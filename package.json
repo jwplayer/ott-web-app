@@ -1,0 +1,76 @@
+{
+  "name": "jw-ott-webapp",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/Videodock/jw-ott-webapp.git",
+  "author": "Robin van Zanten",
+  "private": true,
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "test": "npx jest",
+    "test-watch": "npx jest --watch",
+    "test-coverage": "npx jest --coverage",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+    "create-base": "node scripts/blueprint/index.js"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-query": "^3.13.10",
+    "react-router-dom": "^5.2.0",
+    "tile-dock": "https://github.com/RCVZ/tile-dock-temp"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
+    "@snowpack/app-scripts-react": "^2.0.1",
+    "@snowpack/plugin-build-script": "^2.1.0",
+    "@snowpack/plugin-dotenv": "^2.1.0",
+    "@snowpack/plugin-postcss": "^1.2.2",
+    "@snowpack/plugin-react-refresh": "^2.4.2",
+    "@snowpack/plugin-run-script": "^2.3.0",
+    "@snowpack/plugin-sass": "^1.4.0",
+    "@snowpack/plugin-typescript": "^1.2.1",
+    "@testing-library/react": "^11.2.6",
+    "@types/jest": "^26.0.22",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/snowpack-env": "^2.3.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "confusing-browser-globals": "^1.0.10",
+    "eslint": "^7.24.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-rulesdir": "^0.2.0",
+    "eslint-watch": "^7.0.0",
+    "husky": "^6.0.0",
+    "jest": "^26.6.3",
+    "postcss": "^8.2.10",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.1",
+    "postcss-scss": "^3.0.5",
+    "prettier": "^2.2.1",
+    "snowpack": "^3.3.4",
+    "stylelint": "^13.12.0",
+    "stylelint-config-recommended-scss": "^4.2.0",
+    "stylelint-declaration-strict-value": "^1.7.12",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.19.0",
+    "typescript": "^4.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS && lint-staged && TZ=UTC yarn test --coverage --watchAll=false --ci --bail=1"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint"
+    ]
+  }
+}
