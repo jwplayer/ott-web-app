@@ -13,6 +13,7 @@
     "test-coverage": "npx jest --coverage",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:styles": "stylelint \"src/**/*.scss\"",
     "create-base": "node scripts/blueprint/index.js"
   },
   "dependencies": {
