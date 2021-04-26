@@ -1,0 +1,29 @@
+@mixin cover($width: 100%, $height: 100%) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $width;
+    height: $height;
+}
+
+@mixin center-self($top: 50%, $left: 50%) {
+
+    position: absolute;
+    top: $top;
+    left: $left;
+    transform: translate(-50%, -50%);
+}
+
+@mixin text-size-adjust($value: none) {
+    -webkit-text-size-adjust: $value;
+    -moz-text-size-adjust: $value;
+    -ms-text-size-adjust: $value;
+}
+
+@function rem($size-in-pixels) {
+    @return #{$size-in-pixels / $body-font-size}rem;
+}
+
+@function theme-name($name) {
+    @return 'jw-theme-#{$name}';
+}

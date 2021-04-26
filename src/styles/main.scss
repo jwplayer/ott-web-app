@@ -1,0 +1,11 @@
+@use "theme";
+
+:root {
+  --primary-color: #{theme.$primary-color};
+
+  --body-background-color: #{theme.$body-bg-color};
+}
+
+body {
+  background-color: var(--body-background-color);
+}

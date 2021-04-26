@@ -2,7 +2,9 @@ import React from 'react';
 
 import Slider from './containers/Slider'
 
-function App() {
+import './styles/main.scss';
+
+function App () {
   return (
     <div className="App">
       <Slider />

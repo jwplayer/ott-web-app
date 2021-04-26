@@ -1,0 +1,87 @@
+//
+// Colors
+// --------------------------------
+
+$white: #fff !default;
+$black: #000 !default;
+
+$gray-lighter: #eee !default;
+$gray-light: #d7dbe6 !default;
+$gray: #999 !default;
+$gray-dark: #363636 !default;
+$gray-darker: #292929 !default;
+$gray-alternate: #edeff3 !default;
+
+$red: #f42957 !default;
+$blue: #2b3b57 !default;
+$green: #393 !default;
+
+//
+// Base
+// --------------------------------
+
+$body-font-size: 16px !default;
+$base-spacing: 12px !default;
+$base-spacing-mobile: 8px !default;
+$base-spacing-heading: 20px !default;
+
+$container-width-mobile: 100% !default;
+$container-width-tablet: 685px !default;
+$container-width-desktop: 800px !default;
+
+//
+// Responsive
+// --------------------------------
+
+$mobile-max-width: 767px !default;
+$tablet-max-width: 1023px !default;
+
+$tablet-min-width: $mobile-max-width + 1 !default;
+$desktop-min-width: $tablet-max-width + 1 !default;
+
+//
+// Header
+// --------------------------------
+
+$header-height: 56px !default;
+$header-nav-width: 120px !default;
+$header-padding: 10px 56px !default;
+
+$header-height-mobile: 56px !default;
+$header-nav-width-mobile: 50px !default;
+
+$search-height: 70px !default;
+
+//
+// Toolbar
+// --------------------------------
+
+$toolbar-height: 50px !default;
+$toolbar-padding: 10px !default;
+$toolbar-nav-width: 60px !default;
+
+//
+// Toggle
+// --------------------------------
+
+$toggle-height: 23px !default;
+$toggle-width: 45px !default;
+$toggle-button-size: 25px !default;
+
+//
+// VideoLayout
+// --------------------------------
+
+$video-layout-width: 1024px !default;
+$video-layout-right-rail-width: 1280px !default;
+
+//
+// Z-index
+// --------------------------------
+
+$view-z-index: 5 !default;
+$loading-z-index: 10 !default;
+$header-z-index: 15 !default;
+$toolbar-z-index: 12 !default;
+$sidebar-z-index: 20 !default;
+$popups-z-index: 25 !default;

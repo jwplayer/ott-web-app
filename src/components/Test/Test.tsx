@@ -1,8 +1,10 @@
 import React from 'react';
 
-function Test() {
+import styles from './Test.module.scss';
+
+function Test () {
   return (
-    <div className="Test">
+    <div className={styles.Test}>
       <span>Test</span>
     </div>
   );
