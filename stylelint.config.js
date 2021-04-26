@@ -222,93 +222,93 @@ const misc = [
 
 
 module.exports = (function () {
-    return {
-      extends: ['stylelint-config-recommended-scss'],
-  
-      plugins: [
-        // Support SCSS
-        'stylelint-scss',
-  
-        // Automatic rule ordering
-        'stylelint-order',
-  
-        'stylelint-declaration-strict-value',
+  return {
+    extends: ['stylelint-config-recommended-scss'],
+
+    plugins: [
+      // Support SCSS
+      'stylelint-scss',
+
+      // Automatic rule ordering
+      'stylelint-order',
+
+      'stylelint-declaration-strict-value',
+    ],
+
+    // Most styling errors should be considered warning
+    defaultSeverity: 'warning',
+
+    rules: {
+      'order/order': [
+        // Variables first
+        'custom-properties',
+        'dollar-variables',
+
+        // Any mixins
+        {
+          type: 'at-rule',
+          name: 'include',
+        },
+
+        // Style declarations
+        'declarations',
+
+        // Pseudo elements
+        {
+          type    : 'rule',
+          name    : 'Pseudo Element',
+          selector: /^&:(:|-)/,
+        },
+
+        // Normal child elements
+        'rules',
+
+        // State modifier
+        {
+          type    : 'rule',
+          name    : 'State Modifier',
+          selector: /^&(:(?!:)|\[)/,
+        },
       ],
-  
-      // Most styling errors should be considered warning
-      defaultSeverity: 'warning',
-  
-      rules: {
-        'order/order': [
-          // Variables first
-          'custom-properties',
-          'dollar-variables',
-  
-          // Any mixins
-          {
-            type: 'at-rule',
-            name: 'include',
+
+      // Ensure logical and consistent property ordering
+      'order/properties-order': [
+        ...special,
+        ...positioning,
+        ...boxmodel,
+        ...typography,
+        ...visual,
+        ...animation,
+        ...misc,
+      ],
+
+      // Ensure that certain properties have a strict variable
+      'scale-unlimited/declaration-strict-value': [
+        ['/color/', 'z-index'],
+        {
+          ignoreValues: {
+            ''       : ['currentColor', 'inherit', 'transparent'],
+            'z-index': ['-1', '0', '1'],
           },
-  
-          // Style declarations
-          'declarations',
-  
-          // Pseudo elements
-          {
-            type: 'rule',
-            name: 'Pseudo Element',
-            selector: /^&:(:|-)/,
-          },
-  
-          // Normal child elements
-          'rules',
-  
-          // State modifier
-          {
-            type: 'rule',
-            name: 'State Modifier',
-            selector: /^&(:(?!:)|\[)/,
-          },
-        ],
-  
-        // Ensure logical and consistent property ordering
-        'order/properties-order': [
-          ...special,
-          ...positioning,
-          ...boxmodel,
-          ...typography,
-          ...visual,
-          ...animation,
-          ...misc,
-        ],
-  
-        // Ensure that certain properties have a strict variable
-        'scale-unlimited/declaration-strict-value': [
-          ['/color/', 'z-index'],
-          {
-            ignoreValues: {
-              '': ['currentColor', 'inherit', 'transparent'],
-              'z-index': ['-1', '0', '1'],
-            },
-  
-            disableFix: true,
-          },
-        ],
-  
-        // Double colon should be used for pseudo elements
-        // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
-        'selector-pseudo-element-colon-notation': 'double',
-  
-        // PostCSS takes care of automatic vendor prefixing
-        'property-no-vendor-prefix': true,
-  
-        // No units are needed for zero
-        'length-zero-no-unit': true,
-  
-        // Prevent using global animations
-        'no-unknown-animations': true,
-      },
-    };
-  })();
+
+          disableFix: true,
+        },
+      ],
+
+      // Double colon should be used for pseudo elements
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
+      'selector-pseudo-element-colon-notation': 'double',
+
+      // PostCSS takes care of automatic vendor prefixing
+      'property-no-vendor-prefix': true,
+
+      // No units are needed for zero
+      'length-zero-no-unit': true,
+
+      // Prevent using global animations
+      'no-unknown-animations': true,
+    },
+  };
+})();
 
 

@@ -29,6 +29,6 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     // Fallthrough must be documented
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   }
 }

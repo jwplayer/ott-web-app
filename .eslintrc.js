@@ -29,17 +29,17 @@ module.exports = {
   env: {
     // Browser conf
     browser: true,
-    es6: true,
+    es6    : true,
 
     // Jest conf
     jest: true,
     node: true,
   },
 
-  rules: {
+  rules    : {
     // Prevent development/debugging statements
-    'no-console': ['error', { allow: ['warn', 'error', 'info', 'debug'] }],
-    'no-alert': 'error',
+    'no-console' : ['error', { allow: ['warn', 'error', 'info', 'debug'] }],
+    'no-alert'   : 'error',
     'no-debugger': 'error',
 
     // Prevent usage of confusing globals
@@ -52,12 +52,12 @@ module.exports = {
     'import/order': [
       'warn',
       {
-        groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
-        pathGroups: [
+        groups            : ['builtin', 'external', 'parent', 'sibling', 'index'],
+        pathGroups        : [
           // Sort absolute root imports before parent imports
           {
-            pattern: '/**',
-            group: 'parent',
+            pattern : '/**',
+            group   : 'parent',
             position: 'before',
           },
         ],
@@ -68,7 +68,7 @@ module.exports = {
   overrides: [
     {
       files: ['*.js'],
-      env: {
+      env  : {
         // We may still use CJS in .js files (eg. local scripts)
         commonjs: true,
       },
@@ -85,27 +85,27 @@ module.exports = {
         '@typescript-eslint/no-implicit-any-catch': 'error',
 
         // These are handled by TS
-        '@typescript-eslint/no-explicit-any': [
+        '@typescript-eslint/no-explicit-any'               : [
           'warn',
           { ignoreRestArgs: true },
         ],
         '@typescript-eslint/explicit-module-boundary-types': 'off',
-        '@typescript-eslint/no-inferrable-types': 'off',
-        '@typescript-eslint/ban-ts-comment': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-        'import/no-unresolved': 'off',
+        '@typescript-eslint/no-inferrable-types'           : 'off',
+        '@typescript-eslint/ban-ts-comment'                : 'off',
+        '@typescript-eslint/no-unused-vars'                : 'off',
+        'import/no-unresolved'                             : 'off',
       },
     },
     {
-      files: ['*.jsx', '*.tsx'],
+      files  : ['*.jsx', '*.tsx'],
       plugins: [
         // Enable linting React code
         'react',
         'react-hooks',
       ],
-      rules: {
+      rules  : {
         // Help with Hooks syntax
-        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/rules-of-hooks' : 'error',
         'react-hooks/exhaustive-deps': 'error',
 
         // Handled by Typescript
@@ -117,9 +117,9 @@ module.exports = {
     },
   ],
 
-  settings: {
+  settings     : {
     react: {
-      pragma: 'React',
+      pragma : 'React',
       version: '17',
     },
   },
