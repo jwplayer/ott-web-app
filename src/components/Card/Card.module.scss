@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .root {
   cursor: pointer;
   transition: transform .2s ease-out,-webkit-transform .2s ease-out;
@@ -23,28 +25,11 @@
   box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
 }
 
-.oneOne {
-  padding-bottom: 100%;
-}
-
-.twoOne {
-  padding-bottom: 50%;
-}
-
-.twoThree {
-  padding-bottom: (3 / 2) * 100%;
-}
-
-.fiveThree {
-  padding-bottom: 60%;
-}
-
-.fourThree {
-  padding-bottom: 75%;
-}
-
-.sixteenNine {
-  padding-bottom: (9 / 16) * 100%;
+$aspects: ((16, 9), (16, 4), (4, 3), (1, 1));
+@each $base, $modifier in $aspects {
+  .aspect-#{$base}#{$modifier} {
+    padding-top: math.percentage($modifier/$base);
+  }
 }
 
 .videoDurationTag {

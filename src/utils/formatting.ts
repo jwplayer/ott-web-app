@@ -1,5 +1,5 @@
-const formatVideoDurationTag = (seconds: number): string | void => {
-    if (!seconds || typeof seconds !== "number") return;
+const formatVideoDurationTag = (seconds: number): string | null => {
+    if (!seconds || typeof seconds !== "number") return null;
 
     const minutes = Math.ceil(seconds / 60)
 
