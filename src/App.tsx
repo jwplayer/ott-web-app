@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import Slider from './containers/Slider'
-
+import Root from './components/Root/Root';
 import './styles/main.scss';
 
-function App () {
-  return (
-    <div className="App">
-      <Slider />
-    </div>
-  );
+interface State {
+  error: Error | null;
+}
+
+class App extends Component<State> {
+  public state: State = {
+    error: null,
+  };
+
+  componentDidCatch(error: Error) {
+    this.setState({ error });
+  }
+
+  render() {
+    return (
+      <Router>
+        <Root error={this.state.error} />
+      </Router>
+    );
+  }
 }
 
 export default App;
