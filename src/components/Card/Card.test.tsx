@@ -4,9 +4,13 @@ import { render } from '@testing-library/react';
 import Card from './Card';
 
 describe('<Card>', () => {
-  it('renders card', () => {
-    const { getByText } = render(<Card title="aa" duration={120} />);
-    const card = getByText(/card/i);
-    expect(card).toBeTruthy();
+  it('renders card with video title', () => {
+    const { getByText } = render(<Card videoTitle="aa" videoDuration={120} />);
+    expect(getByText(/aa/i)).toBeTruthy();
+  });
+
+  it('renders tag with correct duration', () => {
+    const { getByText } = render(<Card videoTitle="aa" videoDuration={120} />);
+    expect(getByText(/2/i)).toBeTruthy();
   });
 });

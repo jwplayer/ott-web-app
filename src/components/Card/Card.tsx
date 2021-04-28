@@ -2,28 +2,31 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { ASPECT_RATIO } from '../../enum/Card.js'
+import { formatVideoDuration } from '../../utils/formatting.ts'
 
 import styles from './Card.module.scss';
 
 type CardProps = {
-  title: string;
-  duration: number;
-  imageSource?: string;
+  videoTitle: string;
+  videoDuration: number;
+  posterSource?: string;
   aspectRatio?: string;
 };
 
 function Card({
-  title,
-  duration,
-  imageSource,
+  videoTitle,
+  videoDuration,
+  posterSource,
   aspectRatio = ASPECT_RATIO[16_9],
 }: CardProps): JSX.Element {
+
   return (
-    <div className={classNames(styles.root, styles[aspectRatio])}>
-      <div className={styles.container} style={{ backgroundImage: `url(${imageSource})` }}>
-        <span>Card</span>
+    <div className={styles.root}>
+      <div className={classNames(styles.poster, styles[aspectRatio])} style={{ backgroundImage: `url(${posterSource})` }}>
+        {videoDuration && <div className={styles.videoDurationTag}>{formatVideoDuration(videoDuration)}</div>}
       </div>
-    </div >
+      <p className={styles.videoTitle}>{videoTitle}</p>
+    </div>
   );
 }
 
