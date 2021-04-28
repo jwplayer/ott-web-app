@@ -1,7 +1,6 @@
-// remove these, if you don't need them
-@import './path/styles/base/colors';
-@import './path/styles/base/breakpoints';
-@import './path/styles/base/mixins';
+@use '../../styles/variables';
+@use '../../styles/theme';
 
 .basis {
+  // component styling
 }
