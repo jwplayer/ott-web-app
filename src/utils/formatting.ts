@@ -4,8 +4,6 @@ const formatVideoDurationTag = (seconds: number): string | void => {
     const minutes = Math.ceil(seconds / 60)
 
     return `${minutes} min`
-
-
 }
 
 export { formatVideoDurationTag }

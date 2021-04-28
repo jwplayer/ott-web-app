@@ -23,7 +23,7 @@ function Card({
 }: CardProps): JSX.Element {
 
   return (
-    <div className={styles.root} onClick={onClick}>
+    <div className={styles.root} onClick={onClick} role="button" aria-label={`Play ${videoTitle}`}>
       <div className={classNames(styles.poster, styles[posterAspectRatio])} style={{ backgroundImage: `url(${posterSource})` }}>
         {videoDuration && <div className={styles.videoDurationTag}>{formatVideoDurationTag(videoDuration)}</div>}
       </div>
