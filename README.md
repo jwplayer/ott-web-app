@@ -38,6 +38,14 @@ When working on this project, keep these in mind:
 
 -  `yarn start`
 
+
+
+## How to use the create-base script
+
+- use `yarn create-base components/YourComponentName` to create a base component
+- use `yarn create-base containers/YourContainerName` to create a base container
+- use `yarn create-base screens/YourScreenName` to create a base screen
+
   
 
 ## Git Commit Guidelines(conventional changelog)

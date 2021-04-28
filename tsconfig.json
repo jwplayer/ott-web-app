@@ -1,7 +1,8 @@
 {
   "include": [
     "src",
-    "types"
+    "types",
+    "scripts"
   ],
   "compilerOptions": {
     "module": "esnext",

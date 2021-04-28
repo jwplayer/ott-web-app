@@ -1,1 +1,2 @@
-import '@testing-library/jest-dom'
+import 'react-app-polyfill/stable';
+import '@testing-library/jest-dom/extend-expect';
