@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Logo/> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <img
+      alt="logo"
+      src="123"
+    />
+  </div>
+</div>
+`;
