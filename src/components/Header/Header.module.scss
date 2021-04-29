@@ -82,6 +82,10 @@
     width: 90px;
     transition: opacity 0.2s ease;
   }
+
+  .search {
+    width: 90px;
+  }
 }
 
 @include responsive.tablet-only() {
