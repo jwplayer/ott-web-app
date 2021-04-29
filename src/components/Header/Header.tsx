@@ -8,11 +8,11 @@ import styles from './Header.module.scss';
 
 type TypeHeader = 'static' | 'fixed';
 
-type HeaderProps = {
+type Props = {
   headerType?: TypeHeader;
 };
 
-const Header: React.FC<HeaderProps> = ({ headerType = 'static' }) => {
+const Header: React.FC<Props> = ({ headerType = 'static' }) => {
   return (
     <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>

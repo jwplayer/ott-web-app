@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom';
 
 import styles from './Logo.module.scss';
 
-type LogoProps = {
+type Props = {
   src: string;
 };
 
-const Logo: React.FC<LogoProps> = ({ src }: LogoProps) => {
+const Logo: React.FC<Props> = ({ src }: Props) => {
   const history = useHistory();
 
   const handleClick = () => {

@@ -3,15 +3,12 @@ import { NavLink } from 'react-router-dom';
 
 import styles from './ButtonLink.module.scss';
 
-type ButtonLinkProps = {
+type Props = {
   label: string;
   to: string;
 };
 
-const ButtonLink: React.FC<ButtonLinkProps> = ({
-  label,
-  to,
-}: ButtonLinkProps) => {
+const ButtonLink: React.FC<Props> = ({ label, to }) => {
   return (
     <NavLink
       className={styles.link}

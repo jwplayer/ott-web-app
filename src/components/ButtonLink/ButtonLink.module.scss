@@ -16,12 +16,12 @@
   padding: 0 10px;
   color: inherit;
   font-family: theme.$body-alt-font-family;
+  font-weight: 700;
   text-align: center;
   text-decoration: none;
   background: transparent;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: 700;
   opacity: 0.7;
   transition: background 0.1s ease, transform 0.1s ease;
 
@@ -37,6 +37,6 @@
 }
 
 .active {
-  color: theme.$btn-icon-active-color;
+  color: variables.$white;
   opacity: 1;
 }

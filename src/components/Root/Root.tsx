@@ -24,11 +24,11 @@ const Settings = () => {
 
 // Mock screens
 
-type RootProps = {
+type Props = {
   error?: Error | null;
 };
 
-const Root: FC<RootProps> = ({ error }: RootProps) => {
+const Root: FC<Props> = ({ error }: Props) => {
   if (error) {
     return <div>Error!</div>;
   }
