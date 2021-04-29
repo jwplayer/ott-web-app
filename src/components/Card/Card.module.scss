@@ -41,6 +41,11 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   padding: 4px 8px;
   border-radius: 4px;
   color: var(--card-color);
+  @media screen and (max-width: 1000px) {
+    padding: 2px 4px;
+    bottom: 8px;
+    right: 8px;
+  }
 }
 
 .cardTitle {

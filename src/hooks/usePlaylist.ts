@@ -7,8 +7,6 @@ const getPlaylistById = (playlistId: string) => {
         res.json())
 };
 
-
-
 export default function usePlaylist(playlistId: string) {
     return useQuery(["playlist", playlistId], () => getPlaylistById(playlistId));
 }
