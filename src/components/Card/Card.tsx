@@ -1,32 +1,35 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { formatVideoDurationTag } from '../../utils/formatting';
+import { formatDurationTag } from '../../utils/formatting';
 
 import styles from './Card.module.scss';
 
 type CardProps = {
   onClick: (() => void);
-  videoTitle: string;
-  videoDuration: number;
+  title: string;
+  duration: number;
   posterSource?: string;
-  posterAspectRatio?: "1:1" | "2:1" | "2:3" | "4:3" | "5:3" | "16:9";
+  posterAspect?: "1:1" | "2:1" | "2:3" | "4:3" | "5:3" | "16:9" | "9:16";
 };
 
 function Card({
   onClick,
-  videoTitle,
-  videoDuration,
+  title,
+  duration,
   posterSource,
-  posterAspectRatio = "16:9",
+  posterAspect = "16:9",
 }: CardProps): JSX.Element {
 
   return (
-    <div className={styles.root} onClick={onClick} role="button" aria-label={`Play ${videoTitle}`}>
-      <div className={classNames(styles.poster, styles[`aspect-${posterAspectRatio.replace(':', '')}`])} style={{ backgroundImage: `url(${posterSource})` }}>
-        {videoDuration && <div className={styles.videoDurationTag}>{formatVideoDurationTag(videoDuration)}</div>}
+    <div className={styles.card} onClick={onClick} role="button" aria-label={`Play ${title}`}>
+      <div
+        className={classNames(styles.cardPoster, styles[`cardPosterAspect${posterAspect.replace(':', '')}`])}
+        style={{ backgroundImage: `url(${posterSource})` }}
+      >
+        {duration && <div className={styles.cardDurationTag}>{formatDurationTag(duration)}</div>}
       </div>
-      <p className={styles.videoTitle}>{videoTitle}</p>
+      <p className={styles.cardTitle}>{title}</p>
     </div>
   );
 }

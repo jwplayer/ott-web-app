@@ -1,18 +1,18 @@
 @use 'sass:math';
 
-.root {
+.card {
   cursor: pointer;
   transition: transform .2s ease-out,-webkit-transform .2s ease-out;
 }
 
-.root:hover {
+.card:hover {
   transform: scale(1.05);
-  & .poster {
+  & .cardPoster {
     box-shadow: 0 0 0 3px var(--card-border-hover-color), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
   }
 }
 
-.poster {
+.cardPoster {
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -25,14 +25,14 @@
   box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
 }
 
-$aspects: ((16, 9), (16, 4), (4, 3), (1, 1));
+$aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 @each $base, $modifier in $aspects {
-  .aspect-#{$base}#{$modifier} {
+  .cardPosterAspect#{$base}#{$modifier} {
     padding-top: math.percentage($modifier/$base);
   }
 }
 
-.videoDurationTag {
+.cardDurationTag {
   position: absolute;
   bottom: 15px;
   right: 15px;
@@ -43,7 +43,7 @@ $aspects: ((16, 9), (16, 4), (4, 3), (1, 1));
   color: var(--card-color);
 }
 
-.videoTitle {
+.cardTitle {
   overflow: hidden;
   font-family: var(--body-alt-font-family);
   color: var(--card-color);
