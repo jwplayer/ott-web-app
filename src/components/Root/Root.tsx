@@ -1,29 +1,43 @@
 import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-// import styles from './Root.module.scss';
+import Home from '../../screens/Home/Home';
+import Header from '../Header/Header';
 
-const Home = () => {
-  return <span>Home</span>;
-};
+// Mock screens
 
 const PlaylistScreen = () => {
-  return <span>PlaylistScreen</span>;
+  return (
+    <>
+      <Header></Header>
+      <span style={{ color: 'white' }}>PlaylistScreen</span>
+    </>
+  );
+};
+const Settings = () => {
+  return (
+    <>
+      <Header></Header> <span style={{ color: 'white' }}>Settings</span>{' '}
+    </>
+  );
 };
 
-interface RootProps {
-  error: Error | null;
-}
+// Mock screens
+
+type RootProps = {
+  error?: Error | null;
+};
 
 const Root: FC<RootProps> = ({ error }: RootProps) => {
   if (error) {
-    return <span>{error}</span>;
+    return <div>Error!</div>;
   }
 
   return (
     <Switch>
       <Route path="/" component={Home} exact />
       <Route path="/p/:id" component={PlaylistScreen} exact />
+      <Route path="/u" component={Settings} exact />
     </Switch>
   );
 };
