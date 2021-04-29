@@ -1,14 +1,18 @@
 import React from 'react';
 
 import Slider from './containers/Slider'
+import QueryProvider from './context/QueryProvider';
+
 
 import './styles/main.scss';
 
-function App () {
+function App() {
   return (
-    <div className="App">
-      <Slider />
-    </div>
+    <QueryProvider>
+      <div className="App">
+        <Slider />
+      </div>
+    </QueryProvider>
   );
 }
 
