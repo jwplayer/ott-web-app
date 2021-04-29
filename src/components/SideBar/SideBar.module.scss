@@ -1,0 +1,64 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+//
+// jwSidebarBackdrop
+// --------------------------------
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: variables.$sidebar-z-index - 1;
+  display: none;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(variables.$black, 0.4);
+
+  &.visible {
+    display: block;
+  }
+}
+
+//
+// jwSidebar
+// --------------------------------
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  z-index: variables.$sidebar-z-index;
+
+  width: 270px;
+  max-width: 90vw;
+  height: 100vh;
+  max-height: 100vh;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--body-background-color);
+  transform: translateX(-100%);
+
+  visibility: hidden;
+  transition: transform 0.2s cubic-bezier(0.52, 0.51, 0.2, 1);
+
+  &.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  padding: variables.$base-spacing;
+}
+
+.divider {
+  width: 270px;
+  max-width: 90vw;
+  border-top: 1px solid rgba(variables.$white, 0.12);
+  opacity: 0.12;
+}
