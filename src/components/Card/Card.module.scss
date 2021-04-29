@@ -1,0 +1,57 @@
+@use 'sass:math';
+
+.card {
+  cursor: pointer;
+  transition: transform .2s ease-out,-webkit-transform .2s ease-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  & .cardPoster {
+    box-shadow: 0 0 0 3px var(--card-border-hover-color), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+  }
+}
+
+.cardPoster {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background-color: var(--card-slider-loading-card-bg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 4px;
+  transition: box-shadow .1s ease;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+}
+
+$aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
+@each $base, $modifier in $aspects {
+  .cardPosterAspect#{$base}#{$modifier} {
+    padding-top: math.percentage($modifier/$base);
+  }
+}
+
+.cardDurationTag {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background-color: var(--card-tag-bg);
+  font-family: var(--body-font-family);
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--card-color);
+}
+
+.cardTitle {
+  overflow: hidden;
+  font-family: var(--body-alt-font-family);
+  color: var(--card-color);
+  font-weight: 700;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 8px;
+  margin-bottom: 0px;
+  min-height: 19px;
+}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Header /> renders headers 1`] = `
+exports[`<Header /> renders header 1`] = `
 <div>
   <header
     class=""
@@ -8,7 +8,7 @@ exports[`<Header /> renders headers 1`] = `
     <div>
       <div>
         <span>
-          menu
+          Placeholder
         </span>
       </div>
       <div>
@@ -28,17 +28,17 @@ exports[`<Header /> renders headers 1`] = `
           </span>
         </a>
         <a
-          href="/one"
+          href="/p/:id"
         >
           <span>
-            One
+            Playlist
           </span>
         </a>
         <a
-          href="/two"
+          href="/u"
         >
           <span>
-            Two
+            Settings
           </span>
         </a>
       </nav>
