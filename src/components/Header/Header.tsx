@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import ButtonLink from '../ButtonLink/ButtonLink';
 import Logo from '../Logo/Logo';
+import Menu from '../../icons/Menu';
 
 import styles from './Header.module.scss';
 
@@ -10,14 +11,18 @@ type TypeHeader = 'static' | 'fixed';
 
 type Props = {
   headerType?: TypeHeader;
+  openSideBar: (sideBarOpen: boolean) => void;
 };
 
-const Header: React.FC<Props> = ({ headerType = 'static' }) => {
+const Header: React.FC<Props> = ({ headerType = 'static', openSideBar }) => {
   return (
     <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>
-        <div className={styles.menu}>
-          <span>Placeholder</span>
+        <div
+          className={styles.menu}
+          onClick={(sideBarOpen) => openSideBar(!sideBarOpen)}
+        >
+          <Menu />
         </div>
         <Logo src="https://cdn.jwplayer.com/images/HXyBCU5N.png" />
         <nav className={styles.nav}>
@@ -27,6 +32,7 @@ const Header: React.FC<Props> = ({ headerType = 'static' }) => {
           <ButtonLink label="Settings" to="/u" />
           {/* mock */}
         </nav>
+        <div className={styles.search}></div>
       </div>
     </header>
   );
