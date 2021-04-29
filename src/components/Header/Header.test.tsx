@@ -5,7 +5,7 @@ import { render } from '../../testUtils';
 import Header from './Header';
 
 describe('<Header />', () => {
-  test('renders headers', () => {
+  test('renders header', () => {
     const { container } = render(<Header />);
 
     expect(container).toMatchSnapshot();
