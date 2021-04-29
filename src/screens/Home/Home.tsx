@@ -1,19 +1,16 @@
 import React from 'react';
 
-import Header from '../../components/Header/Header';
-
-import styles from './Home.module.scss';
+import Layout from '../../components/Layout/Layout';
 
 type HomeProps = {
   dummy?: string;
 };
 
-const Home: React.FC<HomeProps> = ({ dummy = 'defaultValue' }: HomeProps) => {
+const Home: React.FC<HomeProps> = ({ dummy = 'defaultValue' }) => {
   return (
-    <div className={styles.Home}>
-      <Header></Header>
-      <p style={{ color: 'white' }}>{dummy}</p>
-    </div>
+    <Layout>
+      <p>{dummy}</p>
+    </Layout>
   );
 };
 
