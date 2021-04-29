@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 import throttle from 'lodash.throttle';
 
-const getDeviceConfig = (width: number) => {
+type Breakpoints = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
+const THROTTLE_WAIT = 500;
+
+const getDeviceConfig = (width: number): Breakpoints => {
     if (width < 320) {
         return 'xs';
     } else if (width >= 320 && width < 720) {
         return 'sm';
     } else if (width >= 720 && width < 1024) {
         return 'md';
-    } else if (width >= 1024) {
+    } else if (width >= 1024 && width < 1440) {
         return 'lg';
+    } else {
+        return 'xl';
     }
 };
 
@@ -19,7 +25,7 @@ const useBreakpoint = () => {
     useEffect(() => {
         const calcInnerWidth = throttle(function () {
             setBreakpoint(getDeviceConfig(window.innerWidth))
-        }, 200);
+        }, THROTTLE_WAIT);
         window.addEventListener('resize', calcInnerWidth);
         return () => window.removeEventListener('resize', calcInnerWidth);
     }, []);

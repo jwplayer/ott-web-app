@@ -1,4 +1,26 @@
 .playlist {
     color: var(--primary-color);
     font-family: var(--body-alt-font-family);
+    margin-left: 56px;
+    margin-right: 56px;
+    text-align: center;
+
+    @media screen and (max-width: 992px) {
+      margin-left: 12px;
+      margin-right: 12px;
+    }
+  }
+
+  .playlistHeader {
+    display: flex;
+    align-items: center;
+
+    > * + * {
+      margin-left: 24px;
+    }
+  }
+
+  .playlistGrid {
+    display: grid;
+    grid-gap: 8px;
   }
