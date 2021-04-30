@@ -20,11 +20,12 @@ function Card({
   posterSource,
   posterAspect = "16:9",
 }: CardProps): JSX.Element {
+  const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`])
 
   return (
     <div className={styles.card} onClick={onClick} role="button" aria-label={`Play ${title}`}>
       <div
-        className={classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`])}
+        className={posterClassNames}
         style={{ backgroundImage: `url(${posterSource})` }}
       >
         {duration && <div className={styles.tag}>{formatDurationTag(duration)}</div>}
