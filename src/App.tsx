@@ -1,14 +1,23 @@
 import React from 'react';
 
-import Slider from './containers/Slider'
+import Slider from './containers/Slider';
+import ConfigProvider from './providers/configProvider';
 
 import './styles/main.scss';
 
-function App () {
+function App() {
   return (
-    <div className="App">
-      <Slider />
-    </div>
+    <ConfigProvider
+      configLocation={window.configLocation}
+      onLoading={(isLoading: boolean) =>
+        console.info(`Loading config: ${isLoading}`)
+      }
+      onValidationError={(error: Error) => console.error(`Config ${error}`)}
+    >
+      <div className="App">
+        <Slider />
+      </div>
+    </ConfigProvider>
   );
 }
 
