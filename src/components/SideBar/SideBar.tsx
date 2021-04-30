@@ -26,15 +26,15 @@ const SideBar: React.FC<SideBarProps> = ({ sideBarOpen, closeSideBar }) => {
         })}
         onClick={closeSideBar}
       >
-        <nav className={styles.group}>
+        <div className={styles.group} aria-label="close menu" role="button">
           <Close />
-        </nav>
-        <div className={styles.group}>
+        </div>
+        <nav className={styles.group}>
           <ButtonLink label="Home" to="/" />
           <ButtonLink label="Test" to="/" />
           <hr className={styles.divider} />
           <ButtonLink label="Settings" to="/" />
-        </div>
+        </nav>
       </div>
     </Fragment>
   );

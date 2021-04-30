@@ -10,10 +10,14 @@ exports[`<Layout /> renders layout 1`] = `
         class="container"
       >
         <div
+          aria-label="open menu"
           class="menu"
+          role="button"
         >
           <svg
+            aria-hidden="true"
             class="icon"
+            focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -38,6 +42,7 @@ exports[`<Layout /> renders layout 1`] = `
           />
         </div>
         <nav
+          aria-label="menu"
           class="nav"
         >
           <a
@@ -77,11 +82,15 @@ exports[`<Layout /> renders layout 1`] = `
     <div
       class="sidebar"
     >
-      <nav
+      <div
+        aria-label="close menu"
         class="group"
+        role="button"
       >
         <svg
+          aria-hidden="true"
           class="icon"
+          focusable="false"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -95,8 +104,8 @@ exports[`<Layout /> renders layout 1`] = `
             />
           </g>
         </svg>
-      </nav>
-      <div
+      </div>
+      <nav
         class="group"
       >
         <a
@@ -129,7 +138,7 @@ exports[`<Layout /> renders layout 1`] = `
             Settings
           </span>
         </a>
-      </div>
+      </nav>
     </div>
   </div>
 </div>

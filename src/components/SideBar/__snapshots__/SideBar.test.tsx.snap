@@ -8,11 +8,15 @@ exports[`<SideBar /> renders sideBar 1`] = `
   <div
     class="sidebar open"
   >
-    <nav
+    <div
+      aria-label="close menu"
       class="group"
+      role="button"
     >
       <svg
+        aria-hidden="true"
         class="icon"
+        focusable="false"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -26,8 +30,8 @@ exports[`<SideBar /> renders sideBar 1`] = `
           />
         </g>
       </svg>
-    </nav>
-    <div
+    </div>
+    <nav
       class="group"
     >
       <a
@@ -60,7 +64,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
           Settings
         </span>
       </a>
-    </div>
+    </nav>
   </div>
 </div>
 `;
