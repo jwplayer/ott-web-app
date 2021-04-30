@@ -1,4 +1,5 @@
 @use 'sass:math';
+@use "../../styles/mixins/responsive";
 
 .card {
   cursor: pointer;
@@ -42,7 +43,8 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   padding: 4px 8px;
   border-radius: 4px;
   color: var(--card-color);
-  @media screen and (max-width: 1000px) {
+
+  @include responsive.mobile-and-tablet {
     padding: 2px 4px;
     bottom: 8px;
     right: 8px;

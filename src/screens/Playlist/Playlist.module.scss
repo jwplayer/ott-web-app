@@ -1,3 +1,5 @@
+@use "../../styles/mixins/responsive";
+
 .playlist {
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
@@ -6,7 +8,7 @@
   margin-right: 56px;
   text-align: center;
 
-  @media screen and (max-width: 720px) {
+  @include responsive.mobile-only {
     margin-left: 12px;
     margin-right: 12px;
   }
