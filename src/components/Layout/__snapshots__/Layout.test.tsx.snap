@@ -4,12 +4,16 @@ exports[`<Layout /> renders layout 1`] = `
 <div>
   <div>
     <header
-      class=""
+      class="header static"
     >
-      <div>
-        <div>
+      <div
+        class="container"
+      >
+        <div
+          class="menu"
+        >
           <svg
-            class=""
+            class="icon"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -24,16 +28,21 @@ exports[`<Layout /> renders layout 1`] = `
             </g>
           </svg>
         </div>
-        <div>
+        <div
+          class="brand"
+        >
           <img
             alt="logo"
+            class="logo"
             src="https://cdn.jwplayer.com/images/HXyBCU5N.png"
           />
         </div>
-        <nav>
+        <nav
+          class="nav"
+        >
           <a
             aria-current="page"
-            class="function link() { [native code] } active"
+            class="link active"
             href="/"
           >
             <span>
@@ -41,6 +50,7 @@ exports[`<Layout /> renders layout 1`] = `
             </span>
           </a>
           <a
+            class="link"
             href="/p/:id"
           >
             <span>
@@ -48,6 +58,7 @@ exports[`<Layout /> renders layout 1`] = `
             </span>
           </a>
           <a
+            class="link"
             href="/u"
           >
             <span>
@@ -55,18 +66,22 @@ exports[`<Layout /> renders layout 1`] = `
             </span>
           </a>
         </nav>
-        <div />
+        <div
+          class="search"
+        />
       </div>
     </header>
     <div
-      class=""
+      class="backdrop"
     >
       <div
-        class=""
+        class="sidebar"
       >
-        <nav>
+        <nav
+          class="group"
+        >
           <svg
-            class=""
+            class="icon"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -81,10 +96,12 @@ exports[`<Layout /> renders layout 1`] = `
             </g>
           </svg>
         </nav>
-        <div>
+        <div
+          class="group"
+        >
           <a
             aria-current="page"
-            class="function link() { [native code] } active"
+            class="link active"
             href="/"
           >
             <span>
@@ -93,17 +110,19 @@ exports[`<Layout /> renders layout 1`] = `
           </a>
           <a
             aria-current="page"
-            class="function link() { [native code] } active"
+            class="link active"
             href="/"
           >
             <span>
               Test
             </span>
           </a>
-          <hr />
+          <hr
+            class="divider"
+          />
           <a
             aria-current="page"
-            class="function link() { [native code] } active"
+            class="link active"
             href="/"
           >
             <span>

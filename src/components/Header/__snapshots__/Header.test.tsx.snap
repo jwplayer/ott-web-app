@@ -3,12 +3,16 @@
 exports[`<Header /> renders header 1`] = `
 <div>
   <header
-    class=""
+    class="header static"
   >
-    <div>
-      <div>
+    <div
+      class="container"
+    >
+      <div
+        class="menu"
+      >
         <svg
-          class=""
+          class="icon"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -23,16 +27,21 @@ exports[`<Header /> renders header 1`] = `
           </g>
         </svg>
       </div>
-      <div>
+      <div
+        class="brand"
+      >
         <img
           alt="logo"
+          class="logo"
           src="https://cdn.jwplayer.com/images/HXyBCU5N.png"
         />
       </div>
-      <nav>
+      <nav
+        class="nav"
+      >
         <a
           aria-current="page"
-          class="function link() { [native code] } active"
+          class="link active"
           href="/"
         >
           <span>
@@ -40,6 +49,7 @@ exports[`<Header /> renders header 1`] = `
           </span>
         </a>
         <a
+          class="link"
           href="/p/:id"
         >
           <span>
@@ -47,6 +57,7 @@ exports[`<Header /> renders header 1`] = `
           </span>
         </a>
         <a
+          class="link"
           href="/u"
         >
           <span>
@@ -54,7 +65,9 @@ exports[`<Header /> renders header 1`] = `
           </span>
         </a>
       </nav>
-      <div />
+      <div
+        class="search"
+      />
     </div>
   </header>
 </div>

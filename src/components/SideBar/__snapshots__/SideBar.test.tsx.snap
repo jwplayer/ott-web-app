@@ -1,76 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SideBar /> renders no sideBar 1`] = `
-<div>
-  <div
-    class=""
-  >
-    <div
-      class=""
-    >
-      <nav>
-        <svg
-          class=""
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g>
-            <path
-              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-            />
-            <path
-              d="M0 0h24v24H0z"
-              fill="none"
-            />
-          </g>
-        </svg>
-      </nav>
-      <div>
-        <a
-          aria-current="page"
-          class="function link() { [native code] } active"
-          href="/"
-        >
-          <span>
-            Home
-          </span>
-        </a>
-        <a
-          aria-current="page"
-          class="function link() { [native code] } active"
-          href="/"
-        >
-          <span>
-            Test
-          </span>
-        </a>
-        <hr />
-        <a
-          aria-current="page"
-          class="function link() { [native code] } active"
-          href="/"
-        >
-          <span>
-            Settings
-          </span>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<SideBar /> renders sideBar 1`] = `
 <div>
   <div
-    class="undefined"
+    class="backdrop visible"
   >
     <div
-      class="undefined"
+      class="sidebar open"
     >
-      <nav>
+      <nav
+        class="group"
+      >
         <svg
-          class=""
+          class="icon"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -85,10 +27,12 @@ exports[`<SideBar /> renders sideBar 1`] = `
           </g>
         </svg>
       </nav>
-      <div>
+      <div
+        class="group"
+      >
         <a
           aria-current="page"
-          class="function link() { [native code] } active"
+          class="link active"
           href="/"
         >
           <span>
@@ -97,17 +41,19 @@ exports[`<SideBar /> renders sideBar 1`] = `
         </a>
         <a
           aria-current="page"
-          class="function link() { [native code] } active"
+          class="link active"
           href="/"
         >
           <span>
             Test
           </span>
         </a>
-        <hr />
+        <hr
+          class="divider"
+        />
         <a
           aria-current="page"
-          class="function link() { [native code] } active"
+          class="link active"
           href="/"
         >
           <span>
