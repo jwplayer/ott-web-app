@@ -21,11 +21,13 @@ const Header: React.FC<Props> = ({ headerType = 'static', openSideBar }) => {
         <div
           className={styles.menu}
           onClick={(sideBarOpen) => openSideBar(!sideBarOpen)}
+          aria-label="open menu"
+          role="button"
         >
           <Menu />
         </div>
         <Logo src="https://cdn.jwplayer.com/images/HXyBCU5N.png" />
-        <nav className={styles.nav}>
+        <nav className={styles.nav} aria-label="menu">
           <ButtonLink label="Home" to="/" />
           {/* mock */}
           <ButtonLink label="Playlist" to="/p/:id" />

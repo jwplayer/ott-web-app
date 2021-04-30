@@ -9,10 +9,14 @@ exports[`<Header /> renders header 1`] = `
       class="container"
     >
       <div
+        aria-label="open menu"
         class="menu"
+        role="button"
       >
         <svg
+          aria-hidden="true"
           class="icon"
+          focusable="false"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -37,6 +41,7 @@ exports[`<Header /> renders header 1`] = `
         />
       </div>
       <nav
+        aria-label="menu"
         class="nav"
       >
         <a
