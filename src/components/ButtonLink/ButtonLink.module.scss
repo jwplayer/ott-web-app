@@ -41,6 +41,10 @@
   opacity: 1;
 }
 
+//
+// mediaQueries
+// --------------------------------
+
 @include responsive.mobile-and-tablet() {
   .link {
     padding: 12px;

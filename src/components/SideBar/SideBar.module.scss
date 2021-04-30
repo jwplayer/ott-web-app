@@ -50,6 +50,10 @@
   opacity: 0.12;
 }
 
+//
+// mediaQueries
+// --------------------------------
+
 @include responsive.mobile-and-tablet() {
   .sidebar {
     display: inline-block;
