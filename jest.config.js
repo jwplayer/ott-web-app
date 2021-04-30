@@ -1,3 +1,12 @@
+const {
+  transform,
+  ...rest
+} = require('@snowpack/app-scripts-react/jest.config.js')();
+
 module.exports = {
-  ...require('@snowpack/app-scripts-react/jest.config.js')(),
+  transform: {
+    '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform',
+    ...transform,
+  },
+  ...rest,
 };
