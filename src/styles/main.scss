@@ -5,6 +5,13 @@
   --primary-color: #{theme.$primary-color};
 
   --body-background-color: #{theme.$body-bg-color};
+  --body-font-family: #{theme.$body-font-family};
+  --body-alt-font-family: #{theme.$body-alt-font-family};
+
+  --card-color: #{theme.$card-color};
+  --card-border-hover-color: #{theme.$card-border-hover-color};
+  --card-slider-loading-card-bg: #{theme.$card-slider-loading-card-bg};
+  --card-tag-bg: #{theme.$video-details-tag-bg};
 }
 
 body {
