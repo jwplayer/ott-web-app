@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import usePlaylist from '../../hooks/usePlaylist';
-import useBreakpoint from '../../hooks/useBreakpoint';
+import { getCategoriesFromPlaylist, filterPlaylistCategory } from '../../utils/collection';
 import Card from '../../components/Card/Card'
+import Dropdown from '../../components/Dropdown/Dropdown'
+import CardGrid from '../../components/CardGrid/CardGrid'
 
 import styles from './Playlist.module.scss';
 
-// temp data
-const cols = { "xs": 2, "sm": 3, "md": 4, "lg": 5, "xl": 6 }
+// TEMP DATA
 const playlistId = "sR5VypYk";
 
-type PlaylistMapArguments = {
+type PlaylistDestructuredArguments = {
     mediaid: string;
     title: string;
     duration: number;
@@ -19,29 +20,40 @@ type PlaylistMapArguments = {
 
 function Playlist() {
     const { isLoading, error, data: { title, playlist } = {} } = usePlaylist(playlistId)
-    const breakpoint = useBreakpoint();
+    const [filter, setFilter] = useState<string>('')
 
     if (isLoading) return <p>Loading...</p>
 
     if (error) return <p>No playlist found...</p>
 
+    const categories = getCategoriesFromPlaylist(playlist)
+    const filteredPlaylist = filterPlaylistCategory(playlist, filter)
+
     return (
         <div className={styles.playlist}>
             <header className={styles.header}>
                 <h2>{title}</h2>
-                <div className={styles.dropdown}>
-                    <select name="categories">
-                        <option value="">All</option>
-                        <option value="some">Some</option>
-                    </select>
-                </div>
+                {categories.length && (
+                    <Dropdown
+                        name="categories"
+                        value={filter}
+                        defaultLabel="All"
+                        options={categories}
+                        setValue={setFilter}
+                    />)}
             </header>
-            <main
-                className={styles.grid}
-                style={{ gridTemplateColumns: `repeat(${cols[breakpoint]}, minmax(0,1fr))` }}
-            >
-                {playlist.map(({ mediaid: mediaId, title, duration, image }: PlaylistMapArguments) =>
-                    <Card key={mediaId} title={title} duration={duration} posterSource={image} onClick={(() => '')} />)}
+            <main>
+                <CardGrid>
+                    {filteredPlaylist.map(({ mediaid: mediaId, title, duration, image }: PlaylistDestructuredArguments) =>
+                    (
+                        <Card
+                            key={mediaId}
+                            title={title}
+                            duration={duration}
+                            posterSource={image}
+                            onClick={(() => '')}
+                        />))}
+                </CardGrid>
             </main>
         </div>
     );
