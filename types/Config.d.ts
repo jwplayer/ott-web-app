@@ -1,3 +1,7 @@
+/**
+ * Set config setup changes in both config.services.ts and config.d.ts
+ * */
+
 export type Config = {
   id: string;
   siteName: string;
@@ -7,10 +11,12 @@ export type Config = {
   recommendationsPlaylist?: string;
   searchPlaylist?: string;
   analyticsToken?: string;
+  adSchedule?: string;
   assets: { banner?: string };
   content: Content[];
   menu: Menu[];
   options: Options;
+  genres?: string[];
   json?: Record<string, unknown>;
 };
 
@@ -21,12 +27,6 @@ export type Simple = {
 export type Content = {
   playlistId: string;
   featured?: boolean;
-  enableText?: boolean;
-  aspectRatio?: number;
-  type?: string;
-  enableSeeAll?: boolean;
-  rows?: number;
-  cols?: Cols;
 };
 
 export type Menu = {
@@ -44,12 +44,4 @@ export type Options = {
   dynamicBlur?: boolean;
   posterFading?: boolean;
   shelveTitles?: boolean;
-};
-
-export type Cols = {
-  xs?: number;
-  sm?: number;
-  md?: number;
-  lg?: number;
-  xl?: number;
 };

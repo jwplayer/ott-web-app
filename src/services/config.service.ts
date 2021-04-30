@@ -1,23 +1,13 @@
-import type { Config, Content, Cols, Options, Menu } from 'types/Config';
-import { string, number, boolean, array, object, SchemaOf } from 'yup';
+import type { Config, Content, Options, Menu } from 'types/Config';
+import { string, boolean, array, object, SchemaOf } from 'yup';
 
-const colsSchema: SchemaOf<Cols> = object({
-  xs: number().integer().positive().notRequired(),
-  sm: number().integer().positive().notRequired(),
-  md: number().integer().positive().notRequired(),
-  lg: number().integer().positive().notRequired(),
-  xl: number().integer().positive().notRequired(),
-});
+/**
+ * Set config setup changes in both config.services.ts and config.d.ts
+ * */
 
 const contentSchema: SchemaOf<Content> = object({
   playlistId: string().defined(),
   featured: boolean().notRequired(),
-  enableText: boolean().notRequired(),
-  aspectRatio: number().integer().positive().notRequired(),
-  type: string().notRequired(),
-  enableSeeAll: boolean().notRequired(),
-  rows: number().integer().positive().notRequired(),
-  cols: colsSchema.notRequired(),
 }).defined();
 
 const menuSchema: SchemaOf<Menu> = object().shape({
@@ -46,12 +36,14 @@ const configSchema: SchemaOf<Config> = object({
   recommendationsPlaylist: string().notRequired(),
   searchPlaylist: string().notRequired(),
   analyticsToken: string().notRequired(),
+  adSchedule: string().notRequired(),
   assets: object({
     banner: string().notRequired(),
   }).defined(),
   content: array().of(contentSchema),
   menu: array().of(menuSchema),
   options: optionsSchema.notRequired(),
+  genres: array().of(string()).notRequired(),
   json: object().notRequired(),
 }).defined();
 
