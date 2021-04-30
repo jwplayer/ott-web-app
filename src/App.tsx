@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Slider from './containers/Slider'
-import QueryProvider from './context/QueryProvider';
+import QueryProvider from './providers/QueryProvider';
 
 
 import './styles/main.scss';
