@@ -16,6 +16,7 @@ export type Config = {
   content: Content[];
   menu: Menu[];
   options: Options;
+  genres?: string[];
   json?: Record<string, unknown>;
 };
 
@@ -24,8 +25,8 @@ export type Simple = {
 };
 
 export type Content = {
-  featured?: boolean;
   playlistId: string;
+  featured?: boolean;
 };
 
 export type Menu = {

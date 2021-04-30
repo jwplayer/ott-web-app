@@ -43,6 +43,7 @@ const configSchema: SchemaOf<Config> = object({
   content: array().of(contentSchema),
   menu: array().of(menuSchema),
   options: optionsSchema.notRequired(),
+  genres: array().of(string()).notRequired(),
   json: object().notRequired(),
 }).defined();
 
