@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import classNames from 'classnames';
 
 import Close from '../../icons/Close';
@@ -13,12 +13,17 @@ type SideBarProps = {
 
 const SideBar: React.FC<SideBarProps> = ({ sideBarOpen, closeSideBar }) => {
   return (
-    <div
-      className={classNames(styles.backdrop, { [styles.visible]: sideBarOpen })}
-      onClick={closeSideBar}
-    >
+    <Fragment>
       <div
-        className={classNames(styles.sidebar, { [styles.open]: sideBarOpen })}
+        className={classNames(styles.backdrop, {
+          [styles.visible]: sideBarOpen,
+        })}
+        onClick={closeSideBar}
+      ></div>
+      <div
+        className={classNames(styles.sidebar, {
+          [styles.open]: sideBarOpen,
+        })}
         onClick={closeSideBar}
       >
         <nav className={styles.group}>
@@ -31,7 +36,7 @@ const SideBar: React.FC<SideBarProps> = ({ sideBarOpen, closeSideBar }) => {
           <ButtonLink label="Settings" to="/" />
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

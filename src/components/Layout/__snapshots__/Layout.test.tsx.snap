@@ -73,63 +73,62 @@ exports[`<Layout /> renders layout 1`] = `
     </header>
     <div
       class="backdrop"
+    />
+    <div
+      class="sidebar"
     >
-      <div
-        class="sidebar"
+      <nav
+        class="group"
       >
-        <nav
-          class="group"
+        <svg
+          class="icon"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <svg
-            class="icon"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g>
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              />
-              <path
-                d="M0 0h24v24H0z"
-                fill="none"
-              />
-            </g>
-          </svg>
-        </nav>
-        <div
-          class="group"
+          <g>
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+          </g>
+        </svg>
+      </nav>
+      <div
+        class="group"
+      >
+        <a
+          aria-current="page"
+          class="link active"
+          href="/"
         >
-          <a
-            aria-current="page"
-            class="link active"
-            href="/"
-          >
-            <span>
-              Home
-            </span>
-          </a>
-          <a
-            aria-current="page"
-            class="link active"
-            href="/"
-          >
-            <span>
-              Test
-            </span>
-          </a>
-          <hr
-            class="divider"
-          />
-          <a
-            aria-current="page"
-            class="link active"
-            href="/"
-          >
-            <span>
-              Settings
-            </span>
-          </a>
-        </div>
+          <span>
+            Home
+          </span>
+        </a>
+        <a
+          aria-current="page"
+          class="link active"
+          href="/"
+        >
+          <span>
+            Test
+          </span>
+        </a>
+        <hr
+          class="divider"
+        />
+        <a
+          aria-current="page"
+          class="link active"
+          href="/"
+        >
+          <span>
+            Settings
+          </span>
+        </a>
       </div>
     </div>
   </div>
