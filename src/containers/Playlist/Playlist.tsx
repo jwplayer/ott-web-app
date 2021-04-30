@@ -32,9 +32,9 @@ function Playlist({ playlistId }: PlaylistContainerProps): JSX.Element {
 
     return (
         <div className={styles.playlist}>
-            <header className={styles.playlistHeader}>
-                <h2 className={styles.playlistTitle}>{title}</h2>
-                <div className={styles.playlistCategory}>
+            <header className={styles.header}>
+                <h2>{title}</h2>
+                <div className={styles.dropdown}>
                     <select name="categories">
                         <option value="">All</option>
                         <option value="some">Some</option>
@@ -42,7 +42,7 @@ function Playlist({ playlistId }: PlaylistContainerProps): JSX.Element {
                 </div>
             </header>
             <main
-                className={styles.playlistGrid}
+                className={styles.grid}
                 style={{ gridTemplateColumns: `repeat(${cols[breakpoint]}, minmax(0,1fr))` }}
             >
                 {playlist.map(({ mediaid: mediaId, title, duration, image }: PlaylistMapArguments) =>

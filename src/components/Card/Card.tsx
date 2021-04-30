@@ -24,12 +24,12 @@ function Card({
   return (
     <div className={styles.card} onClick={onClick} role="button" aria-label={`Play ${title}`}>
       <div
-        className={classNames(styles.cardPoster, styles[`cardPosterAspect${posterAspect.replace(':', '')}`])}
+        className={classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`])}
         style={{ backgroundImage: `url(${posterSource})` }}
       >
-        {duration && <div className={styles.cardDurationTag}>{formatDurationTag(duration)}</div>}
+        {duration && <div className={styles.tag}>{formatDurationTag(duration)}</div>}
       </div>
-      <p className={styles.cardTitle}>{title}</p>
+      <p className={styles.title}>{title}</p>
     </div>
   );
 }
