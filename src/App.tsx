@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Root from './components/Root/Root';
+import ConfigProvider from './providers/configProvider';
 import './styles/main.scss';
 
 interface State {
@@ -20,7 +21,15 @@ class App extends Component<State> {
   render() {
     return (
       <Router>
-        <Root error={this.state.error} />
+        <ConfigProvider
+          configLocation={window.configLocation}
+          onLoading={(isLoading: boolean) =>
+            console.info(`Loading config: ${isLoading}`)
+          }
+          onValidationError={(error: Error) => console.error(`Config ${error}`)}
+        >
+          <Root error={this.state.error} />
+        </ConfigProvider>
       </Router>
     );
   }
