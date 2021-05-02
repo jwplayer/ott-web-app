@@ -2,15 +2,14 @@ import React from 'react';
 
 import styles from './Base.module.scss';
 
-type BaseProps = {
-  dummy?: string;
+type Props = {
+  prop?: string;
 };
 
-const Base: React.FC<BaseProps> = ({ dummy = 'defaultValue' }: BaseProps) => {
+const Base: React.FC<Props> = ({ prop }: Props) => {
   return (
-    <div className={styles['base']}>
-      <p>hello world</p>
-      <p>{dummy}</p>
+    <div className={styles.base}>
+      <p>{prop}</p>
     </div>
   );
 };
