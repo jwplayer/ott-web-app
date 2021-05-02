@@ -10,15 +10,12 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const [sideBarOpen, toggleSideBar] = useState(false);
+  const [sideBarOpen, setSideBarOpen] = useState(false);
 
   return (
     <div className={styles.layout}>
-      <Header openSideBar={() => toggleSideBar(true)} />
-      <SideBar
-        sideBarOpen={sideBarOpen}
-        closeSideBar={() => toggleSideBar(false)}
-      />
+      <Header openSideBar={() => setSideBarOpen(true)} />
+      <SideBar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)} />
       {children}
     </div>
   );

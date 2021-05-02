@@ -7,24 +7,24 @@ import ButtonLink from '../ButtonLink/ButtonLink';
 import styles from './SideBar.module.scss';
 
 type SideBarProps = {
-  sideBarOpen: boolean;
-  closeSideBar: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
-const SideBar: React.FC<SideBarProps> = ({ sideBarOpen, closeSideBar }) => {
+const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
   return (
     <Fragment>
       <div
         className={classNames(styles.backdrop, {
-          [styles.visible]: sideBarOpen,
+          [styles.visible]: isOpen,
         })}
-        onClick={closeSideBar}
+        onClick={onClose}
       ></div>
       <div
         className={classNames(styles.sidebar, {
-          [styles.open]: sideBarOpen,
+          [styles.open]: isOpen,
         })}
-        onClick={closeSideBar}
+        onClick={onClose}
       >
         <div className={styles.group} aria-label="close menu" role="button">
           <Close />
