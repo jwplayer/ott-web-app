@@ -1,6 +1,6 @@
 import React from 'react';
 
-import createIcon from './createIcon';
+import createIcon from './Icon';
 
 export default createIcon(
   '0 0 24 24',
