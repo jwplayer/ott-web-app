@@ -1,8 +1,27 @@
-$select-border: #777;
-$select-focus: blue;
-$select-arrow: $select-border;
+@use '../../styles/variables';
+@use '../../styles/theme';
 
-select {
+$select-border: variables.$gray-lighter;
+$select-arrow: variables.$black;
+$select-focus: theme.$primary-color;
+
+.dropdown {
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  position: relative;
+  min-width: 10ch;
+  max-width: 20ch;
+  border: 1px solid $select-border;
+  border-radius: 0.25em;
+  padding: 0.5em 0.8em;
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1;
+  background-color: #fff;
+  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+
+.select {
   appearance: none;
   background-color: transparent;
   border: none;
@@ -23,23 +42,7 @@ select {
     }
 }
 
-.dropdown {
-  display: grid;
-  grid-template-areas: "select";
-  align-items: center;
-  position: relative;
-  min-width: 10ch;
-  max-width: 20ch;
-  border: 1px solid $select-border;
-  border-radius: 0.25em;
-  padding: 0.5em 0.8em;
-  font-size: 1.25rem;
-  cursor: pointer;
-  line-height: 1.1;
-  background-color: #fff;
-  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-
-  select,
+.select,
   &::after {
     grid-area: select;
   }
@@ -71,7 +74,7 @@ select {
     }
 }
 
-option {
+.option {
   white-space: normal;
 
   // Set focus on chrome

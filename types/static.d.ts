@@ -57,8 +57,3 @@ declare module '*.png' {
 }
 
 /* CUSTOM: ADD YOUR OWN HERE */
-
-declare module 'lodash.throttle' {
-  const ref: function;
-  export default ref;
-}

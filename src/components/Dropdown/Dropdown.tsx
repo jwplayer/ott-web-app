@@ -22,9 +22,9 @@ function Dropdown({
 
   return (
     <div className={styles.dropdown}>
-      <select name={name} value={value} onChange={handleChange}>
+      <select className={styles.select} name={name} value={value} onChange={handleChange}>
         <option value="">{defaultLabel}</option>
-        {options.map(option => <option key={option} value={option}>{option}</option>)}
+        {options.map(option => <option className={styles.option} key={option} value={option}>{option}</option>)}
       </select>
       <span className="focus"></span>
     </div>
