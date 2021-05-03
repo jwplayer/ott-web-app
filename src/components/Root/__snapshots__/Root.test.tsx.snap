@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Root /> renders and matches snapshot 1`] = `<div />`;
+
+exports[`<Root /> renders error page when error prop is passed 1`] = `
+<div>
+  <div>
+    Error!
+  </div>
+</div>
+`;

@@ -1,0 +1,42 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+@use '../../styles/mixins/utils';
+
+//
+// Navigation Button
+// --------------------------------
+
+.link {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 10px;
+  color: inherit;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: background 0.1s ease, transform 0.1s ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover,
+    &:active {
+      z-index: 1;
+      background: rgba(variables.$black, 0.7);
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+}
+
+.active {
+  color: variables.$white;
+  opacity: 1;
+}

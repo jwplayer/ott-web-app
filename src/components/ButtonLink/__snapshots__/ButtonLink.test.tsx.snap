@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ButtonLink /> renders and matches snapshot 1`] = `
+<div>
+  <a
+    aria-current="page"
+    class="link active"
+    href="/"
+  >
+    <span>
+      home
+    </span>
+  </a>
+</div>
+`;
