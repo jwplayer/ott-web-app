@@ -3,10 +3,10 @@
 exports[`<SideBar /> renders sideBar 1`] = `
 <div>
   <div
-    class="backdrop"
+    class="backdrop visible"
   />
   <div
-    class="sidebar"
+    class="sidebar open"
   >
     <div
       aria-label="close menu"

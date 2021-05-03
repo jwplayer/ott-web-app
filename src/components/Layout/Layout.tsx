@@ -14,7 +14,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className={styles.layout}>
-      <Header openSideBar={() => setSideBarOpen(true)} />
+      <Header onMenuButtonClick={() => setSideBarOpen(true)} />
       <SideBar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)} />
       {children}
     </div>

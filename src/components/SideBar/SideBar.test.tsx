@@ -6,9 +6,7 @@ import SideBar from './SideBar';
 
 describe('<SideBar />', () => {
   test('renders sideBar', () => {
-    const { container } = render(
-      <SideBar sideBarOpen={true} closeSideBar={jest.fn()} />,
-    );
+    const { container } = render(<SideBar isOpen={true} onClose={jest.fn()} />);
 
     expect(container).toMatchSnapshot();
   });

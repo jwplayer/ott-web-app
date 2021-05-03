@@ -11,16 +11,19 @@ type TypeHeader = 'static' | 'fixed';
 
 type Props = {
   headerType?: TypeHeader;
-  openSideBar: (sideBarOpen: boolean) => void;
+  onMenuButtonClick: () => void;
 };
 
-const Header: React.FC<Props> = ({ headerType = 'static', openSideBar }) => {
+const Header: React.FC<Props> = ({
+  headerType = 'static',
+  onMenuButtonClick,
+}) => {
   return (
     <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>
         <div
           className={styles.menu}
-          onClick={(sideBarOpen) => openSideBar(!sideBarOpen)}
+          onClick={onMenuButtonClick}
           aria-label="open menu"
           role="button"
         >
