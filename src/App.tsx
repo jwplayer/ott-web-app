@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import Root from './components/Root/Root';
 import ConfigProvider from './providers/configProvider';
+import QueryProvider from './providers/QueryProvider';
 import './styles/main.scss';
 
 interface State {
@@ -20,17 +21,19 @@ class App extends Component {
 
   render() {
     return (
-      <ConfigProvider
-        configLocation={window.configLocation}
-        onLoading={(isLoading: boolean) =>
-          console.info(`Loading config: ${isLoading}`)
-        }
-        onValidationError={(error: Error) => console.error(`Config ${error}`)}
-      >
-        <Router>
-          <Root error={this.state.error} />
-        </Router>
-      </ConfigProvider>
+      <QueryProvider>
+        <ConfigProvider
+          configLocation={window.configLocation}
+          onLoading={(isLoading: boolean) =>
+            console.info(`Loading config: ${isLoading}`)
+          }
+          onValidationError={(error: Error) => console.error(`Config ${error}`)}
+        >
+          <Router>
+            <Root error={this.state.error} />
+          </Router>
+        </ConfigProvider>
+      </QueryProvider>
     );
   }
 }

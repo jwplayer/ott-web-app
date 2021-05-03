@@ -1,18 +1,20 @@
 @use 'sass:math';
+@use "../../styles/mixins/responsive";
 
 .card {
   cursor: pointer;
   transition: transform .2s ease-out,-webkit-transform .2s ease-out;
-}
 
-.card:hover {
-  transform: scale(1.05);
-  & .cardPoster {
-    box-shadow: 0 0 0 3px var(--card-border-hover-color), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+  &:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    & .poster {
+      box-shadow: 0 0 0 3px var(--card-border-hover-color), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+    }
   }
 }
 
-.cardPoster {
+.poster {
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -27,12 +29,12 @@
 
 $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 @each $base, $modifier in $aspects {
-  .cardPosterAspect#{$base}#{$modifier} {
+  .aspect#{$base}#{$modifier} {
     padding-top: math.percentage($modifier/$base);
   }
 }
 
-.cardDurationTag {
+.tag {
   position: absolute;
   bottom: 15px;
   right: 15px;
@@ -41,9 +43,15 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   padding: 4px 8px;
   border-radius: 4px;
   color: var(--card-color);
+
+  @include responsive.mobile-and-tablet {
+    padding: 2px 4px;
+    bottom: 8px;
+    right: 8px;
+  }
 }
 
-.cardTitle {
+.title {
   overflow: hidden;
   font-family: var(--body-alt-font-family);
   color: var(--card-color);
