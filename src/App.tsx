@@ -9,7 +9,7 @@ interface State {
   error: Error | null;
 }
 
-class App extends Component<State> {
+class App extends Component {
   public state: State = {
     error: null,
   };
@@ -20,17 +20,17 @@ class App extends Component<State> {
 
   render() {
     return (
-      <Router>
-        <ConfigProvider
-          configLocation={window.configLocation}
-          onLoading={(isLoading: boolean) =>
-            console.info(`Loading config: ${isLoading}`)
-          }
-          onValidationError={(error: Error) => console.error(`Config ${error}`)}
-        >
+      <ConfigProvider
+        configLocation={window.configLocation}
+        onLoading={(isLoading: boolean) =>
+          console.info(`Loading config: ${isLoading}`)
+        }
+        onValidationError={(error: Error) => console.error(`Config ${error}`)}
+      >
+        <Router>
           <Root error={this.state.error} />
-        </ConfigProvider>
-      </Router>
+        </Router>
+      </ConfigProvider>
     );
   }
 }

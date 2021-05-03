@@ -6,7 +6,7 @@ import Header from './Header';
 
 describe('<Header />', () => {
   test('renders header', () => {
-    const { container } = render(<Header />);
+    const { container } = render(<Header onMenuButtonClick={jest.fn()} />);
 
     expect(container).toMatchSnapshot();
   });

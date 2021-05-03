@@ -1,4 +1,5 @@
 @use "theme";
+@use "./mixins/responsive";
 
 :root {
   --primary-color: #{theme.$primary-color};
@@ -27,4 +28,10 @@ body {
 ::after,
 ::before {
   box-sizing: border-box;
+}
+
+@include responsive.mobile-and-tablet() {
+  body {
+    font-size: 18px;
+  }
 }

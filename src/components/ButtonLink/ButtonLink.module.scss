@@ -10,7 +10,7 @@
 .link {
   position: relative;
   display: inline-flex;
-  justify-content: center;
+  justify-content: inherit;
   align-items: center;
   min-height: 38px;
   padding: 0 10px;
@@ -39,4 +39,14 @@
 .active {
   color: variables.$white;
   opacity: 1;
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .link {
+    padding: 12px;
+  }
 }

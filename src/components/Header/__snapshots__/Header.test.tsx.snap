@@ -9,11 +9,27 @@ exports[`<Header /> renders header 1`] = `
       class="container"
     >
       <div
+        aria-label="open menu"
         class="menu"
+        role="button"
       >
-        <span>
-          Placeholder
-        </span>
+        <svg
+          aria-hidden="true"
+          class="icon"
+          focusable="false"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path
+              d="M0 0h24v24H0V0z"
+              fill="none"
+            />
+            <path
+              d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+            />
+          </g>
+        </svg>
       </div>
       <div
         class="brand"
@@ -25,6 +41,7 @@ exports[`<Header /> renders header 1`] = `
         />
       </div>
       <nav
+        aria-label="menu"
         class="nav"
       >
         <a
@@ -53,6 +70,9 @@ exports[`<Header /> renders header 1`] = `
           </span>
         </a>
       </nav>
+      <div
+        class="search"
+      />
     </div>
   </header>
 </div>
