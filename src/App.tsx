@@ -9,7 +9,7 @@ interface State {
   error: Error | null;
 }
 
-class App extends Component<State> {
+class App extends Component {
   public state: State = {
     error: null,
   };

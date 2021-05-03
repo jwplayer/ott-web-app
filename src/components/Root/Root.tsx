@@ -2,22 +2,20 @@ import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Home from '../../screens/Home/Home';
-import Header from '../Header/Header';
 
 // Mock screens
 
 const PlaylistScreen = () => {
   return (
     <>
-      <Header></Header>
-      <span style={{ color: 'white' }}>PlaylistScreen</span>
+      <span>PlaylistScreen</span>
     </>
   );
 };
 const Settings = () => {
   return (
     <>
-      <Header></Header> <span style={{ color: 'white' }}>Settings</span>{' '}
+      <span>Settings</span>{' '}
     </>
   );
 };
