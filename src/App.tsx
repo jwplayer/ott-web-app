@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Root from './components/Root/Root';
-import './styles/main.scss';
 import ConfigProvider from './providers/configProvider';
+import './styles/main.scss';
 
 interface State {
   error: Error | null;
