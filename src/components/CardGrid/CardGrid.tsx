@@ -1,20 +1,24 @@
 import React from 'react';
 
-import useBreakpoint from '../../hooks/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
 import styles from './CardGrid.module.scss';
 
 // TEMP DATA
-const cols = { "xs": 2, "sm": 3, "md": 4, "lg": 5, "xl": 6 }
+const cols = { 
+  [Breakpoint.xs]: 2, 
+  [Breakpoint.sm]: 3, 
+  [Breakpoint.md]: 4, 
+  [Breakpoint.lg]: 5, 
+  [Breakpoint.xl]: 6 
+}
 
 type CardGridProps = {
   children: React.ReactNode;
 };
 
-function CardGrid({
-  children,
-}: CardGridProps) {
-  const breakpoint = useBreakpoint();
+function CardGrid({ children }: CardGridProps) {
+  const breakpoint: Breakpoint = useBreakpoint();
 
   return (
     <div
