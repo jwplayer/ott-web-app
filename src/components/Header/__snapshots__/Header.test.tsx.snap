@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> renders header 1`] = `
+<div>
+  <header
+    class="header static"
+  >
+    <div
+      class="container"
+    >
+      <div
+        aria-label="open menu"
+        class="menu"
+        role="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="icon"
+          focusable="false"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path
+              d="M0 0h24v24H0V0z"
+              fill="none"
+            />
+            <path
+              d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="brand"
+      >
+        <img
+          alt="logo"
+          class="logo"
+          src="https://cdn.jwplayer.com/images/HXyBCU5N.png"
+        />
+      </div>
+      <nav
+        aria-label="menu"
+        class="nav"
+      >
+        <a
+          aria-current="page"
+          class="link active"
+          href="/"
+        >
+          <span>
+            Home
+          </span>
+        </a>
+        <a
+          class="link"
+          href="/p/:id"
+        >
+          <span>
+            Playlist
+          </span>
+        </a>
+        <a
+          class="link"
+          href="/u"
+        >
+          <span>
+            Settings
+          </span>
+        </a>
+      </nav>
+      <div
+        class="search"
+      />
+    </div>
+  </header>
+</div>
+`;

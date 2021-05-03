@@ -1,0 +1,104 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+@use '../../styles/mixins/utils';
+
+//
+// Header
+// --------------------------------
+
+.header {
+  height: variables.$header-height;
+  padding: 10px 56px;
+
+  //
+  // Make header fixed
+  //
+  &.fixed {
+    position: fixed;
+    z-index: variables.$header-z-index;
+    width: 100%;
+  }
+
+  //
+  // Make header static
+  //
+  &.static {
+    position: static;
+    width: 100%;
+  }
+}
+
+//
+// Header container
+//
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+//
+// Header menu
+//
+.menu {
+  display: none;
+}
+
+//
+// Header navigation
+//
+.nav {
+  display: inline-block;
+  flex: 1;
+}
+
+.search {
+  width: 180px;
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .header {
+    height: variables.$header-height-mobile;
+    padding: 10px variables.$base-spacing * 2;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+  }
+}
+
+@include responsive.mobile-only() {
+  .header {
+    padding: 10px variables.$base-spacing-mobile;
+  }
+
+  .menu {
+    transition: opacity 0.2s ease;
+  }
+
+  .search {
+    width: 25px;
+  }
+}
+
+@include responsive.tablet-only() {
+  .menu {
+    width: 180px;
+  }
+}
+
+@include responsive.desktop-only() {
+  .nav {
+    text-align: center;
+  }
+}
