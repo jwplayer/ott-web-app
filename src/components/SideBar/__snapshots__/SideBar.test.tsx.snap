@@ -43,15 +43,6 @@ exports[`<SideBar /> renders sideBar 1`] = `
           Home
         </span>
       </a>
-      <a
-        aria-current="page"
-        class="link active"
-        href="/"
-      >
-        <span>
-          Test
-        </span>
-      </a>
       <hr
         class="divider"
       />
