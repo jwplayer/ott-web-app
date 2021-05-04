@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
+import '../../hooks/matchMedia.mock';
 import Dropdown from './Dropdown';
 
-const options = ["x", "y", "z"]
+const options = ['x', 'y', 'z'];
 
 describe('<Dropdown>', () => {
   it('renders dropdown', () => {
-    const { getByText } = render((
+    const { container } = render(
       <Dropdown
         name="categories"
         value="aa"
         defaultLabel="bb"
         options={options}
         setValue={(event) => event}
-      />));
-    const dropdown = getByText(/bb/i);
-    expect(document.body.contains(dropdown));
+      />,
+    );
+    expect(container).toMatchSnapshot();
   });
 });
