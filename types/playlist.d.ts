@@ -26,6 +26,7 @@ export type PlaylistItem = {
     pubdate: number;
     rating: string;
     sources: Source[];
+    seriesId: string | undefined;
     tags: string;
     title: string;
     tracks: Track[];
