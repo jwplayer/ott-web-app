@@ -14,19 +14,13 @@
     "content": [
         {
             "playlistId": "WXu7kuaW",
-            "featured": true,
-            "enableText": false
+            "featured": true
         },
         {
-            "playlistId": "lrYLc95e",
-            "aspectratio": "23",
-            "cols": {"xs": 2, "sm": 3, "md": 4, "lg": 5, "xl": 6}
+            "playlistId": "lrYLc95e"
         },
         {
-            "playlistId": "Q352cyuc",
-            "type": "grid",
-            "enableSeeAll": true,
-            "rows": 1
+            "playlistId": "Q352cyuc"
         },
         {
             "playlistId": "oR7ahO0J"
