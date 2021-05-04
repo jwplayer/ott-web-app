@@ -15,7 +15,7 @@ export type Image = {
 export type ShelfProps = {
   title: string;
   playlist: string[];
-  featured: boolean;
+  featured?: boolean;
 };
 
 export type Source = {
@@ -49,9 +49,11 @@ export type Item = {
 const Shelf: React.FC<ShelfProps> = ({
   title,
   playlist,
-  featured,
+  featured = false,
 }: ShelfProps) => {
   const config: Config = useContext(ConfigContext);
+
+  console.info(config);
 
   return (
     <div className={styles['Shelf']}>

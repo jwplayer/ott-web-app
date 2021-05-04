@@ -5,7 +5,7 @@ import Shelf from './Shelf';
 
 describe('FeaturedShelf Component tests', () => {
   test.skip('dummy test', () => {
-    render(<Shelf></Shelf>);
+    render(<Shelf title="test" playlist={[]} featured></Shelf>);
     expect(screen.getByText('hello world')).toBeInTheDocument();
   });
 });
