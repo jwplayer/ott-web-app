@@ -24,6 +24,40 @@ body {
   background-color: var(--body-background-color);
 }
 
+button {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+
+  /* inherit font & color from ancestor */
+  color: inherit;
+  font: inherit;
+
+  /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+  line-height: normal;
+
+  background: transparent;
+  border: none;
+  border: 0;
+
+  /* Corrects inability to style clickable `input` types in iOS */
+  appearance: none;
+  /* Corrects font smoothing for webkit */
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+}
+
+h1 h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
 *,
 ::after,
 ::before {
