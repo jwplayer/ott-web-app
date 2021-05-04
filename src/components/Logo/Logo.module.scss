@@ -1,0 +1,47 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+//
+// Logo
+// --------------------------------
+
+.brand {
+  align-self: center;
+  text-align: center;
+}
+
+.logo {
+  max-width: 100%;
+  max-height: variables.$header-height - 10px;
+  max-height: 36px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .brand {
+    flex: 1;
+
+    .logo {
+      max-height: variables.$header-height-mobile - 20px;
+    }
+  }
+}
+
+@include responsive.mobile-only() {
+  .brand {
+    transition: opacity 0.2s ease;
+  }
+}
+
+@include responsive.desktop-only() {
+  .brand {
+    width: 180px;
+    text-align: left;
+  }
+}

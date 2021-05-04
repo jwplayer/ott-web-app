@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import QueryProvider from './providers/QueryProvider';
+import Root from './components/Root/Root';
 import ConfigProvider from './providers/configProvider';
-import Home from './screens/Home/Home';
-
+import QueryProvider from './providers/QueryProvider';
 import './styles/main.scss';
 
-function App() {
-  return (
-    <ConfigProvider
-      configLocation={window.configLocation}
-      onLoading={(isLoading: boolean) =>
-        console.info(`Loading config: ${isLoading}`)
-      }
-      onValidationError={(error: Error) => console.error(`Config ${error}`)}
-    >
+interface State {
+  error: Error | null;
+}
+
+class App extends Component {
+  public state: State = {
+    error: null,
+  };
+
+  componentDidCatch(error: Error) {
+    this.setState({ error });
+  }
+
+  render() {
+    return (
       <QueryProvider>
-        <div className="App">
-          <Home />
-        </div>
+        <ConfigProvider
+          configLocation={window.configLocation}
+          onLoading={(isLoading: boolean) =>
+            console.info(`Loading config: ${isLoading}`)
+          }
+          onValidationError={(error: Error) => console.error(`Config ${error}`)}
+        >
+          <Router>
+            <Root error={this.state.error} />
+          </Router>
+        </ConfigProvider>
       </QueryProvider>
-    </ConfigProvider>
-  );
+    );
+  }
 }
 
 export default App;

@@ -1,0 +1,24 @@
+@use "../../styles/mixins/responsive";
+
+.playlist {
+  color: var(--primary-color);
+  font-family: var(--body-alt-font-family);
+  margin-top: 20px;
+  margin-left: 56px;
+  margin-right: 56px;
+  text-align: center;
+
+  @include responsive.mobile-only {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+
+  > * + * {
+    margin-left: 24px;
+  }
+}
