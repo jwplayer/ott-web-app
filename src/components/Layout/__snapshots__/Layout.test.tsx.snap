@@ -32,15 +32,6 @@ exports[`<Layout /> renders layout 1`] = `
             </g>
           </svg>
         </div>
-        <div
-          class="brand"
-        >
-          <img
-            alt="logo"
-            class="logo"
-            src="https://cdn.jwplayer.com/images/HXyBCU5N.png"
-          />
-        </div>
         <nav
           aria-label="menu"
           class="nav"
@@ -52,14 +43,6 @@ exports[`<Layout /> renders layout 1`] = `
           >
             <span>
               Home
-            </span>
-          </a>
-          <a
-            class="link"
-            href="/p/:id"
-          >
-            <span>
-              Playlist
             </span>
           </a>
           <a
@@ -115,15 +98,6 @@ exports[`<Layout /> renders layout 1`] = `
         >
           <span>
             Home
-          </span>
-        </a>
-        <a
-          aria-current="page"
-          class="link active"
-          href="/"
-        >
-          <span>
-            Test
           </span>
         </a>
         <hr
