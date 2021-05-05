@@ -1,5 +1,6 @@
 import React, { useState, Fragment, FC } from 'react';
 
+import Dropdown from '../Dropdown/Dropdown';
 import FilterModal from '../FilterModal/FilterModal';
 import Button from '../Button/Button';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
@@ -28,7 +29,7 @@ const Filter: FC<Props> = ({
     setValue(event.target.value);
 
   const handleOnClick = () => {
-    if (breakpoint < 2) {
+    if (breakpoint < Breakpoint.md) {
       openFilterModal(true);
     }
   };
@@ -68,25 +69,15 @@ const Filter: FC<Props> = ({
       {showFilterRow ? (
         <div className={styles.filterRow}>{filterButtons()}</div>
       ) : (
-        <div className={styles.dropdown}>
-          <select
-            className={styles.select}
-            name={name}
-            value={value}
-            onClick={handleOnClick}
-            onChange={handleChange}
-          >
-            <option className={styles.option} value="">
-              {defaultLabel}
-            </option>
-            {options.map((option) => (
-              <option className={styles.option} key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <span className="focus" />
-        </div>
+        <Dropdown
+          options={options}
+          defaultLabel={defaultLabel}
+          name={name}
+          value={value}
+          onClick={handleOnClick}
+          onChange={handleChange}
+          optionsStyle={styles.optionMobile}
+        />
       )}
     </Fragment>
   );

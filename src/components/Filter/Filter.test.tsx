@@ -2,14 +2,14 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../hooks/matchMedia.mock';
-import Dropdown from './Filter';
+import Filter from './Filter';
 
 const options = ['x', 'y', 'z'];
 
-describe('<Dropdown>', () => {
-  it('renders dropdown', () => {
+describe('<Filter>', () => {
+  it('renders Filter', () => {
     const { container } = render(
-      <Dropdown
+      <Filter
         name="categories"
         value="aa"
         defaultLabel="bb"
