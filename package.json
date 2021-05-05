@@ -25,6 +25,7 @@
     "react-dom": "^17.0.2",
     "react-query": "^3.13.10",
     "react-router-dom": "^5.2.0",
+    "react-virtualized": "^9.22.3",
     "tile-dock": "https://github.com/RCVZ/tile-dock-temp",
     "yup": "^0.32.9"
   },
@@ -46,6 +47,7 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-virtualized": "^9.21.11",
     "@types/snowpack-env": "^2.3.3",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
