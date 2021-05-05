@@ -3,7 +3,7 @@
 exports[`<FilterModal> renders and matches snapshot 1`] = `
 <div>
   <div
-    class="filterModal"
+    class="filterModal open"
   >
     <div
       aria-label="close menu"
@@ -27,14 +27,18 @@ exports[`<FilterModal> renders and matches snapshot 1`] = `
           />
         </g>
       </svg>
-      <h4 />
+      <h4>
+        aa
+      </h4>
     </div>
     <hr
       class="divider"
     />
     <div
       class="group"
-    />
+    >
+      <button />
+    </div>
   </div>
 </div>
 `;

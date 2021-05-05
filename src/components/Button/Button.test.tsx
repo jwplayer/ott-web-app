@@ -5,7 +5,9 @@ import Button from './Button';
 
 describe('<Button>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Button />);
+    const { container } = render(
+      <Button label="aa" active onClick={() => null} />,
+    );
 
     expect(container).toMatchSnapshot();
   });

@@ -14,7 +14,7 @@ import CardGrid from '../../components/CardGrid/CardGrid';
 import styles from './Playlist.module.scss';
 
 function Playlist() {
-  const { id: playlistId } = useParams();
+  const { id: playlistId } = useParams<Record<string, string>>();
   const { isLoading, error, data: { title, playlist } = {} } = usePlaylist(
     playlistId,
   );

@@ -3,9 +3,11 @@
 exports[`<Button> renders and matches snapshot 1`] = `
 <div>
   <button
-    class="button"
+    class="button active"
   >
-    <span />
+    <span>
+      aa
+    </span>
   </button>
 </div>
 `;
