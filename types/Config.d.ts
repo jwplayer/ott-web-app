@@ -6,7 +6,7 @@ export type Config = {
   id: string;
   siteName: string;
   description: string;
-  footerText: string;
+  footerText?: string | null;
   player: string;
   recommendationsPlaylist?: string;
   searchPlaylist?: string;

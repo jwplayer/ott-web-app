@@ -31,7 +31,7 @@ const configSchema: SchemaOf<Config> = object({
   id: string().defined(),
   siteName: string().defined(),
   description: string().defined(),
-  footerText: string().defined(),
+  footerText: string().nullable(),
   player: string().defined(),
   recommendationsPlaylist: string().notRequired(),
   searchPlaylist: string().notRequired(),
@@ -59,14 +59,43 @@ const loadConfig = async (configLocation: string) => {
       method: 'GET',
     });
 
-    return await response.json();
+    const data = await response.json();
+
+    if (data.version) {
+      return serializeDeprecatedConfig(data);
+    }
+    return data;
   } catch (error: unknown) {
     return error;
   }
 };
 
-export const validateConfig = (config: unknown): Promise<Config> => {
-  return configSchema.validate(config, { strict: true }) as Promise<Config>;
+// /**
+//    * Serialize deprecated config to v3 config
+//    * @param {Object} config
+//    * @returns {jwOTTwebApp.config}
+//    */
+const serializeDeprecatedConfig = (config: Config) => {
+  const description = JSON.parse(config.description);
+  config.description = '';
+
+  const newConfig = {
+    ...config,
+    id: 'ID_PLACE_HOLDER',
+    menu: description.menu,
+    analyticsToken: description.analyticsToken,
+    options: {
+      dynamicBlur: description.dynamicBlur,
+    },
+  };
+  console.info(newConfig);
+  return newConfig;
+};
+
+export const validateConfig = (config: Config): Promise<Config> => {
+  return configSchema.validate(config, {
+    strict: true,
+  }) as Promise<Config>;
 };
 
 export default loadConfig;
