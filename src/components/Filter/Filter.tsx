@@ -4,7 +4,7 @@ import FilterModal from '../FilterModal/FilterModal';
 import Button from '../Button/Button';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
-import styles from './Dropdown.module.scss';
+import styles from './Filter.module.scss';
 
 type Props = {
   name: string;
@@ -14,7 +14,7 @@ type Props = {
   setValue: (value: string) => void;
 };
 
-const Dropdown: FC<Props> = ({
+const Filter: FC<Props> = ({
   name,
   value,
   defaultLabel,
@@ -92,4 +92,4 @@ const Dropdown: FC<Props> = ({
   );
 };
 
-export default Dropdown;
+export default Filter;

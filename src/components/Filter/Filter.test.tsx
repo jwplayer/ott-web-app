@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import '../../hooks/matchMedia.mock';
-import Dropdown from './Dropdown';
+import Dropdown from './Filter';
 
 const options = ['x', 'y', 'z'];
 

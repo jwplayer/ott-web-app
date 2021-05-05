@@ -8,7 +8,7 @@ import {
   filterPlaylistCategory,
 } from '../../utils/collection';
 import Card from '../../components/Card/Card';
-import Dropdown from '../../components/DropDown/Dropdown';
+import Dropdown from '../../components/Filter/Filter';
 import CardGrid from '../../components/CardGrid/CardGrid';
 
 import styles from './Playlist.module.scss';
