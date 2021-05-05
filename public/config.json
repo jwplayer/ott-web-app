@@ -1,51 +1,43 @@
 {
-    "id": "Kfo1Se0r",
-    "siteName": "JW Showcase",
-    "description": "JW Showcase is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.",
-    "footerText": "Powered by JW Player",
-    "player": "TEMcdMw2",
-    "recommendationsPlaylist": "wZuMVmMk",
-    "searchPlaylist": "r3MhKJyA",
-    "analyticsToken": "Ksdo93bew0weW0wf03n",
-    "adSchedule": "9E8rTt7a",
-    "assets": {
-        "banner": "images/logo.png"
+  "assets": {
+    "banner": "https://cdn.jwplayer.com/images/HXyBCU5N.png"
+  },
+  "content": [
+    {
+      "enableText": true,
+      "featured": true,
+      "playlistId": "CJE23b5T"
     },
-    "content": [
-        {
-            "playlistId": "WXu7kuaW",
-            "featured": true,
-            "enableText": false
-        },
-        {
-            "playlistId": "lrYLc95e",
-            "aspectratio": "23",
-            "cols": {"xs": 2, "sm": 3, "md": 4, "lg": 5, "xl": 6}
-        },
-        {
-            "playlistId": "Q352cyuc",
-            "type": "grid",
-            "enableSeeAll": true,
-            "rows": 1
-        },
-        {
-            "playlistId": "oR7ahO0J"
-        }
-    ],
-    "menu": [
-        {
-            "label": "All Movies",
-            "playlistId": "4fgzPjpv"
-        }
-    ],
-    "options": {
-        "backgroundColor": "#000000",
-        "highlightColor": "#DD0000",
-        "enableContinueWatching": true,
-        "headerBackground": "#00DD00",
-        "enableCasting": true,
-        "enableSharing": true,
-        "dynamicBlur": false,
-        "posterFading": true
+    {
+      "enableText": true,
+      "playlistId": "sR5VypYk"
+    },
+    {
+      "enableText": true,
+      "playlistId": "o45EkQBf"
     }
+  ],
+  "description": "{\n  \"menu\": [{\n    \"label\": \"Films\", \n    \"playlistId\": \"sR5VypYk\",\n    \"filterTags\": \"Action,Comedy,Fantasy,Drama\"\n  },{\n    \"label\": \"Courses\",\n    \"playlistId\": \"o45EkQBf\",\n    \"filterTags\": \"Beginner,Advanced\"\n  }],\n  \"dynamicBlur\": true,\n  \"analyticsToken\":\"lDd_MCg4EeuMunbqcIJccw\",\n  \"scheduleId\": \"cfoBLHlQ\"\n }",
+  "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
+  "options": {
+    "backgroundColor": null,
+    "enableAddToHome": false,
+    "enableContinueWatching": true,
+    "enableCookieNotice": false,
+    "enableHeader": true,
+    "enableInVideoSearch": false,
+    "highlightColor": null,
+    "rightRail": {
+      "enabled": true
+    },
+    "showcaseContentOnly": false,
+    "useRecommendationsPlaylist": true,
+    "videoTitlePosition": "below"
+  },
+  "player": "7xMa4gNw",
+  "recommendationsPlaylist": "fuD6TWcf",
+  "searchPlaylist": "tQ832H1H",
+  "siteName": "Blender",
+  "theme": "dark",
+  "version": "2"
 }
