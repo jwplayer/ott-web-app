@@ -29,21 +29,14 @@ button {
   margin: 0;
   padding: 0;
   overflow: visible;
-
-  /* inherit font & color from ancestor */
   color: inherit;
   font: inherit;
-
-  /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
   line-height: normal;
-
   background: transparent;
   border: none;
   border: 0;
-
-  /* Corrects inability to style clickable `input` types in iOS */
+  outline: none;
   appearance: none;
-  /* Corrects font smoothing for webkit */
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
 }
