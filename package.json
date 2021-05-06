@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "snowpack dev",
-    "build": "snowpack build && rimraf build/{_snowpack,dist}",
+    "build": "snowpack build",
     "test": "npx jest",
     "test-watch": "npx jest --watch",
     "test-coverage": "npx jest --coverage",
