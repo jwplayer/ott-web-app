@@ -38,6 +38,9 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 }
 
 .tag {
+  @include responsive.mobile-only {
+    font-size: 14px;
+  }
   position: absolute;
   right: 8px;
   bottom: 8px;
@@ -50,6 +53,9 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 }
 
 .title {
+  @include responsive.mobile-only {
+    font-size: 14px;
+  }
   width: 100%;
   min-height: 19px;
   margin-top: 8px;
