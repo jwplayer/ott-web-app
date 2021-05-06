@@ -35,8 +35,8 @@ export type Menu = {
 };
 
 export type Options = {
-  backgroundColor?: string;
-  highlightColor?: string;
+  backgroundColor?: string | null;
+  highlightColor?: string | null;
   enableContinueWatching?: boolean;
   headerBackground?: string;
   enableCasting?: boolean;

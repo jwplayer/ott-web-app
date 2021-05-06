@@ -16,8 +16,8 @@ const menuSchema: SchemaOf<Menu> = object().shape({
 });
 
 const optionsSchema: SchemaOf<Options> = object({
-  backgroundColor: string().notRequired(),
-  highlightColor: string().notRequired(),
+  backgroundColor: string().nullable(),
+  highlightColor: string().nullable(),
   enableContinueWatching: boolean().notRequired(),
   headerBackground: string().notRequired(),
   enableCasting: boolean().notRequired(),
@@ -86,6 +86,7 @@ const serializeDeprecatedConfig = (config: Config) => {
     analyticsToken: description.analyticsToken,
     options: {
       dynamicBlur: description.dynamicBlur,
+      ...config.options,
     },
   };
   console.info(newConfig);
