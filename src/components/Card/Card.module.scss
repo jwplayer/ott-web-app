@@ -23,8 +23,9 @@
     z-index: 10;
     transform: scale(1.05);
     & .poster {
-      box-shadow: 0 0 0 3px var(--highlight-color), 0 8px 10px rgb(0 0 0 / 14%),
-        0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+      box-shadow: 0 0 0 3px var(--highlight-color, variables.$white),
+        0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
+        0 4px 5px rgb(0 0 0 / 20%);
     }
   }
 }
