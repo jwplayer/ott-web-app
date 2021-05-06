@@ -26,18 +26,18 @@ type Tile = {
 };
 
 const TileDock = ({
-  items,
-  tilesToShow = 6,
-  cycleMode = 'endless',
-  spacing = 12,
-  minimalTouchMovement = 30,
-  showControls = true,
-  animated = !window.matchMedia('(prefers-reduced-motion)').matches,
-  transitionTime = '0.6s',
-  renderTile,
-  renderLeftControl,
-  renderRightControl,
-}: TileDockProps) => {
+    items,
+    tilesToShow = 6,
+    cycleMode = 'endless',
+    spacing = 12,
+    minimalTouchMovement = 30,
+    showControls = true,
+    animated = !window.matchMedia('(prefers-reduced-motion)').matches,
+    transitionTime = '0.6s',
+    renderTile,
+    renderLeftControl,
+    renderRightControl,
+  }: TileDockProps) => {
   const [index, setIndex] = useState<number>(0);
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
@@ -46,12 +46,12 @@ const TileDock = ({
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items.length > tilesToShow;
-  const transformWithOffset: number = isMultiPage ? 100 - tileWidth * tilesToShow + transform : 0;
+  const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow - 1) + transform : 0;
 
-  const makeTiles = (items: unknown[]): Tile[] => {
+  const makeTiles = (slicedItems: unknown[]): Tile[] => {
     const itemIndices: string[] = [];
 
-    return items.map((item) => {
+    return slicedItems.map((item) => {
       let key = `tile_${items.indexOf(item)}`;
       while (itemIndices.includes(key)) {
         key += '_';
@@ -63,18 +63,19 @@ const TileDock = ({
 
   const sliceItems = (items: unknown[]): Tile[] => {
     if (!isMultiPage) return makeTiles(items);
+
     const sliceFrom: number = index;
     const sliceTo: number = index + tilesToShow * 3;
-    const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 0;
+    const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 1;
     const listStartClone: unknown[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation);
-    const listEndClone: unknown[] = items.slice(0 - tilesToShow);
+    const listEndClone: unknown[] = items.slice(0 - tilesToShow + 1);
     const itemsWithClones: unknown[] = [...listEndClone, ...items, ...listStartClone];
     const itemsSlice: unknown[] = itemsWithClones.slice(sliceFrom, sliceTo);
+
     return makeTiles(itemsSlice);
   };
 
   const tileList: Tile[] = sliceItems(items);
-  const isAnimating: boolean = index !== slideToIndex;
   const transitionBasis: string = `transform ${animated ? transitionTime : '0s'} ease`;
 
   const needControls: boolean = showControls && isMultiPage;
@@ -92,7 +93,7 @@ const TileDock = ({
     if (nextIndex > items.length - tilesToShow) {
       if (cycleMode === 'stop') nextIndex = items.length - tilesToShow;
       if (cycleMode === 'restart')
-        nextIndex = index === items.length - tilesToShow ? items.length : items.length - tilesToShow;
+        nextIndex = index >= items.length - tilesToShow ? items.length : items.length - tilesToShow;
     }
 
     const steps: number = Math.abs(index - nextIndex);
@@ -123,6 +124,10 @@ const TileDock = ({
       resetIndex = resetIndex >= items.length ? slideToIndex - items.length : resetIndex;
       resetIndex = resetIndex < 0 ? items.length + slideToIndex : resetIndex;
 
+      if (resetIndex !== slideToIndex) {
+        setSlideToIndex(resetIndex);
+      }
+
       setIndex(resetIndex);
       if (frameRef.current) frameRef.current.style.transition = 'none';
       setTransform(-100);
@@ -135,6 +140,12 @@ const TileDock = ({
     if (doAnimationReset) resetAnimation();
   }, [doAnimationReset, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis]);
 
+  const handleTransitionEnd = (event: React.TransitionEvent<HTMLUListElement>) => {
+    if (event.target === frameRef.current) {
+      setDoAnimationReset(true)
+    }
+  };
+
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // Todo: set capital W before creating package
@@ -143,6 +154,8 @@ const TileDock = ({
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
   };
+
+  const slideOffset = index - slideToIndex;
 
   return (
     <div className="tileDock">
@@ -154,13 +167,13 @@ const TileDock = ({
         style={ulStyle}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        onTransitionEnd={(): void => setDoAnimationReset(true)}
+        onTransitionEnd={handleTransitionEnd}
       >
         {tileList.map((tile: Tile, listIndex) => {
           // Todo:
           // const isTabable = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
           const isVisible = true; // Todo: hide all but visible?
-          const isOpaque = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
+          const isOpaque = !isMultiPage || (listIndex > tilesToShow - slideOffset - 2 && listIndex < (tilesToShow * 2) - slideOffset - 1);
 
           return (
             <li

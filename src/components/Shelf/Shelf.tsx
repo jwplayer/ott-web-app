@@ -52,7 +52,6 @@ const Shelf: React.FC<ShelfProps> = ({ playlist, onCardClick, onCardHover, featu
           const playlistItem = item as PlaylistItem;
           return (
             <Card
-              key={playlistItem.mediaid}
               title={playlistItem.title}
               duration={playlistItem.duration}
               posterSource={playlistItem.image}

@@ -13,6 +13,7 @@ import { ConfigContext } from '../../providers/configProvider';
 import type { UsePlaylistResult } from '../../hooks/usePlaylist';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import scrollbarSize from '../../utils/dom';
 
 import styles from './Home.module.scss';
 
@@ -107,6 +108,7 @@ const Home = (): JSX.Element => {
               isScrolling={isScrolling}
               onScroll={onChildScroll}
               rowCount={content.length}
+              getScrollbarSize={scrollbarSize}
               // onRowsRendered={onRowsRendered}
               // ref={registerChild}
               rowHeight={({ index }) => calculateHeight(index)}
