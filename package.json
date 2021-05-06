@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "snowpack dev",
-    "build": "snowpack build && rimraf build/{_snowpack,dist}",
+    "build": "snowpack build",
     "test": "npx jest",
     "test-watch": "npx jest --watch",
     "test-coverage": "npx jest --coverage",
@@ -29,6 +29,8 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
+    "@babel/plugin-proposal-optional-chaining": "^7.13.12",
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
     "@snowpack/app-scripts-react": "^2.0.1",
