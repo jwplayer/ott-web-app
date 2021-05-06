@@ -1,0 +1,13 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.BlurBackground {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-position: center;
+  background-size: cover;
+  box-sizing: border-box;
+  filter: blur(30px);
+  z-index: -1;
+}

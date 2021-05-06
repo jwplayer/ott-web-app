@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DynamicBlur> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="BlurBackground"
+    style="background: url(); opacity: 0; transition: opacity 1s ease-in-out;"
+  />
+  <div
+    class="BlurBackground"
+    style="background: url(); opacity: 0; transition: opacity 1s ease-in-out;"
+  />
+</div>
+`;
