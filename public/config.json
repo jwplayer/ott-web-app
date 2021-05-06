@@ -39,7 +39,7 @@
         "headerBackground": "#00DD00",
         "enableCasting": true,
         "enableSharing": true,
-        "dynamicBlur": false,
+        "dynamicBlur": true,
         "posterFading": true
     }
 }

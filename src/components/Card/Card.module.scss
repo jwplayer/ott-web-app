@@ -3,13 +3,14 @@
 
 .card {
   cursor: pointer;
-  transition: transform .2s ease-out,-webkit-transform .2s ease-out;
+  transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
 
   &:hover {
     transform: scale(1.05);
     z-index: 10;
     & .poster {
-      box-shadow: 0 0 0 3px var(--card-border-hover-color), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+      box-shadow: 0 0 0 3px var(--card-border-hover-color), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
+        0 4px 5px rgb(0 0 0 / 20%);
     }
   }
 }
@@ -23,7 +24,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 4px;
-  transition: box-shadow .1s ease;
+  transition: box-shadow 0.1s ease;
   box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
 }
 
@@ -62,4 +63,16 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   margin-top: 8px;
   margin-bottom: 0px;
   min-height: 19px;
+}
+.titleFeatured {
+  position: absolute;
+  display: flex;
+  bottom: 50%;
+  font-family: var(--body-alt-font-family);
+  color: var(--card-color);
+  font-weight: 700;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  padding: 12px;
 }

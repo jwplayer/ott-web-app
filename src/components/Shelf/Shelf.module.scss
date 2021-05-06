@@ -1,2 +1,36 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
+
+.Shelf {
+  margin: 0px 56px;
+}
+
+.title {
+  overflow: hidden;
+  font-family: var(--body-font-family);
+  color: var(--card-color);
+  font-weight: 700;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrowButton {
+  position: absolute;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 2em;
+  font-weight: 400;
+  font-variant: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  z-index: 1;
+  cursor: pointer;
+}
+.arrowLeft {
+  left: -30px;
+}
+.arrowRight {
+  right: -30px;
+}

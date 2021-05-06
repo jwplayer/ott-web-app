@@ -1,100 +1,67 @@
-import React, { useContext } from 'react';
-import type { Config } from 'types/Config';
+import React from 'react';
+import type { Playlist, PlaylistItem } from 'types/playlist';
+import classNames from 'classnames';
 
-import { ConfigContext } from '../../providers/configProvider';
+import Card from '../Card/Card';
 import TileDock from '../TileDock/TileDock';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
 import styles from './Shelf.module.scss';
 
-export type Image = {
-  src: string;
-  type: string;
-  width: number;
+const tileBreakpoints = {
+  [Breakpoint.xs]: 1,
+  [Breakpoint.sm]: 3,
+  [Breakpoint.md]: 4,
+  [Breakpoint.lg]: 5,
+  [Breakpoint.xl]: 6,
 };
 
 export type ShelfProps = {
-  title: string;
-  playlist: string[];
+  playlist: Playlist | undefined;
+  onCardClick: (playlistItem: PlaylistItem) => void;
+  onCardHover: (playlistItem: PlaylistItem) => void;
   featured?: boolean;
 };
 
-export type Source = {
-  file: string;
-  type: string;
-};
+const Shelf: React.FC<ShelfProps> = ({ playlist, onCardClick, onCardHover, featured = false }: ShelfProps) => {
+  const breakpoint: Breakpoint = useBreakpoint();
+  const tilesToShow: number = featured ? 1 : tileBreakpoints[breakpoint];
 
-export type Track = {
-  file: string;
-  kind: string;
-  label: string;
-};
-
-export type Item = {
-  description: string;
-  duration: number;
-  feedid: string;
-  image: string;
-  images: Image[];
-  junction_id: string;
-  link: string;
-  mediaid: string;
-  pubdate: number;
-  sources: Source[];
-  tags: string;
-  title: string;
-  tracks: Track[];
-  variations: Record<string, unknown>;
-};
-
-const Shelf: React.FC<ShelfProps> = ({
-  title,
-  playlist,
-  featured = false,
-}: ShelfProps) => {
-  const config: Config = useContext(ConfigContext);
-
-  console.info(config);
+  if (!playlist) return null;
 
   return (
     <div className={styles['Shelf']}>
-      <p>
-        Playlist {title} {featured}
-      </p>
+      {!featured && <h2 className={styles['title']}>{playlist.title}</h2>}
       <TileDock
-        items={playlist}
-        tilesToShow={6}
-        tileHeight={300}
-        cycleMode={'endless'}
+        items={playlist.playlist}
+        tilesToShow={tilesToShow}
+        cycleMode={'restart'}
         transitionTime="0.3s"
-        spacing={3}
+        spacing={12}
         renderLeftControl={(handleClick) => (
-          <button onClick={handleClick}>Left</button>
+          <button className={classNames(styles['arrowButton'], styles['arrowLeft'])} onClick={handleClick}>
+            &lt;
+          </button>
         )}
         renderRightControl={(handleClick) => (
-          <button onClick={handleClick}>Right</button>
-          )}
-        renderTile={(item: unknown) => {
+          <button className={classNames(styles['arrowButton'], styles['arrowRight'])} onClick={handleClick}>
+            &gt;
+          </button>
+        )}
+        renderTile={(item) => {
+          const playlistItem = item as PlaylistItem;
           return (
-          <div
-            style={{
-              background: 'white',
-              width: '100%',
-              height: '100%',
-              overflow: 'hidden',
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                background: `url('${
-                  (item as Item).images[0]?.src
-                }') center / cover no-repeat`,
-              }}
-            >
-            </div>
-          </div>
-        )}}
+            <Card
+              key={playlistItem.mediaid}
+              title={playlistItem.title}
+              duration={playlistItem.duration}
+              posterSource={playlistItem.image}
+              onClick={() => onCardClick(playlistItem)}
+              onHover={() => onCardHover(playlistItem)}
+              featured={featured}
+            />
+          );
+        }}
       />
     </div>
   );

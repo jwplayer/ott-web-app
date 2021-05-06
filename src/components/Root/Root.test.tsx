@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { mockWindowLocation, render } from '../../testUtils';
+import { mockWindowLocation, mockMatchMedia, render } from '../../testUtils';
 
+mockMatchMedia();
 import Root from './Root';
 
 describe('<Root />', () => {

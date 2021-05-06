@@ -2,8 +2,8 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import './TileDock.css';
 
 export type CycleMode = 'stop' | 'restart' | 'endless';
-type Direction        = 'left' | 'right';
-type Position         = { x: number; y: number; };
+type Direction = 'left' | 'right';
+type Position = { x: number; y: number };
 
 export type TileDockProps = {
   items: unknown[];
@@ -15,9 +15,14 @@ export type TileDockProps = {
   showControls?: boolean;
   animated?: boolean;
   transitionTime?: string;
-  renderTile: (item: unknown, index: number) => JSX.Element;
+  renderTile: (item: unknown) => JSX.Element;
   renderLeftControl?: (handleClick: () => void) => JSX.Element;
   renderRightControl?: (handleClick: () => void) => JSX.Element;
+};
+
+type Tile = {
+  item: unknown;
+  key: string;
 };
 
 const TileDock = ({
@@ -25,7 +30,6 @@ const TileDock = ({
   tilesToShow = 6,
   cycleMode = 'endless',
   spacing = 12,
-  tileHeight = 300,
   minimalTouchMovement = 30,
   showControls = true,
   animated = !window.matchMedia('(prefers-reduced-motion)').matches,
@@ -34,66 +38,78 @@ const TileDock = ({
   renderLeftControl,
   renderRightControl,
 }: TileDockProps) => {
-  const [index, setIndex]                       = useState<number>(0);
-  const [slideToIndex, setSlideToIndex]         = useState<number>(0);
-  const [transform, setTransform]               = useState<number>(-100);
+  const [index, setIndex] = useState<number>(0);
+  const [slideToIndex, setSlideToIndex] = useState<number>(0);
+  const [transform, setTransform] = useState<number>(-100);
   const [doAnimationReset, setDoAnimationReset] = useState<boolean>(false);
-  const [touchPosition, setTouchPosition]       = useState<Position>({ x: 0, y: 0 } as Position);
-  const frameRef                                = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
-  const tilesToShowRounded: number              = Math.floor(tilesToShow);
-  const offset: number                          = Math.round((tilesToShow - tilesToShowRounded) * 10) / 10;
-  const offsetCompensation: number              = offset ? 1 : 0;
-  const tileWidth: number                       = 100 / (tilesToShowRounded + offset * 2);
-  const isMultiPage: boolean                    = items.length > tilesToShowRounded;
-  const transformWithOffset: number             = isMultiPage ? 100 - tileWidth * (tilesToShowRounded + offsetCompensation - offset) + transform : 0;
+  const [touchPosition, setTouchPosition] = useState<Position>({ x: 0, y: 0 } as Position);
+  const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
+  const tileWidth: number = 100 / tilesToShow;
+  const isMultiPage: boolean = items.length > tilesToShow;
+  const transformWithOffset: number = isMultiPage ? 100 - tileWidth * tilesToShow + transform : 0;
 
-  const sliceItems = (items: unknown[]): unknown[] => {
-    const sliceFrom: number                    = index;
-    const sliceTo: number                      = index + tilesToShowRounded * 3 + offsetCompensation * 2;
-    const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShowRounded : 0;
-    const listStartClone: unknown[]            = items.slice(0, tilesToShowRounded + cycleModeEndlessCompensation + offsetCompensation,);
-    const listEndClone: unknown[]              = items.slice(0 - (tilesToShowRounded + offsetCompensation));
-    const itemsWithClones: unknown[]           = [...listEndClone, ...items, ...listStartClone];
-    const itemsSlice: unknown[]                = itemsWithClones.slice(sliceFrom, sliceTo);
+  const makeTiles = (items: unknown[]): Tile[] => {
+    const itemIndices: string[] = [];
 
-    return itemsSlice;
+    return items.map((item) => {
+      let key = `tile_${items.indexOf(item)}`;
+      while (itemIndices.includes(key)) {
+        key += '_';
+      }
+      itemIndices.push(key);
+      return { item, key };
+    });
   };
 
-  const tileList: unknown[]       = isMultiPage ? sliceItems(items) : items;
-  const isAnimating: boolean      = index !== slideToIndex;
-  const transitionBasis: string   = `transform ${animated ? transitionTime : '0s'} ease`;
+  const sliceItems = (items: unknown[]): Tile[] => {
+    if (!isMultiPage) return makeTiles(items);
+    const sliceFrom: number = index;
+    const sliceTo: number = index + tilesToShow * 3;
+    const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 0;
+    const listStartClone: unknown[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation);
+    const listEndClone: unknown[] = items.slice(0 - tilesToShow);
+    const itemsWithClones: unknown[] = [...listEndClone, ...items, ...listStartClone];
+    const itemsSlice: unknown[] = itemsWithClones.slice(sliceFrom, sliceTo);
+    return makeTiles(itemsSlice);
+  };
 
-  const needControls: boolean     = showControls && isMultiPage;
-  const showLeftControl: boolean  = needControls && !(cycleMode === 'stop' && index === 0);
-  const showRightControl: boolean = needControls && !(cycleMode === 'stop' && index === items.length - tilesToShowRounded);
+  const tileList: Tile[] = sliceItems(items);
+  const isAnimating: boolean = index !== slideToIndex;
+  const transitionBasis: string = `transform ${animated ? transitionTime : '0s'} ease`;
 
-  const slide = (direction: Direction) : void => {
-    const directionFactor = (direction === 'right')? 1 : -1;
-    let nextIndex: number = index + (tilesToShowRounded * directionFactor);
+  const needControls: boolean = showControls && isMultiPage;
+  const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
+  const showRightControl: boolean = needControls && !(cycleMode === 'stop' && index === items.length - tilesToShow);
 
-    if(nextIndex < 0){
+  const slide = (direction: Direction): void => {
+    const directionFactor = direction === 'right' ? 1 : -1;
+    let nextIndex: number = index + tilesToShow * directionFactor;
+
+    if (nextIndex < 0) {
       if (cycleMode === 'stop') nextIndex = 0;
-      if (cycleMode === 'restart') nextIndex = index === 0 ? 0 - tilesToShowRounded : 0;
+      if (cycleMode === 'restart') nextIndex = index === 0 ? 0 - tilesToShow : 0;
     }
-    if (nextIndex > items.length - tilesToShowRounded) {
-      if(cycleMode === 'stop') nextIndex = items.length - tilesToShowRounded;
-      if(cycleMode === 'restart') nextIndex = index === items.length - tilesToShowRounded ? items.length : items.length - tilesToShowRounded;
+    if (nextIndex > items.length - tilesToShow) {
+      if (cycleMode === 'stop') nextIndex = items.length - tilesToShow;
+      if (cycleMode === 'restart')
+        nextIndex = index === items.length - tilesToShow ? items.length : items.length - tilesToShow;
     }
 
-    const steps: number    = Math.abs(index - nextIndex);
+    const steps: number = Math.abs(index - nextIndex);
     const movement: number = steps * tileWidth * (0 - directionFactor);
-    
+
     setSlideToIndex(nextIndex);
     setTransform(-100 + movement);
-    if (!animated)  setDoAnimationReset(true);
+    if (!animated) setDoAnimationReset(true);
   };
 
-  const handleTouchStart = (event: React.TouchEvent): void => setTouchPosition({ x: event.touches[0].clientX, y: event.touches[0].clientY });
-  const handleTouchEnd   = (event: React.TouchEvent): void => {
-    const newPosition          = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
-    const movementX: number    = Math.abs(newPosition.x - touchPosition.x);
-    const movementY: number    = Math.abs(newPosition.y - touchPosition.y);
-    const direction: Direction = (newPosition.x < touchPosition.x) ? 'right' : 'left';
+  const handleTouchStart = (event: React.TouchEvent): void =>
+    setTouchPosition({ x: event.touches[0].clientX, y: event.touches[0].clientY });
+  const handleTouchEnd = (event: React.TouchEvent): void => {
+    const newPosition = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
+    const movementX: number = Math.abs(newPosition.x - touchPosition.x);
+    const movementY: number = Math.abs(newPosition.y - touchPosition.y);
+    const direction: Direction = newPosition.x < touchPosition.x ? 'right' : 'left';
 
     if (movementX > minimalTouchMovement && movementX > movementY) {
       slide(direction);
@@ -106,7 +122,7 @@ const TileDock = ({
 
       resetIndex = resetIndex >= items.length ? slideToIndex - items.length : resetIndex;
       resetIndex = resetIndex < 0 ? items.length + slideToIndex : resetIndex;
-      
+
       setIndex(resetIndex);
       if (frameRef.current) frameRef.current.style.transition = 'none';
       setTransform(-100);
@@ -117,23 +133,8 @@ const TileDock = ({
     };
 
     if (doAnimationReset) resetAnimation();
-  }, [
-    doAnimationReset,
-    index,
-    items.length,
-    slideToIndex,
-    tileWidth,
-    tilesToShowRounded,
-    transitionBasis,
-  ]);
+  }, [doAnimationReset, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis]);
 
-  const renderGradientEdge = () : string => {
-    const firstPercentage  = cycleMode === 'stop' && index === 0 ? offset * tileWidth : 0;
-    const secondPercentage = tileWidth * offset;
-    const thirdPercentage  = 100 - tileWidth * offset;
-
-    return `linear-gradient(90deg, rgba(255,255,255,1) ${firstPercentage}%, rgba(255,255,255,0) ${secondPercentage}%, rgba(255,255,255,0) ${thirdPercentage}%, rgba(255,255,255,1) 100%)`;
-  };
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // Todo: set capital W before creating package
@@ -144,11 +145,9 @@ const TileDock = ({
   };
 
   return (
-    <div className="tileDock" style={{ height: tileHeight }}>
+    <div className="tileDock">
       {showLeftControl && !!renderLeftControl && (
-        <div className="leftControl">
-          {renderLeftControl(() => slide('left'))}
-        </div>
+        <div className="leftControl">{renderLeftControl(() => slide('left'))}</div>
       )}
       <ul
         ref={frameRef}
@@ -157,37 +156,32 @@ const TileDock = ({
         onTouchEnd={handleTouchEnd}
         onTransitionEnd={(): void => setDoAnimationReset(true)}
       >
-        {tileList.map((item:any, listIndex) => {
-          const isVisible =
-            isAnimating ||
-            !isMultiPage ||
-            (listIndex > tilesToShowRounded - offsetCompensation - 1 &&
-              listIndex < tilesToShowRounded * 2 + offsetCompensation + offsetCompensation);
+        {tileList.map((tile: Tile, listIndex) => {
+          // Todo:
+          // const isTabable = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
+          const isVisible = true; // Todo: hide all but visible?
+          const isOpaque = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
 
           return (
             <li
-              key={`visibleTile${listIndex}`}
+              key={tile.key}
               style={{
                 width: `${tileWidth}%`,
-                height: tileHeight,
                 visibility: isVisible ? 'visible' : 'hidden',
                 paddingLeft: spacing / 2,
                 paddingRight: spacing / 2,
                 boxSizing: 'border-box',
+                opacity: isOpaque ? 1 : 0.1,
+                transition: 'opacity .2s ease-in 0s',
               }}
             >
-              {renderTile(item, listIndex)}
+              {renderTile(tile.item)}
             </li>
           );
         })}
       </ul>
-      {offsetCompensation > 0 && isMultiPage && (
-        <div className="offsetTile" style={{ background: renderGradientEdge() }} />
-      )}
       {showRightControl && !!renderRightControl && (
-        <div className="rightControl">
-          {renderRightControl(() => slide('right'))}
-        </div>
+        <div className="rightControl">{renderRightControl(() => slide('right'))}</div>
       )}
     </div>
   );
