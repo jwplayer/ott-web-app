@@ -1,11 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef } from 'react';
-import { AutoSizer, Grid, WindowScroller } from 'react-virtualized';
+import React from 'react';
+import {
+  Grid,
+  WindowScroller,
+  AutoSizer,
+  GridCellRenderer,
+} from 'react-virtualized';
 
 import scrollbarSize from '../../utils/domHelpers';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
-import styles from './VirtualizedGrid.module.scss';
+type props = {
+  cellRenderer: GridCellRenderer;
+  rowCount: number;
+  spacing: number;
+};
 
 const cols = {
   [Breakpoint.xs]: 2,
@@ -24,39 +32,31 @@ const calculateHeight = (
   return ratio * rat2;
 };
 
-const VirtualizedGrid = ({ cellRenderer, length }: any) => {
-  const windowScrollerRef = useRef(null);
+const VirtualizedGrid = ({ cellRenderer, rowCount, spacing }: props) => {
   const breakpoint: Breakpoint = useBreakpoint();
+  const columnCount = cols[breakpoint];
 
   return (
-    <WindowScroller ref={windowScrollerRef} scrollElement={window}>
-      {({ height, isScrolling, registerChild }) => (
-        <div className={styles.WindowScrollerWrapper}>
-          <AutoSizer disableHeight>
-            {({ width }) => {
-              const correctWidth = width - 10;
-              return (
-                <div ref={registerChild}>
-                  <Grid
-                    cellRenderer={cellRenderer}
-                    // onScroll={onChildScroll}
-                    isScrolling={isScrolling}
-                    // scrollTop={scrollTop}
-                    columnCount={cols[breakpoint]}
-                    columnWidth={correctWidth / cols[breakpoint]}
-                    height={height - 200}
-                    rowCount={length}
-                    rowHeight={
-                      calculateHeight(correctWidth / cols[breakpoint]) + 30
-                    }
-                    width={correctWidth}
-                    getScrollbarSize={scrollbarSize}
-                  />
-                </div>
-              );
-            }}
-          </AutoSizer>
-        </div>
+    <WindowScroller>
+      {({ height, isScrolling, onChildScroll, scrollTop }) => (
+        <AutoSizer disableHeight>
+          {({ width }) => (
+            <Grid
+              autoHeight
+              cellRenderer={cellRenderer}
+              onScroll={onChildScroll}
+              isScrolling={isScrolling}
+              scrollTop={scrollTop}
+              columnCount={columnCount}
+              columnWidth={width / columnCount}
+              height={height}
+              rowCount={rowCount}
+              rowHeight={calculateHeight(width / columnCount) + spacing}
+              width={width}
+              getScrollbarSize={scrollbarSize}
+            />
+          )}
+        </AutoSizer>
       )}
     </WindowScroller>
   );
