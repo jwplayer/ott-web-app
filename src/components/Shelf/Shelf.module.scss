@@ -2,12 +2,14 @@
 @use '../../styles/theme';
 
 .Shelf {
-  margin: 0px 56px;
+  margin: 12px 56px;
 }
 
 .title {
   overflow: hidden;
-  font-family: var(--body-font-family);
+  font-family: var(--body-alt-font-family);
+  font-size: 24px;
+  margin-bottom: 12px;
   color: var(--card-color);
   font-weight: 700;
   width: 100%;

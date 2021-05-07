@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <base href="/">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
@@ -26,7 +27,7 @@
         window.configLocation =
           'https://' + configId + '.jwpapp.com/config.json';
       } else {
-        window.configLocation = window.location.origin + '/config.json';
+        window.configLocation = './config.json';
       }
     </script>
     <!--

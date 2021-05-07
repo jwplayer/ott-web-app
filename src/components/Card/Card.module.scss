@@ -9,11 +9,23 @@
   &:hover {
     z-index: 10;
     transform: scale(1.05);
+
     & .poster {
       box-shadow: 0 0 0 3px var(--highlight-color, variables.$white),
         0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
         0 4px 5px rgb(0 0 0 / 20%);
     }
+  }
+}
+
+.featured {
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  .meta {
+    padding: 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
   }
 }
 
@@ -41,13 +53,11 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   @include responsive.mobile-only {
     font-size: 14px;
   }
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
   padding: 4px 8px;
   color: var(--card-color);
   font-family: var(--body-font-family);
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 600;
   background-color: rgba(variables.$black, 0.7);
   border-radius: 4px;
 }
@@ -56,11 +66,6 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   @include responsive.mobile-only {
     font-size: 14px;
   }
-  width: 100%;
-  min-height: 19px;
-  margin-top: 8px;
-  margin-bottom: 0;
-  overflow: hidden;
   color: var(--card-color);
   font-family: var(--body-alt-font-family);
   font-weight: 700;
@@ -68,15 +73,25 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   text-align: left;
   text-overflow: ellipsis;
 }
-.titleFeatured {
+
+.meta {
   position: absolute;
+  bottom: 0;
   display: flex;
-  bottom: 50%;
-  font-family: var(--body-alt-font-family);
-  color: var(--card-color);
-  font-weight: 700;
   align-items: center;
   width: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-  padding: 12px;
+  padding: 8px;
+  color: var(--card-color);
+
+  .title {
+    flex: 1;
+  }
+}
+
+.titleContainer {
+  width: 100%;
+  min-height: 19px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  overflow: hidden;
 }

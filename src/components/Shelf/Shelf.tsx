@@ -8,12 +8,20 @@ import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
 import styles from './Shelf.module.scss';
 
-const tileBreakpoints = {
+export const tileBreakpoints = {
   [Breakpoint.xs]: 1,
   [Breakpoint.sm]: 3,
   [Breakpoint.md]: 4,
   [Breakpoint.lg]: 5,
   [Breakpoint.xl]: 6,
+};
+
+export const featuredTileBreakpoints = {
+  [Breakpoint.xs]: 1,
+  [Breakpoint.sm]: 2,
+  [Breakpoint.md]: 2,
+  [Breakpoint.lg]: 2,
+  [Breakpoint.xl]: 2,
 };
 
 export type ShelfProps = {
@@ -25,7 +33,7 @@ export type ShelfProps = {
 
 const Shelf: React.FC<ShelfProps> = ({ playlist, onCardClick, onCardHover, featured = false }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
-  const tilesToShow: number = featured ? 1 : tileBreakpoints[breakpoint];
+  const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
 
   if (!playlist) return null;
 

@@ -22,6 +22,7 @@
   "dependencies": {
     "@types/react-virtualized": "^9.21.11",
     "classnames": "^2.3.1",
+    "lodash.merge": "^4.6.2",
     "memoize-one": "^5.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -48,6 +49,7 @@
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@types/jest": "^26.0.22",
+    "@types/lodash.merge": "^4.6.6",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-router-dom": "^5.1.7",

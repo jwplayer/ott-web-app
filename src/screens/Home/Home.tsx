@@ -6,12 +6,13 @@ import { useHistory } from 'react-router-dom';
 import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
+import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { UIStateContext, UpdateBlurImage } from '../../providers/uiStateProvider';
 import Shelf from '../../container/Shelf/Shelf';
 import { ConfigContext } from '../../providers/configProvider';
 import type { UsePlaylistResult } from '../../hooks/usePlaylist';
 import usePlaylist from '../../hooks/usePlaylist';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import useBreakpoint from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
 
 import styles from './Home.module.scss';
@@ -26,14 +27,6 @@ type ItemData = {
   content: Content[];
   onCardClick: (playlistItem: PlaylistItem) => void;
   updateBlurImage: UpdateBlurImage;
-};
-
-const tileBreakpoints = {
-  [Breakpoint.xs]: 1,
-  [Breakpoint.sm]: 3,
-  [Breakpoint.md]: 4,
-  [Breakpoint.lg]: 5,
-  [Breakpoint.xl]: 6,
 };
 
 const renderRow = ({ index, key, style, itemData }: rowData) => {
@@ -78,15 +71,17 @@ const Home = (): JSX.Element => {
   const calculateHeight = (index: number): number => {
     const item = content[index];
     if (!item) return 0;
-    const tilesToShow: number = item.featured ? 1 : tileBreakpoints[breakpoint];
-    const shelfMetaHeight = item.featured ? 0 : 28 + 20 + 20;
-    const cardMetaHeight = item.featured ? 0 : 20 + 8;
-    const shelfHorizontalMargin = 50;
-    const cardHorizontalMargin = 10;
-    const shelfPadding = 20;
+
+    const tilesToShow: number = item.featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
+    const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
+    const shelfMetaHeight = item.featured ? 24 : shelfTitlesHeight + 24;
+    const cardMetaHeight = item.featured ? 0 : 27;
+    const shelfHorizontalMargin = 56 * 2;
+    const cardHorizontalMargin = 0;
     const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow - cardHorizontalMargin;
-    const cardHeight = (cardWidth / 16) * 9 + cardMetaHeight;
-    return cardHeight + shelfMetaHeight + shelfPadding;
+    const cardHeight = cardWidth * (9 / 16);
+
+    return cardHeight + shelfMetaHeight + cardMetaHeight;
   };
 
   useEffect(() => {
@@ -94,7 +89,7 @@ const Home = (): JSX.Element => {
   }, [firstPlaylist, updateBlurImage]);
 
   return (
-    <div className={styles['Home']}>
+    <div className={styles.home}>
       {/* <InfiniteLoader isRowLoaded={(index) => !!content[index]} loadMoreRows={loadMoreRows} rowCount={5}>
           {({ onRowsRendered, registerChild }) => ( */}
       <WindowScroller onResize={() => ((listRef.current as unknown) as List)?.recomputeRowHeights()}>

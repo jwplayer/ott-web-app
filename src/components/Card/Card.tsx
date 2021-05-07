@@ -13,7 +13,7 @@ type CardProps = {
   posterSource?: string;
   seriesId?: string;
   posterAspect?: '1:1' | '2:1' | '2:3' | '4:3' | '5:3' | '16:9' | '9:16';
-  featured: boolean;
+  featured?: boolean;
 };
 
 function Card({
@@ -26,6 +26,7 @@ function Card({
   posterAspect = '16:9',
   featured = false,
 }: CardProps): JSX.Element {
+  const cardClassName = classNames(styles.card, { [styles.featured]: featured });
   const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`]);
   const metaData = () => {
     if (seriesId) {
@@ -36,12 +37,18 @@ function Card({
   };
 
   return (
-    <div className={styles.card} onClick={onClick} onMouseEnter={onHover} role="button" aria-label={`Play ${title}`}>
+    <div className={cardClassName} onClick={onClick} onMouseEnter={onHover} role="button" aria-label={`Play ${title}`}>
       <div className={posterClassNames} style={{ backgroundImage: `url(${posterSource})` }}>
-        {metaData()}
-        {featured && <div className={styles.titleFeatured}>{title}</div>}
+        <div className={styles.meta}>
+          <div className={styles.title}>{featured ? title : ''}</div>
+          {metaData()}
+        </div>
       </div>
-      {!featured && <div className={styles.title}>{title}</div>}
+      {!featured && (
+        <div className={styles.titleContainer}>
+          <div className={styles.title}>{title}</div>
+        </div>
+      )}
     </div>
   );
 }

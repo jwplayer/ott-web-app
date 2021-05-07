@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Layout from '@components/Layout/Layout';
 
+import Layout from '../Layout/Layout';
 import Playlist from '../../screens/Playlist/Playlist';
 import Home from '../../screens/Home/Home';
 

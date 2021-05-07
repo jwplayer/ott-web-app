@@ -1,4 +1,5 @@
 import React, { createContext, FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import merge from 'lodash.merge';
 
 import loadConfig, { validateConfig } from '../services/config.service';
 import type { Config, Options } from '../../types/Config';
@@ -12,7 +13,9 @@ const defaultConfig: Config = {
   assets: {},
   content: [],
   menu: [],
-  options: {},
+  options: {
+    shelveTitles: true,
+  },
 };
 
 export const ConfigContext = createContext<Config>(defaultConfig);
@@ -38,7 +41,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
       const config = await loadConfig(configLocation);
       validateConfig(config)
         .then((configValidated) => {
-          setConfig(configValidated);
+          setConfig(() => merge({}, defaultConfig, configValidated));
           setCssVariables(configValidated.options);
           onLoading(false);
         })
