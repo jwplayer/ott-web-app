@@ -1,17 +1,17 @@
-@use "../../styles/mixins/responsive";
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
 
 .playlist {
-  @include responsive.tablet-and-larger {
-    margin-right: 12px;
-    margin-left: 12px;
-
-    > main {
-      margin-top: 20px;
-      margin-right: 40px;
-      margin-left: 40px;
-    }
+  @include responsive.mobile-only() {
+    margin: 0 variables.$base-spacing;
   }
-  margin: 0 8px;
+
+  @include responsive.tablet-only() {
+    margin: 0 variables.$base-spacing * 2;
+  }
+
+  margin: 0 variables.$base-spacing * 4;
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
   text-align: center;
@@ -21,31 +21,26 @@
   }
 }
 
+.main {
+  margin: -8px;
+}
+
 .header {
   @include responsive.mobile-and-tablet {
     justify-content: space-between;
   }
 
-  @include responsive.mobile-only {
-    margin-top: 0;
-    margin-right: 8px;
-    margin-left: 8px;
-  }
-
   display: flex;
   align-items: center;
-  margin-top: 20px;
-  margin-right: 56px;
-  margin-left: 56px;
+  margin: 24px 0;
+
   > h2 {
+    font-family: theme.$body-alt-font-family;
     font-weight: 700;
     font-size: 24px;
   }
 }
 
-.wrapper {
-  @include responsive.tablet-and-larger {
-    padding: 15px;
-  }
+.cell {
   padding: 8px;
 }

@@ -9,7 +9,7 @@
 
 .header {
   height: variables.$header-height;
-  padding: 10px 56px;
+  padding: 10px variables.$base-spacing * 4;
 
   //
   // Make header fixed
@@ -83,7 +83,7 @@
 
 @include responsive.mobile-only() {
   .header {
-    padding: 10px 16px;
+    padding: 10px variables.$base-spacing;
   }
 
   .menu {

@@ -1,4 +1,4 @@
-import React, { createContext, FunctionComponent, ReactNode, useState } from 'react';
+import React, { createContext, FunctionComponent, ReactNode, useCallback, useState } from 'react';
 
 export type UpdateBlurImage = (image: string) => void;
 export type BlurImage = string;
@@ -19,8 +19,8 @@ export type ProviderProps = {
 };
 
 const UIStateProvider: FunctionComponent<ProviderProps> = ({ children }) => {
-  const [blurImage, setBlurImage] = useState<BlurImage>(() => defaultContext.blurImage);
-  const updateBlurImage: UpdateBlurImage = (image: BlurImage) => setBlurImage(image);
+  const [blurImage, setBlurImage] = useState<BlurImage>(defaultContext.blurImage);
+  const updateBlurImage: UpdateBlurImage = useCallback((image: BlurImage) => setBlurImage(image), []);
 
   return <UIStateContext.Provider value={{ blurImage, updateBlurImage }}>{children}</UIStateContext.Provider>;
 };

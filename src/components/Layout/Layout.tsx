@@ -4,7 +4,7 @@ import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
-import { ConfigContext } from '../../providers/configProvider';
+import { ConfigContext } from '../../providers/ConfigProvider';
 import { UIStateContext } from '../../providers/uiStateProvider';
 
 import styles from './Layout.module.scss';
@@ -25,7 +25,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className={styles.layout}>
-      {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} />}
+      {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
       <Header
         onMenuButtonClick={() => setSideBarOpen(true)}
         playlistMenuItems={playlistMenuItems}

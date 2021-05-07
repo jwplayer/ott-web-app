@@ -3,6 +3,7 @@ import { Grid, WindowScroller, AutoSizer, GridCellRenderer } from 'react-virtual
 
 import scrollbarSize from '../../utils/domHelpers';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import './VirtualizedGrid.scss';
 
 type props = {
   cellRenderer: GridCellRenderer;
