@@ -62,7 +62,7 @@ const loadConfig = async (configLocation: string) => {
     const data = await response.json();
 
     if (data.version) {
-      return serializeDeprecatedConfig(data);
+      return parseDeprecatedConfig(data);
     }
     return data;
   } catch (error: unknown) {
@@ -70,26 +70,33 @@ const loadConfig = async (configLocation: string) => {
   }
 };
 
-// /**
-//    * Serialize deprecated config to v3 config
-//    * @param {Object} config
-//    * @returns {jwOTTwebApp.config}
-//    */
-const serializeDeprecatedConfig = (config: Config) => {
-  const description = JSON.parse(config.description);
-  config.description = '';
+/**
+ * Serialize deprecated config to v3 config
+ * @param {Object} config
+ * @returns {jwOTTwebApp.config}
+ */
+const parseDeprecatedConfig = (config: Config) => {
+  let newConfig;
+  if (config.description.startsWith('{')) {
+    try {
+      const description = JSON.parse(config.description);
+      config.description = '';
 
-  const newConfig = {
-    ...config,
-    id: 'ID_PLACE_HOLDER',
-    menu: description.menu,
-    analyticsToken: description.analyticsToken,
-    options: {
-      dynamicBlur: description.dynamicBlur,
-      ...config.options,
-    },
-  };
-  console.info(newConfig);
+      newConfig = {
+        ...config,
+        id: 'ID_PLACE_HOLDER',
+        menu: description.menu,
+        analyticsToken: description.analyticsToken,
+        options: {
+          dynamicBlur: description.dynamicBlur,
+          ...config.options,
+        },
+      };
+    } catch (error: unknown) {
+      throw new Error('Failed to JSON parse the `description` property');
+    }
+  }
+
   return newConfig;
 };
 
