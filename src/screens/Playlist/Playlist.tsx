@@ -7,7 +7,7 @@ import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
 import usePlaylist from '../../hooks/usePlaylist';
 import { getCategoriesFromPlaylist, filterPlaylistCategory, chunk } from '../../utils/collection';
 import Card from '../../components/Card/Card';
-import Dropdown from '../../components/Filter/Filter';
+import Filter from '../../components/Filter/Filter';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import { UIStateContext } from '../../providers/uiStateProvider';
 
@@ -50,14 +50,14 @@ function Playlist({
   if (isLoading) return <p>Loading...</p>;
   if (error || !playlist) return <p>No playlist found...</p>;
 
-  const cellRenderer = ({ columnIndex, key, rowIndex, style }: GridCellProps) => {
+  const cellRenderer = ({ columnIndex, rowIndex, style }: GridCellProps) => {
     if (!playlistRows[rowIndex][columnIndex]) return;
 
     const playlistItem: PlaylistItem = playlistRows[rowIndex][columnIndex];
     const { mediaid, title, duration, image, seriesId } = playlistItem;
 
     return (
-      <div className={styles.wrapper} style={style} key={key}>
+      <div className={styles.cell} style={style} key={mediaid}>
         <Card
           key={mediaid}
           title={title}
@@ -75,11 +75,9 @@ function Playlist({
     <div className={styles.playlist}>
       <header className={styles.header}>
         <h2>{title}</h2>
-        {categories.length && (
-          <Dropdown name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />
-        )}
+        <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />
       </header>
-      <main>
+      <main className={styles.main}>
         <VirtualizedGrid rowCount={playlistRows.length} cellRenderer={cellRenderer} spacing={30} />
       </main>
     </div>
