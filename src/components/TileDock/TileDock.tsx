@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import './TileDock.css';
 
 export type CycleMode = 'stop' | 'restart' | 'endless';
@@ -25,57 +25,69 @@ type Tile = {
   key: string;
 };
 
+const makeTiles = (originalList: unknown[], slicedItems: unknown[]): Tile[] => {
+  const itemIndices: string[] = [];
+
+  return slicedItems.map((item) => {
+    let key = `tile_${originalList.indexOf(item)}`;
+    while (itemIndices.includes(key)) {
+      key += '_';
+    }
+    itemIndices.push(key);
+    return { item, key };
+  });
+};
+
+const sliceItems = (
+  items: unknown[],
+  isMultiPage: boolean,
+  index: number,
+  tilesToShow: number,
+  cycleMode: CycleMode,
+): Tile[] => {
+  if (!isMultiPage) return makeTiles(items, items);
+
+  const sliceFrom: number = index;
+  const sliceTo: number = index + tilesToShow * 3;
+  const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 1;
+  const listStartClone: unknown[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation);
+  const listEndClone: unknown[] = items.slice(0 - tilesToShow + 1);
+  const itemsWithClones: unknown[] = [...listEndClone, ...items, ...listStartClone];
+  const itemsSlice: unknown[] = itemsWithClones.slice(sliceFrom, sliceTo);
+
+  return makeTiles(items, itemsSlice);
+};
+
 const TileDock = ({
-    items,
-    tilesToShow = 6,
-    cycleMode = 'endless',
-    spacing = 12,
-    minimalTouchMovement = 30,
-    showControls = true,
-    animated = !window.matchMedia('(prefers-reduced-motion)').matches,
-    transitionTime = '0.6s',
-    renderTile,
-    renderLeftControl,
-    renderRightControl,
-  }: TileDockProps) => {
+  items,
+  tilesToShow = 6,
+  cycleMode = 'endless',
+  spacing = 12,
+  minimalTouchMovement = 30,
+  showControls = true,
+  animated = !window.matchMedia('(prefers-reduced-motion)').matches,
+  transitionTime = '0.6s',
+  renderTile,
+  renderLeftControl,
+  renderRightControl,
+}: TileDockProps) => {
   const [index, setIndex] = useState<number>(0);
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
   const [doAnimationReset, setDoAnimationReset] = useState<boolean>(false);
-  const [touchPosition, setTouchPosition] = useState<Position>({ x: 0, y: 0 } as Position);
+  const [touchPosition, setTouchPosition] = useState<Position>({
+    x: 0,
+    y: 0,
+  } as Position);
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items.length > tilesToShow;
   const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow - 1) + transform : 0;
 
-  const makeTiles = (slicedItems: unknown[]): Tile[] => {
-    const itemIndices: string[] = [];
+  const tileList: Tile[] = useMemo(() => {
+    return sliceItems(items, isMultiPage, index, tilesToShow, cycleMode);
+  }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
-    return slicedItems.map((item) => {
-      let key = `tile_${items.indexOf(item)}`;
-      while (itemIndices.includes(key)) {
-        key += '_';
-      }
-      itemIndices.push(key);
-      return { item, key };
-    });
-  };
-
-  const sliceItems = (items: unknown[]): Tile[] => {
-    if (!isMultiPage) return makeTiles(items);
-
-    const sliceFrom: number = index;
-    const sliceTo: number = index + tilesToShow * 3;
-    const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 1;
-    const listStartClone: unknown[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation);
-    const listEndClone: unknown[] = items.slice(0 - tilesToShow + 1);
-    const itemsWithClones: unknown[] = [...listEndClone, ...items, ...listStartClone];
-    const itemsSlice: unknown[] = itemsWithClones.slice(sliceFrom, sliceTo);
-
-    return makeTiles(itemsSlice);
-  };
-
-  const tileList: Tile[] = sliceItems(items);
   const transitionBasis: string = `transform ${animated ? transitionTime : '0s'} ease`;
 
   const needControls: boolean = showControls && isMultiPage;
@@ -105,9 +117,15 @@ const TileDock = ({
   };
 
   const handleTouchStart = (event: React.TouchEvent): void =>
-    setTouchPosition({ x: event.touches[0].clientX, y: event.touches[0].clientY });
+    setTouchPosition({
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    });
   const handleTouchEnd = (event: React.TouchEvent): void => {
-    const newPosition = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
+    const newPosition = {
+      x: event.changedTouches[0].clientX,
+      y: event.changedTouches[0].clientY,
+    };
     const movementX: number = Math.abs(newPosition.x - touchPosition.x);
     const movementY: number = Math.abs(newPosition.y - touchPosition.y);
     const direction: Direction = newPosition.x < touchPosition.x ? 'right' : 'left';
@@ -142,14 +160,14 @@ const TileDock = ({
 
   const handleTransitionEnd = (event: React.TransitionEvent<HTMLUListElement>) => {
     if (event.target === frameRef.current) {
-      setDoAnimationReset(true)
+      setDoAnimationReset(true);
     }
   };
 
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
-    // Todo: set capital W before creating package
-    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    // prettier-ignore
+    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -173,7 +191,9 @@ const TileDock = ({
           // Todo:
           // const isTabable = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
           const isVisible = true; // Todo: hide all but visible?
-          const isOpaque = !isMultiPage || (listIndex > tilesToShow - slideOffset - 2 && listIndex < (tilesToShow * 2) - slideOffset - 1);
+          const isOpaque =
+            !isMultiPage ||
+            (listIndex > tilesToShow - (slideOffset + 2) && listIndex < tilesToShow * 2 - slideOffset - 1);
 
           return (
             <li
