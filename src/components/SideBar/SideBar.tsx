@@ -9,9 +9,10 @@ import styles from './SideBar.module.scss';
 type SideBarProps = {
   isOpen: boolean;
   onClose: () => void;
+  playlistMenuItems: JSX.Element[];
 };
 
-const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
+const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose, playlistMenuItems }) => {
   return (
     <Fragment>
       <div
@@ -19,7 +20,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
           [styles.visible]: isOpen,
         })}
         onClick={onClose}
-      ></div>
+      />
       <div
         className={classNames(styles.sidebar, {
           [styles.open]: isOpen,
@@ -31,7 +32,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
         </div>
         <nav className={styles.group}>
           <ButtonLink label="Home" to="/" />
-          <ButtonLink label="Test" to="/" />
+          {playlistMenuItems}
           <hr className={styles.divider} />
           <ButtonLink label="Settings" to="/" />
         </nav>

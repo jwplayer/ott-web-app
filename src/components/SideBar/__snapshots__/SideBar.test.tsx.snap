@@ -49,7 +49,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
         href="/"
       >
         <span>
-          Test
+          Home
         </span>
       </a>
       <hr

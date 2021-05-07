@@ -1,15 +1,21 @@
-import type { Playlist } from 'types/playlist';
+import type { PlaylistItem } from 'types/playlist';
 
-const getCategoriesFromPlaylist = (playlist: Playlist) =>
+const getCategoriesFromPlaylist = (playlist: PlaylistItem[]) =>
   playlist.reduce(
     (categories: string[], item) => (categories.includes(item.genre) ? categories : categories.concat(item.genre)),
     [],
   );
 
-const filterPlaylistCategory = (playlist: Playlist, filter: string) => {
+const filterPlaylistCategory = (playlist: PlaylistItem[], filter: string) => {
   if (!filter) return playlist;
 
   return playlist.filter(({ genre }) => genre === filter);
 };
 
-export { getCategoriesFromPlaylist, filterPlaylistCategory };
+const chunk = <T>(input: T[], size: number) => {
+  return input?.reduce((arr: T[][], item, idx: number) => {
+    return idx % size === 0 ? [...arr, [item]] : [...arr.slice(0, -1), [...arr.slice(-1)[0], item]];
+  }, []);
+};
+
+export { getCategoriesFromPlaylist, filterPlaylistCategory, chunk };

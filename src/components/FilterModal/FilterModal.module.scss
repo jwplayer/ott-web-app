@@ -1,0 +1,67 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+//
+// filterModal
+// --------------------------------
+
+.filterModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: variables.$sidebar-z-index;
+  display: none;
+  width: 100%;
+  height: 100vh;
+  color: variables.$white;
+  background-color: var(--body-background-color);
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.52, 0.51, 0.2, 1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: variables.$base-spacing;
+  font-size: 20px;
+  text-transform: capitalize;
+  > h4 {
+    margin-left: variables.$base-spacing;
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.divider {
+  position: relative;
+  width: 100%;
+  border-top: 1px solid rgba(variables.$white, 0.12);
+  opacity: 0.12;
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .filterModal {
+    display: inline-block;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .backdrop {
+    display: inline-block;
+    visibility: hidden;
+
+    &.visible {
+      visibility: visible;
+    }
+  }
+}

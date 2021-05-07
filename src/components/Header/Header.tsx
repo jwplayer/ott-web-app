@@ -12,22 +12,22 @@ type TypeHeader = 'static' | 'fixed';
 type Props = {
   headerType?: TypeHeader;
   onMenuButtonClick: () => void;
+  playlistMenuItems: JSX.Element[];
+  logoSrc?: string;
 };
 
-const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick }) => {
+const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, playlistMenuItems, logoSrc }) => {
   return (
     <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>
         <div className={styles.menu} onClick={onMenuButtonClick} aria-label="open menu" role="button">
           <Menu />
         </div>
-        <Logo src="https://cdn.jwplayer.com/images/HXyBCU5N.png" />
+        {logoSrc && <Logo src={logoSrc} />}
         <nav className={styles.nav} aria-label="menu">
           <ButtonLink label="Home" to="/" />
-          {/* mock */}
-          <ButtonLink label="Playlist" to="/p/:id" />
+          {playlistMenuItems}
           <ButtonLink label="Settings" to="/u" />
-          {/* mock */}
         </nav>
         <div className={styles.search}></div>
       </div>

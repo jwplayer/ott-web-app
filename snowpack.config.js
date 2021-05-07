@@ -5,17 +5,43 @@ module.exports = {
     src: { url: '/dist' },
   },
   alias: {
-    '@components': './src/components/*',
-    '@container': './src/container/*',
-    '@types': './src/types/*',
-    '@app': './src/*',
+    '@components': './src/components',
+    '@container': './src/container',
+    '@types': './src/types',
+    '@app': './src',
   },
   plugins: [
     '@snowpack/plugin-postcss',
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-sass',
-    '@snowpack/plugin-webpack',
+    // ['@snowpack/plugin-webpack', {
+    //   extendConfig: (config) => {
+    //     // FIXES https://github.com/snowpackjs/snowpack/discussions/2810
+    //     config.module.rules.find(
+    //       (rule) =>
+    //         rule &&
+    //         rule.use &&
+    //         rule.use.find((use) => {
+    //           if (
+    //             !use ||
+    //             !use.loader ||
+    //             !use.loader.includes('babel-loader')
+    //           ) {
+    //             return null;
+    //           }
+    //
+    //           use.options.plugins = (use.options.plugins || []).concat([
+    //             '@babel/plugin-proposal-optional-chaining',
+    //             '@babel/plugin-proposal-nullish-coalescing-operator'
+    //           ]);
+    //
+    //           return use;
+    //         }),
+    //     );
+    //     return config;
+    //   },
+    // }],
     [
       '@snowpack/plugin-typescript',
       {
@@ -38,9 +64,7 @@ module.exports = {
       },
     ],
   ],
-  routes: [
-    /* Enable an SPA Fallback in development: */
-  ],
+  routes: [{ match: 'routes', src: '.*', dest: '/index.html' }],
   optimize: {
     /* Example: Bundle your final build: */
     // "bundle": true,
@@ -49,7 +73,7 @@ module.exports = {
     /* ... */
   },
   devOptions: {
-    /* ... */
+    port: process.env.PORT ? parseInt(process.env.PORT) : 8080,
   },
   buildOptions: {
     /* ... */

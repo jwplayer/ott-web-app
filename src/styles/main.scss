@@ -15,13 +15,39 @@
 }
 
 body {
-  min-width: 320px;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: scroll;
   font-size: 16px;
   background-color: var(--body-background-color);
+}
+
+button {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  background: transparent;
+  border: none;
+  border: 0;
+  outline: none;
+  appearance: none;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  font: inherit;
 }
 
 *,

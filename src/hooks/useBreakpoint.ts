@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
-const XS_MATCH_MEDIA: MediaQueryList = window.matchMedia?.('screen and (max-width: 400px)');
-const SM_MATCH_MEDIA: MediaQueryList = window.matchMedia?.('screen and (min-width: 320px) and (max-width: 719px)');
-const MD_MATCH_MEDIA: MediaQueryList = window.matchMedia?.('screen and (min-width: 720px) and (max-width: 1023px)');
-const LG_MATCH_MEDIA: MediaQueryList = window.matchMedia?.('screen and (min-width: 1024px) and (max-width: 1439px)');
+const XS_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (max-width: 319px)');
+const SM_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 320px) and (max-width: 767px)');
+const MD_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 768px) and (max-width: 1023px)');
+const LG_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 1024px) and (max-width: 1439px)');
 
 export enum Breakpoint {
   xs,
@@ -14,10 +14,10 @@ export enum Breakpoint {
 }
 
 const getScreenSize = (): Breakpoint => {
-  if (XS_MATCH_MEDIA?.matches) return Breakpoint.xs;
-  if (SM_MATCH_MEDIA?.matches) return Breakpoint.sm;
-  if (MD_MATCH_MEDIA?.matches) return Breakpoint.md;
-  if (LG_MATCH_MEDIA?.matches) return Breakpoint.lg;
+  if (XS_MATCH_MEDIA.matches) return Breakpoint.xs;
+  if (SM_MATCH_MEDIA.matches) return Breakpoint.sm;
+  if (MD_MATCH_MEDIA.matches) return Breakpoint.md;
+  if (LG_MATCH_MEDIA.matches) return Breakpoint.lg;
   else return Breakpoint.xl;
 };
 

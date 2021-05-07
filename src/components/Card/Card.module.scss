@@ -1,15 +1,17 @@
 @use 'sass:math';
 @use "../../styles/mixins/responsive";
+@use '../../styles/variables';
 
 .card {
   cursor: pointer;
   transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
 
   &:hover {
-    transform: scale(1.05);
     z-index: 10;
+    transform: scale(1.05);
     & .poster {
-      box-shadow: 0 0 0 3px var(--card-border-hover-color), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
+      box-shadow: 0 0 0 3px var(--highlight-color, variables.$white),
+        0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
         0 4px 5px rgb(0 0 0 / 20%);
     }
   }
@@ -36,33 +38,35 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 }
 
 .tag {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  background-color: var(--card-tag-bg);
-  font-family: var(--body-font-family);
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: var(--card-color);
-
-  @include responsive.mobile-and-tablet {
-    padding: 2px 4px;
-    bottom: 8px;
-    right: 8px;
+  @include responsive.mobile-only {
+    font-size: 14px;
   }
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 4px 8px;
+  color: var(--card-color);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  background-color: rgba(variables.$black, 0.7);
+  border-radius: 4px;
 }
 
 .title {
-  overflow: hidden;
-  font-family: var(--body-alt-font-family);
-  color: var(--card-color);
-  font-weight: 700;
+  @include responsive.mobile-only {
+    font-size: 14px;
+  }
   width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-top: 8px;
-  margin-bottom: 0px;
   min-height: 19px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  overflow: hidden;
+  color: var(--card-color);
+  font-family: var(--body-alt-font-family);
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: left;
+  text-overflow: ellipsis;
 }
 .titleFeatured {
   position: absolute;

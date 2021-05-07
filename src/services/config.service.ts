@@ -16,8 +16,8 @@ const menuSchema: SchemaOf<Menu> = object().shape({
 });
 
 const optionsSchema: SchemaOf<Options> = object({
-  backgroundColor: string().notRequired(),
-  highlightColor: string().notRequired(),
+  backgroundColor: string().nullable(),
+  highlightColor: string().nullable(),
   enableContinueWatching: boolean().notRequired(),
   headerBackground: string().notRequired(),
   enableCasting: boolean().notRequired(),
@@ -31,7 +31,7 @@ const configSchema: SchemaOf<Config> = object({
   id: string().defined(),
   siteName: string().defined(),
   description: string().defined(),
-  footerText: string().defined(),
+  footerText: string().nullable(),
   player: string().defined(),
   recommendationsPlaylist: string().notRequired(),
   searchPlaylist: string().notRequired(),
@@ -59,14 +59,51 @@ const loadConfig = async (configLocation: string) => {
       method: 'GET',
     });
 
-    return await response.json();
+    const data = await response.json();
+
+    if (data.version) {
+      return parseDeprecatedConfig(data);
+    }
+    return data;
   } catch (error: unknown) {
     return error;
   }
 };
 
-export const validateConfig = (config: unknown): Promise<Config> => {
-  return configSchema.validate(config, { strict: true }) as Promise<Config>;
+/**
+ * Serialize deprecated config to v3 config
+ * @param {Object} config
+ * @returns {jwOTTwebApp.config}
+ */
+const parseDeprecatedConfig = (config: Config) => {
+  let newConfig;
+  if (config.description.startsWith('{')) {
+    try {
+      const description = JSON.parse(config.description);
+      config.description = '';
+
+      newConfig = {
+        ...config,
+        id: 'ID_PLACE_HOLDER',
+        menu: description.menu,
+        analyticsToken: description.analyticsToken,
+        options: {
+          dynamicBlur: description.dynamicBlur,
+          ...config.options,
+        },
+      };
+    } catch (error: unknown) {
+      throw new Error('Failed to JSON parse the `description` property');
+    }
+  }
+
+  return newConfig;
+};
+
+export const validateConfig = (config: Config): Promise<Config> => {
+  return configSchema.validate(config, {
+    strict: true,
+  }) as Promise<Config>;
 };
 
 export default loadConfig;

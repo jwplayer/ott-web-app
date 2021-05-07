@@ -6,7 +6,7 @@ export type Config = {
   id: string;
   siteName: string;
   description: string;
-  footerText: string;
+  footerText?: string | null;
   player: string;
   recommendationsPlaylist?: string;
   searchPlaylist?: string;
@@ -35,8 +35,8 @@ export type Menu = {
 };
 
 export type Options = {
-  backgroundColor?: string;
-  highlightColor?: string;
+  backgroundColor?: string | null;
+  highlightColor?: string | null;
   enableContinueWatching?: boolean;
   headerBackground?: string;
   enableCasting?: boolean;

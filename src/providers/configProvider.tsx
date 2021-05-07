@@ -1,7 +1,7 @@
 import React, { createContext, FunctionComponent, ReactNode, useEffect, useState } from 'react';
 
 import loadConfig, { validateConfig } from '../services/config.service';
-import type { Config } from '../../types/Config';
+import type { Config, Options } from '../../types/Config';
 
 const defaultConfig: Config = {
   id: '',
@@ -39,6 +39,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
       validateConfig(config)
         .then((configValidated) => {
           setConfig(configValidated);
+          setCssVariables(configValidated.options);
           onLoading(false);
         })
         .catch((error: Error) => {
@@ -48,6 +49,18 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     };
     loadAndValidateConfig(configLocation);
   }, [configLocation, onLoading, onValidationError]);
+
+  const setCssVariables = ({ backgroundColor, highlightColor }: Options) => {
+    const root = document.querySelector(':root') as HTMLElement;
+
+    if (root && backgroundColor) {
+      root.style.setProperty('--background-color', backgroundColor);
+    }
+
+    if (root && highlightColor) {
+      root.style.setProperty('--highlight-color', highlightColor);
+    }
+  };
 
   return <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>;
 };
