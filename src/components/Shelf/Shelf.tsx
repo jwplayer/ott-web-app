@@ -1,10 +1,11 @@
 import React from 'react';
 import type { Playlist, PlaylistItem } from 'types/playlist';
-import classNames from 'classnames';
 
 import Card from '../Card/Card';
 import TileDock from '../TileDock/TileDock';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import ArrowLeft from '../../icons/ArrowLeft';
+import ArrowRight from '../../icons/ArrowRight';
 
 import styles from './Shelf.module.scss';
 
@@ -47,14 +48,14 @@ const Shelf: React.FC<ShelfProps> = ({ playlist, onCardClick, onCardHover, featu
         transitionTime="0.3s"
         spacing={12}
         renderLeftControl={(handleClick) => (
-          <button className={classNames(styles['arrowButton'], styles['arrowLeft'])} onClick={handleClick}>
-            &lt;
-          </button>
+          <div className={styles.arrow} onClick={handleClick}>
+            <ArrowLeft />
+          </div>
         )}
         renderRightControl={(handleClick) => (
-          <button className={classNames(styles['arrowButton'], styles['arrowRight'])} onClick={handleClick}>
-            &gt;
-          </button>
+          <div className={styles.arrow} onClick={handleClick}>
+            <ArrowRight />
+          </div>
         )}
         renderTile={(item) => {
           const playlistItem = item as PlaylistItem;
