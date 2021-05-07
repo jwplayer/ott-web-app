@@ -2,7 +2,8 @@ import type { PlaylistItem } from 'types/playlist';
 
 const getCategoriesFromPlaylist = (playlist: PlaylistItem[]) =>
   playlist.reduce(
-    (categories: string[], item) => (categories.includes(item.genre) ? categories : categories.concat(item.genre)),
+    (categories: string[], item) =>
+      categories.includes(item.genre) || !item.genre ? categories : categories.concat(item.genre),
     [],
   );
 
