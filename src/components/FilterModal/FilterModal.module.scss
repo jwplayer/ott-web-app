@@ -16,14 +16,15 @@
   height: 100vh;
   color: variables.$white;
   background-color: var(--body-background-color);
-  transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(0.52, 0.51, 0.2, 1);
+  transform: translateY(+100%);
+  transition: transform 0.5s cubic-bezier(0.52, 0.51, 0.2, 1);
 }
 
 .header {
   display: flex;
   align-items: center;
   padding: variables.$base-spacing;
+  font-weight: 700;
   font-size: 20px;
   text-transform: capitalize;
   > h4 {
@@ -52,7 +53,7 @@
     display: inline-block;
 
     &.open {
-      transform: translateX(0);
+      transform: translateY(0);
     }
   }
 
