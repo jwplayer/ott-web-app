@@ -1,14 +1,15 @@
 import type { Playlist } from 'types/playlist';
 
 const getCategoriesFromPlaylist = (playlist: Playlist) =>
-    playlist.reduce((categories: string[], item) => categories.includes(item.genre) ? categories : categories.concat(item.genre), [])
-
+  playlist.reduce(
+    (categories: string[], item) => (categories.includes(item.genre) ? categories : categories.concat(item.genre)),
+    [],
+  );
 
 const filterPlaylistCategory = (playlist: Playlist, filter: string) => {
-    if (!filter) return playlist
+  if (!filter) return playlist;
 
-    return playlist.filter(({ genre }) => genre === filter)
+  return playlist.filter(({ genre }) => genre === filter);
+};
 
-}
-
-export { getCategoriesFromPlaylist, filterPlaylistCategory }
+export { getCategoriesFromPlaylist, filterPlaylistCategory };

@@ -109,12 +109,11 @@ const Home = (): JSX.Element => {
               onScroll={onChildScroll}
               rowCount={content.length}
               getScrollbarSize={scrollbarSize}
-              // onRowsRendered={onRowsRendered}
-              // ref={registerChild}
               rowHeight={({ index }) => calculateHeight(index)}
               rowRenderer={({ index, key, style }) => renderRow({ index, key, style, itemData })}
               scrollTop={scrollTop}
               width={document.body.offsetWidth}
+              isScrollingOptOut
             />
           )}
         </WindowScroller>

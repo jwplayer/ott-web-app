@@ -8,9 +8,7 @@ type QueryProviderProps = {
 };
 
 function QueryProvider({ children }: QueryProviderProps): JSX.Element {
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
 
 export default QueryProvider;

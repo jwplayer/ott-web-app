@@ -2,7 +2,10 @@ import React, { createContext, FunctionComponent, ReactNode, useState } from 're
 
 export type UpdateBlurImage = (image: string) => void;
 export type BlurImage = string;
-export type UIContext = { blurImage: BlurImage; updateBlurImage: UpdateBlurImage };
+export type UIContext = {
+  blurImage: BlurImage;
+  updateBlurImage: UpdateBlurImage;
+};
 
 const defaultContext: UIContext = {
   blurImage: '',

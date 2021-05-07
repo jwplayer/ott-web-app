@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  FunctionComponent,
-  ReactNode,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, FunctionComponent, ReactNode, useEffect, useState } from 'react';
 
 import loadConfig, { validateConfig } from '../services/config.service';
 import type { Config } from '../../types/Config';
@@ -55,9 +49,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     loadAndValidateConfig(configLocation);
   }, [configLocation, onLoading, onValidationError]);
 
-  return (
-    <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
-  );
+  return <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>;
 };
 
 export default ConfigProvider;

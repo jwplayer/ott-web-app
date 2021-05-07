@@ -3,18 +3,13 @@ import { render } from '@testing-library/react';
 
 import Dropdown from './Dropdown';
 
-const options = ["x", "y", "z"]
+const options = ['x', 'y', 'z'];
 
 describe('<Dropdown>', () => {
   it('renders dropdown', () => {
-    const { getByText } = render((
-      <Dropdown
-        name="categories"
-        value="aa"
-        defaultLabel="bb"
-        options={options}
-        setValue={(event) => event}
-      />));
+    const { getByText } = render(
+      <Dropdown name="categories" value="aa" defaultLabel="bb" options={options} setValue={(event) => event} />,
+    );
     const dropdown = getByText(/bb/i);
     expect(document.body.contains(dropdown));
   });

@@ -10,12 +10,7 @@ type Props = {
 
 const ButtonLink: React.FC<Props> = ({ label, to }) => {
   return (
-    <NavLink
-      className={styles.link}
-      activeClassName={styles.active}
-      to={to}
-      exact
-    >
+    <NavLink className={styles.link} activeClassName={styles.active} to={to} exact>
       <span className={styles.buttonLabel}>{label}</span>
     </NavLink>
   );
