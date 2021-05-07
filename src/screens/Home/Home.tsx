@@ -7,7 +7,7 @@ import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
-import { UIStateContext, UpdateBlurImage } from '../../providers/uiStateProvider';
+import { UIStateContext } from '../../providers/uiStateProvider';
 import Shelf from '../../container/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import type { UsePlaylistResult } from '../../hooks/usePlaylist';
@@ -26,11 +26,11 @@ type rowData = {
 type ItemData = {
   content: Content[];
   onCardClick: (playlistItem: PlaylistItem) => void;
-  updateBlurImage: UpdateBlurImage;
+  onCardHover: (playlistItem: PlaylistItem) => void;
 };
 
 const renderRow = ({ index, key, style, itemData }: rowData) => {
-  const { content, onCardClick, updateBlurImage } = itemData;
+  const { content, onCardClick, onCardHover } = itemData;
   const contentItem: Content = content[index];
   if (!contentItem) return null;
 
@@ -40,23 +40,23 @@ const renderRow = ({ index, key, style, itemData }: rowData) => {
         key={contentItem.playlistId}
         playlistId={contentItem.playlistId}
         onCardClick={onCardClick}
-        onCardHover={(playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image)}
+        onCardHover={onCardHover}
         featured={contentItem.featured === true}
       />
     </div>
   );
 };
 
-const createItemData = memoize((content, onCardClick, updateBlurImage) => ({
+const createItemData = memoize((content, onCardClick, onCardHover) => ({
   content,
   onCardClick,
-  updateBlurImage,
+  onCardHover,
 }));
 
 const Home = (): JSX.Element => {
   const history = useHistory();
   const config: Config = useContext(ConfigContext);
-  const { updateBlurImage } = useContext(UIStateContext);
+  const { blurImage, updateBlurImage } = useContext(UIStateContext);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config ? config.content : [];
@@ -64,9 +64,10 @@ const Home = (): JSX.Element => {
   const usePlaylistArg: string | undefined = content.length ? content[0]?.playlistId : undefined;
   const { data: firstPlaylist }: UsePlaylistResult = usePlaylist(usePlaylistArg || '');
 
-  const onCardClick = (playlistItem: PlaylistItem) => playlistItem && history.push(`/play/${playlistItem.mediaid}`);
+  const onCardClick = (playlistItem: PlaylistItem) => history.push(`/play/${playlistItem.mediaid}`);
+  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
-  const itemData: ItemData = createItemData(content, onCardClick, updateBlurImage);
+  const itemData: ItemData = createItemData(content, onCardClick, onCardHover);
 
   const calculateHeight = (index: number): number => {
     const item = content[index];
@@ -85,8 +86,8 @@ const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (firstPlaylist?.playlist[0]?.image) updateBlurImage(firstPlaylist.playlist[0].image);
-  }, [firstPlaylist, updateBlurImage]);
+    if (firstPlaylist?.playlist.length && !blurImage) updateBlurImage(firstPlaylist.playlist[0].image);
+  }, [firstPlaylist, blurImage, updateBlurImage]);
 
   return (
     <div className={styles.home}>

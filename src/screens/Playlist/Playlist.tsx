@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import type { RouteComponentProps } from 'react-router-dom';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { GridCellProps } from 'react-virtualized';
+import type { PlaylistItem } from 'types/playlist';
 
 import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
 import usePlaylist from '../../hooks/usePlaylist';
@@ -8,6 +9,7 @@ import { getCategoriesFromPlaylist, filterPlaylistCategory, chunk } from '../../
 import Card from '../../components/Card/Card';
 import Filter from '../../components/Filter/Filter';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import { UIStateContext } from '../../providers/uiStateProvider';
 
 import styles from './Playlist.module.scss';
 
@@ -28,27 +30,43 @@ function Playlist({
     params: { id },
   },
 }: RouteComponentProps<PlaylistRouteParams>) {
-  const { isLoading, error, data: { title, playlist } = {} } = usePlaylist(id);
+  const history = useHistory();
+  const { updateBlurImage } = useContext(UIStateContext);
+  const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
   const [filter, setFilter] = useState<string>('');
   const breakpoint: Breakpoint = useBreakpoint();
 
-  if (isLoading) return <p>Loading...</p>;
-
-  if (error || !playlist) return <p>No playlist found...</p>;
-
   const categories = getCategoriesFromPlaylist(playlist);
-  const filteredPlaylist = filterPlaylistCategory(playlist, filter);
+  const filteredPlaylist = useMemo(() => filterPlaylistCategory(playlist, filter), [playlist, filter]);
+  const playlistRows = chunk<PlaylistItem>(filteredPlaylist, cols[breakpoint]);
 
-  const playlistRows = chunk(filteredPlaylist, cols[breakpoint]);
+  const onCardClick = (playlistItem: PlaylistItem) => history.push(`/play/${playlistItem.mediaid}`);
+  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+
+  useEffect(() => {
+    if (filteredPlaylist.length) updateBlurImage(filteredPlaylist[0].image);
+  }, [filter, filteredPlaylist, updateBlurImage]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !playlist) return <p>No playlist found...</p>;
 
   const cellRenderer = ({ columnIndex, rowIndex, style }: GridCellProps) => {
     if (!playlistRows[rowIndex][columnIndex]) return;
 
-    const { mediaid: mediaId, title, duration, image, seriesId } = playlistRows[rowIndex][columnIndex];
+    const playlistItem: PlaylistItem = playlistRows[rowIndex][columnIndex];
+    const { mediaid, title, duration, image, seriesId } = playlistItem;
 
     return (
-      <div className={styles.cell} style={style} key={mediaId}>
-        <Card title={title} duration={duration} posterSource={image} seriesId={seriesId} onClick={() => ''} />
+      <div className={styles.cell} style={style} key={mediaid}>
+        <Card
+          key={mediaid}
+          title={title}
+          duration={duration}
+          posterSource={image}
+          seriesId={seriesId}
+          onClick={() => onCardClick(playlistItem)}
+          onHover={() => onCardHover(playlistItem)}
+        />
       </div>
     );
   };
