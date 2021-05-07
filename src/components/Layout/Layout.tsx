@@ -1,12 +1,13 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
+import type { Config } from 'types/Config';
 
 import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
-import styles from './Layout.module.scss';
-import type { Config } from 'types/Config';
 import { ConfigContext } from '../../providers/configProvider';
 import { UIStateContext } from '../../providers/uiStateProvider';
+
+import styles from './Layout.module.scss';
 
 type LayoutProps = {
   children?: ReactNode;

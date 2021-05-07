@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 
 import { debounce } from '../../utils/common';
 
@@ -22,8 +22,14 @@ type Props = {
 };
 
 const DynamicBlur: React.FC<Props> = ({ url, transitionTime = 1 }: Props) => {
-  const [imgState, setImgState] = useState<ImgState>(defaultImgState);
+  const image = useRef(defaultImgState);
   const loadImgRef = useRef(debounce((url: string, imgState: ImgState) => loadImage(url, imgState), 350));
+
+  const getImgState = image.current;
+
+  const setImgState = (imgState: ImgState) => {
+    image.current = imgState;
+  };
 
   const loadImage = (url: string, imgState: ImgState) => {
     const img = document.createElement('img');
@@ -38,23 +44,23 @@ const DynamicBlur: React.FC<Props> = ({ url, transitionTime = 1 }: Props) => {
   };
 
   useEffect(() => {
-    if (url !== imgState.srcFirst && url !== imgState.srcSecond) loadImgRef.current(url, imgState);
-  }, [url, imgState]);
+    if (url !== getImgState.srcFirst && url !== getImgState.srcSecond) loadImgRef.current(url, getImgState);
+  }, [url, getImgState]);
 
   return (
     <React.Fragment>
       <div
         style={{
-          background: `url('${imgState.srcFirst}')`,
-          opacity: imgState.current === 'first' ? 0.3 : 0,
+          background: `url('${getImgState.srcFirst}')`,
+          opacity: getImgState.current === 'first' ? 0.3 : 0,
           transition: `opacity ${transitionTime}s ease-in-out`,
         }}
         className={styles.BlurBackground}
       />
       <div
         style={{
-          background: `url('${imgState.srcSecond}')`,
-          opacity: imgState.current === 'second' ? 0.3 : 0,
+          background: `url('${getImgState.srcSecond}')`,
+          opacity: getImgState.current === 'second' ? 0.3 : 0,
           transition: `opacity ${transitionTime}s ease-in-out`,
         }}
         className={styles.BlurBackground}
