@@ -1,24 +1,45 @@
 @use "../../styles/mixins/responsive";
 
 .playlist {
+  @include responsive.tablet-and-larger {
+    margin-right: 12px;
+    margin-left: 12px;
+    > main {
+      margin-top: 20px;
+      margin-right: 40px;
+      margin-left: 40px;
+    }
+  }
+  margin: 0 8px;
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
-  margin-top: 20px;
-  margin-left: 56px;
-  margin-right: 56px;
   text-align: center;
-
-  @include responsive.mobile-only {
-    margin-left: 12px;
-    margin-right: 12px;
-  }
 }
 
 .header {
+  @include responsive.mobile-and-tablet {
+    justify-content: space-between;
+  }
+
+  @include responsive.mobile-only {
+    margin-top: 0;
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+
   display: flex;
   align-items: center;
-
-  > * + * {
-    margin-left: 24px;
+  margin-top: 20px;
+  margin-right: 56px;
+  margin-left: 56px;
+  > h2 {
+    font-size: 24px;
   }
+}
+
+.wrapper {
+  @include responsive.tablet-and-larger {
+    padding: 15px;
+  }
+  padding: 8px;
 }

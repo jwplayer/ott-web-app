@@ -31,15 +31,6 @@ exports[`<Header /> renders header 1`] = `
           </g>
         </svg>
       </div>
-      <div
-        class="brand"
-      >
-        <img
-          alt="logo"
-          class="logo"
-          src="https://cdn.jwplayer.com/images/HXyBCU5N.png"
-        />
-      </div>
       <nav
         aria-label="menu"
         class="nav"
@@ -54,11 +45,12 @@ exports[`<Header /> renders header 1`] = `
           </span>
         </a>
         <a
-          class="link"
-          href="/p/:id"
+          aria-current="page"
+          class="link active"
+          href="/"
         >
           <span>
-            Playlist
+            Home
           </span>
         </a>
         <a

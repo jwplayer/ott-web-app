@@ -1,0 +1,50 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use "../../styles/mixins/responsive";
+
+.button {
+  @include responsive.mobile-only() {
+    padding: 12px 16px;
+  }
+
+  @include responsive.tablet-and-larger() {
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        z-index: 1;
+        background: rgba(var(--background-color), 0.7);
+        box-shadow: 0 0 0 3px var(--highlight-color, variables.$white),
+          0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
+          0 4px 5px rgb(0 0 0 / 20%);
+        opacity: 1;
+      }
+    }
+  }
+  position: relative;
+  display: inline-flex;
+  display: flex;
+  justify-content: inherit;
+  align-items: center;
+  align-items: baseline;
+  min-height: 38px;
+  margin: 0 5px;
+  padding: 9px 16px;
+  color: variables.$white;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: background 0.1s ease, transform 0.1s ease;
+
+  &.active {
+    color: variables.$white;
+    background: rgba(variables.$black, 0.7);
+    opacity: 1;
+  }
+  > h2 {
+    font-size: 24px;
+  }
+}
