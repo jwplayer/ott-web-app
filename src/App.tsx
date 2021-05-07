@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Root from './components/Root/Root';
-import ConfigProvider from './providers/configProvider';
+import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
 import UIStateProvider from './providers/uiStateProvider';
 import './styles/main.scss';

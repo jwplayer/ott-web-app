@@ -4,7 +4,7 @@ import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
-import { ConfigContext } from '../../providers/configProvider';
+import { ConfigContext } from '../../providers/ConfigProvider';
 import { UIStateContext } from '../../providers/uiStateProvider';
 
 import styles from './Layout.module.scss';

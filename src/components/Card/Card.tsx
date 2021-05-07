@@ -38,7 +38,7 @@ function Card({
 
   return (
     <div className={cardClassName} onClick={onClick} onMouseEnter={onHover} role="button" aria-label={`Play ${title}`}>
-      <div className={posterClassNames} style={{ backgroundImage: `url(${posterSource})` }}>
+      <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
         <div className={styles.meta}>
           <div className={styles.title}>{featured ? title : ''}</div>
           {metaData()}

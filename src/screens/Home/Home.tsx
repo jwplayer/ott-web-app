@@ -9,7 +9,7 @@ import type { PlaylistItem } from 'types/playlist';
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { UIStateContext, UpdateBlurImage } from '../../providers/uiStateProvider';
 import Shelf from '../../container/Shelf/Shelf';
-import { ConfigContext } from '../../providers/configProvider';
+import { ConfigContext } from '../../providers/ConfigProvider';
 import type { UsePlaylistResult } from '../../hooks/usePlaylist';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint from '../../hooks/useBreakpoint';

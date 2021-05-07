@@ -5,8 +5,8 @@ export type CycleMode = 'stop' | 'restart' | 'endless';
 type Direction = 'left' | 'right';
 type Position = { x: number; y: number };
 
-export type TileDockProps = {
-  items: unknown[];
+export type TileDockProps<T> = {
+  items: T[];
   cycleMode?: CycleMode;
   tilesToShow?: number;
   spacing?: number;
@@ -15,17 +15,17 @@ export type TileDockProps = {
   showControls?: boolean;
   animated?: boolean;
   transitionTime?: string;
-  renderTile: (item: unknown) => JSX.Element;
+  renderTile: (item: T) => JSX.Element;
   renderLeftControl?: (handleClick: () => void) => JSX.Element;
   renderRightControl?: (handleClick: () => void) => JSX.Element;
 };
 
-type Tile = {
-  item: unknown;
+type Tile<T> = {
+  item: T;
   key: string;
 };
 
-const makeTiles = (originalList: unknown[], slicedItems: unknown[]): Tile[] => {
+const makeTiles = <T,>(originalList: T[], slicedItems: T[]): Tile<T>[] => {
   const itemIndices: string[] = [];
 
   return slicedItems.map((item) => {
@@ -38,27 +38,27 @@ const makeTiles = (originalList: unknown[], slicedItems: unknown[]): Tile[] => {
   });
 };
 
-const sliceItems = (
-  items: unknown[],
+const sliceItems = <T,>(
+  items: T[],
   isMultiPage: boolean,
   index: number,
   tilesToShow: number,
   cycleMode: CycleMode,
-): Tile[] => {
+): Tile<T>[] => {
   if (!isMultiPage) return makeTiles(items, items);
 
   const sliceFrom: number = index;
   const sliceTo: number = index + tilesToShow * 3;
   const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 1;
-  const listStartClone: unknown[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation);
-  const listEndClone: unknown[] = items.slice(0 - tilesToShow + 1);
-  const itemsWithClones: unknown[] = [...listEndClone, ...items, ...listStartClone];
-  const itemsSlice: unknown[] = itemsWithClones.slice(sliceFrom, sliceTo);
+  const listStartClone: T[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation);
+  const listEndClone: T[] = items.slice(0 - tilesToShow + 1);
+  const itemsWithClones: T[] = [...listEndClone, ...items, ...listStartClone];
+  const itemsSlice: T[] = itemsWithClones.slice(sliceFrom, sliceTo);
 
   return makeTiles(items, itemsSlice);
 };
 
-const TileDock = ({
+const TileDock = <T extends unknown>({
   items,
   tilesToShow = 6,
   cycleMode = 'endless',
@@ -70,7 +70,7 @@ const TileDock = ({
   renderTile,
   renderLeftControl,
   renderRightControl,
-}: TileDockProps) => {
+}: TileDockProps<T>) => {
   const [index, setIndex] = useState<number>(0);
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
@@ -84,8 +84,8 @@ const TileDock = ({
   const isMultiPage: boolean = items.length > tilesToShow;
   const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow - 1) + transform : 0;
 
-  const tileList: Tile[] = useMemo(() => {
-    return sliceItems(items, isMultiPage, index, tilesToShow, cycleMode);
+  const tileList: Tile<T>[] = useMemo(() => {
+    return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
   const transitionBasis: string = `transform ${animated ? transitionTime : '0s'} ease`;
@@ -187,7 +187,7 @@ const TileDock = ({
         onTouchEnd={handleTouchEnd}
         onTransitionEnd={handleTransitionEnd}
       >
-        {tileList.map((tile: Tile, listIndex) => {
+        {tileList.map((tile: Tile<T>, listIndex) => {
           // Todo:
           // const isTabable = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
           const isVisible = true; // Todo: hide all but visible?
