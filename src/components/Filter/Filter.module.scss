@@ -2,10 +2,6 @@
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
 
-$select-border: variables.$gray-lighter;
-$select-arrow: variables.$black;
-$select-focus: theme.$primary-color;
-
 .filterRow {
   @include responsive.mobile-only() {
     display: none;

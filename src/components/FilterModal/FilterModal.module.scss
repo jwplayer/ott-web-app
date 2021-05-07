@@ -47,7 +47,7 @@
 // mediaQueries
 // --------------------------------
 
-@include responsive.mobile-and-tablet() {
+@include responsive.mobile-only() {
   .filterModal {
     display: inline-block;
 

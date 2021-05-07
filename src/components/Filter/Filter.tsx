@@ -38,7 +38,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue }) => 
     ];
   };
 
-  const showFilterRow = breakpoint >= 2 && options.length < 6;
+  const showFilterRow = breakpoint >= Breakpoint.md && options.length < 6;
 
   return (
     <Fragment>
