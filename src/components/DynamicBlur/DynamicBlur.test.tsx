@@ -5,7 +5,7 @@ import DynamicBlur from './DynamicBlur';
 
 describe('<DynamicBlur>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<DynamicBlur />);
+    const { container } = render(<DynamicBlur url="/" />);
 
     expect(container).toMatchSnapshot();
   });
