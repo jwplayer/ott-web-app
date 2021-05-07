@@ -3,6 +3,7 @@ import merge from 'lodash.merge';
 
 import loadConfig, { validateConfig } from '../services/config.service';
 import type { Config, Options } from '../../types/Config';
+import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 
 const defaultConfig: Config = {
   id: '',
@@ -34,20 +35,24 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
   onValidationError,
 }) => {
   const [config, setConfig] = useState<Config>(defaultConfig);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const loadAndValidateConfig = async (configLocation: string) => {
       onLoading(true);
+      setLoading(true);
       const config = await loadConfig(configLocation);
       validateConfig(config)
         .then((configValidated) => {
           setConfig(() => merge({}, defaultConfig, configValidated));
           setCssVariables(configValidated.options);
           onLoading(false);
+          setLoading(false);
         })
         .catch((error: Error) => {
           onValidationError(error);
           onLoading(false);
+          setLoading(false);
         });
     };
     loadAndValidateConfig(configLocation);
@@ -65,7 +70,12 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     }
   };
 
-  return <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>;
+  return (
+    <ConfigContext.Provider value={config}>
+      {loading ? <LoadingOverlay /> : null}
+      {children}
+    </ConfigContext.Provider>
+  );
 };
 
 export default ConfigProvider;
