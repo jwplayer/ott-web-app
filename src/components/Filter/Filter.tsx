@@ -1,4 +1,5 @@
 import React, { useState, Fragment, FC } from 'react';
+import MenuButton from '../../components/MenuButton/MenuButton';
 
 import Dropdown from '../Dropdown/Dropdown';
 import FilterModal from '../FilterModal/FilterModal';
@@ -31,26 +32,23 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue }) => 
     }
   };
 
-  const filterButtons = () => {
-    const extraOptions = options.map((option) => (
-      <Button label={option} onClick={() => setValue(option)} key={option} active={value === option} />
-    ));
-
-    return [
-      <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} />,
-      ...extraOptions,
-    ];
-  };
-
-  const showFilterRow = breakpoint >= 2 && options.length < 6;
+  const showFilterRow = breakpoint >= Breakpoint.md && options.length < 6;
 
   return (
     <Fragment>
       <FilterModal name={name} isOpen={isFilterModalOpen} onClose={() => openFilterModal(false)}>
-        {filterButtons()}
+        {options.map((option) => (
+          <MenuButton label={option} onClick={() => setValue(option)} key={option} active={value === option} />
+        ))}
+        <MenuButton label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} />
       </FilterModal>
       {showFilterRow ? (
-        <div className={styles.filterRow}>{filterButtons()}</div>
+        <div className={styles.filterRow}>
+          {options.map((option) => (
+            <Button label={option} onClick={() => setValue(option)} key={option} active={value === option} />
+          ))}
+          <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} />
+        </div>
       ) : (
         <Dropdown
           options={options}

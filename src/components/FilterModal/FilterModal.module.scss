@@ -16,16 +16,19 @@
   height: 100vh;
   color: variables.$white;
   background-color: var(--body-background-color);
-  transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(0.52, 0.51, 0.2, 1);
+  transform: translateY(20%);
+  opacity: 0;
+  transition: transform 0.2s cubic-bezier(0.52, 0.51, 0.2, 1), opacity 0.2s cubic-bezier(0.52, 0.51, 0.2, 1);
 }
 
 .header {
   display: flex;
   align-items: center;
   padding: variables.$base-spacing;
+  font-weight: 700;
   font-size: 20px;
   text-transform: capitalize;
+
   > h4 {
     margin-left: variables.$base-spacing;
   }
@@ -38,6 +41,7 @@
 
 .divider {
   position: relative;
+  margin: 0;
   width: 100%;
   border-top: 1px solid rgba(variables.$white, 0.12);
   opacity: 0.12;
@@ -47,12 +51,13 @@
 // mediaQueries
 // --------------------------------
 
-@include responsive.mobile-and-tablet() {
+@include responsive.mobile-only() {
   .filterModal {
     display: inline-block;
 
     &.open {
-      transform: translateX(0);
+      transform: translateY(0);
+      opacity: 1;
     }
   }
 

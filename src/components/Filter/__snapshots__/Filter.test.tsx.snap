@@ -6,27 +6,31 @@ exports[`<Filter> renders Filter 1`] = `
     class="filterModal"
   >
     <div
-      aria-label="close menu"
       class="header"
-      role="button"
     >
-      <svg
-        aria-hidden="true"
-        class="icon"
-        focusable="false"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
+      <div
+        aria-label="close menu"
+        class="iconButton"
+        role="button"
       >
-        <g>
-          <path
-            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-          />
-          <path
-            d="M0 0h24v24H0z"
-            fill="none"
-          />
-        </g>
-      </svg>
+        <svg
+          aria-hidden="true"
+          class="icon"
+          focusable="false"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+          </g>
+        </svg>
+      </div>
       <h4>
         categories
       </h4>
@@ -37,46 +41,39 @@ exports[`<Filter> renders Filter 1`] = `
     <div
       class="group"
     >
-      <button
-        class="button"
-      >
-        <span>
-          bb
-        </span>
-      </button>
-      <button
-        class="button"
+      <div
+        class="menuButton"
       >
         <span>
           x
         </span>
-      </button>
-      <button
-        class="button"
+      </div>
+      <div
+        class="menuButton"
       >
         <span>
           y
         </span>
-      </button>
-      <button
-        class="button"
+      </div>
+      <div
+        class="menuButton"
       >
         <span>
           z
         </span>
-      </button>
+      </div>
+      <div
+        class="menuButton"
+      >
+        <span>
+          bb
+        </span>
+      </div>
     </div>
   </div>
   <div
     class="filterRow"
   >
-    <button
-      class="button"
-    >
-      <span>
-        bb
-      </span>
-    </button>
     <button
       class="button"
     >
@@ -96,6 +93,13 @@ exports[`<Filter> renders Filter 1`] = `
     >
       <span>
         z
+      </span>
+    </button>
+    <button
+      class="button"
+    >
+      <span>
+        bb
       </span>
     </button>
   </div>

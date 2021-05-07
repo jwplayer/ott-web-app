@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MenuButton> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="menuButton"
+  >
+    <span>
+      Label
+    </span>
+  </div>
+</div>
+`;

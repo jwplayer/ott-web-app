@@ -1,12 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FilterModal> renders and matches snapshot 1`] = `
+exports[`<SideBar /> renders sideBar 1`] = `
 <div>
   <div
-    class="filterModal open"
+    class="backdrop visible"
+  />
+  <div
+    class="sidebar open"
   >
     <div
-      class="header"
+      class="heading"
     >
       <div
         aria-label="close menu"
@@ -31,18 +34,40 @@ exports[`<FilterModal> renders and matches snapshot 1`] = `
           </g>
         </svg>
       </div>
-      <h4>
-        aa
-      </h4>
     </div>
-    <hr
-      class="divider"
-    />
-    <div
+    <nav
       class="group"
     >
-      <button />
-    </div>
+      <a
+        aria-current="page"
+        class="menuButton active"
+        href="/"
+      >
+        <span>
+          Home
+        </span>
+      </a>
+      <a
+        aria-current="page"
+        class="link active"
+        href="/"
+      >
+        <span>
+          Home
+        </span>
+      </a>
+      <hr
+        class="divider"
+      />
+      <a
+        class="menuButton"
+        href="/u"
+      >
+        <span>
+          Settings
+        </span>
+      </a>
+    </nav>
   </div>
 </div>
 `;

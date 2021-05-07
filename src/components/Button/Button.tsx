@@ -8,7 +8,6 @@ type Props = {
   active: boolean;
   onClick: () => void;
 };
-
 const Button: React.FC<Props> = ({ label, active, onClick }: Props) => {
   return (
     <button

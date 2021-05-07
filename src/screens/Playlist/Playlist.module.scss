@@ -15,6 +15,10 @@
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
   text-align: center;
+
+  > main {
+    margin-top: 6px;
+  }
 }
 
 .main {

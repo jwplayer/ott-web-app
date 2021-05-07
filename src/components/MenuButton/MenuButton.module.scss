@@ -1,0 +1,40 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+@use '../../styles/mixins/utils';
+
+//
+// Navigation Button
+// --------------------------------
+
+.menuButton {
+  position: relative;
+  display: inline-flex;
+  justify-content: inherit;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 variables.$base-spacing;
+  color: variables.$white;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: background 0.1s ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover,
+    &:active {
+      background: rgba(variables.$white, 0.08);
+      opacity: 1;
+    }
+  }
+}
+
+.active {
+  background: rgba(variables.$white, 0.08);
+  opacity: 1;
+}

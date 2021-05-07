@@ -2,18 +2,15 @@
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
 
-$select-border: variables.$gray-lighter;
-$select-arrow: variables.$black;
-$select-focus: theme.$primary-color;
-
 .filterRow {
-  @include responsive.mobile-only() {
-    display: none;
-  }
   display: flex;
   align-items: center;
   margin-left: 16px;
   padding-top: 8px;
+
+  > button {
+    margin: 0 4px;
+  }
 }
 
 .optionMobile {

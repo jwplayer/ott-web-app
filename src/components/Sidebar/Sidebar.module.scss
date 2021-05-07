@@ -35,10 +35,15 @@
   transition: transform 0.3s cubic-bezier(0.52, 0.51, 0.2, 1);
 }
 
+.heading {
+  display: flex;
+  padding: variables.$base-spacing 0 0;
+}
+
 .group {
   display: flex;
   flex-direction: column;
-  padding: variables.$base-spacing;
+  padding: variables.$base-spacing 0;
 }
 
 .divider {

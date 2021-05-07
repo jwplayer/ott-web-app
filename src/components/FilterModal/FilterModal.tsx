@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Close from '../../icons/Close';
 
 import styles from './FilterModal.module.scss';
+import IconButton from '../../components/IconButton/IconButton';
 
 type Props = {
   isOpen: boolean;
@@ -19,14 +20,17 @@ const FilterModal: React.FC<Props> = ({ isOpen, onClose, name, children }) => {
         className={classNames(styles.filterModal, {
           [styles.open]: isOpen,
         })}
-        onClick={onClose}
       >
-        <div className={styles.header} aria-label="close menu" role="button">
-          <Close />
+        <div className={styles.header}>
+          <IconButton aria-label="close menu" onClick={onClose}>
+            <Close />
+          </IconButton>
           <h4>{name}</h4>
         </div>
         <hr className={styles.divider} />
-        <div className={styles.group}>{children}</div>
+        <div className={styles.group} onClick={onClose}>
+          {children}
+        </div>
       </div>
     </Fragment>
   );

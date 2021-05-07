@@ -3,7 +3,7 @@
 @use '../../styles/mixins/responsive';
 
 $select-border: variables.$gray-lighter;
-$select-arrow: variables.$black;
+$select-arrow: variables.$white;
 $select-focus: theme.$primary-color;
 
 .dropdown {
@@ -16,17 +16,17 @@ $select-focus: theme.$primary-color;
   padding: 0.2em 0.4em;
   font-size: 1.25rem;
   line-height: 1.1;
-  background-color: #fff;
-  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-  border: 1px solid $select-border;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 0.25em;
   cursor: pointer;
   grid-template-areas: 'select';
 
   // Custom arrow
   &::after {
-    width: 0.6em;
-    height: 0.4em;
+    z-index: 1;
+    width: 0.4em;
+    height: 0.3em;
     background-color: $select-arrow;
     clip-path: polygon(100% 0%, 0 0%, 50% 100%);
     content: '';
@@ -38,11 +38,12 @@ $select-focus: theme.$primary-color;
     width: 100%;
     margin: 0;
     padding: 0 1em 0 0;
+    color: var(--highlight-color, white);
     font-family: inherit;
     font-weight: 700;
     font-size: 1rem;
     line-height: inherit;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 1);
     border: none;
     outline: none;
     cursor: inherit;
@@ -64,6 +65,9 @@ $select-focus: theme.$primary-color;
     background-image: linear-gradient(to top, #ddd, #eee 33%);
     cursor: not-allowed;
   }
+  &:hover {
+    border-color: $select-focus;
+  }
 
   &:focus + .focus {
     position: absolute;
@@ -71,7 +75,7 @@ $select-focus: theme.$primary-color;
     right: -1px;
     bottom: -1px;
     left: -1px;
-    border: 2px solid $select-focus;
+    border: 2px solid orange;
     border-radius: inherit;
   }
 }
