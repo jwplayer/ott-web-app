@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classNames from 'classnames';
 
 import { formatDurationTag } from '../../utils/formatting';
@@ -14,18 +14,8 @@ type CardProps = {
   posterAspect?: '1:1' | '2:1' | '2:3' | '4:3' | '5:3' | '16:9' | '9:16';
 };
 
-function Card({
-  onClick,
-  title,
-  duration,
-  posterSource,
-  seriesId,
-  posterAspect = '16:9',
-}: CardProps): JSX.Element {
-  const posterClassNames = classNames(
-    styles.poster,
-    styles[`aspect${posterAspect.replace(':', '')}`],
-  );
+function Card({ onClick, title, duration, posterSource, seriesId, posterAspect = '16:9' }: CardProps): JSX.Element {
+  const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`]);
 
   const metaData = () => {
     if (seriesId) {
@@ -36,16 +26,8 @@ function Card({
   };
 
   return (
-    <div
-      className={styles.card}
-      onClick={onClick}
-      role="button"
-      aria-label={`Play ${title}`}
-    >
-      <div
-        className={posterClassNames}
-        style={{ backgroundImage: `url(${posterSource})` }}
-      >
+    <div className={styles.card} onClick={onClick} role="button" aria-label={`Play ${title}`}>
+      <div className={posterClassNames} style={{ backgroundImage: `url(${posterSource})` }}>
         {metaData()}
       </div>
       <p className={styles.title}>{title}</p>
@@ -53,4 +35,4 @@ function Card({
   );
 }
 
-export default Card;
+export default memo(Card);

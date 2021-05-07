@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-  WindowScroller,
-  AutoSizer,
-  GridCellRenderer,
-} from 'react-virtualized';
+import { Grid, WindowScroller, AutoSizer, GridCellRenderer } from 'react-virtualized';
 
 import scrollbarSize from '../../utils/domHelpers';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
@@ -23,11 +18,7 @@ const cols = {
   [Breakpoint.xl]: 5,
 };
 
-const calculateHeight = (
-  width: number,
-  rat1: number = 16,
-  rat2: number = 9,
-) => {
+const calculateHeight = (width: number, rat1: number = 16, rat2: number = 9) => {
   const ratio = width / rat1;
   return ratio * rat2;
 };
