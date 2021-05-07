@@ -20,15 +20,15 @@
   height: 100%;
 }
 .tileDock .leftControl {
-  left: 0px;
+  left: -40px;
   position: absolute;
-  top: 50%;
+  top: calc(50% + 20px);
   transform: translateY(-100%);
   z-index: 1;
 }
 .tileDock .rightControl {
   position: absolute;
-  right: 0px;
-  top: 50%;
+  right: -40px;
+  top: calc(50% + 20px);
   transform: translateY(-100%);
 }
