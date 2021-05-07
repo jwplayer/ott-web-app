@@ -1,33 +1,64 @@
 import React, { useState } from 'react';
+import type { RouteComponentProps } from 'react-router-dom';
+import type { GridCellProps } from 'react-virtualized';
 
+import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
 import usePlaylist from '../../hooks/usePlaylist';
-import { getCategoriesFromPlaylist, filterPlaylistCategory } from '../../utils/collection';
+import { getCategoriesFromPlaylist, filterPlaylistCategory, chunk } from '../../utils/collection';
 import Card from '../../components/Card/Card';
-import Dropdown from '../../components/Dropdown/Dropdown';
-import CardGrid from '../../components/CardGrid/CardGrid';
+import Dropdown from '../../components/Filter/Filter';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
 import styles from './Playlist.module.scss';
 
-// TEMP DATA
-const playlistId = 'sR5VypYk';
-
-type PlaylistDestructuredArguments = {
-  mediaid: string;
-  title: string;
-  duration: number;
-  image: string;
+const cols = {
+  [Breakpoint.xs]: 2,
+  [Breakpoint.sm]: 2,
+  [Breakpoint.md]: 2,
+  [Breakpoint.lg]: 4,
+  [Breakpoint.xl]: 5,
 };
 
-function Playlist() {
-  const { isLoading, error, data: { title, playlist } = {} } = usePlaylist(playlistId);
+type PlaylistRouteParams = {
+  id: string;
+};
+
+function Playlist({
+  match: {
+    params: { id },
+  },
+}: RouteComponentProps<PlaylistRouteParams>) {
+  const { isLoading, error, data: { title, playlist } = {} } = usePlaylist(id);
   const [filter, setFilter] = useState<string>('');
+  const breakpoint: Breakpoint = useBreakpoint();
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>No playlist found...</p>;
+  if (error || !playlist) return <p>No playlist found...</p>;
 
   const categories = getCategoriesFromPlaylist(playlist);
   const filteredPlaylist = filterPlaylistCategory(playlist, filter);
+
+  const playlistRows = chunk(filteredPlaylist, cols[breakpoint]);
+
+  const cellRenderer = ({ columnIndex, key, rowIndex, style }: GridCellProps) => {
+    if (!playlistRows[rowIndex][columnIndex]) return;
+
+    const { mediaid: mediaId, title, duration, image, seriesId } = playlistRows[rowIndex][columnIndex];
+
+    return (
+      <div className={styles.wrapper} style={style} key={key}>
+        <Card
+          key={mediaId}
+          title={title}
+          duration={duration}
+          posterSource={image}
+          seriesId={seriesId}
+          onClick={() => ''}
+        />
+      </div>
+    );
+  };
 
   return (
     <div className={styles.playlist}>
@@ -38,11 +69,7 @@ function Playlist() {
         )}
       </header>
       <main>
-        <CardGrid>
-          {filteredPlaylist.map(({ mediaid: mediaId, title, duration, image }: PlaylistDestructuredArguments) => (
-            <Card key={mediaId} title={title} duration={duration} posterSource={image} onClick={() => ''} />
-          ))}
-        </CardGrid>
+        <VirtualizedGrid rowCount={playlistRows.length} cellRenderer={cellRenderer} spacing={30} />
       </main>
     </div>
   );
