@@ -34,7 +34,7 @@ function Playlist({
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>No playlist found...</p>;
+  if (error || !playlist) return <p>No playlist found...</p>;
 
   const categories = getCategoriesFromPlaylist(playlist);
   const filteredPlaylist = filterPlaylistCategory(playlist, filter);
