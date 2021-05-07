@@ -22,7 +22,7 @@
       color: var(--background-color, black);
       background-color: var(--highlight-color, white);
       border-color: var(--highlight-color, white);
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
 
     &:hover:not(.active) {
@@ -41,15 +41,10 @@
 
   color: var(--highlight-color, white);
   font-family: theme.$body-alt-font-family;
-  font-weight: 700;
   text-align: center;
   text-decoration: none;
   background: transparent;
 
   cursor: pointer;
   transition: background 0.1s ease, transform 0.1s ease;
-
-  > h2 {
-    font-size: 24px;
-  }
 }
