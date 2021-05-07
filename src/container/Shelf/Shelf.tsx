@@ -1,7 +1,8 @@
 import React from 'react';
+import type { PlaylistItem } from 'types/playlist';
+
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
 import ShelfComponent from '../../components/Shelf/Shelf';
-import type { PlaylistItem } from 'types/playlist';
 
 type ShelfProps = {
   playlistId: string;
