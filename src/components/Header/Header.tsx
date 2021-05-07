@@ -6,6 +6,7 @@ import Logo from '../Logo/Logo';
 import Menu from '../../icons/Menu';
 
 import styles from './Header.module.scss';
+import IconButton from '../../components/IconButton/IconButton';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -20,8 +21,10 @@ const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, pla
   return (
     <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>
-        <div className={styles.menu} onClick={onMenuButtonClick} aria-label="open menu" role="button">
-          <Menu />
+        <div className={styles.menu}>
+          <IconButton aria-label="open menu" onClick={onMenuButtonClick}>
+            <Menu />
+          </IconButton>
         </div>
         {logoSrc && <Logo src={logoSrc} />}
         <nav className={styles.nav} aria-label="menu">

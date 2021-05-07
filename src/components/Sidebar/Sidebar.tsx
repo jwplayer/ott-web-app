@@ -1,18 +1,19 @@
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
+import MenuButton from '../../components/MenuButton/MenuButton';
+import IconButton from '../../components/IconButton/IconButton';
 
 import Close from '../../icons/Close';
-import ButtonLink from '../ButtonLink/ButtonLink';
 
-import styles from './SideBar.module.scss';
+import styles from './Sidebar.module.scss';
 
-type SideBarProps = {
+type SidebarProps = {
   isOpen: boolean;
   onClose: () => void;
   playlistMenuItems: JSX.Element[];
 };
 
-const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose, playlistMenuItems }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, playlistMenuItems }) => {
   return (
     <Fragment>
       <div
@@ -25,20 +26,21 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose, playlistMenuItems })
         className={classNames(styles.sidebar, {
           [styles.open]: isOpen,
         })}
-        onClick={onClose}
       >
-        <div className={styles.group} aria-label="close menu" role="button">
-          <Close />
+        <div className={styles.heading}>
+          <IconButton onClick={onClose} aria-label="close menu">
+            <Close />
+          </IconButton>
         </div>
-        <nav className={styles.group}>
-          <ButtonLink label="Home" to="/" />
+        <nav className={styles.group} onClick={onClose}>
+          <MenuButton label="Home" to="/" />
           {playlistMenuItems}
           <hr className={styles.divider} />
-          <ButtonLink label="Settings" to="/" />
+          <MenuButton label="Settings" to="/u" />
         </nav>
       </div>
     </Fragment>
   );
 };
 
-export default SideBar;
+export default Sidebar;

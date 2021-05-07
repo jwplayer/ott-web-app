@@ -3,13 +3,14 @@
 @use '../../styles/mixins/responsive';
 
 .filterRow {
-  @include responsive.mobile-only() {
-    display: none;
-  }
   display: flex;
   align-items: center;
   margin-left: 16px;
   padding-top: 8px;
+
+  > button {
+    margin: 0 4px;
+  }
 }
 
 .optionMobile {

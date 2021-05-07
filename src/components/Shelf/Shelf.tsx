@@ -35,7 +35,13 @@ export type ShelfProps = {
 
 const placeholderItems = new Array(15).fill({});
 
-const Shelf: React.FC<ShelfProps> = ({ playlist, onCardClick, onCardHover, featured = false, loading = false }: ShelfProps) => {
+const Shelf: React.FC<ShelfProps> = ({
+  playlist,
+  onCardClick,
+  onCardHover,
+  featured = false,
+  loading = false,
+}: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
 
@@ -43,9 +49,7 @@ const Shelf: React.FC<ShelfProps> = ({ playlist, onCardClick, onCardHover, featu
 
   return (
     <div className={styles['Shelf']}>
-      {!featured && (
-        <h2 className={styles['title']}>{loading ? '...' : playlist.title}</h2>
-      )}
+      {!featured && <h2 className={styles['title']}>{loading ? '...' : playlist.title}</h2>}
       <TileDock<PlaylistItem | number>
         items={loading ? placeholderItems : playlist.playlist}
         tilesToShow={tilesToShow}
@@ -64,13 +68,7 @@ const Shelf: React.FC<ShelfProps> = ({ playlist, onCardClick, onCardHover, featu
         )}
         renderTile={(item) => {
           if (loading || typeof item === 'number') {
-            return (
-              <Card
-                title={'...'}
-                duration={0}
-                featured={featured}
-              />
-            );
+            return <Card title={'...'} duration={0} featured={featured} />;
           }
 
           return (

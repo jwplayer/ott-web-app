@@ -16,8 +16,9 @@
   height: 100vh;
   color: variables.$white;
   background-color: var(--body-background-color);
-  transform: translateY(+100%);
-  transition: transform 0.5s cubic-bezier(0.52, 0.51, 0.2, 1);
+  transform: translateY(20%);
+  opacity: 0;
+  transition: transform 0.2s cubic-bezier(0.52, 0.51, 0.2, 1), opacity 0.2s cubic-bezier(0.52, 0.51, 0.2, 1);
 }
 
 .header {
@@ -27,6 +28,7 @@
   font-weight: 700;
   font-size: 20px;
   text-transform: capitalize;
+
   > h4 {
     margin-left: variables.$base-spacing;
   }
@@ -39,6 +41,7 @@
 
 .divider {
   position: relative;
+  margin: 0;
   width: 100%;
   border-top: 1px solid rgba(variables.$white, 0.12);
   opacity: 0.12;
@@ -54,6 +57,7 @@
 
     &.open {
       transform: translateY(0);
+      opacity: 1;
     }
   }
 
