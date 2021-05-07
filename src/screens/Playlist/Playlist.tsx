@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import type { GridCellProps } from 'react-virtualized';
 
 import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
-import Layout from '../../components/Layout/Layout';
 import usePlaylist from '../../hooks/usePlaylist';
 import { getCategoriesFromPlaylist, filterPlaylistCategory, chunk } from '../../utils/collection';
 import Card from '../../components/Card/Card';
