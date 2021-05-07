@@ -1,16 +1,16 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
-  mount         : {
+  mount: {
     public: { url: '/', static: true },
-    src   : { url: '/dist' },
+    src: { url: '/dist' },
   },
-  alias         : {
-    '@components': './src/components/*',
-    '@container' : './src/container/*',
-    '@types'     : './src/types/*',
-    '@app'       : './src/*',
+  alias: {
+    '@components': './src/components',
+    '@container': './src/container',
+    '@types': './src/types',
+    '@app': './src',
   },
-  plugins       : [
+  plugins: [
     '@snowpack/plugin-postcss',
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
@@ -51,8 +51,8 @@ module.exports = {
     [
       '@snowpack/plugin-run-script',
       {
-        name : 'eslint',
-        cmd  : 'eslint src --ext .js,.jsx,.ts,.tsx',
+        name: 'eslint',
+        cmd: 'eslint src --ext .js,.jsx,.ts,.tsx',
         watch: 'esw -w --clear src --ext .js,.jsx,.ts,.tsx',
       },
     ],
@@ -60,22 +60,22 @@ module.exports = {
       '@snowpack/plugin-run-script',
       {
         name: 'stylelint',
-        cmd : 'stylelint src/**/*.scss',
+        cmd: 'stylelint src/**/*.scss',
       },
     ],
   ],
-  routes        : [{ match: 'routes', src: '.*', dest: '/index.html' }],
-  optimize      : {
+  routes: [{ match: 'routes', src: '.*', dest: '/index.html' }],
+  optimize: {
     /* Example: Bundle your final build: */
     // "bundle": true,
   },
   packageOptions: {
     /* ... */
   },
-  devOptions    : {
+  devOptions: {
     port: process.env.PORT ? parseInt(process.env.PORT) : 8080,
   },
-  buildOptions  : {
+  buildOptions: {
     /* ... */
   },
 };
