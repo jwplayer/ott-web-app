@@ -2,7 +2,6 @@ import React from 'react';
 
 import { mockWindowLocation, render } from '../../testUtils';
 
-import '../../hooks/matchMedia.mock';
 import Root from './Root';
 
 describe('<Root />', () => {

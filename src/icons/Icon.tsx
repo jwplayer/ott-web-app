@@ -7,10 +7,7 @@ type Props = {
   className?: string;
 };
 
-export default (viewBox: string, icon: JSX.Element) => ({
-  className,
-  ...props
-}: Props) => (
+export default (viewBox: string, icon: JSX.Element) => ({ className, ...props }: Props) => (
   <svg
     className={classNames(styles.icon, className)}
     viewBox={viewBox}

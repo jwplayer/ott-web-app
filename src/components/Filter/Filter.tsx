@@ -15,18 +15,11 @@ type Props = {
   setValue: (value: string) => void;
 };
 
-const Filter: FC<Props> = ({
-  name,
-  value,
-  defaultLabel,
-  options,
-  setValue,
-}) => {
+const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue }) => {
   const [isFilterModalOpen, openFilterModal] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
-    setValue(event.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
 
   const handleOnClick = () => {
     if (breakpoint < Breakpoint.md) {
@@ -36,21 +29,11 @@ const Filter: FC<Props> = ({
 
   const filterButtons = () => {
     const extraOptions = options.map((option) => (
-      <Button
-        label={option}
-        onClick={() => setValue(option)}
-        key={option}
-        active={value === option}
-      />
+      <Button label={option} onClick={() => setValue(option)} key={option} active={value === option} />
     ));
 
     return [
-      <Button
-        label={defaultLabel}
-        onClick={() => setValue('')}
-        active={value === ''}
-        key={defaultLabel}
-      />,
+      <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} />,
       ...extraOptions,
     ];
   };
@@ -59,11 +42,7 @@ const Filter: FC<Props> = ({
 
   return (
     <Fragment>
-      <FilterModal
-        name={name}
-        isOpen={isFilterModalOpen}
-        onClose={() => openFilterModal(false)}
-      >
+      <FilterModal name={name} isOpen={isFilterModalOpen} onClose={() => openFilterModal(false)}>
         {filterButtons()}
       </FilterModal>
       {showFilterRow ? (

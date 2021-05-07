@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Button from './Button';
+import DynamicBlur from './DynamicBlur';
 
-describe('<Button>', () => {
+describe('<DynamicBlur>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Button label="aa" active onClick={() => null} />);
+    const { container } = render(<DynamicBlur />);
 
     expect(container).toMatchSnapshot();
   });

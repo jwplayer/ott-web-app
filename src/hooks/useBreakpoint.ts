@@ -5,36 +5,42 @@ const SM_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width:
 const MD_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 768px) and (max-width: 1023px)');
 const LG_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 1024px) and (max-width: 1439px)');
 
-export enum Breakpoint { xs, sm, md, lg, xl }
+export enum Breakpoint {
+  xs,
+  sm,
+  md,
+  lg,
+  xl,
+}
 
-const getScreenSize = () : Breakpoint => {
-    if (XS_MATCH_MEDIA.matches) return Breakpoint.xs;
-    if (SM_MATCH_MEDIA.matches) return Breakpoint.sm;
-    if (MD_MATCH_MEDIA.matches) return Breakpoint.md;
-    if (LG_MATCH_MEDIA.matches) return Breakpoint.lg;
-    else return Breakpoint.xl;
+const getScreenSize = (): Breakpoint => {
+  if (XS_MATCH_MEDIA.matches) return Breakpoint.xs;
+  if (SM_MATCH_MEDIA.matches) return Breakpoint.sm;
+  if (MD_MATCH_MEDIA.matches) return Breakpoint.md;
+  if (LG_MATCH_MEDIA.matches) return Breakpoint.lg;
+  else return Breakpoint.xl;
 };
 
-const useBreakpoint = () : Breakpoint => {
-    const [breakpoint, setBreakpoint] = useState<Breakpoint>(() => getScreenSize());
-  
-    useEffect(() => {
-      const changeEventHandler = () : void => setBreakpoint(getScreenSize());
-  
-      XS_MATCH_MEDIA.addEventListener('change', changeEventHandler);
-      SM_MATCH_MEDIA.addEventListener('change', changeEventHandler);
-      MD_MATCH_MEDIA.addEventListener('change', changeEventHandler);
-      LG_MATCH_MEDIA.addEventListener('change', changeEventHandler);
-  
-      return () => {
-        XS_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
-        SM_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
-        MD_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
-        LG_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
-      }
-    }, []);
-  
-    return breakpoint;
-  };
+const useBreakpoint = (): Breakpoint => {
+  const [breakpoint, setBreakpoint] = useState<Breakpoint>(() => getScreenSize());
 
-  export default useBreakpoint;
+  useEffect(() => {
+    const changeEventHandler = (): void => setBreakpoint(getScreenSize());
+
+    XS_MATCH_MEDIA.addEventListener('change', changeEventHandler);
+    SM_MATCH_MEDIA.addEventListener('change', changeEventHandler);
+    MD_MATCH_MEDIA.addEventListener('change', changeEventHandler);
+    LG_MATCH_MEDIA.addEventListener('change', changeEventHandler);
+
+    return () => {
+      XS_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
+      SM_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
+      MD_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
+      LG_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
+    };
+  }, []);
+
+  return breakpoint;
+};
+
+export default useBreakpoint;

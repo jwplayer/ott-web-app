@@ -12,6 +12,7 @@ export type Source = {
 export type Track = {
   file: string;
   kind: string;
+  label?: string;
 };
 
 export type PlaylistItem = {
@@ -33,4 +34,17 @@ export type PlaylistItem = {
   variations?: Record<string, unknown>;
 };
 
-export type Playlist = PlaylistItem[];
+export type Link = {
+  first?: string;
+  last?: string;
+};
+
+export type Playlist = {
+  description?: string;
+  feed_instance_id?: string;
+  feedid?: string;
+  kind?: string;
+  links?: Link;
+  playlist: PlaylistItem[];
+  title: string;
+};

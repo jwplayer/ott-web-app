@@ -1,52 +1,31 @@
-import React, { SyntheticEvent } from 'react';
-import classNames from 'classnames';
+import React from 'react';
 
 import styles from './Dropdown.module.scss';
 
-type Props = {
+type DropdownProps = {
   name: string;
   value: string;
   defaultLabel: string;
   options: string[];
-  optionsStyle?: string;
-  onClick: (event: SyntheticEvent) => void;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  setValue: (value: string) => void;
 };
 
-const Dropdown: React.FC<Props> = ({
-  name,
-  value,
-  defaultLabel,
-  options,
-  onClick,
-  onChange,
-  optionsStyle,
-}: Props) => {
+function Dropdown({ name, value, defaultLabel, options, setValue }: DropdownProps) {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
+
   return (
     <div className={styles.dropdown}>
-      <select
-        className={styles.select}
-        name={name}
-        value={value}
-        onClick={onClick}
-        onChange={onChange}
-      >
-        <option className={classNames(styles.option, optionsStyle)} value="">
-          {defaultLabel}
-        </option>
+      <select className={styles.select} name={name} value={value} onChange={handleChange}>
+        <option value="">{defaultLabel}</option>
         {options.map((option) => (
-          <option
-            className={classNames(styles.option, optionsStyle)}
-            key={option}
-            value={option}
-          >
+          <option className={styles.option} key={option} value={option}>
             {option}
           </option>
         ))}
       </select>
-      <span className="focus" />
+      <span className="focus"></span>
     </div>
   );
-};
+}
 
 export default Dropdown;

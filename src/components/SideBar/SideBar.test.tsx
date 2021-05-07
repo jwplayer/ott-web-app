@@ -8,13 +8,7 @@ import SideBar from './SideBar';
 describe('<SideBar />', () => {
   const playlistMenuItems = [<ButtonLink key="key" label="Home" to="/" />];
   test('renders sideBar', () => {
-    const { container } = render(
-      <SideBar
-        isOpen={true}
-        onClose={jest.fn()}
-        playlistMenuItems={playlistMenuItems}
-      />,
-    );
+    const { container } = render(<SideBar isOpen={true} onClose={jest.fn()} playlistMenuItems={playlistMenuItems} />);
 
     expect(container).toMatchSnapshot();
   });
