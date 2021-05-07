@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
 import type { GridCellProps } from 'react-virtualized';
 
 import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
@@ -19,11 +19,18 @@ const cols = {
   [Breakpoint.xl]: 5,
 };
 
-function Playlist() {
-  const breakpoint: Breakpoint = useBreakpoint();
-  const { id: playlistId } = useParams<Record<string, string>>();
+type PlaylistRouteParams = {
+  id: string;
+};
+
+function Playlist({
+  match: {
+    params: { id },
+  },
+}: RouteComponentProps<PlaylistRouteParams>) {
+  const { isLoading, error, data: { title, playlist } = {} } = usePlaylist(id);
   const [filter, setFilter] = useState<string>('');
-  const { isLoading, error, data: { title, playlist } = {} } = usePlaylist(playlistId);
+  const breakpoint: Breakpoint = useBreakpoint();
 
   if (isLoading) return <p>Loading...</p>;
 
