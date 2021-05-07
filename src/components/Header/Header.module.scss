@@ -83,7 +83,7 @@
 
 @include responsive.mobile-only() {
   .header {
-    padding: 10px variables.$base-spacing-mobile;
+    padding: 10px 16px;
   }
 
   .menu {
