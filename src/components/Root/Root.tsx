@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Layout from '@components/Layout/Layout';
 
 import Playlist from '../../screens/Playlist/Playlist';
 import Home from '../../screens/Home/Home';
@@ -14,11 +15,13 @@ const Root: FC<Props> = ({ error }: Props) => {
   }
 
   return (
-    <Switch>
-      <Route path="/" component={Home} exact />
-      <Route path="/p/:id" component={Playlist} exact />
-      <Route path="/u" component={() => <span>Settings</span>} exact />
-    </Switch>
+    <Layout>
+      <Switch>
+        <Route path="/" component={Home} exact />
+        <Route path="/p/:id" component={Playlist} exact />
+        <Route path="/u" component={() => <span>Settings</span>} exact />
+      </Switch>
+    </Layout>
   );
 };
 

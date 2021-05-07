@@ -25,9 +25,9 @@ const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, pla
         </div>
         {logoSrc && <Logo src={logoSrc} />}
         <nav className={styles.nav} aria-label="menu">
-          <ButtonLink label="Home" to="/" />
+          <ButtonLink className={styles.buttonLink} label="Home" to="/" />
           {playlistMenuItems}
-          <ButtonLink label="Settings" to="/u" />
+          <ButtonLink className={styles.buttonLink} label="Settings" to="/u" />
         </nav>
         <div className={styles.search}></div>
       </div>

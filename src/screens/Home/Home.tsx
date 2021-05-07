@@ -7,7 +7,6 @@ import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
 import { UIStateContext, UpdateBlurImage } from '../../providers/uiStateProvider';
-import Layout from '../../components/Layout/Layout';
 import Shelf from '../../container/Shelf/Shelf';
 import { ConfigContext } from '../../providers/configProvider';
 import type { UsePlaylistResult } from '../../hooks/usePlaylist';
@@ -95,32 +94,30 @@ const Home = (): JSX.Element => {
   }, [firstPlaylist, updateBlurImage]);
 
   return (
-    <Layout>
-      <div className={styles['Home']}>
-        {/* <InfiniteLoader isRowLoaded={(index) => !!content[index]} loadMoreRows={loadMoreRows} rowCount={5}>
+    <div className={styles['Home']}>
+      {/* <InfiniteLoader isRowLoaded={(index) => !!content[index]} loadMoreRows={loadMoreRows} rowCount={5}>
           {({ onRowsRendered, registerChild }) => ( */}
-        <WindowScroller onResize={() => ((listRef.current as unknown) as List)?.recomputeRowHeights()}>
-          {({ height, isScrolling, onChildScroll, scrollTop }) => (
-            <List
-              ref={listRef}
-              autoHeight
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={content.length}
-              getScrollbarSize={scrollbarSize}
-              rowHeight={({ index }) => calculateHeight(index)}
-              rowRenderer={({ index, key, style }) => renderRow({ index, key, style, itemData })}
-              scrollTop={scrollTop}
-              width={document.body.offsetWidth}
-              isScrollingOptOut
-            />
-          )}
-        </WindowScroller>
-        {/* )}
+      <WindowScroller onResize={() => ((listRef.current as unknown) as List)?.recomputeRowHeights()}>
+        {({ height, isScrolling, onChildScroll, scrollTop }) => (
+          <List
+            ref={listRef}
+            autoHeight
+            height={height}
+            isScrolling={isScrolling}
+            onScroll={onChildScroll}
+            rowCount={content.length}
+            getScrollbarSize={scrollbarSize}
+            rowHeight={({ index }) => calculateHeight(index)}
+            rowRenderer={({ index, key, style }) => renderRow({ index, key, style, itemData })}
+            scrollTop={scrollTop}
+            width={document.body.offsetWidth}
+            isScrollingOptOut
+          />
+        )}
+      </WindowScroller>
+      {/* )}
         </InfiniteLoader> */}
-      </div>
-    </Layout>
+    </div>
   );
 };
 
