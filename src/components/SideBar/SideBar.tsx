@@ -12,33 +12,31 @@ type SideBarProps = {
   playlistMenuItems: JSX.Element[];
 };
 
-const SideBar: FC<SideBarProps> = ({ isOpen, onClose, playlistMenuItems }) => {
-  return (
-    <Fragment>
-      <div
-        className={classNames(styles.backdrop, {
-          [styles.visible]: isOpen,
-        })}
-        onClick={onClose}
-      ></div>
-      <div
-        className={classNames(styles.sidebar, {
-          [styles.open]: isOpen,
-        })}
-        onClick={onClose}
-      >
-        <div className={styles.group} aria-label="close menu" role="button">
-          <Close />
-        </div>
-        <nav className={styles.group}>
-          <ButtonLink label="Home" to="/" />
-          {playlistMenuItems}
-          <hr className={styles.divider} />
-          <ButtonLink label="Settings" to="/" />
-        </nav>
+const SideBar: FC<SideBarProps> = ({ isOpen, onClose, playlistMenuItems }) => (
+  <Fragment>
+    <div
+      className={classNames(styles.backdrop, {
+        [styles.visible]: isOpen,
+      })}
+      onClick={onClose}
+    ></div>
+    <div
+      className={classNames(styles.sidebar, {
+        [styles.open]: isOpen,
+      })}
+      onClick={onClose}
+    >
+      <div className={styles.group} aria-label="close menu" role="button">
+        <Close />
       </div>
-    </Fragment>
-  );
-};
+      <nav className={styles.group}>
+        <ButtonLink label="Home" to="/" />
+        {playlistMenuItems}
+        <hr className={styles.divider} />
+        <ButtonLink label="Settings" to="/" />
+      </nav>
+    </div>
+  </Fragment>
+);
 
 export default SideBar;
