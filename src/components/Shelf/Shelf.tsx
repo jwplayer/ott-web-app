@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Playlist, PlaylistItem } from 'types/playlist';
 
 import Card from '../Card/Card';
@@ -43,6 +43,7 @@ const Shelf: React.FC<ShelfProps> = ({
   loading = false,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
+  const [isInitState, setIsInitState] = useState(true);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
 
   if (!playlist) return null;
@@ -57,12 +58,26 @@ const Shelf: React.FC<ShelfProps> = ({
         transitionTime={loading ? '0s' : '0.3s'}
         spacing={12}
         renderLeftControl={(handleClick) => (
-          <div className={styles.arrow} onClick={handleClick}>
+          <div
+            className={isInitState ? styles.arrowDisabled : styles.arrow}
+            onClick={() => {
+              if (!isInitState) {
+                setIsInitState(false);
+                handleClick();
+              }
+            }}
+          >
             <ArrowLeft />
           </div>
         )}
         renderRightControl={(handleClick) => (
-          <div className={styles.arrow} onClick={handleClick}>
+          <div
+            className={styles.arrow}
+            onClick={() => {
+              setIsInitState(false);
+              handleClick();
+            }}
+          >
             <ArrowRight />
           </div>
         )}
