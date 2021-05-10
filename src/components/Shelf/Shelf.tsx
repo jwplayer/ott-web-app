@@ -95,6 +95,7 @@ const Shelf: React.FC<ShelfProps> = ({
               title={item.title}
               duration={item.duration}
               posterSource={item.image}
+              seriesId={item.seriesId}
               onClick={() => (isInView ? onCardClick(item) : null)}
               onHover={() => onCardHover(item)}
               featured={featured}
