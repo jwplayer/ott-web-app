@@ -14,6 +14,7 @@ type CardProps = {
   seriesId?: string;
   posterAspect?: '1:1' | '2:1' | '2:3' | '4:3' | '5:3' | '16:9' | '9:16';
   featured?: boolean;
+  disabled?: boolean;
 };
 
 function Card({
@@ -25,8 +26,9 @@ function Card({
   seriesId,
   posterAspect = '16:9',
   featured = false,
+  disabled = false,
 }: CardProps): JSX.Element {
-  const cardClassName = classNames(styles.card, { [styles.featured]: featured });
+  const cardClassName = classNames(styles.card, { [styles.featured]: featured, [styles.disabled]: disabled });
   const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`]);
   const metaData = () => {
     if (seriesId) {

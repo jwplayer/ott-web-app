@@ -61,10 +61,8 @@ const Shelf: React.FC<ShelfProps> = ({
           <div
             className={isInitState ? styles.arrowDisabled : styles.arrow}
             onClick={() => {
-              if (!isInitState) {
-                setIsInitState(false);
-                handleClick();
-              }
+              setIsInitState(false);
+              handleClick();
             }}
           >
             <ArrowLeft />
@@ -81,7 +79,7 @@ const Shelf: React.FC<ShelfProps> = ({
             <ArrowRight />
           </div>
         )}
-        renderTile={(item) => {
+        renderTile={(item, isInView) => {
           if (loading || typeof item === 'number') {
             return <Card title={'...'} duration={0} featured={featured} />;
           }
@@ -91,9 +89,10 @@ const Shelf: React.FC<ShelfProps> = ({
               title={item.title}
               duration={item.duration}
               posterSource={item.image}
-              onClick={() => onCardClick(item)}
+              onClick={() => (isInView ? onCardClick(item) : null)}
               onHover={() => onCardHover(item)}
               featured={featured}
+              disabled={!isInView}
             />
           );
         }}
