@@ -12,7 +12,7 @@ import Shelf from '../../container/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import type { UsePlaylistResult } from '../../hooks/usePlaylist';
 import usePlaylist from '../../hooks/usePlaylist';
-import useBreakpoint from '../../hooks/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
 
 import styles from './Home.module.scss';
@@ -71,13 +71,15 @@ const Home = (): JSX.Element => {
 
   const calculateHeight = (index: number): number => {
     const item = content[index];
+    const isMobile = tileBreakpoints[breakpoint] <= Breakpoint.sm;
+
     if (!item) return 0;
 
     const tilesToShow: number = item.featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
     const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
     const shelfMetaHeight = item.featured ? 24 : shelfTitlesHeight + 24;
     const cardMetaHeight = item.featured ? 0 : 27;
-    const shelfHorizontalMargin = 56 * 2;
+    const shelfHorizontalMargin = (isMobile && item.featured ? 20 : 56) * 2;
     const cardHorizontalMargin = 0;
     const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow - cardHorizontalMargin;
     const cardHeight = cardWidth * (9 / 16);

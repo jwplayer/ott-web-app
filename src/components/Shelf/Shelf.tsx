@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Playlist, PlaylistItem } from 'types/playlist';
+import classNames from 'classnames';
 
 import Card from '../Card/Card';
 import TileDock from '../TileDock/TileDock';
@@ -11,15 +12,15 @@ import styles from './Shelf.module.scss';
 
 export const tileBreakpoints = {
   [Breakpoint.xs]: 1,
-  [Breakpoint.sm]: 3,
-  [Breakpoint.md]: 4,
+  [Breakpoint.sm]: 1,
+  [Breakpoint.md]: 2,
   [Breakpoint.lg]: 5,
   [Breakpoint.xl]: 6,
 };
 
 export const featuredTileBreakpoints = {
   [Breakpoint.xs]: 1,
-  [Breakpoint.sm]: 2,
+  [Breakpoint.sm]: 1,
   [Breakpoint.md]: 2,
   [Breakpoint.lg]: 2,
   [Breakpoint.xl]: 2,
@@ -48,12 +49,13 @@ const Shelf: React.FC<ShelfProps> = ({
   if (!playlist) return null;
 
   return (
-    <div className={styles['Shelf']}>
+    <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
       {!featured && <h2 className={styles['title']}>{loading ? '...' : playlist.title}</h2>}
       <TileDock<PlaylistItem | number>
         items={loading ? placeholderItems : playlist.playlist}
         tilesToShow={tilesToShow}
         cycleMode={'restart'}
+        showControls={!matchMedia('(hover: none)').matches}
         transitionTime={loading ? '0s' : '0.3s'}
         spacing={12}
         renderLeftControl={(handleClick) => (
