@@ -41,8 +41,8 @@
 
 .divider {
   position: relative;
-  margin: 0;
   width: 100%;
+  margin: 0;
   border-top: 1px solid rgba(variables.$white, 0.12);
   opacity: 0.12;
 }
@@ -54,9 +54,11 @@
 @include responsive.mobile-only() {
   .filterModal {
     display: inline-block;
+    visibility: hidden;
 
     &.open {
       transform: translateY(0);
+      visibility: visible;
       opacity: 1;
     }
   }
