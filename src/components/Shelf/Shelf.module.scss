@@ -14,16 +14,11 @@
     margin: 0 variables.$base-spacing * 2;
   }
   margin: 12px 56px;
-
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
-  text-align: center;
 }
 
 .title {
-  @include responsive.mobile-only() {
-    text-align: left;
-  }
   width: 100%;
   margin-bottom: 12px;
   overflow: hidden;
@@ -38,12 +33,12 @@
 .arrow {
   cursor: pointer;
   transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
-  &:hover {
-    transform: scale(1.2);
-  }
   > svg {
     width: 30px;
     height: 30px;
+  }
+  &:hover {
+    transform: scale(1.2);
   }
 }
 .arrowDisabled {
