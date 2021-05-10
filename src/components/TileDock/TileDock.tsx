@@ -196,6 +196,7 @@ const TileDock = <T extends unknown>({
           return (
             <li
               key={tile.key}
+              tabIndex={isInView ? 0 : -1}
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,

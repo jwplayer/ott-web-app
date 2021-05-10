@@ -60,6 +60,9 @@ const Shelf: React.FC<ShelfProps> = ({
         renderLeftControl={(handleClick) => (
           <div
             className={isInitState ? styles.arrowDisabled : styles.arrow}
+            role="button"
+            tabIndex={isInitState ? -1 : 0}
+            aria-label="Slide left"
             onClick={() => {
               setIsInitState(false);
               handleClick();
@@ -71,6 +74,9 @@ const Shelf: React.FC<ShelfProps> = ({
         renderRightControl={(handleClick) => (
           <div
             className={styles.arrow}
+            role="button"
+            tabIndex={0}
+            aria-label="Slide right"
             onClick={() => {
               setIsInitState(false);
               handleClick();
