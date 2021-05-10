@@ -43,7 +43,7 @@ const Shelf: React.FC<ShelfProps> = ({
   loading = false,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
-  const [isInitState, setIsInitState] = useState(true);
+  const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
 
   if (!playlist) return null;
@@ -59,12 +59,12 @@ const Shelf: React.FC<ShelfProps> = ({
         spacing={12}
         renderLeftControl={(handleClick) => (
           <div
-            className={isInitState ? styles.arrowDisabled : styles.arrow}
+            className={didSlideBefore ? styles.arrow : styles.arrowDisabled}
             role="button"
-            tabIndex={isInitState ? -1 : 0}
+            tabIndex={didSlideBefore ? 0 : -1}
             aria-label="Slide left"
             onClick={() => {
-              setIsInitState(false);
+              setDidSlideBefore(true);
               handleClick();
             }}
           >
@@ -78,7 +78,7 @@ const Shelf: React.FC<ShelfProps> = ({
             tabIndex={0}
             aria-label="Slide right"
             onClick={() => {
-              setIsInitState(false);
+              setDidSlideBefore(true);
               handleClick();
             }}
           >
