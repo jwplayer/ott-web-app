@@ -1,20 +1,38 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
+@use '../../styles/mixins/responsive';
 
-.Shelf {
+.shelf {
+  @include responsive.mobile-only() {
+    margin: 24px 60px 24px variables.$base-spacing;
+    &.featured {
+      margin: 24px variables.$base-spacing;
+    }
+  }
+
+  @include responsive.tablet-only() {
+    margin: 0 variables.$base-spacing * 2;
+  }
   margin: 12px 56px;
+
+  color: var(--primary-color);
+  font-family: var(--body-alt-font-family);
+  text-align: center;
 }
 
 .title {
-  overflow: hidden;
-  font-family: var(--body-alt-font-family);
-  font-size: 24px;
-  margin-bottom: 12px;
-  color: var(--card-color);
-  font-weight: 700;
+  @include responsive.mobile-only() {
+    text-align: left;
+  }
   width: 100%;
-  text-overflow: ellipsis;
+  margin-bottom: 12px;
+  overflow: hidden;
+  color: var(--card-color);
+  font-family: var(--body-alt-font-family);
+  font-weight: 700;
+  font-size: 24px;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .arrow {

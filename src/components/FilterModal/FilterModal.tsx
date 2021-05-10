@@ -2,9 +2,9 @@ import React, { Fragment, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import Close from '../../icons/Close';
+import IconButton from '../../components/IconButton/IconButton';
 
 import styles from './FilterModal.module.scss';
-import IconButton from '../../components/IconButton/IconButton';
 
 type Props = {
   isOpen: boolean;
