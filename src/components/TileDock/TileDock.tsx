@@ -15,7 +15,7 @@ export type TileDockProps<T> = {
   showControls?: boolean;
   animated?: boolean;
   transitionTime?: string;
-  renderTile: (item: T) => JSX.Element;
+  renderTile: (item: T, isInView: boolean) => JSX.Element;
   renderLeftControl?: (handleClick: () => void) => JSX.Element;
   renderRightControl?: (handleClick: () => void) => JSX.Element;
 };
@@ -49,11 +49,11 @@ const sliceItems = <T,>(
 
   const sliceFrom: number = index;
   const sliceTo: number = index + tilesToShow * 3;
-  const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 1;
-  const listStartClone: T[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation);
-  const listEndClone: T[] = items.slice(0 - tilesToShow + 1);
+  const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 0;
+  const listStartClone: T[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation + 1);
+  const listEndClone: T[] = items.slice(0 - (tilesToShow + cycleModeEndlessCompensation + 1));
   const itemsWithClones: T[] = [...listEndClone, ...items, ...listStartClone];
-  const itemsSlice: T[] = itemsWithClones.slice(sliceFrom, sliceTo);
+  const itemsSlice: T[] = itemsWithClones.slice(sliceFrom, sliceTo + 2);
 
   return makeTiles(items, itemsSlice);
 };
@@ -82,7 +82,7 @@ const TileDock = <T extends unknown>({
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items.length > tilesToShow;
-  const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow - 1) + transform : 0;
+  const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow + 1) + transform : 0;
 
   const tileList: Tile<T>[] = useMemo(() => {
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
@@ -190,25 +190,23 @@ const TileDock = <T extends unknown>({
         {tileList.map((tile: Tile<T>, listIndex) => {
           // Todo:
           // const isTabable = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
-          const isVisible = true; // Todo: hide all but visible?
-          const isOpaque =
-            !isMultiPage ||
-            (listIndex > tilesToShow - (slideOffset + 2) && listIndex < tilesToShow * 2 - slideOffset - 1);
+          const isInView =
+            !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
 
           return (
             <li
               key={tile.key}
+              tabIndex={isInView ? 0 : -1}
               style={{
                 width: `${tileWidth}%`,
-                visibility: isVisible ? 'visible' : 'hidden',
                 paddingLeft: spacing / 2,
                 paddingRight: spacing / 2,
                 boxSizing: 'border-box',
-                opacity: isOpaque ? 1 : 0.1,
+                opacity: isInView ? 1 : 0.1,
                 transition: 'opacity .2s ease-in 0s',
               }}
             >
-              {renderTile(tile.item)}
+              {renderTile(tile.item, isInView)}
             </li>
           );
         })}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Playlist, PlaylistItem } from 'types/playlist';
 
 import Card from '../Card/Card';
@@ -43,6 +43,7 @@ const Shelf: React.FC<ShelfProps> = ({
   loading = false,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
+  const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
 
   if (!playlist) return null;
@@ -57,16 +58,34 @@ const Shelf: React.FC<ShelfProps> = ({
         transitionTime={loading ? '0s' : '0.3s'}
         spacing={12}
         renderLeftControl={(handleClick) => (
-          <div className={styles.arrow} onClick={handleClick}>
+          <div
+            className={didSlideBefore ? styles.arrow : styles.arrowDisabled}
+            role="button"
+            tabIndex={didSlideBefore ? 0 : -1}
+            aria-label="Slide left"
+            onClick={() => {
+              setDidSlideBefore(true);
+              handleClick();
+            }}
+          >
             <ArrowLeft />
           </div>
         )}
         renderRightControl={(handleClick) => (
-          <div className={styles.arrow} onClick={handleClick}>
+          <div
+            className={styles.arrow}
+            role="button"
+            tabIndex={0}
+            aria-label="Slide right"
+            onClick={() => {
+              setDidSlideBefore(true);
+              handleClick();
+            }}
+          >
             <ArrowRight />
           </div>
         )}
-        renderTile={(item) => {
+        renderTile={(item, isInView) => {
           if (loading || typeof item === 'number') {
             return <Card title={'...'} duration={0} featured={featured} />;
           }
@@ -76,9 +95,11 @@ const Shelf: React.FC<ShelfProps> = ({
               title={item.title}
               duration={item.duration}
               posterSource={item.image}
-              onClick={() => onCardClick(item)}
+              seriesId={item.seriesId}
+              onClick={() => (isInView ? onCardClick(item) : null)}
               onHover={() => onCardHover(item)}
               featured={featured}
+              disabled={!isInView}
             />
           );
         }}
