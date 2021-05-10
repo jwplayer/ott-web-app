@@ -1,44 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
   <base href="/">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
+  <meta charset="utf-8" />
+  <title>JW OTT Webapp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta
       name="description"
-      content="Web site created using create-snowpack-app"
-    />
-    <title>Snowpack App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script type="module" src="/dist/index.js"></script>
-    <script>
-      var urlSearchParams = new URLSearchParams(window.location.search);
-      var configId =
+      content="JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration."
+  />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:title" content="JW OTT Webapp">
+  <meta property="og:description" content="JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.">
+  <meta property="og:image" content="/images/icon-256x256.png">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Safari web app -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="/images/icon-152x152.png">
+
+  <!-- Chrome, Firefox OS and Opera -->
+  <meta name="theme-color" content="#fff">
+  <!-- Windows Phone -->
+  <meta name="msapplication-navbutton-color" content="#fff">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="#fff">
+</head>
+<body>
+<div id="root"></div>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<script type="module" src="/dist/index.js"></script>
+<script>
+  var urlSearchParams = new URLSearchParams(window.location.search);
+  var configId =
         urlSearchParams.get('c') ||
         window.localStorage.getItem('jwshowcase.config');
 
-      if (configId) {
-        window.localStorage.setItem('jwshowcase.config', configId);
+  if (configId) {
+    window.localStorage.setItem('jwshowcase.config', configId);
 
-        window.configLocation =
-          'https://' + configId + '.jwpapp.com/config.json';
-      } else {
-        window.configLocation = './config.json';
-      }
-    </script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    window.configLocation =
+      'https://' + configId + '.jwpapp.com/config.json';
+  } else {
+    window.configLocation = './config.json';
+  }
+</script>
+<!--
+  This HTML file is a template.
+  If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  You can add webfonts, meta tags, or analytics to this file.
+  The build step will place the bundled scripts into the <body> tag.
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+  To begin the development, run `npm start` or `yarn start`.
+  To create a production bundle, use `npm run build` or `yarn build`.
+-->
+</body>
 </html>
