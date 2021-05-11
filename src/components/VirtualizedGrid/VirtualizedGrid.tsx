@@ -2,21 +2,14 @@ import React from 'react';
 import { Grid, WindowScroller, AutoSizer, GridCellRenderer } from 'react-virtualized';
 
 import scrollbarSize from '../../utils/domHelpers';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
 import './VirtualizedGrid.scss';
 
-type props = {
+type Props = {
   cellRenderer: GridCellRenderer;
   rowCount: number;
+  cols: Breakpoints;
   spacing: number;
-};
-
-const cols = {
-  [Breakpoint.xs]: 2,
-  [Breakpoint.sm]: 2,
-  [Breakpoint.md]: 2,
-  [Breakpoint.lg]: 4,
-  [Breakpoint.xl]: 5,
 };
 
 const calculateHeight = (width: number, rat1: number = 16, rat2: number = 9) => {
@@ -24,7 +17,7 @@ const calculateHeight = (width: number, rat1: number = 16, rat2: number = 9) => 
   return ratio * rat2;
 };
 
-const VirtualizedGrid = ({ cellRenderer, rowCount, spacing }: props) => {
+const VirtualizedGrid = ({ cellRenderer, rowCount, cols, spacing }: Props) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const columnCount = cols[breakpoint];
 

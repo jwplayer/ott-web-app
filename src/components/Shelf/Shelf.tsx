@@ -4,21 +4,22 @@ import classNames from 'classnames';
 
 import Card from '../Card/Card';
 import TileDock from '../TileDock/TileDock';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
 import ArrowLeft from '../../icons/ArrowLeft';
 import ArrowRight from '../../icons/ArrowRight';
+import { findPlaylistImageForWidth } from '../../utils/collection';
 
 import styles from './Shelf.module.scss';
 
-export const tileBreakpoints = {
+export const tileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
-  [Breakpoint.sm]: 1,
-  [Breakpoint.md]: 2,
+  [Breakpoint.sm]: 3,
+  [Breakpoint.md]: 4,
   [Breakpoint.lg]: 5,
   [Breakpoint.xl]: 6,
 };
 
-export const featuredTileBreakpoints = {
+export const featuredTileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
   [Breakpoint.sm]: 1,
   [Breakpoint.md]: 2,
@@ -46,6 +47,7 @@ const Shelf: React.FC<ShelfProps> = ({
   const breakpoint: Breakpoint = useBreakpoint();
   const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
+  const imageSourceWidth = (featured ? 720 : 320) * (window.devicePixelRatio > 1 ? 2 : 1);
 
   if (!playlist) return null;
 
@@ -96,7 +98,7 @@ const Shelf: React.FC<ShelfProps> = ({
             <Card
               title={item.title}
               duration={item.duration}
-              posterSource={item.image}
+              posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
               seriesId={item.seriesId}
               onClick={() => (isInView ? onCardClick(item) : null)}
               onHover={() => onCardHover(item)}

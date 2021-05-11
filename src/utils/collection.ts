@@ -19,4 +19,7 @@ const chunk = <T>(input: T[], size: number) => {
   }, []);
 };
 
-export { getCategoriesFromPlaylist, filterPlaylistCategory, chunk };
+const findPlaylistImageForWidth = (playlistItem: PlaylistItem, width: number): string =>
+  playlistItem.images.find((img) => img.width === width)?.src || playlistItem.image;
+
+export { getCategoriesFromPlaylist, filterPlaylistCategory, chunk, findPlaylistImageForWidth };

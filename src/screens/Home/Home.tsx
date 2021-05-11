@@ -79,7 +79,7 @@ const Home = (): JSX.Element => {
     const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
     const shelfMetaHeight = item.featured ? 24 : shelfTitlesHeight + 24;
     const cardMetaHeight = item.featured ? 0 : 27;
-    const shelfHorizontalMargin = (isMobile && item.featured ? 20 : 56) * 2;
+    const shelfHorizontalMargin = (isMobile && item.featured ? 20 : 56) * featuredTileBreakpoints[breakpoint];
     const cardHorizontalMargin = 0;
     const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow - cardHorizontalMargin;
     const cardHeight = cardWidth * (9 / 16);

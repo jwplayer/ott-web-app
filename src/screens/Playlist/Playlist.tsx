@@ -5,18 +5,23 @@ import type { PlaylistItem } from 'types/playlist';
 
 import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
 import usePlaylist from '../../hooks/usePlaylist';
-import { getCategoriesFromPlaylist, filterPlaylistCategory, chunk } from '../../utils/collection';
+import {
+  getCategoriesFromPlaylist,
+  filterPlaylistCategory,
+  chunk,
+  findPlaylistImageForWidth,
+} from '../../utils/collection';
 import Card from '../../components/Card/Card';
 import Filter from '../../components/Filter/Filter';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
 import { UIStateContext } from '../../providers/uiStateProvider';
 
 import styles from './Playlist.module.scss';
 
-const cols = {
+const cols: Breakpoints = {
   [Breakpoint.xs]: 2,
   [Breakpoint.sm]: 2,
-  [Breakpoint.md]: 2,
+  [Breakpoint.md]: 3,
   [Breakpoint.lg]: 4,
   [Breakpoint.xl]: 5,
 };
@@ -35,6 +40,7 @@ function Playlist({
   const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
   const [filter, setFilter] = useState<string>('');
   const breakpoint: Breakpoint = useBreakpoint();
+  const imageSourceWidth = 320 * (window.devicePixelRatio > 1 ? 2 : 1);
 
   const categories = getCategoriesFromPlaylist(playlist);
   const filteredPlaylist = useMemo(() => filterPlaylistCategory(playlist, filter), [playlist, filter]);
@@ -54,7 +60,7 @@ function Playlist({
     if (!playlistRows[rowIndex][columnIndex]) return;
 
     const playlistItem: PlaylistItem = playlistRows[rowIndex][columnIndex];
-    const { mediaid, title, duration, image, seriesId } = playlistItem;
+    const { mediaid, title, duration, seriesId } = playlistItem;
 
     return (
       <div className={styles.cell} style={style} key={mediaid}>
@@ -62,7 +68,7 @@ function Playlist({
           key={mediaid}
           title={title}
           duration={duration}
-          posterSource={image}
+          posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
           seriesId={seriesId}
           onClick={() => onCardClick(playlistItem)}
           onHover={() => onCardHover(playlistItem)}
@@ -78,7 +84,7 @@ function Playlist({
         <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />
       </header>
       <main className={styles.main}>
-        <VirtualizedGrid rowCount={playlistRows.length} cellRenderer={cellRenderer} spacing={30} />
+        <VirtualizedGrid rowCount={playlistRows.length} cols={cols} cellRenderer={cellRenderer} spacing={30} />
       </main>
     </div>
   );
