@@ -10,5 +10,5 @@ const getPlaylistById = (playlistId: string) => {
 export type UsePlaylistResult<TData = Playlist, TError = unknown> = UseBaseQueryResult<TData, TError>;
 
 export default function usePlaylist(playlistId: string): UsePlaylistResult {
-  return useQuery(['playlist', playlistId], () => getPlaylistById(playlistId));
+  return useQuery(['playlist', playlistId], () => getPlaylistById(playlistId), { enabled: !!playlistId });
 }

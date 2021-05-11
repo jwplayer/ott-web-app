@@ -93,8 +93,6 @@ const Home = (): JSX.Element => {
 
   return (
     <div className={styles.home}>
-      {/* <InfiniteLoader isRowLoaded={(index) => !!content[index]} loadMoreRows={loadMoreRows} rowCount={5}>
-          {({ onRowsRendered, registerChild }) => ( */}
       <WindowScroller onResize={() => ((listRef.current as unknown) as List)?.recomputeRowHeights()}>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
           <List
@@ -114,8 +112,6 @@ const Home = (): JSX.Element => {
           />
         )}
       </WindowScroller>
-      {/* )}
-        </InfiniteLoader> */}
     </div>
   );
 };
