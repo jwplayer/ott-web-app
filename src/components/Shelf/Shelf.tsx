@@ -47,7 +47,8 @@ const Shelf: React.FC<ShelfProps> = ({
   const breakpoint: Breakpoint = useBreakpoint();
   const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
-  const imageSourceWidth = (featured ? 720 : 320) * (window.devicePixelRatio > 1 ? 2 : 1);
+  const isLargeScreen = breakpoint >= Breakpoint.md;
+  const imageSourceWidth = (featured ? 640 : 320) * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
   if (!playlist) return null;
 

@@ -40,7 +40,8 @@ function Playlist({
   const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
   const [filter, setFilter] = useState<string>('');
   const breakpoint: Breakpoint = useBreakpoint();
-  const imageSourceWidth = 320 * (window.devicePixelRatio > 1 ? 2 : 1);
+  const isLargeScreen = breakpoint >= Breakpoint.md;
+  const imageSourceWidth = 320 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
   const categories = getCategoriesFromPlaylist(playlist);
   const filteredPlaylist = useMemo(() => filterPlaylistCategory(playlist, filter), [playlist, filter]);
