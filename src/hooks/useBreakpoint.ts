@@ -14,11 +14,11 @@ export enum Breakpoint {
 }
 
 export type Breakpoints = {
-  [Breakpoint.xs]: Breakpoint;
-  [Breakpoint.sm]: Breakpoint;
-  [Breakpoint.md]: Breakpoint;
-  [Breakpoint.lg]: Breakpoint;
-  [Breakpoint.xl]: Breakpoint;
+  [Breakpoint.xs]: number;
+  [Breakpoint.sm]: number;
+  [Breakpoint.md]: number;
+  [Breakpoint.lg]: number;
+  [Breakpoint.xl]: number;
 };
 
 const getScreenSize = (): Breakpoint => {
