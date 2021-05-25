@@ -64,7 +64,9 @@ const Shelf: React.FC<ShelfProps> = ({
         spacing={12}
         renderLeftControl={(handleClick) => (
           <div
-            className={didSlideBefore ? styles.arrow : styles.arrowDisabled}
+            className={classNames(styles.arrow, {
+              [styles.disabled]: !didSlideBefore,
+            })}
             role="button"
             tabIndex={didSlideBefore ? 0 : -1}
             aria-label="Slide left"
@@ -78,7 +80,7 @@ const Shelf: React.FC<ShelfProps> = ({
         )}
         renderRightControl={(handleClick) => (
           <div
-            className={styles.arrow}
+            className={classNames(styles.arrow)}
             role="button"
             tabIndex={0}
             aria-label="Slide right"
