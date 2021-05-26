@@ -167,7 +167,7 @@ const TileDock = <T extends unknown>({
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -196,7 +196,6 @@ const TileDock = <T extends unknown>({
           return (
             <li
               key={tile.key}
-              tabIndex={isInView ? 0 : -1}
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,

@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import Logo from '../Logo/Logo';
 import Menu from '../../icons/Menu';
+import IconButton from '../../components/IconButton/IconButton';
 
 import styles from './Header.module.scss';
-import IconButton from '../../components/IconButton/IconButton';
 
 type TypeHeader = 'static' | 'fixed';
 

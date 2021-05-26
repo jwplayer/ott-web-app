@@ -11,6 +11,7 @@
   cursor: pointer;
   opacity: 0.7;
   transition: transform 0.1s ease;
+  outline-color: var(--highlight-color, white);
 
   &:hover {
     transform: scale(1.1);

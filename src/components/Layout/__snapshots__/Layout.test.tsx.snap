@@ -16,6 +16,7 @@ exports[`<Layout /> renders layout 1`] = `
             aria-label="open menu"
             class="iconButton"
             role="button"
+            tabindex="0"
           >
             <svg
               aria-hidden="true"
@@ -76,6 +77,7 @@ exports[`<Layout /> renders layout 1`] = `
           aria-label="close menu"
           class="iconButton"
           role="button"
+          tabindex="-1"
         >
           <svg
             aria-hidden="true"
@@ -103,6 +105,7 @@ exports[`<Layout /> renders layout 1`] = `
           aria-current="page"
           class="menuButton active"
           href="/"
+          tabindex="-1"
         >
           <span>
             Home
@@ -114,6 +117,7 @@ exports[`<Layout /> renders layout 1`] = `
         <a
           class="menuButton"
           href="/u"
+          tabindex="-1"
         >
           <span>
             Settings

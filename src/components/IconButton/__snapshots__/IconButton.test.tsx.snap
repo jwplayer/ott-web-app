@@ -6,6 +6,7 @@ exports[`<IconButton> renders and matches snapshot 1`] = `
     aria-label="Icon button"
     class="iconButton"
     role="button"
+    tabindex="0"
   >
     <svg
       aria-hidden="true"

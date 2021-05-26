@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { KeyboardEvent, memo } from 'react';
 import classNames from 'classnames';
 
 import { formatDurationTag } from '../../utils/formatting';
@@ -39,7 +39,17 @@ function Card({
   };
 
   return (
-    <div className={cardClassName} onClick={onClick} onMouseEnter={onHover} role="button" aria-label={`Play ${title}`}>
+    <div
+      className={cardClassName}
+      onClick={onClick}
+      onMouseEnter={onHover}
+      tabIndex={disabled ? -1 : 0}
+      onKeyDown={(event: KeyboardEvent) =>
+        (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()
+      }
+      role="button"
+      aria-label={`Play ${title}`}
+    >
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
         <div className={styles.meta}>
           <div className={styles.title}>{featured ? title : ''}</div>

@@ -65,7 +65,9 @@ $select-focus: theme.$primary-color;
     background-image: linear-gradient(to top, #ddd, #eee 33%);
     cursor: not-allowed;
   }
-  &:hover {
+  &:hover,
+  &:focus {
+    outline: none;
     border-color: $select-focus;
   }
 

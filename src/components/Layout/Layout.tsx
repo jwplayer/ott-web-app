@@ -6,9 +6,9 @@ import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { UIStateContext } from '../../providers/uiStateProvider';
+import MenuButton from '../../components/MenuButton/MenuButton';
 
 import styles from './Layout.module.scss';
-import MenuButton from '../../components/MenuButton/MenuButton';
 
 type LayoutProps = {
   children?: ReactNode;
@@ -34,7 +34,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         isOpen={sideBarOpen}
         onClose={() => setSideBarOpen(false)}
         playlistMenuItems={menu.map((item) => (
-          <MenuButton key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
+          <MenuButton
+            key={item.playlistId}
+            label={item.label}
+            to={`/p/${item.playlistId}`}
+            tabIndex={sideBarOpen ? 0 : -1}
+          />
         ))}
       />
       {children}

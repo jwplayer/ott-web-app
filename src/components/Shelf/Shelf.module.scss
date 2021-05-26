@@ -32,6 +32,7 @@
 
 .arrow {
   cursor: pointer;
+  outline-color: var(--highlight-color, white);
   transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
   > svg {
     width: 30px;

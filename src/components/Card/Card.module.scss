@@ -6,8 +6,11 @@
   cursor: pointer;
   transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
 
+  // @media (hover: hover) and (pointer: fine) {
+  &:focus,
   &:hover {
-    z-index: 10;
+    z-index: 1;
+    outline: none;
     transform: scale(1.05);
 
     & .poster {
