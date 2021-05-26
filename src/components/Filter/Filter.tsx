@@ -1,6 +1,6 @@
 import React, { useState, Fragment, FC } from 'react';
-import MenuButton from '../../components/MenuButton/MenuButton';
 
+import MenuButton from '../../components/MenuButton/MenuButton';
 import Dropdown from '../Dropdown/Dropdown';
 import FilterModal from '../FilterModal/FilterModal';
 import Button from '../Button/Button';

@@ -48,7 +48,13 @@ function Card({
       </div>
       {!featured && (
         <div className={styles.titleContainer}>
-          <div className={styles.title}>{title}</div>
+          <div className={styles.title}>
+            {title}
+            {title}
+            {title}
+            {title}
+            {title}
+          </div>
         </div>
       )}
     </div>

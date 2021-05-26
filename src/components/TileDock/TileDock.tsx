@@ -1,5 +1,7 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
-import './TileDock.css';
+
+// import './TileDock.css';
+import styles from './TileDock.module.scss';
 
 export type CycleMode = 'stop' | 'restart' | 'endless';
 type Direction = 'left' | 'right';
@@ -176,9 +178,9 @@ const TileDock = <T extends unknown>({
   const slideOffset = index - slideToIndex;
 
   return (
-    <div className="tileDock">
+    <div className={styles.tileDock}>
       {showLeftControl && !!renderLeftControl && (
-        <div className="leftControl">{renderLeftControl(() => slide('left'))}</div>
+        <div className={styles.leftControl}>{renderLeftControl(() => slide('left'))}</div>
       )}
       <ul
         ref={frameRef}
@@ -212,7 +214,7 @@ const TileDock = <T extends unknown>({
         })}
       </ul>
       {showRightControl && !!renderRightControl && (
-        <div className="rightControl">{renderRightControl(() => slide('right'))}</div>
+        <div className={styles.rightControl}>{renderRightControl(() => slide('right'))}</div>
       )}
     </div>
   );

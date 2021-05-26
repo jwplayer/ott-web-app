@@ -32,6 +32,7 @@
 
 .arrow {
   cursor: pointer;
+  padding: 12px 0px;
   transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
   > svg {
     width: 30px;

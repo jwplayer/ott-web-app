@@ -61,7 +61,7 @@ const Shelf: React.FC<ShelfProps> = ({
         cycleMode={'restart'}
         showControls={!matchMedia('(hover: none)').matches}
         transitionTime={loading ? '0s' : '0.3s'}
-        spacing={12}
+        spacing={8}
         renderLeftControl={(handleClick) => (
           <div
             className={didSlideBefore ? styles.arrow : styles.arrowDisabled}
