@@ -16,6 +16,15 @@
   margin: 12px 56px;
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
+
+  &:hover {
+    .arrow {
+      opacity: 1;
+      &.disabled {
+        opacity: 0.3;
+      }
+    }
+  }
 }
 
 .title {
@@ -33,7 +42,9 @@
 .arrow {
   cursor: pointer;
   padding: 12px 0px;
-  transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  -webkit-transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
   > svg {
     width: 30px;
     height: 30px;
@@ -41,11 +52,10 @@
   &:hover {
     transform: scale(1.2);
   }
-}
-.arrowDisabled {
-  opacity: 0.3;
-  > svg {
-    width: 30px;
-    height: 30px;
+  &.disabled {
+    cursor: default;
+    &:hover {
+      transform: none;
+    }
   }
 }
