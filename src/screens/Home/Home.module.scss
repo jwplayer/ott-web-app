@@ -1,4 +1,9 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
 
-.home {}
+.list {
+  overflow: visible !important;
+  > div {
+    overflow: visible !important;
+  }
+}
