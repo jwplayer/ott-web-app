@@ -41,10 +41,10 @@
 
 .arrow {
   cursor: pointer;
+  padding: 12px 0px;
   transition: transform 0.2s ease-out, opacity 0.2s ease-out;
   -webkit-transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   opacity: 0;
-
   > svg {
     width: 30px;
     height: 30px;

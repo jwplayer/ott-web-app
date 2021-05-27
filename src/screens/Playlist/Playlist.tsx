@@ -85,7 +85,7 @@ function Playlist({
         <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />
       </header>
       <main className={styles.main}>
-        <VirtualizedGrid rowCount={playlistRows.length} cols={cols} cellRenderer={cellRenderer} spacing={30} />
+        <VirtualizedGrid rowCount={playlistRows.length} cols={cols} cellRenderer={cellRenderer} spacing={50} />
       </main>
     </div>
   );
