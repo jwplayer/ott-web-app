@@ -50,6 +50,11 @@ const Shelf: React.FC<ShelfProps> = ({
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const imageSourceWidth = (featured ? 640 : 320) * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
+  const handleSlide = (doSlide: () => void): void => {
+    setDidSlideBefore(true);
+    doSlide();
+  };
+
   if (!playlist) return null;
 
   return (
@@ -62,6 +67,7 @@ const Shelf: React.FC<ShelfProps> = ({
         showControls={!matchMedia('(hover: none)').matches}
         transitionTime={loading ? '0s' : '0.3s'}
         spacing={8}
+        renderLeftControl={(doSlide) => (
         renderLeftControl={(handleClick) => (
           <div
             className={classNames(styles.arrow, {
@@ -70,24 +76,24 @@ const Shelf: React.FC<ShelfProps> = ({
             role="button"
             tabIndex={didSlideBefore ? 0 : -1}
             aria-label="Slide left"
-            onClick={() => {
-              setDidSlideBefore(true);
-              handleClick();
-            }}
+            onKeyDown={(event: React.KeyboardEvent) =>
+              (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)
+            }
+            onClick={() => handleSlide(doSlide)}
           >
             <ArrowLeft />
           </div>
         )}
-        renderRightControl={(handleClick) => (
+        renderRightControl={(doSlide) => (
           <div
             className={classNames(styles.arrow)}
             role="button"
             tabIndex={0}
             aria-label="Slide right"
-            onClick={() => {
-              setDidSlideBefore(true);
-              handleClick();
-            }}
+            onKeyDown={(event: React.KeyboardEvent) =>
+              (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)
+            }
+            onClick={() => handleSlide(doSlide)}
           >
             <ArrowRight />
           </div>

@@ -90,6 +90,7 @@ const Home = (): JSX.Element => {
       <WindowScroller onResize={() => ((listRef.current as unknown) as List)?.recomputeRowHeights()}>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
           <List
+            className={styles.list}
             tabIndex={-1}
             ref={listRef}
             autoHeight
