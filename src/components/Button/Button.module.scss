@@ -15,12 +15,20 @@
   text-align: center;
   text-decoration: none;
 
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: theme.$btn-primary-bg;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 
   cursor: pointer;
   transition: background 0.1s ease, transform 0.1s ease;
+
+  &.fullWidth {
+    width: 100%;
+  }
+
+  &.secondary {
+    background-color: theme.$btn-secondary-bg;
+  }
 
   &.active {
     color: var(--background-color, black);
@@ -35,11 +43,23 @@
       z-index: 1;
       background-color: rgba(variables.$black, 0.8);
       border-color: var(--highlight-color, white);
-      transform: scale(1.1);
       opacity: 1;
+      transform: scale(1.1);
+      &.secondary {
+        background-color: theme.$btn-secondary-bg;
+      }
+      &.fullWidth {
+        transform: scale(1.04);
+      }
     }
     &:focus.active {
       transform: scale(1.1);
+      &.fullWidth {
+        transform: scale(1.04);
+      }
     }
   }
+}
+.startIcon {
+  margin-right: 13px;
 }
