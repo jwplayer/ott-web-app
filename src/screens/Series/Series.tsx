@@ -1,17 +1,21 @@
 import React from 'react';
+import { RouteComponentProps, useLocation } from 'react-router-dom';
 
-import styles from './Series.module.scss';
+import Video from '../../containers/Video/Video';
 
-type Props = {
-  prop?: string;
+type SeriesRouteParams = {
+  id: string;
+  episodeId: string;
 };
 
-const Series: React.FC<Props> = ({ prop }: Props) => {
-  return (
-    <div className={styles.Series}>
-      <p>{prop}</p>
-    </div>
-  );
+const Series = ({
+  match: {
+    params: { id },
+  },
+}: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
+  const episodeId: string | null = new URLSearchParams(useLocation().search).get('episodeId');
+
+  return <Video videoType={'series'} playlistId={id} episodeId={episodeId} />;
 };
 
 export default Series;

@@ -1,0 +1,91 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.video {
+  padding: 50px;
+  color: white;
+}
+.main {
+  display: flex;
+}
+.info {
+  width: 50%;
+}
+.title {
+  font-weight: 900;
+  font-size: larger;
+  margin: 20px 0px;
+}
+.meta {
+  margin: 20px 0px;
+  > ul {
+    padding-inline-start: 0px;
+    display: flex;
+    > li {
+      margin-right: 30px;
+    }
+    > li:first-child {
+      list-style-type: none;
+    }
+  }
+}
+.buttons {
+  margin: 20px 0px;
+  > button {
+    margin-right: 20px;
+  }
+}
+.banner {
+  width: 50%;
+  position: relative;
+  opacity: 0.7;
+  > img {
+    width: 100%;
+  }
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+  }
+}
+.playIcon {
+  position: absolute;
+  left: calc(50% - 35px);
+  top: calc(50% - 60px);
+  font-size: xx-large;
+  border: 3px solid white;
+  padding: 25px 30px;
+  border-radius: 100%;
+}
+.other {
+  margin: 50px 0px;
+}
+.playerContainer {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: black;
+}
+.background {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.7;
+}
+.playerInfo {
+  position: absolute;
+  top: 0;
+  margin: 50px;
+  max-width: 50%;
+  display: flex;
+
+  > h2 {
+    font-size: x-large;
+  }
+}
+.backButton {
+  padding: 10px;
+  font-size: x-large;
+}
