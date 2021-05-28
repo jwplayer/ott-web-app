@@ -16,6 +16,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
             aria-label="open menu"
             class="iconButton"
             role="button"
+            tabindex="0"
           >
             <svg
               aria-hidden="true"
@@ -75,6 +76,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
           aria-label="close menu"
           class="iconButton"
           role="button"
+          tabindex="-1"
         >
           <svg
             aria-hidden="true"
@@ -101,6 +103,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
         <a
           class="menuButton"
           href="/"
+          tabindex="-1"
         >
           <span>
             Home
@@ -112,6 +115,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
         <a
           class="menuButton"
           href="/u"
+          tabindex="-1"
         >
           <span>
             Settings

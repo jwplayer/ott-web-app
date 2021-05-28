@@ -3,7 +3,8 @@ import { Grid, WindowScroller, AutoSizer, GridCellRenderer } from 'react-virtual
 
 import scrollbarSize from '../../utils/domHelpers';
 import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
-import './VirtualizedGrid.scss';
+
+import styles from './VirtualizedGrid.module.scss';
 
 type Props = {
   cellRenderer: GridCellRenderer;
@@ -27,6 +28,8 @@ const VirtualizedGrid = ({ cellRenderer, rowCount, cols, spacing }: Props) => {
         <AutoSizer disableHeight>
           {({ width }) => (
             <Grid
+              className={styles.grid}
+              tabIndex={-1}
               autoHeight
               cellRenderer={cellRenderer}
               onScroll={onChildScroll}

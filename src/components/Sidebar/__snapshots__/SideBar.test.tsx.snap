@@ -15,6 +15,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
         aria-label="close menu"
         class="iconButton"
         role="button"
+        tabindex="0"
       >
         <svg
           aria-hidden="true"
@@ -42,6 +43,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
         aria-current="page"
         class="menuButton active"
         href="/"
+        tabindex="0"
       >
         <span>
           Home
@@ -62,6 +64,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
       <a
         class="menuButton"
         href="/u"
+        tabindex="0"
       >
         <span>
           Settings

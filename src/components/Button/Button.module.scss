@@ -30,12 +30,16 @@
 
   @media (hover: hover) and (pointer: fine) {
     &:hover:not(.active),
+    &:focus:not(.active),
     &:active {
       z-index: 1;
       background-color: rgba(variables.$black, 0.8);
       border-color: var(--highlight-color, white);
       transform: scale(1.1);
       opacity: 1;
+    }
+    &:focus.active {
+      transform: scale(1.1);
     }
   }
 }

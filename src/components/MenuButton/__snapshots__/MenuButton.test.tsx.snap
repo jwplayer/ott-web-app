@@ -4,6 +4,7 @@ exports[`<MenuButton> renders and matches snapshot 1`] = `
 <div>
   <div
     class="menuButton"
+    tabindex="0"
   >
     <span>
       Label

@@ -15,6 +15,7 @@ exports[`<Header /> renders header 1`] = `
           aria-label="open menu"
           class="iconButton"
           role="button"
+          tabindex="0"
         >
           <svg
             aria-hidden="true"
