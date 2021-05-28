@@ -66,10 +66,13 @@ const Shelf: React.FC<ShelfProps> = ({
         cycleMode={'restart'}
         showControls={!matchMedia('(hover: none)').matches}
         transitionTime={loading ? '0s' : '0.3s'}
-        spacing={12}
+        spacing={8}
         renderLeftControl={(doSlide) => (
+        renderLeftControl={(handleClick) => (
           <div
-            className={didSlideBefore ? styles.arrow : styles.arrowDisabled}
+            className={classNames(styles.arrow, {
+              [styles.disabled]: !didSlideBefore,
+            })}
             role="button"
             tabIndex={didSlideBefore ? 0 : -1}
             aria-label="Slide left"
@@ -83,7 +86,7 @@ const Shelf: React.FC<ShelfProps> = ({
         )}
         renderRightControl={(doSlide) => (
           <div
-            className={styles.arrow}
+            className={classNames(styles.arrow)}
             role="button"
             tabIndex={0}
             aria-label="Slide right"
