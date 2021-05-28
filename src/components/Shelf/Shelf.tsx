@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import Card from '../Card/Card';
 import TileDock from '../TileDock/TileDock';
 import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
-import ArrowLeft from '../../icons/ArrowLeft';
-import ArrowRight from '../../icons/ArrowRight';
+import ChevronLeft from '../../icons/ChevronLeft';
+import ChevronRight from '../../icons/ChevronRight';
 import { findPlaylistImageForWidth } from '../../utils/collection';
 
 import styles from './Shelf.module.scss';
@@ -68,9 +68,8 @@ const Shelf: React.FC<ShelfProps> = ({
         transitionTime={loading ? '0s' : '0.3s'}
         spacing={8}
         renderLeftControl={(doSlide) => (
-        renderLeftControl={(handleClick) => (
           <div
-            className={classNames(styles.arrow, {
+            className={classNames(styles.chevron, {
               [styles.disabled]: !didSlideBefore,
             })}
             role="button"
@@ -81,12 +80,12 @@ const Shelf: React.FC<ShelfProps> = ({
             }
             onClick={() => handleSlide(doSlide)}
           >
-            <ArrowLeft />
+            <ChevronLeft />
           </div>
         )}
         renderRightControl={(doSlide) => (
           <div
-            className={classNames(styles.arrow)}
+            className={classNames(styles.chevron)}
             role="button"
             tabIndex={0}
             aria-label="Slide right"
@@ -95,7 +94,7 @@ const Shelf: React.FC<ShelfProps> = ({
             }
             onClick={() => handleSlide(doSlide)}
           >
-            <ArrowRight />
+            <ChevronRight />
           </div>
         )}
         renderTile={(item, isInView) => {
