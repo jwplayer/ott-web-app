@@ -1,6 +1,14 @@
 import React from 'react';
 import type { PlaylistItem } from 'types/playlist';
+import classNames from 'classnames';
 
+import Cinema from '../../containers/Cinema/Cinema';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import Favorite from '../../icons/Favorite';
+import PlayTrailer from '../../icons/PlayTrailer';
+import Share from '../../icons/Share';
+import ArrowLeft from '../../icons/ArrowLeft';
+import Play from '../../icons/Play';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
 
@@ -11,59 +19,68 @@ type Props = {
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
+  posterFading: boolean;
+  relatedShelf?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({ item, play, startPlay, goBack }: Props) => {
-  const fullYear: number = new Date(item.pubdate).getFullYear();
-  const duration: string = `${Math.floor(item.duration / 60)}h ${item.duration % 60}m`;
+const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, relatedShelf }: Props) => {
+  const posterImage = item.image.replace('720', '1280'); // Todo: 1280 should be sent from API
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === Breakpoint.xs;
+
+  const metaData = [];
+  if (item.pubdate) metaData.push(new Date(item.pubdate).getFullYear());
+  if (item.duration) metaData.push(`${Math.floor(item.duration / 60)}h ${item.duration % 60}m`);
+  if (item.genre) metaData.push(item.genre);
+  if (item.rating) metaData.push(item.rating);
+  const metaString = metaData.join(' • ');
+
+  //todo: image based on screen res, etc (like Home)
+  //todo: breakpoints not same as css (so info padding-top acts too soon)
+  //todo: description enlarger
+
   return (
     <div className={styles.video}>
       <div className={styles.main}>
         <div className={styles.info}>
           <h2 className={styles.title}>{item.title}</h2>
-          <div className={styles.meta}>
-            <ul>
-              <li>{fullYear}</li>
-              <li>{duration}</li>
-              <li>{item.genre}</li>
-              <li>{item.rating}</li>
-            </ul>
+          <div className={styles.meta}>{metaString}</div>
+          {!isMobile && <div className={styles.description}>{item.description}</div>}
+          <div className={styles.playButton}>
+            <Button
+              color="secondary"
+              label={'Start watching'}
+              startIcon={<Play />}
+              onClick={startPlay}
+              active={play}
+              fullWidth
+            />
           </div>
-          <div className={styles.description}>{item.description}</div>
-          <div className={styles.buttons}>
-            <Button label={'Favorite'} onClick={() => null} active />
-            <Button label={'Trailer'} onClick={() => null} active />
-            <Button label={'Share'} onClick={() => null} active />
+          <div className={styles.otherButtons}>
+            <Button label={'Trailer'} startIcon={<PlayTrailer />} onClick={() => null} />
+            <Button label={'Favorite'} startIcon={<Favorite />} onClick={() => null} />
+            <Button label={'Share'} startIcon={<Share />} onClick={() => null} />
           </div>
         </div>
-        <div className={styles.banner} onClick={startPlay}>
-          <img src={item.image} />
-          <div className={styles.playIcon}>&#9658;</div>
-        </div>
+        <div
+          className={classNames(styles.poster, posterFading ? styles.posterFading : styles.posterNormal)}
+          style={{ backgroundImage: `url('${posterImage}')` }}
+        />
       </div>
-      <div className={styles.other}>
-        <h3>Resting shelf</h3>
-      </div>
+      {!!relatedShelf && <div className={styles.other}>{relatedShelf}</div>}
       {play && (
         <div className={styles.playerContainer}>
           <div className={styles.background} style={{ backgroundImage: `url('${item.image}')` }} />
-          <div className={styles.player}></div>
-          <div className={styles.playerInfo}>
-            <div className={styles.backButton}>
-              <IconButton aria-label="Back" onClick={goBack}>
-                <p>&#8592;</p>
-              </IconButton>
-            </div>
-            <div>
+          <div className={styles.player}>
+            <Cinema item={item} />
+          </div>
+          <div className={styles.playerContent}>
+            <IconButton aria-label="Back" onClick={goBack}>
+              <ArrowLeft />
+            </IconButton>
+            <div className={styles.playerInfo}>
               <h2 className={styles.title}>{item.title}</h2>
-              <div className={styles.meta}>
-                <ul>
-                  <li>{fullYear}</li>
-                  <li>{duration}</li>
-                  <li>{item.genre}</li>
-                  <li>{item.rating}</li>
-                </ul>
-              </div>
+              <div className={styles.meta}>{metaString}</div>
               <div className={styles.description}>{item.description}</div>
             </div>
           </div>

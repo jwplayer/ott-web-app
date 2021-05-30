@@ -12,6 +12,8 @@
 
   color: var(--highlight-color, white);
   font-family: theme.$body-alt-font-family;
+  font-size: 16px;
+  line-height: 18px;
   text-align: center;
   text-decoration: none;
 
@@ -20,7 +22,12 @@
   border-radius: 4px;
 
   cursor: pointer;
-  transition: background 0.1s ease, transform 0.1s ease;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+
+  > svg {
+    height: 18px;
+    width: 18px;
+  }
 
   &.fullWidth {
     width: 100%;
@@ -61,5 +68,12 @@
   }
 }
 .startIcon {
-  margin-right: 13px;
+  margin-right: 11px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  > svg {
+    height: 20px;
+    width: 20px;
+  }
 }
