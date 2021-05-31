@@ -68,7 +68,6 @@ const Shelf: React.FC<ShelfProps> = ({
         transitionTime={loading ? '0s' : '0.3s'}
         spacing={8}
         renderLeftControl={(doSlide) => (
-        renderLeftControl={(handleClick) => (
           <div
             className={classNames(styles.arrow, {
               [styles.disabled]: !didSlideBefore,
