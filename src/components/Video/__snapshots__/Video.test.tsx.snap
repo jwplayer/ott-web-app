@@ -136,7 +136,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="poster posterNormal"
+        class="poster posterFading"
         style="background-image: url(http://test/img.jpg);"
       />
     </div>
