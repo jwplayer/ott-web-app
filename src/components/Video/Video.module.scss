@@ -127,19 +127,15 @@
   left: 0;
   background-color: black;
 }
-.background {
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.7;
-}
 .player {
   position: absolute;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .playerContent {
   position: absolute;
@@ -147,6 +143,11 @@
   margin: 30px 62px;
   max-width: 50%;
   display: flex;
+
+  &.hidden {
+    transition: opacity 0.6s ease;
+    opacity: 0;
+  }
 }
 .playerInfo {
   margin: 0px 30px;

@@ -20,6 +20,7 @@
     "pre-commit": "lint-staged && TZ=UTC yarn test --coverage --watchAll=false --ci --bail=1"
   },
   "dependencies": {
+    "@types/jwplayer": "^8.2.6",
     "@types/react-virtualized": "^9.21.11",
     "classnames": "^2.3.1",
     "lodash.merge": "^4.6.2",

@@ -155,10 +155,6 @@ exports[`<Video> renders and matches snapshot 1`] = `
       class="playerContainer"
     >
       <div
-        class="background"
-        style="background-image: url(http://test/img.jpg);"
-      />
-      <div
         class="player"
       >
         <div
