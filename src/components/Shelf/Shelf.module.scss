@@ -13,7 +13,7 @@
   @include responsive.tablet-only() {
     margin: 0 variables.$base-spacing * 2;
   }
-  margin: 12px 56px;
+  margin: 12px 0px;
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
 

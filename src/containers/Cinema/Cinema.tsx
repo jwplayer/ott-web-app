@@ -25,7 +25,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
       if (init) {
         const player = getPlayer();
         player.setup({ file });
-        player.on('ready', () => console.info('Player ready'));
+        player.on('ready', () => player.play());
         player.on('play', () => onPlay());
         player.on('pause', () => onPause());
         setInit(false);

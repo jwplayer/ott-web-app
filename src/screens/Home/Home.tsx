@@ -52,7 +52,7 @@ const Home = (): JSX.Element => {
     const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
     return (
-      <div key={key} style={style}>
+      <div key={key} style={style} className={styles.shelfContainer}>
         <Shelf
           key={contentItem.playlistId}
           playlistId={contentItem.playlistId}
