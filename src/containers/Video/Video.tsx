@@ -33,23 +33,24 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const getSeriesItem = () => playlist?.playlist[0];
   const item = videoType === 'movie' ? getMovieItem() : getSeriesItem();
 
-  const startPlay = () => (item ? history.push(videoUrl(item, playlistId, true)) : null);
-  const goBack = () => (item ? history.push(videoUrl(item, playlistId, false)) : null);
+  const startPlay = () => item && history.push(videoUrl(item, playlistId, true));
+  const goBack = () => item && history.push(videoUrl(item, playlistId, false));
 
-  const onCardClick = (playlistItem: PlaylistItem) =>
-    history.push(cardUrl(playlistItem, config.recommendationsPlaylist));
-  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+  const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
+  const onCardHover = (item: PlaylistItem) => updateBlurImage(item.image);
 
-  useEffect(() => {
-    if (item) updateBlurImage(item.image);
-  }, [item, updateBlurImage]);
+  useEffect(() => item && updateBlurImage(item.image), [item, updateBlurImage]);
+
+  //todo: series andere playlist
+  //todo: currently playing in recommended
+
+  //temp:
+  console.info({ episodeId });
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading list</p>;
   if (!playlist) return <p>List not found</p>;
   if (!item) return <p>Can not find medium</p>;
-
-  console.info({ episodeId });
 
   return (
     <VideoComponent

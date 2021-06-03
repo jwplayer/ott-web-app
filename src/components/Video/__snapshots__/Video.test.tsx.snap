@@ -22,9 +22,20 @@ exports[`<Video> renders and matches snapshot 1`] = `
           1970 • 5h 54m • Tester • CC_CC
         </div>
         <div
-          class="description"
+          class="collapsibleText"
         >
-          Test item description
+          <div
+            class="dummyDiv"
+            style="max-height: none;"
+          >
+            Test item description
+          </div>
+          <div
+            class="textContainer description"
+            style="max-height: none;"
+          >
+            Test item description
+          </div>
         </div>
         <div
           class="playButton"

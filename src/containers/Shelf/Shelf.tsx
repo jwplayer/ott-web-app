@@ -15,6 +15,7 @@ type ShelfProps = {
 const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false }: ShelfProps): JSX.Element => {
   const { isLoading, error, data: playlist }: UsePlaylistResult = usePlaylist(playlistId, relatedMediaId);
 
+  if (!playlistId) return <p>No playlist</p>;
   if (error) return <p>Error here {error}</p>;
 
   return (

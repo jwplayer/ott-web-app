@@ -20,7 +20,7 @@ const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-/g, whitespaceChar);
 
 const movieURL = (item: PlaylistItem, playlistId: string = '') =>
-  `/m/${item.mediaid}/${slugify(item.title)}?list=${playlistId}`;
+  `/m/${item.mediaid}/${slugify(item.title)}${playlistId ? `?list=${playlistId}` : ''}`;
 
 const seriesURL = (item: PlaylistItem, playlistId: string = '') => `/s/${playlistId}/${slugify(item.title)}`;
 

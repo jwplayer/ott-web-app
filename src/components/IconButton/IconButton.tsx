@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 
 import styles from './IconButton.module.scss';
@@ -7,12 +8,19 @@ type Props = {
   children: JSX.Element;
   'aria-label': string;
   tabIndex?: number;
+  className?: string;
 };
 
-const IconButton: React.FC<Props> = ({ children, onClick, 'aria-label': ariaLabel, tabIndex = 0 }: Props) => {
+const IconButton: React.FC<Props> = ({
+  children,
+  onClick,
+  'aria-label': ariaLabel,
+  tabIndex = 0,
+  className,
+}: Props) => {
   return (
     <div
-      className={styles.iconButton}
+      className={classNames(styles.iconButton, className)}
       onClick={onClick}
       aria-label={ariaLabel}
       role="button"

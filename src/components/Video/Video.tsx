@@ -2,6 +2,7 @@ import React from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
+import CollapsibleText from '../CollapsibleText/CollapsibleText';
 import Cinema from '../../containers/Cinema/Cinema';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Favorite from '../../icons/Favorite';
@@ -24,9 +25,11 @@ type Props = {
 };
 
 const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, relatedShelf }: Props) => {
-  const posterImage = item.image.replace('720', '1280'); // Todo: 1280 should be sent from API
-  const breakpoint = useBreakpoint();
+  const breakpoint: Breakpoint = useBreakpoint();
+  const isLargeScreen = breakpoint >= Breakpoint.md;
   const isMobile = breakpoint === Breakpoint.xs;
+  const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
+  const posterImage = item.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
 
   const metaData = [];
   if (item.pubdate) metaData.push(new Date(item.pubdate).getFullYear());
@@ -35,9 +38,7 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
 
-  //todo: image based on screen res, etc (like Home)
   //todo: breakpoints not same as css (so info padding-top acts too soon)
-  //todo: description enlarger
 
   return (
     <div className={styles.video}>
@@ -45,7 +46,7 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
         <div className={styles.info}>
           <h2 className={styles.title}>{item.title}</h2>
           <div className={styles.meta}>{metaString}</div>
-          {!isMobile && <div className={styles.description}>{item.description}</div>}
+          <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
           <div className={styles.playButton}>
             <Button
               color="secondary"
