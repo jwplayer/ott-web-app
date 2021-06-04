@@ -23,7 +23,7 @@ describe('<Cinema>', () => {
       title: 'Test item title',
       tracks: [],
     } as PlaylistItem;
-    const { container } = render(<Cinema item={item} />);
+    const { container } = render(<Cinema item={item} onPlay={() => null} onPause={() => null} />);
 
     expect(container).toMatchSnapshot();
   });
