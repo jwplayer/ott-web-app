@@ -8,12 +8,13 @@ import type { PlaylistItem } from 'types/playlist';
 
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { UIStateContext } from '../../providers/uiStateProvider';
-import Shelf from '../../container/Shelf/Shelf';
+import Shelf from '../../containers/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import type { UsePlaylistResult } from '../../hooks/usePlaylist';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
+import { cardUrl } from '../../utils/formatting';
 
 import styles from './Home.module.scss';
 
@@ -25,33 +26,9 @@ type rowData = {
 };
 type ItemData = {
   content: Content[];
-  onCardClick: (playlistItem: PlaylistItem) => void;
-  onCardHover: (playlistItem: PlaylistItem) => void;
 };
 
-const renderRow = ({ index, key, style, itemData }: rowData) => {
-  const { content, onCardClick, onCardHover } = itemData;
-  const contentItem: Content = content[index];
-  if (!contentItem) return null;
-
-  return (
-    <div key={key} style={style}>
-      <Shelf
-        key={contentItem.playlistId}
-        playlistId={contentItem.playlistId}
-        onCardClick={onCardClick}
-        onCardHover={onCardHover}
-        featured={contentItem.featured === true}
-      />
-    </div>
-  );
-};
-
-const createItemData = memoize((content, onCardClick, onCardHover) => ({
-  content,
-  onCardClick,
-  onCardHover,
-}));
+const createItemData = memoize((content) => ({ content }));
 
 const Home = (): JSX.Element => {
   const history = useHistory();
@@ -64,10 +41,28 @@ const Home = (): JSX.Element => {
   const usePlaylistArg: string | undefined = content.length ? content[0]?.playlistId : undefined;
   const { data: firstPlaylist }: UsePlaylistResult = usePlaylist(usePlaylistArg || '');
 
-  const onCardClick = (playlistItem: PlaylistItem) => history.push(`/play/${playlistItem.mediaid}`);
-  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+  const itemData: ItemData = createItemData(content);
 
-  const itemData: ItemData = createItemData(content, onCardClick, onCardHover);
+  const rowRenderer = ({ index, key, style, itemData }: rowData) => {
+    if (!itemData?.content?.[index]) return null;
+
+    const contentItem: Content = itemData.content[index];
+
+    const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, contentItem.playlistId));
+    const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+
+    return (
+      <div key={key} style={style}>
+        <Shelf
+          key={contentItem.playlistId}
+          playlistId={contentItem.playlistId}
+          onCardClick={onCardClick}
+          onCardHover={onCardHover}
+          featured={contentItem.featured === true}
+        />
+      </div>
+    );
+  };
 
   const calculateHeight = (index: number): number => {
     const item = content[index];
@@ -80,8 +75,7 @@ const Home = (): JSX.Element => {
     const shelfMetaHeight = item.featured ? 24 : shelfTitlesHeight + 24;
     const cardMetaHeight = item.featured ? 0 : 40;
     const shelfHorizontalMargin = (isMobile && item.featured ? 20 : 56) * featuredTileBreakpoints[breakpoint];
-    const cardHorizontalMargin = 0;
-    const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow - cardHorizontalMargin;
+    const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
     const cardHeight = cardWidth * (9 / 16);
 
     return cardHeight + shelfMetaHeight + cardMetaHeight;
@@ -106,7 +100,7 @@ const Home = (): JSX.Element => {
             rowCount={content.length}
             getScrollbarSize={scrollbarSize}
             rowHeight={({ index }) => calculateHeight(index)}
-            rowRenderer={({ index, key, style }) => renderRow({ index, key, style, itemData })}
+            rowRenderer={({ index, key, style }) => rowRenderer({ index, key, style, itemData })}
             scrollTop={scrollTop}
             width={document.body.offsetWidth}
             isScrollingOptOut

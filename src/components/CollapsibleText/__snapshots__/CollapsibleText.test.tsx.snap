@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CollapsibleText> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="collapsibleText"
+  >
+    <div
+      class="dummyDiv"
+      style="max-height: none;"
+    >
+      Test...
+    </div>
+    <div
+      class="textContainer"
+      style="max-height: none;"
+    >
+      Test...
+    </div>
+  </div>
+</div>
+`;

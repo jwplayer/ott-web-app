@@ -1,0 +1,153 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+.video {
+  padding: 56px 56px;
+  color: var(--primary-color);
+  font-family: var(--body-font-family);
+  font-weight: 400;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2);
+
+  @include responsive.tablet-only() {
+    padding: 24px;
+  }
+  @include responsive.mobile-only() {
+    padding: 16px;
+  }
+}
+.main {
+  display: flex;
+  position: relative;
+}
+.info {
+  max-width: 450px;
+  @include responsive.tablet-only() {
+    max-width: 350px;
+  }
+  @include responsive.mobile-only() {
+    width: 100%;
+    padding-top: 225px;
+  }
+}
+.title {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0.25px;
+  margin: 8px 0px;
+}
+.meta {
+  line-height: 18px;
+  font-size: 16px;
+  letter-spacing: 0.15px;
+  margin-bottom: 8px;
+}
+.description {
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+}
+.playButton {
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.otherButtons {
+  display: flex;
+  justify-content: center;
+  > button {
+    margin-right: 8px;
+    width: 33%;
+  }
+  > button:last-child {
+    margin-right: 0px;
+  }
+  @include responsive.mobile-only() {
+    flex-wrap: wrap;
+    > button:first-child {
+      margin-bottom: 8px;
+      margin-right: 0px;
+      width: 100%;
+    }
+    > button:not(:first-child) {
+      flex: 1;
+    }
+  }
+}
+.poster {
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  top: 0;
+  right: 0;
+  z-index: -1;
+}
+.posterNormal {
+  width: 720px;
+  height: 405px;
+  border-radius: 4px;
+  mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
+
+  @include responsive.tablet-only() {
+    width: 600px;
+    height: 338px;
+  }
+  @include responsive.mobile-only() {
+    width: 100vw;
+    mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
+    -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
+  }
+}
+.posterFading {
+  width: 1280px;
+  height: 640px;
+  mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
+  -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
+}
+.playIcon {
+  position: absolute;
+  left: calc(50% - 35px);
+  top: calc(50% - 60px);
+  font-size: xx-large;
+  border: 3px solid white;
+  padding: 25px 30px;
+  border-radius: 100%;
+}
+.other {
+  margin: 50px 0px;
+}
+.playerContainer {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: black;
+}
+.background {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.7;
+}
+.player {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.playerContent {
+  position: absolute;
+  top: 0;
+  margin: 30px 62px;
+  max-width: 50%;
+  display: flex;
+}
+.playerInfo {
+  margin: 0px 30px;
+}

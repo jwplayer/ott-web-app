@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Series from './Series';
+import CollapsibleText from './CollapsibleText';
 
-describe('<Series>', () => {
+describe('<CollapsibleText>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Series />);
+    const { container } = render(<CollapsibleText text="Test..." />);
 
     expect(container).toMatchSnapshot();
   });

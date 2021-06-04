@@ -8,12 +8,14 @@ type ShelfProps = {
   playlistId: string;
   onCardClick: (playlistItem: PlaylistItem) => void;
   onCardHover: (playlistItem: PlaylistItem) => void;
+  relatedMediaId?: string;
   featured?: boolean;
 };
 
-const Shelf = ({ playlistId, onCardClick, onCardHover, featured = false }: ShelfProps): JSX.Element => {
-  const { isLoading, error, data: playlist }: UsePlaylistResult = usePlaylist(playlistId);
+const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false }: ShelfProps): JSX.Element => {
+  const { isLoading, error, data: playlist }: UsePlaylistResult = usePlaylist(playlistId, relatedMediaId);
 
+  if (!playlistId) return <p>No playlist</p>;
   if (error) return <p>Error here {error}</p>;
 
   return (

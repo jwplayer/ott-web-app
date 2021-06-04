@@ -3,6 +3,7 @@ import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { GridCellProps } from 'react-virtualized';
 import type { PlaylistItem } from 'types/playlist';
 
+import { cardUrl } from '../../utils/formatting';
 import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
 import usePlaylist from '../../hooks/usePlaylist';
 import {
@@ -47,7 +48,7 @@ function Playlist({
   const filteredPlaylist = useMemo(() => filterPlaylistCategory(playlist, filter), [playlist, filter]);
   const playlistRows = chunk<PlaylistItem>(filteredPlaylist, cols[breakpoint]);
 
-  const onCardClick = (playlistItem: PlaylistItem) => history.push(`/play/${playlistItem.mediaid}`);
+  const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, id));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
   useEffect(() => {

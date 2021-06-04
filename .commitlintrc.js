@@ -5,7 +5,8 @@ module.exports = {
       2, 'always', [
         'project',
         'home',
-        'playlist'
+        'playlist',
+        'videodetail',
       ],
     ],
   },

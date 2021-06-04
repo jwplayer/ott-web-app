@@ -1,0 +1,36 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.collapsibleText {
+  position: relative;
+  padding-bottom: 20px;
+}
+.dummyDiv {
+  position: absolute;
+  visibility: hidden;
+}
+.textContainer {
+  overflow: hidden;
+  &.collapsed {
+    mask-image: linear-gradient(-180deg, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(-180deg, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+  }
+}
+.chevron {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  bottom: 25px;
+  left: calc(50% - 24px / 2);
+  z-index: 1;
+  cursor: pointer;
+
+  > svg {
+    transform: rotate(90deg);
+  }
+  &.expanded {
+    > svg {
+      transform: rotate(270deg);
+    }
+  }
+}

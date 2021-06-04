@@ -18,3 +18,13 @@ export default function scrollbarSize(recalc?: boolean) {
   }
   return size;
 }
+
+export const addScript = (src: string, callback: () => void): void => {
+  const script: HTMLScriptElement = document.createElement('script');
+  script.type = 'text/javascript';
+  script.async = true;
+  script.src = src;
+  script.onload = callback;
+  script.onerror = (error) => console.info('Error loading external script', error);
+  document.body.appendChild(script);
+};

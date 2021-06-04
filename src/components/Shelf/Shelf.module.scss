@@ -18,7 +18,7 @@
   font-family: var(--body-alt-font-family);
 
   &:hover {
-    .arrow {
+    .chevron {
       opacity: 1;
       &.disabled {
         opacity: 0.3;
@@ -39,14 +39,14 @@
   text-overflow: ellipsis;
 }
 
-.arrow {
+.chevron {
   cursor: pointer;
   outline-color: var(--highlight-color, white);
   padding: 12px 0px;
   transition: transform 0.2s ease-out, opacity 0.2s ease-out;
   -webkit-transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   opacity: 0;
-  
+
   > svg {
     width: 30px;
     height: 30px;
