@@ -6,12 +6,6 @@ exports[`<CollapsibleText> renders and matches snapshot 1`] = `
     class="collapsibleText"
   >
     <div
-      class="dummyDiv"
-      style="max-height: none;"
-    >
-      Test...
-    </div>
-    <div
       class="textContainer"
       style="max-height: none;"
     >

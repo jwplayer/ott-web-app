@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 
+import useBreakpoint from '../../hooks/useBreakpoint';
 import IconButton from '../IconButton/IconButton';
 import ChevronRight from '../../icons/ChevronRight';
 
@@ -13,32 +14,35 @@ type Props = {
 };
 
 const CollapsibleText: React.FC<Props> = ({ text, className, maxHeight = 'none' }: Props) => {
-  const dummyDiv = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
+  const divRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
+  const breakpoint = useBreakpoint();
   const [doesFlowOver, setDoesFlowOver] = useState(false);
-  const [collapsed, setCollapsed] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
-  const ariaLabel = collapsed ? 'Expand' : 'Collapse';
+  const ariaLabel = expanded ? 'Collapse' : 'Expand';
 
   useEffect(() => {
-    dummyDiv.current && setDoesFlowOver(dummyDiv.current.scrollHeight > dummyDiv.current?.offsetHeight);
-  }, [maxHeight]);
+    divRef.current &&
+      setDoesFlowOver(
+        divRef.current.scrollHeight > divRef.current.offsetHeight ||
+          (maxHeight < divRef.current.offsetHeight && maxHeight !== 'none'),
+      );
+  }, [maxHeight, text, breakpoint]);
 
   return (
     <div className={classNames(styles.collapsibleText)}>
-      <div ref={dummyDiv} className={styles.dummyDiv} style={{ maxHeight }}>
-        {text}
-      </div>
       <div
-        className={classNames(styles.textContainer, className, { [styles.collapsed]: collapsed && doesFlowOver })}
-        style={{ maxHeight: collapsed ? maxHeight : 'none' }}
+        ref={divRef}
+        className={classNames(styles.textContainer, className, { [styles.collapsed]: !expanded && doesFlowOver })}
+        style={{ maxHeight: expanded ? divRef.current.scrollHeight : maxHeight }}
       >
         {text}
       </div>
       {doesFlowOver && (
         <IconButton
           aria-label={ariaLabel}
-          className={classNames(styles.chevron, { [styles.expanded]: !collapsed })}
-          onClick={() => setCollapsed(!collapsed)}
+          className={classNames(styles.chevron, { [styles.expanded]: expanded })}
+          onClick={() => setExpanded(!expanded)}
         >
           <ChevronRight />
         </IconButton>
