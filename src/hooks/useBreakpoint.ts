@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
-const XS_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (max-width: 540px)');
-const SM_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 541px) and (max-width: 960px)');
-const MD_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 961px) and (max-width: 1280px)');
-const LG_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 1281px) and (max-width: 1680px)');
+const XS_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (max-width: 599px)');
+const SM_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 600px) and (max-width: 959px)');
+const MD_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 960px) and (max-width: 1279px)');
+const LG_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 1280px) and (max-width: 1919px)');
 
 export enum Breakpoint {
   xs,
