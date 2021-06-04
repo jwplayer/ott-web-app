@@ -47,11 +47,9 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
     timeout = setTimeout(() => setMouseActive(false), 2000);
   };
 
-  //todo: breakpoints not same as css (so info padding-top acts too soon)
-
   return (
     <div className={styles.video}>
-      <div className={styles.main}>
+      <div className={classNames(styles.main, { [styles.hidden]: play })}>
         <div className={styles.info}>
           <h2 className={styles.title}>{item.title}</h2>
           <div className={styles.meta}>{metaString}</div>

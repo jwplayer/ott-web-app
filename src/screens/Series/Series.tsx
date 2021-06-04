@@ -13,7 +13,7 @@ const Series = ({
     params: { id },
   },
 }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
-  const episodeId: string | null = new URLSearchParams(useLocation().search).get('episodeId');
+  const episodeId: string | null = new URLSearchParams(useLocation().search).get('e');
 
   return <Video videoType={'series'} playlistId={id} episodeId={episodeId} />;
 };
