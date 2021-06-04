@@ -20,6 +20,14 @@ module.exports = {
         // FIXES https://github.com/snowpackjs/snowpack/discussions/2810
         const babelRule = config.module.rules.find((rule) =>
           rule && rule.use && rule.use.find((use) => use && use.loader && use.loader.includes('babel-loader')));
+        const cssModulesRule = config.module.rules.find((rule) =>
+          rule && rule.use && rule.use.find((use) => use && use.loader && use.loader.includes('css-loader') && use.options && use.options.modules));
+
+        if (cssModulesRule) {
+          cssModulesRule.use.unshift({
+            loader:  require.resolve('./scripts/webpack/css-modules-fix.js'),
+          });
+        }
 
         if (babelRule) {
           babelRule.use = babelRule.use.filter(use => {
@@ -28,11 +36,6 @@ module.exports = {
                 '@babel/plugin-proposal-optional-chaining',
                 '@babel/plugin-proposal-nullish-coalescing-operator'
               ]);
-            }
-
-            // filter out proxy-import-resolve
-            if (use.loader.includes('proxy-import-resolve')) {
-              return false;
             }
 
             return true;
