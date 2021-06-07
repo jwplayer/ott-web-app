@@ -59,13 +59,15 @@ const Shelf: React.FC<ShelfProps> = ({
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
-      {!featured && <h2 className={styles['title']}>{loading ? '...' : playlist.title}</h2>}
+      {!featured && (
+        <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{loading ? ' ' : playlist.title}</h2>
+      )}
       <TileDock<PlaylistItem | number>
         items={loading ? placeholderItems : playlist.playlist}
         tilesToShow={tilesToShow}
         cycleMode={'restart'}
         showControls={!matchMedia('(hover: none)').matches}
-        transitionTime={loading ? '0s' : '0.3s'}
+        transitionTime={loading ? '0.3s' : '0.3s'}
         spacing={8}
         renderLeftControl={(doSlide) => (
           <div
@@ -99,7 +101,7 @@ const Shelf: React.FC<ShelfProps> = ({
         )}
         renderTile={(item, isInView) => {
           if (loading || typeof item === 'number') {
-            return <Card title={'...'} duration={0} featured={featured} />;
+            return <Card title={' '} duration={0} featured={featured} loading />;
           }
 
           return (

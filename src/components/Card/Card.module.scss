@@ -28,6 +28,10 @@
     .title {
       font-size: 34px;
       font-family: var(--body-font-family);
+      line-height: 36px;
+      height: 1em;
+      text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 4px 5px rgba(0, 0, 0, 0.12), 0px 1px 10px rgba(0, 0, 0, 0.2);
+
       @include responsive.mobile-only {
         font-size: 24px;
       }
@@ -42,6 +46,7 @@
     .meta {
       padding: 16px;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+      justify-content: space-between;
     }
   }
 
@@ -88,13 +93,13 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   @include responsive.mobile-only {
     font-size: 14px;
   }
-  flex: 1;
   color: var(--card-color);
   font-family: var(--body-alt-font-family);
   font-weight: 700;
   font-size: 16px;
   text-align: left;
   overflow: hidden;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2);
   @supports (-webkit-line-clamp: 2) {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -102,20 +107,24 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   }
 
   height: 2.3em;
+
+  &.loading {
+    background-color: rgba(255, 255, 255, 0.4);
+    height: 16px;
+    border-radius: 5px;
+    width: 30%;
+  }
 }
 
 .meta {
   position: absolute;
   bottom: 0;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   padding: 8px;
   color: var(--card-color);
-
-  .title {
-    flex: 1;
-  }
 }
 
 .tag {
@@ -129,4 +138,8 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   font-weight: 600;
   background-color: rgba(variables.$black, 0.6);
   border-radius: 4px;
+
+  &.loading {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
 }
