@@ -39,6 +39,7 @@ function Playlist({
   const history = useHistory();
   const { updateBlurImage } = useContext(UIStateContext);
   const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
+
   const [filter, setFilter] = useState<string>('');
   const breakpoint: Breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -55,8 +56,7 @@ function Playlist({
     if (filteredPlaylist.length) updateBlurImage(filteredPlaylist[0].image);
   }, [filter, filteredPlaylist, updateBlurImage]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error || !playlist) return <p>No playlist found...</p>;
+  if (error || !playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   const cellRenderer = ({ columnIndex, rowIndex, style }: GridCellProps) => {
     if (!playlistRows[rowIndex][columnIndex]) return;
@@ -74,6 +74,7 @@ function Playlist({
           seriesId={seriesId}
           onClick={() => onCardClick(playlistItem)}
           onHover={() => onCardHover(playlistItem)}
+          loading={isLoading}
         />
       </div>
     );
