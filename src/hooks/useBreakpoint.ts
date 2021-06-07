@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 
-const XS_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (max-width: 599px)');
-const SM_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 600px) and (max-width: 959px)');
-const MD_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 960px) and (max-width: 1279px)');
-const LG_MATCH_MEDIA: MediaQueryList = window.matchMedia('screen and (min-width: 1280px) and (max-width: 1919px)');
+import { addMediaQueryListChangeListener, removeMediaQueryListChangeListener } from '../utils/matchMedia';
+
+const XS_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (max-width: 599px)');
+const SM_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 600px) and (max-width: 959px)');
+const MD_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 960px) and (max-width: 1279px)');
+const LG_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 1280px) and (max-width: 1919px)');
 
 export enum Breakpoint {
   xs,
@@ -35,16 +37,16 @@ const useBreakpoint = (): Breakpoint => {
   useEffect(() => {
     const changeEventHandler = (): void => setBreakpoint(getScreenSize());
 
-    XS_MATCH_MEDIA.addEventListener('change', changeEventHandler);
-    SM_MATCH_MEDIA.addEventListener('change', changeEventHandler);
-    MD_MATCH_MEDIA.addEventListener('change', changeEventHandler);
-    LG_MATCH_MEDIA.addEventListener('change', changeEventHandler);
+    addMediaQueryListChangeListener(XS_MATCH_MEDIA, changeEventHandler);
+    addMediaQueryListChangeListener(SM_MATCH_MEDIA, changeEventHandler);
+    addMediaQueryListChangeListener(MD_MATCH_MEDIA, changeEventHandler);
+    addMediaQueryListChangeListener(LG_MATCH_MEDIA, changeEventHandler);
 
     return () => {
-      XS_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
-      SM_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
-      MD_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
-      LG_MATCH_MEDIA.removeEventListener('change', changeEventHandler);
+      removeMediaQueryListChangeListener(XS_MATCH_MEDIA, changeEventHandler);
+      removeMediaQueryListChangeListener(SM_MATCH_MEDIA, changeEventHandler);
+      removeMediaQueryListChangeListener(MD_MATCH_MEDIA, changeEventHandler);
+      removeMediaQueryListChangeListener(LG_MATCH_MEDIA, changeEventHandler);
     };
   }, []);
 
