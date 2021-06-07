@@ -1,9 +1,23 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
+@use '../../styles/mixins/responsive';
 
 .list {
   overflow: visible !important;
   > div {
     overflow: visible !important;
+  }
+}
+.shelfContainer {
+  padding: 12px 56px;
+
+  @include responsive.mobile-only() {
+    padding: 24px 60px 24px variables.$base-spacing;
+    &.featured {
+      padding: 24px variables.$base-spacing;
+    }
+  }
+  @include responsive.tablet-only() {
+    padding: 0 variables.$base-spacing * 2;
   }
 }

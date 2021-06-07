@@ -19,9 +19,13 @@
 .main {
   display: flex;
   position: relative;
+  &.hidden {
+    display: none;
+  }
 }
 .info {
   max-width: 450px;
+  min-height: 380px;
   @include responsive.tablet-only() {
     max-width: 350px;
   }
@@ -117,7 +121,7 @@
   border-radius: 100%;
 }
 .other {
-  margin: 50px 0px;
+  margin-top: 50px;
 }
 .playerContainer {
   position: absolute;
@@ -125,14 +129,8 @@
   height: 100vh;
   top: 0;
   left: 0;
+  overflow: hidden;
   background-color: black;
-}
-.background {
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.7;
 }
 .player {
   position: absolute;
@@ -140,6 +138,9 @@
   top: 0;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .playerContent {
   position: absolute;
@@ -147,6 +148,11 @@
   margin: 30px 62px;
   max-width: 50%;
   display: flex;
+
+  &.hidden {
+    transition: opacity 0.6s ease;
+    opacity: 0;
+  }
 }
 .playerInfo {
   margin: 0px 30px;

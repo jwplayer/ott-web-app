@@ -22,7 +22,8 @@ const slugify = (text: string, whitespaceChar: string = '-') =>
 const movieURL = (item: PlaylistItem, playlistId: string = '') =>
   `/m/${item.mediaid}/${slugify(item.title)}${playlistId ? `?list=${playlistId}` : ''}`;
 
-const seriesURL = (item: PlaylistItem, playlistId: string = '') => `/s/${playlistId}/${slugify(item.title)}`;
+const seriesURL = (item: PlaylistItem, playlistId: string = '') =>
+  `/s/${item.seriesId}/${slugify(item.title)}?e=${item.mediaid}&r=${playlistId}`;
 
 const cardUrl = (item: PlaylistItem, playlistId: string = '') =>
   item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);

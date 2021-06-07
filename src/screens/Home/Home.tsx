@@ -5,6 +5,7 @@ import List from 'react-virtualized/dist/commonjs/List';
 import { useHistory } from 'react-router-dom';
 import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
+import classNames from 'classnames';
 
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { UIStateContext } from '../../providers/uiStateProvider';
@@ -52,7 +53,11 @@ const Home = (): JSX.Element => {
     const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
     return (
-      <div key={key} style={style}>
+      <div
+        key={key}
+        style={style}
+        className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
+      >
         <Shelf
           key={contentItem.playlistId}
           playlistId={contentItem.playlistId}

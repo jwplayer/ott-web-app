@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
@@ -25,6 +25,8 @@ type Props = {
 };
 
 const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, relatedShelf }: Props) => {
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const isMobile = breakpoint === Breakpoint.xs;
@@ -38,11 +40,16 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
 
-  //todo: breakpoints not same as css (so info padding-top acts too soon)
+  let timeout: NodeJS.Timeout;
+  const mouseActivity = () => {
+    setMouseActive(true);
+    clearTimeout(timeout);
+    timeout = setTimeout(() => setMouseActive(false), 2000);
+  };
 
   return (
     <div className={styles.video}>
-      <div className={styles.main}>
+      <div className={classNames(styles.main, { [styles.hidden]: play })}>
         <div className={styles.info}>
           <h2 className={styles.title}>{item.title}</h2>
           <div className={styles.meta}>{metaString}</div>
@@ -70,12 +77,11 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
       </div>
       {!!relatedShelf && <div className={styles.other}>{relatedShelf}</div>}
       {play && (
-        <div className={styles.playerContainer}>
-          <div className={styles.background} style={{ backgroundImage: `url('${item.image}')` }} />
+        <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
           <div className={styles.player}>
-            <Cinema item={item} />
+            <Cinema item={item} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} />
           </div>
-          <div className={styles.playerContent}>
+          <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !mouseActive })}>
             <IconButton aria-label="Back" onClick={goBack}>
               <ArrowLeft />
             </IconButton>
