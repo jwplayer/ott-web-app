@@ -18,8 +18,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: |
+      - name: Install dependencies
+        run: |
           yarn
-          yarn codecept:${{ matrix.config }}:ci run --steps
+          yarn global add wait-on
+      - name: Start dev server
+        run: yarn start
+      - name: Run tests
+        run: wait-on http://localhost:8080 && yarn codecept:${{ matrix.config }} run --steps
         env:
           CI: true

@@ -19,9 +19,7 @@
     "commit-msg": "commitlint --edit $1",
     "pre-commit": "lint-staged && TZ=UTC yarn test --coverage --watchAll=false --ci --bail=1",
     "codecept:mobile": "codeceptjs -c codecept.mobile.js run --steps",
-    "codecept:mobile:ci": "start-server-and-test 'yarn start' http://localhost:8080 'yarn codecept:mobile'",
-    "codecept:desktop": "codeceptjs -c codecept.desktop.js run --steps",
-    "codecept:desktop:ci": "start-server-and-test 'yarn start' http://localhost:8080 'yarn codecept:desktop'"
+    "codecept:desktop": "codeceptjs -c codecept.desktop.js run --steps"
   },
   "dependencies": {
     "@types/jwplayer": "^8.2.6",
