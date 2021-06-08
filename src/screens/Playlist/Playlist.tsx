@@ -2,16 +2,13 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { GridCellProps } from 'react-virtualized';
 import type { PlaylistItem } from 'types/playlist';
+import type { Config } from 'types/Config';
 
+import { ConfigContext } from '../../providers/ConfigProvider';
 import { cardUrl } from '../../utils/formatting';
 import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
 import usePlaylist from '../../hooks/usePlaylist';
-import {
-  getCategoriesFromPlaylist,
-  filterPlaylistCategory,
-  chunk,
-  findPlaylistImageForWidth,
-} from '../../utils/collection';
+import { filterPlaylist, chunk, findPlaylistImageForWidth, getFiltersFromConfig } from '../../utils/collection';
 import Card from '../../components/Card/Card';
 import Filter from '../../components/Filter/Filter';
 import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
@@ -38,14 +35,15 @@ function Playlist({
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
   const { updateBlurImage } = useContext(UIStateContext);
+  const config: Config = useContext(ConfigContext);
   const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
   const [filter, setFilter] = useState<string>('');
   const breakpoint: Breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const imageSourceWidth = 320 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
-  const categories = getCategoriesFromPlaylist(playlist);
-  const filteredPlaylist = useMemo(() => filterPlaylistCategory(playlist, filter), [playlist, filter]);
+  const categories = getFiltersFromConfig(config, id);
+  const filteredPlaylist = useMemo(() => filterPlaylist(playlist, filter), [playlist, filter]);
   const playlistRows = chunk<PlaylistItem>(filteredPlaylist, cols[breakpoint]);
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, id));
