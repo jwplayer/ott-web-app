@@ -109,7 +109,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   height: 2.3em;
 
   &.loading {
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: var(--card-slider-loading-card-bg);
     height: 16px;
     border-radius: 5px;
     width: 30%;
@@ -138,8 +138,4 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   font-weight: 600;
   background-color: rgba(variables.$black, 0.6);
   border-radius: 4px;
-
-  &.loading {
-    background-color: rgba(255, 255, 255, 0.4);
-  }
 }

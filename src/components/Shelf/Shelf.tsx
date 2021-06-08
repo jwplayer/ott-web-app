@@ -64,7 +64,7 @@ const Shelf: React.FC<ShelfProps> = ({
         items={playlist.playlist}
         tilesToShow={tilesToShow}
         cycleMode={'restart'}
-        showControls={!matchMedia('(hover: none)').matches}
+        showControls={!matchMedia('(hover: none)').matches && !loading}
         transitionTime={'0.3s'}
         spacing={8}
         renderLeftControl={(doSlide) => (

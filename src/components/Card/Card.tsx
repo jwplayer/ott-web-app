@@ -53,10 +53,12 @@ function Card({
       aria-label={`Play ${title}`}
     >
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
-        <div className={styles.meta}>
-          {featured && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
-          {metaData()}
-        </div>
+        {!loading && (
+          <div className={styles.meta}>
+            {featured && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
+            {metaData()}
+          </div>
+        )}
       </div>
       {!featured && (
         <div className={styles.titleContainer}>
