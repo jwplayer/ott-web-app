@@ -29,6 +29,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
         ))}
         logoSrc={assets.banner}
+        background={options.headerBackground}
       />
       <Sidebar
         isOpen={sideBarOpen}

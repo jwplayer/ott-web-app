@@ -4,6 +4,7 @@ exports[`<Header /> renders header 1`] = `
 <div>
   <header
     class="header static"
+    style="background: none;"
   >
     <div
       class="container"
