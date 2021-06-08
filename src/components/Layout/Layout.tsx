@@ -1,6 +1,7 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 
+import MarkDown from '../MarkDown/MarkDown';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
@@ -59,7 +60,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         />
         {children}
       </div>
-      {!!footerText && <div className={styles.footer}>{footerText}</div>}
+      {!!footerText && (
+        <div className={styles.footer}>
+          <MarkDown markDownString={footerText} />
+        </div>
+      )}
     </div>
   );
 };
