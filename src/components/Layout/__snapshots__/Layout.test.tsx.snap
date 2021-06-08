@@ -5,7 +5,6 @@ exports[`<Layout /> renders layout 1`] = `
   <div>
     <header
       class="header static"
-      style="background: none;"
     >
       <div
         class="container"

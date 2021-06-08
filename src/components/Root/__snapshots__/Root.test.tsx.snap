@@ -5,7 +5,6 @@ exports[`<Root /> renders and matches snapshot 1`] = `
   <div>
     <header
       class="header static"
-      style="background: none;"
     >
       <div
         class="container"

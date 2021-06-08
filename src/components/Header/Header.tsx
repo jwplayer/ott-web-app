@@ -15,18 +15,11 @@ type Props = {
   onMenuButtonClick: () => void;
   playlistMenuItems: JSX.Element[];
   logoSrc?: string;
-  background?: string;
 };
 
-const Header: React.FC<Props> = ({
-  headerType = 'static',
-  onMenuButtonClick,
-  playlistMenuItems,
-  logoSrc,
-  background = 'none',
-}) => {
+const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, playlistMenuItems, logoSrc }) => {
   return (
-    <header className={classNames(styles.header, styles[headerType])} style={{ background }}>
+    <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>
         <div className={styles.menu}>
           <IconButton aria-label="open menu" onClick={onMenuButtonClick}>
