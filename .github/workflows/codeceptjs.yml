@@ -19,12 +19,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: yarn
+        run: |
+          yarn
+          npm install wait-on -g
       - name: Start dev server
         run: yarn start &
       - name: Run tests
-        run: |
-          yarn global add wait-on
-          wait-on http://localhost:8080 && yarn codecept:${{ matrix.config }} run --steps
+        run: wait-on http://localhost:8080 && yarn codecept:${{ matrix.config }} run --steps
         env:
           CI: true
