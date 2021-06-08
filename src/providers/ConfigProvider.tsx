@@ -45,7 +45,6 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
       validateConfig(config)
         .then((configValidated) => {
           setConfig(() => merge({}, defaultConfig, configValidated));
-          setSiteMetadata(configValidated);
           setCssVariables(configValidated.options);
           onLoading(false);
           setLoading(false);
@@ -59,17 +58,6 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     loadAndValidateConfig(configLocation);
   }, [configLocation, onLoading, onValidationError]);
 
-  const setSiteMetadata = ({ siteName, description }: Config) => {
-    if (siteName) document.title = siteName;
-    if (description) {
-      const meta = document.getElementsByTagName('meta');
-      for (let i = 0; i < meta.length; i++) {
-        if (meta[i].name.toLowerCase() === 'description') {
-          meta[i].content = description;
-        }
-      }
-    }
-  };
   const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Options) => {
     const root = document.querySelector(':root') as HTMLElement;
 

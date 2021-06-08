@@ -1,4 +1,5 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
+import { Helmet } from 'react-helmet';
 
 import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
@@ -15,13 +16,26 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const { menu, assets, options, footerText } = useContext(ConfigContext);
+  const { menu, assets, options, siteName, description, footerText } = useContext(ConfigContext);
   const { blurImage } = useContext(UIStateContext);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
+  const banner = assets.banner;
 
   return (
     <div className={styles.layout}>
+      <Helmet>
+        <title>{siteName}</title>
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="og:title" content={siteName} />
+        <meta property="og:type" content="video.other" />
+        {banner && <meta property="og:image" content={banner?.replace(/^https:/, 'http:')} />}
+        {banner && <meta property="og:image:secure_url" content={banner?.replace(/^http:/, 'https:')} />}
+        <meta name="twitter:title" content={siteName} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={banner} />
+      </Helmet>
       <div className={styles.main}>
         {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
         <Header
@@ -29,7 +43,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           playlistMenuItems={menu.map((item) => (
             <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
           ))}
-          logoSrc={assets.banner}
+          logoSrc={banner}
         />
         <Sidebar
           isOpen={sideBarOpen}
