@@ -15,34 +15,37 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const { menu, assets, options } = useContext(ConfigContext);
+  const { menu, assets, options, footerText } = useContext(ConfigContext);
   const { blurImage } = useContext(UIStateContext);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
 
   return (
     <div className={styles.layout}>
-      {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
-      <Header
-        onMenuButtonClick={() => setSideBarOpen(true)}
-        playlistMenuItems={menu.map((item) => (
-          <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
-        ))}
-        logoSrc={assets.banner}
-      />
-      <Sidebar
-        isOpen={sideBarOpen}
-        onClose={() => setSideBarOpen(false)}
-        playlistMenuItems={menu.map((item) => (
-          <MenuButton
-            key={item.playlistId}
-            label={item.label}
-            to={`/p/${item.playlistId}`}
-            tabIndex={sideBarOpen ? 0 : -1}
-          />
-        ))}
-      />
-      {children}
+      <div className={styles.main}>
+        {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
+        <Header
+          onMenuButtonClick={() => setSideBarOpen(true)}
+          playlistMenuItems={menu.map((item) => (
+            <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
+          ))}
+          logoSrc={assets.banner}
+        />
+        <Sidebar
+          isOpen={sideBarOpen}
+          onClose={() => setSideBarOpen(false)}
+          playlistMenuItems={menu.map((item) => (
+            <MenuButton
+              key={item.playlistId}
+              label={item.label}
+              to={`/p/${item.playlistId}`}
+              tabIndex={sideBarOpen ? 0 : -1}
+            />
+          ))}
+        />
+        {children}
+      </div>
+      {!!footerText && <div className={styles.footer}>{footerText}</div>}
     </div>
   );
 };
