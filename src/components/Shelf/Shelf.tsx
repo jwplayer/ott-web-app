@@ -71,6 +71,7 @@ const Shelf: React.FC<ShelfProps> = ({
           <div
             className={classNames(styles.chevron, {
               [styles.disabled]: !didSlideBefore,
+              [styles.featuredLeftCorrection]: featured && isLargeScreen,
             })}
             role="button"
             tabIndex={didSlideBefore ? 0 : -1}
@@ -85,7 +86,9 @@ const Shelf: React.FC<ShelfProps> = ({
         )}
         renderRightControl={(doSlide) => (
           <div
-            className={classNames(styles.chevron)}
+            className={classNames(styles.chevron, {
+              [styles.featuredRightCorrection]: featured && isLargeScreen,
+            })}
             role="button"
             tabIndex={0}
             aria-label="Slide right"

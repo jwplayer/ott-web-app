@@ -47,6 +47,16 @@
       transform: none;
     }
   }
+  &.featuredLeftCorrection {
+    position: absolute;
+    left: calc(0px - 100vw * 0.2 + 56px);
+    top: -30px;
+  }
+  &.featuredRightCorrection {
+    position: absolute;
+    top: -30px;
+    right: calc(0px - 100vw * 0.2 + 56px);
+  }
 }
 .error {
   color: var(--card-color);
