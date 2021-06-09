@@ -8,7 +8,7 @@ const MARKDOWN_HEADERS_REGEX = /^(#{1,6})(.*)$/gm;
 const LINEBREAK_REGEX = /(?:\r\n|\r|\n)/g;
 
 type Props = {
-  markDownString: string;
+  markdownString: string;
 };
 
 const parseMarkdown = (value: string): string =>
@@ -27,8 +27,8 @@ const parseMarkdown = (value: string): string =>
     })
     .replace(LINEBREAK_REGEX, '<br />'); // linebreak formatter should run last
 
-const MarkDown: React.FC<Props> = ({ markDownString }: Props) => {
-  return <div dangerouslySetInnerHTML={{ __html: parseMarkdown(markDownString) }} />;
+const MarkDown: React.FC<Props> = ({ markdownString }: Props) => {
+  return <div dangerouslySetInnerHTML={{ __html: parseMarkdown(markdownString) }} />;
 };
 
 export default MarkDown;
