@@ -8,7 +8,17 @@ import Header from './Header';
 describe('<Header />', () => {
   test('renders header', () => {
     const playlistMenuItems = [<ButtonLink key="key" label="Home" to="/" />];
-    const { container } = render(<Header onMenuButtonClick={jest.fn()} playlistMenuItems={playlistMenuItems} />);
+    const { container } = render((
+      <Header
+        onMenuButtonClick={jest.fn()}
+        playlistMenuItems={playlistMenuItems}
+        searchBarProps={{
+          query: '',
+          onQueryChange: jest.fn()
+        }}
+        searchEnabled
+      />
+    ));
 
     expect(container).toMatchSnapshot();
   });

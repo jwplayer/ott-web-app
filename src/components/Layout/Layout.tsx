@@ -15,9 +15,10 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const { menu, assets, options } = useContext(ConfigContext);
+  const { menu, assets, options, searchPlaylist } = useContext(ConfigContext);
   const { blurImage } = useContext(UIStateContext);
   const [sideBarOpen, setSideBarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const hasDynamicBlur = options.dynamicBlur === true;
 
   return (
@@ -29,6 +30,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
         ))}
         logoSrc={assets.banner}
+        searchEnabled={!!searchPlaylist}
+        searchBarProps={{
+          query: searchQuery,
+          onQueryChange: (event) => setSearchQuery(event.target.value),
+          onClearButtonClick: () => setSearchQuery(''),
+        }}
       />
       <Sidebar
         isOpen={sideBarOpen}

@@ -2,14 +2,14 @@
 
 exports[`<Logo/> renders and matches snapshot 1`] = `
 <div>
-  <div
-    class="brand"
+  <a
+    href="/"
   >
     <img
       alt="logo"
       class="logo"
       src="123"
     />
-  </div>
+  </a>
 </div>
 `;

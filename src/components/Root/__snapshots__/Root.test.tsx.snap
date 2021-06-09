@@ -14,7 +14,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
         >
           <div
             aria-label="open menu"
-            class="iconButton"
+            class="iconButton iconButton"
             role="button"
             tabindex="0"
           >

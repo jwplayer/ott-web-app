@@ -47,19 +47,65 @@
 }
 
 //
+// Header menu
+//
+.iconButton {
+  width: 36px;
+  height: 36px;
+}
+
+//
+// Header brand
+//
+.brand {
+  align-self: center;
+  margin-right: variables.$base-spacing;
+}
+
+//
 // Header navigation
 //
 .nav {
   display: inline-block;
   flex: 1;
+  align-items: center;
 
   > a {
+    height: 36px;
+    min-height: 36px;
     margin: 0 6px;
   }
 }
 
+//
+// Header search
+//
 .search {
   width: 180px;
+}
+
+//
+// Header mobile search
+//
+.mobileSearch {
+  position: absolute;
+  right: 0;
+  left: 0;
+  display: flex;
+
+  > div:first-child {
+    flex: 1;
+  }
+}
+
+//
+// Header modifier when mobile search is active
+//
+.mobileSearchActive {
+  .menu,
+  .brand {
+    display: none;
+  }
 }
 
 //
@@ -76,8 +122,18 @@
     display: block;
   }
 
+  .brand {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+  }
+
   .nav {
     display: none;
+  }
+
+  .search {
+    text-align: right;
   }
 }
 
@@ -87,22 +143,16 @@
   }
 
   .menu {
-    transition: opacity 0.2s ease;
+    width: 40px;
   }
 
   .search {
-    width: 25px;
+    width: 40px;
   }
 }
 
 @include responsive.tablet-only() {
   .menu {
     width: 180px;
-  }
-}
-
-@include responsive.desktop-only() {
-  .nav {
-    text-align: center;
   }
 }
