@@ -43,7 +43,7 @@ exports[`<Layout /> renders layout 1`] = `
         >
           <a
             aria-current="page"
-            class="button text active"
+            class="button default text active"
             href="/"
           >
             <span>
@@ -51,7 +51,7 @@ exports[`<Layout /> renders layout 1`] = `
             </span>
           </a>
           <a
-            class="button text"
+            class="button default text"
             href="/u"
           >
             <span>

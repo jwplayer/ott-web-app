@@ -10,11 +10,8 @@
   min-height: 38px;
   padding: 0 16px;
 
-  color: theme.$btn-default-color;
-  background-color: theme.$btn-default-bg;
-
-  font-family: theme.$body-alt-font-family;
   font-size: 16px;
+  font-family: theme.$body-alt-font-family;
   line-height: 18px;
   text-align: center;
   text-decoration: none;
@@ -26,55 +23,46 @@
     height: 18px;
     width: 18px;
   }
-
-  &.fullWidth {
-    width: 100%;
-  }
-  &.outlined {
-    border: 1px solid rgba(255, 255, 255, 0.3);
+  &:hover {
+    transform: scale(1.1);
   }
 
-  &.primary,
-  &.active:not(.text) {
+  &.default {
+    color: theme.$btn-default-color;
+    background-color: theme.$btn-default-bg;
+  }
+  &.primary {
     color: var(--highlight-contrast-color, white);
     background-color: var(--highlight-color, black);
-    &.outlined {
-      border-color: var(--highlight-color, white);
+  }
+
+  &.outlined {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    &.active {
+      background-color: var(--highlight-color, black);
+      border: none;
+      &:hover {
+        transform: none;
+      }
     }
   }
   &.text {
-    font-size: 18px;
-    font-weight: 700;
     opacity: 0.7;
-    &:not(:hover) {
-      background: none;
+    background: none;
+    &:hover {
+      background: theme.$btn-default-bg;
+      opacity: 1;
+      transform: scale(1.1);
     }
     &.active {
       opacity: 1;
     }
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    &:hover:not(.active),
-    &:focus:not(.active),
-    &:hover:is(.text),
-    &:focus:is(.text),
-    &:active {
-      z-index: 1;
-      opacity: 1;
-      transform: scale(1.1);
-      &.fullWidth {
-        transform: scale(1.04);
-      }
-      &.outlined {
-        border-color: white;
-      }
-    }
-    &:hover &:focus.active {
-      transform: scale(1.1);
-      &.fullWidth {
-        transform: scale(1.04);
-      }
+  &.fullWidth {
+    width: 100%;
+    &:hover {
+      transform: scale(1.04);
     }
   }
 }

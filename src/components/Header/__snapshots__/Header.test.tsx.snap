@@ -42,7 +42,7 @@ exports[`<Header /> renders header 1`] = `
       >
         <a
           aria-current="page"
-          class="button outlined active"
+          class="button default outlined active"
           href="/"
         >
           <span>

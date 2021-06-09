@@ -52,6 +52,10 @@
 .nav {
   display: inline-block;
   flex: 1;
+  > a {
+    font-size: 18px;
+    font-weight: 700;
+  }
 }
 
 .search {
