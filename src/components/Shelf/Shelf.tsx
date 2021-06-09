@@ -28,14 +28,13 @@ export const featuredTileBreakpoints: Breakpoints = {
 };
 
 export type ShelfProps = {
-  playlist: Playlist | undefined;
+  playlist: Playlist;
   onCardClick: (playlistItem: PlaylistItem) => void;
   onCardHover: (playlistItem: PlaylistItem) => void;
   featured?: boolean;
   loading?: boolean;
+  error?: unknown;
 };
-
-const placeholderItems = new Array(15).fill({});
 
 const Shelf: React.FC<ShelfProps> = ({
   playlist,
@@ -43,6 +42,7 @@ const Shelf: React.FC<ShelfProps> = ({
   onCardHover,
   featured = false,
   loading = false,
+  error = null,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const [didSlideBefore, setDidSlideBefore] = useState(false);
@@ -55,17 +55,17 @@ const Shelf: React.FC<ShelfProps> = ({
     doSlide();
   };
 
-  if (!playlist) return null;
+  if (error) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
-      {!featured && <h2 className={styles['title']}>{loading ? '...' : playlist.title}</h2>}
-      <TileDock<PlaylistItem | number>
-        items={loading ? placeholderItems : playlist.playlist}
+      {!featured && <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{playlist.title}</h2>}
+      <TileDock<PlaylistItem>
+        items={playlist.playlist}
         tilesToShow={tilesToShow}
         cycleMode={'restart'}
-        showControls={!matchMedia('(hover: none)').matches}
-        transitionTime={loading ? '0s' : '0.3s'}
+        showControls={!matchMedia('(hover: none)').matches && !loading}
+        transitionTime={'0.3s'}
         spacing={8}
         renderLeftControl={(doSlide) => (
           <div
@@ -97,24 +97,19 @@ const Shelf: React.FC<ShelfProps> = ({
             <ChevronRight />
           </div>
         )}
-        renderTile={(item, isInView) => {
-          if (loading || typeof item === 'number') {
-            return <Card title={'...'} duration={0} featured={featured} />;
-          }
-
-          return (
-            <Card
-              title={item.title}
-              duration={item.duration}
-              posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
-              seriesId={item.seriesId}
-              onClick={() => (isInView ? onCardClick(item) : null)}
-              onHover={() => onCardHover(item)}
-              featured={featured}
-              disabled={!isInView}
-            />
-          );
-        }}
+        renderTile={(item, isInView) => (
+          <Card
+            title={item.title}
+            duration={item.duration}
+            posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
+            seriesId={item.seriesId}
+            onClick={() => (isInView ? onCardClick(item) : null)}
+            onHover={() => onCardHover(item)}
+            featured={featured}
+            disabled={!isInView}
+            loading={loading}
+          />
+        )}
       />
     </div>
   );
