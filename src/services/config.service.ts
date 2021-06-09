@@ -13,6 +13,7 @@ const contentSchema: SchemaOf<Content> = object({
 const menuSchema: SchemaOf<Menu> = object().shape({
   label: string().defined(),
   playlistId: string().defined(),
+  filterTags: string().notRequired(),
 });
 
 const optionsSchema: SchemaOf<Options> = object({

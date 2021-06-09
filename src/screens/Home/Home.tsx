@@ -109,6 +109,7 @@ const Home = (): JSX.Element => {
             scrollTop={scrollTop}
             width={document.body.offsetWidth}
             isScrollingOptOut
+            overscanRowCount={3}
           />
         )}
       </WindowScroller>

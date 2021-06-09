@@ -15,6 +15,7 @@
 
 .title {
   width: 100%;
+  min-height: 28px;
   margin-bottom: 12px;
   overflow: hidden;
   color: var(--card-color);
@@ -46,4 +47,8 @@
       transform: none;
     }
   }
+}
+.error {
+  color: var(--card-color);
+  font-family: var(--body-alt-font-family);
 }

@@ -15,6 +15,7 @@ type CardProps = {
   posterAspect?: '1:1' | '2:1' | '2:3' | '4:3' | '5:3' | '16:9' | '9:16';
   featured?: boolean;
   disabled?: boolean;
+  loading?: boolean;
 };
 
 function Card({
@@ -27,6 +28,7 @@ function Card({
   posterAspect = '16:9',
   featured = false,
   disabled = false,
+  loading = false,
 }: CardProps): JSX.Element {
   const cardClassName = classNames(styles.card, { [styles.featured]: featured, [styles.disabled]: disabled });
   const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`]);
@@ -51,14 +53,16 @@ function Card({
       aria-label={`Play ${title}`}
     >
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
-        <div className={styles.meta}>
-          <div className={styles.title}>{featured ? title : ''}</div>
-          {metaData()}
-        </div>
+        {!loading && (
+          <div className={styles.meta}>
+            {featured && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
+            {metaData()}
+          </div>
+        )}
       </div>
       {!featured && (
         <div className={styles.titleContainer}>
-          <div className={styles.title}>{title}</div>
+          <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>
       )}
     </div>
