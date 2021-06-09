@@ -29,7 +29,8 @@
     "menu": [
         {
             "label": "All Movies",
-            "playlistId": "4fgzPjpv"
+            "playlistId": "4fgzPjpv",
+            "filterTags": "Action,Comedy,Drama,Fantasy"
         }
     ],
     "options": {

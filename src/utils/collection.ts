@@ -1,13 +1,14 @@
+import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
-const getCategoriesFromPlaylist = (playlist: PlaylistItem[]) =>
-  playlist.reduce(
-    (categories: string[], item) =>
-      categories.includes(item.genre) || !item.genre ? categories : categories.concat(item.genre),
-    [],
-  );
+const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
+  const menuItem = config.menu.find((item) => item.playlistId === playlistId);
+  const filters = menuItem?.filterTags?.split(',');
 
-const filterPlaylistCategory = (playlist: PlaylistItem[], filter: string) => {
+  return filters || [];
+};
+
+const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
   if (!filter) return playlist;
 
   return playlist.filter(({ genre }) => genre === filter);
@@ -22,4 +23,4 @@ const chunk = <T>(input: T[], size: number) => {
 const findPlaylistImageForWidth = (playlistItem: PlaylistItem, width: number): string =>
   playlistItem.images.find((img) => img.width === width)?.src || playlistItem.image;
 
-export { getCategoriesFromPlaylist, filterPlaylistCategory, chunk, findPlaylistImageForWidth };
+export { getFiltersFromConfig, filterPlaylist, chunk, findPlaylistImageForWidth };
