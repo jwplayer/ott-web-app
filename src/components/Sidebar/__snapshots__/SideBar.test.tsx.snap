@@ -38,7 +38,17 @@ exports[`<SideBar /> renders sideBar 1`] = `
     </div>
     <nav
       class="group"
-    />
+    >
+      <a
+        aria-current="page"
+        class="button outlined active"
+        href="/"
+      >
+        <span>
+          Home
+        </span>
+      </a>
+    </nav>
   </div>
 </div>
 `;

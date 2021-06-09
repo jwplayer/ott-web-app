@@ -42,7 +42,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
           class="nav"
         >
           <a
-            class="link"
+            class="button text"
             href="/"
           >
             <span>
@@ -50,7 +50,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
             </span>
           </a>
           <a
-            class="link"
+            class="button text"
             href="/u"
           >
             <span>

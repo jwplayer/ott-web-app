@@ -3,7 +3,7 @@
 exports[`<Button> renders and matches snapshot 1`] = `
 <div>
   <button
-    class="button active undefined outlined"
+    class="button outlined active"
   >
     <span>
       aa

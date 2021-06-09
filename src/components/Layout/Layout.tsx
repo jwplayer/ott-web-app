@@ -1,6 +1,6 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
 
-import ButtonLink from '../ButtonLink/ButtonLink';
+import Button from '../Button/Button';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
@@ -24,11 +24,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     <div className={styles.layout}>
       {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
       <Header onMenuButtonClick={() => setSideBarOpen(true)} logoSrc={assets.banner}>
-        <ButtonLink label="Home" to="/" />
+        <Button label="Home" to="/" variant="text" />
         {menu.map((item) => (
-          <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
+          <Button key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} variant="text" />
         ))}
-        <ButtonLink label="Settings" to="/u" />
+        <Button label="Settings" to="/u" variant="text" />
       </Header>
       <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
         <MenuButton label="Home" to="/" tabIndex={sideBarOpen ? 0 : -1} />

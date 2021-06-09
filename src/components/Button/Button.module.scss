@@ -35,21 +35,30 @@
   }
 
   &.primary,
-  &.active {
+  &.active:not(.text) {
     color: var(--highlight-contrast-color, white);
     background-color: var(--highlight-color, black);
     &.outlined {
       border-color: var(--highlight-color, white);
     }
   }
-  &.text:not(:hover):not(.active) {
-    background: none;
+  &.text {
+    font-size: 18px;
+    font-weight: 700;
     opacity: 0.7;
+    &:not(:hover) {
+      background: none;
+    }
+    &.active {
+      opacity: 1;
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {
     &:hover:not(.active),
     &:focus:not(.active),
+    &:hover:is(.text),
+    &:focus:is(.text),
     &:active {
       z-index: 1;
       opacity: 1;
@@ -61,7 +70,7 @@
         border-color: white;
       }
     }
-    &:focus.active {
+    &:hover &:focus.active {
       transform: scale(1.1);
       &.fullWidth {
         transform: scale(1.04);
