@@ -27,8 +27,8 @@ const parseMarkdown = (value: string): string =>
     })
     .replace(LINEBREAK_REGEX, '<br />'); // linebreak formatter should run last
 
-const MarkDown: React.FC<Props> = ({ markdownString }: Props) => {
+const Markdown: React.FC<Props> = ({ markdownString }: Props) => {
   return <div dangerouslySetInnerHTML={{ __html: parseMarkdown(markdownString) }} />;
 };
 
-export default MarkDown;
+export default Markdown;
