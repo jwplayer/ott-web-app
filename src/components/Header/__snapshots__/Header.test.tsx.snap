@@ -39,34 +39,7 @@ exports[`<Header /> renders header 1`] = `
       <nav
         aria-label="menu"
         class="nav"
-      >
-        <a
-          aria-current="page"
-          class="link active"
-          href="/"
-        >
-          <span>
-            Home
-          </span>
-        </a>
-        <a
-          aria-current="page"
-          class="link active"
-          href="/"
-        >
-          <span>
-            Home
-          </span>
-        </a>
-        <a
-          class="link"
-          href="/u"
-        >
-          <span>
-            Settings
-          </span>
-        </a>
-      </nav>
+      />
       <div
         class="search"
       />

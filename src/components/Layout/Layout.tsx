@@ -23,17 +23,16 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <div className={styles.layout}>
       {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
-      <Header
-        onMenuButtonClick={() => setSideBarOpen(true)}
-        playlistMenuItems={menu.map((item) => (
+      <Header onMenuButtonClick={() => setSideBarOpen(true)} logoSrc={assets.banner}>
+        <ButtonLink label="Home" to="/" />
+        {menu.map((item) => (
           <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
         ))}
-        logoSrc={assets.banner}
-      />
-      <Sidebar
-        isOpen={sideBarOpen}
-        onClose={() => setSideBarOpen(false)}
-        playlistMenuItems={menu.map((item) => (
+        <ButtonLink label="Settings" to="/u" />
+      </Header>
+      <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
+        <MenuButton label="Home" to="/" tabIndex={sideBarOpen ? 0 : -1} />
+        {menu.map((item) => (
           <MenuButton
             key={item.playlistId}
             label={item.label}
@@ -41,7 +40,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             tabIndex={sideBarOpen ? 0 : -1}
           />
         ))}
-      />
+        <hr className={styles.divider} />
+        <MenuButton label="Settings" to="/u" tabIndex={sideBarOpen ? 0 : -1} />
+      </Sidebar>
       {children}
     </div>
   );

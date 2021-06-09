@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { ReactFragment } from 'react';
 import classNames from 'classnames';
 
-import ButtonLink from '../ButtonLink/ButtonLink';
 import Logo from '../Logo/Logo';
 import Menu from '../../icons/Menu';
 import IconButton from '../../components/IconButton/IconButton';
@@ -13,11 +12,11 @@ type TypeHeader = 'static' | 'fixed';
 type Props = {
   headerType?: TypeHeader;
   onMenuButtonClick: () => void;
-  playlistMenuItems: JSX.Element[];
   logoSrc?: string;
+  children?: ReactFragment;
 };
 
-const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, playlistMenuItems, logoSrc }) => {
+const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, children, logoSrc }) => {
   return (
     <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>
@@ -28,9 +27,7 @@ const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, pla
         </div>
         {logoSrc && <Logo src={logoSrc} />}
         <nav className={styles.nav} aria-label="menu">
-          <ButtonLink label="Home" to="/" />
-          {playlistMenuItems}
-          <ButtonLink label="Settings" to="/u" />
+          {children}
         </nav>
         <div className={styles.search}></div>
       </div>
