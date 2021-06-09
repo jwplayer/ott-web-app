@@ -22,9 +22,9 @@ export const tileBreakpoints: Breakpoints = {
 export const featuredTileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
   [Breakpoint.sm]: 1,
-  [Breakpoint.md]: 2,
-  [Breakpoint.lg]: 2,
-  [Breakpoint.xl]: 2,
+  [Breakpoint.md]: 1,
+  [Breakpoint.lg]: 1,
+  [Breakpoint.xl]: 1,
 };
 
 export type ShelfProps = {
