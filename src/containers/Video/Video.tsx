@@ -58,7 +58,7 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
       play={play}
       startPlay={startPlay}
       goBack={goBack}
-      posterFading={posterFading}
+      poster={posterFading ? 'fading' : 'normal'}
       relatedShelf={
         config.recommendationsPlaylist ? (
           <Shelf

@@ -12,19 +12,22 @@ import ArrowLeft from '../../icons/ArrowLeft';
 import Play from '../../icons/Play';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
+import { formatDuration } from '../../utils/formatting';
 
 import styles from './Video.module.scss';
+
+type Poster = 'fading' | 'normal';
 
 type Props = {
   item: PlaylistItem;
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
-  posterFading: boolean;
+  poster: Poster;
   relatedShelf?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, relatedShelf }: Props) => {
+const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
@@ -35,7 +38,7 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
 
   const metaData = [];
   if (item.pubdate) metaData.push(new Date(item.pubdate).getFullYear());
-  if (item.duration) metaData.push(`${Math.floor(item.duration / 60)}h ${item.duration % 60}m`);
+  if (item.duration) metaData.push(formatDuration(item.duration));
   if (item.genre) metaData.push(item.genre);
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
@@ -49,7 +52,7 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
 
   return (
     <div className={styles.video}>
-      <div className={classNames(styles.main, { [styles.hidden]: play })}>
+      <div className={classNames(styles.main, { [styles.hidden]: play, [styles.posterNormal]: poster === 'normal' })}>
         <div className={styles.info}>
           <h2 className={styles.title}>{item.title}</h2>
           <div className={styles.meta}>{metaString}</div>
@@ -65,13 +68,18 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
             />
           </div>
           <div className={styles.otherButtons}>
-            <Button label={'Trailer'} startIcon={<PlayTrailer />} onClick={() => null} />
+            <Button
+              label={'Trailer'}
+              startIcon={<PlayTrailer />}
+              onClick={() => null}
+              fullWidth={breakpoint < Breakpoint.sm}
+            />
             <Button label={'Favorite'} startIcon={<Favorite />} onClick={() => null} />
             <Button label={'Share'} startIcon={<Share />} onClick={() => null} />
           </div>
         </div>
         <div
-          className={classNames(styles.poster, posterFading ? styles.posterFading : styles.posterNormal)}
+          className={classNames(styles.poster, styles[poster])}
           style={{ backgroundImage: `url('${posterImage}')` }}
         />
       </div>
