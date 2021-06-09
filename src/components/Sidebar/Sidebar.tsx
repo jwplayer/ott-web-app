@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import MenuButton from '../../components/MenuButton/MenuButton';
 import IconButton from '../../components/IconButton/IconButton';
@@ -14,6 +15,8 @@ type SidebarProps = {
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, playlistMenuItems }) => {
+  const { t } = useTranslation('menu');
+
   return (
     <Fragment>
       <div
@@ -28,15 +31,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, playlistMenuItems })
         })}
       >
         <div className={styles.heading}>
-          <IconButton onClick={onClose} aria-label="close menu" tabIndex={isOpen ? 0 : -1}>
+          <IconButton onClick={onClose} aria-label={t('close_menu')} tabIndex={isOpen ? 0 : -1}>
             <Close />
           </IconButton>
         </div>
         <nav className={styles.group} onClick={onClose}>
-          <MenuButton label="Home" to="/" tabIndex={isOpen ? 0 : -1} />
+          <MenuButton label={t('home')} to="/" tabIndex={isOpen ? 0 : -1} />
           {playlistMenuItems}
           <hr className={styles.divider} />
-          <MenuButton label="Settings" to="/u" tabIndex={isOpen ? 0 : -1} />
+          <MenuButton label={t('settings')} to="/u" tabIndex={isOpen ? 0 : -1} />
         </nav>
       </div>
     </Fragment>

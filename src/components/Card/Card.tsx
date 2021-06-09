@@ -1,5 +1,6 @@
 import React, { KeyboardEvent, memo } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import { formatDurationTag } from '../../utils/formatting';
 
@@ -28,6 +29,7 @@ function Card({
   featured = false,
   disabled = false,
 }: CardProps): JSX.Element {
+  const { t } = useTranslation('common');
   const cardClassName = classNames(styles.card, { [styles.featured]: featured, [styles.disabled]: disabled });
   const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`]);
   const metaData = () => {
@@ -48,7 +50,7 @@ function Card({
         (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()
       }
       role="button"
-      aria-label={`Play ${title}`}
+      aria-label={t('play_item', { title })}
     >
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
         <div className={styles.meta}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import CollapsibleText from '../CollapsibleText/CollapsibleText';
 import Cinema from '../../containers/Cinema/Cinema';
@@ -28,6 +29,7 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
+  const { t } = useTranslation(['video', 'common']);
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const isMobile = breakpoint === Breakpoint.xs;
   const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
@@ -57,7 +59,7 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
           <div className={styles.playButton}>
             <Button
               color="secondary"
-              label={'Start watching'}
+              label={t('video:start_watching')}
               startIcon={<Play />}
               onClick={startPlay}
               active={play}
@@ -65,9 +67,9 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
             />
           </div>
           <div className={styles.otherButtons}>
-            <Button label={'Trailer'} startIcon={<PlayTrailer />} onClick={() => null} />
-            <Button label={'Favorite'} startIcon={<Favorite />} onClick={() => null} />
-            <Button label={'Share'} startIcon={<Share />} onClick={() => null} />
+            <Button label={t('video:trailer')} startIcon={<PlayTrailer />} onClick={() => null} />
+            <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
+            <Button label={t('video:share')} startIcon={<Share />} onClick={() => null} />
           </div>
         </div>
         <div
@@ -82,7 +84,7 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
             <Cinema item={item} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} />
           </div>
           <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !mouseActive })}>
-            <IconButton aria-label="Back" onClick={goBack}>
+            <IconButton aria-label={t('common:back')} onClick={goBack}>
               <ArrowLeft />
             </IconButton>
             <div className={styles.playerInfo}>

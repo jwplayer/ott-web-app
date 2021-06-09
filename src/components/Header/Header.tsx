@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import ButtonLink from '../ButtonLink/ButtonLink';
 import Logo from '../Logo/Logo';
@@ -18,19 +19,21 @@ type Props = {
 };
 
 const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, playlistMenuItems, logoSrc }) => {
+  const { t } = useTranslation('menu');
+
   return (
     <header className={classNames(styles.header, styles[headerType])}>
       <div className={styles.container}>
         <div className={styles.menu}>
-          <IconButton aria-label="open menu" onClick={onMenuButtonClick}>
+          <IconButton aria-label={t('open_menu')} onClick={onMenuButtonClick}>
             <Menu />
           </IconButton>
         </div>
         {logoSrc && <Logo src={logoSrc} />}
-        <nav className={styles.nav} aria-label="menu">
-          <ButtonLink label="Home" to="/" />
+        <nav className={styles.nav} aria-label={t('menu')}>
+          <ButtonLink label={t('home')} to="/" />
           {playlistMenuItems}
-          <ButtonLink label="Settings" to="/u" />
+          <ButtonLink label={t('settings')} to="/u" />
         </nav>
         <div className={styles.search}></div>
       </div>

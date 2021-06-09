@@ -12,7 +12,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
       class="heading"
     >
       <div
-        aria-label="close menu"
+        aria-label="close_menu"
         class="iconButton"
         role="button"
         tabindex="0"
@@ -46,7 +46,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
         tabindex="0"
       >
         <span>
-          Home
+          home
         </span>
       </a>
       <a
@@ -67,7 +67,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
         tabindex="0"
       >
         <span>
-          Settings
+          settings
         </span>
       </a>
     </nav>
