@@ -12,7 +12,7 @@ exports[`<Header /> renders header 1`] = `
         class="menu"
       >
         <div
-          aria-label="open menu"
+          aria-label="open_menu"
           class="iconButton iconButton"
           role="button"
           tabindex="0"
@@ -42,28 +42,11 @@ exports[`<Header /> renders header 1`] = `
       >
         <a
           aria-current="page"
-          class="link active"
+          class="button default outlined active"
           href="/"
         >
           <span>
             Home
-          </span>
-        </a>
-        <a
-          aria-current="page"
-          class="link active"
-          href="/"
-        >
-          <span>
-            Home
-          </span>
-        </a>
-        <a
-          class="link"
-          href="/u"
-        >
-          <span>
-            Settings
           </span>
         </a>
       </nav>

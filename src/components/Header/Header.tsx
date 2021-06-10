@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { ReactFragment, useState } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import SearchBar, { Props as SearchBarProps } from '../SearchBar/SearchBar';
-import ButtonLink from '../ButtonLink/ButtonLink';
 import Logo from '../Logo/Logo';
 import Menu from '../../icons/Menu';
 import SearchIcon from '../../icons/Search';
@@ -17,24 +17,25 @@ type TypeHeader = 'static' | 'fixed';
 type Props = {
   headerType?: TypeHeader;
   onMenuButtonClick: () => void;
-  playlistMenuItems: JSX.Element[];
   logoSrc?: string;
   searchBarProps: SearchBarProps;
   searchEnabled: boolean;
   onCloseSearchButtonClick?: () => void;
+  children?: ReactFragment;
 };
 
 const Header: React.FC<Props> = (
   {
+    children,
     headerType = 'static',
     onMenuButtonClick,
-    playlistMenuItems,
     logoSrc,
     searchBarProps,
     searchEnabled,
     onCloseSearchButtonClick,
   }
   ) => {
+    const { t } = useTranslation('menu');
     const [mobileSearchActive, setMobileSearchActive] = useState(false);
     const breakpoint = useBreakpoint();
     const headerClassName = classNames(styles.header, styles[headerType], {
@@ -71,7 +72,7 @@ const Header: React.FC<Props> = (
       <header className={headerClassName}>
         <div className={styles.container}>
           <div className={styles.menu}>
-            <IconButton className={styles.iconButton} aria-label="open menu" onClick={onMenuButtonClick}>
+            <IconButton className={styles.iconButton} aria-label={t('open_menu')} onClick={onMenuButtonClick}>
               <Menu />
             </IconButton>
           </div>
@@ -81,9 +82,7 @@ const Header: React.FC<Props> = (
             </div>
           )}
           <nav className={styles.nav} aria-label="menu">
-            <ButtonLink label="Home" to="/" />
-            {playlistMenuItems}
-            <ButtonLink label="Settings" to="/u" />
+            {children}
           </nav>
           <div className={styles.search}>{searchEnabled ? search : null}</div>
         </div>
