@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MarkdownComponent> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    This is a test markdown string with a 
+    <a
+      href="https://www.example.com"
+      target="_blank"
+    >
+      testlink
+    </a>
+  </div>
+</div>
+`;

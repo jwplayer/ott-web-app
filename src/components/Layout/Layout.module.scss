@@ -1,9 +1,33 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
 
-.Layout {
+.layout {
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main {
+  flex: 1;
+}
+.footer {
+  color: var(--primary-color);
+  font-family: var(--body-alt-font-family);
+  font-size: 16px;
+  letter-spacing: 0.15px;
+  text-align: center;
+  padding: 20px 40px;
+  line-height: 18px;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2);
+
+  > div > a,
+  a:visited,
+  a:active,
+  a:hover {
+    color: white;
+    text-decoration: none;
+  }
 }
 .divider {
   width: 270px;
