@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { GridCellProps } from 'react-virtualized';
 import type { PlaylistItem } from 'types/playlist';
@@ -49,10 +49,6 @@ function Playlist({
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, id));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
-
-  useEffect(() => {
-    filteredPlaylist?.length && updateBlurImage(filteredPlaylist?.[0].image);
-  }, [filteredPlaylist, updateBlurImage]);
 
   if (error || !playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
