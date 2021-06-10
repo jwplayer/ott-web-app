@@ -1,15 +1,22 @@
-import React, { createContext, FunctionComponent, ReactNode, useCallback, useState } from 'react';
+import React, { createContext, FunctionComponent, ReactNode, useCallback, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-export type UpdateBlurImage = (image: string) => void;
-export type BlurImage = string;
+import { debounce } from '../utils/common';
+
 export type UIContext = {
-  blurImage: BlurImage;
-  updateBlurImage: UpdateBlurImage;
+  blurImage: string;
+  searchQuery: string;
+  updateBlurImage: (image: string) => void;
+  updateSearchQuery: (searchQuery: string) => void;
+  resetSearchQuery: () => void;
 };
 
 const defaultContext: UIContext = {
   blurImage: '',
-  updateBlurImage: () => '',
+  searchQuery: '',
+  updateBlurImage: () => undefined,
+  updateSearchQuery: () => undefined,
+  resetSearchQuery: () => undefined,
 };
 
 export const UIStateContext = createContext<UIContext>(defaultContext);
@@ -19,10 +26,26 @@ export type ProviderProps = {
 };
 
 const UIStateProvider: FunctionComponent<ProviderProps> = ({ children }) => {
-  const [blurImage, setBlurImage] = useState<BlurImage>(defaultContext.blurImage);
-  const updateBlurImage: UpdateBlurImage = useCallback((image: BlurImage) => setBlurImage(image), []);
+  const history = useHistory();
+  const [blurImage, setBlurImage] = useState<string>(defaultContext.blurImage);
+  const updateBlurImage = useCallback((image: string) => setBlurImage(image), []);
 
-  return <UIStateContext.Provider value={{ blurImage, updateBlurImage }}>{children}</UIStateContext.Provider>;
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const updateSearchPath = useRef(debounce((query: string) => {
+    history.push(`/q/${encodeURIComponent(query)}`);
+  }, 250));
+
+  const updateSearchQuery = useCallback((query: string) => {
+    setSearchQuery(query);
+    updateSearchPath.current(query);
+  }, []);
+
+  const resetSearchQuery = useCallback(() => {
+    setSearchQuery('');
+    history.push('/')
+  }, [history]);
+
+  return <UIStateContext.Provider value={{ blurImage, searchQuery, updateBlurImage, updateSearchQuery, resetSearchQuery }}>{children}</UIStateContext.Provider>;
 };
 
 export default UIStateProvider;

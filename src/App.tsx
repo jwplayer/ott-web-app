@@ -16,11 +16,11 @@ class App extends Component {
     error: null,
   };
 
-  componentDidCatch(error: Error) {
+  componentDidCatch (error: Error) {
     this.setState({ error });
   }
 
-  render() {
+  render () {
     return (
       <QueryProvider>
         <ConfigProvider
@@ -28,11 +28,11 @@ class App extends Component {
           onLoading={(isLoading: boolean) => console.info(`Loading config: ${isLoading}`)}
           onValidationError={(error: Error) => console.error(`Config ${error}`)}
         >
-          <UIStateProvider>
-            <Router>
+          <Router>
+            <UIStateProvider>
               <Root error={this.state.error} />
-            </Router>
-          </UIStateProvider>
+            </UIStateProvider>
+          </Router>
         </ConfigProvider>
       </QueryProvider>
     );

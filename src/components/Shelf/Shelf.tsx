@@ -55,7 +55,7 @@ const Shelf: React.FC<ShelfProps> = ({
     doSlide();
   };
 
-  if (error) return <h2 className={styles.error}>Could not load items</h2>;
+  if (error || !playlist?.playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })}>

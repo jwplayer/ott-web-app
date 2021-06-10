@@ -1,0 +1,39 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+.errorPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+}
+
+.box {
+  max-width: 500px;
+  padding: 12px;
+  font-family: theme.$body-font-family;
+}
+
+.title {
+  margin-bottom: 24px;
+  font-size: 34px;
+  font-weight: 700;
+  color: variables.$white;
+}
+
+.main {
+  color: variables.$white;
+
+  > h6 {
+    margin-bottom: 16px;
+    font-weight: 700;
+    font-size: 20px;
+  }
+}
+
+@include responsive.mobile-only() {
+  .title {
+    font-size: 24px;
+  }
+}

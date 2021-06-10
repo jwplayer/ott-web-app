@@ -21,6 +21,7 @@ type Props = {
   logoSrc?: string;
   searchBarProps: SearchBarProps;
   searchEnabled: boolean;
+  onCloseSearchButtonClick?: () => void;
 };
 
 const Header: React.FC<Props> = (
@@ -31,6 +32,7 @@ const Header: React.FC<Props> = (
     logoSrc,
     searchBarProps,
     searchEnabled,
+    onCloseSearchButtonClick,
   }
   ) => {
     const [mobileSearchActive, setMobileSearchActive] = useState(false);
@@ -43,7 +45,17 @@ const Header: React.FC<Props> = (
       mobileSearchActive ? (
         <div className={styles.mobileSearch}>
           <SearchBar {...searchBarProps} />
-          <IconButton className={styles.iconButton} aria-label="Close search" onClick={() => setMobileSearchActive(false)}>
+          <IconButton
+            className={styles.iconButton}
+            aria-label="Close search"
+            onClick={() => {
+              setMobileSearchActive(false);
+
+              if (onCloseSearchButtonClick) {
+                onCloseSearchButtonClick();
+              }
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </div>

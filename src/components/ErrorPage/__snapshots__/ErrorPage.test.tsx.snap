@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ErrorPage> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="errorPage"
+  >
+    <div
+      class="box"
+    >
+      <header>
+        <h1
+          class="title"
+        >
+          This is the title
+        </h1>
+      </header>
+      <main
+        class="main"
+      >
+        This is the content
+      </main>
+    </div>
+  </div>
+</div>
+`;
