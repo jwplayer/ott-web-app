@@ -37,7 +37,7 @@
         "backgroundColor": "#000000",
         "highlightColor": "#DD0000",
         "enableContinueWatching": true,
-        "headerBackground": "#00DD00",
+        "headerBackground": "#080808",
         "enableCasting": true,
         "enableSharing": true,
         "dynamicBlur": true,
