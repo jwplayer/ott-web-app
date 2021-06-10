@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { ReactFragment } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import ButtonLink from '../ButtonLink/ButtonLink';
 import Logo from '../Logo/Logo';
 import Menu from '../../icons/Menu';
 import IconButton from '../../components/IconButton/IconButton';
@@ -14,11 +13,11 @@ type TypeHeader = 'static' | 'fixed';
 type Props = {
   headerType?: TypeHeader;
   onMenuButtonClick: () => void;
-  playlistMenuItems: JSX.Element[];
   logoSrc?: string;
+  children?: ReactFragment;
 };
 
-const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, playlistMenuItems, logoSrc }) => {
+const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, children, logoSrc }) => {
   const { t } = useTranslation('menu');
 
   return (
@@ -30,10 +29,8 @@ const Header: React.FC<Props> = ({ headerType = 'static', onMenuButtonClick, pla
           </IconButton>
         </div>
         {logoSrc && <Logo src={logoSrc} />}
-        <nav className={styles.nav} aria-label={t('menu')}>
-          <ButtonLink label={t('home')} to="/" />
-          {playlistMenuItems}
-          <ButtonLink label={t('settings')} to="/u" />
+        <nav className={styles.nav} aria-label="menu">
+          {children}
         </nav>
         <div className={styles.search}></div>
       </div>

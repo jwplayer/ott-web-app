@@ -10,17 +10,12 @@
   min-height: 38px;
   padding: 0 16px;
 
-  color: var(--highlight-color, white);
-  font-family: theme.$body-alt-font-family;
   font-size: 16px;
+  font-family: theme.$body-alt-font-family;
   line-height: 18px;
   text-align: center;
   text-decoration: none;
-
-  background-color: theme.$btn-primary-bg;
-  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
-
   cursor: pointer;
   transition: background-color 0.1s ease, transform 0.1s ease;
 
@@ -28,42 +23,46 @@
     height: 18px;
     width: 18px;
   }
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.default {
+    color: theme.$btn-default-color;
+    background-color: theme.$btn-default-bg;
+  }
+  &.primary {
+    color: var(--highlight-contrast-color, white);
+    background-color: var(--highlight-color, black);
+  }
+
+  &.outlined {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    &.active {
+      background-color: var(--highlight-color, black);
+      border: none;
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+  &.text {
+    opacity: 0.7;
+    background: none;
+    &:hover {
+      background: theme.$btn-default-bg;
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    &.active {
+      opacity: 1;
+    }
+  }
 
   &.fullWidth {
     width: 100%;
-  }
-
-  &.secondary {
-    background-color: theme.$btn-secondary-bg;
-  }
-
-  &.active {
-    color: var(--background-color, black);
-    background-color: var(--highlight-color, white);
-    border-color: var(--highlight-color, white);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover:not(.active),
-    &:focus:not(.active),
-    &:active {
-      z-index: 1;
-      background-color: rgba(variables.$black, 0.8);
-      border-color: var(--highlight-color, white);
-      opacity: 1;
-      transform: scale(1.1);
-      &.secondary {
-        background-color: theme.$btn-secondary-bg;
-      }
-      &.fullWidth {
-        transform: scale(1.04);
-      }
-    }
-    &:focus.active {
-      transform: scale(1.1);
-      &.fullWidth {
-        transform: scale(1.04);
-      }
+    &:hover {
+      transform: scale(1.04);
     }
   }
 }

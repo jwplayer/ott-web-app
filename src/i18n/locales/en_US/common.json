@@ -1,7 +1,9 @@
 {
   "back": "Back",
   "close": "Close menu",
+  "home": "Home",
   "play_item": "Play {{ title }}",
+  "settings": "Settings",
   "slide_left": "Slide left",
   "slide_right": "Slide right"
 }

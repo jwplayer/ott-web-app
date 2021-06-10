@@ -32,6 +32,7 @@ export type Content = {
 export type Menu = {
   label: string;
   playlistId: string;
+  filterTags?: string;
 };
 
 export type Options = {

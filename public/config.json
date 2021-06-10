@@ -29,14 +29,15 @@
     "menu": [
         {
             "label": "All Movies",
-            "playlistId": "4fgzPjpv"
+            "playlistId": "4fgzPjpv",
+            "filterTags": "Action,Comedy,Drama,Fantasy"
         }
     ],
     "options": {
         "backgroundColor": "#000000",
         "highlightColor": "#DD0000",
         "enableContinueWatching": true,
-        "headerBackground": "#00DD00",
+        "headerBackground": "#080808",
         "enableCasting": true,
         "enableSharing": true,
         "dynamicBlur": true,

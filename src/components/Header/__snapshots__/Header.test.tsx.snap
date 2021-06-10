@@ -42,28 +42,11 @@ exports[`<Header /> renders header 1`] = `
       >
         <a
           aria-current="page"
-          class="link active"
-          href="/"
-        >
-          <span>
-            home
-          </span>
-        </a>
-        <a
-          aria-current="page"
-          class="link active"
+          class="button default outlined active"
           href="/"
         >
           <span>
             Home
-          </span>
-        </a>
-        <a
-          class="link"
-          href="/u"
-        >
-          <span>
-            settings
           </span>
         </a>
       </nav>

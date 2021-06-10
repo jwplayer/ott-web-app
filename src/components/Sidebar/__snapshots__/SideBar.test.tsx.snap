@@ -41,33 +41,11 @@ exports[`<SideBar /> renders sideBar 1`] = `
     >
       <a
         aria-current="page"
-        class="menuButton active"
-        href="/"
-        tabindex="0"
-      >
-        <span>
-          home
-        </span>
-      </a>
-      <a
-        aria-current="page"
-        class="link active"
+        class="button default outlined active"
         href="/"
       >
         <span>
           Home
-        </span>
-      </a>
-      <hr
-        class="divider"
-      />
-      <a
-        class="menuButton"
-        href="/u"
-        tabindex="0"
-      >
-        <span>
-          settings
         </span>
       </a>
     </nav>
