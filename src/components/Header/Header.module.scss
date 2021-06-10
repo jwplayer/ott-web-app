@@ -10,6 +10,7 @@
 .header {
   height: variables.$header-height;
   padding: 10px variables.$base-spacing * 4;
+  background: var(--header-background);
 
   //
   // Make header fixed

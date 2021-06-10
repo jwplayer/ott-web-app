@@ -58,7 +58,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     loadAndValidateConfig(configLocation);
   }, [configLocation, onLoading, onValidationError]);
 
-  const setCssVariables = ({ backgroundColor, highlightColor }: Options) => {
+  const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Options) => {
     const root = document.querySelector(':root') as HTMLElement;
 
     if (root && backgroundColor) {
@@ -67,6 +67,9 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
 
     if (root && highlightColor) {
       root.style.setProperty('--highlight-color', highlightColor);
+    }
+    if (root && headerBackground) {
+      root.style.setProperty('--header-background', headerBackground);
     }
   };
 
