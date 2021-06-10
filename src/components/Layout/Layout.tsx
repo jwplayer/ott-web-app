@@ -1,7 +1,7 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 
-import Markdown from '../Markdown/Markdown';
+import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
@@ -62,7 +62,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       </div>
       {!!footerText && (
         <div className={styles.footer}>
-          <Markdown markdownString={footerText} />
+          <MarkdownComponent markdownString={footerText} />
         </div>
       )}
     </div>
