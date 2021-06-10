@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
-import { UIStateContext } from '../../providers/uiStateProvider';
+import { UIStore } from '../../state/UIStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import VideoComponent from '../../components/Video/Video';
 import { cardUrl, videoUrl } from '../../utils/formatting';
@@ -22,7 +22,6 @@ export type VideoProps = {
 const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
-  const { updateBlurImage } = useContext(UIStateContext);
   const play = new URLSearchParams(location.search).get('play') === '1';
   const config: Config = useContext(ConfigContext);
   const posterFading: boolean = config ? config.options.posterFading === true : false;
@@ -37,9 +36,19 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const goBack = () => item && history.push(videoUrl(item, playlistId, false));
 
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
-  const onCardHover = (item: PlaylistItem) => updateBlurImage(item.image);
+  const onCardHover = (item: PlaylistItem) =>
+    UIStore.update((state) => {
+      state.blurImage = item.image;
+    });
 
-  useEffect(() => item && updateBlurImage(item.image), [item, updateBlurImage]);
+  useEffect(
+    () =>
+      item &&
+      UIStore.update((state) => {
+        state.blurImage = item.image;
+      }),
+    [item],
+  );
 
   //todo: series andere playlist
   //todo: currently playing in recommended

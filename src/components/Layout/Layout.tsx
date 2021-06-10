@@ -1,11 +1,11 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
 
+import { UIStore } from '../../state/UIStore';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
-import { UIStateContext } from '../../providers/uiStateProvider';
 import MenuButton from '../../components/MenuButton/MenuButton';
 
 import styles from './Layout.module.scss';
@@ -16,7 +16,7 @@ type LayoutProps = {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   const { menu, assets, options } = useContext(ConfigContext);
-  const { blurImage } = useContext(UIStateContext);
+  const blurImage = UIStore.useState((s) => s.blurImage);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
 

@@ -4,6 +4,7 @@ import type { GridCellProps } from 'react-virtualized';
 import type { PlaylistItem } from 'types/playlist';
 import type { Config } from 'types/Config';
 
+import { UIStore } from '../../state/UIStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { cardUrl } from '../../utils/formatting';
 import VirtualizedGrid from '../../components/VirtualizedGrid/VirtualizedGrid';
@@ -12,7 +13,6 @@ import { filterPlaylist, chunk, findPlaylistImageForWidth, getFiltersFromConfig 
 import Card from '../../components/Card/Card';
 import Filter from '../../components/Filter/Filter';
 import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
-import { UIStateContext } from '../../providers/uiStateProvider';
 
 import styles from './Playlist.module.scss';
 
@@ -34,7 +34,6 @@ function Playlist({
   },
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
-  const { updateBlurImage } = useContext(UIStateContext);
   const config: Config = useContext(ConfigContext);
   const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
 
@@ -48,11 +47,18 @@ function Playlist({
   const playlistRows = chunk<PlaylistItem>(filteredPlaylist, cols[breakpoint]);
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, id));
-  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+  const onCardHover = (playlistItem: PlaylistItem) =>
+    UIStore.update((state) => {
+      state.blurImage = playlistItem.image;
+    });
 
   useEffect(() => {
-    if (filteredPlaylist.length) updateBlurImage(filteredPlaylist[0].image);
-  }, [filter, filteredPlaylist, updateBlurImage]);
+    if (filteredPlaylist.length) {
+      UIStore.update((state) => {
+        state.blurImage = filteredPlaylist[0].image;
+      });
+    }
+  }, [filter, filteredPlaylist]);
 
   if (error || !playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
