@@ -5,7 +5,6 @@ import { I18nextProvider, getI18n } from 'react-i18next';
 import Root from './components/Root/Root';
 import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
-import UIStateProvider from './providers/UIStateProvider';
 
 import './i18n/config';
 import './styles/main.scss';
@@ -33,9 +32,7 @@ class App extends Component {
             onValidationError={(error: Error) => console.error(`Config ${error}`)}
           >
             <Router>
-              <UIStateProvider>
-                <Root error={this.state.error} />
-              </UIStateProvider>
+              <Root error={this.state.error} />
             </Router>
           </ConfigProvider>
         </QueryProvider>

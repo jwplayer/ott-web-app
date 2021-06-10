@@ -2,7 +2,7 @@ import { Store } from 'pullstate';
 
 type UIStore = {
   blurImage: string;
-  searchQuery: '';
+  searchQuery: string;
 };
 
 export const UIStore = new Store<UIStore>({
