@@ -4,12 +4,7 @@ module.exports = {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
-  alias: {
-    '@components': './src/components',
-    '@container': './src/container',
-    '@types': './src/types',
-    '@app': './src',
-  },
+  alias: {},
   plugins: [
     '@snowpack/plugin-postcss',
     '@snowpack/plugin-react-refresh',
