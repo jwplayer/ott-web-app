@@ -1,5 +1,6 @@
 import React, { Fragment, ReactNode } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import Close from '../../icons/Close';
 import IconButton from '../../components/IconButton/IconButton';
@@ -14,6 +15,8 @@ type Props = {
 };
 
 const FilterModal: React.FC<Props> = ({ isOpen, onClose, name, children }) => {
+  const { t } = useTranslation('common');
+
   return (
     <Fragment>
       <div
@@ -22,7 +25,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onClose, name, children }) => {
         })}
       >
         <div className={styles.header}>
-          <IconButton aria-label="close menu" onClick={onClose}>
+          <IconButton aria-label={t('close')} onClick={onClose}>
             <Close />
           </IconButton>
           <h4>{name}</h4>

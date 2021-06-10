@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { I18nextProvider, getI18n } from 'react-i18next';
 
 import Root from './components/Root/Root';
 import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
 import UIStateProvider from './providers/uiStateProvider';
+import './i18n/config';
+
 import './styles/main.scss';
 
 interface State {
@@ -16,25 +19,27 @@ class App extends Component {
     error: null,
   };
 
-  componentDidCatch(error: Error) {
+  componentDidCatch (error: Error) {
     this.setState({ error });
   }
 
-  render() {
+  render () {
     return (
-      <QueryProvider>
-        <ConfigProvider
-          configLocation={window.configLocation}
-          onLoading={(isLoading: boolean) => console.info(`Loading config: ${isLoading}`)}
-          onValidationError={(error: Error) => console.error(`Config ${error}`)}
-        >
-          <UIStateProvider>
+      <I18nextProvider i18n={getI18n()}>
+        <QueryProvider>
+          <ConfigProvider
+            configLocation={window.configLocation}
+            onLoading={(isLoading: boolean) => console.info(`Loading config: ${isLoading}`)}
+            onValidationError={(error: Error) => console.error(`Config ${error}`)}
+          >
             <Router>
-              <Root error={this.state.error} />
+              <UIStateProvider>
+                <Root error={this.state.error} />
+              </UIStateProvider>
             </Router>
-          </UIStateProvider>
-        </ConfigProvider>
-      </QueryProvider>
+          </ConfigProvider>
+        </QueryProvider>
+      </I18nextProvider>
     );
   }
 }

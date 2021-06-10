@@ -83,7 +83,7 @@ const TileDock = <T extends unknown>({
   } as Position);
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
-  const isMultiPage: boolean = items.length > tilesToShow;
+  const isMultiPage: boolean = items?.length > tilesToShow;
   const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow + 1) + transform : 0;
 
   const tileList: Tile<T>[] = useMemo(() => {

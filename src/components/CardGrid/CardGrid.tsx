@@ -1,34 +1,60 @@
 import React from 'react';
+import type { GridCellProps } from 'react-virtualized';
 
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import type { PlaylistItem } from '../../../types/playlist';
+import VirtualizedGrid from '../VirtualizedGrid/VirtualizedGrid';
+import Card from '../Card/Card';
+import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
+import { chunk, findPlaylistImageForWidth } from '../../utils/collection';
 
 import styles from './CardGrid.module.scss';
 
-// TEMP DATA
-const cols = {
+const defaultCols: Breakpoints = {
   [Breakpoint.xs]: 2,
-  [Breakpoint.sm]: 3,
-  [Breakpoint.md]: 4,
-  [Breakpoint.lg]: 5,
-  [Breakpoint.xl]: 6,
+  [Breakpoint.sm]: 2,
+  [Breakpoint.md]: 3,
+  [Breakpoint.lg]: 4,
+  [Breakpoint.xl]: 5,
 };
 
 type CardGridProps = {
-  children: React.ReactNode;
+  playlist: PlaylistItem[];
+  onCardHover: (item: PlaylistItem) => void;
+  onCardClick: (item: PlaylistItem) => void;
+  isLoading: boolean;
+  cols?: Breakpoints;
 };
 
-function CardGrid({ children }: CardGridProps) {
+function CardGrid ({ playlist, onCardClick, onCardHover, isLoading = false, cols = defaultCols }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
+  const isLargeScreen = breakpoint >= Breakpoint.md;
+  const imageSourceWidth = 320 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
+  const rows = chunk<PlaylistItem>(playlist, cols[breakpoint]);
+
+  const cellRenderer = ({ columnIndex, rowIndex, style }: GridCellProps) => {
+    if (!rows[rowIndex][columnIndex]) return;
+
+    const playlistItem: PlaylistItem = rows[rowIndex][columnIndex];
+    const { mediaid, title, duration, seriesId } = playlistItem;
+
+    return (
+      <div className={styles.cell} style={style} key={mediaid}>
+        <Card
+          key={mediaid}
+          title={title}
+          duration={duration}
+          posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
+          seriesId={seriesId}
+          onClick={() => onCardClick(playlistItem)}
+          onHover={() => onCardHover(playlistItem)}
+          loading={isLoading}
+        />
+      </div>
+    );
+  };
 
   return (
-    <div
-      className={styles.cardGrid}
-      style={{
-        gridTemplateColumns: `repeat(${cols[breakpoint]}, minmax(0,1fr))`,
-      }}
-    >
-      {children}
-    </div>
+    <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={50} />
   );
 }
 

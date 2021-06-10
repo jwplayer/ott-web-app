@@ -9,7 +9,7 @@ exports[`<Filter> renders Filter 1`] = `
       class="header"
     >
       <div
-        aria-label="close menu"
+        aria-label="close"
         class="iconButton"
         role="button"
         tabindex="0"
@@ -80,28 +80,28 @@ exports[`<Filter> renders Filter 1`] = `
     class="filterRow"
   >
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         x
       </span>
     </button>
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         y
       </span>
     </button>
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         z
       </span>
     </button>
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         bb

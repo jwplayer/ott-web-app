@@ -1,6 +1,7 @@
 import React, { createContext, FunctionComponent, ReactNode, useEffect, useState } from 'react';
 import merge from 'lodash.merge';
 
+import { calculateContrastColor } from '../utils/common';
 import loadConfig, { validateConfig } from '../services/config.service';
 import type { Config, Options } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
@@ -58,15 +59,20 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     loadAndValidateConfig(configLocation);
   }, [configLocation, onLoading, onValidationError]);
 
-  const setCssVariables = ({ backgroundColor, highlightColor }: Options) => {
+  const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Options) => {
     const root = document.querySelector(':root') as HTMLElement;
 
     if (root && backgroundColor) {
       root.style.setProperty('--background-color', backgroundColor);
+      root.style.setProperty('--background-contrast-color', calculateContrastColor(backgroundColor));
     }
 
     if (root && highlightColor) {
       root.style.setProperty('--highlight-color', highlightColor);
+      root.style.setProperty('--highlight-contrast-color', calculateContrastColor(highlightColor));
+    }
+    if (root && headerBackground) {
+      root.style.setProperty('--header-background', headerBackground);
     }
   };
 

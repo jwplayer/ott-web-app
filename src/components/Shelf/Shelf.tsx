@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Playlist, PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import Card from '../Card/Card';
 import TileDock from '../TileDock/TileDock';
@@ -45,6 +46,7 @@ const Shelf: React.FC<ShelfProps> = ({
   error = null,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
+  const { t } = useTranslation('common')
   const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -55,7 +57,7 @@ const Shelf: React.FC<ShelfProps> = ({
     doSlide();
   };
 
-  if (error) return <h2 className={styles.error}>Could not load items</h2>;
+  if (error || !playlist?.playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
@@ -74,7 +76,7 @@ const Shelf: React.FC<ShelfProps> = ({
             })}
             role="button"
             tabIndex={didSlideBefore ? 0 : -1}
-            aria-label="Slide left"
+            aria-label={t('slide_left')}
             onKeyDown={(event: React.KeyboardEvent) =>
               (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)
             }
@@ -88,7 +90,7 @@ const Shelf: React.FC<ShelfProps> = ({
             className={classNames(styles.chevron)}
             role="button"
             tabIndex={0}
-            aria-label="Slide right"
+            aria-label={t('slide_right')}
             onKeyDown={(event: React.KeyboardEvent) =>
               (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)
             }
