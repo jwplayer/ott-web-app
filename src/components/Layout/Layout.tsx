@@ -19,8 +19,8 @@ type LayoutProps = {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   const { t } = useTranslation('common');
-  const { menu, assets, options, siteName, description, footerText } = useContext(ConfigContext);
-  const { blurImage } = useContext(UIStateContext);
+  const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
+  const { blurImage, searchQuery, updateSearchQuery, resetSearchQuery } = useContext(UIStateContext);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
   const banner = assets.banner;
@@ -41,7 +41,17 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       </Helmet>
       <div className={styles.main}>
         {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
-        <Header onMenuButtonClick={() => setSideBarOpen(true)} logoSrc={banner}>
+        <Header
+          onMenuButtonClick={() => setSideBarOpen(true)}
+          logoSrc={banner}
+          searchEnabled={!!searchPlaylist}
+          searchBarProps={{
+            query: searchQuery,
+            onQueryChange: (event) => updateSearchQuery(event.target.value),
+            onClearButtonClick: () => updateSearchQuery(''),
+          }}
+          onCloseSearchButtonClick={() => resetSearchQuery()}
+        >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
             <Button key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} variant="text" />

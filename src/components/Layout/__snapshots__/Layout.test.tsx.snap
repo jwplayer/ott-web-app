@@ -19,7 +19,7 @@ exports[`<Layout /> renders layout 1`] = `
           >
             <div
               aria-label="open_menu"
-              class="iconButton"
+              class="iconButton iconButton"
               role="button"
               tabindex="0"
             >
