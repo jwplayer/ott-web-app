@@ -1,13 +1,13 @@
 import { useHistory, useLocation } from 'react-router';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
-import { UIStore } from '../../state/UIStore';
+import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import VideoComponent from '../../components/Video/Video';
 import { cardUrl, videoUrl } from '../../utils/formatting';
-import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
+import usePlaylist from '../../hooks/usePlaylist';
 import Shelf from '../Shelf/Shelf';
 
 export type VideoType = 'movie' | 'series';
@@ -26,32 +26,19 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const config: Config = useContext(ConfigContext);
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
-  const { isLoading, error, data: playlist }: UsePlaylistResult = usePlaylist(playlistId);
+  const { isLoading, error, data: { playlist } = { playlist: [] } } = usePlaylist(playlistId);
 
-  const getMovieItem = () => playlist?.playlist?.find((item) => item.mediaid === mediaId);
-  const getSeriesItem = () => playlist?.playlist[0];
+  const updateBlurImage = useBlurImageUpdater(playlist);
+
+  const getMovieItem = () => playlist?.find((item) => item.mediaid === mediaId);
+  const getSeriesItem = () => playlist[0];
   const item = videoType === 'movie' ? getMovieItem() : getSeriesItem();
 
   const startPlay = () => item && history.push(videoUrl(item, playlistId, true));
   const goBack = () => item && history.push(videoUrl(item, playlistId, false));
 
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
-  const onCardHover = (item: PlaylistItem) =>
-    UIStore.update((state) => {
-      state.blurImage = item.image;
-    });
-
-  useEffect(
-    () =>
-      item &&
-      UIStore.update((state) => {
-        state.blurImage = item.image;
-      }),
-    [item],
-  );
-
-  //todo: series andere playlist
-  //todo: currently playing in recommended
+  const onCardHover = (item: PlaylistItem) => updateBlurImage(item.image);
 
   //temp:
   console.info({ episodeId });

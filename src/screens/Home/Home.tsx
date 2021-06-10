@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useEffect, useRef } from 'react';
+import React, { CSSProperties, useContext, useRef } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
@@ -7,11 +7,10 @@ import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
-import { UIStore } from '../../state/UIStore';
+import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import Shelf from '../../containers/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
-import type { UsePlaylistResult } from '../../hooks/usePlaylist';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
@@ -34,13 +33,12 @@ const createItemData = memoize((content) => ({ content }));
 const Home = (): JSX.Element => {
   const history = useHistory();
   const config: Config = useContext(ConfigContext);
-  const blurImage = UIStore.useState((state) => state.blurImage);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config ? config.content : [];
 
-  const usePlaylistArg: string | undefined = content.length ? content[0]?.playlistId : undefined;
-  const { data: firstPlaylist }: UsePlaylistResult = usePlaylist(usePlaylistArg || '');
+  const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
+  const updateBlurImage = useBlurImageUpdater(playlist);
 
   const itemData: ItemData = createItemData(content);
 
@@ -50,10 +48,7 @@ const Home = (): JSX.Element => {
     const contentItem: Content = itemData.content[index];
 
     const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, contentItem.playlistId));
-    const onCardHover = (playlistItem: PlaylistItem) =>
-      UIStore.update((state) => {
-        state.blurImage = playlistItem.image;
-      });
+    const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
     return (
       <div
@@ -88,16 +83,6 @@ const Home = (): JSX.Element => {
 
     return cardHeight + shelfMetaHeight + cardMetaHeight;
   };
-
-  useEffect(() => {
-    if (firstPlaylist?.playlist.length && !blurImage) {
-      const { image } = firstPlaylist.playlist[0];
-
-      UIStore.update((state) => {
-        state.blurImage = image;
-      });
-    }
-  }, [firstPlaylist, blurImage]);
 
   return (
     <div className={styles.home}>
