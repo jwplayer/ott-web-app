@@ -27,6 +27,7 @@
     "classnames": "^2.3.1",
     "lodash.merge": "^4.6.2",
     "memoize-one": "^5.2.1",
+    "pullstate": "^1.22.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.13.10",
