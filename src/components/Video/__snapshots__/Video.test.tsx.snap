@@ -55,7 +55,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Start watching
+              video:start_watching
             </span>
           </button>
         </div>
@@ -83,7 +83,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Trailer
+              video:trailer
             </span>
           </button>
           <button
@@ -107,7 +107,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Favorite
+              video:favorite
             </span>
           </button>
           <button
@@ -131,7 +131,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Share
+              video:share
             </span>
           </button>
         </div>
@@ -156,7 +156,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
         class="playerContent"
       >
         <div
-          aria-label="Back"
+          aria-label="common:back"
           class="iconButton"
           role="button"
           tabindex="0"

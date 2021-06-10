@@ -12,7 +12,7 @@ exports[`<SideBar /> renders sideBar 1`] = `
       class="heading"
     >
       <div
-        aria-label="close menu"
+        aria-label="close_menu"
         class="iconButton"
         role="button"
         tabindex="0"

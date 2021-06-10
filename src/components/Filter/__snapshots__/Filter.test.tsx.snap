@@ -9,7 +9,7 @@ exports[`<Filter> renders Filter 1`] = `
       class="header"
     >
       <div
-        aria-label="close menu"
+        aria-label="close"
         class="iconButton"
         role="button"
         tabindex="0"

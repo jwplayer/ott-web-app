@@ -1,5 +1,6 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 import Button from '../Button/Button';
 import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
@@ -17,6 +18,7 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
+  const { t } = useTranslation('common');
   const { menu, assets, options, siteName, description, footerText } = useContext(ConfigContext);
   const { blurImage } = useContext(UIStateContext);
   const [sideBarOpen, setSideBarOpen] = useState(false);
@@ -40,14 +42,14 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       <div className={styles.main}>
         {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
         <Header onMenuButtonClick={() => setSideBarOpen(true)} logoSrc={banner}>
-          <Button label="Home" to="/" variant="text" />
+          <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
             <Button key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} variant="text" />
           ))}
-          <Button label="Settings" to="/u" variant="text" />
+          <Button label={t('settings')} to="/u" variant="text" />
         </Header>
         <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
-          <MenuButton label="Home" to="/" tabIndex={sideBarOpen ? 0 : -1} />
+          <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
           {menu.map((item) => (
             <MenuButton
               key={item.playlistId}
@@ -57,7 +59,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             />
           ))}
           <hr className={styles.divider} />
-          <MenuButton label="Settings" to="/u" tabIndex={sideBarOpen ? 0 : -1} />
+          <MenuButton label={t('settings')} to="/u" tabIndex={sideBarOpen ? 0 : -1} />
         </Sidebar>
         {children}
       </div>

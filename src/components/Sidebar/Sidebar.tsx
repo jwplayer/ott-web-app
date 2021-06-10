@@ -1,5 +1,6 @@
 import React, { Fragment, ReactFragment } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import IconButton from '../../components/IconButton/IconButton';
 import Close from '../../icons/Close';
@@ -13,6 +14,8 @@ type SidebarProps = {
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
+  const { t } = useTranslation('menu');
+
   return (
     <Fragment>
       <div
@@ -27,7 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
         })}
       >
         <div className={styles.heading}>
-          <IconButton onClick={onClose} aria-label="close menu" tabIndex={isOpen ? 0 : -1}>
+          <IconButton onClick={onClose} aria-label={t('close_menu')} tabIndex={isOpen ? 0 : -1}>
             <Close />
           </IconButton>
         </div>

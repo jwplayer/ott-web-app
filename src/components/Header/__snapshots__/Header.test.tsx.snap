@@ -12,7 +12,7 @@ exports[`<Header /> renders header 1`] = `
         class="menu"
       >
         <div
-          aria-label="open menu"
+          aria-label="open_menu"
           class="iconButton"
           role="button"
           tabindex="0"
