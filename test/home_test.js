@@ -24,7 +24,7 @@ Scenario('Header button navigates to playlist screen', ({ I }) => {
 
 Scenario('Menu button opens the sidebar', ({ I }) => {
   I.amOnPage('http://localhost:8080');
-  I.click('[aria-label="open menu"]');
+  I.click('[aria-label="Open menu"]');
   I.see('Home');
   I.see('All Movies');
   I.see('Settings');
