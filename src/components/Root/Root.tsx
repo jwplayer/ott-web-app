@@ -7,6 +7,7 @@ import Home from '../../screens/Home/Home';
 import Playlist from '../../screens/Playlist/Playlist';
 import Settings from '../../screens/Settings/Settings';
 import Movie from '../../screens/Movie/Movie';
+import Search from '../../screens/Search/Search';
 
 type Props = {
   error?: Error | null;
@@ -25,6 +26,7 @@ const Root: FC<Props> = ({ error }: Props) => {
         <Route path="/u" component={Settings} exact />
         <Route path="/m/:id/:slug" component={Movie} exact />
         <Route path="/s/:id/:slug" component={Series} />
+        <Route path="/q/:query?" component={Search} />
       </Switch>
     </Layout>
   );

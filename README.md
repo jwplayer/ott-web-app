@@ -66,6 +66,7 @@ The allowed scopes are:
 - home
 - playlist
 - videodetail
+- search
 
 ### Subject
 

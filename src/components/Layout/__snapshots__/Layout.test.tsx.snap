@@ -18,8 +18,8 @@ exports[`<Layout /> renders layout 1`] = `
             class="menu"
           >
             <div
-              aria-label="open menu"
-              class="iconButton"
+              aria-label="open_menu"
+              class="iconButton iconButton"
               role="button"
               tabindex="0"
             >
@@ -48,19 +48,19 @@ exports[`<Layout /> renders layout 1`] = `
           >
             <a
               aria-current="page"
-              class="link active"
+              class="button default text active"
               href="/"
             >
               <span>
-                Home
+                home
               </span>
             </a>
             <a
-              class="link"
+              class="button default text"
               href="/u"
             >
               <span>
-                Settings
+                settings
               </span>
             </a>
           </nav>
@@ -79,7 +79,7 @@ exports[`<Layout /> renders layout 1`] = `
           class="heading"
         >
           <div
-            aria-label="close menu"
+            aria-label="close_menu"
             class="iconButton"
             role="button"
             tabindex="-1"
@@ -113,7 +113,7 @@ exports[`<Layout /> renders layout 1`] = `
             tabindex="-1"
           >
             <span>
-              Home
+              home
             </span>
           </a>
           <hr
@@ -125,7 +125,7 @@ exports[`<Layout /> renders layout 1`] = `
             tabindex="-1"
           >
             <span>
-              Settings
+              settings
             </span>
           </a>
         </nav>

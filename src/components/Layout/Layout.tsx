@@ -1,14 +1,16 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 import { UIStore } from '../../state/UIStore';
+import Button from '../Button/Button';
 import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
-import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import MenuButton from '../../components/MenuButton/MenuButton';
+import { UIStateContext } from '../../providers/UIStateProvider';
 
 import styles from './Layout.module.scss';
 
@@ -17,8 +19,10 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const { menu, assets, options, siteName, description, footerText } = useContext(ConfigContext);
+  const { t } = useTranslation('common');
+  const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
   const blurImage = UIStore.useState((s) => s.blurImage);
+  const { searchQuery, updateSearchQuery, resetSearchQuery } = useContext(UIStateContext);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
   const banner = assets.banner;
@@ -41,15 +45,24 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
-          playlistMenuItems={menu.map((item) => (
-            <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
-          ))}
           logoSrc={banner}
-        />
-        <Sidebar
-          isOpen={sideBarOpen}
-          onClose={() => setSideBarOpen(false)}
-          playlistMenuItems={menu.map((item) => (
+          searchEnabled={!!searchPlaylist}
+          searchBarProps={{
+            query: searchQuery,
+            onQueryChange: (event) => updateSearchQuery(event.target.value),
+            onClearButtonClick: () => updateSearchQuery(''),
+          }}
+          onCloseSearchButtonClick={() => resetSearchQuery()}
+        >
+          <Button label={t('home')} to="/" variant="text" />
+          {menu.map((item) => (
+            <Button key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} variant="text" />
+          ))}
+          <Button label={t('settings')} to="/u" variant="text" />
+        </Header>
+        <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
+          <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
+          {menu.map((item) => (
             <MenuButton
               key={item.playlistId}
               label={item.label}
@@ -57,7 +70,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
               tabIndex={sideBarOpen ? 0 : -1}
             />
           ))}
-        />
+          <hr className={styles.divider} />
+          <MenuButton label={t('settings')} to="/u" tabIndex={sideBarOpen ? 0 : -1} />
+        </Sidebar>
         {children}
       </div>
       {!!footerText && (

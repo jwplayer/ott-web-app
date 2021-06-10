@@ -1,27 +1,10 @@
 import { UseBaseQueryResult, useQuery } from 'react-query';
-import type { Playlist, PlaylistItem } from 'types/playlist';
+import type { Playlist } from 'types/playlist';
+
+import { generatePlaylistPlaceholder } from '../utils/collection';
 
 const baseUrl = 'https://content.jwplatform.com';
-
-const placeholderData: Playlist = {
-  title: '',
-  playlist: new Array(30).fill({
-    description: '',
-    duration: 0,
-    feedid: '',
-    image: '',
-    images: [],
-    link: '',
-    genre: '',
-    mediaid: '',
-    pubdate: 0,
-    rating: '',
-    sources: [],
-    tags: '',
-    title: '',
-    tracks: [],
-  } as PlaylistItem),
-};
+const placeholderData = generatePlaylistPlaceholder(30);
 
 const getPlaylistById = (playlistId: string, relatedMediaId?: string) => {
   const relatedQuery = relatedMediaId ? `?related_media_id=${relatedMediaId}` : '';

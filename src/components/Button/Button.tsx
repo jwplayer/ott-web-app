@@ -1,9 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
 
 import styles from './Button.module.scss';
 
-type Color = 'primary' | 'secondary';
+type Color = 'default' | 'primary';
+
+type Variant = 'contained' | 'outlined' | 'text';
 
 type Props = {
   label: string;
@@ -11,29 +14,38 @@ type Props = {
   color?: Color;
   fullWidth?: boolean;
   startIcon?: JSX.Element;
-  onClick: () => void;
+  variant?: Variant;
+  onClick?: () => void;
+  to?: string;
 };
 const Button: React.FC<Props> = ({
   label,
-  color = 'primary',
+  color = 'default',
   startIcon,
   fullWidth = false,
   active = false,
+  variant = 'outlined',
+  to,
   onClick,
 }: Props) => {
-  return (
-    <button
-      className={classNames(styles.button, {
-        [styles.active]: active,
-        [styles.secondary]: color === 'secondary',
-        [styles.fullWidth]: fullWidth,
-      })}
-      onClick={onClick}
-    >
-      {startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null}
-      <span className={styles.buttonLabel}>{label}</span>
+  const className = classNames(styles.button, [styles[color]], [styles[variant]], {
+    [styles.active]: active,
+    [styles.fullWidth]: fullWidth,
+  });
+
+  const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
+  const span = <span className={styles.buttonLabel}>{label}</span>;
+
+  return to ? (
+    <NavLink className={className} to={to} activeClassName={styles.active} exact>
+      {icon}
+      {span}
+    </NavLink>
+  ) : (
+    <button className={className} onClick={onClick}>
+      {icon}
+      {span}
     </button>
   );
 };
-
 export default Button;
