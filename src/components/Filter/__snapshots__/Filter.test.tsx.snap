@@ -80,28 +80,28 @@ exports[`<Filter> renders Filter 1`] = `
     class="filterRow"
   >
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         x
       </span>
     </button>
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         y
       </span>
     </button>
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         z
       </span>
     </button>
     <button
-      class="button"
+      class="button default outlined"
     >
       <span>
         bb

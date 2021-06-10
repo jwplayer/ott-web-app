@@ -1,7 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactFragment } from 'react';
 import classNames from 'classnames';
 
-import MenuButton from '../../components/MenuButton/MenuButton';
 import IconButton from '../../components/IconButton/IconButton';
 import Close from '../../icons/Close';
 
@@ -10,10 +9,10 @@ import styles from './Sidebar.module.scss';
 type SidebarProps = {
   isOpen: boolean;
   onClose: () => void;
-  playlistMenuItems: JSX.Element[];
+  children?: ReactFragment;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, playlistMenuItems }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
   return (
     <Fragment>
       <div
@@ -33,10 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, playlistMenuItems })
           </IconButton>
         </div>
         <nav className={styles.group} onClick={onClose}>
-          <MenuButton label="Home" to="/" tabIndex={isOpen ? 0 : -1} />
-          {playlistMenuItems}
-          <hr className={styles.divider} />
-          <MenuButton label="Settings" to="/u" tabIndex={isOpen ? 0 : -1} />
+          {children}
         </nav>
       </div>
     </Fragment>

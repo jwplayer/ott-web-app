@@ -56,7 +56,8 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, posterFading, r
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
           <div className={styles.playButton}>
             <Button
-              color="secondary"
+              color="primary"
+              variant="contained"
               label={'Start watching'}
               startIcon={<Play />}
               onClick={startPlay}

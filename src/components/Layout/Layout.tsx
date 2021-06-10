@@ -1,8 +1,8 @@
 import React, { ReactNode, FC, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 
+import Button from '../Button/Button';
 import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
-import ButtonLink from '../ButtonLink/ButtonLink';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
@@ -39,17 +39,16 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       </Helmet>
       <div className={styles.main}>
         {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
-        <Header
-          onMenuButtonClick={() => setSideBarOpen(true)}
-          playlistMenuItems={menu.map((item) => (
-            <ButtonLink key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} />
+        <Header onMenuButtonClick={() => setSideBarOpen(true)} logoSrc={banner}>
+          <Button label="Home" to="/" variant="text" />
+          {menu.map((item) => (
+            <Button key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} variant="text" />
           ))}
-          logoSrc={banner}
-        />
-        <Sidebar
-          isOpen={sideBarOpen}
-          onClose={() => setSideBarOpen(false)}
-          playlistMenuItems={menu.map((item) => (
+          <Button label="Settings" to="/u" variant="text" />
+        </Header>
+        <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
+          <MenuButton label="Home" to="/" tabIndex={sideBarOpen ? 0 : -1} />
+          {menu.map((item) => (
             <MenuButton
               key={item.playlistId}
               label={item.label}
@@ -57,7 +56,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
               tabIndex={sideBarOpen ? 0 : -1}
             />
           ))}
-        />
+          <hr className={styles.divider} />
+          <MenuButton label="Settings" to="/u" tabIndex={sideBarOpen ? 0 : -1} />
+        </Sidebar>
         {children}
       </div>
       {!!footerText && (

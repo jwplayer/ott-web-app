@@ -29,3 +29,8 @@
     text-decoration: none;
   }
 }
+.divider {
+  width: 270px;
+  border-top: 1px solid rgba(variables.$white, 0.12);
+  opacity: 0.12;
+}
