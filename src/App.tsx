@@ -7,9 +7,8 @@ import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
 import UIStateProvider from './providers/uiStateProvider';
 import './i18n/config';
-
 import './styles/main.scss';
-
+import { loadWatchHistory } from './store/WatchHistoryStore';
 interface State {
   error: Error | null;
 }
@@ -19,11 +18,15 @@ class App extends Component {
     error: null,
   };
 
-  componentDidCatch (error: Error) {
+  componentDidCatch(error: Error) {
     this.setState({ error });
   }
 
-  render () {
+  componentDidMount() {
+    loadWatchHistory();
+  }
+
+  render() {
     return (
       <I18nextProvider i18n={getI18n()}>
         <QueryProvider>
