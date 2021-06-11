@@ -30,8 +30,8 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 
-  const getMovieItem = () => playlist?.find((item) => item.mediaid === mediaId);
-  const getSeriesItem = () => playlist[0];
+  const getMovieItem = () => playlist.find((item) => item.mediaid === mediaId);
+  const getSeriesItem = () => playlist.length && playlist[0];
   const item = videoType === 'movie' ? getMovieItem() : getSeriesItem();
 
   const startPlay = () => item && history.push(videoUrl(item, playlistId, true));

@@ -7,7 +7,7 @@ const useBlurImageUpdater = (playlist: PlaylistItem[]) => {
   useEffect(() => {
     if (!playlist.length) return;
 
-    const { image } = playlist?.[0];
+    const { image } = playlist[0];
 
     if (image) {
       UIStore.update((state) => {
