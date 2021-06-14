@@ -3,7 +3,7 @@ import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import type { WatchHistoryItem } from 'types/watchHistory';
 
-import { watchHistoryStore, useWatchHistoryUpdater } from '../../store/WatchHistoryStore';
+import { watchHistoryStore, useWatchHistoryUpdater } from '../../stores/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
 

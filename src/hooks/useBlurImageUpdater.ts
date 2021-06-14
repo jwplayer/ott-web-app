@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { UIStore } from '../state/UIStore';
+import { UIStore } from '../stores/UIStore';
 import type { PlaylistItem } from '../../types/playlist';
 
 const useBlurImageUpdater = (playlist: PlaylistItem[]) => {

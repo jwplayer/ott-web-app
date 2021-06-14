@@ -3,7 +3,7 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { UIStore } from '../../state/UIStore';
+import { UIStore } from '../../stores/UIStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import type { PlaylistItem } from '../../../types/playlist';
