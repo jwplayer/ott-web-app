@@ -94,13 +94,15 @@ const Video: React.FC<Props> = ({
             />
           </div>
           <div className={styles.otherButtons}>
-            <Button
-              label={t('video:trailer')}
-              startIcon={<PlayTrailer />}
-              onClick={onTrailerClick}
-              active={playTrailer}
-              fullWidth={breakpoint < Breakpoint.sm}
-            />
+            {trailerItem && (
+              <Button
+                label={t('video:trailer')}
+                startIcon={<PlayTrailer />}
+                onClick={onTrailerClick}
+                active={playTrailer}
+                fullWidth={breakpoint < Breakpoint.sm}
+              />
+            )}
             <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
             {enableSharing && (
               <Button
