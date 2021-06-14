@@ -28,3 +28,19 @@ Scenario('I can remove a video from my favorites', async({ I }) => {
 
   assert.strictEqual(savedFavorites.length, 0);
 });
+
+Scenario('I can see my favorited videos on the home page', async ({ I }) => {
+  I.amOnPage('http://localhost:8080/');
+  I.dontSee('Favorites');
+
+  I.amOnPage('http://localhost:8080/m/DqGECHhT/central-intelligence?list=WXu7kuaW');
+  I.see('Favorite');
+
+  I.scrollTo({ css: 'button[aria-label="Add to favorites"]' });
+  I.forceClick({ css: 'button[aria-label="Add to favorites"]' });
+  I.seeElement({ css: 'button[aria-label="Remove from favorites"]' });
+
+  I.amOnPage('http://localhost:8080/');
+  I.see('Favorites')
+  I.see('Central Intelligence', { css: '[data-mediaid="favorites"]'});
+});

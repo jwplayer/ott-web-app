@@ -14,7 +14,7 @@ type ShelfProps = {
 };
 
 const alternativeShelves = ['favorites'];
-const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false }: ShelfProps): JSX.Element => {
+const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false }: ShelfProps): JSX.Element | null => {
   const isAlternativeShelf = alternativeShelves.includes(playlistId);
   const {
     isLoading,
@@ -24,13 +24,16 @@ const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured 
 
   const favoritesPlaylist = favoritesStore.useState((s) => s.favorites);
 
+  const shelfPlaylist = playlistId === 'favorites' ? favoritesPlaylist : playlist;
+
   if (!playlistId) return <p>No playlist id</p>;
+  if (!isLoading && !shelfPlaylist?.playlist.length) return null;
 
   return (
     <ShelfComponent
       loading={isLoading}
       error={error}
-      playlist={playlistId === 'favorites' ? favoritesPlaylist : playlist}
+      playlist={shelfPlaylist}
       onCardClick={onCardClick}
       onCardHover={onCardHover}
       featured={featured}

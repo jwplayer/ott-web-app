@@ -13,6 +13,7 @@ const PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}
 
 export const favoritesStore = new Store<FavoritesStore>({
   favorites: {
+    feedid: 'favorites',
     title: 'Favorites',
     playlist: [],
   },
