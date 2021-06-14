@@ -14,9 +14,9 @@ const Movie = ({
 }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const listId: string | null = new URLSearchParams(useLocation().search).get('list');
 
-  if (!listId) return <p>No playlist id</p>;
+  if (!id) return <p>No media id</p>;
 
-  return <Video videoType={'movie'} playlistId={listId} mediaId={id} />;
+  return <Video videoType={'movie'} playlistId={listId || undefined} mediaId={id} />;
 };
 
 export default Movie;

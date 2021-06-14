@@ -30,7 +30,12 @@ export const initializeWatchHistory = () => {
   );
 };
 
-export const useWatchHistoryUpdater = (createWatchHistoryItem: () => WatchHistoryItem | undefined): void => {
+export const useWatchHistoryUpdater = (
+  createWatchHistoryItem: () => WatchHistoryItem | undefined,
+  enabled: boolean = true,
+): void => {
+  if (!enabled) return;
+
   useEffect(() => {
     const savePosition = () => {
       const { watchHistory } = watchHistoryStore.getRawState();

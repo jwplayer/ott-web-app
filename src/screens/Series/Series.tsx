@@ -15,7 +15,7 @@ const Series = ({
 }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
   const episodeId: string | null = new URLSearchParams(useLocation().search).get('e');
 
-  return <Video videoType={'series'} playlistId={id} episodeId={episodeId} />;
+  return <Video videoType={'series'} playlistId={id || undefined} episodeId={episodeId} mediaId={episodeId || ''} />;
 };
 
 export default Series;

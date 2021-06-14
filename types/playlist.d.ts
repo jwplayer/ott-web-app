@@ -29,6 +29,7 @@ export type PlaylistItem = {
   sources: Source[];
   seriesId?: string;
   tags: string;
+  trailerId?: string;
   title: string;
   tracks: Track[];
   variations?: Record<string, unknown>;

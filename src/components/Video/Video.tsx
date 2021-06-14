@@ -15,6 +15,7 @@ import Play from '../../icons/Play';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
 import { formatDuration } from '../../utils/formatting';
+import Modal from '../Modal/Modal';
 
 import styles from './Video.module.scss';
 
@@ -22,6 +23,7 @@ type Poster = 'fading' | 'normal';
 
 type Props = {
   item: PlaylistItem;
+  trailerItem?: PlaylistItem;
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
@@ -29,11 +31,15 @@ type Props = {
   enableSharing: boolean;
   hasShared: boolean;
   onShareClick: () => void;
+  playTrailer: boolean;
+  onTrailerClick: () => void;
+  onTrailerClose: () => void;
   relatedShelf?: JSX.Element;
 };
 
 const Video: React.FC<Props> = ({
   item,
+  trailerItem,
   play,
   startPlay,
   goBack,
@@ -42,6 +48,9 @@ const Video: React.FC<Props> = ({
   hasShared,
   onShareClick,
   relatedShelf,
+  playTrailer,
+  onTrailerClick,
+  onTrailerClose,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
@@ -88,7 +97,8 @@ const Video: React.FC<Props> = ({
             <Button
               label={t('video:trailer')}
               startIcon={<PlayTrailer />}
-              onClick={() => null}
+              onClick={onTrailerClick}
+              active={playTrailer}
               fullWidth={breakpoint < Breakpoint.sm}
             />
             <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
@@ -124,6 +134,16 @@ const Video: React.FC<Props> = ({
             </div>
           </div>
         </div>
+      )}
+      {playTrailer && trailerItem && (
+        <Modal onClose={onTrailerClose}>
+          <div onMouseMove={mouseActivity} onClick={mouseActivity}>
+            <Cinema item={trailerItem} onComplete={onTrailerClose} isTrailer />
+            <div
+              className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: !mouseActive })}
+            >{`${item.title} - Trailer`}</div>
+          </div>
+        </Modal>
       )}
     </div>
   );
