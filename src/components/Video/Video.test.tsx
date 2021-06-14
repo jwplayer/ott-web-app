@@ -32,6 +32,7 @@ describe('<Video>', () => {
         play
         hasShared={false}
         onShareClick={() => null}
+        enableSharing
       />,
     );
 

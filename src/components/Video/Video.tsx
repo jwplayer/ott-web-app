@@ -26,6 +26,7 @@ type Props = {
   startPlay: () => void;
   goBack: () => void;
   poster: Poster;
+  enableSharing: boolean;
   hasShared: boolean;
   onShareClick: () => void;
   relatedShelf?: JSX.Element;
@@ -37,6 +38,7 @@ const Video: React.FC<Props> = ({
   startPlay,
   goBack,
   poster,
+  enableSharing,
   hasShared,
   onShareClick,
   relatedShelf,
@@ -90,12 +92,14 @@ const Video: React.FC<Props> = ({
               fullWidth={breakpoint < Breakpoint.sm}
             />
             <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
-            <Button
-              label={hasShared ? t('video:copied_url') : t('video:share')}
-              startIcon={hasShared ? <Check /> : <Share />}
-              onClick={onShareClick}
-              active={hasShared}
-            />
+            {enableSharing && (
+              <Button
+                label={hasShared ? t('video:copied_url') : t('video:share')}
+                startIcon={hasShared ? <Check /> : <Share />}
+                onClick={onShareClick}
+                active={hasShared}
+              />
+            )}
           </div>
         </div>
         <div

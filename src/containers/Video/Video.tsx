@@ -26,7 +26,8 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const play = new URLSearchParams(location.search).get('play') === '1';
   const config: Config = useContext(ConfigContext);
   const [hasShared, setHasShared] = useState<boolean>(false);
-  const posterFading: boolean = config ? config.options.posterFading === true : false;
+  const enableSharing: boolean = config.options.enableSharing === true;
+  const posterFading: boolean = config.options.posterFading === true;
 
   const { isLoading, error, data: { playlist } = { playlist: [] } } = usePlaylist(playlistId);
 
@@ -69,6 +70,7 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
       startPlay={startPlay}
       goBack={goBack}
       poster={posterFading ? 'fading' : 'normal'}
+      enableSharing={enableSharing}
       hasShared={hasShared}
       onShareClick={onShareClick}
       relatedShelf={

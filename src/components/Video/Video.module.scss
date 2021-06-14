@@ -62,9 +62,10 @@
 .otherButtons {
   display: flex;
   justify-content: center;
+  width: 100%;
   > button {
     margin-right: 8px;
-    width: 33%;
+    width: 100%;
   }
   > button:last-child {
     margin-right: 0px;
@@ -74,7 +75,6 @@
     > button:first-child {
       margin-bottom: 8px;
       margin-right: 0px;
-      width: 100%;
     }
     > button:not(:first-child) {
       flex: 1;
