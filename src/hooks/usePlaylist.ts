@@ -2,15 +2,9 @@ import { UseBaseQueryResult, useQuery } from 'react-query';
 import type { Playlist } from 'types/playlist';
 
 import { generatePlaylistPlaceholder } from '../utils/collection';
+import { getPlaylistById } from '../services/api.service';
 
-const baseUrl = 'https://content.jwplatform.com';
 const placeholderData = generatePlaylistPlaceholder(30);
-
-const getPlaylistById = (playlistId: string, relatedMediaId?: string) => {
-  const relatedQuery = relatedMediaId ? `?related_media_id=${relatedMediaId}` : '';
-
-  return fetch(`${baseUrl}/v2/playlists/${playlistId}${relatedQuery}`).then((res) => res.json());
-};
 
 export type UsePlaylistResult<TData = Playlist, TError = unknown> = UseBaseQueryResult<TData, TError>;
 

@@ -9,6 +9,7 @@ import VideoComponent from '../../components/Video/Video';
 import { cardUrl, videoUrl } from '../../utils/formatting';
 import usePlaylist from '../../hooks/usePlaylist';
 import Shelf from '../Shelf/Shelf';
+import { useFavorites } from '../../stores/FavoritesStore';
 
 export type VideoType = 'movie' | 'series';
 
@@ -22,6 +23,7 @@ export type VideoProps = {
 const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
+  const { hasItem, saveItem, removeItem } = useFavorites();
   const play = new URLSearchParams(location.search).get('play') === '1';
   const config: Config = useContext(ConfigContext);
   const posterFading: boolean = config ? config.options.posterFading === true : false;
@@ -31,8 +33,9 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   const getMovieItem = () => playlist.find((item) => item.mediaid === mediaId);
-  const getSeriesItem = () => playlist.length && playlist[0];
+  const getSeriesItem = () => playlist[0];
   const item = videoType === 'movie' ? getMovieItem() : getSeriesItem();
+  const isFavorited = !!item && hasItem(item);
 
   const startPlay = () => item && history.push(videoUrl(item, playlistId, true));
   const goBack = () => item && history.push(videoUrl(item, playlistId, false));
@@ -55,6 +58,8 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
       startPlay={startPlay}
       goBack={goBack}
       poster={posterFading ? 'fading' : 'normal'}
+      isFavorited={isFavorited}
+      onFavoriteButtonClick={() => isFavorited ? removeItem(item) : saveItem(item)}
       relatedShelf={
         config.recommendationsPlaylist ? (
           <Shelf

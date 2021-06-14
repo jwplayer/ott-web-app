@@ -16,6 +16,7 @@ import IconButton from '../IconButton/IconButton';
 import { formatDuration } from '../../utils/formatting';
 
 import styles from './Video.module.scss';
+import FavoriteBorder from '../../icons/FavoriteBorder';
 
 type Poster = 'fading' | 'normal';
 
@@ -24,11 +25,13 @@ type Props = {
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
+  isFavorited: boolean;
+  onFavoriteButtonClick: () => void;
   poster: Poster;
   relatedShelf?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf }: Props) => {
+const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf, isFavorited, onFavoriteButtonClick }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
@@ -77,7 +80,12 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, related
               onClick={() => null}
               fullWidth={breakpoint < Breakpoint.sm}
             />
-            <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
+            <Button
+              label={t('video:favorite')}
+              startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
+              onClick={onFavoriteButtonClick}
+              color={isFavorited ? 'primary' : 'default'}
+            />
             <Button label={t('video:share')} startIcon={<Share />} onClick={() => null} />
           </div>
         </div>

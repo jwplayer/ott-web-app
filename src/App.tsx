@@ -9,6 +9,7 @@ import QueryProvider from './providers/QueryProvider';
 import './i18n/config';
 import './styles/main.scss';
 import { initializeWatchHistory } from './stores/WatchHistoryStore';
+import { initializeFavorites } from './stores/FavoritesStore';
 
 interface State {
   error: Error | null;
@@ -27,6 +28,8 @@ class App extends Component {
     if (config.options.enableContinueWatching) {
       initializeWatchHistory();
     }
+
+    initializeFavorites();
   }
 
   render() {
