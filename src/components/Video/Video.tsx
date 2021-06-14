@@ -76,17 +76,24 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, related
           <div className={styles.otherButtons}>
             <Button
               label={t('video:trailer')}
+              aria-label={t('video:watch_trailer')}
               startIcon={<PlayTrailer />}
               onClick={() => null}
               fullWidth={breakpoint < Breakpoint.sm}
             />
             <Button
               label={t('video:favorite')}
+              aria-label={isFavorited ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
               startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
               onClick={onFavoriteButtonClick}
               color={isFavorited ? 'primary' : 'default'}
             />
-            <Button label={t('video:share')} startIcon={<Share />} onClick={() => null} />
+            <Button
+              label={t('video:share')}
+              aria-label={t('video:share_video')}
+              startIcon={<Share />}
+              onClick={() => null}
+            />
           </div>
         </div>
         <div

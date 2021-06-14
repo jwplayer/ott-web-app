@@ -12,7 +12,7 @@ exports.config = {
   helpers  : {
     Playwright: {
       url    : 'http://localhost:8080',
-      show   : false,
+      show   : true,
       browser: 'chromium',
       emulate: devices['iPhone SE'],
     }
