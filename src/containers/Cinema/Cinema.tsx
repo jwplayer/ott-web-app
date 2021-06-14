@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
+import type { WatchHistoryItem } from 'types/watchHistory';
 
-import { WatchHistoryStore, useWatchHistoryUpdater, WatchHistoryItem } from '../../store/WatchHistoryStore';
+import { watchHistoryStore, useWatchHistoryUpdater } from '../../store/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
 
@@ -19,7 +20,6 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
   const [initialized, setInitialized] = useState(false);
   const file = item.sources[0]?.file;
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
-  const continueTillPercentage = 0.95;
 
   const createWatchHistoryItem = (): WatchHistoryItem | undefined => {
     const player = window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
@@ -31,20 +31,21 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
       position: player.getPosition(),
     } as WatchHistoryItem;
   };
-  const watchHistory = WatchHistoryStore.useState((state) => state.watchHistory);
+  const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
   const updateWatchHistory = useWatchHistoryUpdater(createWatchHistoryItem);
 
   useEffect(() => {
     const getPlayer = () => window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
     const loadVideo = () => {
       const player = getPlayer();
-      const position = watchHistory.find((historyItem) => historyItem.mediaid === item.mediaid)?.position;
-      player.setup({ file });
+      player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
       player.on('ready', () => {
-        if (position && position < player.getDuration() * continueTillPercentage) {
-          player.seek(position);
+        const { watchHistory } = watchHistoryStore.getRawState();
+        const position = watchHistory.find((historyItem) => historyItem.mediaid === item.mediaid)?.position;
+
+        if (position) {
+          setTimeout(() => player.seek(position), 1000);
         }
-        player.play();
       });
       player.on('play', () => onPlay && onPlay());
       player.on('pause', () => onPause && onPause());
@@ -54,7 +55,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [item.mediaid, onPlay, onPause, config.player, file, scriptUrl, initialized, watchHistory, updateWatchHistory]);
+  }, [item, onPlay, onPause, config.player, file, scriptUrl, initialized, watchHistory, updateWatchHistory]);
 
   return <div className={styles.Cinema} id="cinema" />;
 };

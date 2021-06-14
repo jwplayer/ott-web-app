@@ -1,50 +1,49 @@
 import { Store } from 'pullstate';
 import { useEffect } from 'react';
+import type { WatchHistoryItem } from 'types/watchHistory';
 
-import * as persist from '../services/persist.service';
+import * as persist from '../utils/persist';
 
-export type WatchHistoryItem = {
-  mediaid: string;
-  position: number;
-};
+const PERSIST_KEY_WATCH_HISTORY = `watchhistory${window.configId ? `-${window.configId}` : ''}`;
 
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];
 };
 
-export const WatchHistoryStore = new Store<WatchHistoryStore>({
+export const watchHistoryStore = new Store<WatchHistoryStore>({
   watchHistory: [],
 });
-WatchHistoryStore.subscribe(
-  (state) => state.watchHistory,
-  (watchHistory) => persist.storeWatchHistory(watchHistory),
-);
 
-export const loadWatchHistory = () => {
-  const watchHistory = persist.loadWatchHistory();
+export const initializeWatchHistory = () => {
+  const localHistory = persist.getItem(PERSIST_KEY_WATCH_HISTORY);
+  const watchHistory: WatchHistoryItem[] = localHistory ? (localHistory as WatchHistoryItem[]) : [];
 
-  return (
-    watchHistory &&
-    WatchHistoryStore.update((state) => {
+  if (watchHistory) {
+    watchHistoryStore.update((state) => {
       state.watchHistory = watchHistory;
-    })
+    });
+  }
+
+  return watchHistoryStore.subscribe(
+    (state) => state.watchHistory,
+    (watchHistory) => persist.setItem(PERSIST_KEY_WATCH_HISTORY, watchHistory),
   );
 };
 
 export const useWatchHistoryUpdater = (createWatchHistoryItem: () => WatchHistoryItem | undefined): void => {
   useEffect(() => {
     const savePosition = () => {
-      const { watchHistory } = WatchHistoryStore.getRawState();
+      const { watchHistory } = watchHistoryStore.getRawState();
       const item = createWatchHistoryItem();
       if (!item) return;
 
       const index = watchHistory.findIndex((historyItem) => historyItem.mediaid === item.mediaid);
       if (index > -1) {
-        WatchHistoryStore.update((state) => {
+        watchHistoryStore.update((state) => {
           state.watchHistory[index] = item;
         });
       } else {
-        WatchHistoryStore.update((state) => {
+        watchHistoryStore.update((state) => {
           state.watchHistory.push(item);
         });
       }

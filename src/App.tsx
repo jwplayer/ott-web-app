@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { I18nextProvider, getI18n } from 'react-i18next';
+import type { Config } from 'types/Config';
 
 import Root from './components/Root/Root';
 import ConfigProvider from './providers/ConfigProvider';
@@ -8,7 +9,8 @@ import QueryProvider from './providers/QueryProvider';
 import UIStateProvider from './providers/uiStateProvider';
 import './i18n/config';
 import './styles/main.scss';
-import { loadWatchHistory } from './store/WatchHistoryStore';
+import { initializeWatchHistory } from './store/WatchHistoryStore';
+
 interface State {
   error: Error | null;
 }
@@ -22,8 +24,10 @@ class App extends Component {
     this.setState({ error });
   }
 
-  componentDidMount() {
-    loadWatchHistory();
+  initializeServices(config: Config) {
+    if (config.options.enableContinueWatching) {
+      initializeWatchHistory();
+    }
   }
 
   render() {
@@ -34,6 +38,7 @@ class App extends Component {
             configLocation={window.configLocation}
             onLoading={(isLoading: boolean) => console.info(`Loading config: ${isLoading}`)}
             onValidationError={(error: Error) => console.error(`Config ${error}`)}
+            onValidationCompleted={(config) => this.initializeServices(config)}
           >
             <Router>
               <UIStateProvider>
