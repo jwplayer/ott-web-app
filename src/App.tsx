@@ -8,7 +8,7 @@ import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
 import './i18n/config';
 import './styles/main.scss';
-import { initializeWatchHistory } from './store/WatchHistoryStore';
+import { initializeWatchHistory } from './stores/WatchHistoryStore';
 
 interface State {
   error: Error | null;

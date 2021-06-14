@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react';
 import { useHistory } from 'react-router';
 
 import { debounce } from '../utils/common';
-import { UIStore } from '../state/UIStore';
+import { UIStore } from '../stores/UIStore';
 
 const useSearchQueryUpdater = () => {
   const history = useHistory();

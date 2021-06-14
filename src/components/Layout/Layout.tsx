@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
-import { UIStore } from '../../state/UIStore';
+import { UIStore } from '../../stores/UIStore';
 import Button from '../Button/Button';
 import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
 import Header from '../Header/Header';
