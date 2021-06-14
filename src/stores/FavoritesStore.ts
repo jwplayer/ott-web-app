@@ -1,33 +1,39 @@
 import { Store } from 'pullstate';
 
-import type { PlaylistItem } from '../../types/playlist';
+import type { Playlist, PlaylistItem } from '../../types/playlist';
 import * as persist from '../utils/persist';
 import type { Favorite } from '../../types/favorite';
 import { getMediaByIds } from '../services/api.service';
+import { queryClient } from '../providers/QueryProvider';
 
 type FavoritesStore = {
-  favorites: PlaylistItem[];
+  favorites: Playlist;
 };
 
 const PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}` : ''}`;
 
 export const favoritesStore = new Store<FavoritesStore>({
-  favorites: [],
+  favorites: {
+    title: 'Favorites',
+    playlist: [],
+  },
 });
 
 export const initializeFavorites = async () => {
-  const savedFavorites: Favorite[] | null = persist.getItem(PERSIST_KEY_FAVORITES) as Favorite[] | null;
+  const savedItems: Favorite[] | null = persist.getItem(PERSIST_KEY_FAVORITES) as Favorite[] | null;
 
-  if (savedFavorites) {
-    const favoritesPlaylist = await getMediaByIds(savedFavorites.map(({ mediaid }) => mediaid));
+  if (savedItems) {
+    const playlistItems = await getMediaByIds(savedItems.map(({ mediaid }) => mediaid));
 
     favoritesStore.update((state) => {
-      state.favorites = favoritesPlaylist;
+      state.favorites.playlist = playlistItems;
     });
   }
 
   return favoritesStore.subscribe(state => state.favorites, (favorites) => {
-    persist.setItem(PERSIST_KEY_FAVORITES, favorites.map(playlistItem => ({
+    queryClient.setQueryData(['playlist', 'favorites', undefined], () => favorites);
+
+    persist.setItem(PERSIST_KEY_FAVORITES, favorites.playlist.map(playlistItem => ({
       mediaid: playlistItem.mediaid,
       title: playlistItem.title,
       tags: playlistItem.tags,
@@ -45,20 +51,20 @@ export const useFavorites = (): { saveItem: SaveItemFn, removeItem: RemoveItemFn
 
   const saveItem = (item: PlaylistItem) => {
     favoritesStore.update((s, o) => {
-      if (!o.favorites.some(current => current.mediaid === item.mediaid)) {
-        s.favorites.push(item);
+      if (!o.favorites.playlist.some(current => current.mediaid === item.mediaid)) {
+        s.favorites.playlist.unshift(item);
       }
     });
   };
 
   const removeItem = (item: PlaylistItem) => {
     favoritesStore.update((s) => {
-      s.favorites = s.favorites.filter(current => current.mediaid !== item.mediaid);
+      s.favorites.playlist = s.favorites.playlist.filter(current => current.mediaid !== item.mediaid);
     });
   };
 
   const hasItem = (item: PlaylistItem) => {
-    return favorites.some(current => current.mediaid === item.mediaid);
+    return favorites.playlist.some(current => current.mediaid === item.mediaid);
   };
 
   return { saveItem, removeItem, hasItem };

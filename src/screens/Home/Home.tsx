@@ -17,6 +17,7 @@ import scrollbarSize from '../../utils/dom';
 import { cardUrl } from '../../utils/formatting';
 
 import styles from './Home.module.scss';
+import FavoritesShelf from '../../containers/FavoritesShelf/FavoritesShelf';
 
 type rowData = {
   index: number;
@@ -49,6 +50,7 @@ const Home = (): JSX.Element => {
 
     const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, contentItem.playlistId));
     const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+    const ShelfComponent = contentItem.playlistId === 'favorites' ? FavoritesShelf : Shelf;
 
     return (
       <div
@@ -56,7 +58,7 @@ const Home = (): JSX.Element => {
         style={style}
         className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
       >
-        <Shelf
+        <ShelfComponent
           key={contentItem.playlistId}
           playlistId={contentItem.playlistId}
           onCardClick={onCardClick}
