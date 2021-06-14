@@ -27,6 +27,7 @@ export type ProviderProps = {
   configLocation: string;
   onLoading: (isLoading: boolean) => void;
   onValidationError: (error: Error) => void;
+  onValidationCompleted: (config: Config) => void;
 };
 
 const ConfigProvider: FunctionComponent<ProviderProps> = ({
@@ -34,6 +35,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
   configLocation,
   onLoading,
   onValidationError,
+  onValidationCompleted,
 }) => {
   const [config, setConfig] = useState<Config>(defaultConfig);
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,6 +51,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
           setCssVariables(configValidated.options);
           onLoading(false);
           setLoading(false);
+          onValidationCompleted(config);
         })
         .catch((error: Error) => {
           onValidationError(error);
@@ -57,7 +60,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
         });
     };
     loadAndValidateConfig(configLocation);
-  }, [configLocation, onLoading, onValidationError]);
+  }, [configLocation, onLoading, onValidationError, onValidationCompleted]);
 
   const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Options) => {
     const root = document.querySelector(':root') as HTMLElement;
