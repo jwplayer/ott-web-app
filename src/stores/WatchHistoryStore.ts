@@ -4,7 +4,7 @@ import type { WatchHistoryItem } from 'types/watchHistory';
 
 import * as persist from '../utils/persist';
 
-const PERSIST_KEY_WATCH_HISTORY = `watchhistory${window.configId ? `-${window.configId}` : ''}`;
+const PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
 
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];

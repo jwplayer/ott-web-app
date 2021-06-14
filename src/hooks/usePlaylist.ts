@@ -16,7 +16,7 @@ export type UsePlaylistResult<TData = Playlist, TError = unknown> = UseBaseQuery
 
 export default function usePlaylist(playlistId: string, relatedMediaId?: string): UsePlaylistResult {
   return useQuery(['playlist', playlistId, relatedMediaId], () => getPlaylistById(playlistId, relatedMediaId), {
-    enabled: !!playlistId,
+    enabled: !!playlistId && playlistId !== 'continue-watching',
     placeholderData,
   });
 }

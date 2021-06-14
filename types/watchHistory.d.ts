@@ -1,4 +1,7 @@
 export type WatchHistoryItem = {
   mediaid: string;
-  position: number;
+  title: string;
+  tags: string;
+  duration: number;
+  progress: number;
 };

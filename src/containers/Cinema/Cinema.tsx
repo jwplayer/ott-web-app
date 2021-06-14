@@ -28,7 +28,10 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
 
     return {
       mediaid: item.mediaid,
-      position: player.getPosition(),
+      title: item.title,
+      tags: item.tags,
+      duration: player.getDuration(),
+      progress: player.getPosition(),
     } as WatchHistoryItem;
   };
   const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
@@ -41,10 +44,9 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
       player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
       player.on('ready', () => {
         const { watchHistory } = watchHistoryStore.getRawState();
-        const position = watchHistory.find((historyItem) => historyItem.mediaid === item.mediaid)?.position;
-
-        if (position) {
-          setTimeout(() => player.seek(position), 1000);
+        const progress = watchHistory.find((historyItem) => historyItem.mediaid === item.mediaid)?.progress;
+        if (progress) {
+          setTimeout(() => player.seek(progress), 1000);
         }
       });
       player.on('play', () => onPlay && onPlay());
