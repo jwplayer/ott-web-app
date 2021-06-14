@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import type { Config } from 'types/Config';
@@ -10,7 +10,7 @@ import { filterPlaylist, getFiltersFromConfig } from '../../utils/collection';
 import CardGrid from '../../components/CardGrid/CardGrid';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import Filter from '../../components/Filter/Filter';
-import { UIStateContext } from '../../providers/uiStateProvider';
+import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 
 import styles from './Playlist.module.scss';
 
@@ -24,7 +24,6 @@ function Playlist({
   },
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
-  const { updateBlurImage } = useContext(UIStateContext);
   const config: Config = useContext(ConfigContext);
   const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
 
@@ -32,16 +31,13 @@ function Playlist({
 
   const categories = getFiltersFromConfig(config, id);
   const filteredPlaylist = useMemo(() => filterPlaylist(playlist, filter), [playlist, filter]);
+  const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, id));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
-  useEffect(() => {
-    if (filteredPlaylist.length) updateBlurImage(filteredPlaylist[0].image);
-  }, [filter, filteredPlaylist, updateBlurImage]);
-
   if (error || !playlist) {
-    return <ErrorPage title="Playlist not found!" />
+    return <ErrorPage title="Playlist not found!" />;
   }
 
   return (
@@ -51,7 +47,12 @@ function Playlist({
         <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />
       </header>
       <main className={styles.main}>
-        <CardGrid playlist={filteredPlaylist} onCardClick={onCardClick} onCardHover={onCardHover} isLoading={isLoading} />
+        <CardGrid
+          playlist={filteredPlaylist}
+          onCardClick={onCardClick}
+          onCardHover={onCardHover}
+          isLoading={isLoading}
+        />
       </main>
     </div>
   );
