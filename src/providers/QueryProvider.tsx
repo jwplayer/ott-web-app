@@ -1,7 +1,7 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-export const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
 type QueryProviderProps = {
   children: JSX.Element;

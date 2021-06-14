@@ -4,7 +4,6 @@ import type { Playlist, PlaylistItem } from '../../types/playlist';
 import * as persist from '../utils/persist';
 import type { Favorite } from '../../types/favorite';
 import { getMediaByIds } from '../services/api.service';
-import { queryClient } from '../providers/QueryProvider';
 
 type FavoritesStore = {
   favorites: Playlist;
@@ -31,8 +30,6 @@ export const initializeFavorites = async () => {
   }
 
   return favoritesStore.subscribe(state => state.favorites, (favorites) => {
-    queryClient.setQueryData(['playlist', 'favorites', undefined], () => favorites);
-
     persist.setItem(PERSIST_KEY_FAVORITES, favorites.playlist.map(playlistItem => ({
       mediaid: playlistItem.mediaid,
       title: playlistItem.title,

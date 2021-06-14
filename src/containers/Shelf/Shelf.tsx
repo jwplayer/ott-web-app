@@ -3,6 +3,7 @@ import type { PlaylistItem } from 'types/playlist';
 
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
 import ShelfComponent from '../../components/Shelf/Shelf';
+import { favoritesStore } from '../../stores/FavoritesStore';
 
 type ShelfProps = {
   playlistId: string;
@@ -12,11 +13,16 @@ type ShelfProps = {
   featured?: boolean;
 };
 
+const alternativeShelves = ['favorites'];
 const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false }: ShelfProps): JSX.Element => {
-  const { isLoading, error, data: playlist = { title: '', playlist: [] } }: UsePlaylistResult = usePlaylist(
-    playlistId,
-    relatedMediaId,
-  );
+  const isAlternativeShelf = alternativeShelves.includes(playlistId);
+  const {
+    isLoading,
+    error,
+    data: playlist = { title: '', playlist: [] },
+  }: UsePlaylistResult = usePlaylist(playlistId, relatedMediaId, !isAlternativeShelf);
+
+  const favoritesPlaylist = favoritesStore.useState((s) => s.favorites);
 
   if (!playlistId) return <p>No playlist id</p>;
 
@@ -24,7 +30,7 @@ const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured 
     <ShelfComponent
       loading={isLoading}
       error={error}
-      playlist={playlist}
+      playlist={playlistId === 'favorites' ? favoritesPlaylist : playlist}
       onCardClick={onCardClick}
       onCardHover={onCardHover}
       featured={featured}
