@@ -19,7 +19,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
         <div
           class="meta"
         >
-          1970 • 5h 54m • Tester • CC_CC
+          1970 • 6m  • Tester • CC_CC
         </div>
         <div
           class="collapsibleText"
@@ -35,7 +35,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
           class="playButton"
         >
           <button
-            class="button active secondary fullWidth"
+            class="button primary active fullWidth"
           >
             <div
               class="startIcon"
@@ -55,7 +55,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Start watching
+              video:start_watching
             </span>
           </button>
         </div>
@@ -63,7 +63,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
           class="otherButtons"
         >
           <button
-            class="button"
+            class="button default outlined"
           >
             <div
               class="startIcon"
@@ -83,11 +83,11 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Trailer
+              video:trailer
             </span>
           </button>
           <button
-            class="button"
+            class="button default outlined"
           >
             <div
               class="startIcon"
@@ -107,11 +107,11 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Favorite
+              video:favorite
             </span>
           </button>
           <button
-            class="button"
+            class="button default outlined"
           >
             <div
               class="startIcon"
@@ -131,13 +131,13 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              Share
+              video:share
             </span>
           </button>
         </div>
       </div>
       <div
-        class="poster posterFading"
+        class="poster fading"
         style="background-image: url(http://test/img.jpg);"
       />
     </div>
@@ -156,7 +156,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
         class="playerContent"
       >
         <div
-          aria-label="Back"
+          aria-label="common:back"
           class="iconButton"
           role="button"
           tabindex="0"
@@ -186,7 +186,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
           <div
             class="meta"
           >
-            1970 • 5h 54m • Tester • CC_CC
+            1970 • 6m  • Tester • CC_CC
           </div>
           <div
             class="description"
