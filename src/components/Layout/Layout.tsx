@@ -2,13 +2,14 @@ import React, { ReactNode, FC, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
+import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
+import { UIStore } from '../../state/UIStore';
 import Button from '../Button/Button';
 import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
-import { UIStateContext } from '../../providers/uiStateProvider';
 import MenuButton from '../../components/MenuButton/MenuButton';
 
 import styles from './Layout.module.scss';
@@ -20,7 +21,10 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const { t } = useTranslation('common');
   const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
-  const { blurImage, searchQuery, updateSearchQuery, resetSearchQuery } = useContext(UIStateContext);
+  const blurImage = UIStore.useState((s) => s.blurImage);
+  const searchQuery = UIStore.useState((s) => s.searchQuery);
+  const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
+
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
   const banner = assets.banner;
