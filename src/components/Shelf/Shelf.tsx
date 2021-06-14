@@ -46,7 +46,7 @@ const Shelf: React.FC<ShelfProps> = ({
   error = null,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
-  const { t } = useTranslation('common')
+  const { t } = useTranslation('common');
   const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -73,7 +73,6 @@ const Shelf: React.FC<ShelfProps> = ({
           <div
             className={classNames(styles.chevron, {
               [styles.disabled]: !didSlideBefore,
-              [styles.featuredLeftCorrection]: featured && isLargeScreen,
             })}
             role="button"
             tabIndex={didSlideBefore ? 0 : -1}
@@ -88,9 +87,7 @@ const Shelf: React.FC<ShelfProps> = ({
         )}
         renderRightControl={(doSlide) => (
           <div
-            className={classNames(styles.chevron, {
-              [styles.featuredRightCorrection]: featured && isLargeScreen,
-            })}
+            className={styles.chevron}
             role="button"
             tabIndex={0}
             aria-label={t('slide_right')}
