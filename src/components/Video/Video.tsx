@@ -9,6 +9,7 @@ import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Favorite from '../../icons/Favorite';
 import PlayTrailer from '../../icons/PlayTrailer';
 import Share from '../../icons/Share';
+import Check from '../../icons/Check';
 import ArrowLeft from '../../icons/ArrowLeft';
 import Play from '../../icons/Play';
 import Button from '../Button/Button';
@@ -25,10 +26,21 @@ type Props = {
   startPlay: () => void;
   goBack: () => void;
   poster: Poster;
+  hasShared: boolean;
+  onShareClick: () => void;
   relatedShelf?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf }: Props) => {
+const Video: React.FC<Props> = ({
+  item,
+  play,
+  startPlay,
+  goBack,
+  poster,
+  hasShared,
+  onShareClick,
+  relatedShelf,
+}: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
@@ -78,7 +90,12 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, related
               fullWidth={breakpoint < Breakpoint.sm}
             />
             <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
-            <Button label={t('video:share')} startIcon={<Share />} onClick={() => null} />
+            <Button
+              label={hasShared ? t('video:copied_url') : t('video:share')}
+              startIcon={hasShared ? <Check /> : <Share />}
+              onClick={onShareClick}
+              active={hasShared}
+            />
           </div>
         </div>
         <div

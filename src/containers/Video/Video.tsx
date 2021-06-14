@@ -1,8 +1,9 @@
 import { useHistory, useLocation } from 'react-router';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
+import { copyToClipboard } from '../../utils/dom';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import VideoComponent from '../../components/Video/Video';
@@ -24,6 +25,7 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const location = useLocation();
   const play = new URLSearchParams(location.search).get('play') === '1';
   const config: Config = useContext(ConfigContext);
+  const [hasShared, setHasShared] = useState<boolean>(false);
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
   const { isLoading, error, data: { playlist } = { playlist: [] } } = usePlaylist(playlistId);
@@ -40,6 +42,18 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
   const onCardHover = (item: PlaylistItem) => updateBlurImage(item.image);
 
+  const onShareClick = (): void => {
+    if (!item) return;
+
+    if (typeof navigator.share === 'function') {
+      navigator.share({ title: item.title, text: item.description, url: window.location.href });
+    } else {
+      copyToClipboard(window.location.href);
+    }
+    setHasShared(true);
+    setTimeout(() => setHasShared(false), 2000);
+  };
+
   //temp:
   console.info({ episodeId });
 
@@ -55,6 +69,8 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
       startPlay={startPlay}
       goBack={goBack}
       poster={posterFading ? 'fading' : 'normal'}
+      hasShared={hasShared}
+      onShareClick={onShareClick}
       relatedShelf={
         config.recommendationsPlaylist ? (
           <Shelf
