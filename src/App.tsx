@@ -6,7 +6,6 @@ import type { Config } from 'types/Config';
 import Root from './components/Root/Root';
 import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
-import UIStateProvider from './providers/uiStateProvider';
 import './i18n/config';
 import './styles/main.scss';
 import { initializeWatchHistory } from './store/WatchHistoryStore';
@@ -41,9 +40,7 @@ class App extends Component {
             onValidationCompleted={(config) => this.initializeServices(config)}
           >
             <Router>
-              <UIStateProvider>
-                <Root error={this.state.error} />
-              </UIStateProvider>
+              <Root error={this.state.error} />
             </Router>
           </ConfigProvider>
         </QueryProvider>

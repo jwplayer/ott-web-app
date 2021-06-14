@@ -1,6 +1,5 @@
 import type { Config } from 'types/Config';
-import type { PlaylistItem } from 'types/playlist';
-import type { Playlist } from 'types/playlist';
+import type { Playlist, PlaylistItem } from 'types/playlist';
 
 const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
   const menuItem = config.menu.find((item) => item.playlistId === playlistId);
@@ -24,25 +23,27 @@ const chunk = <T>(input: T[], size: number) => {
 const findPlaylistImageForWidth = (playlistItem: PlaylistItem, width: number): string =>
   playlistItem.images.find((img) => img.width === width)?.src || playlistItem.image;
 
-const generatePlaylistPlaceholder = (playlistLength: number = 15) : Playlist => ({
+const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => ({
   title: '',
-  playlist: new Array(playlistLength).fill({}).map((_value, index) => ({
-    description: '',
-    duration: 0,
-    feedid: '',
-    image: '',
-    images: [],
-    link: '',
-    genre: '',
-    mediaid: `placeholder_${index}`,
-    pubdate: 0,
-    rating: '',
-    sources: [],
-    tags: '',
-    title: '',
-    tracks: [],
-  }) as PlaylistItem),
+  playlist: new Array(playlistLength).fill({}).map(
+    (_value, index) =>
+      ({
+        description: '',
+        duration: 0,
+        feedid: '',
+        image: '',
+        images: [],
+        link: '',
+        genre: '',
+        mediaid: `placeholder_${index}`,
+        pubdate: 0,
+        rating: '',
+        sources: [],
+        tags: '',
+        title: '',
+        tracks: [],
+      } as PlaylistItem),
+  ),
 });
-
 
 export { getFiltersFromConfig, filterPlaylist, chunk, findPlaylistImageForWidth, generatePlaylistPlaceholder };

@@ -2,12 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 
+import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
+import { UIStore } from '../../state/UIStore';
+import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import type { PlaylistItem } from '../../../types/playlist';
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { cardUrl } from '../../utils/formatting';
-import { UIStateContext } from '../../providers/uiStateProvider';
 import useFirstRender from '../../hooks/useFirstRender';
 import useSearchPlaylist from '../../hooks/useSearchPlaylist';
 
@@ -17,16 +19,23 @@ type SearchRouteParams = {
   query: string;
 };
 
-const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({ match: { params: { query } } }) => {
+const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
+  match: {
+    params: { query },
+  },
+}) => {
   const { searchPlaylist } = useContext(ConfigContext);
   const firstRender = useFirstRender();
-  const { updateBlurImage, searchQuery, updateSearchQuery } = useContext(UIStateContext);
+  const searchQuery = UIStore.useState((s) => s.searchQuery);
+  const { updateSearchQuery } = useSearchQueryUpdater();
   const history = useHistory();
-  const {
-    isFetching,
-    error,
-    data: { playlist } = { playlist: [] },
-  } = useSearchPlaylist(searchPlaylist || '', query, firstRender);
+  const { isFetching, error, data: { playlist } = { playlist: [] } } = useSearchPlaylist(
+    searchPlaylist || '',
+    query,
+    firstRender,
+  );
+
+  const updateBlurImage = useBlurImageUpdater(playlist);
 
   // Update the search bar query to match the route param on mount
   useEffect(() => {
@@ -44,9 +53,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({ match: { par
 
   if ((error || !playlist) && !isFetching) {
     return (
-      <ErrorPage
-        title="Something went wrong"
-      >
+      <ErrorPage title="Something went wrong">
         <h6>It looks like we had an issue loading this page..</h6>
         <p>Reload this page or try again later.</p>
       </ErrorPage>
@@ -54,16 +61,12 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({ match: { par
   }
 
   if (!query) {
-    return (
-      <ErrorPage title="Type something in the search box to start searching" />
-    );
+    return <ErrorPage title="Type something in the search box to start searching" />;
   }
 
   if (!playlist.length) {
     return (
-      <ErrorPage
-        title={`No results found for "${query || ''}"`}
-      >
+      <ErrorPage title={`No results found for "${query || ''}"`}>
         <h6>Suggestions:</h6>
         <ul>
           <li>Make sure all words are spelled correctly</li>

@@ -19,7 +19,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
         <div
           class="meta"
         >
-          1970 • 5h 54m • Tester • CC_CC
+          1970 • 6m  • Tester • CC_CC
         </div>
         <div
           class="collapsibleText"
@@ -137,7 +137,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="poster posterFading"
+        class="poster fading"
         style="background-image: url(http://test/img.jpg);"
       />
     </div>
@@ -186,7 +186,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
           <div
             class="meta"
           >
-            1970 • 5h 54m • Tester • CC_CC
+            1970 • 6m  • Tester • CC_CC
           </div>
           <div
             class="description"
