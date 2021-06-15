@@ -16,6 +16,7 @@ import IconButton from '../IconButton/IconButton';
 import { formatDuration } from '../../utils/formatting';
 
 import styles from './Video.module.scss';
+import FavoriteBorder from '../../icons/FavoriteBorder';
 
 type Poster = 'fading' | 'normal';
 
@@ -24,11 +25,13 @@ type Props = {
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
+  isFavorited: boolean;
+  onFavoriteButtonClick: () => void;
   poster: Poster;
   relatedShelf?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf }: Props) => {
+const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf, isFavorited, onFavoriteButtonClick }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
@@ -73,12 +76,24 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, related
           <div className={styles.otherButtons}>
             <Button
               label={t('video:trailer')}
+              aria-label={t('video:watch_trailer')}
               startIcon={<PlayTrailer />}
               onClick={() => null}
               fullWidth={breakpoint < Breakpoint.sm}
             />
-            <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
-            <Button label={t('video:share')} startIcon={<Share />} onClick={() => null} />
+            <Button
+              label={t('video:favorite')}
+              aria-label={isFavorited ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
+              startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
+              onClick={onFavoriteButtonClick}
+              color={isFavorited ? 'primary' : 'default'}
+            />
+            <Button
+              label={t('video:share')}
+              aria-label={t('video:share_video')}
+              startIcon={<Share />}
+              onClick={() => null}
+            />
           </div>
         </div>
         <div

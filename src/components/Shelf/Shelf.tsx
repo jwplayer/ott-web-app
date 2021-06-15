@@ -60,7 +60,7 @@ const Shelf: React.FC<ShelfProps> = ({
   if (error || !playlist?.playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
-    <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
+    <div className={classNames(styles.shelf, { [styles.featured]: featured })} data-mediaid={playlist.feedid}>
       {!featured && <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{playlist.title}</h2>}
       <TileDock<PlaylistItem>
         items={playlist.playlist}

@@ -1,6 +1,10 @@
 {
+  "add_to_favorites": "",
   "favorite": "",
+  "remove_from_favorites": "",
   "share": "",
+  "share_video": "",
   "start_watching": "",
-  "trailer": ""
+  "trailer": "",
+  "watch_trailer": ""
 }
