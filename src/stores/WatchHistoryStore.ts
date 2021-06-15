@@ -37,7 +37,7 @@ export const useWatchHistoryUpdater = (createWatchHistoryItem: () => WatchHistor
       const item = createWatchHistoryItem();
       if (!item) return;
 
-      const index = watchHistory.findIndex((historyItem) => historyItem.mediaid === item.mediaid);
+      const index = watchHistory.findIndex(({ mediaid }) => mediaid === item.mediaid);
       if (index > -1) {
         watchHistoryStore.update((state) => {
           state.watchHistory[index] = item;

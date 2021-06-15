@@ -31,7 +31,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
       title: item.title,
       tags: item.tags,
       duration: player.getDuration(),
-      progress: player.getPosition(),
+      progress: player.getPosition() / player.getDuration(),
     } as WatchHistoryItem;
   };
   const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
@@ -40,17 +40,14 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
   useEffect(() => {
     const getPlayer = () => window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
     const loadVideo = () => {
+      const { watchHistory } = watchHistoryStore.getRawState();
+      const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
+      const { progress, duration } = watchHistoryItem || {};
       const player = getPlayer();
       player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
-      player.on('ready', () => {
-        const { watchHistory } = watchHistoryStore.getRawState();
-        const progress = watchHistory.find((historyItem) => historyItem.mediaid === item.mediaid)?.progress;
-        if (progress) {
-          setTimeout(() => player.seek(progress), 1000);
-        }
-      });
       player.on('play', () => onPlay && onPlay());
       player.on('pause', () => onPause && onPause());
+      player.on('beforePlay', () => progress && duration && player.seek(duration * progress));
     };
 
     if (config.player && !initialized) {
