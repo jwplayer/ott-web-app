@@ -6,3 +6,4 @@ node_modules
 /coverage
 src/i18n/locales/**/*_old.json
 /output
+/.vscode/settings.json
