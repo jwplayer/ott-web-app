@@ -7,8 +7,9 @@ import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
+import { favoritesStore } from '../../stores/FavoritesStore';
+import { PersonalShelf } from '../../enum/PersonalShelf';
 import { watchHistoryStore } from '../../stores/WatchHistoryStore';
-import { contentWithPersonalPlaylists } from '../../utils/collection';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import Shelf from '../../containers/Shelf/Shelf';
@@ -37,8 +38,9 @@ const Home = (): JSX.Element => {
   const config: Config = useContext(ConfigContext);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
-  const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
-  const content: Content[] = contentWithPersonalPlaylists(config?.content, watchHistory);
+  const content: Content[] = config?.content;
+  const watchHistory = watchHistoryStore.useState();
+  const favorites = favoritesStore.useState();
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
@@ -75,6 +77,8 @@ const Home = (): JSX.Element => {
     const isMobile = tileBreakpoints[breakpoint] <= Breakpoint.sm;
 
     if (!item) return 0;
+    if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.watchHistory.length) return 0;
+    if (item.playlistId === PersonalShelf.Favorites && !favorites.favorites.length) return 0;
 
     const tilesToShow: number = item.featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
     const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;

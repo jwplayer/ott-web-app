@@ -1,6 +1,8 @@
 import type { Config, Content, Options, Menu } from 'types/Config';
 import { string, boolean, array, object, SchemaOf } from 'yup';
 
+import { PersonalShelf } from '../enum/PersonalShelf';
+
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
@@ -62,7 +64,7 @@ const loadConfig = async (configLocation: string) => {
 
     const data = await response.json();
 
-    addFavoritesShelf(data);
+    addPersonalShelves(data);
 
     if (data.version) {
       return parseDeprecatedConfig(data);
@@ -74,12 +76,15 @@ const loadConfig = async (configLocation: string) => {
 };
 
 /**
- * Add the favorites shelf if not already defined
+ * Add the personal shelves if not already defined: Favorites, ContinueWatching
  * @param {Config} data
  */
-const addFavoritesShelf = (data: Config) => {
-  if (!data.content.some(row => row.playlistId === 'favorites')) {
-    data.content.push({ playlistId: 'favorites' });
+const addPersonalShelves = (data: Config) => {
+  if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.Favorites)) {
+    data.content.push({ playlistId: PersonalShelf.Favorites });
+  }
+  if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.ContinueWatching)) {
+    data.content.splice(1, 0, { playlistId: PersonalShelf.ContinueWatching });
   }
 };
 

@@ -14,9 +14,9 @@ import Play from '../../icons/Play';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
 import { formatDuration } from '../../utils/formatting';
+import FavoriteBorder from '../../icons/FavoriteBorder';
 
 import styles from './Video.module.scss';
-import FavoriteBorder from '../../icons/FavoriteBorder';
 
 type Poster = 'fading' | 'normal';
 
@@ -31,7 +31,16 @@ type Props = {
   relatedShelf?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf, isFavorited, onFavoriteButtonClick }: Props) => {
+const Video: React.FC<Props> = ({
+  item,
+  play,
+  startPlay,
+  goBack,
+  poster,
+  relatedShelf,
+  isFavorited,
+  onFavoriteButtonClick,
+}: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();

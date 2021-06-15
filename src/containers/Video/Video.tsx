@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 
+import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import VideoComponent from '../../components/Video/Video';
@@ -24,11 +25,16 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
   const history = useHistory();
   const location = useLocation();
   const { hasItem, saveItem, removeItem } = useFavorites();
+  const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const play = new URLSearchParams(location.search).get('play') === '1';
   const config: Config = useContext(ConfigContext);
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
-  const { isLoading, error, data: { playlist } = { playlist: [] } } = usePlaylist(playlistId);
+  const { isLoading, error, data: { playlist } = { playlist: [] } } = usePlaylist(
+    playlistId,
+    undefined,
+    !isAlternativeShelf,
+  );
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 
@@ -59,7 +65,7 @@ const Video = ({ playlistId, videoType, episodeId, mediaId }: VideoProps): JSX.E
       goBack={goBack}
       poster={posterFading ? 'fading' : 'normal'}
       isFavorited={isFavorited}
-      onFavoriteButtonClick={() => isFavorited ? removeItem(item) : saveItem(item)}
+      onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
       relatedShelf={
         config.recommendationsPlaylist ? (
           <Shelf

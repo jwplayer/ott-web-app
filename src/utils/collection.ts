@@ -1,29 +1,11 @@
-import type { Config, Content } from 'types/Config';
+import type { Config } from 'types/Config';
 import type { Playlist, PlaylistItem } from 'types/playlist';
-import type { WatchHistoryItem } from 'types/watchHistory';
 
 const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
   const menuItem = config.menu.find((item) => item.playlistId === playlistId);
   const filters = menuItem?.filterTags?.split(',');
 
   return filters || [];
-};
-
-const contentWithPersonalPlaylists = (
-  content: Content[] | undefined,
-  watchHistory: WatchHistoryItem[] | null,
-): Content[] => {
-  if (!content) return [];
-
-  if (watchHistory) {
-    if (!content.some((item) => item.playlistId === 'continue-watching')) {
-      content.splice(1, 1, { playlistId: 'continue-watching' });
-    }
-  } else {
-    content.filter((item) => item.playlistId !== 'continue-watching');
-  }
-
-  return content;
 };
 
 const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
@@ -64,11 +46,4 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
   ),
 });
 
-export {
-  getFiltersFromConfig,
-  contentWithPersonalPlaylists,
-  filterPlaylist,
-  chunk,
-  findPlaylistImageForWidth,
-  generatePlaylistPlaceholder,
-};
+export { getFiltersFromConfig, filterPlaylist, chunk, findPlaylistImageForWidth, generatePlaylistPlaceholder };
