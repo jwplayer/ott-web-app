@@ -11,10 +11,11 @@ type ShelfProps = {
   onCardHover: (playlistItem: PlaylistItem) => void;
   relatedMediaId?: string;
   featured?: boolean;
+  title?: string;
 };
 
 const alternativeShelves = ['favorites'];
-const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false }: ShelfProps): JSX.Element | null => {
+const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false, title }: ShelfProps): JSX.Element | null => {
   const isAlternativeShelf = alternativeShelves.includes(playlistId);
   const {
     isLoading,
@@ -36,6 +37,7 @@ const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured 
       playlist={shelfPlaylist}
       onCardClick={onCardClick}
       onCardHover={onCardHover}
+      title={title}
       featured={featured}
     />
   );

@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import type { Config } from 'types/Config';
+import { Helmet } from 'react-helmet';
 
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { cardUrl } from '../../utils/formatting';
@@ -42,6 +43,9 @@ function Playlist({
 
   return (
     <div className={styles.playlist}>
+      <Helmet>
+        <title>{title} - {config.siteName}</title>
+      </Helmet>
       <header className={styles.header}>
         <h2>{title}</h2>
         <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />

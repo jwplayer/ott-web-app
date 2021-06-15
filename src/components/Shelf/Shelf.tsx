@@ -35,12 +35,14 @@ export type ShelfProps = {
   featured?: boolean;
   loading?: boolean;
   error?: unknown;
+  title?: string;
 };
 
 const Shelf: React.FC<ShelfProps> = ({
   playlist,
   onCardClick,
   onCardHover,
+  title,
   featured = false,
   loading = false,
   error = null,
@@ -61,7 +63,7 @@ const Shelf: React.FC<ShelfProps> = ({
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })} data-mediaid={playlist.feedid}>
-      {!featured && <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{playlist.title}</h2>}
+      {!featured && <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2>}
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}
