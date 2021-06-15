@@ -69,19 +69,33 @@ const Home = (): JSX.Element => {
 
   const calculateHeight = (index: number): number => {
     const item = content[index];
-    const isMobile = tileBreakpoints[breakpoint] <= Breakpoint.sm;
+    const isLargeScreen = breakpoint >= Breakpoint.md;
 
     if (!item) return 0;
 
-    const tilesToShow: number = item.featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
-    const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
-    const shelfMetaHeight = item.featured ? 24 : shelfTitlesHeight + 24;
-    const cardMetaHeight = item.featured ? 0 : 40;
-    const shelfHorizontalMargin = (isMobile && item.featured ? 20 : 56) * featuredTileBreakpoints[breakpoint];
-    const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
-    const cardHeight = cardWidth * (9 / 16);
+    const calculateFeatured = () => {
+      const tilesToShow = featuredTileBreakpoints[breakpoint];
+      const shelfMetaHeight = 24;
+      const cardMetaHeight = 10;
+      const shelfHorizontalMargin = isLargeScreen ? document.body.offsetWidth * 0.4 : 0;
+      const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
+      const cardHeight = cardWidth * (9 / 16);
 
-    return cardHeight + shelfMetaHeight + cardMetaHeight;
+      return cardHeight + shelfMetaHeight + cardMetaHeight;
+    };
+    const calculateRegular = () => {
+      const tilesToShow = tileBreakpoints[breakpoint];
+      const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
+      const shelfMetaHeight = shelfTitlesHeight + 24;
+      const cardMetaHeight = 40;
+      const shelfHorizontalMargin = 0 * featuredTileBreakpoints[breakpoint];
+      const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
+      const cardHeight = cardWidth * (9 / 16);
+
+      return cardHeight + shelfMetaHeight + cardMetaHeight;
+    };
+
+    return item.featured ? calculateFeatured() : calculateRegular();
   };
 
   return (

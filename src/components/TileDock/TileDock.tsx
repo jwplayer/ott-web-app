@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-// import './TileDock.css';
 import styles from './TileDock.module.scss';
 
 export type CycleMode = 'stop' | 'restart' | 'endless';
