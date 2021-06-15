@@ -23,7 +23,7 @@ describe('<Video>', () => {
       title: 'Test item title',
       tracks: [],
     } as PlaylistItem;
-    const { container } = render(<Video item={item} startPlay={() => null} goBack={() => null} poster="fading" play />);
+    const { container } = render(<Video item={item} startPlay={() => null} goBack={() => null} poster="fading" play  isFavorited={false} onFavoriteButtonClick={jest.fn()}/>);
 
     expect(container).toMatchSnapshot();
   });
