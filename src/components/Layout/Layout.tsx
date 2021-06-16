@@ -36,7 +36,6 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         <meta name="description" content={description} />
         <meta property="og:description" content={description} />
         <meta property="og:title" content={siteName} />
-        <meta property="og:type" content="video.other" />
         {banner && <meta property="og:image" content={banner?.replace(/^https:/, 'http:')} />}
         {banner && <meta property="og:image:secure_url" content={banner?.replace(/^http:/, 'https:')} />}
         <meta name="twitter:title" content={siteName} />

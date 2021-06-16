@@ -12,6 +12,7 @@ import VideoComponent from '../../components/Video/Video';
 import Shelf from '../../containers/Shelf/Shelf';
 import useMedia from '../../hooks/useMedia';
 import usePlaylist from '../../hooks/usePlaylist';
+import { generateEpisodeJSONLD } from '../../utils/structuredData';
 
 type SeriesRouteParams = {
   id: string;
@@ -60,6 +61,7 @@ const Series = (
     <React.Fragment>
       <Helmet>
         <title>{item.title} - {config.siteName}</title>
+        {seriesPlaylist && item ? <link rel="canonical" href={`${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}`} /> : null}
         <meta name="description" content={item.description} />
         <meta property="og:description" content={item.description} />
         <meta property="og:title" content={`${item.title} - ${config.siteName}`} />
@@ -77,6 +79,7 @@ const Series = (
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
         {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
+        {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
       </Helmet>
       <VideoComponent
         item={item}

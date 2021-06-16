@@ -6,11 +6,12 @@ import { Helmet } from 'react-helmet';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { cardUrl, videoUrl } from '../../utils/formatting';
+import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
 import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
 import Shelf from '../../containers/Shelf/Shelf';
 import useMedia from '../../hooks/useMedia';
+import { generateMovieJSONLD } from '../../utils/structuredData';
 
 type MovieRouteParams = {
   id: string;
@@ -49,6 +50,7 @@ const Movie = (
     <React.Fragment>
       <Helmet>
         <title>{item.title} - {config.siteName}</title>
+        {item ? <link rel="canonical" href={`${window.location.origin}${movieURL(item)}`} /> : null}
         <meta name="description" content={item.description} />
         <meta property="og:description" content={item.description} />
         <meta property="og:title" content={`${item.title} - ${config.siteName}`} />
@@ -66,6 +68,7 @@ const Movie = (
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
         {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
+        {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
       <VideoComponent
         item={item}
