@@ -9,7 +9,7 @@ import classNames from 'classnames';
 
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
-import { useWatchHistory } from '../../stores/WatchHistoryStore';
+import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import Shelf from '../../containers/Shelf/Shelf';
@@ -39,8 +39,7 @@ const Home = (): JSX.Element => {
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;
-  const { getPlaylist } = useWatchHistory();
-  const watchHistory = getPlaylist();
+  const watchHistory = watchHistoryStore.useState();
   const favorites = favoritesStore.useState();
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
@@ -78,7 +77,7 @@ const Home = (): JSX.Element => {
     const isLargeScreen = breakpoint >= Breakpoint.md;
 
     if (!item) return 0;
-    if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.playlist.length) return 0;
+    if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.watchHistory.length) return 0;
     if (item.playlistId === PersonalShelf.Favorites && !favorites.favorites.length) return 0;
 
     const calculateFeatured = () => {
