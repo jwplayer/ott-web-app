@@ -9,12 +9,14 @@ import * as persist from '../utils/persist';
 
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];
+  playlistItemsLoaded: boolean;
 };
 
 const PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
 
 export const watchHistoryStore = new Store<WatchHistoryStore>({
   watchHistory: [],
+  playlistItemsLoaded: false,
 });
 
 export const initializeWatchHistory = async () => {
@@ -34,6 +36,7 @@ export const initializeWatchHistory = async () => {
 
     watchHistoryStore.update((state) => {
       state.watchHistory = watchHistory.filter((item) => !!item.mediaid);
+      state.playlistItemsLoaded = true;
     });
   }
 
