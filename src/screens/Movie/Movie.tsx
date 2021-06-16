@@ -32,14 +32,14 @@ const Movie = (
   const play = searchParams.get('play') === '1';
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
-  const updateBlurImage = useBlurImageUpdater(null, item);
+  useBlurImageUpdater(item);
+
   const isFavorited = !!item && hasItem(item);
 
   const startPlay = () => item && history.push(videoUrl(item, searchParams.get('r'), true));
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
 
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
-  const onCardHover = (item: PlaylistItem) => updateBlurImage(item.image);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading list</p>;
@@ -80,7 +80,6 @@ const Movie = (
             <Shelf
               playlistId={config.recommendationsPlaylist}
               onCardClick={onCardClick}
-              onCardHover={onCardHover}
               relatedMediaId={item.mediaid}
             />
           ) : undefined

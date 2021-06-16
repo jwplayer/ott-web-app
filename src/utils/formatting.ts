@@ -7,6 +7,7 @@ const formatDurationTag = (seconds: number): string | null => {
 
   return `${minutes} min`;
 };
+
 /**
  * @param duration Duration in seconds
  *

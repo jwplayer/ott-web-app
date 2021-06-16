@@ -8,7 +8,7 @@ import { favoritesStore } from '../../stores/FavoritesStore';
 type ShelfProps = {
   playlistId: string;
   onCardClick: (playlistItem: PlaylistItem) => void;
-  onCardHover: (playlistItem: PlaylistItem) => void;
+  onCardHover?: (playlistItem: PlaylistItem) => void;
   relatedMediaId?: string;
   featured?: boolean;
   title?: string;

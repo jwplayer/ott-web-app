@@ -31,7 +31,7 @@ export const featuredTileBreakpoints: Breakpoints = {
 export type ShelfProps = {
   playlist: Playlist;
   onCardClick: (playlistItem: PlaylistItem) => void;
-  onCardHover: (playlistItem: PlaylistItem) => void;
+  onCardHover?: (playlistItem: PlaylistItem) => void;
   featured?: boolean;
   loading?: boolean;
   error?: unknown;
@@ -107,8 +107,8 @@ const Shelf: React.FC<ShelfProps> = ({
             duration={item.duration}
             posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
             seriesId={item.seriesId}
-            onClick={() => (isInView ? onCardClick(item) : null)}
-            onHover={() => onCardHover(item)}
+            onClick={isInView ? () => onCardClick(item) : undefined}
+            onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
             featured={featured}
             disabled={!isInView}
             loading={loading}
