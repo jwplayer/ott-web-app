@@ -10,9 +10,10 @@ import { useFavorites } from '../../stores/FavoritesStore';
 type ShelfProps = {
   playlistId: string;
   onCardClick: (playlistItem: PlaylistItem) => void;
-  onCardHover: (playlistItem: PlaylistItem) => void;
+  onCardHover?: (playlistItem: PlaylistItem) => void;
   relatedMediaId?: string;
   featured?: boolean;
+  title?: string;
 };
 
 const Shelf = ({
@@ -21,6 +22,7 @@ const Shelf = ({
   onCardHover,
   relatedMediaId,
   featured = false,
+  title,
 }: ShelfProps): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const { isLoading, error, data: playlist = { title: '', playlist: [] } }: UsePlaylistResult = usePlaylist(
@@ -47,6 +49,7 @@ const Shelf = ({
       playlist={shelfPlaylist}
       onCardClick={onCardClick}
       onCardHover={onCardHover}
+      title={title}
       featured={featured}
     />
   );
