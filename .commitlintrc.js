@@ -10,6 +10,7 @@ module.exports = {
         'search',
         'watchhistory',
         'favorites',
+        'seo',
       ],
     ],
   },

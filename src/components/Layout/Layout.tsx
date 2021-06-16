@@ -36,11 +36,8 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         <meta name="description" content={description} />
         <meta property="og:description" content={description} />
         <meta property="og:title" content={siteName} />
-        {banner && <meta property="og:image" content={banner?.replace(/^https:/, 'http:')} />}
-        {banner && <meta property="og:image:secure_url" content={banner?.replace(/^http:/, 'https:')} />}
         <meta name="twitter:title" content={siteName} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={banner} />
       </Helmet>
       <div className={styles.main}>
         {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
