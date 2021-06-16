@@ -15,6 +15,7 @@ import Play from '../../icons/Play';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
 import { formatDuration } from '../../utils/formatting';
+import FavoriteBorder from '../../icons/FavoriteBorder';
 
 import styles from './Video.module.scss';
 
@@ -25,6 +26,8 @@ type Props = {
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
+  isFavorited: boolean;
+  onFavoriteButtonClick: () => void;
   poster: Poster;
   enableSharing: boolean;
   hasShared: boolean;
@@ -41,6 +44,8 @@ const Video: React.FC<Props> = ({
   enableSharing,
   hasShared,
   onShareClick,
+  isFavorited,
+  onFavoriteButtonClick,
   relatedShelf,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -68,7 +73,12 @@ const Video: React.FC<Props> = ({
 
   return (
     <div className={styles.video}>
-      <div className={classNames(styles.main, { [styles.hidden]: play, [styles.posterNormal]: poster === 'normal' })}>
+      <div
+        className={classNames(styles.main, styles.mainPadding, {
+          [styles.hidden]: play,
+          [styles.posterNormal]: poster === 'normal',
+        })}
+      >
         <div className={styles.info}>
           <h2 className={styles.title}>{item.title}</h2>
           <div className={styles.meta}>{metaString}</div>
@@ -87,11 +97,18 @@ const Video: React.FC<Props> = ({
           <div className={styles.otherButtons}>
             <Button
               label={t('video:trailer')}
+              aria-label={t('video:watch_trailer')}
               startIcon={<PlayTrailer />}
               onClick={() => null}
               fullWidth={breakpoint < Breakpoint.sm}
             />
-            <Button label={t('video:favorite')} startIcon={<Favorite />} onClick={() => null} />
+            <Button
+              label={t('video:favorite')}
+              aria-label={isFavorited ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
+              startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
+              onClick={onFavoriteButtonClick}
+              color={isFavorited ? 'primary' : 'default'}
+            />
             {enableSharing && (
               <Button
                 label={hasShared ? t('video:copied_url') : t('video:share')}
@@ -107,7 +124,7 @@ const Video: React.FC<Props> = ({
           style={{ backgroundImage: `url('${posterImage}')` }}
         />
       </div>
-      {!!relatedShelf && <div className={styles.other}>{relatedShelf}</div>}
+      {!!relatedShelf && <div className={classNames(styles.related, styles.mainPadding)}>{relatedShelf}</div>}
       {play && (
         <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
           <div className={styles.player}>

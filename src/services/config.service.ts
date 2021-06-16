@@ -62,12 +62,24 @@ const loadConfig = async (configLocation: string) => {
 
     const data = await response.json();
 
+    addFavoritesShelf(data);
+
     if (data.version) {
       return parseDeprecatedConfig(data);
     }
     return data;
   } catch (error: unknown) {
     return error;
+  }
+};
+
+/**
+ * Add the favorites shelf if not already defined
+ * @param {Config} data
+ */
+const addFavoritesShelf = (data: Config) => {
+  if (!data.content.some(row => row.playlistId === 'favorites')) {
+    data.content.push({ playlistId: 'favorites' });
   }
 };
 

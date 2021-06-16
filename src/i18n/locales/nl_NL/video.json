@@ -1,7 +1,11 @@
 {
+  "add_to_favorites": "",
   "favorite": "",
+  "remove_from_favorites": "",
   "share": "",
+  "share_video": "",
   "start_watching": "",
   "trailer": "",
-  "copied_url": ""
+  "copied_url": "",
+  "watch_trailer": ""
 }
