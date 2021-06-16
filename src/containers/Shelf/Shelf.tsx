@@ -2,7 +2,7 @@ import React from 'react';
 import type { PlaylistItem } from 'types/playlist';
 
 import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
-import { useWatchlist } from '../../stores/WatchHistoryStore';
+import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
 import ShelfComponent from '../../components/Shelf/Shelf';
 import { useFavorites } from '../../stores/FavoritesStore';
@@ -30,7 +30,7 @@ const Shelf = ({
   );
   const { getPlaylist: getFavoritesPlayist } = useFavorites();
   const favoritesPlaylist = getFavoritesPlayist();
-  const { getPlaylist: getWatchHistoryPlayist } = useWatchlist();
+  const { getPlaylist: getWatchHistoryPlayist } = useWatchHistory();
   const watchHistoryPlayist = getWatchHistoryPlayist();
 
   let shelfPlaylist = playlist;

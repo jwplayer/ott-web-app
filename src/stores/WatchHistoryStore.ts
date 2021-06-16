@@ -68,9 +68,19 @@ export const createWatchHistoryItem = (
 };
 
 type GetProgressFn = () => VideoProgress | null;
-export type SaveItemFn = (item: PlaylistItem, getProgress: GetProgressFn) => void;
+type SaveItemFn = (item: PlaylistItem, getProgress: GetProgressFn) => void;
+type RemoveItemFn = (item: PlaylistItem) => void;
+type HasItemFn = (item: PlaylistItem) => boolean;
+type getPlaylistFn = () => Playlist;
 
-export const useWatchHistory = () => {
+type UseWatchHistoryReturn = {
+  saveItem: SaveItemFn;
+  removeItem: RemoveItemFn;
+  hasItem: HasItemFn;
+  getPlaylist: getPlaylistFn;
+};
+
+export const useWatchHistory = (): UseWatchHistoryReturn => {
   const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
 
   const saveItem: SaveItemFn = (item, getProgress) => {
@@ -106,7 +116,7 @@ export const useWatchHistory = () => {
     return {
       feedid: PersonalShelf.ContinueWatching,
       title: 'Continue watching',
-      playlist: watchHistory.map(({ playlistItem }) => playlistItem),
+      playlist: watchHistory.filter(({ playlistItem }) => !!playlistItem).map(({ playlistItem }) => playlistItem),
     } as Playlist;
   };
 

@@ -52,12 +52,14 @@ type RemoveItemFn = (item: PlaylistItem) => void;
 type HasItemFn = (item: PlaylistItem) => boolean;
 type getPlaylistFn = () => Playlist;
 
-export const useFavorites = (): {
+type UseFavoritesReturn = {
   saveItem: SaveItemFn;
   removeItem: RemoveItemFn;
   hasItem: HasItemFn;
   getPlaylist: getPlaylistFn;
-} => {
+};
+
+export const useFavorites = (): UseFavoritesReturn => {
   const favorites = favoritesStore.useState((state) => state.favorites);
 
   const saveItem = (item: PlaylistItem) => {
