@@ -1,4 +1,6 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
+const WorkboxPlugin = require('workbox-webpack-plugin');
+
 module.exports = {
   mount: {
     public: { url: '/', static: true },
@@ -36,6 +38,8 @@ module.exports = {
             return true;
           });
         }
+
+        config.plugins.push(new WorkboxPlugin.GenerateSW())
 
         return config;
       },
