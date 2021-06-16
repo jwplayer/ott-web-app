@@ -23,9 +23,9 @@ export const tileBreakpoints: Breakpoints = {
 export const featuredTileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
   [Breakpoint.sm]: 1,
-  [Breakpoint.md]: 2,
-  [Breakpoint.lg]: 2,
-  [Breakpoint.xl]: 2,
+  [Breakpoint.md]: 1,
+  [Breakpoint.lg]: 1,
+  [Breakpoint.xl]: 1,
 };
 
 export type ShelfProps = {
@@ -46,7 +46,7 @@ const Shelf: React.FC<ShelfProps> = ({
   error = null,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
-  const { t } = useTranslation('common')
+  const { t } = useTranslation('common');
   const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -87,7 +87,7 @@ const Shelf: React.FC<ShelfProps> = ({
         )}
         renderRightControl={(doSlide) => (
           <div
-            className={classNames(styles.chevron)}
+            className={styles.chevron}
             role="button"
             tabIndex={0}
             aria-label={t('slide_right')}

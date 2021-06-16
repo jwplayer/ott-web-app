@@ -66,7 +66,12 @@ const Video: React.FC<Props> = ({
 
   return (
     <div className={styles.video}>
-      <div className={classNames(styles.main, { [styles.hidden]: play, [styles.posterNormal]: poster === 'normal' })}>
+      <div
+        className={classNames(styles.main, styles.mainPadding, {
+          [styles.hidden]: play,
+          [styles.posterNormal]: poster === 'normal',
+        })}
+      >
         <div className={styles.info}>
           <h2 className={styles.title}>{item.title}</h2>
           <div className={styles.meta}>{metaString}</div>
@@ -110,7 +115,7 @@ const Video: React.FC<Props> = ({
           style={{ backgroundImage: `url('${posterImage}')` }}
         />
       </div>
-      {!!relatedShelf && <div className={styles.other}>{relatedShelf}</div>}
+      {!!relatedShelf && <div className={classNames(styles.related, styles.mainPadding)}>{relatedShelf}</div>}
       {play && (
         <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
           <div className={styles.player}>

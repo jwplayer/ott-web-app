@@ -10,6 +10,9 @@
 }
 .shelfContainer {
   padding: 12px 56px;
+  &.featured {
+    padding: 12px 20%;
+  }
 
   @include responsive.mobile-only() {
     padding: 24px 60px 24px variables.$base-spacing;
@@ -19,5 +22,8 @@
   }
   @include responsive.tablet-only() {
     padding: 0 variables.$base-spacing * 2;
+    &.featured {
+      padding: 24px variables.$base-spacing * 2;
+    }
   }
 }
