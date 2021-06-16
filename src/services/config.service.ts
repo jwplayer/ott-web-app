@@ -83,8 +83,10 @@ const addPersonalShelves = (data: Config) => {
   if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.Favorites)) {
     data.content.push({ playlistId: PersonalShelf.Favorites });
   }
-  if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.ContinueWatching)) {
-    data.content.splice(1, 0, { playlistId: PersonalShelf.ContinueWatching });
+  if (data.options.enableContinueWatching) {
+    if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.ContinueWatching)) {
+      data.content.splice(1, 0, { playlistId: PersonalShelf.ContinueWatching });
+    }
   }
 };
 
