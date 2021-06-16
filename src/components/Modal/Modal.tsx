@@ -26,10 +26,10 @@ const Modal: React.FC<Props> = ({ onClose, children }: Props) => {
   }, [onClose]);
 
   return (
-    <div className={styles.modal} onClick={onClose}>
+    <div className={styles.overlay} onClick={onClose}>
       <div className={styles.backdrop} />
       <div className={styles.modalContainer}>
-        <div className={styles.main} onClick={(event) => event.stopPropagation()}>
+        <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
           <IconButton onClick={onClose} aria-label={t('close_modal')} className={styles.close}>
             <Close />
           </IconButton>

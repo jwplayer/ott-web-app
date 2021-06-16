@@ -1,7 +1,7 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
 
-.modal {
+.overlay {
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -24,10 +24,9 @@
   justify-content: center;
   align-items: center;
 }
-.main {
+.modal {
   position: relative;
   width: 80vw;
-  // height: 80vh;
   background-color: rgba(0, 0, 0, 0.9);
 }
 .close {
