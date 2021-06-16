@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
@@ -12,6 +12,7 @@ import VideoComponent from '../../components/Video/Video';
 import Shelf from '../../containers/Shelf/Shelf';
 import useMedia from '../../hooks/useMedia';
 import usePlaylist from '../../hooks/usePlaylist';
+import { copyToClipboard } from '../../utils/dom';
 
 type SeriesRouteParams = {
   id: string;
@@ -40,6 +41,9 @@ const Series = (
     }
   }, [history, searchParams, seriesPlaylist]);
 
+  const [hasShared, setHasShared] = useState<boolean>(false);
+  const enableSharing: boolean = config.options.enableSharing === true;
+
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
   const posterFading: boolean = config ? config.options.posterFading === true : false;
@@ -51,6 +55,18 @@ const Series = (
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
 
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
+
+  const onShareClick = (): void => {
+    if (!item) return;
+
+    if (typeof navigator.share === 'function') {
+      navigator.share({ title: item.title, text: item.description, url: window.location.href });
+    } else {
+      copyToClipboard(window.location.href);
+    }
+    setHasShared(true);
+    setTimeout(() => setHasShared(false), 2000);
+  };
 
   if (isLoading || playlistIsLoading) return <p>Loading...</p>;
   if (error || playlistError) return <p>Error loading list</p>;
@@ -84,6 +100,9 @@ const Series = (
         startPlay={startPlay}
         goBack={goBack}
         poster={posterFading ? 'fading' : 'normal'}
+        enableSharing={enableSharing}
+        hasShared={hasShared}
+        onShareClick={onShareClick}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => isFavorited ? removeItem(item) : saveItem(item)}
         relatedShelf={

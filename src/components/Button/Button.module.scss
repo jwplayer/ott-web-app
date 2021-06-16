@@ -75,5 +75,9 @@
     height: 20px;
     width: 20px;
     fill: currentColor;
+    @include responsive.tablet-only() {
+      width: 18px;
+      height: 18px;
+    }
   }
 }
