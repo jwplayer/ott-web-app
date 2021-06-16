@@ -70,7 +70,7 @@ export const createWatchHistoryItem = (
 type GetProgressFn = () => VideoProgress | null;
 export type SaveItemFn = (item: PlaylistItem, getProgress: GetProgressFn) => void;
 
-export const useWatchlist = () => {
+export const useWatchHistory = () => {
   const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
 
   const saveItem: SaveItemFn = (item, getProgress) => {

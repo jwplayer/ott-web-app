@@ -4,7 +4,7 @@ import type { PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 
 import { useWatchHistoryListener } from '../../hooks/useWatchHistoryListener';
-import { watchHistoryStore, useWatchlist } from '../../stores/WatchHistoryStore';
+import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
 
@@ -31,7 +31,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
 
     return { duration, progress } as VideoProgress;
   };
-  const { saveItem } = useWatchlist();
+  const { saveItem } = useWatchHistory();
   useWatchHistoryListener(() => saveItem(item, getProgress));
 
   useEffect(() => {
