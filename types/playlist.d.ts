@@ -50,3 +50,10 @@ export type Playlist = {
   playlist: PlaylistItem[];
   title: string;
 };
+
+export type Media = {
+  description?: string;
+  feed_instance_id: string;
+  kind: string;
+  playlist: PlaylistItem[];
+};

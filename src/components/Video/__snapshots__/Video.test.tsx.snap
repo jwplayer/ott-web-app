@@ -113,7 +113,6 @@ exports[`<Video> renders and matches snapshot 1`] = `
             </span>
           </button>
           <button
-            aria-label="video:share_video"
             class="button default outlined"
           >
             <div

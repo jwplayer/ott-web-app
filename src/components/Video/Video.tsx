@@ -9,14 +9,15 @@ import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Favorite from '../../icons/Favorite';
 import PlayTrailer from '../../icons/PlayTrailer';
 import Share from '../../icons/Share';
+import Check from '../../icons/Check';
 import ArrowLeft from '../../icons/ArrowLeft';
 import Play from '../../icons/Play';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
 import { formatDuration } from '../../utils/formatting';
+import FavoriteBorder from '../../icons/FavoriteBorder';
 
 import styles from './Video.module.scss';
-import FavoriteBorder from '../../icons/FavoriteBorder';
 
 type Poster = 'fading' | 'normal';
 
@@ -28,10 +29,25 @@ type Props = {
   isFavorited: boolean;
   onFavoriteButtonClick: () => void;
   poster: Poster;
+  enableSharing: boolean;
+  hasShared: boolean;
+  onShareClick: () => void;
   relatedShelf?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, relatedShelf, isFavorited, onFavoriteButtonClick }: Props) => {
+const Video: React.FC<Props> = ({
+  item,
+  play,
+  startPlay,
+  goBack,
+  poster,
+  enableSharing,
+  hasShared,
+  onShareClick,
+  isFavorited,
+  onFavoriteButtonClick,
+  relatedShelf,
+}: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
@@ -93,12 +109,14 @@ const Video: React.FC<Props> = ({ item, play, startPlay, goBack, poster, related
               onClick={onFavoriteButtonClick}
               color={isFavorited ? 'primary' : 'default'}
             />
-            <Button
-              label={t('video:share')}
-              aria-label={t('video:share_video')}
-              startIcon={<Share />}
-              onClick={() => null}
-            />
+            {enableSharing && (
+              <Button
+                label={hasShared ? t('video:copied_url') : t('video:share')}
+                startIcon={hasShared ? <Check /> : <Share />}
+                onClick={onShareClick}
+                active={hasShared}
+              />
+            )}
           </div>
         </div>
         <div

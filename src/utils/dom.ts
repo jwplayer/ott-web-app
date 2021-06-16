@@ -28,3 +28,16 @@ export const addScript = (src: string, callback: () => void): void => {
   script.onerror = (error) => console.info('Error loading external script', error);
   document.body.appendChild(script);
 };
+
+export const copyToClipboard = (value: string): void => {
+  const inputc = document.createElement('input');
+  inputc.style.zIndex = '-10';
+  inputc.style.position = 'absolute';
+  inputc.style.left = '-1000';
+  inputc.value = value;
+  document.body.appendChild(inputc);
+  inputc.select();
+  document.execCommand('copy');
+  inputc.blur();
+  document.body.removeChild(inputc);
+};

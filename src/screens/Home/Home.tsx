@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useRef } from 'react';
+import React, { CSSProperties, useContext, useRef, useEffect } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
@@ -7,6 +7,9 @@ import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
+import { favoritesStore } from '../../stores/FavoritesStore';
+import { PersonalShelf } from '../../enum/PersonalShelf';
+import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import Shelf from '../../containers/Shelf/Shelf';
@@ -35,7 +38,10 @@ const Home = (): JSX.Element => {
   const config: Config = useContext(ConfigContext);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
-  const content: Content[] = config ? config.content : [];
+  const content: Content[] = config?.content;
+  const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
+  const watchHistoryLoaded = watchHistoryStore.useState((state) => state.playlistItemsLoaded);
+  const favorites = favoritesStore.useState((state) => state.favorites);
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
@@ -72,6 +78,8 @@ const Home = (): JSX.Element => {
     const isLargeScreen = breakpoint >= Breakpoint.md;
 
     if (!item) return 0;
+    if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.length) return 0;
+    if (item.playlistId === PersonalShelf.Favorites && !favorites.length) return 0;
 
     const calculateFeatured = () => {
       const tilesToShow = featuredTileBreakpoints[breakpoint];
@@ -97,6 +105,12 @@ const Home = (): JSX.Element => {
 
     return item.featured ? calculateFeatured() : calculateRegular();
   };
+
+  useEffect(() => {
+    if (watchHistoryLoaded) {
+      ((listRef.current as unknown) as List)?.recomputeRowHeights();
+    }
+  }, [watchHistoryLoaded]);
 
   return (
     <div className={styles.home}>

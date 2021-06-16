@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
@@ -12,18 +12,18 @@ import VideoComponent from '../../components/Video/Video';
 import Shelf from '../../containers/Shelf/Shelf';
 import useMedia from '../../hooks/useMedia';
 import { generateMovieJSONLD } from '../../utils/structuredData';
+import { copyToClipboard } from '../../utils/dom';
 
 type MovieRouteParams = {
   id: string;
 };
 
-const Movie = (
-  {
-    match: {
-      params: { id },
-    },
-    location,
-  }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
+const Movie = ({
+  match: {
+    params: { id },
+  },
+  location,
+}: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const searchParams = new URLSearchParams(location.search);
   const { isLoading, error, data: item } = useMedia(id);
@@ -33,6 +33,9 @@ const Movie = (
   const play = searchParams.get('play') === '1';
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
+  const [hasShared, setHasShared] = useState<boolean>(false);
+  const enableSharing: boolean = config.options.enableSharing === true;
+
   useBlurImageUpdater(item);
 
   const isFavorited = !!item && hasItem(item);
@@ -41,6 +44,18 @@ const Movie = (
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
 
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
+
+  const onShareClick = (): void => {
+    if (!item) return;
+
+    if (typeof navigator.share === 'function') {
+      navigator.share({ title: item.title, text: item.description, url: window.location.href });
+    } else {
+      copyToClipboard(window.location.href);
+    }
+    setHasShared(true);
+    setTimeout(() => setHasShared(false), 2000);
+  };
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading list</p>;
@@ -76,8 +91,11 @@ const Movie = (
         startPlay={startPlay}
         goBack={goBack}
         poster={posterFading ? 'fading' : 'normal'}
+        enableSharing={enableSharing}
+        hasShared={hasShared}
+        onShareClick={onShareClick}
         isFavorited={isFavorited}
-        onFavoriteButtonClick={() => isFavorited ? removeItem(item) : saveItem(item)}
+        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
         relatedShelf={
           config.recommendationsPlaylist ? (
             <Shelf
