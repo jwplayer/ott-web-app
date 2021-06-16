@@ -37,7 +37,7 @@ type Props = {
   playTrailer: boolean;
   onTrailerClick: () => void;
   onTrailerClose: () => void;
-  relatedShelf?: JSX.Element;
+  children?: JSX.Element;
 };
 
 const Video: React.FC<Props> = ({
@@ -52,7 +52,8 @@ const Video: React.FC<Props> = ({
   onShareClick,
   isFavorited,
   onFavoriteButtonClick,
-  relatedShelf,
+
+  children,
   playTrailer,
   onTrailerClick,
   onTrailerClose,
@@ -136,7 +137,7 @@ const Video: React.FC<Props> = ({
           style={{ backgroundImage: `url('${posterImage}')` }}
         />
       </div>
-      {!!relatedShelf && <div className={classNames(styles.related, styles.mainPadding)}>{relatedShelf}</div>}
+      {!!children && <div className={classNames(styles.related, styles.mainPadding)}>{children}</div>}
       {play && (
         <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
           <div className={styles.player}>

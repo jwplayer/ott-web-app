@@ -44,7 +44,9 @@ function Playlist({
   return (
     <div className={styles.playlist}>
       <Helmet>
-        <title>{title} - {config.siteName}</title>
+        <title>
+          {title} - {config.siteName}
+        </title>
       </Helmet>
       <header className={styles.header}>
         <h2>{title}</h2>

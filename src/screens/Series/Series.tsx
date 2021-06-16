@@ -3,13 +3,14 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 
+import CardGrid from '../../components/CardGrid/CardGrid';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl, episodeURL, videoUrl } from '../../utils/formatting';
 import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
-import Shelf from '../../containers/Shelf/Shelf';
+import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import useMedia from '../../hooks/useMedia';
 import usePlaylist from '../../hooks/usePlaylist';
 import { copyToClipboard } from '../../utils/dom';
@@ -116,8 +117,11 @@ const Series = ({
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
-        relatedShelf={<Shelf playlistId={id} title="Episodes" onCardClick={onCardClick} />}
-      />
+      >
+        <PlaylistContainer playlistId={id}>
+          {({ playlist }) => <CardGrid playlist={playlist.playlist} onCardClick={onCardClick} isLoading={false} />}
+        </PlaylistContainer>
+      </VideoComponent>
     </React.Fragment>
   );
 };
