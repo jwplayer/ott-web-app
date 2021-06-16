@@ -67,7 +67,7 @@ const Movie = ({
   return (
     <React.Fragment>
       <Helmet>
-        <title>pageTitle</title>
+        <title>{pageTitle}</title>
         <link rel="canonical" href={canonicalUrl} />
         <meta name="description" content={item.description} />
         <meta property="og:description" content={item.description} />
