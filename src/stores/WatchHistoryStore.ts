@@ -1,5 +1,4 @@
 import { Store } from 'pullstate';
-import { useEffect } from 'react';
 import type { Playlist, PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 import type { WatchHistoryItem } from 'types/watchHistory';
@@ -22,6 +21,11 @@ export const initializeWatchHistory = async () => {
   const savedItems: WatchHistoryItem[] | null = persist.getItem(PERSIST_KEY_WATCH_HISTORY) as WatchHistoryItem[] | null;
 
   if (savedItems) {
+    // Store persist data now, add playlistItems once API data ready
+    watchHistoryStore.update((state) => {
+      state.watchHistory = savedItems;
+    });
+
     const watchHistory = await Promise.all(
       savedItems.map(async (item) =>
         createWatchHistoryItem(await getMediaById(item.mediaid), { duration: item.duration, progress: item.progress }),
@@ -49,7 +53,10 @@ export const initializeWatchHistory = async () => {
   );
 };
 
-const createWatchHistoryItem = (item: PlaylistItem | undefined, videoProgress: VideoProgress): WatchHistoryItem => {
+export const createWatchHistoryItem = (
+  item: PlaylistItem | undefined,
+  videoProgress: VideoProgress,
+): WatchHistoryItem => {
   return {
     mediaid: item?.mediaid,
     title: item?.title,
@@ -60,47 +67,30 @@ const createWatchHistoryItem = (item: PlaylistItem | undefined, videoProgress: V
   } as WatchHistoryItem;
 };
 
-type GetProgressFn = () => VideoProgress;
-
-export const useWatchHistoryUpdater = (item: PlaylistItem, getProgress: GetProgressFn): void => {
-  useEffect(() => {
-    const savePosition = () => {
-      const { watchHistory } = watchHistoryStore.getRawState();
-      const videoProgress = getProgress();
-      if (!videoProgress) return;
-
-      const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
-
-      const index = watchHistory.findIndex(({ mediaid }) => mediaid === watchHistoryItem.mediaid);
-      if (index > -1) {
-        watchHistoryStore.update((state) => {
-          state.watchHistory[index] = watchHistoryItem;
-        });
-      } else {
-        watchHistoryStore.update((state) => {
-          state.watchHistory.unshift(watchHistoryItem);
-        });
-      }
-    };
-    const visibilityListener = () => document.visibilityState === 'hidden' && savePosition();
-
-    window.addEventListener('beforeunload', savePosition);
-    window.addEventListener('visibilitychange', visibilityListener);
-
-    return () => {
-      savePosition();
-      window.removeEventListener('beforeunload', savePosition);
-      window.removeEventListener('visibilitychange', visibilityListener);
-    };
-  }, []);
-};
+type GetProgressFn = () => VideoProgress | null;
+export type SaveItemFn = (item: PlaylistItem, getProgress: GetProgressFn) => void;
 
 export const useWatchlist = () => {
   const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
 
-  // const saveItem = (watchHistoryItem: WatchHistoryItem, item: PlaylistItem) => {
-  //   // move savePosition to here?
-  // };
+  const saveItem: SaveItemFn = (item, getProgress) => {
+    const { watchHistory } = watchHistoryStore.getRawState();
+    const videoProgress = getProgress();
+    if (!videoProgress) return;
+
+    const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
+
+    const index = watchHistory.findIndex(({ mediaid }) => mediaid === watchHistoryItem.mediaid);
+    if (index > -1) {
+      watchHistoryStore.update((state) => {
+        state.watchHistory[index] = watchHistoryItem;
+      });
+    } else {
+      watchHistoryStore.update((state) => {
+        state.watchHistory.unshift(watchHistoryItem);
+      });
+    }
+  };
 
   const removeItem = (item: PlaylistItem) => {
     watchHistoryStore.update((state) => {
@@ -120,5 +110,5 @@ export const useWatchlist = () => {
     } as Playlist;
   };
 
-  return { removeItem, hasItem, getPlaylist };
+  return { saveItem, removeItem, hasItem, getPlaylist };
 };
