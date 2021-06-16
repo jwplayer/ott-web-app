@@ -1,9 +1,11 @@
 import React from 'react';
 import type { PlaylistItem } from 'types/playlist';
 
+import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
+import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
 import ShelfComponent from '../../components/Shelf/Shelf';
-import { favoritesStore } from '../../stores/FavoritesStore';
+import { useFavorites } from '../../stores/FavoritesStore';
 
 type ShelfProps = {
   playlistId: string;
@@ -14,18 +16,28 @@ type ShelfProps = {
   title?: string;
 };
 
-const alternativeShelves = ['favorites'];
-const Shelf = ({ playlistId, onCardClick, onCardHover, relatedMediaId, featured = false, title }: ShelfProps): JSX.Element | null => {
-  const isAlternativeShelf = alternativeShelves.includes(playlistId);
-  const {
-    isLoading,
-    error,
-    data: playlist = { title: '', playlist: [] },
-  }: UsePlaylistResult = usePlaylist(playlistId, relatedMediaId, !isAlternativeShelf);
+const Shelf = ({
+  playlistId,
+  onCardClick,
+  onCardHover,
+  relatedMediaId,
+  featured = false,
+  title,
+}: ShelfProps): JSX.Element | null => {
+  const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
+  const { isLoading, error, data: playlist = { title: '', playlist: [] } }: UsePlaylistResult = usePlaylist(
+    playlistId,
+    relatedMediaId,
+    !isAlternativeShelf,
+  );
+  const { getPlaylist: getFavoritesPlayist } = useFavorites();
+  const favoritesPlaylist = getFavoritesPlayist();
+  const { getPlaylist: getWatchHistoryPlayist } = useWatchHistory();
+  const watchHistoryPlayist = getWatchHistoryPlayist();
 
-  const favoritesPlaylist = favoritesStore.useState((s) => s.favorites);
-
-  const shelfPlaylist = playlistId === 'favorites' ? favoritesPlaylist : playlist;
+  let shelfPlaylist = playlist;
+  if (playlistId === PersonalShelf.Favorites) shelfPlaylist = favoritesPlaylist;
+  if (playlistId === PersonalShelf.ContinueWatching) shelfPlaylist = watchHistoryPlayist;
 
   if (!playlistId) return <p>No playlist id</p>;
   if (!isLoading && !shelfPlaylist?.playlist.length) return null;

@@ -67,6 +67,7 @@ The allowed scopes are:
 - playlist
 - videodetail
 - search
+- watchhistory
 - favorites
 
 ### Subject

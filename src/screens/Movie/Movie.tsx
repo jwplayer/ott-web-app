@@ -17,13 +17,12 @@ type MovieRouteParams = {
   id: string;
 };
 
-const Movie = (
-  {
-    match: {
-      params: { id },
-    },
-    location,
-  }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
+const Movie = ({
+  match: {
+    params: { id },
+  },
+  location,
+}: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const searchParams = new URLSearchParams(location.search);
   const { isLoading, error, data: item } = useMedia(id);
@@ -64,7 +63,9 @@ const Movie = (
   return (
     <React.Fragment>
       <Helmet>
-        <title>{item.title} - {config.siteName}</title>
+        <title>
+          {item.title} - {config.siteName}
+        </title>
         <meta name="description" content={item.description} />
         <meta property="og:description" content={item.description} />
         <meta property="og:title" content={`${item.title} - ${config.siteName}`} />
@@ -81,7 +82,9 @@ const Movie = (
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
+        {item.tags.split(',').map((tag) => (
+          <meta property="og:video:tag" content={tag} key={tag} />
+        ))}
       </Helmet>
       <VideoComponent
         item={item}
@@ -93,7 +96,7 @@ const Movie = (
         hasShared={hasShared}
         onShareClick={onShareClick}
         isFavorited={isFavorited}
-        onFavoriteButtonClick={() => isFavorited ? removeItem(item) : saveItem(item)}
+        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
         relatedShelf={
           config.recommendationsPlaylist ? (
             <Shelf
