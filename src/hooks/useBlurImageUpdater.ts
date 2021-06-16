@@ -3,18 +3,16 @@ import { useEffect } from 'react';
 import { UIStore } from '../stores/UIStore';
 import type { PlaylistItem } from '../../types/playlist';
 
-const useBlurImageUpdater = (playlist: PlaylistItem[]) => {
+const useBlurImageUpdater = (data?: PlaylistItem[] | PlaylistItem) => {
   useEffect(() => {
-    if (!playlist.length) return;
+    const targetItem = Array.isArray(data) ? data?.[0] : data;
 
-    const { image } = playlist[0];
+    if (!targetItem?.image) return;
 
-    if (image) {
-      UIStore.update((state) => {
-        state.blurImage = image;
-      });
-    }
-  }, [playlist]);
+    UIStore.update((state) => {
+      state.blurImage = targetItem.image;
+    });
+  }, [data]);
 
   return (image: string) =>
     image &&

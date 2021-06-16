@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { UIStore } from '../../stores/UIStore';
@@ -24,7 +26,8 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
     params: { query },
   },
 }) => {
-  const { searchPlaylist } = useContext(ConfigContext);
+  const { t } = useTranslation('search');
+  const { siteName, searchPlaylist } = useContext(ConfigContext);
   const firstRender = useFirstRender();
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
@@ -53,25 +56,25 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
 
   if ((error || !playlist) && !isFetching) {
     return (
-      <ErrorPage title="Something went wrong">
-        <h6>It looks like we had an issue loading this page..</h6>
-        <p>Reload this page or try again later.</p>
+      <ErrorPage title={t('error_heading')}>
+        <h6>{t('error_subheading')}</h6>
+        <p>{t('error_description')}</p>
       </ErrorPage>
     );
   }
 
   if (!query) {
-    return <ErrorPage title="Type something in the search box to start searching" />;
+    return <ErrorPage title={t('start_typing')} />;
   }
 
   if (!playlist.length) {
     return (
-      <ErrorPage title={`No results found for "${query || ''}"`}>
-        <h6>Suggestions:</h6>
+      <ErrorPage title={t('no_results_heading', { query })}>
+        <h6>{t('suggestions')}</h6>
         <ul>
-          <li>Make sure all words are spelled correctly</li>
-          <li>Try different search terms</li>
-          <li>Make search terms more general</li>
+          <li>{t('tip_one')}</li>
+          <li>{t('tip_two')}</li>
+          <li>{t('tip_three')}</li>
         </ul>
       </ErrorPage>
     );
@@ -79,8 +82,11 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
 
   return (
     <div className={styles.search}>
+      <Helmet>
+        <title>{t('title', { results: playlist.length, query })} - {siteName}</title>
+      </Helmet>
       <header className={styles.header}>
-        <h2>Search results</h2>
+        <h2>{t('heading')}</h2>
       </header>
       <main className={styles.main}>
         <CardGrid playlist={playlist} onCardClick={onCardClick} onCardHover={onCardHover} isLoading={firstRender} />

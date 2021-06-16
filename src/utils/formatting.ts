@@ -1,4 +1,4 @@
-import type { PlaylistItem } from 'types/playlist';
+import type { Playlist, PlaylistItem } from 'types/playlist';
 
 const formatDurationTag = (seconds: number): string | null => {
   if (!seconds || typeof seconds !== 'number') return null;
@@ -7,6 +7,7 @@ const formatDurationTag = (seconds: number): string | null => {
 
   return `${minutes} min`;
 };
+
 /**
  * @param duration Duration in seconds
  *
@@ -40,19 +41,22 @@ const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-+$/, '')
     .replace(/-/g, whitespaceChar);
 
-const movieURL = (item: PlaylistItem, playlistId: string = '') =>
-  `/m/${item.mediaid}/${slugify(item.title)}${playlistId ? `?list=${playlistId}` : ''}`;
+const movieURL = (item: PlaylistItem, playlistId?: string | null) =>
+  `/m/${item.mediaid}/${slugify(item.title)}${playlistId ? `?r=${playlistId}` : ''}`;
 
-const seriesURL = (item: PlaylistItem, playlistId: string = '') =>
-  `/s/${item.seriesId}/${slugify(item.title)}?e=${item.mediaid}&r=${playlistId}`;
+const seriesURL = (item: PlaylistItem, playlistId?: string | null) =>
+  `/s/${item.seriesId}/${slugify(item.title)}?r=${playlistId}`;
 
-const cardUrl = (item: PlaylistItem, playlistId: string = '') =>
+const episodeURL = (seriesPlaylist: Playlist, episodeId?: string) =>
+  `/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}${episodeId ? `?e=${episodeId}` : ''}`;
+
+const cardUrl = (item: PlaylistItem, playlistId?: string | null) =>
   item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
 
-const videoUrl = (item: PlaylistItem, playlistId: string = '', play: boolean = false) => {
+const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
   const url = item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
 
   return `${url}${play ? '&play=1' : ''}`;
 };
 
-export { formatDurationTag, formatDuration, cardUrl, movieURL, seriesURL, videoUrl };
+export { formatDurationTag, formatDuration, cardUrl, movieURL, seriesURL, videoUrl, episodeURL };

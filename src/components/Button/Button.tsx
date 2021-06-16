@@ -18,7 +18,8 @@ type Props = {
   onClick?: () => void;
   to?: string;
 };
-const Button: React.FC<Props> = ({
+
+const Button: React.FC<Props & React.AriaAttributes> = ({
   label,
   color = 'default',
   startIcon,
@@ -27,6 +28,7 @@ const Button: React.FC<Props> = ({
   variant = 'outlined',
   to,
   onClick,
+  ...rest
 }: Props) => {
   const className = classNames(styles.button, [styles[color]], [styles[variant]], {
     [styles.active]: active,
@@ -37,12 +39,12 @@ const Button: React.FC<Props> = ({
   const span = <span className={styles.buttonLabel}>{label}</span>;
 
   return to ? (
-    <NavLink className={className} to={to} activeClassName={styles.active} exact>
+    <NavLink className={className} to={to} activeClassName={styles.active} {...rest} exact>
       {icon}
       {span}
     </NavLink>
   ) : (
-    <button className={className} onClick={onClick}>
+    <button className={className} onClick={onClick} {...rest}>
       {icon}
       {span}
     </button>

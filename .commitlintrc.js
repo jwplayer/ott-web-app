@@ -8,6 +8,8 @@ module.exports = {
         'playlist',
         'videodetail',
         'search',
+        'watchhistory',
+        'favorites',
       ],
     ],
   },

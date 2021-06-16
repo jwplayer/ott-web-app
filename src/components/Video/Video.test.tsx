@@ -26,13 +26,15 @@ describe('<Video>', () => {
     const { container } = render(
       <Video
         item={item}
-        startPlay={() => null}
-        goBack={() => null}
+        startPlay={jest.fn()}
+        goBack={jest.fn()}
         poster="fading"
         play
         hasShared={false}
-        onShareClick={() => null}
+        onShareClick={jest.fn()}
         enableSharing
+        isFavorited={false}
+        onFavoriteButtonClick={jest.fn()}
       />,
     );
 

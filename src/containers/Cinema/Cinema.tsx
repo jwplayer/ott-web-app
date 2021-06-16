@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
-import type { WatchHistoryItem } from 'types/watchHistory';
+import type { VideoProgress } from 'types/video';
 
-import { watchHistoryStore, useWatchHistoryUpdater } from '../../stores/WatchHistoryStore';
+import { useWatchHistoryListener } from '../../hooks/useWatchHistoryListener';
+import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
 
@@ -24,34 +25,36 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
   const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
 
-  const createWatchHistoryItem = (): WatchHistoryItem | undefined => {
+  const getProgress = (): VideoProgress | null => {
     const player = window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
+    if (!player) return null;
 
-    if (!player) return;
+    const duration = player.getDuration();
+    const progress = player.getPosition() / duration;
 
-    return {
-      mediaid: item.mediaid,
-      position: player.getPosition(),
-    } as WatchHistoryItem;
+    return { duration, progress } as VideoProgress;
   };
-  const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
-  const updateWatchHistory = useWatchHistoryUpdater(createWatchHistoryItem, enableWatchHistory);
+  const { saveItem } = useWatchHistory();
+  useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
 
   useEffect(() => {
     const getPlayer = () => window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
     const loadVideo = () => {
       const player = getPlayer();
-      player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
-      player.on('ready', () => {
-        const { watchHistory } = watchHistoryStore.getRawState();
-        const position = watchHistory.find((historyItem) => historyItem.mediaid === item.mediaid)?.position;
+      const { watchHistory } = watchHistoryStore.getRawState();
+      const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
+      let applyWatchHistory = !!watchHistory && enableWatchHistory;
 
-        if (position && enableWatchHistory) {
-          setTimeout(() => player.seek(position), 1000);
-        }
-      });
+      player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
       player.on('play', () => onPlay && onPlay());
       player.on('pause', () => onPause && onPause());
+      player.on('beforePlay', () => {
+        if (applyWatchHistory) {
+          applyWatchHistory = false; // Only the first time beforePlay
+          const { progress, duration } = watchHistoryItem || {};
+          progress && duration && player.seek(duration * progress);
+        }
+      });
       player.on('complete', () => onComplete && onComplete());
     };
 
@@ -59,19 +62,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [
-    item,
-    onPlay,
-    onPause,
-    onComplete,
-    config.player,
-    file,
-    scriptUrl,
-    initialized,
-    watchHistory,
-    enableWatchHistory,
-    updateWatchHistory,
-  ]);
+  }, [item, onPlay, onPause, onComplete, config.player, file, scriptUrl, initialized, enableWatchHistory]);
 
   return <div className={styles.Cinema} id="cinema" />;
 };

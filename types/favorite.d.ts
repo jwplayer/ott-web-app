@@ -1,10 +1,9 @@
 import type { PlaylistItem } from './playlist';
 
-export type WatchHistoryItem = {
+export type Favorite = {
   mediaid: string;
   title: string;
   tags: string;
   duration: number;
-  progress: number;
   playlistItem?: PlaylistItem;
 };
