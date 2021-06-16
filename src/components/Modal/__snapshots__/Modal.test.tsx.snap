@@ -15,7 +15,7 @@ exports[`<Modal> renders and matches snapshot 1`] = `
         class="main"
       >
         <div
-          aria-label="Close"
+          aria-label="close_modal"
           class="iconButton close"
           role="button"
           tabindex="0"

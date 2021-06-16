@@ -1,6 +1,7 @@
 {
   "back": "Back",
   "close": "Close menu",
+  "close_modal": "Close",
   "home": "Home",
   "play_item": "Play {{ title }}",
   "settings": "Settings",

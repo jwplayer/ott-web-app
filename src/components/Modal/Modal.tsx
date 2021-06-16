@@ -1,4 +1,5 @@
 import React, { ReactFragment, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import IconButton from '../IconButton/IconButton';
 import Close from '../../icons/Close';
@@ -11,6 +12,8 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = ({ onClose, children }: Props) => {
+  const { t } = useTranslation('common');
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => event.keyCode === 27 && onClose();
 
@@ -27,7 +30,7 @@ const Modal: React.FC<Props> = ({ onClose, children }: Props) => {
       <div className={styles.backdrop} />
       <div className={styles.modalContainer}>
         <div className={styles.main} onClick={(event) => event.stopPropagation()}>
-          <IconButton onClick={onClose} aria-label={'Close'} className={styles.close}>
+          <IconButton onClick={onClose} aria-label={t('close_modal')} className={styles.close}>
             <Close />
           </IconButton>
           {children}
