@@ -17,6 +17,8 @@ type CardProps = {
   featured?: boolean;
   disabled?: boolean;
   loading?: boolean;
+  isCurrent?: boolean;
+  currentLabel?: string;
 };
 
 function Card({
@@ -30,10 +32,17 @@ function Card({
   featured = false,
   disabled = false,
   loading = false,
+  isCurrent = false,
+  currentLabel,
 }: CardProps): JSX.Element {
   const { t } = useTranslation('common');
-  const cardClassName = classNames(styles.card, { [styles.featured]: featured, [styles.disabled]: disabled });
-  const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`]);
+  const cardClassName = classNames(styles.card, {
+    [styles.featured]: featured,
+    [styles.disabled]: disabled,
+  });
+  const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`], {
+    [styles.current]: isCurrent,
+  });
   const metaData = () => {
     if (seriesId) {
       return <div className={styles.tag}>Series</div>;
@@ -61,6 +70,7 @@ function Card({
             {metaData()}
           </div>
         )}
+        {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
       </div>
       {!featured && (
         <div className={styles.titleContainer}>

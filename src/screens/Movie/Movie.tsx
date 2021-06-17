@@ -2,17 +2,21 @@ import React, { useContext, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
+import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
 import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
-import Shelf from '../../containers/Shelf/Shelf';
+import CardGrid from '../../components/CardGrid/CardGrid';
 import useMedia from '../../hooks/useMedia';
 import { generateMovieJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
+
+import styles from './Movie.module.scss';
 
 type MovieRouteParams = {
   id: string;
@@ -26,6 +30,7 @@ const Movie = ({
 }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const history = useHistory();
+  const { t } = useTranslation('video');
   const searchParams = new URLSearchParams(location.search);
   const { isLoading, error, data: item } = useMedia(id);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
@@ -91,6 +96,7 @@ const Movie = ({
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
       <VideoComponent
+        title={item.title}
         item={item}
         trailerItem={trailerItem}
         play={play}
@@ -105,16 +111,26 @@ const Movie = ({
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
-        relatedShelf={
-          config.recommendationsPlaylist ? (
-            <Shelf
-              playlistId={config.recommendationsPlaylist}
-              onCardClick={onCardClick}
-              relatedMediaId={item.mediaid}
-            />
-          ) : undefined
-        }
-      />
+      >
+        {config.recommendationsPlaylist ? (
+          <PlaylistContainer playlistId={config.recommendationsPlaylist} relatedMediaId={item.mediaid}>
+            {({ playlist, isLoading }) => (
+              <>
+                <div className={styles.related}>
+                  <h3>{playlist.title}</h3>
+                </div>
+                <CardGrid
+                  playlist={playlist.playlist}
+                  onCardClick={onCardClick}
+                  isLoading={isLoading}
+                  currentCardItem={item}
+                  currentCardLabel={t('currently_playing')}
+                />
+              </>
+            )}
+          </PlaylistContainer>
+        ) : undefined}
+      </VideoComponent>
     </React.Fragment>
   );
 };

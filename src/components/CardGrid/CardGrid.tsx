@@ -19,13 +19,23 @@ const defaultCols: Breakpoints = {
 
 type CardGridProps = {
   playlist: PlaylistItem[];
-  onCardHover: (item: PlaylistItem) => void;
+  onCardHover?: (item: PlaylistItem) => void;
   onCardClick: (item: PlaylistItem) => void;
   isLoading: boolean;
   cols?: Breakpoints;
+  currentCardItem?: PlaylistItem;
+  currentCardLabel?: string;
 };
 
-function CardGrid ({ playlist, onCardClick, onCardHover, isLoading = false, cols = defaultCols }: CardGridProps) {
+function CardGrid({
+  playlist,
+  onCardClick,
+  onCardHover,
+  isLoading = false,
+  cols = defaultCols,
+  currentCardItem,
+  currentCardLabel,
+}: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const imageSourceWidth = 320 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
@@ -46,15 +56,19 @@ function CardGrid ({ playlist, onCardClick, onCardHover, isLoading = false, cols
           posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
           seriesId={seriesId}
           onClick={() => onCardClick(playlistItem)}
-          onHover={() => onCardHover(playlistItem)}
+          onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
           loading={isLoading}
+          isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
+          currentLabel={currentCardLabel}
         />
       </div>
     );
   };
 
   return (
-    <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={50} />
+    <div className={styles.container}>
+      <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={50} />
+    </div>
   );
 }
 

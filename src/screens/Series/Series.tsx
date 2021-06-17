@@ -2,18 +2,23 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
+import CardGrid from '../../components/CardGrid/CardGrid';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { cardUrl, episodeURL, videoUrl } from '../../utils/formatting';
+import { episodeURL } from '../../utils/formatting';
+import Filter from '../../components/Filter/Filter';
 import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
-import Shelf from '../../containers/Shelf/Shelf';
 import useMedia from '../../hooks/useMedia';
 import usePlaylist from '../../hooks/usePlaylist';
 import { generateEpisodeJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
+import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
+
+import styles from './Series.module.scss';
 
 type SeriesRouteParams = {
   id: string;
@@ -27,15 +32,22 @@ const Series = ({
 }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const history = useHistory();
+  const { t } = useTranslation('video');
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist } = usePlaylist(
-    id,
-    undefined,
-    true,
-    false,
-  );
+  const {
+    isLoading: playlistIsLoading,
+    error: playlistError,
+    data: seriesPlaylist = { title: '', playlist: [] },
+  } = usePlaylist(id, undefined, true, false);
   const { isLoading, error, data: item } = useMedia(searchParams.get('e') || '');
   const { data: trailerItem } = useMedia(item?.trailerId || '');
+
+  const [seasonFilter, setSeasonFilter] = useState<string>('');
+  const filters = getFiltersFromSeries(seriesPlaylist.playlist);
+  const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [
+    seriesPlaylist,
+    seasonFilter,
+  ]);
 
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
@@ -49,10 +61,10 @@ const Series = ({
 
   const isFavorited = !!item && hasItem(item);
 
-  const startPlay = () => item && history.push(videoUrl(item, searchParams.get('r'), true));
-  const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
+  const startPlay = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, true));
+  const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
 
-  const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
+  const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
 
   const onShareClick = (): void => {
     if (!item) return;
@@ -104,6 +116,7 @@ const Series = ({
         {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
       </Helmet>
       <VideoComponent
+        title={seriesPlaylist.title}
         item={item}
         trailerItem={trailerItem}
         play={play}
@@ -118,8 +131,29 @@ const Series = ({
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
-        relatedShelf={<Shelf playlistId={id} title="Episodes" onCardClick={onCardClick} />}
-      />
+        isSeries
+      >
+        <>
+          <div className={styles.episodes}>
+            <h3>{t('episodes')}</h3>
+            <Filter
+              name="categories"
+              value={seasonFilter}
+              valuePrefix="Season "
+              defaultLabel="All"
+              options={filters}
+              setValue={setSeasonFilter}
+            />
+          </div>
+          <CardGrid
+            playlist={filteredPlaylist}
+            onCardClick={onCardClick}
+            isLoading={isLoading}
+            currentCardItem={item}
+            currentCardLabel={t('current_episode')}
+          />
+        </>
+      </VideoComponent>
     </React.Fragment>
   );
 };
