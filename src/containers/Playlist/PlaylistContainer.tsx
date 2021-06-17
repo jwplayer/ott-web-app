@@ -19,7 +19,7 @@ type Props = {
   children: (childrenParams: ChildrenParams) => JSX.Element;
 };
 
-const PlaylistContainer = ({ playlistId, onPlaylistUpdate, children }: Props): JSX.Element | null => {
+const PlaylistContainer = ({ playlistId, relatedMediaId, onPlaylistUpdate, children }: Props): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const { isLoading, error, data: fetchedPlaylist = { title: '', playlist: [] } }: UsePlaylistResult = usePlaylist(
     playlistId,
