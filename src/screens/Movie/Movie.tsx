@@ -25,15 +25,17 @@ const Movie = ({
   location,
 }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
+  const history = useHistory();
   const searchParams = new URLSearchParams(location.search);
   const { isLoading, error, data: item } = useMedia(id);
+  const { data: trailerItem } = useMedia(item?.trailerId || '');
 
-  const history = useHistory();
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
   const [hasShared, setHasShared] = useState<boolean>(false);
+  const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const enableSharing: boolean = config.options.enableSharing === true;
 
   useBlurImageUpdater(item);
@@ -90,6 +92,7 @@ const Movie = ({
       </Helmet>
       <VideoComponent
         item={item}
+        trailerItem={trailerItem}
         play={play}
         startPlay={startPlay}
         goBack={goBack}
@@ -97,6 +100,9 @@ const Movie = ({
         enableSharing={enableSharing}
         hasShared={hasShared}
         onShareClick={onShareClick}
+        playTrailer={playTrailer}
+        onTrailerClick={() => setPlayTrailer(true)}
+        onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
         relatedShelf={

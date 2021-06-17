@@ -31,6 +31,7 @@ export type PlaylistItem = {
   episodeNumber?: string;
   seasonNumber?: string;
   tags: string;
+  trailerId?: string;
   title: string;
   tracks: Track[];
   variations?: Record<string, unknown>;

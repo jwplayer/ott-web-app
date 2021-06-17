@@ -1,0 +1,36 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  z-index: 1;
+}
+.backdrop {
+  width: inherit;
+  height: inherit;
+  background: rgba(0, 0, 0, 0.6);
+}
+.modalContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal {
+  position: relative;
+  width: 80vw;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.close {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}

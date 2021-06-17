@@ -19,37 +19,34 @@ type SeriesRouteParams = {
   id: string;
 };
 
-const Series = (
-  {
-    match: {
-      params: { id },
-    },
-    location,
-  }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
+const Series = ({
+  match: {
+    params: { id },
+  },
+  location,
+}: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const history = useHistory();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const {
-    isLoading: playlistIsLoading,
-    error: playlistError,
-    data: seriesPlaylist
-  } = usePlaylist(id, undefined, true, false)
+  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist } = usePlaylist(
+    id,
+    undefined,
+    true,
+    false,
+  );
   const { isLoading, error, data: item } = useMedia(searchParams.get('e') || '');
-
-  useEffect(() => {
-    if (!searchParams.has('e') && seriesPlaylist?.playlist.length) {
-      history.replace(episodeURL(seriesPlaylist, seriesPlaylist.playlist[0].feedid));
-    }
-  }, [history, searchParams, seriesPlaylist]);
-
-  const [hasShared, setHasShared] = useState<boolean>(false);
-  const enableSharing: boolean = config.options.enableSharing === true;
+  const { data: trailerItem } = useMedia(item?.trailerId || '');
 
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
+  const [hasShared, setHasShared] = useState<boolean>(false);
+  const [playTrailer, setPlayTrailer] = useState<boolean>(false);
+  const enableSharing: boolean = config.options.enableSharing === true;
+
   useBlurImageUpdater(item);
+
   const isFavorited = !!item && hasItem(item);
 
   const startPlay = () => item && history.push(videoUrl(item, searchParams.get('r'), true));
@@ -68,6 +65,12 @@ const Series = (
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };
+
+  useEffect(() => {
+    if (!searchParams.has('e') && seriesPlaylist?.playlist.length) {
+      history.replace(episodeURL(seriesPlaylist, seriesPlaylist.playlist[0].feedid));
+    }
+  }, [history, searchParams, seriesPlaylist]);
 
   if (isLoading || playlistIsLoading) return <p>Loading...</p>;
   if (error || playlistError) return <p>Error loading list</p>;
@@ -102,6 +105,7 @@ const Series = (
       </Helmet>
       <VideoComponent
         item={item}
+        trailerItem={trailerItem}
         play={play}
         startPlay={startPlay}
         goBack={goBack}
@@ -109,15 +113,12 @@ const Series = (
         enableSharing={enableSharing}
         hasShared={hasShared}
         onShareClick={onShareClick}
+        playTrailer={playTrailer}
+        onTrailerClick={() => setPlayTrailer(true)}
+        onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
-        onFavoriteButtonClick={() => isFavorited ? removeItem(item) : saveItem(item)}
-        relatedShelf={
-          <Shelf
-            playlistId={id}
-            title="Episodes"
-            onCardClick={onCardClick}
-          />
-        }
+        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+        relatedShelf={<Shelf playlistId={id} title="Episodes" onCardClick={onCardClick} />}
       />
     </React.Fragment>
   );
