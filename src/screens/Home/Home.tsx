@@ -65,15 +65,17 @@ const Home = (): JSX.Element => {
             role="row"
             className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
           >
-            <ShelfComponent
-              loading={isLoading}
-              error={error}
-              playlist={playlist}
-              onCardClick={onCardClick}
-              onCardHover={onCardHover}
-              title={playlist.title}
-              featured={contentItem.featured === true}
-            />
+            <div role="cell">
+              <ShelfComponent
+                loading={isLoading}
+                error={error}
+                playlist={playlist}
+                onCardClick={onCardClick}
+                onCardHover={onCardHover}
+                title={playlist.title}
+                featured={contentItem.featured === true}
+              />
+            </div>
           </div>
         )}
       </PlaylistContainer>

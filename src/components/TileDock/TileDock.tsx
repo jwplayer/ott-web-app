@@ -187,7 +187,6 @@ const TileDock = <T extends unknown>({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onTransitionEnd={handleTransitionEnd}
-        role="none"
       >
         {tileList.map((tile: Tile<T>, listIndex) => {
           // Todo:
@@ -198,7 +197,6 @@ const TileDock = <T extends unknown>({
           return (
             <li
               key={tile.key}
-              role="none"
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,

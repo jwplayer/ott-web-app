@@ -48,19 +48,21 @@ function CardGrid({
     const { mediaid, title, duration, seriesId } = playlistItem;
 
     return (
-      <div className={styles.cell} style={style} key={mediaid}>
-        <Card
-          key={mediaid}
-          title={title}
-          duration={duration}
-          posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
-          seriesId={seriesId}
-          onClick={() => onCardClick(playlistItem)}
-          onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
-          loading={isLoading}
-          isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
-          currentLabel={currentCardLabel}
-        />
+      <div className={styles.cell} style={style} key={mediaid} role="row">
+        <div role="cell">
+          <Card
+            key={mediaid}
+            title={title}
+            duration={duration}
+            posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
+            seriesId={seriesId}
+            onClick={() => onCardClick(playlistItem)}
+            onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
+            loading={isLoading}
+            isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
+            currentLabel={currentCardLabel}
+          />
+        </div>
       </div>
     );
   };

@@ -28,6 +28,7 @@ const VirtualizedGrid = ({ cellRenderer, rowCount, cols, spacing }: Props) => {
         <AutoSizer disableHeight>
           {({ width }) => (
             <Grid
+              role="grid"
               className={styles.grid}
               tabIndex={-1}
               autoHeight
