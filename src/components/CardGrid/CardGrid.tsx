@@ -65,7 +65,11 @@ function CardGrid({
     );
   };
 
-  return <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={50} />;
+  return (
+    <div className={styles.container}>
+      <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={50} />
+    </div>
+  );
 }
 
 export default CardGrid;
