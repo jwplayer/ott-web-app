@@ -20,10 +20,9 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue }) => 
   const [isFilterModalOpen, openFilterModal] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
 
-  if (!options.length) {
+  if (options.length < 2) {
     return null;
   }
-
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
 
   const handleOnClick = () => {
