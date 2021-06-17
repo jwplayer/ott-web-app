@@ -34,8 +34,8 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
 
     return { duration, progress } as VideoProgress;
   };
-  const { saveItem } = useWatchHistory();
-  useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
+  const { saveItem, removeItem } = useWatchHistory();
+  const { removeListener } = useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
 
   useEffect(() => {
     const getPlayer = () => window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
@@ -55,14 +55,30 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
           progress && duration && player.seek(duration * progress);
         }
       });
-      player.on('complete', () => onComplete && onComplete());
+      player.on('complete', () => {
+        removeItem(item);
+        removeListener();
+        return onComplete && onComplete();
+      });
     };
 
     if (config.player && !initialized) {
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [item, onPlay, onPause, onComplete, config.player, file, scriptUrl, initialized, enableWatchHistory]);
+  }, [
+    item,
+    onPlay,
+    onPause,
+    onComplete,
+    config.player,
+    file,
+    scriptUrl,
+    initialized,
+    enableWatchHistory,
+    removeItem,
+    removeListener,
+  ]);
 
   return <div className={styles.Cinema} id="cinema" />;
 };
