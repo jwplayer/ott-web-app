@@ -30,6 +30,8 @@ export type PlaylistItem = {
   seasonNumber?: string;
   sources: Source[];
   seriesId?: string;
+  episodeNumber?: string;
+  seasonNumber?: string;
   tags: string;
   trailerId?: string;
   title: string;

@@ -69,6 +69,8 @@ The allowed scopes are:
 - search
 - watchhistory
 - favorites
+- pwa
+- seo
 
 ### Subject
 
