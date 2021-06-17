@@ -55,8 +55,9 @@ const cardUrl = (item: PlaylistItem, playlistId?: string | null) =>
 
 const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
   const url = item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
+  const playParam = play ? `${playlistId ? '&' : '?'}play=1` : '';
 
-  return `${url}${play ? '&play=1' : ''}`;
+  return `${url}${playParam}`;
 };
 
 export { formatDurationTag, formatDuration, cardUrl, movieURL, seriesURL, videoUrl, episodeURL };

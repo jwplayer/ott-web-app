@@ -105,6 +105,7 @@ const Series = ({
         ))}
       </Helmet>
       <VideoComponent
+        title={seriesPlaylist.title}
         item={item}
         trailerItem={trailerItem}
         play={play}
@@ -119,6 +120,7 @@ const Series = ({
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+        isSeries
       >
         <PlaylistContainer playlistId={id}>
           {() => (

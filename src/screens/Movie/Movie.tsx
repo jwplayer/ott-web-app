@@ -92,6 +92,7 @@ const Movie = ({
         ))}
       </Helmet>
       <VideoComponent
+        title={item.title}
         item={item}
         trailerItem={trailerItem}
         play={play}

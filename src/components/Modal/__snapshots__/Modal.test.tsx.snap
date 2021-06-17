@@ -38,6 +38,9 @@ exports[`<Modal> renders and matches snapshot 1`] = `
             </g>
           </svg>
         </div>
+        <p>
+          Test modal
+        </p>
       </div>
     </div>
   </div>

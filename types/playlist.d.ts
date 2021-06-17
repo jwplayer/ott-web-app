@@ -18,6 +18,7 @@ export type Track = {
 export type PlaylistItem = {
   description: string;
   duration: number;
+  episodeNumber?: string;
   feedid: string;
   image: string;
   images: Image[];
@@ -26,6 +27,7 @@ export type PlaylistItem = {
   mediaid: string;
   pubdate: number;
   rating: string;
+  seasonNumber?: string;
   sources: Source[];
   seriesId?: string;
   tags: string;
