@@ -23,11 +23,13 @@ import styles from './Video.module.scss';
 type Poster = 'fading' | 'normal';
 
 type Props = {
+  title: string;
   item: PlaylistItem;
   trailerItem?: PlaylistItem;
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
+  onComplete?: () => void;
   isFavorited: boolean;
   onFavoriteButtonClick: () => void;
   poster: Poster;
@@ -37,25 +39,29 @@ type Props = {
   playTrailer: boolean;
   onTrailerClick: () => void;
   onTrailerClose: () => void;
-  relatedShelf?: JSX.Element;
+  isSeries?: boolean;
+  children?: JSX.Element;
 };
 
 const Video: React.FC<Props> = ({
+  title,
   item,
   trailerItem,
   play,
   startPlay,
   goBack,
+  onComplete,
   poster,
   enableSharing,
   hasShared,
   onShareClick,
   isFavorited,
   onFavoriteButtonClick,
-  relatedShelf,
+  children,
   playTrailer,
   onTrailerClick,
   onTrailerClose,
+  isSeries = false,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [mouseActive, setMouseActive] = useState(false);
@@ -73,12 +79,31 @@ const Video: React.FC<Props> = ({
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
 
+  const seriesMeta = isSeries ? `S${item.seasonNumber}:E${item.episodeNumber}` : null;
+
   let timeout: NodeJS.Timeout;
   const mouseActivity = () => {
     setMouseActive(true);
     clearTimeout(timeout);
     timeout = setTimeout(() => setMouseActive(false), 2000);
   };
+
+  const metaContent = (
+    <>
+      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.metaContainer}>
+        <div className={styles.meta}>{metaString}</div>
+        {isSeries && (
+          <div className={styles.seriesMeta}>
+            <strong>{seriesMeta}</strong>
+            {' - '}
+            {item.title}
+          </div>
+        )}
+      </div>
+      <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
+    </>
+  );
 
   return (
     <div className={styles.video}>
@@ -89,9 +114,7 @@ const Video: React.FC<Props> = ({
         })}
       >
         <div className={styles.info}>
-          <h2 className={styles.title}>{item.title}</h2>
-          <div className={styles.meta}>{metaString}</div>
-          <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
+          {metaContent}
           <div className={styles.playButton}>
             <Button
               color="primary"
@@ -136,21 +159,22 @@ const Video: React.FC<Props> = ({
           style={{ backgroundImage: `url('${posterImage}')` }}
         />
       </div>
-      {!!relatedShelf && <div className={classNames(styles.related, styles.mainPadding)}>{relatedShelf}</div>}
+      {!!children && <div className={classNames(styles.related, styles.mainPadding)}>{children}</div>}
       {play && (
         <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
           <div className={styles.player}>
-            <Cinema item={item} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} />
+            <Cinema
+              item={item}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onComplete={onComplete}
+            />
           </div>
           <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !mouseActive })}>
             <IconButton aria-label={t('common:back')} onClick={goBack}>
               <ArrowLeft />
             </IconButton>
-            <div className={styles.playerInfo}>
-              <h2 className={styles.title}>{item.title}</h2>
-              <div className={styles.meta}>{metaString}</div>
-              <div className={styles.description}>{item.description}</div>
-            </div>
+            <div className={styles.playerInfo}>{metaContent}</div>
           </div>
         </div>
       )}
@@ -160,7 +184,7 @@ const Video: React.FC<Props> = ({
             <Cinema item={trailerItem} onComplete={onTrailerClose} isTrailer />
             <div
               className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: !mouseActive })}
-            >{`${item.title} - Trailer`}</div>
+            >{`${title} - Trailer`}</div>
           </div>
         </Modal>
       )}

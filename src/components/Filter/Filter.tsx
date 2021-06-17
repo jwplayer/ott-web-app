@@ -11,19 +11,19 @@ import styles from './Filter.module.scss';
 type Props = {
   name: string;
   value: string;
+  valuePrefix?: string;
   defaultLabel: string;
   options: string[];
   setValue: (value: string) => void;
 };
 
-const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue }) => {
+const Filter: FC<Props> = ({ name, value, valuePrefix = '', defaultLabel, options, setValue }) => {
   const [isFilterModalOpen, openFilterModal] = useState(false);
   const breakpoint: Breakpoint = useBreakpoint();
 
   if (!options.length) {
     return null;
   }
-
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
 
   const handleOnClick = () => {
@@ -45,7 +45,12 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue }) => 
       {showFilterRow ? (
         <div className={styles.filterRow}>
           {options.map((option) => (
-            <Button label={option} onClick={() => setValue(option)} key={option} active={value === option} />
+            <Button
+              label={`${valuePrefix}${option}`}
+              onClick={() => setValue(option)}
+              key={option}
+              active={value === option}
+            />
           ))}
           <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} />
         </div>

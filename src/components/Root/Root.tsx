@@ -24,8 +24,8 @@ const Root: FC<Props> = ({ error }: Props) => {
         <Route path="/" component={Home} exact />
         <Route path="/p/:id" component={Playlist} exact />
         <Route path="/u" component={Settings} exact />
-        <Route path="/m/:id/:slug" component={Movie} exact />
-        <Route path="/s/:id/:slug" component={Series} />
+        <Route path="/m/:id/:slug?" component={Movie} exact />
+        <Route path="/s/:id/:slug?" component={Series} />
         <Route path="/q/:query?" component={Search} />
       </Switch>
     </Layout>

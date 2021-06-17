@@ -3,6 +3,7 @@ import type { Playlist, PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 import type { WatchHistoryItem } from 'types/watchHistory';
 
+import { VideoProgressMinMax } from '../enum/VideoProgressMinMax';
 import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
@@ -115,13 +116,17 @@ export const useWatchHistory = (): UseWatchHistoryReturn => {
     return watchHistory.some(({ mediaid }) => mediaid === item.mediaid);
   };
 
-  const getPlaylist = () => {
-    return {
+  const getPlaylist = () =>
+    ({
       feedid: PersonalShelf.ContinueWatching,
       title: 'Continue watching',
-      playlist: watchHistory.filter(({ playlistItem }) => !!playlistItem).map(({ playlistItem }) => playlistItem),
-    } as Playlist;
-  };
+      playlist: watchHistory
+        .filter(
+          ({ playlistItem, progress }) =>
+            !!playlistItem && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max,
+        )
+        .map(({ playlistItem }) => playlistItem),
+    } as Playlist);
 
   return { saveItem, removeItem, hasItem, getPlaylist };
 };

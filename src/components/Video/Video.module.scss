@@ -46,12 +46,35 @@
   line-height: 36px;
   letter-spacing: 0.25px;
   margin: 8px 0px;
+  @include responsive.mobile-only() {
+    margin: 0px;
+  }
+}
+.metaContainer {
+  display: flex;
+  flex-direction: column;
 }
 .meta {
   line-height: 18px;
   font-size: 16px;
   letter-spacing: 0.15px;
   margin-bottom: 8px;
+  @include responsive.mobile-only() {
+    font-size: 14px;
+    order: 2;
+  }
+}
+.seriesMeta {
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  margin-top: 24px;
+  @include responsive.mobile-only() {
+    font-size: 18px;
+    margin: 4px 0px;
+    order: 1;
+  }
 }
 .description {
   font-size: 18px;

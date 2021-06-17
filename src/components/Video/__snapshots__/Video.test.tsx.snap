@@ -14,12 +14,16 @@ exports[`<Video> renders and matches snapshot 1`] = `
         <h2
           class="title"
         >
-          Test item title
+          Test video
         </h2>
         <div
-          class="meta"
+          class="metaContainer"
         >
-          1970 • 6m  • Tester • CC_CC
+          <div
+            class="meta"
+          >
+            1970 • 6m  • Tester • CC_CC
+          </div>
         </div>
         <div
           class="collapsibleText"
@@ -158,17 +162,26 @@ exports[`<Video> renders and matches snapshot 1`] = `
           <h2
             class="title"
           >
-            Test item title
+            Test video
           </h2>
           <div
-            class="meta"
+            class="metaContainer"
           >
-            1970 • 6m  • Tester • CC_CC
+            <div
+              class="meta"
+            >
+              1970 • 6m  • Tester • CC_CC
+            </div>
           </div>
           <div
-            class="description"
+            class="collapsibleText"
           >
-            Test item description
+            <div
+              class="textContainer description"
+              style="max-height: none;"
+            >
+              Test item description
+            </div>
           </div>
         </div>
       </div>

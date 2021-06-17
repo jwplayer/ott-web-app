@@ -7,12 +7,12 @@ import type { Config, Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
+import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
-import { watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
-import Shelf from '../../containers/Shelf/Shelf';
+import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
@@ -39,7 +39,9 @@ const Home = (): JSX.Element => {
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;
-  const watchHistory = watchHistoryStore.useState((state) => state.watchHistory);
+
+  const { getPlaylist: getWatchHistoryPlayist } = useWatchHistory();
+  const watchHistory = getWatchHistoryPlayist();
   const watchHistoryLoaded = watchHistoryStore.useState((state) => state.playlistItemsLoaded);
   const favorites = favoritesStore.useState((state) => state.favorites);
 
@@ -62,13 +64,19 @@ const Home = (): JSX.Element => {
         style={style}
         className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
       >
-        <Shelf
-          key={contentItem.playlistId}
-          playlistId={contentItem.playlistId}
-          onCardClick={onCardClick}
-          onCardHover={onCardHover}
-          featured={contentItem.featured === true}
-        />
+        <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
+          {({ playlist, error, isLoading }) => (
+            <ShelfComponent
+              loading={isLoading}
+              error={error}
+              playlist={playlist}
+              onCardClick={onCardClick}
+              onCardHover={onCardHover}
+              title={playlist.title}
+              featured={contentItem.featured === true}
+            />
+          )}
+        </PlaylistContainer>
       </div>
     );
   };
@@ -78,7 +86,7 @@ const Home = (): JSX.Element => {
     const isLargeScreen = breakpoint >= Breakpoint.md;
 
     if (!item) return 0;
-    if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.length) return 0;
+    if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.playlist.length) return 0;
     if (item.playlistId === PersonalShelf.Favorites && !favorites.length) return 0;
 
     const calculateFeatured = () => {

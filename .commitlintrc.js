@@ -11,6 +11,8 @@ module.exports = {
         'watchhistory',
         'favorites',
         'analytics',
+        'pwa',
+        'seo',
       ],
     ],
   },
