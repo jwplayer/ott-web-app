@@ -6,6 +6,10 @@
   "share": "Share",
   "start_watching": "Start watching",
   "trailer": "Trailer",
+  "share_video": "Share this video",
+  "copied_url": "Copied url",
   "watch_trailer": "Watch the trailer",
-  "share_video": "Share this video"
+  "currently_playing": "Currently playing",
+  "current_episode": "Current episode",
+  "episodes": "Episodes"
 }

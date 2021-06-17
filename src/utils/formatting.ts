@@ -47,16 +47,19 @@ const movieURL = (item: PlaylistItem, playlistId?: string | null) =>
 const seriesURL = (item: PlaylistItem, playlistId?: string | null) =>
   `/s/${item.seriesId}/${slugify(item.title)}?r=${playlistId}`;
 
-const episodeURL = (seriesPlaylist: Playlist, episodeId?: string) =>
-  `/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}${episodeId ? `?e=${episodeId}` : ''}`;
+const episodeURL = (seriesPlaylist: Playlist, episodeId?: string, play: boolean = false) =>
+  `/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}${episodeId ? `?e=${episodeId}` : ''}${
+    play ? '&play=1' : ''
+  }`;
 
 const cardUrl = (item: PlaylistItem, playlistId?: string | null) =>
   item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
 
 const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
   const url = item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
+  const playParam = play ? `${playlistId ? '&' : '?'}play=1` : '';
 
-  return `${url}${play ? '&play=1' : ''}`;
+  return `${url}${playParam}`;
 };
 
 export { formatDurationTag, formatDuration, cardUrl, movieURL, seriesURL, videoUrl, episodeURL };

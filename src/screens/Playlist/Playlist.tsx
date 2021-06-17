@@ -41,10 +41,14 @@ function Playlist({
     return <ErrorPage title="Playlist not found!" />;
   }
 
+  const pageTitle = `${title} - ${config.siteName}`;
+
   return (
     <div className={styles.playlist}>
       <Helmet>
-        <title>{title} - {config.siteName}</title>
+        <title>{pageTitle}</title>
+        <meta property="og:title" content={pageTitle} />
+        <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       <header className={styles.header}>
         <h2>{title}</h2>
