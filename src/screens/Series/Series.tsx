@@ -144,13 +144,15 @@ const Series = ({
         <>
           <div className={styles.episodes}>
             <h3>{t('episodes')}</h3>
-            <Filter
-              name="categories"
-              value={seasonFilter}
-              defaultLabel="All"
-              options={filters}
-              setValue={setSeasonFilter}
-            />
+            {filters.length > 1 && (
+              <Filter
+                name="categories"
+                value={seasonFilter}
+                defaultLabel="All"
+                options={filters}
+                setValue={setSeasonFilter}
+              />
+            )}
           </div>
           <CardGrid
             playlist={filteredPlaylist}
