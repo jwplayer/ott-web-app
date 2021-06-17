@@ -14,12 +14,17 @@ const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
   return playlist.filter(({ genre }) => genre === filter);
 };
 
-const getFiltersFromSeries = (series: PlaylistItem[]): string[] =>
-  series.reduce(
+const getFiltersFromSeries = (series: PlaylistItem[]): string[] => {
+  const seasonString = (seasonNumber: string = '') => `Season ${seasonNumber}`;
+
+  return series.reduce(
     (filters: string[], item) =>
-      item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || ''),
+      item.seasonNumber && filters.includes(seasonString(item.seasonNumber))
+        ? filters
+        : filters.concat(seasonString(item.seasonNumber)),
     [],
   );
+};
 
 const filterSeries = (playlist: PlaylistItem[], filter: string) => {
   if (!filter) return playlist;
