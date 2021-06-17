@@ -171,3 +171,13 @@
 .playerInfo {
   margin: 0px 30px;
 }
+.trailerMeta {
+  position: absolute;
+  z-index: 1;
+  left: 16px;
+  top: 16px;
+  &.hidden {
+    transition: opacity 0.6s ease;
+    opacity: 0;
+  }
+}

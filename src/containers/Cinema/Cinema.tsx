@@ -14,13 +14,16 @@ type Props = {
   item: PlaylistItem;
   onPlay?: () => void;
   onPause?: () => void;
+  onComplete?: () => void;
+  isTrailer?: boolean;
 };
 
-const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
+const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer = false }: Props) => {
   const config: Config = useContext(ConfigContext);
   const [initialized, setInitialized] = useState(false);
-  const file = item.sources[0]?.file;
+  const file = item.sources?.[0]?.file;
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
+  const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
 
   const getProgress = (): VideoProgress | null => {
     const player = window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
@@ -32,7 +35,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
     return { duration, progress } as VideoProgress;
   };
   const { saveItem } = useWatchHistory();
-  useWatchHistoryListener(() => saveItem(item, getProgress));
+  useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
 
   useEffect(() => {
     const getPlayer = () => window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
@@ -40,7 +43,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
       const player = getPlayer();
       const { watchHistory } = watchHistoryStore.getRawState();
       const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
-      let applyWatchHistory = !!watchHistory;
+      let applyWatchHistory = !!watchHistory && enableWatchHistory;
 
       player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
       player.on('play', () => onPlay && onPlay());
@@ -52,13 +55,14 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause }: Props) => {
           progress && duration && player.seek(duration * progress);
         }
       });
+      player.on('complete', () => onComplete && onComplete());
     };
 
     if (config.player && !initialized) {
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [item, onPlay, onPause, config.player, file, scriptUrl, initialized]);
+  }, [item, onPlay, onPause, onComplete, config.player, file, scriptUrl, initialized, enableWatchHistory]);
 
   return <div className={styles.Cinema} id="cinema" />;
 };
