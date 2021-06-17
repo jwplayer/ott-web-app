@@ -28,6 +28,8 @@ export type PlaylistItem = {
   rating: string;
   sources: Source[];
   seriesId?: string;
+  episodeNumber?: string;
+  seasonNumber?: string;
   tags: string;
   trailerId?: string;
   title: string;
