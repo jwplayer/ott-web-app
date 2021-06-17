@@ -23,7 +23,8 @@
     height: 18px;
     width: 18px;
   }
-  &:hover {
+  &:hover,
+  &:focus {
     transform: scale(1.1);
   }
 
@@ -38,7 +39,8 @@
 
   &.outlined {
     border: 1px solid rgba(255, 255, 255, 0.3);
-    &.active {
+    &.active,
+    &:focus {
       background-color: var(--highlight-color, black);
       border: none;
       &:hover {
