@@ -30,6 +30,23 @@ const formatDuration = (duration: number): string | null => {
   return `${hoursString}${minutesString}`;
 };
 
+export const addQueryParams = (url: string, queryParams: { [key: string]: string | undefined | null }) => {
+  const queryStringIndex = url.indexOf('?');
+  const urlWithoutSearch = queryStringIndex > -1 ? url.slice(0, queryStringIndex) : url;
+  const urlSearchParams = new URLSearchParams(queryStringIndex > -1 ? url.slice(queryStringIndex) : undefined);
+
+  Object.keys(queryParams).forEach((key) => {
+    const value = queryParams[key];
+
+    if (typeof value !== 'string') return;
+
+    urlSearchParams.set(key, value);
+  });
+  const queryString = urlSearchParams.toString();
+
+  return `${urlWithoutSearch}${queryString ? `?${queryString}` : ''}`;
+};
+
 const slugify = (text: string, whitespaceChar: string = '-') =>
   text
     .toString()
@@ -42,24 +59,23 @@ const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-/g, whitespaceChar);
 
 const movieURL = (item: PlaylistItem, playlistId?: string | null) =>
-  `/m/${item.mediaid}/${slugify(item.title)}${playlistId ? `?r=${playlistId}` : ''}`;
+  addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId });
 
 const seriesURL = (item: PlaylistItem, playlistId?: string | null) =>
-  `/s/${item.seriesId}/${slugify(item.title)}?r=${playlistId}`;
+  addQueryParams(`/s/${item.seriesId}/${slugify(item.title)}`, { r: playlistId });
 
 const episodeURL = (seriesPlaylist: Playlist, episodeId?: string, play: boolean = false) =>
-  `/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}${episodeId ? `?e=${episodeId}` : ''}${
-    play ? '&play=1' : ''
-  }`;
+  addQueryParams(`/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}`, {
+    e: episodeId,
+    play: play ? '1' : null,
+  });
 
 const cardUrl = (item: PlaylistItem, playlistId?: string | null) =>
   item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
 
-const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
-  const url = item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
-  const playParam = play ? `${playlistId ? '&' : '?'}play=1` : '';
-
-  return `${url}${playParam}`;
-};
+const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
+  addQueryParams(item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId), {
+    play: play ? '1' : null,
+  });
 
 export { formatDurationTag, formatDuration, cardUrl, movieURL, seriesURL, videoUrl, episodeURL };
