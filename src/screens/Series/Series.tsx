@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { useFavorites } from '../../stores/FavoritesStore';
@@ -27,6 +28,7 @@ const Series = ({
 }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const history = useHistory();
+  const { t } = useTranslation('video');
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist } = usePlaylist(
     id,
@@ -119,7 +121,15 @@ const Series = ({
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
       >
         <PlaylistContainer playlistId={id}>
-          {({ playlist }) => <CardGrid playlist={playlist.playlist} onCardClick={onCardClick} isLoading={false} />}
+          {() => (
+            <CardGrid
+              playlist={seriesPlaylist.playlist}
+              onCardClick={onCardClick}
+              isLoading={isLoading}
+              currentCardItem={item}
+              currentCardLabel={t('current_episode')}
+            />
+          )}
         </PlaylistContainer>
       </VideoComponent>
     </React.Fragment>

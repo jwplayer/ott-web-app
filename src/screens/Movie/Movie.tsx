@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { useFavorites } from '../../stores/FavoritesStore';
@@ -26,6 +27,7 @@ const Movie = ({
 }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const history = useHistory();
+  const { t } = useTranslation('video');
   const searchParams = new URLSearchParams(location.search);
   const { isLoading, error, data: item } = useMedia(id);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
@@ -107,8 +109,14 @@ const Movie = ({
       >
         {config.recommendationsPlaylist ? (
           <PlaylistContainer playlistId={config.recommendationsPlaylist} relatedMediaId={item.mediaid}>
-            {({ playlist }) => (
-              <CardGrid playlist={playlist.playlist} onCardClick={onCardClick} isLoading={isLoading} />
+            {({ playlist, isLoading }) => (
+              <CardGrid
+                playlist={playlist.playlist}
+                onCardClick={onCardClick}
+                isLoading={isLoading}
+                currentCardItem={item}
+                currentCardLabel={t('currently_playing')}
+              />
             )}
           </PlaylistContainer>
         ) : undefined}

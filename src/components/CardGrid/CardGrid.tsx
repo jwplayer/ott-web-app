@@ -23,9 +23,19 @@ type CardGridProps = {
   onCardClick: (item: PlaylistItem) => void;
   isLoading: boolean;
   cols?: Breakpoints;
+  currentCardItem?: PlaylistItem;
+  currentCardLabel?: string;
 };
 
-function CardGrid({ playlist, onCardClick, onCardHover, isLoading = false, cols = defaultCols }: CardGridProps) {
+function CardGrid({
+  playlist,
+  onCardClick,
+  onCardHover,
+  isLoading = false,
+  cols = defaultCols,
+  currentCardItem,
+  currentCardLabel,
+}: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const imageSourceWidth = 320 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
@@ -48,6 +58,8 @@ function CardGrid({ playlist, onCardClick, onCardHover, isLoading = false, cols 
           onClick={() => onCardClick(playlistItem)}
           onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
           loading={isLoading}
+          isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
+          currentLabel={currentCardLabel}
         />
       </div>
     );
