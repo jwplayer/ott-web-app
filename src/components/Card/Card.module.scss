@@ -6,7 +6,10 @@
   cursor: pointer;
   transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
 
-  // @media (hover: hover) and (pointer: fine) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
   &:focus,
   &:hover {
     z-index: 1;
