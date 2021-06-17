@@ -70,6 +70,7 @@ The allowed scopes are:
 - watchhistory
 - favorites
 - pwa
+- seo
 
 ### Subject
 

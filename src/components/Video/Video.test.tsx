@@ -35,6 +35,9 @@ describe('<Video>', () => {
         enableSharing
         isFavorited={false}
         onFavoriteButtonClick={jest.fn()}
+        playTrailer={false}
+        onTrailerClick={jest.fn()}
+        onTrailerClose={jest.fn()}
       />,
     );
 
