@@ -3,7 +3,7 @@ import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 
-import { VideoProgressMinMax } from '../../enum/VideoProgressMinMax';
+import { VideoProgressMinMax } from '../../config';
 import { useWatchHistoryListener } from '../../hooks/useWatchHistoryListener';
 import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
