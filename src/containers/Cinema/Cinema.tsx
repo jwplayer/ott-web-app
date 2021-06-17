@@ -3,6 +3,7 @@ import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 
+import { VideoProgressMinMax } from '../../enum/VideoProgressMinMax';
 import { useWatchHistoryListener } from '../../hooks/useWatchHistoryListener';
 import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
@@ -34,8 +35,8 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
 
     return { duration, progress } as VideoProgress;
   };
-  const { saveItem, removeItem } = useWatchHistory();
-  const { removeListener } = useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
+  const { saveItem } = useWatchHistory();
+  useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
 
   useEffect(() => {
     const getPlayer = () => window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
@@ -52,33 +53,19 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
         if (applyWatchHistory) {
           applyWatchHistory = false; // Only the first time beforePlay
           const { progress, duration } = watchHistoryItem || {};
-          progress && duration && player.seek(duration * progress);
+          if (progress && duration && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max) {
+            player.seek(duration * progress);
+          }
         }
       });
-      player.on('complete', () => {
-        removeItem(item);
-        removeListener();
-        return onComplete && onComplete();
-      });
+      player.on('complete', () => onComplete && onComplete());
     };
 
     if (config.player && !initialized) {
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [
-    item,
-    onPlay,
-    onPause,
-    onComplete,
-    config.player,
-    file,
-    scriptUrl,
-    initialized,
-    enableWatchHistory,
-    removeItem,
-    removeListener,
-  ]);
+  }, [item, onPlay, onPause, onComplete, config.player, file, scriptUrl, initialized, enableWatchHistory]);
 
   return <div className={styles.Cinema} id="cinema" />;
 };
