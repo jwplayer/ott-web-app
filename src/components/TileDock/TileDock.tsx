@@ -168,7 +168,7 @@ const TileDock = <T extends unknown>({
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -187,6 +187,7 @@ const TileDock = <T extends unknown>({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onTransitionEnd={handleTransitionEnd}
+        role="none"
       >
         {tileList.map((tile: Tile<T>, listIndex) => {
           // Todo:
@@ -197,6 +198,7 @@ const TileDock = <T extends unknown>({
           return (
             <li
               key={tile.key}
+              role="none"
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,
