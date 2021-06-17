@@ -8,7 +8,7 @@ import CardGrid from '../../components/CardGrid/CardGrid';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { cardUrl, episodeURL, videoUrl } from '../../utils/formatting';
+import { episodeURL } from '../../utils/formatting';
 import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
@@ -51,10 +51,10 @@ const Series = ({
 
   const isFavorited = !!item && hasItem(item);
 
-  const startPlay = () => item && history.push(videoUrl(item, searchParams.get('r'), true));
-  const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
+  const startPlay = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, true));
+  const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
 
-  const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
+  const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
 
   const onShareClick = (): void => {
     if (!item) return;
