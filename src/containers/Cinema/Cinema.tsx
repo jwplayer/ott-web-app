@@ -3,6 +3,7 @@ import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 
+import { VideoProgressMinMax } from '../../enum/VideoProgressMinMax';
 import { useWatchHistoryListener } from '../../hooks/useWatchHistoryListener';
 import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
@@ -52,7 +53,9 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
         if (applyWatchHistory) {
           applyWatchHistory = false; // Only the first time beforePlay
           const { progress, duration } = watchHistoryItem || {};
-          progress && duration && player.seek(duration * progress);
+          if (progress && duration && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max) {
+            player.seek(duration * progress);
+          }
         }
       });
       player.on('complete', () => onComplete && onComplete());

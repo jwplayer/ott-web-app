@@ -52,6 +52,15 @@ const Movie = ({
 
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
 
+  const playNext = (playlist: PlaylistItem[] | null) => {
+    if (!item || !playlist) return;
+
+    const index = playlist.findIndex(({ mediaid }) => mediaid === item.mediaid);
+    const nextItem = playlist[index + 1];
+
+    return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
+  };
+
   const onShareClick = (): void => {
     if (!item) return;
 
@@ -95,26 +104,27 @@ const Movie = ({
         {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
-      <VideoComponent
-        title={item.title}
-        item={item}
-        trailerItem={trailerItem}
-        play={play}
-        startPlay={startPlay}
-        goBack={goBack}
-        poster={posterFading ? 'fading' : 'normal'}
-        enableSharing={enableSharing}
-        hasShared={hasShared}
-        onShareClick={onShareClick}
-        playTrailer={playTrailer}
-        onTrailerClick={() => setPlayTrailer(true)}
-        onTrailerClose={() => setPlayTrailer(false)}
-        isFavorited={isFavorited}
-        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
-      >
-        {config.recommendationsPlaylist ? (
-          <PlaylistContainer playlistId={config.recommendationsPlaylist} relatedMediaId={item.mediaid}>
-            {({ playlist, isLoading }) => (
+      <PlaylistContainer playlistId={config?.recommendationsPlaylist || ''} relatedItem={item}>
+        {({ playlist, isLoading }) => (
+          <VideoComponent
+            title={item.title}
+            item={item}
+            trailerItem={trailerItem}
+            play={play}
+            startPlay={startPlay}
+            goBack={goBack}
+            onComplete={() => playNext(playlist.playlist)}
+            poster={posterFading ? 'fading' : 'normal'}
+            enableSharing={enableSharing}
+            hasShared={hasShared}
+            onShareClick={onShareClick}
+            playTrailer={playTrailer}
+            onTrailerClick={() => setPlayTrailer(true)}
+            onTrailerClose={() => setPlayTrailer(false)}
+            isFavorited={isFavorited}
+            onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+          >
+            {config.recommendationsPlaylist ? (
               <>
                 <div className={styles.related}>
                   <h3>{playlist.title}</h3>
@@ -127,10 +137,10 @@ const Movie = ({
                   currentCardLabel={t('currently_playing')}
                 />
               </>
-            )}
-          </PlaylistContainer>
-        ) : undefined}
-      </VideoComponent>
+            ) : undefined}
+          </VideoComponent>
+        )}
+      </PlaylistContainer>
     </React.Fragment>
   );
 };

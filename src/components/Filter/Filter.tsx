@@ -24,7 +24,6 @@ const Filter: FC<Props> = ({ name, value, valuePrefix = '', defaultLabel, option
   if (!options.length) {
     return null;
   }
-
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
 
   const handleOnClick = () => {

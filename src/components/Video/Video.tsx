@@ -29,6 +29,7 @@ type Props = {
   play: boolean;
   startPlay: () => void;
   goBack: () => void;
+  onComplete?: () => void;
   isFavorited: boolean;
   onFavoriteButtonClick: () => void;
   poster: Poster;
@@ -49,6 +50,7 @@ const Video: React.FC<Props> = ({
   play,
   startPlay,
   goBack,
+  onComplete,
   poster,
   enableSharing,
   hasShared,
@@ -161,7 +163,12 @@ const Video: React.FC<Props> = ({
       {play && (
         <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
           <div className={styles.player}>
-            <Cinema item={item} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} />
+            <Cinema
+              item={item}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onComplete={onComplete}
+            />
           </div>
           <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !mouseActive })}>
             <IconButton aria-label={t('common:back')} onClick={goBack}>

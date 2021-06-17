@@ -66,6 +66,15 @@ const Series = ({
 
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
 
+  const playNext = () => {
+    if (!item || !seriesPlaylist) return;
+
+    const index = seriesPlaylist.playlist.findIndex(({ mediaid }) => mediaid === item.mediaid);
+    const nextItem = seriesPlaylist.playlist[index + 1];
+
+    return nextItem && history.push(episodeURL(seriesPlaylist, nextItem.mediaid, true));
+  };
+
   const onShareClick = (): void => {
     if (!item) return;
 
@@ -122,6 +131,7 @@ const Series = ({
         play={play}
         startPlay={startPlay}
         goBack={goBack}
+        onComplete={() => playNext()}
         poster={posterFading ? 'fading' : 'normal'}
         enableSharing={enableSharing}
         hasShared={hasShared}
@@ -136,14 +146,16 @@ const Series = ({
         <>
           <div className={styles.episodes}>
             <h3>{t('episodes')}</h3>
-            <Filter
-              name="categories"
-              value={seasonFilter}
-              valuePrefix="Season "
-              defaultLabel="All"
-              options={filters}
-              setValue={setSeasonFilter}
-            />
+            {filters.length > 1 && (
+              <Filter
+                name="categories"
+                value={seasonFilter}
+                valuePrefix="Season "
+                defaultLabel="All"
+                options={filters}
+                setValue={setSeasonFilter}
+              />
+            )}
           </div>
           <CardGrid
             playlist={filteredPlaylist}
