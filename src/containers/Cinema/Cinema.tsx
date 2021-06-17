@@ -7,6 +7,7 @@ import { useWatchHistoryListener } from '../../hooks/useWatchHistoryListener';
 import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistoryStore';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
+import useOttAnalytics from '../../hooks/useOttAnalytics';
 
 import styles from './Cinema.module.scss';
 
@@ -24,6 +25,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
   const file = item.sources?.[0]?.file;
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
   const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
+  const setPlayer = useOttAnalytics(item);
 
   const getProgress = (): VideoProgress | null => {
     const player = window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);
@@ -46,6 +48,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
       let applyWatchHistory = !!watchHistory && enableWatchHistory;
 
       player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
+      setPlayer(player);
       player.on('play', () => onPlay && onPlay());
       player.on('pause', () => onPause && onPause());
       player.on('beforePlay', () => {
@@ -62,7 +65,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer 
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [item, onPlay, onPause, onComplete, config.player, file, scriptUrl, initialized, enableWatchHistory]);
+  }, [item, onPlay, onPause, onComplete, config.player, file, scriptUrl, initialized, enableWatchHistory, setPlayer]);
 
   return <div className={styles.Cinema} id="cinema" />;
 };
