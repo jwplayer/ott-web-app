@@ -42,6 +42,7 @@ const PlaylistContainer = ({ playlistId, relatedMediaId, onPlaylistUpdate, child
   if (playlistId === PersonalShelf.ContinueWatching) playlist = watchHistoryPlayist;
 
   if (!playlistId) return <p>No playlist id</p>;
+  if (!playlist.playlist.length) return null;
 
   return children({ playlist, isLoading, error });
 };
