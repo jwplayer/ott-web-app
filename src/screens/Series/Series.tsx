@@ -148,6 +148,7 @@ const Series = ({
               <Filter
                 name="categories"
                 value={seasonFilter}
+                valuePrefix="Season "
                 defaultLabel="All"
                 options={filters}
                 setValue={setSeasonFilter}
