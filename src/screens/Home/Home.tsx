@@ -63,9 +63,9 @@ const Home = (): JSX.Element => {
         className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
       >
         <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
-          {({ playlist, error }) => (
+          {({ playlist, error, isLoading }) => (
             <ShelfComponent
-              loading={false}
+              loading={isLoading}
               error={error}
               playlist={playlist}
               onCardClick={onCardClick}
