@@ -12,5 +12,6 @@ export default function usePlaylist (playlistId: string, relatedMediaId?: string
   return useQuery(['playlist', playlistId, relatedMediaId], () => getPlaylistById(playlistId, relatedMediaId), {
     enabled: !!playlistId && enabled,
     placeholderData: usePlaceholderData ? placeholderData : undefined,
+    retry: false,
   });
 }

@@ -2,6 +2,7 @@
   "back": "Back",
   "close": "Close menu",
   "close_modal": "Close",
+  "filter_videos_by_genre": "Filter videos by genre",
   "home": "Home",
   "play_item": "Play {{ title }}",
   "settings": "Settings",

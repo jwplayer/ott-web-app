@@ -11,7 +11,6 @@ describe('<Dropdown>', () => {
         value="aa"
         defaultLabel="bb"
         options={options}
-        onClick={(event: React.SyntheticEvent) => event}
         onChange={(event: React.SyntheticEvent) => event}
       />,
     );

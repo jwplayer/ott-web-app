@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 import styles from './Dropdown.module.scss';
@@ -9,14 +9,23 @@ type Props = {
   defaultLabel: string;
   options: string[];
   optionsStyle?: string;
-  onClick: (event: SyntheticEvent) => void;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-const Dropdown: React.FC<Props> = ({ name, value, defaultLabel, options, onClick, onChange, optionsStyle }: Props) => {
+const Dropdown: React.FC<Props & React.AriaAttributes> = (
+  {
+    name,
+    value,
+    defaultLabel,
+    options,
+    onChange,
+    optionsStyle,
+    ...rest
+  }: Props & React.AriaAttributes
+) => {
   return (
-    <div className={styles.dropdown} tabIndex={0}>
-      <select className={styles.select} name={name} value={value} onClick={onClick} onChange={onChange} tabIndex={-1}>
+    <div className={styles.dropdown}>
+      <select className={styles.select} name={name} value={value} onChange={onChange} {...rest}>
         <option className={classNames(styles.option, optionsStyle)} value="">
           {defaultLabel}
         </option>

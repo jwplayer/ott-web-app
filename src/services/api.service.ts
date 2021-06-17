@@ -2,6 +2,22 @@ import type { Playlist, PlaylistItem } from '../../types/playlist';
 import { API_BASE_URL } from '../config';
 
 /**
+ * Get data
+ * @param response
+ */
+export const getDataOrThrow = async (response: Response) => {
+  const data = await response.json();
+
+  if (!response.ok) {
+    const message = `Request '${response.url}' failed with ${response.status}`;
+
+    throw new Error(data?.message || message)
+  }
+
+  return data;
+};
+
+/**
  * Get playlist by id
  * @param {string} id
  * @param relatedMediaId
@@ -10,7 +26,7 @@ export const getPlaylistById = (id: string, relatedMediaId?: string) : Promise<P
   const relatedQuery = relatedMediaId ? `?related_media_id=${relatedMediaId}` : '';
 
   return fetch(`${API_BASE_URL}/v2/playlists/${id}${relatedQuery}`)
-    .then((res) => res.json());
+    .then(getDataOrThrow)
 };
 
 /**
@@ -20,7 +36,7 @@ export const getPlaylistById = (id: string, relatedMediaId?: string) : Promise<P
  */
 export const getSearchPlaylist = (playlistId: string, query: string) : Promise<Playlist | undefined> => {
   return fetch(`${API_BASE_URL}/v2/playlists/${playlistId}?search=${encodeURIComponent(query)}`)
-    .then((res) => res.json());
+    .then(getDataOrThrow);
 };
 
 /**
@@ -29,7 +45,7 @@ export const getSearchPlaylist = (playlistId: string, query: string) : Promise<P
  */
 export const getMediaById = (id: string): Promise<PlaylistItem | undefined> => {
   return fetch(`${API_BASE_URL}/v2/media/${id}`)
-    .then((res) => res.json() as Promise<Playlist>)
+    .then((res) => getDataOrThrow(res) as Promise<Playlist>)
     .then(data => data.playlist[0]);
 };
 

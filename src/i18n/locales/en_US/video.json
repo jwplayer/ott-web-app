@@ -1,11 +1,12 @@
 {
   "add_to_favorites": "Add to favorites",
+  "copied_url": "Copied url",
   "favorite": "Favorite",
   "remove_from_favorites": "Remove from favorites",
   "share": "Share",
-  "share_video": "Share this video",
   "start_watching": "Start watching",
   "trailer": "Trailer",
+  "share_video": "Share this video",
   "copied_url": "Copied url",
   "watch_trailer": "Watch the trailer",
   "currently_playing": "Currently playing",
