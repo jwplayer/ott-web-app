@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import type { Playlist } from 'types/playlist';
+import type { Playlist, PlaylistItem } from 'types/playlist';
 
 import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
@@ -14,17 +14,17 @@ type ChildrenParams = {
 
 type Props = {
   playlistId: string;
-  relatedMediaId?: string;
+  relatedItem?: PlaylistItem;
   onPlaylistUpdate?: (playlist: Playlist) => void;
   children: (childrenParams: ChildrenParams) => JSX.Element;
 };
 
-const PlaylistContainer = ({ playlistId, relatedMediaId, onPlaylistUpdate, children }: Props): JSX.Element | null => {
+const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, children }: Props): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const { isLoading, error, data: fetchedPlaylist = { title: '', playlist: [] } }: UsePlaylistResult = usePlaylist(
     playlistId,
-    relatedMediaId,
-    !isAlternativeShelf,
+    relatedItem?.mediaid,
+    !isAlternativeShelf && !!playlistId,
   );
 
   let playlist = fetchedPlaylist;
@@ -43,6 +43,10 @@ const PlaylistContainer = ({ playlistId, relatedMediaId, onPlaylistUpdate, child
 
   if (!playlistId) return <p>No playlist id</p>;
   if (!playlist.playlist.length) return null;
+
+  if (relatedItem && !playlist.playlist.some(({ mediaid }) => mediaid === relatedItem.mediaid)) {
+    playlist.playlist.unshift(relatedItem);
+  }
 
   return children({ playlist, isLoading, error });
 };
