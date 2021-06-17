@@ -15,6 +15,8 @@ import CardGrid from '../../components/CardGrid/CardGrid';
 import useMedia from '../../hooks/useMedia';
 import { copyToClipboard } from '../../utils/dom';
 
+import styles from './Movie.module.scss';
+
 type MovieRouteParams = {
   id: string;
 };
@@ -111,13 +113,18 @@ const Movie = ({
         {config.recommendationsPlaylist ? (
           <PlaylistContainer playlistId={config.recommendationsPlaylist} relatedMediaId={item.mediaid}>
             {({ playlist, isLoading }) => (
-              <CardGrid
-                playlist={playlist.playlist}
-                onCardClick={onCardClick}
-                isLoading={isLoading}
-                currentCardItem={item}
-                currentCardLabel={t('currently_playing')}
-              />
+              <>
+                <div className={styles.related}>
+                  <h3>{playlist.title}</h3>
+                </div>
+                <CardGrid
+                  playlist={playlist.playlist}
+                  onCardClick={onCardClick}
+                  isLoading={isLoading}
+                  currentCardItem={item}
+                  currentCardLabel={t('currently_playing')}
+                />
+              </>
             )}
           </PlaylistContainer>
         ) : undefined}
