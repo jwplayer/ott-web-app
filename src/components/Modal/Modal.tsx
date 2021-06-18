@@ -17,10 +17,10 @@ const Modal: React.FC<Props> = ({ onClose, children }: Props) => {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => event.keyCode === 27 && onClose();
 
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflowY = 'hidden';
     document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.body.style.overflow = 'scroll';
+      document.body.style.overflowY = 'auto';
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [onClose]);
