@@ -1,11 +1,11 @@
 import React, { Fragment, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Dropdown from '../Dropdown/Dropdown';
 import Button from '../Button/Button';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
 import styles from './Filter.module.scss';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   name: string;
@@ -30,16 +30,23 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
   return (
     <Fragment>
       {showFilterRow ? (
-        <div className={styles.filterRow}>
+        <div className={styles.filterRow} role="listbox">
           {options.map((option) => (
             <Button
               label={`${valuePrefix}${option}`}
               onClick={() => setValue(option)}
               key={option}
               active={value === option}
+              role="option"
             />
           ))}
-          <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} />
+          <Button
+            label={defaultLabel}
+            onClick={() => setValue('')}
+            active={value === ''}
+            key={defaultLabel}
+            role="option"
+          />
         </div>
       ) : (
         <Dropdown

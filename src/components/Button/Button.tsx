@@ -16,10 +16,12 @@ type Props = {
   startIcon?: JSX.Element;
   variant?: Variant;
   onClick?: () => void;
+  tabIndex?: number;
   to?: string;
-};
+  role?: string;
+} & React.AriaAttributes;
 
-const Button: React.FC<Props & React.AriaAttributes> = ({
+const Button: React.FC<Props> = ({
   label,
   color = 'default',
   startIcon,
