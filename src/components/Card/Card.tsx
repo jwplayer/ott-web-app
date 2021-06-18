@@ -66,13 +66,15 @@ function Card({
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
         {!loading && (
           <div className={styles.meta}>
-            {featured && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
-            {metaData()}
+            {featured && !disabled && (
+              <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
+            )}
+            {!disabled && metaData()}
           </div>
         )}
         {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
       </div>
-      {!featured && (
+      {!featured && !disabled && (
         <div className={styles.titleContainer}>
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>
