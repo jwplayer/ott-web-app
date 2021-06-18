@@ -30,13 +30,15 @@ export type ProviderProps = {
   onValidationCompleted: (config: Config) => void;
 };
 
-const ConfigProvider: FunctionComponent<ProviderProps> = ({
-  children,
-  configLocation,
-  onLoading,
-  onValidationError,
-  onValidationCompleted,
-}) => {
+const ConfigProvider: FunctionComponent<ProviderProps> = (
+  {
+    children,
+    configLocation,
+    onLoading,
+    onValidationError,
+    onValidationCompleted,
+  }
+) => {
   const [config, setConfig] = useState<Config>(defaultConfig);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -44,7 +46,10 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     const loadAndValidateConfig = async (configLocation: string) => {
       onLoading(true);
       setLoading(true);
-      const config = await loadConfig(configLocation);
+      const config = await loadConfig(configLocation).catch((error) => {
+        onValidationError(error);
+      });
+
       validateConfig(config)
         .then((configValidated) => {
           setConfig(() => merge({}, defaultConfig, configValidated));
