@@ -69,6 +69,7 @@ const Shelf: React.FC<ShelfProps> = ({
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}
+        wrapWithEmptyTiles={featured && playlist.playlist.length === 1}
         cycleMode={'restart'}
         showControls={!matchMedia('(hover: none)').matches && !loading}
         transitionTime={'0.3s'}

@@ -25,3 +25,10 @@
   transform: translateY(-100%);
   z-index: 1;
 }
+.emptyTile::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
