@@ -11,10 +11,12 @@ import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
 import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
+import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import CardGrid from '../../components/CardGrid/CardGrid';
 import useMedia from '../../hooks/useMedia';
 import { generateMovieJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './Movie.module.scss';
 
@@ -73,9 +75,7 @@ const Movie = ({
     setTimeout(() => setHasShared(false), 2000);
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading list</p>;
-  if (!item) return <p>Can not find medium</p>;
+  if (error || !item) return <ErrorPage title="Video not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
@@ -101,45 +101,49 @@ const Movie = ({
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
+        {item.tags.split(',').map((tag) => <meta property="og:video:tag" content={tag} key={tag} />)}
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
       <PlaylistContainer playlistId={config?.recommendationsPlaylist || ''} relatedItem={item}>
-        {({ playlist, isLoading }) => (
-          <VideoComponent
-            title={item.title}
-            item={item}
-            trailerItem={trailerItem}
-            play={play}
-            startPlay={startPlay}
-            goBack={goBack}
-            onComplete={() => playNext(playlist.playlist)}
-            poster={posterFading ? 'fading' : 'normal'}
-            enableSharing={enableSharing}
-            hasShared={hasShared}
-            onShareClick={onShareClick}
-            playTrailer={playTrailer}
-            onTrailerClick={() => setPlayTrailer(true)}
-            onTrailerClose={() => setPlayTrailer(false)}
-            isFavorited={isFavorited}
-            onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
-          >
-            {config.recommendationsPlaylist ? (
-              <>
-                <div className={styles.related}>
-                  <h3>{playlist.title}</h3>
-                </div>
-                <CardGrid
-                  playlist={playlist.playlist}
-                  onCardClick={onCardClick}
-                  isLoading={isLoading}
-                  currentCardItem={item}
-                  currentCardLabel={t('currently_playing')}
-                />
-              </>
-            ) : undefined}
-          </VideoComponent>
-        )}
+        {({ playlist }) =>
+          isLoading ? (
+            <LoadingOverlay />
+          ) : (
+            <VideoComponent
+              title={item.title}
+              item={item}
+              trailerItem={trailerItem}
+              play={play}
+              startPlay={startPlay}
+              goBack={goBack}
+              onComplete={() => playNext(playlist.playlist)}
+              poster={posterFading ? 'fading' : 'normal'}
+              enableSharing={enableSharing}
+              hasShared={hasShared}
+              onShareClick={onShareClick}
+              playTrailer={playTrailer}
+              onTrailerClick={() => setPlayTrailer(true)}
+              onTrailerClose={() => setPlayTrailer(false)}
+              isFavorited={isFavorited}
+              onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+            >
+              {config.recommendationsPlaylist ? (
+                <>
+                  <div className={styles.related}>
+                    <h3>{playlist.title}</h3>
+                  </div>
+                  <CardGrid
+                    playlist={playlist.playlist}
+                    onCardClick={onCardClick}
+                    isLoading={isLoading}
+                    currentCardItem={item}
+                    currentCardLabel={t('currently_playing')}
+                  />
+                </>
+              ) : undefined}
+            </VideoComponent>
+          )
+        }
       </PlaylistContainer>
     </React.Fragment>
   );

@@ -14,9 +14,11 @@ import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
 import useMedia from '../../hooks/useMedia';
 import usePlaylist from '../../hooks/usePlaylist';
+import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
 import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './Series.module.scss';
 
@@ -93,12 +95,14 @@ const Series = ({
     }
   }, [history, searchParams, seriesPlaylist]);
 
-  if (isLoading || playlistIsLoading) return <p>Loading...</p>;
-  if (error || playlistError) return <p>Error loading list</p>;
-  if (!seriesPlaylist || !item) return <p>Can not find medium</p>;
+  if (error || !item) return <ErrorPage title="Episode not found!" />;
+  if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
-  const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
+  const canonicalUrl =
+    seriesPlaylist && item
+      ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}`
+      : window.location.href;
 
   return (
     <React.Fragment>
@@ -121,51 +125,59 @@ const Series = ({
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
-        {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
+        {item.tags.split(',').map((tag) => (
+          <meta property="og:video:tag" content={tag} key={tag} />
+        ))}
+        {seriesPlaylist && item ? (
+          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script>
+        ) : null}
       </Helmet>
-      <VideoComponent
-        title={seriesPlaylist.title}
-        item={item}
-        trailerItem={trailerItem}
-        play={play}
-        startPlay={startPlay}
-        goBack={goBack}
-        onComplete={() => playNext()}
-        poster={posterFading ? 'fading' : 'normal'}
-        enableSharing={enableSharing}
-        hasShared={hasShared}
-        onShareClick={onShareClick}
-        playTrailer={playTrailer}
-        onTrailerClick={() => setPlayTrailer(true)}
-        onTrailerClose={() => setPlayTrailer(false)}
-        isFavorited={isFavorited}
-        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
-        isSeries
-      >
-        <>
-          <div className={styles.episodes}>
-            <h3>{t('episodes')}</h3>
-            {filters.length > 1 && (
-              <Filter
-                name="categories"
-                value={seasonFilter}
-                valuePrefix="Season "
-                defaultLabel="All"
-                options={filters}
-                setValue={setSeasonFilter}
-              />
-            )}
-          </div>
-          <CardGrid
-            playlist={filteredPlaylist}
-            onCardClick={onCardClick}
-            isLoading={isLoading}
-            currentCardItem={item}
-            currentCardLabel={t('current_episode')}
-          />
-        </>
-      </VideoComponent>
+      {isLoading || playlistIsLoading ? (
+        <LoadingOverlay />
+      ) : (
+        <VideoComponent
+          title={seriesPlaylist.title}
+          item={item}
+          trailerItem={trailerItem}
+          play={play}
+          startPlay={startPlay}
+          goBack={goBack}
+          onComplete={() => playNext()}
+          poster={posterFading ? 'fading' : 'normal'}
+          enableSharing={enableSharing}
+          hasShared={hasShared}
+          onShareClick={onShareClick}
+          playTrailer={playTrailer}
+          onTrailerClick={() => setPlayTrailer(true)}
+          onTrailerClose={() => setPlayTrailer(false)}
+          isFavorited={isFavorited}
+          onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+          isSeries
+        >
+          <>
+            <div className={styles.episodes}>
+              <h3>{t('episodes')}</h3>
+              {filters.length > 1 && (
+                <Filter
+                  name="categories"
+                  value={seasonFilter}
+                  valuePrefix="Season "
+                  defaultLabel="All"
+                  options={filters}
+                  setValue={setSeasonFilter}
+                />
+              )}
+            </div>
+            <CardGrid
+              playlist={filteredPlaylist}
+              onCardClick={onCardClick}
+              isLoading={isLoading}
+              currentCardItem={item}
+              currentCardLabel={t('current_episode')}
+            />
+          </>
+        </VideoComponent>
+      )}
     </React.Fragment>
   );
 };
