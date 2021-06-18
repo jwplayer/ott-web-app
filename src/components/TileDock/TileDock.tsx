@@ -15,6 +15,7 @@ export type TileDockProps<T> = {
   minimalTouchMovement?: number;
   showControls?: boolean;
   animated?: boolean;
+  wrapWithEmptyTiles?: boolean;
   transitionTime?: string;
   renderTile: (item: T, isInView: boolean) => JSX.Element;
   renderLeftControl?: (handleClick: () => void) => JSX.Element;
@@ -26,7 +27,7 @@ type Tile<T> = {
   key: string;
 };
 
-const makeTiles = <T,>(originalList: T[], slicedItems: T[]): Tile<T>[] => {
+const makeTiles = <T, > (originalList: T[], slicedItems: T[]): Tile<T>[] => {
   const itemIndices: string[] = [];
 
   return slicedItems.map((item) => {
@@ -39,7 +40,7 @@ const makeTiles = <T,>(originalList: T[], slicedItems: T[]): Tile<T>[] => {
   });
 };
 
-const sliceItems = <T,>(
+const sliceItems = <T, > (
   items: T[],
   isMultiPage: boolean,
   index: number,
@@ -59,19 +60,22 @@ const sliceItems = <T,>(
   return makeTiles(items, itemsSlice);
 };
 
-const TileDock = <T extends unknown>({
-  items,
-  tilesToShow = 6,
-  cycleMode = 'endless',
-  spacing = 12,
-  minimalTouchMovement = 30,
-  showControls = true,
-  animated = !window.matchMedia('(prefers-reduced-motion)').matches,
-  transitionTime = '0.6s',
-  renderTile,
-  renderLeftControl,
-  renderRightControl,
-}: TileDockProps<T>) => {
+const TileDock = <T extends unknown> (
+  {
+    items,
+    tilesToShow = 6,
+    cycleMode = 'endless',
+    spacing = 12,
+    minimalTouchMovement = 30,
+    showControls = true,
+    animated = !window.matchMedia('(prefers-reduced-motion)').matches,
+    transitionTime = '0.6s',
+    wrapWithEmptyTiles = false,
+    renderTile,
+    renderLeftControl,
+    renderRightControl,
+  }: TileDockProps<T>
+) => {
   const [index, setIndex] = useState<number>(0);
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
@@ -83,7 +87,7 @@ const TileDock = <T extends unknown>({
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items?.length > tilesToShow;
-  const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow + 1) + transform : 0;
+  const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow + 1) + transform : wrapWithEmptyTiles ? -100 : 0;
 
   const tileList: Tile<T>[] = useMemo(() => {
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
@@ -168,7 +172,7 @@ const TileDock = <T extends unknown>({
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -188,9 +192,18 @@ const TileDock = <T extends unknown>({
         onTouchEnd={handleTouchEnd}
         onTransitionEnd={handleTransitionEnd}
       >
+        {wrapWithEmptyTiles ? (
+          <li
+            className={styles.emptyTile}
+            style={{
+              width: `${tileWidth}%`,
+              paddingLeft: spacing / 2,
+              paddingRight: spacing / 2,
+              boxSizing: 'border-box',
+            }}
+          />
+        ) : null}
         {tileList.map((tile: Tile<T>, listIndex) => {
-          // Todo:
-          // const isTabable = isAnimating || !isMultiPage || (listIndex > tilesToShow - 1 && listIndex < tilesToShow * 2);
           const isInView =
             !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
 
@@ -210,6 +223,17 @@ const TileDock = <T extends unknown>({
             </li>
           );
         })}
+        {wrapWithEmptyTiles ? (
+          <li
+            className={styles.emptyTile}
+            style={{
+              width: `${tileWidth}%`,
+              paddingLeft: spacing / 2,
+              paddingRight: spacing / 2,
+              boxSizing: 'border-box',
+            }}
+          />
+        ) : null}
       </ul>
       {showRightControl && !!renderRightControl && (
         <div className={styles.rightControl}>{renderRightControl(() => slide('right'))}</div>

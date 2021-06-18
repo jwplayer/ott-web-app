@@ -40,8 +40,9 @@ const Home = (): JSX.Element => {
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;
 
-  const { getPlaylist: getWatchHistoryPlayist } = useWatchHistory();
-  const watchHistory = getWatchHistoryPlayist();
+  const { getPlaylist: getWatchHistoryPlaylist, getDictionary: getWatchHistoryDictionary } = useWatchHistory();
+  const watchHistory = getWatchHistoryPlaylist();
+  const watchHistoryDictionary = getWatchHistoryDictionary();
   const watchHistoryLoaded = watchHistoryStore.useState((state) => state.playlistItemsLoaded);
   const favorites = favoritesStore.useState((state) => state.favorites);
 
@@ -72,6 +73,7 @@ const Home = (): JSX.Element => {
                 loading={isLoading}
                 error={error}
                 playlist={playlist}
+                watchHistory={playlist.feedid === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
                 title={playlist.title}

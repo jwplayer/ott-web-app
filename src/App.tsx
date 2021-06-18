@@ -32,15 +32,27 @@ class App extends Component {
     initializeFavorites();
   }
 
+  configLoadingHandler = (isLoading: boolean) => {
+    console.info(`Loading config: ${isLoading}`)
+  };
+
+  configErrorHandler = (error: Error) => {
+    this.setState({ error });
+  };
+
+  configValidationCompletedHandler = (config: Config) => {
+    this.initializeServices(config);
+  };
+
   render() {
     return (
       <I18nextProvider i18n={getI18n()}>
         <QueryProvider>
           <ConfigProvider
             configLocation={window.configLocation}
-            onLoading={(isLoading: boolean) => console.info(`Loading config: ${isLoading}`)}
-            onValidationError={(error: Error) => console.error(`Config ${error}`)}
-            onValidationCompleted={(config) => this.initializeServices(config)}
+            onLoading={this.configLoadingHandler}
+            onValidationError={this.configErrorHandler}
+            onValidationCompleted={this.configValidationCompletedHandler}
           >
             <Router>
               <Root error={this.state.error} />

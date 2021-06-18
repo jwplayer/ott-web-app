@@ -16,16 +16,20 @@ type Props = {
   startIcon?: JSX.Element;
   variant?: Variant;
   onClick?: () => void;
+  tabIndex?: number;
+  size?: 'medium' | 'large',
   to?: string;
-};
+  role?: string;
+} & React.AriaAttributes;
 
-const Button: React.FC<Props & React.AriaAttributes> = ({
+const Button: React.FC<Props> = ({
   label,
   color = 'default',
   startIcon,
   fullWidth = false,
   active = false,
   variant = 'outlined',
+  size = 'medium',
   to,
   onClick,
   ...rest
@@ -33,6 +37,7 @@ const Button: React.FC<Props & React.AriaAttributes> = ({
   const className = classNames(styles.button, [styles[color]], [styles[variant]], {
     [styles.active]: active,
     [styles.fullWidth]: fullWidth,
+    [styles.large]: size === 'large',
   });
 
   const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
