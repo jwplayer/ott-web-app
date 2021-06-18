@@ -5,6 +5,7 @@ import { calculateContrastColor } from '../utils/common';
 import loadConfig, { validateConfig } from '../services/config.service';
 import type { Config, Options } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
+import { addScript } from '../utils/dom';
 
 const defaultConfig: Config = {
   id: '',
@@ -49,6 +50,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
         .then((configValidated) => {
           setConfig(() => merge({}, defaultConfig, configValidated));
           setCssVariables(configValidated.options);
+          maybeInjectAnalyticsLibrary(config);
           onLoading(false);
           setLoading(false);
           onValidationCompleted(config);
@@ -78,6 +80,14 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
       root.style.setProperty('--header-background', headerBackground);
     }
   };
+
+  const maybeInjectAnalyticsLibrary = (config: Config) => {
+    if (!config.analyticsToken) return;
+
+    return new Promise<void>((resolve) => {
+      addScript('/jwpltx.js', () => resolve());
+    });
+  } 
 
   return (
     <ConfigContext.Provider value={config}>
