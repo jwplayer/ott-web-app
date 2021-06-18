@@ -13,6 +13,7 @@ type CardProps = {
   duration: number;
   posterSource?: string;
   seriesId?: string;
+  progress?: number;
   posterAspect?: '1:1' | '2:1' | '2:3' | '4:3' | '5:3' | '16:9' | '9:16';
   featured?: boolean;
   disabled?: boolean;
@@ -28,6 +29,7 @@ function Card({
   duration,
   posterSource,
   seriesId,
+  progress,
   posterAspect = '16:9',
   featured = false,
   disabled = false,
@@ -73,6 +75,11 @@ function Card({
           </div>
         )}
         {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
+        {progress ? (
+          <div className={styles.progressContainer}>
+            <div className={styles.progressBar} style={{ width: `${Math.round(progress * 100)}%` }} />
+          </div>
+        ) : null}
       </div>
       {!featured && !disabled && (
         <div className={styles.titleContainer}>

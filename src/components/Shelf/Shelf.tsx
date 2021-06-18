@@ -32,6 +32,7 @@ export type ShelfProps = {
   playlist: Playlist;
   onCardClick: (playlistItem: PlaylistItem) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
+  watchHistory?: { [key: string]: number };
   featured?: boolean;
   loading?: boolean;
   error?: unknown;
@@ -43,6 +44,7 @@ const Shelf: React.FC<ShelfProps> = ({
   onCardClick,
   onCardHover,
   title,
+  watchHistory,
   featured = false,
   loading = false,
   error = null,
@@ -108,6 +110,7 @@ const Shelf: React.FC<ShelfProps> = ({
           <Card
             title={item.title}
             duration={item.duration}
+            progress={watchHistory ? watchHistory[item.mediaid] : undefined}
             posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
             seriesId={item.seriesId}
             onClick={isInView ? () => onCardClick(item) : undefined}
