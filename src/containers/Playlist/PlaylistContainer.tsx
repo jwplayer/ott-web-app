@@ -42,7 +42,9 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, children
   if (playlistId === PersonalShelf.ContinueWatching) playlist = watchHistoryPlayist;
 
   if (!playlistId) return <p>No playlist id</p>;
-  if (!playlist.playlist.length) return null;
+  if (!playlist.playlist.length) {
+    return null;
+  }
 
   if (relatedItem && !playlist.playlist.some(({ mediaid }) => mediaid === relatedItem.mediaid)) {
     playlist.playlist.unshift(relatedItem);

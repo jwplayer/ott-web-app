@@ -59,25 +59,28 @@ const Home = (): JSX.Element => {
     const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
     return (
-      <div
-        key={key}
-        style={style}
-        className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
-      >
-        <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
-          {({ playlist, error, isLoading }) => (
-            <ShelfComponent
-              loading={isLoading}
-              error={error}
-              playlist={playlist}
-              onCardClick={onCardClick}
-              onCardHover={onCardHover}
-              title={playlist.title}
-              featured={contentItem.featured === true}
-            />
-          )}
-        </PlaylistContainer>
-      </div>
+      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
+        {({ playlist, error, isLoading }) => (
+          <div
+            key={key}
+            style={style}
+            role="row"
+            className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
+          >
+            <div role="cell">
+              <ShelfComponent
+                loading={isLoading}
+                error={error}
+                playlist={playlist}
+                onCardClick={onCardClick}
+                onCardHover={onCardHover}
+                title={playlist.title}
+                featured={contentItem.featured === true}
+              />
+            </div>
+          </div>
+        )}
+      </PlaylistContainer>
     );
   };
 
