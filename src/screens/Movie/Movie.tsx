@@ -37,6 +37,7 @@ const Movie = ({
 
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
+  const feedId = searchParams.get('l');
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
   const [hasShared, setHasShared] = useState<boolean>(false);
@@ -118,6 +119,7 @@ const Movie = ({
           <VideoComponent
             title={item.title}
             item={item}
+            feedId={feedId ?? undefined}
             trailerItem={trailerItem}
             play={play}
             startPlay={startPlay}

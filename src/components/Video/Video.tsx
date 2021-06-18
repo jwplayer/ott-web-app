@@ -25,6 +25,7 @@ type Poster = 'fading' | 'normal';
 type Props = {
   title: string;
   item: PlaylistItem;
+  feedId?: string;
   trailerItem?: PlaylistItem;
   play: boolean;
   startPlay: () => void;
@@ -46,6 +47,7 @@ type Props = {
 const Video: React.FC<Props> = ({
   title,
   item,
+  feedId,
   trailerItem,
   play,
   startPlay,
@@ -156,6 +158,7 @@ const Video: React.FC<Props> = ({
           <div className={styles.player}>
             <Cinema
               item={item}
+              feedId={feedId}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onComplete={onComplete}

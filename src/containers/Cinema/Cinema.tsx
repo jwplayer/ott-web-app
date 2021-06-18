@@ -18,24 +18,17 @@ type Props = {
   onComplete?: () => void;
   onUserActive?: () => void;
   onUserInActive?: () => void;
+  feedId?: string;
   isTrailer?: boolean;
 };
 
-const Cinema: React.FC<Props> = ({
-  item,
-  onPlay,
-  onPause,
-  onComplete,
-  onUserActive,
-  onUserInActive,
-  isTrailer = false,
-}: Props) => {
+const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
   const config: Config = useContext(ConfigContext);
   const [initialized, setInitialized] = useState(false);
   const file = item.sources?.[0]?.file;
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
   const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
-  const setPlayer = useOttAnalytics(item);
+  const setPlayer = useOttAnalytics(item, feedId);
 
   const getProgress = (): VideoProgress | null => {
     const player = window.jwplayer && (window.jwplayer('cinema') as JWPlayer);
@@ -79,20 +72,7 @@ const Cinema: React.FC<Props> = ({
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [
-    item,
-    onPlay,
-    onPause,
-    onComplete,
-    onUserActive,
-    onUserInActive,
-    config.player,
-    file,
-    scriptUrl,
-    initialized,
-    enableWatchHistory,
-    setPlayer,
-  ]);
+  }, [item, onPlay, onPause, onComplete, onUserActive, onUserInActive, config.player, file, scriptUrl, initialized, enableWatchHistory, setPlayer]);
 
   return <div id="cinema" />;
 };
