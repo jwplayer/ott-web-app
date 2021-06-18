@@ -179,7 +179,7 @@ const Video: React.FC<Props> = ({
         </div>
       )}
       {playTrailer && trailerItem && (
-        <Modal onClose={onTrailerClose}>
+        <Modal onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
           <Cinema
             item={trailerItem}
             onPlay={() => setIsPlaying(true)}

@@ -1,5 +1,6 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
+@use '../../styles/mixins/responsive';
 
 .overlay {
   position: fixed;
@@ -28,9 +29,31 @@
   position: relative;
   width: 80vw;
   background-color: rgba(0, 0, 0, 0.9);
+  @include responsive.mobile-only() {
+    width: 100vw;
+  }
 }
 .close {
   position: absolute;
-  right: 30px;
-  top: 30px;
+  right: 16px;
+  top: 16px;
+  width: 48px;
+  height: 48px;
+  opacity: 1;
+  > svg {
+    width: 28px;
+    height: 28px;
+  }
+  @include responsive.mobile-only() {
+    width: 24px;
+    height: 24px;
+    > svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+  &.hidden {
+    transition: opacity 0.6s ease;
+    opacity: 0;
+  }
 }

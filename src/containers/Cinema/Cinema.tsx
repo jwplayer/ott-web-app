@@ -11,8 +11,6 @@ import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
 import useOttAnalytics from '../../hooks/useOttAnalytics';
 
-import styles from './Cinema.module.scss';
-
 type Props = {
   item: PlaylistItem;
   onPlay?: () => void;
@@ -96,7 +94,7 @@ const Cinema: React.FC<Props> = ({
     setPlayer,
   ]);
 
-  return <div className={styles.Cinema} id="cinema" />;
+  return <div id="cinema" />;
 };
 
 export default Cinema;

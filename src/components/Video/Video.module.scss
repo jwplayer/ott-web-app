@@ -47,6 +47,9 @@
   letter-spacing: 0.25px;
   margin: 8px 0px;
   @include responsive.mobile-only() {
+    font-size: 20px;
+    line-height: 20px;
+    letter-spacing: 0.15px;
     margin: 0px;
   }
 }
