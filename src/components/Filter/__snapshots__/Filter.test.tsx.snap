@@ -4,9 +4,11 @@ exports[`<Filter> renders Filter 1`] = `
 <div>
   <div
     class="filterRow"
+    role="listbox"
   >
     <button
       class="button default outlined"
+      role="option"
     >
       <span>
         x
@@ -14,6 +16,7 @@ exports[`<Filter> renders Filter 1`] = `
     </button>
     <button
       class="button default outlined"
+      role="option"
     >
       <span>
         y
@@ -21,6 +24,7 @@ exports[`<Filter> renders Filter 1`] = `
     </button>
     <button
       class="button default outlined"
+      role="option"
     >
       <span>
         z
@@ -28,6 +32,7 @@ exports[`<Filter> renders Filter 1`] = `
     </button>
     <button
       class="button default outlined"
+      role="option"
     >
       <span>
         bb

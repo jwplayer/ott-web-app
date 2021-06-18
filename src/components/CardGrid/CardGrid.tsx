@@ -45,7 +45,7 @@ function CardGrid({
     if (!rows[rowIndex][columnIndex]) return;
 
     const playlistItem: PlaylistItem = rows[rowIndex][columnIndex];
-    const { mediaid, title, duration, seriesId } = playlistItem;
+    const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber } = playlistItem;
 
     return (
       <div className={styles.cell} style={style} key={mediaid} role="row">
@@ -56,6 +56,8 @@ function CardGrid({
             duration={duration}
             posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
             seriesId={seriesId}
+            episodeNumber={episodeNumber}
+            seasonNumber={seasonNumber}
             onClick={() => onCardClick(playlistItem)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}

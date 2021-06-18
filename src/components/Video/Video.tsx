@@ -112,6 +112,7 @@ const Video: React.FC<Props> = ({
             <Button
               color="primary"
               variant="contained"
+              size="large"
               label={t('video:start_watching')}
               startIcon={<Play />}
               onClick={startPlay}

@@ -169,3 +169,21 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   background-color: rgba(variables.$black, 0.6);
   border-radius: 4px;
 }
+
+.live {
+  background-color: variables.$red;
+}
+
+.progressContainer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  background-color: rgba(variables.$black, 0.38);
+}
+
+.progressBar {
+  height: 5px;
+  background-color: var(--primary-color);
+}

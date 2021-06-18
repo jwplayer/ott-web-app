@@ -1,15 +1,14 @@
 {
   "add_to_favorites": "",
   "copied_url": "",
+  "current_episode": "",
+  "currently_playing": "",
+  "episodes": "",
   "favorite": "",
   "remove_from_favorites": "",
   "share": "",
   "start_watching": "",
   "trailer": "",
-  "share_video": "",
-  "copied_url": "",
-  "watch_trailer": "", 
-  "currently_playing": "",
-  "current_episode": "",
-  "episodes": ""
+  "watch_trailer": "",
+  "share_video": ""
 }

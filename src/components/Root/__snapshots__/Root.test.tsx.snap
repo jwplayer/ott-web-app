@@ -135,8 +135,27 @@ exports[`<Root /> renders and matches snapshot 1`] = `
 
 exports[`<Root /> renders error page when error prop is passed 1`] = `
 <div>
-  <div>
-    Error!
+  <div
+    class="errorPage"
+  >
+    <div
+      class="box"
+    >
+      <header>
+        <h1
+          class="title"
+        >
+          generic_error_heading
+        </h1>
+      </header>
+      <main
+        class="main"
+      >
+        <p>
+          generic_error_description
+        </p>
+      </main>
+    </div>
   </div>
 </div>
 `;
