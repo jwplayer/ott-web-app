@@ -37,13 +37,11 @@
     transform: scale(1);
   }
 }
-@keyframes shrinkFadeOut {
+@keyframes shrink {
   0% {
-    opacity: 1;
     transform: scale(1);
   }
   100% {
-    opacity: 0;
     transform: scale(0);
   }
 }
@@ -55,14 +53,16 @@
   left: 0px;
   top: 0px;
   z-index: 1;
+  &.closing:local {
+    animation: 0.2s ease-out 0s 1 fadeOut;
+  }
 }
 .backdrop {
-  animation: 0.3s ease-out 0s 1 fadeIn;
   width: inherit;
   height: inherit;
   background: rgba(0, 0, 0, 0.6);
-  &.closing {
-    animation: 0.2s ease-out 0s 1 fadeOut;
+  &:local {
+    animation: 0.3s ease-out 0s 1 fadeIn;
   }
 }
 .modalContainer {
@@ -74,23 +74,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  &.closing {
-    animation: 0.2s ease-out 0s 1 shrinkFadeOut;
+  &.closing:local {
+    animation: 0.2s ease-out 0s 1 shrink;
   }
 }
 .modal {
   position: relative;
   width: 80vw;
-  animation: 0.5s ease-out 0s 1 fadeInDelayed;
+  @include responsive.mobile-only() {
+    width: 100vw;
+    height: calc(100vw / 16 * 9);
+  }
+  &:local {
+    animation: 0.5s ease-out 0s 1 fadeInDelayed;
+  }
 }
 .modalBackground {
   position: absolute;
   width: 80vw;
   height: calc(80vw / 16 * 9);
   background-color: rgba(0, 0, 0, 0.9);
-  animation: 0.2s ease-out 0s 1 grow;
   @include responsive.mobile-only() {
     width: 100vw;
+    height: calc(100vw / 16 * 9);
+  }
+  &:local {
+    animation: 0.2s ease-out 0s 1 grow;
   }
 }
 .close {

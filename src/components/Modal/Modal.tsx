@@ -36,7 +36,7 @@ const Modal: React.FC<Props> = ({ onClose, closeButtonVisible = true, children }
   }, [prepareClose]);
 
   return (
-    <div className={styles.overlay} onClick={prepareClose}>
+    <div className={classNames(styles.overlay, { [styles.closing]: closing })} onClick={prepareClose}>
       <div className={styles.backdrop} />
       <div className={classNames(styles.modalContainer, { [styles.closing]: closing })}>
         <div className={styles.modalBackground} />
