@@ -113,6 +113,8 @@ const Shelf: React.FC<ShelfProps> = ({
             progress={watchHistory ? watchHistory[item.mediaid] : undefined}
             posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
             seriesId={item.seriesId}
+            seasonNumber={item.seasonNumber}
+            episodeNumber={item.episodeNumber}
             onClick={isInView ? () => onCardClick(item) : undefined}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
             featured={featured}
