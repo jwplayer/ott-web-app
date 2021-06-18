@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -64,7 +64,7 @@ const Video: React.FC<Props> = ({
   isSeries = false,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [mouseActive, setMouseActive] = useState(false);
+  const [userActive, setUserActive] = useState(true);
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation(['video', 'common']);
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -79,13 +79,6 @@ const Video: React.FC<Props> = ({
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
 
-  let timeout: NodeJS.Timeout;
-  const mouseActivity = () => {
-    setMouseActive(true);
-    clearTimeout(timeout);
-    timeout = setTimeout(() => setMouseActive(false), 2000);
-  };
-
   const seriesMeta = isSeries && (
     <>
       <strong>{`S${item.seasonNumber}:E${item.episodeNumber}`}</strong>
@@ -93,6 +86,10 @@ const Video: React.FC<Props> = ({
       {item.title}
     </>
   );
+
+  useEffect(() => {
+    if (play || playTrailer) setUserActive(true);
+  }, [play, playTrailer]);
 
   return (
     <div className={styles.video}>
@@ -155,17 +152,19 @@ const Video: React.FC<Props> = ({
       </div>
       {!!children && <div className={classNames(styles.related, styles.mainPadding)}>{children}</div>}
       {play && (
-        <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
+        <div className={styles.playerContainer}>
           <div className={styles.player}>
             <Cinema
               item={item}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onComplete={onComplete}
+              onUserActive={() => setUserActive(true)}
+              onUserInActive={() => setUserActive(false)}
             />
-            <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !mouseActive })} />
+            <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
           </div>
-          <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !mouseActive })}>
+          <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !userActive })}>
             <IconButton aria-label={t('common:back')} onClick={goBack} className={styles.backButton}>
               <ArrowLeft />
             </IconButton>
@@ -181,12 +180,19 @@ const Video: React.FC<Props> = ({
       )}
       {playTrailer && trailerItem && (
         <Modal onClose={onTrailerClose}>
-          <div onMouseMove={mouseActivity} onClick={mouseActivity}>
-            <Cinema item={trailerItem} onComplete={onTrailerClose} isTrailer />
-            <div
-              className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: !mouseActive })}
-            >{`${title} - Trailer`}</div>
-          </div>
+          <Cinema
+            item={trailerItem}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onComplete={onTrailerClose}
+            onUserActive={() => setUserActive(true)}
+            onUserInActive={() => setUserActive(false)}
+            isTrailer
+          />
+          <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
+          <div
+            className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: isPlaying && !userActive })}
+          >{`${title} - Trailer`}</div>
         </Modal>
       )}
     </div>
