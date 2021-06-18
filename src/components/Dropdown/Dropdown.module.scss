@@ -7,13 +7,13 @@ $select-arrow: variables.$white;
 $select-focus: theme.$primary-color;
 
 .dropdown {
+  height: 36px;
   position: relative;
   display: grid;
   align-items: center;
   width: 140px;
   margin-left: 24px;
   font-size: 1.25rem;
-  line-height: 1.1;
   background-color: rgba(0, 0, 0, 0.54);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 0.25em;
@@ -35,6 +35,7 @@ $select-focus: theme.$primary-color;
   .select {
     z-index: 1;
     width: 100%;
+    height: 36px;
     margin: 0;
     padding: 9px 24px 9px 9px;
     text-overflow: ellipsis;
@@ -42,7 +43,6 @@ $select-focus: theme.$primary-color;
     font-family: inherit;
     font-weight: 700;
     font-size: 1rem;
-    line-height: inherit;
     background: none;
     border: none;
     outline: none;

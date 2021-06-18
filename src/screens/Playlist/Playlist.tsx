@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import type { Config } from 'types/Config';
@@ -26,13 +26,18 @@ function Playlist({
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
   const config: Config = useContext(ConfigContext);
-  const { isLoading, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
+  const { isLoading, isPlaceholderData, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
 
   const [filter, setFilter] = useState<string>('');
 
   const categories = getFiltersFromConfig(config, id);
   const filteredPlaylist = useMemo(() => filterPlaylist(playlist, filter), [playlist, filter]);
   const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
+
+  useEffect(() => {
+    // reset filter when the playlist id changes
+    setFilter('');
+  }, [id]);
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, id));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
@@ -51,8 +56,8 @@ function Playlist({
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       <header className={styles.header}>
-        <h2>{title}</h2>
-        <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />
+        <h2>{isLoading || isPlaceholderData ? 'Loading' : title}</h2>
+        {!isLoading && !isPlaceholderData && <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
       </header>
       <main className={styles.main}>
         <CardGrid

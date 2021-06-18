@@ -56,7 +56,6 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
           value={value}
           onChange={handleChange}
           aria-label={t('filter_videos_by_genre')}
-          optionsStyle={styles.optionMobile}
         />
       )}
     </Fragment>

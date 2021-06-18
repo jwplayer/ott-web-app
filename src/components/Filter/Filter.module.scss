@@ -11,9 +11,3 @@
     margin: 0 4px;
   }
 }
-
-.optionMobile {
-  @include responsive.mobile-only() {
-    display: none;
-  }
-}
