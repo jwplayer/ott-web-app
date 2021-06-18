@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -66,7 +66,7 @@ const Video: React.FC<Props> = ({
   isSeries = false,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [mouseActive, setMouseActive] = useState(false);
+  const [userActive, setUserActive] = useState(true);
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation(['video', 'common']);
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -81,31 +81,17 @@ const Video: React.FC<Props> = ({
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
 
-  const seriesMeta = isSeries ? `S${item.seasonNumber}:E${item.episodeNumber}` : null;
-
-  let timeout: NodeJS.Timeout;
-  const mouseActivity = () => {
-    setMouseActive(true);
-    clearTimeout(timeout);
-    timeout = setTimeout(() => setMouseActive(false), 2000);
-  };
-
-  const metaContent = (
+  const seriesMeta = isSeries && (
     <>
-      <h2 className={styles.title}>{title}</h2>
-      <div className={styles.metaContainer}>
-        <div className={styles.meta}>{metaString}</div>
-        {isSeries && (
-          <div className={styles.seriesMeta}>
-            <strong>{seriesMeta}</strong>
-            {' - '}
-            {item.title}
-          </div>
-        )}
-      </div>
-      <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
+      <strong>{`S${item.seasonNumber}:E${item.episodeNumber}`}</strong>
+      {' - '}
+      {item.title}
     </>
   );
+
+  useEffect(() => {
+    if (play || playTrailer) setUserActive(true);
+  }, [play, playTrailer]);
 
   return (
     <div className={styles.video}>
@@ -116,7 +102,12 @@ const Video: React.FC<Props> = ({
         })}
       >
         <div className={styles.info}>
-          {metaContent}
+          <h2 className={styles.title}>{title}</h2>
+          <div className={styles.metaContainer}>
+            <div className={styles.meta}>{metaString}</div>
+            {isSeries && <div className={styles.seriesMeta}>{seriesMeta}</div>}
+          </div>
+          <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
           <div className={styles.playButton}>
             <Button
               color="primary"
@@ -163,7 +154,7 @@ const Video: React.FC<Props> = ({
       </div>
       {!!children && <div className={classNames(styles.related, styles.mainPadding)}>{children}</div>}
       {play && (
-        <div className={styles.playerContainer} onMouseMove={mouseActivity} onClick={mouseActivity}>
+        <div className={styles.playerContainer}>
           <div className={styles.player}>
             <Cinema
               item={item}
@@ -171,24 +162,40 @@ const Video: React.FC<Props> = ({
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onComplete={onComplete}
+              onUserActive={() => setUserActive(true)}
+              onUserInActive={() => setUserActive(false)}
             />
+            <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
           </div>
-          <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !mouseActive })}>
-            <IconButton aria-label={t('common:back')} onClick={goBack}>
+          <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !userActive })}>
+            <IconButton aria-label={t('common:back')} onClick={goBack} className={styles.backButton}>
               <ArrowLeft />
             </IconButton>
-            <div className={styles.playerInfo}>{metaContent}</div>
+            <div className={styles.playerInfo}>
+              <h2 className={styles.title}>{title}</h2>
+              <div className={styles.metaContainer}>
+                {isSeries && <div className={classNames(styles.seriesMeta, styles.seriesMetaPlayer)}>{seriesMeta}</div>}
+                <div className={styles.meta}>{metaString}</div>
+              </div>
+            </div>
           </div>
         </div>
       )}
       {playTrailer && trailerItem && (
-        <Modal onClose={onTrailerClose}>
-          <div onMouseMove={mouseActivity} onClick={mouseActivity}>
-            <Cinema item={trailerItem} onComplete={onTrailerClose} isTrailer />
-            <div
-              className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: !mouseActive })}
-            >{`${title} - Trailer`}</div>
-          </div>
+        <Modal onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
+          <Cinema
+            item={trailerItem}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onComplete={onTrailerClose}
+            onUserActive={() => setUserActive(true)}
+            onUserInActive={() => setUserActive(false)}
+            isTrailer
+          />
+          <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
+          <div
+            className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: isPlaying && !userActive })}
+          >{`${title} - Trailer`}</div>
         </Modal>
       )}
     </div>

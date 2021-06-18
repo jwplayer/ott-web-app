@@ -3,7 +3,7 @@ import type { Playlist, PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 import type { WatchHistoryItem } from 'types/watchHistory';
 
-import { VideoProgressMinMax } from '../enum/VideoProgressMinMax';
+import { VideoProgressMinMax } from '../config';
 import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';

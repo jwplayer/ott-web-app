@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
@@ -74,6 +74,13 @@ const Movie = ({
     setTimeout(() => setHasShared(false), 2000);
   };
 
+  useEffect(() => {
+    if (play) document.body.style.overflowY = 'hidden';
+    return () => {
+      if (play) document.body.style.overflowY = '';
+    };
+  }, [play]);
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading list</p>;
   if (!item) return <p>Can not find medium</p>;
@@ -102,7 +109,9 @@ const Movie = ({
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
+        {item.tags.split(',').map((tag) => (
+          <meta property="og:video:tag" content={tag} key={tag} />
+        ))}
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
       <PlaylistContainer playlistId={config?.recommendationsPlaylist || ''} relatedItem={item}>

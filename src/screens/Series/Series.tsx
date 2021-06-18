@@ -94,12 +94,22 @@ const Series = ({
     }
   }, [history, searchParams, seriesPlaylist]);
 
+  useEffect(() => {
+    if (play) document.body.style.overflowY = 'hidden';
+    return () => {
+      if (play) document.body.style.overflowY = '';
+    };
+  }, [play]);
+
   if (isLoading || playlistIsLoading) return <p>Loading...</p>;
   if (error || playlistError) return <p>Error loading list</p>;
   if (!seriesPlaylist || !item) return <p>Can not find medium</p>;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
-  const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
+  const canonicalUrl =
+    seriesPlaylist && item
+      ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}`
+      : window.location.href;
 
   return (
     <React.Fragment>
@@ -122,8 +132,12 @@ const Series = ({
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {item.tags.split(',').map(tag => <meta property="og:video:tag" content={tag} key={tag} />)}
-        {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
+        {item.tags.split(',').map((tag) => (
+          <meta property="og:video:tag" content={tag} key={tag} />
+        ))}
+        {seriesPlaylist && item ? (
+          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script>
+        ) : null}
       </Helmet>
       <VideoComponent
         title={seriesPlaylist.title}
