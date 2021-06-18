@@ -17,6 +17,9 @@ exports[`<Modal> renders and matches snapshot 1`] = `
       <div
         class="modal"
       >
+        <p>
+          Test modal
+        </p>
         <div
           aria-label="close_modal"
           class="iconButton close"
@@ -41,9 +44,6 @@ exports[`<Modal> renders and matches snapshot 1`] = `
             </g>
           </svg>
         </div>
-        <p>
-          Test modal
-        </p>
       </div>
     </div>
   </div>

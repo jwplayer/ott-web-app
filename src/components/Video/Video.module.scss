@@ -39,10 +39,10 @@
   }
 }
 .info {
-  max-width: 450px;
+  width: 450px;
   min-height: 380px;
   @include responsive.tablet-only() {
-    max-width: 350px;
+    width: 350px;
   }
   @include responsive.mobile-only() {
     width: 100%;
@@ -56,6 +56,9 @@
   letter-spacing: 0.25px;
   margin: 8px 0px;
   @include responsive.mobile-only() {
+    font-size: 20px;
+    line-height: 20px;
+    letter-spacing: 0.15px;
     margin: 0px;
   }
 }
@@ -83,6 +86,9 @@
     font-size: 18px;
     margin: 4px 0px;
     order: 1;
+  }
+  &.seriesMetaPlayer {
+    margin-top: 4px;
   }
 }
 .description {
@@ -189,6 +195,20 @@
   justify-content: center;
   align-items: center;
 }
+.playerOverlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+
+  &.hidden {
+    transition: opacity 0.6s ease;
+    opacity: 0;
+  }
+}
 .playerContent {
   position: absolute;
   top: 0;
@@ -199,6 +219,14 @@
   &.hidden {
     transition: opacity 0.6s ease;
     opacity: 0;
+  }
+}
+.backButton {
+  margin: 6px 0px;
+  opacity: 1;
+  > svg {
+    width: 36px;
+    height: 36px;
   }
 }
 .playerInfo {

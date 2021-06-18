@@ -9,10 +9,11 @@ import styles from './Modal.module.scss';
 
 type Props = {
   onClose: () => void;
+  closeButtonVisible?: boolean;
   children: ReactFragment;
 };
 
-const Modal: React.FC<Props> = ({ onClose, children }: Props) => {
+const Modal: React.FC<Props> = ({ onClose, closeButtonVisible = true, children }: Props) => {
   const { t } = useTranslation('common');
   const [closing, setClosing] = useState<boolean>(false);
 
@@ -40,10 +41,14 @@ const Modal: React.FC<Props> = ({ onClose, children }: Props) => {
       <div className={classNames(styles.modalContainer, { [styles.closing]: closing })}>
         <div className={styles.modalBackground} />
         <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
-          <IconButton onClick={prepareClose} aria-label={t('close_modal')} className={styles.close}>
+          {children}
+          <IconButton
+            onClick={prepareClose}
+            aria-label={t('close_modal')}
+            className={classNames(styles.close, { [styles.hidden]: !closeButtonVisible })}
+          >
             <Close />
           </IconButton>
-          {children}
         </div>
       </div>
     </div>
