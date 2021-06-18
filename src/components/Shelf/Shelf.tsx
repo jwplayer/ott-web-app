@@ -32,6 +32,7 @@ export type ShelfProps = {
   playlist: Playlist;
   onCardClick: (playlistItem: PlaylistItem) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
+  watchHistory?: { [key: string]: number };
   featured?: boolean;
   loading?: boolean;
   error?: unknown;
@@ -43,6 +44,7 @@ const Shelf: React.FC<ShelfProps> = ({
   onCardClick,
   onCardHover,
   title,
+  watchHistory,
   featured = false,
   loading = false,
   error = null,
@@ -69,6 +71,7 @@ const Shelf: React.FC<ShelfProps> = ({
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}
+        wrapWithEmptyTiles={featured && playlist.playlist.length === 1}
         cycleMode={'restart'}
         showControls={!matchMedia('(hover: none)').matches && !loading}
         transitionTime={'0.3s'}
@@ -107,8 +110,11 @@ const Shelf: React.FC<ShelfProps> = ({
           <Card
             title={item.title}
             duration={item.duration}
+            progress={watchHistory ? watchHistory[item.mediaid] : undefined}
             posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
             seriesId={item.seriesId}
+            seasonNumber={item.seasonNumber}
+            episodeNumber={item.episodeNumber}
             onClick={isInView ? () => onCardClick(item) : undefined}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
             featured={featured}

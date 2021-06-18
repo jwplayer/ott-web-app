@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Series from '../../screens/Series/Series';
 import Layout from '../Layout/Layout';
@@ -8,14 +9,21 @@ import Playlist from '../../screens/Playlist/Playlist';
 import Settings from '../../screens/Settings/Settings';
 import Movie from '../../screens/Movie/Movie';
 import Search from '../../screens/Search/Search';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 type Props = {
   error?: Error | null;
 };
 
 const Root: FC<Props> = ({ error }: Props) => {
+  const { t } = useTranslation('error');
+
   if (error) {
-    return <div>Error!</div>;
+    return (
+      <ErrorPage title={t('generic_error_heading', 'There was an issue loading the application')}>
+        <p>{t('generic_error_description', 'Try refreshing this page or come back later.')}</p>
+      </ErrorPage>
+    );
   }
 
   return (

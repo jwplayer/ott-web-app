@@ -1,17 +1,21 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
-@use "../../styles/mixins/responsive";
+@use '../../styles/mixins/responsive';
+
+$medium-button-height: 36px;
+$large-button-height: 40px;
 
 .button {
   position: relative;
   display: inline-flex;
   justify-content: inherit;
   align-items: center;
-  min-height: 38px;
+  height: $medium-button-height;
   padding: 0 16px;
 
-  font-size: 16px;
   font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  font-size: 16px;
   line-height: 18px;
   text-align: center;
   text-decoration: none;
@@ -19,19 +23,15 @@
   cursor: pointer;
   transition: background-color 0.1s ease, transform 0.1s ease;
 
-  > svg {
-    height: 18px;
-    width: 18px;
-  }
-  &:hover,
-  &:focus {
-    transform: scale(1.1);
+  &.large {
+    height: $large-button-height;
   }
 
   &.default {
     color: theme.$btn-default-color;
     background-color: theme.$btn-default-bg;
   }
+
   &.primary {
     color: var(--highlight-contrast-color, white);
     background-color: var(--highlight-color, black);
@@ -39,47 +39,63 @@
 
   &.outlined {
     border: 1px solid rgba(255, 255, 255, 0.3);
+
     &.active,
     &:focus {
       background-color: var(--highlight-color, black);
-      border: none;
-      &:hover {
-        transform: none;
-      }
+      color: var(--highlight-contrast-color, white);
+      border-color: var(--highlight-color);
     }
   }
+
   &.text {
-    opacity: 0.7;
     background: none;
+    opacity: 0.7;
+
+    &.active {
+      opacity: 1;
+    }
+
     &:hover {
       background: theme.$btn-default-bg;
-      opacity: 1;
       transform: scale(1.1);
-    }
-    &.active {
       opacity: 1;
     }
   }
 
   &.fullWidth {
     width: 100%;
+
     &:hover {
       transform: scale(1.04);
     }
   }
+
+  > svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover,
+  &:focus {
+    transform: scale(1.1);
+  }
 }
+
 .startIcon {
-  margin-right: 11px;
-  height: 100%;
   display: flex;
   align-items: center;
+  height: 100%;
+  margin-right: 11px;
+
   > svg {
-    height: 20px;
-    width: 20px;
-    fill: currentColor;
     @include responsive.tablet-only() {
       width: 18px;
       height: 18px;
     }
+
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
   }
 }

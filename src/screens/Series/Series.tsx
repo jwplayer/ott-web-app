@@ -46,6 +46,7 @@ const Series = ({
 
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
+  const feedId = searchParams.get('l');
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
   const [hasShared, setHasShared] = useState<boolean>(false);
@@ -88,12 +89,22 @@ const Series = ({
     }
   }, [history, searchParams, seriesPlaylist]);
 
+  useEffect(() => {
+    if (play) document.body.style.overflowY = 'hidden';
+    return () => {
+      if (play) document.body.style.overflowY = '';
+    };
+  }, [play]);
+
   if (isLoading || playlistIsLoading) return <LoadingOverlay />;
   if (error || !item) return <ErrorPage title="Episode not found!" />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
-  const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
+  const canonicalUrl =
+    seriesPlaylist && item
+      ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}`
+      : window.location.href;
 
   return (
     <React.Fragment>
@@ -119,11 +130,14 @@ const Series = ({
         {item.tags.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
+        {seriesPlaylist && item ? (
+          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script>
+        ) : null}
       </Helmet>
       <VideoComponent
         title={seriesPlaylist.title}
         item={item}
+        feedId={feedId ?? undefined}
         trailerItem={trailerItem}
         play={play}
         startPlay={startPlay}

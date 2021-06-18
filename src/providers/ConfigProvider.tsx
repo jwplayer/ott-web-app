@@ -5,6 +5,7 @@ import { calculateContrastColor } from '../utils/common';
 import loadConfig, { validateConfig } from '../services/config.service';
 import type { Config, Options } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
+import { addScript } from '../utils/dom';
 
 const defaultConfig: Config = {
   id: '',
@@ -30,13 +31,15 @@ export type ProviderProps = {
   onValidationCompleted: (config: Config) => void;
 };
 
-const ConfigProvider: FunctionComponent<ProviderProps> = ({
-  children,
-  configLocation,
-  onLoading,
-  onValidationError,
-  onValidationCompleted,
-}) => {
+const ConfigProvider: FunctionComponent<ProviderProps> = (
+  {
+    children,
+    configLocation,
+    onLoading,
+    onValidationError,
+    onValidationCompleted,
+  }
+) => {
   const [config, setConfig] = useState<Config>(defaultConfig);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -44,11 +47,15 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     const loadAndValidateConfig = async (configLocation: string) => {
       onLoading(true);
       setLoading(true);
-      const config = await loadConfig(configLocation);
+      const config = await loadConfig(configLocation).catch((error) => {
+        onValidationError(error);
+      });
+
       validateConfig(config)
         .then((configValidated) => {
           setConfig(() => merge({}, defaultConfig, configValidated));
           setCssVariables(configValidated.options);
+          maybeInjectAnalyticsLibrary(config);
           onLoading(false);
           setLoading(false);
           onValidationCompleted(config);
@@ -78,6 +85,14 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
       root.style.setProperty('--header-background', headerBackground);
     }
   };
+
+  const maybeInjectAnalyticsLibrary = (config: Config) => {
+    if (!config.analyticsToken) return;
+
+    return new Promise<void>((resolve) => {
+      addScript('/jwpltx.js', () => resolve());
+    });
+  } 
 
   return (
     <ConfigContext.Provider value={config}>

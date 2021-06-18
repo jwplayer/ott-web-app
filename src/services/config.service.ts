@@ -54,25 +54,27 @@ const loadConfig = async (configLocation: string) => {
   if (!configLocation) {
     return null;
   }
-  try {
-    const response = await fetch(configLocation, {
-      headers: {
-        Accept: 'application/json',
-      },
-      method: 'GET',
-    });
 
-    const data = await response.json();
+  const response = await fetch(configLocation, {
+    headers: {
+      Accept: 'application/json',
+    },
+    method: 'GET',
+  });
 
-    addPersonalShelves(data);
-
-    if (data.version) {
-      return parseDeprecatedConfig(data);
-    }
-    return data;
-  } catch (error: unknown) {
-    return error;
+  if (!response.ok) {
+    throw new Error('Failed to load the config');
   }
+
+  const data = await response.json();
+
+  addPersonalShelves(data);
+
+  if (data.version) {
+    return parseDeprecatedConfig(data);
+  }
+
+  return data;
 };
 
 /**

@@ -4,6 +4,7 @@
   "close_modal": "Close",
   "filter_videos_by_genre": "Filter videos by genre",
   "home": "Home",
+  "live": "LIVE",
   "play_item": "Play {{ title }}",
   "settings": "Settings",
   "slide_left": "Slide left",

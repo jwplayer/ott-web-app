@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
@@ -39,6 +39,7 @@ const Movie = ({
 
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
+  const feedId = searchParams.get('l');
   const posterFading: boolean = config ? config.options.posterFading === true : false;
 
   const [hasShared, setHasShared] = useState<boolean>(false);
@@ -74,6 +75,13 @@ const Movie = ({
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };
+
+  useEffect(() => {
+    if (play) document.body.style.overflowY = 'hidden';
+    return () => {
+      if (play) document.body.style.overflowY = '';
+    };
+  }, [play])
 
   if (isLoading) return <LoadingOverlay />;
   if (error || !item) return <ErrorPage title="Video not found!" />;
@@ -112,6 +120,7 @@ const Movie = ({
           <VideoComponent
             title={item.title}
             item={item}
+            feedId={feedId ?? undefined}
             trailerItem={trailerItem}
             play={play}
             startPlay={startPlay}

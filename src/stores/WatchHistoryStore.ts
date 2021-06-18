@@ -3,7 +3,7 @@ import type { Playlist, PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 import type { WatchHistoryItem } from 'types/watchHistory';
 
-import { VideoProgressMinMax } from '../enum/VideoProgressMinMax';
+import { VideoProgressMinMax } from '../config';
 import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
@@ -76,12 +76,14 @@ type SaveItemFn = (item: PlaylistItem, getProgress: GetProgressFn) => void;
 type RemoveItemFn = (item: PlaylistItem) => void;
 type HasItemFn = (item: PlaylistItem) => boolean;
 type getPlaylistFn = () => Playlist;
+type getDictionaryFn = () => { [key: string]: number };
 
 type UseWatchHistoryReturn = {
   saveItem: SaveItemFn;
   removeItem: RemoveItemFn;
   hasItem: HasItemFn;
   getPlaylist: getPlaylistFn;
+  getDictionary: getDictionaryFn;
 };
 
 export const useWatchHistory = (): UseWatchHistoryReturn => {
@@ -128,5 +130,13 @@ export const useWatchHistory = (): UseWatchHistoryReturn => {
         .map(({ playlistItem }) => playlistItem),
     } as Playlist);
 
-  return { saveItem, removeItem, hasItem, getPlaylist };
+  const getDictionary = () => {
+    return watchHistory.reduce((dict: { [key: string]: number }, item) => {
+      dict[item.mediaid] = item.progress;
+
+      return dict;
+    }, {});
+  };
+
+  return { saveItem, removeItem, hasItem, getPlaylist, getDictionary };
 };
