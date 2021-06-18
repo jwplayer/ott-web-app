@@ -79,8 +79,6 @@ const Video: React.FC<Props> = ({
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
 
-  const seriesMeta = isSeries ? `S${item.seasonNumber}:E${item.episodeNumber}` : null;
-
   let timeout: NodeJS.Timeout;
   const mouseActivity = () => {
     setMouseActive(true);
@@ -88,20 +86,11 @@ const Video: React.FC<Props> = ({
     timeout = setTimeout(() => setMouseActive(false), 2000);
   };
 
-  const metaContent = (
+  const seriesMeta = isSeries && (
     <>
-      <h2 className={styles.title}>{title}</h2>
-      <div className={styles.metaContainer}>
-        <div className={styles.meta}>{metaString}</div>
-        {isSeries && (
-          <div className={styles.seriesMeta}>
-            <strong>{seriesMeta}</strong>
-            {' - '}
-            {item.title}
-          </div>
-        )}
-      </div>
-      <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
+      <strong>{`S${item.seasonNumber}:E${item.episodeNumber}`}</strong>
+      {' - '}
+      {item.title}
     </>
   );
 
@@ -114,7 +103,12 @@ const Video: React.FC<Props> = ({
         })}
       >
         <div className={styles.info}>
-          {metaContent}
+          <h2 className={styles.title}>{title}</h2>
+          <div className={styles.metaContainer}>
+            <div className={styles.meta}>{metaString}</div>
+            {isSeries && <div className={styles.seriesMeta}>{seriesMeta}</div>}
+          </div>
+          <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
           <div className={styles.playButton}>
             <Button
               color="primary"
@@ -169,12 +163,19 @@ const Video: React.FC<Props> = ({
               onPause={() => setIsPlaying(false)}
               onComplete={onComplete}
             />
+            <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !mouseActive })} />
           </div>
           <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !mouseActive })}>
-            <IconButton aria-label={t('common:back')} onClick={goBack}>
+            <IconButton aria-label={t('common:back')} onClick={goBack} className={styles.backButton}>
               <ArrowLeft />
             </IconButton>
-            <div className={styles.playerInfo}>{metaContent}</div>
+            <div className={styles.playerInfo}>
+              <h2 className={styles.title}>{title}</h2>
+              <div className={styles.metaContainer}>
+                {isSeries && <div className={classNames(styles.seriesMeta, styles.seriesMetaPlayer)}>{seriesMeta}</div>}
+                <div className={styles.meta}>{metaString}</div>
+              </div>
+            </div>
           </div>
         </div>
       )}

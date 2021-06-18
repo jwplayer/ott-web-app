@@ -132,13 +132,16 @@ exports[`<Video> renders and matches snapshot 1`] = `
           class="Cinema"
           id="cinema"
         />
+        <div
+          class="playerOverlay"
+        />
       </div>
       <div
         class="playerContent"
       >
         <div
           aria-label="common:back"
-          class="iconButton"
+          class="iconButton backButton"
           role="button"
           tabindex="0"
         >
@@ -171,16 +174,6 @@ exports[`<Video> renders and matches snapshot 1`] = `
               class="meta"
             >
               1970 • 6m  • Tester • CC_CC
-            </div>
-          </div>
-          <div
-            class="collapsibleText"
-          >
-            <div
-              class="textContainer description"
-              style="max-height: none;"
-            >
-              Test item description
             </div>
           </div>
         </div>
