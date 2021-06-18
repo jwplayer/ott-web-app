@@ -17,16 +17,17 @@ type Props = {
   onPlay?: () => void;
   onPause?: () => void;
   onComplete?: () => void;
+  feedId?: string;
   isTrailer?: boolean;
 };
 
-const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, isTrailer = false }: Props) => {
+const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, feedId, isTrailer = false }: Props) => {
   const config: Config = useContext(ConfigContext);
   const [initialized, setInitialized] = useState(false);
   const file = item.sources?.[0]?.file;
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
   const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
-  const setPlayer = useOttAnalytics(item);
+  const setPlayer = useOttAnalytics(item, feedId);
 
   const getProgress = (): VideoProgress | null => {
     const player = window.jwplayer && (window.jwplayer('cinema') as jwplayer.JWPlayer);

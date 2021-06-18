@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ConfigContext } from '../providers/ConfigProvider';
 import type { PlaylistItem } from '../../types/playlist';
 
-const useOttAnalytics = (item?: PlaylistItem) => {
+const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const config = useContext(ConfigContext);
   const [player, setPlayer] = useState<jwplayer.JWPlayer>();
 
@@ -12,41 +12,41 @@ const useOttAnalytics = (item?: PlaylistItem) => {
       return;
     }
 
-    player.on('ready', () => {
+    const readyHandler = () => {
       if (!config.analyticsToken) return;
 
       window.jwpltx.ready(
         config.analyticsToken,
         window.location.hostname,
-        item.feedid,
+        feedId,
         item.mediaid,
         item.title
       );
-    });
+    }
 
-    player.on('ready', () => {
-      if (!config.analyticsToken) return;
-
-      window.jwpltx.ready(
-        config.analyticsToken,
-        window.location.hostname,
-        item.feedid,
-        item.mediaid,
-        item.title
-      );
-    });
-
-    player.on('complete', () => {
+    const completeHandler = () => {
       window.jwpltx.complete();
-    });
+    };
 
-    player.on('time', ({ position, duration  }) => {
+    const timeHandler = ({ position, duration }: jwplayer.TimeParam) => {
       window.jwpltx.time(position, duration);
-    });
+    };
 
-    player.on('adImpression', () => {
+    const adImpressionHandler = () => {
       window.jwpltx.adImpression();
-    });
+    };
+
+    player.on('ready', readyHandler);
+    player.on('complete', completeHandler);
+    player.on('time', timeHandler);
+    player.on('adImpression', adImpressionHandler);
+
+    return () => {
+      player.off('ready', readyHandler);
+      player.off('complete', completeHandler);
+      player.off('time', timeHandler);
+      player.off('adImpression', adImpressionHandler);
+    }
   }, [player]);
 
   return setPlayer;
