@@ -1,5 +1,6 @@
-import React, { ReactFragment, useEffect } from 'react';
+import React, { ReactFragment, useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
 import IconButton from '../IconButton/IconButton';
 import Close from '../../icons/Close';
@@ -13,24 +14,33 @@ type Props = {
 
 const Modal: React.FC<Props> = ({ onClose, children }: Props) => {
   const { t } = useTranslation('common');
+  const [closing, setClosing] = useState<boolean>(false);
 
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => event.keyCode === 27 && onClose();
-
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.body.style.overflow = 'scroll';
-      document.removeEventListener('keydown', onKeyDown);
-    };
+  const prepareClose = useCallback(() => {
+    setClosing(true);
+    setTimeout(onClose, 200);
   }, [onClose]);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => event.keyCode === 27 && prepareClose();
+
+    document.body.style.overflowY = 'hidden';
+    document.addEventListener('keydown', onKeyDown);
+
+    setClosing(false);
+    return () => {
+      document.body.style.overflowY = '';
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [prepareClose]);
+
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay} onClick={prepareClose}>
       <div className={styles.backdrop} />
-      <div className={styles.modalContainer}>
+      <div className={classNames(styles.modalContainer, { [styles.closing]: closing })}>
+        <div className={styles.modalBackground} />
         <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
-          <IconButton onClick={onClose} aria-label={t('close_modal')} className={styles.close}>
+          <IconButton onClick={prepareClose} aria-label={t('close_modal')} className={styles.close}>
             <Close />
           </IconButton>
           {children}

@@ -12,6 +12,9 @@ exports[`<Modal> renders and matches snapshot 1`] = `
       class="modalContainer"
     >
       <div
+        class="modalBackground"
+      />
+      <div
         class="modal"
       >
         <div

@@ -156,10 +156,7 @@ const Video: React.FC<Props> = ({
             )}
           </div>
         </div>
-        <div
-          className={classNames(styles.poster, styles[poster])}
-          style={{ backgroundImage: `url('${posterImage}')` }}
-        />
+        <div className={classNames(styles.poster, styles[poster])} style={{ backgroundImage: `url('${posterImage}')` }} />
       </div>
       {!!children && <div className={classNames(styles.related, styles.mainPadding)}>{children}</div>}
       {play && (
@@ -185,9 +182,7 @@ const Video: React.FC<Props> = ({
         <Modal onClose={onTrailerClose}>
           <div onMouseMove={mouseActivity} onClick={mouseActivity}>
             <Cinema item={trailerItem} onComplete={onTrailerClose} isTrailer />
-            <div
-              className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: !mouseActive })}
-            >{`${title} - Trailer`}</div>
+            <div className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: !mouseActive })}>{`${title} - Trailer`}</div>
           </div>
         </Modal>
       )}
