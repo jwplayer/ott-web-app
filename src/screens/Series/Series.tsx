@@ -97,7 +97,7 @@ const Series = ({
   useEffect(() => {
     if (play) document.body.style.overflowY = 'hidden';
     return () => {
-      if (play) document.body.style.overflowY = 'auto';
+      if (play) document.body.style.overflowY = '';
     };
   }, [play]);
 
