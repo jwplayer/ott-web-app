@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { ReactNode, CSSProperties } from 'react';
 
 import Animation, { Status } from '../Animation';
 
@@ -11,7 +11,7 @@ type Props = {
   children: ReactNode;
 };
 
-const Fade = ({
+const Grow = ({
   open = true,
   duration = 250,
   delay = 0,
@@ -20,9 +20,11 @@ const Fade = ({
   children,
 }: Props): JSX.Element | null => {
   const seconds = duration / 1000;
-  const transition = `opacity ${seconds}s ease-in-out`;
-
-  const createStyle = (status: Status): CSSProperties => ({ transition, opacity: status === 'opening' || status === 'open' ? 1 : 0 });
+  const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
+  const createStyle = (status: Status): CSSProperties => ({
+    transition,
+    transform: status === 'opening' || status === 'open' ? 'scale(1)' : 'scale(0.1)',
+  });
 
   return (
     <Animation
@@ -38,4 +40,4 @@ const Fade = ({
   );
 };
 
-export default Fade;
+export default Grow;

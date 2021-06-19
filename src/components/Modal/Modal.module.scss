@@ -9,19 +9,11 @@
   left: 0px;
   top: 0px;
   z-index: 1;
-  &.hidden {
-    display: none;
-  }
 }
 .backdrop {
   width: inherit;
   height: inherit;
   background: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  &.open {
-    opacity: 1;
-  }
 }
 .modalContainer {
   position: absolute;
@@ -38,28 +30,18 @@
   width: 80vw;
   height: calc(80vw / 16 * 9);
   background-color: rgba(0, 0, 0, 0.9);
-  transition: transform 0.15s ease-out, -webkit-transform 0.15s ease-out;
-  transform: scale(0);
   @include responsive.mobile-only() {
     width: 100vw;
     height: calc(100vw / 16 * 9);
-  }
-  &.open {
-    transform: scale(1);
   }
 }
 .modal {
   position: relative;
   width: 80vw;
   height: calc(80vw / 16 * 9);
-  opacity: 0;
-  transition: opacity 0.25s ease;
   @include responsive.mobile-only() {
     width: 100vw;
     height: calc(100vw / 16 * 9);
-  }
-  &.open {
-    opacity: 1;
   }
 }
 .close {

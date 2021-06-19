@@ -1,10 +1,11 @@
-import React, { ReactFragment, useEffect, useState, useCallback } from 'react';
+import React, { ReactFragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
 import IconButton from '../IconButton/IconButton';
 import Close from '../../icons/Close';
-// import Fade from '../Animation/Fade/Fade';
+import Fade from '../Animation/Fade/Fade';
+import Grow from '../Animation/Grow/Grow';
 
 import styles from './Modal.module.scss';
 
@@ -15,49 +16,37 @@ type Props = {
   children: ReactFragment;
 };
 
-type Status = 'opening' | 'open' | 'closing' | 'closed';
-
 const Modal: React.FC<Props> = ({ open, onClose, closeButtonVisible = true, children }: Props) => {
   const { t } = useTranslation('common');
-  const [status, setStatus] = useState<Status>('closed');
-
-  const prepareClose = useCallback(() => {
-    if (open) {
-      setStatus('closing');
-      setTimeout(() => setStatus('closed'), 150);
-      document.body.style.overflowY = '';
-      document.removeEventListener('keydown', (event: KeyboardEvent) => event.keyCode === 27 && prepareClose());
-      onClose();
-    }
-  }, [open, onClose]);
-
-  useEffect(() => {
-    if (open) {
-      setTimeout(() => setStatus('opening'), 10); // wait for overlay to appear
-      setTimeout(() => setStatus('open'), 250);
-
-      document.body.style.overflowY = 'hidden';
-      document.addEventListener('keydown', (event: KeyboardEvent) => event.keyCode === 27 && prepareClose());
-    }
-  }, [open, prepareClose]);
+  const [doRender, setDoRender] = useState<boolean>(false);
 
   return (
-    <div className={classNames(styles.overlay, { [styles.hidden]: !open && status !== 'closing' })} onClick={prepareClose}>
-      <div className={classNames(styles.backdrop, { [styles.open]: status === 'opening' || status === 'open' })} />
-      <div className={classNames(styles.modalContainer)}>
-        <div className={classNames(styles.modalBackground, { [styles.open]: status === 'opening' || status === 'open' })} />
-        <div className={classNames(styles.modal, { [styles.open]: status === 'open' })} onClick={(event) => event.stopPropagation()}>
-          {children}
-          <IconButton
-            onClick={prepareClose}
-            aria-label={t('close_modal')}
-            className={classNames(styles.close, { [styles.hidden]: !closeButtonVisible })}
+    <Fade open={open} duration={300}>
+      <div className={classNames(styles.overlay)} onClick={onClose}>
+        <div className={classNames(styles.backdrop)} />
+        <div className={classNames(styles.modalContainer)}>
+          <Grow
+            open={open}
+            delay={100}
+            duration={200}
+            onOpenAnimationDone={() => setDoRender(true)}
+            onCloseAnimationEnd={() => setDoRender(false)}
           >
-            <Close />
-          </IconButton>
+            <div className={classNames(styles.modalBackground)} />
+            <div className={classNames(styles.modal)} onClick={(event) => event.stopPropagation()}>
+              {doRender && children}
+              <IconButton
+                onClick={onClose}
+                aria-label={t('close_modal')}
+                className={classNames(styles.close, { [styles.hidden]: !closeButtonVisible })}
+              >
+                <Close />
+              </IconButton>
+            </div>
+          </Grow>
         </div>
       </div>
-    </div>
+    </Fade>
   );
 };
 

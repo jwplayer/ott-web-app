@@ -123,63 +123,59 @@ exports[`<Video> renders and matches snapshot 1`] = `
       />
     </div>
     <div
-      style="display: none;"
+      style="transition: opacity 0.25s ease-in-out; opacity: 0;"
     >
       <div
-        style="opacity: 0; transition: opacity 0.25s ease;"
+        class="playerContainer"
       >
         <div
-          class="playerContainer"
+          class="player"
         >
           <div
-            class="player"
+            id="cinema"
+          />
+          <div
+            class="playerOverlay"
+          />
+        </div>
+        <div
+          class="playerContent"
+        >
+          <div
+            aria-label="common:back"
+            class="iconButton backButton"
+            role="button"
+            tabindex="0"
           >
-            <div
-              id="cinema"
-            />
-            <div
-              class="playerOverlay"
-            />
+            <svg
+              aria-hidden="true"
+              class="icon"
+              focusable="false"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g>
+                <path
+                  d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+                />
+              </g>
+            </svg>
           </div>
           <div
-            class="playerContent"
+            class="playerInfo"
           >
-            <div
-              aria-label="common:back"
-              class="iconButton backButton"
-              role="button"
-              tabindex="0"
+            <h2
+              class="title"
             >
-              <svg
-                aria-hidden="true"
-                class="icon"
-                focusable="false"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g>
-                  <path
-                    d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
-                  />
-                </g>
-              </svg>
-            </div>
+              Test video
+            </h2>
             <div
-              class="playerInfo"
+              class="metaContainer"
             >
-              <h2
-                class="title"
-              >
-                Test video
-              </h2>
               <div
-                class="metaContainer"
+                class="meta"
               >
-                <div
-                  class="meta"
-                >
-                  1970 • 6m  • Tester • CC_CC
-                </div>
+                1970 • 6m  • Tester • CC_CC
               </div>
             </div>
           </div>
