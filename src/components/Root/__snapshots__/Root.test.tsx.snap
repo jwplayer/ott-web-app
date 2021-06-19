@@ -54,14 +54,6 @@ exports[`<Root /> renders and matches snapshot 1`] = `
                 home
               </span>
             </a>
-            <a
-              class="button default text"
-              href="/u"
-            >
-              <span>
-                settings
-              </span>
-            </a>
           </nav>
           <div
             class="search"
