@@ -25,6 +25,7 @@
   left: calc(50% - 24px / 2);
   cursor: pointer;
   opacity: 1;
+  outline: none;
 
   > svg {
     transform: rotate(90deg);
