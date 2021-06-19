@@ -133,6 +133,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
         >
           <div
             id="cinema"
+            style="max-width: 100vw; max-height: 100vh;"
           />
           <div
             class="playerOverlay"

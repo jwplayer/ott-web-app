@@ -107,7 +107,7 @@ const Video: React.FC<Props> = ({
             <div className={styles.meta}>{metaString}</div>
             {isSeries && <div className={styles.seriesMeta}>{seriesMeta}</div>}
           </div>
-          <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 50 : 'none'} />
+          <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
           <div className={styles.playButton}>
             <Button
               color="primary"

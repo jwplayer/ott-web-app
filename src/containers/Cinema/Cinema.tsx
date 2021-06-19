@@ -61,7 +61,14 @@ const Cinema: React.FC<Props> = ({
       const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
       let applyWatchHistory = !!watchHistory && enableWatchHistory;
 
-      player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
+      player.setup({
+        file,
+        image: item.image,
+        title: item.title,
+        autostart: 'viewable',
+        width: isTrailer ? '100%' : '100vw',
+        height: isTrailer ? '100%' : '100vh',
+      });
       setPlayer(player);
       player.on('play', () => onPlay && onPlay());
       player.on('pause', () => onPause && onPause());
@@ -97,9 +104,10 @@ const Cinema: React.FC<Props> = ({
     enableWatchHistory,
     playerId,
     setPlayer,
+    isTrailer,
   ]);
 
-  return <div id={playerId} />;
+  return <div id={playerId} style={{ maxWidth: '100vw', maxHeight: '100vh' }} />;
 };
 
 export default Cinema;
