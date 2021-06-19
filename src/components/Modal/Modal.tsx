@@ -1,4 +1,4 @@
-import React, { ReactFragment, useState } from 'react';
+import React, { ReactFragment, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -19,6 +19,17 @@ type Props = {
 const Modal: React.FC<Props> = ({ open, onClose, closeButtonVisible = true, children }: Props) => {
   const { t } = useTranslation('common');
   const [doRender, setDoRender] = useState<boolean>(false);
+
+  useEffect(() => {
+    const listener = (event: KeyboardEvent) => event.keyCode === 27 && onClose();
+    if (open) {
+      document.body.style.overflowY = 'hidden';
+      document.addEventListener('keydown', listener);
+    } else {
+      document.body.style.overflowY = '';
+      document.removeEventListener('keydown', listener);
+    }
+  }, [open, onClose]);
 
   return (
     <Fade open={open} duration={300}>
