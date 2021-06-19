@@ -11,6 +11,12 @@
   list-style-type: none;
   white-space: normal;
 }
+.notInView {
+  opacity: 0.5;
+  @media (hover: hover) and (pointer: fine) {
+    opacity: 0.3;
+  }
+}
 .tileDock .leftControl {
   left: 0px;
   position: absolute;

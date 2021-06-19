@@ -21,6 +21,7 @@ $large-button-height: 40px;
   text-decoration: none;
   border-radius: 4px;
   cursor: pointer;
+  outline: none;
   transition: background-color 0.1s ease, transform 0.1s ease;
 
   &.large {

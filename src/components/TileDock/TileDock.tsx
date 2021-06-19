@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './TileDock.module.scss';
@@ -27,7 +28,7 @@ type Tile<T> = {
   key: string;
 };
 
-const makeTiles = <T, > (originalList: T[], slicedItems: T[]): Tile<T>[] => {
+const makeTiles = <T,>(originalList: T[], slicedItems: T[]): Tile<T>[] => {
   const itemIndices: string[] = [];
 
   return slicedItems.map((item) => {
@@ -40,13 +41,7 @@ const makeTiles = <T, > (originalList: T[], slicedItems: T[]): Tile<T>[] => {
   });
 };
 
-const sliceItems = <T, > (
-  items: T[],
-  isMultiPage: boolean,
-  index: number,
-  tilesToShow: number,
-  cycleMode: CycleMode,
-): Tile<T>[] => {
+const sliceItems = <T,>(items: T[], isMultiPage: boolean, index: number, tilesToShow: number, cycleMode: CycleMode): Tile<T>[] => {
   if (!isMultiPage) return makeTiles(items, items);
 
   const sliceFrom: number = index;
@@ -60,22 +55,20 @@ const sliceItems = <T, > (
   return makeTiles(items, itemsSlice);
 };
 
-const TileDock = <T extends unknown> (
-  {
-    items,
-    tilesToShow = 6,
-    cycleMode = 'endless',
-    spacing = 12,
-    minimalTouchMovement = 30,
-    showControls = true,
-    animated = !window.matchMedia('(prefers-reduced-motion)').matches,
-    transitionTime = '0.6s',
-    wrapWithEmptyTiles = false,
-    renderTile,
-    renderLeftControl,
-    renderRightControl,
-  }: TileDockProps<T>
-) => {
+const TileDock = <T extends unknown>({
+  items,
+  tilesToShow = 6,
+  cycleMode = 'endless',
+  spacing = 12,
+  minimalTouchMovement = 30,
+  showControls = true,
+  animated = !window.matchMedia('(prefers-reduced-motion)').matches,
+  transitionTime = '0.6s',
+  wrapWithEmptyTiles = false,
+  renderTile,
+  renderLeftControl,
+  renderRightControl,
+}: TileDockProps<T>) => {
   const [index, setIndex] = useState<number>(0);
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
@@ -109,8 +102,7 @@ const TileDock = <T extends unknown> (
     }
     if (nextIndex > items.length - tilesToShow) {
       if (cycleMode === 'stop') nextIndex = items.length - tilesToShow;
-      if (cycleMode === 'restart')
-        nextIndex = index >= items.length - tilesToShow ? items.length : items.length - tilesToShow;
+      if (cycleMode === 'restart') nextIndex = index >= items.length - tilesToShow ? items.length : items.length - tilesToShow;
     }
 
     const steps: number = Math.abs(index - nextIndex);
@@ -172,7 +164,7 @@ const TileDock = <T extends unknown> (
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -182,16 +174,8 @@ const TileDock = <T extends unknown> (
 
   return (
     <div className={styles.tileDock}>
-      {showLeftControl && !!renderLeftControl && (
-        <div className={styles.leftControl}>{renderLeftControl(() => slide('left'))}</div>
-      )}
-      <ul
-        ref={frameRef}
-        style={ulStyle}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onTransitionEnd={handleTransitionEnd}
-      >
+      {showLeftControl && !!renderLeftControl && <div className={styles.leftControl}>{renderLeftControl(() => slide('left'))}</div>}
+      <ul ref={frameRef} style={ulStyle} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onTransitionEnd={handleTransitionEnd}>
         {wrapWithEmptyTiles ? (
           <li
             className={styles.emptyTile}
@@ -204,18 +188,18 @@ const TileDock = <T extends unknown> (
           />
         ) : null}
         {tileList.map((tile: Tile<T>, listIndex) => {
-          const isInView =
-            !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
+          const isInView = !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
 
           return (
             <li
               key={tile.key}
+              className={classNames({ [styles.notInView]: !isInView })}
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,
                 paddingRight: spacing / 2,
                 boxSizing: 'border-box',
-                opacity: isInView ? 1 : 0.1,
+                // opacity: isInView ? 1 : 0.3,
                 transition: 'opacity .2s ease-in 0s',
               }}
             >
@@ -235,9 +219,7 @@ const TileDock = <T extends unknown> (
           />
         ) : null}
       </ul>
-      {showRightControl && !!renderRightControl && (
-        <div className={styles.rightControl}>{renderRightControl(() => slide('right'))}</div>
-      )}
+      {showRightControl && !!renderRightControl && <div className={styles.rightControl}>{renderRightControl(() => slide('right'))}</div>}
     </div>
   );
 };
