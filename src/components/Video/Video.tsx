@@ -17,6 +17,7 @@ import IconButton from '../IconButton/IconButton';
 import { formatDuration } from '../../utils/formatting';
 import Modal from '../Modal/Modal';
 import FavoriteBorder from '../../icons/FavoriteBorder';
+import Fade from '../Animation/Fade/Fade';
 
 import styles from './Video.module.scss';
 
@@ -97,7 +98,6 @@ const Video: React.FC<Props> = ({
     <div className={styles.video}>
       <div
         className={classNames(styles.main, styles.mainPadding, {
-          [styles.hidden]: play,
           [styles.posterNormal]: poster === 'normal',
         })}
       >
@@ -151,7 +151,7 @@ const Video: React.FC<Props> = ({
         <div className={classNames(styles.poster, styles[poster])} style={{ backgroundImage: `url('${posterImage}')` }} />
       </div>
       {!!children && <div className={classNames(styles.related, styles.mainPadding)}>{children}</div>}
-      {play && (
+      <Fade open={play}>
         <div className={styles.playerContainer}>
           <div className={styles.player}>
             <Cinema
@@ -178,9 +178,9 @@ const Video: React.FC<Props> = ({
             </div>
           </div>
         </div>
-      )}
-      {playTrailer && trailerItem && (
-        <Modal onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
+      </Fade>
+      {!!trailerItem && (
+        <Modal open={playTrailer} onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
           <Cinema
             item={trailerItem}
             onPlay={() => setIsPlaying(true)}
@@ -188,6 +188,7 @@ const Video: React.FC<Props> = ({
             onComplete={onTrailerClose}
             onUserActive={() => setUserActive(true)}
             onUserInActive={() => setUserActive(false)}
+            playerId="trailer"
             isTrailer
           />
           <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />

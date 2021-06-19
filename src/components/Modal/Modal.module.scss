@@ -2,50 +2,6 @@
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes fadeInDelayed {
-  0% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-@keyframes grow {
-  0% {
-    transform: scale(0.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes shrink {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-
 .overlay {
   position: fixed;
   width: 100vw;
@@ -53,16 +9,18 @@
   left: 0px;
   top: 0px;
   z-index: 1;
-  &.closing:local {
-    animation: 0.2s ease-out 0s 1 fadeOut;
+  &.hidden {
+    display: none;
   }
 }
 .backdrop {
   width: inherit;
   height: inherit;
   background: rgba(0, 0, 0, 0.6);
-  &:local {
-    animation: 0.3s ease-out 0s 1 fadeIn;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  &.open {
+    opacity: 1;
   }
 }
 .modalContainer {
@@ -74,32 +32,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  &.closing:local {
-    animation: 0.2s ease-out 0s 1 shrink;
-  }
-}
-.modal {
-  position: relative;
-  width: 80vw;
-  @include responsive.mobile-only() {
-    width: 100vw;
-    height: calc(100vw / 16 * 9);
-  }
-  &:local {
-    animation: 0.5s ease-out 0s 1 fadeInDelayed;
-  }
 }
 .modalBackground {
   position: absolute;
   width: 80vw;
   height: calc(80vw / 16 * 9);
   background-color: rgba(0, 0, 0, 0.9);
+  transition: transform 0.15s ease-out, -webkit-transform 0.15s ease-out;
+  transform: scale(0);
   @include responsive.mobile-only() {
     width: 100vw;
     height: calc(100vw / 16 * 9);
   }
-  &:local {
-    animation: 0.2s ease-out 0s 1 grow;
+  &.open {
+    transform: scale(1);
+  }
+}
+.modal {
+  position: relative;
+  width: 80vw;
+  height: calc(80vw / 16 * 9);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  @include responsive.mobile-only() {
+    width: 100vw;
+    height: calc(100vw / 16 * 9);
+  }
+  &.open {
+    opacity: 1;
   }
 }
 .close {

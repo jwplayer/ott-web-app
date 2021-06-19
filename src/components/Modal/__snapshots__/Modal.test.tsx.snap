@@ -3,7 +3,7 @@
 exports[`<Modal> renders and matches snapshot 1`] = `
 <div>
   <div
-    class="overlay"
+    class="overlay hidden"
   >
     <div
       class="backdrop"

@@ -4,43 +4,49 @@ import classNames from 'classnames';
 
 import IconButton from '../IconButton/IconButton';
 import Close from '../../icons/Close';
+// import Fade from '../Animation/Fade/Fade';
 
 import styles from './Modal.module.scss';
 
 type Props = {
+  open: boolean;
   onClose: () => void;
   closeButtonVisible?: boolean;
   children: ReactFragment;
 };
 
-const Modal: React.FC<Props> = ({ onClose, closeButtonVisible = true, children }: Props) => {
+type Status = 'opening' | 'open' | 'closing' | 'closed';
+
+const Modal: React.FC<Props> = ({ open, onClose, closeButtonVisible = true, children }: Props) => {
   const { t } = useTranslation('common');
-  const [closing, setClosing] = useState<boolean>(false);
+  const [status, setStatus] = useState<Status>('closed');
 
   const prepareClose = useCallback(() => {
-    setClosing(true);
-    setTimeout(onClose, 200);
-  }, [onClose]);
+    if (open) {
+      setStatus('closing');
+      setTimeout(() => setStatus('closed'), 150);
+      document.body.style.overflowY = '';
+      document.removeEventListener('keydown', (event: KeyboardEvent) => event.keyCode === 27 && prepareClose());
+      onClose();
+    }
+  }, [open, onClose]);
 
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => event.keyCode === 27 && prepareClose();
+    if (open) {
+      setTimeout(() => setStatus('opening'), 10); // wait for overlay to appear
+      setTimeout(() => setStatus('open'), 250);
 
-    document.body.style.overflowY = 'hidden';
-    document.addEventListener('keydown', onKeyDown);
-
-    setClosing(false);
-    return () => {
-      document.body.style.overflowY = '';
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [prepareClose]);
+      document.body.style.overflowY = 'hidden';
+      document.addEventListener('keydown', (event: KeyboardEvent) => event.keyCode === 27 && prepareClose());
+    }
+  }, [open, prepareClose]);
 
   return (
-    <div className={classNames(styles.overlay, { [styles.closing]: closing })} onClick={prepareClose}>
-      <div className={styles.backdrop} />
-      <div className={classNames(styles.modalContainer, { [styles.closing]: closing })}>
-        <div className={styles.modalBackground} />
-        <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
+    <div className={classNames(styles.overlay, { [styles.hidden]: !open && status !== 'closing' })} onClick={prepareClose}>
+      <div className={classNames(styles.backdrop, { [styles.open]: status === 'opening' || status === 'open' })} />
+      <div className={classNames(styles.modalContainer)}>
+        <div className={classNames(styles.modalBackground, { [styles.open]: status === 'opening' || status === 'open' })} />
+        <div className={classNames(styles.modal, { [styles.open]: status === 'open' })} onClick={(event) => event.stopPropagation()}>
           {children}
           <IconButton
             onClick={prepareClose}
