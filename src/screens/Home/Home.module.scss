@@ -2,6 +2,11 @@
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
 
+.home {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 .list {
   overflow: visible !important;
   > div {
