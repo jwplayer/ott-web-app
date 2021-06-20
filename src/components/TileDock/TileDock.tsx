@@ -164,7 +164,7 @@ const TileDock = <T extends unknown>({
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
