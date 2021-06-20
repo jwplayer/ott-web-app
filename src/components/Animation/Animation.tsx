@@ -5,7 +5,7 @@ type Props = {
   open?: boolean;
   duration?: number;
   delay?: number;
-  onOpenAnimationDone?: () => void;
+  onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
   children: ReactNode;
 };
@@ -17,11 +17,12 @@ const Animation = ({
   open = true,
   duration = 250,
   delay = 0,
-  onOpenAnimationDone,
+  onOpenAnimationEnd,
   onCloseAnimationEnd,
   children,
 }: Props): JSX.Element | null => {
   const [status, setStatus] = useState<Status>('closed');
+  const [hasOpenedBefore, setHasOpenedBefore] = useState<boolean>(false);
   const seconds = duration / 1000;
   const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
 
@@ -32,19 +33,20 @@ const Animation = ({
     if (timeout.current) clearTimeout(timeout.current);
     if (timeout2.current) clearTimeout(timeout2.current);
     if (open) {
-      timeout2.current = setTimeout(() => setStatus('opening'), delay);
-      timeout.current = setTimeout(() => {
+      setHasOpenedBefore(true);
+      timeout.current = setTimeout(() => setStatus('opening'), delay);
+      timeout2.current = setTimeout(() => {
         setStatus('open');
-        onOpenAnimationDone && onOpenAnimationDone();
+        onOpenAnimationEnd && onOpenAnimationEnd();
       }, duration + delay);
-    } else {
-      timeout2.current = setTimeout(() => setStatus('closing'), delay);
-      timeout.current = setTimeout(() => {
+    } else if (hasOpenedBefore) {
+      timeout.current = setTimeout(() => setStatus('closing'), delay);
+      timeout2.current = setTimeout(() => {
         setStatus('closed');
         onCloseAnimationEnd && onCloseAnimationEnd();
       }, duration + delay);
     }
-  }, [duration, delay, transition, open, onOpenAnimationDone, onCloseAnimationEnd]);
+  }, [duration, delay, transition, open, onOpenAnimationEnd, onCloseAnimationEnd, hasOpenedBefore, setHasOpenedBefore]);
 
   if (!open && status === 'closed') {
     return null;
