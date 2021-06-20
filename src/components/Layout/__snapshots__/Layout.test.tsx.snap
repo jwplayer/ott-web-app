@@ -111,15 +111,6 @@ exports[`<Layout /> renders layout 1`] = `
           <hr
             class="divider"
           />
-          <a
-            class="menuButton"
-            href="/u"
-            tabindex="-1"
-          >
-            <span>
-              settings
-            </span>
-          </a>
         </nav>
       </div>
     </div>

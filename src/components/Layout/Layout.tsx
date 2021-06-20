@@ -63,7 +63,6 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             <MenuButton key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} tabIndex={sideBarOpen ? 0 : -1} />
           ))}
           <hr className={styles.divider} />
-          <MenuButton label={t('settings')} to="/u" tabIndex={sideBarOpen ? 0 : -1} />
         </Sidebar>
         {children}
       </div>
