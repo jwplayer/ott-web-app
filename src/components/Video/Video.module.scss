@@ -2,15 +2,6 @@
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .video {
   color: var(--primary-color);
   font-family: var(--body-font-family);
@@ -183,7 +174,6 @@
   left: 0;
   overflow: hidden;
   background-color: black;
-  animation: 0.5s ease-out 0s 1 fadeIn;
 }
 .player {
   position: absolute;
