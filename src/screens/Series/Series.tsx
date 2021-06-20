@@ -14,9 +14,11 @@ import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
 import useMedia from '../../hooks/useMedia';
 import usePlaylist from '../../hooks/usePlaylist';
+import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
 import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './Series.module.scss';
 
@@ -34,20 +36,13 @@ const Series = ({
   const history = useHistory();
   const { t } = useTranslation('video');
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const {
-    isLoading: playlistIsLoading,
-    error: playlistError,
-    data: seriesPlaylist = { title: '', playlist: [] },
-  } = usePlaylist(id, undefined, true, false);
+  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist = { title: '', playlist: [] } } = usePlaylist(id, undefined, true, false);
   const { isLoading, error, data: item } = useMedia(searchParams.get('e') || '');
   const { data: trailerItem } = useMedia(item?.trailerId || '');
 
   const [seasonFilter, setSeasonFilter] = useState<string>('');
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
-  const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [
-    seriesPlaylist,
-    seasonFilter,
-  ]);
+  const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
   const { hasItem, saveItem, removeItem } = useFavorites();
   const play = searchParams.get('play') === '1';
@@ -101,9 +96,9 @@ const Series = ({
     };
   }, [play]);
 
-  if (isLoading || playlistIsLoading) return <p>Loading...</p>;
-  if (error || playlistError) return <p>Error loading list</p>;
-  if (!seriesPlaylist || !item) return <p>Can not find medium</p>;
+  if (isLoading || playlistIsLoading) return <LoadingOverlay />;
+  if (error || !item) return <ErrorPage title="Episode not found!" />;
+  if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
   const canonicalUrl =
@@ -163,14 +158,7 @@ const Series = ({
           <div className={styles.episodes}>
             <h3>{t('episodes')}</h3>
             {filters.length > 1 && (
-              <Filter
-                name="categories"
-                value={seasonFilter}
-                valuePrefix="Season "
-                defaultLabel="All"
-                options={filters}
-                setValue={setSeasonFilter}
-              />
+              <Filter name="categories" value={seasonFilter} valuePrefix="Season " defaultLabel="All" options={filters} setValue={setSeasonFilter} />
             )}
           </div>
           <CardGrid

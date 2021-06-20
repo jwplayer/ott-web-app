@@ -11,10 +11,12 @@ import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
 import type { PlaylistItem } from '../../../types/playlist';
 import VideoComponent from '../../components/Video/Video';
+import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import CardGrid from '../../components/CardGrid/CardGrid';
 import useMedia from '../../hooks/useMedia';
 import { generateMovieJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './Movie.module.scss';
 
@@ -79,11 +81,10 @@ const Movie = ({
     return () => {
       if (play) document.body.style.overflowY = '';
     };
-  }, [play]);
+  }, [play])
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading list</p>;
-  if (!item) return <p>Can not find medium</p>;
+  if (isLoading) return <LoadingOverlay />;
+  if (error || !item) return <ErrorPage title="Video not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
@@ -115,7 +116,7 @@ const Movie = ({
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
       <PlaylistContainer playlistId={config?.recommendationsPlaylist || ''} relatedItem={item}>
-        {({ playlist, isLoading }) => (
+        {({ playlist }) => (
           <VideoComponent
             title={item.title}
             item={item}
