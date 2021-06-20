@@ -81,7 +81,7 @@ const Movie = ({
     return () => {
       if (play) document.body.style.overflowY = '';
     };
-  }, [play]);
+  }, [play])
 
   if (isLoading) return <LoadingOverlay />;
   if (error || !item) return <ErrorPage title="Video not found!" />;
