@@ -40,7 +40,7 @@ const Modal: React.FC<Props> = ({ open, onClose, closeButtonVisible = true, chil
             open={open}
             delay={100}
             duration={200}
-            onOpenAnimationDone={() => setDoRender(true)}
+            onOpenAnimationEnd={() => setDoRender(true)}
             onCloseAnimationEnd={() => setDoRender(false)}
           >
             <div className={classNames(styles.modalBackground)} />

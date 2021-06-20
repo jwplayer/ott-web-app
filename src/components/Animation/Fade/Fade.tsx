@@ -6,19 +6,12 @@ type Props = {
   open?: boolean;
   duration?: number;
   delay?: number;
-  onOpenAnimationDone?: () => void;
+  onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
   children: ReactNode;
 };
 
-const Fade = ({
-  open = true,
-  duration = 250,
-  delay = 0,
-  onOpenAnimationDone,
-  onCloseAnimationEnd,
-  children,
-}: Props): JSX.Element | null => {
+const Fade = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
   const seconds = duration / 1000;
   const transition = `opacity ${seconds}s ease-in-out`;
 
@@ -30,7 +23,7 @@ const Fade = ({
       open={open}
       duration={duration}
       delay={delay}
-      onOpenAnimationDone={onOpenAnimationDone}
+      onOpenAnimationEnd={onOpenAnimationEnd}
       onCloseAnimationEnd={onCloseAnimationEnd}
     >
       {children}
