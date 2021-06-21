@@ -20,9 +20,20 @@ type Props = {
   onUserInActive?: () => void;
   feedId?: string;
   isTrailer?: boolean;
+  playerId?: string;
 };
 
-const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
+const Cinema: React.FC<Props> = ({
+  item,
+  onPlay,
+  onPause,
+  onComplete,
+  onUserActive,
+  onUserInActive,
+  feedId,
+  isTrailer = false,
+  playerId = 'cinema',
+}: Props) => {
   const config: Config = useContext(ConfigContext);
   const [initialized, setInitialized] = useState(false);
   const file = item.sources?.[0]?.file;
@@ -31,7 +42,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const setPlayer = useOttAnalytics(item, feedId);
 
   const getProgress = (): VideoProgress | null => {
-    const player = window.jwplayer && (window.jwplayer('cinema') as JWPlayer);
+    const player = window.jwplayer && (window.jwplayer(playerId) as JWPlayer);
     if (!player) return null;
 
     const duration = player.getDuration();
@@ -43,14 +54,21 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
 
   useEffect(() => {
-    const getPlayer = () => window.jwplayer && (window.jwplayer('cinema') as JWPlayer);
+    const getPlayer = () => window.jwplayer && (window.jwplayer(playerId) as JWPlayer);
     const loadVideo = () => {
       const player = getPlayer();
       const { watchHistory } = watchHistoryStore.getRawState();
       const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
       let applyWatchHistory = !!watchHistory && enableWatchHistory;
 
-      player.setup({ file, image: item.image, title: item.title, autostart: 'viewable' });
+      player.setup({
+        file,
+        image: item.image,
+        title: item.title,
+        autostart: 'viewable',
+        width: isTrailer ? '100%' : '100vw',
+        height: isTrailer ? '100%' : '100vh',
+      });
       setPlayer(player);
       player.on('play', () => onPlay && onPlay());
       player.on('pause', () => onPause && onPause());
@@ -72,9 +90,24 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       getPlayer() ? loadVideo() : addScript(scriptUrl, loadVideo);
       setInitialized(true);
     }
-  }, [item, onPlay, onPause, onComplete, onUserActive, onUserInActive, config.player, file, scriptUrl, initialized, enableWatchHistory, setPlayer]);
+  }, [
+    item,
+    onPlay,
+    onPause,
+    onComplete,
+    onUserActive,
+    onUserInActive,
+    config.player,
+    file,
+    scriptUrl,
+    initialized,
+    enableWatchHistory,
+    playerId,
+    setPlayer,
+    isTrailer,
+  ]);
 
-  return <div id="cinema" />;
+  return <div id={playerId} style={{ maxWidth: '100vw', maxHeight: '100vh' }} />;
 };
 
 export default Cinema;

@@ -12,8 +12,8 @@
 .textContainer {
   overflow: hidden;
   &.collapsed {
-    mask-image: linear-gradient(-180deg, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
-    -webkit-mask-image: linear-gradient(-180deg, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(-180deg, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(-180deg, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0) 100%);
   }
   transition: max-height 0.1s ease-out;
 }
@@ -21,10 +21,11 @@
   position: absolute;
   width: 24px;
   height: 24px;
-  bottom: 25px;
+  bottom: 20px;
   left: calc(50% - 24px / 2);
-  z-index: 1;
   cursor: pointer;
+  opacity: 1;
+  outline: none;
 
   > svg {
     transform: rotate(90deg);
