@@ -88,7 +88,7 @@ const Home = (): JSX.Element => {
 
   const calculateHeight = (index: number): number => {
     const item = content[index];
-    const isDesktop = breakpoint >= Breakpoint.sm;
+    const isDesktop = breakpoint > Breakpoint.sm;
     const isMobile = breakpoint === Breakpoint.xs;
 
     if (!item) return 0;
