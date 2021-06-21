@@ -3,7 +3,9 @@
 exports[`<Cinema> renders and matches snapshot 1`] = `
 <div>
   <div
-    id="cinema"
-  />
+    class="cinema"
+  >
+    <div />
+  </div>
 </div>
 `;

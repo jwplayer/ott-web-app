@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
@@ -62,14 +62,14 @@ const Series = ({
 
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
 
-  const playNext = () => {
+  const handleComplete = useCallback(() => {
     if (!item || !seriesPlaylist) return;
 
     const index = seriesPlaylist.playlist.findIndex(({ mediaid }) => mediaid === item.mediaid);
     const nextItem = seriesPlaylist.playlist[index + 1];
 
     return nextItem && history.push(episodeURL(seriesPlaylist, nextItem.mediaid, true));
-  };
+  }, [history, item, seriesPlaylist]);
 
   const onShareClick = (): void => {
     if (!item) return;
@@ -142,7 +142,7 @@ const Series = ({
         play={play}
         startPlay={startPlay}
         goBack={goBack}
-        onComplete={() => playNext()}
+        onComplete={handleComplete}
         poster={posterFading ? 'fading' : 'normal'}
         enableSharing={enableSharing}
         hasShared={hasShared}

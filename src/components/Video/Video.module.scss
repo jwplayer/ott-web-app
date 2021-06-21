@@ -9,50 +9,55 @@
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2);
 }
 .mainPadding {
-  padding: 56px;
   @include responsive.tablet-only() {
-    padding: 24px;
-    padding-top: 34px;
+    padding: 34px 24px 24px;
   }
+
   @include responsive.mobile-only() {
     padding: 16px;
   }
-  padding-top: 37px;
-  padding-bottom: 0px;
+
+  padding: 37px 56px 0;
 }
 .main {
   display: flex;
+
   &.hidden {
     display: none;
   }
+
   &.posterNormal {
     position: relative;
   }
 }
+
 .info {
-  width: 450px;
-  min-height: 380px;
   @include responsive.tablet-only() {
     width: 350px;
   }
+
   @include responsive.mobile-only() {
     width: 100%;
     padding-top: 225px;
   }
+
+  width: 450px;
+  min-height: 380px;
 }
+
 .title {
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 36px;
-  letter-spacing: 0.25px;
-  margin: 8px 0px;
   @include responsive.mobile-only() {
     font-size: 20px;
     line-height: 20px;
     letter-spacing: 0.15px;
-    margin: 0px;
   }
+
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 40px;
+  letter-spacing: 0.25px;
 }
+
 .metaContainer {
   display: flex;
   flex-direction: column;
@@ -202,7 +207,7 @@
 .playerContent {
   position: absolute;
   top: 0;
-  margin: 30px 62px;
+  margin: 24px 56px;
   max-width: 50%;
   display: flex;
 
@@ -212,16 +217,18 @@
   }
 }
 .backButton {
-  margin: 6px 0px;
+  margin-right: 24px;
   opacity: 1;
+
   > svg {
     width: 36px;
     height: 36px;
   }
 }
+
 .playerInfo {
-  margin: 0px 30px;
 }
+
 .trailerMeta {
   position: absolute;
   z-index: 1;

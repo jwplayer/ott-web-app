@@ -5,14 +5,14 @@ import type { PlaylistItem } from '../../types/playlist';
 
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const config = useContext(ConfigContext);
-  const [player, setPlayer] = useState<jwplayer.JWPlayer>();
+  const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
   useEffect(() => {
     if (!window.jwpltx || !config.analyticsToken || !player || !item) {
       return;
     }
 
-    const readyHandler = () => {
+    const playlistItemHandler = () => {
       if (!config.analyticsToken) return;
 
       window.jwpltx.ready(
@@ -36,13 +36,13 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       window.jwpltx.adImpression();
     };
 
-    player.on('ready', readyHandler);
+    player.on('playlistItem', playlistItemHandler);
     player.on('complete', completeHandler);
     player.on('time', timeHandler);
     player.on('adImpression', adImpressionHandler);
 
     return () => {
-      player.off('ready', readyHandler);
+      player.off('playlistItem', playlistItemHandler);
       player.off('complete', completeHandler);
       player.off('time', timeHandler);
       player.off('adImpression', adImpressionHandler);

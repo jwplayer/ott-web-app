@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -69,6 +69,13 @@ const Video: React.FC<Props> = ({
   const [userActive, setUserActive] = useState(true);
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation(['video', 'common']);
+
+  const handleUserActive = useCallback(() => setUserActive(true), []);
+  const handleUserInactive = useCallback(() => setUserActive(false), []);
+  const handlePlay = useCallback(() => setIsPlaying(true), []);
+  const handlePause = useCallback(() => setIsPlaying(false), []);
+  const handleComplete = useCallback(() => onComplete && onComplete(), [onComplete]);
+
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const isMobile = breakpoint === Breakpoint.xs;
   const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
@@ -160,11 +167,11 @@ const Video: React.FC<Props> = ({
             <Cinema
               item={item}
               feedId={feedId}
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
-              onComplete={onComplete}
-              onUserActive={() => setUserActive(true)}
-              onUserInActive={() => setUserActive(false)}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              onComplete={handleComplete}
+              onUserActive={handleUserActive}
+              onUserInActive={handleUserInactive}
             />
             <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
           </div>
@@ -186,11 +193,11 @@ const Video: React.FC<Props> = ({
         <Modal onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
           <Cinema
             item={trailerItem}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
+            onPlay={handlePlay}
+            onPause={handlePause}
             onComplete={onTrailerClose}
-            onUserActive={() => setUserActive(true)}
-            onUserInActive={() => setUserActive(false)}
+            onUserActive={handleUserActive}
+            onUserInActive={handleUserInactive}
             isTrailer
           />
           <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />

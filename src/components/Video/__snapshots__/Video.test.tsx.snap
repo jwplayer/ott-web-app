@@ -129,8 +129,10 @@ exports[`<Video> renders and matches snapshot 1`] = `
         class="player"
       >
         <div
-          id="cinema"
-        />
+          class="cinema"
+        >
+          <div />
+        </div>
         <div
           class="playerOverlay"
         />
@@ -158,9 +160,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
             </g>
           </svg>
         </div>
-        <div
-          class="playerInfo"
-        >
+        <div>
           <h2
             class="title"
           >
