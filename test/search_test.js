@@ -8,17 +8,17 @@ Scenario('Search bar is visible', ({ I }) => {
 });
 
 Scenario('I can type a search phrase in the search bar', ({ I }) => {
-  I.fillField({ css: 'input[aria-label="Search"]' }, 'test');
+  I.fillField({ css: 'input[aria-label="Search"]' }, 'Caminandes');
   I.see('Search results');
 });
 
 Scenario('I get search results when typing a search phrase', ({ I }) => {
-  I.fillField({ css: 'input[aria-label="Search"]' }, 'test');
+  I.fillField({ css: 'input[aria-label="Search"]' }, 'Caminandes');
   I.see('Search results');
 
-  I.see('Bug test');
-  I.see('Testing uploading');
-  I.see('Ben is Back');
+  I.see('Caminandes 1');
+  I.see('Caminandes 2');
+  I.see('Caminandes 3');
 });
 
 Scenario('I can clear the search phrase with the clear button', async ({ I }) => {

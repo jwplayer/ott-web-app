@@ -38,6 +38,7 @@ class App extends Component {
 
   configErrorHandler = (error: Error) => {
     this.setState({ error });
+    console.info('Error while loading the config.json:', error);
   };
 
   configValidationCompletedHandler = (config: Config) => {

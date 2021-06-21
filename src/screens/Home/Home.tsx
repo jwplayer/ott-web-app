@@ -88,7 +88,7 @@ const Home = (): JSX.Element => {
 
   const calculateHeight = (index: number): number => {
     const item = content[index];
-    const isLargeScreen = breakpoint >= Breakpoint.md;
+    const isMobile = breakpoint === Breakpoint.xs;
 
     if (!item) return 0;
     if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.playlist.length) return 0;
@@ -97,19 +97,18 @@ const Home = (): JSX.Element => {
     const calculateFeatured = () => {
       const tilesToShow = featuredTileBreakpoints[breakpoint];
       const shelfMetaHeight = 24;
-      const cardMetaHeight = 10;
-      const shelfHorizontalMargin = isLargeScreen ? document.body.offsetWidth * 0.4 : 0;
+      const shelfHorizontalMargin = document.body.offsetWidth * 0.4;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);
 
-      return cardHeight + shelfMetaHeight + cardMetaHeight;
+      return cardHeight + shelfMetaHeight;
     };
     const calculateRegular = () => {
       const tilesToShow = tileBreakpoints[breakpoint];
       const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
-      const shelfMetaHeight = shelfTitlesHeight + 24;
+      const shelfMetaHeight = shelfTitlesHeight + 12;
       const cardMetaHeight = 40;
-      const shelfHorizontalMargin = 0 * featuredTileBreakpoints[breakpoint];
+      const shelfHorizontalMargin = isMobile ? 76 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);
 

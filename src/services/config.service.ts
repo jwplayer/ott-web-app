@@ -31,7 +31,7 @@ const optionsSchema: SchemaOf<Options> = object({
 });
 
 const configSchema: SchemaOf<Config> = object({
-  id: string().defined(),
+  id: string().notRequired(),
   siteName: string().defined(),
   description: string().defined(),
   footerText: string().nullable(),
@@ -94,17 +94,16 @@ const addPersonalShelves = (data: Config) => {
 
 /**
  * Serialize deprecated config to v3 config
- * @param {Object} config
- * @returns {jwOTTwebApp.config}
+ * @param {Config} config
+ * @returns {Config}
  */
 const parseDeprecatedConfig = (config: Config) => {
-  let newConfig;
   if (config.description.startsWith('{')) {
     try {
       const description = JSON.parse(config.description);
       config.description = '';
 
-      newConfig = {
+      return {
         ...config,
         id: 'ID_PLACE_HOLDER',
         menu: description.menu,
@@ -119,7 +118,7 @@ const parseDeprecatedConfig = (config: Config) => {
     }
   }
 
-  return newConfig;
+  return config;
 };
 
 export const validateConfig = (config: Config): Promise<Config> => {

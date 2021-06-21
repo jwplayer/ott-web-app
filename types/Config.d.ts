@@ -3,7 +3,7 @@
  * */
 
 export type Config = {
-  id: string;
+  id?: string;
   siteName: string;
   description: string;
   footerText?: string | null;

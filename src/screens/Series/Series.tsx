@@ -90,7 +90,7 @@ const Series = ({
 
   useEffect(() => {
     if (!searchParams.has('e') && seriesPlaylist?.playlist.length) {
-      history.replace(episodeURL(seriesPlaylist, seriesPlaylist.playlist[0].feedid));
+      history.replace(episodeURL(seriesPlaylist, seriesPlaylist.playlist[0].mediaid));
     }
   }, [history, searchParams, seriesPlaylist]);
 

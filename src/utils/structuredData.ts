@@ -4,7 +4,7 @@ import { episodeURL, movieURL } from './formatting';
 import { secondsToISO8601 } from './datetime';
 
 export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
-  const seriesCanonical = `${window.location.origin}/${episodeURL(seriesPlaylist)}`;
+  const seriesCanonical = `${window.location.origin}${episodeURL(seriesPlaylist)}`;
 
   return {
     '@type': 'TVSeries',
@@ -18,7 +18,7 @@ export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
 };
 
 export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: PlaylistItem) => {
-  const episodeCanonical = `${window.location.origin}/${episodeURL(seriesPlaylist, episode.mediaid)}`;
+  const episodeCanonical = `${window.location.origin}${episodeURL(seriesPlaylist, episode.mediaid)}`;
   const seriesMetadata = generateSeriesMetadata(seriesPlaylist);
 
   return JSON.stringify({
@@ -34,7 +34,7 @@ export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: Playlis
 };
 
 export const generateMovieJSONLD = (item: PlaylistItem) => {
-  const movieCanonical = `${window.location.origin}/${movieURL(item)}`;
+  const movieCanonical = `${window.location.origin}${movieURL(item)}`;
 
   return JSON.stringify({
     '@context': 'http://schema.org/',
