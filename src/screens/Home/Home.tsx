@@ -88,6 +88,7 @@ const Home = (): JSX.Element => {
 
   const calculateHeight = (index: number): number => {
     const item = content[index];
+    const isDesktop = breakpoint >= Breakpoint.sm;
     const isMobile = breakpoint === Breakpoint.xs;
 
     if (!item) return 0;
@@ -97,7 +98,7 @@ const Home = (): JSX.Element => {
     const calculateFeatured = () => {
       const tilesToShow = featuredTileBreakpoints[breakpoint];
       const shelfMetaHeight = 24;
-      const shelfHorizontalMargin = document.body.offsetWidth * 0.4;
+      const shelfHorizontalMargin = isDesktop ? document.body.offsetWidth * 0.4 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);
 
