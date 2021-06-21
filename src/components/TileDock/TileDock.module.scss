@@ -2,14 +2,14 @@
 
 .tileDock ul {
   display: block;
-  white-space: nowrap;
   margin: 0;
   padding: 0;
+  white-space: nowrap;
 }
 .tileDock li {
   display: inline-block;
-  list-style-type: none;
   white-space: normal;
+  list-style-type: none;
 }
 .notInView {
   opacity: 0.5;
@@ -18,18 +18,18 @@
   }
 }
 .tileDock .leftControl {
-  left: 0px;
   position: absolute;
   top: calc(50% + 25px);
-  transform: translateY(-100%);
+  left: 0;
   z-index: 1;
+  transform: translateY(-100%);
 }
 .tileDock .rightControl {
   position: absolute;
-  right: 0px;
   top: calc(50% + 25px);
-  transform: translateY(-100%);
+  right: 0;
   z-index: 1;
+  transform: translateY(-100%);
 }
 .emptyTile::before {
   content: '';

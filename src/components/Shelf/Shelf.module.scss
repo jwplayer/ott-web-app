@@ -1,5 +1,5 @@
 .shelf {
-  margin: 0px 0px;
+  margin: 0 0;
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
 
@@ -27,25 +27,25 @@
 }
 
 .chevron {
-  cursor: pointer;
+  padding: 12px 0;
   outline-color: var(--highlight-color, white);
-  padding: 12px 0px;
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-  -webkit-transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  cursor: pointer;
   opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 
   > svg {
     width: 30px;
     height: 30px;
-  }
-  &:hover {
-    transform: scale(1.2);
   }
   &.disabled {
     cursor: default;
     &:hover {
       transform: none;
     }
+  }
+  &:hover {
+    transform: scale(1.2);
   }
 }
 .error {

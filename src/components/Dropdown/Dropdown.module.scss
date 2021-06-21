@@ -6,12 +6,15 @@ $select-border: variables.$gray-lighter;
 $select-arrow: variables.$white;
 $select-focus: theme.$primary-color;
 
+$disabled-bg-color: #eee;
+$disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
+
 .dropdown {
-  height: 36px;
   position: relative;
   display: grid;
   align-items: center;
   width: 140px;
+  height: 36px;
   margin-left: 24px;
   font-size: 1.25rem;
   background-color: rgba(0, 0, 0, 0.54);
@@ -38,11 +41,11 @@ $select-focus: theme.$primary-color;
     height: 36px;
     margin: 0;
     padding: 9px 24px 9px 9px;
-    text-overflow: ellipsis;
     color: variables.$white;
     font-family: inherit;
     font-weight: 700;
     font-size: 1rem;
+    text-overflow: ellipsis;
     background: none;
     border: none;
     outline: none;
@@ -61,14 +64,15 @@ $select-focus: theme.$primary-color;
   }
 
   & .disabled {
-    background-color: #eee;
-    background-image: linear-gradient(to top, #ddd, #eee 33%);
+    background-color: $disabled-bg-color;
+    background-image: $disabled-gradient;
     cursor: not-allowed;
   }
+
   &:hover,
   &:focus {
-    outline: none;
     border-color: $select-focus;
+    outline: none;
   }
 
   &:focus + .focus {

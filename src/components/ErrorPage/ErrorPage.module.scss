@@ -4,8 +4,8 @@
 
 .errorPage {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 70vh;
 }
 
@@ -17,9 +17,9 @@
 
 .title {
   margin-bottom: 24px;
-  font-size: 34px;
-  font-weight: 700;
   color: variables.$white;
+  font-weight: 700;
+  font-size: 34px;
 }
 
 .main {

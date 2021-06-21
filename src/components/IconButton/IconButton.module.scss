@@ -7,12 +7,12 @@
   align-items: center;
   width: 40px;
   height: 40px;
+  outline: none;
   outline-color: var(--highlight-color, white);
 
   cursor: pointer;
   opacity: 0.7;
   transition: transform 0.1s ease;
-  outline: none;
 
   &:hover {
     transform: scale(1.1);

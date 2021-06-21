@@ -45,29 +45,27 @@ type Props = {
   children?: JSX.Element;
 };
 
-const Video: React.FC<Props> = (
-  {
-    title,
-    item,
-    feedId,
-    trailerItem,
-    play,
-    startPlay,
-    goBack,
-    onComplete,
-    poster,
-    enableSharing,
-    hasShared,
-    onShareClick,
-    isFavorited,
-    onFavoriteButtonClick,
-    children,
-    playTrailer,
-    onTrailerClick,
-    onTrailerClose,
-    isSeries = false,
-  }: Props,
-) => {
+const Video: React.FC<Props> = ({
+  title,
+  item,
+  feedId,
+  trailerItem,
+  play,
+  startPlay,
+  goBack,
+  onComplete,
+  poster,
+  enableSharing,
+  hasShared,
+  onShareClick,
+  isFavorited,
+  onFavoriteButtonClick,
+  children,
+  playTrailer,
+  onTrailerClick,
+  onTrailerClose,
+  isSeries = false,
+}: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [userActive, setUserActive] = useState(true);
   const breakpoint: Breakpoint = useBreakpoint();
@@ -119,9 +117,9 @@ const Video: React.FC<Props> = (
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
           <div className={styles.playButton}>
             <Button
-              color='primary'
-              variant='contained'
-              size='large'
+              color="primary"
+              variant="contained"
+              size="large"
               label={t('video:start_watching')}
               startIcon={<Play />}
               onClick={startPlay}
@@ -179,11 +177,10 @@ const Video: React.FC<Props> = (
                 <IconButton aria-label={t('common:back')} onClick={goBack} className={styles.backButton}>
                   <ArrowLeft />
                 </IconButton>
-                <div className={styles.playerInfo}>
+                <div>
                   <h2 className={styles.title}>{title}</h2>
                   <div className={styles.metaContainer}>
-                    {isSeries &&
-                    <div className={classNames(styles.seriesMeta, styles.seriesMetaPlayer)}>{seriesMeta}</div>}
+                    {isSeries && <div className={classNames(styles.seriesMeta, styles.seriesMetaPlayer)}>{seriesMeta}</div>}
                     <div className={styles.meta}>{metaString}</div>
                   </div>
                 </div>

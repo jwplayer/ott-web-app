@@ -3,20 +3,19 @@
 @use '../../styles/variables';
 
 .card {
-  cursor: pointer;
-  transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
 
   @media (hover: hover) and (pointer: fine) {
     &:focus,
     &:hover {
+      position: relative;
       z-index: 1;
       outline: none;
       transform: scale(1.05);
-      position: relative;
 
       & .poster {
         box-shadow: 0 0 0 3px var(--highlight-color, variables.$white), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
@@ -26,32 +25,32 @@
   }
 
   &.featured {
-    &:hover {
-      transform: scale(1.02);
-    }
 
     .title {
-      font-size: 34px;
-      font-family: var(--body-font-family);
-      line-height: 36px;
-      height: 1em;
-      text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 4px 5px rgba(0, 0, 0, 0.12), 0px 1px 10px rgba(0, 0, 0, 0.2);
 
       @include responsive.mobile-only {
         font-size: 24px;
       }
+      height: 1em;
+      font-family: var(--body-font-family);
+      font-size: 34px;
+      line-height: 36px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.12), 0 1px 10px rgba(0, 0, 0, 0.2);
     }
     .tag {
-      font-size: 16px;
-      padding: 9px 16px;
       @include responsive.mobile-only {
         padding: 4px 8px;
       }
+      padding: 9px 16px;
+      font-size: 16px;
     }
     .meta {
+      justify-content: space-between;
       padding: 16px;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-      justify-content: space-between;
+    }
+    &:hover {
+      transform: scale(1.02);
     }
   }
 
@@ -68,42 +67,42 @@
 
 .poster {
   position: relative;
-  overflow: hidden;
   width: 100%;
+  overflow: hidden;
   background-color: var(--card-slider-loading-card-bg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
   border-radius: 4px;
-  transition: box-shadow 0.1s ease;
   box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+  transition: box-shadow 0.1s ease;
 
   &.current::after {
-    content: '';
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.54);
+    content: '';
   }
 }
 
 .currentLabel {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  width: 100%;
+  height: 100%;
+  font-family: var(--body-font-family);
+  font-weight: 700;
 
   font-size: 18px;
-  font-weight: 700;
   line-height: 20px;
-  font-family: var(--body-font-family);
 }
 
 $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
@@ -125,26 +124,22 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   @include responsive.mobile-only {
     font-size: 14px;
   }
+
+  height: 2.4em;
+  overflow: hidden;
   color: var(--card-color);
   font-family: var(--body-alt-font-family);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 1em;
+  line-height: 1.2em;
   text-align: left;
-  overflow: hidden;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2);
-  @supports (-webkit-line-clamp: 2) {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  height: 2.3em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 
   &.loading {
-    background-color: var(--card-slider-loading-card-bg);
-    height: 16px;
-    border-radius: 5px;
     width: 30%;
+    height: 16px;
+    background-color: var(--card-slider-loading-card-bg);
+    border-radius: 5px;
   }
 }
 
@@ -166,8 +161,8 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   padding: 4px 8px;
   color: var(--card-color);
   font-family: var(--body-font-family);
-  font-size: 13px;
   font-weight: 600;
+  font-size: 13px;
   background-color: rgba(variables.$black, 0.6);
   border-radius: 4px;
 }

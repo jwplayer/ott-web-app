@@ -221,7 +221,7 @@ const misc = [
 ];
 
 
-module.exports = (function () {
+module.exports = (function() {
   return {
     extends: ['stylelint-config-recommended-scss'],
 
@@ -235,8 +235,7 @@ module.exports = (function () {
       'stylelint-declaration-strict-value',
     ],
 
-    // Most styling errors should be considered warning
-    defaultSeverity: 'warning',
+    defaultSeverity: 'error',
 
     rules: {
       'order/order': [
@@ -307,6 +306,11 @@ module.exports = (function () {
 
       // Prevent using global animations
       'no-unknown-animations': true,
+
+      'no-descending-specificity': null,
+      'at-rule-semicolon-newline-after'  : 'always',
+      'block-opening-brace-newline-after': 'always',
+      'block-closing-brace-newline-after': 'always',
     },
   };
 })();

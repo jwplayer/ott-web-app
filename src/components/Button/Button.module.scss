@@ -20,8 +20,8 @@ $large-button-height: 40px;
   text-align: center;
   text-decoration: none;
   border-radius: 4px;
-  cursor: pointer;
   outline: none;
+  cursor: pointer;
   transition: background-color 0.1s ease, transform 0.1s ease;
 
   &.large {
@@ -43,8 +43,8 @@ $large-button-height: 40px;
 
     &.active,
     &:focus {
-      background-color: var(--highlight-color, black);
       color: var(--highlight-contrast-color, white);
+      background-color: var(--highlight-color, black);
       border-color: var(--highlight-color);
     }
   }

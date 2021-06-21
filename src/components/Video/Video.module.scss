@@ -6,7 +6,7 @@
   color: var(--primary-color);
   font-family: var(--body-font-family);
   font-weight: 400;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 3px 4px rgba(0, 0, 0, 0.12), 0px 1px 5px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 .mainPadding {
   @include responsive.tablet-only() {
@@ -63,78 +63,72 @@
   flex-direction: column;
 }
 .meta {
-  line-height: 18px;
-  font-size: 16px;
-  letter-spacing: 0.15px;
-  margin-bottom: 8px;
   @include responsive.mobile-only() {
-    font-size: 14px;
     order: 2;
+    font-size: 14px;
   }
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0.15px;
 }
 .seriesMeta {
+  @include responsive.mobile-only() {
+    order: 1;
+    margin: 4px 0;
+    font-size: 18px;
+  }
+  margin-top: 24px;
+  margin-bottom: 8px;
   font-size: 20px;
   line-height: 20px;
   letter-spacing: 0.5px;
-  margin-bottom: 8px;
-  margin-top: 24px;
-  @include responsive.mobile-only() {
-    font-size: 18px;
-    margin: 4px 0px;
-    order: 1;
-  }
   &.seriesMetaPlayer {
     margin-top: 4px;
   }
 }
 .description {
+  min-height: 21px;
+  margin-bottom: 24px;
   font-size: 18px;
   line-height: 20px;
   letter-spacing: 0.5px;
-  margin-bottom: 24px;
-  min-height: 21px;
 }
 .playButton {
   justify-content: center;
   margin-bottom: 8px;
 }
 .otherButtons {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  > button {
-    margin-right: 8px;
-    width: 100%;
-  }
-  > button:last-child {
-    margin-right: 0px;
-  }
   @include responsive.mobile-only() {
     flex-wrap: wrap;
     > button:first-child {
+      margin-right: 0;
       margin-bottom: 8px;
-      margin-right: 0px;
     }
     > button:not(:first-child) {
       flex: 1;
     }
   }
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  > button {
+    width: 100%;
+    margin-right: 8px;
+  }
+  > button:last-child {
+    margin-right: 0;
+  }
 }
 .poster {
   position: absolute;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
   top: 0;
   right: 0;
   z-index: -1;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   &.normal {
-    width: 720px;
-    height: 405px;
-    border-radius: 4px;
-    mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
-    -webkit-mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
-    margin: 37px 56px;
 
     @include responsive.tablet-only() {
       width: 600px;
@@ -143,30 +137,32 @@
     }
     @include responsive.mobile-only() {
       width: 100vw;
-      margin: 0px 16px;
+      margin: 0 16px;
       mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
-      -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
     }
+    width: 720px;
+    height: 405px;
+    margin: 37px 56px;
+    border-radius: 4px;
+    mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
   }
   &.fading {
+    @include responsive.mobile-only() {
+      mask-image: radial-gradient(farthest-corner at 70% 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 65%);
+    }
     width: 100vw;
     height: 100vh;
     mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 50%);
-    -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 50%);
-    @include responsive.mobile-only() {
-      mask-image: radial-gradient(farthest-corner at 70% 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 65%);
-      -webkit-mask-image: radial-gradient(farthest-corner at 70% 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 65%);
-    }
   }
 }
 
 .playIcon {
   position: absolute;
-  left: calc(50% - 35px);
   top: calc(50% - 60px);
+  left: calc(50% - 35px);
+  padding: 25px 30px;
   font-size: xx-large;
   border: 3px solid white;
-  padding: 25px 30px;
   border-radius: 100%;
 }
 .related {
@@ -174,22 +170,22 @@
 }
 .playerContainer {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  background-color: black;
+  background-color: variables.$black;
 }
 .player {
   position: absolute;
-  left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 .playerOverlay {
   position: absolute;
@@ -217,16 +213,14 @@
   }
 }
 
-.playerInfo {
-}
-
 .trailerMeta {
   position: absolute;
-  z-index: 1;
-  left: 16px;
   top: 16px;
+  left: 16px;
+  z-index: 1;
+
   &.hidden {
-    transition: opacity 0.6s ease;
     opacity: 0;
+    transition: opacity 0.6s ease;
   }
 }
