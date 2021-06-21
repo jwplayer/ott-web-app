@@ -83,7 +83,7 @@ const Video: React.FC<Props> = ({
   const posterImage = item.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
 
   const metaData = [];
-  if (item.pubdate) metaData.push(new Date(item.pubdate).getFullYear());
+  if (item.pubdate) metaData.push(new Date(item.pubdate * 1000).getFullYear());
   if (item.duration) metaData.push(formatDuration(item.duration));
   if (item.genre) metaData.push(item.genre);
   if (item.rating) metaData.push(item.rating);
