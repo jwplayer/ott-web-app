@@ -56,20 +56,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           {menu.map((item) => (
             <Button key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} variant="text" />
           ))}
-          <Button label={t('settings')} to="/u" variant="text" />
         </Header>
         <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
           <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
           {menu.map((item) => (
-            <MenuButton
-              key={item.playlistId}
-              label={item.label}
-              to={`/p/${item.playlistId}`}
-              tabIndex={sideBarOpen ? 0 : -1}
-            />
+            <MenuButton key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} tabIndex={sideBarOpen ? 0 : -1} />
           ))}
           <hr className={styles.divider} />
-          <MenuButton label={t('settings')} to="/u" tabIndex={sideBarOpen ? 0 : -1} />
         </Sidebar>
         {children}
       </div>

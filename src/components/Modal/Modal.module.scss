@@ -25,12 +25,23 @@
   justify-content: center;
   align-items: center;
 }
-.modal {
-  position: relative;
+.modalBackground {
+  position: absolute;
   width: 80vw;
+  height: calc(80vw / 16 * 9);
   background-color: rgba(0, 0, 0, 0.9);
   @include responsive.mobile-only() {
     width: 100vw;
+    height: calc(100vw / 16 * 9);
+  }
+}
+.modal {
+  position: relative;
+  width: 80vw;
+  height: calc(80vw / 16 * 9);
+  @include responsive.mobile-only() {
+    width: 100vw;
+    height: calc(100vw / 16 * 9);
   }
 }
 .close {

@@ -36,7 +36,12 @@ const Series = ({
   const history = useHistory();
   const { t } = useTranslation('video');
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist = { title: '', playlist: [] } } = usePlaylist(id, undefined, true, false);
+  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist = { title: '', playlist: [] } } = usePlaylist(
+    id,
+    undefined,
+    true,
+    false,
+  );
   const { isLoading, error, data: item } = useMedia(searchParams.get('e') || '');
   const { data: trailerItem } = useMedia(item?.trailerId || '');
 
@@ -102,9 +107,7 @@ const Series = ({
 
   const pageTitle = `${item.title} - ${config.siteName}`;
   const canonicalUrl =
-    seriesPlaylist && item
-      ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}`
-      : window.location.href;
+    seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
 
   return (
     <React.Fragment>
@@ -130,9 +133,7 @@ const Series = ({
         {item.tags.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {seriesPlaylist && item ? (
-          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script>
-        ) : null}
+        {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
       </Helmet>
       <VideoComponent
         title={seriesPlaylist.title}
@@ -158,7 +159,14 @@ const Series = ({
           <div className={styles.episodes}>
             <h3>{t('episodes')}</h3>
             {filters.length > 1 && (
-              <Filter name="categories" value={seasonFilter} valuePrefix="Season " defaultLabel="All" options={filters} setValue={setSeasonFilter} />
+              <Filter
+                name="categories"
+                value={seasonFilter}
+                valuePrefix="Season "
+                defaultLabel="All"
+                options={filters}
+                setValue={setSeasonFilter}
+              />
             )}
           </div>
           <CardGrid

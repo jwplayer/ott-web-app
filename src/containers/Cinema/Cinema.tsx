@@ -22,6 +22,7 @@ type Props = {
   onUserInActive?: () => void;
   feedId?: string;
   isTrailer?: boolean;
+  playerId?: string;
 };
 
 const Cinema: React.FC<Props> = (
