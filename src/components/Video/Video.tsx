@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -45,31 +45,40 @@ type Props = {
   children?: JSX.Element;
 };
 
-const Video: React.FC<Props> = ({
-  title,
-  item,
-  feedId,
-  trailerItem,
-  play,
-  startPlay,
-  goBack,
-  onComplete,
-  poster,
-  enableSharing,
-  hasShared,
-  onShareClick,
-  isFavorited,
-  onFavoriteButtonClick,
-  children,
-  playTrailer,
-  onTrailerClick,
-  onTrailerClose,
-  isSeries = false,
-}: Props) => {
+const Video: React.FC<Props> = (
+  {
+    title,
+    item,
+    feedId,
+    trailerItem,
+    play,
+    startPlay,
+    goBack,
+    onComplete,
+    poster,
+    enableSharing,
+    hasShared,
+    onShareClick,
+    isFavorited,
+    onFavoriteButtonClick,
+    children,
+    playTrailer,
+    onTrailerClick,
+    onTrailerClose,
+    isSeries = false,
+  }: Props,
+) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [userActive, setUserActive] = useState(true);
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation(['video', 'common']);
+
+  const handleUserActive = useCallback(() => setUserActive(true), []);
+  const handleUserInactive = useCallback(() => setUserActive(false), []);
+  const handlePlay = useCallback(() => setIsPlaying(true), []);
+  const handlePause = useCallback(() => setIsPlaying(false), []);
+  const handleComplete = useCallback(() => onComplete && onComplete(), [onComplete]);
+
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const isMobile = breakpoint === Breakpoint.xs;
   const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
@@ -110,9 +119,9 @@ const Video: React.FC<Props> = ({
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
           <div className={styles.playButton}>
             <Button
-              color="primary"
-              variant="contained"
-              size="large"
+              color='primary'
+              variant='contained'
+              size='large'
               label={t('video:start_watching')}
               startIcon={<Play />}
               onClick={startPlay}
@@ -157,38 +166,41 @@ const Video: React.FC<Props> = ({
             <Cinema
               item={item}
               feedId={feedId}
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
-              onComplete={onComplete}
-              onUserActive={() => setUserActive(true)}
-              onUserInActive={() => setUserActive(false)}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              onComplete={handleComplete}
+              onUserActive={handleUserActive}
+              onUserInActive={handleUserInactive}
             />
-            <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
           </div>
-          <div className={classNames(styles.playerContent, { [styles.hidden]: isPlaying && !userActive })}>
-            <IconButton aria-label={t('common:back')} onClick={goBack} className={styles.backButton}>
-              <ArrowLeft />
-            </IconButton>
-            <div className={styles.playerInfo}>
-              <h2 className={styles.title}>{title}</h2>
-              <div className={styles.metaContainer}>
-                {isSeries && <div className={classNames(styles.seriesMeta, styles.seriesMetaPlayer)}>{seriesMeta}</div>}
-                <div className={styles.meta}>{metaString}</div>
+          <Fade open={!isPlaying || userActive}>
+            <div className={styles.playerOverlay}>
+              <div className={styles.playerContent}>
+                <IconButton aria-label={t('common:back')} onClick={goBack} className={styles.backButton}>
+                  <ArrowLeft />
+                </IconButton>
+                <div className={styles.playerInfo}>
+                  <h2 className={styles.title}>{title}</h2>
+                  <div className={styles.metaContainer}>
+                    {isSeries &&
+                    <div className={classNames(styles.seriesMeta, styles.seriesMetaPlayer)}>{seriesMeta}</div>}
+                    <div className={styles.meta}>{metaString}</div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </Fade>
         </div>
       </Fade>
       {!!trailerItem && (
         <Modal open={playTrailer} onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
           <Cinema
             item={trailerItem}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
+            onPlay={handlePlay}
+            onPause={handlePause}
             onComplete={onTrailerClose}
-            onUserActive={() => setUserActive(true)}
-            onUserInActive={() => setUserActive(false)}
-            playerId="trailer"
+            onUserActive={handleUserActive}
+            onUserInActive={handleUserInactive}
             isTrailer
           />
           <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />

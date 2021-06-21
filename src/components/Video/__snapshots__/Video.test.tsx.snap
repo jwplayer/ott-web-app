@@ -132,51 +132,55 @@ exports[`<Video> renders and matches snapshot 1`] = `
           class="player"
         >
           <div
-            id="cinema"
-            style="max-width: 100vw; max-height: 100vh;"
-          />
-          <div
-            class="playerOverlay"
-          />
+            class="cinema"
+          >
+            <div />
+          </div>
         </div>
         <div
-          class="playerContent"
+          style="transition: opacity 0.25s ease-in-out; opacity: 0;"
         >
           <div
-            aria-label="common:back"
-            class="iconButton backButton"
-            role="button"
-            tabindex="0"
+            class="playerOverlay"
           >
-            <svg
-              aria-hidden="true"
-              class="icon"
-              focusable="false"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g>
-                <path
-                  d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
-                />
-              </g>
-            </svg>
-          </div>
-          <div
-            class="playerInfo"
-          >
-            <h2
-              class="title"
-            >
-              Test video
-            </h2>
             <div
-              class="metaContainer"
+              class="playerContent"
             >
               <div
-                class="meta"
+                aria-label="common:back"
+                class="iconButton backButton"
+                role="button"
+                tabindex="0"
               >
-                1970 • 6m  • Tester • CC_CC
+                <svg
+                  aria-hidden="true"
+                  class="icon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g>
+                    <path
+                      d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div>
+                <h2
+                  class="title"
+                >
+                  Test video
+                </h2>
+                <div
+                  class="metaContainer"
+                >
+                  <div
+                    class="meta"
+                  >
+                    1970 • 6m  • Tester • CC_CC
+                  </div>
+                </div>
               </div>
             </div>
           </div>
