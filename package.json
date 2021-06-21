@@ -100,7 +100,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
-      "prettier --check"
+      "prettier --write"
     ],
     "src/**/*.scss": [
       "stylelint"

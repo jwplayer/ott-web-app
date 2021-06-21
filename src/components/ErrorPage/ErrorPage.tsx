@@ -14,9 +14,7 @@ const ErrorPage: React.FC<Props> = ({ title, children }: Props) => {
         <header>
           <h1 className={styles.title}>{title}</h1>
         </header>
-        <main className={styles.main}>
-          {children}
-        </main>
+        <main className={styles.main}>{children}</main>
       </div>
     </div>
   );

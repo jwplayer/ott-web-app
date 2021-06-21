@@ -25,18 +25,7 @@ type Props = {
   playerId?: string;
 };
 
-const Cinema: React.FC<Props> = (
-  {
-    item,
-    onPlay,
-    onPause,
-    onComplete,
-    onUserActive,
-    onUserInActive,
-    feedId,
-    isTrailer = false,
-  }: Props,
-) => {
+const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
   const config: Config = useContext(ConfigContext);
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
@@ -74,13 +63,15 @@ const Cinema: React.FC<Props> = (
       }
 
       // load new item
-      playerRef.current.load([{
-        mediaid: item.mediaid,
-        image: item.image,
-        title: item.title,
-        description: item.description,
-        sources: item.sources.map(source => ({ ...source })),
-      }]);
+      playerRef.current.load([
+        {
+          mediaid: item.mediaid,
+          image: item.image,
+          title: item.title,
+          description: item.description,
+          sources: item.sources.map((source) => ({ ...source })),
+        },
+      ]);
     };
 
     const initializePlayer = () => {
@@ -93,13 +84,15 @@ const Cinema: React.FC<Props> = (
       playerRef.current = window.jwplayer(playerElementRef.current);
 
       playerRef.current.setup({
-        playlist: [{
-          mediaid: item.mediaid,
-          image: item.image,
-          title: item.title,
-          description: item.description,
-          sources: item.sources.map(source => ({ ...source })),
-        }],
+        playlist: [
+          {
+            mediaid: item.mediaid,
+            image: item.image,
+            title: item.title,
+            description: item.description,
+            sources: item.sources.map((source) => ({ ...source })),
+          },
+        ],
         aspect: false,
         width: '100%',
         height: '100%',

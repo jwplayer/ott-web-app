@@ -32,11 +32,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
   const history = useHistory();
-  const { isFetching, error, data: { playlist } = { playlist: [] } } = useSearchPlaylist(
-    searchPlaylist || '',
-    query,
-    firstRender,
-  );
+  const { isFetching, error, data: { playlist } = { playlist: [] } } = useSearchPlaylist(searchPlaylist || '', query, firstRender);
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 
@@ -83,7 +79,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   return (
     <div className={styles.search}>
       <Helmet>
-        <title>{t('title', { results: playlist.length, query })} - {siteName}</title>
+        <title>
+          {t('title', { results: playlist.length, query })} - {siteName}
+        </title>
       </Helmet>
       <header className={styles.header}>
         <h2>{t('heading')}</h2>

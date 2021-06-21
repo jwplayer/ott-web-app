@@ -16,7 +16,7 @@ type Props = {
   setValue: (value: string) => void;
 };
 
-const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '', }) => {
+const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '' }) => {
   const { t } = useTranslation('common');
   const breakpoint: Breakpoint = useBreakpoint();
 
@@ -40,13 +40,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
               role="option"
             />
           ))}
-          <Button
-            label={defaultLabel}
-            onClick={() => setValue('')}
-            active={value === ''}
-            key={defaultLabel}
-            role="option"
-          />
+          <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} role="option" />
         </div>
       ) : (
         <Dropdown

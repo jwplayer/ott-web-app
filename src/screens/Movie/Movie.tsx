@@ -24,14 +24,12 @@ type MovieRouteParams = {
   id: string;
 };
 
-const Movie = (
-  {
-    match: {
-      params: { id },
-    },
-    location,
-  }: RouteComponentProps<MovieRouteParams>,
-): JSX.Element => {
+const Movie = ({
+  match: {
+    params: { id },
+  },
+  location,
+}: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const config = useContext(ConfigContext);
   const history = useHistory();
   const { t } = useTranslation('video');
@@ -88,7 +86,7 @@ const Movie = (
   }, [history, id, playlist, searchParams]);
 
   if (isLoading) return <LoadingOverlay />;
-  if (error || !item) return <ErrorPage title='Video not found!' />;
+  if (error || !item) return <ErrorPage title="Video not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
@@ -97,27 +95,27 @@ const Movie = (
     <React.Fragment>
       <Helmet>
         <title>{pageTitle}</title>
-        <link rel='canonical' href={canonicalUrl} />
-        <meta name='description' content={item.description} />
-        <meta property='og:description' content={item.description} />
-        <meta property='og:title' content={pageTitle} />
-        <meta property='og:type' content='video.other' />
-        {item.image && <meta property='og:image' content={item.image?.replace(/^https:/, 'http:')} />}
-        {item.image && <meta property='og:image:secure_url' content={item.image?.replace(/^http:/, 'https:')} />}
-        <meta property='og:image:width' content={item.image ? '720' : ''} />
-        <meta property='og:image:height' content={item.image ? '406' : ''} />
-        <meta name='twitter:title' content={pageTitle} />
-        <meta name='twitter:description' content={item.description} />
-        <meta name='twitter:image' content={item.image} />
-        <meta property='og:video' content={canonicalUrl.replace(/^https:/, 'http:')} />
-        <meta property='og:video:secure_url' content={canonicalUrl.replace(/^http:/, 'https:')} />
-        <meta property='og:video:type' content='text/html' />
-        <meta property='og:video:width' content='1280' />
-        <meta property='og:video:height' content='720' />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta name="description" content={item.description} />
+        <meta property="og:description" content={item.description} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:type" content="video.other" />
+        {item.image && <meta property="og:image" content={item.image?.replace(/^https:/, 'http:')} />}
+        {item.image && <meta property="og:image:secure_url" content={item.image?.replace(/^http:/, 'https:')} />}
+        <meta property="og:image:width" content={item.image ? '720' : ''} />
+        <meta property="og:image:height" content={item.image ? '406' : ''} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={item.description} />
+        <meta name="twitter:image" content={item.image} />
+        <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
+        <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
+        <meta property="og:video:type" content="text/html" />
+        <meta property="og:video:width" content="1280" />
+        <meta property="og:video:height" content="720" />
         {item.tags.split(',').map((tag) => (
-          <meta property='og:video:tag' content={tag} key={tag} />
+          <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {item ? <script type='application/ld+json'>{generateMovieJSONLD(item)}</script> : null}
+        {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
       <VideoComponent
         title={item.title}

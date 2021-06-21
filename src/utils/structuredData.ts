@@ -13,9 +13,9 @@ export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
     numberOfEpisodes: seriesPlaylist.playlist.length,
     numberOfSeasons: seriesPlaylist.playlist.reduce(function (list, playlistItem) {
       return !playlistItem.seasonNumber || list.includes(playlistItem.seasonNumber) ? list : list.concat(playlistItem.seasonNumber);
-    }, [] as string[]).length
+    }, [] as string[]).length,
   };
-}
+};
 
 export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: PlaylistItem) => {
   const episodeCanonical = `${window.location.origin}/${episodeURL(seriesPlaylist, episode.mediaid)}`;
@@ -31,7 +31,7 @@ export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: Playlis
     uploadDate: secondsToISO8601(episode.pubdate),
     partOfSeries: seriesMetadata,
   });
-}
+};
 
 export const generateMovieJSONLD = (item: PlaylistItem) => {
   const movieCanonical = `${window.location.origin}/${movieURL(item)}`;
@@ -44,6 +44,6 @@ export const generateMovieJSONLD = (item: PlaylistItem) => {
     description: item.description,
     duration: secondsToISO8601(item.duration, true),
     thumbnailUrl: item.image,
-    uploadDate: secondsToISO8601(item.pubdate)
+    uploadDate: secondsToISO8601(item.pubdate),
   });
-}
+};

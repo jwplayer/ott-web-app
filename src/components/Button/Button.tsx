@@ -17,7 +17,7 @@ type Props = {
   variant?: Variant;
   onClick?: () => void;
   tabIndex?: number;
-  size?: 'medium' | 'large',
+  size?: 'medium' | 'large';
   to?: string;
   role?: string;
 } & React.AriaAttributes;

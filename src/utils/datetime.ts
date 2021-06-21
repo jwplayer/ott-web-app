@@ -1,7 +1,7 @@
 /**
  * Seconds to ISO8601 duration or date string
  */
-export function secondsToISO8601 (input: number, timeOnly: boolean = false): string {
+export function secondsToISO8601(input: number, timeOnly: boolean = false): string {
   if (!input) {
     return '';
   }

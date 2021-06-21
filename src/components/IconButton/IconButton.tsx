@@ -11,13 +11,7 @@ type Props = {
   className?: string;
 };
 
-const IconButton: React.FC<Props> = ({
-  children,
-  onClick,
-  'aria-label': ariaLabel,
-  tabIndex = 0,
-  className,
-}: Props) => {
+const IconButton: React.FC<Props> = ({ children, onClick, 'aria-label': ariaLabel, tabIndex = 0, className }: Props) => {
   return (
     <div
       className={classNames(styles.iconButton, className)}
@@ -25,9 +19,7 @@ const IconButton: React.FC<Props> = ({
       aria-label={ariaLabel}
       role="button"
       tabIndex={tabIndex}
-      onKeyDown={(event: React.KeyboardEvent) =>
-        (event.key === 'Enter' || event.key === ' ') && tabIndex >= 0 && onClick && onClick()
-      }
+      onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && tabIndex >= 0 && onClick && onClick()}
     >
       {children}
     </div>

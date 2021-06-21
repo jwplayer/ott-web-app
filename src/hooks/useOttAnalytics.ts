@@ -15,14 +15,8 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
     const playlistItemHandler = () => {
       if (!config.analyticsToken) return;
 
-      window.jwpltx.ready(
-        config.analyticsToken,
-        window.location.hostname,
-        feedId,
-        item.mediaid,
-        item.title
-      );
-    }
+      window.jwpltx.ready(config.analyticsToken, window.location.hostname, feedId, item.mediaid, item.title);
+    };
 
     const completeHandler = () => {
       window.jwpltx.complete();
@@ -46,7 +40,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       player.off('complete', completeHandler);
       player.off('time', timeHandler);
       player.off('adImpression', adImpressionHandler);
-    }
+    };
   }, [player]);
 
   return setPlayer;

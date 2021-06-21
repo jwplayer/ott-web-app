@@ -24,8 +24,7 @@ const CollapsibleText: React.FC<Props> = ({ text, className, maxHeight = 'none' 
   useEffect(() => {
     divRef.current &&
       setDoesFlowOver(
-        divRef.current.scrollHeight > divRef.current.offsetHeight ||
-          (maxHeight < divRef.current.offsetHeight && maxHeight !== 'none'),
+        divRef.current.scrollHeight > divRef.current.offsetHeight || (maxHeight < divRef.current.offsetHeight && maxHeight !== 'none'),
       );
   }, [maxHeight, text, breakpoint]);
 

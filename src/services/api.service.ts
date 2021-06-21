@@ -11,7 +11,7 @@ export const getDataOrThrow = async (response: Response) => {
   if (!response.ok) {
     const message = `Request '${response.url}' failed with ${response.status}`;
 
-    throw new Error(data?.message || message)
+    throw new Error(data?.message || message);
   }
 
   return data;
@@ -22,11 +22,10 @@ export const getDataOrThrow = async (response: Response) => {
  * @param {string} id
  * @param relatedMediaId
  */
-export const getPlaylistById = (id: string, relatedMediaId?: string) : Promise<Playlist | undefined> => {
+export const getPlaylistById = (id: string, relatedMediaId?: string): Promise<Playlist | undefined> => {
   const relatedQuery = relatedMediaId ? `?related_media_id=${relatedMediaId}` : '';
 
-  return fetch(`${API_BASE_URL}/v2/playlists/${id}${relatedQuery}`)
-    .then(getDataOrThrow)
+  return fetch(`${API_BASE_URL}/v2/playlists/${id}${relatedQuery}`).then(getDataOrThrow);
 };
 
 /**
@@ -34,9 +33,8 @@ export const getPlaylistById = (id: string, relatedMediaId?: string) : Promise<P
  * @param {string} playlistId
  * @param {string} query
  */
-export const getSearchPlaylist = (playlistId: string, query: string) : Promise<Playlist | undefined> => {
-  return fetch(`${API_BASE_URL}/v2/playlists/${playlistId}?search=${encodeURIComponent(query)}`)
-    .then(getDataOrThrow);
+export const getSearchPlaylist = (playlistId: string, query: string): Promise<Playlist | undefined> => {
+  return fetch(`${API_BASE_URL}/v2/playlists/${playlistId}?search=${encodeURIComponent(query)}`).then(getDataOrThrow);
 };
 
 /**
@@ -46,7 +44,7 @@ export const getSearchPlaylist = (playlistId: string, query: string) : Promise<P
 export const getMediaById = (id: string): Promise<PlaylistItem | undefined> => {
   return fetch(`${API_BASE_URL}/v2/media/${id}`)
     .then((res) => getDataOrThrow(res) as Promise<Playlist>)
-    .then(data => data.playlist[0]);
+    .then((data) => data.playlist[0]);
 };
 
 /**
@@ -55,11 +53,11 @@ export const getMediaById = (id: string): Promise<PlaylistItem | undefined> => {
  */
 export const getMediaByIds = async (ids: string[]): Promise<PlaylistItem[]> => {
   // @todo this should be updated when it will become possible to request multiple media items in a single request
-  const responses = await Promise.all(ids.map(id => getMediaById(id)));
+  const responses = await Promise.all(ids.map((id) => getMediaById(id)));
 
-  function notEmpty<Value> (value: Value | null | undefined): value is Value {
+  function notEmpty<Value>(value: Value | null | undefined): value is Value {
     return value !== null && value !== undefined;
   }
 
   return responses.filter(notEmpty);
-}
+};

@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   configLoadingHandler = (isLoading: boolean) => {
-    console.info(`Loading config: ${isLoading}`)
+    console.info(`Loading config: ${isLoading}`);
   };
 
   configErrorHandler = (error: Error) => {

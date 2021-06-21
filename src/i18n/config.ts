@@ -16,13 +16,13 @@ i18n
   .use(languageDetector)
   .init({
     resources,
-    lng          : 'en-US',
-    fallbackLng  : 'en',
+    lng: 'en-US',
+    fallbackLng: 'en',
     interpolation: {
-      escapeValue: false
+      escapeValue: false,
     },
-    detection    : {
-      order : ['localStorage', 'navigator'],
+    detection: {
+      order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
     },
   });

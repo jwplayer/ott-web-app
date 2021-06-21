@@ -24,25 +24,24 @@ type Props = {
   children?: ReactFragment;
 };
 
-const Header: React.FC<Props> = (
-  {
-    children,
-    headerType = 'static',
-    onMenuButtonClick,
-    logoSrc,
-    searchBarProps,
-    searchEnabled,
-    onCloseSearchButtonClick,
-  }
-  ) => {
-    const { t } = useTranslation('menu');
-    const [mobileSearchActive, setMobileSearchActive] = useState(false);
-    const breakpoint = useBreakpoint();
-    const headerClassName = classNames(styles.header, styles[headerType], {
-      [styles.mobileSearchActive]: mobileSearchActive && breakpoint <= Breakpoint.sm
-    });
+const Header: React.FC<Props> = ({
+  children,
+  headerType = 'static',
+  onMenuButtonClick,
+  logoSrc,
+  searchBarProps,
+  searchEnabled,
+  onCloseSearchButtonClick,
+}) => {
+  const { t } = useTranslation('menu');
+  const [mobileSearchActive, setMobileSearchActive] = useState(false);
+  const breakpoint = useBreakpoint();
+  const headerClassName = classNames(styles.header, styles[headerType], {
+    [styles.mobileSearchActive]: mobileSearchActive && breakpoint <= Breakpoint.sm,
+  });
 
-    const search = breakpoint <= Breakpoint.sm ?
+  const search =
+    breakpoint <= Breakpoint.sm ? (
       mobileSearchActive ? (
         <div className={styles.mobileSearch}>
           <SearchBar {...searchBarProps} />
@@ -64,31 +63,30 @@ const Header: React.FC<Props> = (
         <IconButton className={styles.iconButton} aria-label="Open search" onClick={() => setMobileSearchActive(true)}>
           <SearchIcon />
         </IconButton>
-      ) : (
-        <SearchBar {...searchBarProps} />
-      );
-
-    return (
-      <header className={headerClassName}>
-        <div className={styles.container}>
-          <div className={styles.menu}>
-            <IconButton className={styles.iconButton} aria-label={t('open_menu')} onClick={onMenuButtonClick}>
-              <Menu />
-            </IconButton>
-          </div>
-          {logoSrc && (
-            <div className={styles.brand}>
-              <Logo src={logoSrc} />
-            </div>
-          )}
-          <nav className={styles.nav} aria-label="menu">
-            {children}
-          </nav>
-          <div className={styles.search}>{searchEnabled ? search : null}</div>
-        </div>
-      </header>
+      )
+    ) : (
+      <SearchBar {...searchBarProps} />
     );
-  }
-;
 
+  return (
+    <header className={headerClassName}>
+      <div className={styles.container}>
+        <div className={styles.menu}>
+          <IconButton className={styles.iconButton} aria-label={t('open_menu')} onClick={onMenuButtonClick}>
+            <Menu />
+          </IconButton>
+        </div>
+        {logoSrc && (
+          <div className={styles.brand}>
+            <Logo src={logoSrc} />
+          </div>
+        )}
+        <nav className={styles.nav} aria-label="menu">
+          {children}
+        </nav>
+        <div className={styles.search}>{searchEnabled ? search : null}</div>
+      </div>
+    </header>
+  );
+};
 export default Header;

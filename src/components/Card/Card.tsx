@@ -56,7 +56,11 @@ function Card({
     if (seriesId) {
       return <div className={styles.tag}>Series</div>;
     } else if (seasonNumber && episodeNumber) {
-      return <div className={styles.tag}>S{seasonNumber}:E{episodeNumber}</div>
+      return (
+        <div className={styles.tag}>
+          S{seasonNumber}:E{episodeNumber}
+        </div>
+      );
     } else if (duration) {
       return <div className={styles.tag}>{formatDurationTag(duration)}</div>;
     } else if (duration === 0) {
@@ -70,18 +74,14 @@ function Card({
       onClick={onClick}
       onMouseEnter={onHover}
       tabIndex={disabled ? -1 : 0}
-      onKeyDown={(event: KeyboardEvent) =>
-        (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()
-      }
+      onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()}
       role="button"
       aria-label={t('play_item', { title })}
     >
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
         {!loading && (
           <div className={styles.meta}>
-            {featured && !disabled && (
-              <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
-            )}
+            {featured && !disabled && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
             {renderTag()}
           </div>
         )}

@@ -15,9 +15,7 @@ const DynamicBlur = ({ url, transitionTime = 1, debounceTime = 350 }: Props): JS
   const [currentImg, setCurrentImg] = useState<number>();
   const firstImage = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
   const secondImage = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
-  const loadImgDebounced = useRef(
-    debounce((url: string, currentImg: number) => loadImage(url, currentImg), debounceTime),
-  );
+  const loadImgDebounced = useRef(debounce((url: string, currentImg: number) => loadImage(url, currentImg), debounceTime));
 
   const loadImage = (url: string, currentImg: number) => {
     const img = document.createElement('img');
@@ -49,16 +47,8 @@ const DynamicBlur = ({ url, transitionTime = 1, debounceTime = 350 }: Props): JS
 
   return (
     <React.Fragment>
-      <div
-        ref={firstImage}
-        style={{ transition: `opacity ${transitionTime}s ease-in-out` }}
-        className={styles.BlurBackground}
-      />
-      <div
-        ref={secondImage}
-        style={{ transition: `opacity ${transitionTime}s ease-in-out` }}
-        className={styles.BlurBackground}
-      />
+      <div ref={firstImage} style={{ transition: `opacity ${transitionTime}s ease-in-out` }} className={styles.BlurBackground} />
+      <div ref={secondImage} style={{ transition: `opacity ${transitionTime}s ease-in-out` }} className={styles.BlurBackground} />
     </React.Fragment>
   );
 };

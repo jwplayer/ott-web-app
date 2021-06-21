@@ -57,15 +57,12 @@ function Playlist({
       </Helmet>
       <header className={styles.header}>
         <h2>{isLoading || isPlaceholderData ? 'Loading' : title}</h2>
-        {!isLoading && !isPlaceholderData && <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
+        {!isLoading && !isPlaceholderData && (
+          <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />
+        )}
       </header>
       <main className={styles.main}>
-        <CardGrid
-          playlist={filteredPlaylist}
-          onCardClick={onCardClick}
-          onCardHover={onCardHover}
-          isLoading={isLoading}
-        />
+        <CardGrid playlist={filteredPlaylist} onCardClick={onCardClick} onCardHover={onCardHover} isLoading={isLoading} />
       </main>
     </div>
   );

@@ -16,26 +16,13 @@ const SearchBar: React.FC<Props> = ({ query, onQueryChange, onClearButtonClick }
   return (
     <div className={styles.searchBar}>
       <SearchIcon className={styles.icon} />
-      <input
-        className={styles.input}
-        type="text"
-        value={query}
-        onChange={onQueryChange}
-        aria-label="Search"
-        placeholder="Search..."
-      />
+      <input className={styles.input} type="text" value={query} onChange={onQueryChange} aria-label="Search" placeholder="Search..." />
       {query ? (
-        <IconButton
-          className={styles.clearButton}
-          aria-label="Clear search"
-          onClick={onClearButtonClick}
-        >
+        <IconButton className={styles.clearButton} aria-label="Clear search" onClick={onClearButtonClick}>
           <CancelIcon />
         </IconButton>
       ) : null}
     </div>
   );
-}
-;
-
+};
 export default SearchBar;

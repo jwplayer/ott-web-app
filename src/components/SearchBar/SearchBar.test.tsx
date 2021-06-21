@@ -22,7 +22,7 @@ describe('<SearchBar>', () => {
 
     const searchInput = getByLabelText('Search') as HTMLInputElement;
 
-    fireEvent.change(searchInput, { target: { value: 'my search phrase' }})
+    fireEvent.change(searchInput, { target: { value: 'my search phrase' } });
 
     expect(callback).toBeCalled();
     expect(searchInput.value).toEqual('my search phrase');

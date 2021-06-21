@@ -57,10 +57,7 @@ export const initializeWatchHistory = async () => {
   );
 };
 
-export const createWatchHistoryItem = (
-  item: PlaylistItem | undefined,
-  videoProgress: VideoProgress,
-): WatchHistoryItem => {
+export const createWatchHistoryItem = (item: PlaylistItem | undefined, videoProgress: VideoProgress): WatchHistoryItem => {
   return {
     mediaid: item?.mediaid,
     title: item?.title,
@@ -123,10 +120,7 @@ export const useWatchHistory = (): UseWatchHistoryReturn => {
       feedid: PersonalShelf.ContinueWatching,
       title: 'Continue watching',
       playlist: watchHistory
-        .filter(
-          ({ playlistItem, progress }) =>
-            !!playlistItem && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max,
-        )
+        .filter(({ playlistItem, progress }) => !!playlistItem && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max)
         .map(({ playlistItem }) => playlistItem),
     } as Playlist);
 

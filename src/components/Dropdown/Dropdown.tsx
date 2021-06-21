@@ -12,17 +12,15 @@ type Props = {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-const Dropdown: React.FC<Props & React.AriaAttributes> = (
-  {
-    name,
-    value,
-    defaultLabel,
-    options,
-    onChange,
-    optionsStyle,
-    ...rest
-  }: Props & React.AriaAttributes
-) => {
+const Dropdown: React.FC<Props & React.AriaAttributes> = ({
+  name,
+  value,
+  defaultLabel,
+  options,
+  onChange,
+  optionsStyle,
+  ...rest
+}: Props & React.AriaAttributes) => {
   return (
     <div className={styles.dropdown}>
       <select className={styles.select} name={name} value={value} onChange={onChange} {...rest}>

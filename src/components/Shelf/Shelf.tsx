@@ -65,9 +65,7 @@ const Shelf: React.FC<ShelfProps> = ({
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })} data-mediaid={playlist.feedid}>
-      {!featured && (
-        <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2>
-      )}
+      {!featured && <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2>}
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}
@@ -84,9 +82,7 @@ const Shelf: React.FC<ShelfProps> = ({
             role="button"
             tabIndex={didSlideBefore ? 0 : -1}
             aria-label={t('slide_left')}
-            onKeyDown={(event: React.KeyboardEvent) =>
-              (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)
-            }
+            onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
             onClick={() => handleSlide(doSlide)}
           >
             <ChevronLeft />
@@ -98,9 +94,7 @@ const Shelf: React.FC<ShelfProps> = ({
             role="button"
             tabIndex={0}
             aria-label={t('slide_right')}
-            onKeyDown={(event: React.KeyboardEvent) =>
-              (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)
-            }
+            onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
             onClick={() => handleSlide(doSlide)}
           >
             <ChevronRight />

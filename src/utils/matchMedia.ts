@@ -5,7 +5,7 @@
  */
 export const addMediaQueryListChangeListener = (mediaQuery: MediaQueryList, callback: (event: MediaQueryListEvent) => void): void => {
   if (typeof mediaQuery.addEventListener === 'undefined') {
-    mediaQuery.addListener(callback)
+    mediaQuery.addListener(callback);
   } else {
     mediaQuery.addEventListener('change', callback);
   }
@@ -18,7 +18,7 @@ export const addMediaQueryListChangeListener = (mediaQuery: MediaQueryList, call
  */
 export const removeMediaQueryListChangeListener = (mediaQuery: MediaQueryList, callback: (event: MediaQueryListEvent) => void): void => {
   if (typeof mediaQuery.removeEventListener === 'undefined') {
-    mediaQuery.removeListener(callback)
+    mediaQuery.removeListener(callback);
   } else {
     mediaQuery.removeEventListener('change', callback);
   }
