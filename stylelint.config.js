@@ -268,6 +268,12 @@ module.exports = (function() {
           name    : 'State Modifier',
           selector: /^&(:(?!:)|\[)/,
         },
+
+        {
+          type: 'at-rule',
+          name: 'include',
+          parameter: new RegExp('responsive')
+        },
       ],
 
       // Ensure logical and consistent property ordering

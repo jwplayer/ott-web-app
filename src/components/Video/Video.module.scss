@@ -10,6 +10,8 @@
 }
 
 .mainPadding {
+  padding: 37px 56px 0;
+
   @include responsive.tablet-only() {
     padding: 34px 24px 24px;
   }
@@ -17,8 +19,6 @@
   @include responsive.mobile-only() {
     padding: 16px;
   }
-
-  padding: 37px 56px 0;
 }
 
 .main {
@@ -34,6 +34,9 @@
 }
 
 .info {
+  width: 450px;
+  min-height: 380px;
+
   @include responsive.tablet-only() {
     width: 350px;
   }
@@ -42,22 +45,19 @@
     width: 100%;
     padding-top: 225px;
   }
-
-  width: 450px;
-  min-height: 380px;
 }
 
 .title {
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 40px;
+  letter-spacing: 0.25px;
+
   @include responsive.mobile-only() {
     font-size: 20px;
     line-height: 20px;
     letter-spacing: 0.15px;
   }
-
-  font-weight: 700;
-  font-size: 34px;
-  line-height: 40px;
-  letter-spacing: 0.25px;
 }
 
 .metaContainer {
@@ -66,22 +66,18 @@
 }
 
 .meta {
-  @include responsive.mobile-only() {
-    order: 2;
-    font-size: 14px;
-  }
   margin-bottom: 8px;
   font-size: 16px;
   line-height: 18px;
   letter-spacing: 0.15px;
+
+  @include responsive.mobile-only() {
+    order: 2;
+    font-size: 14px;
+  }
 }
 
 .seriesMeta {
-  @include responsive.mobile-only() {
-    order: 1;
-    margin: 4px 0;
-    font-size: 18px;
-  }
   margin-top: 24px;
   margin-bottom: 8px;
   font-size: 20px;
@@ -90,6 +86,12 @@
 
   &.seriesMetaPlayer {
     margin-top: 4px;
+  }
+
+  @include responsive.mobile-only() {
+    order: 1;
+    margin: 4px 0;
+    font-size: 18px;
   }
 }
 
@@ -107,16 +109,6 @@
 }
 
 .otherButtons {
-  @include responsive.mobile-only() {
-    flex-wrap: wrap;
-    > button:first-child {
-      margin-right: 0;
-      margin-bottom: 8px;
-    }
-    > button:not(:first-child) {
-      flex: 1;
-    }
-  }
   display: flex;
   justify-content: center;
   width: 100%;
@@ -128,6 +120,17 @@
 
   > button:last-child {
     margin-right: 0;
+  }
+
+  @include responsive.mobile-only() {
+    flex-wrap: wrap;
+    > button:first-child {
+      margin-right: 0;
+      margin-bottom: 8px;
+    }
+    > button:not(:first-child) {
+      flex: 1;
+    }
   }
 }
 
@@ -141,6 +144,13 @@
   background-size: cover;
 
   &.normal {
+    width: 720px;
+    height: 405px;
+    margin: 37px 56px;
+    border-radius: 4px;
+    mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%); /* stylelint-disable-line */
+
     @include responsive.tablet-only() {
       width: 600px;
       height: 338px;
@@ -154,24 +164,18 @@
       mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
       -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%); /* stylelint-disable-line */
     }
-
-    width: 720px;
-    height: 405px;
-    margin: 37px 56px;
-    border-radius: 4px;
-    mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
-    -webkit-mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%); /* stylelint-disable-line */
   }
 
   &.fading {
-    @include responsive.mobile-only() {
-      mask-image: radial-gradient(farthest-corner at 70% 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 65%);
-      -webkit-mask-image: radial-gradient(farthest-corner at 70% 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 65%); /* stylelint-disable-line */
-    }
     width: 100vw;
     height: 100vh;
     mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 50%);
     -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 50%); /* stylelint-disable-line */
+
+    @include responsive.mobile-only() {
+      mask-image: radial-gradient(farthest-corner at 70% 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 65%);
+      -webkit-mask-image: radial-gradient(farthest-corner at 70% 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 65%); /* stylelint-disable-line */
+    }
   }
 }
 
@@ -218,11 +222,19 @@
   padding: 24px 56px;
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.4) 100%);
   pointer-events: none;
+
+  @include responsive.mobile-only() {
+    padding-left: 16px;
+  }
 }
 
 .playerContent {
   display: flex;
-  width: 50%;
+  width: 80%;
+
+  @include responsive.mobile-only() {
+    width: 100%;
+  }
 }
 
 .backButton {

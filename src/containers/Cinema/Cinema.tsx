@@ -3,6 +3,7 @@ import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
 import type { JWPlayer } from 'types/jwplayer';
+import classNames from 'classnames';
 
 import { VideoProgressMinMax } from '../../config';
 import { useWatchHistoryListener } from '../../hooks/useWatchHistoryListener';
@@ -147,7 +148,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   }, []);
 
   return (
-    <div className={styles.cinema}>
+    <div className={classNames(styles.cinema, { [styles.fill]: !isTrailer })}>
       <div ref={playerElementRef} />
     </div>
   );

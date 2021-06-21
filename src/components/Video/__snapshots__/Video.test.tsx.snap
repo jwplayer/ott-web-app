@@ -132,7 +132,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
           class="player"
         >
           <div
-            class="cinema"
+            class="cinema fill"
           >
             <div />
           </div>
