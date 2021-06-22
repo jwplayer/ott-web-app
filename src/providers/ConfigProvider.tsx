@@ -17,6 +17,7 @@ const defaultConfig: Config = {
   content: [],
   menu: [],
   options: {
+    enableSharing: true,
     shelveTitles: true,
   },
 };
