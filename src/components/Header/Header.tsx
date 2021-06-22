@@ -35,6 +35,7 @@ const Header: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation('menu');
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
     [styles.mobileSearchActive]: mobileSearchActive && breakpoint <= Breakpoint.sm,
@@ -78,11 +79,11 @@ const Header: React.FC<Props> = ({
         </div>
         {logoSrc && (
           <div className={styles.brand}>
-            <Logo src={logoSrc} />
+            <Logo src={logoSrc} onLoad={() => setLogoLoaded(true)} />
           </div>
         )}
         <nav className={styles.nav} aria-label="menu">
-          {children}
+          {logoLoaded ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
       </div>
