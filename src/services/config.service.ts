@@ -38,8 +38,8 @@ const configSchema: SchemaOf<Config> = object({
   player: string().defined(),
   recommendationsPlaylist: string().notRequired(),
   searchPlaylist: string().notRequired(),
-  analyticsToken: string().notRequired(),
-  adSchedule: string().notRequired(),
+  analyticsToken: string().nullable(),
+  adSchedule: string().nullable(),
   assets: object({
     banner: string().notRequired(),
   }).defined(),
@@ -98,27 +98,26 @@ const addPersonalShelves = (data: Config) => {
  * @returns {Config}
  */
 const parseDeprecatedConfig = (config: Config) => {
-  if (config.description.startsWith('{')) {
-    try {
-      const description = JSON.parse(config.description);
-      config.description = '';
-
-      return {
-        ...config,
-        id: 'ID_PLACE_HOLDER',
-        menu: description.menu,
-        analyticsToken: description.analyticsToken,
-        options: {
-          dynamicBlur: description.dynamicBlur,
-          ...config.options,
-        },
-      };
-    } catch (error: unknown) {
-      throw new Error('Failed to JSON parse the `description` property');
-    }
+  if (!config.description.startsWith('{')) {
+    return config;
   }
 
-  return config;
+  try {
+    const { menu, id, analyticsToken, adSchedule, description, ...options } = JSON.parse(config.description);
+
+    const updatedConfig = {
+      menu: menu || [],
+      id: id || 'showcase-id',
+      analyticsToken: analyticsToken || null,
+      adSchedule: adSchedule || null,
+      description: description || '',
+      options: Object.assign(config.options, options),
+    };
+
+    return Object.assign(config, updatedConfig);
+  } catch (error: unknown) {
+    throw new Error('Failed to JSON parse the `description` property');
+  }
 };
 
 export const validateConfig = (config: Config): Promise<Config> => {

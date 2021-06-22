@@ -10,8 +10,8 @@ export type Config = {
   player: string;
   recommendationsPlaylist?: string;
   searchPlaylist?: string;
-  analyticsToken?: string;
-  adSchedule?: string;
+  analyticsToken?: string | null;
+  adSchedule?: string | null;
   assets: { banner?: string };
   content: Content[];
   menu: Menu[];
