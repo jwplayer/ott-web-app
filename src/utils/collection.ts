@@ -11,7 +11,7 @@ const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
 const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
   if (!filter) return playlist;
 
-  return playlist.filter(({ tags }) => tags.split(',').includes(filter));
+  return playlist.filter(({ tags }) => (tags ? tags.split(',').includes(filter) : false));
 };
 
 const getFiltersFromSeries = (series: PlaylistItem[]): string[] =>
