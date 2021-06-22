@@ -8,8 +8,8 @@ export type Config = {
   description: string;
   footerText?: string | null;
   player: string;
-  recommendationsPlaylist?: string;
-  searchPlaylist?: string;
+  recommendationsPlaylist?: string | null;
+  searchPlaylist?: string | null;
   analyticsToken?: string | null;
   adSchedule?: string | null;
   assets: { banner?: string };

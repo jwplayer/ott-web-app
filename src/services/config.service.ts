@@ -36,8 +36,8 @@ const configSchema: SchemaOf<Config> = object({
   description: string().defined(),
   footerText: string().nullable(),
   player: string().defined(),
-  recommendationsPlaylist: string().notRequired(),
-  searchPlaylist: string().notRequired(),
+  recommendationsPlaylist: string().nullable(),
+  searchPlaylist: string().nullable(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
   assets: object({
