@@ -130,7 +130,7 @@ const Series = ({
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {item.tags.split(',').map((tag) => (
+        {item.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
         {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}

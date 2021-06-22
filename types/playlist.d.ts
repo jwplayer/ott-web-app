@@ -32,7 +32,7 @@ export type PlaylistItem = {
   seriesId?: string;
   episodeNumber?: string;
   seasonNumber?: string;
-  tags: string;
+  tags?: string;
   trailerId?: string;
   title: string;
   tracks: Track[];
