@@ -19,7 +19,7 @@ import { generateEpisodeJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
 import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import { watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
 
 import styles from './Series.module.scss';
 
@@ -59,8 +59,12 @@ const Series = ({
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const enableSharing: boolean = config.options.enableSharing === true;
 
+  const { getDictionary: getWatchHistoryDictionary } = useWatchHistory();
+  const watchHistoryDictionary = getWatchHistoryDictionary();
   const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
   const watchHistoryItem = item && watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
+
+  console.log(watchHistoryItem);
 
   useBlurImageUpdater(item);
 
@@ -183,6 +187,7 @@ const Series = ({
           <CardGrid
             playlist={filteredPlaylist}
             onCardClick={onCardClick}
+            watchHistory={watchHistoryDictionary}
             isLoading={isLoading}
             currentCardItem={item}
             currentCardLabel={t('current_episode')}

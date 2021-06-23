@@ -186,6 +186,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: 1;
   height: 5px;
   background-color: rgba(variables.$black, 0.38);
 }

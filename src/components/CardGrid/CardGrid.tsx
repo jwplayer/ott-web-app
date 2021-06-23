@@ -21,6 +21,7 @@ type CardGridProps = {
   playlist: PlaylistItem[];
   onCardHover?: (item: PlaylistItem) => void;
   onCardClick: (item: PlaylistItem) => void;
+  watchHistory?: { [key: string]: number };
   isLoading: boolean;
   cols?: Breakpoints;
   currentCardItem?: PlaylistItem;
@@ -31,6 +32,7 @@ function CardGrid({
   playlist,
   onCardClick,
   onCardHover,
+  watchHistory,
   isLoading = false,
   cols = defaultCols,
   currentCardItem,
@@ -55,6 +57,7 @@ function CardGrid({
             title={title}
             duration={duration}
             posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
+            progress={watchHistory ? watchHistory[mediaid] : undefined}
             seriesId={seriesId}
             episodeNumber={episodeNumber}
             seasonNumber={seasonNumber}
