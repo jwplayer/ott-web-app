@@ -1,4 +1,4 @@
-import React, { ReactNode, FC, useState, useContext } from 'react';
+import React, { ReactNode, FC, useState, useContext, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
@@ -26,14 +26,23 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const searchActive = UIStore.useState((s) => s.searchActive);
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
 
+  const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
+
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
   const banner = assets.banner;
 
-  const searchButtonClickHandler = () =>
+  useEffect(() => {
+    if (searchActive && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchActive]);
+
+  const searchButtonClickHandler = () => {
     UIStore.update((s) => {
       s.searchActive = true;
     });
+  };
 
   const closeSearchButtonClickHandler = () => {
     resetSearchQuery();
@@ -63,6 +72,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             query: searchQuery,
             onQueryChange: (event) => updateSearchQuery(event.target.value),
             onClearButtonClick: () => updateSearchQuery(''),
+            inputRef: searchInputRef,
           }}
           searchActive={searchActive}
           onSearchButtonClick={searchButtonClickHandler}
