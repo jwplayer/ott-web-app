@@ -21,9 +21,11 @@ const parseMarkdown = (value: string): string =>
     .replace(MARKDOWN_STRONG_REGEX, (...[, word]) => `<strong>${word}</strong>`)
     .replace(MARKDOWN_ITALIC_REGEX, (...[, word]) => `<em>${word}</em>`)
     .replace(MARKDOWN_LINK_REGEX, (...[, word, link]) => {
-      const target = /^(https?|www\.|\/\/)/.test(link) ? ' target="_blank"' : '';
+      const externalLink = /^(https?|www\.|\/\/)/.test(link);
+      const target = externalLink ? ' target="_blank"' : '';
+      const rel = externalLink ? ' rel="noopener"' : '';
 
-      return `<a href="${link}"${target}>${word}</a>`;
+      return `<a href="${link}"${target}${rel}>${word}</a>`;
     })
     .replace(LINEBREAK_REGEX, '<br />'); // linebreak formatter should run last
 
