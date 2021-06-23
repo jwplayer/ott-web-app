@@ -10,7 +10,8 @@
 .header {
   height: variables.$header-height;
   padding: 10px variables.$base-spacing * 4;
-  background: var(--header-background);
+  color: var(--header-contrast-color, variables.$white);
+  background: var(--header-background, transparent);
 
   //
   // Make header fixed
@@ -53,6 +54,10 @@
 .iconButton {
   width: 36px;
   height: 36px;
+
+  > svg {
+    fill: currentColor;
+  }
 }
 
 //

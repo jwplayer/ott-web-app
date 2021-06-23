@@ -29,7 +29,7 @@ $large-button-height: 40px;
   }
 
   &.default {
-    color: theme.$btn-default-color;
+    color: currentColor;
     background-color: theme.$btn-default-bg;
   }
 

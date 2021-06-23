@@ -82,6 +82,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     }
     if (root && headerBackground) {
       root.style.setProperty('--header-background', headerBackground);
+      root.style.setProperty('--header-contrast-color', calculateContrastColor(headerBackground));
     }
   };
 
