@@ -29,6 +29,7 @@ type Props = {
   feedId?: string;
   trailerItem?: PlaylistItem;
   play: boolean;
+  progress?: number;
   startPlay: () => void;
   goBack: () => void;
   onComplete?: () => void;
@@ -53,6 +54,7 @@ const Video: React.FC<Props> = ({
   trailerItem,
   play,
   startPlay,
+  progress,
   goBack,
   onComplete,
   poster,
@@ -123,12 +125,18 @@ const Video: React.FC<Props> = ({
               color="primary"
               variant="contained"
               size="large"
-              label={t('video:start_watching')}
+              label={typeof progress === 'number' ? t('video:continue_watching') : t('video:start_watching')}
               startIcon={<Play />}
               onClick={startPlay}
               active={play}
               fullWidth
-            />
+            >
+              {progress && (
+                <div className={styles.progressRail}>
+                  <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
+                </div>
+              )}
+            </Button>
           </div>
           <div className={styles.otherButtons}>
             {trailerItem && (

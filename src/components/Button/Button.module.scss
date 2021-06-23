@@ -12,6 +12,7 @@ $large-button-height: 40px;
   align-items: center;
   height: $medium-button-height;
   padding: 0 16px;
+  overflow: hidden;
 
   font-family: theme.$body-alt-font-family;
   font-weight: 700;

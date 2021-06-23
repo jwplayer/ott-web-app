@@ -21,6 +21,7 @@ import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './Series.module.scss';
+import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 
 type SeriesRouteParams = {
   id: string;
@@ -57,6 +58,9 @@ const Series = ({
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const enableSharing: boolean = config.options.enableSharing === true;
+
+  const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
+  const watchHistoryItem = item && watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
 
   useBlurImageUpdater(item);
 
@@ -147,6 +151,7 @@ const Series = ({
         feedId={feedId ?? undefined}
         trailerItem={trailerItem}
         play={play}
+        progress={watchHistoryItem?.progress}
         startPlay={startPlay}
         goBack={goBack}
         onComplete={handleComplete}

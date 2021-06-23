@@ -19,6 +19,7 @@ import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
 
 import styles from './Movie.module.scss';
+import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 
 type MovieRouteParams = {
   id: string;
@@ -45,6 +46,9 @@ const Movie = ({
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const enableSharing: boolean = config.options.enableSharing === true;
+
+  const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
+  const watchHistoryItem = item && watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
 
   useBlurImageUpdater(item);
 
@@ -131,6 +135,7 @@ const Movie = ({
         startPlay={startPlay}
         goBack={goBack}
         onComplete={handleComplete}
+        progress={watchHistoryItem?.progress}
         poster={posterFading ? 'fading' : 'normal'}
         enableSharing={enableSharing}
         hasShared={hasShared}

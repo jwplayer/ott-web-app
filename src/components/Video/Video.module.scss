@@ -259,3 +259,19 @@
     transition: opacity 0.6s ease;
   }
 }
+
+.progressRail {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba(variables.$black, 0.4);
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  background-color: variables.$white;
+}
