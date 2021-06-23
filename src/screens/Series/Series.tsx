@@ -64,8 +64,6 @@ const Series = ({
   const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
   const watchHistoryItem = item && watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
 
-  console.log(watchHistoryItem);
-
   useBlurImageUpdater(item);
 
   const isFavorited = !!item && hasItem(item);
