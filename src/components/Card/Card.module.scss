@@ -19,7 +19,7 @@
 
       & .poster {
         box-shadow: 0 0 0 3px var(--highlight-color, variables.$white), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
-          0 4px 5px rgb(0 0 0 / 20%);
+        0 4px 5px rgb(0 0 0 / 20%);
       }
     }
   }
@@ -28,15 +28,20 @@
 
     .title {
       height: 1em;
+      padding-right: 8px;
       font-family: var(--body-font-family);
       font-size: 34px;
       line-height: 36px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.12), 0 1px 10px rgba(0, 0, 0, 0.2);
 
       @include responsive.mobile-only {
         font-size: 24px;
+        line-height: 26px;
       }
     }
+
     .tag {
       padding: 9px 16px;
       font-size: 16px;
@@ -44,11 +49,13 @@
         padding: 4px 8px;
       }
     }
+
     .meta {
       justify-content: space-between;
       padding: 16px;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
     }
+
     &:hover {
       transform: scale(1.02);
     }
@@ -58,6 +65,7 @@
     &:hover {
       transform: scale(1);
       cursor: default;
+
       & .poster {
         box-shadow: none;
       }
@@ -138,6 +146,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
     background-color: var(--card-slider-loading-card-bg);
     border-radius: 5px;
   }
+
   @include responsive.mobile-only {
     font-size: 14px;
   }
