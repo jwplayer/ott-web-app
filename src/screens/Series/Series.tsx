@@ -81,9 +81,10 @@ const Series = ({
 
     if (typeof navigator.share === 'function') {
       navigator.share({ title: item.title, text: item.description, url: window.location.href });
-    } else {
-      copyToClipboard(window.location.href);
+      return;
     }
+
+    copyToClipboard(window.location.href);
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };
