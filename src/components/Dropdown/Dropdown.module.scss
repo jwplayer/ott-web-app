@@ -31,6 +31,7 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
     margin-right: 9px;
     background-color: $select-arrow;
     clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    -webkit-clip-path: polygon(100% 0%, 0 0%, 50% 100%); /* stylelint-disable-line */
     content: '';
     justify-self: end;
   }
@@ -45,11 +46,13 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
     font-family: inherit;
     font-weight: 700;
     font-size: 1rem;
+    line-height: 1em;
     text-overflow: ellipsis;
     background: none;
     border: none;
     outline: none;
     cursor: inherit;
+    -webkit-appearance: none; /* stylelint-disable-line */
     appearance: none;
 
     // Remove IE arrow
