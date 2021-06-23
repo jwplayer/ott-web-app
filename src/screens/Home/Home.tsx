@@ -120,10 +120,10 @@ const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (watchHistoryLoaded) {
+    if (favorites || watchHistory) {
       ((listRef.current as unknown) as List)?.recomputeRowHeights();
     }
-  }, [watchHistoryLoaded]);
+  }, [favorites, watchHistory]);
 
   return (
     <div className={styles.home}>
