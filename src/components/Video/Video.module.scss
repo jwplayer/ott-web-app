@@ -122,18 +122,28 @@
     margin-right: 0;
   }
 
+  @include responsive.mobile-and-tablet() {
+    > button {
+      padding: 0 12px;
+    }
+  }
+
   @include responsive.mobile-only() {
     flex-wrap: wrap;
+
     > button:first-child {
-      margin-right: 0;
       margin-bottom: 8px;
     }
-    > button:not(:first-child) {
+
+    > button:not(.trailerButton) {
       flex: 1;
+    }
+
+    .trailerButton {
+      margin-right: 0;
     }
   }
 }
-
 .poster {
   position: absolute;
   top: 0;
