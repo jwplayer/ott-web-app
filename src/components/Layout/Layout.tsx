@@ -23,11 +23,25 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
+  const searchActive = UIStore.useState((s) => s.searchActive);
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
 
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
   const banner = assets.banner;
+
+  const searchButtonClickHandler = () =>
+    UIStore.update((s) => {
+      s.searchActive = true;
+    });
+
+  const closeSearchButtonClickHandler = () => {
+    resetSearchQuery();
+
+    UIStore.update((s) => {
+      s.searchActive = false;
+    });
+  };
 
   return (
     <div className={styles.layout}>
@@ -50,7 +64,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             onQueryChange: (event) => updateSearchQuery(event.target.value),
             onClearButtonClick: () => updateSearchQuery(''),
           }}
-          onCloseSearchButtonClick={() => resetSearchQuery()}
+          searchActive={searchActive}
+          onSearchButtonClick={searchButtonClickHandler}
+          onCloseSearchButtonClick={closeSearchButtonClickHandler}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

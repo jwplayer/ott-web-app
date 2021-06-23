@@ -47,7 +47,14 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
     }
   }, [firstRender, query, searchQuery, updateSearchQuery]);
 
-  const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, searchPlaylist));
+  const onCardClick = (playlistItem: PlaylistItem) => {
+    UIStore.update((s) => {
+      s.searchQuery = '';
+      s.searchActive = false;
+    });
+
+    history.push(cardUrl(playlistItem, searchPlaylist));
+  };
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
   if ((error || !playlist) && !isFetching) {
