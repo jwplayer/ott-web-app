@@ -61,8 +61,8 @@ const Home = (): JSX.Element => {
     const contentItem: Content = itemData.content[index];
 
     return (
-      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
-        {({ playlist, error, isLoading }) => (
+      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId} style={style}>
+        {({ playlist, error, isLoading, style }) => (
           <div
             key={key}
             style={style}

@@ -10,6 +10,7 @@ type ChildrenParams = {
   playlist: Playlist;
   isLoading: boolean;
   error: unknown;
+  style?: React.CSSProperties;
 };
 
 type Props = {
@@ -17,9 +18,10 @@ type Props = {
   relatedItem?: PlaylistItem;
   onPlaylistUpdate?: (playlist: Playlist) => void;
   children: (childrenParams: ChildrenParams) => JSX.Element;
+  style?: React.CSSProperties;
 };
 
-const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, children }: Props): JSX.Element | null => {
+const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, children }: Props): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const { isLoading, error, data: fetchedPlaylist = { title: '', playlist: [] } }: UsePlaylistResult = usePlaylist(
     playlistId,
@@ -32,14 +34,14 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, children
   const { getPlaylist: getFavoritesPlayist } = useFavorites();
   const favoritesPlaylist = getFavoritesPlayist();
   const { getPlaylist: getWatchHistoryPlayist } = useWatchHistory();
-  const watchHistoryPlayist = getWatchHistoryPlayist();
+  const watchHistoryPlaylist = getWatchHistoryPlayist();
 
   useEffect(() => {
     if (playlist && onPlaylistUpdate) onPlaylistUpdate(playlist);
   }, [playlist, onPlaylistUpdate]);
 
   if (playlistId === PersonalShelf.Favorites) playlist = favoritesPlaylist;
-  if (playlistId === PersonalShelf.ContinueWatching) playlist = watchHistoryPlayist;
+  if (playlistId === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
 
   if (!playlistId) return <p>No playlist id</p>;
   if (!playlist.playlist.length) {
@@ -50,7 +52,7 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, children
     playlist.playlist.unshift(relatedItem);
   }
 
-  return children({ playlist, isLoading, error });
+  return children({ playlist, isLoading, error, style });
 };
 
 export default PlaylistContainer;
