@@ -1,11 +1,13 @@
 {
   "add_to_favorites": "Add to favorites",
+  "all_seasons": "All seasons",
   "copied_url": "Copied url",
   "current_episode": "Current episode",
   "currently_playing": "Currently playing",
   "episodes": "Episodes",
   "favorite": "Favorite",
   "remove_from_favorites": "Remove from favorites",
+  "season_prefix": "Season ",
   "share": "Share",
   "start_watching": "Start watching",
   "trailer": "Trailer",

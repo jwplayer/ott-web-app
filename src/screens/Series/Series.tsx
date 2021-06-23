@@ -162,8 +162,8 @@ const Series = ({
               <Filter
                 name="categories"
                 value={seasonFilter}
-                valuePrefix="Season "
-                defaultLabel="All"
+                valuePrefix={t('season_prefix')}
+                defaultLabel={t('all_seasons')}
                 options={filters}
                 setValue={setSeasonFilter}
               />

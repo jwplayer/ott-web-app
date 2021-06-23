@@ -46,6 +46,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
         <Dropdown
           options={options}
           defaultLabel={defaultLabel}
+          valuePrefix={valuePrefix}
           name={name}
           value={value}
           onChange={handleChange}
