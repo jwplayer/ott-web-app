@@ -86,7 +86,7 @@ const TileDock = <T extends unknown>({
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
-  const transitionBasis: string = `transform ${animated ? transitionTime : '0s'} ease`;
+  const transitionBasis: string = isMultiPage ? `transform ${animated ? transitionTime : '0s'} ease` : '';
 
   const needControls: boolean = showControls && isMultiPage;
   const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
