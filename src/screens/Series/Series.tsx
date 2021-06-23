@@ -102,6 +102,10 @@ const Series = ({
     };
   }, [play]);
 
+  useEffect(() => {
+    (document.scrollingElement || document.body).scrollTop = 0;
+  }, []);
+
   if (isLoading || playlistIsLoading) return <LoadingOverlay />;
   if (error || !item) return <ErrorPage title="Episode not found!" />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;

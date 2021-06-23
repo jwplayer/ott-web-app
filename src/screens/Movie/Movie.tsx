@@ -75,6 +75,10 @@ const Movie = ({
     };
   }, [play]);
 
+  useEffect(() => {
+    (document.scrollingElement || document.body).scrollTop = 0;
+  }, []);
+
   const { data: playlist } = useRecommendedPlaylist(config.recommendationsPlaylist || '', item);
 
   const handleComplete = useCallback(() => {
