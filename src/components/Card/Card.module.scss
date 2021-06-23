@@ -155,6 +155,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 .meta {
   position: absolute;
   bottom: 0;
+  z-index: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;

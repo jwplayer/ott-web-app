@@ -305,7 +305,7 @@ module.exports = (function() {
       'selector-pseudo-element-colon-notation': 'double',
 
       // PostCSS takes care of automatic vendor prefixing (not implemented currently)
-      'property-no-vendor-prefix': false,
+      'property-no-vendor-prefix': null,
 
       // No units are needed for zero
       'length-zero-no-unit': true,
