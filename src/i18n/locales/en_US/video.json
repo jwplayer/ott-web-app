@@ -10,6 +10,8 @@
   "season_prefix": "Season ",
   "share": "Share",
   "start_watching": "Start watching",
+  "total_episodes": "{{ count }} episode",
+  "total_episodes_plural": "{{ count }} episodes",
   "trailer": "Trailer",
   "watch_trailer": "Watch the trailer",
   "share_video": "Share this video"

@@ -42,6 +42,7 @@ type Props = {
   onTrailerClick: () => void;
   onTrailerClose: () => void;
   isSeries?: boolean;
+  episodeCount?: number;
   children?: JSX.Element;
 };
 
@@ -65,6 +66,7 @@ const Video: React.FC<Props> = ({
   onTrailerClick,
   onTrailerClose,
   isSeries = false,
+  episodeCount,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [userActive, setUserActive] = useState(true);
@@ -84,7 +86,8 @@ const Video: React.FC<Props> = ({
 
   const metaData = [];
   if (item.pubdate) metaData.push(new Date(item.pubdate * 1000).getFullYear());
-  if (item.duration) metaData.push(formatDuration(item.duration));
+  if (!isSeries && item.duration) metaData.push(formatDuration(item.duration));
+  if (isSeries && episodeCount) metaData.push(t('video:total_episodes', { count: episodeCount }));
   if (item.genre) metaData.push(item.genre);
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');

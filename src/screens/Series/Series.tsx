@@ -137,6 +137,7 @@ const Series = ({
       </Helmet>
       <VideoComponent
         title={seriesPlaylist.title}
+        episodeCount={seriesPlaylist.playlist.length}
         item={item}
         feedId={feedId ?? undefined}
         trailerItem={trailerItem}
