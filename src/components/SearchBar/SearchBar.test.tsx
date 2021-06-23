@@ -13,14 +13,14 @@ describe('<SearchBar>', () => {
   test('uses query param to fill the search bar input', () => {
     const { getByLabelText } = render(<SearchBar query="my search query" onQueryChange={jest.fn()} />);
 
-    expect((getByLabelText('Search') as HTMLInputElement).value).toEqual('my search query');
+    expect((getByLabelText('search_bar.search_label') as HTMLInputElement).value).toEqual('my search query');
   });
 
   test('calls the onQueryChange callback when the user types in the search input', () => {
     const callback = jest.fn();
     const { getByLabelText } = render(<SearchBar onQueryChange={callback} />);
 
-    const searchInput = getByLabelText('Search') as HTMLInputElement;
+    const searchInput = getByLabelText('search_bar.search_label') as HTMLInputElement;
 
     fireEvent.change(searchInput, { target: { value: 'my search phrase' } });
 
@@ -32,7 +32,7 @@ describe('<SearchBar>', () => {
     const callback = jest.fn();
     const { getByLabelText } = render(<SearchBar onClearButtonClick={callback} query="testing..." onQueryChange={jest.fn()} />);
 
-    fireEvent.click(getByLabelText('Clear search'));
+    fireEvent.click(getByLabelText('search_bar.clear_search_label'));
 
     expect(callback).toBeCalled();
   });

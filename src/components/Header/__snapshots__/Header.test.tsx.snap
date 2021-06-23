@@ -70,9 +70,9 @@ exports[`<Header /> renders header 1`] = `
             </g>
           </svg>
           <input
-            aria-label="Search"
+            aria-label="search_bar.search_label"
             class="input"
-            placeholder="Search..."
+            placeholder="search_bar.search_placeholder"
             type="text"
             value=""
           />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import IconButton from '../IconButton/IconButton';
 import SearchIcon from '../../icons/Search';
@@ -14,6 +15,8 @@ export type Props = {
 };
 
 const SearchBar: React.FC<Props> = ({ query, onQueryChange, onClearButtonClick, inputRef }: Props) => {
+  const { t } = useTranslation('search');
+
   return (
     <div className={styles.searchBar}>
       <SearchIcon className={styles.icon} />
@@ -22,12 +25,12 @@ const SearchBar: React.FC<Props> = ({ query, onQueryChange, onClearButtonClick, 
         type="text"
         value={query}
         onChange={onQueryChange}
-        aria-label="Search"
-        placeholder="Search..."
+        aria-label={t('search_bar.search_label')}
+        placeholder={t('search_bar.search_placeholder')}
         ref={inputRef}
       />
       {query ? (
-        <IconButton className={styles.clearButton} aria-label="Clear search" onClick={onClearButtonClick}>
+        <IconButton className={styles.clearButton} aria-label={t('search_bar.clear_search_label')} onClick={onClearButtonClick}>
           <CancelIcon />
         </IconButton>
       ) : null}
