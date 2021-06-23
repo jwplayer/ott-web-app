@@ -19,9 +19,9 @@ import { generateEpisodeJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
 import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
+import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 
 import styles from './Series.module.scss';
-import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 
 type SeriesRouteParams = {
   id: string;

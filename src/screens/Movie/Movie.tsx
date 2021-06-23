@@ -17,9 +17,9 @@ import { generateMovieJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
+import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 
 import styles from './Movie.module.scss';
-import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 
 type MovieRouteParams = {
   id: string;
