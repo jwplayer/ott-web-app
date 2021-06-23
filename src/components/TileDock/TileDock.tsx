@@ -199,8 +199,7 @@ const TileDock = <T extends unknown>({
                 paddingLeft: spacing / 2,
                 paddingRight: spacing / 2,
                 boxSizing: 'border-box',
-                // opacity: isInView ? 1 : 0.3,
-                transition: 'opacity .2s ease-in 0s',
+                transition: !isInView ? 'opacity .2s ease-in 0s' : '',
               }}
             >
               {renderTile(tile.item, isInView)}
