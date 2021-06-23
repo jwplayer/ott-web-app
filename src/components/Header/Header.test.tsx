@@ -16,6 +16,9 @@ describe('<Header />', () => {
           onQueryChange: jest.fn(),
         }}
         searchEnabled
+        searchActive={false}
+        onSearchButtonClick={jest.fn()}
+        onCloseSearchButtonClick={jest.fn()}
       >
         {playlistMenuItems}
       </Header>,
