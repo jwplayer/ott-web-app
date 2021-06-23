@@ -58,8 +58,8 @@ $large-button-height: 40px;
     }
 
     &:hover {
+      z-index: 1;
       background: theme.$btn-default-bg;
-      transform: scale(1.1);
       opacity: 1;
     }
   }
@@ -67,8 +67,10 @@ $large-button-height: 40px;
   &.fullWidth {
     width: 100%;
 
-    &:hover {
-      transform: scale(1.04);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        transform: scale(1.04);
+      }
     }
   }
 
@@ -77,9 +79,11 @@ $large-button-height: 40px;
     height: 18px;
   }
 
-  &:hover,
-  &:focus {
-    transform: scale(1.1);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover,
+    &:focus {
+      transform: scale(1.06);
+    }
   }
 }
 
@@ -90,10 +94,10 @@ $large-button-height: 40px;
   margin-right: 11px;
 
   > svg {
-
     width: 20px;
     height: 20px;
     fill: currentColor;
+
     @include responsive.tablet-only() {
       width: 18px;
       height: 18px;
