@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { Playlist, PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,7 @@ export const featuredTileBreakpoints: Breakpoints = {
 
 export type ShelfProps = {
   playlist: Playlist;
-  onCardClick: (playlistItem: PlaylistItem) => void;
+  onCardClick: (playlistItem: PlaylistItem, playlistId?: string) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
   featured?: boolean;
@@ -56,6 +56,60 @@ const Shelf: React.FC<ShelfProps> = ({
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const imageSourceWidth = (featured ? 640 : 320) * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
+  const renderTile = useCallback(
+    (item, isInView) => (
+      <Card
+        title={item.title}
+        duration={item.duration}
+        progress={watchHistory ? watchHistory[item.mediaid] : undefined}
+        posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
+        seriesId={item.seriesId}
+        seasonNumber={item.seasonNumber}
+        episodeNumber={item.episodeNumber}
+        onClick={isInView ? () => onCardClick(item, playlist.feedid) : undefined}
+        onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
+        featured={featured}
+        disabled={!isInView}
+        loading={loading}
+      />
+    ),
+    [featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory],
+  );
+
+  const renderRightControl = useCallback(
+    (doSlide) => (
+      <div
+        className={styles.chevron}
+        role="button"
+        tabIndex={0}
+        aria-label={t('slide_right')}
+        onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
+        onClick={() => handleSlide(doSlide)}
+      >
+        <ChevronRight />
+      </div>
+    ),
+    [t],
+  );
+
+  const renderLeftControl = useCallback(
+    (doSlide) => (
+      <div
+        className={classNames(styles.chevron, {
+          [styles.disabled]: !didSlideBefore,
+        })}
+        role="button"
+        tabIndex={didSlideBefore ? 0 : -1}
+        aria-label={t('slide_left')}
+        onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
+        onClick={() => handleSlide(doSlide)}
+      >
+        <ChevronLeft />
+      </div>
+    ),
+    [didSlideBefore, t],
+  );
+
   const handleSlide = (doSlide: () => void): void => {
     setDidSlideBefore(true);
     doSlide();
@@ -74,48 +128,9 @@ const Shelf: React.FC<ShelfProps> = ({
         showControls={!matchMedia('(hover: none)').matches && !loading}
         transitionTime={'0.3s'}
         spacing={8}
-        renderLeftControl={(doSlide) => (
-          <div
-            className={classNames(styles.chevron, {
-              [styles.disabled]: !didSlideBefore,
-            })}
-            role="button"
-            tabIndex={didSlideBefore ? 0 : -1}
-            aria-label={t('slide_left')}
-            onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
-            onClick={() => handleSlide(doSlide)}
-          >
-            <ChevronLeft />
-          </div>
-        )}
-        renderRightControl={(doSlide) => (
-          <div
-            className={styles.chevron}
-            role="button"
-            tabIndex={0}
-            aria-label={t('slide_right')}
-            onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
-            onClick={() => handleSlide(doSlide)}
-          >
-            <ChevronRight />
-          </div>
-        )}
-        renderTile={(item, isInView) => (
-          <Card
-            title={item.title}
-            duration={item.duration}
-            progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-            posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
-            seriesId={item.seriesId}
-            seasonNumber={item.seasonNumber}
-            episodeNumber={item.episodeNumber}
-            onClick={isInView ? () => onCardClick(item) : undefined}
-            onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
-            featured={featured}
-            disabled={!isInView}
-            loading={loading}
-          />
-        )}
+        renderLeftControl={renderLeftControl}
+        renderRightControl={renderRightControl}
+        renderTile={renderTile}
       />
     </div>
   );

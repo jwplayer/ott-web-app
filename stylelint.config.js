@@ -304,8 +304,8 @@ module.exports = (function() {
       // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
       'selector-pseudo-element-colon-notation': 'double',
 
-      // PostCSS takes care of automatic vendor prefixing
-      'property-no-vendor-prefix': true,
+      // PostCSS takes care of automatic vendor prefixing (not implemented currently)
+      'property-no-vendor-prefix': false,
 
       // No units are needed for zero
       'length-zero-no-unit': true,

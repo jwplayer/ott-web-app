@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useRef, useEffect } from 'react';
+import React, { CSSProperties, useContext, useRef, useEffect, useCallback } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
-import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
@@ -43,11 +43,15 @@ const Home = (): JSX.Element => {
   const { getPlaylist: getWatchHistoryPlaylist, getDictionary: getWatchHistoryDictionary } = useWatchHistory();
   const watchHistory = getWatchHistoryPlaylist();
   const watchHistoryDictionary = getWatchHistoryDictionary();
-  const watchHistoryLoaded = watchHistoryStore.useState((state) => state.playlistItemsLoaded);
   const favorites = favoritesStore.useState((state) => state.favorites);
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
+
+  const onCardClick = useCallback((playlistItem: PlaylistItem, playlistId?: string) => history.push(cardUrl(playlistItem, playlistId)), [
+    history,
+  ]);
+  const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
 
   const itemData: ItemData = createItemData(content);
 
@@ -55,9 +59,6 @@ const Home = (): JSX.Element => {
     if (!itemData?.content?.[index]) return null;
 
     const contentItem: Content = itemData.content[index];
-
-    const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, contentItem.playlistId));
-    const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
     return (
       <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
