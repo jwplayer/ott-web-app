@@ -131,11 +131,11 @@ const Video: React.FC<Props> = ({
               active={play}
               fullWidth
             >
-              {progress && (
+              {progress ? (
                 <div className={styles.progressRail}>
                   <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
                 </div>
-              )}
+              ) : null}
             </Button>
           </div>
           <div className={styles.otherButtons}>
