@@ -113,11 +113,29 @@ const TileDock = <T extends unknown>({
     if (!animated) setDoAnimationReset(true);
   };
 
-  const handleTouchStart = (event: React.TouchEvent): void =>
+  const handleTouchStart = (event: React.TouchEvent): void => {
     setTouchPosition({
       x: event.touches[0].clientX,
       y: event.touches[0].clientY,
     });
+  };
+
+  const [verticalScrollStopped, setVerticalScrollStopped] = useState<boolean>(false);
+
+  const handleTouchMove = (event: React.TouchEvent): void => {
+    if (verticalScrollStopped) return;
+
+    const newPosition = {
+      x: event.changedTouches[0].clientX,
+      y: event.changedTouches[0].clientY,
+    };
+    const movementX: number = Math.abs(newPosition.x - touchPosition.x);
+    const movementY: number = Math.abs(newPosition.y - touchPosition.y);
+    if (movementX > movementY && movementX > 10) {
+      setVerticalScrollStopped(true);
+      document.body.style.overflowY = 'hidden';
+    }
+  };
   const handleTouchEnd = (event: React.TouchEvent): void => {
     const newPosition = {
       x: event.changedTouches[0].clientX,
@@ -127,6 +145,8 @@ const TileDock = <T extends unknown>({
     const movementY: number = Math.abs(newPosition.y - touchPosition.y);
     const direction: Direction = newPosition.x < touchPosition.x ? 'right' : 'left';
 
+    setVerticalScrollStopped(false);
+    document.body.style.overflowY = '';
     if (movementX > minimalTouchMovement && movementX > movementY) {
       slide(direction);
     }
@@ -175,7 +195,14 @@ const TileDock = <T extends unknown>({
   return (
     <div className={styles.tileDock}>
       {showLeftControl && !!renderLeftControl && <div className={styles.leftControl}>{renderLeftControl(() => slide('left'))}</div>}
-      <ul ref={frameRef} style={ulStyle} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onTransitionEnd={handleTransitionEnd}>
+      <ul
+        ref={frameRef}
+        style={ulStyle}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchMove={handleTouchMove}
+        onTransitionEnd={handleTransitionEnd}
+      >
         {wrapWithEmptyTiles ? (
           <li
             className={styles.emptyTile}
