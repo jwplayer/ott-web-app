@@ -99,8 +99,6 @@ const Movie = ({
     return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
   }, [history, id, playlist, searchParams]);
 
-  console.log(isLoading, item);
-
   if (isLoading && !item) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title="Video not found!" />;
 

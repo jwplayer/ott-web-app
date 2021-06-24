@@ -78,7 +78,7 @@ const Shelf: React.FC<ShelfProps> = ({
         loading={loading}
       />
     ),
-    [featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory],
+    [enableCardTitles, featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory],
   );
 
   const renderRightControl = useCallback(
