@@ -1,217 +1,36 @@
-# JW OTT Webapp
+![JW OTT Webapp](./images/homepage-screenshot.png)
 
-## Introduction
+JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
 
-This is the main repository for the JW OTT Webapp.
+To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify.app/](https://jw-ott-webapp.netlify.app/).
 
-## Development rules
+## Documentation
 
-When working on this project, keep these in mind:
+- [Configure JW OTT Webapp](./docs/configuration.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Frameworks, SDK's and Libraries](./docs/frameworks.md)
 
-- Use yarn.
-- Run the server through `yarn start`
-- Run the tests through `yarn test`
-- Lint through `yarn lint`
+## Supported Features
 
-## Getting started
+- Works with any JW Player edition, from Free to Enterprise (note that usage will count against your monthly JW streaming limits). Only cloud-hosted JW Players are supported.
+- It looks great on any device. The responsive UI automatically optimizes itself for desktop, tablet, and mobile screens.
+- Populates your site's media content using JSON feeds. If you are using JW Platform, this happens auto-magically based on playlists that you specify. Using feeds from other sources will require you to hack the source code.
+- Video titles, descriptions and hero images are populated from JW Platform JSON feed metadata.
+- Playback of HLS video content from the JW Platform CDN. You can add external URLs (for example, URLS from your own server or CDN) to your playlists in the Content section of your JW Player account dashboard, but they must be HLS streams (`.m3u8` files).
+- Support for live video streams (must be registered as external .m3u8 URLs in your JW Dashboard).
+- Customize the user interface with your own branding. The default app is configured for JW Player branding and content, but you can easily change this to use your own assets by modifying the `config.json` file. Advanced customization is possible (for example, editing the CSS files), but you will need to modify the source code and [build from source](docs/build-from-source.md).
+- Site-wide video search and related video recommendations powered by [JW Recommendations](https://support.jwplayer.com/customer/portal/articles/2191721-jw-recommendations).
+- Basic playback analytics is reported to your JW Dashboard.
+- Ad integrations (VAST, VPAID, GoogleIMA, etc.). These features require a JW Player Ads Edition license. For more information, see the [JW Player pricing page](https://www.jwplayer.com/pricing/).
+- A "Favorites" feature for users to save videos for watching later. A separate list for "Continue Watching" is also kept so users can resume watching videos where they left off. The lists are per-browser at this time (i.e., lists do not sync across user's browsers or devices). The "Continue Watching" list can be disabled in your JW OTT Webapp's `config.json` file.
+- A grid view for a particular playlist of videos, with the ability to deep-link to the playlist through a static URL.
+- Social sharing options using the device native sharing dialog.
 
-- Clone this repository
-- Run `yarn` to install dependencies
-- Run `yarn start`
+## Unsupported Features
 
-## How to use the create-base script
+- Security-related features (encrypted HLS, DRM, signed URLs)
+- Self-hosted JW Players
 
-- use `yarn create-base components/YourComponentName` to create a base component
-- use `yarn create-base containers/YourContainerName` to create a base container
-- use `yarn create-base screens/YourScreenName` to create a base screen
+## Support and Bug Reporting
 
-## Git Commit Guidelines (conventional changelog)
-
-We use the conventional changelog thereby defining very precise rules over how our git commit messages can be formatted. This leads to **more readable messages** that are easy to follow when looking through the **project history**. But also, we allow us the git commit messages to **generate the change log**.
-
-### Commit Message Format
-
-Each commit message consists of a **header**, a **body** and a **footer**. The header has a special format that includes a **type**, a **scope** and a **subject**:
-
-```
-<type>(<scope>): <subject>
-<BLANK LINE>
-<body>
-<BLANK LINE>
-<footer>
-```
-
-The subject line of the commit message cannot be longer 100 characters. This allows the message to be easier to read on GitHub as well as in various git tools.
-
-### Type
-
-Please use one of the following:
-
-*  **feat**: A new feature
-*  **fix**: A bug fix
-*  **docs**: Documentation only changes
-*  **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-*  **refactor**: A code change that neither fixes a bug or adds a feature
-*  **perf**: A code change that improves performance
-*  **test**: Adding missing tests
-*  **chore**: Changes to the build process or auxiliary tools and libraries such as documentation generation
-
-### Scope
-
-The scope must specify the location of the commit change. For example `home` or `player`.
-
-The allowed scopes are:
-
-- project
-- home
-- playlist
-- videodetail
-- search
-- watchhistory
-- favorites
-- analytics
-- pwa
-- seo
-
-### Subject
-
-The subject contains a succinct description of the change:
-
-* Use the imperative, present tense: "change" not "changed" nor "changes".
-* Don't capitalize the first letter.
-* Do not add a dot (.) at the end.
-
-### Body
-
-The body should include the motivation for the change and contrast this with previous behavior.
-
-### Footer
-
-The footer should contain any information about **Breaking Changes** and is also the place to reference GitHub issues that this commit **Closes**.
-
-## Project Structure
-
-```
-/src
-  /assets         - Static assets (image, svg, etc.)
-  /components     - (Reusable) components
-  /containers     - UI Containers
-  /hooks          - Custom React hooks
-  /icons          - SVG icons wrapped in React Components
-  /providers      - React context
-  /screens        - Screens (essentially containers, but only used directly in the router)
-  /services       - Services which connects external data sources to the application
-  /styles         - Global SCSS rules, theming and variables
-  /utils          - Utility functions
-
-  /App.tsx        - The main React component which renders the app
-  /index.ts       - The entrypoint
-```
-
-## Language, Frameworks, Sdk's and Libraries
-
-### Typescript
-
-Typescript is superset of javascript, TypeScript adds optional types to JavaScript that support tools for large-scale JavaScript applications for any browser, for any host, on any OS. TypeScript compiles to readable, standards-based JavaScript.
-
-- Optional static typing
-- Spot bugs at compile time
-- Predictability
-- Readability
-- Fast refactoring
-- Power of OOP
-
-[Read more.](https://www.typescriptlang.org/)
-
-### React
-
-React uses Virtual DOM. The virtual DOM is a programming concept where an ideal, or “virtual”, representation of a UI is kept in memory.
-
-The Virtual DOM compares the components’ previous states and updates only the items in the Real DOM that were changed, instead of updating all components again.
-
-- Easy creation of dynamic applications
-- Great performance
-- Reusable components
-- Unidirectional data flow
-- Dedicated tools for easy debugging
-
-[Read more.](https://reactjs.org/docs/getting-started.html)
-
-### Snowpack
-
-Snowpack is a frontend build tool. Snowpack leverages JavaScript's native module system (known as ESM) to avoid unnecessary work.
-
-- Instant startup
-- Build once, cache forever
-- HMR feat. Fast Refresh
-- Easy configuration
-
-[Read more.](https://www.snowpack.dev/tutorials/quick-start)
-
-### React query
-
-Fetch, cache and update data in React applications without touching any "global state".
-
-- Declarative & Automatic
-- Simple & Familiar
-- Powerful & Configurable
-
-[Read more.](https://react-query.tanstack.com/)
-
-### React Router
-
-React Router is a collection of navigational components that compose declaratively with the application.
-
-- Viewing declarations in a standardized structure helps us to instantly understand what are our app views
-- Lazy code loading
-- Using the React router, a developer can easily handle nested views and progressive resolution of views
-- Using the browsing history feature, the user can navigate backwards/forwards and restore the state of the view
-- Dynamic route matching
-
-[Read more.](https://reactrouter.com/web/guides/quick-start)
-
-### Jest
-
-Jest is a JavaScript test runner, that is, a JavaScript library for creating, running, and structuring tests. It allows the developer to write tests that are easy to read and maintain.
-
-- Fast in execution
-- Simple mock functions
-- Manual module mocks
-- Snapshot testing
-- Built-in coverage reports
-
-[Read more.](https://jestjs.io/docs/getting-started)
-
-### Sass
-
-Sass is CSS extension language. Which enables a developer to write cleaner, modular CSS en thereby easier to maintain CSS.
-
-- Uses nested syntax
-- Includes mixins
-- Adds import abilities
-
-[Read more.](https://sass-lang.com/guide)
-
-### CodeceptJS
-
-CodeceptJS is a modern end-to-end testing framework that is designed to make tests easy to read, write, and develop. Test are written in javascript with a special BDD-style syntax. The tests are written as a linear scenario of the user's action on in an app.
-
-- Scenario Driven
-- Driver Agnostic
-- Interactive Debug
-- Rich Locators
-- Web & Mobile Testing
-- Parallel Testing
-- Multi-Session Testing
-
-[Read more.](https://codecept.io/basics/)
-
-### Cleeng (MediaStore SDK)
-
-Cleeng is a subscription retention platform that provides a seamless integration for identity, entitlement, billing, and analytics functionality.
-
-- ChurnIQ 2.0 Analytics
-- Identity management
-- Checkout implementation
-
-[Read more.](https://developers.cleeng.com/docs/getting-started-with-cleeng)
+To report bugs and feature requests, or request help using JW OTT Webapp, use this repository's [Issues](./issues) page.
