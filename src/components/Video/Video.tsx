@@ -130,6 +130,7 @@ const Video: React.FC<Props> = ({
           <div className={styles.otherButtons}>
             {trailerItem && (
               <Button
+                className={styles.trailerButton}
                 label={t('video:trailer')}
                 aria-label={t('video:watch_trailer')}
                 startIcon={<PlayTrailer />}
@@ -201,9 +202,7 @@ const Video: React.FC<Props> = ({
             isTrailer
           />
           <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
-          <div
-            className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: isPlaying && !userActive })}
-          >{`${title} - Trailer`}</div>
+          <div className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: isPlaying && !userActive })}>{`${title} - Trailer`}</div>
         </Modal>
       )}
     </div>

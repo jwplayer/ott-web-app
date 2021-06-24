@@ -1,4 +1,4 @@
-import React, { ReactNode, FC, useState, useContext } from 'react';
+import React, { ReactNode, FC, useState, useContext, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
@@ -28,6 +28,15 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
   const banner = assets.banner;
+
+  useEffect(() => {
+    const calculateViewHeight = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+
+    calculateViewHeight();
+    window.addEventListener('resize', () => calculateViewHeight);
+
+    return () => document.removeEventListener('resize', calculateViewHeight);
+  }, []);
 
   return (
     <div className={styles.layout}>

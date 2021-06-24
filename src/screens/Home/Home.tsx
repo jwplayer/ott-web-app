@@ -17,7 +17,7 @@ import { ConfigContext } from '../../providers/ConfigProvider';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
-import { cardUrl } from '../../utils/formatting';
+import { videoUrl } from '../../utils/formatting';
 
 import styles from './Home.module.scss';
 
@@ -56,7 +56,7 @@ const Home = (): JSX.Element => {
 
     const contentItem: Content = itemData.content[index];
 
-    const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, contentItem.playlistId));
+    const onCardClick = (playlistItem: PlaylistItem, play: boolean) => history.push(videoUrl(playlistItem, contentItem.playlistId, play));
     const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
     return (
@@ -74,7 +74,7 @@ const Home = (): JSX.Element => {
                 error={error}
                 playlist={playlist}
                 watchHistory={playlist.feedid === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                onCardClick={onCardClick}
+                onCardClick={(item: PlaylistItem) => onCardClick(item, playlist.feedid === PersonalShelf.ContinueWatching)}
                 onCardHover={onCardHover}
                 title={playlist.title}
                 featured={contentItem.featured === true}

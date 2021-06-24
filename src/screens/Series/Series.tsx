@@ -101,13 +101,12 @@ const Series = ({
     };
   }, [play]);
 
-  if (isLoading || playlistIsLoading) return <LoadingOverlay />;
+  if (isLoading || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
   if (error || !item) return <ErrorPage title="Episode not found!" />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
-  const canonicalUrl =
-    seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
+  const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
 
   return (
     <React.Fragment>
@@ -159,14 +158,7 @@ const Series = ({
           <div className={styles.episodes}>
             <h3>{t('episodes')}</h3>
             {filters.length > 1 && (
-              <Filter
-                name="categories"
-                value={seasonFilter}
-                valuePrefix="Season "
-                defaultLabel="All"
-                options={filters}
-                setValue={setSeasonFilter}
-              />
+              <Filter name="categories" value={seasonFilter} valuePrefix="Season " defaultLabel="All" options={filters} setValue={setSeasonFilter} />
             )}
           </div>
           <CardGrid
