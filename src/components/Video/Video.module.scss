@@ -236,8 +236,9 @@
   top: 0;
   left: 0;
   width: 100%;
+  min-height: 100px;
   padding: 24px 56px;
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.4) 100%);
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0.25) 100%);
   pointer-events: none;
 
   @include responsive.mobile-only() {
@@ -262,6 +263,8 @@
   > svg {
     width: 36px;
     height: 36px;
+    -webkit-filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4)); /* stylelint-disable-line */
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4));
   }
 }
 
