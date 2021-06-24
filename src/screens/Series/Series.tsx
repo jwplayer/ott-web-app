@@ -44,7 +44,8 @@ const Series = ({
     true,
     false,
   );
-  const { isLoading, error, data: item } = useMedia(searchParams.get('e') || '');
+  const episodeId = searchParams.get('e') || '';
+  const { isLoading, error, data: item } = useMedia(episodeId);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
 
   const [seasonFilter, setSeasonFilter] = useState<string>('');
@@ -114,11 +115,11 @@ const Series = ({
   }, [play]);
 
   useEffect(() => {
-    (document.scrollingElement || document.body).scrollTop = 0;
-  }, []);
+    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+  }, [episodeId]);
 
-  if (isLoading || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
-  if (error || !item) return <ErrorPage title="Episode not found!" />;
+  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
+  if ((!isLoading && error) || !item) return <ErrorPage title="Episode not found!" />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;

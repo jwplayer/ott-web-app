@@ -85,8 +85,8 @@ const Movie = ({
   }, [play]);
 
   useEffect(() => {
-    (document.scrollingElement || document.body).scrollTop = 0;
-  }, []);
+    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+  }, [id]);
 
   const { data: playlist } = useRecommendedPlaylist(config.recommendationsPlaylist || '', item);
 
@@ -99,8 +99,10 @@ const Movie = ({
     return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
   }, [history, id, playlist, searchParams]);
 
-  if (isLoading) return <LoadingOverlay />;
-  if (error || !item) return <ErrorPage title="Video not found!" />;
+  console.log(isLoading, item);
+
+  if (isLoading && !item) return <LoadingOverlay />;
+  if ((!isLoading && error) || !item) return <ErrorPage title="Video not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
