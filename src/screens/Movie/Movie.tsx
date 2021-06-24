@@ -147,6 +147,7 @@ const Movie = ({
               isLoading={isLoading}
               currentCardItem={item}
               currentCardLabel={t('currently_playing')}
+              enableCardTitles={config.options.shelveTitles}
             />
           </>
         ) : undefined}

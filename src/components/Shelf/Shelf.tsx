@@ -33,6 +33,8 @@ export type ShelfProps = {
   onCardClick: (playlistItem: PlaylistItem) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
+  enableTitle?: boolean;
+  enableCardTitles?: boolean;
   featured?: boolean;
   loading?: boolean;
   error?: unknown;
@@ -45,6 +47,8 @@ const Shelf: React.FC<ShelfProps> = ({
   onCardHover,
   title,
   watchHistory,
+  enableTitle = true,
+  enableCardTitles = true,
   featured = false,
   loading = false,
   error = null,
@@ -65,7 +69,9 @@ const Shelf: React.FC<ShelfProps> = ({
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })} data-mediaid={playlist.feedid}>
-      {!featured && <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2>}
+      {!featured && enableTitle ? (
+        <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2>
+      ) : null}
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}
@@ -103,6 +109,7 @@ const Shelf: React.FC<ShelfProps> = ({
         renderTile={(item, isInView) => (
           <Card
             title={item.title}
+            enableTitle={enableCardTitles}
             duration={item.duration}
             progress={watchHistory ? watchHistory[item.mediaid] : undefined}
             posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}

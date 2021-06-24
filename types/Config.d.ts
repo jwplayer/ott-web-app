@@ -27,6 +27,7 @@ export type Simple = {
 export type Content = {
   playlistId: string;
   featured?: boolean;
+  enableText?: boolean;
 };
 
 export type Menu = {

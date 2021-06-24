@@ -167,6 +167,7 @@ const Series = ({
             isLoading={isLoading}
             currentCardItem={item}
             currentCardLabel={t('current_episode')}
+            enableCardTitles={config.options.shelveTitles}
           />
         </>
       </VideoComponent>
