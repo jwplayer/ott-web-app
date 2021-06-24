@@ -18,6 +18,7 @@ import { copyToClipboard } from '../../utils/dom';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
 import { watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { VideoProgressMinMax } from '../../config';
 
 import styles from './Movie.module.scss';
 
@@ -48,7 +49,11 @@ const Movie = ({
   const enableSharing: boolean = config.options.enableSharing === true;
 
   const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
-  const watchHistoryItem = item && watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
+  const watchHistoryItem =
+    item &&
+    watchHistory.find(({ mediaid, progress }) => {
+      return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
+    });
 
   useBlurImageUpdater(item);
 
