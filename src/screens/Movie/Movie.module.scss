@@ -4,8 +4,8 @@
 .related {
   display: flex;
   align-items: center;
-  margin: 16px 0;
   > h3 {
+    padding-bottom: 16px;
     font-family: var(--body-alt-font-family);
     font-weight: 700;
     font-size: 24px;
