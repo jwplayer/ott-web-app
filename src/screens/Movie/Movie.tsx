@@ -68,9 +68,9 @@ const Movie = ({
   };
 
   useEffect(() => {
-    if (play) document.body.style.overflowY = 'hidden';
+    document.body.style.overflowY = play ? 'hidden' : '';
     return () => {
-      if (play) document.body.style.overflowY = '';
+      document.body.style.overflowY = '';
     };
   }, [play]);
 
