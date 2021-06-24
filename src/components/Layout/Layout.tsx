@@ -1,4 +1,4 @@
-import React, { ReactNode, FC, useState, useContext, useEffect } from 'react';
+import React, { ReactNode, FC, useState, useContext, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
@@ -23,20 +23,34 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
+  const searchActive = UIStore.useState((s) => s.searchActive);
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
+
+  const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const hasDynamicBlur = options.dynamicBlur === true;
   const banner = assets.banner;
 
   useEffect(() => {
-    const calculateViewHeight = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    if (searchActive && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchActive]);
 
-    calculateViewHeight();
-    window.addEventListener('resize', () => calculateViewHeight);
+  const searchButtonClickHandler = () => {
+    UIStore.update((s) => {
+      s.searchActive = true;
+    });
+  };
 
-    return () => document.removeEventListener('resize', calculateViewHeight);
-  }, []);
+  const closeSearchButtonClickHandler = () => {
+    resetSearchQuery();
+
+    UIStore.update((s) => {
+      s.searchActive = false;
+    });
+  };
 
   return (
     <div className={styles.layout}>
@@ -58,8 +72,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             query: searchQuery,
             onQueryChange: (event) => updateSearchQuery(event.target.value),
             onClearButtonClick: () => updateSearchQuery(''),
+            inputRef: searchInputRef,
           }}
-          onCloseSearchButtonClick={() => resetSearchQuery()}
+          searchActive={searchActive}
+          onSearchButtonClick={searchButtonClickHandler}
+          onCloseSearchButtonClick={closeSearchButtonClickHandler}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

@@ -29,6 +29,7 @@ type Props = {
   feedId?: string;
   trailerItem?: PlaylistItem;
   play: boolean;
+  progress?: number;
   startPlay: () => void;
   goBack: () => void;
   onComplete?: () => void;
@@ -42,6 +43,7 @@ type Props = {
   onTrailerClick: () => void;
   onTrailerClose: () => void;
   isSeries?: boolean;
+  episodeCount?: number;
   children?: JSX.Element;
 };
 
@@ -52,6 +54,7 @@ const Video: React.FC<Props> = ({
   trailerItem,
   play,
   startPlay,
+  progress,
   goBack,
   onComplete,
   poster,
@@ -65,6 +68,7 @@ const Video: React.FC<Props> = ({
   onTrailerClick,
   onTrailerClose,
   isSeries = false,
+  episodeCount,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [userActive, setUserActive] = useState(true);
@@ -84,7 +88,8 @@ const Video: React.FC<Props> = ({
 
   const metaData = [];
   if (item.pubdate) metaData.push(new Date(item.pubdate * 1000).getFullYear());
-  if (item.duration) metaData.push(formatDuration(item.duration));
+  if (!isSeries && item.duration) metaData.push(formatDuration(item.duration));
+  if (isSeries && episodeCount) metaData.push(t('video:total_episodes', { count: episodeCount }));
   if (item.genre) metaData.push(item.genre);
   if (item.rating) metaData.push(item.rating);
   const metaString = metaData.join(' • ');
@@ -120,12 +125,18 @@ const Video: React.FC<Props> = ({
               color="primary"
               variant="contained"
               size="large"
-              label={t('video:start_watching')}
+              label={typeof progress === 'number' ? t('video:continue_watching') : t('video:start_watching')}
               startIcon={<Play />}
               onClick={startPlay}
               active={play}
               fullWidth
-            />
+            >
+              {progress ? (
+                <div className={styles.progressRail}>
+                  <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
+                </div>
+              ) : null}
+            </Button>
           </div>
           <div className={styles.otherButtons}>
             {trailerItem && (

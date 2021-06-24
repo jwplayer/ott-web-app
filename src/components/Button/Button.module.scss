@@ -12,6 +12,7 @@ $large-button-height: 40px;
   align-items: center;
   height: $medium-button-height;
   padding: 0 16px;
+  overflow: hidden;
 
   font-family: theme.$body-alt-font-family;
   font-weight: 700;
@@ -42,13 +43,13 @@ $large-button-height: 40px;
   }
 
   &.default {
-    color: theme.$btn-default-color;
+    color: currentColor;
     background-color: theme.$btn-default-bg;
   }
 
   &.primary {
-    color: var(--highlight-contrast-color, white);
-    background-color: var(--highlight-color, black);
+    color: var(--highlight-contrast-color, theme.$btn-primary-color);
+    background-color: var(--highlight-color, theme.$btn-primary-bg);
   }
 
   &.outlined {
@@ -56,9 +57,9 @@ $large-button-height: 40px;
 
     &.active,
     &:focus-visible {
-      color: var(--highlight-contrast-color, white);
-      background-color: var(--highlight-color, black);
-      border-color: var(--highlight-color);
+      color: var(--highlight-contrast-color, theme.$btn-primary-color);
+      background-color: var(--highlight-color, theme.$btn-primary-bg);
+      border-color: var(--highlight-color, theme.$btn-primary-bg);
     }
   }
 
@@ -71,6 +72,7 @@ $large-button-height: 40px;
       opacity: 1;
     }
     &:hover {
+      z-index: 1;
       background: theme.$btn-default-bg;
       opacity: 1;
     }
@@ -79,8 +81,10 @@ $large-button-height: 40px;
   &.fullWidth {
     width: 100%;
 
-    &:hover {
-      transform: scale(1.04);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        transform: scale(1.04);
+      }
     }
   }
 
@@ -100,6 +104,7 @@ $large-button-height: 40px;
     width: 20px;
     height: 20px;
     fill: currentColor;
+
     @include responsive.tablet-only() {
       width: 18px;
       height: 18px;

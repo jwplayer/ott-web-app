@@ -81,13 +81,13 @@ function Card({
       aria-label={t('play_item', { title })}
     >
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
+        {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {!loading && (
           <div className={styles.meta}>
             {featured && !disabled && enableTitle && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
             {renderTag()}
           </div>
         )}
-        {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {progress ? (
           <div className={styles.progressContainer}>
             <div className={styles.progressBar} style={{ width: `${Math.round(progress * 100)}%` }} />

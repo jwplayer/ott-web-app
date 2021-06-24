@@ -4,8 +4,7 @@
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(100vh - calc(100vh - 100%));
 }
 .main {
   flex: 1;

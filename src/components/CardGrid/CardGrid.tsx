@@ -20,7 +20,8 @@ const defaultCols: Breakpoints = {
 type CardGridProps = {
   playlist: PlaylistItem[];
   onCardHover?: (item: PlaylistItem) => void;
-  onCardClick: (item: PlaylistItem) => void;
+  onCardClick: (item: PlaylistItem, playlistId?: string) => void;
+  watchHistory?: { [key: string]: number };
   isLoading: boolean;
   enableCardTitles?: boolean;
   cols?: Breakpoints;
@@ -32,6 +33,7 @@ function CardGrid({
   playlist,
   onCardClick,
   onCardHover,
+  watchHistory,
   enableCardTitles = true,
   isLoading = false,
   cols = defaultCols,
@@ -58,10 +60,11 @@ function CardGrid({
             enableTitle={enableCardTitles}
             duration={duration}
             posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
+            progress={watchHistory ? watchHistory[mediaid] : undefined}
             seriesId={seriesId}
             episodeNumber={episodeNumber}
             seasonNumber={seasonNumber}
-            onClick={() => onCardClick(playlistItem)}
+            onClick={() => onCardClick(playlistItem, playlistItem.feedid)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}

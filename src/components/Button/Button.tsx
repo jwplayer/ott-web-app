@@ -9,6 +9,7 @@ type Color = 'default' | 'primary';
 type Variant = 'contained' | 'outlined' | 'text';
 
 type Props = {
+  children?: React.ReactNode;
   label: string;
   active?: boolean;
   color?: Color;
@@ -25,6 +26,7 @@ type Props = {
 
 const Button: React.FC<Props> = ({
   label,
+  children,
   color = 'default',
   startIcon,
   fullWidth = false,
@@ -49,11 +51,13 @@ const Button: React.FC<Props> = ({
     <NavLink className={combinedClassNames} to={to} activeClassName={styles.active} {...rest} exact>
       {icon}
       {span}
+      {children}
     </NavLink>
   ) : (
     <button className={combinedClassNames} onClick={onClick} {...rest}>
       {icon}
       {span}
+      {children}
     </button>
   );
 };

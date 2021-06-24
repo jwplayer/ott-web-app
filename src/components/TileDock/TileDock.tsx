@@ -82,7 +82,7 @@ const TileDock = <T extends unknown>({
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
-  const transitionBasis: string = `transform ${animated ? transitionTime : '0s'} ease`;
+  const transitionBasis: string = isMultiPage && animated ? `transform ${transitionTime} ease` : '';
 
   const needControls: boolean = showControls && isMultiPage;
   const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
@@ -234,8 +234,7 @@ const TileDock = <T extends unknown>({
                 paddingLeft: spacing / 2,
                 paddingRight: spacing / 2,
                 boxSizing: 'border-box',
-                // opacity: isInView ? 1 : 0.3,
-                transition: 'opacity .2s ease-in 0s',
+                transition: !isInView ? 'opacity .2s ease-in 0s' : '',
               }}
             >
               {renderTile(tile.item, isInView)}

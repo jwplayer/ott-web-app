@@ -19,14 +19,14 @@ exports[`<SearchBar> renders and matches snapshot 1`] = `
       </g>
     </svg>
     <input
-      aria-label="Search"
+      aria-label="search_bar.search_label"
       class="input"
-      placeholder="Search..."
+      placeholder="search_bar.search_placeholder"
       type="text"
       value="My search query"
     />
     <div
-      aria-label="Clear search"
+      aria-label="search_bar.clear_search_label"
       class="iconButton clearButton"
       role="button"
       tabindex="0"

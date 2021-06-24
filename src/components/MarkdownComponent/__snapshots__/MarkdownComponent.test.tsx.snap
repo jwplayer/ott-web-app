@@ -6,6 +6,7 @@ exports[`<MarkdownComponent> renders and matches snapshot 1`] = `
     This is a test markdown string with a 
     <a
       href="https://www.example.com"
+      rel="noopener"
       target="_blank"
     >
       testlink

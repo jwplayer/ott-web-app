@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useRef, useEffect } from 'react';
+import React, { CSSProperties, useContext, useRef, useEffect, useCallback } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
@@ -10,14 +10,14 @@ import classNames from 'classnames';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
-import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
-import { videoUrl } from '../../utils/formatting';
+import { cardUrl } from '../../utils/formatting';
 
 import styles from './Home.module.scss';
 
@@ -43,11 +43,18 @@ const Home = (): JSX.Element => {
   const { getPlaylist: getWatchHistoryPlaylist, getDictionary: getWatchHistoryDictionary } = useWatchHistory();
   const watchHistory = getWatchHistoryPlaylist();
   const watchHistoryDictionary = getWatchHistoryDictionary();
-  const watchHistoryLoaded = watchHistoryStore.useState((state) => state.playlistItemsLoaded);
   const favorites = favoritesStore.useState((state) => state.favorites);
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
+
+  const onCardClick = useCallback(
+    (playlistItem: PlaylistItem, playlistId?: string) => {
+      history.push(cardUrl(playlistItem, playlistId, playlistId === PersonalShelf.ContinueWatching));
+    },
+    [history],
+  );
+  const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
 
   const itemData: ItemData = createItemData(content);
 
@@ -56,25 +63,17 @@ const Home = (): JSX.Element => {
 
     const contentItem: Content = itemData.content[index];
 
-    const onCardClick = (playlistItem: PlaylistItem, play: boolean) => history.push(videoUrl(playlistItem, contentItem.playlistId, play));
-    const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
-
     return (
-      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
-        {({ playlist, error, isLoading }) => (
-          <div
-            key={key}
-            style={style}
-            role="row"
-            className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
-          >
+      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId} style={style}>
+        {({ playlist, error, isLoading, style }) => (
+          <div key={key} style={style} role="row" className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}>
             <div role="cell">
               <ShelfComponent
                 loading={isLoading}
                 error={error}
                 playlist={playlist}
                 watchHistory={playlist.feedid === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                onCardClick={(item: PlaylistItem) => onCardClick(item, playlist.feedid === PersonalShelf.ContinueWatching)}
+                onCardClick={onCardClick}
                 onCardHover={onCardHover}
                 enableTitle={contentItem.enableText}
                 enableCardTitles={config.options.shelveTitles}
@@ -122,10 +121,10 @@ const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (watchHistoryLoaded) {
+    if (favorites || watchHistory) {
       ((listRef.current as unknown) as List)?.recomputeRowHeights();
     }
-  }, [watchHistoryLoaded]);
+  }, [favorites, watchHistory]);
 
   return (
     <div className={styles.home}>

@@ -32,13 +32,7 @@ export type ProviderProps = {
   onValidationCompleted: (config: Config) => void;
 };
 
-const ConfigProvider: FunctionComponent<ProviderProps> = ({
-  children,
-  configLocation,
-  onLoading,
-  onValidationError,
-  onValidationCompleted,
-}) => {
+const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLocation, onLoading, onValidationError, onValidationCompleted }) => {
   const [config, setConfig] = useState<Config>(defaultConfig);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -82,6 +76,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     }
     if (root && headerBackground) {
       root.style.setProperty('--header-background', headerBackground);
+      root.style.setProperty('--header-contrast-color', calculateContrastColor(headerBackground));
     }
   };
 

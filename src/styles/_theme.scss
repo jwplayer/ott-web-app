@@ -26,8 +26,8 @@ $body-alt-font-family: Trebuchet MS, Helvetica, Arial, sans-serif !default;
 $btn-default-bg: rgba(0, 0, 0, 0.6) !default;
 $btn-default-color: variables.$white !default;
 
-$btn-primary-bg: $secondary-color !default;
-$btn-primary-color: variables.$white !default;
+$btn-primary-bg: variables.$white !default;
+$btn-primary-color: variables.$black !default;
 
 $btn-facebook-bg: #3b5998 !default;
 $btn-twitter-bg: #55acee !default;

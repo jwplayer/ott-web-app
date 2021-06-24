@@ -17,6 +17,8 @@ import { generateMovieJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
+import { watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { VideoProgressMinMax } from '../../config';
 
 import styles from './Movie.module.scss';
 
@@ -46,6 +48,13 @@ const Movie = ({
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const enableSharing: boolean = config.options.enableSharing === true;
 
+  const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
+  const watchHistoryItem =
+    item &&
+    watchHistory.find(({ mediaid, progress }) => {
+      return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
+    });
+
   useBlurImageUpdater(item);
 
   const isFavorited = !!item && hasItem(item);
@@ -60,9 +69,10 @@ const Movie = ({
 
     if (typeof navigator.share === 'function') {
       navigator.share({ title: item.title, text: item.description, url: window.location.href });
-    } else {
-      copyToClipboard(window.location.href);
+      return;
     }
+
+    copyToClipboard(window.location.href);
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };
@@ -73,6 +83,10 @@ const Movie = ({
       document.body.style.overflowY = '';
     };
   }, [play]);
+
+  useEffect(() => {
+    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+  }, [id]);
 
   const { data: playlist } = useRecommendedPlaylist(config.recommendationsPlaylist || '', item);
 
@@ -85,8 +99,8 @@ const Movie = ({
     return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
   }, [history, id, playlist, searchParams]);
 
-  if (isLoading) return <LoadingOverlay />;
-  if (error || !item) return <ErrorPage title="Video not found!" />;
+  if (isLoading && !item) return <LoadingOverlay />;
+  if ((!isLoading && error) || !item) return <ErrorPage title="Video not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
@@ -126,6 +140,7 @@ const Movie = ({
         startPlay={startPlay}
         goBack={goBack}
         onComplete={handleComplete}
+        progress={watchHistoryItem?.progress}
         poster={posterFading ? 'fading' : 'normal'}
         enableSharing={enableSharing}
         hasShared={hasShared}
