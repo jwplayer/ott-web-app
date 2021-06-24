@@ -76,6 +76,8 @@ const Home = (): JSX.Element => {
                 watchHistory={playlist.feedid === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
+                enableTitle={contentItem.enableText}
+                enableCardTitles={config.options.shelveTitles}
                 title={playlist.title}
                 featured={contentItem.featured === true}
               />
@@ -106,9 +108,9 @@ const Home = (): JSX.Element => {
     };
     const calculateRegular = () => {
       const tilesToShow = tileBreakpoints[breakpoint];
-      const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
+      const shelfTitlesHeight = item.enableText ? 40 : 0;
       const shelfMetaHeight = shelfTitlesHeight + 12;
-      const cardMetaHeight = 40;
+      const cardMetaHeight = config.options.shelveTitles ? 40 : 0;
       const shelfHorizontalMargin = isMobile ? 76 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);

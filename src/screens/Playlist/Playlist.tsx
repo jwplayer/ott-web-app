@@ -62,7 +62,13 @@ function Playlist({
         )}
       </header>
       <main className={styles.main}>
-        <CardGrid playlist={filteredPlaylist} onCardClick={onCardClick} onCardHover={onCardHover} isLoading={isLoading} />
+        <CardGrid
+          playlist={filteredPlaylist}
+          onCardClick={onCardClick}
+          onCardHover={onCardHover}
+          isLoading={isLoading}
+          enableCardTitles={config.options.shelveTitles}
+        />
       </main>
     </div>
   );

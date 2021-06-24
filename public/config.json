@@ -4,18 +4,15 @@
   },
   "content": [
     {
-      "backgroundColor": "#C105FA",
       "enableText": true,
       "featured": true,
       "playlistId": "CJE23b5T"
     },
     {
-      "backgroundColor": "#C105FA",
       "enableText": true,
       "playlistId": "sR5VypYk"
     },
     {
-      "backgroundColor": "#C105FA",
       "enableText": true,
       "playlistId": "o45EkQBf"
     }
@@ -38,24 +35,13 @@
   "options": {
     "dynamicBlur": true,
     "posterFading": true,
-    "backgroundColor": "#D42828",
-    "enableAddToHome": false,
+    "backgroundColor": null,
+    "shelveTitles": true,
     "enableContinueWatching": true,
-    "enableCookieNotice": false,
-    "enableHeader": true,
-    "enableInVideoSearch": false,
-    "highlightColor": "#CCCCCC",
-    "rightRail": {
-      "enabled": true
-    },
-    "showcaseContentOnly": false,
-    "useRecommendationsPlaylist": true,
-    "videoTitlePosition": "above"
+    "highlightColor": null
   },
   "player": "7xMa4gNw",
   "recommendationsPlaylist": "fuD6TWcf",
   "searchPlaylist": "tQ832H1H",
-  "siteName": "Blender",
-  "theme": "dark",
-  "version": "2"
+  "siteName": "Blender"
 }
