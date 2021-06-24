@@ -45,16 +45,7 @@ exports[`<Root /> renders and matches snapshot 1`] = `
           <nav
             aria-label="menu"
             class="nav"
-          >
-            <a
-              class="button default text"
-              href="/"
-            >
-              <span>
-                home
-              </span>
-            </a>
-          </nav>
+          />
           <div
             class="search"
           />

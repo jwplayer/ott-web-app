@@ -1,4 +1,4 @@
-import React, { ReactFragment } from 'react';
+import React, { ReactFragment, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -38,6 +38,7 @@ const Header: React.FC<Props> = ({
   onCloseSearchButtonClick,
 }) => {
   const { t } = useTranslation('menu');
+  const [logoLoaded, setLogoLoaded] = useState(false);
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
     [styles.mobileSearchActive]: searchActive && breakpoint <= Breakpoint.sm,
@@ -87,11 +88,11 @@ const Header: React.FC<Props> = ({
         </div>
         {logoSrc && (
           <div className={styles.brand}>
-            <Logo src={logoSrc} />
+            <Logo src={logoSrc} onLoad={() => setLogoLoaded(true)} />
           </div>
         )}
         <nav className={styles.nav} aria-label="menu">
-          {children}
+          {logoLoaded ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
       </div>

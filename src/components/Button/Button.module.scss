@@ -25,6 +25,19 @@ $large-button-height: 40px;
   cursor: pointer;
   transition: background-color 0.1s ease, transform 0.1s ease;
 
+  @media (hover: hover) and (pointer: fine) {
+    &:hover,
+    &:focus {
+      transform: scale(1.1);
+    }
+    &:focus:not(:focus-visible):not(:hover) {
+      transform: scale(1);
+    }
+    &:focus-visible {
+      transform: scale(1.1);
+    }
+  }
+
   &.large {
     height: $large-button-height;
   }
@@ -35,15 +48,15 @@ $large-button-height: 40px;
   }
 
   &.primary {
-    color: var(--highlight-contrast-color, white);
-    background-color: var(--highlight-color, black);
+    color: var(--highlight-contrast-color, theme.$btn-primary-color);
+    background-color: var(--highlight-color, theme.$btn-primary-bg);
   }
 
   &.outlined {
     border: 1px solid rgba(255, 255, 255, 0.3);
 
     &.active,
-    &:focus {
+    &:focus-visible {
       color: var(--highlight-contrast-color, white);
       background-color: var(--highlight-color, black);
       border-color: var(--highlight-color);
@@ -54,10 +67,10 @@ $large-button-height: 40px;
     background: none;
     opacity: 0.7;
 
-    &.active {
+    &.active,
+    &:focus {
       opacity: 1;
     }
-
     &:hover {
       z-index: 1;
       background: theme.$btn-default-bg;
@@ -78,13 +91,6 @@ $large-button-height: 40px;
   > svg {
     width: 18px;
     height: 18px;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover,
-    &:focus {
-      transform: scale(1.06);
-    }
   }
 }
 

@@ -48,9 +48,12 @@ const Home = (): JSX.Element => {
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
 
-  const onCardClick = useCallback((playlistItem: PlaylistItem, playlistId?: string) => history.push(cardUrl(playlistItem, playlistId)), [
-    history,
-  ]);
+  const onCardClick = useCallback(
+    (playlistItem: PlaylistItem, playlistId?: string) => {
+      history.push(cardUrl(playlistItem, playlistId, playlistId === PersonalShelf.ContinueWatching));
+    },
+    [history],
+  );
   const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
 
   const itemData: ItemData = createItemData(content);
@@ -63,12 +66,7 @@ const Home = (): JSX.Element => {
     return (
       <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId} style={style}>
         {({ playlist, error, isLoading, style }) => (
-          <div
-            key={key}
-            style={style}
-            role="row"
-            className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
-          >
+          <div key={key} style={style} role="row" className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}>
             <div role="cell">
               <ShelfComponent
                 loading={isLoading}
@@ -77,6 +75,8 @@ const Home = (): JSX.Element => {
                 watchHistory={playlist.feedid === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
+                enableTitle={contentItem.enableText}
+                enableCardTitles={config.options.shelveTitles}
                 title={playlist.title}
                 featured={contentItem.featured === true}
               />
@@ -107,9 +107,9 @@ const Home = (): JSX.Element => {
     };
     const calculateRegular = () => {
       const tilesToShow = tileBreakpoints[breakpoint];
-      const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
+      const shelfTitlesHeight = item.enableText ? 40 : 0;
       const shelfMetaHeight = shelfTitlesHeight + 12;
-      const cardMetaHeight = 40;
+      const cardMetaHeight = config.options.shelveTitles ? 40 : 0;
       const shelfHorizontalMargin = isMobile ? 76 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './TileDock.module.scss';
 
@@ -73,10 +73,6 @@ const TileDock = <T extends unknown>({
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
   const [doAnimationReset, setDoAnimationReset] = useState<boolean>(false);
-  const [touchPosition, setTouchPosition] = useState<Position>({
-    x: 0,
-    y: 0,
-  } as Position);
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items?.length > tilesToShow;
@@ -92,45 +88,84 @@ const TileDock = <T extends unknown>({
   const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
   const showRightControl: boolean = needControls && !(cycleMode === 'stop' && index === items.length - tilesToShow);
 
-  const slide = (direction: Direction): void => {
-    const directionFactor = direction === 'right' ? 1 : -1;
-    let nextIndex: number = index + tilesToShow * directionFactor;
+  const slide = useCallback(
+    (direction: Direction): void => {
+      const directionFactor = direction === 'right' ? 1 : -1;
+      let nextIndex: number = index + tilesToShow * directionFactor;
 
-    if (nextIndex < 0) {
-      if (cycleMode === 'stop') nextIndex = 0;
-      if (cycleMode === 'restart') nextIndex = index === 0 ? 0 - tilesToShow : 0;
-    }
-    if (nextIndex > items.length - tilesToShow) {
-      if (cycleMode === 'stop') nextIndex = items.length - tilesToShow;
-      if (cycleMode === 'restart') nextIndex = index >= items.length - tilesToShow ? items.length : items.length - tilesToShow;
-    }
+      if (nextIndex < 0) {
+        if (cycleMode === 'stop') nextIndex = 0;
+        if (cycleMode === 'restart') nextIndex = index === 0 ? 0 - tilesToShow : 0;
+      }
+      if (nextIndex > items.length - tilesToShow) {
+        if (cycleMode === 'stop') nextIndex = items.length - tilesToShow;
+        if (cycleMode === 'restart') nextIndex = index >= items.length - tilesToShow ? items.length : items.length - tilesToShow;
+      }
 
-    const steps: number = Math.abs(index - nextIndex);
-    const movement: number = steps * tileWidth * (0 - directionFactor);
+      const steps: number = Math.abs(index - nextIndex);
+      const movement: number = steps * tileWidth * (0 - directionFactor);
 
-    setSlideToIndex(nextIndex);
-    setTransform(-100 + movement);
-    if (!animated) setDoAnimationReset(true);
-  };
+      setSlideToIndex(nextIndex);
+      setTransform(-100 + movement);
+      if (!animated) setDoAnimationReset(true);
+    },
+    [animated, cycleMode, index, items.length, tileWidth, tilesToShow],
+  );
 
-  const handleTouchStart = (event: React.TouchEvent): void =>
-    setTouchPosition({
-      x: event.touches[0].clientX,
-      y: event.touches[0].clientY,
-    });
-  const handleTouchEnd = (event: React.TouchEvent): void => {
-    const newPosition = {
-      x: event.changedTouches[0].clientX,
-      y: event.changedTouches[0].clientY,
-    };
-    const movementX: number = Math.abs(newPosition.x - touchPosition.x);
-    const movementY: number = Math.abs(newPosition.y - touchPosition.y);
-    const direction: Direction = newPosition.x < touchPosition.x ? 'right' : 'left';
+  const handleTouchStart = useCallback(
+    (event: React.TouchEvent): void => {
+      const touchPosition: Position = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY,
+      };
 
-    if (movementX > minimalTouchMovement && movementX > movementY) {
-      slide(direction);
-    }
-  };
+      function handleTouchMove(this: HTMLDocument, event: TouchEvent): void {
+        const newPosition: Position = {
+          x: event.changedTouches[0].clientX,
+          y: event.changedTouches[0].clientY,
+        };
+        const movementX: number = Math.abs(newPosition.x - touchPosition.x);
+        const movementY: number = Math.abs(newPosition.y - touchPosition.y);
+
+        if (movementX > movementY && movementX > 10) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }
+
+      function handleTouchEnd(this: HTMLDocument, event: TouchEvent): void {
+        const newPosition = {
+          x: event.changedTouches[0].clientX,
+          y: event.changedTouches[0].clientY,
+        };
+
+        const movementX: number = Math.abs(newPosition.x - touchPosition.x);
+        const movementY: number = Math.abs(newPosition.y - touchPosition.y);
+        const direction: Direction = newPosition.x < touchPosition.x ? 'right' : 'left';
+
+        if (movementX > minimalTouchMovement && movementX > movementY) {
+          slide(direction);
+        }
+
+        cleanup();
+      }
+
+      function handleTouchCancel() {
+        cleanup();
+      }
+
+      function cleanup() {
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+        document.removeEventListener('touchcancel', handleTouchCancel);
+      }
+
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener('touchcancel', handleTouchCancel);
+    },
+    [minimalTouchMovement, slide],
+  );
 
   useLayoutEffect(() => {
     const resetAnimation = (): void => {
@@ -175,7 +210,7 @@ const TileDock = <T extends unknown>({
   return (
     <div className={styles.tileDock}>
       {showLeftControl && !!renderLeftControl && <div className={styles.leftControl}>{renderLeftControl(() => slide('left'))}</div>}
-      <ul ref={frameRef} style={ulStyle} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onTransitionEnd={handleTransitionEnd}>
+      <ul ref={frameRef} style={ulStyle} onTouchStart={handleTouchStart} onTransitionEnd={handleTransitionEnd}>
         {wrapWithEmptyTiles ? (
           <li
             className={styles.emptyTile}

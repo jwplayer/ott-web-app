@@ -22,6 +22,7 @@ type CardProps = {
   loading?: boolean;
   isCurrent?: boolean;
   currentLabel?: string;
+  enableTitle?: boolean;
 };
 
 function Card({
@@ -35,6 +36,7 @@ function Card({
   episodeNumber,
   progress,
   posterAspect = '16:9',
+  enableTitle = true,
   featured = false,
   disabled = false,
   loading = false,
@@ -82,7 +84,7 @@ function Card({
         {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {!loading && (
           <div className={styles.meta}>
-            {featured && !disabled && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
+            {featured && !disabled && enableTitle && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
             {renderTag()}
           </div>
         )}
@@ -92,7 +94,7 @@ function Card({
           </div>
         ) : null}
       </div>
-      {!featured && !disabled && (
+      {!featured && !disabled && enableTitle && (
         <div className={styles.titleContainer}>
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>

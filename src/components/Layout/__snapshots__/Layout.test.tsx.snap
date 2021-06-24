@@ -45,17 +45,7 @@ exports[`<Layout /> renders layout 1`] = `
           <nav
             aria-label="menu"
             class="nav"
-          >
-            <a
-              aria-current="page"
-              class="button default text active"
-              href="/"
-            >
-              <span>
-                home
-              </span>
-            </a>
-          </nav>
+          />
           <div
             class="search"
           />

@@ -25,7 +25,6 @@
   }
 
   &.featured {
-
     .title {
       height: 1.1em;
       padding-right: 8px;
@@ -129,7 +128,6 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 }
 
 .title {
-
   height: 2.4em;
   overflow: hidden;
   color: var(--card-color);
@@ -170,6 +168,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   font-family: var(--body-font-family);
   font-weight: 600;
   font-size: 13px;
+  white-space: nowrap;
   background-color: rgba(variables.$black, 0.6);
   border-radius: 4px;
   @include responsive.mobile-only {

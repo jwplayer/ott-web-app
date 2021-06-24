@@ -26,26 +26,31 @@ const Animation = ({
   const seconds = duration / 1000;
   const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
 
-  const timeout = useRef<NodeJS.Timeout>();
-  const timeout2 = useRef<NodeJS.Timeout>();
+  const timeout = useRef<number>();
+  const timeout2 = useRef<number>();
 
   useEffect(() => {
     if (timeout.current) clearTimeout(timeout.current);
     if (timeout2.current) clearTimeout(timeout2.current);
     if (open) {
       setHasOpenedBefore(true);
-      timeout.current = setTimeout(() => setStatus('opening'), delay);
-      timeout2.current = setTimeout(() => {
+      timeout.current = window.setTimeout(() => setStatus('opening'), delay);
+      timeout2.current = window.setTimeout(() => {
         setStatus('open');
         onOpenAnimationEnd && onOpenAnimationEnd();
       }, duration + delay);
     } else if (hasOpenedBefore) {
-      timeout.current = setTimeout(() => setStatus('closing'), delay);
-      timeout2.current = setTimeout(() => {
+      timeout.current = window.setTimeout(() => setStatus('closing'), delay);
+      timeout2.current = window.setTimeout(() => {
         setStatus('closed');
         onCloseAnimationEnd && onCloseAnimationEnd();
       }, duration + delay);
     }
+
+    return () => {
+      clearTimeout(timeout.current);
+      clearTimeout(timeout2.current);
+    };
   }, [duration, delay, transition, open, onOpenAnimationEnd, onCloseAnimationEnd, hasOpenedBefore, setHasOpenedBefore]);
 
   if (!open && status === 'closed') {
