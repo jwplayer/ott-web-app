@@ -72,7 +72,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({
     const root = document.querySelector(':root') as HTMLElement;
 
     if (root && backgroundColor) {
-      root.style.setProperty('--background-color', backgroundColor);
+      root.style.setProperty('--body-background-color', backgroundColor);
       root.style.setProperty('--background-contrast-color', calculateContrastColor(backgroundColor));
     }
 
