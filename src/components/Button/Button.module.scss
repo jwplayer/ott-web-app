@@ -57,9 +57,9 @@ $large-button-height: 40px;
 
     &.active,
     &:focus-visible {
-      color: var(--highlight-contrast-color, white);
-      background-color: var(--highlight-color, black);
-      border-color: var(--highlight-color);
+      color: var(--highlight-contrast-color, theme.$btn-primary-color);
+      background-color: var(--highlight-color, theme.$btn-primary-bg);
+      border-color: var(--highlight-color, theme.$btn-primary-bg);
     }
   }
 
