@@ -22,6 +22,7 @@ type CardProps = {
   loading?: boolean;
   isCurrent?: boolean;
   currentLabel?: string;
+  enableTitle?: boolean;
 };
 
 function Card({
@@ -35,6 +36,7 @@ function Card({
   episodeNumber,
   progress,
   posterAspect = '16:9',
+  enableTitle = true,
   featured = false,
   disabled = false,
   loading = false,
@@ -79,20 +81,20 @@ function Card({
       aria-label={t('play_item', { title })}
     >
       <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
+        {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {!loading && (
           <div className={styles.meta}>
-            {featured && !disabled && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
+            {featured && !disabled && enableTitle && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
             {renderTag()}
           </div>
         )}
-        {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {progress ? (
           <div className={styles.progressContainer}>
             <div className={styles.progressBar} style={{ width: `${Math.round(progress * 100)}%` }} />
           </div>
         ) : null}
       </div>
-      {!featured && !disabled && (
+      {!featured && !disabled && enableTitle && (
         <div className={styles.titleContainer}>
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>

@@ -10,6 +10,7 @@ import { PersonalShelf } from '../enum/PersonalShelf';
 const contentSchema: SchemaOf<Content> = object({
   playlistId: string().defined(),
   featured: boolean().notRequired(),
+  enableText: boolean().notRequired(),
 }).defined();
 
 const menuSchema: SchemaOf<Menu> = object().shape({
@@ -69,6 +70,7 @@ const loadConfig = async (configLocation: string) => {
   const data = await response.json();
 
   addPersonalShelves(data);
+  addContentDefaultOptions(data);
 
   if (data.version) {
     return parseDeprecatedConfig(data);
@@ -85,11 +87,20 @@ const addPersonalShelves = (data: Config) => {
   if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.Favorites)) {
     data.content.push({ playlistId: PersonalShelf.Favorites });
   }
+
   if (data.options.enableContinueWatching) {
     if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.ContinueWatching)) {
       data.content.splice(1, 0, { playlistId: PersonalShelf.ContinueWatching });
     }
   }
+};
+
+/**
+ * Add content default options
+ * @param {Config} data
+ */
+const addContentDefaultOptions = (data: Config) => {
+  data.content = data.content.map((content) => Object.assign({ enableText: true, featured: false }, content));
 };
 
 /**

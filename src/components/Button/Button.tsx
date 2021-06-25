@@ -9,6 +9,7 @@ type Color = 'default' | 'primary';
 type Variant = 'contained' | 'outlined' | 'text';
 
 type Props = {
+  children?: React.ReactNode;
   label: string;
   active?: boolean;
   color?: Color;
@@ -20,10 +21,12 @@ type Props = {
   size?: 'medium' | 'large';
   to?: string;
   role?: string;
+  className?: string;
 } & React.AriaAttributes;
 
 const Button: React.FC<Props> = ({
   label,
+  children,
   color = 'default',
   startIcon,
   fullWidth = false,
@@ -32,9 +35,10 @@ const Button: React.FC<Props> = ({
   size = 'medium',
   to,
   onClick,
+  className,
   ...rest
 }: Props) => {
-  const className = classNames(styles.button, [styles[color]], [styles[variant]], {
+  const combinedClassNames = classNames(styles.button, className, [styles[color]], [styles[variant]], {
     [styles.active]: active,
     [styles.fullWidth]: fullWidth,
     [styles.large]: size === 'large',
@@ -44,14 +48,16 @@ const Button: React.FC<Props> = ({
   const span = <span className={styles.buttonLabel}>{label}</span>;
 
   return to ? (
-    <NavLink className={className} to={to} activeClassName={styles.active} {...rest} exact>
+    <NavLink className={combinedClassNames} to={to} activeClassName={styles.active} {...rest} exact>
       {icon}
       {span}
+      {children}
     </NavLink>
   ) : (
-    <button className={className} onClick={onClick} {...rest}>
+    <button className={combinedClassNames} onClick={onClick} {...rest}>
       {icon}
       {span}
+      {children}
     </button>
   );
 };

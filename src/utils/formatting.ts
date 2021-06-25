@@ -1,5 +1,7 @@
 import type { Playlist, PlaylistItem } from 'types/playlist';
 
+import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from './media';
+
 const formatDurationTag = (seconds: number): string | null => {
   if (!seconds || typeof seconds !== 'number') return null;
 
@@ -58,20 +60,41 @@ const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-+$/, '')
     .replace(/-/g, whitespaceChar);
 
-const movieURL = (item: PlaylistItem, playlistId?: string | null) =>
-  addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId });
+const movieURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
+  addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
 
-const seriesURL = (item: PlaylistItem, playlistId?: string | null) =>
-  addQueryParams(`/s/${item.seriesId}/${slugify(item.title)}`, { r: playlistId });
+const seriesURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+  const seriesId = getSeriesId(item);
 
-const episodeURL = (seriesPlaylist: Playlist, episodeId?: string, play: boolean = false) =>
+  return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
+};
+
+const episodeURL = (seriesPlaylist: Playlist, episodeId?: string, play: boolean = false, playlistId?: string | null) =>
   addQueryParams(`/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}`, {
     e: episodeId,
+    r: playlistId,
     play: play ? '1' : null,
   });
 
-const cardUrl = (item: PlaylistItem, playlistId?: string | null) =>
-  item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId);
+const episodeURLFromEpisode = (item: PlaylistItem, seriesId: string, playlistId?: string | null, play: boolean = false) => {
+  // generated URL does not match the canonical URL. We need the series playlist in order to generate the slug. For
+  // now the item title is used instead. The canonical link isn't affected by this though.
+  return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, {
+    e: item.mediaid,
+    r: playlistId,
+    play: play ? '1' : null,
+  });
+};
+
+const cardUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+  if (isEpisode(item)) {
+    const seriesId = getSeriesIdFromEpisode(item);
+
+    return seriesId ? episodeURLFromEpisode(item, seriesId, playlistId, play) : movieURL(item);
+  }
+
+  return isSeriesPlaceholder(item) ? seriesURL(item, playlistId, play) : movieURL(item, playlistId, play);
+};
 
 const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
   addQueryParams(item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId), {

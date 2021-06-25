@@ -12,6 +12,7 @@ $large-button-height: 40px;
   align-items: center;
   height: $medium-button-height;
   padding: 0 16px;
+  overflow: hidden;
 
   font-family: theme.$body-alt-font-family;
   font-weight: 700;
@@ -24,18 +25,31 @@ $large-button-height: 40px;
   cursor: pointer;
   transition: background-color 0.1s ease, transform 0.1s ease;
 
+  @media (hover: hover) and (pointer: fine) {
+    &:hover,
+    &:focus {
+      transform: scale(1.1);
+    }
+    &:focus:not(:focus-visible):not(:hover) {
+      transform: scale(1);
+    }
+    &:focus-visible {
+      transform: scale(1.1);
+    }
+  }
+
   &.large {
     height: $large-button-height;
   }
 
   &.default {
-    color: theme.$btn-default-color;
+    color: currentColor;
     background-color: theme.$btn-default-bg;
   }
 
   &.primary {
-    color: var(--highlight-contrast-color, white);
-    background-color: var(--highlight-color, black);
+    color: var(--highlight-contrast-color, theme.$btn-primary-color);
+    background-color: var(--highlight-color, theme.$btn-primary-bg);
   }
 
   &.outlined {
@@ -43,9 +57,9 @@ $large-button-height: 40px;
 
     &.active,
     &:focus {
-      color: var(--highlight-contrast-color, white);
-      background-color: var(--highlight-color, black);
-      border-color: var(--highlight-color);
+      color: var(--highlight-contrast-color, theme.$btn-primary-color);
+      background-color: var(--highlight-color, theme.$btn-primary-bg);
+      border-color: var(--highlight-color, theme.$btn-primary-bg);
     }
   }
 
@@ -53,13 +67,13 @@ $large-button-height: 40px;
     background: none;
     opacity: 0.7;
 
-    &.active {
+    &.active,
+    &:focus {
       opacity: 1;
     }
-
     &:hover {
+      z-index: 1;
       background: theme.$btn-default-bg;
-      transform: scale(1.1);
       opacity: 1;
     }
   }
@@ -67,19 +81,16 @@ $large-button-height: 40px;
   &.fullWidth {
     width: 100%;
 
-    &:hover {
-      transform: scale(1.04);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        transform: scale(1.04);
+      }
     }
   }
 
   > svg {
     width: 18px;
     height: 18px;
-  }
-
-  &:hover,
-  &:focus {
-    transform: scale(1.1);
   }
 }
 
@@ -90,10 +101,10 @@ $large-button-height: 40px;
   margin-right: 11px;
 
   > svg {
-
     width: 20px;
     height: 20px;
     fill: currentColor;
+
     @include responsive.tablet-only() {
       width: 18px;
       height: 18px;

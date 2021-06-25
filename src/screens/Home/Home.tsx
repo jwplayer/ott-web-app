@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useRef, useEffect } from 'react';
+import React, { CSSProperties, useContext, useRef, useEffect, useCallback } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
-import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
 import { ConfigContext } from '../../providers/ConfigProvider';
@@ -43,11 +43,18 @@ const Home = (): JSX.Element => {
   const { getPlaylist: getWatchHistoryPlaylist, getDictionary: getWatchHistoryDictionary } = useWatchHistory();
   const watchHistory = getWatchHistoryPlaylist();
   const watchHistoryDictionary = getWatchHistoryDictionary();
-  const watchHistoryLoaded = watchHistoryStore.useState((state) => state.playlistItemsLoaded);
   const favorites = favoritesStore.useState((state) => state.favorites);
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
+
+  const onCardClick = useCallback(
+    (playlistItem: PlaylistItem, playlistId?: string) => {
+      history.push(cardUrl(playlistItem, playlistId, playlistId === PersonalShelf.ContinueWatching));
+    },
+    [history],
+  );
+  const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
 
   const itemData: ItemData = createItemData(content);
 
@@ -56,18 +63,10 @@ const Home = (): JSX.Element => {
 
     const contentItem: Content = itemData.content[index];
 
-    const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, contentItem.playlistId));
-    const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
-
     return (
-      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId}>
-        {({ playlist, error, isLoading }) => (
-          <div
-            key={key}
-            style={style}
-            role="row"
-            className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
-          >
+      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId} style={style}>
+        {({ playlist, error, isLoading, style }) => (
+          <div key={key} style={style} role="row" className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}>
             <div role="cell">
               <ShelfComponent
                 loading={isLoading}
@@ -76,6 +75,8 @@ const Home = (): JSX.Element => {
                 watchHistory={playlist.feedid === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
+                enableTitle={contentItem.enableText}
+                enableCardTitles={config.options.shelveTitles}
                 title={playlist.title}
                 featured={contentItem.featured === true}
               />
@@ -106,9 +107,9 @@ const Home = (): JSX.Element => {
     };
     const calculateRegular = () => {
       const tilesToShow = tileBreakpoints[breakpoint];
-      const shelfTitlesHeight = config.options.shelveTitles ? 40 : 0;
+      const shelfTitlesHeight = item.enableText ? 40 : 0;
       const shelfMetaHeight = shelfTitlesHeight + 12;
-      const cardMetaHeight = 40;
+      const cardMetaHeight = config.options.shelveTitles ? 40 : 0;
       const shelfHorizontalMargin = isMobile ? 76 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);
@@ -120,10 +121,10 @@ const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (watchHistoryLoaded) {
+    if (favorites || watchHistory) {
       ((listRef.current as unknown) as List)?.recomputeRowHeights();
     }
-  }, [watchHistoryLoaded]);
+  }, [favorites, watchHistory]);
 
   return (
     <div className={styles.home}>

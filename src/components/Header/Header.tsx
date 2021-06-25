@@ -20,6 +20,8 @@ type Props = {
   logoSrc?: string;
   searchBarProps: SearchBarProps;
   searchEnabled: boolean;
+  searchActive: boolean;
+  onSearchButtonClick?: () => void;
   onCloseSearchButtonClick?: () => void;
   children?: ReactFragment;
 };
@@ -30,27 +32,27 @@ const Header: React.FC<Props> = ({
   onMenuButtonClick,
   logoSrc,
   searchBarProps,
+  searchActive,
+  onSearchButtonClick,
   searchEnabled,
   onCloseSearchButtonClick,
 }) => {
   const { t } = useTranslation('menu');
-  const [mobileSearchActive, setMobileSearchActive] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
-    [styles.mobileSearchActive]: mobileSearchActive && breakpoint <= Breakpoint.sm,
+    [styles.mobileSearchActive]: searchActive && breakpoint <= Breakpoint.sm,
   });
 
   const search =
     breakpoint <= Breakpoint.sm ? (
-      mobileSearchActive ? (
+      searchActive ? (
         <div className={styles.mobileSearch}>
           <SearchBar {...searchBarProps} />
           <IconButton
             className={styles.iconButton}
             aria-label="Close search"
             onClick={() => {
-              setMobileSearchActive(false);
-
               if (onCloseSearchButtonClick) {
                 onCloseSearchButtonClick();
               }
@@ -60,7 +62,15 @@ const Header: React.FC<Props> = ({
           </IconButton>
         </div>
       ) : (
-        <IconButton className={styles.iconButton} aria-label="Open search" onClick={() => setMobileSearchActive(true)}>
+        <IconButton
+          className={styles.iconButton}
+          aria-label="Open search"
+          onClick={() => {
+            if (onSearchButtonClick) {
+              onSearchButtonClick();
+            }
+          }}
+        >
           <SearchIcon />
         </IconButton>
       )
@@ -78,11 +88,11 @@ const Header: React.FC<Props> = ({
         </div>
         {logoSrc && (
           <div className={styles.brand}>
-            <Logo src={logoSrc} />
+            <Logo src={logoSrc} onLoad={() => setLogoLoaded(true)} />
           </div>
         )}
         <nav className={styles.nav} aria-label="menu">
-          {children}
+          {logoLoaded ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
       </div>

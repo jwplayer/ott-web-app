@@ -9,6 +9,7 @@ type Props = {
   defaultLabel: string;
   options: string[];
   optionsStyle?: string;
+  valuePrefix?: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
@@ -19,6 +20,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
   options,
   onChange,
   optionsStyle,
+  valuePrefix,
   ...rest
 }: Props & React.AriaAttributes) => {
   return (
@@ -29,6 +31,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
         </option>
         {options.map((option) => (
           <option className={classNames(styles.option, optionsStyle)} key={option} value={option}>
+            {valuePrefix}
             {option}
           </option>
         ))}

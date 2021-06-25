@@ -39,17 +39,7 @@ exports[`<Header /> renders header 1`] = `
       <nav
         aria-label="menu"
         class="nav"
-      >
-        <a
-          aria-current="page"
-          class="button default outlined active"
-          href="/"
-        >
-          <span>
-            Home
-          </span>
-        </a>
-      </nav>
+      />
       <div
         class="search"
       >
@@ -70,9 +60,9 @@ exports[`<Header /> renders header 1`] = `
             </g>
           </svg>
           <input
-            aria-label="Search"
+            aria-label="search_bar.search_label"
             class="input"
-            placeholder="Search..."
+            placeholder="search_bar.search_placeholder"
             type="text"
             value=""
           />

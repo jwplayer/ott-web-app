@@ -27,7 +27,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   },
 }) => {
   const { t } = useTranslation('search');
-  const { siteName, searchPlaylist } = useContext(ConfigContext);
+  const { siteName, searchPlaylist, options } = useContext(ConfigContext);
   const firstRender = useFirstRender();
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
@@ -47,7 +47,14 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
     }
   }, [firstRender, query, searchQuery, updateSearchQuery]);
 
-  const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, searchPlaylist));
+  const onCardClick = (playlistItem: PlaylistItem) => {
+    UIStore.update((s) => {
+      s.searchQuery = '';
+      s.searchActive = false;
+    });
+
+    history.push(cardUrl(playlistItem, searchPlaylist));
+  };
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
   if ((error || !playlist) && !isFetching) {
@@ -87,7 +94,13 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
         <h2>{t('heading')}</h2>
       </header>
       <main className={styles.main}>
-        <CardGrid playlist={playlist} onCardClick={onCardClick} onCardHover={onCardHover} isLoading={firstRender} />
+        <CardGrid
+          playlist={playlist}
+          onCardClick={onCardClick}
+          onCardHover={onCardHover}
+          isLoading={firstRender}
+          enableCardTitles={options.shelveTitles}
+        />
       </main>
     </div>
   );

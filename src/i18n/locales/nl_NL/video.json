@@ -1,13 +1,18 @@
 {
   "add_to_favorites": "",
+  "all_seasons": "",
+  "continue_watching": "",
   "copied_url": "",
   "current_episode": "",
   "currently_playing": "",
   "episodes": "",
   "favorite": "",
   "remove_from_favorites": "",
+  "season_prefix": "",
   "share": "",
   "start_watching": "",
+  "total_episodes": "",
+  "total_episodes_plural": "",
   "trailer": "",
   "watch_trailer": "",
   "share_video": ""

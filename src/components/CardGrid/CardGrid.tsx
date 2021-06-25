@@ -20,8 +20,10 @@ const defaultCols: Breakpoints = {
 type CardGridProps = {
   playlist: PlaylistItem[];
   onCardHover?: (item: PlaylistItem) => void;
-  onCardClick: (item: PlaylistItem) => void;
+  onCardClick: (item: PlaylistItem, playlistId?: string) => void;
+  watchHistory?: { [key: string]: number };
   isLoading: boolean;
+  enableCardTitles?: boolean;
   cols?: Breakpoints;
   currentCardItem?: PlaylistItem;
   currentCardLabel?: string;
@@ -31,6 +33,8 @@ function CardGrid({
   playlist,
   onCardClick,
   onCardHover,
+  watchHistory,
+  enableCardTitles = true,
   isLoading = false,
   cols = defaultCols,
   currentCardItem,
@@ -53,12 +57,14 @@ function CardGrid({
           <Card
             key={mediaid}
             title={title}
+            enableTitle={enableCardTitles}
             duration={duration}
             posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
+            progress={watchHistory ? watchHistory[mediaid] : undefined}
             seriesId={seriesId}
             episodeNumber={episodeNumber}
             seasonNumber={seasonNumber}
-            onClick={() => onCardClick(playlistItem)}
+            onClick={() => onCardClick(playlistItem, playlistItem.feedid)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
@@ -71,7 +77,7 @@ function CardGrid({
 
   return (
     <div className={styles.container}>
-      <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={50} />
+      <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={enableCardTitles ? 50 : 4} />
     </div>
   );
 }

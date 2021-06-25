@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { UIStore } from '../stores/UIStore';
 import type { PlaylistItem } from '../../types/playlist';
@@ -14,11 +14,13 @@ const useBlurImageUpdater = (data?: PlaylistItem[] | PlaylistItem) => {
     });
   }, [data]);
 
-  return (image: string) =>
-    image &&
-    UIStore.update((state) => {
-      state.blurImage = image;
-    });
+  return useCallback((image: string) => {
+    if (image) {
+      UIStore.update((state) => {
+        state.blurImage = image;
+      });
+    }
+  }, []);
 };
 
 export default useBlurImageUpdater;

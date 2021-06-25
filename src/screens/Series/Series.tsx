@@ -19,6 +19,8 @@ import { generateEpisodeJSONLD } from '../../utils/structuredData';
 import { copyToClipboard } from '../../utils/dom';
 import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
+import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
+import { VideoProgressMinMax } from '../../config';
 
 import styles from './Series.module.scss';
 
@@ -42,7 +44,8 @@ const Series = ({
     true,
     false,
   );
-  const { isLoading, error, data: item } = useMedia(searchParams.get('e') || '');
+  const episodeId = searchParams.get('e') || '';
+  const { isLoading, error, data: item } = useMedia(episodeId);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
 
   const [seasonFilter, setSeasonFilter] = useState<string>('');
@@ -57,6 +60,15 @@ const Series = ({
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const enableSharing: boolean = config.options.enableSharing === true;
+
+  const { getDictionary: getWatchHistoryDictionary } = useWatchHistory();
+  const watchHistoryDictionary = getWatchHistoryDictionary();
+  const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
+  const watchHistoryItem =
+    item &&
+    watchHistory.find(({ mediaid, progress }) => {
+      return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
+    });
 
   useBlurImageUpdater(item);
 
@@ -81,9 +93,10 @@ const Series = ({
 
     if (typeof navigator.share === 'function') {
       navigator.share({ title: item.title, text: item.description, url: window.location.href });
-    } else {
-      copyToClipboard(window.location.href);
+      return;
     }
+
+    copyToClipboard(window.location.href);
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };
@@ -101,13 +114,16 @@ const Series = ({
     };
   }, [play]);
 
-  if (isLoading || playlistIsLoading) return <LoadingOverlay />;
-  if (error || !item) return <ErrorPage title="Episode not found!" />;
+  useEffect(() => {
+    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+  }, [episodeId]);
+
+  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
+  if ((!isLoading && error) || !item) return <ErrorPage title="Episode not found!" />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
 
   const pageTitle = `${item.title} - ${config.siteName}`;
-  const canonicalUrl =
-    seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
+  const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
 
   return (
     <React.Fragment>
@@ -137,10 +153,12 @@ const Series = ({
       </Helmet>
       <VideoComponent
         title={seriesPlaylist.title}
+        episodeCount={seriesPlaylist.playlist.length}
         item={item}
         feedId={feedId ?? undefined}
         trailerItem={trailerItem}
         play={play}
+        progress={watchHistoryItem?.progress}
         startPlay={startPlay}
         goBack={goBack}
         onComplete={handleComplete}
@@ -162,8 +180,8 @@ const Series = ({
               <Filter
                 name="categories"
                 value={seasonFilter}
-                valuePrefix="Season "
-                defaultLabel="All"
+                valuePrefix={t('season_prefix')}
+                defaultLabel={t('all_seasons')}
                 options={filters}
                 setValue={setSeasonFilter}
               />
@@ -172,9 +190,11 @@ const Series = ({
           <CardGrid
             playlist={filteredPlaylist}
             onCardClick={onCardClick}
+            watchHistory={watchHistoryDictionary}
             isLoading={isLoading}
             currentCardItem={item}
             currentCardLabel={t('current_episode')}
+            enableCardTitles={config.options.shelveTitles}
           />
         </>
       </VideoComponent>
