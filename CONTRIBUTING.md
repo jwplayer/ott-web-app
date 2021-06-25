@@ -30,7 +30,7 @@ The `yarn create-base` can be used to quickly scaffold a component, container or
 
 ## Git Commit Guidelines (conventional changelog)
 
-We use the conventional changelog thereby defining very precise rules over how our git commit messages can be formatted. This leads to **more readable messages** that are easy to follow when looking through the **project history**. But also, we allow us the git commit messages to **generate the change log**.
+We use the conventional changelog thereby defining very precise rules over how our git commit messages can be formatted. This leads to **more readable messages** that are easy to follow when looking through the **project history**. But also, we allow the git commit messages to **generate the change log**.
 
 ### Commit Message Format
 
