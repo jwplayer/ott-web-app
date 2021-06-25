@@ -104,6 +104,7 @@ The footer should contain any information about **Breaking Changes** and is also
   /providers      - React context
   /screens        - Screens (essentially containers, but only used directly in the router)
   /services       - Services which connects external data sources to the application
+  /stores         - Pullstate store files
   /styles         - Global SCSS rules, theming and variables
   /utils          - Utility functions
 

@@ -8,7 +8,7 @@ In the `public/index.html` file, a small script is added to allow switching conf
 
 You can append `?c=showcase-id` to the URL and use a different configuration. However, this may not be desirable for production builds since there will only be a single configuration.
 
-To disable the dynamic configuration mechanism, remove the following part in the `public/index.html` file.
+To disable the dynamic configuration mechanism, remove the following part from the `public/index.html` file.
 
 ```html
 <script>
@@ -95,7 +95,7 @@ The eight-character Playlist ID of the Search playlist that you want to use to e
 
 **menu**
 
-Use the `menu' array to define the links that are visible in the header and menu on mobile devices.
+Use the `menu` array to define the links that are visible in the header and menu on mobile devices.
 
 ```
 {
@@ -132,7 +132,7 @@ You can optionally define a list of comma separated tags which are used in the "
 
 **content**
 
-Use the `content' array to define which and how content playlists should be displayed in "shelves". For optimal performance and user experience, we recommend a maximum of 10 playlists. See the available options below to configure each shelf separately.
+Use the `content` array to define which and how content playlists should be displayed in "shelves". For optimal performance and user experience, we recommend a maximum of 10 playlists. See the available options below to configure each shelf separately.
 
 ```
 {
