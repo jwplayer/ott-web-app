@@ -92,6 +92,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
             title: item.title,
             description: item.description,
             sources: item.sources.map((source) => ({ ...source })),
+            tracks: item.tracks,
           },
         ],
         aspect: false,
