@@ -69,6 +69,7 @@ The allowed scopes are:
 - home
 - playlist
 - videodetail
+- series
 - search
 - watchhistory
 - favorites
