@@ -88,7 +88,7 @@
     "postcss-import": "^14.0.1",
     "postcss-scss": "^3.0.5",
     "prettier": "^2.2.1",
-    "snowpack": "^3.3.4",
+    "snowpack": "^3.8.2",
     "start-server-and-test": "^1.12.5",
     "stylelint": "^13.12.0",
     "stylelint-config-recommended-scss": "^4.2.0",
