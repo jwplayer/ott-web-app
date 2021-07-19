@@ -6,6 +6,7 @@ import loadConfig, { validateConfig } from '../services/config.service';
 import type { Config, Options } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 import { addScript } from '../utils/dom';
+import { ConfigStore } from '../stores/ConfigStore';
 
 const defaultConfig: Config = {
   id: '',
@@ -16,6 +17,8 @@ const defaultConfig: Config = {
   assets: {},
   content: [],
   menu: [],
+  cleengId: null,
+  cleengSandbox: true,
   options: {
     enableSharing: true,
     shelveTitles: true,
@@ -46,7 +49,14 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
 
       validateConfig(config)
         .then((configValidated) => {
-          setConfig(() => merge({}, defaultConfig, configValidated));
+          const configWithDefaults = merge({}, defaultConfig, configValidated);
+
+          // @todo refactor this provider to use the ConfigStore exclusively
+          setConfig(configWithDefaults);
+          ConfigStore.update(s => {
+            s.config = configWithDefaults;
+          });
+
           setCssVariables(configValidated.options);
           maybeInjectAnalyticsLibrary(config);
           onLoading(false);
