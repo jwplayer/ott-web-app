@@ -1,4 +1,4 @@
-import React, { ReactNode, FC, useState, useContext, useRef, useEffect } from 'react';
+import React, { FC, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
@@ -11,6 +11,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import MenuButton from '../../components/MenuButton/MenuButton';
+import { AccountModalView, AccountStore } from '../../stores/AccountStore';
 
 import styles from './Layout.module.scss';
 
@@ -52,6 +53,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     });
   };
 
+  const loginButtonClickHandler = () => {
+    AccountStore.update(s => {
+      s.modal.open = true;
+      s.modal.view = AccountModalView.LOGIN;
+    })
+  };
+
   return (
     <div className={styles.layout}>
       <Helmet>
@@ -77,6 +85,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           searchActive={searchActive}
           onSearchButtonClick={searchButtonClickHandler}
           onCloseSearchButtonClick={closeSearchButtonClickHandler}
+          onLoginButtonClick={loginButtonClickHandler}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
