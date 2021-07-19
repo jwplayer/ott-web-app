@@ -106,8 +106,9 @@ $search-border: 1px solid $light-color !default;
 
 // Modal
 
-$modal-bg: $light-color !default;
-$modal-color: variables.$black !default;
+$modal-bg: #202020 !default;
+$modal-color: variables.$white !default;
+$modal-backdrop-bg: rgba(variables.$black, 0.6) !default;
 
 // Offline
 

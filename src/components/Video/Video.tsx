@@ -202,7 +202,7 @@ const Video: React.FC<Props> = ({
         </div>
       </Fade>
       {!!trailerItem && (
-        <Modal open={playTrailer} onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
+        <Modal className={styles.trailerModal} open={playTrailer} onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
           <Cinema
             item={trailerItem}
             onPlay={handlePlay}
