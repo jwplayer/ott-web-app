@@ -2716,10 +2716,19 @@
     postcss-load-config "^3.0.1"
     workerpool "^6.1.2"
 
-"@snowpack/plugin-react-refresh@^2.3.5", "@snowpack/plugin-react-refresh@^2.4.2":
+"@snowpack/plugin-react-refresh@^2.3.5":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@snowpack/plugin-react-refresh/-/plugin-react-refresh-2.4.2.tgz#6b301e9563deb5af82a0d159bd2a77575282b357"
   integrity sha512-crZwoSt2+KyzFGCca6mFUb+7yf76uvynvYqc+ovn4Aln0otaV/MakzCaaHmucjW/UdmH9G1rH2PiXma3jUCKoA==
+  dependencies:
+    "@babel/core" "^7.0.0"
+    "@babel/plugin-syntax-class-properties" "^7.10.0"
+    react-refresh "^0.9.0"
+
+"@snowpack/plugin-react-refresh@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@snowpack/plugin-react-refresh/-/plugin-react-refresh-2.5.0.tgz#e4ad1561ec4acd9a876318cb1e8d05f66b4e11d4"
+  integrity sha512-3rYkwayAA+65IIYLXMEFqQwtBGbII9IidMJo1yXuj35kTEg9TdZrofoqcHaSts2sv2Nz0TD6v7BWRPdvCU0uIw==
   dependencies:
     "@babel/core" "^7.0.0"
     "@babel/plugin-syntax-class-properties" "^7.10.0"
