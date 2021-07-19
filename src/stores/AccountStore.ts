@@ -2,7 +2,7 @@ import { Store } from 'pullstate'
 import jwtDecode from 'jwt-decode';
 
 import * as accountService from '../services/account.service';
-import type { AuthData, Customer, JwtDetails } from '../../types/cleeng';
+import type { AuthData, Customer, JwtDetails } from '../../types/account';
 
 import { ConfigStore } from './ConfigStore';
 

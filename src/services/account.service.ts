@@ -3,7 +3,7 @@ import type {
   Login,
   Register,
   ResetPassword,
-} from '../../types/cleeng';
+} from '../../types/account';
 
 import { post, put, patch, get } from './cleeng.service';
 
