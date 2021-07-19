@@ -9,6 +9,7 @@ module.exports = {
         'videodetail',
         'series',
         'search',
+        'user',
         'watchhistory',
         'favorites',
         'analytics',

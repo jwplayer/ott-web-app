@@ -1,0 +1,30 @@
+{
+  "account": {
+    "email": "",
+    "edit_account": "",
+    "security": "",
+    "password": "",
+    "edit_password": "",
+    "about_you": "",
+    "firstname": "",
+    "lastname": "",
+    "edit_information": "",
+    "terms_and_tracking": "",
+    "update_consents": ""
+  },
+  "payment": {
+    "subscription_details": "",
+    "monthly_subscription": "",
+    "next_billing_date_on": "",
+    "month": "",
+    "edit_subscription": "",
+    "payment_method": "",
+    "card_number": "",
+    "expiry_date": "",
+    "cvc_cvv": "",
+    "transactions": "",
+    "price_payed_with_card": "",
+    "more_transactions": "",
+    "show_all": ""
+  }
+}

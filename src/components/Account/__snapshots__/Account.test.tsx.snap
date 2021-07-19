@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Account> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <div>
+      <h3>
+        account.email
+      </h3>
+    </div>
+    <div>
+      <strong>
+        account.email
+      </strong>
+      <p>
+        test@test.com
+      </p>
+      <button
+        class="button default outlined"
+      >
+        <span>
+          account.edit_account
+        </span>
+      </button>
+    </div>
+  </div>
+  <div>
+    <div>
+      <h3>
+        account.security
+      </h3>
+    </div>
+    <div>
+      <strong>
+        account.password
+      </strong>
+      <p>
+        ****************
+      </p>
+      <button
+        class="button default outlined"
+      >
+        <span>
+          account.edit_password
+        </span>
+      </button>
+    </div>
+  </div>
+  <div>
+    <div>
+      <h3>
+        account.about_you
+      </h3>
+    </div>
+    <div>
+      <strong>
+        account.firstname
+      </strong>
+      <p />
+      <strong>
+        account.lastname
+      </strong>
+      <p />
+      <button
+        class="button default outlined"
+      >
+        <span>
+          account.edit_information
+        </span>
+      </button>
+    </div>
+  </div>
+  <div>
+    <div>
+      <h3>
+        Terms & tracking
+      </h3>
+    </div>
+    <div>
+      <label
+        class="checkbox"
+      >
+        <input
+          id="terms1"
+          name="terms 1"
+          type="checkbox"
+          value="Bike"
+        />
+        <p>
+          I accept the 
+          <strong>
+            Terms of Conditions
+          </strong>
+           of 
+          &lt;platform name&gt;
+        </p>
+      </label>
+      <button
+        class="button default outlined"
+      >
+        <span>
+          account.update_consents
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
