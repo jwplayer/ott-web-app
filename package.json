@@ -28,6 +28,7 @@
     "classnames": "^2.3.1",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",
+    "jwt-decode": "^3.1.2",
     "lodash.merge": "^4.6.2",
     "memoize-one": "^5.2.1",
     "pullstate": "^1.22.1",
