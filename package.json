@@ -23,8 +23,6 @@
     "codecept:desktop": "codeceptjs -c codecept.desktop.js run --steps"
   },
   "dependencies": {
-    "@types/jwplayer": "^8.2.6",
-    "@types/react-virtualized": "^9.21.11",
     "classnames": "^2.3.1",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",
@@ -67,6 +65,7 @@
     "@types/react-router-dom": "^5.1.8",
     "@types/react-virtualized": "^9.21.12",
     "@types/snowpack-env": "^2.3.4",
+    "@types/jwplayer": "^8.2.7",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",
     "codeceptjs": "^3.0.7",
