@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import AccountContainer from '../../containers/Account/Account';
+import Customer from '../../containers/Customer/Customer';
 import SubscriptionContainer from '../../containers/Subscription/Subscription';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
@@ -43,11 +43,11 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Switch>
           <Route path="/u/my-account">
-            <AccountContainer>
-              {({ account, update }) => (
-                <Account account={account} update={update} panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
+            <Customer>
+              {({ customer, update }) => (
+                <Account customer={customer} update={update} panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
               )}
-            </AccountContainer>
+            </Customer>
           </Route>
           <Route path="/u/favorites">
             <div>Favorites</div>

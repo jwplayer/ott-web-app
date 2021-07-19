@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import type { Subscription } from 'types/subscription';
 
 import Button from '../Button/Button';
 
@@ -46,7 +47,7 @@ const Payment = ({ subscription, update, panelClassName, panelHeaderClassName }:
           <div className={styles.cardDetails}>
             <div className={styles.expiryDate}>
               <strong>{t('payment.expiry_date')}</strong>
-              <p>03/2030</p>
+              <p>{subscription.expiresAt}</p>
             </div>
             <div>
               <strong>{t('payment.cvc_cvv')}</strong>

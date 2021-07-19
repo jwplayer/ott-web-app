@@ -13,7 +13,7 @@ exports[`<Account> renders and matches snapshot 1`] = `
         account.email
       </strong>
       <p>
-        test@test.com
+        todo@test.nl
       </p>
       <button
         class="button default outlined"

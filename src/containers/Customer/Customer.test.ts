@@ -1,6 +1,6 @@
 // import React from 'react';
 
-describe('<Cinema>', () => {
+describe('<Customer>', () => {
   test('renders and matches snapshot', () => {
     // todo
     // const item = {

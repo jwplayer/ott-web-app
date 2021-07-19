@@ -12,6 +12,8 @@ export type Config = {
   searchPlaylist?: string | null;
   analyticsToken?: string | null;
   adSchedule?: string | null;
+  cleengId?: string | null;
+  cleengSandbox: boolean;
   assets: { banner?: string };
   content: Content[];
   menu: Menu[];

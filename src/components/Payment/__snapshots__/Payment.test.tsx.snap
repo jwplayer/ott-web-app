@@ -60,9 +60,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
           <strong>
             payment.expiry_date
           </strong>
-          <p>
-            03/2030
-          </p>
+          <p />
         </div>
         <div>
           <strong>

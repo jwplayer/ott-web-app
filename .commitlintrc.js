@@ -15,6 +15,7 @@ module.exports = {
         'analytics',
         'pwa',
         'seo',
+        'auth',
       ],
     ],
   },

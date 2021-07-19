@@ -1,18 +1,19 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import type { Customer } from 'types/account';
 
 import Button from '../../components/Button/Button';
 
 import styles from './Account.module.scss';
 
 type Props = {
-  account: Account;
-  update: (account: Account) => void;
+  customer: Customer;
+  update: (customer: Customer) => void;
   panelClassName?: string;
   panelHeaderClassName?: string;
 };
 
-const Account = ({ account, update, panelClassName, panelHeaderClassName }: Props): JSX.Element => {
+const Account = ({ customer, update, panelClassName, panelHeaderClassName }: Props): JSX.Element => {
   const { t } = useTranslation('user');
 
   return (
@@ -23,8 +24,8 @@ const Account = ({ account, update, panelClassName, panelHeaderClassName }: Prop
         </div>
         <div>
           <strong>{t('account.email')}</strong>
-          <p>{account.email}</p>
-          <Button label={t('account.edit_account')} onClick={() => update(account)} />
+          <p>{customer.email}</p>
+          <Button label={t('account.edit_account')} onClick={() => update(customer)} />
         </div>
       </div>
       <div className={panelClassName}>
@@ -43,9 +44,9 @@ const Account = ({ account, update, panelClassName, panelHeaderClassName }: Prop
         </div>
         <div>
           <strong>{t('account.firstname')}</strong>
-          <p>{account.firstname}</p>
+          <p>{customer.firstName}</p>
           <strong>{t('account.lastname')}</strong>
-          <p>{account.lastname}</p>
+          <p>{customer.lastName}</p>
           <Button label={t('account.edit_information')} />
         </div>
       </div>

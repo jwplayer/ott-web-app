@@ -19,6 +19,7 @@ export const ConfigStore = new Store<ConfigStore>({
     assets: {},
     content: [],
     menu: [],
+    cleengSandbox: true,
     options: {
       shelveTitles: true,
     },
