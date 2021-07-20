@@ -1,6 +1,7 @@
 import React, { FC, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import { UIStore } from '../../stores/UIStore';
@@ -11,7 +12,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import MenuButton from '../../components/MenuButton/MenuButton';
-import { AccountModalView, AccountStore } from '../../stores/AccountStore';
+import { addQueryParam } from '../../utils/history';
 
 import styles from './Layout.module.scss';
 
@@ -20,6 +21,7 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
+  const history = useHistory();
   const { t } = useTranslation('common');
   const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
   const blurImage = UIStore.useState((s) => s.blurImage);
@@ -54,10 +56,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   const loginButtonClickHandler = () => {
-    AccountStore.update(s => {
-      s.modal.open = true;
-      s.modal.view = AccountModalView.LOGIN;
-    })
+    addQueryParam(history, 'u', 'login');
   };
 
   return (

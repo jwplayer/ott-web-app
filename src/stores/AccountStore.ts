@@ -6,24 +6,12 @@ import type { AuthData, Customer, JwtDetails } from '../../types/account';
 
 import { ConfigStore } from './ConfigStore';
 
-export enum AccountModalView {
-  LOGIN,
-}
-
 type AccountStore = {
-  modal: {
-    open: boolean;
-    view: AccountModalView
-  },
   auth: AuthData | null,
   user: Customer | null,
 };
 
 export const AccountStore = new Store<AccountStore>({
-  modal: {
-    open: false,
-    view: AccountModalView.LOGIN,
-  },
   auth: null,
   user: null,
 });
