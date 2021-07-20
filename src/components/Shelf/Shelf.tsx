@@ -115,6 +115,17 @@ const Shelf: React.FC<ShelfProps> = ({
     [didSlideBefore, t],
   );
 
+  const renderPaginationDots = (onClick: () => void, index: number, pageIndex: number) => (
+    <span
+      key={pageIndex}
+      className={classNames(styles.dot, { [styles.active]: index === pageIndex })}
+      onClick={onClick}
+      role="button"
+      aria-pressed={index === pageIndex}
+      aria-label={t('show_page', { number: pageIndex + 1 })}
+    />
+  );
+
   const handleSlide = (doSlide: () => void): void => {
     setDidSlideBefore(true);
     doSlide();
@@ -131,10 +142,12 @@ const Shelf: React.FC<ShelfProps> = ({
         wrapWithEmptyTiles={featured && playlist.playlist.length === 1}
         cycleMode={'restart'}
         showControls={!matchMedia('(hover: none)').matches && !loading}
+        showDots={featured}
         transitionTime={'0.3s'}
         spacing={8}
         renderLeftControl={renderLeftControl}
         renderRightControl={renderRightControl}
+        renderPaginationDots={renderPaginationDots}
         renderTile={renderTile}
       />
     </div>
