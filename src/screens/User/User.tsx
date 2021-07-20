@@ -47,7 +47,13 @@ const User = (): JSX.Element => {
           <Route path="/u/my-account">
             <Customer>
               {({ customer, update }) => (
-                <Account customer={customer} update={update} panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
+                <Account
+                  customer={customer}
+                  update={update}
+                  panelClassName={styles.panel}
+                  panelHeaderClassName={styles.panelHeader}
+                  onDeleteAccountClick={() => console.error('Sure?')}
+                />
               )}
             </Customer>
           </Route>

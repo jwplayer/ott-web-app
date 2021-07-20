@@ -6,8 +6,13 @@
     "logout": "Log out"
   },
   "account": {
+    "save": "Save",
+    "cancel": "Cancel",
     "email": "Email",
     "edit_account": "Edit account",
+    "confirm_password": "Confirm password",
+    "please_confirm": "Please confirm your password to proceed with changing your email address.",
+    "delete_account": "Delete account",
     "security": "Security",
     "password": "Password",
     "edit_password": "Edit password",

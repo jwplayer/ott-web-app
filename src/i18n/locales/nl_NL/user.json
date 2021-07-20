@@ -6,8 +6,13 @@
     "logout": ""
   },
   "account": {
+    "save": "",
+    "cancel": "",
     "email": "",
     "edit_account": "",
+    "confirm_password": "",
+    "please_confirm": "",
+    "delete_account": "",
     "security": "",
     "password": "",
     "edit_password": "",
