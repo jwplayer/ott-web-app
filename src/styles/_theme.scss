@@ -138,6 +138,17 @@ $scroll-indicator-bg: #7f899a !default;
 $sidebar-bg: #000 !default;
 $sidebar-color: variables.$white !default;
 
+// TextField
+$text-field-bg-color: rgba(variables.$black, 0.54) !default;
+$text-field-resting-border-color: rgba(variables.$white, 0.34) !default;
+$text-field-resting-color: rgba(variables.$white, 0.7) !default;
+$text-field-hover-border-color: rgba(variables.$white, 0.7) !default;
+$text-field-hover-bg-color: rgba(variables.$white, 0.08) !default;
+$text-field-active-color: variables.$white !default;
+$text-field-active-border-color: variables.$white !default;
+$text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
+$text-field-error-color: #FF0C3E !default;
+
 // Toggle
 
 $toggle-default-color: #585858 !default;

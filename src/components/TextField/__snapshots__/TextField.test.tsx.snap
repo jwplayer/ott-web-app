@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TextField> renders and matches multiline snapshot 1`] = `
+<div>
+  <div
+    class="textField"
+  >
+    <label
+      class="label"
+      for="text-field_1235_name"
+    >
+      Label
+    </label>
+    <textarea
+      class="input"
+      id="text-field_1235_name"
+      name="name"
+      placeholder="Placeholder"
+      rows="3"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`<TextField> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="textField"
+  >
+    <label
+      class="label"
+      for="text-field_1235_name"
+    >
+      Label
+    </label>
+    <input
+      class="input"
+      id="text-field_1235_name"
+      name="name"
+      placeholder="Placeholder"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;

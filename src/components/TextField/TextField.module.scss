@@ -1,0 +1,62 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.textField {
+  width: 100%;
+  margin-bottom: 8px;
+
+  &.error {
+    .label,
+    .helperText {
+      color: theme.$text-field-error-color;
+    }
+
+    .input {
+      border-color: theme.$text-field-error-color;
+    }
+  }
+
+  &.disabled {
+    .input {
+      opacity: 0.7;
+    }
+  }
+
+  &:hover {
+    &:not(.disabled) {
+      .input {
+        background-color: theme.$text-field-hover-bg-color;
+        border-color: theme.$text-field-hover-border-color;
+      }
+    }
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 14px 16px;
+  color: theme.$text-field-resting-color;
+  font-size: 16px;
+  line-height: 18px;
+  background-color: theme.$text-field-bg-color;
+  border: 1px solid theme.$text-field-resting-border-color;
+  border-radius: 4px;
+  transition: border 0.2s ease;
+
+  &:focus {
+    color: theme.$text-field-active-color;
+    border-color: theme.$text-field-active-border-color;
+    outline: none;
+  }
+}
+
+.helperText {
+  margin-top: 4px;
+  font-size: 12px;
+}
