@@ -45,8 +45,8 @@ const Modal: React.FC<Props> = ({ className, open, onClose, children, closeButto
 
       // make sure main content is hidden for screen readers and inert
       if (appView) {
-        appView.setAttribute('aria-hidden', 'true');
         appView.inert = true;
+        appView.setAttribute('aria-hidden', 'true');
       }
 
       // prevent scrolling under the modal
@@ -60,8 +60,8 @@ const Modal: React.FC<Props> = ({ className, open, onClose, children, closeButto
       }
     } else {
       if (appView) {
-        appView.removeAttribute('aria-hidden');
         appView.inert = false;
+        appView.removeAttribute('aria-hidden');
       }
 
       document.body.style.overflowY = '';
