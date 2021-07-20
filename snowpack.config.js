@@ -14,7 +14,6 @@ module.exports = {
     '@snowpack/plugin-sass',
     ['@snowpack/plugin-webpack', {
       extendConfig: (config) => {
-        // FIXES https://github.com/snowpackjs/snowpack/discussions/2810
         const cssModulesRule = config.module.rules.find((rule) =>
           rule && rule.use && rule.use.find((use) => use && use.loader && use.loader.includes('css-loader') && use.options && use.options.modules));
 
