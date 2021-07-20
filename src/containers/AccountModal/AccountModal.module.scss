@@ -1,14 +1,6 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
 
-.accountModal {
-  max-width: 450px;
-  padding: 24px;
-  color: theme.$modal-color;
-  background-color: theme.$modal-bg;
-  border-radius: 6px;
-}
-
 .banner {
   text-align: center;
 

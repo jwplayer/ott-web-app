@@ -1,24 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 
 import Fade from '../Animation/Fade/Fade';
-import IconButton from '../IconButton/IconButton';
-import Close from '../../icons/Close';
+import Grow from '../Animation/Grow/Grow';
 
 import styles from './Modal.module.scss';
 
 type Props = {
-  className?: string;
   children?: React.ReactNode;
+  AnimationComponent?: React.JSXElementConstructor<{ open?: boolean; duration?: number; delay?: number; children: React.ReactNode }>;
   open: boolean;
   onClose?: () => void;
-  closeButtonVisible?: boolean;
 };
 
-const Modal: React.FC<Props> = ({ className, open, onClose, children, closeButtonVisible }: Props) => {
-  const { t } = useTranslation('common');
+const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow }: Props) => {
   const [visible, setVisible] = useState(open);
   const lastFocus = useRef<HTMLElement>() as React.MutableRefObject<HTMLElement>;
   const modalRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
@@ -79,15 +74,10 @@ const Modal: React.FC<Props> = ({ className, open, onClose, children, closeButto
     <Fade open={open} duration={300} onCloseAnimationEnd={() => setVisible(false)}>
       <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
         <div className={styles.backdrop} onClick={onClose} data-testid="backdrop" />
-        <div className={classNames(styles.container, className)}>
-          {children}
-          <IconButton
-            onClick={onClose}
-            aria-label={t('close_modal')}
-            className={classNames(styles.close, { [styles.hidden]: !closeButtonVisible })}
-          >
-            <Close />
-          </IconButton>
+        <div className={styles.container}>
+          <AnimationComponent open={open} duration={200}>
+            {children}
+          </AnimationComponent>
         </div>
       </div>
     </Fade>,

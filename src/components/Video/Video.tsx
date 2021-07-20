@@ -20,6 +20,7 @@ import FavoriteBorder from '../../icons/FavoriteBorder';
 import Fade from '../Animation/Fade/Fade';
 
 import styles from './Video.module.scss';
+import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
 
 type Poster = 'fading' | 'normal';
 
@@ -202,18 +203,21 @@ const Video: React.FC<Props> = ({
         </div>
       </Fade>
       {!!trailerItem && (
-        <Modal className={styles.trailerModal} open={playTrailer} onClose={onTrailerClose} closeButtonVisible={!isPlaying || userActive}>
-          <Cinema
-            item={trailerItem}
-            onPlay={handlePlay}
-            onPause={handlePause}
-            onComplete={onTrailerClose}
-            onUserActive={handleUserActive}
-            onUserInActive={handleUserInactive}
-            isTrailer
-          />
-          <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
-          <div className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: isPlaying && !userActive })}>{`${title} - Trailer`}</div>
+        <Modal open={playTrailer} onClose={onTrailerClose}>
+          <div className={styles.trailerModal}>
+            <Cinema
+              item={trailerItem}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              onComplete={onTrailerClose}
+              onUserActive={handleUserActive}
+              onUserInActive={handleUserInactive}
+              isTrailer
+            />
+            <div className={classNames(styles.playerOverlay, { [styles.hidden]: isPlaying && !userActive })} />
+            <div className={classNames(styles.trailerMeta, styles.title, { [styles.hidden]: isPlaying && !userActive })}>{`${title} - Trailer`}</div>
+            <ModalCloseButton onClick={onTrailerClose} visible={!isPlaying || userActive} />
+          </div>
         </Modal>
       )}
     </div>
