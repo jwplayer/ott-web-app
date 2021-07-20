@@ -8,12 +8,12 @@ import styles from './Payment.module.scss';
 
 type Props = {
   subscription: Subscription;
-  update: (subscription: Subscription) => void;
+  onEditSubscriptionClick: (subscription: Subscription) => void;
   panelClassName?: string;
   panelHeaderClassName?: string;
 };
 
-const Payment = ({ subscription, update, panelClassName, panelHeaderClassName }: Props): JSX.Element => {
+const Payment = ({ subscription, onEditSubscriptionClick, panelClassName, panelHeaderClassName }: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const showAllTransactions = () => console.info('show all');
 
@@ -35,7 +35,7 @@ const Payment = ({ subscription, update, panelClassName, panelHeaderClassName }:
             {t('payment.month')}
           </p>
         </div>
-        <Button label={t('payment.edit_subscription')} onClick={() => update} />
+        <Button label={t('payment.edit_subscription')} onClick={() => onEditSubscriptionClick} />
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
