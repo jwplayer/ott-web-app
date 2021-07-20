@@ -121,25 +121,26 @@ const Video: React.FC<Props> = ({
             {isSeries && <div className={styles.seriesMeta}>{seriesMeta}</div>}
           </div>
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
-          <div className={styles.playButton}>
-            <Button
-              color="primary"
-              variant="contained"
-              size="large"
-              label={typeof progress === 'number' ? t('video:continue_watching') : t('video:start_watching')}
-              startIcon={<Play />}
-              onClick={startPlay}
-              active={play}
-              fullWidth
-            >
-              {progress ? (
-                <div className={styles.progressRail}>
-                  <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
-                </div>
-              ) : null}
-            </Button>
-          </div>
-          <div className={styles.otherButtons}>
+
+          <div className={styles.buttonBar}>
+            <div className={styles.playButton}>
+              <Button
+                color="primary"
+                variant="contained"
+                size="large"
+                label={typeof progress === 'number' ? t('video:continue_watching') : t('video:start_watching')}
+                startIcon={<Play />}
+                onClick={startPlay}
+                active={play}
+                fullWidth={breakpoint < Breakpoint.sm}
+              >
+                {progress ? (
+                  <div className={styles.progressRail}>
+                    <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
+                  </div>
+                ) : null}
+              </Button>
+            </div>
             {trailerItem && (
               <Button
                 className={styles.trailerButton}
