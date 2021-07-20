@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import styles from './Logo.module.scss';
@@ -14,11 +14,11 @@ type ImgRef = {
 };
 
 const Logo: React.FC<Props> = ({ src, onLoad }: Props) => {
-  const imgRef = useRef<ImgRef>({ height: undefined, width: undefined });
+  const [imgDimensions, updateImgDimensions] = useState<ImgRef>({ height: undefined, width: undefined });
 
   const onLoadHandler = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const { height, width } = event.currentTarget;
-    imgRef.current = { height, width };
+    updateImgDimensions({ height, width });
     onLoad();
   };
 
@@ -28,8 +28,8 @@ const Logo: React.FC<Props> = ({ src, onLoad }: Props) => {
         className={styles.logo}
         alt="logo"
         src={src}
-        height={imgRef.current.height}
-        width={imgRef.current.width}
+        height={imgDimensions.height}
+        width={imgDimensions.width}
         onLoad={onLoadHandler}
         onError={onLoad}
       />
