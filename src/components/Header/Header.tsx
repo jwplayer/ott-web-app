@@ -9,6 +9,7 @@ import SearchIcon from '../../icons/Search';
 import CloseIcon from '../../icons/Close';
 import IconButton from '../../components/IconButton/IconButton';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import Button from '../Button/Button';
 
 import styles from './Header.module.scss';
 
@@ -23,6 +24,7 @@ type Props = {
   searchActive: boolean;
   onSearchButtonClick?: () => void;
   onCloseSearchButtonClick?: () => void;
+  onLoginButtonClick?: () => void;
   children?: ReactFragment;
 };
 
@@ -36,6 +38,7 @@ const Header: React.FC<Props> = ({
   onSearchButtonClick,
   searchEnabled,
   onCloseSearchButtonClick,
+  onLoginButtonClick,
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -95,6 +98,7 @@ const Header: React.FC<Props> = ({
           {logoLoaded ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
+        <div><Button onClick={onLoginButtonClick} label="Login" /></div>
       </div>
     </header>
   );

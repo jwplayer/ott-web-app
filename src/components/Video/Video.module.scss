@@ -50,10 +50,14 @@
 }
 
 .title {
+  color: var(--primary-color);
+  font-family: var(--body-font-family);
   font-weight: 700;
   font-size: 34px;
   line-height: 40px;
   letter-spacing: 0.25px;
+
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 
   @include responsive.mobile-only() {
     font-size: 20px;
@@ -146,6 +150,7 @@
     }
   }
 }
+
 .poster {
   position: absolute;
   top: 0;
@@ -265,6 +270,17 @@
     height: 36px;
     -webkit-filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4)); /* stylelint-disable-line */
     filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4));
+  }
+}
+
+.trailerModal {
+  position: relative;
+  width: 80vw;
+  height: calc(80vw / 16 * 9);
+
+  @include responsive.mobile-only() {
+    width: 100vw;
+    height: calc(100vw / 16 * 9);
   }
 }
 

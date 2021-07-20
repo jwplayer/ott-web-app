@@ -40,6 +40,7 @@
     "react-router-dom": "^5.2.0",
     "react-virtualized": "^9.22.3",
     "tile-dock": "https://github.com/RCVZ/tile-dock-temp",
+    "wicg-inert": "^3.1.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {

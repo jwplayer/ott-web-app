@@ -1,6 +1,7 @@
-import React, { ReactNode, FC, useState, useContext, useRef, useEffect } from 'react';
+import React, { FC, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import { UIStore } from '../../stores/UIStore';
@@ -11,6 +12,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import MenuButton from '../../components/MenuButton/MenuButton';
+import { addQueryParam } from '../../utils/history';
 
 import styles from './Layout.module.scss';
 
@@ -19,6 +21,7 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
+  const history = useHistory();
   const { t } = useTranslation('common');
   const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
   const blurImage = UIStore.useState((s) => s.blurImage);
@@ -52,6 +55,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     });
   };
 
+  const loginButtonClickHandler = () => {
+    addQueryParam(history, 'u', 'login');
+  };
+
   return (
     <div className={styles.layout}>
       <Helmet>
@@ -77,6 +84,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           searchActive={searchActive}
           onSearchButtonClick={searchButtonClickHandler}
           onCloseSearchButtonClick={closeSearchButtonClickHandler}
+          onLoginButtonClick={loginButtonClickHandler}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
