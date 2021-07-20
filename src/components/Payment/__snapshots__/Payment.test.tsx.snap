@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Payment> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <div>
+      <h3>
+        payment.subscription_details
+      </h3>
+    </div>
+    <div
+      class="infoBox"
+    >
+      <p>
+        <strong>
+          payment.monthly_subscription
+        </strong>
+         
+        <br />
+        payment.next_billing_date_on
+        &lt;date&gt;
+      </p>
+      <p
+        class="price"
+      >
+        <strong>
+          € 14.76
+        </strong>
+        /
+        payment.month
+      </p>
+    </div>
+    <button
+      class="button default outlined"
+    >
+      <span>
+        payment.edit_subscription
+      </span>
+    </button>
+  </div>
+  <div>
+    <div>
+      <h3>
+        payment.payment_method
+      </h3>
+    </div>
+    <div>
+      <strong>
+        payment.card_number
+      </strong>
+      <p>
+        xxxx xxxx xxxx 3456
+      </p>
+      <div
+        class="cardDetails"
+      >
+        <div
+          class="expiryDate"
+        >
+          <strong>
+            payment.expiry_date
+          </strong>
+          <p />
+        </div>
+        <div>
+          <strong>
+            payment.cvc_cvv
+          </strong>
+          <p>
+            ******
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <h3>
+        payment.transactions
+      </h3>
+    </div>
+    <div
+      class="infoBox"
+    >
+      <p>
+        <strong>
+          payment.monthly_subscription
+        </strong>
+         
+        <br />
+        payment.price_payed_with_card
+      </p>
+      <p>
+        &lt;Invoice code&gt;
+        <br />
+        &lt;Date&gt;
+      </p>
+    </div>
+    <p>
+      payment.more_transactions
+    </p>
+    <button
+      class="button default outlined"
+    >
+      <span>
+        Show all
+      </span>
+    </button>
+  </div>
+</div>
+`;

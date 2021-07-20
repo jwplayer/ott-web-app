@@ -53,7 +53,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
 
           // @todo refactor this provider to use the ConfigStore exclusively
           setConfig(configWithDefaults);
-          ConfigStore.update(s => {
+          ConfigStore.update((s) => {
             s.config = configWithDefaults;
           });
 

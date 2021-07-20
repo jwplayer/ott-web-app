@@ -1,4 +1,4 @@
-import { Store } from 'pullstate'
+import { Store } from 'pullstate';
 import jwtDecode from 'jwt-decode';
 
 import * as accountService from '../services/account.service';
@@ -7,8 +7,8 @@ import type { AuthData, Customer, JwtDetails } from '../../types/account';
 import { ConfigStore } from './ConfigStore';
 
 type AccountStore = {
-  auth: AuthData | null,
-  user: Customer | null,
+  auth: AuthData | null;
+  user: Customer | null;
 };
 
 export const AccountStore = new Store<AccountStore>({
@@ -24,14 +24,16 @@ const afterLogin = async (sandbox: boolean, auth: AuthData) => {
 
   if (response.errors.length) throw new Error(response.errors[0]);
 
-  AccountStore.update(s => {
+  AccountStore.update((s) => {
     s.auth = auth;
     s.user = response.responseData;
   });
 };
 
 export const login = async (email: string, password: string) => {
-  const { config: { cleengId, cleengSandbox } } = ConfigStore.getRawState();
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
 

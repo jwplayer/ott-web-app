@@ -1,9 +1,4 @@
-import type {
-  ChangePassword, GetCustomer,
-  Login,
-  Register,
-  ResetPassword,
-} from '../../types/account';
+import type { ChangePassword, GetCustomer, Login, Register, ResetPassword } from '../../types/account';
 
 import { post, put, patch, get } from './cleeng.service';
 
