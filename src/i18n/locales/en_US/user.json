@@ -1,4 +1,10 @@
 {
+  "nav": {
+    "account": "Account",
+    "favorites": "Favorites",
+    "payments": "Payments",
+    "logout": "Log out"
+  },
   "account": {
     "email": "Email",
     "edit_account": "Edit account",

@@ -17,6 +17,8 @@ const Account = ({ children }: Props): JSX.Element => {
     country: 'England',
     currency: 'Euro',
     lastUserIp: 'temp',
+    firstName: 'Henk',
+    lastName: 'Peterson',
   };
   const update = (customer: Customer) => console.info('update', customer);
 
