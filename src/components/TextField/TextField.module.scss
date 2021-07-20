@@ -11,20 +11,28 @@
       color: theme.$text-field-error-color;
     }
 
-    .input {
+    .container {
       border-color: theme.$text-field-error-color;
     }
   }
 
   &.disabled {
-    .input {
+    .container {
       opacity: 0.7;
     }
   }
 
+  &.leftControl .input {
+    padding-left: 0;
+  }
+
+  &.rightControl .input {
+    padding-right: 0;
+  }
+
   &:hover {
     &:not(.disabled) {
-      .input {
+      .container {
         background-color: theme.$text-field-hover-bg-color;
         border-color: theme.$text-field-hover-border-color;
       }
@@ -35,28 +43,46 @@
 .label {
   display: block;
   margin-bottom: 4px;
+  text-align: left;
+}
+
+.control > div {
+  width: 48px;
+  height: 48px;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+
+  color: theme.$text-field-resting-color;
+
+  background-color: theme.$text-field-bg-color;
+  border: 1px solid theme.$text-field-resting-border-color;
+  border-radius: 4px;
+  transition: border 0.2s ease;
+
+  &:focus-within {
+    color: theme.$text-field-active-color;
+    border-color: theme.$text-field-active-border-color;
+  }
 }
 
 .input {
   width: 100%;
   min-height: 48px;
   padding: 14px 16px;
-  color: theme.$text-field-resting-color;
+  color: inherit;
   font-size: 16px;
   line-height: 18px;
-  background-color: theme.$text-field-bg-color;
-  border: 1px solid theme.$text-field-resting-border-color;
-  border-radius: 4px;
-  transition: border 0.2s ease;
-
-  &:focus {
-    color: theme.$text-field-active-color;
-    border-color: theme.$text-field-active-border-color;
-    outline: none;
-  }
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
 }
 
 .helperText {
   margin-top: 4px;
   font-size: 12px;
+  text-align: left;
 }
