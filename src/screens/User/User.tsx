@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import Customer from '../../containers/Customer/Customer';
+import CustomerContainer from '../../containers/Customer/CustomerContainer';
 import SubscriptionContainer from '../../containers/Subscription/Subscription';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
@@ -12,6 +12,7 @@ import AccountCircle from '../../icons/AccountCircle';
 import Favorite from '../../icons/Favorite';
 import BalanceWallet from '../../icons/BalanceWallet';
 import Exit from '../../icons/Exit';
+import { AccountStore } from '../../stores/AccountStore';
 
 import styles from './User.module.scss';
 
@@ -19,6 +20,11 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
+  const customer = AccountStore.useState((state) => state.user);
+
+  if (!customer) {
+    return <div className={styles.user}>Open login panel?</div>;
+  }
 
   return (
     <div className={styles.user}>
@@ -45,17 +51,18 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Switch>
           <Route path="/u/my-account">
-            <Customer>
-              {({ customer, update }) => (
+            <CustomerContainer>
+              {({ customer, onUpdateEmailSubmit, onUpdateInfoSubmit }) => (
                 <Account
                   customer={customer}
-                  update={update}
+                  onUpdateEmailSubmit={onUpdateEmailSubmit}
+                  onUpdateInfoSubmit={onUpdateInfoSubmit}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                   onDeleteAccountClick={() => console.error('Sure?')}
                 />
               )}
-            </Customer>
+            </CustomerContainer>
           </Route>
           <Route path="/u/favorites">
             <div>Favorites</div>

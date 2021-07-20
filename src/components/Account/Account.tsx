@@ -9,20 +9,40 @@ import styles from './Account.module.scss';
 
 type Props = {
   customer: Customer;
-  update: (customer: Customer) => void;
+  onUpdateEmailSubmit: (data: Record<string, string>) => void;
+  onUpdateInfoSubmit: (data: Record<string, string>) => void;
   panelClassName?: string;
   panelHeaderClassName?: string;
   onDeleteAccountClick: () => void;
 };
 
 type Editing = 'none' | 'account' | 'password' | 'info';
+type FormValues = Record<string, string>;
 
-const Account = ({ customer, update, onDeleteAccountClick, panelClassName, panelHeaderClassName }: Props): JSX.Element => {
+const Account = ({
+  customer,
+  panelClassName,
+  panelHeaderClassName,
+  onUpdateEmailSubmit,
+  onUpdateInfoSubmit,
+  onDeleteAccountClick,
+}: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const [editing, setEditing] = useState<Editing>('none');
 
+  const handleSubmit = (values: FormValues) => {
+    switch (editing) {
+      case 'account':
+        return onUpdateEmailSubmit(values);
+      case 'info':
+        return onUpdateInfoSubmit(values);
+      default:
+        return;
+    }
+  };
+
   return (
-    <Form initialValues={{ test: 'test' }} onSubmit={(values) => update(values as Customer)}>
+    <Form initialValues={customer} onSubmit={handleSubmit} editing={editing !== 'none'}>
       {({ values, onChange, handleSubmit }) => (
         <>
           <div className={panelClassName}>
@@ -35,7 +55,7 @@ const Account = ({ customer, update, onDeleteAccountClick, panelClassName, panel
               {editing === 'account' && (
                 <>
                   <strong>{t('account.confirm_password')}</strong>
-                  <input name="emailConfirm" value={values.emailConfirm} onChange={onChange} />
+                  <input name="confirmationPassword" value={values.confirmationPassword} onChange={onChange} />
                 </>
               )}
               <div className={styles.controls}>
@@ -68,9 +88,9 @@ const Account = ({ customer, update, onDeleteAccountClick, panelClassName, panel
             <div>
               <div className={styles.flexBox}>
                 <strong>{t('account.firstname')}</strong>
-                {editing === 'info' ? <input name="firstName" value={values.firstName} /> : <p>{customer.firstName}</p>}
+                {editing === 'info' ? <input name="firstName" value={values.firstName} onChange={onChange} /> : <p>{customer.firstName}</p>}
                 <strong>{t('account.lastname')}</strong>
-                {editing === 'info' ? <input name="lastName" value={values.lastName} /> : <p>{customer.lastName}</p>}
+                {editing === 'info' ? <input name="lastName" value={values.lastName} onChange={onChange} /> : <p>{customer.lastName}</p>}
                 <div className={styles.controls}>
                   {editing === 'info' ? (
                     <>

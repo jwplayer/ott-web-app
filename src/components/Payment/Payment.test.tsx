@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import type { Subscription } from 'types/subscription';
 
 import Payment from './Payment';
 
