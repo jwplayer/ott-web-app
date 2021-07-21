@@ -1,6 +1,7 @@
 // This file is generated, do not modify manually.
 // Run `$ yarn i18next:scan` to update this file
 
+export { default as account } from './nl_NL/account.json';
 export { default as common } from './nl_NL/common.json';
 export { default as error } from './nl_NL/error.json';
 export { default as menu } from './nl_NL/menu.json';

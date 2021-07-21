@@ -56,7 +56,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   const loginButtonClickHandler = () => {
-    addQueryParam(history, 'u', 'login');
+    history.push(addQueryParam(history, 'u', 'login'));
   };
 
   return (

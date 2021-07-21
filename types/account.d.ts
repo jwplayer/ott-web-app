@@ -48,6 +48,14 @@ export type GetCustomerPayload = {
   customerId: string;
 };
 
+export type UpdateCustomerPayload = {
+  id?: string;
+  email?: string;
+  confirmationPassword?: string;
+  firstName?: string;
+  lastName?: string;
+};
+
 export type Customer = {
   id: string;
   email: string;
@@ -66,3 +74,4 @@ type Register = CleengRequest<RegisterPayload, AuthData>;
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
+type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;

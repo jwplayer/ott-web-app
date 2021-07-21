@@ -2,6 +2,22 @@
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
 
+button {
+  margin-right: variables.$base-spacing;
+}
+
+.flexBox {
+  display: flex;
+  flex-direction: column;
+  > * {
+    margin-bottom: variables.$base-spacing / 2;
+  }
+}
+
+.controls {
+  margin-top: variables.$base-spacing;
+}
+
 .checkbox {
   display: flex;
   align-items: center;

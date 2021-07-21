@@ -1,6 +1,9 @@
 {
   "account": {
     "about_you": "",
+    "cancel": "",
+    "confirm_password": "",
+    "delete_account": "",
     "edit_account": "",
     "edit_information": "",
     "edit_password": "",
@@ -8,6 +11,7 @@
     "firstname": "",
     "lastname": "",
     "password": "",
+    "save": "",
     "security": "",
     "update_consents": ""
   },
@@ -15,6 +19,12 @@
     "clear": "",
     "not_found": "",
     "title": ""
+  },
+  "nav": {
+    "account": "",
+    "favorites": "",
+    "logout": "",
+    "payments": ""
   },
   "payment": {
     "card_number": "",

@@ -1,6 +1,9 @@
 {
   "account": {
     "about_you": "About you",
+    "cancel": "Cancel",
+    "confirm_password": "Confirm password",
+    "delete_account": "Delete account",
     "edit_account": "Edit account",
     "edit_information": "Edit information",
     "edit_password": "Edit password",
@@ -8,6 +11,7 @@
     "firstname": "First name",
     "lastname": "Last name",
     "password": "Password",
+    "save": "Save",
     "security": "Security",
     "update_consents": "Update consents"
   },
@@ -15,6 +19,12 @@
     "clear": "Clear favorites",
     "not_found": "Favorites not found!",
     "title": "Favorites"
+  },
+  "nav": {
+    "account": "Account",
+    "favorites": "Favorites",
+    "logout": "Log out",
+    "payments": "Payments"
   },
   "payment": {
     "card_number": "Card number",
