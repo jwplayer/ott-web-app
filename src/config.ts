@@ -4,3 +4,5 @@ export const VideoProgressMinMax = {
   Min: 0.05,
   Max: 0.95,
 };
+
+export const playlistLimit = 25;
