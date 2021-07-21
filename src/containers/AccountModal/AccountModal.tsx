@@ -18,7 +18,7 @@ const AccountModal = () => {
   } = useContext(ConfigContext);
 
   const closeHandler = () => {
-    removeQueryParam(history, 'u');
+    history.push(removeQueryParam(history, 'u'));
   };
 
   return (

@@ -79,6 +79,7 @@ $large-button-height: 40px;
   }
 
   &.fullWidth {
+    justify-content: center;
     width: 100%;
 
     @media (hover: hover) and (pointer: fine) {
