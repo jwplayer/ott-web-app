@@ -26,16 +26,25 @@ $large-button-height: 40px;
   transition: background-color 0.1s ease, transform 0.1s ease;
 
   @media (hover: hover) and (pointer: fine) {
-    &:hover,
-    &:focus {
-      transform: scale(1.1);
+    &:not(.disabled) {
+      &:hover,
+      &:focus {
+        transform: scale(1.1);
+      }
+
+      &:focus:not(:focus-visible):not(:hover) {
+        transform: scale(1);
+      }
+
+      &:focus-visible {
+        transform: scale(1.1);
+      }
     }
-    &:focus:not(:focus-visible):not(:hover) {
-      transform: scale(1);
-    }
-    &:focus-visible {
-      transform: scale(1.1);
-    }
+  }
+
+  &.disabled {
+    cursor: default;
+    opacity: 0.7;
   }
 
   &.large {
@@ -55,11 +64,13 @@ $large-button-height: 40px;
   &.outlined {
     border: 1px solid rgba(255, 255, 255, 0.3);
 
-    &.active,
-    &:focus {
-      color: var(--highlight-contrast-color, theme.$btn-primary-color);
-      background-color: var(--highlight-color, theme.$btn-primary-bg);
-      border-color: var(--highlight-color, theme.$btn-primary-bg);
+    &:not(.disabled) {
+      &.active,
+      &:focus {
+        color: var(--highlight-contrast-color, theme.$btn-primary-color);
+        background-color: var(--highlight-color, theme.$btn-primary-bg);
+        border-color: var(--highlight-color, theme.$btn-primary-bg);
+      }
     }
   }
 
@@ -67,14 +78,17 @@ $large-button-height: 40px;
     background: none;
     opacity: 0.7;
 
-    &.active,
-    &:focus {
-      opacity: 1;
-    }
-    &:hover {
-      z-index: 1;
-      background: theme.$btn-default-bg;
-      opacity: 1;
+    &:not(.disabled) {
+      &.active,
+      &:focus {
+        opacity: 1;
+      }
+
+      &:hover {
+        z-index: 1;
+        background: theme.$btn-default-bg;
+        opacity: 1;
+      }
     }
   }
 
@@ -83,7 +97,7 @@ $large-button-height: 40px;
     width: 100%;
 
     @media (hover: hover) and (pointer: fine) {
-      &:hover {
+      &:hover:not(.disabled) {
         transform: scale(1.04);
       }
     }

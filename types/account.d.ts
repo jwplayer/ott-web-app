@@ -16,6 +16,11 @@ export type LoginPayload = {
   publisherId?: string;
 };
 
+export type LoginFormData = {
+  email: string;
+  password: string;
+};
+
 export type RegisterPayload = {
   email: string;
   password: string;

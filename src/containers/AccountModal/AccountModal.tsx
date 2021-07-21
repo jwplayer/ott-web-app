@@ -5,9 +5,9 @@ import { ConfigContext } from '../../providers/ConfigProvider';
 import Dialog from '../../components/Dialog/Dialog';
 import useQueryParam from '../../hooks/useQueryParam';
 import { removeQueryParam } from '../../utils/history';
-import LoginForm from '../../components/LoginForm/LoginForm';
 
 import styles from './AccountModal.module.scss';
+import Login from './forms/Login';
 
 const AccountModal = () => {
   const history = useHistory();
@@ -24,7 +24,8 @@ const AccountModal = () => {
   return (
     <Dialog open={!!view} onClose={closeHandler}>
       <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>
-      <LoginForm onSubmit={(event, formData) => console.info(event, formData)} />
+      <Login />
+
     </Dialog>
   );
 };

@@ -86,6 +86,7 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
     </a>
     <button
       class="button primary fullWidth large"
+      type="submit"
     >
       <span>
         login.sign_in

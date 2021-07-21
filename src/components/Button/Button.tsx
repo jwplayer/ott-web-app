@@ -22,6 +22,8 @@ type Props = {
   to?: string;
   role?: string;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 } & React.AriaAttributes;
 
 const Button: React.FC<Props> = ({
@@ -33,6 +35,8 @@ const Button: React.FC<Props> = ({
   active = false,
   variant = 'outlined',
   size = 'medium',
+  disabled,
+  type,
   to,
   onClick,
   className,
@@ -42,6 +46,7 @@ const Button: React.FC<Props> = ({
     [styles.active]: active,
     [styles.fullWidth]: fullWidth,
     [styles.large]: size === 'large',
+    [styles.disabled]: disabled,
   });
 
   const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
@@ -54,7 +59,7 @@ const Button: React.FC<Props> = ({
       {children}
     </NavLink>
   ) : (
-    <button className={combinedClassNames} onClick={onClick} {...rest}>
+    <button className={combinedClassNames} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
       {icon}
       {span}
       {children}

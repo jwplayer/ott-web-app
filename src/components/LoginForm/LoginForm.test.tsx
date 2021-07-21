@@ -6,7 +6,7 @@ import LoginForm from './LoginForm';
 
 describe('<LoginForm>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<LoginForm />);
+    const { container } = render(<LoginForm onSubmit={jest.fn()} onChange={jest.fn()} values={{ email: '', password: ''}} errors={{}} />);
 
     expect(container).toMatchSnapshot();
   });
