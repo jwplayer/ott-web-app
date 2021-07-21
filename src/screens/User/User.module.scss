@@ -14,7 +14,7 @@
   }
 
   @include responsive.tablet-only() {
-    margin: 0 variables.$base-spacing * 2;
+    margin: 0 variables.$base-spacing * 1.5;
   }
 }
 .leftColumn {

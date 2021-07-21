@@ -15,6 +15,11 @@
     "security": "Security",
     "update_consents": "Update consents"
   },
+  "favorites": {
+    "clear": "Clear favorites",
+    "not_found": "Favorites not found!",
+    "title": "Favorites"
+  },
   "nav": {
     "account": "Account",
     "favorites": "Favorites",

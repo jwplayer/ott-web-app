@@ -15,6 +15,11 @@
     "security": "",
     "update_consents": ""
   },
+  "favorites": {
+    "clear": "",
+    "not_found": "",
+    "title": ""
+  },
   "nav": {
     "account": "",
     "favorites": "",
