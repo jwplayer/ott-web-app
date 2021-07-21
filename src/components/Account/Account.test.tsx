@@ -14,7 +14,14 @@ describe('<Account>', () => {
       currency: 'Euro',
       lastUserIp: 'temp',
     };
-    const { container } = render(<Account customer={customer} update={(customer) => console.info(customer)} />);
+    const { container } = render(
+      <Account
+        customer={customer}
+        onUpdateEmailSubmit={(values) => console.info(values)}
+        onUpdateInfoSubmit={(values) => console.info(values)}
+        onDeleteAccountClick={() => null}
+      />,
+    );
 
     // todo
     expect(container).toMatchSnapshot();

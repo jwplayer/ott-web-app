@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Form> renders Form 1`] = `
+<div>
+  <form>
+    <input
+      name="test"
+      value="Testing"
+    />
+  </form>
+</div>
+`;

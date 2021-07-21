@@ -8,20 +8,26 @@ exports[`<Account> renders and matches snapshot 1`] = `
         account.email
       </h3>
     </div>
-    <div>
+    <div
+      class="flexBox"
+    >
       <strong>
         account.email
       </strong>
       <p>
         todo@test.nl
       </p>
-      <button
-        class="button default outlined"
+      <div
+        class="controls"
       >
-        <span>
-          account.edit_account
-        </span>
-      </button>
+        <button
+          class="button default outlined"
+        >
+          <span>
+            account.edit_account
+          </span>
+        </button>
+      </div>
     </div>
   </div>
   <div>
@@ -53,21 +59,29 @@ exports[`<Account> renders and matches snapshot 1`] = `
       </h3>
     </div>
     <div>
-      <strong>
-        account.firstname
-      </strong>
-      <p />
-      <strong>
-        account.lastname
-      </strong>
-      <p />
-      <button
-        class="button default outlined"
+      <div
+        class="flexBox"
       >
-        <span>
-          account.edit_information
-        </span>
-      </button>
+        <strong>
+          account.firstname
+        </strong>
+        <p />
+        <strong>
+          account.lastname
+        </strong>
+        <p />
+        <div
+          class="controls"
+        >
+          <button
+            class="button default outlined"
+          >
+            <span>
+              account.edit_information
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div>
