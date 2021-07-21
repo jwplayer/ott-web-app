@@ -2,11 +2,17 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import React, { ReactNode, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 
+import QueryProvider from './providers/QueryProvider';
+
 interface WrapperProps {
   children?: ReactNode;
 }
 
-export const wrapper = ({ children }: WrapperProps) => <Router>{children}</Router>;
+export const wrapper = ({ children }: WrapperProps) => (
+  <Router>
+    <QueryProvider>{children as ReactElement}</QueryProvider>
+  </Router>
+);
 
 const customRender = (ui: ReactElement, options?: RenderOptions) => render(ui, { wrapper, ...options });
 
