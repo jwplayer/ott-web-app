@@ -32,6 +32,8 @@
   "description": "Blender demo site",
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
   "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
+  "cleengId": "292636325",
+  "cleengSandbox": true,
   "options": {
     "dynamicBlur": true,
     "posterFading": true,

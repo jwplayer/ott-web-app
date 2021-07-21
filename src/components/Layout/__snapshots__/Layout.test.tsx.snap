@@ -49,6 +49,15 @@ exports[`<Layout /> renders layout 1`] = `
           <div
             class="search"
           />
+          <div>
+            <button
+              class="button default outlined"
+            >
+              <span>
+                Login
+              </span>
+            </button>
+          </div>
         </div>
       </header>
       <div

@@ -6,3 +6,4 @@ export { default as error } from './en_US/error.json';
 export { default as menu } from './en_US/menu.json';
 export { default as search } from './en_US/search.json';
 export { default as video } from './en_US/video.json';
+export { default as user } from './en_US/user.json';

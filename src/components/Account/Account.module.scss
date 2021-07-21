@@ -1,0 +1,11 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  > input {
+    margin-right: 10px;
+  }
+}

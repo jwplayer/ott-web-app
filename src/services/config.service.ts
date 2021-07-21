@@ -47,6 +47,8 @@ const configSchema: SchemaOf<Config> = object({
   content: array().of(contentSchema),
   menu: array().of(menuSchema),
   options: optionsSchema.notRequired(),
+  cleengId: string().nullable(),
+  cleengSandbox: boolean().default(true),
   genres: array().of(string()).notRequired(),
   json: object().notRequired(),
 }).defined();
@@ -114,7 +116,7 @@ const parseDeprecatedConfig = (config: Config) => {
   }
 
   try {
-    const { menu, id, analyticsToken, adSchedule, description, ...options } = JSON.parse(config.description);
+    const { menu, id, analyticsToken, adSchedule, description, cleengId, cleengSandbox, ...options } = JSON.parse(config.description);
 
     const updatedConfig = {
       menu: menu || [],
@@ -122,6 +124,8 @@ const parseDeprecatedConfig = (config: Config) => {
       analyticsToken: analyticsToken || null,
       adSchedule: adSchedule || null,
       description: description || '',
+      cleengId,
+      cleengSandbox,
       options: Object.assign(config.options, options),
     };
 

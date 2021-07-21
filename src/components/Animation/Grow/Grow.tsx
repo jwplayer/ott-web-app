@@ -16,7 +16,7 @@ const Grow = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCl
   const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
   const createStyle = (status: Status): CSSProperties => ({
     transition,
-    transform: status === 'opening' || status === 'open' ? 'scale(1)' : 'scale(0.1)',
+    transform: status === 'opening' || status === 'open' ? 'scale(1)' : 'scale(0.7)',
   });
 
   return (
