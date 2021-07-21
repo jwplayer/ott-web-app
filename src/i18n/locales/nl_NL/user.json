@@ -1,41 +1,38 @@
 {
+  "account": {
+    "about_you": "",
+    "cancel": "",
+    "confirm_password": "",
+    "delete_account": "",
+    "edit_account": "",
+    "edit_information": "",
+    "edit_password": "",
+    "email": "",
+    "firstname": "",
+    "lastname": "",
+    "password": "",
+    "save": "",
+    "security": "",
+    "update_consents": ""
+  },
   "nav": {
     "account": "",
     "favorites": "",
-    "payments": "",
-    "logout": ""
-  },
-  "account": {
-    "save": "",
-    "cancel": "",
-    "email": "",
-    "edit_account": "",
-    "confirm_password": "",
-    "please_confirm": "",
-    "delete_account": "",
-    "security": "",
-    "password": "",
-    "edit_password": "",
-    "about_you": "",
-    "firstname": "",
-    "lastname": "",
-    "edit_information": "",
-    "terms_and_tracking": "",
-    "update_consents": ""
+    "logout": "",
+    "payments": ""
   },
   "payment": {
-    "subscription_details": "",
-    "monthly_subscription": "",
-    "next_billing_date_on": "",
-    "month": "",
-    "edit_subscription": "",
-    "payment_method": "",
     "card_number": "",
-    "expiry_date": "",
     "cvc_cvv": "",
-    "transactions": "",
-    "price_payed_with_card": "",
+    "edit_subscription": "",
+    "expiry_date": "",
+    "month": "",
+    "monthly_subscription": "",
     "more_transactions": "",
-    "show_all": ""
+    "next_billing_date_on": "",
+    "payment_method": "",
+    "price_payed_with_card": "",
+    "subscription_details": "",
+    "transactions": ""
   }
 }

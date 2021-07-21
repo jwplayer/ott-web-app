@@ -1,0 +1,15 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.link {
+  display: inline-block;
+  color: var(--primary-color);
+  font-family: theme.$body-font-family;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}

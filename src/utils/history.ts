@@ -1,17 +1,21 @@
 import type { History } from 'history';
 
-export function addQueryParam(history: History, key: string, value: string, method: 'replace' | 'push' = 'push') {
+export function addQueryParam(history: History, key: string, value: string): string {
   const urlSearchParams = new URLSearchParams(history.location.search);
 
   urlSearchParams.set(key, value);
 
-  history[method]({ pathname: history.location.pathname, search: urlSearchParams.toString() });
+  const searchParams = urlSearchParams.toString();
+
+  return `${history.location.pathname}${searchParams ? `?${searchParams}` : ''}`
 }
 
-export function removeQueryParam(history: History, key: string, method: 'replace' | 'push' = 'push') {
+export function removeQueryParam(history: History, key: string): string {
   const urlSearchParams = new URLSearchParams(history.location.search);
 
   urlSearchParams.delete(key);
 
-  history[method]({ pathname: history.location.pathname, search: urlSearchParams.toString() });
+  const searchParams = urlSearchParams.toString();
+
+  return `${history.location.pathname}${searchParams ? `?${searchParams}` : ''}`
 }
