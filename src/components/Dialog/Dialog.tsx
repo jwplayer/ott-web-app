@@ -12,7 +12,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const Dialog: React.FC<Props> = ({ open, onClose, children } : Props) => {
+const Dialog: React.FC<Props> = ({ open, onClose, children }: Props) => {
   return (
     <Modal open={open} onClose={onClose} AnimationComponent={Slide}>
       <div className={styles.dialog}>

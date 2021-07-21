@@ -19,7 +19,7 @@ const AccountModal = () => {
 
   const closeHandler = () => {
     removeQueryParam(history, 'u');
-  }
+  };
 
   return (
     <Dialog open={!!view} onClose={closeHandler}>

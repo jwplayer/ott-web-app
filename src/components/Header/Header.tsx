@@ -98,7 +98,9 @@ const Header: React.FC<Props> = ({
           {logoLoaded ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
-        <div><Button onClick={onLoginButtonClick} label="Login" /></div>
+        <div>
+          <Button onClick={onLoginButtonClick} label="Login" />
+        </div>
       </div>
     </header>
   );
