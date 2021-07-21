@@ -1,30 +1,28 @@
 {
   "account": {
-    "email": "Email",
-    "edit_account": "Edit account",
-    "security": "Security",
-    "password": "Password",
-    "edit_password": "Edit password",
     "about_you": "About you",
+    "edit_account": "Edit account",
+    "edit_information": "Edit information",
+    "edit_password": "Edit password",
+    "email": "Email",
     "firstname": "First name",
     "lastname": "Last name",
-    "edit_information": "Edit information",
-    "terms_and_tracking": "Terms & tracking",
+    "password": "Password",
+    "security": "Security",
     "update_consents": "Update consents"
   },
   "payment": {
-    "subscription_details": "Subscription details",
-    "monthly_subscription": "Monthly subscription",
-    "next_billing_date_on": "Next billing date is on",
-    "month": "month",
-    "edit_subscription": "Edit subscription",
-    "payment_method": "Payment method",
     "card_number": "Card number",
-    "expiry_date": "Expiry date",
     "cvc_cvv": "CVC / CVV",
-    "transactions": "Transactions",
-    "price_payed_with_card": "Price payed with card",
+    "edit_subscription": "Edit subscription",
+    "expiry_date": "Expiry date",
+    "month": "month",
+    "monthly_subscription": "Monthly subscription",
     "more_transactions": "{{ amount }} more transactions",
-    "show_all": "Show all"
+    "next_billing_date_on": "Next billing date is on",
+    "payment_method": "Payment method",
+    "price_payed_with_card": "Price payed with card",
+    "subscription_details": "Subscription details",
+    "transactions": "Transactions"
   }
 }

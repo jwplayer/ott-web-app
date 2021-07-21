@@ -1,0 +1,10 @@
+{
+  "login": {
+    "email": "Email",
+    "forgot_password": "Forgot password?",
+    "hide_password": "Hide password",
+    "password": "Password",
+    "sign_in": "Sign in",
+    "view_password": "View password"
+  }
+}
