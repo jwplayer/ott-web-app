@@ -1,10 +1,11 @@
 import React from 'react';
-
-import styles from './ModalCloseButton.module.scss';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
+
 import Close from '../../icons/Close';
 import IconButton from '../IconButton/IconButton';
-import { useTranslation } from 'react-i18next';
+
+import styles from './ModalCloseButton.module.scss';
 
 type Props = {
   onClick?: () => void;

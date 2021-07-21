@@ -50,12 +50,14 @@ const createFavorite = (item: PlaylistItem): Favorite =>
 type SaveItemFn = (item: PlaylistItem) => void;
 type RemoveItemFn = (item: PlaylistItem) => void;
 type HasItemFn = (item: PlaylistItem) => boolean;
+type ClearListFn = () => void;
 type getPlaylistFn = () => Playlist;
 
 type UseFavoritesReturn = {
   saveItem: SaveItemFn;
   removeItem: RemoveItemFn;
   hasItem: HasItemFn;
+  clearList: ClearListFn;
   getPlaylist: getPlaylistFn;
 };
 
@@ -80,6 +82,12 @@ export const useFavorites = (): UseFavoritesReturn => {
     return favorites.some(({ mediaid }) => mediaid === item.mediaid);
   };
 
+  const clearList = () => {
+    favoritesStore.update((state) => {
+      state.favorites = [];
+    });
+  };
+
   const getPlaylist = () => {
     return {
       feedid: PersonalShelf.Favorites,
@@ -88,5 +96,5 @@ export const useFavorites = (): UseFavoritesReturn => {
     } as Playlist;
   };
 
-  return { saveItem, removeItem, hasItem, getPlaylist };
+  return { saveItem, removeItem, hasItem, clearList, getPlaylist };
 };

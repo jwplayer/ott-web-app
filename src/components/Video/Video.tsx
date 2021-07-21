@@ -18,9 +18,9 @@ import { formatDuration } from '../../utils/formatting';
 import Modal from '../Modal/Modal';
 import FavoriteBorder from '../../icons/FavoriteBorder';
 import Fade from '../Animation/Fade/Fade';
+import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
 
 import styles from './Video.module.scss';
-import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
 
 type Poster = 'fading' | 'normal';
 
