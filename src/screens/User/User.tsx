@@ -70,7 +70,12 @@ const User = (): JSX.Element => {
           <Route path="/u/payments">
             <SubscriptionContainer>
               {({ subscription, update }) => (
-                <Payment subscription={subscription} update={update} panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
+                <Payment
+                  subscription={subscription}
+                  onEditSubscriptionClick={update}
+                  panelClassName={styles.panel}
+                  panelHeaderClassName={styles.panelHeader}
+                />
               )}
             </SubscriptionContainer>
           </Route>

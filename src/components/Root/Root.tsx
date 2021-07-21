@@ -10,6 +10,7 @@ import Playlist from '../../screens/Playlist/Playlist';
 import Movie from '../../screens/Movie/Movie';
 import Search from '../../screens/Search/Search';
 import ErrorPage from '../ErrorPage/ErrorPage';
+import AccountModal from '../../containers/AccountModal/AccountModal';
 
 type Props = {
   error?: Error | null;
@@ -36,6 +37,7 @@ const Root: FC<Props> = ({ error }: Props) => {
         <Route path="/q/:query?" component={Search} />
         <Route path="/u/:page?" component={User} />
       </Switch>
+      <AccountModal />
     </Layout>
   );
 };

@@ -1,0 +1,10 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.dialog {
+  max-width: 450px;
+  padding: 24px;
+  color: theme.$modal-color;
+  background-color: theme.$modal-bg;
+  border-radius: 6px;
+}

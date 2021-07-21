@@ -11,12 +11,12 @@ type Props = {
   children: ReactNode;
 };
 
-const Grow = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
+const Slide = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
   const seconds = duration / 1000;
   const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
   const createStyle = (status: Status): CSSProperties => ({
     transition,
-    transform: status === 'opening' || status === 'open' ? 'scale(1)' : 'scale(0.7)',
+    transform: status === 'opening' || status === 'open' ? 'translateY(0)' : 'translateY(15px)',
   });
 
   return (
@@ -33,4 +33,4 @@ const Grow = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCl
   );
 };
 
-export default Grow;
+export default Slide;
