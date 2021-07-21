@@ -43,7 +43,7 @@ const Account = ({
 
   return (
     <Form initialValues={customer} onSubmit={handleSubmit} editing={editing !== 'none'}>
-      {({ values, onChange, handleSubmit }) => (
+      {({ values, handleChange, handleSubmit }) => (
         <>
           <div className={panelClassName}>
             <div className={panelHeaderClassName}>
@@ -51,11 +51,11 @@ const Account = ({
             </div>
             <div className={styles.flexBox}>
               <strong>{t('account.email')}</strong>
-              {editing === 'account' ? <input name="email" value={values.email} onChange={onChange} /> : <p>{customer.email}</p>}
+              {editing === 'account' ? <input name="email" value={values.email} onChange={handleChange} /> : <p>{customer.email}</p>}
               {editing === 'account' && (
                 <>
                   <strong>{t('account.confirm_password')}</strong>
-                  <input name="confirmationPassword" value={values.confirmationPassword} onChange={onChange} />
+                  <input name="confirmationPassword" value={values.confirmationPassword} onChange={handleChange} />
                 </>
               )}
               <div className={styles.controls}>
@@ -88,9 +88,9 @@ const Account = ({
             <div>
               <div className={styles.flexBox}>
                 <strong>{t('account.firstname')}</strong>
-                {editing === 'info' ? <input name="firstName" value={values.firstName} onChange={onChange} /> : <p>{customer.firstName}</p>}
+                {editing === 'info' ? <input name="firstName" value={values.firstName} onChange={handleChange} /> : <p>{customer.firstName}</p>}
                 <strong>{t('account.lastname')}</strong>
-                {editing === 'info' ? <input name="lastName" value={values.lastName} onChange={onChange} /> : <p>{customer.lastName}</p>}
+                {editing === 'info' ? <input name="lastName" value={values.lastName} onChange={handleChange} /> : <p>{customer.lastName}</p>}
                 <div className={styles.controls}>
                   {editing === 'info' ? (
                     <>

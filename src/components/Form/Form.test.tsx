@@ -9,7 +9,7 @@ describe('<Form>', () => {
   it('renders Form', () => {
     const { container } = render(
       <Form initialValues={initialValues} onSubmit={() => null}>
-        {({ values, onChange }) => <input name="test" value={values.test || ''} onChange={onChange} />}
+        {({ values, handleChange }) => <input name="test" value={values.test || ''} onChange={handleChange} />}
       </Form>,
     );
     expect(container).toMatchSnapshot();

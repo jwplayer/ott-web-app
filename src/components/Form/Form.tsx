@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 
 type Return = {
   values: FormValues;
-  onChange?: (event: React.FormEvent<HTMLInputElement>) => void;
+  handleChange?: (event: React.FormEvent<HTMLInputElement>) => void;
   handleSubmit?: () => void;
 };
 
 type Props = {
   initialValues: FormValues;
   editing?: boolean;
-  children: ({ values, onChange }: Return) => JSX.Element;
+  children: ({ values, handleChange }: Return) => JSX.Element;
   onSubmit: (values: FormValues) => void;
 };
 
 const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX.Element => {
   const [values, setValues] = useState<FormValues>(initialValues);
 
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     if (!event.currentTarget) return;
     setValues({ ...values, [event.currentTarget.name]: event.currentTarget.value });
   };
@@ -30,7 +30,7 @@ const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX
     return children({ values });
   }
 
-  return <form onSubmit={handleSubmit}>{children({ values, onChange, handleSubmit })}</form>;
+  return <form onSubmit={handleSubmit}>{children({ values, handleChange, handleSubmit })}</form>;
 };
 
 export default Form;
