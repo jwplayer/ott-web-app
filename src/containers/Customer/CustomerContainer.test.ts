@@ -1,6 +1,6 @@
 // import React from 'react';
 
-describe('<Customer>', () => {
+describe('<Account>', () => {
   test('renders and matches snapshot', () => {
     // todo
     // const item = {

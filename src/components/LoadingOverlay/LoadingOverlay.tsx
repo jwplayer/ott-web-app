@@ -1,10 +1,15 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './LoadingOverlay.module.scss';
 
-const LoadingOverlay: React.FC = () => {
+type Props = {
+  transparentBackground?: boolean;
+};
+
+const LoadingOverlay = ({ transparentBackground = false }: Props): JSX.Element => {
   return (
-    <div className={styles.loadingOverlay}>
+    <div className={classNames(styles.loadingOverlay, { [styles.transparent]: transparentBackground })}>
       <div className={styles.buffer}>
         <div />
         <div />

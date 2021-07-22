@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 type Return = {
   values: FormValues;
-  handleChange?: (event: React.FormEvent<HTMLInputElement>) => void;
+  handleChange?: React.ChangeEventHandler<HTMLInputElement>;
   handleSubmit?: () => void;
+  handleReset?: () => void;
 };
 
 type Props = {
@@ -26,11 +27,17 @@ const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX
     onSubmit(values);
   };
 
+  const handleReset = () => setValues(initialValues);
+
   if (!editing) {
     return children({ values });
   }
 
-  return <form onSubmit={handleSubmit} noValidate>{children({ values, handleChange, handleSubmit })}</form>;
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      {children({ values, handleChange, handleSubmit, handleReset })}
+    </form>
+  );
 };
 
 export default Form;

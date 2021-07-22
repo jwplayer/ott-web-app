@@ -12,7 +12,7 @@ import CustomerContainer from '../../containers/Customer/CustomerContainer';
 import SubscriptionContainer from '../../containers/Subscription/Subscription';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
-import Account from '../../components/Account/Account';
+import AccountComponent from '../../components/Account/Account';
 import Payment from '../../components/Payment/Payment';
 import AccountCircle from '../../icons/AccountCircle';
 import Favorite from '../../icons/Favorite';
@@ -68,11 +68,14 @@ const User = (): JSX.Element => {
         <Switch>
           <Route path="/u/my-account">
             <CustomerContainer>
-              {({ customer, onUpdateEmailSubmit, onUpdateInfoSubmit }) => (
-                <Account
+              {({ customer, errors, isLoading, onUpdateEmailSubmit, onUpdateInfoSubmit, onReset }) => (
+                <AccountComponent
                   customer={customer}
+                  errors={errors}
+                  isLoading={isLoading}
                   onUpdateEmailSubmit={onUpdateEmailSubmit}
                   onUpdateInfoSubmit={onUpdateInfoSubmit}
+                  onReset={onReset}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                   onDeleteAccountClick={() => console.error('Sure?')}

@@ -5,7 +5,9 @@ type UseFormChangeHandler = React.ChangeEventHandler<HTMLInputElement | HTMLText
 type UseFormSubmitHandler = React.FormEventHandler<HTMLFormElement>;
 
 export type GenericFormErrors = { form: string };
+export type GenericFormValues = Record<string, string>;
 export type FormErrors<T> = Partial<T & GenericFormErrors>;
+export type FormValues<T> = Partial<T & GenericFormValues>;
 
 export type UseFormReturnValue<T> = {
   values: T;
@@ -23,7 +25,7 @@ type UseFormMethods<T> = {
 
 export type UseFormOnSubmitHandler<T> = (values: T, formMethods: UseFormMethods<T>) => void;
 
-export default function useForm<T extends FormValues>(
+export default function useForm<T extends GenericFormValues>(
   initialValues: T,
   onSubmit: UseFormOnSubmitHandler<T>,
   validationSchema?: AnySchema,

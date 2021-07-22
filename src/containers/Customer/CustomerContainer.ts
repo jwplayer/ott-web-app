@@ -1,14 +1,22 @@
-import type { Customer } from 'types/account';
+import type { Customer, UpdateCustomerPayload } from 'types/account';
+import { useMutation } from 'react-query';
 
 import { ConfigStore } from '../../stores/ConfigStore';
 import { AccountStore } from '../../stores/AccountStore';
 import { updateCustomer } from '../../services/account.service';
+import type { FormErrors, FormValues } from '../../hooks/useForm';
 
 type ChildrenParams = {
   customer: Customer;
-  onUpdateEmailSubmit: (values: FormValues) => void;
-  onUpdateInfoSubmit: (values: FormValues) => void;
+  errors: FormErrors<UpdateCustomerPayload>;
+  isLoading: boolean;
+  onUpdateEmailSubmit: (values: CustomerFormValues) => void;
+  onUpdateInfoSubmit: (values: CustomerFormValues) => void;
+  onReset: () => void;
 };
+
+type CustomerFormValues = FormValues<UpdateCustomerPayload>;
+type CustomerFormErrors = FormErrors<UpdateCustomerPayload>;
 
 type Props = {
   children: (data: ChildrenParams) => JSX.Element;
@@ -21,18 +29,45 @@ const CustomerContainer = ({ children }: Props): JSX.Element => {
     config: { cleengSandbox },
   } = ConfigStore.getRawState();
 
-  const onUpdateEmailSubmit = (values: FormValues) => {
-    if (auth?.jwt) {
-      updateCustomer({ id: values.id, email: values.email, confirmationPassword: values.confirmationPassword }, cleengSandbox, auth.jwt);
-    }
-  };
-  const onUpdateInfoSubmit = (values: FormValues) => {
-    if (auth?.jwt) {
-      updateCustomer({ id: values.id, firstName: values.firstName, lastName: values.lastName }, cleengSandbox, auth.jwt);
-    }
+  const { mutate, isLoading, data, reset } = useMutation((values: CustomerFormValues) => updateCustomer(values, cleengSandbox, auth?.jwt || ''));
+
+  const onUpdateEmailSubmit = ({ id, email, confirmationPassword }: CustomerFormValues) => mutate({ id, email, confirmationPassword });
+  const onUpdateInfoSubmit = ({ id, firstName, lastName }: CustomerFormValues) => mutate({ id, firstName, lastName });
+
+  const translateErrors = (errors?: string[]) => {
+    const formErrors: CustomerFormErrors = {};
+
+    errors?.map((error) => {
+      switch (error) {
+        case 'Invalid param email':
+          formErrors.email = 'Invalid email address!';
+          break;
+        case 'Customer email already exists':
+          formErrors.email = 'Email already exists!';
+          break;
+        case 'Please enter a valid e-mail address.':
+          formErrors.email = 'Please enter a valid e-mail address.';
+          break;
+        case 'Invalid confirmationPassword': {
+          formErrors.confirmationPassword = 'Password incorrect!';
+          break;
+        }
+        default:
+          console.info('Unknown error', error);
+          return;
+      }
+    });
+    return formErrors;
   };
 
-  return children({ customer, onUpdateEmailSubmit, onUpdateInfoSubmit } as ChildrenParams);
+  return children({
+    customer,
+    isLoading,
+    errors: translateErrors(data?.errors),
+    onUpdateEmailSubmit,
+    onUpdateInfoSubmit,
+    onReset: reset,
+  } as ChildrenParams);
 };
 
 export default CustomerContainer;
