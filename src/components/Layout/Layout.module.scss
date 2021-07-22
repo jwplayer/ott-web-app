@@ -32,3 +32,14 @@
   border-top: 1px solid rgba(variables.$white, 0.12);
   opacity: 0.12;
 }
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 variables.$base-spacing;
+
+  > button:first-child {
+    margin-bottom: variables.$base-spacing / 2;
+    color: var(--primary-color);
+  }
+}
