@@ -3,6 +3,7 @@
 exports[`<LoginForm> renders and matches snapshot 1`] = `
 <div>
   <form
+    data-testid="login-form"
     novalidate=""
   >
     <h2
@@ -85,7 +86,9 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
       login.forgot_password
     </a>
     <button
+      aria-disabled="false"
       class="button primary fullWidth large"
+      type="submit"
     >
       <span>
         login.sign_in

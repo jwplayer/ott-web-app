@@ -16,7 +16,7 @@ type Props = {
 const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX.Element => {
   const [values, setValues] = useState<FormValues>(initialValues);
 
-  const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (!event.currentTarget) return;
     setValues({ ...values, [event.currentTarget.name]: event.currentTarget.value });
   };
@@ -30,7 +30,7 @@ const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX
     return children({ values });
   }
 
-  return <form onSubmit={handleSubmit}>{children({ values, handleChange, handleSubmit })}</form>;
+  return <form onSubmit={handleSubmit} noValidate>{children({ values, handleChange, handleSubmit })}</form>;
 };
 
 export default Form;

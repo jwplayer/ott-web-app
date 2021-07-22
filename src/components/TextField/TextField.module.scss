@@ -6,7 +6,6 @@
   margin-bottom: 8px;
 
   &.error {
-    .label,
     .helperText {
       color: theme.$text-field-error-color;
     }
@@ -85,6 +84,7 @@
 
 .helperText {
   margin-top: 4px;
+  font-family: theme.$body-font-family;
   font-size: 12px;
   text-align: left;
 }
