@@ -8,6 +8,7 @@ import { removeQueryParam } from '../../utils/history';
 
 import styles from './AccountModal.module.scss';
 import Login from './forms/Login';
+import ChooseOffer from './forms/ChooseOffer';
 
 const AccountModal = () => {
   const history = useHistory();
@@ -24,8 +25,8 @@ const AccountModal = () => {
   return (
     <Dialog open={!!view} onClose={closeHandler}>
       <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>
-      <Login />
-
+      {view === 'login' ? <Login /> : null}
+      {view === 'choose-offer' ? <ChooseOffer /> : null}
     </Dialog>
   );
 };
