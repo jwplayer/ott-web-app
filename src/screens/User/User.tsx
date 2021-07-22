@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
@@ -33,12 +33,14 @@ const User = (): JSX.Element => {
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
 
-  if (!customer) {
-    return <div className={styles.user}>Open login panel?</div>;
-  }
-
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+
+  useEffect(() => updateBlurImage(''), [updateBlurImage]);
+
+  if (!customer) {
+    return <div className={styles.user}>Please login first</div>;
+  }
 
   return (
     <div className={styles.user}>
