@@ -8,7 +8,7 @@
     "password": "Password",
     "sign_in": "Sign in",
     "view_password": "View password",
-    "wrong_combination": "Wrong email/password combination",
-    "wrong_email": "Please re-enter your email details and try again."
+    "wrong_combination": "Incorrect email/password combination",
+    "wrong_email": "Please check your email and try again."
   }
 }
