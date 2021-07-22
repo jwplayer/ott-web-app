@@ -12,6 +12,7 @@
   display: inline-flex;
   justify-content: inherit;
   align-items: center;
+  width: 100%;
   min-height: 44px;
   padding: 0 variables.$base-spacing;
   color: variables.$white;
@@ -26,6 +27,14 @@
   opacity: 0.7;
   transition: background 0.1s ease;
 
+  &.small {
+    padding: 0 variables.$base-spacing * 1.5;
+    font-size: 16px;
+    > .startIcon {
+      margin-right: variables.$base-spacing * 1.5;
+    }
+  }
+
   @media (hover: hover) and (pointer: fine) {
     &:hover,
     &:active {
@@ -38,4 +47,22 @@
 .active {
   background: rgba(variables.$white, 0.08);
   opacity: 1;
+}
+
+.startIcon {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 12px;
+
+  > svg {
+    width: 25px;
+    height: 25px;
+    fill: currentColor;
+
+    @include responsive.tablet-only() {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
