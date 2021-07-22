@@ -43,7 +43,7 @@ export default function useForm<T extends FormValues>(
   const handleSubmit: UseFormSubmitHandler = (event) => {
     event.preventDefault();
 
-    if (!onSubmit) return;
+    if (!onSubmit || submitting) return;
 
     // reset errors before submitting
     setErrors({});

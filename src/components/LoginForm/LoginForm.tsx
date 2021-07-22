@@ -30,7 +30,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const history = useHistory();
 
   return (
-    <form onSubmit={onSubmit} noValidate>
+    <form onSubmit={onSubmit} data-testid="login-form" noValidate>
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
       <TextField
