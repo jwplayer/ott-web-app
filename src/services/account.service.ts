@@ -1,4 +1,12 @@
-import type { ChangePassword, GetCustomer, Login, Register, ResetPassword, UpdateCustomer } from '../../types/account';
+import type {
+  ChangePassword,
+  GetCustomer,
+  Login,
+  RefreshToken,
+  Register,
+  ResetPassword,
+  UpdateCustomer,
+} from '../../types/account';
 
 import { post, put, patch, get } from './cleeng.service';
 
@@ -24,4 +32,8 @@ export const updateCustomer: UpdateCustomer = async (payload, sandbox, jwt) => {
 
 export const getCustomer: GetCustomer = async (payload, sandbox, jwt) => {
   return get(sandbox, `/customers/${payload.customerId}`, jwt);
+};
+
+export const refreshToken: RefreshToken = async (payload, sandbox) => {
+  return post(sandbox, '/auths/refresh_token', JSON.stringify(payload));
 };

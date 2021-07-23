@@ -3,6 +3,7 @@ import type { Offer } from './checkout';
 export type AuthData = {
   jwt: string;
   customerToken: string;
+  refreshToken: string;
 };
 
 export type JwtDetails = {
@@ -69,6 +70,10 @@ export type UpdateCustomerPayload = {
   lastName?: string;
 };
 
+export type RefreshTokenPayload = {
+  refreshToken: string;
+};
+
 export type Customer = {
   id: string;
   email: string;
@@ -88,3 +93,4 @@ type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
+type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
