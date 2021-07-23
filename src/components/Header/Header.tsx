@@ -103,14 +103,14 @@ const Header: React.FC<Props> = ({
         </React.Fragment>
       ) : (
         <div className={styles.buttonContainer}>
-          <Button onClick={onLoginButtonClick} label="Login" />
+          <Button onClick={onLoginButtonClick} label={t('sign_in')} />
           <Button
             variant="contained"
             color="primary"
             onClick={() => {
               'sign up';
             }}
-            label="Sign up"
+            label={t('sign_up')}
           />
         </div>
       )
