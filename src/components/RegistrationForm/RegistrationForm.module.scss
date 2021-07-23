@@ -1,0 +1,43 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.title {
+  margin-bottom: 24px;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.error {
+  margin-bottom: 24px;
+  padding: 16px;
+  color: variables.$white;
+  font-family: theme.$body-font-family;
+  font-size: 18px;
+  background-color: theme.$form-error-bg-color;
+  border-radius: 4px;
+}
+
+.continue {
+  margin: variables.$base-spacing 0;
+}
+
+.bottom {
+  padding: variables.$base-spacing 0;
+  text-align: center;
+}
+
+.alreadyAccount {
+  font-family: theme.$body-alt-font-family;
+  font-size: 16px;
+}
+
+.login {
+  margin-left: 6px;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
