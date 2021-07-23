@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Checkbox> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="checkbox"
+  >
+    <input
+      id="check-box_1235_abc"
+      name="abc"
+      type="checkbox"
+    />
+    <label
+      for="check-box_1235_abc"
+    />
+  </div>
+</div>
+`;

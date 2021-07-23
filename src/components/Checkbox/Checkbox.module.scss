@@ -1,0 +1,65 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.checkbox {
+  display: flex;
+  align-items: center;
+
+  > label {
+    margin: variables.$base-spacing / 2 variables.$base-spacing variables.$base-spacing / 2 variables.$base-spacing / 2;
+    font-family: theme.$body-font-family;
+    font-size: 14px;
+    cursor: pointer;
+
+    > a {
+      color: variables.$white;
+      font-weight: 700;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  input {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.5s;
+    appearance: none;
+
+    &::before {
+      display: inline-block;
+      font-family: system-ui;
+      font-weight: 900;
+      font-size: 0;
+      content: 'L';
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:not(:checked) {
+      border: 2px solid theme.$input-resting-border-color;
+      &:hover {
+        border-color: theme.$input-hover-border-color;
+      }
+    }
+
+    &:checked {
+      background-color: var(--primary-color);
+      &::before {
+        font-size: 16px;
+        transform: translateY(-1px) scaleX(-1) rotate(-45deg);
+      }
+    }
+  }
+}
