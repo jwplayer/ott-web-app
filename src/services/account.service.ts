@@ -1,4 +1,13 @@
-import type { ChangePassword, GetCustomer, Login, Register, ResetPassword, UpdateCustomer } from '../../types/account';
+import type {
+  ChangePassword,
+  GetCustomer,
+  GetCustomerConsents,
+  GetPublisherConsents,
+  Login,
+  Register,
+  ResetPassword,
+  UpdateCustomer,
+} from '../../types/account';
 
 import { post, put, patch, get } from './cleeng.service';
 
@@ -8,6 +17,14 @@ export const login: Login = async (payload, sandbox) => {
 
 export const register: Register = async (payload, sandbox) => {
   return post(sandbox, '/auths', JSON.stringify(payload));
+};
+
+export const getPublisherConsents: GetPublisherConsents = async (payload, sandbox) => {
+  return get(sandbox, `/publishers/${payload.publisherId}/consents`);
+};
+
+export const getCustomerConsents: GetCustomerConsents = async (payload, sandbox, jwt) => {
+  return get(sandbox, `/customers/${payload.customerId}/consents`, jwt);
 };
 
 export const resetPassword: ResetPassword = async (payload, sandbox) => {

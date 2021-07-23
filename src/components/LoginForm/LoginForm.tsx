@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { LoginFormData } from 'types/account';
+import type { FormErrors } from 'types/form';
 
 import useToggle from '../../hooks/useToggle';
 import { addQueryParam } from '../../utils/history';
@@ -11,7 +12,6 @@ import Link from '../Link/Link';
 import IconButton from '../IconButton/IconButton';
 import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
-import type { FormErrors } from '../../hooks/useForm';
 
 import styles from './LoginForm.module.scss';
 

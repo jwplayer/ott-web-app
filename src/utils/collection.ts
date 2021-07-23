@@ -1,4 +1,6 @@
+import type { Consent, CustomerConsent } from 'types/account';
 import type { Config } from 'types/Config';
+import type { GenericFormValues } from 'types/form';
 import type { Playlist, PlaylistItem } from 'types/playlist';
 
 const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
@@ -16,8 +18,7 @@ const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
 
 const getFiltersFromSeries = (series: PlaylistItem[]): string[] =>
   series.reduce(
-    (filters: string[], item) =>
-      item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || ''),
+    (filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')),
     [],
   );
 
@@ -59,6 +60,37 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
   ),
 });
 
+const formatConsentValues = (publisherConsents?: Consent[], customerConsents?: CustomerConsent[]) => {
+  if (!publisherConsents || !customerConsents) {
+    return {};
+  }
+
+  const values: Record<string, boolean> = {};
+  publisherConsents?.forEach((publisherConsent) => {
+    if (customerConsents?.find((customerConsent) => customerConsent.name === 'terms' && customerConsent.state === 'accepted')) {
+      values[publisherConsent.name] = true;
+    }
+  });
+
+  return values;
+};
+
+const formatConsentsFromValues = (publisherConsents?: Consent[], values?: GenericFormValues) => {
+  const consents: CustomerConsent[] = [];
+
+  if (!publisherConsents || !values) return consents;
+
+  publisherConsents.forEach((consent) => {
+    consents.push({
+      name: consent.name,
+      version: consent.version,
+      state: values.consents[consent.name] ? 'accepted' : 'declined',
+    });
+  });
+
+  return consents;
+};
+
 export {
   getFiltersFromConfig,
   getFiltersFromSeries,
@@ -67,4 +99,6 @@ export {
   chunk,
   findPlaylistImageForWidth,
   generatePlaylistPlaceholder,
+  formatConsentValues,
+  formatConsentsFromValues,
 };

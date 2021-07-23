@@ -68,13 +68,28 @@ const User = (): JSX.Element => {
         <Switch>
           <Route path="/u/my-account">
             <CustomerContainer>
-              {({ customer, errors, isLoading, onUpdateEmailSubmit, onUpdateInfoSubmit, onReset }) => (
+              {({
+                customer,
+                errors,
+                isLoading,
+                consentsLoading,
+                publisherConsents,
+                customerConsents,
+                onUpdateEmailSubmit,
+                onUpdateInfoSubmit,
+                onUpdateConsentsSubmit,
+                onReset,
+              }) => (
                 <AccountComponent
                   customer={customer}
                   errors={errors}
                   isLoading={isLoading}
+                  consentsLoading={consentsLoading}
+                  publisherConsents={publisherConsents}
+                  customerConsents={customerConsents}
                   onUpdateEmailSubmit={onUpdateEmailSubmit}
                   onUpdateInfoSubmit={onUpdateInfoSubmit}
+                  onUpdateConsentsSubmit={onUpdateConsentsSubmit}
                   onReset={onReset}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}

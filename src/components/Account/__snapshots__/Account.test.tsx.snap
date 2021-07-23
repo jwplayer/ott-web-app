@@ -2,132 +2,112 @@
 
 exports[`<Account> renders and matches snapshot 1`] = `
 <div>
-  <div>
+  <form
+    novalidate=""
+  >
     <div>
-      <h3>
-        account.email
-      </h3>
-    </div>
-    <div
-      class="flexBox"
-    >
-      <p>
-        todo@test.nl
-      </p>
-      <div
-        class="controls"
-      >
-        <button
-          class="button default outlined"
-        >
-          <span>
-            account.edit_account
-          </span>
-        </button>
+      <div>
+        <h3>
+          account.email
+        </h3>
       </div>
-    </div>
-  </div>
-  <div>
-    <div>
-      <h3>
-        account.security
-      </h3>
-    </div>
-    <div>
-      <strong>
-        account.password
-      </strong>
-      <p>
-        ****************
-      </p>
-      <button
-        class="button default outlined"
-      >
-        <span>
-          account.edit_password
-        </span>
-      </button>
-    </div>
-  </div>
-  <div>
-    <div>
-      <h3>
-        account.about_you
-      </h3>
-    </div>
-    <div>
       <div
         class="flexBox"
       >
-        <div
-          class="textField"
-        >
-          <label
-            class="label"
-            for="text-field_1235_firstName"
-          >
-            account.firstname
-          </label>
-          <p />
-        </div>
-        <div
-          class="textField"
-        >
-          <label
-            class="label"
-            for="text-field_1235_lastName"
-          >
-            account.lastname
-          </label>
-          <p />
-        </div>
+        <p>
+          todo@test.nl
+        </p>
         <div
           class="controls"
         >
           <button
             class="button default outlined"
+            type="button"
           >
             <span>
-              account.edit_information
+              account.edit_account
             </span>
           </button>
         </div>
       </div>
     </div>
-  </div>
-  <div>
     <div>
-      <h3>
-        Terms & tracking
-      </h3>
-    </div>
-    <div>
-      <label
-        class="checkbox"
-      >
-        <input
-          id="terms1"
-          name="terms 1"
-          type="checkbox"
-          value="Bike"
-        />
+      <div>
+        <h3>
+          account.security
+        </h3>
+      </div>
+      <div>
+        <strong>
+          account.password
+        </strong>
         <p>
-          I accept the 
-          <strong>
-            Terms of Conditions
-          </strong>
-           of 
-          &lt;platform name&gt;
+          ****************
         </p>
-      </label>
-      <button
-        class="button default outlined"
-      >
-        <span>
-          account.update_consents
-        </span>
-      </button>
+        <button
+          class="button default outlined"
+          type="button"
+        >
+          <span>
+            account.edit_password
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
+    <div>
+      <div>
+        <h3>
+          account.about_you
+        </h3>
+      </div>
+      <div>
+        <div
+          class="flexBox"
+        >
+          <div
+            class="textField"
+          >
+            <label
+              class="label"
+              for="text-field_1235_firstName"
+            >
+              account.firstname
+            </label>
+            <p />
+          </div>
+          <div
+            class="textField"
+          >
+            <label
+              class="label"
+              for="text-field_1235_lastName"
+            >
+              account.lastname
+            </label>
+            <p />
+          </div>
+          <div
+            class="controls"
+          >
+            <button
+              class="button default outlined"
+              type="button"
+            >
+              <span>
+                account.edit_information
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <h3>
+          Terms & tracking
+        </h3>
+      </div>
+    </div>
+  </form>
 </div>
 `;

@@ -91,7 +91,7 @@ $cookies-color: $dark-color !default;
 $cookies-bg: variables.$white !default;
 
 // Form
-$form-error-bg-color: #FF0C3E !default;
+$form-error-bg-color: #ff0c3e !default;
 
 // Footer
 
@@ -151,7 +151,7 @@ $text-field-hover-bg-color: rgba(variables.$white, 0.08) !default;
 $text-field-active-color: variables.$white !default;
 $text-field-active-border-color: variables.$white !default;
 $text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
-$text-field-error-color: #FF0C3E !default;
+$text-field-error-color: #ff0c3e !default;
 
 // Toggle
 
@@ -188,3 +188,9 @@ $video-details-tag-shadow: 0 1px 0 variables.$black !default;
 $panel-bg: rgba(255, 255, 255, 0.08);
 $panel-box-shadow: 0 6px 10px rgb(0 0 0 / 14%), 0 1px 18px rgb(0 0 0 / 12%), 0 3px 5px rgb(0 0 0 / 20%);
 $panel-header-border-bottom: 1px solid rgba(255, 255, 255, 0.32);
+
+// Forms
+$forms-primary-color: rgb(1, 163, 157);
+$forms-primary-color-hover: rgba(1, 163, 157, 0.8);
+$forms-checkbox-bg: #cccccc;
+$forms-checkbox-bg-hover: #eeeeee;

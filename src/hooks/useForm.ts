@@ -1,13 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import type { FormErrors, GenericFormValues, UseFormChangeHandler, UseFormSubmitHandler } from 'types/form';
 import { ValidationError, AnySchema } from 'yup';
-
-type UseFormChangeHandler = React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-type UseFormSubmitHandler = React.FormEventHandler<HTMLFormElement>;
-
-export type GenericFormErrors = { form: string };
-export type GenericFormValues = Record<string, string>;
-export type FormErrors<T> = Partial<T & GenericFormErrors>;
-export type FormValues<T> = Partial<T & GenericFormValues>;
 
 export type UseFormReturnValue<T> = {
   values: T;

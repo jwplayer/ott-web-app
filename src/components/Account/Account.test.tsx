@@ -17,8 +17,11 @@ describe('<Account>', () => {
     const { container } = render(
       <Account
         customer={customer}
-        onUpdateEmailSubmit={(values) => console.info(values)}
-        onUpdateInfoSubmit={(values) => console.info(values)}
+        isLoading={false}
+        consentsLoading={false}
+        onUpdateEmailSubmit={() => null}
+        onUpdateInfoSubmit={() => null}
+        onUpdateConsentsSubmit={() => null}
         onDeleteAccountClick={() => null}
       />,
     );

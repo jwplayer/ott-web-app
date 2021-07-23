@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import Spinner from '../Spinner/Spinner';
+
 import styles from './LoadingOverlay.module.scss';
 
 type Props = {
@@ -10,12 +12,7 @@ type Props = {
 const LoadingOverlay = ({ transparentBackground = false }: Props): JSX.Element => {
   return (
     <div className={classNames(styles.loadingOverlay, { [styles.transparent]: transparentBackground })}>
-      <div className={styles.buffer}>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
+      <Spinner />
     </div>
   );
 };
