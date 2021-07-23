@@ -23,9 +23,9 @@ button {
   display: block;
   align-items: center;
   margin-top: variables.$base-spacing / 2;
-  margin-bottom: 12px;
-  padding-left: 35px;
-  font-size: 22px;
+  margin-bottom: 0;
+  padding-left: variables.$base-spacing * 1.5;
+  font-size: 16px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
