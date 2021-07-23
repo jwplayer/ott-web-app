@@ -100,3 +100,10 @@ export const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: b
   addQueryParams(item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId), {
     play: play ? '1' : null,
   });
+
+export const formatPrice = (price: number, currency: string, country: string) => {
+  return new Intl.NumberFormat(country, {
+    style: 'currency',
+    currency: currency,
+  }).format(price);
+}

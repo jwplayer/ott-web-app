@@ -7,10 +7,10 @@ import CheckCircle from '../../icons/CheckCircle';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import type { FormErrors } from '../../hooks/useForm';
 import type { Offer } from '../../../types/checkout';
-
-import styles from './ChooseOfferForm.module.scss';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import { getOfferPrice } from '../../utils/subscription';
+
+import styles from './ChooseOfferForm.module.scss';
 
 type Props = {
   values: ChooseOfferFormData;
@@ -30,11 +30,11 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
     if (offer.freeDays > 0) {
       return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
     } else if (offer.freePeriods) {
-      // t('choose_offer.periods.day')
-      // t('choose_offer.periods.week')
-      // t('choose_offer.periods.month')
-      // t('choose_offer.periods.year')
-      const period = t(`choose_offer.periods.${offer.period}`, { count: offer.freePeriods });
+      // t('periods.day')
+      // t('periods.week')
+      // t('periods.month')
+      // t('periods.year')
+      const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
 
       return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
     }
@@ -77,7 +77,7 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
                 </li>
               </ul>
               <div className={styles.offerPrice}>
-                {getOfferPrice(monthlyOffer)} <small>/{t('choose_offer.periods.month')}</small>
+                {getOfferPrice(monthlyOffer)} <small>/{t('periods.month')}</small>
               </div>
             </label>
           </div>
@@ -111,7 +111,7 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
                 </li>
               </ul>
               <div className={styles.offerPrice}>
-                {getOfferPrice(yearlyOffer)} <small>/{t('choose_offer.periods.year')}</small>
+                {getOfferPrice(yearlyOffer)} <small>/{t('periods.year')}</small>
               </div>
             </label>
           </div>

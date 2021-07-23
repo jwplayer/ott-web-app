@@ -1,8 +1,5 @@
 import type { Offer } from '../../types/checkout';
 
-export const getOfferPrice = (offer: Offer) => {
-  return new Intl.NumberFormat(offer.customerCountry, {
-    style: 'currency',
-    currency: offer.customerCurrency,
-  }).format(offer.customerPriceInclTax);
-};
+import { formatPrice } from './formatting';
+
+export const getOfferPrice = (offer: Offer) => formatPrice(offer.customerPriceInclTax, offer.customerCurrency, offer.customerCountry);

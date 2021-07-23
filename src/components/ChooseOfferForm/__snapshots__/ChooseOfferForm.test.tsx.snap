@@ -105,7 +105,7 @@ exports[`<OffersForm> renders and matches snapshot 1`] = `
              
             <small>
               /
-              choose_offer.periods.month
+              periods.month
             </small>
           </div>
         </label>
@@ -195,7 +195,7 @@ exports[`<OffersForm> renders and matches snapshot 1`] = `
              
             <small>
               /
-              choose_offer.periods.year
+              periods.year
             </small>
           </div>
         </label>

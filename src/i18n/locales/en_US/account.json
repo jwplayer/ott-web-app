@@ -1,4 +1,19 @@
 {
+  "checkout": {
+    "applicable_tax": "Applicable tax ({{taxRate}}%)",
+    "continue": "Continue",
+    "coupon_discount": "Coupon discount",
+    "credit_card": "Credit Card",
+    "discount_period": "For the first {{period}}",
+    "discount_period_plural": "For {{count}} {{period}}",
+    "monthly": "Monthly subscription",
+    "payment_method": "Payment method",
+    "payment_method_fee": "Payment method fee",
+    "paypal": "PayPal",
+    "redeem_coupon": "Redeem coupon",
+    "total_price": "Total",
+    "yearly": "Yearly subscription"
+  },
   "choose_offer": {
     "all_movies_and_series_of_platform": "All movies and series of {{siteName}}",
     "benefits": {
@@ -13,16 +28,6 @@
     "field_required": "This field is required",
     "monthly": "Monthly",
     "monthly_subscription": "Monthly subscription",
-    "periods": {
-      "day": "day",
-      "month": "month",
-      "week": "week",
-      "year": "year",
-      "day_plural": "days",
-      "week_plural": "weeks",
-      "month_plural": "months",
-      "year_plural": "years"
-    },
     "subscription": "Subscription",
     "yearly": "Yearly",
     "yearly_subscription": "Yearly subscription"
@@ -38,5 +43,15 @@
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
+  },
+  "periods": {
+    "day": "day",
+    "month": "month",
+    "week": "week",
+    "year": "year",
+    "day_plural": "days",
+    "week_plural": "weeks",
+    "month_plural": "months",
+    "year_plural": "years"
   }
 }
