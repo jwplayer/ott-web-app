@@ -69,6 +69,11 @@ export type UpdateCustomerPayload = {
   lastName?: string;
 };
 
+export type UpdateCustomerConsentsPayload = {
+  id?: string;
+  consents: CustomerConsent[];
+};
+
 export type Customer = {
   id: string;
   email: string;
@@ -111,3 +116,4 @@ type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
+type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, Customer>;

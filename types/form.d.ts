@@ -7,4 +7,5 @@ export type FormErrors<T> = Partial<T & GenericFormErrors>;
 export type FormValues<T> = Partial<T & GenericFormValues>;
 
 export type CustomerFormValues = FormValues<UpdateCustomerPayload>;
+export type CustomerConsentsFormValues = FormValues<UpdateCustomerConsentsPayload>;
 export type CustomerFormErrors = FormErrors<UpdateCustomerPayload>;

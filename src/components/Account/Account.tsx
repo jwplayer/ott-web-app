@@ -100,7 +100,7 @@ const Account = ({
                   disabled={isLoading}
                 />
               ) : (
-                <p>{customer.email}</p>
+                <p>{customer?.email}</p>
               )}
               {editing === 'account' && (
                 <TextField
@@ -196,7 +196,7 @@ const Account = ({
             {consentsLoading ? (
               <Spinner size="small" />
             ) : publisherConsents ? (
-              <div>
+              <div onClick={() => setEditing('consents')}>
                 {publisherConsents.map((consent, index) => (
                   <label className={styles.checkbox} key={index}>
                     <input
@@ -215,10 +215,8 @@ const Account = ({
                   className={styles.submitConsents}
                   type="button"
                   label={t('account.update_consents')}
-                  onClick={() => {
-                    setEditing('consents');
-                    handleSubmit && handleSubmit();
-                  }}
+                  disabled={!hasChanged}
+                  onClick={handleSubmit}
                 />
               </div>
             ) : null}

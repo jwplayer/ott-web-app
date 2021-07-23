@@ -1,10 +1,10 @@
-import type { Consent, Customer, CustomerConsent, UpdateCustomerPayload } from 'types/account';
+import type { Consent, Customer, CustomerConsent, UpdateCustomerConsentsPayload, UpdateCustomerPayload } from 'types/account';
 import { useMutation, useQuery } from 'react-query';
 import type { CustomerFormErrors, CustomerFormValues, FormErrors } from 'types/form';
 
 import { ConfigStore } from '../../stores/ConfigStore';
 import { AccountStore } from '../../stores/AccountStore';
-import { getCustomerConsents, getPublisherConsents, updateCustomer } from '../../services/account.service';
+import { getCustomerConsents, getPublisherConsents, updateCustomer, updateCustomerConsents } from '../../services/account.service';
 
 type ChildrenParams = {
   customer: Customer;
@@ -33,27 +33,22 @@ const CustomerContainer = ({ children, fetchConsents = true }: Props): JSX.Eleme
   const publisherId = cleengId || '';
   const customerId = customer?.id || '';
 
-  const { mutate, isLoading, data, reset } = useMutation((values: CustomerFormValues) => updateCustomer(values, cleengSandbox, jwt));
+  const customerMutation = useMutation((values: CustomerFormValues) => updateCustomer(values, cleengSandbox, jwt));
+  const { mutate: mutateCustomer, isLoading: isMutateCustomerLoading, data: mutateCustomerData, reset } = customerMutation;
 
-  const { data: publisherConsents, isLoading: publisherConsentsLoading } = useQuery(
-    ['publisherConsents'],
-    () => getPublisherConsents({ publisherId }, cleengSandbox),
-    {
-      enabled: fetchConsents && !!publisherId,
-    },
-  );
-  const { data: customerConsents, isLoading: customerConsentsLoading } = useQuery(
-    ['customerConsents'],
-    () => getCustomerConsents({ customerId }, cleengSandbox, jwt),
-    {
-      enabled: fetchConsents && !!customer?.id,
-    },
-  );
+  const mutation = useMutation((values: UpdateCustomerConsentsPayload) => updateCustomerConsents(values, cleengSandbox, jwt));
+  const { mutate: mutateConsents, isLoading: isMutateConsentsLoading, data: mutateConsentsData } = mutation;
 
-  const onUpdateEmailSubmit = ({ id, email, confirmationPassword }: CustomerFormValues) => mutate({ id, email, confirmationPassword });
-  const onUpdateInfoSubmit = ({ id, firstName, lastName }: CustomerFormValues) => mutate({ id, firstName, lastName });
+  const enabled = fetchConsents && !!publisherId && !!customer?.id;
+  const fetchPublicherConsents = useQuery(['publisherConsents'], () => getPublisherConsents({ publisherId }, cleengSandbox), { enabled });
+  const { data: publisherConsents, isLoading: publisherConsentsLoading } = fetchPublicherConsents;
 
-  const onUpdateConsentsSubmit = (consents: CustomerConsent[]) => mutate({ id: customerId, consents });
+  const fetchCustomerConsents = useQuery(['customerConsents'], () => getCustomerConsents({ customerId }, cleengSandbox, jwt), { enabled });
+  const { data: customerConsents, isLoading: customerConsentsLoading } = fetchCustomerConsents;
+
+  const onUpdateEmailSubmit = ({ id, email, confirmationPassword }: CustomerFormValues) => mutateCustomer({ id, email, confirmationPassword });
+  const onUpdateInfoSubmit = ({ id, firstName, lastName }: CustomerFormValues) => mutateCustomer({ id, firstName, lastName });
+  const onUpdateConsentsSubmit = (consents: CustomerConsent[]) => mutateConsents({ id: customerId, consents });
 
   const translateErrors = (errors?: string[]) => {
     const formErrors: CustomerFormErrors = {};
@@ -83,8 +78,8 @@ const CustomerContainer = ({ children, fetchConsents = true }: Props): JSX.Eleme
 
   return children({
     customer,
-    isLoading: isLoading,
-    errors: translateErrors(data?.errors),
+    isLoading: isMutateCustomerLoading || isMutateConsentsLoading,
+    errors: translateErrors(mutateCustomerData?.errors || mutateConsentsData?.errors),
     publisherConsents: publisherConsents?.responseData?.consents,
     customerConsents: customerConsents?.responseData?.consents,
     consentsLoading: publisherConsentsLoading || customerConsentsLoading,

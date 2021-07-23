@@ -67,7 +67,7 @@ const formatConsentValues = (publisherConsents?: Consent[], customerConsents?: C
 
   const values: Record<string, boolean> = {};
   publisherConsents?.forEach((publisherConsent) => {
-    if (customerConsents?.find((customerConsent) => customerConsent.name === 'terms' && customerConsent.state === 'accepted')) {
+    if (customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name && customerConsent.state === 'accepted')) {
       values[publisherConsent.name] = true;
     }
   });
