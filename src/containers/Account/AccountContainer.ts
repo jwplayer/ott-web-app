@@ -24,7 +24,7 @@ type Props = {
   fetchConsents?: boolean;
 };
 
-const CustomerContainer = ({ children, fetchConsents = true }: Props): JSX.Element => {
+const AccountContainer = ({ children, fetchConsents = true }: Props): JSX.Element => {
   const customer = AccountStore.useState((state) => state.user);
   const auth = AccountStore.useState((state) => state.auth);
   const { config } = ConfigStore.getRawState();
@@ -90,4 +90,4 @@ const CustomerContainer = ({ children, fetchConsents = true }: Props): JSX.Eleme
   } as ChildrenParams);
 };
 
-export default CustomerContainer;
+export default AccountContainer;

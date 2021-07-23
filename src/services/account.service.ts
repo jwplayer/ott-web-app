@@ -25,7 +25,7 @@ export const getPublisherConsents: GetPublisherConsents = async (payload, sandbo
 };
 
 export const getCustomerConsents: GetCustomerConsents = async (payload, sandbox, jwt) => {
-  return get(sandbox, `/customers/${payload.customerId}/consents`, jwt);
+  return get(sandbox, `/customers/${payload.customerId}/consents`, undefined, jwt);
 };
 
 export const resetPassword: ResetPassword = async (payload, sandbox) => {
@@ -45,5 +45,5 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload, sa
 };
 
 export const getCustomer: GetCustomer = async (payload, sandbox, jwt) => {
-  return get(sandbox, `/customers/${payload.customerId}`, jwt);
+  return get(sandbox, `/customers/${payload.customerId}`, undefined, jwt);
 };

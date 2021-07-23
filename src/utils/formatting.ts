@@ -1,4 +1,5 @@
 import type { Playlist, PlaylistItem } from 'types/playlist';
+import type { Subscription } from 'types/subscription';
 
 import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from './media';
 
@@ -100,5 +101,20 @@ const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean 
   addQueryParams(item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId), {
     play: play ? '1' : null,
   });
+
+export const formatSubscriptionDates = (subscriptions: Subscription[]) => {
+  if (!subscriptions) return [];
+
+  return subscriptions.map(({ expiresAt }) => {
+    const date = new Date(expiresAt);
+    return `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`;
+  });
+};
+
+export const formatCurrencySymbol = (currency: string) => {
+  if (!currency) return null;
+
+  if (currency === 'EUR') return '€';
+};
 
 export { formatDurationTag, formatDuration, cardUrl, movieURL, seriesURL, videoUrl, episodeURL };

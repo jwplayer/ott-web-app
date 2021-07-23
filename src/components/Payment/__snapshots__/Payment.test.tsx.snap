@@ -17,17 +17,17 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         </strong>
          
         <br />
-        payment.next_billing_date_on
-        &lt;date&gt;
+        payment.next_billing_date_on 19 0 1970
       </p>
       <p
         class="price"
       >
         <strong>
-          € 14.76
+          € 20.00
         </strong>
         /
         payment.month
+         
       </p>
     </div>
     <button
@@ -43,34 +43,6 @@ exports[`<Payment> renders and matches snapshot 1`] = `
       <h3>
         payment.payment_method
       </h3>
-    </div>
-    <div>
-      <strong>
-        payment.card_number
-      </strong>
-      <p>
-        xxxx xxxx xxxx 3456
-      </p>
-      <div
-        class="cardDetails"
-      >
-        <div
-          class="expiryDate"
-        >
-          <strong>
-            payment.expiry_date
-          </strong>
-          <p />
-        </div>
-        <div>
-          <strong>
-            payment.cvc_cvv
-          </strong>
-          <p>
-            ******
-          </p>
-        </div>
-      </div>
     </div>
   </div>
   <div>
