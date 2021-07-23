@@ -28,6 +28,7 @@ type Props = {
   onSearchButtonClick?: () => void;
   onCloseSearchButtonClick?: () => void;
   onLoginButtonClick?: () => void;
+  onSignUpButtonClick?: () => void;
   toggleUserMenu: (value: boolean) => void;
   children?: ReactFragment;
   isLoggedIn: boolean;
@@ -45,6 +46,7 @@ const Header: React.FC<Props> = ({
   searchEnabled,
   onCloseSearchButtonClick,
   onLoginButtonClick,
+  onSignUpButtonClick,
   isLoggedIn,
   userMenuOpen,
   toggleUserMenu,
@@ -104,14 +106,7 @@ const Header: React.FC<Props> = ({
       ) : (
         <div className={styles.buttonContainer}>
           <Button onClick={onLoginButtonClick} label="Login" />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              'sign up';
-            }}
-            label="Sign up"
-          />
+          <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label="Sign up" />
         </div>
       )
     ) : null;

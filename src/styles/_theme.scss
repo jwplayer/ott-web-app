@@ -91,7 +91,7 @@ $cookies-color: $dark-color !default;
 $cookies-bg: variables.$white !default;
 
 // Form
-$form-error-bg-color: #FF0C3E !default;
+$form-error-bg-color: #ff0c3e !default;
 
 // Footer
 
@@ -151,7 +151,11 @@ $text-field-hover-bg-color: rgba(variables.$white, 0.08) !default;
 $text-field-active-color: variables.$white !default;
 $text-field-active-border-color: variables.$white !default;
 $text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
-$text-field-error-color: #FF0C3E !default;
+$text-field-error-color: #ff0c3e !default;
+
+// Input
+$input-resting-border-color: rgba(variables.$white, 0.34) !default;
+$input-hover-border-color: rgba(variables.$white, 0.7) !default;
 
 // Toggle
 

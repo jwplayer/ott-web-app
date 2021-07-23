@@ -63,6 +63,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     history.push(addQueryParam(history, 'u', 'login'));
   };
 
+  const signUpButtonClickHandler = () => {
+    history.push(addQueryParam(history, 'u', 'create_account'));
+  };
+
   const toggleUserMenu = (value: boolean) =>
     UIStore.update((state) => {
       state.userMenuOpen = value;
@@ -111,6 +115,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           onSearchButtonClick={searchButtonClickHandler}
           onCloseSearchButtonClick={closeSearchButtonClickHandler}
           onLoginButtonClick={loginButtonClickHandler}
+          onSignUpButtonClick={signUpButtonClickHandler}
           isLoggedIn={isLoggedIn}
           userMenuOpen={userMenuOpen}
           toggleUserMenu={toggleUserMenu}

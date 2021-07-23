@@ -16,7 +16,7 @@ export type UseFormReturnValue<T> = {
 };
 
 type UseFormMethods<T> = {
-  setValue: (key: keyof T, value: string) => void;
+  setValue: (key: keyof T, value: string | boolean) => void;
   setErrors: (errors: FormErrors<T>) => void;
   setSubmitting: (submitting: boolean) => void;
 };
@@ -32,7 +32,7 @@ export default function useForm<T extends FormValues>(
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors<T>>({});
 
-  const setValue = (name: keyof T, value: string) => {
+  const setValue = (name: keyof T, value: string | boolean) => {
     setValues((current) => ({ ...current, [name]: value }));
   };
 

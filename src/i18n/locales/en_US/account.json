@@ -10,5 +10,17 @@
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
+  },
+  "registration": {
+    "email": "Email",
+    "field_required": "This field is required",
+    "hide_password": "Hide password",
+    "password": "Password",
+    "sign_up": "Sign up",
+    "continue": "Continue",
+    "view_password": "View password",
+    "terms_conditions": "I accept the <a href={{link}}>Terms and Conditions</a> of Cleeng.",
+    "email_updates": "Yes, I want to receive {{siteName}} updates by email.",
+    "already_account": "Already have an account?"
   }
 }

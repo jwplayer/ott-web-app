@@ -1,1 +1,1 @@
-type FormValues = Record<string, string>;
+type FormValues = Record<string, string | boolean>;

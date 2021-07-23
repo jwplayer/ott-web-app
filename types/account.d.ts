@@ -21,6 +21,13 @@ export type LoginFormData = {
   password: string;
 };
 
+export type RegistrationFormData = {
+  email: string;
+  password: string;
+  termsConditions: boolean;
+  emailUpdates: boolean;
+};
+
 export type RegisterPayload = {
   email: string;
   password: string;
