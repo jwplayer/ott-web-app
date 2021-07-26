@@ -1,15 +1,18 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 
+import { render } from '../../testUtils';
 import MenuButton from '../MenuButton/MenuButton';
-import UserMenu from '../UserMenu/UserMenu';
 
 import Popover from './Popover';
 
 describe('<Popover>', () => {
   test('renders and matches snapshot', () => {
     const menuItems = [<MenuButton key="key" label="Home" to="/" />];
-    const { container } = render(<Popover popoverButtonIcon={<UserMenu />}>{menuItems}</Popover>);
+    const { container } = render(
+      <Popover isOpen={true} onClose={jest.fn()}>
+        {menuItems}
+      </Popover>,
+    );
 
     expect(container).toMatchSnapshot();
   });

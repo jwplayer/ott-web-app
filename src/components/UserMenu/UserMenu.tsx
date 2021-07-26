@@ -18,7 +18,7 @@ const UserMenu = ({ inPopover = false }: Props) => {
   const { t } = useTranslation('user');
 
   const menuItems = (
-    <ul>
+    <ul className={styles.menuItems}>
       <li>
         <MenuButton small={inPopover} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>
