@@ -10,12 +10,17 @@ type Props = {
   onClick?: () => void;
   tabIndex?: number;
   active?: boolean;
+  startIcon?: JSX.Element;
+  small?: boolean;
 };
 
-const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active = false }: Props) => {
+const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active = false, startIcon, small = false }: Props) => {
+  const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
+
   if (to) {
     return (
-      <NavLink className={styles.menuButton} activeClassName={styles.active} to={to} tabIndex={tabIndex} exact>
+      <NavLink className={classNames(styles.menuButton, { [styles.small]: small })} activeClassName={styles.active} to={to} tabIndex={tabIndex} exact>
+        {icon}
         <span className={styles.label}>{label}</span>
       </NavLink>
     );
@@ -23,6 +28,7 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active 
 
   return (
     <div className={classNames(styles.menuButton, { [styles.active]: active })} onClick={onClick} tabIndex={tabIndex}>
+      {icon}
       <span className={styles.label}>{label}</span>
     </div>
   );

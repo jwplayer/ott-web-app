@@ -9,14 +9,24 @@ type Props = {
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
   children: ReactNode;
+  fromRight?: boolean;
 };
 
-const Slide = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
+const Slide = ({
+  open = true,
+  duration = 250,
+  delay = 0,
+  onOpenAnimationEnd,
+  onCloseAnimationEnd,
+  children,
+  fromRight,
+}: Props): JSX.Element | null => {
   const seconds = duration / 1000;
   const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
   const createStyle = (status: Status): CSSProperties => ({
     transition,
-    transform: status === 'opening' || status === 'open' ? 'translateY(0)' : 'translateY(15px)',
+    transform: status === 'opening' || status === 'open' ? 'translateY(0)' : `${fromRight ? 'translateX(15px)' : 'translateY(15px)'}`,
+    zIndex: 15,
   });
 
   return (

@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
+import { AccountStore } from '../../stores/AccountStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import { UIStore } from '../../stores/UIStore';
 import Button from '../Button/Button';
@@ -13,6 +14,7 @@ import DynamicBlur from '../DynamicBlur/DynamicBlur';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { addQueryParam } from '../../utils/history';
+import UserMenu from '../UserMenu/UserMenu';
 
 import styles from './Layout.module.scss';
 
@@ -27,7 +29,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const searchActive = UIStore.useState((s) => s.searchActive);
+  const userMenuOpen = UIStore.useState((s) => s.userMenuOpen);
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
+  const isLoggedIn = !!AccountStore.useState((state) => state.user);
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
@@ -59,6 +63,28 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     history.push(addQueryParam(history, 'u', 'login'));
   };
 
+  const toggleUserMenu = (value: boolean) =>
+    UIStore.update((state) => {
+      state.userMenuOpen = value;
+    });
+
+  const userActions = isLoggedIn ? (
+    <UserMenu />
+  ) : (
+    <div className={styles.buttonContainer}>
+      <Button fullWidth onClick={loginButtonClickHandler} label="Login" />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          'sign up';
+        }}
+        label="Sign up"
+        fullWidth
+      />
+    </div>
+  );
+
   return (
     <div className={styles.layout}>
       <Helmet>
@@ -85,6 +111,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           onSearchButtonClick={searchButtonClickHandler}
           onCloseSearchButtonClick={closeSearchButtonClickHandler}
           onLoginButtonClick={loginButtonClickHandler}
+          isLoggedIn={isLoggedIn}
+          userMenuOpen={userMenuOpen}
+          toggleUserMenu={toggleUserMenu}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
@@ -97,6 +126,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             <MenuButton key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} tabIndex={sideBarOpen ? 0 : -1} />
           ))}
           <hr className={styles.divider} />
+          {userActions}
         </Sidebar>
         {children}
       </div>
