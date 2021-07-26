@@ -1,27 +1,26 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import Spinner from '../Spinner/Spinner';
+
 import styles from './LoadingOverlay.module.scss';
 
 type Props = {
+  transparentBackground?: boolean;
   inline?: boolean;
-}
+};
 
-const LoadingOverlay: React.FC<Props> = ({ inline = false }) => {
+const LoadingOverlay = ({ transparentBackground = false, inline = false }: Props): JSX.Element => {
   const className = classNames(styles.loadingOverlay, {
+    [styles.transparent]: transparentBackground,
     [styles.fixed]: !inline,
     [styles.inline]: inline,
-  })
+  });
+
   return (
     <div className={className}>
-      <div className={styles.buffer}>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
+      <Spinner />
     </div>
   );
 };
-
 export default LoadingOverlay;

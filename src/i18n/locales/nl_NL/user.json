@@ -9,11 +9,14 @@
     "edit_password": "",
     "email": "",
     "firstname": "",
+    "hide_password": "",
     "lastname": "",
     "password": "",
     "save": "",
     "security": "",
-    "update_consents": ""
+    "terms_and_tracking": "",
+    "update_consents": "",
+    "view_password": ""
   },
   "favorites": {
     "clear": "",

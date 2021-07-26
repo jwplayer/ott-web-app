@@ -5,11 +5,11 @@ import type { ChooseOfferFormData } from 'types/account';
 import Button from '../Button/Button';
 import CheckCircle from '../../icons/CheckCircle';
 import { ConfigContext } from '../../providers/ConfigProvider';
-import type { FormErrors } from '../../hooks/useForm';
 import type { Offer } from '../../../types/checkout';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import { getOfferPrice } from '../../utils/subscription';
 import DialogBackButton from '../DialogBackButton/DialogBackButton';
+import type { FormErrors } from '../../../types/form';
 
 import styles from './ChooseOfferForm.module.scss';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +12,7 @@ import CustomerContainer from '../../containers/Customer/CustomerContainer';
 import SubscriptionContainer from '../../containers/Subscription/Subscription';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
-import Account from '../../components/Account/Account';
+import AccountComponent from '../../components/Account/Account';
 import Payment from '../../components/Payment/Payment';
 import AccountCircle from '../../icons/AccountCircle';
 import Favorite from '../../icons/Favorite';
@@ -33,12 +33,14 @@ const User = (): JSX.Element => {
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
 
-  if (!customer) {
-    return <div className={styles.user}>Open login panel?</div>;
-  }
-
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+
+  useEffect(() => updateBlurImage(''), [updateBlurImage]);
+
+  if (!customer) {
+    return <div className={styles.user}>Please login first</div>;
+  }
 
   return (
     <div className={styles.user}>
@@ -66,11 +68,29 @@ const User = (): JSX.Element => {
         <Switch>
           <Route path="/u/my-account">
             <CustomerContainer>
-              {({ customer, onUpdateEmailSubmit, onUpdateInfoSubmit }) => (
-                <Account
+              {({
+                customer,
+                errors,
+                isLoading,
+                consentsLoading,
+                publisherConsents,
+                customerConsents,
+                onUpdateEmailSubmit,
+                onUpdateInfoSubmit,
+                onUpdateConsentsSubmit,
+                onReset,
+              }) => (
+                <AccountComponent
                   customer={customer}
+                  errors={errors}
+                  isLoading={isLoading}
+                  consentsLoading={consentsLoading}
+                  publisherConsents={publisherConsents}
+                  customerConsents={customerConsents}
                   onUpdateEmailSubmit={onUpdateEmailSubmit}
                   onUpdateInfoSubmit={onUpdateInfoSubmit}
+                  onUpdateConsentsSubmit={onUpdateConsentsSubmit}
+                  onReset={onReset}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                   onDeleteAccountClick={() => console.error('Sure?')}
