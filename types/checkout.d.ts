@@ -25,7 +25,7 @@ export type Offer = {
   socialCommissionRate: number;
   averageRating: number;
   contentType: string | null;
-  period: string;
+  period: 'day' | 'week' | 'month' | 'year';
   freePeriods: number;
   freeDays: number;
   expiresAt: string | null;
@@ -93,3 +93,9 @@ export type Payment = {
   paymentDetailsId: number | null,
   paymentOperation: string
 };
+
+export type GetOfferPayload = {
+  offerId: string;
+};
+
+export type GetOffer = CleengRequest<GetOfferPayload, Offer>;

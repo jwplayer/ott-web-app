@@ -14,6 +14,7 @@ import VisibilityOff from '../../icons/VisibilityOff';
 import type { FormErrors } from '../../hooks/useForm';
 
 import styles from './LoginForm.module.scss';
+import FormFeedback from '../FormFeedback/FormFeedback';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
@@ -32,7 +33,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   return (
     <form onSubmit={onSubmit} data-testid="login-form" noValidate>
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
-      {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
+      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
         value={values.email}
         onChange={onChange}

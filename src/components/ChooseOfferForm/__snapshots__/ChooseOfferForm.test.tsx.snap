@@ -1,0 +1,215 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OffersForm> renders and matches snapshot 1`] = `
+<div>
+  <form
+    data-testid="choose-offer-form"
+    novalidate=""
+  >
+    <h2
+      class="title"
+    >
+      choose_offer.subscription
+    </h2>
+    <h3
+      class="subtitle"
+    >
+      choose_offer.all_movies_and_series_of_platform
+    </h3>
+    <div
+      class="offers"
+    >
+      <div
+        class="offer"
+      >
+        <input
+          aria-label="choose_offer.monthly_subscription"
+          checked=""
+          class="radio"
+          id="monthly"
+          name="periodicity"
+          type="radio"
+          value="monthly"
+        />
+        <label
+          class="label"
+          for="monthly"
+        >
+          <h4
+            class="offerTitle"
+          >
+            choose_offer.monthly
+          </h4>
+          <hr
+            class="offerDivider"
+          />
+          <ul
+            class="offerBenefits"
+          >
+            <li>
+              <svg
+                aria-hidden="true"
+                class="icon"
+                focusable="false"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </g>
+              </svg>
+               
+              choose_offer.benefits.first_periods_free
+            </li>
+            <li>
+              <svg
+                aria-hidden="true"
+                class="icon"
+                focusable="false"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </g>
+              </svg>
+               
+              choose_offer.benefits.cancel_anytime
+            </li>
+            <li>
+              <svg
+                aria-hidden="true"
+                class="icon"
+                focusable="false"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </g>
+              </svg>
+               
+              choose_offer.benefits.watch_on_all_devices
+            </li>
+          </ul>
+          <div
+            class="offerPrice"
+          >
+            € 6,99
+             
+            <small>
+              /
+              choose_offer.periods.month
+            </small>
+          </div>
+        </label>
+      </div>
+      <div
+        class="offer"
+      >
+        <input
+          aria-label="choose_offer.yearly_subscription"
+          class="radio"
+          id="yearly"
+          name="periodicity"
+          type="radio"
+          value="yearly"
+        />
+        <label
+          class="label"
+          for="yearly"
+        >
+          <h4
+            class="offerTitle"
+          >
+            choose_offer.yearly
+          </h4>
+          <hr
+            class="offerDivider"
+          />
+          <ul
+            class="offerBenefits"
+          >
+            <li>
+              <svg
+                aria-hidden="true"
+                class="icon"
+                focusable="false"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </g>
+              </svg>
+               
+              choose_offer.benefits.first_days_free
+            </li>
+            <li>
+              <svg
+                aria-hidden="true"
+                class="icon"
+                focusable="false"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </g>
+              </svg>
+               
+              choose_offer.benefits.cancel_anytime
+            </li>
+            <li>
+              <svg
+                aria-hidden="true"
+                class="icon"
+                focusable="false"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </g>
+              </svg>
+               
+              choose_offer.benefits.watch_on_all_devices
+            </li>
+          </ul>
+          <div
+            class="offerPrice"
+          >
+            € 50,00
+             
+            <small>
+              /
+              choose_offer.periods.year
+            </small>
+          </div>
+        </label>
+      </div>
+    </div>
+    <button
+      aria-disabled="false"
+      class="button primary fullWidth"
+      type="submit"
+    >
+      <span>
+        choose_offer.continue
+      </span>
+    </button>
+  </form>
+</div>
+`;

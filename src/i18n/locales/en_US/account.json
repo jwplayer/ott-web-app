@@ -1,4 +1,32 @@
 {
+  "choose_offer": {
+    "all_movies_and_series_of_platform": "All movies and series of {{siteName}}",
+    "benefits": {
+      "cancel_anytime": "Cancel anytime",
+      "first_days_free": "First day free",
+      "first_days_free_plural": "First {{count}} days free",
+      "first_periods_free": "First {{period}} free",
+      "first_periods_free_plural": "First {{count}} {{period}} days free",
+      "watch_on_all_devices": "Watch on all devices"
+    },
+    "continue": "Continue",
+    "field_required": "This field is required",
+    "monthly": "Monthly",
+    "monthly_subscription": "Monthly subscription",
+    "periods": {
+      "day": "day",
+      "month": "month",
+      "week": "week",
+      "year": "year",
+      "day_plural": "days",
+      "week_plural": "weeks",
+      "month_plural": "months",
+      "year_plural": "years"
+    },
+    "subscription": "Subscription",
+    "yearly": "Yearly",
+    "yearly_subscription": "Yearly subscription"
+  },
   "login": {
     "email": "Email",
     "field_is_not_valid_email": "Please re-enter your email details and try again.",

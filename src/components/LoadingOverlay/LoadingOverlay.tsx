@@ -1,10 +1,19 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './LoadingOverlay.module.scss';
 
-const LoadingOverlay: React.FC = () => {
+type Props = {
+  inline?: boolean;
+}
+
+const LoadingOverlay: React.FC<Props> = ({ inline = false }) => {
+  const className = classNames(styles.loadingOverlay, {
+    [styles.fixed]: !inline,
+    [styles.inline]: inline,
+  })
   return (
-    <div className={styles.loadingOverlay}>
+    <div className={className}>
       <div className={styles.buffer}>
         <div />
         <div />

@@ -1,0 +1,23 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.formFeedback {
+  margin-bottom: 24px;
+  padding: 16px;
+  color: variables.$white;
+  font-family: theme.$body-font-family;
+  font-size: 18px;
+  border-radius: 4px;
+}
+
+.error {
+  background-color: theme.$form-feedback-error-bg-color;
+}
+
+.warning {
+  background-color: theme.$form-feedback-warning-bg-color;
+}
+
+.success {
+  background-color: theme.$form-feedback-success-bg-color;
+}

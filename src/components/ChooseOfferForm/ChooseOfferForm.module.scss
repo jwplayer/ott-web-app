@@ -1,0 +1,102 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.title {
+  margin-bottom: 8px;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.subtitle {
+  margin-bottom: 24px;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.offers {
+  display: flex;
+  width: 100%;
+  margin: 0 -4px 24px;
+}
+
+.offer {
+  flex: 1;
+  margin: 0 4px;
+}
+
+.radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+
+  :focus,
+  :active {
+    + .label {
+      border-color: variables.$white;
+    }
+  }
+
+  &:checked + .label {
+    color: variables.$black;
+    background-color: variables.$white;
+    border-color: variables.$white;
+  }
+}
+
+.label {
+  display: block;
+  padding: 16px;
+  font-family: theme.$body-font-family;
+  background-color: rgba(variables.$black, 0.34);
+  border: 1px solid rgba(variables.$white, 0.34);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border 0.2s ease, background 0.2s ease;
+}
+
+.offerTitle {
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+}
+
+.offerDivider {
+  border: none;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.54;
+}
+
+.offerBenefits {
+  margin-bottom: 16px;
+  padding: 0;
+
+  > li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    padding: 4px 0;
+
+    > svg {
+      margin-right: 4px;
+      fill: variables.$green;
+    }
+  }
+}
+
+.offerPrice {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-size: 32px;
+
+  > small {
+    margin-left: 4px;
+    font-size: 12px;
+  }
+}

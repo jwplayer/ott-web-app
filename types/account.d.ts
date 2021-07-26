@@ -1,3 +1,5 @@
+import type { Offer } from './checkout';
+
 export type AuthData = {
   jwt: string;
   customerToken: string;
@@ -19,6 +21,12 @@ export type LoginPayload = {
 export type LoginFormData = {
   email: string;
   password: string;
+};
+
+export type OfferPeriodicity = 'monthly' | 'yearly';
+
+export type ChooseOfferFormData = {
+  periodicity: OfferPeriodicity;
 };
 
 export type RegisterPayload = {

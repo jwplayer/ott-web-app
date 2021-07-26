@@ -1,4 +1,28 @@
 {
+  "choose_offer": {
+    "all_movies_and_series_of_platform": "",
+    "benefits": {
+      "cancel_anytime": "",
+      "first_days_free": "",
+      "first_days_free_plural": "",
+      "first_periods_free": "",
+      "first_periods_free_plural": "",
+      "watch_on_all_devices": ""
+    },
+    "continue": "",
+    "field_required": "",
+    "monthly": "",
+    "monthly_subscription": "",
+    "periods": {
+      "day": "",
+      "month": "",
+      "week": "",
+      "year": ""
+    },
+    "subscription": "",
+    "yearly": "",
+    "yearly_subscription": ""
+  },
   "login": {
     "email": "",
     "field_is_not_valid_email": "",
