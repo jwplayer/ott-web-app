@@ -2,6 +2,7 @@ import React, { ReactFragment, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
+import AccountCircle from '../../icons/AccountCircle';
 import SearchBar, { Props as SearchBarProps } from '../SearchBar/SearchBar';
 import Logo from '../Logo/Logo';
 import Menu from '../../icons/Menu';
@@ -10,6 +11,8 @@ import CloseIcon from '../../icons/Close';
 import IconButton from '../../components/IconButton/IconButton';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../Button/Button';
+import Popover from '../Popover/Popover';
+import UserMenu from '../UserMenu/UserMenu';
 
 import styles from './Header.module.scss';
 
@@ -25,7 +28,10 @@ type Props = {
   onSearchButtonClick?: () => void;
   onCloseSearchButtonClick?: () => void;
   onLoginButtonClick?: () => void;
+  toggleUserMenu: (value: boolean) => void;
   children?: ReactFragment;
+  isLoggedIn: boolean;
+  userMenuOpen: boolean;
 };
 
 const Header: React.FC<Props> = ({
@@ -39,6 +45,9 @@ const Header: React.FC<Props> = ({
   searchEnabled,
   onCloseSearchButtonClick,
   onLoginButtonClick,
+  isLoggedIn,
+  userMenuOpen,
+  toggleUserMenu,
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -81,6 +90,32 @@ const Header: React.FC<Props> = ({
       <SearchBar {...searchBarProps} />
     );
 
+  const userActions =
+    breakpoint >= Breakpoint.sm ? (
+      isLoggedIn ? (
+        <React.Fragment>
+          <IconButton className={styles.iconButton} aria-label={t('open_user_menu')} onClick={() => toggleUserMenu(!userMenuOpen)}>
+            <AccountCircle />
+          </IconButton>
+          <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
+            <UserMenu inPopover />
+          </Popover>
+        </React.Fragment>
+      ) : (
+        <div className={styles.buttonContainer}>
+          <Button onClick={onLoginButtonClick} label={t('sign_in')} />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              'sign up';
+            }}
+            label={t('sign_up')}
+          />
+        </div>
+      )
+    ) : null;
+
   return (
     <header className={headerClassName}>
       <div className={styles.container}>
@@ -98,9 +133,7 @@ const Header: React.FC<Props> = ({
           {logoLoaded ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
-        <div>
-          <Button onClick={onLoginButtonClick} label="Login" />
-        </div>
+        {userActions}
       </div>
     </header>
   );

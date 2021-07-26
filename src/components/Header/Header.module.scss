@@ -116,6 +116,13 @@
   }
 }
 
+.buttonContainer {
+  > button:first-child {
+    margin-right: variables.$base-spacing / 2;
+    margin-left: variables.$base-spacing;
+  }
+}
+
 //
 // mediaQueries
 // --------------------------------

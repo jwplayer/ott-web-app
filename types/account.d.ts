@@ -1,6 +1,7 @@
 export type AuthData = {
   jwt: string;
   customerToken: string;
+  refreshToken: string;
 };
 
 export type JwtDetails = {
@@ -19,6 +20,12 @@ export type LoginPayload = {
 export type LoginFormData = {
   email: string;
   password: string;
+};
+
+export type OfferPeriodicity = 'monthly' | 'yearly';
+
+export type ChooseOfferFormData = {
+  periodicity: OfferPeriodicity;
 };
 
 export type RegisterPayload = {
@@ -74,6 +81,10 @@ export type UpdateCustomerConsentsPayload = {
   consents: CustomerConsent[];
 };
 
+export type RefreshTokenPayload = {
+  refreshToken: string;
+};
+
 export type Customer = {
   id: string;
   email: string;
@@ -117,3 +128,4 @@ type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknow
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
 type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, Customer>;
+type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;

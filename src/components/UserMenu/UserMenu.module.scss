@@ -1,0 +1,36 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.panel {
+  width: 100%;
+  height: 100%;
+  padding: variables.$base-spacing 0;
+  font-weight: normal;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 18px;
+  letter-spacing: 0.15px;
+  background: theme.$modal-bg;
+  box-shadow: theme.$panel-box-shadow;
+}
+
+.menuItems > li > a {
+  padding: 0 18px;
+  font-size: 16px;
+}
+
+.button {
+  margin-bottom: variables.$base-spacing;
+}
+
+.divider {
+  vertical-align: baseline;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(variables.$white, 0.12);
+
+  &.inPopover {
+    margin: variables.$base-spacing;
+    border-top: 1px solid rgba(255, 255, 255, 0.32);
+  }
+}

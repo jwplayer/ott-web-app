@@ -45,5 +45,9 @@
   "player": "7xMa4gNw",
   "recommendationsPlaylist": "fuD6TWcf",
   "searchPlaylist": "tQ832H1H",
-  "siteName": "Blender"
+  "siteName": "Blender",
+  "json": {
+    "cleengMonthlyOffer": "S916977979_NL",
+    "cleengYearlyOffer": "S345569153_NL"
+  }
 }

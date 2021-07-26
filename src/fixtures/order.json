@@ -1,0 +1,39 @@
+{
+  "id": 696713353,
+  "customerId": 362344331,
+  "customer": {
+    "locale": "nl_NL",
+    "email": "email@domain.com"
+  },
+  "publisherId": 292636325,
+  "offerId": "S916977979_NL",
+  "offer": {
+    "title": "Monthly subscription",
+    "description": null,
+    "price": 5.7768,
+    "currency": "EUR"
+  },
+  "totalPrice": 6.99,
+  "priceBreakdown": {
+    "offerPrice": 5.78,
+    "discountAmount": 0,
+    "discountedPrice": 5.78,
+    "taxValue": 1.21,
+    "customerServiceFee": 0,
+    "paymentMethodFee": 0
+  },
+  "taxRate": 0.21,
+  "taxBreakdown": null,
+  "currency": "EUR",
+  "country": "NL",
+  "paymentMethodId": 194856795,
+  "expirationDate": 1627374040,
+  "billingAddress": null,
+  "couponId": null,
+  "discount": {
+    "applied": false,
+    "type": "",
+    "periods": 0
+  },
+  "requiredPaymentDetails": true
+}

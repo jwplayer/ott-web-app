@@ -1,4 +1,40 @@
 {
+  "checkout": {
+    "applicable_tax": "Applicable tax ({{taxRate}}%)",
+    "continue": "Continue",
+    "coupon_discount": "Coupon discount",
+    "credit_card": "Credit Card",
+    "discount_period": "For the first {{period}}",
+    "discount_period_plural": "For {{count}} {{period}}",
+    "monthly": "Monthly subscription",
+    "no_payment_needed": "No payment needed",
+    "payment_method": "Payment method",
+    "payment_method_fee": "Payment method fee",
+    "paypal": "PayPal",
+    "redeem_coupon": "Redeem coupon",
+    "remove_coupon": "Remove coupon",
+    "total_price": "Total",
+    "yearly": "Yearly subscription"
+  },
+  "choose_offer": {
+    "all_movies_and_series_of_platform": "All movies and series of {{siteName}}",
+    "benefits": {
+      "cancel_anytime": "Cancel anytime",
+      "first_days_free": "First day free",
+      "first_days_free_plural": "First {{count}} days free",
+      "first_periods_free": "First {{period}} free",
+      "first_periods_free_plural": "First {{count}} {{period}} days free",
+      "watch_on_all_devices": "Watch on all devices"
+    },
+    "continue": "Continue",
+    "field_required": "This field is required",
+    "monthly": "Monthly",
+    "monthly_subscription": "Monthly subscription",
+    "offer_not_found": "Offer not found, please try reloading the page",
+    "subscription": "Subscription",
+    "yearly": "Yearly",
+    "yearly_subscription": "Yearly subscription"
+  },
   "login": {
     "email": "Email",
     "field_is_not_valid_email": "Please re-enter your email details and try again.",
@@ -10,5 +46,15 @@
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
+  },
+  "periods": {
+    "day": "day",
+    "month": "month",
+    "week": "week",
+    "year": "year",
+    "day_plural": "days",
+    "week_plural": "weeks",
+    "month_plural": "months",
+    "year_plural": "years"
   }
 }

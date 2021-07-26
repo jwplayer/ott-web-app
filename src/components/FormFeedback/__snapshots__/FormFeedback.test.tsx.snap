@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormFeedback> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="formFeedback error"
+  >
+    Form feedback
+  </div>
+</div>
+`;

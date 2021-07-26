@@ -1,0 +1,10 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.dialogBackButton {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 48px;
+  height: 48px;
+}

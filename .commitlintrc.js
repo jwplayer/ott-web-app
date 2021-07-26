@@ -16,6 +16,7 @@ module.exports = {
         'pwa',
         'seo',
         'auth',
+        'menu',
       ],
     ],
   },
