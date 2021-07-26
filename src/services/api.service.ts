@@ -1,3 +1,4 @@
+import { addQueryParams } from '../utils/formatting';
 import type { Playlist, PlaylistItem } from '../../types/playlist';
 import { API_BASE_URL } from '../config';
 
@@ -22,10 +23,13 @@ export const getDataOrThrow = async (response: Response) => {
  * @param {string} id
  * @param relatedMediaId
  */
-export const getPlaylistById = (id: string, relatedMediaId?: string): Promise<Playlist | undefined> => {
-  const relatedQuery = relatedMediaId ? `?related_media_id=${relatedMediaId}` : '';
+export const getPlaylistById = (id: string, relatedMediaId?: string, limit?: number): Promise<Playlist | undefined> => {
+  const url = addQueryParams(`${API_BASE_URL}/v2/playlists/${id}`, {
+    related_media_id: relatedMediaId,
+    page_limit: limit?.toString(),
+  });
 
-  return fetch(`${API_BASE_URL}/v2/playlists/${id}${relatedQuery}`).then(getDataOrThrow);
+  return fetch(url).then(getDataOrThrow);
 };
 
 /**

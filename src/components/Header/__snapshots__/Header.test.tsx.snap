@@ -68,12 +68,21 @@ exports[`<Header /> renders header 1`] = `
           />
         </div>
       </div>
-      <div>
+      <div
+        class="buttonContainer"
+      >
         <button
           class="button default outlined"
         >
           <span>
-            Login
+            sign_in
+          </span>
+        </button>
+        <button
+          class="button primary"
+        >
+          <span>
+            sign_up
           </span>
         </button>
       </div>

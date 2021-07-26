@@ -71,14 +71,16 @@ button {
   width: 15px;
   height: 15px;
   background-color: theme.$forms-checkbox-bg;
+  border-radius: 2px;
+
   &::after {
     content: '';
     position: absolute;
     top: 2px;
-    left: 4px;
+    left: 5px;
     display: none;
 
-    width: 6px;
+    width: 5px;
     height: 10px;
     border: solid black;
     border-width: 0 2px 2px 0;

@@ -90,8 +90,14 @@ $cookies-title-color: $primary-color !default;
 $cookies-color: $dark-color !default;
 $cookies-bg: variables.$white !default;
 
-// Form
-$form-error-bg-color: #ff0c3e !default;
+// FormFeedback
+
+$form-feedback-error-bg-color: #ff0c3e !default;
+$form-feedback-error-color: variables.$white !default;
+$form-feedback-warning-bg-color: variables.$orange !default;
+$form-feedback-warning-color: variables.$white !default;
+$form-feedback-success-bg-color: variables.$green !default;
+$form-feedback-success-color: variables.$black !default;
 
 // Footer
 

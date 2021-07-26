@@ -17,7 +17,7 @@ export type PaymentDetail = {
   id: string;
   customerId: string;
   paymentGateway: string;
-  paymendMethod: string;
+  paymentMethod: string;
   paymentMethodSpecificParams: Record<PaymentMethodSpecificParam>;
   paymentMethodId: string;
   active: boolean;
@@ -33,15 +33,15 @@ export type PaymentMethodSpecificParam = {
 };
 
 export type Transaction = {
-  transactionId?: string;
-  transactionDate?: number;
-  offerId?: string;
-  offerType?: string;
-  offerTitle?: string;
-  offerPeriod?: string;
+  transactionId: string;
+  transactionDate: number;
+  offerId: string;
+  offerType: string;
+  offerTitle: string;
+  offerPeriod: string;
   publisherSiteName?: string;
-  transactionPriceExclTax?: string;
-  transactionCurrency?: string;
+  transactionPriceExclTax: string;
+  transactionCurrency: string;
   contentExternalId?: string;
   contentType?: string;
   shortUrl?: string;
@@ -52,17 +52,17 @@ export type Transaction = {
   discountRate?: string;
   discountValue?: string;
   discountedOfferPrice?: string;
-  offerCurrency?: string;
-  offerPriceExclTax?: string;
-  applicableTax?: string;
-  transactionPriceInclTax?: string;
+  offerCurrency: string;
+  offerPriceExclTax: string;
+  applicableTax: string;
+  transactionPriceInclTax: string;
   appliedExchangeRateCustomer?: string;
-  customerId?: string;
-  customerEmail?: string;
-  customerLocale?: string;
-  customerCountry?: string;
-  customerIpCountry?: string;
-  customerCurrency?: string;
+  customerId: string;
+  customerEmail: string;
+  customerLocale: string;
+  customerCountry: string;
+  customerIpCountry: string;
+  customerCurrency: string;
   paymentMethod?: string;
   referalUrl?: string;
   transactionExternalData?: string;
@@ -74,6 +74,10 @@ export type GetSubscriptionsPayload = {
   customerId: string;
 };
 
+export type GetSubscriptionsResponse = {
+  items: Subscription[];
+};
+
 export type UpdateSubscriptionPayload = {
   customerId: string;
   offerId: string;
@@ -81,8 +85,18 @@ export type UpdateSubscriptionPayload = {
   cancellationReason?: string;
 };
 
+export type UpdateSubscriptionResponse = {
+  offerId: string;
+  status: 'active' | 'cancelled' | 'expired' | 'terminated';
+  expiresAt: number;
+};
+
 export type GetPaymentDetailsPayload = {
   customerId: string;
+};
+
+export type GetPaymentDetailsResponse = {
+  paymentDetails: PaymentDetail[];
 };
 
 export type GetTransactionsPayload = {
@@ -91,7 +105,11 @@ export type GetTransactionsPayload = {
   offset?: string;
 };
 
-type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, Subscription[]>;
-type UpdateSubscriptions = CleengAuthRequest<UpdateSubscriptionPayload, Subscription>;
-type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, Record<string, PaymentDetail[]>>;
-type GetTransactions = CleengAuthRequest<GetTransactionsPayload, Transaction[]>;
+export type GetTransactionsResponse = {
+  items: Transaction[];
+};
+
+type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
+type UpdateSubscription = CleengAuthRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
+type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
+type GetTransactions = CleengAuthRequest<GetTransactionsPayload, GetTransactionsResponse>;

@@ -19,6 +19,10 @@ describe('<Header />', () => {
         searchActive={false}
         onSearchButtonClick={jest.fn()}
         onCloseSearchButtonClick={jest.fn()}
+        onLoginButtonClick={jest.fn()}
+        userMenuOpen={false}
+        toggleUserMenu={jest.fn()}
+        isLoggedIn={false}
       >
         {playlistMenuItems}
       </Header>,

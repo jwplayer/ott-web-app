@@ -104,7 +104,7 @@ exports[`<Account> renders and matches snapshot 1`] = `
     <div>
       <div>
         <h3>
-          Terms & tracking
+          account.terms_and_tracking
         </h3>
       </div>
     </div>

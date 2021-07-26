@@ -1,16 +1,18 @@
 import { useMutation, useQuery } from 'react-query';
 import type { PaymentDetail, Subscription, Transaction, UpdateSubscriptionPayload } from 'types/subscription';
 
-import { getPaymentDetails, getSubscriptions, getTransactions, updateSubscriptions } from '../../services/subscription.service';
+import { getPaymentDetails, getSubscriptions, getTransactions, updateSubscription } from '../../services/subscription.service';
 import { AccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
 
 type ChildrenParams = {
+  activeSubscription?: Subscription;
   subscriptions: Subscription[];
   paymentDetails: PaymentDetail[];
+  activePaymentDetail?: PaymentDetail;
   transactions: Transaction[];
   isLoading: boolean;
-  onUpdateSubscriptionSubmit: (subscriptions: Subscription) => void;
+  onUpdateSubscriptionSubmit: () => void;
 };
 
 type Props = {
@@ -28,7 +30,7 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
   const getSubscriptionsQuery = useQuery(['subscriptions', customerId], () => getSubscriptions({ customerId }, sandbox, jwt));
   const { data: subscriptions, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
 
-  const subscriptionMutation = useMutation((values: UpdateSubscriptionPayload) => updateSubscriptions(values, sandbox, jwt));
+  const subscriptionMutation = useMutation((values: UpdateSubscriptionPayload) => updateSubscription(values, sandbox, jwt));
   const { mutate: mutateSubscriptions, isLoading: isSubscriptionMutationLoading } = subscriptionMutation;
 
   const getPaymentDetailsQuery = useQuery(['paymentDetails', customerId], () => getPaymentDetails({ customerId }, sandbox, jwt));
@@ -41,10 +43,14 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
     mutateSubscriptions({ customerId, offerId, status, cancellationReason });
   };
 
+  console.log(transactions);
+
   return children({
-    subscriptions: subscriptions?.responseData,
+    activeSubscription: subscriptions?.responseData.items.find(subscription => subscription.status !== 'expired' && subscription.status !== 'terminated'),
+    activePaymentDetail: paymentDetails?.responseData.paymentDetails.find(paymentDetails => paymentDetails.active),
+    subscriptions: subscriptions?.responseData.items,
     paymentDetails: paymentDetails?.responseData.paymentDetails,
-    transactions: transactions?.responseData,
+    transactions: transactions?.responseData.items,
     isLoading: isSubscriptionsLoading || isPaymentDetailsLoading || isTransactionsLoading || isSubscriptionMutationLoading,
     onUpdateSubscriptionSubmit,
   } as ChildrenParams);

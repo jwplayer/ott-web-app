@@ -14,6 +14,7 @@
     "password": "Password",
     "save": "Save",
     "security": "Security",
+    "terms_and_tracking": "Terms & tracking",
     "update_consents": "Update consents",
     "view_password": "View password"
   },
@@ -35,11 +36,11 @@
     "expiry_date": "Expiry date",
     "month": "month",
     "monthly_subscription": "Monthly subscription",
-    "more_transactions": "{{ amount }} more transactions",
     "next_billing_date_on": "Next billing date is on",
     "payment_method": "Payment method",
-    "price_payed_with_card": "Price payed with card",
+    "price_payed_with": "{{price}} payed with {{method}}",
     "subscription_details": "Subscription details",
-    "transactions": "Transactions"
+    "transactions": "Transactions",
+    "price_payed_with_card": "Price payed with card"
   }
 }

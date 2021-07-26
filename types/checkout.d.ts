@@ -25,7 +25,7 @@ export type Offer = {
   socialCommissionRate: number;
   averageRating: number;
   contentType: string | null;
-  period: string;
+  period: 'day' | 'week' | 'month' | 'year';
   freePeriods: number;
   freeDays: number;
   expiresAt: string | null;
@@ -34,6 +34,13 @@ export type Offer = {
   contentExternalId: string | null;
   contentExternalData: string | null;
   contentAgeRestriction: string | null
+}
+
+export type OrderOffer = {
+  title: string;
+  description: string | null;
+  price: number;
+  currency: string;
 }
 
 export type Order = {
@@ -45,7 +52,7 @@ export type Order = {
   };
   publisherId: number;
   offerId: string;
-  offer: Offer;
+  offer: OrderOffer;
   totalPrice: number;
   priceBreakdown: {
     offerPrice: number;
@@ -66,9 +73,21 @@ export type Order = {
   discount: {
     applied: boolean;
     type: string;
-    periods: string
+    periods: number
   };
   requiredPaymentDetails: boolean
+};
+
+export type PaymentMethod = {
+  id: number;
+  methodName: 'card' | 'paypal';
+  logoUrl: string;
+};
+
+export type PaymentMethodResponse = {
+  message: string;
+  paymentMethods: PaymentMethod[];
+  status: number;
 };
 
 export type Payment = {
@@ -93,3 +112,40 @@ export type Payment = {
   paymentDetailsId: number | null,
   paymentOperation: string
 };
+
+export type GetOfferPayload = {
+  offerId: string;
+};
+
+export type CreateOrderPayload = {
+  offerId: string;
+  customerId: string;
+  country: string;
+  currency: string;
+  customerIP: string;
+  paymentMethodId?: number;
+  couponCode?: string;
+};
+
+export type CreateOrderResponse = {
+  message: string;
+  order: Order;
+  success: boolean;
+};
+
+export type UpdateOrderPayload = {
+  orderId: number;
+  paymentMethodId?: number;
+  couponCode?: string | null;
+};
+
+export type UpdateOrderResponse = {
+  message: string;
+  order: Order;
+  success: boolean;
+};
+
+export type GetOffer = CleengRequest<GetOfferPayload, Offer>;
+export type CreateOrder = CleengAuthRequest<CreateOrderPayload, CreateOrderResponse>;
+export type UpdateOrder = CleengAuthRequest<UpdateOrderPayload, UpdateOrderResponse>;
+export type GetPaymentMethods = CleengEmptyAuthRequest<PaymentMethodResponse>;

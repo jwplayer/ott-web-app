@@ -8,35 +8,6 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         payment.subscription_details
       </h3>
     </div>
-    <div
-      class="infoBox"
-    >
-      <p>
-        <strong>
-          payment.monthly_subscription
-        </strong>
-         
-        <br />
-        payment.next_billing_date_on 19 0 1970
-      </p>
-      <p
-        class="price"
-      >
-        <strong>
-          € 20.00
-        </strong>
-        /
-        payment.month
-         
-      </p>
-    </div>
-    <button
-      class="button default outlined"
-    >
-      <span>
-        payment.edit_subscription
-      </span>
-    </button>
   </div>
   <div>
     <div>
@@ -51,33 +22,6 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         payment.transactions
       </h3>
     </div>
-    <div
-      class="infoBox"
-    >
-      <p>
-        <strong>
-          payment.monthly_subscription
-        </strong>
-         
-        <br />
-        payment.price_payed_with_card
-      </p>
-      <p>
-        &lt;Invoice code&gt;
-        <br />
-        &lt;Date&gt;
-      </p>
-    </div>
-    <p>
-      payment.more_transactions
-    </p>
-    <button
-      class="button default outlined"
-    >
-      <span>
-        Show all
-      </span>
-    </button>
   </div>
 </div>
 `;

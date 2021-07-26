@@ -114,13 +114,13 @@ const User = (): JSX.Element => {
           </Route>
           <Route path="/u/payments">
             <SubscriptionContainer>
-              {({ subscriptions, paymentDetails, transactions, isLoading, onUpdateSubscriptionSubmit }) => (
+              {({ activeSubscription, activePaymentDetail, transactions, isLoading }) => (
                 <Payment
-                  subscriptions={subscriptions}
-                  paymentDetails={paymentDetails}
+                  activeSubscription={activeSubscription}
+                  activePaymentDetail={activePaymentDetail}
                   transactions={transactions}
+                  customer={customer}
                   isLoading={isLoading}
-                  onUpdateSubscriptionSubmit={onUpdateSubscriptionSubmit}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                 />

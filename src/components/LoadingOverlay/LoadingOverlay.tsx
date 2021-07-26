@@ -7,14 +7,20 @@ import styles from './LoadingOverlay.module.scss';
 
 type Props = {
   transparentBackground?: boolean;
+  inline?: boolean;
 };
 
-const LoadingOverlay = ({ transparentBackground = false }: Props): JSX.Element => {
+const LoadingOverlay = ({ transparentBackground = false, inline = false }: Props): JSX.Element => {
+  const className = classNames(styles.loadingOverlay, {
+    [styles.transparent]: transparentBackground,
+    [styles.fixed]: !inline,
+    [styles.inline]: inline,
+  });
+
   return (
-    <div className={classNames(styles.loadingOverlay, { [styles.transparent]: transparentBackground })}>
+    <div className={className}>
       <Spinner />
     </div>
   );
 };
-
 export default LoadingOverlay;

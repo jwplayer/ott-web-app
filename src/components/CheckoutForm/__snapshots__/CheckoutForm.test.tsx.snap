@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckoutForm> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <div
+      aria-label="Go back"
+      class="iconButton dialogBackButton"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="icon"
+        focusable="false"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g>
+          <path
+            d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+          />
+        </g>
+      </svg>
+    </div>
+    <h2
+      class="title"
+    >
+      checkout.payment_method
+    </h2>
+    <div
+      class="order"
+    >
+      <div
+        class="orderInfo"
+      >
+        <p
+          class="orderTitle"
+        >
+          checkout.monthly
+        </p>
+      </div>
+      <div
+        class="orderPrice"
+      >
+        <span>
+          € 5,78
+        </span>
+        <small>
+          /
+          periods.month
+        </small>
+      </div>
+    </div>
+    <div
+      class="couponForm"
+    >
+      <button
+        class="button default outlined"
+      >
+        <span>
+          checkout.redeem_coupon
+        </span>
+      </button>
+    </div>
+    <div>
+      <table
+        class="orderTotals"
+      >
+        <tbody>
+          <tr>
+            <td>
+              checkout.applicable_tax
+            </td>
+            <td>
+              € 1,21
+            </td>
+          </tr>
+          <tr>
+            <td>
+              checkout.payment_method_fee
+            </td>
+            <td>
+              € 0,00
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>
+              checkout.total_price
+            </td>
+            <td>
+              € 6,99
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <hr
+      class="divider"
+    />
+    <div
+      class="paymentMethods"
+    />
+    <button
+      aria-disabled="false"
+      class="button primary fullWidth large"
+    >
+      <span>
+        checkout.continue
+      </span>
+    </button>
+  </div>
+</div>
+`;

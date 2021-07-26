@@ -14,6 +14,7 @@
     "password": "",
     "save": "",
     "security": "",
+    "terms_and_tracking": "",
     "update_consents": "",
     "view_password": ""
   },
@@ -35,11 +36,11 @@
     "expiry_date": "",
     "month": "",
     "monthly_subscription": "",
-    "more_transactions": "",
     "next_billing_date_on": "",
     "payment_method": "",
-    "price_payed_with_card": "",
+    "price_payed_with": "",
     "subscription_details": "",
-    "transactions": ""
+    "transactions": "",
+    "price_payed_with_card": ""
   }
 }

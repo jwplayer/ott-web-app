@@ -10,6 +10,7 @@ import './i18n/config';
 import './styles/main.scss';
 import { initializeWatchHistory } from './stores/WatchHistoryStore';
 import { initializeFavorites } from './stores/FavoritesStore';
+import { initializeAccount } from './stores/AccountStore';
 
 interface State {
   error: Error | null;
@@ -30,6 +31,7 @@ class App extends Component {
     }
 
     initializeFavorites();
+    initializeAccount();
   }
 
   configLoadingHandler = (isLoading: boolean) => {
