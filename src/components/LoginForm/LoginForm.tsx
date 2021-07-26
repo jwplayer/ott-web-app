@@ -12,9 +12,9 @@ import IconButton from '../IconButton/IconButton';
 import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import type { FormErrors } from '../../hooks/useForm';
+import FormFeedback from '../FormFeedback/FormFeedback';
 
 import styles from './LoginForm.module.scss';
-import FormFeedback from '../FormFeedback/FormFeedback';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;

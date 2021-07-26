@@ -7,22 +7,33 @@ import CheckCircle from '../../icons/CheckCircle';
 import { ConfigContext } from '../../providers/ConfigProvider';
 import type { FormErrors } from '../../hooks/useForm';
 import type { Offer } from '../../../types/checkout';
-
-import styles from './ChooseOfferForm.module.scss';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import { getOfferPrice } from '../../utils/subscription';
+import DialogBackButton from '../DialogBackButton/DialogBackButton';
+
+import styles from './ChooseOfferForm.module.scss';
 
 type Props = {
   values: ChooseOfferFormData;
   errors: FormErrors<ChooseOfferFormData>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
+  onBackButtonClickHandler?: () => void;
   monthlyOffer?: Offer;
   yearlyOffer?: Offer;
   submitting: boolean;
 };
 
-const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, submitting, yearlyOffer, monthlyOffer }: Props) => {
+const ChooseOfferForm: React.FC<Props> = ({
+  values,
+  errors,
+  onChange,
+  onSubmit,
+  submitting,
+  yearlyOffer,
+  monthlyOffer,
+  onBackButtonClickHandler,
+}: Props) => {
   const { siteName } = useContext(ConfigContext);
   const { t } = useTranslation('account');
 
@@ -30,20 +41,21 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
     if (offer.freeDays > 0) {
       return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
     } else if (offer.freePeriods) {
-      // t('choose_offer.periods.day')
-      // t('choose_offer.periods.week')
-      // t('choose_offer.periods.month')
-      // t('choose_offer.periods.year')
-      const period = t(`choose_offer.periods.${offer.period}`, { count: offer.freePeriods });
+      // t('periods.day')
+      // t('periods.week')
+      // t('periods.month')
+      // t('periods.year')
+      const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
 
       return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
     }
 
     return null;
-  }
+  };
 
   return (
     <form onSubmit={onSubmit} data-testid="choose-offer-form" noValidate>
+      {onBackButtonClickHandler  ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
       <h2 className={styles.title}>{t('choose_offer.subscription')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.all_movies_and_series_of_platform', { siteName })}</h3>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
@@ -77,7 +89,7 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
                 </li>
               </ul>
               <div className={styles.offerPrice}>
-                {getOfferPrice(monthlyOffer)} <small>/{t('choose_offer.periods.month')}</small>
+                {getOfferPrice(monthlyOffer)} <small>/{t('periods.month')}</small>
               </div>
             </label>
           </div>
@@ -111,7 +123,7 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
                 </li>
               </ul>
               <div className={styles.offerPrice}>
-                {getOfferPrice(yearlyOffer)} <small>/{t('choose_offer.periods.year')}</small>
+                {getOfferPrice(yearlyOffer)} <small>/{t('periods.year')}</small>
               </div>
             </label>
           </div>

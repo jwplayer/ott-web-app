@@ -1,4 +1,21 @@
 {
+  "checkout": {
+    "applicable_tax": "",
+    "continue": "",
+    "coupon_discount": "",
+    "credit_card": "",
+    "discount_period": "",
+    "discount_period_plural": "",
+    "monthly": "",
+    "no_payment_needed": "",
+    "payment_method": "",
+    "payment_method_fee": "",
+    "paypal": "",
+    "redeem_coupon": "",
+    "remove_coupon": "",
+    "total_price": "",
+    "yearly": ""
+  },
   "choose_offer": {
     "all_movies_and_series_of_platform": "",
     "benefits": {
@@ -13,12 +30,7 @@
     "field_required": "",
     "monthly": "",
     "monthly_subscription": "",
-    "periods": {
-      "day": "",
-      "month": "",
-      "week": "",
-      "year": ""
-    },
+    "offer_not_found": "",
     "subscription": "",
     "yearly": "",
     "yearly_subscription": ""
@@ -34,5 +46,11 @@
     "view_password": "",
     "wrong_combination": "",
     "wrong_email": ""
+  },
+  "periods": {
+    "day": "",
+    "month": "",
+    "week": "",
+    "year": ""
   }
 }
