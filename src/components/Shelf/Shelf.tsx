@@ -115,15 +115,8 @@ const Shelf: React.FC<ShelfProps> = ({
     [didSlideBefore, t],
   );
 
-  const renderPaginationDots = (onClick: () => void, index: number, pageIndex: number) => (
-    <span
-      key={pageIndex}
-      className={classNames(styles.dot, { [styles.active]: index === pageIndex })}
-      onClick={onClick}
-      role="button"
-      aria-pressed={index === pageIndex}
-      aria-label={t('show_page', { number: pageIndex + 1 })}
-    />
+  const renderPaginationDots = (index: number, pageIndex: number) => (
+    <span key={pageIndex} className={classNames(styles.dot, { [styles.active]: index === pageIndex })} />
   );
 
   const handleSlide = (doSlide: () => void): void => {

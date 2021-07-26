@@ -22,7 +22,7 @@ export type TileDockProps<T> = {
   renderTile: (item: T, isInView: boolean) => JSX.Element;
   renderLeftControl?: (handleClick: () => void) => JSX.Element;
   renderRightControl?: (handleClick: () => void) => JSX.Element;
-  renderPaginationDots?: (handleClick: () => void, index: number, pageIndex: number) => JSX.Element;
+  renderPaginationDots?: (index: number, pageIndex: number) => JSX.Element;
 };
 
 type Tile<T> = {
@@ -229,7 +229,7 @@ const TileDock = <T extends unknown>({
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -243,9 +243,7 @@ const TileDock = <T extends unknown>({
       const dotsRow = (
         <div className={styles.dots}>
           {Array.from({ length }, (_, pageIndex) => {
-            const direction = index < pageIndex + 1 ? 'right' : 'left';
-            const slides = Math.abs(pageIndex - index);
-            return renderPaginationDots(() => index !== pageIndex && slide(direction, slides), index, pageIndex);
+            return renderPaginationDots(index, pageIndex);
           })}
         </div>
       );

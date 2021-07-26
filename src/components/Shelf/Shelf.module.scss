@@ -55,10 +55,9 @@
   margin: 0 5px;
   background-color: rgba(254, 254, 254, 0.2);
   border-radius: 50%;
-  cursor: pointer;
   transition: all 200ms ease;
-  &.active,
-  &:hover {
+
+  &.active {
     background-color: var(--primary-color);
     transform: scale(1.1);
   }
