@@ -13,6 +13,9 @@ export type UseFormReturnValue<T> = {
   submitting: boolean;
   handleChange: UseFormChangeHandler;
   handleSubmit: UseFormSubmitHandler;
+  setValue: (key: keyof T, value: string) => void;
+  setErrors: (errors: FormErrors<T>) => void;
+  setSubmitting: (submitting: boolean) => void;
 };
 
 type UseFormMethods<T> = {
@@ -78,5 +81,5 @@ export default function useForm<T extends FormValues>(
     onSubmit(values, { setValue, setErrors, setSubmitting });
   };
 
-  return { values, errors, handleChange, handleSubmit, submitting };
+  return { values, errors, handleChange, handleSubmit, submitting, setValue, setErrors, setSubmitting };
 }

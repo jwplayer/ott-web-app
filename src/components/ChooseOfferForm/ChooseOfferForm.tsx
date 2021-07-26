@@ -9,6 +9,7 @@ import type { FormErrors } from '../../hooks/useForm';
 import type { Offer } from '../../../types/checkout';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import { getOfferPrice } from '../../utils/subscription';
+import DialogBackButton from '../DialogBackButton/DialogBackButton';
 
 import styles from './ChooseOfferForm.module.scss';
 
@@ -17,12 +18,22 @@ type Props = {
   errors: FormErrors<ChooseOfferFormData>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
+  onBackButtonClickHandler?: () => void;
   monthlyOffer?: Offer;
   yearlyOffer?: Offer;
   submitting: boolean;
 };
 
-const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, submitting, yearlyOffer, monthlyOffer }: Props) => {
+const ChooseOfferForm: React.FC<Props> = ({
+  values,
+  errors,
+  onChange,
+  onSubmit,
+  submitting,
+  yearlyOffer,
+  monthlyOffer,
+  onBackButtonClickHandler,
+}: Props) => {
   const { siteName } = useContext(ConfigContext);
   const { t } = useTranslation('account');
 
@@ -40,10 +51,11 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
     }
 
     return null;
-  }
+  };
 
   return (
     <form onSubmit={onSubmit} data-testid="choose-offer-form" noValidate>
+      {onBackButtonClickHandler  ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
       <h2 className={styles.title}>{t('choose_offer.subscription')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.all_movies_and_series_of_platform', { siteName })}</h3>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}

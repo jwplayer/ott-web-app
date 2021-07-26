@@ -7,10 +7,12 @@
     "discount_period": "",
     "discount_period_plural": "",
     "monthly": "",
+    "no_payment_needed": "",
     "payment_method": "",
     "payment_method_fee": "",
     "paypal": "",
     "redeem_coupon": "",
+    "remove_coupon": "",
     "total_price": "",
     "yearly": ""
   },
@@ -28,6 +30,7 @@
     "field_required": "",
     "monthly": "",
     "monthly_subscription": "",
+    "offer_not_found": "",
     "subscription": "",
     "yearly": "",
     "yearly_subscription": ""

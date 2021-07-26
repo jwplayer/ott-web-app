@@ -36,6 +36,13 @@ export type Offer = {
   contentAgeRestriction: string | null
 }
 
+export type OrderOffer = {
+  title: string;
+  description: string | null;
+  price: number;
+  currency: string;
+}
+
 export type Order = {
   id: number;
   customerId: number;
@@ -45,7 +52,7 @@ export type Order = {
   };
   publisherId: number;
   offerId: string;
-  offer: Offer;
+  offer: OrderOffer;
   totalPrice: number;
   priceBreakdown: {
     offerPrice: number;
@@ -129,7 +136,7 @@ export type CreateOrderResponse = {
 export type UpdateOrderPayload = {
   orderId: number;
   paymentMethodId?: number;
-  couponCode?: string;
+  couponCode?: string | null;
 };
 
 export type UpdateOrderResponse = {

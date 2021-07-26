@@ -1,29 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { useQuery } from 'react-query';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
-import { CheckoutStore, createOrder, updateOrder } from '../../../stores/CheckoutStore';
+import { CheckoutStore, createOrder, updateOrder, getPaymentMethods } from '../../../stores/CheckoutStore';
 import { addQueryParam } from '../../../utils/history';
-import { ConfigContext } from '../../../providers/ConfigProvider';
-import { getPaymentMethods } from '../../../services/checkout.service';
-import { AccountStore } from '../../../stores/AccountStore';
 import useForm from '../../../hooks/useForm';
+import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 
 const Checkout = () => {
   const history = useHistory();
-  const { cleengSandbox } = useContext(ConfigContext);
+  const [updatingOrder, setUpdatingOrder] = useState(false);
   const [couponFormOpen, setCouponFormOpen] = useState(false);
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const auth = AccountStore.useState((s) => s.auth);
-  const order = CheckoutStore.useState((s) => s.order);
-  const offer = CheckoutStore.useState((s) => s.offer);
-
-  const { data } = useQuery('paymentMethods', () => (auth?.jwt ? getPaymentMethods(cleengSandbox, auth.jwt) : null));
+  const { order, offer, paymentMethods } = CheckoutStore.useState((s) => s);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
+    setUpdatingOrder(true);
     setCouponCodeApplied(false);
 
     if (values.couponCode && order) {
@@ -31,25 +25,34 @@ const Checkout = () => {
         await updateOrder(order.id, paymentMethodId, values.couponCode);
         setCouponCodeApplied(true);
       } catch (error: unknown) {
-        setErrors({ couponCode: 'Something went wrong!' })
+        setErrors({ couponCode: 'Something went wrong!' });
       }
     }
 
+    setUpdatingOrder(false);
     setSubmitting(false);
   });
 
-  const paymentMethods = data?.responseData?.paymentMethods;
   useEffect(() => {
-    if (offer && paymentMethodId) {
-      createOrder(offer.offerId, paymentMethodId)
-    }
-  }, [offer, paymentMethodId]);
+    async function create() {
+      if (offer) {
+        setUpdatingOrder(true);
+        setCouponCodeApplied(false);
+        const methods = await getPaymentMethods();
 
-  useEffect(() => {
-    if (paymentMethods) {
-      setPaymentMethodId(paymentMethods[0]?.id);
+        setPaymentMethodId(methods[0]?.id);
+
+        await createOrder(offer.offerId, methods[0]?.id);
+        setUpdatingOrder(false);
+      }
     }
-  }, [paymentMethods]);
+
+    if (!offer) {
+      return history.replace(addQueryParam(history, 'u', 'choose-offer'));
+    }
+
+    create();
+  }, [history, offer]);
 
   const backButtonClickHandler = () => {
     history.push(addQueryParam(history, 'u', 'choose-offer'));
@@ -61,28 +64,48 @@ const Checkout = () => {
     setPaymentMethodId(toPaymentMethodId);
 
     if (order && toPaymentMethodId) {
-      updateOrder(order.id, toPaymentMethodId, couponCodeForm.values.couponCode);
+      setUpdatingOrder(true);
+      setCouponCodeApplied(false);
+      updateOrder(order.id, toPaymentMethodId, couponCodeForm.values.couponCode)
+        .catch((error: Error) => {
+          if (error.message.includes(`Order with id ${order.id}} not found`)) {
+            history.push(addQueryParam(history, 'u', 'choose-offer'));
+          }
+        })
+        .finally(() => setUpdatingOrder(false));
     }
   };
 
+  // loading state
+  if (!offer || !order || !paymentMethods) {
+    return (
+      <div style={{ height: 300 }}>
+        <LoadingOverlay inline />
+      </div>
+    );
+  }
+
   return (
-    <CheckoutForm
-      order={order}
-      offer={offer}
-      onBackButtonClick={backButtonClickHandler}
-      paymentMethods={paymentMethods}
-      paymentMethodId={paymentMethodId}
-      onPaymentMethodChange={handlePaymentMethodChange}
-      onCouponFormSubmit={couponCodeForm.handleSubmit}
-      onCouponInputChange={couponCodeForm.handleChange}
-      onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
-      onCloseCouponFormClick={() => setCouponFormOpen(false)}
-      couponInputValue={couponCodeForm.values.couponCode}
-      couponFormOpen={couponFormOpen}
-      couponFormApplied={couponCodeApplied}
-      couponFormSubmitting={couponCodeForm.submitting}
-      couponFormError={!!couponCodeForm.errors.couponCode}
-    />
+    <React.Fragment>
+      <CheckoutForm
+        order={order}
+        offer={offer}
+        onBackButtonClick={backButtonClickHandler}
+        paymentMethods={paymentMethods}
+        paymentMethodId={paymentMethodId}
+        onPaymentMethodChange={handlePaymentMethodChange}
+        onCouponFormSubmit={couponCodeForm.handleSubmit}
+        onCouponInputChange={couponCodeForm.handleChange}
+        onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
+        onCloseCouponFormClick={() => setCouponFormOpen(false)}
+        couponInputValue={couponCodeForm.values.couponCode}
+        couponFormOpen={couponFormOpen}
+        couponFormApplied={couponCodeApplied}
+        couponFormSubmitting={couponCodeForm.submitting}
+        couponFormError={!!couponCodeForm.errors.couponCode}
+      />
+      {updatingOrder ? <LoadingOverlay inline /> : null}
+    </React.Fragment>
   );
 };
 

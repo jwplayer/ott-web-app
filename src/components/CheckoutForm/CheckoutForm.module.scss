@@ -92,6 +92,7 @@
   width: 100%;
   margin-bottom: 24px;
   font-family: theme.$body-font-family;
+  font-size: 18px;
 
   td:first-child {
     text-align: right;
@@ -100,6 +101,16 @@
   td:last-child {
     width: 100px;
     text-align: right;
+  }
+
+  .couponCell {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    line-height: 1em;
+
+    & > small {
+      font-size: 14px;
+    }
   }
 
   tfoot {
@@ -170,4 +181,12 @@
   > svg {
     margin-right: 4px;
   }
+}
+
+.noPaymentNeeded {
+  padding: 24px 0;
+  font-family: theme.$body-font-family;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
 }

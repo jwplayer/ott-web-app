@@ -7,10 +7,12 @@
     "discount_period": "For the first {{period}}",
     "discount_period_plural": "For {{count}} {{period}}",
     "monthly": "Monthly subscription",
+    "no_payment_needed": "No payment needed",
     "payment_method": "Payment method",
     "payment_method_fee": "Payment method fee",
     "paypal": "PayPal",
     "redeem_coupon": "Redeem coupon",
+    "remove_coupon": "Remove coupon",
     "total_price": "Total",
     "yearly": "Yearly subscription"
   },
@@ -28,6 +30,7 @@
     "field_required": "This field is required",
     "monthly": "Monthly",
     "monthly_subscription": "Monthly subscription",
+    "offer_not_found": "Offer not found, please try reloading the page",
     "subscription": "Subscription",
     "yearly": "Yearly",
     "yearly_subscription": "Yearly subscription"
