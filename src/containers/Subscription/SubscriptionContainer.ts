@@ -25,7 +25,7 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
   const { config } = ConfigStore.getRawState();
   const { cleengSandbox: sandbox } = config;
   const jwt = auth?.jwt || '';
-  const customerId = customer?.id || '';
+  const customerId = customer?.id || -1; // id must be number
 
   const getSubscriptionsQuery = useQuery(['subscriptions', customerId], () => getSubscriptions({ customerId }, sandbox, jwt));
   const { data: subscriptions, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
@@ -42,8 +42,6 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
   const onUpdateSubscriptionSubmit = ({ offerId, status }: Subscription, cancellationReason?: string) => {
     mutateSubscriptions({ customerId, offerId, status, cancellationReason });
   };
-
-  console.log(transactions);
 
   return children({
     activeSubscription: subscriptions?.responseData.items.find(subscription => subscription.status !== 'expired' && subscription.status !== 'terminated'),

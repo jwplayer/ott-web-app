@@ -1,0 +1,43 @@
+{
+  "id": 362344331,
+  "email": "email@domain.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "country": "NL",
+  "regDate": "2021-04-28 13:03:26",
+  "lastLoginDate": "2021-07-26 16:54:38",
+  "lastUserIp": "123.123.123.123",
+  "externalId": "",
+  "externalData": {
+    "history": [
+      {
+        "tags": "Movie,Drama",
+        "title": "The Omega Code",
+        "mediaid": "YzUqQnrx",
+        "duration": 5968,
+        "progress": 0.3710328907847994
+      },
+      {
+        "tags": "Trailer",
+        "title": "The Omega Code Official Trailer",
+        "mediaid": "k6K5ugEC",
+        "duration": 113,
+        "progress": 0.448087431693989
+      }
+    ],
+    "favorites": [
+      {
+        "tags": "Movie",
+        "title": "Megiddo The Omega Code 2",
+        "mediaid": "2v7rOqOE",
+        "duration": 6341
+      },
+      {
+        "tags": "Laurie Crouch,Matt Crouch,Ron Luce,Episode,The State of Faith,seriesId_740sLvW8",
+        "title": "Praise | State Of Faith: China | March 25, 2021",
+        "mediaid": "5cMy3jIp",
+        "duration": 3376
+      }
+    ]
+  }
+}

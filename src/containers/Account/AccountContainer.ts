@@ -31,7 +31,7 @@ const AccountContainer = ({ children, fetchConsents = true }: Props): JSX.Elemen
   const { cleengId, cleengSandbox } = config;
   const jwt = auth?.jwt || '';
   const publisherId = cleengId || '';
-  const customerId = customer?.id || '';
+  const customerId = customer?.id || 0;
 
   const customerMutation = useMutation((values: CustomerFormValues) => updateCustomer(values, cleengSandbox, jwt));
   const { mutate: mutateCustomer, isLoading: isMutateCustomerLoading, data: mutateCustomerData, reset } = customerMutation;
@@ -43,12 +43,12 @@ const AccountContainer = ({ children, fetchConsents = true }: Props): JSX.Elemen
   const fetchPublicherConsents = useQuery(['publisherConsents'], () => getPublisherConsents({ publisherId }, cleengSandbox), { enabled });
   const { data: publisherConsents, isLoading: publisherConsentsLoading } = fetchPublicherConsents;
 
-  const fetchCustomerConsents = useQuery(['customerConsents'], () => getCustomerConsents({ customerId }, cleengSandbox, jwt), { enabled });
+  const fetchCustomerConsents = useQuery(['customerConsents'], () => getCustomerConsents({ customerId: customerId.toString() }, cleengSandbox, jwt), { enabled });
   const { data: customerConsents, isLoading: customerConsentsLoading } = fetchCustomerConsents;
 
   const onUpdateEmailSubmit = ({ id, email, confirmationPassword }: CustomerFormValues) => mutateCustomer({ id, email, confirmationPassword });
   const onUpdateInfoSubmit = ({ id, firstName, lastName }: CustomerFormValues) => mutateCustomer({ id, firstName, lastName });
-  const onUpdateConsentsSubmit = (consents: CustomerConsent[]) => mutateConsents({ id: customerId, consents });
+  const onUpdateConsentsSubmit = (consents: CustomerConsent[]) => mutateConsents({ id: customerId.toString(), consents });
 
   const translateErrors = (errors?: string[]) => {
     const formErrors: CustomerFormErrors = {};

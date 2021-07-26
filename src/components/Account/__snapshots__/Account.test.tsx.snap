@@ -15,7 +15,7 @@ exports[`<Account> renders and matches snapshot 1`] = `
         class="flexBox"
       >
         <p>
-          todo@test.nl
+          email@domain.com
         </p>
         <div
           class="controls"
@@ -73,7 +73,9 @@ exports[`<Account> renders and matches snapshot 1`] = `
             >
               account.firstname
             </label>
-            <p />
+            <p>
+              John
+            </p>
           </div>
           <div
             class="textField"
@@ -84,7 +86,9 @@ exports[`<Account> renders and matches snapshot 1`] = `
             >
               account.lastname
             </label>
-            <p />
+            <p>
+              Doe
+            </p>
           </div>
           <div
             class="controls"

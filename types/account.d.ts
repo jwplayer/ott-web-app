@@ -86,16 +86,16 @@ export type RefreshTokenPayload = {
 };
 
 export type Customer = {
-  id: string;
+  id: number;
   email: string;
-  locale: string;
   country: string;
-  currency: string;
+  regDate: string;
+  lastLoginDate?: string;
   lastUserIp: string;
   firstName?: string;
   lastName?: string;
   externalId?: string;
-  externalData?: string;
+  externalData?: Record<string, unknown>;
 };
 
 export type Consent = {
@@ -119,6 +119,13 @@ export type CustomerConsent = {
   version: string;
 };
 
+export type LocalesData = {
+  country: string;
+  currency: string;
+  locale: string;
+  ipAddress: string;
+};
+
 type Login = CleengRequest<LoginPayload, AuthData>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
 type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, Record<string, Consent[]>>;
@@ -129,3 +136,4 @@ type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
 type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, Customer>;
 type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
+type GetLocales = CleengEmptyRequest<LocalesData>;

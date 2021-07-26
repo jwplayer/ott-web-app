@@ -1,0 +1,15 @@
+{
+  "id": 839256565,
+  "customerId": 362344331,
+  "paymentGateway": "adyen",
+  "paymentMethod": "card",
+  "paymentMethodSpecificParams": {
+    "variant": "amex",
+    "lastCardFourDigits": "0002",
+    "holderName": "Checkout Shopper PlaceHolder",
+    "cardExpirationDate": "03/2030",
+    "socialSecurityNumber": ""
+  },
+  "paymentMethodId": 194856795,
+  "active": true
+}

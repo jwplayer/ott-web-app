@@ -8,7 +8,7 @@ import type {
   ResetPassword,
   UpdateCustomer,
   UpdateCustomerConsents,
-  RefreshToken,
+  RefreshToken, GetLocales,
 } from '../../types/account';
 
 import { post, put, patch, get } from './cleeng.service';
@@ -51,4 +51,8 @@ export const getCustomer: GetCustomer = async (payload, sandbox, jwt) => {
 
 export const refreshToken: RefreshToken = async (payload, sandbox) => {
   return post(sandbox, '/auths/refresh_token', JSON.stringify(payload));
+};
+
+export const getLocales: GetLocales = async (sandbox) => {
+  return get(sandbox, '/locales');
 };

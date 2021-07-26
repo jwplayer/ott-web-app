@@ -14,12 +14,12 @@ export type Subscription = {
 };
 
 export type PaymentDetail = {
-  id: string;
-  customerId: string;
+  id: number;
+  customerId: number;
   paymentGateway: string;
   paymentMethod: string;
   paymentMethodSpecificParams: Record<PaymentMethodSpecificParam>;
-  paymentMethodId: string;
+  paymentMethodId: number;
   active: boolean;
 };
 
@@ -47,7 +47,7 @@ export type Transaction = {
   shortUrl?: string;
   campaignId?: string;
   campaignName?: string;
-  couponCode?: string;
+  couponCode?: string | null;
   discountType?: string;
   discountRate?: string;
   discountValue?: string;
@@ -71,7 +71,7 @@ export type Transaction = {
 
 // Payload types
 export type GetSubscriptionsPayload = {
-  customerId: string;
+  customerId: number;
 };
 
 export type GetSubscriptionsResponse = {
@@ -79,7 +79,7 @@ export type GetSubscriptionsResponse = {
 };
 
 export type UpdateSubscriptionPayload = {
-  customerId: string;
+  customerId: number;
   offerId: string;
   status: string;
   cancellationReason?: string;
@@ -92,7 +92,7 @@ export type UpdateSubscriptionResponse = {
 };
 
 export type GetPaymentDetailsPayload = {
-  customerId: string;
+  customerId: number;
 };
 
 export type GetPaymentDetailsResponse = {
@@ -100,7 +100,7 @@ export type GetPaymentDetailsResponse = {
 };
 
 export type GetTransactionsPayload = {
-  customerId: string;
+  customerId: number;
   limit?: string;
   offset?: string;
 };
