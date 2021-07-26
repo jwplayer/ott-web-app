@@ -17,11 +17,11 @@ const temp = (t: unknown) => {
 const Registration = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const loginSubmitHandler: UseFormOnSubmitHandler<RegistrationFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
+  const registrationSubmitHandler: UseFormOnSubmitHandler<RegistrationFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await temp(formData);
 
-      history.push(addQueryParam(history, 'u', 'personal_details'));
+      history.push(addQueryParam(history, 'u', 'registration_details'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {
@@ -45,7 +45,7 @@ const Registration = () => {
   const initialValues: RegistrationFormData = { email: '', password: '', termsConditions: true, emailUpdates: true };
   const { handleSubmit, handleChange, values, errors, submitting } = useForm<RegistrationFormData>(
     initialValues,
-    loginSubmitHandler,
+    registrationSubmitHandler,
     validationSchema,
   );
 
