@@ -1,22 +1,5 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
-@use '../../styles/mixins/responsive';
-
-button {
-  margin-right: variables.$base-spacing;
-}
-
-.flexBox {
-  display: flex;
-  flex-direction: column;
-  > * {
-    margin-bottom: variables.$base-spacing / 2;
-  }
-}
-
-.controls {
-  margin-top: variables.$base-spacing;
-}
 
 .checkbox {
   position: relative;
@@ -88,8 +71,4 @@ button {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   }
-}
-
-.submitConsents {
-  margin-top: variables.$base-spacing;
 }

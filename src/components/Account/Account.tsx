@@ -13,7 +13,7 @@ import Form from '../Form/Form';
 import IconButton from '../IconButton/IconButton';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import TextField from '../TextField/TextField';
-import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
+import Checkbox from '../Checkbox/Checkbox';
 
 import styles from './Account.module.scss';
 
@@ -64,7 +64,6 @@ const Account = ({
         return onUpdateInfoSubmit(values as CustomerFormValues);
       case 'consents':
         return onUpdateConsentsSubmit(formatConsentsFromValues(publisherConsents, values));
-        break;
       default:
         return;
     }
@@ -191,25 +190,22 @@ const Account = ({
           </div>
           <div className={panelClassName}>
             <div className={panelHeaderClassName}>
-              <h3>{'Terms & tracking'}</h3>
+              <h3>{t('account.terms_and_tracking')}</h3>
             </div>
             {consentsLoading ? (
               <Spinner size="small" />
             ) : publisherConsents ? (
               <div onClick={() => setEditing('consents')}>
                 {publisherConsents.map((consent, index) => (
-                  <label className={styles.checkbox} key={index}>
-                    <input
-                      type="checkbox"
-                      name={consent.name}
-                      checked={(values.consents?.[consent.name] as boolean) || false}
-                      value={values.consents?.[consent.name] || ''}
-                      onChange={(event) => (handleChange ? handleChange(event, { nestInto: 'consents' }) : null)}
-                      disabled={consent.required}
-                    />
-                    <span className={styles.checkmark} />
-                    <MarkdownComponent markdownString={consent.label} className={styles.checkLabel} />
-                  </label>
+                  <Checkbox
+                    key={index}
+                    name={consent.name}
+                    value={values.consents?.[consent.name] || ''}
+                    checked={(values.consents?.[consent.name] as boolean) || false}
+                    onChange={(event) => (handleChange ? handleChange(event, { nestInto: 'consents' }) : null)}
+                    disabled={consent.required}
+                    label={consent.label}
+                  />
                 ))}
                 <Button
                   className={styles.submitConsents}
