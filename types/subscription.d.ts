@@ -9,7 +9,7 @@ export type Subscription = {
   paymentGateway: string;
   paymentMethod: string;
   offerTitle: string;
-  period: string;
+  period: 'day' | 'week' | 'month' | 'year';
   totalPrice: number;
 };
 

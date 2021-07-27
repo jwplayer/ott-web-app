@@ -14,9 +14,19 @@ exports[`<Account> renders and matches snapshot 1`] = `
       <div
         class="flexBox"
       >
-        <p>
-          email@domain.com
-        </p>
+        <div
+          class="textField"
+        >
+          <label
+            class="label"
+            for="text-field_1235_email"
+          >
+            account.email
+          </label>
+          <p>
+            email@domain.com
+          </p>
+        </div>
         <div
           class="controls"
         >

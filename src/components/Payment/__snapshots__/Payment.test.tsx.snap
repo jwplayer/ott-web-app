@@ -5,7 +5,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
   <div>
     <div>
       <h3>
-        payment.subscription_details
+        user:payment.subscription_details
       </h3>
     </div>
     <div
@@ -13,11 +13,11 @@ exports[`<Payment> renders and matches snapshot 1`] = `
     >
       <p>
         <strong>
-          payment.monthly_subscription
+          user:payment.monthly_subscription
         </strong>
          
         <br />
-        payment.next_billing_date_on
+        user:payment.next_billing_date_on
          
         3/16/2021
       </p>
@@ -27,16 +27,17 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         <strong>
           € 20,00
         </strong>
-        /
-        payment.month
-         
+        <small>
+          /
+          account:periods.year
+        </small>
       </p>
     </div>
   </div>
   <div>
     <div>
       <h3>
-        payment.payment_method
+        user:payment.payment_method
       </h3>
     </div>
     <div>
@@ -47,7 +48,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
           class="label"
           for="text-field_1235"
         >
-          payment.card_number
+          user:payment.card_number
         </label>
         <p>
           •••• •••• •••• 0002
@@ -63,7 +64,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
             class="label"
             for="text-field_1235"
           >
-            payment.expiry_date
+            user:payment.expiry_date
           </label>
           <p>
             03/2030
@@ -76,7 +77,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
             class="label"
             for="text-field_1235"
           >
-            payment.cvc_cvv
+            user:payment.cvc_cvv
           </label>
           <p>
             ******
@@ -88,7 +89,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
   <div>
     <div>
       <h3>
-        payment.transactions
+        user:payment.transactions
       </h3>
     </div>
     <div
@@ -100,7 +101,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         </strong>
          
         <br />
-        payment.price_payed_with
+        user:payment.price_payed_with
       </p>
       <p>
         T712014024
@@ -117,7 +118,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         </strong>
          
         <br />
-        payment.price_payed_with
+        user:payment.price_payed_with
       </p>
       <p>
         T177974068
@@ -134,7 +135,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         </strong>
          
         <br />
-        payment.price_payed_with
+        user:payment.price_payed_with
       </p>
       <p>
         T996601696

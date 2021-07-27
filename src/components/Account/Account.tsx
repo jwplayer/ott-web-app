@@ -88,19 +88,16 @@ const Account = ({
               <h3>{t('account.email')}</h3>
             </div>
             <div className={styles.flexBox}>
-              {editing === 'account' ? (
-                <TextField
-                  name="email"
-                  label={t('account.email')}
-                  value={values.email as string}
-                  onChange={handleChange}
-                  error={!!errors?.email}
-                  helperText={errors?.email}
-                  disabled={isLoading}
-                />
-              ) : (
-                <p>{customer?.email}</p>
-              )}
+              <TextField
+                name="email"
+                label={t('account.email')}
+                value={values.email as string}
+                onChange={handleChange}
+                error={!!errors?.email}
+                helperText={errors?.email}
+                disabled={isLoading}
+                editing={editing === 'account'}
+              />
               {editing === 'account' && (
                 <TextField
                   name="confirmationPassword"

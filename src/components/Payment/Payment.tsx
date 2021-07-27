@@ -8,6 +8,7 @@ import type { Customer } from '../../../types/account';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './Payment.module.scss';
+import Button from '../Button/Button';
 
 type Props = {
   activeSubscription?: Subscription;
@@ -28,55 +29,66 @@ const Payment = ({
   panelClassName,
   panelHeaderClassName,
 }: Props): JSX.Element => {
-  const { t } = useTranslation('user');
+  const { t } = useTranslation(['user', 'account']);
 
   return (
     <>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('payment.subscription_details')}</h3>
+          <h3>{t('user:payment.subscription_details')}</h3>
         </div>
         {activeSubscription ? (
           <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
             <p>
-              <strong>{t('payment.monthly_subscription')}</strong> <br />
-              {t('payment.next_billing_date_on')} {formatDate(activeSubscription.expiresAt)}
+              <strong>{t('user:payment.monthly_subscription')}</strong> <br />
+              {t('user:payment.next_billing_date_on')} {formatDate(activeSubscription.expiresAt)}
             </p>
             <p className={styles.price}>
               <strong>{formatPrice(activeSubscription.totalPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
-              {'/'}
-              {t(`payment.month`)} {/** @todo: create dynamic translation keys by period */}
+              <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
             </p>
           </div>
-        ) : null}
+        ) : (
+          <React.Fragment>
+            <p>{t('user:payment.no_subscription')}</p>
+            <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} />
+          </React.Fragment>
+        )}
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('payment.payment_method')}</h3>
+          <h3>{t('user:payment.payment_method')}</h3>
         </div>
         {activePaymentDetail ? (
           <div key={activePaymentDetail.id}>
             <TextField
-              label={t('payment.card_number')}
+              label={t('user:payment.card_number')}
               value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
               editing={false}
             />
             <div className={styles.cardDetails}>
-              <TextField label={t('payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
-              <TextField label={t('payment.cvc_cvv')} value={'******'} editing={false} />
+              <TextField
+                label={t('user:payment.expiry_date')}
+                value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate}
+                editing={false}
+              />
+              <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
             </div>
           </div>
         ) : null}
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('payment.transactions')}</h3>
+          <h3>{t('user:payment.transactions')}</h3>
         </div>
-        {transactions?.map(transaction => (
+        {transactions?.map((transaction) => (
           <div className={styles.infoBox} key={transaction.transactionId}>
             <p>
               <strong>{transaction.offerTitle}</strong> <br />
-              {t('payment.price_payed_with', { price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry), method: transaction.paymentMethod })}
+              {t('user:payment.price_payed_with', {
+                price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                method: transaction.paymentMethod,
+              })}
             </p>
             <p>
               {transaction.transactionId}
@@ -90,5 +102,4 @@ const Payment = ({
     </>
   );
 };
-
 export default Payment;
