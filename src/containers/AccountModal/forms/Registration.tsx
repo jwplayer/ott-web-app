@@ -25,9 +25,9 @@ const Registration = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {
-          setErrors({ email: t('registrations.invalid_email') });
+          setErrors({ email: t('registration.invalid_email') });
         } else if (error.message.toLowerCase().includes('invalid param password')) {
-          setErrors({ form: t('registrations.invalid_password') });
+          setErrors({ form: t('registration.invalid_password') });
         }
         setValue('password', '');
       }
@@ -37,9 +37,9 @@ const Registration = () => {
   };
 
   const validationSchema: SchemaOf<RegistrationFormData> = object().shape({
-    email: string().email(t('registrations.field_is_not_valid_email')).required(t('registrations.field_required')),
-    password: string().required(t('registrations.field_required')),
-    termsConditions: boolean().required(t('registrations.field_required')),
+    email: string().email(t('registration.field_is_not_valid_email')).required(t('registration.field_required')),
+    password: string().required(t('registration.field_required')),
+    termsConditions: boolean().required(t('registration.field_required')),
     emailUpdates: boolean().required(),
   });
   const initialValues: RegistrationFormData = { email: '', password: '', termsConditions: true, emailUpdates: true };

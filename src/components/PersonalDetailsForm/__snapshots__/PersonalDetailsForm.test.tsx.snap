@@ -9,7 +9,7 @@ exports[`<PersonalDetailsForm> renders and matches snapshot 1`] = `
     <h2
       class="title"
     >
-      personal_details.personal_details
+      personal_details.title
     </h2>
     <button
       aria-disabled="false"

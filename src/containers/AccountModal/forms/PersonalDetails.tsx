@@ -20,6 +20,20 @@ const PersonalDetails = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
 
+  // i18next dynamic labels
+  // t('personal_details.firstName');
+  // t('personal_details.lastName');
+  // t('personal_details.birthDate');
+  // t('personal_details.companyName');
+  // t('personal_details.phoneNumber');
+  // t('personal_details.address');
+  // t('personal_details.address2');
+  // t('personal_details.city');
+  // t('personal_details.country');
+  // t('personal_details.state');
+  // t('personal_details.postCode');
+  // t('registration.field_required');
+
   const getCaptureFields = useCallback(
     (settings: CleengCaptureField[]) => {
       const fields: PersonalDetailsCustomField[] = [];
@@ -39,7 +53,7 @@ const PersonalDetails = () => {
               label: t(`personal_details.${nestedField}`),
               validationType: 'string',
               type: 'text',
-              validations: required ? [{ type: 'required', params: [t('PersonalDetails.field_required')] }] : null,
+              validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
             });
           }
         }
@@ -52,7 +66,7 @@ const PersonalDetails = () => {
             label: t(`personal_details.${key}`),
             validationType: 'string',
             type: 'text',
-            validations: required ? [{ type: 'required', params: [t('PersonalDetails.field_required')] }] : null,
+            validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
           });
         }
 
@@ -64,7 +78,7 @@ const PersonalDetails = () => {
             label: t(`personal_details.${key}`),
             validationType: 'string',
             type: 'date',
-            validations: required ? [{ type: 'required', params: [t('PersonalDetails.field_required')] }] : null,
+            validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
           });
         }
 
@@ -73,10 +87,10 @@ const PersonalDetails = () => {
 
           fields.push({
             name: key,
-            label: key,
+            label: t(`personal_details.${key}`),
             type: deconstructCustomField(field).type,
             validationType: deconstructCustomField(field).type,
-            validations: required ? [{ type: 'required', params: [t('PersonalDetails.field_required')] }] : null,
+            validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
             value: deconstructCustomField(field).value,
             values: deconstructCustomField(field).values,
             question,

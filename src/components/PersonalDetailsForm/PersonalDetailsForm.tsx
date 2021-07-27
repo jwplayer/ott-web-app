@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PersonalDetailsFormData, PersonalDetailsCustomField } from 'types/account';
+import type { FormErrors } from 'types/form';
 
-import type { FormErrors } from '../../hooks/useForm';
 import TextField from '../TextField/TextField';
 import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
@@ -46,7 +46,17 @@ const PersonalDetailsForm: React.FC<Props> = ({ onSubmit, onChange, values, erro
       }
 
       if (field.type === 'checkbox') {
-        return <Checkbox header={field.question} key={index} value={false} onChange={onChange} label={field.value} name={field.name} />;
+        return (
+          <Checkbox
+            header={field.question}
+            key={index}
+            checked={false}
+            value={field.question ?? ''}
+            onChange={onChange}
+            label={field.label}
+            name={field.name}
+          />
+        );
       }
 
       if (field.type === 'date') {
@@ -55,7 +65,7 @@ const PersonalDetailsForm: React.FC<Props> = ({ onSubmit, onChange, values, erro
             key={index}
             value={values[field.name]}
             onChange={onChange}
-            label={t(`personal_details.${field.name}`)}
+            label={field.label}
             placeholder={'mm/dd/yyyy'}
             error={!!errors[field.name]}
             helperText={errors[field.name]}
@@ -69,8 +79,8 @@ const PersonalDetailsForm: React.FC<Props> = ({ onSubmit, onChange, values, erro
           key={index}
           value={values[field.name]}
           onChange={onChange}
-          label={t(`personal_details.${field.name}`)}
-          placeholder={t(`personal_details.${field.name}`)}
+          label={field.label}
+          placeholder={field.label}
           error={!!errors[field.name] || !!errors.form}
           helperText={errors[field.name]}
           name={field.name}
@@ -81,7 +91,7 @@ const PersonalDetailsForm: React.FC<Props> = ({ onSubmit, onChange, values, erro
 
   return (
     <form className={styles.form} onSubmit={onSubmit} data-testid="personal_details-form">
-      <h2 className={styles.title}>{t('personal_details.personal_details')}</h2>
+      <h2 className={styles.title}>{t('personal_details.title')}</h2>
       {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
       {renderCustomFields()}
       <Button
