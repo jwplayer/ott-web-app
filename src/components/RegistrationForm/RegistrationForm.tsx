@@ -32,25 +32,6 @@ const RegistrationForm: React.FC<Props> = ({ onSubmit, onChange, values, errors,
   const { t } = useTranslation('account');
   const history = useHistory();
 
-  const passwordStrength = (password: string) => {
-    let strength = 0;
-
-    if (password.match(/[a-z]+/)) {
-      strength += 1;
-    }
-    if (password.match(/[A-Z]+/)) {
-      strength += 1;
-    }
-    if (password.match(/[0-9|!@#$%^&*()_+-=]+/)) {
-      strength += 1;
-    }
-    if (password.length >= 6) {
-      strength += 1;
-    }
-
-    return strength;
-  };
-
   const loginButtonClickHandler = () => {
     history.push(addQueryParam(history, 'u', 'login'));
   };
@@ -87,7 +68,7 @@ const RegistrationForm: React.FC<Props> = ({ onSubmit, onChange, values, errors,
           </IconButton>
         }
       />
-      <PasswordStrength strength={passwordStrength(values.password)} />
+      <PasswordStrength password={values.password} />
       <Checkbox
         onChange={onChange}
         name="terms-conditions"

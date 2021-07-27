@@ -56,7 +56,8 @@
     "view_password": "View password",
     "terms_conditions": "I accept the <a href={{link}}>Terms and Conditions</a> of Cleeng.",
     "email_updates": "Yes, I want to receive {{siteName}} updates by email.",
-    "already_account": "Already have an account?"
+    "already_account": "Already have an account?",
+    "password_strength": "Use a minimum of 6 characters (case sensitive) with at least one number or special character and one capital character"
   },
   "personal_details": {
     "personal_details": "Personal details",

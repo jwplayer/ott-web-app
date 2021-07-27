@@ -90,7 +90,7 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
         />
       </div>
       <span>
-        Use a minimum of 6 characters (case sensitive) with at least one number or special character and one capital character
+        registration.password_strength
       </span>
     </div>
     <div
