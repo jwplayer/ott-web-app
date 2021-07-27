@@ -27,8 +27,7 @@ type Props = {
 const AccountContainer = ({ children, fetchConsents = true }: Props): JSX.Element => {
   const customer = AccountStore.useState((state) => state.user);
   const auth = AccountStore.useState((state) => state.auth);
-  const { config } = ConfigStore.getRawState();
-  const { cleengId, cleengSandbox } = config;
+  const { cleengId, cleengSandbox } = ConfigStore.useState((s) => s.config);
   const jwt = auth?.jwt || '';
   const publisherId = cleengId || '';
   const customerId = customer?.id || 0;
