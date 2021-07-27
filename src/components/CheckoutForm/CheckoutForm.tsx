@@ -29,6 +29,7 @@ type Props = {
   couponInputValue: string;
   order: Order;
   offer: Offer;
+  renderPaymentMethod?: () => JSX.Element | null;
 };
 
 const CheckoutForm: React.FC<Props> = ({
@@ -47,6 +48,7 @@ const CheckoutForm: React.FC<Props> = ({
   onCloseCouponFormClick,
   onCouponFormSubmit,
   onRedeemCouponButtonClick,
+  renderPaymentMethod,
 }) => {
   const { t } = useTranslation('account');
 
@@ -174,10 +176,8 @@ const CheckoutForm: React.FC<Props> = ({
             </div>
           ) : null}
         </div>
-      ) : (
-        <div className={styles.noPaymentNeeded}>{t('checkout.no_payment_needed')}</div>
-      )}
-      <Button label={t('checkout.continue')} variant="contained" color="primary" size="large" disabled={!order} fullWidth />
+      ) : null}
+      <div className={styles.paymentDetails}>{renderPaymentMethod ? renderPaymentMethod() : null}</div>
     </div>
   );
 };

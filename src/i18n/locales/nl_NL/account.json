@@ -1,6 +1,7 @@
 {
   "checkout": {
     "applicable_tax": "",
+    "close": "",
     "continue": "",
     "coupon_discount": "",
     "credit_card": "",
@@ -8,9 +9,13 @@
     "discount_period_plural": "",
     "monthly": "",
     "no_payment_needed": "",
+    "payment_cancelled": "",
+    "payment_cancelled_message": "",
+    "payment_error": "",
     "payment_method": "",
     "payment_method_fee": "",
     "paypal": "",
+    "paypal_instructions": "",
     "redeem_coupon": "",
     "total_price": "",
     "yearly": ""

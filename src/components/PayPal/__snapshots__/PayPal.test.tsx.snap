@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PayPal> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="payPal"
+  >
+    <p>
+      checkout.paypal_instructions
+    </p>
+    <button
+      class="button primary fullWidth large"
+    >
+      <span>
+        checkout.continue
+      </span>
+    </button>
+  </div>
+</div>
+`;
