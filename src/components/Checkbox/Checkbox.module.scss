@@ -3,6 +3,7 @@
 
 .checkbox {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 
   > label {
@@ -20,6 +21,14 @@
         text-decoration: underline;
       }
     }
+  }
+
+  .header {
+    flex: 1 1 100%;
+    margin-bottom: 4px;
+    font-family: theme.$body-font-family;
+    font-weight: 700;
+    text-align: left;
   }
 
   input {
