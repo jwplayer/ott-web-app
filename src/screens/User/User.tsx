@@ -8,8 +8,8 @@ import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl } from '../../utils/formatting';
-import CustomerContainer from '../../containers/Customer/CustomerContainer';
-import SubscriptionContainer from '../../containers/Subscription/Subscription';
+import AccountContainer from '../../containers/Account/AccountContainer';
+import SubscriptionContainer from '../../containers/Subscription/SubscriptionContainer';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
 import AccountComponent from '../../components/Account/Account';
@@ -67,7 +67,7 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Switch>
           <Route path="/u/my-account">
-            <CustomerContainer>
+            <AccountContainer>
               {({
                 customer,
                 errors,
@@ -96,7 +96,7 @@ const User = (): JSX.Element => {
                   onDeleteAccountClick={() => console.error('Sure?')}
                 />
               )}
-            </CustomerContainer>
+            </AccountContainer>
           </Route>
           <Route path="/u/favorites">
             <PlaylistContainer playlistId={PersonalShelf.Favorites}>
@@ -114,10 +114,13 @@ const User = (): JSX.Element => {
           </Route>
           <Route path="/u/payments">
             <SubscriptionContainer>
-              {({ subscription, update }) => (
+              {({ activeSubscription, activePaymentDetail, transactions, isLoading }) => (
                 <Payment
-                  subscription={subscription}
-                  onEditSubscriptionClick={update}
+                  activeSubscription={activeSubscription}
+                  activePaymentDetail={activePaymentDetail}
+                  transactions={transactions}
+                  customer={customer}
+                  isLoading={isLoading}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                 />

@@ -1,16 +1,27 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import type { Subscription } from 'types/subscription';
+
+import customer from '../../fixtures/customer.json';
+import transactions from '../../fixtures/transactions.json';
+import paymentDetail from '../../fixtures/paymentDetail.json';
+import subscription from '../../fixtures/subscription.json';
+import type { Customer } from '../../../types/account';
+import type { PaymentDetail, Subscription, Transaction } from '../../../types/subscription';
 
 import Payment from './Payment';
 
 describe('<Payment>', () => {
   test('renders and matches snapshot', () => {
-    const subscription = {} as Subscription;
+    const { container } = render(
+      <Payment
+        customer={customer as Customer}
+        transactions={transactions as Transaction[]}
+        activeSubscription={subscription as Subscription}
+        activePaymentDetail={paymentDetail as PaymentDetail}
+        isLoading={false}
+      />,
+    );
 
-    const { container } = render(<Payment subscription={subscription} onEditSubscriptionClick={(subscription) => console.info(subscription)} />);
-
-    // todo
     expect(container).toMatchSnapshot();
   });
 });

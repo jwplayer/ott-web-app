@@ -31,16 +31,16 @@
   },
   "payment": {
     "card_number": "",
+    "complete_subscription": "",
     "cvc_cvv": "",
-    "edit_subscription": "",
     "expiry_date": "",
-    "month": "",
     "monthly_subscription": "",
-    "more_transactions": "",
     "next_billing_date_on": "",
+    "no_subscription": "",
     "payment_method": "",
-    "price_payed_with_card": "",
+    "price_payed_with": "",
     "subscription_details": "",
-    "transactions": ""
+    "transactions": "",
+    "price_payed_with_card": ""
   }
 }

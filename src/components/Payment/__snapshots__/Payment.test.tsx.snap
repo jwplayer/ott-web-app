@@ -5,7 +5,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
   <div>
     <div>
       <h3>
-        payment.subscription_details
+        user:payment.subscription_details
       </h3>
     </div>
     <div
@@ -13,59 +13,72 @@ exports[`<Payment> renders and matches snapshot 1`] = `
     >
       <p>
         <strong>
-          payment.monthly_subscription
+          user:payment.monthly_subscription
         </strong>
          
         <br />
-        payment.next_billing_date_on
-        &lt;date&gt;
+        user:payment.next_billing_date_on
+         
+        3/16/2021
       </p>
       <p
         class="price"
       >
         <strong>
-          € 14.76
+          € 20,00
         </strong>
-        /
-        payment.month
+        <small>
+          /
+          account:periods.year
+        </small>
       </p>
     </div>
-    <button
-      class="button default outlined"
-    >
-      <span>
-        payment.edit_subscription
-      </span>
-    </button>
   </div>
   <div>
     <div>
       <h3>
-        payment.payment_method
+        user:payment.payment_method
       </h3>
     </div>
     <div>
-      <strong>
-        payment.card_number
-      </strong>
-      <p>
-        xxxx xxxx xxxx 3456
-      </p>
+      <div
+        class="textField"
+      >
+        <label
+          class="label"
+          for="text-field_1235"
+        >
+          user:payment.card_number
+        </label>
+        <p>
+          •••• •••• •••• 0002
+        </p>
+      </div>
       <div
         class="cardDetails"
       >
         <div
-          class="expiryDate"
+          class="textField"
         >
-          <strong>
-            payment.expiry_date
-          </strong>
-          <p />
+          <label
+            class="label"
+            for="text-field_1235"
+          >
+            user:payment.expiry_date
+          </label>
+          <p>
+            03/2030
+          </p>
         </div>
-        <div>
-          <strong>
-            payment.cvc_cvv
-          </strong>
+        <div
+          class="textField"
+        >
+          <label
+            class="label"
+            for="text-field_1235"
+          >
+            user:payment.cvc_cvv
+          </label>
           <p>
             ******
           </p>
@@ -76,7 +89,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
   <div>
     <div>
       <h3>
-        payment.transactions
+        user:payment.transactions
       </h3>
     </div>
     <div
@@ -84,28 +97,52 @@ exports[`<Payment> renders and matches snapshot 1`] = `
     >
       <p>
         <strong>
-          payment.monthly_subscription
+          Monthly subscription (recurring)
         </strong>
          
         <br />
-        payment.price_payed_with_card
+        user:payment.price_payed_with
       </p>
       <p>
-        &lt;Invoice code&gt;
+        T712014024
         <br />
-        &lt;Date&gt;
+        5/5/2021
       </p>
     </div>
-    <p>
-      payment.more_transactions
-    </p>
-    <button
-      class="button default outlined"
+    <div
+      class="infoBox"
     >
-      <span>
-        Show all
-      </span>
-    </button>
+      <p>
+        <strong>
+          Monthly subscription (recurring)
+        </strong>
+         
+        <br />
+        user:payment.price_payed_with
+      </p>
+      <p>
+        T177974068
+        <br />
+        5/5/2021
+      </p>
+    </div>
+    <div
+      class="infoBox"
+    >
+      <p>
+        <strong>
+          Monthly subscription (recurring)
+        </strong>
+         
+        <br />
+        user:payment.price_payed_with
+      </p>
+      <p>
+        T996601696
+        <br />
+        5/5/2021
+      </p>
+    </div>
   </div>
 </div>
 `;

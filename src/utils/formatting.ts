@@ -101,9 +101,15 @@ export const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: b
     play: play ? '1' : null,
   });
 
+export const formatDate = (dateString: number) => {
+  if (!dateString) return '';
+
+  return new Date(dateString * 1000).toLocaleDateString();
+};
+
 export const formatPrice = (price: number, currency: string, country: string) => {
   return new Intl.NumberFormat(country, {
     style: 'currency',
     currency: currency,
   }).format(price);
-}
+};

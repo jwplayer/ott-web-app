@@ -1,81 +1,105 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Subscription } from 'types/subscription';
+import type { PaymentDetail, Subscription, Transaction } from 'types/subscription';
 
-import Button from '../Button/Button';
+import { formatDate, formatPrice } from '../../utils/formatting';
+import TextField from '../TextField/TextField';
+import type { Customer } from '../../../types/account';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './Payment.module.scss';
+import Button from '../Button/Button';
 
 type Props = {
-  subscription: Subscription;
-  onEditSubscriptionClick: (subscription: Subscription) => void;
+  activeSubscription?: Subscription;
+  activePaymentDetail?: PaymentDetail;
+  transactions: Transaction[];
+  customer: Customer;
+  isLoading: boolean;
   panelClassName?: string;
   panelHeaderClassName?: string;
 };
 
-const Payment = ({ subscription, onEditSubscriptionClick, panelClassName, panelHeaderClassName }: Props): JSX.Element => {
-  const { t } = useTranslation('user');
-  const showAllTransactions = () => console.info('show all');
+const Payment = ({
+  activePaymentDetail,
+  activeSubscription,
+  transactions,
+  customer,
+  isLoading,
+  panelClassName,
+  panelHeaderClassName,
+}: Props): JSX.Element => {
+  const { t } = useTranslation(['user', 'account']);
 
   return (
     <>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('payment.subscription_details')}</h3>
+          <h3>{t('user:payment.subscription_details')}</h3>
         </div>
-        <div className={styles.infoBox}>
-          <p>
-            <strong>{t('payment.monthly_subscription')}</strong> <br />
-            {t('payment.next_billing_date_on')}
-            {'<date>'}
-          </p>
-          <p className={styles.price}>
-            <strong>{'€ 14.76'}</strong>
-            {'/'}
-            {t('payment.month')}
-          </p>
-        </div>
-        <Button label={t('payment.edit_subscription')} onClick={() => onEditSubscriptionClick} />
+        {activeSubscription ? (
+          <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
+            <p>
+              <strong>{t('user:payment.monthly_subscription')}</strong> <br />
+              {t('user:payment.next_billing_date_on')} {formatDate(activeSubscription.expiresAt)}
+            </p>
+            <p className={styles.price}>
+              <strong>{formatPrice(activeSubscription.totalPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
+              <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
+            </p>
+          </div>
+        ) : (
+          <React.Fragment>
+            <p>{t('user:payment.no_subscription')}</p>
+            <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} />
+          </React.Fragment>
+        )}
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('payment.payment_method')}</h3>
+          <h3>{t('user:payment.payment_method')}</h3>
         </div>
-        <div>
-          <strong>{t('payment.card_number')}</strong>
-          <p>xxxx xxxx xxxx 3456</p>
-          <div className={styles.cardDetails}>
-            <div className={styles.expiryDate}>
-              <strong>{t('payment.expiry_date')}</strong>
-              <p>{subscription.expiresAt}</p>
-            </div>
-            <div>
-              <strong>{t('payment.cvc_cvv')}</strong>
-              <p>******</p>
+        {activePaymentDetail ? (
+          <div key={activePaymentDetail.id}>
+            <TextField
+              label={t('user:payment.card_number')}
+              value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
+              editing={false}
+            />
+            <div className={styles.cardDetails}>
+              <TextField
+                label={t('user:payment.expiry_date')}
+                value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate}
+                editing={false}
+              />
+              <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
             </div>
           </div>
-        </div>
+        ) : null}
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('payment.transactions')}</h3>
+          <h3>{t('user:payment.transactions')}</h3>
         </div>
-        <div className={styles.infoBox}>
-          <p>
-            <strong>{t('payment.monthly_subscription')}</strong> <br />
-            {t('payment.price_payed_with_card')}
-          </p>
-          <p>
-            {'<Invoice code>'}
-            <br />
-            {'<Date>'}
-          </p>
-        </div>
-        <p>{t('payment.more_transactions', { amount: 4 })}</p>
-        <Button label="Show all" onClick={() => showAllTransactions()} />
+        {transactions?.map((transaction) => (
+          <div className={styles.infoBox} key={transaction.transactionId}>
+            <p>
+              <strong>{transaction.offerTitle}</strong> <br />
+              {t('user:payment.price_payed_with', {
+                price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                method: transaction.paymentMethod,
+              })}
+            </p>
+            <p>
+              {transaction.transactionId}
+              <br />
+              {formatDate(transaction.transactionDate)}
+            </p>
+          </div>
+        ))}
       </div>
+      {isLoading && <LoadingOverlay inline />}
     </>
   );
 };
-
 export default Payment;

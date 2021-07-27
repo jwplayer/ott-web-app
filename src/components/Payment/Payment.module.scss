@@ -11,8 +11,9 @@
   font-size: 14px;
   line-height: 18px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
-  background: rgba(61, 59, 59, 0.08);
+  background: theme.$panel-bg;
   border-radius: 4px;
+
   > strong {
     line-height: 16px;
     letter-spacing: 0.25px;
@@ -31,8 +32,5 @@
 
 .cardDetails {
   display: flex;
-}
-
-.expiryDate {
-  width: 250px;
+  margin-top: variables.$base-spacing * 2;
 }
