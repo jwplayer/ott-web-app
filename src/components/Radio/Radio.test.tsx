@@ -3,9 +3,9 @@ import { render } from '@testing-library/react';
 
 import Radio from './Radio';
 
-describe.skip('<Radio>', () => {
+describe('<Radio>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Radio />);
+    const { container } = render(<Radio name="radio" onChange={jest.fn()} />);
 
     expect(container).toMatchSnapshot();
   });

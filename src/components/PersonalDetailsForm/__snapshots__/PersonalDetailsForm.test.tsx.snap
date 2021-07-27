@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PersonalDetailsForm> renders and matches snapshot 1`] = `
+<div>
+  <form
+    class="form"
+    data-testid="personal_details-form"
+  >
+    <h2
+      class="title"
+    >
+      personal_details.personal_details
+    </h2>
+    <button
+      aria-disabled="false"
+      class="button continue primary fullWidth large"
+      type="submit"
+    >
+      <span>
+        personal_details.continue
+      </span>
+    </button>
+  </form>
+</div>
+`;
