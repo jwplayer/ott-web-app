@@ -10,6 +10,8 @@ import styles from './AccountModal.module.scss';
 import Login from './forms/Login';
 import Registration from './forms/Registration';
 import PersonalDetails from './forms/PersonalDetails';
+import ChooseOffer from './forms/ChooseOffer';
+import Checkout from './forms/Checkout';
 
 const AccountModal = () => {
   const history = useHistory();
@@ -31,6 +33,10 @@ const AccountModal = () => {
         return <Registration />;
       case 'personal-details':
         return <PersonalDetails />;
+      case 'choose-offer':
+        return <ChooseOffer />;
+      case 'checkout':
+        return <Checkout />;
     }
   };
 

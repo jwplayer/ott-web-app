@@ -9,11 +9,14 @@
     "edit_password": "Edit password",
     "email": "Email",
     "firstname": "First name",
+    "hide_password": "Hide password",
     "lastname": "Last name",
     "password": "Password",
     "save": "Save",
     "security": "Security",
-    "update_consents": "Update consents"
+    "terms_and_tracking": "Terms & tracking",
+    "update_consents": "Update consents",
+    "view_password": "View password"
   },
   "favorites": {
     "clear": "Clear favorites",
@@ -28,16 +31,16 @@
   },
   "payment": {
     "card_number": "Card number",
+    "complete_subscription": "Complete subscription",
     "cvc_cvv": "CVC / CVV",
-    "edit_subscription": "Edit subscription",
     "expiry_date": "Expiry date",
-    "month": "month",
     "monthly_subscription": "Monthly subscription",
-    "more_transactions": "{{ amount }} more transactions",
     "next_billing_date_on": "Next billing date is on",
+    "no_subscription": "You have no subscription. Complete your subscription to start watching all movies and series.",
     "payment_method": "Payment method",
-    "price_payed_with_card": "Price payed with card",
+    "price_payed_with": "{{price}} payed with {{method}}",
     "subscription_details": "Subscription details",
-    "transactions": "Transactions"
+    "transactions": "Transactions",
+    "price_payed_with_card": "Price payed with card"
   }
 }

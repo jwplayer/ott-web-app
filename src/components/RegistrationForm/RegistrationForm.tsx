@@ -91,10 +91,21 @@ const RegistrationForm: React.FC<Props> = ({ onSubmit, onChange, values, errors,
       <Checkbox
         onChange={onChange}
         name="terms-conditions"
-        value={values.termsConditions}
-        label={<Trans t={t} i18nKey="registration.terms_conditions" values={{ link: termsConditionsUrl }} components={{ a: <a /> }} />}
+        checked={values.termsConditions}
+        value={'terms-conditions'}
+        label={
+          (
+            <Trans t={t} i18nKey="registration.terms_conditions" values={{ link: termsConditionsUrl }} components={{ a: <a /> }} />
+          ) as unknown as string
+        }
       />
-      <Checkbox onChange={onChange} value={values.emailUpdates} name="email-updates" label={t('registration.email_updates')} />
+      <Checkbox
+        onChange={onChange}
+        value={'email-updates'}
+        checked={values.emailUpdates}
+        name="email-updates"
+        label={t('registration.email_updates')}
+      />
       <Button
         className={styles.continue}
         type="submit"

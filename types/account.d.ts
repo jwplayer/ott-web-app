@@ -1,6 +1,7 @@
 export type AuthData = {
   jwt: string;
   customerToken: string;
+  refreshToken: string;
 };
 
 export type JwtDetails = {
@@ -26,6 +27,12 @@ export type RegistrationFormData = {
   password: string;
   termsConditions: boolean;
   emailUpdates: boolean;
+};
+
+export type OfferPeriodicity = 'monthly' | 'yearly';
+
+export type ChooseOfferFormData = {
+  periodicity: OfferPeriodicity;
 };
 
 export type RegisterPayload = {
@@ -66,6 +73,14 @@ export type PersonalDetailsFormData = {
   [key: string]: string;
 };
 
+export type GetPublisherConsentsPayload = {
+  publisherId: string;
+};
+
+export type GetCustomerConsentsPayload = {
+  customerId: string;
+};
+
 export type ResetPasswordPayload = {
   customerEmail: string;
   offerId?: string;
@@ -92,22 +107,64 @@ export type UpdateCustomerPayload = {
   lastName?: string;
 };
 
+export type UpdateCustomerConsentsPayload = {
+  id?: string;
+  consents: CustomerConsent[];
+};
+
+export type RefreshTokenPayload = {
+  refreshToken: string;
+};
+
 export type Customer = {
-  id: string;
+  id: number;
   email: string;
-  locale: string;
   country: string;
-  currency: string;
+  regDate: string;
+  lastLoginDate?: string;
   lastUserIp: string;
   firstName?: string;
   lastName?: string;
   externalId?: string;
-  externalData?: string;
+  externalData?: Record<string, unknown>;
+};
+
+export type Consent = {
+  broadcasterId: number;
+  name: string;
+  version: string;
+  value: string;
+  label: string;
+  required: boolean;
+};
+export type CustomerConsent = {
+  customerId?: string;
+  date?: number;
+  label?: string;
+  name: string;
+  needsUpdate?: boolean;
+  newestVersion?: string;
+  required?: boolean;
+  state: 'accepted' | 'declined';
+  value?: string;
+  version: string;
+};
+
+export type LocalesData = {
+  country: string;
+  currency: string;
+  locale: string;
+  ipAddress: string;
 };
 
 type Login = CleengRequest<LoginPayload, AuthData>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
+type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, Record<string, Consent[]>>;
+type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, Record<string, CustomerConsent[]>>;
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
+type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, Customer>;
+type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
+type GetLocales = CleengEmptyRequest<LocalesData>;

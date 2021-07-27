@@ -2,7 +2,9 @@
 
 exports[`<UserMenu> renders and matches snapshot 1`] = `
 <div>
-  <ul>
+  <ul
+    class="menuItems"
+  >
     <li>
       <a
         class="menuButton"

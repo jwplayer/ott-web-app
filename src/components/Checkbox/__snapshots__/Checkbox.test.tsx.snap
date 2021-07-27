@@ -6,13 +6,15 @@ exports[`<Checkbox> renders and matches snapshot 1`] = `
     class="checkbox"
   >
     <input
-      id="check-box_1235_abc"
-      name="abc"
+      id="check-box_1235_name"
+      name="name"
       type="checkbox"
     />
     <label
-      for="check-box_1235_abc"
-    />
+      for="check-box_1235_name"
+    >
+      label
+    </label>
   </div>
 </div>
 `;

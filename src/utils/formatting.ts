@@ -2,7 +2,7 @@ import type { Playlist, PlaylistItem } from 'types/playlist';
 
 import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from './media';
 
-const formatDurationTag = (seconds: number): string | null => {
+export const formatDurationTag = (seconds: number): string | null => {
   if (!seconds || typeof seconds !== 'number') return null;
 
   const minutes = Math.ceil(seconds / 60);
@@ -20,7 +20,7 @@ const formatDurationTag = (seconds: number): string | null => {
  * @returns string, such as '2h 24m' or '31m'
  */
 
-const formatDuration = (duration: number): string | null => {
+export const formatDuration = (duration: number): string | null => {
   if (!duration || typeof duration !== 'number') return null;
 
   const hours = Math.floor(duration / 3600);
@@ -49,7 +49,7 @@ export const addQueryParams = (url: string, queryParams: { [key: string]: string
   return `${urlWithoutSearch}${queryString ? `?${queryString}` : ''}`;
 };
 
-const slugify = (text: string, whitespaceChar: string = '-') =>
+export const slugify = (text: string, whitespaceChar: string = '-') =>
   text
     .toString()
     .toLowerCase()
@@ -60,23 +60,23 @@ const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-+$/, '')
     .replace(/-/g, whitespaceChar);
 
-const movieURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
+export const movieURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
   addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
 
-const seriesURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+export const seriesURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
   const seriesId = getSeriesId(item);
 
   return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
 };
 
-const episodeURL = (seriesPlaylist: Playlist, episodeId?: string, play: boolean = false, playlistId?: string | null) =>
+export const episodeURL = (seriesPlaylist: Playlist, episodeId?: string, play: boolean = false, playlistId?: string | null) =>
   addQueryParams(`/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}`, {
     e: episodeId,
     r: playlistId,
     play: play ? '1' : null,
   });
 
-const episodeURLFromEpisode = (item: PlaylistItem, seriesId: string, playlistId?: string | null, play: boolean = false) => {
+export const episodeURLFromEpisode = (item: PlaylistItem, seriesId: string, playlistId?: string | null, play: boolean = false) => {
   // generated URL does not match the canonical URL. We need the series playlist in order to generate the slug. For
   // now the item title is used instead. The canonical link isn't affected by this though.
   return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, {
@@ -86,7 +86,7 @@ const episodeURLFromEpisode = (item: PlaylistItem, seriesId: string, playlistId?
   });
 };
 
-const cardUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+export const cardUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
   if (isEpisode(item)) {
     const seriesId = getSeriesIdFromEpisode(item);
 
@@ -96,9 +96,20 @@ const cardUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean =
   return isSeriesPlaceholder(item) ? seriesURL(item, playlistId, play) : movieURL(item, playlistId, play);
 };
 
-const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
+export const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
   addQueryParams(item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId), {
     play: play ? '1' : null,
   });
 
-export { formatDurationTag, formatDuration, cardUrl, movieURL, seriesURL, videoUrl, episodeURL };
+export const formatDate = (dateString: number) => {
+  if (!dateString) return '';
+
+  return new Date(dateString * 1000).toLocaleDateString();
+};
+
+export const formatPrice = (price: number, currency: string, country: string) => {
+  return new Intl.NumberFormat(country, {
+    style: 'currency',
+    currency: currency,
+  }).format(price);
+};

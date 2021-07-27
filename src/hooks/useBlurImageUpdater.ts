@@ -15,11 +15,9 @@ const useBlurImageUpdater = (data?: PlaylistItem[] | PlaylistItem) => {
   }, [data]);
 
   return useCallback((image: string) => {
-    if (image) {
-      UIStore.update((state) => {
-        state.blurImage = image;
-      });
-    }
+    UIStore.update((state) => {
+      state.blurImage = image;
+    });
   }, []);
 };
 

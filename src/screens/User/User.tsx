@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
@@ -8,11 +8,11 @@ import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl } from '../../utils/formatting';
-import CustomerContainer from '../../containers/Customer/CustomerContainer';
-import SubscriptionContainer from '../../containers/Subscription/Subscription';
+import AccountContainer from '../../containers/Account/AccountContainer';
+import SubscriptionContainer from '../../containers/Subscription/SubscriptionContainer';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
-import Account from '../../components/Account/Account';
+import AccountComponent from '../../components/Account/Account';
 import Payment from '../../components/Payment/Payment';
 import AccountCircle from '../../icons/AccountCircle';
 import Favorite from '../../icons/Favorite';
@@ -33,12 +33,14 @@ const User = (): JSX.Element => {
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
 
-  if (!customer) {
-    return <div className={styles.user}>Open login panel?</div>;
-  }
-
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+
+  useEffect(() => updateBlurImage(''), [updateBlurImage]);
+
+  if (!customer) {
+    return <div className={styles.user}>Please login first</div>;
+  }
 
   return (
     <div className={styles.user}>
@@ -65,18 +67,36 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Switch>
           <Route path="/u/my-account">
-            <CustomerContainer>
-              {({ customer, onUpdateEmailSubmit, onUpdateInfoSubmit }) => (
-                <Account
+            <AccountContainer>
+              {({
+                customer,
+                errors,
+                isLoading,
+                consentsLoading,
+                publisherConsents,
+                customerConsents,
+                onUpdateEmailSubmit,
+                onUpdateInfoSubmit,
+                onUpdateConsentsSubmit,
+                onReset,
+              }) => (
+                <AccountComponent
                   customer={customer}
+                  errors={errors}
+                  isLoading={isLoading}
+                  consentsLoading={consentsLoading}
+                  publisherConsents={publisherConsents}
+                  customerConsents={customerConsents}
                   onUpdateEmailSubmit={onUpdateEmailSubmit}
                   onUpdateInfoSubmit={onUpdateInfoSubmit}
+                  onUpdateConsentsSubmit={onUpdateConsentsSubmit}
+                  onReset={onReset}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                   onDeleteAccountClick={() => console.error('Sure?')}
                 />
               )}
-            </CustomerContainer>
+            </AccountContainer>
           </Route>
           <Route path="/u/favorites">
             <PlaylistContainer playlistId={PersonalShelf.Favorites}>
@@ -94,10 +114,13 @@ const User = (): JSX.Element => {
           </Route>
           <Route path="/u/payments">
             <SubscriptionContainer>
-              {({ subscription, update }) => (
+              {({ activeSubscription, activePaymentDetail, transactions, isLoading }) => (
                 <Payment
-                  subscription={subscription}
-                  onEditSubscriptionClick={update}
+                  activeSubscription={activeSubscription}
+                  activePaymentDetail={activePaymentDetail}
+                  transactions={transactions}
+                  customer={customer}
+                  isLoading={isLoading}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                 />

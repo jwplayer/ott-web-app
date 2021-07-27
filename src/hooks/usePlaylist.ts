@@ -13,8 +13,9 @@ export default function usePlaylist(
   relatedMediaId?: string,
   enabled: boolean = true,
   usePlaceholderData: boolean = true,
+  limit?: number,
 ): UsePlaylistResult {
-  return useQuery(['playlist', playlistId, relatedMediaId], () => getPlaylistById(playlistId, relatedMediaId), {
+  return useQuery(['playlist', playlistId, relatedMediaId], () => getPlaylistById(playlistId, relatedMediaId, limit), {
     enabled: !!playlistId && enabled,
     placeholderData: usePlaceholderData ? placeholderData : undefined,
     retry: false,

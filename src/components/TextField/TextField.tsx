@@ -23,6 +23,7 @@ type Props = {
   readOnly?: boolean;
   multiline?: boolean;
   rows?: number;
+  editing?: boolean;
 };
 
 const TextField: React.FC<Props> = ({
@@ -35,6 +36,8 @@ const TextField: React.FC<Props> = ({
   rightControl,
   type = 'text',
   rows = 3,
+  editing = true,
+  value,
   ...rest
 }: Props) => {
   const id = useOpaqueId('text-field', rest.name);
@@ -53,6 +56,7 @@ const TextField: React.FC<Props> = ({
   const inputProps: Partial<Props & { id: string }> = {
     id,
     type,
+    value,
     ...rest,
   };
 
@@ -65,11 +69,15 @@ const TextField: React.FC<Props> = ({
       <label htmlFor={id} className={styles.label}>
         {label}
       </label>
-      <div className={styles.container}>
-        {leftControl ? <div className={styles.control}>{leftControl}</div> : null}
-        <InputComponent className={styles.input} {...inputProps} />
-        {rightControl ? <div className={styles.control}>{rightControl}</div> : null}
-      </div>
+      {editing ? (
+        <div className={styles.container}>
+          {leftControl ? <div className={styles.control}>{leftControl}</div> : null}
+          <InputComponent className={styles.input} {...inputProps} />
+          {rightControl ? <div className={styles.control}>{rightControl}</div> : null}
+        </div>
+      ) : (
+        <p>{value}</p>
+      )}
       {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
     </div>
   );

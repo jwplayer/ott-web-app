@@ -7,18 +7,19 @@ import styles from './Checkbox.module.scss';
 type Props = {
   label?: string;
   name: string;
-  value: boolean;
+  value: string;
+  checked?: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   header?: string;
 };
 
-const Checkbox: React.FC<Props> = ({ label, name, onChange, header }: Props) => {
+const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked }: Props) => {
   const id = useOpaqueId('check-box', name);
 
   return (
     <div className={styles.checkbox}>
       {header && <span className={styles.header}>{header}</span>}
-      <input name={name} type="checkbox" id={id} onChange={onChange} />
+      <input name={name} type="checkbox" id={id} onChange={onChange} checked={checked} />
       <label htmlFor={id}>{label}</label>
     </div>
   );

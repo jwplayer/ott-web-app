@@ -1,0 +1,13 @@
+{
+  "subscriptionId": 590680399,
+  "offerId": "S568296139_ZW",
+  "status": "active",
+  "expiresAt": 1615897260,
+  "nextPaymentPrice": 22.15,
+  "nextPaymentCurrency": "EUR",
+  "paymentGateway": "adyen",
+  "paymentMethod": "card",
+  "offerTitle": "Annual subscription (recurring)",
+  "period": "year",
+  "totalPrice": 20
+}
