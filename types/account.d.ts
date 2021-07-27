@@ -42,6 +42,30 @@ export type RegisterPayload = {
   externalData?: string;
 };
 
+export type PersonalDetailsCustomField = {
+  name: string;
+  label: string;
+  type: 'text' | 'number' | 'dropdown' | 'radio' | 'checkbox' | 'date';
+  value?: string;
+  values?: string[];
+  question?: string;
+  validationType?: string;
+  validations: Record<string, unknown>[] | null;
+};
+
+export type PersonalDetailsFormData = {
+  firstName?: string;
+  lastName?: string;
+  birthday?: string;
+  companyName?: string;
+  phoneNumber?: number;
+  address?: string;
+  city?: string;
+  region?: string;
+  zipCode?: string;
+  [key: string]: string;
+};
+
 export type ResetPasswordPayload = {
   customerEmail: string;
   offerId?: string;

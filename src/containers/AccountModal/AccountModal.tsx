@@ -8,6 +8,8 @@ import { removeQueryParam } from '../../utils/history';
 
 import styles from './AccountModal.module.scss';
 import Login from './forms/Login';
+import Registration from './forms/Registration';
+import PersonalDetails from './forms/PersonalDetails';
 
 const AccountModal = () => {
   const history = useHistory();
@@ -21,11 +23,21 @@ const AccountModal = () => {
     history.push(removeQueryParam(history, 'u'));
   };
 
+  const renderForm = () => {
+    switch (view) {
+      case 'login':
+        return <Login />;
+      case 'create-account':
+        return <Registration />;
+      case 'personal-details':
+        return <PersonalDetails />;
+    }
+  };
+
   return (
     <Dialog open={!!view} onClose={closeHandler}>
       <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>
-      <Login />
-
+      {renderForm()}
     </Dialog>
   );
 };

@@ -22,5 +22,20 @@
     "terms_conditions": "I accept the <a href={{link}}>Terms and Conditions</a> of Cleeng.",
     "email_updates": "Yes, I want to receive {{siteName}} updates by email.",
     "already_account": "Already have an account?"
+  },
+  "personal_details": {
+    "personal_details": "Personal details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthDate": "Date of birth",
+    "companyName": "Company name",
+    "phoneNumber": "Mobile number",
+    "address": "Adress line one",
+    "address2": "Adress line two",
+    "city": "City",
+    "country": "Country",
+    "state": "State/Province/Region",
+    "postCode": "ZIP/Postal code",
+    "continue": "Continue"
   }
 }

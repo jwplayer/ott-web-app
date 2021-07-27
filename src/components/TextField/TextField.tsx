@@ -11,7 +11,7 @@ type Props = {
   placeholder?: string;
   name?: string;
   value: string;
-  type?: 'text' | 'email' | 'password' | 'search';
+  type?: 'text' | 'email' | 'password' | 'search' | 'number' | 'date';
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onFocus?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;

@@ -1,0 +1,36 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.title {
+  margin-bottom: 24px;
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.error {
+  margin-bottom: 24px;
+  padding: 16px;
+  color: variables.$white;
+  font-family: theme.$body-font-family;
+  font-size: 18px;
+  background-color: theme.$form-error-bg-color;
+  border-radius: 4px;
+}
+
+.continue {
+  margin: variables.$base-spacing 0;
+}
+
+.form {
+  max-height: 500px;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+  > div {
+    margin: 12px 0;
+  }
+}

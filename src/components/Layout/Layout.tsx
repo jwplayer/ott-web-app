@@ -64,7 +64,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   const signUpButtonClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'create_account'));
+    history.push(addQueryParam(history, 'u', 'create-account'));
   };
 
   const toggleUserMenu = (value: boolean) =>

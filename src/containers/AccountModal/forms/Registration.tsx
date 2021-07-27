@@ -21,7 +21,7 @@ const Registration = () => {
     try {
       await temp(formData);
 
-      history.push(addQueryParam(history, 'u', 'registration_details'));
+      history.push(addQueryParam(history, 'u', 'personal-details'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {
