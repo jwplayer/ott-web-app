@@ -15,12 +15,14 @@ export type TileDockProps<T> = {
   tileHeight?: number;
   minimalTouchMovement?: number;
   showControls?: boolean;
+  showDots?: boolean;
   animated?: boolean;
   wrapWithEmptyTiles?: boolean;
   transitionTime?: string;
   renderTile: (item: T, isInView: boolean) => JSX.Element;
   renderLeftControl?: (handleClick: () => void) => JSX.Element;
   renderRightControl?: (handleClick: () => void) => JSX.Element;
+  renderPaginationDots?: (index: number, pageIndex: number) => JSX.Element;
 };
 
 type Tile<T> = {
@@ -65,9 +67,11 @@ const TileDock = <T extends unknown>({
   animated = !window.matchMedia('(prefers-reduced-motion)').matches,
   transitionTime = '0.6s',
   wrapWithEmptyTiles = false,
+  showDots = false,
   renderTile,
   renderLeftControl,
   renderRightControl,
+  renderPaginationDots,
 }: TileDockProps<T>) => {
   const [index, setIndex] = useState<number>(0);
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
@@ -77,7 +81,7 @@ const TileDock = <T extends unknown>({
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items?.length > tilesToShow;
   const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow + 1) + transform : wrapWithEmptyTiles ? -100 : 0;
-
+  const pages = items.length / tilesToShow;
   const tileList: Tile<T>[] = useMemo(() => {
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
@@ -97,6 +101,7 @@ const TileDock = <T extends unknown>({
         if (cycleMode === 'stop') nextIndex = 0;
         if (cycleMode === 'restart') nextIndex = index === 0 ? 0 - tilesToShow : 0;
       }
+
       if (nextIndex > items.length - tilesToShow) {
         if (cycleMode === 'stop') nextIndex = items.length - tilesToShow;
         if (cycleMode === 'restart') nextIndex = index >= items.length - tilesToShow ? items.length : items.length - tilesToShow;
@@ -107,6 +112,7 @@ const TileDock = <T extends unknown>({
 
       setSlideToIndex(nextIndex);
       setTransform(-100 + movement);
+
       if (!animated) setDoAnimationReset(true);
     },
     [animated, cycleMode, index, items.length, tileWidth, tilesToShow],
@@ -179,8 +185,10 @@ const TileDock = <T extends unknown>({
       }
 
       setIndex(resetIndex);
+
       if (frameRef.current) frameRef.current.style.transition = 'none';
       setTransform(-100);
+
       setTimeout(() => {
         if (frameRef.current) frameRef.current.style.transition = transitionBasis;
       }, 0);
@@ -199,7 +207,7 @@ const TileDock = <T extends unknown>({
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    WebkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    'WebkitTransform': `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -207,53 +215,70 @@ const TileDock = <T extends unknown>({
 
   const slideOffset = index - slideToIndex;
 
-  return (
-    <div className={styles.tileDock}>
-      {showLeftControl && !!renderLeftControl && <div className={styles.leftControl}>{renderLeftControl(() => slide('left'))}</div>}
-      <ul ref={frameRef} style={ulStyle} onTouchStart={handleTouchStart} onTransitionEnd={handleTransitionEnd}>
-        {wrapWithEmptyTiles ? (
-          <li
-            className={styles.emptyTile}
-            style={{
-              width: `${tileWidth}%`,
-              paddingLeft: spacing / 2,
-              paddingRight: spacing / 2,
-              boxSizing: 'border-box',
-            }}
-          />
-        ) : null}
-        {tileList.map((tile: Tile<T>, listIndex) => {
-          const isInView = !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
+  const paginationDots = () => {
+    if (showDots && isMultiPage && !!renderPaginationDots) {
+      const length = pages;
 
-          return (
+      return (
+        <div className={styles.dots}>
+          {Array.from({ length }, (_, pageIndex) => {
+            return renderPaginationDots(index, pageIndex);
+          })}
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div>
+      <div className={styles.tileDock}>
+        {showLeftControl && !!renderLeftControl && <div className={styles.leftControl}>{renderLeftControl(() => slide('left'))}</div>}
+        <ul ref={frameRef} style={ulStyle} onTouchStart={handleTouchStart} onTransitionEnd={handleTransitionEnd}>
+          {wrapWithEmptyTiles ? (
             <li
-              key={tile.key}
-              className={classNames({ [styles.notInView]: !isInView })}
+              className={styles.emptyTile}
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,
                 paddingRight: spacing / 2,
                 boxSizing: 'border-box',
-                transition: !isInView ? 'opacity .2s ease-in 0s' : '',
               }}
-            >
-              {renderTile(tile.item, isInView)}
-            </li>
-          );
-        })}
-        {wrapWithEmptyTiles ? (
-          <li
-            className={styles.emptyTile}
-            style={{
-              width: `${tileWidth}%`,
-              paddingLeft: spacing / 2,
-              paddingRight: spacing / 2,
-              boxSizing: 'border-box',
-            }}
-          />
-        ) : null}
-      </ul>
-      {showRightControl && !!renderRightControl && <div className={styles.rightControl}>{renderRightControl(() => slide('right'))}</div>}
+            />
+          ) : null}
+          {tileList.map((tile: Tile<T>, listIndex) => {
+            const isInView = !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
+
+            return (
+              <li
+                key={tile.key}
+                className={classNames({ [styles.notInView]: !isInView })}
+                style={{
+                  width: `${tileWidth}%`,
+                  paddingLeft: spacing / 2,
+                  paddingRight: spacing / 2,
+                  boxSizing: 'border-box',
+                  transition: !isInView ? 'opacity .2s ease-in 0s' : '',
+                }}
+              >
+                {renderTile(tile.item, isInView)}
+              </li>
+            );
+          })}
+          {wrapWithEmptyTiles ? (
+            <li
+              className={styles.emptyTile}
+              style={{
+                width: `${tileWidth}%`,
+                paddingLeft: spacing / 2,
+                paddingRight: spacing / 2,
+                boxSizing: 'border-box',
+              }}
+            />
+          ) : null}
+        </ul>
+        {showRightControl && !!renderRightControl && <div className={styles.rightControl}>{renderRightControl(() => slide('right'))}</div>}
+      </div>
+      {paginationDots()}
     </div>
   );
 };
