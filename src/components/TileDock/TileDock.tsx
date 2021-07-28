@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState, useEffect } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './TileDock.module.scss';
 
@@ -81,21 +81,19 @@ const TileDock = <T extends unknown>({
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items?.length > tilesToShow;
   const transformWithOffset: number = isMultiPage ? 100 - tileWidth * (tilesToShow + 1) + transform : wrapWithEmptyTiles ? -100 : 0;
-  const [slideQueue, updateSlideQueue] = useState<string[]>([]);
-  const [slideAgain, setSlideAgain] = useState(false);
   const pages = items.length / tilesToShow;
   const tileList: Tile<T>[] = useMemo(() => {
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
-  const transitionBasis: string = isMultiPage && animated ? `transform ${slideQueue.length ? '200ms' : transitionTime} ease` : '';
+  const transitionBasis: string = isMultiPage && animated ? `transform ${transitionTime} ease` : '';
 
   const needControls: boolean = showControls && isMultiPage;
   const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
   const showRightControl: boolean = needControls && !(cycleMode === 'stop' && index === items.length - tilesToShow);
 
   const slide = useCallback(
-    (direction: Direction, slides: number = 0): void => {
+    (direction: Direction): void => {
       const directionFactor = direction === 'right' ? 1 : -1;
       let nextIndex: number = index + tilesToShow * directionFactor;
 
@@ -108,10 +106,6 @@ const TileDock = <T extends unknown>({
         if (cycleMode === 'stop') nextIndex = items.length - tilesToShow;
         if (cycleMode === 'restart') nextIndex = index >= items.length - tilesToShow ? items.length : items.length - tilesToShow;
       }
-      if (index !== slideToIndex) {
-        updateSlideQueue((slideQueue) => [...slideQueue, direction]);
-        return;
-      }
 
       const steps: number = Math.abs(index - nextIndex);
       const movement: number = steps * tileWidth * (0 - directionFactor);
@@ -119,10 +113,9 @@ const TileDock = <T extends unknown>({
       setSlideToIndex(nextIndex);
       setTransform(-100 + movement);
 
-      if (slides) updateSlideQueue(Array.from({ length: slides - 1 }, () => direction));
       if (!animated) setDoAnimationReset(true);
     },
-    [animated, cycleMode, index, items.length, tileWidth, tilesToShow, slideToIndex],
+    [animated, cycleMode, index, items.length, tileWidth, tilesToShow],
   );
 
   const handleTouchStart = useCallback(
@@ -200,25 +193,10 @@ const TileDock = <T extends unknown>({
         if (frameRef.current) frameRef.current.style.transition = transitionBasis;
       }, 0);
       setDoAnimationReset(false);
-
-      if (slideQueue) {
-        setSlideAgain(true);
-      }
     };
 
     if (doAnimationReset) resetAnimation();
-  }, [doAnimationReset, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis, slide, slideQueue]);
-
-  useEffect(() => {
-    if (slideAgain && slideQueue.length) {
-      const slideQueuePointer = [...slideQueue];
-      const direction = slideQueuePointer.shift();
-
-      updateSlideQueue(slideQueuePointer);
-      slide(direction as Direction);
-      setSlideAgain(false);
-    }
-  }, [slideAgain, slide, slideQueue]);
+  }, [doAnimationReset, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis]);
 
   const handleTransitionEnd = (event: React.TransitionEvent<HTMLUListElement>) => {
     if (event.target === frameRef.current) {
@@ -229,7 +207,7 @@ const TileDock = <T extends unknown>({
   const ulStyle = {
     transform: `translate3d(${transformWithOffset}%, 0, 0)`,
     // prettier-ignore
-    webkitTransform: `translate3d(${transformWithOffset}%, 0, 0)`,
+    'WebkitTransform': `translate3d(${transformWithOffset}%, 0, 0)`,
     transition: transitionBasis,
     marginLeft: -spacing / 2,
     marginRight: -spacing / 2,
@@ -240,14 +218,14 @@ const TileDock = <T extends unknown>({
   const paginationDots = () => {
     if (showDots && isMultiPage && !!renderPaginationDots) {
       const length = pages;
-      const dotsRow = (
+
+      return (
         <div className={styles.dots}>
           {Array.from({ length }, (_, pageIndex) => {
             return renderPaginationDots(index, pageIndex);
           })}
         </div>
       );
-      return dotsRow;
     }
   };
 
