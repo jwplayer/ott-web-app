@@ -6,6 +6,7 @@ import Dialog from '../../components/Dialog/Dialog';
 import useQueryParam from '../../hooks/useQueryParam';
 import { removeQueryParam } from '../../utils/history';
 import PaymentFailed from '../../components/PaymentFailed/PaymentFailed';
+import Welcome from '../../components/Welcome/Welcome';
 
 import styles from './AccountModal.module.scss';
 import Login from './forms/Login';
@@ -39,6 +40,7 @@ const AccountModal = () => {
       {view === 'checkout' ? <Checkout /> : null}
       {view === 'paypal-error' ? <PaymentFailed type="error" message={message} onCloseButtonClick={closeHandler} /> : null}
       {view === 'paypal-cancelled' ? <PaymentFailed type="cancelled" onCloseButtonClick={closeHandler} /> : null}
+      {view === 'welcome' ? <Welcome onCloseButtonClick={closeHandler} onCountdownCompleted={closeHandler} /> : null}
     </Dialog>
   );
 };

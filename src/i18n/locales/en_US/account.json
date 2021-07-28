@@ -17,7 +17,10 @@
     "paypal": "PayPal",
     "paypal_instructions": "Clicking 'continue' will bring you to the PayPal site.",
     "redeem_coupon": "Redeem coupon",
+    "start_watching": "Start watching ({{countdown}})",
     "total_price": "Total",
+    "welcome_description": "Thank you for subscribing to {{siteName}}. Please enjoy all our content.",
+    "welcome_title": "Welcome to {{siteName}}",
     "yearly": "Yearly subscription"
   },
   "choose_offer": {

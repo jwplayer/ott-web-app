@@ -17,7 +17,10 @@
     "paypal": "",
     "paypal_instructions": "",
     "redeem_coupon": "",
+    "start_watching": "",
     "total_price": "",
+    "welcome_description": "",
+    "welcome_title": "",
     "yearly": ""
   },
   "choose_offer": {
