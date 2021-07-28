@@ -36,11 +36,12 @@
 }
 
 .info {
-  width: 60%;
+  width: 70%;
+  max-width: 650px;
   min-height: 380px;
 
   @include responsive.tablet-only() {
-    width: 75%;
+    width: 350px;
   }
 
   @include responsive.mobile-only() {
@@ -109,15 +110,6 @@
   letter-spacing: 0.5px;
 }
 
-.playButton {
-  justify-content: center;
-  margin: 5px;
-
-  @include responsive.mobile-only() {
-    flex: 1 1 100%;
-  }
-}
-
 .buttonBar {
   display: flex;
   justify-content: flex-start;
@@ -130,8 +122,14 @@
 
   @include responsive.mobile-and-tablet() {
     flex-wrap: wrap;
+
     > button {
+      flex: 1;
       padding: 0 12px;
+    }
+
+    .bigButton {
+      flex-basis: 100%;
     }
   }
 
@@ -140,10 +138,6 @@
 
     > button:first-child {
       margin-bottom: 8px;
-    }
-
-    > button:not(.trailerButton) {
-      flex: 1 1 40%;
     }
   }
 }

@@ -123,33 +123,32 @@ const Video: React.FC<Props> = ({
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
 
           <div className={styles.buttonBar}>
-            <div className={styles.playButton}>
-              <Button
-                color="primary"
-                variant="contained"
-                size="large"
-                label={typeof progress === 'number' ? t('video:continue_watching') : t('video:start_watching')}
-                startIcon={<Play />}
-                onClick={startPlay}
-                active={play}
-                fullWidth={breakpoint < Breakpoint.sm}
-              >
-                {progress ? (
-                  <div className={styles.progressRail}>
-                    <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
-                  </div>
-                ) : null}
-              </Button>
-            </div>
+            <Button
+              className={styles.bigButton}
+              color="primary"
+              variant="contained"
+              size="large"
+              label={typeof progress === 'number' ? t('video:continue_watching') : t('video:start_watching')}
+              startIcon={<Play />}
+              onClick={startPlay}
+              active={play}
+              fullWidth={breakpoint < Breakpoint.md}
+            >
+              {progress ? (
+                <div className={styles.progressRail}>
+                  <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
+                </div>
+              ) : null}
+            </Button>
             {trailerItem && (
               <Button
-                className={styles.trailerButton}
+                className={styles.bigButton}
                 label={t('video:trailer')}
                 aria-label={t('video:watch_trailer')}
                 startIcon={<PlayTrailer />}
                 onClick={onTrailerClick}
                 active={playTrailer}
-                fullWidth={breakpoint < Breakpoint.sm}
+                fullWidth={breakpoint < Breakpoint.md}
               />
             )}
             <Button
@@ -158,6 +157,7 @@ const Video: React.FC<Props> = ({
               startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
               onClick={onFavoriteButtonClick}
               color={isFavorited ? 'primary' : 'default'}
+              fullWidth={breakpoint < Breakpoint.md}
             />
             {enableSharing && (
               <Button
@@ -165,6 +165,7 @@ const Video: React.FC<Props> = ({
                 startIcon={hasShared ? <Check /> : <Share />}
                 onClick={onShareClick}
                 active={hasShared}
+                fullWidth={breakpoint < Breakpoint.md}
               />
             )}
           </div>

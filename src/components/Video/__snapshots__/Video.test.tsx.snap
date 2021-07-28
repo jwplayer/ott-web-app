@@ -38,34 +38,30 @@ exports[`<Video> renders and matches snapshot 1`] = `
         <div
           class="buttonBar"
         >
-          <div
-            class="playButton"
+          <button
+            class="button bigButton primary active large"
           >
-            <button
-              class="button primary active large"
+            <div
+              class="startIcon"
             >
-              <div
-                class="startIcon"
+              <svg
+                aria-hidden="true"
+                class="icon"
+                focusable="false"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden="true"
-                  class="icon"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g>
-                    <path
-                      d="M8,5.14V19.14L19,12.14L8,5.14Z"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <span>
-                video:start_watching
-              </span>
-            </button>
-          </div>
+                <g>
+                  <path
+                    d="M8,5.14V19.14L19,12.14L8,5.14Z"
+                  />
+                </g>
+              </svg>
+            </div>
+            <span>
+              video:start_watching
+            </span>
+          </button>
           <button
             aria-label="video:add_to_favorites"
             class="button default outlined"
