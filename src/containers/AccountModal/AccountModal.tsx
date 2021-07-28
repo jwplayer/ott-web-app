@@ -20,8 +20,8 @@ const AccountModal = () => {
 
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
-    if (view) setView(view);
-  }, [view]);
+    if (viewParam) setView(viewParam);
+  }, [viewParam]);
 
   const {
     assets: { banner },
