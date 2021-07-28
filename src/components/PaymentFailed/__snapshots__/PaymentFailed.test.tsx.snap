@@ -10,7 +10,9 @@ exports[`<PaymentFailed> renders and matches snapshot 1`] = `
     </h2>
     <p
       class="message"
-    />
+    >
+      Error message
+    </p>
     <div>
       <button
         class="button primary fullWidth large"
