@@ -2,9 +2,7 @@
 @use '../../styles/theme';
 
 .checkbox {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  display: inline-block;
 
   > label {
     margin: variables.$base-spacing / 2 variables.$base-spacing variables.$base-spacing / 2 variables.$base-spacing / 2;
@@ -23,22 +21,39 @@
     }
   }
 
+  &.error {
+    input {
+      &:not(:checked) {
+        border: 2px solid theme.$input-field-error-color;
+      }
+    }
+
+    .helperText {
+      margin-top: -5px;
+      margin-left: 35px;
+      color: theme.$text-field-error-color;
+      font-family: theme.$body-font-family;
+      font-size: 10px;
+    }
+  }
+
   .header {
-    flex: 1 1 100%;
+    display: inline-block;
+    width: 100%;
     margin-bottom: 4px;
     font-family: theme.$body-font-family;
     font-weight: 700;
     text-align: left;
   }
 
-  input {
-    display: flex;
+  > input {
+    display: inline-flex;
     flex-shrink: 0;
     justify-content: center;
     align-items: center;
     width: 20px;
     height: 20px;
-    margin: 0;
+    vertical-align: middle;
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.5s;
@@ -50,6 +65,11 @@
       font-weight: 900;
       font-size: 0;
       content: 'L';
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      pointer-events: none;
     }
 
     &:hover {

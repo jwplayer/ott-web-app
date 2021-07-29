@@ -9,6 +9,7 @@ exports[`<Checkbox> renders and matches snapshot 1`] = `
       id="check-box_1235_name"
       name="name"
       type="checkbox"
+      value="value"
     />
     <label
       for="check-box_1235_name"
