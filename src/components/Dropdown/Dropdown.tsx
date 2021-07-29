@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
 
@@ -14,6 +15,10 @@ type Props = {
   valuePrefix?: string;
   label?: string;
   fullWidth?: boolean;
+  size?: 'small' | 'medium';
+  error?: boolean;
+  helperText?: string;
+  required?: boolean;
   onChange: React.ChangeEventHandler;
 };
 
@@ -27,14 +32,21 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
   label,
   fullWidth,
   valuePrefix,
+  error,
+  helperText,
+  required = false,
+  size = 'medium',
   ...rest
 }: Props & React.AriaAttributes) => {
+  const { t } = useTranslation('common');
   const id = useOpaqueId();
+
   return (
-    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth })}>
+    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size])}>
       {label && (
         <label htmlFor={id} className={styles.label}>
           {label}
+          {!required ? <span>{t('optional')}</span> : null}
         </label>
       )}
       <div className={classNames(styles.dropdown, { [styles.fullWidth]: fullWidth })}>
@@ -46,7 +58,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
           )}
           {options &&
             options.map((option) => (
-              <option className={classNames(styles.option, optionsStyle)} key={option} value={option}>
+              <option className={classNames(styles.option, optionsStyle)} key={option} value={option} aria-required={required}>
                 {valuePrefix}
                 {option}
               </option>
@@ -54,6 +66,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
         </select>
         <span className="focus" />
       </div>
+      {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
     </div>
   );
 };

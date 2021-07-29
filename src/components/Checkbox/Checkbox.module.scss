@@ -2,12 +2,8 @@
 @use '../../styles/theme';
 
 .checkbox {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-
-  > label {
-    margin: variables.$base-spacing / 2 variables.$base-spacing variables.$base-spacing / 2 variables.$base-spacing / 2;
+  label {
+    margin-left: variables.$base-spacing / 2;
     font-family: theme.$body-font-family;
     font-size: 14px;
     cursor: pointer;
@@ -24,11 +20,16 @@
   }
 
   .header {
-    flex: 1 1 100%;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     font-family: theme.$body-font-family;
     font-weight: 700;
     text-align: left;
+
+    > span {
+      float: right;
+      color: rgba(variables.$white, 0.7);
+      font-weight: normal;
+    }
   }
 
   input {
@@ -71,4 +72,23 @@
       }
     }
   }
+
+  &.error {
+    .helperText {
+      color: theme.$text-field-error-color;
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.helperText {
+  margin-top: 4px;
+  font-family: theme.$body-font-family;
+  font-size: 12px;
+  text-align: left;
 }

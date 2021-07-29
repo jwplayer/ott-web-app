@@ -37,6 +37,12 @@
   font-family: theme.$body-font-family;
   font-weight: 700;
   text-align: left;
+
+  > span {
+    float: right;
+    color: rgba(variables.$white, 0.7);
+    font-weight: normal;
+  }
 }
 
 .control > div {
@@ -46,9 +52,14 @@
 
 .container {
   display: flex;
+  align-items: center;
   width: 100%;
 
   color: theme.$text-field-resting-color;
+
+  font-family: theme.$body-font-family;
+  font-weight: 700;
+  font-size: 16px;
 
   background-color: theme.$text-field-bg-color;
   border: 1px solid theme.$text-field-resting-border-color;
@@ -68,10 +79,31 @@
   color: inherit;
   font-size: 16px;
   line-height: 18px;
+  text-align: center;
   background: transparent;
   border: none;
   outline: none;
   appearance: none;
+
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  &[name="date"] {
+    width: 43px;
+    padding-right: 4px;
+  }
+
+  &[name="month"] {
+    width: 35px;
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  &[name="year"] {
+    width: 60px;
+    padding-left: 4px;
+  }
 }
 
 .helperText {

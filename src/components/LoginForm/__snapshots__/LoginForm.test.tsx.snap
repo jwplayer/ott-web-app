@@ -28,6 +28,7 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
           id="text-field_1235_email"
           name="email"
           placeholder="login.email"
+          required=""
           type="email"
           value=""
         />
@@ -50,6 +51,7 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
           id="text-field_1235_password"
           name="password"
           placeholder="login.password"
+          required=""
           type="password"
           value=""
         />

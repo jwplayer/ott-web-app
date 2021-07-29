@@ -45,6 +45,12 @@
   font-family: theme.$body-font-family;
   font-weight: 700;
   text-align: left;
+
+  > span {
+    float: right;
+    color: rgba(variables.$white, 0.7);
+    font-weight: normal;
+  }
 }
 
 .control > div {
@@ -74,6 +80,7 @@
   min-height: 48px;
   padding: 14px 16px;
   color: inherit;
+  font-family: theme.$body-font-family;
   font-size: 16px;
   line-height: 18px;
   background: transparent;

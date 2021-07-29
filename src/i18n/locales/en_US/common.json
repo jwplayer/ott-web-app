@@ -5,6 +5,7 @@
   "filter_videos_by_genre": "Filter videos by genre",
   "home": "Home",
   "live": "LIVE",
+  "optional": "(Optional)",
   "play_item": "Play {{ title }}",
   "slide_left": "Slide left",
   "slide_right": "Slide right"

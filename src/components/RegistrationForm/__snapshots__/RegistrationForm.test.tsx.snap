@@ -18,6 +18,9 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
         for="text-field_1235_email"
       >
         registration.email
+        <span>
+          optional
+        </span>
       </label>
       <div
         class="container"
@@ -40,6 +43,9 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
         for="text-field_1235_password"
       >
         registration.password
+        <span>
+          optional
+        </span>
       </label>
       <div
         class="container"
@@ -96,28 +102,36 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
     <div
       class="checkbox"
     >
-      <input
-        id="check-box_1235_terms-conditions"
-        name="terms-conditions"
-        type="checkbox"
-      />
-      <label
-        for="check-box_1235_terms-conditions"
-      />
+      <div
+        class="row"
+      >
+        <input
+          id="check-box_1235_terms-conditions"
+          name="terms-conditions"
+          type="checkbox"
+        />
+        <label
+          for="check-box_1235_terms-conditions"
+        />
+      </div>
     </div>
     <div
       class="checkbox"
     >
-      <input
-        id="check-box_1235_email-updates"
-        name="email-updates"
-        type="checkbox"
-      />
-      <label
-        for="check-box_1235_email-updates"
+      <div
+        class="row"
       >
-        registration.email_updates
-      </label>
+        <input
+          id="check-box_1235_email-updates"
+          name="email-updates"
+          type="checkbox"
+        />
+        <label
+          for="check-box_1235_email-updates"
+        >
+          registration.email_updates
+        </label>
+      </div>
     </div>
     <button
       aria-disabled="false"
