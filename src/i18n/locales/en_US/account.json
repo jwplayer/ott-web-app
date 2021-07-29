@@ -69,25 +69,24 @@
     "invalid_email": "",
     "invalid_password": "",
     "lastName": "Last name",
-    "personal_details": "Personal details",
     "phoneNumber": "Mobile number",
     "postCode": "ZIP/Postal code",
-    "state": "State/Province/Region"
+    "state": "State/Province/Region",
+    "title": ""
   },
   "registration": {
     "already_account": "Already have an account?",
     "continue": "Continue",
     "email": "Email",
-    "email_updates": "Yes, I want to receive {{siteName}} updates by email.",
     "field_is_not_valid_email": "Please re-enter your email details",
     "field_required": "This field is required",
     "hide_password": "Hide password",
-    "invalid_email": "Incorrect email",
     "invalid_password": "Incorrect password",
     "password": "Password",
     "password_strength": "Use a minimum of 6 characters (case sensitive) with at least one number or special character and one capital character",
     "sign_up": "Sign up",
-    "terms_conditions": "I accept the <a href={{link}}>Terms and Conditions</a> of Cleeng.",
-    "view_password": "View password"
+    "user_exists": "There is already a user with this email address",
+    "view_password": "View password",
+    "email_updates": "Yes, I want to receive {{siteName}} updates by email."
   }
 }
