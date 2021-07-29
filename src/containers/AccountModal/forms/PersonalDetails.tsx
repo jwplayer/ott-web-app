@@ -122,7 +122,7 @@ const PersonalDetails = () => {
   };
 
   const yepSchema: unknown = getCaptureFields(dummy).fields.reduce(createYupSchema, {});
-  console.info(yepSchema);
+
   const validationSchema: SchemaOf<PersonalDetailsFormData> = object().shape(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     yepSchema as Record<string, AnySchema<any, any, any> | Lazy<any, any> | Reference<unknown>>,

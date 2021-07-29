@@ -25,8 +25,10 @@ export type LoginFormData = {
 export type RegistrationFormData = {
   email: string;
   password: string;
-  termsConditions: boolean;
-  emailUpdates: boolean;
+};
+
+export type ConsentsFormData = {
+  [key: string]: boolean;
 };
 
 export type OfferPeriodicity = 'monthly' | 'yearly';
@@ -135,6 +137,7 @@ export type Consent = {
   version: string;
   value: string;
   label: string;
+  enabledByDefault: boolean;
   required: boolean;
 };
 export type CustomerConsent = {

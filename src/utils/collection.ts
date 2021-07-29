@@ -75,6 +75,20 @@ const formatConsentValues = (publisherConsents?: Consent[], customerConsents?: C
   return values;
 };
 
+const extractConsentValues = (consents?: Consent[]) => {
+  const values: Record<string, boolean> = {};
+
+  if (!consents) {
+    return values;
+  }
+
+  consents?.forEach((consent) => {
+    values[consent.name] = consent.enabledByDefault;
+  });
+
+  return values;
+};
+
 const formatConsentsFromValues = (publisherConsents?: Consent[], values?: GenericFormValues) => {
   const consents: CustomerConsent[] = [];
 
@@ -91,6 +105,27 @@ const formatConsentsFromValues = (publisherConsents?: Consent[], values?: Generi
   return consents;
 };
 
+const checkConsentsFromValues = (publisherConsents?: Consent[], consents?: GenericFormValues) => {
+  const customerConsents: CustomerConsent[] = [];
+  const consentsErrors: string[] = [];
+
+  if (!publisherConsents || !consents) return { customerConsents, consentsErrors };
+
+  publisherConsents.forEach((consent) => {
+    if (consent.required && !consents[consent.name]) {
+      consentsErrors.push(consent.name);
+    }
+
+    customerConsents.push({
+      name: consent.name,
+      version: consent.version,
+      state: consents[consent.name] ? 'accepted' : 'declined',
+    });
+  });
+
+  return { customerConsents, consentsErrors };
+};
+
 export {
   getFiltersFromConfig,
   getFiltersFromSeries,
@@ -101,4 +136,6 @@ export {
   generatePlaylistPlaceholder,
   formatConsentValues,
   formatConsentsFromValues,
+  extractConsentValues,
+  checkConsentsFromValues,
 };
