@@ -17,6 +17,7 @@ module.exports = {
         'seo',
         'auth',
         'menu',
+        'payment',
       ],
     ],
   },

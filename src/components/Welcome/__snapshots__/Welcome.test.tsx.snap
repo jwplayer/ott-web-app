@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Welcome> renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="welcome"
+  >
+    <h2>
+      checkout.welcome_title
+    </h2>
+    <p>
+      checkout.welcome_description
+    </p>
+    <button
+      class="button primary fullWidth large"
+    >
+      <span>
+        checkout.start_watching
+      </span>
+    </button>
+  </div>
+</div>
+`;

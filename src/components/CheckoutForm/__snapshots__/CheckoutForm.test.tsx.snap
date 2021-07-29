@@ -103,14 +103,7 @@ exports[`<CheckoutForm> renders and matches snapshot 1`] = `
     <div
       class="paymentMethods"
     />
-    <button
-      aria-disabled="false"
-      class="button primary fullWidth large"
-    >
-      <span>
-        checkout.continue
-      </span>
-    </button>
+    <div />
   </div>
 </div>
 `;
