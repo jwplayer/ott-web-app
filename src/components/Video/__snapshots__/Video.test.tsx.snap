@@ -36,10 +36,10 @@ exports[`<Video> renders and matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="playButton"
+          class="buttonBar"
         >
           <button
-            class="button primary active fullWidth large"
+            class="button bigButton primary active large"
           >
             <div
               class="startIcon"
@@ -62,10 +62,6 @@ exports[`<Video> renders and matches snapshot 1`] = `
               video:start_watching
             </span>
           </button>
-        </div>
-        <div
-          class="otherButtons"
-        >
           <button
             aria-label="video:add_to_favorites"
             class="button default outlined"

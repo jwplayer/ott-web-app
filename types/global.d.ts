@@ -3,6 +3,7 @@ interface Window {
   configId: string;
   jwplayer?: jwplayer.JWPlayerStatic;
   jwpltx: Jwpltx;
+  AdyenCheckout: Adyen.AdyenCheckoutStatic;
 }
 
 interface HTMLDivElement {

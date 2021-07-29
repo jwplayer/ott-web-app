@@ -145,7 +145,30 @@ export type UpdateOrderResponse = {
   success: boolean;
 };
 
+export type PaymentWithoutDetailsPayload = {
+  orderId: number;
+};
+
+export type PaymentWithAdyenPayload = {
+  orderId: number;
+  card: AdyenPaymentMethod;
+};
+
+export type PaymentWithPayPalPayload = {
+  orderId: number;
+  successUrl: string;
+  cancelUrl: string;
+  errorUrl: string;
+};
+
+export type PaymentWithPayPalResponse = {
+  redirectUrl: string;
+};
+
 export type GetOffer = CleengRequest<GetOfferPayload, Offer>;
 export type CreateOrder = CleengAuthRequest<CreateOrderPayload, CreateOrderResponse>;
 export type UpdateOrder = CleengAuthRequest<UpdateOrderPayload, UpdateOrderResponse>;
 export type GetPaymentMethods = CleengEmptyAuthRequest<PaymentMethodResponse>;
+export type PaymentWithoutDetails = CleengAuthRequest<PaymentWithoutDetailsPayload, Payment>;
+export type PaymentWithAdyen = CleengAuthRequest<PaymentWithAdyenPayload, Payment>;
+export type PaymentWithPayPal = CleengAuthRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;

@@ -93,9 +93,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
   const maybeInjectAnalyticsLibrary = (config: Config) => {
     if (!config.analyticsToken) return;
 
-    return new Promise<void>((resolve) => {
-      addScript('/jwpltx.js', () => resolve());
-    });
+    return addScript('/jwpltx.js');
   };
 
   return (

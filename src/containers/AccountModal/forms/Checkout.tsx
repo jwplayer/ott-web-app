@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
-import { CheckoutStore, createOrder, updateOrder, getPaymentMethods } from '../../../stores/CheckoutStore';
+import { CheckoutStore, createOrder, updateOrder, getPaymentMethods, paymentWithoutDetails, adyenPayment, paypalPayment } from '../../../stores/CheckoutStore';
 import { addQueryParam } from '../../../utils/history';
 import useForm from '../../../hooks/useForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
+import Adyen from '../../../components/Adyen/Adyen';
+import PayPal from '../../../components/PayPal/PayPal';
+import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
+import { addQueryParams } from '../../../utils/formatting';
 
 const Checkout = () => {
   const history = useHistory();
+  const [paymentError, setPaymentError] = useState<string|undefined>(undefined);
   const [updatingOrder, setUpdatingOrder] = useState(false);
   const [couponFormOpen, setCouponFormOpen] = useState(false);
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
@@ -76,6 +81,76 @@ const Checkout = () => {
     }
   };
 
+  const handleNoPaymentRequiredSubmit = async () => {
+    try {
+      setUpdatingOrder(true);
+      setPaymentError(undefined);
+      await paymentWithoutDetails();
+      history.replace(addQueryParam(history, 'u', 'welcome'))
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setPaymentError(error.message);
+      }
+    }
+
+    setUpdatingOrder(false);
+  };
+
+  const handlePayPalSubmit = async () => {
+    try {
+      setPaymentError(undefined);
+      setUpdatingOrder(true);
+      const successUrl = addQueryParams(window.location.href, { 'u': 'welcome' });
+      const cancelUrl = addQueryParams(window.location.href, { 'u': 'paypal-cancelled' });
+      const errorUrl = addQueryParams(window.location.href, { 'u': 'paypal-error' });
+      const response = await paypalPayment(successUrl, cancelUrl, errorUrl);
+
+      if (response.redirectUrl) {
+        window.location.href = response.redirectUrl;
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setPaymentError(error.message);
+      }
+    }
+    setUpdatingOrder(false);
+  };
+
+  const handleAdyenSubmit = useCallback(async (data: AdyenEventData) => {
+    if (!data.isValid) return;
+
+    try {
+      setUpdatingOrder(true);
+      setPaymentError(undefined);
+      await adyenPayment(data.data.paymentMethod);
+      history.replace(addQueryParam(history, 'u', 'welcome'))
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setPaymentError(error.message);
+      }
+    }
+
+    setUpdatingOrder(false);
+  }, [history]);
+
+  const renderPaymentMethod = () => {
+    const paymentMethod = paymentMethods?.find((method) => method.id === paymentMethodId);
+
+    if (!order || !offer) return null;
+
+    if (!order.requiredPaymentDetails) {
+      return <NoPaymentRequired onSubmit={handleNoPaymentRequiredSubmit} error={paymentError} />;
+    }
+
+    if (paymentMethod?.methodName === 'card') {
+      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} />;
+    } else if (paymentMethod?.methodName === 'paypal') {
+      return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
+    }
+
+    return null;
+  };
+
   // loading state
   if (!offer || !order || !paymentMethods) {
     return (
@@ -103,6 +178,7 @@ const Checkout = () => {
         couponFormApplied={couponCodeApplied}
         couponFormSubmitting={couponCodeForm.submitting}
         couponFormError={!!couponCodeForm.errors.couponCode}
+        renderPaymentMethod={renderPaymentMethod}
       />
       {updatingOrder ? <LoadingOverlay inline /> : null}
     </React.Fragment>
