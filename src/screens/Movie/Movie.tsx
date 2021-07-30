@@ -82,7 +82,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const subscriptions = subscriptionsResult?.responseData?.items;
   const hasActiveSubscription = subscriptions?.find((subscription: Subscription) => subscription.status === 'active');
   const allowedToWatch = useMemo<boolean>(
-    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !hasActiveSubscription)),
+    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!hasActiveSubscription)),
     [requiresSubscription, cleengId, user, configHasOffer, hasActiveSubscription],
   );
 
