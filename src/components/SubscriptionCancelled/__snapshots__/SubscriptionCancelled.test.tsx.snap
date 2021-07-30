@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SubscriptionCancelled> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="title"
+    >
+      subscription_cancelled.title
+    </h2>
+    <p
+      class="paragraph"
+    >
+      subscription_cancelled.message
+    </p>
+    <button
+      class="button default outlined fullWidth"
+    >
+      <span>
+        Back to profile
+      </span>
+    </button>
+  </div>
+</div>
+`;

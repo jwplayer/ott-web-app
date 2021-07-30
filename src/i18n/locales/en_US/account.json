@@ -1,4 +1,9 @@
 {
+  "cancel_subscription": {
+    "explanation": "You will be unsubscribed from your current plan by clicking the unsubscribe button below.",
+    "title": "We are sorry to see you go.",
+    "unknown_error_occurred": "An unknown error occurred, please try again later."
+  },
   "checkout": {
     "applicable_tax": "Applicable tax ({{taxRate}}%)",
     "close": "Close",
@@ -101,5 +106,9 @@
     "reset_password": "Edit Password",
     "text": "If you want to edit your password, click 'YES, Reset' to receive password reset instruction on your mail",
     "yes": "Yes, reset"
+  },
+  "subscription_cancelled": {
+    "message": "You have been successfully unsubscribed. Your current plan will expire on {{date}}",
+    "title": "Miss you already."
   }
 }

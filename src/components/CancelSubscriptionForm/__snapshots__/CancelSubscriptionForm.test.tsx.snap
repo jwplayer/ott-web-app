@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CancelSubscriptionForm> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="title"
+    >
+      cancel_subscription.title
+    </h2>
+    <p
+      class="paragraph"
+    >
+      cancel_subscription.explanation
+    </p>
+    <button
+      class="button confirmButton primary fullWidth"
+    >
+      <span>
+        Unsubscribe
+      </span>
+    </button>
+    <button
+      class="button default outlined fullWidth"
+    >
+      <span>
+        No, thanks
+      </span>
+    </button>
+  </div>
+</div>
+`;

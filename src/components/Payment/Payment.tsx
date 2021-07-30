@@ -19,10 +19,12 @@ type Props = {
   panelClassName?: string;
   panelHeaderClassName?: string;
   onCompleteSubscriptionClick?: () => void;
+  onCancelSubscriptionClick?: () => void;
 };
 
 const Payment = ({
   onCompleteSubscriptionClick,
+  onCancelSubscriptionClick,
   activePaymentDetail,
   activeSubscription,
   transactions,
@@ -40,16 +42,23 @@ const Payment = ({
           <h3>{t('user:payment.subscription_details')}</h3>
         </div>
         {activeSubscription ? (
-          <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
-            <p>
-              <strong>{t('user:payment.monthly_subscription')}</strong> <br />
-              {t('user:payment.next_billing_date_on')} {formatDate(activeSubscription.expiresAt)}
-            </p>
-            <p className={styles.price}>
-              <strong>{formatPrice(activeSubscription.totalPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
-              <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
-            </p>
-          </div>
+          <React.Fragment>
+            <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
+              <p>
+                <strong>{t('user:payment.monthly_subscription')}</strong> <br />
+                {activeSubscription.status === 'active'
+                  ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
+                  : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
+              </p>
+              <p className={styles.price}>
+                <strong>{formatPrice(activeSubscription.totalPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
+                <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
+              </p>
+            </div>
+            {activeSubscription.status === 'active' ? (
+              <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
+            ) : null}
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <p>{t('user:payment.no_subscription')}</p>
@@ -104,4 +113,5 @@ const Payment = ({
     </>
   );
 };
+
 export default Payment;

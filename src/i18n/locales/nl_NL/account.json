@@ -1,4 +1,9 @@
 {
+  "cancel_subscription": {
+    "explanation": "",
+    "title": "",
+    "unknown_error_occurred": ""
+  },
   "checkout": {
     "applicable_tax": "",
     "close": "",
@@ -97,5 +102,9 @@
     "reset_password": "",
     "text": "",
     "yes": ""
+  },
+  "subscription_cancelled": {
+    "message": "",
+    "title": ""
   }
 }
