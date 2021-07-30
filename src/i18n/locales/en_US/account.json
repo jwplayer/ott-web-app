@@ -97,9 +97,28 @@
     "email_updates": "Yes, I want to receive {{siteName}} updates by email."
   },
   "reset": {
+    "back_login": "Back to login",
+    "confirm": "Confirm",
+    "email": "Email",
+    "email_me": "Email me",
+    "forgot_password": "Forgot password",
+    "forgot_text": "We will send you an email with instructions on how to reset your password.",
+    "hide_password": "Hide password",
+    "invalid_link": "Invalid link",
+    "invalid_password": "Invalid password",
+    "invalid_token": "Invalid link",
+    "link_sent": "Password link sent",
+    "link_sent_text": "Please check your inbox at {{email}}",
     "no": "No, thanks",
+    "not_sure": "Not sure that was the right email address?",
+    "password": "Password",
+    "password_reset": "Password reset",
     "reset_password": "Edit Password",
     "text": "If you want to edit your password, click 'YES, Reset' to receive password reset instruction on your mail",
-    "yes": "Yes, reset"
+    "try_again": "Try again",
+    "view_password": "View password",
+    "wrong_email": "Wrong email",
+    "yes": "Yes, reset",
+    "password_reset_text": ""
   }
 }
