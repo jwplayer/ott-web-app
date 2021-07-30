@@ -84,6 +84,7 @@ const RegistrationForm: React.FC<Props> = ({
         helperText={errors.email}
         name="email"
         type="email"
+        required
       />
       <TextField
         value={values.password}
@@ -102,6 +103,7 @@ const RegistrationForm: React.FC<Props> = ({
             {viewPassword ? <Visibility /> : <VisibilityOff />}
           </IconButton>
         }
+        required
       />
       <PasswordStrength password={values.password} />
       {publisherConsents?.map((consent, index) => (
