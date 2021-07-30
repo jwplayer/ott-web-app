@@ -85,16 +85,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       playerRef.current = window.jwplayer(playerElementRef.current);
 
       playerRef.current.setup({
-        playlist: [
-          {
-            mediaid: item.mediaid,
-            image: item.image,
-            title: item.title,
-            description: item.description,
-            sources: item.sources.map((source) => ({ ...source })),
-            tracks: item.tracks,
-          },
-        ],
+        playlist: [item],
         aspect: false,
         width: '100%',
         height: '100%',

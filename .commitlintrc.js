@@ -7,6 +7,7 @@ module.exports = {
         'home',
         'playlist',
         'videodetail',
+        'player',
         'series',
         'search',
         'user',
