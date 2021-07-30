@@ -1,6 +1,7 @@
 {
   "checkout": {
     "applicable_tax": "Applicable tax ({{taxRate}}%)",
+    "close": "Close",
     "continue": "Continue",
     "coupon_discount": "Coupon discount",
     "credit_card": "Credit Card",
@@ -8,11 +9,18 @@
     "discount_period_plural": "For {{count}} {{period}}",
     "monthly": "Monthly subscription",
     "no_payment_needed": "No payment needed",
+    "payment_cancelled": "Payment cancelled",
+    "payment_cancelled_message": "You have cancelled the payment",
+    "payment_error": "Payment failed",
     "payment_method": "Payment method",
     "payment_method_fee": "Payment method fee",
     "paypal": "PayPal",
+    "paypal_instructions": "Clicking 'continue' will bring you to the PayPal site.",
     "redeem_coupon": "Redeem coupon",
+    "start_watching": "Start watching ({{countdown}})",
     "total_price": "Total",
+    "welcome_description": "Thank you for subscribing to {{siteName}}. Please enjoy all our content.",
+    "welcome_title": "Welcome to {{siteName}}",
     "yearly": "Yearly subscription"
   },
   "choose_offer": {
@@ -57,11 +65,12 @@
     "year_plural": "years"
   },
   "personal_details": {
-    "address": "Adress line one",
-    "address2": "Adress line two",
-    "birthDate": "Date of birth",
+    "address": "Address line 1",
+    "address2": "Address line 2",
+    "birth_date": "Date of birth",
+    "birth_date_not_valid": "Birth of date is not a valid date",
     "city": "City",
-    "companyName": "Company name",
+    "company_name": "Company name",
     "continue": "Continue",
     "country": "Country",
     "field_required": "",
@@ -71,8 +80,14 @@
     "lastName": "Last name",
     "phoneNumber": "Mobile number",
     "postCode": "ZIP/Postal code",
+    "fist_name": "First name",
+    "last_name": "Last name",
+    "no_answer": "No answer",
+    "phone_number": "Phone number",
+    "post_code": "Zip/Postal Code",
     "state": "State/Province/Region",
-    "title": ""
+    "this_field_is_required": "This field is required",
+    "title": "Personal details"
   },
   "registration": {
     "already_account": "Already have an account?",

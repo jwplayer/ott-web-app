@@ -22,6 +22,9 @@ exports[`<Account> renders and matches snapshot 1`] = `
             for="text-field_1235_email"
           >
             account.email
+            <span>
+              optional
+            </span>
           </label>
           <p>
             email@domain.com
@@ -82,6 +85,9 @@ exports[`<Account> renders and matches snapshot 1`] = `
               for="text-field_1235_firstName"
             >
               account.firstname
+              <span>
+                optional
+              </span>
             </label>
             <p>
               John
@@ -95,6 +101,9 @@ exports[`<Account> renders and matches snapshot 1`] = `
               for="text-field_1235_lastName"
             >
               account.lastname
+              <span>
+                optional
+              </span>
             </label>
             <p>
               Doe

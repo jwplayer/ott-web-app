@@ -36,7 +36,8 @@
 }
 
 .info {
-  width: 450px;
+  width: 70%;
+  max-width: 650px;
   min-height: 380px;
 
   @include responsive.tablet-only() {
@@ -109,28 +110,26 @@
   letter-spacing: 0.5px;
 }
 
-.playButton {
-  justify-content: center;
-  margin-bottom: 8px;
-}
-
-.otherButtons {
+.buttonBar {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
 
   > button {
-    width: 100%;
-    margin-right: 8px;
-  }
-
-  > button:last-child {
-    margin-right: 0;
+    margin: 5px;
   }
 
   @include responsive.mobile-and-tablet() {
+    flex-wrap: wrap;
+
     > button {
+      flex: 1;
       padding: 0 12px;
+    }
+
+    .bigButton {
+      flex-basis: 100%;
     }
   }
 
@@ -139,14 +138,6 @@
 
     > button:first-child {
       margin-bottom: 8px;
-    }
-
-    > button:not(.trailerButton) {
-      flex: 1;
-    }
-
-    .trailerButton {
-      margin-right: 0;
     }
   }
 }

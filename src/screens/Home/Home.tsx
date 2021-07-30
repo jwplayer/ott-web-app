@@ -98,7 +98,7 @@ const Home = (): JSX.Element => {
 
     const calculateFeatured = () => {
       const tilesToShow = featuredTileBreakpoints[breakpoint];
-      const shelfMetaHeight = 24;
+      const shelfMetaHeight = 50;
       const shelfHorizontalMargin = isDesktop ? document.body.offsetWidth * 0.4 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);

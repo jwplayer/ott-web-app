@@ -62,17 +62,48 @@ export type PersonalDetailsCustomField = {
   validations: Record<string, unknown>[] | null;
 };
 
-export type PersonalDetailsFormData = {
-  firstName?: string;
-  lastName?: string;
-  birthday?: string;
-  companyName?: string;
-  phoneNumber?: number;
+export type CaptureFirstNameLastName = {
+  firstName: string;
+  lastName: string;
+};
+
+export type CaptureAddress = {
   address?: string;
+  address2?: string;
   city?: string;
-  region?: string;
-  zipCode?: string;
-  [key: string]: string;
+  state?: string;
+  postCode?: string;
+  country?: string;
+};
+
+export type CleengCaptureField = {
+  key: string;
+  enabled: boolean;
+  required: boolean;
+  answer: string | Record<string, string | null> | null;
+};
+
+export type CleengCaptureQuestionField = {
+  key: string;
+  enabled: boolean;
+  required: boolean;
+  value: string;
+  question: string;
+  answer: string | null;
+};
+
+export type PersonalDetailsFormData = {
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  companyName: string;
+  phoneNumber: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  postCode: string;
+  country: string;
 };
 
 export type GetPublisherConsentsPayload = {
@@ -160,6 +191,40 @@ export type LocalesData = {
   ipAddress: string;
 };
 
+export type GetCaptureStatusPayload = {
+  customerId: string;
+};
+
+export type GetCaptureStatusResponse = {
+  isCaptureEnabled: boolean;
+  shouldCaptureBeDisplayed: boolean;
+  settings: Array<CleengCaptureField | CleengCaptureQuestionField>;
+};
+
+export type CaptureCustomAnswer = {
+  questionId: string;
+  question: string;
+  value: string;
+};
+
+export type Capture = {
+  firstName?: string;
+  address?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  postCode?: string;
+  country?: string;
+  birthDate?: string;
+  companyName?: string;
+  phoneNumber?: string;
+  customAnswers?: CaptureCustomAnswer[];
+}
+
+export type UpdateCaptureAnswersPayload = {
+  customerId: string;
+} & Capture;
+
 type Login = CleengRequest<LoginPayload, AuthData>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
 type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, Record<string, Consent[]>>;
@@ -171,3 +236,5 @@ type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
 type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, Customer>;
 type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = CleengEmptyRequest<LocalesData>;
+type GetCaptureStatus = CleengAuthRequest<GetCaptureStatusPayload, GetCaptureStatusResponse>;
+type UpdateCaptureAnswers = CleengAuthRequest<UpdateCaptureAnswersPayload, Capture>;

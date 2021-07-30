@@ -5,7 +5,9 @@
   "filter_videos_by_genre": "",
   "home": "",
   "live": "",
+  "optional": "",
   "play_item": "",
   "slide_left": "",
-  "slide_right": ""
+  "slide_right": "",
+  "show_page": ""
 }

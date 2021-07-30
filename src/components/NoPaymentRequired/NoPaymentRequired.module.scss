@@ -1,0 +1,11 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.noPaymentRequired {
+  p {
+    font-family: theme.$body-font-family;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+  }
+}

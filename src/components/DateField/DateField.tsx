@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
 
@@ -11,20 +12,30 @@ type Props = {
   placeholder?: string;
   name?: string;
   value: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  format?: string,
+  onChange?: (dateString: string) => void;
   onFocus?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;
   error?: boolean;
+  required?: boolean;
 };
 
-const DateField: React.FC<Props> = ({
-  className,
-  label,
-  error,
-  helperText,
+const parseDateString = (dateString: string) => {
+  const date = new Date(dateString);
 
-  ...rest
-}: Props) => {
+  return isNaN(date.getTime()) ? null : date;
+};
+
+const DateField: React.FC<Props> = ({ className, label, error, helperText, value, onChange, format = 'YYYY-MM-DD', ...rest }: Props) => {
+  const { t } = useTranslation('common');
+  const parsedDate = parseDateString(value);
+
+  const [date, setDate] = useState({
+    date: parsedDate?.getDate().toString() || '',
+    month: parsedDate ? (parsedDate.getMonth() + 1).toString() : '',
+    year: parsedDate?.getFullYear().toString() || '',
+  });
+
   const id = useOpaqueId('text-field', rest.name);
 
   const DateFieldClassName = classNames(
@@ -35,25 +46,44 @@ const DateField: React.FC<Props> = ({
     className,
   );
 
-  const formatDate = (event: React.KeyboardEvent) => {
-    const format: string = 'mm/dd/yyyy';
-    if (!event.ctrlKey && !event.metaKey && (event.keyCode == 32 || event.keyCode > 46)) {
-      const target: Partial<HTMLTextAreaElement> = event.target;
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.currentTarget.select();
+  };
 
-      const match = new RegExp(
-        format
-          .replace(/(\w+)\W(\w+)\W(\w+)/, '^\\s*($1)\\W*($2)?\\W*($3)?([0-9]*).*')
-          .replace(/mm|dd/g, '\\d{2}')
-          .replace(/yy/g, '\\d{4}'),
-      );
-      const replacer = format.match(/\W/) as unknown as string;
-      if (!target.value) return;
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!/^[0-9]$/.test(event.key) && event.key !== 'Tab' && event.key !== 'Backspace') {
+      return event.preventDefault();
+    }
+  };
 
-      const replace = '$1/$2/$3$4'.replace(/\//g, replacer);
-      target.value = target.value
-        .replace(/(^|\W)(?=\d\W)/g, '$10') // padding
-        .replace(match, replace) // fields
-        .replace(/(\W)+/g, '$1'); // remove repeats}
+  const getNewValue = (value: string, min?: number, max?: number) => {
+    const parsed = parseInt(value);
+    if (isNaN(parsed)) return '';
+
+    if (min && max) {
+      return Math.min(31, Math.max(1, parsed)).toString();
+    }
+
+    return parsed.toString();
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setDate(current => {
+      const date = name === 'date' ?  getNewValue(value, 1, 31) : current.date;
+      const month = name === 'month' ?  getNewValue(value, 1, 12) : current.month;
+      const year = name === 'year' ?  getNewValue(value).slice(0, 4) : current.year;
+
+      if (onChange) {
+        onChange(date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '');
+      }
+
+      return { date, month, year };
+    });
+
+    if ((name === 'month' || name === 'date') && value.length === 2) {
+      (event.currentTarget?.nextElementSibling as HTMLInputElement).focus();
     }
   };
 
@@ -61,9 +91,47 @@ const DateField: React.FC<Props> = ({
     <div className={DateFieldClassName}>
       <label htmlFor={id} className={styles.label}>
         {label}
+        {!rest.required ? <span>{t('optional')}</span> : null}
       </label>
       <div className={styles.container}>
-        <input className={styles.input} onKeyUp={formatDate} maxLength={10} type="text" id={id} {...rest} />
+        <input
+          className={styles.input}
+          name="date"
+          placeholder="dd"
+          value={date.date}
+          onFocus={handleFocus}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          maxLength={2}
+          type="number"
+          id={id}
+        />
+        {' / '}
+        <input
+          className={styles.input}
+          name="month"
+          placeholder="mm"
+          value={date.month}
+          onFocus={handleFocus}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          maxLength={2}
+          type="number"
+          id={id}
+        />
+        {' / '}
+        <input
+          className={styles.input}
+          name="year"
+          placeholder="yyyy"
+          value={date.year}
+          onFocus={handleFocus}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          maxLength={4}
+          type="number"
+          id={id}
+        />
       </div>
       {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
     </div>

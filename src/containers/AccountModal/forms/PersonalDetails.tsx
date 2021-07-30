@@ -1,146 +1,123 @@
-import React, { useCallback } from 'react';
-import { object, SchemaOf, AnySchema } from 'yup';
-import type { PersonalDetailsFormData, PersonalDetailsCustomField } from 'types/account';
+import React, { useState } from 'react';
+import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import type Reference from 'yup/lib/Reference';
-import type Lazy from 'yup/lib/Lazy';
+import { mixed, object, string } from 'yup';
+import { useQuery } from 'react-query';
 
-import { createYupSchema } from '../../../utils/yupSchemaCreator';
 import PersonalDetailsForm from '../../../components/PersonalDetailsForm/PersonalDetailsForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { addQueryParam } from '../../../utils/history';
-import { deconstructCustomField, CleengCaptureField } from '../../../utils/cleengUtils';
+import { getCaptureStatus, updateCaptureAnswers } from '../../../stores/AccountStore';
+import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 
-const temp = (t: PersonalDetailsFormData) => {
-  t;
+const yupConditional = (required: boolean, message: string) => {
+  return required ? string().required(message) : mixed().notRequired();
 };
 
 const PersonalDetails = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
+  const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
+  const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
+  const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 
-  // i18next dynamic labels
-  // t('personal_details.firstName');
-  // t('personal_details.lastName');
-  // t('personal_details.birthDate');
-  // t('personal_details.companyName');
-  // t('personal_details.phoneNumber');
-  // t('personal_details.address');
-  // t('personal_details.address2');
-  // t('personal_details.city');
-  // t('personal_details.country');
-  // t('personal_details.state');
-  // t('personal_details.postCode');
-  // t('registration.field_required');
+  const fields = data ? Object.fromEntries(data.settings.map((item) => [item.key, item])) : {};
+  const questions = data ? data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[] : [];
 
-  const getCaptureFields = useCallback(
-    (settings: CleengCaptureField[]) => {
-      const fields: PersonalDetailsCustomField[] = [];
-      const initialValues: PersonalDetailsFormData = {};
+  const initialValues: PersonalDetailsFormData = {
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    companyName: '',
+    phoneNumber: '',
+    address: '',
+    address2: '',
+    city: '',
+    state: '',
+    postCode: '',
+    country: '',
+  };
 
-      settings.forEach((field) => {
-        const { key, required, answer, question, enabled } = field;
+  const questionChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.type === 'checkbox' && !event.target.checked ? '' : event.target.value;
 
-        if (!enabled) return;
+    setQuestionValues((current) => ({ ...current, [event.target.name]: value }));
+  };
 
-        if (key === 'address' || key === 'firstNameLastName') {
-          for (const nestedField in answer as Record<string, unknown>) {
-            initialValues[nestedField] = '';
+  const PersonalDetailSubmitHandler: UseFormOnSubmitHandler<PersonalDetailsFormData> = async (formData, { setErrors, setSubmitting, validate }) => {
+    const requiredMessage = t('personal_details.this_field_is_required');
+    const schema = object().shape({
+      firstName: yupConditional(!!fields.firstNameLastName?.required, requiredMessage),
+      lastName: yupConditional(!!fields.firstNameLastName?.required, requiredMessage),
+      address1: yupConditional(!!fields.address?.required, requiredMessage),
+      address2: yupConditional(!!fields.address?.required, requiredMessage),
+      postCode: yupConditional(!!fields.address?.required, requiredMessage),
+      state: yupConditional(!!fields.address?.required, requiredMessage),
+      city: yupConditional(!!fields.address?.required, requiredMessage),
+      companyName: yupConditional(!!fields.companyName?.required, requiredMessage),
+      birthDate: fields.birthDate?.required
+        ? string()
+            .required(requiredMessage)
+            .matches(/\d{4}-\d{2}-\d{2}/, t('personal_details.birth_date_not_valid'))
+        : mixed().notRequired(),
+      phoneNumber: yupConditional(!!fields.phoneNumber?.required, requiredMessage),
+    });
 
-            fields.push({
-              name: nestedField,
-              label: t(`personal_details.${nestedField}`),
-              validationType: 'string',
-              type: 'text',
-              validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
-            });
-          }
-        }
+    const errors: Record<string, string> = {};
 
-        if (key === 'companyName') {
-          initialValues[key] = '';
+    questions.forEach((question) => {
+      if (question.enabled && question.required && !questionValues[question.key]) {
+        errors[question.key] = t('personal_details.this_field_is_required');
+      }
+    });
 
-          fields.push({
-            name: key,
-            label: t(`personal_details.${key}`),
-            validationType: 'string',
-            type: 'text',
-            validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
-          });
-        }
+    setQuestionErrors(errors);
 
-        if (key === 'birthDate') {
-          initialValues[key] = '';
+    // we have validation errors
+    if (!validate(schema) || Object.keys(errors).length) {
+      setSubmitting(false);
+      return;
+    }
 
-          fields.push({
-            name: key,
-            label: t(`personal_details.${key}`),
-            validationType: 'string',
-            type: 'date',
-            validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
-          });
-        }
 
-        if ('question' in field) {
-          initialValues[key] = '';
-
-          fields.push({
-            name: key,
-            label: t(`personal_details.${key}`),
-            type: deconstructCustomField(field).type,
-            validationType: deconstructCustomField(field).type,
-            validations: required ? [{ type: 'required', params: [t('personal_details.field_required')] }] : null,
-            value: deconstructCustomField(field).value,
-            values: deconstructCustomField(field).values,
-            question,
-          });
-        }
-      });
-
-      return { fields, initialValues };
-    },
-    [t],
-  );
-
-  const PersonalDetailsubmitHandler: UseFormOnSubmitHandler<PersonalDetailsFormData> = async (formData, { setErrors, setSubmitting }) => {
     try {
-      await temp(formData);
-
+      const removeEmpty = (obj: Record<string,unknown>) => Object.fromEntries(Object.keys(obj).filter(key => obj[key] !== '').map(key => [key, obj[key]]));
+      const customAnswers = questions.map(question => ({ question: question.question, questionId: question.key, value: questionValues[question.key] } as CaptureCustomAnswer));
+      await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
       history.push(addQueryParam(history, 'u', 'personal-details'));
     } catch (error: unknown) {
       if (error instanceof Error) {
-        if (error.message.toLowerCase().includes('invalid param email')) {
-          setErrors({ email: t('personal_details.invalid_email') });
-        } else if (error.message.toLowerCase().includes('invalid param password')) {
-          setErrors({ form: t('personal_details.invalid_password') });
-        }
+        setErrors({ form: error.message });
       }
     }
 
     setSubmitting(false);
   };
 
-  const yepSchema: unknown = getCaptureFields(dummy).fields.reduce(createYupSchema, {});
-
-  const validationSchema: SchemaOf<PersonalDetailsFormData> = object().shape(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    yepSchema as Record<string, AnySchema<any, any, any> | Lazy<any, any> | Reference<unknown>>,
-  ) as SchemaOf<PersonalDetailsFormData>;
-
-  const initialValues: PersonalDetailsFormData = getCaptureFields(dummy).initialValues;
-
-  const { handleSubmit, handleChange, values, errors, submitting } = useForm<PersonalDetailsFormData>(
+  const { setValue, handleSubmit, handleChange, values, errors, submitting } = useForm<PersonalDetailsFormData>(
     initialValues,
-    PersonalDetailsubmitHandler,
-    validationSchema,
+    PersonalDetailSubmitHandler,
   );
+
+  if (isLoading) {
+    return (
+      <div style={{ height: 400 }}>
+        <LoadingOverlay inline />
+      </div>
+    );
+  }
 
   return (
     <PersonalDetailsForm
-      fields={getCaptureFields(dummy).fields}
+      fields={fields}
+      questions={questions}
+      onQuestionChange={questionChangeHandler}
+      questionValues={questionValues}
+      questionErrors={questionErrors}
       onSubmit={handleSubmit}
       onChange={handleChange}
+      setValue={setValue}
       values={values}
       errors={errors}
       submitting={submitting}
@@ -149,70 +126,3 @@ const PersonalDetails = () => {
 };
 
 export default PersonalDetails;
-
-const dummy = [
-  {
-    key: 'firstNameLastName',
-    enabled: true,
-    required: false,
-    answer: {
-      firstName: null,
-      lastName: null,
-    },
-  },
-  {
-    key: 'birthDate',
-    enabled: true,
-    required: true,
-    answer: null,
-  },
-  {
-    key: 'companyName',
-    enabled: false,
-    required: true,
-    answer: null,
-  },
-  {
-    key: 'phoneNumber',
-    enabled: true,
-    required: true,
-    answer: null,
-  },
-  {
-    key: 'address',
-    enabled: true,
-    required: false,
-    answer: {
-      address: null,
-      address2: null,
-      city: null,
-      state: null,
-      postCode: null,
-      country: null,
-    },
-  },
-  {
-    key: 'custom_1',
-    enabled: true,
-    required: true,
-    value: 'one',
-    question: 'Which option do you prefer?',
-    answer: null,
-  },
-  {
-    key: 'custom_2',
-    enabled: true,
-    required: true,
-    value: 'one;two;three',
-    question: 'Which option do you prefer?',
-    answer: '',
-  },
-  {
-    key: 'custom_3',
-    enabled: true,
-    required: true,
-    value: 'one;two',
-    question: 'Which option do you prefer?',
-    answer: '',
-  },
-];

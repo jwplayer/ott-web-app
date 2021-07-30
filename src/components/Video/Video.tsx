@@ -121,8 +121,10 @@ const Video: React.FC<Props> = ({
             {isSeries && <div className={styles.seriesMeta}>{seriesMeta}</div>}
           </div>
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
-          <div className={styles.playButton}>
+
+          <div className={styles.buttonBar}>
             <Button
+              className={styles.bigButton}
               color="primary"
               variant="contained"
               size="large"
@@ -130,7 +132,7 @@ const Video: React.FC<Props> = ({
               startIcon={<Play />}
               onClick={startPlay}
               active={play}
-              fullWidth
+              fullWidth={breakpoint < Breakpoint.md}
             >
               {progress ? (
                 <div className={styles.progressRail}>
@@ -138,17 +140,15 @@ const Video: React.FC<Props> = ({
                 </div>
               ) : null}
             </Button>
-          </div>
-          <div className={styles.otherButtons}>
             {trailerItem && (
               <Button
-                className={styles.trailerButton}
+                className={styles.bigButton}
                 label={t('video:trailer')}
                 aria-label={t('video:watch_trailer')}
                 startIcon={<PlayTrailer />}
                 onClick={onTrailerClick}
                 active={playTrailer}
-                fullWidth={breakpoint < Breakpoint.sm}
+                fullWidth={breakpoint < Breakpoint.md}
               />
             )}
             <Button
@@ -157,6 +157,7 @@ const Video: React.FC<Props> = ({
               startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
               onClick={onFavoriteButtonClick}
               color={isFavorited ? 'primary' : 'default'}
+              fullWidth={breakpoint < Breakpoint.md}
             />
             {enableSharing && (
               <Button
@@ -164,6 +165,7 @@ const Video: React.FC<Props> = ({
                 startIcon={hasShared ? <Check /> : <Share />}
                 onClick={onShareClick}
                 active={hasShared}
+                fullWidth={breakpoint < Breakpoint.md}
               />
             )}
           </div>

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import useOpaqueId from '../../hooks/useOpaqueId';
 
 import styles from './TextField.module.scss';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   className?: string;
@@ -41,6 +42,7 @@ const TextField: React.FC<Props> = ({
   ...rest
 }: Props) => {
   const id = useOpaqueId('text-field', rest.name);
+  const { t } = useTranslation('common');
   const InputComponent = multiline ? 'textarea' : 'input';
   const textFieldClassName = classNames(
     styles.textField,
@@ -68,6 +70,7 @@ const TextField: React.FC<Props> = ({
     <div className={textFieldClassName}>
       <label htmlFor={id} className={styles.label}>
         {label}
+        {!rest.required ? <span>{t('optional')}</span> : null}
       </label>
       {editing ? (
         <div className={styles.container}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { PersonalDetailsFormData, PersonalDetailsCustomField } from 'types/account';
+import type { PersonalDetailsFormData, CleengCaptureField, CleengCaptureQuestionField } from 'types/account';
 import type { FormErrors } from 'types/form';
 
 import TextField from '../TextField/TextField';
@@ -15,85 +15,173 @@ import styles from './PersonalDetailsForm.module.scss';
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  setValue: (key: keyof PersonalDetailsFormData, value: string) => void;
   error?: string;
   errors: FormErrors<PersonalDetailsFormData>;
   values: PersonalDetailsFormData;
   submitting: boolean;
-  fields: PersonalDetailsCustomField[];
+  fields: Record<string, CleengCaptureField>;
+  questions: CleengCaptureQuestionField[];
+  onQuestionChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  questionValues: Record<string, string>;
+  questionErrors: Record<string, string>;
 };
 
-const PersonalDetailsForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, fields }: Props) => {
+const PersonalDetailsForm: React.FC<Props> = ({
+  onSubmit,
+  onChange,
+  setValue,
+  values,
+  errors,
+  submitting,
+  fields,
+  questions,
+  onQuestionChange,
+  questionValues,
+  questionErrors,
+}: Props) => {
   const { t } = useTranslation('account');
+  const renderQuestion = ({ value, key, question, required }: CleengCaptureQuestionField) => {
+    const values = value?.split(';') || [];
+    const props = {
+      name: key,
+      onChange: onQuestionChange,
+      error: !!questionErrors[key],
+      helperText: questionErrors[key],
+      required,
+    };
 
-  const renderCustomFields = () =>
-    fields.map((field, index) => {
-      if (field.type === 'dropdown') {
-        return (
-          <Dropdown
-            key={index}
-            value={values[field.name]}
-            onChange={onChange}
-            label={field.question}
-            options={field.values}
-            name={field.name}
-            fullWidth
-          />
-        );
-      }
-
-      if (field.type === 'radio') {
-        return <Radio name={field.name} header={field.question} key={index} values={field.values} onChange={onChange} />;
-      }
-
-      if (field.type === 'checkbox') {
-        return (
-          <Checkbox
-            header={field.question}
-            key={index}
-            checked={false}
-            value={field.question ?? ''}
-            onChange={onChange}
-            label={field.label}
-            name={field.name}
-          />
-        );
-      }
-
-      if (field.type === 'date') {
-        return (
-          <DateField
-            key={index}
-            value={values[field.name]}
-            onChange={onChange}
-            label={field.label}
-            placeholder={'mm/dd/yyyy'}
-            error={!!errors[field.name]}
-            helperText={errors[field.name]}
-            name={field.name}
-          />
-        );
-      }
-
+    if (values.length === 1) {
+      return <Checkbox checked={!!questionValues[key]} value={values[0]} header={question} label={values[0]} {...props} />;
+    } else if (values.length === 2) {
+      return <Radio values={values} value={questionValues[key]} header={question} {...props} />;
+    } else if (values.length > 2) {
       return (
-        <TextField
-          key={index}
-          value={values[field.name]}
-          onChange={onChange}
-          label={field.label}
-          placeholder={field.label}
-          error={!!errors[field.name] || !!errors.form}
-          helperText={errors[field.name]}
-          name={field.name}
-          type={field.type}
-        />
+        <Dropdown options={values} value={questionValues[key]} label={question} defaultLabel={t('personal_details.no_answer')} {...props} fullWidth />
       );
-    });
+    }
+
+    return null;
+  };
 
   return (
-    <form className={styles.form} onSubmit={onSubmit} data-testid="personal_details-form">
+    <form className={styles.form} onSubmit={onSubmit} data-testid="personal_details-form" noValidate>
       <h2 className={styles.title}>{t('personal_details.title')}</h2>
       {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
-      {renderCustomFields()}
+      {fields.firstNameLastName?.enabled ? (
+        <React.Fragment>
+          <TextField
+            value={values.firstName}
+            onChange={onChange}
+            label={t('personal_details.fist_name')}
+            placeholder={t('personal_details.fist_name')}
+            error={!!errors.firstName || !!errors.form}
+            helperText={errors.firstName}
+            required={fields.firstNameLastName.required}
+            name="firstName"
+          />
+          <TextField
+            value={values.lastName}
+            onChange={onChange}
+            label={t('personal_details.last_name')}
+            placeholder={t('personal_details.last_name')}
+            error={!!errors.lastName || !!errors.form}
+            helperText={errors.lastName}
+            required={fields.firstNameLastName.required}
+            name="lastName"
+          />
+        </React.Fragment>
+      ) : null}
+      {fields.companyName?.enabled ? (
+        <TextField
+          value={values.companyName}
+          onChange={onChange}
+          label={t('personal_details.company_name')}
+          placeholder={t('personal_details.company_name')}
+          error={!!errors.companyName || !!errors.form}
+          helperText={errors.companyName}
+          required={fields.companyName.required}
+          name="companyName"
+        />
+      ) : null}
+      {fields.address?.enabled ? (
+        <React.Fragment>
+          <TextField
+            value={values.address}
+            onChange={onChange}
+            label={t('personal_details.address')}
+            placeholder={t('personal_details.address')}
+            error={!!errors.address || !!errors.form}
+            helperText={errors.address}
+            required={fields.address.required}
+            name="address"
+          />
+          <TextField
+            value={values.address2}
+            onChange={onChange}
+            label={t('personal_details.address2')}
+            placeholder={t('personal_details.address2')}
+            error={!!errors.address2 || !!errors.form}
+            helperText={errors.address2}
+            name="address2"
+          />
+          <TextField
+            value={values.city}
+            onChange={onChange}
+            label={t('personal_details.city')}
+            placeholder={t('personal_details.city')}
+            error={!!errors.city || !!errors.form}
+            helperText={errors.city}
+            required={fields.address.required}
+            name="city"
+          />
+          <TextField
+            value={values.state}
+            onChange={onChange}
+            label={t('personal_details.state')}
+            placeholder={t('personal_details.state')}
+            error={!!errors.state || !!errors.form}
+            helperText={errors.state}
+            required={fields.address.required}
+            name="state"
+          />
+          <TextField
+            value={values.postCode}
+            onChange={onChange}
+            label={t('personal_details.post_code')}
+            placeholder={t('personal_details.post_code')}
+            error={!!errors.postCode || !!errors.form}
+            helperText={errors.postCode}
+            required={fields.address.required}
+            name="postCode"
+          />
+        </React.Fragment>
+      ) : null}
+      {fields.phoneNumber?.enabled ? (
+        <TextField
+          value={values.phoneNumber}
+          onChange={onChange}
+          label={t('personal_details.phone_number')}
+          placeholder={t('personal_details.phone_number')}
+          error={!!errors.phoneNumber || !!errors.form}
+          helperText={errors.phoneNumber}
+          required={fields.phoneNumber.required}
+          name="phoneNumber"
+        />
+      ) : null}
+      {fields.birthDate?.enabled ? (
+        <DateField
+          value={values.birthDate}
+          onChange={value => setValue('birthDate', value)}
+          label={t('personal_details.birth_date')}
+          placeholder={t('personal_details.birth_date')}
+          error={!!errors.birthDate || !!errors.form}
+          helperText={errors.birthDate}
+          required={fields.birthDate.required}
+          name="birthDate"
+        />
+      ) : null}
+      {questions.map((question) => renderQuestion(question))}
       <Button
         className={styles.continue}
         type="submit"

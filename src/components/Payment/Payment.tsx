@@ -18,9 +18,11 @@ type Props = {
   isLoading: boolean;
   panelClassName?: string;
   panelHeaderClassName?: string;
+  onCompleteSubscriptionClick?: () => void;
 };
 
 const Payment = ({
+  onCompleteSubscriptionClick,
   activePaymentDetail,
   activeSubscription,
   transactions,
@@ -51,7 +53,7 @@ const Payment = ({
         ) : (
           <React.Fragment>
             <p>{t('user:payment.no_subscription')}</p>
-            <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} />
+            <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} onClick={onCompleteSubscriptionClick} />
           </React.Fragment>
         )}
       </div>

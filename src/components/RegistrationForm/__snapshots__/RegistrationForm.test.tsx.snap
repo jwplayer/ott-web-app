@@ -19,6 +19,9 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
         for="text-field_1235_email"
       >
         registration.email
+        <span>
+          optional
+        </span>
       </label>
       <div
         class="container"
@@ -41,6 +44,9 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
         for="text-field_1235_password"
       >
         registration.password
+        <span>
+          optional
+        </span>
       </label>
       <div
         class="container"

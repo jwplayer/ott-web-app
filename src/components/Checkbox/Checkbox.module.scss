@@ -4,8 +4,8 @@
 .checkbox {
   display: inline-block;
 
-  > label {
-    margin: variables.$base-spacing / 2 variables.$base-spacing variables.$base-spacing / 2 variables.$base-spacing / 2;
+  label {
+    margin-left: variables.$base-spacing / 2;
     font-family: theme.$body-font-family;
     font-size: 14px;
     cursor: pointer;
@@ -40,13 +40,19 @@
   .header {
     display: inline-block;
     width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     font-family: theme.$body-font-family;
     font-weight: 700;
     text-align: left;
+
+    > span {
+      float: right;
+      color: rgba(variables.$white, 0.7);
+      font-weight: normal;
+    }
   }
 
-  > input {
+  input {
     display: inline-flex;
     flex-shrink: 0;
     justify-content: center;
@@ -91,4 +97,17 @@
       }
     }
   }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.helperText {
+  margin-top: 4px;
+  font-family: theme.$body-font-family;
+  font-size: 12px;
+  text-align: left;
 }

@@ -2,7 +2,7 @@ import { Store } from 'pullstate';
 import jwtDecode from 'jwt-decode';
 
 import * as accountService from '../services/account.service';
-import type { AuthData, Customer, JwtDetails, CustomerConsent } from '../../types/account';
+import type { AuthData, Capture, Customer, JwtDetails, CustomerConsent } from '../../types/account';
 import * as persist from '../utils/persist';
 
 import { ConfigStore } from './ConfigStore';
@@ -133,5 +133,40 @@ export const updateConsents = async (customerConsents: CustomerConsent[]) => {
     cleengSandbox,
     auth.jwt,
   );
+
   if (updateConsentsResponse.errors.length) throw new Error(updateConsentsResponse.errors[0]);
+
+  return updateConsentsResponse.responseData;
+};
+
+export const getCaptureStatus = async () => {
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
+  const { auth, user } = AccountStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+  if (!user || !auth) throw new Error('user not logged in');
+
+  const response = await accountService.getCaptureStatus({ customerId: user.id.toString() }, cleengSandbox, auth.jwt);
+
+  if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+  return response.responseData;
+};
+
+export const updateCaptureAnswers = async (capture: Capture) => {
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
+  const { auth, user } = AccountStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+  if (!user || !auth) throw new Error('user not logged in');
+
+  const response = await accountService.updateCaptureAnswers({ customerId: user.id.toString(), ...capture }, cleengSandbox, auth.jwt);
+
+  if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+  return response.responseData;
 };

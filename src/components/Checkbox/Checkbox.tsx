@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
 
@@ -15,21 +16,24 @@ type Props = {
   error?: boolean;
   helperText?: string;
   disabled?: boolean;
+  required?: boolean;
 };
 
-const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error }: Props) => {
-  const checkboxClassName = classNames(styles.checkbox, {
-    [styles.error]: error,
-  });
+const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error, required }: Props) => {
+  const { t } = useTranslation('common');
   const id = useOpaqueId('check-box', name);
 
-  const labelComponent = typeof label === 'string' ? <label htmlFor={id}>{label}</label> : label && React.cloneElement(label, { htmlFor: id });
-
   return (
-    <div className={checkboxClassName}>
-      {header && <span className={styles.header}>{header}</span>}
-      <input name={name} type="checkbox" id={id} onChange={onChange} value={value} checked={checked} disabled={disabled} />
-      {labelComponent}
+    <div className={classNames(styles.checkbox, { [styles.error]: error })}>
+      {header ? (
+        <div className={styles.header}>
+          {header}{!required ? <span>{t('optional')}</span> : null}
+        </div>
+      ) : null}
+      <div className={styles.row}>
+        <input name={name} type="checkbox" id={id} value={value} onChange={onChange} checked={checked} aria-required={required} disabled={disabled} />
+        <label htmlFor={id}>{label}</label>
+      </div>
       {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
     </div>
   );
