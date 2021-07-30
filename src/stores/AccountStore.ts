@@ -2,8 +2,10 @@ import { Store } from 'pullstate';
 import jwtDecode from 'jwt-decode';
 
 import * as accountService from '../services/account.service';
+import * as subscriptionService from '../services/subscription.service';
 import type { AuthData, Capture, Customer, JwtDetails, CustomerConsent } from '../../types/account';
 import * as persist from '../utils/persist';
+import type { Subscription } from '../../types/subscription';
 
 import { ConfigStore } from './ConfigStore';
 
@@ -13,12 +15,14 @@ type AccountStore = {
   loading: boolean;
   auth: AuthData | null;
   user: Customer | null;
+  subscription: Subscription | null;
 };
 
 export const AccountStore = new Store<AccountStore>({
   loading: true,
   auth: null,
   user: null,
+  subscription: null,
 });
 
 const setLoading = (loading: boolean) => {
@@ -87,6 +91,14 @@ const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
   }
 };
 
+export const getActiveSubscription = async (sandbox: boolean, customer: Customer, auth: AuthData) => {
+  const response = await subscriptionService.getSubscriptions({ customerId: customer.id }, sandbox, auth.jwt);
+
+  if (response.errors.length > 0) return null;
+
+  return response.responseData.items.find((item) => item.status === 'active' || item.status === 'cancelled') || null;
+};
+
 export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
   const customerId = decodedToken.customerId.toString();
@@ -94,10 +106,13 @@ export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
 
   if (response.errors.length) throw new Error(response.errors[0]);
 
+  const subscription = await getActiveSubscription(sandbox, response.responseData, auth);
+
   AccountStore.update((s) => {
     s.loading = false;
     s.auth = auth;
     s.user = response.responseData;
+    s.subscription = subscription;
   });
 };
 
@@ -224,6 +239,37 @@ export const resetPassword = async (resetUrl: string) => {
   );
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+  return response.responseData;
+};
+
+export const cancelSubscription = async () => {
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
+  const { user, auth, subscription } = AccountStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+  if (!user || !auth) throw new Error('user not logged in');
+  if (!subscription) throw new Error('user has no active subscription');
+
+  const response = await subscriptionService.updateSubscription(
+    {
+      customerId: user.id,
+      offerId: subscription.offerId,
+      status: 'cancelled',
+    },
+    cleengSandbox,
+    auth.jwt,
+  );
+
+  if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+  const updatedSubscription = await getActiveSubscription(cleengSandbox, user, auth);
+
+  AccountStore.update(s => {
+    s.subscription = updatedSubscription;
+  });
 
   return response.responseData;
 };
