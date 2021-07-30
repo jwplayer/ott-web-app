@@ -80,7 +80,9 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   });
   const { data: subscriptionsResult, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
   const subscriptions = subscriptionsResult?.responseData?.items;
-  const hasActiveSubscription = subscriptions?.find((subscription: Subscription) => subscription.status === 'active');
+  const hasActiveSubscription = subscriptions?.find(
+    (subscription: Subscription) => subscription.status === 'active' || subscription.status === 'cancelled',
+  );
   const allowedToWatch = useMemo<boolean>(
     () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!hasActiveSubscription)),
     [requiresSubscription, cleengId, user, configHasOffer, hasActiveSubscription],
@@ -111,17 +113,15 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   }, [history, id, playlist, searchParams]);
 
   const formatStartWatchingLabel = (): string => {
-    if (allowedToWatch) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
     if (!user) return t('sign_up_to_start_watching');
-    if (subscriptions?.find((subscription: Subscription) => subscription.status === 'cancelled')) return t('complete_your_subscription');
-    if (subscriptions?.find((subscription: Subscription) => subscription.status === 'expired')) return t('renew_your_subscription');
-    if (subscriptions?.find((subscription: Subscription) => subscription.status === 'terminated')) return t('renew_your_subscription'); //todo: is this correct?
-    return '';
+    if (!subscriptions?.length) return t('complete_your_subscription');
+    if (!hasActiveSubscription) return t('renew_your_subscription');
+    return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
   };
 
   const handleStartWatchingClick = useCallback(() => {
     if (!user) return history.push('?u=login');
-    if (!allowedToWatch) return history.push('/u/payment');
+    if (!allowedToWatch) return history.push('/u/payments');
 
     return item && history.push(videoUrl(item, searchParams.get('r'), true));
   }, [user, history, allowedToWatch, item, searchParams]);
