@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { object, string, SchemaOf } from 'yup';
-import type { RegistrationFormData, ConsentsFormData } from 'types/account';
+import type { RegistrationFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
@@ -17,36 +17,43 @@ const Registration = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
   const { cleengId, cleengSandbox: sandbox } = ConfigStore.useState((s) => s.config);
-  const [consentsFormData, updateConsentsFormData] = useState<ConsentsFormData>({});
-  const [consentsError, setConsentsError] = useState<string[]>([]);
+  const [consentValues, setConsentValues] = useState<Record<string, boolean>>({});
+  const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
   const publisherId = cleengId || '';
   const enabled = !!publisherId;
   const getConsents = () => getPublisherConsents({ publisherId }, sandbox);
-  const { data: publisherConsents, isLoading: publisherConsentsLoading } = useQuery(['consents'], getConsents, { enabled });
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getConsents, { enabled });
+  const publisherConsents = useMemo(() => data?.responseData?.consents || [], [data]);
 
   const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateConsentsFormData((current) => ({ ...current, [event.target.name]: event.target.checked }));
+    setConsentValues((current) => ({ ...current, [event.target.name]: event.target.checked }));
   };
 
   useEffect(() => {
-    updateConsentsFormData(extractConsentValues(publisherConsents?.responseData.consents));
-  }, [publisherConsents?.responseData.consents]);
+    if (publisherConsents) {
+      setConsentValues(extractConsentValues(publisherConsents));
+    }
+  }, [publisherConsents]);
 
   const registrationSubmitHandler: UseFormOnSubmitHandler<RegistrationFormData> = async (
     { email, password },
     { setErrors, setSubmitting, setValue },
   ) => {
     try {
-      const { consentsErrors, customerConsents } = checkConsentsFromValues(publisherConsents?.responseData.consents, consentsFormData);
+      const { consentsErrors, customerConsents } = checkConsentsFromValues(publisherConsents, consentValues);
 
       if (consentsErrors.length) {
-        setConsentsError(consentsErrors);
-        throw new Error('consent required');
+        setConsentErrors(consentsErrors);
+        setSubmitting(false);
+        return;
       }
 
       await register(email, password);
-      await updateConsents(customerConsents);
+
+      await updateConsents(customerConsents).catch(() => {
+        // error caught while updating the consents, but continue the registration flow
+      });
 
       history.push(addQueryParam(history, 'u', 'personal-details'));
     } catch (error: unknown) {
@@ -55,9 +62,7 @@ const Registration = () => {
         if (errorMessage.includes('customer already exists.')) {
           setErrors({ form: t('registration.user_exists') });
         } else if (errorMessage.includes('invalid param password')) {
-          setErrors({ form: t('registration.invalid_password') });
-        } else if (errorMessage.includes('consent required')) {
-          setErrors({ form: t('registration.field_required') });
+          setErrors({ password: t('registration.invalid_password') });
         }
         setValue('password', '');
       }
@@ -80,12 +85,12 @@ const Registration = () => {
       onChange={handleChange}
       values={values}
       errors={errors}
-      consentsError={consentsError}
+      consentErrors={consentErrors}
       submitting={submitting}
-      consentsFormData={consentsFormData}
-      publisherConsents={publisherConsents?.responseData.consents}
+      consentValues={consentValues}
+      publisherConsents={publisherConsents}
       loading={publisherConsentsLoading}
-      onChangeConsent={handleChangeConsent}
+      onConsentChange={handleChangeConsent}
     />
   );
 };

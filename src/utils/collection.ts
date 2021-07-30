@@ -105,7 +105,7 @@ const formatConsentsFromValues = (publisherConsents?: Consent[], values?: Generi
   return consents;
 };
 
-const checkConsentsFromValues = (publisherConsents?: Consent[], consents?: GenericFormValues) => {
+const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, boolean>) => {
   const customerConsents: CustomerConsent[] = [];
   const consentsErrors: string[] = [];
 

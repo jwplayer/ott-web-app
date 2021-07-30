@@ -96,7 +96,7 @@
     "field_is_not_valid_email": "Please re-enter your email details",
     "field_required": "This field is required",
     "hide_password": "Hide password",
-    "invalid_password": "Incorrect password",
+    "invalid_password": "Use a minimum of 6 characters (case sensitive) with at least one number or special character and one capital character",
     "password": "Password",
     "password_strength": "Use a minimum of 6 characters (case sensitive) with at least one number or special character and one capital character",
     "sign_up": "Sign up",

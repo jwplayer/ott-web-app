@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import type { RegistrationFormData, Consent, ConsentsFormData } from 'types/account';
+import type { RegistrationFormData, Consent } from 'types/account';
 import type { FormErrors } from 'types/form';
 
 import useToggle from '../../hooks/useToggle';
@@ -20,12 +20,12 @@ import styles from './RegistrationForm.module.scss';
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onChangeConsent: React.ChangeEventHandler<HTMLInputElement>;
-  consentsError: string[];
+  onConsentChange: React.ChangeEventHandler<HTMLInputElement>;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
   loading: boolean;
-  consentsFormData?: ConsentsFormData;
+  consentValues: Record<string, boolean>;
+  consentErrors: string[];
   submitting: boolean;
   publisherConsents?: Consent[];
 };
@@ -38,9 +38,9 @@ const RegistrationForm: React.FC<Props> = ({
   submitting,
   loading,
   publisherConsents,
-  consentsFormData,
-  onChangeConsent,
-  consentsError,
+  consentValues,
+  onConsentChange,
+  consentErrors,
 }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
 
@@ -51,14 +51,16 @@ const RegistrationForm: React.FC<Props> = ({
     history.push(addQueryParam(history, 'u', 'login'));
   };
 
-  const checkConsentLabel = (consentContent: string): string | JSX.Element => {
-    const hasHrefOpenTag = /<a(.|\n)*?>/.test(consentContent);
-    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(consentContent);
+  const formatConsentLabel = (label: string): string | JSX.Element => {
+    // @todo sanitize consent label to prevent XSS
+    const hasHrefOpenTag = /<a(.|\n)*?>/.test(label);
+    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(label);
 
     if (hasHrefOpenTag && hasHrefCloseTag) {
-      return <label dangerouslySetInnerHTML={{ __html: consentContent }} />;
+      return <span dangerouslySetInnerHTML={{ __html: label }} />;
     }
-    return consentContent;
+
+    return label;
   };
 
   if (loading) {
@@ -102,17 +104,17 @@ const RegistrationForm: React.FC<Props> = ({
         }
       />
       <PasswordStrength password={values.password} />
-      {consentsFormData &&
-        publisherConsents?.map((consent, index) => (
-          <Checkbox
-            key={index}
-            name={consent.name}
-            value={consent.name}
-            error={consentsError?.includes(consent.name)}
-            onChange={onChangeConsent}
-            label={checkConsentLabel(consent.label)}
-          />
-        ))}
+      {publisherConsents?.map((consent, index) => (
+        <Checkbox
+          key={index}
+          name={consent.name}
+          value={consent.name}
+          error={consentErrors?.includes(consent.name)}
+          checked={consentValues[consent.name]}
+          onChange={onConsentChange}
+          label={formatConsentLabel(consent.label)}
+        />
+      ))}
       <Button
         className={styles.continue}
         type="submit"

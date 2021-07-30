@@ -8,7 +8,7 @@ import styles from './Radio.module.scss';
 
 type Props = {
   name: string;
-  value: string;
+  value?: string;
   values?: string[];
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   header?: string;
