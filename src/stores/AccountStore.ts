@@ -243,7 +243,7 @@ export const resetPassword = async (resetUrl: string) => {
   return response.responseData;
 };
 
-export const cancelSubscription = async () => {
+export const updateSubscription = async (status: 'active' | 'cancelled') => {
   const {
     config: { cleengId, cleengSandbox },
   } = ConfigStore.getRawState();
@@ -257,7 +257,7 @@ export const cancelSubscription = async () => {
     {
       customerId: user.id,
       offerId: subscription.offerId,
-      status: 'cancelled',
+      status,
     },
     cleengSandbox,
     auth.jwt,

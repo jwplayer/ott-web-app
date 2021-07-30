@@ -103,6 +103,14 @@
     "view_password": "View password",
     "email_updates": "Yes, I want to receive {{siteName}} updates by email."
   },
+  "renew_subscription": {
+    "explanation": "By clicking the button below you can renew your plan.",
+    "next_billing_date_on": "Next billing date will be {{date}}",
+    "no_thanks": "No, thanks",
+    "renew_subscription": "Renew subscription",
+    "renew_your_subscription": "Renew your subscription",
+    "unknown_error_occurred": "An unknown error occurred!"
+  },
   "reset": {
     "no": "No, thanks",
     "reset_password": "Edit Password",
@@ -113,5 +121,10 @@
     "message": "You have been successfully unsubscribed. Your current plan will expire on {{date}}",
     "return_to_profile": "Return to profile",
     "title": "Miss you already."
+  },
+  "subscription_renewed": {
+    "back_to_profile": "Back to profile",
+    "message": "You have been successfully resubscribed. Your fee will be {{price}} starting from {{date}}",
+    "title": "Your subscription has been renewed"
   }
 }

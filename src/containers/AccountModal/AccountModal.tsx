@@ -18,6 +18,7 @@ import ChooseOffer from './forms/ChooseOffer';
 import Checkout from './forms/Checkout';
 import ResetPassword from './forms/ResetPassword';
 import CancelSubscription from './forms/CancelSubscription';
+import RenewSubscription from './forms/RenewSubscription';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password'];
 
@@ -78,6 +79,8 @@ const AccountModal = () => {
         return <Welcome onCloseButtonClick={closeHandler} onCountdownCompleted={closeHandler} />;
       case 'unsubscribe':
         return <CancelSubscription />;
+      case 'renew-subscription':
+        return <RenewSubscription />;
     }
   };
 

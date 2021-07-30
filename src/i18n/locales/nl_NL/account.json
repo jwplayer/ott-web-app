@@ -99,6 +99,14 @@
     "view_password": "",
     "email_updates": ""
   },
+  "renew_subscription": {
+    "explanation": "",
+    "next_billing_date_on": "",
+    "no_thanks": "",
+    "renew_subscription": "",
+    "renew_your_subscription": "",
+    "unknown_error_occurred": ""
+  },
   "reset": {
     "no": "",
     "reset_password": "",
@@ -108,6 +116,11 @@
   "subscription_cancelled": {
     "message": "",
     "return_to_profile": "",
+    "title": ""
+  },
+  "subscription_renewed": {
+    "back_to_profile": "",
+    "message": "",
     "title": ""
   }
 }
