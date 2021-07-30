@@ -1,4 +1,11 @@
 {
+  "cancel_subscription": {
+    "explanation": "You will be unsubscribed from your current plan by clicking the unsubscribe button below.",
+    "no_thanks": "No, thanks",
+    "title": "We are sorry to see you go.",
+    "unknown_error_occurred": "An unknown error occurred, please try again later.",
+    "unsubscribe": "Unsubscribe"
+  },
   "checkout": {
     "applicable_tax": "Applicable tax ({{taxRate}}%)",
     "close": "Close",
@@ -120,5 +127,10 @@
     "wrong_email": "Wrong email",
     "yes": "Yes, reset",
     "password_reset_text": ""
+  },
+  "subscription_cancelled": {
+    "message": "You have been successfully unsubscribed. Your current plan will expire on {{date}}",
+    "return_to_profile": "Return to profile",
+    "title": "Miss you already."
   }
 }

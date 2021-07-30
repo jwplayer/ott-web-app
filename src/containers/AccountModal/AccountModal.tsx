@@ -17,6 +17,7 @@ import PersonalDetails from './forms/PersonalDetails';
 import ChooseOffer from './forms/ChooseOffer';
 import Checkout from './forms/Checkout';
 import ResetPassword from './forms/ResetPassword';
+import CancelSubscription from './forms/CancelSubscription';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -26,6 +27,7 @@ const AccountModal = () => {
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
   const { loading, auth } = AccountStore.useState((s) => s);
+  const isPublicView = viewParam && !PUBLIC_VIEWS.includes(viewParam);
 
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
@@ -33,10 +35,10 @@ const AccountModal = () => {
   }, [viewParam]);
 
   useEffect(() => {
-    if (!!viewParam && !loading && !auth && !PUBLIC_VIEWS.includes(viewParam)) {
+    if (!!viewParam && !loading && !auth && !isPublicView) {
       history.push(addQueryParam(history, 'u', 'login'));
     }
-  }, [viewParam, history, loading, auth]);
+  }, [viewParam, history, loading, auth, isPublicView]);
 
   const {
     assets: { banner },
@@ -47,7 +49,7 @@ const AccountModal = () => {
   };
 
   const renderForm = () => {
-    if (!auth && loading) {
+    if (!auth && loading && !isPublicView) {
       return (
         <div style={{ height: 300 }}>
           <LoadingOverlay inline />
@@ -80,6 +82,8 @@ const AccountModal = () => {
         return <ResetPassword type="confirmation" />;
       case 'edit-password':
         return <ResetPassword type="edit" />;
+      case 'unsubscribe':
+        return <CancelSubscription />;
     }
   };
 

@@ -30,6 +30,7 @@
     "payments": ""
   },
   "payment": {
+    "cancel_subscription": "",
     "card_number": "",
     "complete_subscription": "",
     "cvc_cvv": "",
@@ -40,6 +41,7 @@
     "payment_method": "",
     "price_payed_with": "",
     "subscription_details": "",
+    "subscription_expires_on": "",
     "transactions": "",
     "price_payed_with_card": ""
   }

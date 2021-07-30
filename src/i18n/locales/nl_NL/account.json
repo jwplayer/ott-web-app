@@ -1,4 +1,11 @@
 {
+  "cancel_subscription": {
+    "explanation": "",
+    "no_thanks": "",
+    "title": "",
+    "unknown_error_occurred": "",
+    "unsubscribe": ""
+  },
   "checkout": {
     "applicable_tax": "",
     "close": "",
@@ -116,5 +123,10 @@
     "wrong_email": "",
     "yes": "",
     "password_reset_text": ""
+  },
+  "subscription_cancelled": {
+    "message": "",
+    "return_to_profile": "",
+    "title": ""
   }
 }

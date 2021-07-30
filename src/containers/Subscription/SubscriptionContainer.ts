@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from 'react-query';
-import type { PaymentDetail, Subscription, Transaction, UpdateSubscriptionPayload } from 'types/subscription';
+import { useQuery } from 'react-query';
+import type { PaymentDetail, Subscription, Transaction } from 'types/subscription';
 
-import { getPaymentDetails, getSubscriptions, getTransactions, updateSubscription } from '../../services/subscription.service';
+import { getPaymentDetails, getSubscriptions, getTransactions } from '../../services/subscription.service';
 import { AccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
 
@@ -30,18 +30,11 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
   const getSubscriptionsQuery = useQuery(['subscriptions', customerId], () => getSubscriptions({ customerId }, sandbox, jwt));
   const { data: subscriptions, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
 
-  const subscriptionMutation = useMutation((values: UpdateSubscriptionPayload) => updateSubscription(values, sandbox, jwt));
-  const { mutate: mutateSubscriptions, isLoading: isSubscriptionMutationLoading } = subscriptionMutation;
-
   const getPaymentDetailsQuery = useQuery(['paymentDetails', customerId], () => getPaymentDetails({ customerId }, sandbox, jwt));
   const { data: paymentDetails, isLoading: isPaymentDetailsLoading } = getPaymentDetailsQuery;
 
   const getTransactionsQuery = useQuery(['transactions', customerId], () => getTransactions({ customerId }, sandbox, jwt));
   const { data: transactions, isLoading: isTransactionsLoading } = getTransactionsQuery;
-
-  const onUpdateSubscriptionSubmit = ({ offerId, status }: Subscription, cancellationReason?: string) => {
-    mutateSubscriptions({ customerId, offerId, status, cancellationReason });
-  };
 
   return children({
     activeSubscription: subscriptions?.responseData.items.find(
@@ -51,8 +44,7 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
     subscriptions: subscriptions?.responseData.items,
     paymentDetails: paymentDetails?.responseData.paymentDetails,
     transactions: transactions?.responseData.items,
-    isLoading: isSubscriptionsLoading || isPaymentDetailsLoading || isTransactionsLoading || isSubscriptionMutationLoading,
-    onUpdateSubscriptionSubmit,
+    isLoading: isSubscriptionsLoading || isPaymentDetailsLoading || isTransactionsLoading,
   } as ChildrenParams);
 };
 
