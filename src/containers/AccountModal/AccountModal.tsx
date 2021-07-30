@@ -27,7 +27,7 @@ const AccountModal = () => {
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
   const { loading, auth } = AccountStore.useState((s) => s);
-  const isPublicView = viewParam && !PUBLIC_VIEWS.includes(viewParam);
+  const isPublicView = viewParam && PUBLIC_VIEWS.includes(viewParam);
 
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
