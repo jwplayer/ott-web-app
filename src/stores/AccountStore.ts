@@ -10,17 +10,28 @@ import { ConfigStore } from './ConfigStore';
 const PERSIST_KEY_ACCOUNT = 'auth';
 
 type AccountStore = {
+  loading: boolean;
   auth: AuthData | null;
   user: Customer | null;
 };
 
 export const AccountStore = new Store<AccountStore>({
+  loading: true,
   auth: null,
   user: null,
 });
 
+const setLoading = (loading: boolean) => {
+  return AccountStore.update((s) => {
+    s.loading = loading;
+  });
+}
+
 export const initializeAccount = async () => {
   const { config } = ConfigStore.getRawState();
+
+  if (!config.cleengId) setLoading(false);
+
   const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
   let refreshTimeout: number;
 
@@ -38,30 +49,41 @@ export const initializeAccount = async () => {
   );
 
   // restore session from localStorage
-  if (storedSession) {
-    const refreshedAuthData = await getFreshJwtToken(config.cleengSandbox, storedSession);
+  try {
+    if (storedSession) {
+      const refreshedAuthData = await getFreshJwtToken(config.cleengSandbox, storedSession);
 
-    if (refreshedAuthData) {
-      await afterLogin(config.cleengSandbox, refreshedAuthData);
+      if (refreshedAuthData) {
+        await afterLogin(config.cleengSandbox, refreshedAuthData);
+      }
     }
+  } catch(error: unknown) {
+    await logout();
   }
+
+  setLoading(false);
 };
 
 const getFreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
   const result = await accountService.refreshToken({ refreshToken: auth.refreshToken }, sandbox);
 
-  if (result?.responseData) {
-    return result.responseData;
-  }
+  if (result.errors.length) throw new Error(result.errors[0]);
+
+  return result?.responseData;
 };
 
 const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
-  const authData = await getFreshJwtToken(sandbox, auth);
+  try {
+    const authData = await getFreshJwtToken(sandbox, auth);
 
-  if (authData) {
-    AccountStore.update((s) => {
-      s.auth = { ...s.auth, ...authData };
-    });
+    if (authData) {
+      AccountStore.update((s) => {
+        s.auth = { ...s.auth, ...authData };
+      });
+    }
+  } catch(error: unknown) {
+    // failed to refresh, logout user
+    await logout();
   }
 };
 
@@ -73,6 +95,7 @@ export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
   if (response.errors.length) throw new Error(response.errors[0]);
 
   AccountStore.update((s) => {
+    s.loading = false;
     s.auth = auth;
     s.user = response.responseData;
   });
@@ -85,11 +108,22 @@ export const login = async (email: string, password: string) => {
 
   if (!cleengId) throw new Error('cleengId is not configured');
 
+  setLoading(true);
+
   const response = await accountService.login({ email, password, publisherId: cleengId }, cleengSandbox);
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
   return afterLogin(cleengSandbox, response.responseData);
+};
+
+export const logout = async () => {
+  persist.removeItem(PERSIST_KEY_ACCOUNT);
+
+  AccountStore.update(s => {
+    s.auth = null;
+    s.user = null;
+  });
 };
 
 export const register = async (email: string, password: string) => {
