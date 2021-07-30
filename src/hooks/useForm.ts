@@ -74,13 +74,13 @@ export default function useForm<T extends GenericFormValues>(
     // reset errors before submitting
     setErrors({});
 
-    // start submitting
-    setSubmitting(true);
-
     // validate values with schema
     if (validationSchema && !validate(validationSchema)) {
       return;
     }
+
+    // start submitting
+    setSubmitting(true);
 
     onSubmit(values, { setValue, setErrors, setSubmitting, validate });
   };

@@ -42,7 +42,7 @@ const Button: React.FC<Props> = ({
   className,
   ...rest
 }: Props) => {
-  const combinedClassNames = classNames(styles.button, className, [styles[color]], [styles[variant]], {
+  const buttonClassName = classNames(styles.button, className, [styles[color]], [styles[variant]], {
     [styles.active]: active,
     [styles.fullWidth]: fullWidth,
     [styles.large]: size === 'large',
@@ -53,13 +53,13 @@ const Button: React.FC<Props> = ({
   const span = <span className={styles.buttonLabel}>{label}</span>;
 
   return to ? (
-    <NavLink className={combinedClassNames} to={to} activeClassName={styles.active} {...rest} exact>
+    <NavLink className={buttonClassName} to={to} activeClassName={styles.active} {...rest} exact>
       {icon}
       {span}
       {children}
     </NavLink>
   ) : (
-    <button className={combinedClassNames} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
+    <button className={buttonClassName} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
       {icon}
       {span}
       {children}

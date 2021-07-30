@@ -81,16 +81,15 @@
     "already_account": "",
     "continue": "",
     "email": "",
-    "email_updates": "",
     "field_is_not_valid_email": "",
     "field_required": "",
     "hide_password": "",
-    "invalid_email": "",
     "invalid_password": "",
     "password": "",
     "password_strength": "",
     "sign_up": "",
-    "terms_conditions": "",
-    "view_password": ""
+    "user_exists": "",
+    "view_password": "",
+    "email_updates": ""
   }
 }

@@ -1,11 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Button from '../Button/Button';
 import useCountdown from '../../hooks/useCountdown';
 import { ConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Welcome.module.scss';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   onCloseButtonClick?: () => void;

@@ -4,6 +4,7 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
 <div>
   <form
     data-testid="registration-form"
+    novalidate=""
   >
     <h2
       class="title"
@@ -98,40 +99,6 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
       <span>
         registration.password_strength
       </span>
-    </div>
-    <div
-      class="checkbox"
-    >
-      <div
-        class="row"
-      >
-        <input
-          id="check-box_1235_terms-conditions"
-          name="terms-conditions"
-          type="checkbox"
-        />
-        <label
-          for="check-box_1235_terms-conditions"
-        />
-      </div>
-    </div>
-    <div
-      class="checkbox"
-    >
-      <div
-        class="row"
-      >
-        <input
-          id="check-box_1235_email-updates"
-          name="email-updates"
-          type="checkbox"
-        />
-        <label
-          for="check-box_1235_email-updates"
-        >
-          registration.email_updates
-        </label>
-      </div>
     </div>
     <button
       aria-disabled="false"

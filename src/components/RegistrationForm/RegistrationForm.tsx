@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { useTranslation, Trans } from 'react-i18next';
-import type { RegistrationFormData } from 'types/account';
+import { useTranslation } from 'react-i18next';
+import type { RegistrationFormData, Consent } from 'types/account';
 import type { FormErrors } from 'types/form';
 
 import useToggle from '../../hooks/useToggle';
@@ -13,20 +13,35 @@ import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import PasswordStrength from '../PasswordStrength/PasswordStrength';
 import Checkbox from '../Checkbox/Checkbox';
-import { termsConditionsUrl } from '../../config';
+import Spinner from '../Spinner/Spinner';
 
 import styles from './RegistrationForm.module.scss';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  error?: string;
+  onConsentChange: React.ChangeEventHandler<HTMLInputElement>;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
+  loading: boolean;
+  consentValues: Record<string, boolean>;
+  consentErrors: string[];
   submitting: boolean;
+  publisherConsents?: Consent[];
 };
 
-const RegistrationForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting }: Props) => {
+const RegistrationForm: React.FC<Props> = ({
+  onSubmit,
+  onChange,
+  values,
+  errors,
+  submitting,
+  loading,
+  publisherConsents,
+  consentValues,
+  onConsentChange,
+  consentErrors,
+}: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
 
   const { t } = useTranslation('account');
@@ -36,8 +51,28 @@ const RegistrationForm: React.FC<Props> = ({ onSubmit, onChange, values, errors,
     history.push(addQueryParam(history, 'u', 'login'));
   };
 
+  const formatConsentLabel = (label: string): string | JSX.Element => {
+    // @todo sanitize consent label to prevent XSS
+    const hasHrefOpenTag = /<a(.|\n)*?>/.test(label);
+    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(label);
+
+    if (hasHrefOpenTag && hasHrefCloseTag) {
+      return <span dangerouslySetInnerHTML={{ __html: label }} />;
+    }
+
+    return label;
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <Spinner size="small" />
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={onSubmit} data-testid="registration-form">
+    <form onSubmit={onSubmit} data-testid="registration-form" noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
       {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
       <TextField
@@ -69,24 +104,17 @@ const RegistrationForm: React.FC<Props> = ({ onSubmit, onChange, values, errors,
         }
       />
       <PasswordStrength password={values.password} />
-      <Checkbox
-        onChange={onChange}
-        name="terms-conditions"
-        checked={values.termsConditions}
-        value={'terms-conditions'}
-        label={
-          (
-            <Trans t={t} i18nKey="registration.terms_conditions" values={{ link: termsConditionsUrl }} components={{ a: <a /> }} />
-          ) as unknown as string
-        }
-      />
-      <Checkbox
-        onChange={onChange}
-        value={'email-updates'}
-        checked={values.emailUpdates}
-        name="email-updates"
-        label={t('registration.email_updates')}
-      />
+      {publisherConsents?.map((consent, index) => (
+        <Checkbox
+          key={index}
+          name={consent.name}
+          value={consent.name}
+          error={consentErrors?.includes(consent.name)}
+          checked={consentValues[consent.name]}
+          onChange={onConsentChange}
+          label={formatConsentLabel(consent.label)}
+        />
+      ))}
       <Button
         className={styles.continue}
         type="submit"

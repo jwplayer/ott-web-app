@@ -25,8 +25,6 @@ export type LoginFormData = {
 export type RegistrationFormData = {
   email: string;
   password: string;
-  termsConditions: boolean;
-  emailUpdates: boolean;
 };
 
 export type OfferPeriodicity = 'monthly' | 'yearly';
@@ -108,8 +106,16 @@ export type GetPublisherConsentsPayload = {
   publisherId: string;
 };
 
+export type GetPublisherConsentsResponse = {
+  consents: Consent[];
+};
+
 export type GetCustomerConsentsPayload = {
   customerId: string;
+};
+
+export type GetCustomerConsentsResponse = {
+  consents: CustomerConsent[];
 };
 
 export type ResetPasswordPayload = {
@@ -166,6 +172,7 @@ export type Consent = {
   version: string;
   value: string;
   label: string;
+  enabledByDefault: boolean;
   required: boolean;
 };
 export type CustomerConsent = {
@@ -224,8 +231,8 @@ export type UpdateCaptureAnswersPayload = {
 
 type Login = CleengRequest<LoginPayload, AuthData>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
-type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, Record<string, Consent[]>>;
-type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, Record<string, CustomerConsent[]>>;
+type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, GetPublisherConsentsResponse>;
+type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;

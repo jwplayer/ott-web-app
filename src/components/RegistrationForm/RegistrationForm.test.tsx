@@ -9,9 +9,13 @@ describe('<RegistrationForm>', () => {
       <RegistrationForm
         onSubmit={jest.fn()}
         onChange={jest.fn()}
-        values={{ email: '', password: '', termsConditions: false, emailUpdates: false }}
+        values={{ email: '', password: '' }}
         errors={{}}
         submitting={false}
+        consentErrors={[]}
+        consentValues={{}}
+        loading={false}
+        onConsentChange={jest.fn()}
       />,
     );
 

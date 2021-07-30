@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
 
 import styles from './TextField.module.scss';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   className?: string;

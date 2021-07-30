@@ -20,7 +20,7 @@ export const login: Login = async (payload, sandbox) => {
 };
 
 export const register: Register = async (payload, sandbox) => {
-  return post(sandbox, '/auths', JSON.stringify(payload));
+  return post(sandbox, '/customers', JSON.stringify(payload));
 };
 
 export const getPublisherConsents: GetPublisherConsents = async (payload, sandbox) => {

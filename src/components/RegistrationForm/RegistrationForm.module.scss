@@ -17,6 +17,11 @@
   background-color: theme.$form-feedback-error-bg-color;
   border-radius: 4px;
 }
+.loading {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
 
 .continue {
   margin: variables.$base-spacing 0;
