@@ -55,5 +55,11 @@
     "week_plural": "weeks",
     "month_plural": "months",
     "year_plural": "years"
+  },
+  "reset": {
+    "no": "No, thanks",
+    "reset_password": "Edit Password",
+    "text": "If you want to edit your password, click 'YES, Reset' to receive password reset instruction on your mail",
+    "yes": "Yes, reset"
   }
 }

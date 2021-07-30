@@ -59,7 +59,7 @@ const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
   const authData = await getFreshJwtToken(sandbox, auth);
 
   if (authData) {
-    AccountStore.update(s => {
+    AccountStore.update((s) => {
       s.auth = { ...s.auth, ...authData };
     });
   }
@@ -90,4 +90,16 @@ export const login = async (email: string, password: string) => {
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
   return afterLogin(cleengSandbox, response.responseData);
+};
+
+export const resetPassword = async (resetUrl: string) => {
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
+  const { user } = AccountStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+  if (!user?.email) throw new Error('invalid param email');
+
+  return await accountService.resetPassword({ customerEmail: user.email, publisherId: cleengId, resetUrl }, cleengSandbox);
 };

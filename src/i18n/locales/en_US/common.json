@@ -7,6 +7,5 @@
   "live": "LIVE",
   "play_item": "Play {{ title }}",
   "slide_left": "Slide left",
-  "slide_right": "Slide right",
-  "show_page": "Show page {{ number }}"
+  "slide_right": "Slide right"
 }

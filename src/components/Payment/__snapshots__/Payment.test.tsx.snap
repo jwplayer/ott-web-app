@@ -19,7 +19,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
         <br />
         user:payment.next_billing_date_on
          
-        3/16/2021
+        16-3-2021
       </p>
       <p
         class="price"
@@ -106,7 +106,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
       <p>
         T712014024
         <br />
-        5/5/2021
+        5-5-2021
       </p>
     </div>
     <div
@@ -123,7 +123,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
       <p>
         T177974068
         <br />
-        5/5/2021
+        5-5-2021
       </p>
     </div>
     <div
@@ -140,7 +140,7 @@ exports[`<Payment> renders and matches snapshot 1`] = `
       <p>
         T996601696
         <br />
-        5/5/2021
+        5-5-2021
       </p>
     </div>
   </div>
