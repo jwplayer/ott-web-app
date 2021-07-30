@@ -101,5 +101,7 @@ export const resetPassword = async (resetUrl: string) => {
   if (!cleengId) throw new Error('cleengId is not configured');
   if (!user?.email) throw new Error('invalid param email');
 
-  return await accountService.resetPassword({ customerEmail: user.email, publisherId: cleengId, resetUrl }, cleengSandbox);
+  const response = await accountService.resetPassword({ customerEmail: user.email, publisherId: cleengId, resetUrl }, cleengSandbox);
+
+  if (response.errors.length > 0) throw new Error(response.errors[0]);
 };

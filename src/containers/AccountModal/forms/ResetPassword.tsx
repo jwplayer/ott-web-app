@@ -16,8 +16,7 @@ const ResetPassword: React.FC = () => {
     const resetUrl = `${window.location.origin}/u/my-account?u=edit-password`;
 
     try {
-      const response = await resetPassword(resetUrl);
-      if (response.errors.length > 0) throw new Error(response.errors[0]);
+      await resetPassword(resetUrl);
 
       history.push('/u/logout');
     } catch (error: unknown) {
