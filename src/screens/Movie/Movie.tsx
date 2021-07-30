@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 
 import { useFavorites } from '../../stores/FavoritesStore';
-import { ConfigContext } from '../../providers/ConfigProvider';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
 import type { PlaylistItem } from '../../../types/playlist';
@@ -19,6 +19,11 @@ import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
 import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
+import { ConfigStore } from '../../stores/ConfigStore';
+import { AccountStore } from '../../stores/AccountStore';
+import { configHasCleengOffer } from '../../utils/cleeng';
+import type { Subscription } from '../../../types/subscription';
+import { getSubscriptions } from '../../services/subscription.service';
 
 import styles from './Movie.module.scss';
 
@@ -26,27 +31,31 @@ type MovieRouteParams = {
   id: string;
 };
 
-const Movie = ({
-  match: {
-    params: { id },
-  },
-  location,
-}: RouteComponentProps<MovieRouteParams>): JSX.Element => {
-  const config = useContext(ConfigContext);
+const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
+  // Routing
   const history = useHistory();
-  const { t } = useTranslation('video');
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const { isLoading, error, data: item } = useMedia(id);
-  const { data: trailerItem } = useMedia(item?.trailerId || '');
-
-  const { hasItem, saveItem, removeItem } = useFavorites();
+  const id = match?.params.id;
   const play = searchParams.get('play') === '1';
   const feedId = searchParams.get('l');
-  const posterFading: boolean = config ? config.options.posterFading === true : false;
 
-  const [hasShared, setHasShared] = useState<boolean>(false);
-  const [playTrailer, setPlayTrailer] = useState<boolean>(false);
-  const enableSharing: boolean = config.options.enableSharing === true;
+  // Config
+  const config = ConfigStore.useState((s) => s.config);
+  const { cleengId, options, recommendationsPlaylist, siteName, cleengSandbox } = config;
+  const configHasOffer = configHasCleengOffer(config);
+  const posterFading: boolean = options?.posterFading === true;
+  const enableSharing: boolean = options?.enableSharing === true;
+
+  const { t } = useTranslation('video');
+
+  // Media
+  const { isLoading, error, data: item } = useMedia(id);
+  const requiresSubscription = item?.requiresSubscription !== 'false';
+  useBlurImageUpdater(item);
+  const { data: trailerItem } = useMedia(item?.trailerId || '');
+  const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
+
+  const { hasItem, saveItem, removeItem } = useFavorites();
 
   const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
   const watchHistoryItem =
@@ -54,16 +63,32 @@ const Movie = ({
     watchHistory.find(({ mediaid, progress }) => {
       return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
     });
+  const progress = watchHistoryItem?.progress;
 
-  useBlurImageUpdater(item);
-
+  // General state
   const isFavorited = !!item && hasItem(item);
+  const [hasShared, setHasShared] = useState<boolean>(false);
+  const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
-  const startPlay = () => item && history.push(videoUrl(item, searchParams.get('r'), true));
+  // User
+  const user = AccountStore.useState((state) => state.user);
+  const auth = AccountStore.useState((state) => state.auth);
+  const jwt = auth?.jwt || '';
+  const customerId = user?.id || -1; // id must be number
+  const getSubscriptionsQuery = useQuery(['subscriptions', customerId], () => getSubscriptions({ customerId }, cleengSandbox, jwt), {
+    enabled: !!user,
+  });
+  const { data: subscriptionsResult, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
+  const subscriptions = subscriptionsResult?.responseData?.items;
+  const hasActiveSubscription = subscriptions?.find((subscription: Subscription) => subscription.status === 'active');
+  const allowedToWatch = useMemo<boolean>(
+    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !hasActiveSubscription)),
+    [requiresSubscription, cleengId, user, configHasOffer, hasActiveSubscription],
+  );
+
+  // Handlers
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
-
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
-
   const onShareClick = (): void => {
     if (!item) return;
 
@@ -76,7 +101,32 @@ const Movie = ({
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };
+  const handleComplete = useCallback(() => {
+    if (!id || !playlist) return;
 
+    const index = playlist.playlist.findIndex(({ mediaid }) => mediaid === id);
+    const nextItem = playlist.playlist[index + 1];
+
+    return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
+  }, [history, id, playlist, searchParams]);
+
+  const formatStartWatchingLabel = (): string => {
+    if (allowedToWatch) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
+    if (!user) return t('sign_up_to_start_watching');
+    if (subscriptions?.find((subscription: Subscription) => subscription.status === 'cancelled')) return t('complete_your_subscription');
+    if (subscriptions?.find((subscription: Subscription) => subscription.status === 'expired')) return t('renew_your_subscription');
+    if (subscriptions?.find((subscription: Subscription) => subscription.status === 'terminated')) return t('renew_your_subscription'); //todo: is this correct?
+    return '';
+  };
+
+  const handleStartWatchingClick = useCallback(() => {
+    if (!user) return history.push('?u=login');
+    if (!allowedToWatch) return history.push('/u/payment');
+
+    return item && history.push(videoUrl(item, searchParams.get('r'), true));
+  }, [user, history, allowedToWatch, item, searchParams]);
+
+  // Effects
   useEffect(() => {
     document.body.style.overflowY = play ? 'hidden' : '';
     return () => {
@@ -88,21 +138,11 @@ const Movie = ({
     (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   }, [id]);
 
-  const { data: playlist } = useRecommendedPlaylist(config.recommendationsPlaylist || '', item);
-
-  const handleComplete = useCallback(() => {
-    if (!id || !playlist) return;
-
-    const index = playlist.playlist.findIndex(({ mediaid }) => mediaid === id);
-    const nextItem = playlist.playlist[index + 1];
-
-    return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
-  }, [history, id, playlist, searchParams]);
-
-  if (isLoading && !item) return <LoadingOverlay />;
+  // UI
+  if ((isLoading && !item) || isSubscriptionsLoading) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title="Video not found!" />;
 
-  const pageTitle = `${item.title} - ${config.siteName}`;
+  const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
 
   return (
@@ -137,10 +177,12 @@ const Movie = ({
         feedId={feedId ?? undefined}
         trailerItem={trailerItem}
         play={play}
-        startPlay={startPlay}
+        allowedToWatch={allowedToWatch}
+        startWatchingLabel={formatStartWatchingLabel()}
+        onStartWatchingClick={handleStartWatchingClick}
         goBack={goBack}
         onComplete={handleComplete}
-        progress={watchHistoryItem?.progress}
+        progress={progress}
         poster={posterFading ? 'fading' : 'normal'}
         enableSharing={enableSharing}
         hasShared={hasShared}
@@ -162,7 +204,7 @@ const Movie = ({
               isLoading={isLoading}
               currentCardItem={item}
               currentCardLabel={t('currently_playing')}
-              enableCardTitles={config.options.shelveTitles}
+              enableCardTitles={options.shelveTitles}
             />
           </>
         ) : undefined}

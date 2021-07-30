@@ -30,8 +30,10 @@ type Props = {
   feedId?: string;
   trailerItem?: PlaylistItem;
   play: boolean;
+  allowedToWatch: boolean;
+  startWatchingLabel: string;
   progress?: number;
-  startPlay: () => void;
+  onStartWatchingClick: () => void;
   goBack: () => void;
   onComplete?: () => void;
   isFavorited: boolean;
@@ -54,7 +56,9 @@ const Video: React.FC<Props> = ({
   feedId,
   trailerItem,
   play,
-  startPlay,
+  allowedToWatch,
+  startWatchingLabel,
+  onStartWatchingClick,
   progress,
   goBack,
   onComplete,
@@ -128,9 +132,9 @@ const Video: React.FC<Props> = ({
               color="primary"
               variant="contained"
               size="large"
-              label={typeof progress === 'number' ? t('video:continue_watching') : t('video:start_watching')}
-              startIcon={<Play />}
-              onClick={startPlay}
+              label={startWatchingLabel}
+              startIcon={allowedToWatch ? <Play /> : undefined}
+              onClick={onStartWatchingClick}
               active={play}
               fullWidth={breakpoint < Breakpoint.md}
             >

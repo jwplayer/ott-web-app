@@ -1,6 +1,7 @@
 {
   "add_to_favorites": "Add to favorites",
   "all_seasons": "All seasons",
+  "complete_your_subscription": "Complete your subscription",
   "continue_watching": "Continue watching",
   "copied_url": "Copied url",
   "current_episode": "Current episode",
@@ -8,8 +9,10 @@
   "episodes": "Episodes",
   "favorite": "Favorite",
   "remove_from_favorites": "Remove from favorites",
+  "renew_your_subscription": "Renew your subscription",
   "season_prefix": "Season ",
   "share": "Share",
+  "sign_up_to_start_watching": "Sign up to start watching!",
   "start_watching": "Start watching",
   "total_episodes": "{{ count }} episode",
   "total_episodes_plural": "{{ count }} episodes",
