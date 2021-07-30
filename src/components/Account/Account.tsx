@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Consent, Customer, CustomerConsent, UpdateCustomerPayload } from 'types/account';
 import type { CustomerFormValues, FormErrors, GenericFormValues } from 'types/form';
+import { useHistory } from 'react-router-dom';
 
 import { formatConsentsFromValues, formatConsentValues } from '../../utils/collection';
 import Visibility from '../../icons/Visibility';
@@ -14,6 +15,7 @@ import IconButton from '../IconButton/IconButton';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import TextField from '../TextField/TextField';
 import Checkbox from '../Checkbox/Checkbox';
+import { addQueryParam } from '../../utils/history';
 
 import styles from './Account.module.scss';
 
@@ -51,6 +53,7 @@ const Account = ({
   onReset,
 }: Props): JSX.Element => {
   const { t } = useTranslation('user');
+  const history = useHistory();
   const [editing, setEditing] = useState<Editing>('none');
   const [viewPassword, toggleViewPassword] = useToggle();
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
@@ -72,6 +75,10 @@ const Account = ({
     formResetHandler && formResetHandler();
     setEditing('none');
     onReset && onReset();
+  };
+
+  const editPasswordClickHandler = () => {
+    history.push(addQueryParam(history, 'u', 'reset-password'));
   };
 
   useEffect(() => {
@@ -143,7 +150,7 @@ const Account = ({
             <div>
               <strong>{t('account.password')}</strong>
               <p>****************</p>
-              <Button label={t('account.edit_password')} type="button" onClick={() => setEditing('password')} />
+              <Button label={t('account.edit_password')} type="button" onClick={() => (customer ? editPasswordClickHandler() : null)} />
             </div>
           </div>
           <div className={panelClassName}>

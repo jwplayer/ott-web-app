@@ -91,5 +91,11 @@
     "user_exists": "",
     "view_password": "",
     "email_updates": ""
+  },
+  "reset": {
+    "no": "",
+    "reset_password": "",
+    "text": "",
+    "yes": ""
   }
 }

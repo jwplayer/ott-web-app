@@ -16,6 +16,7 @@ import Registration from './forms/Registration';
 import PersonalDetails from './forms/PersonalDetails';
 import ChooseOffer from './forms/ChooseOffer';
 import Checkout from './forms/Checkout';
+import ResetPassword from './forms/ResetPassword';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password'];
 
@@ -59,6 +60,8 @@ const AccountModal = () => {
         return <Login />;
       case 'create-account':
         return <Registration />;
+      case 'reset-password':
+        return <ResetPassword />;
       case 'personal-details':
         return <PersonalDetails />;
       case 'choose-offer':

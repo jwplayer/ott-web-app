@@ -25,7 +25,7 @@ const setLoading = (loading: boolean) => {
   return AccountStore.update((s) => {
     s.loading = loading;
   });
-}
+};
 
 export const initializeAccount = async () => {
   const { config } = ConfigStore.getRawState();
@@ -57,7 +57,7 @@ export const initializeAccount = async () => {
         await afterLogin(config.cleengSandbox, refreshedAuthData);
       }
     }
-  } catch(error: unknown) {
+  } catch (error: unknown) {
     await logout();
   }
 
@@ -81,7 +81,7 @@ const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
         s.auth = { ...s.auth, ...authData };
       });
     }
-  } catch(error: unknown) {
+  } catch (error: unknown) {
     // failed to refresh, logout user
     await logout();
   }
@@ -120,7 +120,7 @@ export const login = async (email: string, password: string) => {
 export const logout = async () => {
   persist.removeItem(PERSIST_KEY_ACCOUNT);
 
-  AccountStore.update(s => {
+  AccountStore.update((s) => {
     s.auth = null;
     s.user = null;
   });
@@ -199,6 +199,29 @@ export const updateCaptureAnswers = async (capture: Capture) => {
   if (!user || !auth) throw new Error('user not logged in');
 
   const response = await accountService.updateCaptureAnswers({ customerId: user.id.toString(), ...capture }, cleengSandbox, auth.jwt);
+
+  if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+  return response.responseData;
+};
+
+export const resetPassword = async (resetUrl: string) => {
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
+  const { user } = AccountStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+  if (!user?.email) throw new Error('invalid param email');
+
+  const response = await accountService.resetPassword(
+    {
+      customerEmail: user.email,
+      publisherId: cleengId,
+      resetUrl,
+    },
+    cleengSandbox,
+  );
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 

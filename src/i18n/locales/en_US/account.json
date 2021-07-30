@@ -72,14 +72,6 @@
     "city": "City",
     "company_name": "Company name",
     "continue": "Continue",
-    "country": "Country",
-    "field_required": "",
-    "firstName": "First name",
-    "invalid_email": "",
-    "invalid_password": "",
-    "lastName": "Last name",
-    "phoneNumber": "Mobile number",
-    "postCode": "ZIP/Postal code",
     "fist_name": "First name",
     "last_name": "Last name",
     "no_answer": "No answer",
@@ -103,5 +95,11 @@
     "user_exists": "There is already a user with this email address",
     "view_password": "View password",
     "email_updates": "Yes, I want to receive {{siteName}} updates by email."
+  },
+  "reset": {
+    "no": "No, thanks",
+    "reset_password": "Edit Password",
+    "text": "If you want to edit your password, click 'YES, Reset' to receive password reset instruction on your mail",
+    "yes": "Yes, reset"
   }
 }
