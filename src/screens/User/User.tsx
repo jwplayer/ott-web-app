@@ -20,6 +20,7 @@ import BalanceWallet from '../../icons/BalanceWallet';
 import Exit from '../../icons/Exit';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { AccountStore } from '../../stores/AccountStore';
+import { addQueryParam } from '../../utils/history';
 
 import styles from './User.module.scss';
 
@@ -35,6 +36,10 @@ const User = (): JSX.Element => {
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+
+  const handleCompleteSubscriptionClick = () => {
+    history.push(addQueryParam(history, 'u', 'choose-offer'));
+  };
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
@@ -123,6 +128,7 @@ const User = (): JSX.Element => {
                   isLoading={isLoading}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
+                  onCompleteSubscriptionClick={handleCompleteSubscriptionClick}
                 />
               )}
             </SubscriptionContainer>

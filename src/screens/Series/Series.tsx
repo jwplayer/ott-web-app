@@ -38,12 +38,11 @@ const Series = ({
   const history = useHistory();
   const { t } = useTranslation('video');
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist = { title: '', playlist: [] } } = usePlaylist(
-    id,
-    undefined,
-    true,
-    false,
-  );
+  const {
+    isLoading: playlistIsLoading,
+    error: playlistError,
+    data: seriesPlaylist = { title: '', playlist: [] },
+  } = usePlaylist(id, undefined, true, false);
   const episodeId = searchParams.get('e') || '';
   const { isLoading, error, data: item } = useMedia(episodeId);
   const { data: trailerItem } = useMedia(item?.trailerId || '');

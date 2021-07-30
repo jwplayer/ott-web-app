@@ -6,9 +6,9 @@ import { formatDate, formatPrice } from '../../utils/formatting';
 import TextField from '../TextField/TextField';
 import type { Customer } from '../../../types/account';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import Button from '../Button/Button';
 
 import styles from './Payment.module.scss';
-import Button from '../Button/Button';
 
 type Props = {
   activeSubscription?: Subscription;
@@ -18,9 +18,11 @@ type Props = {
   isLoading: boolean;
   panelClassName?: string;
   panelHeaderClassName?: string;
+  onCompleteSubscriptionClick?: () => void;
 };
 
 const Payment = ({
+  onCompleteSubscriptionClick,
   activePaymentDetail,
   activeSubscription,
   transactions,
@@ -51,7 +53,7 @@ const Payment = ({
         ) : (
           <React.Fragment>
             <p>{t('user:payment.no_subscription')}</p>
-            <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} />
+            <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} onClick={onCompleteSubscriptionClick} />
           </React.Fragment>
         )}
       </div>

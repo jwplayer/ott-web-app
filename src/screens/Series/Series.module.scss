@@ -5,8 +5,9 @@
 .episodes {
   display: flex;
   align-items: center;
+  margin-right: -4px;
+  padding-bottom: 16px;
   > h3 {
-    padding-bottom: 16px;
     font-family: var(--body-alt-font-family);
     font-weight: 700;
     font-size: 24px;
