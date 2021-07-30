@@ -159,6 +159,11 @@ $text-field-active-border-color: variables.$white !default;
 $text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
 $text-field-error-color: #ff0c3e !default;
 
+// Input
+$input-resting-border-color: rgba(variables.$white, 0.34) !default;
+$input-hover-border-color: rgba(variables.$white, 0.7) !default;
+$input-field-error-color: #ff0c3e !default;
+
 // Toggle
 
 $toggle-default-color: #585858 !default;

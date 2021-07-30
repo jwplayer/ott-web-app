@@ -27,16 +27,24 @@ const getItem = (key: string) => {
   }
 };
 
+const removeItem = (key: string) => {
+  const storageKey = `${LOCAL_STORAGE_PREFIX}${key}`;
+
+  try {
+    window.localStorage.removeItem(storageKey);
+  } catch (error: unknown) {
+    console.error(error);
+  }
+};
+
 const parseJSON = (value?: string | null): unknown | undefined => {
   if (!value) return;
 
   try {
-    const parsedValue = JSON.parse(value);
-
-    return parsedValue;
+    return JSON.parse(value);
   } catch (error: unknown) {
     return;
   }
 };
 
-export { setItem, getItem };
+export { setItem, getItem, removeItem };

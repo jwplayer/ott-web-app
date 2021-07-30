@@ -8,7 +8,9 @@ import type {
   ResetPassword,
   UpdateCustomer,
   UpdateCustomerConsents,
-  RefreshToken, GetLocales,
+  RefreshToken,
+  GetLocales,
+  GetCaptureStatus, UpdateCaptureAnswers,
 } from '../../types/account';
 
 import { post, put, patch, get } from './cleeng.service';
@@ -18,7 +20,7 @@ export const login: Login = async (payload, sandbox) => {
 };
 
 export const register: Register = async (payload, sandbox) => {
-  return post(sandbox, '/auths', JSON.stringify(payload));
+  return post(sandbox, '/customers', JSON.stringify(payload));
 };
 
 export const getPublisherConsents: GetPublisherConsents = async (payload, sandbox) => {
@@ -55,4 +57,12 @@ export const refreshToken: RefreshToken = async (payload, sandbox) => {
 
 export const getLocales: GetLocales = async (sandbox) => {
   return get(sandbox, '/locales');
+};
+
+export const getCaptureStatus: GetCaptureStatus = async ({ customerId }, sandbox, jwt) => {
+  return get(sandbox, `/customers/${customerId}/capture/status`, jwt);
+};
+
+export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customerId, ...payload }, sandbox, jwt) => {
+  return put(sandbox, `/customers/${customerId}/capture`, JSON.stringify(payload), jwt);
 };

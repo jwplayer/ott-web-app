@@ -9,6 +9,44 @@ $select-focus: theme.$primary-color;
 $disabled-bg-color: #eee;
 $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
 
+.container {
+  width: 100%;
+  margin-bottom: 8px;
+
+  &.error {
+    .dropdown {
+      border-color: theme.$text-field-error-color;
+    }
+    .helperText {
+      color: theme.$text-field-error-color;
+    }
+  }
+
+  &.medium {
+    .dropdown {
+      height: 48px;
+    }
+
+    .select {
+      height: 46px;
+    }
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+  font-family: theme.$body-font-family;
+  font-weight: 700;
+  text-align: left;
+
+  > span {
+    float: right;
+    color: rgba(variables.$white, 0.7);
+    font-weight: normal;
+  }
+}
+
 .dropdown {
   position: relative;
   display: grid;
@@ -16,6 +54,7 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
   width: 140px;
   height: 36px;
   margin-left: 24px;
+  font-family: theme.$body-font-family;
   font-size: 1.25rem;
   background-color: rgba(0, 0, 0, 0.54);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -36,15 +75,19 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
     justify-self: end;
   }
 
+  &.fullWidth {
+    width: 100%;
+    margin-left: initial;
+  }
+
   .select {
     z-index: 1;
     width: 100%;
     height: 36px;
     margin: 0;
-    padding: 9px 24px 9px 9px;
+    padding: 14px 16px;
     color: variables.$white;
     font-family: inherit;
-    font-weight: 700;
     font-size: 1rem;
     line-height: 1em;
     text-overflow: ellipsis;
@@ -93,4 +136,11 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
   white-space: normal;
   // Set focus on chrome
   outline-color: $select-focus;
+}
+
+.helperText {
+  margin-top: 4px;
+  font-family: theme.$body-font-family;
+  font-size: 12px;
+  text-align: left;
 }

@@ -22,6 +22,11 @@ export type LoginFormData = {
   password: string;
 };
 
+export type RegistrationFormData = {
+  email: string;
+  password: string;
+};
+
 export type OfferPeriodicity = 'monthly' | 'yearly';
 
 export type ChooseOfferFormData = {
@@ -42,12 +47,75 @@ export type RegisterPayload = {
   externalData?: string;
 };
 
+export type PersonalDetailsCustomField = {
+  name: string;
+  label: string;
+  type: 'text' | 'number' | 'dropdown' | 'radio' | 'checkbox' | 'date';
+  value?: string;
+  values?: string[];
+  question?: string;
+  validationType?: string;
+  validations: Record<string, unknown>[] | null;
+};
+
+export type CaptureFirstNameLastName = {
+  firstName: string;
+  lastName: string;
+};
+
+export type CaptureAddress = {
+  address?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  postCode?: string;
+  country?: string;
+};
+
+export type CleengCaptureField = {
+  key: string;
+  enabled: boolean;
+  required: boolean;
+  answer: string | Record<string, string | null> | null;
+};
+
+export type CleengCaptureQuestionField = {
+  key: string;
+  enabled: boolean;
+  required: boolean;
+  value: string;
+  question: string;
+  answer: string | null;
+};
+
+export type PersonalDetailsFormData = {
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  companyName: string;
+  phoneNumber: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  postCode: string;
+  country: string;
+};
+
 export type GetPublisherConsentsPayload = {
   publisherId: string;
 };
 
+export type GetPublisherConsentsResponse = {
+  consents: Consent[];
+};
+
 export type GetCustomerConsentsPayload = {
   customerId: string;
+};
+
+export type GetCustomerConsentsResponse = {
+  consents: CustomerConsent[];
 };
 
 export type ResetPasswordPayload = {
@@ -104,6 +172,7 @@ export type Consent = {
   version: string;
   value: string;
   label: string;
+  enabledByDefault: boolean;
   required: boolean;
 };
 export type CustomerConsent = {
@@ -126,10 +195,44 @@ export type LocalesData = {
   ipAddress: string;
 };
 
+export type GetCaptureStatusPayload = {
+  customerId: string;
+};
+
+export type GetCaptureStatusResponse = {
+  isCaptureEnabled: boolean;
+  shouldCaptureBeDisplayed: boolean;
+  settings: Array<CleengCaptureField | CleengCaptureQuestionField>;
+};
+
+export type CaptureCustomAnswer = {
+  questionId: string;
+  question: string;
+  value: string;
+};
+
+export type Capture = {
+  firstName?: string;
+  address?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  postCode?: string;
+  country?: string;
+  birthDate?: string;
+  companyName?: string;
+  phoneNumber?: string;
+  customAnswers?: CaptureCustomAnswer[];
+}
+
+export type UpdateCaptureAnswersPayload = {
+  customerId: string;
+} & Capture;
+
 type Login = CleengRequest<LoginPayload, AuthData>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
-type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, Record<string, Consent[]>>;
-type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, Record<string, CustomerConsent[]>>;
+type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, GetPublisherConsentsResponse>;
+type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
@@ -137,3 +240,5 @@ type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
 type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, Customer>;
 type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = CleengEmptyRequest<LocalesData>;
+type GetCaptureStatus = CleengAuthRequest<GetCaptureStatusPayload, GetCaptureStatusResponse>;
+type UpdateCaptureAnswers = CleengAuthRequest<UpdateCaptureAnswersPayload, Capture>;

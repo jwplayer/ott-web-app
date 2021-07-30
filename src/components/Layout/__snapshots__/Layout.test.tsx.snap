@@ -56,7 +56,7 @@ exports[`<Layout /> renders layout 1`] = `
               class="button default outlined"
             >
               <span>
-                sign_in
+                sign_up
               </span>
             </button>
             <button

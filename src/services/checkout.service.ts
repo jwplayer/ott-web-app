@@ -16,7 +16,7 @@ export const createOrder: CreateOrder = async (payload, sandbox, jwt) => {
   return post(sandbox, '/orders', JSON.stringify(payload), jwt);
 };
 
-export const updateOrder: UpdateOrder = async ({  orderId, ...payload }, sandbox, jwt) => {
+export const updateOrder: UpdateOrder = async ({ orderId, ...payload }, sandbox, jwt) => {
   return patch(sandbox, `/orders/${orderId}`, JSON.stringify(payload), jwt);
 };
 

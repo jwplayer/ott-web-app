@@ -2,22 +2,24 @@
 
 exports[`<Checkbox> renders and matches snapshot 1`] = `
 <div>
-  <label
+  <div
     class="checkbox"
   >
-    <input
-      name="name"
-      type="checkbox"
-      value="value"
-    />
-    <span
-      class="checkmark"
-    />
     <div
-      class="checkLabel"
+      class="row"
     >
-      label
+      <input
+        id="check-box_1235_name"
+        name="name"
+        type="checkbox"
+        value="value"
+      />
+      <label
+        for="check-box_1235_name"
+      >
+        label
+      </label>
     </div>
-  </label>
+  </div>
 </div>
 `;

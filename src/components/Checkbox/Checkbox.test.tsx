@@ -11,7 +11,7 @@ describe('<Checkbox>', () => {
   });
 
   test('should set the checked state', () => {
-    const { getByLabelText } = render(<Checkbox label="label" name="name" value="value" checked={true} />);
+    const { getByLabelText } = render(<Checkbox label="label" name="name" value="value" checked={true} onChange={jest.fn()} />);
 
     expect(getByLabelText('label')).toBeChecked();
   });

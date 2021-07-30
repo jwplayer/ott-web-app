@@ -55,7 +55,7 @@ const ChooseOfferForm: React.FC<Props> = ({
 
   return (
     <form onSubmit={onSubmit} data-testid="choose-offer-form" noValidate>
-      {onBackButtonClickHandler  ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
+      {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
       <h2 className={styles.title}>{t('choose_offer.subscription')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.all_movies_and_series_of_platform', { siteName })}</h3>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}

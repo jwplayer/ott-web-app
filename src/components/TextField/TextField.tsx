@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
 
@@ -11,7 +12,7 @@ type Props = {
   placeholder?: string;
   name?: string;
   value: string;
-  type?: 'text' | 'email' | 'password' | 'search';
+  type?: 'text' | 'email' | 'password' | 'search' | 'number' | 'date';
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onFocus?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;
@@ -41,6 +42,7 @@ const TextField: React.FC<Props> = ({
   ...rest
 }: Props) => {
   const id = useOpaqueId('text-field', rest.name);
+  const { t } = useTranslation('common');
   const InputComponent = multiline ? 'textarea' : 'input';
   const textFieldClassName = classNames(
     styles.textField,
@@ -68,6 +70,7 @@ const TextField: React.FC<Props> = ({
     <div className={textFieldClassName}>
       <label htmlFor={id} className={styles.label}>
         {label}
+        {!rest.required ? <span>{t('optional')}</span> : null}
       </label>
       {editing ? (
         <div className={styles.container}>

@@ -5,4 +5,5 @@ export const VideoProgressMinMax = {
   Max: 0.95,
 };
 
+export const termsConditionsUrl = 'https://cleeng.com/cleeng-user-agreement';
 export const playlistLimit = 25;

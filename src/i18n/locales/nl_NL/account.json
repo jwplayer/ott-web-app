@@ -60,6 +60,38 @@
     "week": "",
     "year": ""
   },
+  "personal_details": {
+    "address": "",
+    "address2": "",
+    "birth_date": "",
+    "birth_date_not_valid": "",
+    "city": "",
+    "company_name": "",
+    "continue": "",
+    "fist_name": "",
+    "last_name": "",
+    "no_answer": "",
+    "phone_number": "",
+    "post_code": "",
+    "state": "",
+    "this_field_is_required": "",
+    "title": ""
+  },
+  "registration": {
+    "already_account": "",
+    "continue": "",
+    "email": "",
+    "field_is_not_valid_email": "",
+    "field_required": "",
+    "hide_password": "",
+    "invalid_password": "",
+    "password": "",
+    "password_strength": "",
+    "sign_up": "",
+    "user_exists": "",
+    "view_password": "",
+    "email_updates": ""
+  },
   "reset": {
     "no": "",
     "reset_password": "",

@@ -42,7 +42,9 @@ const AccountContainer = ({ children, fetchConsents = true }: Props): JSX.Elemen
   const fetchPublicherConsents = useQuery(['publisherConsents'], () => getPublisherConsents({ publisherId }, cleengSandbox), { enabled });
   const { data: publisherConsents, isLoading: publisherConsentsLoading } = fetchPublicherConsents;
 
-  const fetchCustomerConsents = useQuery(['customerConsents'], () => getCustomerConsents({ customerId: customerId.toString() }, cleengSandbox, jwt), { enabled });
+  const fetchCustomerConsents = useQuery(['customerConsents'], () => getCustomerConsents({ customerId: customerId.toString() }, cleengSandbox, jwt), {
+    enabled,
+  });
   const { data: customerConsents, isLoading: customerConsentsLoading } = fetchCustomerConsents;
 
   const onUpdateEmailSubmit = ({ id, email, confirmationPassword }: CustomerFormValues) => mutateCustomer({ id, email, confirmationPassword });

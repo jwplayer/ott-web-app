@@ -10,6 +10,9 @@ exports[`<TextField> renders and matches multiline snapshot 1`] = `
       for="text-field_1235_name"
     >
       Label
+      <span>
+        optional
+      </span>
     </label>
     <div
       class="container"
@@ -37,6 +40,9 @@ exports[`<TextField> renders and matches snapshot 1`] = `
       for="text-field_1235_name"
     >
       Label
+      <span>
+        optional
+      </span>
     </label>
     <div
       class="container"

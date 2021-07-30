@@ -14,11 +14,7 @@ const FormFeedback: React.FC<Props> = ({ children, variant = 'error' }: Props) =
     [styles.warning]: variant === 'warning',
     [styles.success]: variant === 'success',
   });
-  return (
-    <div className={className}>
-      {children}
-    </div>
-  );
+  return <div className={className}>{children}</div>;
 };
 
 export default FormFeedback;
