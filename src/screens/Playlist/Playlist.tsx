@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
-import type { Config } from 'types/Config';
 import { Helmet } from 'react-helmet';
 
-import { ConfigContext } from '../../providers/ConfigProvider';
 import { cardUrl } from '../../utils/formatting';
 import usePlaylist from '../../hooks/usePlaylist';
 import { filterPlaylist, getFiltersFromConfig } from '../../utils/collection';
@@ -12,6 +10,9 @@ import CardGrid from '../../components/CardGrid/CardGrid';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import Filter from '../../components/Filter/Filter';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
+import { AccountStore } from '../../stores/AccountStore';
+import { ConfigStore } from '../../stores/ConfigStore';
+import { configHasCleengOffer } from '../../utils/cleeng';
 
 import styles from './Playlist.module.scss';
 
@@ -25,7 +26,7 @@ function Playlist({
   },
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
-  const config: Config = useContext(ConfigContext);
+  const config = ConfigStore.useState((state) => state.config);
   const { isLoading, isPlaceholderData, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
 
   const [filter, setFilter] = useState<string>('');
@@ -33,6 +34,9 @@ function Playlist({
   const categories = getFiltersFromConfig(config, id);
   const filteredPlaylist = useMemo(() => filterPlaylist(playlist, filter), [playlist, filter]);
   const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
+
+  const hasActiveSubscription = !!AccountStore.useState((state) => state.subscription);
+  const requiresSubscription = !!config.cleengId && configHasCleengOffer(config);
 
   useEffect(() => {
     // reset filter when the playlist id changes
@@ -66,6 +70,8 @@ function Playlist({
           onCardHover={onCardHover}
           isLoading={isLoading}
           enableCardTitles={config.options.shelveTitles}
+          hasActiveSubscription={hasActiveSubscription}
+          requiresSubscription={requiresSubscription}
         />
       </main>
     </div>

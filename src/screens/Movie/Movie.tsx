@@ -80,7 +80,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   });
   const { data: subscriptionsResult, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
   const subscriptions = subscriptionsResult?.responseData?.items;
-  const hasActiveSubscription = subscriptions?.find(
+  const hasActiveSubscription = !!subscriptions?.find(
     (subscription: Subscription) => subscription.status === 'active' || subscription.status === 'cancelled',
   );
   const allowedToWatch = useMemo<boolean>(
@@ -205,6 +205,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
               currentCardItem={item}
               currentCardLabel={t('currently_playing')}
               enableCardTitles={options.shelveTitles}
+              hasActiveSubscription={hasActiveSubscription}
+              requiresSubscription={!!cleengId && configHasOffer}
             />
           </>
         ) : undefined}

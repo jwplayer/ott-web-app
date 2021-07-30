@@ -92,7 +92,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   });
   const { data: subscriptionsResult, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
   const subscriptions = subscriptionsResult?.responseData?.items;
-  const hasActiveSubscription = subscriptions?.find(
+  const hasActiveSubscription = !!subscriptions?.find(
     (subscription: Subscription) => subscription.status === 'active' || subscription.status === 'cancelled',
   );
   const allowedToWatch = useMemo<boolean>(
@@ -236,6 +236,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
             currentCardItem={item}
             currentCardLabel={t('current_episode')}
             enableCardTitles={options.shelveTitles}
+            hasActiveSubscription={hasActiveSubscription}
+            requiresSubscription={!!cleengId && configHasOffer}
           />
         </>
       </VideoComponent>
