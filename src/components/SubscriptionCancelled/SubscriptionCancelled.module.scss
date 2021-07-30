@@ -1,0 +1,13 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.title {
+  margin-bottom: 8px;
+  font-family: theme.$body-font-family;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.paragraph {
+  font-family: theme.$body-font-family;
+}

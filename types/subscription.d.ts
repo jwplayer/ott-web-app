@@ -81,7 +81,7 @@ export type GetSubscriptionsResponse = {
 export type UpdateSubscriptionPayload = {
   customerId: number;
   offerId: string;
-  status: string;
+  status: 'active' | 'cancelled';
   cancellationReason?: string;
 };
 

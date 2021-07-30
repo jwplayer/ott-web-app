@@ -41,6 +41,10 @@ const User = (): JSX.Element => {
     history.push(addQueryParam(history, 'u', 'choose-offer'));
   };
 
+  const handleCancelSubscriptionClick = () => {
+    history.push(addQueryParam(history, 'u', 'unsubscribe'));
+  };
+
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
   if (!customer) {
@@ -129,6 +133,7 @@ const User = (): JSX.Element => {
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                   onCompleteSubscriptionClick={handleCompleteSubscriptionClick}
+                  onCancelSubscriptionClick={handleCancelSubscriptionClick}
                 />
               )}
             </SubscriptionContainer>
