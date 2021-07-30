@@ -75,7 +75,7 @@ exports[`<Header /> renders header 1`] = `
           class="button default outlined"
         >
           <span>
-            sign_up
+            sign_in
           </span>
         </button>
         <button

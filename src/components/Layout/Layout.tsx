@@ -76,16 +76,8 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     <UserMenu />
   ) : (
     <div className={styles.buttonContainer}>
-      <Button fullWidth onClick={loginButtonClickHandler} label="Login" />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          'sign up';
-        }}
-        label="Sign up"
-        fullWidth
-      />
+      <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
+      <Button variant="contained" color="primary" onClick={signUpButtonClickHandler} label={t('sign_up')} fullWidth />
     </div>
   );
 
