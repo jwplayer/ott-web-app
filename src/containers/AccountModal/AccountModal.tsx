@@ -12,6 +12,7 @@ import styles from './AccountModal.module.scss';
 import Login from './forms/Login';
 import ChooseOffer from './forms/ChooseOffer';
 import Checkout from './forms/Checkout';
+import ResetPassword from './forms/ResetPassword';
 
 const AccountModal = () => {
   const history = useHistory();
@@ -38,6 +39,7 @@ const AccountModal = () => {
       {view === 'login' ? <Login /> : null}
       {view === 'choose-offer' ? <ChooseOffer /> : null}
       {view === 'checkout' ? <Checkout /> : null}
+      {view === 'reset-password' ? <ResetPassword /> : null}
       {view === 'paypal-error' ? <PaymentFailed type="error" message={message} onCloseButtonClick={closeHandler} /> : null}
       {view === 'paypal-cancelled' ? <PaymentFailed type="cancelled" onCloseButtonClick={closeHandler} /> : null}
       {view === 'welcome' ? <Welcome onCloseButtonClick={closeHandler} onCountdownCompleted={closeHandler} /> : null}

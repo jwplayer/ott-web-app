@@ -59,5 +59,11 @@
     "month": "",
     "week": "",
     "year": ""
+  },
+  "reset": {
+    "no": "",
+    "reset_password": "",
+    "text": "",
+    "yes": ""
   }
 }
