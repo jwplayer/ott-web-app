@@ -17,7 +17,7 @@ exports[`<SubscriptionCancelled> renders and matches snapshot 1`] = `
       class="button default outlined fullWidth"
     >
       <span>
-        Back to profile
+        subscription_cancelled.return_to_profile
       </span>
     </button>
   </div>

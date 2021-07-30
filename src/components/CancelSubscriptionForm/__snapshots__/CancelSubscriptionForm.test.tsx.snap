@@ -17,14 +17,14 @@ exports[`<CancelSubscriptionForm> renders and matches snapshot 1`] = `
       class="button confirmButton primary fullWidth"
     >
       <span>
-        Unsubscribe
+        cancel_subscription.unsubscribe
       </span>
     </button>
     <button
       class="button default outlined fullWidth"
     >
       <span>
-        No, thanks
+        cancel_subscription.no_thanks
       </span>
     </button>
   </div>

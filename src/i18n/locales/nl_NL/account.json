@@ -1,8 +1,10 @@
 {
   "cancel_subscription": {
     "explanation": "",
+    "no_thanks": "",
     "title": "",
-    "unknown_error_occurred": ""
+    "unknown_error_occurred": "",
+    "unsubscribe": ""
   },
   "checkout": {
     "applicable_tax": "",
@@ -105,6 +107,7 @@
   },
   "subscription_cancelled": {
     "message": "",
+    "return_to_profile": "",
     "title": ""
   }
 }

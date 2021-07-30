@@ -16,10 +16,8 @@ const SubscriptionCancelled: React.FC<Props> = ({ expiresDate, onClose }: Props)
   return (
     <div className={styles.SubscriptionCancelled}>
       <h2 className={styles.title}>{t('subscription_cancelled.title')}</h2>
-      <p className={styles.paragraph}>
-        {t('subscription_cancelled.message', { date: expiresDate})}
-      </p>
-      <Button label="Back to profile" variant="outlined" onClick={onClose} fullWidth />
+      <p className={styles.paragraph}>{t('subscription_cancelled.message', { date: expiresDate })}</p>
+      <Button label={t('subscription_cancelled.return_to_profile')} variant="outlined" onClick={onClose} fullWidth />
     </div>
   );
 };
