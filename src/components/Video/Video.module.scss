@@ -53,7 +53,7 @@
 .title {
   color: var(--primary-color);
   font-family: var(--body-font-family);
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 34px;
   line-height: 40px;
   letter-spacing: 0.25px;

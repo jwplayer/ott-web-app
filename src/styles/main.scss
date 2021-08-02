@@ -1,4 +1,5 @@
 @use "theme";
+@use "variables";
 @use "./mixins/responsive";
 
 :root {
@@ -7,6 +8,9 @@
   --body-background-color: #{theme.$body-bg-color};
   --body-font-family: #{theme.$body-font-family};
   --body-alt-font-family: #{theme.$body-alt-font-family};
+  --body-font-weight-regular: #{theme.$body-font-weight-regular};
+  --body-font-weight-bold: #{theme.$body-font-weight-bold};
+  --body-color: #{theme.$body-color};
 
   --card-color: #{theme.$card-color};
   --card-border-hover-color: #{theme.$card-border-hover-color};
@@ -19,7 +23,9 @@ body {
   padding: 0;
   overflow-x: hidden;
   overflow-y: scroll;
-  font-size: 16px;
+  color: var(--body-color);
+  font-family: var(--body-font-family);
+  font-size: variables.$body-font-size;
   background-color: var(--body-background-color);
   -webkit-font-smoothing: antialiased;
 }

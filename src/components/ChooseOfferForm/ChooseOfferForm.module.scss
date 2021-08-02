@@ -3,15 +3,13 @@
 
 .title {
   margin-bottom: 8px;
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 24px;
 }
 
 .subtitle {
   margin-bottom: 24px;
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 18px;
 }
 
@@ -52,7 +50,6 @@
 .label {
   display: block;
   padding: 16px;
-  font-family: theme.$body-font-family;
   background-color: rgba(variables.$black, 0.34);
   border: 1px solid rgba(variables.$white, 0.34);
   border-radius: 4px;
@@ -61,7 +58,7 @@
 }
 
 .offerTitle {
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 20px;
   text-align: center;
 }

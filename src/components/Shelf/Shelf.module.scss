@@ -20,7 +20,7 @@
   overflow: hidden;
   color: var(--card-color);
   font-family: var(--body-alt-font-family);
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 24px;
   white-space: nowrap;
   text-overflow: ellipsis;

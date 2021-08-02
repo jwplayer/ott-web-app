@@ -4,8 +4,7 @@
 .link {
   display: inline-block;
   color: var(--primary-color);
-  font-family: theme.$body-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   text-decoration: none;
 
   &:hover,

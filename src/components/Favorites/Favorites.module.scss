@@ -8,7 +8,7 @@
 
   > h3 {
     margin-right: variables.$base-spacing * 1.5;
-    font-weight: bold;
+    font-weight: var(--body-font-weight-bold);
     font-size: 34px;
     font-style: normal;
     line-height: 36px;

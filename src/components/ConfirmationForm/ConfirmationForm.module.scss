@@ -2,14 +2,12 @@
 @use '../../styles/theme';
 .title {
   margin: 24px 0;
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 26px;
 }
 
 .text {
   margin-bottom: 24px;
-  font-family: theme.$body-alt-font-family;
   font-size: 16px;
 }
 
@@ -18,7 +16,6 @@
 }
 
 .notSure {
-  font-family: theme.$body-alt-font-family;
   font-size: 16px;
 }
 
@@ -26,8 +23,7 @@
   margin-bottom: 24px;
   margin-left: 6px;
   color: var(--primary-color);
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   cursor: pointer;
   &:hover {
     text-decoration: underline;

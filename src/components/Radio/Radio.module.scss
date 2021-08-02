@@ -11,8 +11,7 @@
 
 .header {
   margin-bottom: 8px;
-  font-family: theme.$body-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   text-align: left;
 
   > span {
@@ -29,7 +28,6 @@
 
   > label {
     margin-left: variables.$base-spacing / 2;
-    font-family: theme.$body-font-family;
     font-size: 14px;
     cursor: pointer;
   }
@@ -72,7 +70,6 @@
 
 .helperText {
   margin-top: 4px;
-  font-family: theme.$body-font-family;
   font-size: 12px;
   text-align: left;
 }

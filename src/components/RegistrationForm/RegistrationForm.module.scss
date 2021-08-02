@@ -3,8 +3,7 @@
 
 .title {
   margin-bottom: 24px;
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 24px;
 }
 
@@ -18,14 +17,12 @@
 }
 
 .alreadyAccount {
-  font-family: theme.$body-alt-font-family;
   font-size: 16px;
 }
 
 .login {
   margin-left: 6px;
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   cursor: pointer;
 
   &:hover,

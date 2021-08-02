@@ -2,12 +2,10 @@
 @use '../../styles/theme';
 
 .title {
-  font-family: theme.$body-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 24px;
 }
 
 .message {
-  font-family: theme.$body-font-family;
   font-size: 16px;
 }
