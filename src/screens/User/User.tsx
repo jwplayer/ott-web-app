@@ -88,9 +88,6 @@ const User = (): JSX.Element => {
       )}
       <div className={styles.mainColumn}>
         <Switch>
-          <Route path="/u/logout">
-            <LoadingOverlay transparentBackground />
-          </Route>
           <Route path="/u/my-account">
             <AccountContainer>
               {({
@@ -156,7 +153,7 @@ const User = (): JSX.Element => {
             </SubscriptionContainer>
           </Route>
           <Route path="/u/logout">
-            <Redirect to="/" />
+            <LoadingOverlay transparentBackground />
           </Route>
           <Route path="/u/:other?">
             <Redirect to="/u/my-account" />
