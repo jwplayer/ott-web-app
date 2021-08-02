@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 import CancelSubscriptionForm from '../../../components/CancelSubscriptionForm/CancelSubscriptionForm';
 import { removeQueryParam } from '../../../utils/history';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { AccountStore, cancelSubscription } from '../../../stores/AccountStore';
+import { AccountStore, updateSubscription } from '../../../stores/AccountStore';
 import SubscriptionCancelled from '../../../components/SubscriptionCancelled/SubscriptionCancelled';
 import { formatDate } from '../../../utils/formatting';
 
@@ -22,7 +22,7 @@ const CancelSubscription = () => {
     setError(null);
 
     try {
-      await cancelSubscription();
+      await updateSubscription('cancelled');
       setCancelled(true);
     } catch (error: unknown) {
       setError(t('cancel_subscription.unknown_error_occurred'));

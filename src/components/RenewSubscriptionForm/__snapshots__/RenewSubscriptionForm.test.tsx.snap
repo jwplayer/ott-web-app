@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RenewSubscriptionForm> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="title"
+    >
+      renew_subscription.renew_your_subscription
+    </h2>
+    <p
+      class="paragraph"
+    >
+      renew_subscription.explanation
+    </p>
+    <div
+      class="infoBox"
+    >
+      <p>
+        <strong>
+          Annual subscription (recurring)
+        </strong>
+         
+        <br />
+        renew_subscription.next_billing_date_on
+      </p>
+      <p
+        class="price"
+      >
+        <strong>
+          € 22,15
+        </strong>
+        <small>
+          /
+          periods.year
+        </small>
+      </p>
+    </div>
+    <button
+      class="button confirmButton primary fullWidth"
+    >
+      <span>
+        renew_subscription.renew_subscription
+      </span>
+    </button>
+    <button
+      class="button default outlined fullWidth"
+    >
+      <span>
+        renew_subscription.no_thanks
+      </span>
+    </button>
+  </div>
+</div>
+`;

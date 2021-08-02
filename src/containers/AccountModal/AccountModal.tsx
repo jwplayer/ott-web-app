@@ -18,6 +18,7 @@ import ChooseOffer from './forms/ChooseOffer';
 import Checkout from './forms/Checkout';
 import ResetPassword from './forms/ResetPassword';
 import CancelSubscription from './forms/CancelSubscription';
+import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
@@ -85,6 +86,8 @@ const AccountModal = () => {
         return <EditPassword />;
       case 'unsubscribe':
         return <CancelSubscription />;
+      case 'renew-subscription':
+        return <RenewSubscription />;
     }
   };
 
