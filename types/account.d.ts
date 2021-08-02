@@ -27,6 +27,14 @@ export type RegistrationFormData = {
   password: string;
 };
 
+export type ForgotPasswordFormData = {
+  email: string;
+};
+
+export type EditPasswordFormData = {
+  password: string;
+};
+
 export type OfferPeriodicity = 'monthly' | 'yearly';
 
 export type ChooseOfferFormData = {
@@ -223,7 +231,7 @@ export type Capture = {
   companyName?: string;
   phoneNumber?: string;
   customAnswers?: CaptureCustomAnswer[];
-}
+};
 
 export type UpdateCaptureAnswersPayload = {
   customerId: string;

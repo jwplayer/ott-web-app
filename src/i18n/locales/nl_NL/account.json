@@ -108,10 +108,29 @@
     "unknown_error_occurred": ""
   },
   "reset": {
+    "back_login": "",
+    "confirm": "",
+    "email": "",
+    "email_me": "",
+    "forgot_password": "",
+    "forgot_text": "",
+    "hide_password": "",
+    "invalid_link": "",
+    "invalid_password": "",
+    "invalid_token": "",
+    "link_sent": "",
+    "link_sent_text": "",
     "no": "",
+    "not_sure": "",
+    "password": "",
+    "password_reset": "",
     "reset_password": "",
     "text": "",
-    "yes": ""
+    "try_again": "",
+    "view_password": "",
+    "wrong_email": "",
+    "yes": "",
+    "password_reset_text": ""
   },
   "subscription_cancelled": {
     "message": "",
