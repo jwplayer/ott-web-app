@@ -14,6 +14,7 @@ exports[`<CancelSubscriptionForm> renders and matches snapshot 1`] = `
       cancel_subscription.explanation
     </p>
     <button
+      aria-disabled="false"
       class="button confirmButton primary fullWidth"
     >
       <span>

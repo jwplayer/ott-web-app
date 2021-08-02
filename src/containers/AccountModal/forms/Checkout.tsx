@@ -2,7 +2,15 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
-import { CheckoutStore, createOrder, updateOrder, getPaymentMethods, paymentWithoutDetails, adyenPayment, paypalPayment } from '../../../stores/CheckoutStore';
+import {
+  CheckoutStore,
+  createOrder,
+  updateOrder,
+  getPaymentMethods,
+  paymentWithoutDetails,
+  adyenPayment,
+  paypalPayment,
+} from '../../../stores/CheckoutStore';
 import { addQueryParam } from '../../../utils/history';
 import useForm from '../../../hooks/useForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -13,7 +21,7 @@ import { addQueryParams } from '../../../utils/formatting';
 
 const Checkout = () => {
   const history = useHistory();
-  const [paymentError, setPaymentError] = useState<string|undefined>(undefined);
+  const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
   const [updatingOrder, setUpdatingOrder] = useState(false);
   const [couponFormOpen, setCouponFormOpen] = useState(false);
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
@@ -86,7 +94,7 @@ const Checkout = () => {
       setUpdatingOrder(true);
       setPaymentError(undefined);
       await paymentWithoutDetails();
-      history.replace(addQueryParam(history, 'u', 'welcome'))
+      history.replace(addQueryParam(history, 'u', 'welcome'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         setPaymentError(error.message);
@@ -100,9 +108,9 @@ const Checkout = () => {
     try {
       setPaymentError(undefined);
       setUpdatingOrder(true);
-      const successUrl = addQueryParams(window.location.href, { 'u': 'welcome' });
-      const cancelUrl = addQueryParams(window.location.href, { 'u': 'paypal-cancelled' });
-      const errorUrl = addQueryParams(window.location.href, { 'u': 'paypal-error' });
+      const successUrl = addQueryParams(window.location.href, { u: 'welcome' });
+      const cancelUrl = addQueryParams(window.location.href, { u: 'paypal-cancelled' });
+      const errorUrl = addQueryParams(window.location.href, { u: 'paypal-error' });
       const response = await paypalPayment(successUrl, cancelUrl, errorUrl);
 
       if (response.redirectUrl) {
@@ -116,22 +124,25 @@ const Checkout = () => {
     setUpdatingOrder(false);
   };
 
-  const handleAdyenSubmit = useCallback(async (data: AdyenEventData) => {
-    if (!data.isValid) return;
+  const handleAdyenSubmit = useCallback(
+    async (data: AdyenEventData) => {
+      if (!data.isValid) return;
 
-    try {
-      setUpdatingOrder(true);
-      setPaymentError(undefined);
-      await adyenPayment(data.data.paymentMethod);
-      history.replace(addQueryParam(history, 'u', 'welcome'))
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setPaymentError(error.message);
+      try {
+        setUpdatingOrder(true);
+        setPaymentError(undefined);
+        await adyenPayment(data.data.paymentMethod);
+        history.replace(addQueryParam(history, 'u', 'welcome'));
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setPaymentError(error.message);
+        }
       }
-    }
 
-    setUpdatingOrder(false);
-  }, [history]);
+      setUpdatingOrder(false);
+    },
+    [history],
+  );
 
   const renderPaymentMethod = () => {
     const paymentMethod = paymentMethods?.find((method) => method.id === paymentMethodId);
@@ -161,27 +172,25 @@ const Checkout = () => {
   }
 
   return (
-    <React.Fragment>
-      <CheckoutForm
-        order={order}
-        offer={offer}
-        onBackButtonClick={backButtonClickHandler}
-        paymentMethods={paymentMethods}
-        paymentMethodId={paymentMethodId}
-        onPaymentMethodChange={handlePaymentMethodChange}
-        onCouponFormSubmit={couponCodeForm.handleSubmit}
-        onCouponInputChange={couponCodeForm.handleChange}
-        onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
-        onCloseCouponFormClick={() => setCouponFormOpen(false)}
-        couponInputValue={couponCodeForm.values.couponCode}
-        couponFormOpen={couponFormOpen}
-        couponFormApplied={couponCodeApplied}
-        couponFormSubmitting={couponCodeForm.submitting}
-        couponFormError={!!couponCodeForm.errors.couponCode}
-        renderPaymentMethod={renderPaymentMethod}
-      />
-      {updatingOrder ? <LoadingOverlay inline /> : null}
-    </React.Fragment>
+    <CheckoutForm
+      order={order}
+      offer={offer}
+      onBackButtonClick={backButtonClickHandler}
+      paymentMethods={paymentMethods}
+      paymentMethodId={paymentMethodId}
+      onPaymentMethodChange={handlePaymentMethodChange}
+      onCouponFormSubmit={couponCodeForm.handleSubmit}
+      onCouponInputChange={couponCodeForm.handleChange}
+      onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
+      onCloseCouponFormClick={() => setCouponFormOpen(false)}
+      couponInputValue={couponCodeForm.values.couponCode}
+      couponFormOpen={couponFormOpen}
+      couponFormApplied={couponCodeApplied}
+      couponFormSubmitting={couponCodeForm.submitting}
+      couponFormError={!!couponCodeForm.errors.couponCode}
+      renderPaymentMethod={renderPaymentMethod}
+      submitting={updatingOrder}
+    />
   );
 };
 

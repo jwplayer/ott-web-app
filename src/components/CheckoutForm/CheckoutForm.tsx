@@ -10,6 +10,7 @@ import Close from '../../icons/Close';
 import DialogBackButton from '../DialogBackButton/DialogBackButton';
 import PayPal from '../../icons/PayPal';
 import CreditCard from '../../icons/CreditCard';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './CheckoutForm.module.scss';
 
@@ -30,6 +31,7 @@ type Props = {
   order: Order;
   offer: Offer;
   renderPaymentMethod?: () => JSX.Element | null;
+  submitting: boolean;
 };
 
 const CheckoutForm: React.FC<Props> = ({
@@ -49,6 +51,7 @@ const CheckoutForm: React.FC<Props> = ({
   onCouponFormSubmit,
   onRedeemCouponButtonClick,
   renderPaymentMethod,
+  submitting,
 }) => {
   const { t } = useTranslation('account');
 
@@ -178,6 +181,7 @@ const CheckoutForm: React.FC<Props> = ({
         </div>
       ) : null}
       <div className={styles.paymentDetails}>{renderPaymentMethod ? renderPaymentMethod() : null}</div>
+      {submitting && <LoadingOverlay transparentBackground inline />}
     </div>
   );
 };

@@ -130,6 +130,7 @@ const RegistrationForm: React.FC<Props> = ({
           {t('login.sign_in')}
         </button>
       </div>
+      {submitting && <LoadingOverlay transparentBackground inline />}
     </form>
   );
 };

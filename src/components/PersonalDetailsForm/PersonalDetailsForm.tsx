@@ -9,6 +9,7 @@ import Dropdown from '../Dropdown/Dropdown';
 import Checkbox from '../Checkbox/Checkbox';
 import Radio from '../Radio/Radio';
 import DateField from '../DateField/DateField';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './PersonalDetailsForm.module.scss';
 import FormFeedback from '../FormFeedback/FormFeedback';
@@ -173,7 +174,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
       {fields.birthDate?.enabled ? (
         <DateField
           value={values.birthDate}
-          onChange={value => setValue('birthDate', value)}
+          onChange={(value) => setValue('birthDate', value)}
           label={t('personal_details.birth_date')}
           placeholder={t('personal_details.birth_date')}
           error={!!errors.birthDate || !!errors.form}
@@ -193,6 +194,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
         disabled={submitting}
         fullWidth
       />
+      {submitting && <LoadingOverlay transparentBackground inline />}
     </form>
   );
 };
