@@ -40,6 +40,7 @@
     "no_subscription": "",
     "payment_method": "",
     "price_payed_with": "",
+    "renew_subscription": "",
     "subscription_details": "",
     "subscription_expires_on": "",
     "transactions": "",

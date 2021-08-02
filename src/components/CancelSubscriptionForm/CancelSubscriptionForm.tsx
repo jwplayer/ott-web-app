@@ -20,7 +20,14 @@ const CancelSubscriptionForm: React.FC<Props> = ({ onConfirm, onCancel, error }:
       {error ? <FormFeedback variant="error">{error}</FormFeedback> : null}
       <h2 className={styles.title}>{t('cancel_subscription.title')}</h2>
       <p className={styles.paragraph}>{t('cancel_subscription.explanation')}</p>
-      <Button className={styles.confirmButton} label={t('cancel_subscription.unsubscribe')} color="primary" variant="contained" onClick={onConfirm} fullWidth />
+      <Button
+        className={styles.confirmButton}
+        label={t('cancel_subscription.unsubscribe')}
+        color="primary"
+        variant="contained"
+        onClick={onConfirm}
+        fullWidth
+      />
       <Button label={t('cancel_subscription.no_thanks')} variant="outlined" onClick={onCancel} fullWidth />
     </div>
   );

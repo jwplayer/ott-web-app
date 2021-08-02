@@ -11,7 +11,7 @@ import Button from '../Button/Button';
 import styles from './Payment.module.scss';
 
 type Props = {
-  activeSubscription?: Subscription;
+  activeSubscription?: Subscription | null;
   activePaymentDetail?: PaymentDetail;
   transactions: Transaction[];
   customer: Customer;
@@ -20,11 +20,13 @@ type Props = {
   panelHeaderClassName?: string;
   onCompleteSubscriptionClick?: () => void;
   onCancelSubscriptionClick?: () => void;
+  onRenewSubscriptionClick?: () => void;
 };
 
 const Payment = ({
   onCompleteSubscriptionClick,
   onCancelSubscriptionClick,
+  onRenewSubscriptionClick,
   activePaymentDetail,
   activeSubscription,
   transactions,
@@ -57,7 +59,9 @@ const Payment = ({
             </div>
             {activeSubscription.status === 'active' ? (
               <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
-            ) : null}
+            ) : (
+              <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
+            )}
           </React.Fragment>
         ) : (
           <React.Fragment>

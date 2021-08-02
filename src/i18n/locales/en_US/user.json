@@ -40,6 +40,7 @@
     "no_subscription": "You have no subscription. Complete your subscription to start watching all movies and series.",
     "payment_method": "Payment method",
     "price_payed_with": "{{price}} payed with {{method}}",
+    "renew_subscription": "Renew subscription",
     "subscription_details": "Subscription details",
     "subscription_expires_on": "This plan will expire on {{date}}",
     "transactions": "Transactions",
