@@ -178,8 +178,6 @@ export const register = async (email: string, password: string) => {
   if (watchHistory) {
     setWatchHistory(watchHistory);
   }
-
-  restoreWatchHistory();
 };
 
 export const setWatchHistory = async (watchHistory: WatchHistoryItem[]) => {
@@ -194,7 +192,7 @@ export const setWatchHistory = async (watchHistory: WatchHistoryItem[]) => {
   } = ConfigStore.getRawState();
 
   const externalData = { history: watchHistory };
-  return await accountService.updateCustomer({ customerId: user.id, externalData }, cleengSandbox, auth?.jwt);
+  return await accountService.updateCustomer({ id: user.id.toString(), externalData }, cleengSandbox, auth?.jwt);
 };
 
 export const updateConsents = async (customerConsents: CustomerConsent[]) => {

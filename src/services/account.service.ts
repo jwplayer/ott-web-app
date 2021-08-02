@@ -40,8 +40,8 @@ export const changePassword: ChangePassword = async (payload, sandbox) => {
   return patch(sandbox, '/customers/passwords', JSON.stringify(payload));
 };
 
-export const updateCustomer: UpdateCustomer = async ({ customerId, ...payload }, sandbox, jwt) => {
-  return patch(sandbox, `/customers/${customerId}`, JSON.stringify(payload), jwt);
+export const updateCustomer: UpdateCustomer = async (payload, sandbox, jwt) => {
+  return patch(sandbox, `/customers/${payload.id}`, JSON.stringify(payload), jwt);
 };
 
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload, sandbox, jwt) => {

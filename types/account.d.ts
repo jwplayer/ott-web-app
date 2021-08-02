@@ -152,7 +152,6 @@ export type UpdateCustomerPayload = {
   confirmationPassword?: string;
   firstName?: string;
   lastName?: string;
-  customerId: number;
   externalData?: ExternalData;
 };
 
