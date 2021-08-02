@@ -16,6 +16,10 @@ button {
 
 .controls {
   margin-top: variables.$base-spacing;
+
+  > button {
+    margin-right: 8px;
+  }
 }
 
 .submitConsents {

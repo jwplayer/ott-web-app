@@ -2,6 +2,10 @@
   "back": "",
   "close": "",
   "close_modal": "",
+  "confirmation_dialog": {
+    "close": "",
+    "confirm": ""
+  },
   "filter_videos_by_genre": "",
   "home": "",
   "live": "",
