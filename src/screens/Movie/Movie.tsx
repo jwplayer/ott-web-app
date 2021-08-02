@@ -21,6 +21,7 @@ import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
 import { AccountStore } from '../../stores/AccountStore';
 import { configHasCleengOffer } from '../../utils/cleeng';
+import { addQueryParam } from '../../utils/history';
 
 import styles from './Movie.module.scss';
 
@@ -100,17 +101,21 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   }, [history, id, playlist, searchParams]);
 
   const formatStartWatchingLabel = (): string => {
-    if (!user) return t('sign_up_to_start_watching');
-    if (!subscription) return t('complete_your_subscription');
+    if (cleengId) {
+      if (!user) return t('sign_up_to_start_watching');
+      if (!subscription && configHasOffer) return t('complete_your_subscription');
+    }
     return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
   };
 
   const handleStartWatchingClick = useCallback(() => {
-    if (!user) return history.push('?u=login');
-    if (!allowedToWatch) return history.push('/u/payments');
+    if (cleengId) {
+      if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
+      if (!allowedToWatch) return history.push('/u/payments');
+    }
 
     return item && history.push(videoUrl(item, searchParams.get('r'), true));
-  }, [user, history, allowedToWatch, item, searchParams]);
+  }, [cleengId, item, history, searchParams, user, allowedToWatch]);
 
   // Effects
   useEffect(() => {
@@ -126,7 +131,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // UI
   if (isLoading && !item) return <LoadingOverlay />;
-  if ((!isLoading && error) || !item) return <ErrorPage title="Video not found!" />;
+  if ((!isLoading && error) || !item) return <ErrorPage title={t('video_not_found')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;

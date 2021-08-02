@@ -23,6 +23,7 @@ import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
 import { configHasCleengOffer } from '../../utils/cleeng';
 import { AccountStore } from '../../stores/AccountStore';
+import { addQueryParam } from '../../utils/history';
 
 import styles from './Series.module.scss';
 
@@ -112,17 +113,21 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   }, [history, item, seriesPlaylist]);
 
   const formatStartWatchingLabel = (): string => {
-    if (!user) return t('sign_up_to_start_watching');
-    if (!subscription) return t('complete_your_subscription');
+    if (cleengId) {
+      if (!user) return t('sign_up_to_start_watching');
+      if (!subscription && configHasOffer) return t('complete_your_subscription');
+    }
     return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
   };
 
   const handleStartWatchingClick = useCallback(() => {
-    if (!user) return history.push('?u=login');
-    if (!allowedToWatch) return history.push('/u/payments');
+    if (cleengId) {
+      if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
+      if (!allowedToWatch) return history.push('/u/payments');
+    }
 
     return history.push(episodeURL(seriesPlaylist, item?.mediaid, true));
-  }, [user, history, allowedToWatch, item, seriesPlaylist]);
+  }, [cleengId, history, seriesPlaylist, item?.mediaid, user, allowedToWatch]);
 
   // Effects
   useEffect(() => {
@@ -144,8 +149,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // UI
   if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
-  if ((!isLoading && error) || !item) return <ErrorPage title="Episode not found!" />;
-  if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
+  if ((!isLoading && error) || !item) return <ErrorPage title={t('episode_not_found')} />;
+  if (playlistError || !seriesPlaylist) return <ErrorPage title={t('series_not_found')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
