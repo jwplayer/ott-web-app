@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import DetectOutsideClick from '../DetectOutsideClick/DetectOutsideClick';
