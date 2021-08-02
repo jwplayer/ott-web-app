@@ -8,9 +8,7 @@ exports[`<RenewSubscriptionForm> renders and matches snapshot 1`] = `
     >
       renew_subscription.renew_your_subscription
     </h2>
-    <p
-      class="paragraph"
-    >
+    <p>
       renew_subscription.explanation
     </p>
     <div

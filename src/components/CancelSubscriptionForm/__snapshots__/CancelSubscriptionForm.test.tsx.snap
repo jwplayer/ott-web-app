@@ -8,9 +8,7 @@ exports[`<CancelSubscriptionForm> renders and matches snapshot 1`] = `
     >
       cancel_subscription.title
     </h2>
-    <p
-      class="paragraph"
-    >
+    <p>
       cancel_subscription.explanation
     </p>
     <button
