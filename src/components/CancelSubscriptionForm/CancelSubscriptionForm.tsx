@@ -10,9 +10,10 @@ type Props = {
   onConfirm: () => void;
   onCancel: () => void;
   error: string | null;
+  submitting: boolean;
 };
 
-const CancelSubscriptionForm: React.FC<Props> = ({ onConfirm, onCancel, error }: Props) => {
+const CancelSubscriptionForm: React.FC<Props> = ({ onConfirm, onCancel, error, submitting }: Props) => {
   const { t } = useTranslation('account');
 
   return (
@@ -27,6 +28,7 @@ const CancelSubscriptionForm: React.FC<Props> = ({ onConfirm, onCancel, error }:
         variant="contained"
         onClick={onConfirm}
         fullWidth
+        disabled={submitting}
       />
       <Button label={t('cancel_subscription.no_thanks')} variant="outlined" onClick={onCancel} fullWidth />
     </div>

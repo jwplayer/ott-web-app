@@ -13,6 +13,7 @@ import IconButton from '../IconButton/IconButton';
 import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import FormFeedback from '../FormFeedback/FormFeedback';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './LoginForm.module.scss';
 
@@ -61,6 +62,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         }
         required
       />
+      {submitting && <LoadingOverlay transparentBackground inline />}
       <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>
         {t('login.forgot_password')}
       </Link>

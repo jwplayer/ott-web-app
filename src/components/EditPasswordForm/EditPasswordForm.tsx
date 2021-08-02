@@ -11,6 +11,7 @@ import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import useToggle from '../../hooks/useToggle';
 import PasswordStrength from '../PasswordStrength/PasswordStrength';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './EditPasswordForm.module.scss';
 
@@ -49,6 +50,7 @@ const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors, 
       />
       <PasswordStrength password={value.password} />
       <Button type="submit" className={styles.button} fullWidth color="primary" disabled={submitting} label={t('reset.confirm')} />
+      {submitting && <LoadingOverlay transparentBackground inline />}
     </form>
   );
 };

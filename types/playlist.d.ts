@@ -27,6 +27,7 @@ export type PlaylistItem = {
   mediaid: string;
   pubdate: number;
   rating: string;
+  requiresSubscription?: string | null;
   seasonNumber?: string;
   sources: Source[];
   seriesId?: string;

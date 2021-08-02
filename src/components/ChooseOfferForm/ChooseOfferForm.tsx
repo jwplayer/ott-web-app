@@ -10,6 +10,7 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import { getOfferPrice } from '../../utils/subscription';
 import DialogBackButton from '../DialogBackButton/DialogBackButton';
 import type { FormErrors } from '../../../types/form';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './ChooseOfferForm.module.scss';
 
@@ -129,6 +130,7 @@ const ChooseOfferForm: React.FC<Props> = ({
           </div>
         ) : null}
       </div>
+      {submitting && <LoadingOverlay transparentBackground inline />}
       <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
     </form>
   );

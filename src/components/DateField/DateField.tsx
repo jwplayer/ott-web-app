@@ -12,7 +12,7 @@ type Props = {
   placeholder?: string;
   name?: string;
   value: string;
-  format?: string,
+  format?: string;
   onChange?: (dateString: string) => void;
   onFocus?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;
@@ -70,10 +70,10 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
-    setDate(current => {
-      const date = name === 'date' ?  getNewValue(value, 1, 31) : current.date;
-      const month = name === 'month' ?  getNewValue(value, 1, 12) : current.month;
-      const year = name === 'year' ?  getNewValue(value).slice(0, 4) : current.year;
+    setDate((current) => {
+      const date = name === 'date' ? getNewValue(value, 1, 31) : current.date;
+      const month = name === 'month' ? getNewValue(value, 1, 12) : current.month;
+      const year = name === 'year' ? getNewValue(value).slice(0, 4) : current.year;
 
       if (onChange) {
         onChange(date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '');

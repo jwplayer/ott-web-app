@@ -11,7 +11,14 @@ import RenewSubscriptionForm from './RenewSubscriptionForm';
 describe('<RenewSubscriptionForm>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
-      <RenewSubscriptionForm customer={customer as Customer} subscription={subscription as Subscription} onConfirm={jest.fn()} onClose={jest.fn()} error={null}/>,
+      <RenewSubscriptionForm
+        customer={customer as Customer}
+        subscription={subscription as Subscription}
+        onConfirm={jest.fn()}
+        onClose={jest.fn()}
+        error={null}
+        submitting={false}
+      />,
     );
 
     expect(container).toMatchSnapshot();

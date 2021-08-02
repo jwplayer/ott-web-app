@@ -9,8 +9,10 @@ import Dropdown from '../Dropdown/Dropdown';
 import Checkbox from '../Checkbox/Checkbox';
 import Radio from '../Radio/Radio';
 import DateField from '../DateField/DateField';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './PersonalDetailsForm.module.scss';
+import FormFeedback from '../FormFeedback/FormFeedback';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
@@ -65,9 +67,9 @@ const PersonalDetailsForm: React.FC<Props> = ({
   };
 
   return (
-    <form className={styles.form} onSubmit={onSubmit} data-testid="personal_details-form" noValidate>
+    <form onSubmit={onSubmit} data-testid="personal_details-form" noValidate>
       <h2 className={styles.title}>{t('personal_details.title')}</h2>
-      {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
+      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       {fields.firstNameLastName?.enabled ? (
         <React.Fragment>
           <TextField
@@ -172,7 +174,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
       {fields.birthDate?.enabled ? (
         <DateField
           value={values.birthDate}
-          onChange={value => setValue('birthDate', value)}
+          onChange={(value) => setValue('birthDate', value)}
           label={t('personal_details.birth_date')}
           placeholder={t('personal_details.birth_date')}
           error={!!errors.birthDate || !!errors.form}
@@ -192,6 +194,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
         disabled={submitting}
         fullWidth
       />
+      {submitting && <LoadingOverlay transparentBackground inline />}
     </form>
   );
 };

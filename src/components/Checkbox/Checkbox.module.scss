@@ -76,9 +76,13 @@
     &:disabled {
       opacity: 0.6;
       pointer-events: none;
+      + label {
+        cursor: default;
+        opacity: 0.6;
+      }
     }
 
-    &:hover {
+    &:hover:not(:disabled) {
       transform: scale(1.1);
     }
 

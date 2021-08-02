@@ -93,19 +93,19 @@ const Header: React.FC<Props> = ({
     );
 
   const userActions =
-    breakpoint >= Breakpoint.sm ? (
+    breakpoint > Breakpoint.sm ? (
       isLoggedIn ? (
         <React.Fragment>
           <IconButton className={styles.iconButton} aria-label={t('open_user_menu')} onClick={() => toggleUserMenu(!userMenuOpen)}>
             <AccountCircle />
           </IconButton>
           <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
-            <UserMenu inPopover />
+            <UserMenu onClick={() => toggleUserMenu(false)} inPopover />
           </Popover>
         </React.Fragment>
       ) : (
         <div className={styles.buttonContainer}>
-          <Button onClick={onLoginButtonClick} label={t('sign_up')} />
+          <Button onClick={onLoginButtonClick} label={t('sign_in')} />
           <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
         </div>
       )

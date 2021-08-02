@@ -7,6 +7,8 @@
   "live": "LIVE",
   "optional": "(Optional)",
   "play_item": "Play {{ title }}",
+  "sign_in": "Sign in",
+  "sign_up": "Sign up",
   "slide_left": "Slide left",
   "slide_right": "Slide right"
 }

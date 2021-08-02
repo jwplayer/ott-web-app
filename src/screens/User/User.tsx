@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
 
@@ -19,17 +19,19 @@ import Favorite from '../../icons/Favorite';
 import BalanceWallet from '../../icons/BalanceWallet';
 import Exit from '../../icons/Exit';
 import { useFavorites } from '../../stores/FavoritesStore';
-import { AccountStore } from '../../stores/AccountStore';
+import { AccountStore, logout } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './User.module.scss';
 
 const User = (): JSX.Element => {
   const history = useHistory();
+  const location = useLocation();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
-  const { user: customer, subscription } = AccountStore.useState((state) => state);
+  const { user: customer, subscription, loading } = AccountStore.useState((state) => state);
 
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
@@ -51,8 +53,21 @@ const User = (): JSX.Element => {
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
+  useEffect(() => {
+    if (!loading && !customer) {
+      history.replace('/');
+    }
+  }, [history, customer, loading]);
+
+  useEffect(() => {
+    if (location.pathname === '/u/logout') {
+      logout();
+      history.push('/');
+    }
+  }, [location, history]);
+
   if (!customer) {
-    return <div className={styles.user}>Please login first</div>;
+    return <div className={styles.user}><LoadingOverlay inline /></div>;
   }
 
   return (
@@ -112,7 +127,7 @@ const User = (): JSX.Element => {
             </AccountContainer>
           </Route>
           <Route path="/u/favorites">
-            <PlaylistContainer playlistId={PersonalShelf.Favorites}>
+            <PlaylistContainer playlistId={PersonalShelf.Favorites} showEmpty>
               {({ playlist, error, isLoading }) => (
                 <Favorites
                   playlist={playlist.playlist}
@@ -144,7 +159,7 @@ const User = (): JSX.Element => {
             </SubscriptionContainer>
           </Route>
           <Route path="/u/logout">
-            <Redirect to="/" />
+            <LoadingOverlay transparentBackground />
           </Route>
           <Route path="/u/:other?">
             <Redirect to="/u/my-account" />

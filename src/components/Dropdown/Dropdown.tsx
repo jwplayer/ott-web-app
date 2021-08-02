@@ -64,7 +64,6 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
               </option>
             ))}
         </select>
-        <span className="focus" />
       </div>
       {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
     </div>
