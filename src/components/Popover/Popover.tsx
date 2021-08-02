@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import DetectOutsideClick from '../DetectOutsideClick/DetectOutsideClick';
@@ -13,17 +13,15 @@ type Props = {
 };
 
 const Popover: React.FC<Props> = ({ children, isOpen, onClose }: Props) => {
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  return isOpen ? (
-    <DetectOutsideClick isActive={isOpen} callback={onClose} el={popoverRef}>
-      <Slide open={isOpen} duration={300} onCloseAnimationEnd={() => onClose()} fromRight>
-        <div ref={popoverRef} className={classNames(styles.popover)}>
+  return (
+    <Slide open={isOpen} duration={250} direction="right">
+      <DetectOutsideClick callback={onClose}>
+        <div className={classNames(styles.popover)}>
           {children}
         </div>
-      </Slide>
-    </DetectOutsideClick>
-  ) : null;
+      </DetectOutsideClick>
+    </Slide>
+  );
 };
 
 export default Popover;

@@ -1,32 +1,34 @@
-import React, { useEffect, RefObject } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 type Prop = {
-  el?: RefObject<HTMLDivElement>;
   callback: () => void;
-  isActive: boolean;
-  children: React.ReactNode;
+  children: React.ReactElement;
 };
 
-const DetectOutsideClick = ({ el, callback, isActive, children }: Prop) => {
+const DetectOutsideClick = ({ callback, children }: Prop) => {
+  const elementRef = useRef<HTMLDivElement>();
+
   useEffect(() => {
-    const onClick = (event: MouseEvent) => {
-      // If the active element exists and is clicked outside of
-      if (isActive && el?.current !== null && !el?.current?.contains(event.target as Node)) {
+    const handleClick = (event: MouseEvent) => {
+      if (!elementRef.current || !(event.target instanceof Node)) {
+        return;
+      }
+
+      if (elementRef.current !== event.target && !elementRef.current?.contains(event.target)) {
         callback();
       }
     };
 
-    // If the item is active (ie open) then listen for clicks outside
-    if (isActive) {
-      setTimeout(() => window.addEventListener('click', onClick), 0);
-    }
+    document.addEventListener('click', handleClick);
 
-    return () => {
-      window.removeEventListener('click', onClick);
-    };
-  }, [isActive, el, callback]);
+    return () => document.removeEventListener('click', handleClick);
+  }, [callback]);
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return React.cloneElement(children, {
+    ref: (node: HTMLDivElement) => {
+      elementRef.current = node;
+    },
+  });
 };
 
 export default DetectOutsideClick;

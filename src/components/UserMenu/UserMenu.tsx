@@ -12,25 +12,26 @@ import styles from './UserMenu.module.scss';
 
 type Props = {
   inPopover?: boolean;
+  onClick?: () => void;
 };
 
-const UserMenu = ({ inPopover = false }: Props) => {
+const UserMenu = ({ inPopover = false, onClick }: Props) => {
   const { t } = useTranslation('user');
 
   const menuItems = (
     <ul className={styles.menuItems}>
       <li>
-        <MenuButton small={inPopover} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
+        <MenuButton small={inPopover} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>
       <li>
-        <MenuButton small={inPopover} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
+        <MenuButton small={inPopover} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
       </li>
       <li>
-        <MenuButton small={inPopover} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
+        <MenuButton small={inPopover} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
       </li>
       <hr className={classNames(styles.divider, { [styles.inPopover]: inPopover })} />
       <li>
-        <MenuButton small={inPopover} to="/u/logout" label={t('nav.logout')} startIcon={<Exit />} />
+        <MenuButton small={inPopover} onClick={onClick} to="/u/logout" label={t('nav.logout')} startIcon={<Exit />} />
       </li>
     </ul>
   );
