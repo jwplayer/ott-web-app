@@ -6,6 +6,8 @@ import * as persist from '../utils/persist';
 import type { Favorite } from '../../types/favorite';
 import { getMediaByIds } from '../services/api.service';
 
+import { AccountStore, updatePersonalShelf } from './AccountStore';
+
 type FavoritesStore = {
   favorites: Favorite[];
 };
@@ -16,8 +18,9 @@ export const favoritesStore = new Store<FavoritesStore>({
   favorites: [],
 });
 
-export const initializeFavorites = async () => {
-  const savedItems: Favorite[] | null = persist.getItem(PERSIST_KEY_FAVORITES) as Favorite[] | null;
+export const restoreFavorites = async () => {
+  const { user } = AccountStore.getRawState();
+  const savedItems = user ? user.externalData?.favorites : persist.getItem<Favorite[]>(PERSIST_KEY_FAVORITES);
 
   if (savedItems) {
     const playlistItems = await getMediaByIds(savedItems.map(({ mediaid }) => mediaid));
@@ -27,15 +30,25 @@ export const initializeFavorites = async () => {
       state.favorites = favorites;
     });
   }
+};
 
-  return favoritesStore.subscribe(
-    (state) => state.favorites,
-    (favorites) =>
-      persist.setItem(
+export const initializeFavorites = async () => {
+  restoreFavorites();
+
+  const updateFavorites = (favorites: Favorite[]) => {
+    const { user } = AccountStore.getRawState();
+
+    if (user) {
+      return updatePersonalShelf();
+    } else {
+      return persist.setItem(
         PERSIST_KEY_FAVORITES,
         favorites.map(({ mediaid, title, tags, duration }) => ({ mediaid, title, tags, duration })),
-      ),
-  );
+      );
+    }
+  };
+
+  return favoritesStore.subscribe((state) => state.favorites, updateFavorites);
 };
 
 const createFavorite = (item: PlaylistItem): Favorite =>

@@ -156,7 +156,8 @@ export type UpdateCustomerPayload = {
 };
 
 export type ExternalData = {
-  history: WatchHistoryItem[];
+  history?: WatchHistoryItem[];
+  favorites?: Favorite[];
 };
 
 export type UpdateCustomerConsentsPayload = {

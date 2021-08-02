@@ -8,7 +8,7 @@ import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
 
-import { AccountStore, setWatchHistory } from './AccountStore';
+import { AccountStore, updatePersonalShelf } from './AccountStore';
 
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];
@@ -51,7 +51,7 @@ export const initializeWatchHistory = () => {
     const { user } = AccountStore.getRawState();
 
     if (user) {
-      return setWatchHistory(watchHistory);
+      return updatePersonalShelf();
     } else {
       return persist.setItem(
         PERSIST_KEY_WATCH_HISTORY,
