@@ -27,11 +27,11 @@ export type RegistrationFormData = {
   password: string;
 };
 
-export type EmailField = {
+export type ForgotPasswordFormData = {
   email: string;
 };
 
-export type PasswordField = {
+export type EditPasswordFormData = {
   password: string;
 };
 

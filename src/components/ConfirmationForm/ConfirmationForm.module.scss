@@ -1,6 +1,5 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
-
 .title {
   margin: 24px 0;
   font-family: theme.$body-alt-font-family;
@@ -16,4 +15,21 @@
 
 .button {
   margin: 16px 0;
+}
+
+.notSure {
+  font-family: theme.$body-alt-font-family;
+  font-size: 16px;
+}
+
+.link {
+  margin-bottom: 24px;
+  margin-left: 6px;
+  color: var(--primary-color);
+  font-family: theme.$body-alt-font-family;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 }

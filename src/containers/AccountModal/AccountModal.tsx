@@ -18,6 +18,7 @@ import ChooseOffer from './forms/ChooseOffer';
 import Checkout from './forms/Checkout';
 import ResetPassword from './forms/ResetPassword';
 import CancelSubscription from './forms/CancelSubscription';
+import EditPassword from './forms/EditPassword';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -27,7 +28,7 @@ const AccountModal = () => {
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
   const { loading, auth } = AccountStore.useState((s) => s);
-  const isPublicView = viewParam && !PUBLIC_VIEWS.includes(viewParam);
+  const isPublicView = viewParam && PUBLIC_VIEWS.includes(viewParam);
 
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
@@ -81,7 +82,7 @@ const AccountModal = () => {
       case 'send-confirmation':
         return <ResetPassword type="confirmation" />;
       case 'edit-password':
-        return <ResetPassword type="edit" />;
+        return <EditPassword />;
       case 'unsubscribe':
         return <CancelSubscription />;
     }

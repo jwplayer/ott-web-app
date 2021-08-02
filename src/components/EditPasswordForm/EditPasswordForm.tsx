@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { FormErrors } from '../../../types/form';
-import type { PasswordField } from '../../../types/account';
+import type { EditPasswordFormData } from '../../../types/account';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import TextField from '../TextField/TextField';
 import Button from '../Button/Button';
@@ -18,8 +18,8 @@ type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   error?: string;
-  errors: FormErrors<PasswordField>;
-  value: PasswordField;
+  errors: FormErrors<EditPasswordFormData>;
+  value: EditPasswordFormData;
   submitting: boolean;
 };
 
