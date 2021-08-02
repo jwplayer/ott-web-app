@@ -21,6 +21,7 @@ import Exit from '../../icons/Exit';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { AccountStore, logout } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './User.module.scss';
 
@@ -56,7 +57,6 @@ const User = (): JSX.Element => {
     if (location.pathname === '/u/logout') {
       logout();
       history.push('/');
-      history.go(0);
     }
   }, [location, history]);
 
@@ -88,6 +88,9 @@ const User = (): JSX.Element => {
       )}
       <div className={styles.mainColumn}>
         <Switch>
+          <Route path="/u/logout">
+            <LoadingOverlay transparentBackground />
+          </Route>
           <Route path="/u/my-account">
             <AccountContainer>
               {({
