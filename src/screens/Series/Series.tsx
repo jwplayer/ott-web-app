@@ -3,7 +3,6 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { useFavorites } from '../../stores/FavoritesStore';
@@ -24,8 +23,6 @@ import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
 import { configHasCleengOffer } from '../../utils/cleeng';
 import { AccountStore } from '../../stores/AccountStore';
-import { getSubscriptions } from '../../services/subscription.service';
-import type { Subscription } from '../../../types/subscription';
 
 import styles from './Series.module.scss';
 
@@ -44,7 +41,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // Config
   const config = ConfigStore.useState((s) => s.config);
-  const { cleengId, options, siteName, cleengSandbox } = config;
+  const { cleengId, options, siteName } = config;
   const configHasOffer = configHasCleengOffer(config);
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
@@ -84,20 +81,10 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // User
   const user = AccountStore.useState((state) => state.user);
-  const auth = AccountStore.useState((state) => state.auth);
-  const jwt = auth?.jwt || '';
-  const customerId = user?.id || -1; // id must be number
-  const getSubscriptionsQuery = useQuery(['subscriptions', customerId], () => getSubscriptions({ customerId }, cleengSandbox, jwt), {
-    enabled: !!user,
-  });
-  const { data: subscriptionsResult, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
-  const subscriptions = subscriptionsResult?.responseData?.items;
-  const hasActiveSubscription = !!subscriptions?.find(
-    (subscription: Subscription) => subscription.status === 'active' || subscription.status === 'cancelled',
-  );
+  const subscription = AccountStore.useState((state) => state.subscription);
   const allowedToWatch = useMemo<boolean>(
-    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!hasActiveSubscription)),
-    [requiresSubscription, cleengId, user, configHasOffer, hasActiveSubscription],
+    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!subscription)),
+    [requiresSubscription, cleengId, user, configHasOffer, subscription],
   );
 
   // Handlers
@@ -126,8 +113,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   const formatStartWatchingLabel = (): string => {
     if (!user) return t('sign_up_to_start_watching');
-    if (!subscriptions?.length) return t('complete_your_subscription');
-    if (!hasActiveSubscription) return t('renew_your_subscription');
+    if (!subscription) return t('complete_your_subscription');
     return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
   };
 
@@ -157,7 +143,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   }, [history, searchParams, seriesPlaylist]);
 
   // UI
-  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e') || isSubscriptionsLoading) return <LoadingOverlay />;
+  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title="Episode not found!" />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title="Series not found!" />;
 
@@ -236,7 +222,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
             currentCardItem={item}
             currentCardLabel={t('current_episode')}
             enableCardTitles={options.shelveTitles}
-            hasActiveSubscription={hasActiveSubscription}
+            hasActiveSubscription={!!subscription}
             requiresSubscription={!!cleengId && configHasOffer}
           />
         </>

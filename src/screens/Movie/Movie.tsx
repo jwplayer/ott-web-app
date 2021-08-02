@@ -3,7 +3,6 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 
 import { useFavorites } from '../../stores/FavoritesStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
@@ -22,8 +21,6 @@ import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
 import { AccountStore } from '../../stores/AccountStore';
 import { configHasCleengOffer } from '../../utils/cleeng';
-import type { Subscription } from '../../../types/subscription';
-import { getSubscriptions } from '../../services/subscription.service';
 
 import styles from './Movie.module.scss';
 
@@ -41,7 +38,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Config
   const config = ConfigStore.useState((s) => s.config);
-  const { cleengId, options, recommendationsPlaylist, siteName, cleengSandbox } = config;
+  const { cleengId, options, recommendationsPlaylist, siteName } = config;
   const configHasOffer = configHasCleengOffer(config);
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
@@ -72,20 +69,10 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // User
   const user = AccountStore.useState((state) => state.user);
-  const auth = AccountStore.useState((state) => state.auth);
-  const jwt = auth?.jwt || '';
-  const customerId = user?.id || -1; // id must be number
-  const getSubscriptionsQuery = useQuery(['subscriptions', customerId], () => getSubscriptions({ customerId }, cleengSandbox, jwt), {
-    enabled: !!user,
-  });
-  const { data: subscriptionsResult, isLoading: isSubscriptionsLoading } = getSubscriptionsQuery;
-  const subscriptions = subscriptionsResult?.responseData?.items;
-  const hasActiveSubscription = !!subscriptions?.find(
-    (subscription: Subscription) => subscription.status === 'active' || subscription.status === 'cancelled',
-  );
+  const subscription = AccountStore.useState((state) => state.subscription);
   const allowedToWatch = useMemo<boolean>(
-    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!hasActiveSubscription)),
-    [requiresSubscription, cleengId, user, configHasOffer, hasActiveSubscription],
+    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!subscription)),
+    [requiresSubscription, cleengId, user, configHasOffer, subscription],
   );
 
   // Handlers
@@ -114,8 +101,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   const formatStartWatchingLabel = (): string => {
     if (!user) return t('sign_up_to_start_watching');
-    if (!subscriptions?.length) return t('complete_your_subscription');
-    if (!hasActiveSubscription) return t('renew_your_subscription');
+    if (!subscription) return t('complete_your_subscription');
     return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
   };
 
@@ -139,7 +125,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   }, [id]);
 
   // UI
-  if ((isLoading && !item) || isSubscriptionsLoading) return <LoadingOverlay />;
+  if (isLoading && !item) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title="Video not found!" />;
 
   const pageTitle = `${item.title} - ${siteName}`;
@@ -205,7 +191,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
               currentCardItem={item}
               currentCardLabel={t('currently_playing')}
               enableCardTitles={options.shelveTitles}
-              hasActiveSubscription={hasActiveSubscription}
+              hasActiveSubscription={!!subscription}
               requiresSubscription={!!cleengId && configHasOffer}
             />
           </>
