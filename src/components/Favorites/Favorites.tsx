@@ -43,16 +43,20 @@ const Favorites = ({ playlist, error, isLoading, onCardClick, onCardHover, onCle
     <div>
       <div className={styles.header}>
         <h3>{t('favorites.title')}</h3>
-        <Button label={t('favorites.clear')} onClick={onClearFavoritesClick} />
+        {playlist.length > 0 ? <Button label={t('favorites.clear')} onClick={onClearFavoritesClick} /> : null}
       </div>
-      <CardGrid
-        playlist={playlist}
-        onCardClick={onCardClick}
-        onCardHover={onCardHover}
-        cols={cols}
-        isLoading={isLoading}
-        enableCardTitles={config.options.shelveTitles}
-      />
+      {playlist.length > 0 ? (
+        <CardGrid
+          playlist={playlist}
+          onCardClick={onCardClick}
+          onCardHover={onCardHover}
+          cols={cols}
+          isLoading={isLoading}
+          enableCardTitles={config.options.shelveTitles}
+        />
+      ) : (
+        <p>{t('favorites.no_favorites')}</p>
+      )}
     </div>
   );
 };

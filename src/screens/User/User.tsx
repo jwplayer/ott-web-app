@@ -119,7 +119,7 @@ const User = (): JSX.Element => {
             </AccountContainer>
           </Route>
           <Route path="/u/favorites">
-            <PlaylistContainer playlistId={PersonalShelf.Favorites}>
+            <PlaylistContainer playlistId={PersonalShelf.Favorites} showEmpty>
               {({ playlist, error, isLoading }) => (
                 <Favorites
                   playlist={playlist.playlist}
