@@ -21,6 +21,7 @@ import Exit from '../../icons/Exit';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { AccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 
 import styles from './User.module.scss';
 
@@ -29,7 +30,7 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
-  const { user: customer, subscription } = AccountStore.useState((state) => state);
+  const { user: customer, subscription, loading } = AccountStore.useState((state) => state);
 
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
@@ -51,8 +52,14 @@ const User = (): JSX.Element => {
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
+  useEffect(() => {
+    if (!loading && !customer) {
+      history.replace('/');
+    }
+  }, [history, customer, loading]);
+
   if (!customer) {
-    return <div className={styles.user}>Please login first</div>;
+    return <div className={styles.user}><LoadingOverlay inline /></div>;
   }
 
   return (
