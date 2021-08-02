@@ -20,6 +20,8 @@
   },
   "favorites": {
     "clear": "",
+    "clear_favorites_body": "",
+    "clear_favorites_title": "",
     "no_favorites": "",
     "not_found": "",
     "title": ""
