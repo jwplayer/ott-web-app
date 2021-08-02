@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
+import scrollbarSize from '../../utils/dom';
 import Fade from '../Animation/Fade/Fade';
 import Grow from '../Animation/Grow/Grow';
 
@@ -45,6 +46,8 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
       }
 
       // prevent scrolling under the modal
+
+      document.body.style.marginRight = `${scrollbarSize()}px`;
       document.body.style.overflowY = 'hidden';
 
       // focus the first element in the modal
@@ -59,7 +62,8 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
         appView.removeAttribute('aria-hidden');
       }
 
-      document.body.style.overflowY = '';
+      document.body.style.removeProperty('margin-right');
+      document.body.style.removeProperty('overflow-y');
 
       // restore last focussed element
       if (lastFocus.current) {

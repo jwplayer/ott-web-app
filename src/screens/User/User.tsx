@@ -29,7 +29,7 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
-  const customer = AccountStore.useState((state) => state.user);
+  const { user: customer, subscription } = AccountStore.useState((state) => state);
 
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
@@ -43,6 +43,10 @@ const User = (): JSX.Element => {
 
   const handleCancelSubscriptionClick = () => {
     history.push(addQueryParam(history, 'u', 'unsubscribe'));
+  };
+
+  const handleRenewSubscriptionClick = () => {
+    history.push(addQueryParam(history, 'u', 'renew-subscription'));
   };
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
@@ -123,9 +127,9 @@ const User = (): JSX.Element => {
           </Route>
           <Route path="/u/payments">
             <SubscriptionContainer>
-              {({ activeSubscription, activePaymentDetail, transactions, isLoading }) => (
+              {({ activePaymentDetail, transactions, isLoading }) => (
                 <Payment
-                  activeSubscription={activeSubscription}
+                  activeSubscription={subscription}
                   activePaymentDetail={activePaymentDetail}
                   transactions={transactions}
                   customer={customer}
@@ -134,6 +138,7 @@ const User = (): JSX.Element => {
                   panelHeaderClassName={styles.panelHeader}
                   onCompleteSubscriptionClick={handleCompleteSubscriptionClick}
                   onCancelSubscriptionClick={handleCancelSubscriptionClick}
+                  onRenewSubscriptionClick={handleRenewSubscriptionClick}
                 />
               )}
             </SubscriptionContainer>

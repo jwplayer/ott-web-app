@@ -56,7 +56,7 @@ exports[`<Layout /> renders layout 1`] = `
               class="button default outlined"
             >
               <span>
-                sign_up
+                sign_in
               </span>
             </button>
             <button
@@ -126,14 +126,14 @@ exports[`<Layout /> renders layout 1`] = `
               class="button default outlined fullWidth"
             >
               <span>
-                Login
+                sign_in
               </span>
             </button>
             <button
               class="button primary fullWidth"
             >
               <span>
-                Sign up
+                sign_up
               </span>
             </button>
           </div>
