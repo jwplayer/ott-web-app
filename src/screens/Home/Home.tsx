@@ -1,23 +1,25 @@
-import React, { CSSProperties, useContext, useRef, useEffect, useCallback } from 'react';
+import React, { CSSProperties, useRef, useEffect, useCallback } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
 import { useHistory } from 'react-router-dom';
-import type { Config, Content } from 'types/Config';
+import type { Content } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
+import { AccountStore } from '../../stores/AccountStore';
+import { ConfigStore } from '../../stores/ConfigStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
-import { ConfigContext } from '../../providers/ConfigProvider';
 import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
 import { cardUrl } from '../../utils/formatting';
+import { configHasCleengOffer } from '../../utils/cleeng';
 
 import styles from './Home.module.scss';
 
@@ -35,10 +37,11 @@ const createItemData = memoize((content) => ({ content }));
 
 const Home = (): JSX.Element => {
   const history = useHistory();
-  const config: Config = useContext(ConfigContext);
+  const config = ConfigStore.useState((state) => state.config);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;
+  const itemData: ItemData = createItemData(content);
 
   const { getPlaylist: getWatchHistoryPlaylist, getDictionary: getWatchHistoryDictionary } = useWatchHistory();
   const watchHistory = getWatchHistoryPlaylist();
@@ -48,6 +51,9 @@ const Home = (): JSX.Element => {
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
 
+  const hasActiveSubscription = !!AccountStore.useState((state) => state.subscription);
+  const requiresSubscription = !!config.cleengId && configHasCleengOffer(config);
+
   const onCardClick = useCallback(
     (playlistItem: PlaylistItem, playlistId?: string) => {
       history.push(cardUrl(playlistItem, playlistId, playlistId === PersonalShelf.ContinueWatching));
@@ -55,8 +61,6 @@ const Home = (): JSX.Element => {
     [history],
   );
   const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
-
-  const itemData: ItemData = createItemData(content);
 
   const rowRenderer = ({ index, key, style, itemData }: rowData) => {
     if (!itemData?.content?.[index]) return null;
@@ -79,6 +83,8 @@ const Home = (): JSX.Element => {
                 enableCardTitles={config.options.shelveTitles}
                 title={playlist.title}
                 featured={contentItem.featured === true}
+                hasActiveSubscription={hasActiveSubscription}
+                requiresSubscription={requiresSubscription}
               />
             </div>
           </div>
@@ -122,13 +128,13 @@ const Home = (): JSX.Element => {
 
   useEffect(() => {
     if (favorites || watchHistory) {
-      ((listRef.current as unknown) as List)?.recomputeRowHeights();
+      (listRef.current as unknown as List)?.recomputeRowHeights();
     }
   }, [favorites, watchHistory]);
 
   return (
     <div className={styles.home}>
-      <WindowScroller onResize={() => ((listRef.current as unknown) as List)?.recomputeRowHeights()}>
+      <WindowScroller onResize={() => (listRef.current as unknown as List)?.recomputeRowHeights()}>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
           <List
             className={styles.list}

@@ -27,6 +27,8 @@ type CardGridProps = {
   cols?: Breakpoints;
   currentCardItem?: PlaylistItem;
   currentCardLabel?: string;
+  hasActiveSubscription: boolean;
+  requiresSubscription: boolean;
 };
 
 function CardGrid({
@@ -39,6 +41,8 @@ function CardGrid({
   cols = defaultCols,
   currentCardItem,
   currentCardLabel,
+  requiresSubscription,
+  hasActiveSubscription,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -69,6 +73,7 @@ function CardGrid({
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
             currentLabel={currentCardLabel}
+            isLocked={requiresSubscription && !hasActiveSubscription && playlistItem.requiresSubscription !== 'false'}
           />
         </div>
       </div>

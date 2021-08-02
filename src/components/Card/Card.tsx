@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import { formatDurationTag } from '../../utils/formatting';
+import Lock from '../../icons/Lock';
 
 import styles from './Card.module.scss';
 
@@ -21,6 +22,7 @@ type CardProps = {
   disabled?: boolean;
   loading?: boolean;
   isCurrent?: boolean;
+  isLocked?: boolean;
   currentLabel?: string;
   enableTitle?: boolean;
 };
@@ -41,6 +43,7 @@ function Card({
   disabled = false,
   loading = false,
   isCurrent = false,
+  isLocked = true,
   currentLabel,
 }: CardProps): JSX.Element {
   const { t } = useTranslation('common');
@@ -85,7 +88,14 @@ function Card({
         {!loading && (
           <div className={styles.meta}>
             {featured && !disabled && enableTitle && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
-            {renderTag()}
+            <div className={styles.tags}>
+              {isLocked && (
+                <div className={classNames(styles.tag, styles.lock)}>
+                  <Lock />
+                </div>
+              )}
+              {renderTag()}
+            </div>
           </div>
         )}
         {progress ? (

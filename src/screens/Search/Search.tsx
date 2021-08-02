@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
@@ -10,10 +10,12 @@ import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import type { PlaylistItem } from '../../../types/playlist';
 import CardGrid from '../../components/CardGrid/CardGrid';
-import { ConfigContext } from '../../providers/ConfigProvider';
 import { cardUrl } from '../../utils/formatting';
 import useFirstRender from '../../hooks/useFirstRender';
 import useSearchPlaylist from '../../hooks/useSearchPlaylist';
+import { AccountStore } from '../../stores/AccountStore';
+import { ConfigStore } from '../../stores/ConfigStore';
+import { configHasCleengOffer } from '../../utils/cleeng';
 
 import styles from './Search.module.scss';
 
@@ -27,7 +29,8 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   },
 }) => {
   const { t } = useTranslation('search');
-  const { siteName, searchPlaylist, options } = useContext(ConfigContext);
+  const config = ConfigStore.useState((state) => state.config);
+  const { siteName, searchPlaylist, options } = config;
   const firstRender = useFirstRender();
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
@@ -35,6 +38,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const { isFetching, error, data: { playlist } = { playlist: [] } } = useSearchPlaylist(searchPlaylist || '', query, firstRender);
 
   const updateBlurImage = useBlurImageUpdater(playlist);
+
+  const hasActiveSubscription = !!AccountStore.useState((state) => state.subscription);
+  const requiresSubscription = !!config.cleengId && configHasCleengOffer(config);
 
   // Update the search bar query to match the route param on mount
   useEffect(() => {
@@ -100,6 +106,8 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
           onCardHover={onCardHover}
           isLoading={firstRender}
           enableCardTitles={options.shelveTitles}
+          hasActiveSubscription={hasActiveSubscription}
+          requiresSubscription={requiresSubscription}
         />
       </main>
     </div>
