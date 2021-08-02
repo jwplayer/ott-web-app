@@ -59,7 +59,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
               </svg>
             </div>
             <span>
-              video:start_watching
+              Start watching
             </span>
           </button>
           <button

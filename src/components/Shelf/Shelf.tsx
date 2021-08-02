@@ -39,6 +39,8 @@ export type ShelfProps = {
   loading?: boolean;
   error?: unknown;
   title?: string;
+  hasActiveSubscription: boolean;
+  requiresSubscription: boolean;
 };
 
 const Shelf: React.FC<ShelfProps> = ({
@@ -52,6 +54,8 @@ const Shelf: React.FC<ShelfProps> = ({
   featured = false,
   loading = false,
   error = null,
+  requiresSubscription,
+  hasActiveSubscription,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
@@ -76,9 +80,21 @@ const Shelf: React.FC<ShelfProps> = ({
         featured={featured}
         disabled={!isInView}
         loading={loading}
+        isLocked={requiresSubscription && !hasActiveSubscription && item.requiresSubscription !== 'false'}
       />
     ),
-    [enableCardTitles, featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory],
+    [
+      enableCardTitles,
+      featured,
+      imageSourceWidth,
+      loading,
+      onCardClick,
+      onCardHover,
+      playlist.feedid,
+      watchHistory,
+      requiresSubscription,
+      hasActiveSubscription,
+    ],
   );
 
   const renderRightControl = useCallback(

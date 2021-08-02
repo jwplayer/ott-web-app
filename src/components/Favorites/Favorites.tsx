@@ -53,6 +53,8 @@ const Favorites = ({ playlist, error, isLoading, onCardClick, onCardHover, onCle
           cols={cols}
           isLoading={isLoading}
           enableCardTitles={config.options.shelveTitles}
+          hasActiveSubscription={true}
+          requiresSubscription={true}
         />
       ) : (
         <p>{t('favorites.no_favorites')}</p>
