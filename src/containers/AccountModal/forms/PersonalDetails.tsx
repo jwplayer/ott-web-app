@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -26,6 +26,16 @@ const PersonalDetails = () => {
 
   const fields = data ? Object.fromEntries(data.settings.map((item) => [item.key, item])) : {};
   const questions = data ? data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[] : [];
+
+  const nextStep = useCallback(() => {
+    const hasOffers = config.json?.cleengMonthlyOffer && config.json?.cleengYearlyOffer;
+
+    history.replace(addQueryParam(history, 'u', hasOffers ? 'choose-offer' : 'welcome'));
+  }, [history, config]);
+
+  useEffect(() => {
+    if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();
+  }, [data, nextStep]);
 
   const initialValues: PersonalDetailsFormData = {
     firstName: '',
@@ -87,9 +97,7 @@ const PersonalDetails = () => {
       const customAnswers = questions.map(question => ({ question: question.question, questionId: question.key, value: questionValues[question.key] } as CaptureCustomAnswer));
       await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
 
-      const hasOffers = config.json?.cleengMonthlyOffer && config.json?.cleengYearlyOffer;
-
-      history.push(addQueryParam(history, 'u', hasOffers ? 'choose-offer' : 'welcome'));
+      nextStep();
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrors({ form: error.message });
