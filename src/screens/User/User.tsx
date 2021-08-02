@@ -56,6 +56,7 @@ const User = (): JSX.Element => {
     if (location.pathname === '/u/logout') {
       logout();
       history.push('/');
+      history.go(0);
     }
   }, [location, history]);
 
