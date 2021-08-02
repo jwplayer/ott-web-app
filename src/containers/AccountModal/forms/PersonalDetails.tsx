@@ -11,6 +11,7 @@ import { addQueryParam } from '../../../utils/history';
 import { getCaptureStatus, updateCaptureAnswers } from '../../../stores/AccountStore';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { ConfigStore } from '../../../stores/ConfigStore';
+import { configHasCleengOffer } from '../../../utils/cleeng';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
@@ -28,7 +29,7 @@ const PersonalDetails = () => {
   const questions = data ? data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[] : [];
 
   const nextStep = useCallback(() => {
-    const hasOffers = config.json?.cleengMonthlyOffer && config.json?.cleengYearlyOffer;
+    const hasOffers = configHasCleengOffer(config);
 
     history.replace(addQueryParam(history, 'u', hasOffers ? 'choose-offer' : 'welcome'));
   }, [history, config]);

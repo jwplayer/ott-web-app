@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
 import { object, SchemaOf, mixed } from 'yup';
 import type { ChooseOfferFormData, OfferPeriodicity } from 'types/account';
 import { useTranslation } from 'react-i18next';
@@ -8,15 +8,18 @@ import { useHistory } from 'react-router';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';
 import { getOffer } from '../../../services/checkout.service';
-import { ConfigContext } from '../../../providers/ConfigProvider';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { CheckoutStore } from '../../../stores/CheckoutStore';
-import { addQueryParam } from '../../../utils/history';
+import { addQueryParam, removeQueryParam } from '../../../utils/history';
+import { configHasCleengOffer } from '../../../utils/cleeng';
+import { ConfigStore } from '../../../stores/ConfigStore';
 
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const { cleengSandbox, json } = useContext(ConfigContext);
+  const config = ConfigStore.useState(s => s.config);
+  const { cleengSandbox, json } = config;
+  const hasOffer = configHasCleengOffer(config);
   const offer = CheckoutStore.useState((s) => s.offer);
 
   const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
@@ -25,6 +28,11 @@ const ChooseOffer = () => {
   // `useQueries` is not strongly typed :-(
   const { data: monthlyOfferData } = useQuery(['offer', cleengMonthlyOffer], () => getOffer({ offerId: cleengMonthlyOffer }, cleengSandbox));
   const { data: yearlyOfferData } = useQuery(['offer', cleengYearlyOffer], () => getOffer({ offerId: cleengYearlyOffer }, cleengSandbox));
+
+  useEffect(() => {
+    // close auth modal when there are no offers defined in the config
+    if (!hasOffer) history.replace(removeQueryParam(history, 'u'));
+  }, [hasOffer, history]);
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async (formData, { setSubmitting, setErrors }) => {
     const offer = formData.periodicity === 'monthly' ? monthlyOfferData?.responseData : yearlyOfferData?.responseData;
@@ -49,7 +57,7 @@ const ChooseOffer = () => {
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
 
   // loading state
-  if (!monthlyOfferData?.responseData || !yearlyOfferData?.responseData) {
+  if (!hasOffer || !monthlyOfferData?.responseData || !yearlyOfferData?.responseData) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
