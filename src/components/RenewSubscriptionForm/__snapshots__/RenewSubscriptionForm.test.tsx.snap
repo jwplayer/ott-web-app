@@ -37,6 +37,7 @@ exports[`<RenewSubscriptionForm> renders and matches snapshot 1`] = `
       </p>
     </div>
     <button
+      aria-disabled="false"
       class="button confirmButton primary fullWidth"
     >
       <span>

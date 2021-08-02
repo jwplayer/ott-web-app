@@ -5,7 +5,7 @@ import CancelSubscriptionForm from './CancelSubscriptionForm';
 
 describe('<CancelSubscriptionForm>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<CancelSubscriptionForm error={null} onCancel={jest.fn()} onConfirm={jest.fn()} />);
+    const { container } = render(<CancelSubscriptionForm submitting={false} error={null} onCancel={jest.fn()} onConfirm={jest.fn()} />);
 
     expect(container).toMatchSnapshot();
   });
