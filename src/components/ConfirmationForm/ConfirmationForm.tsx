@@ -1,0 +1,32 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useHistory, Link } from 'react-router-dom';
+
+import Button from '../Button/Button';
+import { addQueryParam } from '../../utils/history';
+
+import styles from './ConfirmationForm.module.scss';
+
+type Props = {
+  email?: string;
+  onBackToLogin: () => void;
+};
+
+const ConfirmationForm: React.FC<Props> = ({ email, onBackToLogin }: Props) => {
+  const { t } = useTranslation('account');
+  const history = useHistory();
+
+  return (
+    <div className={styles.forgotPasswordForm}>
+      <h2 className={styles.title}>{t('reset.link_sent')}</h2>
+      <p className={styles.text}>{t('reset.link_sent_text', { email: email })}</p>
+      <Button onClick={onBackToLogin} className={styles.button} fullWidth color="primary" label={t('reset.back_login')} />
+      <span className={styles.notSure}>{t('reset.not_sure')}</span>
+      <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>
+        {t('reset.try_again')}
+      </Link>
+    </div>
+  );
+};
+
+export default ConfirmationForm;

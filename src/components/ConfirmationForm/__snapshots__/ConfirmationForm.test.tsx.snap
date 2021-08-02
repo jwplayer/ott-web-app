@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConfirmationForm> renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="title"
+    >
+      reset.link_sent
+    </h2>
+    <p
+      class="text"
+    >
+      reset.link_sent_text
+    </p>
+    <button
+      class="button button primary outlined fullWidth"
+    >
+      <span>
+        reset.back_login
+      </span>
+    </button>
+    <span
+      class="notSure"
+    >
+      reset.not_sure
+    </span>
+    <a
+      class="link"
+      href="/?u=forgot-password"
+    >
+      reset.try_again
+    </a>
+  </div>
+</div>
+`;

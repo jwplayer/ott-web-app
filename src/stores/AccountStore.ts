@@ -220,20 +220,40 @@ export const updateCaptureAnswers = async (capture: Capture) => {
   return response.responseData;
 };
 
-export const resetPassword = async (resetUrl: string) => {
+export const resetPassword = async (email: string, resetUrl: string) => {
   const {
     config: { cleengId, cleengSandbox },
   } = ConfigStore.getRawState();
-  const { user } = AccountStore.getRawState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
-  if (!user?.email) throw new Error('invalid param email');
 
   const response = await accountService.resetPassword(
     {
-      customerEmail: user.email,
+      customerEmail: email,
       publisherId: cleengId,
       resetUrl,
+    },
+    cleengSandbox,
+  );
+
+  if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+  return response.responseData;
+};
+
+export const changePassword = async (customerEmail: string, newPassword: string, resetPasswordToken: string) => {
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+
+  const response = await accountService.changePassword(
+    {
+      publisherId: cleengId,
+      customerEmail,
+      newPassword,
+      resetPasswordToken,
     },
     cleengSandbox,
   );
@@ -267,7 +287,7 @@ export const cancelSubscription = async () => {
 
   const updatedSubscription = await getActiveSubscription(cleengSandbox, user, auth);
 
-  AccountStore.update(s => {
+  AccountStore.update((s) => {
     s.subscription = updatedSubscription;
   });
 
