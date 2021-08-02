@@ -34,11 +34,12 @@ $container-width-desktop: 800px !default;
 // Responsive
 // --------------------------------
 
-$mobile-max-width: 595px !default;
-$tablet-max-width: 959px !default;
+$mobile-max-width: 479px !default;
+$tablet-max-width: 1023px !default;
 
 $tablet-min-width: $mobile-max-width + 1 !default;
 $desktop-min-width: $tablet-max-width + 1 !default;
+$desktop-large-min-width: 1200px !default;
 
 //
 // Header

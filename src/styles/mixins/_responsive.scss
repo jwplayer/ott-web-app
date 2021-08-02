@@ -30,6 +30,12 @@
   }
 }
 
+@mixin desktop-small-only {
+  @media screen and (min-width: variables.$desktop-min-width) and (max-width: variables.$desktop-large-min-width) {
+    @content;
+  }
+}
+
 @mixin desktop-only {
   @media screen and (min-width: variables.$desktop-min-width) {
     @content;

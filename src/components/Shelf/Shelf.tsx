@@ -14,10 +14,10 @@ import styles from './Shelf.module.scss';
 
 export const tileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
-  [Breakpoint.sm]: 3,
-  [Breakpoint.md]: 4,
-  [Breakpoint.lg]: 5,
-  [Breakpoint.xl]: 6,
+  [Breakpoint.sm]: 2,
+  [Breakpoint.md]: 3,
+  [Breakpoint.lg]: 4,
+  [Breakpoint.xl]: 5,
 };
 
 export const featuredTileBreakpoints: Breakpoints = {
