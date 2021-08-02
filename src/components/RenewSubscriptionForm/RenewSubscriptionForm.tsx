@@ -13,11 +13,12 @@ type Props = {
   subscription: Subscription;
   customer: Customer;
   error: string | null;
+  submitting: boolean;
   onConfirm: () => void;
   onClose: () => void;
 };
 
-const RenewSubscriptionForm: React.FC<Props> = ({ subscription, customer, error, onConfirm, onClose }: Props) => {
+const RenewSubscriptionForm: React.FC<Props> = ({ subscription, customer, error, submitting, onConfirm, onClose }: Props) => {
   const { t } = useTranslation('account');
 
   return (
@@ -42,6 +43,7 @@ const RenewSubscriptionForm: React.FC<Props> = ({ subscription, customer, error,
         label={t('renew_subscription.renew_subscription')}
         onClick={onConfirm}
         fullWidth
+        disabled={submitting}
       />
       <Button label={t('renew_subscription.no_thanks')} onClick={onClose} fullWidth />
     </div>

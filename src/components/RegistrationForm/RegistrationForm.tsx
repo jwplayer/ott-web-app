@@ -14,6 +14,7 @@ import VisibilityOff from '../../icons/VisibilityOff';
 import PasswordStrength from '../PasswordStrength/PasswordStrength';
 import Checkbox from '../Checkbox/Checkbox';
 import Spinner from '../Spinner/Spinner';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './RegistrationForm.module.scss';
 
@@ -133,6 +134,7 @@ const RegistrationForm: React.FC<Props> = ({
           {t('login.sign_in')}
         </button>
       </div>
+      {submitting && <LoadingOverlay transparentBackground inline />}
     </form>
   );
 };

@@ -13,11 +13,11 @@ const RenewSubscription = () => {
   const history = useHistory();
   const { subscription, user } = AccountStore.useState((s) => s);
   const [renewed, setRenewed] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const renewSubscriptionConfirmHandler = async () => {
-    setLoading(true);
+    setSubmitting(true);
     setError(null);
 
     try {
@@ -27,7 +27,7 @@ const RenewSubscription = () => {
       setError(t('renew_subscription.unknown_error_occurred'));
     }
 
-    setLoading(false);
+    setSubmitting(false);
   };
 
   const closeHandler = () => {
@@ -41,9 +41,16 @@ const RenewSubscription = () => {
       {renewed ? (
         <SubscriptionRenewed onClose={closeHandler} subscription={subscription} customer={user} />
       ) : (
-        <RenewSubscriptionForm subscription={subscription} customer={user} error={error} onConfirm={renewSubscriptionConfirmHandler} onClose={closeHandler} />
+        <RenewSubscriptionForm
+          subscription={subscription}
+          customer={user}
+          error={error}
+          onConfirm={renewSubscriptionConfirmHandler}
+          onClose={closeHandler}
+          submitting={submitting}
+        />
       )}
-      {loading ? <LoadingOverlay inline /> : null}
+      {submitting ? <LoadingOverlay inline /> : null}
     </React.Fragment>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import ForgotPasswordForm from '../../../components/ForgotPasswordForm/ForgotPasswordForm';
 import type { ForgotPasswordFormData } from '../../../../types/account';
 import ConfirmationForm from '../../../components/ConfirmationForm/ConfirmationForm';
+import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 
 type Prop = {
   type: 'confirmation' | 'forgot' | 'reset' | 'edit';
@@ -19,6 +20,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const { t } = useTranslation('account');
   const history = useHistory();
   const user = AccountStore.useState((state) => state.user);
+  const [resetPasswordSubmtting, setResetPasswordSubmitting] = useState<boolean>(false);
 
   const cancelClickHandler = () => {
     history.push(removeQueryParam(history, 'u'));
@@ -34,8 +36,10 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     try {
       if (!user?.email) throw new Error('invalid param email');
 
+      setResetPasswordSubmitting(true);
       await resetPassword(user.email, resetUrl);
 
+      setResetPasswordSubmitting(false);
       history.push('/u/logout');
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -72,7 +76,9 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
 
   return (
     <React.Fragment>
-      {type === 'reset' && <ResetPasswordForm onCancel={cancelClickHandler} onReset={resetPasswordClickHandler} />}
+      {type === 'reset' && (
+        <ResetPasswordForm submitting={resetPasswordSubmtting} onCancel={cancelClickHandler} onReset={resetPasswordClickHandler} />
+      )}
       {type === 'forgot' && (
         <ForgotPasswordForm
           value={emailForm.values}
@@ -83,6 +89,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
         />
       )}
       {type === 'confirmation' && <ConfirmationForm email={emailForm.values.email} onBackToLogin={backToLoginClickHandler} />}
+      {(emailForm.submitting || resetPasswordSubmtting) && <LoadingOverlay transparentBackground inline />}
     </React.Fragment>
   );
 };

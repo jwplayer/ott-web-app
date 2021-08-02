@@ -14,11 +14,11 @@ const CancelSubscription = () => {
   const history = useHistory();
   const subscription = AccountStore.useState((s) => s.subscription);
   const [cancelled, setCancelled] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const cancelSubscriptionConfirmHandler = async () => {
-    setLoading(true);
+    setSubmitting(true);
     setError(null);
 
     try {
@@ -28,7 +28,7 @@ const CancelSubscription = () => {
       setError(t('cancel_subscription.unknown_error_occurred'));
     }
 
-    setLoading(false);
+    setSubmitting(false);
   };
 
   const closeHandler = () => {
@@ -42,9 +42,9 @@ const CancelSubscription = () => {
       {cancelled ? (
         <SubscriptionCancelled expiresDate={formatDate(subscription.expiresAt)} onClose={closeHandler} />
       ) : (
-        <CancelSubscriptionForm onConfirm={cancelSubscriptionConfirmHandler} onCancel={closeHandler} error={error} />
+        <CancelSubscriptionForm onConfirm={cancelSubscriptionConfirmHandler} onCancel={closeHandler} submitting={submitting} error={error} />
       )}
-      {loading ? <LoadingOverlay inline /> : null}
+      {submitting ? <LoadingOverlay transparentBackground inline /> : null}
     </React.Fragment>
   );
 };
