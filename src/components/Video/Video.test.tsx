@@ -28,7 +28,9 @@ describe('<Video>', () => {
         title="Test video"
         play
         item={item}
-        startPlay={jest.fn()}
+        allowedToWatch={true}
+        startWatchingLabel="Start watching"
+        onStartWatchingClick={jest.fn()}
         goBack={jest.fn()}
         poster="fading"
         hasShared={false}

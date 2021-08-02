@@ -13,7 +13,7 @@ import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import PasswordStrength from '../PasswordStrength/PasswordStrength';
 import Checkbox from '../Checkbox/Checkbox';
-import Spinner from '../Spinner/Spinner';
+import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 
 import styles from './RegistrationForm.module.scss';
@@ -65,17 +65,13 @@ const RegistrationForm: React.FC<Props> = ({
   };
 
   if (loading) {
-    return (
-      <div className={styles.loading}>
-        <Spinner size="small" />
-      </div>
-    );
+    return <LoadingOverlay inline />;
   }
 
   return (
     <form onSubmit={onSubmit} data-testid="registration-form" noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
-      {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
+      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
         value={values.email}
         onChange={onChange}

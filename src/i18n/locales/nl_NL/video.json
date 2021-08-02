@@ -1,6 +1,7 @@
 {
   "add_to_favorites": "",
   "all_seasons": "",
+  "complete_your_subscription": "",
   "continue_watching": "",
   "copied_url": "",
   "current_episode": "",
@@ -8,8 +9,10 @@
   "episodes": "",
   "favorite": "",
   "remove_from_favorites": "",
+  "renew_your_subscription": "",
   "season_prefix": "",
   "share": "",
+  "sign_up_to_start_watching": "",
   "start_watching": "",
   "total_episodes": "",
   "total_episodes_plural": "",

@@ -3,8 +3,16 @@
 
 .dialog {
   max-width: 450px;
+  max-height: 90vh;
   padding: 24px;
+  overflow-y: auto;
   color: theme.$modal-color;
   background-color: theme.$modal-bg;
   border-radius: 6px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

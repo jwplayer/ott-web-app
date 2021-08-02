@@ -59,6 +59,18 @@ const Account = ({
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
   const initialValues = useMemo(() => ({ ...customer, consents: consentValues }), [customer, consentValues]);
 
+  const formatConsentLabel = (label: string): string | JSX.Element => {
+    // @todo sanitize consent label to prevent XSS
+    const hasHrefOpenTag = /<a(.|\n)*?>/.test(label);
+    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(label);
+
+    if (hasHrefOpenTag && hasHrefCloseTag) {
+      return <span dangerouslySetInnerHTML={{ __html: label }} />;
+    }
+
+    return label;
+  };
+
   const handleSubmit = (values: GenericFormValues) => {
     switch (editing) {
       case 'account':
@@ -199,7 +211,7 @@ const Account = ({
             {consentsLoading ? (
               <Spinner size="small" />
             ) : publisherConsents ? (
-              <div onClick={() => setEditing('consents')}>
+              <div className={styles.flexBox} onClick={() => setEditing('consents')}>
                 {publisherConsents.map((consent, index) => (
                   <Checkbox
                     key={index}
@@ -207,17 +219,19 @@ const Account = ({
                     value={values.consents?.[consent.name] || ''}
                     checked={(values.consents?.[consent.name] as boolean) || false}
                     onChange={(event) => (handleChange ? handleChange(event, { nestInto: 'consents' }) : null)}
+                    label={formatConsentLabel(consent.label)}
                     disabled={consent.required}
-                    label={consent.label}
                   />
                 ))}
-                <Button
-                  className={styles.submitConsents}
-                  type="button"
-                  label={t('account.update_consents')}
-                  disabled={!hasChanged}
-                  onClick={handleSubmit}
-                />
+                <div className={styles.controls}>
+                  <Button
+                    className={styles.submitConsents}
+                    type="button"
+                    label={t('account.update_consents')}
+                    disabled={!hasChanged}
+                    onClick={handleSubmit}
+                  />
+                </div>
               </div>
             ) : null}
           </div>

@@ -37,7 +37,7 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
   const { data: transactions, isLoading: isTransactionsLoading } = getTransactionsQuery;
 
   return children({
-    activeSubscription: subscriptions?.responseData.items.find(
+    activeSubscription: subscriptions?.responseData?.items.find(
       (subscription) => subscription.status !== 'expired' && subscription.status !== 'terminated',
     ),
     activePaymentDetail: paymentDetails?.responseData.paymentDetails.find((paymentDetails) => paymentDetails.active),

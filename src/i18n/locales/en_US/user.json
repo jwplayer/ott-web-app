@@ -20,6 +20,7 @@
   },
   "favorites": {
     "clear": "Clear favorites",
+    "no_favorites": "Your favorites are empty",
     "not_found": "Favorites not found!",
     "title": "Favorites"
   },

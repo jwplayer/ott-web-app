@@ -19,7 +19,14 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active 
 
   if (to) {
     return (
-      <NavLink className={classNames(styles.menuButton, { [styles.small]: small })} activeClassName={styles.active} to={to} tabIndex={tabIndex} exact>
+      <NavLink
+        className={classNames(styles.menuButton, { [styles.small]: small })}
+        onClick={onClick}
+        activeClassName={styles.active}
+        to={to}
+        tabIndex={tabIndex}
+        exact
+      >
         {icon}
         <span className={styles.label}>{label}</span>
       </NavLink>

@@ -20,9 +20,10 @@ type Props = {
   onPlaylistUpdate?: (playlist: Playlist) => void;
   children: (childrenParams: ChildrenParams) => JSX.Element;
   style?: React.CSSProperties;
+  showEmpty?: boolean;
 };
 
-const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, children }: Props): JSX.Element | null => {
+const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const {
     isLoading,
@@ -32,10 +33,10 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, c
 
   let playlist = fetchedPlaylist;
 
-  const { getPlaylist: getFavoritesPlayist } = useFavorites();
-  const favoritesPlaylist = getFavoritesPlayist();
-  const { getPlaylist: getWatchHistoryPlayist } = useWatchHistory();
-  const watchHistoryPlaylist = getWatchHistoryPlayist();
+  const { getPlaylist: getFavoritesPlaylist } = useFavorites();
+  const favoritesPlaylist = getFavoritesPlaylist();
+  const { getPlaylist: getWatchHistoryPlaylist } = useWatchHistory();
+  const watchHistoryPlaylist = getWatchHistoryPlaylist();
 
   useEffect(() => {
     if (playlist && onPlaylistUpdate) onPlaylistUpdate(playlist);
@@ -45,7 +46,7 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, c
   if (playlistId === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
 
   if (!playlistId) return <p>No playlist id</p>;
-  if (!playlist.playlist.length) {
+  if (!playlist.playlist.length && !showEmpty) {
     return null;
   }
 

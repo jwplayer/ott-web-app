@@ -116,19 +116,9 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
   }
 
   &:hover,
-  &:focus {
+  &:focus-within {
     border-color: $select-focus;
     outline: none;
-  }
-
-  &:focus + .focus {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    bottom: -1px;
-    left: -1px;
-    border: 2px solid orange;
-    border-radius: inherit;
   }
 }
 
