@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -6,15 +6,15 @@ import { useHistory } from 'react-router';
 import { AccountStore } from '../../stores/AccountStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import { UIStore } from '../../stores/UIStore';
-import Button from '../Button/Button';
-import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
-import Header from '../Header/Header';
-import Sidebar from '../Sidebar/Sidebar';
-import DynamicBlur from '../DynamicBlur/DynamicBlur';
-import { ConfigContext } from '../../providers/ConfigProvider';
+import Button from '../../components/Button/Button';
+import MarkdownComponent from '../../components/MarkdownComponent/MarkdownComponent';
+import Header from '../../components/Header/Header';
+import Sidebar from '../../components/Sidebar/Sidebar';
+import DynamicBlur from '../../components/DynamicBlur/DynamicBlur';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { addQueryParam } from '../../utils/history';
-import UserMenu from '../UserMenu/UserMenu';
+import UserMenu from '../../components/UserMenu/UserMenu';
+import { ConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Layout.module.scss';
 
@@ -25,7 +25,8 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const history = useHistory();
   const { t } = useTranslation('common');
-  const { menu, assets, options, siteName, description, footerText, searchPlaylist } = useContext(ConfigContext);
+  const config = ConfigStore.useState(s => s.config);
+  const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const searchActive = UIStore.useState((s) => s.searchActive);
@@ -72,14 +73,18 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       state.userMenuOpen = value;
     });
 
-  const userActions = isLoggedIn ? (
-    <UserMenu />
-  ) : (
-    <div className={styles.buttonContainer}>
-      <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
-      <Button variant="contained" color="primary" onClick={signUpButtonClickHandler} label={t('sign_up')} fullWidth />
-    </div>
-  );
+  const renderUserActions = () => {
+    if (!cleengId) return null;
+
+    return isLoggedIn ? (
+      <UserMenu />
+    ) : (
+      <div className={styles.buttonContainer}>
+        <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
+        <Button variant="contained" color="primary" onClick={signUpButtonClickHandler} label={t('sign_up')} fullWidth />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.layout}>
@@ -111,6 +116,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           isLoggedIn={isLoggedIn}
           userMenuOpen={userMenuOpen}
           toggleUserMenu={toggleUserMenu}
+          canLogin={!!cleengId}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
@@ -123,7 +129,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             <MenuButton key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} tabIndex={sideBarOpen ? 0 : -1} />
           ))}
           <hr className={styles.divider} />
-          {userActions}
+          {renderUserActions()}
         </Sidebar>
         {children}
       </div>
