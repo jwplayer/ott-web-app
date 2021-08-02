@@ -31,7 +31,7 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
-  const { user: customer, subscription } = AccountStore.useState((state) => state);
+  const { user: customer, subscription, loading } = AccountStore.useState((state) => state);
 
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
@@ -54,6 +54,12 @@ const User = (): JSX.Element => {
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
   useEffect(() => {
+    if (!loading && !customer) {
+      history.replace('/');
+    }
+  }, [history, customer, loading]);
+
+  useEffect(() => {
     if (location.pathname === '/u/logout') {
       logout();
       history.push('/');
@@ -61,7 +67,7 @@ const User = (): JSX.Element => {
   }, [location, history]);
 
   if (!customer) {
-    return <div className={styles.user}>Please login first</div>;
+    return <div className={styles.user}><LoadingOverlay inline /></div>;
   }
 
   return (
@@ -121,7 +127,7 @@ const User = (): JSX.Element => {
             </AccountContainer>
           </Route>
           <Route path="/u/favorites">
-            <PlaylistContainer playlistId={PersonalShelf.Favorites}>
+            <PlaylistContainer playlistId={PersonalShelf.Favorites} showEmpty>
               {({ playlist, error, isLoading }) => (
                 <Favorites
                   playlist={playlist.playlist}

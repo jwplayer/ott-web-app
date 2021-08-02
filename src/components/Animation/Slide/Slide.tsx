@@ -9,7 +9,7 @@ type Props = {
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
   children: ReactNode;
-  fromRight?: boolean;
+  direction?: 'left' | 'top' | 'right' | 'bottom';
 };
 
 const Slide = ({
@@ -19,13 +19,20 @@ const Slide = ({
   onOpenAnimationEnd,
   onCloseAnimationEnd,
   children,
-  fromRight,
+  direction = 'top',
 }: Props): JSX.Element | null => {
   const seconds = duration / 1000;
-  const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
+  const transition = `transform ${seconds}s ease, opacity ${seconds}s ease`; // todo: -webkit-transform;
+  const directions = {
+    left: 'translate(-15px, 0)',
+    top: 'translate(0, -15px)',
+    right: 'translate(15px, 0)',
+    bottom: 'translate(0, 15px)',
+  };
   const createStyle = (status: Status): CSSProperties => ({
     transition,
-    transform: status === 'opening' || status === 'open' ? 'translateY(0)' : `${fromRight ? 'translateX(15px)' : 'translateY(15px)'}`,
+    transform: status === 'opening' || status === 'open' ? 'translate(0, 0)' : directions[direction],
+    opacity: status === 'opening' || status === 'open' ? 1 : 0,
     zIndex: 15,
   });
 

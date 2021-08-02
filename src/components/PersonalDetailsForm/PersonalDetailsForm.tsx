@@ -11,6 +11,7 @@ import Radio from '../Radio/Radio';
 import DateField from '../DateField/DateField';
 
 import styles from './PersonalDetailsForm.module.scss';
+import FormFeedback from '../FormFeedback/FormFeedback';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
@@ -65,9 +66,9 @@ const PersonalDetailsForm: React.FC<Props> = ({
   };
 
   return (
-    <form className={styles.form} onSubmit={onSubmit} data-testid="personal_details-form" noValidate>
+    <form onSubmit={onSubmit} data-testid="personal_details-form" noValidate>
       <h2 className={styles.title}>{t('personal_details.title')}</h2>
-      {errors.form ? <div className={styles.error}>{errors.form}</div> : null}
+      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       {fields.firstNameLastName?.enabled ? (
         <React.Fragment>
           <TextField

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -10,6 +10,7 @@ import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { addQueryParam } from '../../../utils/history';
 import { getCaptureStatus, updateCaptureAnswers } from '../../../stores/AccountStore';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
+import { ConfigStore } from '../../../stores/ConfigStore';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
@@ -18,12 +19,23 @@ const yupConditional = (required: boolean, message: string) => {
 const PersonalDetails = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
+  const config = ConfigStore.useState(s => s.config);
   const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 
   const fields = data ? Object.fromEntries(data.settings.map((item) => [item.key, item])) : {};
   const questions = data ? data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[] : [];
+
+  const nextStep = useCallback(() => {
+    const hasOffers = config.json?.cleengMonthlyOffer && config.json?.cleengYearlyOffer;
+
+    history.replace(addQueryParam(history, 'u', hasOffers ? 'choose-offer' : 'welcome'));
+  }, [history, config]);
+
+  useEffect(() => {
+    if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();
+  }, [data, nextStep]);
 
   const initialValues: PersonalDetailsFormData = {
     firstName: '',
@@ -80,12 +92,12 @@ const PersonalDetails = () => {
       return;
     }
 
-
     try {
       const removeEmpty = (obj: Record<string,unknown>) => Object.fromEntries(Object.keys(obj).filter(key => obj[key] !== '').map(key => [key, obj[key]]));
       const customAnswers = questions.map(question => ({ question: question.question, questionId: question.key, value: questionValues[question.key] } as CaptureCustomAnswer));
       await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
-      history.push(addQueryParam(history, 'u', 'personal-details'));
+
+      nextStep();
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrors({ form: error.message });

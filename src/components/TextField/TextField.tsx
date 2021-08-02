@@ -70,7 +70,7 @@ const TextField: React.FC<Props> = ({
     <div className={textFieldClassName}>
       <label htmlFor={id} className={styles.label}>
         {label}
-        {!rest.required ? <span>{t('optional')}</span> : null}
+        {!rest.required && editing ? <span>{t('optional')}</span> : null}
       </label>
       {editing ? (
         <div className={styles.container}>
