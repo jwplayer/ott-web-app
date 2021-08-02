@@ -17,11 +17,11 @@ const setItem = (key: string, value: unknown) => {
   }
 };
 
-const getItem = (key: string) => {
+const getItem = <T>(key: string) => {
   const storageKey = `${LOCAL_STORAGE_PREFIX}${key}`;
 
   try {
-    return parseJSON(window.localStorage.getItem(storageKey));
+    return parseJSON<T>(window.localStorage.getItem(storageKey));
   } catch (error: unknown) {
     console.error(error);
   }
@@ -37,7 +37,7 @@ const removeItem = (key: string) => {
   }
 };
 
-const parseJSON = (value?: string | null): unknown | undefined => {
+const parseJSON = <T>(value?: string | null): T | undefined => {
   if (!value) return;
 
   try {

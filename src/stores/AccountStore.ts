@@ -6,8 +6,10 @@ import * as subscriptionService from '../services/subscription.service';
 import type { AuthData, Capture, Customer, JwtDetails, CustomerConsent } from '../../types/account';
 import * as persist from '../utils/persist';
 import type { Subscription } from '../../types/subscription';
+import type { WatchHistoryItem } from '../../types/watchHistory';
 
 import { ConfigStore } from './ConfigStore';
+import { watchHistoryStore, restoreWatchHistory } from './WatchHistoryStore';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -59,6 +61,7 @@ export const initializeAccount = async () => {
 
       if (refreshedAuthData) {
         await afterLogin(config.cleengSandbox, refreshedAuthData);
+        restoreWatchHistory();
       }
     }
   } catch (error: unknown) {
@@ -129,7 +132,9 @@ export const login = async (email: string, password: string) => {
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-  return afterLogin(cleengSandbox, response.responseData);
+  await afterLogin(cleengSandbox, response.responseData);
+
+  restoreWatchHistory();
 };
 
 export const logout = async () => {
@@ -145,6 +150,8 @@ export const register = async (email: string, password: string) => {
   const {
     config: { cleengId, cleengSandbox },
   } = ConfigStore.getRawState();
+
+  const { watchHistory } = watchHistoryStore.getRawState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
 
@@ -166,7 +173,28 @@ export const register = async (email: string, password: string) => {
 
   if (responseRegister.errors.length) throw new Error(responseRegister.errors[0]);
 
-  return afterLogin(cleengSandbox, responseRegister.responseData);
+  await afterLogin(cleengSandbox, responseRegister.responseData);
+
+  if (watchHistory) {
+    setWatchHistory(watchHistory);
+  }
+
+  restoreWatchHistory();
+};
+
+export const setWatchHistory = async (watchHistory: WatchHistoryItem[]) => {
+  const { auth, user } = AccountStore.getRawState();
+
+  if (!auth || !user) throw new Error('no auth');
+
+  if (!watchHistory.length) return;
+
+  const {
+    config: { cleengSandbox },
+  } = ConfigStore.getRawState();
+
+  const externalData = { history: watchHistory };
+  return await accountService.updateCustomer({ customerId: user.id, externalData }, cleengSandbox, auth?.jwt);
 };
 
 export const updateConsents = async (customerConsents: CustomerConsent[]) => {

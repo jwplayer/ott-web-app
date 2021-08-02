@@ -8,6 +8,8 @@ import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
 
+import { AccountStore, setWatchHistory } from './AccountStore';
+
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];
   playlistItemsLoaded: boolean;
@@ -20,19 +22,19 @@ export const watchHistoryStore = new Store<WatchHistoryStore>({
   playlistItemsLoaded: false,
 });
 
-export const initializeWatchHistory = async () => {
-  const savedItems: WatchHistoryItem[] | null = persist.getItem(PERSIST_KEY_WATCH_HISTORY) as WatchHistoryItem[] | null;
+export const restoreWatchHistory = async () => {
+  const { user } = AccountStore.getRawState();
+
+  const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(PERSIST_KEY_WATCH_HISTORY);
 
   if (savedItems) {
-    // Store persist data now, add playlistItems once API data ready
+    // Store savedItems immediately, so we can show the watchhistory while we fetch the mediaItems
     watchHistoryStore.update((state) => {
       state.watchHistory = savedItems;
     });
 
     const watchHistory = await Promise.all(
-      savedItems.map(async (item) =>
-        createWatchHistoryItem(await getMediaById(item.mediaid), { duration: item.duration, progress: item.progress }),
-      ),
+      savedItems.map(async (item) => createWatchHistoryItem(await getMediaById(item.mediaid), { duration: item.duration, progress: item.progress })),
     );
 
     watchHistoryStore.update((state) => {
@@ -40,11 +42,18 @@ export const initializeWatchHistory = async () => {
       state.playlistItemsLoaded = true;
     });
   }
+};
 
-  return watchHistoryStore.subscribe(
-    (state) => state.watchHistory,
-    (watchHistory) =>
-      persist.setItem(
+export const initializeWatchHistory = () => {
+  restoreWatchHistory();
+
+  const updateWatchHistory = (watchHistory: WatchHistoryItem[]) => {
+    const { user } = AccountStore.getRawState();
+
+    if (user) {
+      return setWatchHistory(watchHistory);
+    } else {
+      return persist.setItem(
         PERSIST_KEY_WATCH_HISTORY,
         watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
           mediaid,
@@ -53,8 +62,11 @@ export const initializeWatchHistory = async () => {
           duration,
           progress,
         })),
-      ),
-  );
+      );
+    }
+  };
+
+  return watchHistoryStore.subscribe((state) => state.watchHistory, updateWatchHistory);
 };
 
 export const createWatchHistoryItem = (item: PlaylistItem | undefined, videoProgress: VideoProgress): WatchHistoryItem => {
