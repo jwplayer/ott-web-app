@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +22,7 @@ import { useFavorites } from '../../stores/FavoritesStore';
 import { AccountStore, logout } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
+import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog';
 
 import styles from './User.module.scss';
 
@@ -30,6 +31,7 @@ const User = (): JSX.Element => {
   const location = useLocation();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
+  const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const { user: customer, subscription, loading } = AccountStore.useState((state) => state);
 
@@ -67,7 +69,11 @@ const User = (): JSX.Element => {
   }, [location, history]);
 
   if (!customer) {
-    return <div className={styles.user}><LoadingOverlay inline /></div>;
+    return (
+      <div className={styles.user}>
+        <LoadingOverlay inline />
+      </div>
+    );
   }
 
   return (
@@ -135,10 +141,20 @@ const User = (): JSX.Element => {
                   isLoading={isLoading}
                   onCardClick={onCardClick}
                   onCardHover={onCardHover}
-                  onClearFavoritesClick={clearFavorites}
+                  onClearFavoritesClick={() => setClearFavoritesOpen(true)}
                 />
               )}
             </PlaylistContainer>
+            <ConfirmationDialog
+              open={clearFavoritesOpen}
+              title={t('favorites.clear_favorites_title')}
+              body={t('favorites.clear_favorites_body')}
+              onConfirm={() => {
+                clearFavorites();
+                setClearFavoritesOpen(false);
+              }}
+              onClose={() => setClearFavoritesOpen(false)}
+            />
           </Route>
           <Route path="/u/payments">
             <SubscriptionContainer>
