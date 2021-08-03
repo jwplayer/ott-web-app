@@ -65,7 +65,11 @@ const RegistrationForm: React.FC<Props> = ({
   };
 
   if (loading) {
-    return <LoadingOverlay inline />;
+    return (
+      <div style={{ height: 400 }}>
+        <LoadingOverlay inline />
+      </div>
+    );
   }
 
   return (
