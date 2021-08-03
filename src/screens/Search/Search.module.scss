@@ -3,7 +3,6 @@
 @use '../../styles/mixins/responsive';
 
 .search {
-
   margin: 0 variables.$base-spacing * 4;
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
@@ -12,12 +11,17 @@
   > main {
     margin-top: 6px;
   }
+
   @include responsive.mobile-only() {
     margin: 0 variables.$base-spacing;
   }
 
   @include responsive.tablet-only() {
     margin: 0 variables.$base-spacing * 2;
+  }
+
+  @include responsive.desktop-small-only() {
+    margin: 0 variables.$base-spacing * 3;
   }
 }
 

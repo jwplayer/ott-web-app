@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 
 import { addMediaQueryListChangeListener, removeMediaQueryListChangeListener } from '../utils/matchMedia';
 
-const XS_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (max-width: 599px)');
-const SM_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 600px) and (max-width: 959px)');
-const MD_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 960px) and (max-width: 1279px)');
-const LG_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 1280px) and (max-width: 1919px)');
+const XS_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (max-width: 479px)'); // mobile
+const SM_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 480px) and (max-width: 767px)'); // tablet
+const MD_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 768px) and (max-width: 1023px)'); // tablet large
+const LG_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 1024px) and (max-width: 1199px)'); // desktop
 
 export enum Breakpoint {
   xs,

@@ -19,6 +19,10 @@
   @include responsive.tablet-only() {
     margin: 0 variables.$base-spacing * 2;
   }
+
+  @include responsive.desktop-small-only() {
+    margin: 0 variables.$base-spacing * 3;
+  }
 }
 
 .main {

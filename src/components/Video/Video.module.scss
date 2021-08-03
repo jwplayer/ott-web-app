@@ -12,6 +12,10 @@
 .mainPadding {
   padding: 37px 56px 0;
 
+  @include responsive.desktop-small-only() {
+    padding: 34px 36px 36px;
+  }
+
   @include responsive.tablet-only() {
     padding: 34px 24px 24px;
   }
@@ -38,14 +42,15 @@
 .info {
   width: 70%;
   max-width: 650px;
-  min-height: 380px;
 
   @include responsive.tablet-only() {
     width: 350px;
+    min-height: 380px;
   }
 
   @include responsive.mobile-only() {
     width: 100%;
+    min-height: 380px;
     padding-top: 225px;
   }
 }
@@ -115,9 +120,11 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  margin: 0 -6px;
 
   > button {
-    margin: 5px;
+    justify-content: center;
+    margin: 6px;
   }
 
   @include responsive.mobile-and-tablet() {
