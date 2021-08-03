@@ -45,8 +45,12 @@
   if (configId) {
     window.localStorage.setItem('jwshowcase.config', configId);
 
-    window.configLocation =
-      'https://' + configId + '.jwpapp.com/config.json';
+    if (configId.includes('test--')) {
+      window.configLocation = 'https://jw-ott-webapp.s3.eu-central-1.amazonaws.com/' + configId + '.json';
+    } else {
+      window.configLocation =
+        'https://' + configId + '.jwpapp.com/config.json';
+    }
     window.configId = configId;
   } else {
     window.configLocation = './config.json';
