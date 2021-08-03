@@ -16,9 +16,7 @@ const Popover: React.FC<Props> = ({ children, isOpen, onClose }: Props) => {
   return (
     <Slide open={isOpen} duration={250} direction="right">
       <DetectOutsideClick callback={onClose}>
-        <div className={classNames(styles.popover)}>
-          {children}
-        </div>
+        <div className={classNames(styles.popover)}>{children}</div>
       </DetectOutsideClick>
     </Slide>
   );

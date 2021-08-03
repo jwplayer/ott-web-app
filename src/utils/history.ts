@@ -7,7 +7,7 @@ export function addQueryParam(history: History, key: string, value: string): str
 
   const searchParams = urlSearchParams.toString();
 
-  return `${history.location.pathname}${searchParams ? `?${searchParams}` : ''}`
+  return `${history.location.pathname}${searchParams ? `?${searchParams}` : ''}`;
 }
 
 export function removeQueryParam(history: History, key: string): string {
@@ -17,5 +17,5 @@ export function removeQueryParam(history: History, key: string): string {
 
   const searchParams = urlSearchParams.toString();
 
-  return `${history.location.pathname}${searchParams ? `?${searchParams}` : ''}`
+  return `${history.location.pathname}${searchParams ? `?${searchParams}` : ''}`;
 }

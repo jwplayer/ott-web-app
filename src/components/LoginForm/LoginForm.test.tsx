@@ -112,8 +112,8 @@ describe('<LoginForm>', () => {
       />,
     );
 
-    fireEvent.change(getByLabelText('login.email'), { target: { value: 'email' }});
-    fireEvent.change(getByLabelText('login.password'), { target: { value: 'password' }});
+    fireEvent.change(getByLabelText('login.email'), { target: { value: 'email' } });
+    fireEvent.change(getByLabelText('login.password'), { target: { value: 'password' } });
 
     expect(onChange).toBeCalledTimes(2);
   });

@@ -12,7 +12,7 @@ const useCountdown = (durationSeconds: number, intervalSeconds: number = 1, comp
     }
 
     timerRef.current = window.setTimeout(() => {
-      setCountdown(count => count - intervalSeconds);
+      setCountdown((count) => count - intervalSeconds);
     }, intervalSeconds * 1000);
   }, [countdown]);
 

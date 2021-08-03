@@ -31,7 +31,15 @@ const Radio: React.FC<Props> = ({ name, onChange, header, value, values, helperT
       ) : null}
       {values?.map((optionValue, index) => (
         <div className={styles.radio} key={index}>
-          <input value={optionValue} name={name} type="radio" id={id + index} onChange={onChange} checked={value === optionValue} required={required} />
+          <input
+            value={optionValue}
+            name={name}
+            type="radio"
+            id={id + index}
+            onChange={onChange}
+            checked={value === optionValue}
+            required={required}
+          />
           <label htmlFor={id + index}>{optionValue}</label>
         </div>
       ))}

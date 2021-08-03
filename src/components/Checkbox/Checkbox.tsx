@@ -27,7 +27,8 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
     <div className={classNames(styles.checkbox, { [styles.error]: error })}>
       {header ? (
         <div className={styles.header}>
-          {header}{!required ? <span>{t('optional')}</span> : null}
+          {header}
+          {!required ? <span>{t('optional')}</span> : null}
         </div>
       ) : null}
       <div className={styles.row}>

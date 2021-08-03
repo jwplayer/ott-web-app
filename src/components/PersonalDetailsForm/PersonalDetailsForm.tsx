@@ -10,9 +10,9 @@ import Checkbox from '../Checkbox/Checkbox';
 import Radio from '../Radio/Radio';
 import DateField from '../DateField/DateField';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import FormFeedback from '../FormFeedback/FormFeedback';
 
 import styles from './PersonalDetailsForm.module.scss';
-import FormFeedback from '../FormFeedback/FormFeedback';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;

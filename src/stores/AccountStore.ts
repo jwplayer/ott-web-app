@@ -197,10 +197,14 @@ export const updatePersonalShelves = async () => {
 
   const personalShelfData = { history: serializeWatchHistory(watchHistory), favorites: serializeFavorites(favorites) };
 
-  return await accountService.updateCustomer({
-    id: user.id.toString(),
-    externalData: personalShelfData,
-  }, cleengSandbox, auth?.jwt);
+  return await accountService.updateCustomer(
+    {
+      id: user.id.toString(),
+      externalData: personalShelfData,
+    },
+    cleengSandbox,
+    auth?.jwt,
+  );
 };
 
 export const updateConsents = async (customerConsents: CustomerConsent[]) => {

@@ -17,7 +17,7 @@ import { ConfigStore } from '../../../stores/ConfigStore';
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = ConfigStore.useState(s => s.config);
+  const config = ConfigStore.useState((s) => s.config);
   const { cleengSandbox, json } = config;
   const hasOffer = configHasCleengOffer(config);
   const offer = CheckoutStore.useState((s) => s.offer);

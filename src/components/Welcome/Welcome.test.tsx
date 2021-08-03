@@ -5,7 +5,7 @@ import Welcome from './Welcome';
 
 describe('<Welcome>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Welcome  siteName="Sitename!"/>);
+    const { container } = render(<Welcome siteName="Sitename!" />);
 
     expect(container).toMatchSnapshot();
   });
@@ -26,9 +26,9 @@ describe('<Welcome>', () => {
     render(<Welcome onCountdownCompleted={onCountdownCompleted} siteName="Sitename!" />);
 
     let i = 10;
-    while(i--) {
+    while (i--) {
       act(() => {
-        jest.runAllTimers()
+        jest.runAllTimers();
       });
     }
 

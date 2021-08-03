@@ -32,13 +32,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
       {showFilterRow ? (
         <div className={styles.filterRow} role="listbox">
           {options.map((option) => (
-            <Button
-              label={`${valuePrefix}${option}`}
-              onClick={() => setValue(option)}
-              key={option}
-              active={value === option}
-              role="option"
-            />
+            <Button label={`${valuePrefix}${option}`} onClick={() => setValue(option)} key={option} active={value === option} role="option" />
           ))}
           <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} role="option" />
         </div>

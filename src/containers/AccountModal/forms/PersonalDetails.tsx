@@ -20,13 +20,13 @@ const yupConditional = (required: boolean, message: string) => {
 const PersonalDetails = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = ConfigStore.useState(s => s.config);
+  const config = ConfigStore.useState((s) => s.config);
   const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 
   const fields = data ? Object.fromEntries(data.settings.map((item) => [item.key, item])) : {};
-  const questions = data ? data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[] : [];
+  const questions = data ? (data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[]) : [];
 
   const nextStep = useCallback(() => {
     const hasOffers = configHasCleengOffer(config);
@@ -94,8 +94,15 @@ const PersonalDetails = () => {
     }
 
     try {
-      const removeEmpty = (obj: Record<string,unknown>) => Object.fromEntries(Object.keys(obj).filter(key => obj[key] !== '').map(key => [key, obj[key]]));
-      const customAnswers = questions.map(question => ({ question: question.question, questionId: question.key, value: questionValues[question.key] } as CaptureCustomAnswer));
+      const removeEmpty = (obj: Record<string, unknown>) =>
+        Object.fromEntries(
+          Object.keys(obj)
+            .filter((key) => obj[key] !== '')
+            .map((key) => [key, obj[key]]),
+        );
+      const customAnswers = questions.map(
+        (question) => ({ question: question.question, questionId: question.key, value: questionValues[question.key] } as CaptureCustomAnswer),
+      );
       await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
 
       nextStep();

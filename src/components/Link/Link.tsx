@@ -16,10 +16,18 @@ const Link: React.FC<Props> = ({ to, href, children, className, ...rest }: Props
   const linkClassName = classNames(styles.link, className);
 
   if (to) {
-    return <RouterLink to={to} className={linkClassName}>{children}</RouterLink>;
+    return (
+      <RouterLink to={to} className={linkClassName}>
+        {children}
+      </RouterLink>
+    );
   }
 
-  return <a href={href} className={linkClassName} {...rest}>{children}</a>;
+  return (
+    <a href={href} className={linkClassName} {...rest}>
+      {children}
+    </a>
+  );
 };
 
 export default Link;

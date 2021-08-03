@@ -12,7 +12,7 @@ type Props = {
 };
 
 const PaymentFailed: React.FC<Props> = ({ type, message, onCloseButtonClick }: Props) => {
-  const { t } = useTranslation('account')
+  const { t } = useTranslation('account');
   return (
     <div>
       <h2 className={styles.title}>{type === 'cancelled' ? t('checkout.payment_cancelled') : t('checkout.payment_error')}</h2>

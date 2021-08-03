@@ -1,8 +1,10 @@
 import type {
   CreateOrder,
   GetOffer,
-  GetPaymentMethods, PaymentWithAdyen,
-  PaymentWithoutDetails, PaymentWithPayPal,
+  GetPaymentMethods,
+  PaymentWithAdyen,
+  PaymentWithoutDetails,
+  PaymentWithPayPal,
   UpdateOrder,
 } from '../../types/checkout';
 

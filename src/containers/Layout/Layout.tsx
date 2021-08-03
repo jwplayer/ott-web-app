@@ -25,7 +25,7 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const history = useHistory();
   const { t } = useTranslation('common');
-  const config = ConfigStore.useState(s => s.config);
+  const config = ConfigStore.useState((s) => s.config);
   const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
@@ -84,7 +84,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         <Button variant="contained" color="primary" onClick={signUpButtonClickHandler} label={t('sign_up')} fullWidth />
       </div>
     );
-  }
+  };
 
   return (
     <div className={styles.layout}>
