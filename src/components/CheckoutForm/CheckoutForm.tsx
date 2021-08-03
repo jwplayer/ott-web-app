@@ -24,7 +24,7 @@ type Props = {
   onRedeemCouponButtonClick: () => void;
   onCloseCouponFormClick: () => void;
   couponFormOpen: boolean;
-  couponFormError?: boolean;
+  couponFormError?: string;
   couponFormApplied?: boolean;
   couponFormSubmitting?: boolean;
   couponInputValue: string;
@@ -99,8 +99,8 @@ const CheckoutForm: React.FC<Props> = ({
               />
               <Button variant="outlined" label="Apply" type="submit" disabled={couponFormSubmitting} />
             </div>
-            {couponFormError ? <FormFeedback variant="error">Coupon code error! :-(</FormFeedback> : null}
-            {couponFormApplied ? <FormFeedback variant="success">Coupon code applied!</FormFeedback> : null}
+            {couponFormError ? <FormFeedback variant="error">{couponFormError}</FormFeedback> : null}
+            {couponFormApplied ? <FormFeedback variant="success">{t('checkout.coupon_applied')}</FormFeedback> : null}
           </form>
         ) : (
           <Button variant="outlined" label={t('checkout.redeem_coupon')} onClick={onRedeemCouponButtonClick} />
