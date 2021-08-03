@@ -3,7 +3,6 @@
 @use '../../styles/mixins/responsive';
 
 .playlist {
-
   margin: 0 variables.$base-spacing * 4;
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
@@ -12,6 +11,7 @@
   > main {
     margin-top: 6px;
   }
+
   @include responsive.mobile-only() {
     margin: 0 variables.$base-spacing;
   }
@@ -26,17 +26,17 @@
 }
 
 .header {
-
   display: flex;
   align-items: center;
   height: 36px;
   margin: 24px 0;
 
   > h2 {
-    font-family: theme.$body-alt-font-family;
-    font-weight: 700;
+    font-family: var(--body-alt-font-family);
+    font-weight: var(--body-font-weight-bold);
     font-size: 24px;
   }
+
   @include responsive.mobile-and-tablet {
     justify-content: space-between;
   }

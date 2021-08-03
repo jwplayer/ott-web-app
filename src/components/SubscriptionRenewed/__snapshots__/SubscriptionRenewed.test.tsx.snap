@@ -8,9 +8,7 @@ exports[`<SubscriptionRenewed> renders and matches snapshot 1`] = `
     >
       subscription_renewed.title
     </h2>
-    <p
-      class="paragraph"
-    >
+    <p>
       subscription_renewed.message
     </p>
     <button

@@ -16,8 +16,8 @@
   min-height: 44px;
   padding: 0 variables.$base-spacing;
   color: variables.$white;
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
   font-size: 18px;
   text-align: center;
   text-decoration: none;

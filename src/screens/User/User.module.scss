@@ -22,7 +22,7 @@
   margin-right: 24px;
   padding-left: 19px;
 
-  font-weight: bold;
+  font-weight: var(--body-font-weight-bold);
   font-size: 18px;
   font-style: normal;
   line-height: 20px;
@@ -71,7 +71,7 @@ ul {
   border-bottom: theme.$panel-header-border-bottom;
 
   > h3 {
-    font-weight: bold;
+    font-weight: var(--body-font-weight-bold);
     font-size: 24px;
     line-height: 26px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);

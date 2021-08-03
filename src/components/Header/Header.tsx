@@ -33,6 +33,7 @@ type Props = {
   children?: ReactFragment;
   isLoggedIn: boolean;
   userMenuOpen: boolean;
+  canLogin: boolean;
 };
 
 const Header: React.FC<Props> = ({
@@ -50,6 +51,7 @@ const Header: React.FC<Props> = ({
   isLoggedIn,
   userMenuOpen,
   toggleUserMenu,
+  canLogin = false,
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -92,24 +94,25 @@ const Header: React.FC<Props> = ({
       <SearchBar {...searchBarProps} />
     );
 
-  const userActions =
-    breakpoint > Breakpoint.sm ? (
-      isLoggedIn ? (
-        <React.Fragment>
-          <IconButton className={styles.iconButton} aria-label={t('open_user_menu')} onClick={() => toggleUserMenu(!userMenuOpen)}>
-            <AccountCircle />
-          </IconButton>
-          <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
-            <UserMenu onClick={() => toggleUserMenu(false)} inPopover />
-          </Popover>
-        </React.Fragment>
-      ) : (
-        <div className={styles.buttonContainer}>
-          <Button onClick={onLoginButtonClick} label={t('sign_in')} />
-          <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
-        </div>
-      )
-    ) : null;
+  const renderUserActions = () => {
+    if (!canLogin || breakpoint <= Breakpoint.sm) return null;
+
+    return isLoggedIn ? (
+      <React.Fragment>
+        <IconButton className={styles.iconButton} aria-label={t('open_user_menu')} onClick={() => toggleUserMenu(!userMenuOpen)}>
+          <AccountCircle />
+        </IconButton>
+        <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
+          <UserMenu onClick={() => toggleUserMenu(false)} inPopover />
+        </Popover>
+      </React.Fragment>
+    ) : (
+      <div className={styles.buttonContainer}>
+        <Button onClick={onLoginButtonClick} label={t('sign_in')} />
+        <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
+      </div>
+    );
+  };
 
   return (
     <header className={headerClassName}>
@@ -128,7 +131,7 @@ const Header: React.FC<Props> = ({
           {logoLoaded ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
-        {userActions}
+        {renderUserActions()}
       </div>
     </header>
   );

@@ -106,7 +106,7 @@
   width: 100%;
   height: 100%;
   font-family: var(--body-font-family);
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
 
   font-size: 18px;
   line-height: 20px;
@@ -132,7 +132,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   overflow: hidden;
   color: var(--card-color);
   font-family: var(--body-alt-font-family);
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 1em;
   line-height: 1.2em;
   text-align: left;

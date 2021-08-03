@@ -49,24 +49,6 @@ exports[`<Layout /> renders layout 1`] = `
           <div
             class="search"
           />
-          <div
-            class="buttonContainer"
-          >
-            <button
-              class="button default outlined"
-            >
-              <span>
-                sign_in
-              </span>
-            </button>
-            <button
-              class="button primary"
-            >
-              <span>
-                sign_up
-              </span>
-            </button>
-          </div>
         </div>
       </header>
       <div
@@ -119,24 +101,6 @@ exports[`<Layout /> renders layout 1`] = `
           <hr
             class="divider"
           />
-          <div
-            class="buttonContainer"
-          >
-            <button
-              class="button default outlined fullWidth"
-            >
-              <span>
-                sign_in
-              </span>
-            </button>
-            <button
-              class="button primary fullWidth"
-            >
-              <span>
-                sign_up
-              </span>
-            </button>
-          </div>
         </nav>
       </div>
     </div>

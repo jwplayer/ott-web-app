@@ -6,14 +6,13 @@
   flex-direction: column;
   min-height: calc(100vh - calc(100vh - 100%));
 }
+
 .main {
   flex: 1;
 }
+
 .footer {
   padding: 20px 40px;
-  color: var(--primary-color);
-  font-family: var(--body-alt-font-family);
-  font-size: 16px;
   line-height: 18px;
   letter-spacing: 0.15px;
   text-align: center;
@@ -27,10 +26,11 @@
     text-decoration: none;
   }
 }
+
 .divider {
-  width: 270px;
+  width: 100%;
+  border: none;
   border-top: 1px solid rgba(variables.$white, 0.12);
-  opacity: 0.12;
 }
 
 .buttonContainer {
@@ -40,6 +40,5 @@
 
   > button:first-child {
     margin-bottom: variables.$base-spacing / 2;
-    color: var(--primary-color);
   }
 }

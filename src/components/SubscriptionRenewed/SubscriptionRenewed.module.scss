@@ -3,11 +3,10 @@
 
 .title {
   margin-bottom: 16px;
-  font-family: theme.$body-alt-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 24px;
 }
 
 .paragraph {
-  font-family: theme.$body-font-family;
+  //empty
 }

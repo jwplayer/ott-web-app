@@ -5,8 +5,7 @@
   margin-bottom: 24px;
   padding: 16px;
   color: variables.$white;
-  font-family: theme.$body-font-family;
-  font-weight: 700;
+  font-weight: var(--body-font-weight-bold);
   font-size: 18px;
   text-align: left;
   border-radius: 4px;

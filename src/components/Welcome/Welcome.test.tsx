@@ -5,14 +5,14 @@ import Welcome from './Welcome';
 
 describe('<Welcome>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Welcome />);
+    const { container } = render(<Welcome  siteName="Sitename!"/>);
 
     expect(container).toMatchSnapshot();
   });
 
   test('calls the onCloseButtonClick callback when clicking the close button', () => {
     const onCloseButtonClick = jest.fn();
-    const { getByText } = render(<Welcome onCloseButtonClick={onCloseButtonClick} />);
+    const { getByText } = render(<Welcome onCloseButtonClick={onCloseButtonClick} siteName="Sitename!" />);
 
     fireEvent.click(getByText('checkout.start_watching'));
 
@@ -23,7 +23,7 @@ describe('<Welcome>', () => {
     jest.useFakeTimers();
     const onCountdownCompleted = jest.fn();
 
-    render(<Welcome onCountdownCompleted={onCountdownCompleted} />);
+    render(<Welcome onCountdownCompleted={onCountdownCompleted} siteName="Sitename!" />);
 
     let i = 10;
     while(i--) {

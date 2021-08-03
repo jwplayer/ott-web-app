@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import User from '../../screens/User/User';
 import Series from '../../screens/Series/Series';
-import Layout from '../Layout/Layout';
+import Layout from '../../containers/Layout/Layout';
 import Home from '../../screens/Home/Home';
 import Playlist from '../../screens/Playlist/Playlist';
 import Movie from '../../screens/Movie/Movie';
