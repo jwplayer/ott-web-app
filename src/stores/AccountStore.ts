@@ -187,15 +187,25 @@ export const updatePersonalShelf = async () => {
   if (!auth || !user) throw new Error('no auth');
 
   const { watchHistory } = watchHistoryStore.getRawState();
-  const { favorites } = favoritesStore.getRawState();
+  const { favorites: customerFavorites } = favoritesStore.getRawState();
 
-  if (!watchHistory && !favorites) return;
+  if (!watchHistory && !customerFavorites) return;
 
   const {
     config: { cleengSandbox },
   } = ConfigStore.getRawState();
 
-  const personalShelfData = { history: watchHistory, favorites: favorites };
+  const history = watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
+    mediaid,
+    title,
+    tags,
+    duration,
+    progress,
+  }));
+
+  const favorites = customerFavorites.map(({ mediaid, title, tags, duration }) => ({ mediaid, title, tags, duration }));
+  const personalShelfData = JSON.stringify({ history, favorites });
+
   return await accountService.updateCustomer({ id: user.id.toString(), externalData: personalShelfData }, cleengSandbox, auth?.jwt);
 };
 
