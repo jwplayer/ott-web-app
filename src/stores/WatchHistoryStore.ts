@@ -8,6 +8,8 @@ import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
 
+import { AccountStore, updatePersonalShelves } from './AccountStore';
+
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];
   playlistItemsLoaded: boolean;
@@ -20,18 +22,23 @@ export const watchHistoryStore = new Store<WatchHistoryStore>({
   playlistItemsLoaded: false,
 });
 
-export const initializeWatchHistory = async () => {
-  const savedItems: WatchHistoryItem[] | null = persist.getItem(PERSIST_KEY_WATCH_HISTORY) as WatchHistoryItem[] | null;
+export const restoreWatchHistory = async () => {
+  const { user } = AccountStore.getRawState();
+
+  const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(PERSIST_KEY_WATCH_HISTORY);
 
   if (savedItems) {
-    // Store persist data now, add playlistItems once API data ready
+    // Store savedItems immediately, so we can show the watchhistory while we fetch the mediaItems
     watchHistoryStore.update((state) => {
       state.watchHistory = savedItems;
     });
 
     const watchHistory = await Promise.all(
       savedItems.map(async (item) =>
-        createWatchHistoryItem(await getMediaById(item.mediaid), { duration: item.duration, progress: item.progress }),
+        createWatchHistoryItem(await getMediaById(item.mediaid), {
+          duration: item.duration,
+          progress: item.progress,
+        }),
       ),
     );
 
@@ -40,21 +47,31 @@ export const initializeWatchHistory = async () => {
       state.playlistItemsLoaded = true;
     });
   }
+};
 
-  return watchHistoryStore.subscribe(
-    (state) => state.watchHistory,
-    (watchHistory) =>
-      persist.setItem(
-        PERSIST_KEY_WATCH_HISTORY,
-        watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
-          mediaid,
-          title,
-          tags,
-          duration,
-          progress,
-        })),
-      ),
-  );
+export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]) => {
+  return watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
+    mediaid,
+    title,
+    tags,
+    duration,
+    progress,
+  }));
+};
+
+const persistWatchHistory = () => {
+  const { watchHistory } = watchHistoryStore.getRawState();
+  const { user } = AccountStore.getRawState();
+
+  if (user) {
+    return updatePersonalShelves();
+  }
+
+  return persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
+};
+
+export const initializeWatchHistory = () => {
+  restoreWatchHistory();
 };
 
 export const createWatchHistoryItem = (item: PlaylistItem | undefined, videoProgress: VideoProgress): WatchHistoryItem => {
@@ -92,8 +109,8 @@ export const useWatchHistory = (): UseWatchHistoryReturn => {
     if (!videoProgress) return;
 
     const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
-
     const index = watchHistory.findIndex(({ mediaid }) => mediaid === watchHistoryItem.mediaid);
+
     if (index > -1) {
       watchHistoryStore.update((state) => {
         state.watchHistory[index] = watchHistoryItem;
@@ -103,12 +120,16 @@ export const useWatchHistory = (): UseWatchHistoryReturn => {
         state.watchHistory.unshift(watchHistoryItem);
       });
     }
+
+    persistWatchHistory();
   };
 
   const removeItem = (item: PlaylistItem) => {
     watchHistoryStore.update((state) => {
       state.watchHistory = state.watchHistory.filter(({ mediaid }) => mediaid !== item.mediaid);
     });
+
+    persistWatchHistory();
   };
 
   const hasItem = (item: PlaylistItem) => {

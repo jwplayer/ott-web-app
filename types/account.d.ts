@@ -1,3 +1,6 @@
+import type { WatchHistoryItem } from './watchHistory';
+import type { Favorite } from './favorite';
+
 export type AuthData = {
   jwt: string;
   customerToken: string;
@@ -150,6 +153,12 @@ export type UpdateCustomerPayload = {
   confirmationPassword?: string;
   firstName?: string;
   lastName?: string;
+  externalData?: ExternalData;
+};
+
+export type ExternalData = {
+  history?: WatchHistoryItem[];
+  favorites?: Favorite[];
 };
 
 export type UpdateCustomerConsentsPayload = {
@@ -171,7 +180,7 @@ export type Customer = {
   firstName?: string;
   lastName?: string;
   externalId?: string;
-  externalData?: Record<string, unknown>;
+  externalData?: ExternalData;
 };
 
 export type Consent = {

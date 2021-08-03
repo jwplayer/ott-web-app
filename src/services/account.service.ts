@@ -10,7 +10,8 @@ import type {
   UpdateCustomerConsents,
   RefreshToken,
   GetLocales,
-  GetCaptureStatus, UpdateCaptureAnswers,
+  GetCaptureStatus,
+  UpdateCaptureAnswers,
 } from '../../types/account';
 
 import { post, put, patch, get } from './cleeng.service';

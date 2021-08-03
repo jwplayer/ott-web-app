@@ -8,6 +8,8 @@ import * as persist from '../utils/persist';
 import type { Subscription } from '../../types/subscription';
 
 import { ConfigStore } from './ConfigStore';
+import { watchHistoryStore, restoreWatchHistory, serializeWatchHistory } from './WatchHistoryStore';
+import { favoritesStore, restoreFavorites, serializeFavorites } from './FavoritesStore';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -59,6 +61,8 @@ export const initializeAccount = async () => {
 
       if (refreshedAuthData) {
         await afterLogin(config.cleengSandbox, refreshedAuthData);
+        restoreWatchHistory();
+        restoreFavorites();
       }
     }
   } catch (error: unknown) {
@@ -129,7 +133,10 @@ export const login = async (email: string, password: string) => {
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-  return afterLogin(cleengSandbox, response.responseData);
+  await afterLogin(cleengSandbox, response.responseData);
+
+  restoreFavorites();
+  restoreWatchHistory();
 };
 
 export const logout = async () => {
@@ -139,6 +146,9 @@ export const logout = async () => {
     s.auth = null;
     s.user = null;
   });
+
+  restoreFavorites();
+  restoreWatchHistory();
 };
 
 export const register = async (email: string, password: string) => {
@@ -166,7 +176,31 @@ export const register = async (email: string, password: string) => {
 
   if (responseRegister.errors.length) throw new Error(responseRegister.errors[0]);
 
-  return afterLogin(cleengSandbox, responseRegister.responseData);
+  await afterLogin(cleengSandbox, responseRegister.responseData);
+
+  updatePersonalShelves();
+};
+
+export const updatePersonalShelves = async () => {
+  const { auth, user } = AccountStore.getRawState();
+
+  if (!auth || !user) throw new Error('no auth');
+
+  const { watchHistory } = watchHistoryStore.getRawState();
+  const { favorites } = favoritesStore.getRawState();
+
+  if (!watchHistory && !favorites) return;
+
+  const {
+    config: { cleengSandbox },
+  } = ConfigStore.getRawState();
+
+  const personalShelfData = { history: serializeWatchHistory(watchHistory), favorites: serializeFavorites(favorites) };
+
+  return await accountService.updateCustomer({
+    id: user.id.toString(),
+    externalData: personalShelfData,
+  }, cleengSandbox, auth?.jwt);
 };
 
 export const updateConsents = async (customerConsents: CustomerConsent[]) => {
