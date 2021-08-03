@@ -6,7 +6,7 @@ import * as persist from '../utils/persist';
 import type { Favorite } from '../../types/favorite';
 import { getMediaByIds } from '../services/api.service';
 
-import { AccountStore, updatePersonalShelf } from './AccountStore';
+import { AccountStore, updatePersonalShelves } from './AccountStore';
 
 type FavoritesStore = {
   favorites: Favorite[];
@@ -32,23 +32,23 @@ export const restoreFavorites = async () => {
   }
 };
 
+export const serializeFavorites = (favorites: Favorite[]) => {
+  return favorites.map(({ mediaid, title, tags, duration }) => ({ mediaid, title, tags, duration }));
+};
+
+export const persistFavorites = () => {
+  const { favorites } = favoritesStore.getRawState();
+  const { user } = AccountStore.getRawState();
+
+  if (user) {
+    return updatePersonalShelves();
+  }
+
+  return persist.setItem(PERSIST_KEY_FAVORITES, serializeFavorites(favorites));
+};
+
 export const initializeFavorites = async () => {
   restoreFavorites();
-
-  const updateFavorites = (favorites: Favorite[]) => {
-    const { user } = AccountStore.getRawState();
-
-    if (user) {
-      return updatePersonalShelf();
-    } else {
-      return persist.setItem(
-        PERSIST_KEY_FAVORITES,
-        favorites.map(({ mediaid, title, tags, duration }) => ({ mediaid, title, tags, duration })),
-      );
-    }
-  };
-
-  return favoritesStore.subscribe((state) => state.favorites, updateFavorites);
 };
 
 const createFavorite = (item: PlaylistItem): Favorite =>
@@ -78,17 +78,21 @@ export const useFavorites = (): UseFavoritesReturn => {
   const favorites = favoritesStore.useState((state) => state.favorites);
 
   const saveItem = (item: PlaylistItem) => {
-    favoritesStore.update((state, orginal) => {
-      if (!orginal.favorites.some(({ mediaid }) => mediaid === item.mediaid)) {
+    favoritesStore.update((state, original) => {
+      if (!original.favorites.some(({ mediaid }) => mediaid === item.mediaid)) {
         state.favorites.unshift(createFavorite(item));
       }
     });
+
+    persistFavorites();
   };
 
   const removeItem = (item: PlaylistItem) => {
     favoritesStore.update((state) => {
       state.favorites = state.favorites.filter(({ mediaid }) => mediaid !== item.mediaid);
     });
+
+    persistFavorites();
   };
 
   const hasItem = (item: PlaylistItem) => {
@@ -99,6 +103,8 @@ export const useFavorites = (): UseFavoritesReturn => {
     favoritesStore.update((state) => {
       state.favorites = [];
     });
+
+    persistFavorites();
   };
 
   const getPlaylist = () => {

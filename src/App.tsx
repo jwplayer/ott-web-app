@@ -8,7 +8,7 @@ import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
 import './i18n/config';
 import './styles/main.scss';
-import { initializeWatchHistory } from './stores/WatchHistoryStore';
+import { restoreWatchHistory } from './stores/WatchHistoryStore';
 import { initializeFavorites } from './stores/FavoritesStore';
 import { initializeAccount } from './stores/AccountStore';
 
@@ -27,7 +27,7 @@ class App extends Component {
 
   initializeServices(config: Config) {
     if (config.options.enableContinueWatching) {
-      initializeWatchHistory();
+      restoreWatchHistory();
     }
 
     initializeFavorites();

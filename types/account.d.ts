@@ -1,4 +1,5 @@
 import type { WatchHistoryItem } from './watchHistory';
+import type { Favorite } from './favorite';
 
 export type AuthData = {
   jwt: string;
@@ -152,7 +153,7 @@ export type UpdateCustomerPayload = {
   confirmationPassword?: string;
   firstName?: string;
   lastName?: string;
-  externalData?: string;
+  externalData?: ExternalData;
 };
 
 export type ExternalData = {

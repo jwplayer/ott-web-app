@@ -8,8 +8,8 @@ import * as persist from '../utils/persist';
 import type { Subscription } from '../../types/subscription';
 
 import { ConfigStore } from './ConfigStore';
-import { watchHistoryStore, restoreWatchHistory } from './WatchHistoryStore';
-import { favoritesStore, restoreFavorites } from './FavoritesStore';
+import { watchHistoryStore, restoreWatchHistory, serializeWatchHistory } from './WatchHistoryStore';
+import { favoritesStore, restoreFavorites, serializeFavorites } from './FavoritesStore';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -178,35 +178,29 @@ export const register = async (email: string, password: string) => {
 
   await afterLogin(cleengSandbox, responseRegister.responseData);
 
-  updatePersonalShelf();
+  updatePersonalShelves();
 };
 
-export const updatePersonalShelf = async () => {
+export const updatePersonalShelves = async () => {
   const { auth, user } = AccountStore.getRawState();
 
   if (!auth || !user) throw new Error('no auth');
 
   const { watchHistory } = watchHistoryStore.getRawState();
-  const { favorites: customerFavorites } = favoritesStore.getRawState();
+  const { favorites } = favoritesStore.getRawState();
 
-  if (!watchHistory && !customerFavorites) return;
+  if (!watchHistory && !favorites) return;
 
   const {
     config: { cleengSandbox },
   } = ConfigStore.getRawState();
 
-  const history = watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
-    mediaid,
-    title,
-    tags,
-    duration,
-    progress,
-  }));
+  const personalShelfData = { history: serializeWatchHistory(watchHistory), favorites: serializeFavorites(favorites) };
 
-  const favorites = customerFavorites.map(({ mediaid, title, tags, duration }) => ({ mediaid, title, tags, duration }));
-  const personalShelfData = JSON.stringify({ history, favorites });
-
-  return await accountService.updateCustomer({ id: user.id.toString(), externalData: personalShelfData }, cleengSandbox, auth?.jwt);
+  return await accountService.updateCustomer({
+    id: user.id.toString(),
+    externalData: personalShelfData,
+  }, cleengSandbox, auth?.jwt);
 };
 
 export const updateConsents = async (customerConsents: CustomerConsent[]) => {

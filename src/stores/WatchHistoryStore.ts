@@ -8,7 +8,7 @@ import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
 
-import { AccountStore, updatePersonalShelf } from './AccountStore';
+import { AccountStore, updatePersonalShelves } from './AccountStore';
 
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];
@@ -34,7 +34,12 @@ export const restoreWatchHistory = async () => {
     });
 
     const watchHistory = await Promise.all(
-      savedItems.map(async (item) => createWatchHistoryItem(await getMediaById(item.mediaid), { duration: item.duration, progress: item.progress })),
+      savedItems.map(async (item) =>
+        createWatchHistoryItem(await getMediaById(item.mediaid), {
+          duration: item.duration,
+          progress: item.progress,
+        }),
+      ),
     );
 
     watchHistoryStore.update((state) => {
@@ -44,29 +49,29 @@ export const restoreWatchHistory = async () => {
   }
 };
 
+export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]) => {
+  return watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
+    mediaid,
+    title,
+    tags,
+    duration,
+    progress,
+  }));
+};
+
+const persistWatchHistory = () => {
+  const { watchHistory } = watchHistoryStore.getRawState();
+  const { user } = AccountStore.getRawState();
+
+  if (user) {
+    return updatePersonalShelves();
+  }
+
+  return persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
+};
+
 export const initializeWatchHistory = () => {
   restoreWatchHistory();
-
-  const updateWatchHistory = (watchHistory: WatchHistoryItem[]) => {
-    const { user } = AccountStore.getRawState();
-
-    if (user) {
-      return updatePersonalShelf();
-    } else {
-      return persist.setItem(
-        PERSIST_KEY_WATCH_HISTORY,
-        watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
-          mediaid,
-          title,
-          tags,
-          duration,
-          progress,
-        })),
-      );
-    }
-  };
-
-  return watchHistoryStore.subscribe((state) => state.watchHistory, updateWatchHistory);
 };
 
 export const createWatchHistoryItem = (item: PlaylistItem | undefined, videoProgress: VideoProgress): WatchHistoryItem => {
@@ -104,8 +109,8 @@ export const useWatchHistory = (): UseWatchHistoryReturn => {
     if (!videoProgress) return;
 
     const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
-
     const index = watchHistory.findIndex(({ mediaid }) => mediaid === watchHistoryItem.mediaid);
+
     if (index > -1) {
       watchHistoryStore.update((state) => {
         state.watchHistory[index] = watchHistoryItem;
@@ -115,12 +120,16 @@ export const useWatchHistory = (): UseWatchHistoryReturn => {
         state.watchHistory.unshift(watchHistoryItem);
       });
     }
+
+    persistWatchHistory();
   };
 
   const removeItem = (item: PlaylistItem) => {
     watchHistoryStore.update((state) => {
       state.watchHistory = state.watchHistory.filter(({ mediaid }) => mediaid !== item.mediaid);
     });
+
+    persistWatchHistory();
   };
 
   const hasItem = (item: PlaylistItem) => {
