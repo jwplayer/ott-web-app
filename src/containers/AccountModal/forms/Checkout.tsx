@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
 import {
@@ -20,6 +21,7 @@ import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRe
 import { addQueryParams } from '../../../utils/formatting';
 
 const Checkout = () => {
+  const { t } = useTranslation('account');
   const history = useHistory();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
   const [updatingOrder, setUpdatingOrder] = useState(false);
@@ -38,7 +40,13 @@ const Checkout = () => {
         await updateOrder(order.id, paymentMethodId, values.couponCode);
         setCouponCodeApplied(true);
       } catch (error: unknown) {
-        setErrors({ couponCode: 'Something went wrong!' });
+        if (error instanceof Error) {
+          if (error.message.includes(`Order with id ${order.id} not found`)) {
+            history.replace(addQueryParam(history, 'u', 'choose-offer'));
+          } else {
+            setErrors({ couponCode: t('checkout.coupon_not_valid') });
+          }
+        }
       }
     }
 
@@ -187,7 +195,7 @@ const Checkout = () => {
       couponFormOpen={couponFormOpen}
       couponFormApplied={couponCodeApplied}
       couponFormSubmitting={couponCodeForm.submitting}
-      couponFormError={!!couponCodeForm.errors.couponCode}
+      couponFormError={couponCodeForm.errors.couponCode}
       renderPaymentMethod={renderPaymentMethod}
       submitting={updatingOrder}
     />

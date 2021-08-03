@@ -74,9 +74,12 @@ export const updateOrder = async (orderId: number, paymentMethodId?: number, cou
   const response = await checkoutService.updateOrder(updateOrderPayload, cleengSandbox, auth.jwt);
 
   if (response.errors.length > 0) {
-    CheckoutStore.update((s) => {
-      s.order = null;
-    });
+    // clear the order when the order doesn't exist on the server
+    if (response.errors[0].includes(`Order with ${orderId} not found`)) {
+      CheckoutStore.update((s) => {
+        s.order = null;
+      });
+    }
 
     throw new Error(response.errors[0]);
   }
