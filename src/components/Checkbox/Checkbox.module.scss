@@ -56,10 +56,12 @@
     align-items: center;
     width: 20px;
     height: 20px;
+    margin: 4px 0;
     vertical-align: middle;
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.3s;
+    -webkit-appearance: none;
     appearance: none;
 
     &::before {
