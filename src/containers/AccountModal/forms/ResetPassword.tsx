@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
-import { resetPassword, AccountStore } from '../../../stores/AccountStore';
+import { resetPassword, AccountStore, logout } from '../../../stores/AccountStore';
 import { removeQueryParam, addQueryParam } from '../../../utils/history';
 import ResetPasswordForm from '../../../components/ResetPasswordForm/ResetPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
@@ -11,6 +11,7 @@ import ForgotPasswordForm from '../../../components/ForgotPasswordForm/ForgotPas
 import type { ForgotPasswordFormData } from '../../../../types/account';
 import ConfirmationForm from '../../../components/ConfirmationForm/ConfirmationForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
+import { addQueryParams } from '../../../utils/formatting';
 
 type Prop = {
   type: 'confirmation' | 'forgot' | 'reset' | 'edit';
@@ -27,7 +28,10 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   };
 
   const backToLoginClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'login'));
+    if (user) {
+      logout();
+    }
+    history.push(addQueryParams('/', { u: 'login' }));
   };
 
   const resetPasswordClickHandler = async () => {
@@ -40,7 +44,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
       await resetPassword(user.email, resetUrl);
 
       setResetPasswordSubmitting(false);
-      history.push('/u/logout');
+      history.push(addQueryParam(history, 'u', 'send-confirmation'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {
@@ -89,7 +93,9 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
           onSubmit={emailForm.handleSubmit}
         />
       )}
-      {type === 'confirmation' && <ConfirmationForm email={emailForm.values.email} onBackToLogin={backToLoginClickHandler} />}
+      {type === 'confirmation' && (
+        <ConfirmationForm loggedIn={!!user} email={user?.email || emailForm.values.email} onBackToLogin={backToLoginClickHandler} />
+      )}
       {(emailForm.submitting || resetPasswordSubmitting) && <LoadingOverlay transparentBackground inline />}
     </React.Fragment>
   );
