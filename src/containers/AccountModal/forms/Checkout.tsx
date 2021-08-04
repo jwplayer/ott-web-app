@@ -83,6 +83,7 @@ const Checkout = () => {
     const toPaymentMethodId = parseInt(event.target.value);
 
     setPaymentMethodId(toPaymentMethodId);
+    setPaymentError(undefined);
 
     if (order && toPaymentMethodId) {
       setUpdatingOrder(true);
