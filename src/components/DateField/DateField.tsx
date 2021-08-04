@@ -51,40 +51,68 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Backspace' && date[event.currentTarget.name as 'date' | 'month' | 'year'] === '') {
+      (event.currentTarget.previousElementSibling as HTMLElement)?.focus();
+
+      return event.preventDefault();
+    }
+
     if (!/^[0-9]$/.test(event.key) && event.key !== 'Tab' && event.key !== 'Backspace') {
       return event.preventDefault();
     }
   };
 
-  const getNewValue = (value: string, min?: number, max?: number) => {
-    const parsed = parseInt(value);
+  const padLeft = (value: number) => {
+    return value > 0 && value < 10 ? `0${value}` : value.toString();
+  }
+
+  const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+
+  const parseBlurValue = (value: string, min: number, max: number) => {
+    const parsed = clamp(parseInt(value), min, max);
     if (isNaN(parsed)) return '';
 
-    if (min && max) {
-      return Math.min(31, Math.max(1, parsed)).toString();
-    }
+    return value.length > 0 && parsed < 10 ? padLeft(parsed) : parsed.toString();
+  };
 
-    return parsed.toString();
+  const parseInputValue = (value: string, min: number, max: number) => {
+    const parsed = clamp(parseInt(value), min, max);
+    if (isNaN(parsed)) return '';
+
+    return value.length > 1 && parsed < 10 ? padLeft(parsed) : parsed.toString();
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setDate((current) => {
+      const date = name === 'date' ? parseBlurValue(value, 1, 31) : current.date;
+      const month = name === 'month' ? parseBlurValue(value, 1, 12) : current.month;
+      const year = name === 'year' ? parseBlurValue(value, 1900, 2100) : current.year;
+
+      return { date, month, year };
+    });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const nextSibling = event.currentTarget?.nextElementSibling as HTMLInputElement;
 
     setDate((current) => {
-      const date = name === 'date' ? getNewValue(value, 1, 31) : current.date;
-      const month = name === 'month' ? getNewValue(value, 1, 12) : current.month;
-      const year = name === 'year' ? getNewValue(value).slice(0, 4) : current.year;
+      const date = name === 'date' ? parseInputValue(value, 0, 31) : current.date;
+      const month = name === 'month' ? parseInputValue(value, 0, 12) : current.month;
+      const year = name === 'year' ? parseInputValue(value, 0, 2100).slice(0, 4) : current.year;
 
       if (onChange) {
         onChange(date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '');
       }
 
+      if (nextSibling && (name === 'month' && month.length === 2) || ( name === 'date' && date.length === 2)) {
+        setTimeout(() => nextSibling.focus(), 1);
+      }
+
       return { date, month, year };
     });
-
-    if ((name === 'month' || name === 'date') && value.length === 2) {
-      (event.currentTarget?.nextElementSibling as HTMLInputElement).focus();
-    }
   };
 
   return (
@@ -100,6 +128,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           placeholder="dd"
           value={date.date}
           onFocus={handleFocus}
+          onBlur={handleBlur}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           maxLength={2}
@@ -113,6 +142,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           placeholder="mm"
           value={date.month}
           onFocus={handleFocus}
+          onBlur={handleBlur}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           maxLength={2}
@@ -126,6 +156,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           placeholder="yyyy"
           value={date.year}
           onFocus={handleFocus}
+          onBlur={handleBlur}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           maxLength={4}
