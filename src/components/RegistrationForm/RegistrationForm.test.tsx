@@ -10,6 +10,7 @@ describe('<RegistrationForm>', () => {
       <RegistrationForm
         onSubmit={jest.fn()}
         onChange={jest.fn()}
+        onBlur={jest.fn()}
         values={{ email: '', password: '' }}
         errors={{}}
         submitting={false}
