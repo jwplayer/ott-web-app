@@ -53,7 +53,7 @@ const ChooseOffer = () => {
   const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
     periodicity: mixed<OfferPeriodicity>().required(t('choose_offer.field_required')),
   });
-  const initialValues: ChooseOfferFormData = { periodicity: offer?.period === 'year' ? 'yearly' : 'monthly' };
+  const initialValues: ChooseOfferFormData = { periodicity: offer?.period === 'month' ? 'monthly' : 'yearly' };
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
 
   // loading state
