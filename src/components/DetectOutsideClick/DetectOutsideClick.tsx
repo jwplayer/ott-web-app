@@ -19,7 +19,7 @@ const DetectOutsideClick = ({ callback, children }: Prop) => {
       }
     };
 
-    document.addEventListener('click', handleClick);
+    setTimeout(() => document.addEventListener('click', handleClick), 1);
 
     return () => document.removeEventListener('click', handleClick);
   }, [callback]);
