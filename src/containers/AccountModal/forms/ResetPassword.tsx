@@ -20,7 +20,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const { t } = useTranslation('account');
   const history = useHistory();
   const user = AccountStore.useState((state) => state.user);
-  const [resetPasswordSubmtting, setResetPasswordSubmitting] = useState<boolean>(false);
+  const [resetPasswordSubmitting, setResetPasswordSubmitting] = useState<boolean>(false);
 
   const cancelClickHandler = () => {
     history.push(removeQueryParam(history, 'u'));
@@ -31,7 +31,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   };
 
   const resetPasswordClickHandler = async () => {
-    const resetUrl = `${window.location.origin}/u/my-account?u=edit-password`;
+    const resetUrl = `${window.location.origin}/?u=edit-password`;
 
     try {
       if (!user?.email) throw new Error('invalid param email');
@@ -51,7 +51,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   };
 
   const emailSubmitHandler: UseFormOnSubmitHandler<ForgotPasswordFormData> = async (formData, { setErrors, setSubmitting }) => {
-    const resetUrl = `${window.location.origin}/u/my-account?u=edit-password`;
+    const resetUrl = `${window.location.origin}/?u=edit-password`;
 
     try {
       await resetPassword(formData.email, resetUrl);
@@ -72,12 +72,13 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     object().shape({
       email: string().email(t('login.field_is_not_valid_email')).required(t('login.field_required')),
     }),
+    true,
   );
 
   return (
     <React.Fragment>
       {type === 'reset' && (
-        <ResetPasswordForm submitting={resetPasswordSubmtting} onCancel={cancelClickHandler} onReset={resetPasswordClickHandler} />
+        <ResetPasswordForm submitting={resetPasswordSubmitting} onCancel={cancelClickHandler} onReset={resetPasswordClickHandler} />
       )}
       {type === 'forgot' && (
         <ForgotPasswordForm
@@ -89,7 +90,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
         />
       )}
       {type === 'confirmation' && <ConfirmationForm email={emailForm.values.email} onBackToLogin={backToLoginClickHandler} />}
-      {(emailForm.submitting || resetPasswordSubmtting) && <LoadingOverlay transparentBackground inline />}
+      {(emailForm.submitting || resetPasswordSubmitting) && <LoadingOverlay transparentBackground inline />}
     </React.Fragment>
   );
 };

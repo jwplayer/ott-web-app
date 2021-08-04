@@ -11,6 +11,7 @@ import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistorySto
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
 import useOttAnalytics from '../../hooks/useOttAnalytics';
+import { deepCopy } from '../../utils/collection';
 
 import styles from './Cinema.module.scss';
 
@@ -64,15 +65,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       }
 
       // load new item
-      playerRef.current.load([
-        {
-          mediaid: item.mediaid,
-          image: item.image,
-          title: item.title,
-          description: item.description,
-          sources: item.sources.map((source) => ({ ...source })),
-        },
-      ]);
+      playerRef.current.load([deepCopy(item)]);
     };
 
     const initializePlayer = () => {
@@ -85,7 +78,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       playerRef.current = window.jwplayer(playerElementRef.current);
 
       playerRef.current.setup({
-        playlist: [item],
+        playlist: [deepCopy(item)],
         aspect: false,
         width: '100%',
         height: '100%',

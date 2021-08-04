@@ -126,6 +126,13 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
   return { customerConsents, consentsErrors };
 };
 
+const deepCopy = (obj: unknown) => {
+  if (Array.isArray(obj) || (typeof obj === 'object' && obj !== null)) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+  return obj;
+};
+
 export {
   getFiltersFromConfig,
   getFiltersFromSeries,
@@ -138,4 +145,5 @@ export {
   formatConsentsFromValues,
   extractConsentValues,
   checkConsentsFromValues,
+  deepCopy,
 };

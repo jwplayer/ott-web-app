@@ -80,21 +80,11 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="passwordStrength"
-    >
       <div
-        class="passwordStrengthBar"
+        class="helperText"
       >
-        <div
-          class="passwordStrengthFill"
-          data-strength="0"
-        />
+        registration.password_helper_text
       </div>
-      <span>
-        registration.password_strength
-      </span>
     </div>
     <button
       aria-disabled="false"
@@ -105,20 +95,18 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
         registration.continue
       </span>
     </button>
-    <div
+    <p
       class="bottom"
     >
-      <span
-        class="alreadyAccount"
-      >
-        registration.already_account
-      </span>
-      <button
-        class="login"
+      registration.already_account
+       
+      <a
+        class="link"
+        href="/?u=login"
       >
         login.sign_in
-      </button>
-    </div>
+      </a>
+    </p>
   </form>
 </div>
 `;

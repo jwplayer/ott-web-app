@@ -24,9 +24,10 @@ type Props = {
   errors: FormErrors<LoginFormData>;
   values: LoginFormData;
   submitting: boolean;
+  siteName?: string;
 };
 
-const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting }: Props) => {
+const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
   const { t } = useTranslation('account');
   const history = useHistory();
@@ -67,6 +68,9 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         {t('login.forgot_password')}
       </Link>
       <Button type="submit" label={t('login.sign_in')} variant="contained" color="primary" size="large" disabled={submitting} fullWidth />
+      <p className={styles.bottom}>
+        {t('login.not_registered', { siteName })} <Link to={addQueryParam(history, 'u', 'create-account')}>{t('login.sign_up')}</Link>
+      </p>
     </form>
   );
 };

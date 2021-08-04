@@ -96,6 +96,18 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
         login.sign_in
       </span>
     </button>
+    <p
+      class="bottom"
+    >
+      login.not_registered
+       
+      <a
+        class="link"
+        href="/?u=create-account"
+      >
+        login.sign_up
+      </a>
+    </p>
   </form>
 </div>
 `;

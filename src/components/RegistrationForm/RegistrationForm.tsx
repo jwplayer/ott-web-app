@@ -15,12 +15,14 @@ import PasswordStrength from '../PasswordStrength/PasswordStrength';
 import Checkbox from '../Checkbox/Checkbox';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import Link from '../Link/Link';
 
 import styles from './RegistrationForm.module.scss';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onConsentChange: React.ChangeEventHandler<HTMLInputElement>;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
@@ -28,16 +30,19 @@ type Props = {
   consentValues: Record<string, boolean>;
   consentErrors: string[];
   submitting: boolean;
+  canSubmit: boolean;
   publisherConsents?: Consent[];
 };
 
 const RegistrationForm: React.FC<Props> = ({
   onSubmit,
   onChange,
+  onBlur,
   values,
   errors,
   submitting,
   loading,
+  canSubmit,
   publisherConsents,
   consentValues,
   onConsentChange,
@@ -47,10 +52,6 @@ const RegistrationForm: React.FC<Props> = ({
 
   const { t } = useTranslation('account');
   const history = useHistory();
-
-  const loginButtonClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'login'));
-  };
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
     // @todo sanitize consent label to prevent XSS
@@ -79,6 +80,7 @@ const RegistrationForm: React.FC<Props> = ({
       <TextField
         value={values.email}
         onChange={onChange}
+        onBlur={onBlur}
         label={t('registration.email')}
         placeholder={t('registration.email')}
         error={!!errors.email || !!errors.form}
@@ -90,10 +92,16 @@ const RegistrationForm: React.FC<Props> = ({
       <TextField
         value={values.password}
         onChange={onChange}
+        onBlur={onBlur}
         label={t('registration.password')}
         placeholder={t('registration.password')}
         error={!!errors.password || !!errors.form}
-        helperText={errors.password}
+        helperText={(
+          <React.Fragment>
+            <PasswordStrength password={values.password} />
+            {t('registration.password_helper_text')}
+          </React.Fragment>
+        )}
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
@@ -106,13 +114,13 @@ const RegistrationForm: React.FC<Props> = ({
         }
         required
       />
-      <PasswordStrength password={values.password} />
       {publisherConsents?.map((consent, index) => (
         <Checkbox
           key={index}
           name={consent.name}
           value={consent.name}
           error={consentErrors?.includes(consent.name)}
+          required={consent.required}
           checked={consentValues[consent.name]}
           onChange={onConsentChange}
           label={formatConsentLabel(consent.label)}
@@ -125,15 +133,12 @@ const RegistrationForm: React.FC<Props> = ({
         variant="contained"
         color="primary"
         size="large"
-        disabled={submitting}
+        disabled={submitting || !canSubmit}
         fullWidth
       />
-      <div className={styles.bottom}>
-        <span className={styles.alreadyAccount}>{t('registration.already_account')}</span>
-        <button className={styles.login} onClick={loginButtonClickHandler}>
-          {t('login.sign_in')}
-        </button>
-      </div>
+      <p className={styles.bottom}>
+        {t('registration.already_account')} <Link to={addQueryParam(history, 'u', 'login')}>{t('login.sign_in')}</Link>
+      </p>
       {submitting && <LoadingOverlay transparentBackground inline />}
     </form>
   );

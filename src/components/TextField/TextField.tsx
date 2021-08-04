@@ -14,7 +14,8 @@ type Props = {
   value: string;
   type?: 'text' | 'email' | 'password' | 'search' | 'number' | 'date';
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onFocus?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;
   leftControl?: React.ReactNode;
   rightControl?: React.ReactNode;

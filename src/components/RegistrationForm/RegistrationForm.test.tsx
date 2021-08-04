@@ -1,5 +1,6 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+
+import { render } from '../../testUtils';
 
 import RegistrationForm from './RegistrationForm';
 
@@ -9,12 +10,14 @@ describe('<RegistrationForm>', () => {
       <RegistrationForm
         onSubmit={jest.fn()}
         onChange={jest.fn()}
+        onBlur={jest.fn()}
         values={{ email: '', password: '' }}
         errors={{}}
         submitting={false}
         consentErrors={[]}
         consentValues={{}}
         loading={false}
+        canSubmit={true}
         onConsentChange={jest.fn()}
       />,
     );

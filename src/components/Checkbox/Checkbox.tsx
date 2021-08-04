@@ -33,7 +33,7 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
       ) : null}
       <div className={styles.row}>
         <input name={name} type="checkbox" id={id} value={value} onChange={onChange} checked={checked} aria-required={required} disabled={disabled} />
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id}>{required ? '* ' : ''}{label}</label>
       </div>
       {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
     </div>

@@ -17,6 +17,7 @@ exports[`<Checkbox> renders and matches snapshot 1`] = `
       <label
         for="check-box_1235_name"
       >
+        
         label
       </label>
     </div>

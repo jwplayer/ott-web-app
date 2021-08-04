@@ -1,4 +1,5 @@
 export type UseFormChangeHandler = React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+export type UseFormBlurHandler = React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 export type UseFormSubmitHandler = React.FormEventHandler<HTMLFormElement>;
 
 export type GenericFormErrors = { form: string };
