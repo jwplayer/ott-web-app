@@ -28,6 +28,7 @@ type Props = {
   consentValues: Record<string, boolean>;
   consentErrors: string[];
   submitting: boolean;
+  canSubmit: boolean;
   publisherConsents?: Consent[];
 };
 
@@ -38,6 +39,7 @@ const RegistrationForm: React.FC<Props> = ({
   errors,
   submitting,
   loading,
+  canSubmit,
   publisherConsents,
   consentValues,
   onConsentChange,
@@ -113,6 +115,7 @@ const RegistrationForm: React.FC<Props> = ({
           name={consent.name}
           value={consent.name}
           error={consentErrors?.includes(consent.name)}
+          required={consent.required}
           checked={consentValues[consent.name]}
           onChange={onConsentChange}
           label={formatConsentLabel(consent.label)}
@@ -125,7 +128,7 @@ const RegistrationForm: React.FC<Props> = ({
         variant="contained"
         color="primary"
         size="large"
-        disabled={submitting}
+        disabled={submitting || !canSubmit}
         fullWidth
       />
       <div className={styles.bottom}>

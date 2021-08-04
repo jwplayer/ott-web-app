@@ -91,6 +91,7 @@ const Registration = () => {
       publisherConsents={publisherConsents}
       loading={publisherConsentsLoading}
       onConsentChange={handleChangeConsent}
+      canSubmit={!!values.email && !!values.password}
     />
   );
 };
