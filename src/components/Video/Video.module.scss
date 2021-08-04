@@ -217,6 +217,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1;
   width: 100vw;
   height: calc(100vh - calc(100vh - 100%));
   overflow: hidden;
