@@ -33,15 +33,22 @@ const setLoading = (loading: boolean) => {
   });
 };
 
+let subscription: undefined | (() => void);
+let refreshTimeout: number;
+
 export const initializeAccount = async () => {
   const { config } = ConfigStore.getRawState();
 
   if (!config.cleengId) setLoading(false);
 
   const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
-  let refreshTimeout: number;
 
-  AccountStore.subscribe(
+  // clear previous subscribe (for dev environment only)
+  if (subscription) {
+    subscription();
+  }
+
+  subscription = AccountStore.subscribe(
     (state) => state.auth,
     (authData) => {
       window.clearTimeout(refreshTimeout);
