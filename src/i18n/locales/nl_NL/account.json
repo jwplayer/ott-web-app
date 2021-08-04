@@ -97,7 +97,14 @@
     "hide_password": "",
     "invalid_password": "",
     "password": "",
-    "password_strength": "",
+    "password_helper_text": "",
+    "password_strength": {
+      "fair": "",
+      "invalid": "",
+      "strong": "",
+      "very_strong": "",
+      "weak": ""
+    },
     "sign_up": "",
     "user_exists": "",
     "view_password": "",

@@ -22,6 +22,7 @@ import styles from './RegistrationForm.module.scss';
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onConsentChange: React.ChangeEventHandler<HTMLInputElement>;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
@@ -36,6 +37,7 @@ type Props = {
 const RegistrationForm: React.FC<Props> = ({
   onSubmit,
   onChange,
+  onBlur,
   values,
   errors,
   submitting,
@@ -78,6 +80,7 @@ const RegistrationForm: React.FC<Props> = ({
       <TextField
         value={values.email}
         onChange={onChange}
+        onBlur={onBlur}
         label={t('registration.email')}
         placeholder={t('registration.email')}
         error={!!errors.email || !!errors.form}
@@ -89,10 +92,16 @@ const RegistrationForm: React.FC<Props> = ({
       <TextField
         value={values.password}
         onChange={onChange}
+        onBlur={onBlur}
         label={t('registration.password')}
         placeholder={t('registration.password')}
         error={!!errors.password || !!errors.form}
-        helperText={errors.password}
+        helperText={(
+          <React.Fragment>
+            <PasswordStrength password={values.password} />
+            {t('registration.password_helper_text')}
+          </React.Fragment>
+        )}
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
@@ -105,7 +114,6 @@ const RegistrationForm: React.FC<Props> = ({
         }
         required
       />
-      <PasswordStrength password={values.password} />
       {publisherConsents?.map((consent, index) => (
         <Checkbox
           key={index}
