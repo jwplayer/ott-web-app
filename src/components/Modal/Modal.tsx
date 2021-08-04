@@ -46,7 +46,6 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
       }
 
       // prevent scrolling under the modal
-
       document.body.style.marginRight = `${scrollbarSize()}px`;
       document.body.style.overflowY = 'hidden';
 
