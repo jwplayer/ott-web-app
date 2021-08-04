@@ -14,12 +14,29 @@ module.exports = {
     '@snowpack/plugin-sass',
     ['@snowpack/plugin-webpack', {
       extendConfig: (config) => {
+        // FIXES https://github.com/snowpackjs/snowpack/discussions/2810
+        const babelRule = config.module.rules.find((rule) =>
+          rule && rule.use && rule.use.find((use) => use && use.loader && use.loader.includes('babel-loader')));
+
         const cssModulesRule = config.module.rules.find((rule) =>
           rule && rule.use && rule.use.find((use) => use && use.loader && use.loader.includes('css-loader') && use.options && use.options.modules));
 
         if (cssModulesRule) {
           cssModulesRule.use.unshift({
             loader:  require.resolve('./scripts/webpack/css-modules-fix.js'),
+          });
+        }
+
+        if (babelRule) {
+          babelRule.use = babelRule.use.filter(use => {
+            if (use.loader.includes('babel-loader')) {
+              use.options.plugins = (use.options.plugins || []).concat([
+                '@babel/plugin-proposal-optional-chaining',
+                '@babel/plugin-proposal-nullish-coalescing-operator'
+              ]);
+            }
+
+            return true;
           });
         }
 
