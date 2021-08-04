@@ -44,7 +44,7 @@ exports[`<CheckoutForm> renders and matches snapshot 1`] = `
         class="orderPrice"
       >
         <span>
-          € 5,78
+          € 6,99
         </span>
         <small>
           /
@@ -70,14 +70,6 @@ exports[`<CheckoutForm> renders and matches snapshot 1`] = `
         <tbody>
           <tr>
             <td>
-              checkout.applicable_tax
-            </td>
-            <td>
-              € 1,21
-            </td>
-          </tr>
-          <tr>
-            <td>
               checkout.payment_method_fee
             </td>
             <td>
@@ -92,6 +84,14 @@ exports[`<CheckoutForm> renders and matches snapshot 1`] = `
             </td>
             <td>
               € 6,99
+            </td>
+          </tr>
+          <tr>
+            <td>
+              checkout.applicable_tax
+            </td>
+            <td>
+              € 1,21
             </td>
           </tr>
         </tfoot>
