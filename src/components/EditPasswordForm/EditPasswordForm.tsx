@@ -18,13 +18,14 @@ import styles from './EditPasswordForm.module.scss';
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   error?: string;
   errors: FormErrors<EditPasswordFormData>;
   value: EditPasswordFormData;
   submitting: boolean;
 };
 
-const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors, submitting }: Props) => {
+const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, onBlur, value, errors, submitting }: Props) => {
   const { t } = useTranslation('account');
   const [viewPassword, toggleViewPassword] = useToggle();
 
@@ -33,12 +34,19 @@ const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors, 
       <h2 className={styles.title}>{t('reset.password_reset')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
+        className={styles.textField}
         value={value.password}
         onChange={onChange}
-        label={t('reset.password')}
+        onBlur={onBlur}
+        label={t('reset.new_password')}
         placeholder={t('reset.password')}
         error={!!errors.password || !!errors.form}
-        helperText={errors.password}
+        helperText={(
+          <React.Fragment>
+            <PasswordStrength password={value.password} />
+            {t('reset.password_helper_text')}
+          </React.Fragment>
+        )}
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
@@ -48,7 +56,6 @@ const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors, 
         }
         required
       />
-      <PasswordStrength password={value.password} />
       <Button type="submit" className={styles.button} fullWidth color="primary" disabled={submitting} label={t('reset.confirm')} />
       {submitting && <LoadingOverlay transparentBackground inline />}
     </form>

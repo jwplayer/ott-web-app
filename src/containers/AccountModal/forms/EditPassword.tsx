@@ -17,9 +17,13 @@ const ResetPassword: React.FC = () => {
   const emailParam = useQueryParam('email');
 
   const passwordSubmitHandler: UseFormOnSubmitHandler<EditPasswordFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
-    try {
-      if (!resetPasswordTokenParam || !emailParam) throw new Error('invalid reset link');
+    if (!emailParam || !resetPasswordTokenParam) {
+      setErrors({ form: t('reset.invalid_link') });
 
+      return setSubmitting(false);
+    }
+
+    try {
       await changePassword(emailParam, formData.password, resetPasswordTokenParam);
       history.push(addQueryParam(history, 'u', 'login'));
     } catch (error: unknown) {
@@ -28,8 +32,6 @@ const ResetPassword: React.FC = () => {
           setErrors({ password: t('reset.invalid_password') });
         } else if (error.message.includes('resetPasswordToken is not valid')) {
           setErrors({ password: t('reset.invalid_token') });
-        } else if (error.message.includes('invalid reset link')) {
-          setErrors({ password: t('reset.invalid_link') });
         }
 
         setValue('password', '');
@@ -42,20 +44,22 @@ const ResetPassword: React.FC = () => {
     { password: '' },
     passwordSubmitHandler,
     object().shape({
-      password: string().required(t('login.field_required')),
+      password: string()
+        .matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password'))
+        .required(t('login.field_required')),
     }),
+    true,
   );
 
   return (
-    <React.Fragment>
-      <EditPasswordForm
-        value={passwordForm.values}
-        submitting={passwordForm.submitting}
-        onChange={passwordForm.handleChange}
-        errors={passwordForm.errors}
-        onSubmit={passwordForm.handleSubmit}
-      />
-    </React.Fragment>
+    <EditPasswordForm
+      value={passwordForm.values}
+      submitting={passwordForm.submitting}
+      onChange={passwordForm.handleChange}
+      onBlur={passwordForm.handleBlur}
+      errors={passwordForm.errors}
+      onSubmit={passwordForm.handleSubmit}
+    />
   );
 };
 

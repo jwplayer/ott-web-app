@@ -44,6 +44,8 @@ const PasswordStrength: React.FC<Props> = ({ password }: Props) => {
     t('registration.password_strength.very_strong'),
   ];
 
+  if (!strength) return null;
+
   return (
     <div className={styles.passwordStrength} data-strength={strength}>
       <div className={styles.passwordStrengthBar}>

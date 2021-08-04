@@ -83,24 +83,6 @@ exports[`<RegistrationForm> renders and matches snapshot 1`] = `
       <div
         class="helperText"
       >
-        <div
-          class="passwordStrength"
-          data-strength="0"
-        >
-          <div
-            class="passwordStrengthBar"
-          >
-            <div
-              class="passwordStrengthFill"
-            />
-          </div>
-           
-          <span
-            class="label"
-          >
-            registration.password_strength.invalid
-          </span>
-        </div>
         registration.password_helper_text
       </div>
     </div>
