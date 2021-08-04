@@ -59,13 +59,13 @@
     vertical-align: middle;
     border-radius: 2px;
     cursor: pointer;
-    transition: all 0.5s;
+    transition: all 0.3s;
     appearance: none;
 
     &::before {
       display: inline-block;
       font-family: system-ui;
-      font-weight: 900;
+      font-weight: 600;
       font-size: 0;
       content: 'L';
     }
@@ -91,10 +91,13 @@
     }
 
     &:checked {
-      background-color: var(--primary-color);
+      background-color: theme.$forms-checkbox-bg;
       &::before {
-        font-size: 16px;
-        transform: translateY(-1px) scaleX(-1) rotate(-45deg);
+        font-size: 20px;
+        transform: translateY(-3px) translateX(1px) scaleX(-0.95) rotate(-45deg);
+      }
+      &:hover {
+        background-color: theme.$forms-checkbox-bg-hover;
       }
     }
   }
