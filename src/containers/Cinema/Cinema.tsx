@@ -89,7 +89,10 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       setPlayer(playerRef.current);
 
       const handlePlay = () => onPlay && onPlay();
-      const handlePause = () => onPause && onPause();
+      const handlePause = () => {
+        enableWatchHistory && saveItem(item, getProgress);
+        onPause && onPause();
+      };
       const handleComplete = () => onComplete && onComplete();
       const handleUserActive = () => onUserActive && onUserActive();
       const handleUserInactive = () => onUserInActive && onUserInActive();
