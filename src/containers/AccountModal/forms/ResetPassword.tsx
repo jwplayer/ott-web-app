@@ -91,6 +91,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
           onChange={emailForm.handleChange}
           errors={emailForm.errors}
           onSubmit={emailForm.handleSubmit}
+          onBlur={emailForm.handleBlur}
         />
       )}
       {type === 'confirmation' && (
