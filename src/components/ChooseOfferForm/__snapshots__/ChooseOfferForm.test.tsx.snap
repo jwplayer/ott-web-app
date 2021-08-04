@@ -99,6 +99,9 @@ exports[`<OffersForm> renders and matches snapshot 1`] = `
             </li>
           </ul>
           <div
+            class="fill"
+          />
+          <div
             class="offerPrice"
           >
             € 6,99
@@ -188,6 +191,9 @@ exports[`<OffersForm> renders and matches snapshot 1`] = `
               choose_offer.benefits.watch_on_all_devices
             </li>
           </ul>
+          <div
+            class="fill"
+          />
           <div
             class="offerPrice"
           >
