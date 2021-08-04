@@ -13,7 +13,7 @@
   left: 0;
   z-index: variables.$loading-z-index;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - calc(100vh - 100%));
   background-color: var(--body-background-color);
 }
 
