@@ -90,9 +90,9 @@
     "continue": "Continue",
     "fist_name": "First name",
     "last_name": "Last name",
-    "no_answer": "No answer",
     "phone_number": "Phone number",
     "post_code": "Zip/Postal Code",
+    "select_answer": "Choose an option",
     "state": "State/Province/Region",
     "this_field_is_required": "This field is required",
     "title": "Personal details"

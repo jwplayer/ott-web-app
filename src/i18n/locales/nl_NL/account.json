@@ -86,9 +86,9 @@
     "continue": "",
     "fist_name": "",
     "last_name": "",
-    "no_answer": "",
     "phone_number": "",
     "post_code": "",
+    "select_answer": "",
     "state": "",
     "this_field_is_required": "",
     "title": ""
