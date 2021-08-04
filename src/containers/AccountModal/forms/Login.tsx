@@ -8,8 +8,10 @@ import LoginForm from '../../../components/LoginForm/LoginForm';
 import { login } from '../../../stores/AccountStore';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { removeQueryParam } from '../../../utils/history';
+import { ConfigStore } from '../../../stores/ConfigStore';
 
 const Login = () => {
+  const { siteName } = ConfigStore.useState((s) => s.config);
   const history = useHistory();
   const { t } = useTranslation('account');
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
@@ -39,7 +41,7 @@ const Login = () => {
   const initialValues: LoginFormData = { email: '', password: '' };
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, loginSubmitHandler, validationSchema);
 
-  return <LoginForm onSubmit={handleSubmit} onChange={handleChange} values={values} errors={errors} submitting={submitting} />;
+  return <LoginForm onSubmit={handleSubmit} onChange={handleChange} values={values} errors={errors} submitting={submitting} siteName={siteName} />;
 };
 
 export default Login;

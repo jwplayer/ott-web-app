@@ -57,8 +57,10 @@
     "field_required": "",
     "forgot_password": "",
     "hide_password": "",
+    "not_registered": "",
     "password": "",
     "sign_in": "",
+    "sign_up": "",
     "view_password": "",
     "wrong_combination": "",
     "wrong_email": ""

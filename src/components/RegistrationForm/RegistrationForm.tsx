@@ -15,6 +15,7 @@ import PasswordStrength from '../PasswordStrength/PasswordStrength';
 import Checkbox from '../Checkbox/Checkbox';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import Link from '../Link/Link';
 
 import styles from './RegistrationForm.module.scss';
 
@@ -49,10 +50,6 @@ const RegistrationForm: React.FC<Props> = ({
 
   const { t } = useTranslation('account');
   const history = useHistory();
-
-  const loginButtonClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'login'));
-  };
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
     // @todo sanitize consent label to prevent XSS
@@ -131,12 +128,9 @@ const RegistrationForm: React.FC<Props> = ({
         disabled={submitting || !canSubmit}
         fullWidth
       />
-      <div className={styles.bottom}>
-        <span className={styles.alreadyAccount}>{t('registration.already_account')}</span>
-        <button className={styles.login} onClick={loginButtonClickHandler}>
-          {t('login.sign_in')}
-        </button>
-      </div>
+      <p className={styles.bottom}>
+        {t('registration.already_account')} <Link to={addQueryParam(history, 'u', 'login')}>{t('login.sign_in')}</Link>
+      </p>
       {submitting && <LoadingOverlay transparentBackground inline />}
     </form>
   );

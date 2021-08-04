@@ -57,8 +57,10 @@
     "field_required": "This field is required",
     "forgot_password": "Forgot password?",
     "hide_password": "Hide password",
+    "not_registered": "New to {{siteName}}?",
     "password": "Password",
     "sign_in": "Sign in",
+    "sign_up": "Sign up",
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
