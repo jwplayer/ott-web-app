@@ -2,6 +2,7 @@
 @use '../../styles/theme';
 
 .dialog {
+  width: 100vw;
   max-width: 450px;
   max-height: 90vh;
   padding: 24px;
