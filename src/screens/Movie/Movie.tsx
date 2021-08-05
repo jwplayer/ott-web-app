@@ -20,8 +20,8 @@ import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
 import { AccountStore } from '../../stores/AccountStore';
-import { configHasCleengOffer } from '../../utils/cleeng';
 import { addQueryParam } from '../../utils/history';
+import { isAllowedToWatch } from '../../utils/cleeng';
 
 import styles from './Movie.module.scss';
 
@@ -38,9 +38,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const feedId = searchParams.get('l');
 
   // Config
-  const config = ConfigStore.useState((s) => s.config);
-  const { cleengId, options, recommendationsPlaylist, siteName } = config;
-  const configHasOffer = configHasCleengOffer(config);
+  const { options, recommendationsPlaylist, siteName } = ConfigStore.useState((s) => s.config);
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 
@@ -48,7 +47,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
-  const requiresSubscription = item?.requiresSubscription !== 'false';
+  const itemRequiresSubscription = item?.requiresSubscription !== 'false';
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
@@ -71,10 +70,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   // User
   const user = AccountStore.useState((state) => state.user);
   const subscription = AccountStore.useState((state) => state.subscription);
-  const allowedToWatch = useMemo<boolean>(
-    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!subscription)),
-    [requiresSubscription, cleengId, user, configHasOffer, subscription],
-  );
+  const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
@@ -101,21 +97,17 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   }, [history, id, playlist, searchParams]);
 
   const formatStartWatchingLabel = (): string => {
-    if (cleengId) {
-      if (!user) return t('sign_up_to_start_watching');
-      if (!subscription && configHasOffer) return t('complete_your_subscription');
-    }
+    if (!allowedToWatch && !user) return t('sign_up_to_start_watching');
+    if (!allowedToWatch && !subscription) return t('complete_your_subscription');
     return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
   };
 
   const handleStartWatchingClick = useCallback(() => {
-    if (cleengId) {
-      if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
-      if (!allowedToWatch) return history.push('/u/payments');
-    }
+    if (!allowedToWatch && !user) return history.push(addQueryParam(history, 'u', 'create-account'));
+    if (!allowedToWatch && !subscription) return history.push('/u/payments');
 
     return item && history.push(videoUrl(item, searchParams.get('r'), true));
-  }, [cleengId, item, history, searchParams, user, allowedToWatch]);
+  }, [allowedToWatch, user, subscription, history, item, searchParams]);
 
   // Effects
   useEffect(() => {
@@ -196,8 +188,9 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
               currentCardItem={item}
               currentCardLabel={t('currently_playing')}
               enableCardTitles={options.shelveTitles}
-              hasActiveSubscription={!!subscription}
-              requiresSubscription={!!cleengId && configHasOffer}
+              accessModel={accessModel}
+              isLoggedIn={!!user}
+              hasSubscription={!!subscription}
             />
           </>
         ) : undefined}

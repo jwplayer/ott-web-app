@@ -18,6 +18,8 @@ describe('<Favorites>', () => {
             onCardClick={() => null}
             onCardHover={() => null}
             onClearFavoritesClick={() => null}
+            hasSubscription={true}
+            accessModel={'SVOD'}
           />
         )}
       </PlaylistContainer>,

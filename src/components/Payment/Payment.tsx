@@ -92,7 +92,7 @@ const Payment = ({
           </div>
         ) : (
           <div>
-            <p>{t('user:payment.no_payment_methods')}</p>
+            <p>{!isLoading && t('user:payment.no_payment_methods')}</p>
           </div>
         )}
       </div>
@@ -119,7 +119,7 @@ const Payment = ({
           ))
         ) : (
           <div>
-            <p>{t('user:payment.no_transactions')}</p>
+            <p>{!isLoading && t('user:payment.no_transactions')}</p>
           </div>
         )}
       </div>

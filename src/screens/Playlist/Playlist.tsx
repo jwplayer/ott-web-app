@@ -12,7 +12,6 @@ import Filter from '../../components/Filter/Filter';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { AccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
-import { configHasCleengOffer } from '../../utils/cleeng';
 
 import styles from './Playlist.module.scss';
 
@@ -27,6 +26,8 @@ function Playlist({
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
   const config = ConfigStore.useState((state) => state.config);
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
+
   const { isLoading, isPlaceholderData, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
 
   const [filter, setFilter] = useState<string>('');
@@ -35,8 +36,9 @@ function Playlist({
   const filteredPlaylist = useMemo(() => filterPlaylist(playlist, filter), [playlist, filter]);
   const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
 
-  const hasActiveSubscription = !!AccountStore.useState((state) => state.subscription);
-  const requiresSubscription = !!config.cleengId && configHasCleengOffer(config);
+  // User
+  const user = AccountStore.useState((state) => state.user);
+  const subscription = !!AccountStore.useState((state) => state.subscription);
 
   useEffect(() => {
     // reset filter when the playlist id changes
@@ -70,8 +72,9 @@ function Playlist({
           onCardHover={onCardHover}
           isLoading={isLoading}
           enableCardTitles={config.options.shelveTitles}
-          hasActiveSubscription={hasActiveSubscription}
-          requiresSubscription={requiresSubscription}
+          accessModel={accessModel}
+          isLoggedIn={!!user}
+          hasSubscription={!!subscription}
         />
       </main>
     </div>

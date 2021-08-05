@@ -12,10 +12,11 @@ import styles from './UserMenu.module.scss';
 
 type Props = {
   inPopover?: boolean;
+  showPaymentsItem: boolean;
   onClick?: () => void;
 };
 
-const UserMenu = ({ inPopover = false, onClick }: Props) => {
+const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
   const { t } = useTranslation('user');
 
   const menuItems = (
@@ -26,9 +27,11 @@ const UserMenu = ({ inPopover = false, onClick }: Props) => {
       <li>
         <MenuButton small={inPopover} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
       </li>
-      <li>
-        <MenuButton small={inPopover} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
-      </li>
+      {showPaymentsItem && (
+        <li>
+          <MenuButton small={inPopover} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
+        </li>
+      )}
       <hr className={classNames(styles.divider, { [styles.inPopover]: inPopover })} />
       <li>
         <MenuButton small={inPopover} onClick={onClick} to="/u/logout" label={t('nav.logout')} startIcon={<Exit />} />

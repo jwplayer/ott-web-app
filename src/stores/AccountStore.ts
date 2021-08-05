@@ -10,7 +10,6 @@ import type { Subscription } from '../../types/subscription';
 import { ConfigStore } from './ConfigStore';
 import { watchHistoryStore, restoreWatchHistory, serializeWatchHistory } from './WatchHistoryStore';
 import { favoritesStore, restoreFavorites, serializeFavorites } from './FavoritesStore';
-import { configHasCleengOffer } from '../utils/cleeng';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -112,7 +111,7 @@ export const getActiveSubscription = async (sandbox: boolean, customer: Customer
 };
 
 export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
-  const { config } = ConfigStore.getRawState();
+  const { accessModel } = ConfigStore.getRawState();
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
   const customerId = decodedToken.customerId.toString();
   const response = await accountService.getCustomer({ customerId }, sandbox, auth.jwt);
@@ -125,7 +124,7 @@ export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
     s.user = response.responseData;
   });
 
-  if (configHasCleengOffer(config)) {
+  if (accessModel === 'SVOD') {
     reloadActiveSubscription();
   }
 };
@@ -349,7 +348,7 @@ export const reloadActiveSubscription = async () => {
 
   const activeSubscription = await getActiveSubscription(cleengSandbox, user, auth);
 
-  AccountStore.update(s => {
+  AccountStore.update((s) => {
     s.subscription = activeSubscription;
   });
 };

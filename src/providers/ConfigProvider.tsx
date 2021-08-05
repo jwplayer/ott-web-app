@@ -3,7 +3,7 @@ import merge from 'lodash.merge';
 
 import { calculateContrastColor } from '../utils/common';
 import loadConfig, { validateConfig } from '../services/config.service';
-import type { Config, Options } from '../../types/Config';
+import type { AccessModel, Config, Options } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 import { addScript } from '../utils/dom';
 import { ConfigStore } from '../stores/ConfigStore';
@@ -53,8 +53,11 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
 
           // @todo refactor this provider to use the ConfigStore exclusively
           setConfig(configWithDefaults);
+
+          const accessModel = calculateAccessModel(configWithDefaults);
           ConfigStore.update((s) => {
             s.config = configWithDefaults;
+            s.accessModel = accessModel;
           });
 
           setCssVariables(configValidated.options);
@@ -94,6 +97,12 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
     if (!config.analyticsToken) return;
 
     return addScript('/jwpltx.js');
+  };
+
+  const calculateAccessModel = (config: Config): AccessModel => {
+    if (!config.cleengId) return 'AVOD';
+    if (!config.json?.cleengMonthlyOffer && !config.json?.cleengYearlyOffer) return 'AUTHVOD';
+    return 'SVOD';
   };
 
   return (

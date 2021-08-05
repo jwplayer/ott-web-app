@@ -24,6 +24,7 @@ describe('<Header />', () => {
         toggleUserMenu={jest.fn()}
         isLoggedIn={false}
         canLogin={true}
+        showPaymentsMenuItem={true}
       >
         {playlistMenuItems}
       </Header>,

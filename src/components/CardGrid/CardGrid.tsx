@@ -6,6 +6,8 @@ import VirtualizedGrid from '../VirtualizedGrid/VirtualizedGrid';
 import Card from '../Card/Card';
 import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
 import { chunk, findPlaylistImageForWidth } from '../../utils/collection';
+import type { AccessModel } from '../../../types/Config';
+import { isAllowedToWatch } from '../../utils/cleeng';
 
 import styles from './CardGrid.module.scss';
 
@@ -27,8 +29,9 @@ type CardGridProps = {
   cols?: Breakpoints;
   currentCardItem?: PlaylistItem;
   currentCardLabel?: string;
-  hasActiveSubscription: boolean;
-  requiresSubscription: boolean;
+  accessModel: AccessModel;
+  isLoggedIn: boolean;
+  hasSubscription: boolean;
 };
 
 function CardGrid({
@@ -41,8 +44,9 @@ function CardGrid({
   cols = defaultCols,
   currentCardItem,
   currentCardLabel,
-  requiresSubscription,
-  hasActiveSubscription,
+  accessModel,
+  isLoggedIn,
+  hasSubscription,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -73,7 +77,7 @@ function CardGrid({
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
             currentLabel={currentCardLabel}
-            isLocked={requiresSubscription && !hasActiveSubscription && playlistItem.requiresSubscription !== 'false'}
+            isLocked={!isAllowedToWatch(accessModel, isLoggedIn, playlistItem.requiresSubscription !== 'false', hasSubscription)}
           />
         </div>
       </div>

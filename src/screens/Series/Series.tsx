@@ -21,7 +21,7 @@ import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
-import { configHasCleengOffer } from '../../utils/cleeng';
+import { isAllowedToWatch } from '../../utils/cleeng';
 import { AccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 
@@ -41,9 +41,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const feedId = searchParams.get('l');
 
   // Config
-  const config = ConfigStore.useState((s) => s.config);
-  const { cleengId, options, siteName } = config;
-  const configHasOffer = configHasCleengOffer(config);
+  const { options, siteName } = ConfigStore.useState((s) => s.config);
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 
@@ -51,7 +50,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // Media
   const { isLoading, error, data: item } = useMedia(episodeId);
-  const requiresSubscription = item?.requiresSubscription !== 'false';
+  const itemRequiresSubscription = item?.requiresSubscription !== 'false';
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const {
@@ -83,10 +82,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   // User
   const user = AccountStore.useState((state) => state.user);
   const subscription = AccountStore.useState((state) => state.subscription);
-  const allowedToWatch = useMemo<boolean>(
-    () => !requiresSubscription || !cleengId || (!!user && (!configHasOffer || !!subscription)),
-    [requiresSubscription, cleengId, user, configHasOffer, subscription],
-  );
+  const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
@@ -113,21 +109,17 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   }, [history, item, seriesPlaylist]);
 
   const formatStartWatchingLabel = (): string => {
-    if (cleengId) {
-      if (!user) return t('sign_up_to_start_watching');
-      if (!subscription && configHasOffer) return t('complete_your_subscription');
-    }
+    if (!allowedToWatch && !user) return t('sign_up_to_start_watching');
+    if (!allowedToWatch && !subscription) return t('complete_your_subscription');
     return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
   };
 
   const handleStartWatchingClick = useCallback(() => {
-    if (cleengId) {
-      if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
-      if (!allowedToWatch) return history.push('/u/payments');
-    }
+    if (!allowedToWatch && !user) return history.push(addQueryParam(history, 'u', 'create-account'));
+    if (!allowedToWatch && !subscription) return history.push('/u/payments');
 
     return history.push(episodeURL(seriesPlaylist, item?.mediaid, true));
-  }, [cleengId, history, seriesPlaylist, item?.mediaid, user, allowedToWatch]);
+  }, [allowedToWatch, user, history, subscription, seriesPlaylist, item?.mediaid]);
 
   // Effects
   useEffect(() => {
@@ -227,8 +219,9 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
             currentCardItem={item}
             currentCardLabel={t('current_episode')}
             enableCardTitles={options.shelveTitles}
-            hasActiveSubscription={!!subscription}
-            requiresSubscription={!!cleengId && configHasOffer}
+            accessModel={accessModel}
+            isLoggedIn={!!user}
+            hasSubscription={!!subscription}
           />
         </>
       </VideoComponent>

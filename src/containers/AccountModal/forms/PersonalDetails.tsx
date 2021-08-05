@@ -11,7 +11,6 @@ import { addQueryParam } from '../../../utils/history';
 import { getCaptureStatus, updateCaptureAnswers } from '../../../stores/AccountStore';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { ConfigStore } from '../../../stores/ConfigStore';
-import { configHasCleengOffer } from '../../../utils/cleeng';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
@@ -20,7 +19,7 @@ const yupConditional = (required: boolean, message: string) => {
 const PersonalDetails = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = ConfigStore.useState((s) => s.config);
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
@@ -29,10 +28,8 @@ const PersonalDetails = () => {
   const questions = data ? (data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[]) : [];
 
   const nextStep = useCallback(() => {
-    const hasOffers = configHasCleengOffer(config);
-
-    history.replace(addQueryParam(history, 'u', hasOffers ? 'choose-offer' : 'welcome'));
-  }, [history, config]);
+    history.replace(addQueryParam(history, 'u', accessModel === 'SVOD' ? 'choose-offer' : 'welcome'));
+  }, [history, accessModel]);
 
   useEffect(() => {
     if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();

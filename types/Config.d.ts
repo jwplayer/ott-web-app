@@ -49,3 +49,5 @@ export type Options = {
   posterFading?: boolean;
   shelveTitles?: boolean;
 };
+
+export type AccessModel = 'AVOD' | 'AUTHVOD' | 'SVOD';
