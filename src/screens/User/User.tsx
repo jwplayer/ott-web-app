@@ -32,6 +32,7 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
+  const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
   const { user: customer, subscription, loading } = AccountStore.useState((state) => state);
 
@@ -170,6 +171,8 @@ const User = (): JSX.Element => {
                   onCompleteSubscriptionClick={handleCompleteSubscriptionClick}
                   onCancelSubscriptionClick={handleCancelSubscriptionClick}
                   onRenewSubscriptionClick={handleRenewSubscriptionClick}
+                  onShowAllTransactionsClick={() => setShowAllTransactions(true)}
+                  showAllTransactions={showAllTransactions}
                 />
               )}
             </SubscriptionContainer>
