@@ -90,28 +90,38 @@ const Payment = ({
               <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div>
+            <p>{t('user:payment.no_payment_methods')}</p>
+          </div>
+        )}
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
           <h3>{t('user:payment.transactions')}</h3>
         </div>
-        {transactions?.map((transaction) => (
-          <div className={styles.infoBox} key={transaction.transactionId}>
-            <p>
-              <strong>{transaction.offerTitle}</strong> <br />
-              {t('user:payment.price_payed_with', {
-                price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
-                method: transaction.paymentMethod,
-              })}
-            </p>
-            <p>
-              {transaction.transactionId}
-              <br />
-              {formatDate(transaction.transactionDate)}
-            </p>
+        {transactions?.length ? (
+          transactions?.map((transaction) => (
+            <div className={styles.infoBox} key={transaction.transactionId}>
+              <p>
+                <strong>{transaction.offerTitle}</strong> <br />
+                {t('user:payment.price_payed_with', {
+                  price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                  method: transaction.paymentMethod,
+                })}
+              </p>
+              <p>
+                {transaction.transactionId}
+                <br />
+                {formatDate(transaction.transactionDate)}
+              </p>
+            </div>
+          ))
+        ) : (
+          <div>
+            <p>{t('user:payment.no_transactions')}</p>
           </div>
-        ))}
+        )}
       </div>
       {isLoading && <LoadingOverlay inline />}
     </>

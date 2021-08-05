@@ -40,10 +40,10 @@ const SubscriptionContainer = ({ children }: Props): JSX.Element => {
     activeSubscription: subscriptions?.responseData?.items.find(
       (subscription) => subscription.status !== 'expired' && subscription.status !== 'terminated',
     ),
-    activePaymentDetail: paymentDetails?.responseData.paymentDetails.find((paymentDetails) => paymentDetails.active),
-    subscriptions: subscriptions?.responseData.items,
-    paymentDetails: paymentDetails?.responseData.paymentDetails,
-    transactions: transactions?.responseData.items,
+    activePaymentDetail: paymentDetails?.responseData?.paymentDetails.find((paymentDetails) => paymentDetails.active),
+    subscriptions: subscriptions?.responseData?.items,
+    paymentDetails: paymentDetails?.responseData?.paymentDetails,
+    transactions: transactions?.responseData?.items,
     isLoading: isSubscriptionsLoading || isPaymentDetailsLoading || isTransactionsLoading,
   } as ChildrenParams);
 };
