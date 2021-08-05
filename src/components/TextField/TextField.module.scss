@@ -85,6 +85,12 @@
   border: none;
   outline: none;
   appearance: none;
+
+  &[type='password'] {
+    &::-ms-reveal {
+      display: none;
+    }
+  }
 }
 
 .helperText {
