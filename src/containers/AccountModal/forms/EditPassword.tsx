@@ -4,11 +4,11 @@ import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
 import { changePassword } from '../../../stores/AccountStore';
-import { addQueryParam } from '../../../utils/history';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import type { EditPasswordFormData } from '../../../../types/account';
 import EditPasswordForm from '../../../components/EditPasswordForm/EditPasswordForm';
 import useQueryParam from '../../../hooks/useQueryParam';
+import { addQueryParams } from '../../../utils/formatting';
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation('account');
@@ -25,13 +25,13 @@ const ResetPassword: React.FC = () => {
 
     try {
       await changePassword(emailParam, formData.password, resetPasswordTokenParam);
-      history.push(addQueryParam(history, 'u', 'login'));
+      history.push(addQueryParams(window.location.origin, { u: 'login' }));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.includes('invalid param password')) {
           setErrors({ password: t('reset.invalid_password') });
         } else if (error.message.includes('resetPasswordToken is not valid')) {
-          setErrors({ password: t('reset.invalid_token') });
+          setErrors({ form: t('reset.invalid_token') });
         }
 
         setValue('password', '');
