@@ -338,3 +338,19 @@ export const updateSubscription = async (status: 'active' | 'cancelled') => {
 
   return response.responseData;
 };
+
+export const reloadActiveSubscription = async () => {
+  const {
+    config: { cleengId, cleengSandbox },
+  } = ConfigStore.getRawState();
+  const { user, auth } = AccountStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+  if (!user || !auth) throw new Error('user not logged in');
+
+  const activeSubscription = await getActiveSubscription(cleengSandbox, user, auth);
+
+  AccountStore.update(s => {
+    s.subscription = activeSubscription;
+  });
+};
