@@ -59,7 +59,14 @@ const PersonalDetailsForm: React.FC<Props> = ({
       return <Radio values={values} value={questionValues[key]} header={question} {...props} />;
     } else if (values.length > 2) {
       return (
-        <Dropdown options={values} value={questionValues[key]} label={question} defaultLabel={t('personal_details.no_answer')} {...props} fullWidth />
+        <Dropdown
+          options={values}
+          value={questionValues[key]}
+          label={question}
+          defaultLabel={!props.required ? t('personal_details.select_answer') : undefined}
+          {...props}
+          fullWidth
+        />
       );
     }
 

@@ -111,10 +111,18 @@
   }
 
   tfoot {
-    td {
-      padding-top: 8px;
-      font-weight: var(--body-font-weight-bold);
-      font-size: 24px;
+    tr:first-child {
+      td {
+        padding-top: 8px;
+        font-weight: var(--body-font-weight-bold);
+        font-size: 24px;
+      }
+    }
+
+    tr:last-child {
+      td {
+        font-size: 14px;
+      }
     }
   }
 }

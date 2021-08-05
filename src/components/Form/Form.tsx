@@ -44,6 +44,7 @@ const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX
   const handleSubmit = (event?: React.FormEvent) => {
     event && event.preventDefault();
     onSubmit && onSubmit(values);
+    setHasChanged(false);
   };
 
   const handleReset = () => {

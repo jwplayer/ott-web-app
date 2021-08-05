@@ -9,6 +9,7 @@ import styles from './Dropdown.module.scss';
 type Props = {
   name: string;
   value: string;
+  className?: string;
   defaultLabel?: string;
   options?: string[];
   optionsStyle?: string;
@@ -25,6 +26,7 @@ type Props = {
 const Dropdown: React.FC<Props & React.AriaAttributes> = ({
   name,
   value,
+  className,
   defaultLabel,
   options,
   onChange,
@@ -42,7 +44,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
   const id = useOpaqueId();
 
   return (
-    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size])}>
+    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)}>
       {label && (
         <label htmlFor={id} className={styles.label}>
           {label}

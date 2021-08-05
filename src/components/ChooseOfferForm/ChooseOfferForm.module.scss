@@ -1,5 +1,6 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
+@use '../../styles/mixins/responsive';
 
 .title {
   margin-bottom: 8px;
@@ -15,7 +16,6 @@
 
 .offers {
   display: flex;
-  width: 100%;
   margin: 0 -4px 24px;
 }
 
@@ -48,7 +48,9 @@
 }
 
 .label {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 16px;
   background-color: rgba(variables.$black, 0.34);
   border: 1px solid rgba(variables.$white, 0.34);
@@ -64,6 +66,7 @@
 }
 
 .offerDivider {
+  width: 100%;
   border: none;
   border-bottom: 1px solid currentColor;
   opacity: 0.54;
@@ -80,14 +83,24 @@
     padding: 4px 0;
 
     > svg {
+      flex-shrink: 0;
       margin-right: 4px;
       fill: variables.$green;
+    }
+
+    @include responsive.mobile-only() {
+      font-size: 14px;
     }
   }
 }
 
+.fill {
+  flex: 1;
+}
+
 .offerPrice {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: baseline;
   font-size: 32px;

@@ -63,6 +63,22 @@ const CheckoutForm: React.FC<Props> = ({
     return offer ? t(`periods.${offer.period}`) : '';
   };
 
+  const getFreeTrialText = (offer: Offer) => {
+    if (offer.freeDays > 0) {
+      return t('checkout.days_trial', { count: offer.freeDays });
+    } else if (offer.freePeriods) {
+      // t('periods.day')
+      // t('periods.week')
+      // t('periods.month')
+      // t('periods.year')
+      const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
+
+      return t('checkout.periods_trial', { count: offer.freePeriods, period });
+    }
+
+    return null;
+  };
+
   const cardPaymentMethod = paymentMethods?.find((method) => method.methodName === 'card');
   const paypalPaymentMethod = paymentMethods?.find((method) => method.methodName === 'paypal');
 
@@ -73,12 +89,10 @@ const CheckoutForm: React.FC<Props> = ({
       <div className={styles.order}>
         <div className={styles.orderInfo}>
           <p className={styles.orderTitle}>{offer.period === 'month' ? t('checkout.monthly') : t('checkout.yearly')}</p>
-          {/*<p className={styles.orderBillingDate}>*/}
-          {/*  Billing date is on <time>05-12-2021</time>*/}
-          {/*</p>*/}
+          {order.discount.type === 'trial' ? <p className={styles.orderBillingDate}>{getFreeTrialText(offer)}</p> : null}
         </div>
         <div className={styles.orderPrice}>
-          <span>{formatPrice(order.priceBreakdown.offerPrice, order.currency, offer.customerCountry)}</span>
+          <span>{formatPrice(offer.customerPriceInclTax, order.currency, offer.customerCountry)}</span>
           <small>/{getOfferPeriod()}</small>
         </div>
       </div>
@@ -109,14 +123,6 @@ const CheckoutForm: React.FC<Props> = ({
       <div>
         <table className={styles.orderTotals}>
           <tbody>
-            <tr>
-              <td>{t('checkout.applicable_tax', { taxRate: Math.round(order.taxRate * 100) })}</td>
-              <td>{formatPrice(order.priceBreakdown.taxValue, order.currency, offer.customerCountry)}</td>
-            </tr>
-            <tr>
-              <td>{t('checkout.payment_method_fee')}</td>
-              <td>{formatPrice(order.priceBreakdown.paymentMethodFee, order.currency, offer.customerCountry)}</td>
-            </tr>
             {order.discount.applied && order.discount.type === 'coupon' ? (
               <tr>
                 <td className={styles.couponCell}>
@@ -131,14 +137,28 @@ const CheckoutForm: React.FC<Props> = ({
                     )
                   </small>
                 </td>
-                <td>{formatPrice(order.priceBreakdown.discountAmount, order.currency, offer.customerCountry)}</td>
+                <td>{formatPrice(-order.priceBreakdown.discountAmount * (1 + order.taxRate), order.currency, offer.customerCountry)}</td>
               </tr>
             ) : null}
+            {order.discount.applied && order.discount.type === 'trial' ? (
+              <tr>
+                <td className={styles.couponCell}>{t('checkout.free_trial_discount')}</td>
+                <td>{formatPrice(-offer.customerPriceInclTax, order.currency, offer.customerCountry)}</td>
+              </tr>
+            ) : null}
+            <tr>
+              <td>{t('checkout.payment_method_fee')}</td>
+              <td>{formatPrice(order.priceBreakdown.paymentMethodFee, order.currency, offer.customerCountry)}</td>
+            </tr>
           </tbody>
           <tfoot>
             <tr>
               <td>{t('checkout.total_price')}</td>
               <td>{formatPrice(order.totalPrice, order.currency, offer.customerCountry)}</td>
+            </tr>
+            <tr>
+              <td>{t('checkout.applicable_tax', { taxRate: Math.round(order.taxRate * 100) })}</td>
+              <td>{formatPrice(order.priceBreakdown.taxValue, order.currency, offer.customerCountry)}</td>
             </tr>
           </tfoot>
         </table>
