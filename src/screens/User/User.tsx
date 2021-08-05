@@ -32,7 +32,7 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
-  const isLargeScreen = breakpoint >= Breakpoint.md;
+  const isLargeScreen = breakpoint > Breakpoint.md;
   const { user: customer, subscription, loading } = AccountStore.useState((state) => state);
 
   const updateBlurImage = useBlurImageUpdater();
