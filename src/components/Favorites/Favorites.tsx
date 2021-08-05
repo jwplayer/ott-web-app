@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PlaylistItem } from 'types/playlist';
-import type { Config } from 'types/Config';
+import type { AccessModel, Config } from 'types/Config';
 
 import { ConfigContext } from '../../providers/ConfigProvider';
 import Button from '../Button/Button';
@@ -16,6 +16,8 @@ type Props = {
   playlist: PlaylistItem[];
   error: unknown;
   isLoading: boolean;
+  accessModel: AccessModel;
+  hasSubscription: boolean;
   onCardClick: (item: PlaylistItem) => void;
   onCardHover: (item: PlaylistItem) => void;
   onClearFavoritesClick: () => void;
@@ -29,7 +31,16 @@ const cols: Breakpoints = {
   [Breakpoint.xl]: 3,
 };
 
-const Favorites = ({ playlist, error, isLoading, onCardClick, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
+const Favorites = ({
+  playlist,
+  error,
+  isLoading,
+  accessModel,
+  hasSubscription,
+  onCardClick,
+  onCardHover,
+  onClearFavoritesClick,
+}: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const config: Config = useContext(ConfigContext);
 
@@ -53,8 +64,9 @@ const Favorites = ({ playlist, error, isLoading, onCardClick, onCardHover, onCle
           cols={cols}
           isLoading={isLoading}
           enableCardTitles={config.options.shelveTitles}
-          hasActiveSubscription={true}
-          requiresSubscription={true}
+          accessModel={accessModel}
+          isLoggedIn={true}
+          hasSubscription={hasSubscription}
         />
       ) : (
         <p>{t('favorites.no_favorites')}</p>

@@ -11,7 +11,6 @@ import { getOffer } from '../../../services/checkout.service';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { CheckoutStore } from '../../../stores/CheckoutStore';
 import { addQueryParam, removeQueryParam } from '../../../utils/history';
-import { configHasCleengOffer } from '../../../utils/cleeng';
 import { ConfigStore } from '../../../stores/ConfigStore';
 
 const ChooseOffer = () => {
@@ -19,7 +18,8 @@ const ChooseOffer = () => {
   const { t } = useTranslation('account');
   const config = ConfigStore.useState((s) => s.config);
   const { cleengSandbox, json } = config;
-  const hasOffer = configHasCleengOffer(config);
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const hasOffer = accessModel === 'SVOD';
   const offer = CheckoutStore.useState((s) => s.offer);
 
   const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;

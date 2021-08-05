@@ -34,6 +34,7 @@ type Props = {
   isLoggedIn: boolean;
   userMenuOpen: boolean;
   canLogin: boolean;
+  showPaymentsMenuItem: boolean;
 };
 
 const Header: React.FC<Props> = ({
@@ -52,6 +53,7 @@ const Header: React.FC<Props> = ({
   userMenuOpen,
   toggleUserMenu,
   canLogin = false,
+  showPaymentsMenuItem,
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -103,7 +105,7 @@ const Header: React.FC<Props> = ({
           <AccountCircle />
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
-          <UserMenu onClick={() => toggleUserMenu(false)} inPopover />
+          <UserMenu onClick={() => toggleUserMenu(false)} showPaymentsItem={showPaymentsMenuItem} inPopover />
         </Popover>
       </React.Fragment>
     ) : (

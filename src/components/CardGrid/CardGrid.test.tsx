@@ -14,8 +14,9 @@ describe('<CardGrid>', () => {
         onCardHover={jest.fn()}
         onCardClick={jest.fn()}
         isLoading={false}
-        hasActiveSubscription={true}
-        requiresSubscription={true}
+        accessModel={'SVOD'}
+        isLoggedIn={true}
+        hasSubscription={true}
       />,
     );
 

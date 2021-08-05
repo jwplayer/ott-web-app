@@ -112,7 +112,7 @@ export const getActiveSubscription = async (sandbox: boolean, customer: Customer
 };
 
 export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
-  const { config } = ConfigStore.getRawState();
+  const { accessModel } = ConfigStore.getRawState();
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
   const customerId = decodedToken.customerId.toString();
   const response = await accountService.getCustomer({ customerId }, sandbox, auth.jwt);
@@ -125,7 +125,7 @@ export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
     s.user = response.responseData;
   });
 
-  if (configHasCleengOffer(config)) {
+  if (accessModel === 'SVOD') {
     reloadActiveSubscription();
   }
 };

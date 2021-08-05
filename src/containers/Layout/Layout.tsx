@@ -27,6 +27,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const { t } = useTranslation('common');
   const config = ConfigStore.useState((s) => s.config);
   const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const searchActive = UIStore.useState((s) => s.searchActive);
@@ -77,7 +78,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     if (!cleengId) return null;
 
     return isLoggedIn ? (
-      <UserMenu />
+      <UserMenu showPaymentsItem={accessModel === 'SVOD'} />
     ) : (
       <div className={styles.buttonContainer}>
         <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
@@ -117,6 +118,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           userMenuOpen={userMenuOpen}
           toggleUserMenu={toggleUserMenu}
           canLogin={!!cleengId}
+          showPaymentsMenuItem={accessModel === 'SVOD'}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

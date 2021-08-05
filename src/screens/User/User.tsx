@@ -23,10 +23,12 @@ import { AccountStore, logout } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog';
+import { ConfigStore } from '../../stores/ConfigStore';
 
 import styles from './User.module.scss';
 
 const User = (): JSX.Element => {
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const history = useHistory();
   const location = useLocation();
   const { t } = useTranslation('user');
@@ -89,9 +91,11 @@ const User = (): JSX.Element => {
               <li>
                 <Button to="/u/favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
               </li>
-              <li>
-                <Button to="/u/payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
-              </li>
+              {accessModel === 'SVOD' && (
+                <li>
+                  <Button to="/u/payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
+                </li>
+              )}
               <li className={styles.logoutLi}>
                 <Button to="/u/logout" label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
               </li>
@@ -142,6 +146,8 @@ const User = (): JSX.Element => {
                   onCardClick={onCardClick}
                   onCardHover={onCardHover}
                   onClearFavoritesClick={() => setClearFavoritesOpen(true)}
+                  accessModel={accessModel}
+                  hasSubscription={!!subscription}
                 />
               )}
             </PlaylistContainer>
@@ -157,24 +163,28 @@ const User = (): JSX.Element => {
             />
           </Route>
           <Route path="/u/payments">
-            <SubscriptionContainer>
-              {({ activePaymentDetail, transactions, isLoading }) => (
-                <Payment
-                  activeSubscription={subscription}
-                  activePaymentDetail={activePaymentDetail}
-                  transactions={transactions}
-                  customer={customer}
-                  isLoading={isLoading}
-                  panelClassName={styles.panel}
-                  panelHeaderClassName={styles.panelHeader}
-                  onCompleteSubscriptionClick={handleCompleteSubscriptionClick}
-                  onCancelSubscriptionClick={handleCancelSubscriptionClick}
-                  onRenewSubscriptionClick={handleRenewSubscriptionClick}
-                  onShowAllTransactionsClick={() => setShowAllTransactions(true)}
-                  showAllTransactions={showAllTransactions}
-                />
-              )}
-            </SubscriptionContainer>
+            {accessModel === 'SVOD' ? (
+              <SubscriptionContainer>
+                {({ activePaymentDetail, transactions, isLoading }) => (
+                  <Payment
+                    activeSubscription={subscription}
+                    activePaymentDetail={activePaymentDetail}
+                    transactions={transactions}
+                    customer={customer}
+                    isLoading={isLoading}
+                    panelClassName={styles.panel}
+                    panelHeaderClassName={styles.panelHeader}
+                    onCompleteSubscriptionClick={handleCompleteSubscriptionClick}
+                    onCancelSubscriptionClick={handleCancelSubscriptionClick}
+                    onRenewSubscriptionClick={handleRenewSubscriptionClick}
+                    onShowAllTransactionsClick={() => setShowAllTransactions(true)}
+                    showAllTransactions={showAllTransactions}
+                  />
+                )}
+              </SubscriptionContainer>
+            ) : (
+              <Redirect to="/u/my-account" />
+            )}
           </Route>
           <Route path="/u/logout">
             <LoadingOverlay transparentBackground />

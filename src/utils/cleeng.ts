@@ -1,7 +1,11 @@
-import type { Config } from '../../types/Config';
+import type { AccessModel } from '../../types/Config';
 
-export const configHasCleengOffer = (config: Config): boolean => {
-  if (!config?.json) return false;
-
-  return !!config.json.cleengMonthlyOffer && !!config.json.cleengYearlyOffer;
-};
+export const isAllowedToWatch = (
+  accessModel: AccessModel,
+  isLoggedIn: boolean,
+  itemRequiresSubscription: boolean,
+  hasSubscription: boolean,
+): boolean =>
+  accessModel === 'AVOD' ||
+  (accessModel === 'AUTHVOD' && (isLoggedIn || !itemRequiresSubscription)) ||
+  (accessModel === 'SVOD' && (hasSubscription || !itemRequiresSubscription));

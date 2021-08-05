@@ -98,34 +98,46 @@ const Payment = ({
               <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div>
+            <p>{!isLoading && t('user:payment.no_payment_methods')}</p>
+          </div>
+        )}
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
           <h3>{t('user:payment.transactions')}</h3>
         </div>
-        {transactions?.slice(0, showAllTransactions ? 9999 : VISIBLE_TRANSACTIONS).map((transaction) => (
-          <div className={styles.infoBox} key={transaction.transactionId}>
-            <p>
-              <strong>{transaction.offerTitle}</strong> <br />
-              {t('user:payment.price_payed_with', {
-                price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
-                method: transaction.paymentMethod,
-              })}
-            </p>
-            <p>
-              {transaction.transactionId}
-              <br />
-              {formatDate(transaction.transactionDate)}
-            </p>
-          </div>
-        ))}
-        {!showAllTransactions && hasMoreTransactions ? (
+        {transactions?.length ? (
           <React.Fragment>
-            <p>{t('user:payment.hidden_transactions', { count: hiddenTransactionsCount })}</p>
-            <Button label={t('user:payment.show_all')} onClick={onShowAllTransactionsClick} />
+            {transactions?.slice(0, showAllTransactions ? 9999 : VISIBLE_TRANSACTIONS).map((transaction) => (
+              <div className={styles.infoBox} key={transaction.transactionId}>
+                <p>
+                  <strong>{transaction.offerTitle}</strong> <br />
+                  {t('user:payment.price_payed_with', {
+                    price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                    method: transaction.paymentMethod,
+                  })}
+                </p>
+                <p>
+                  {transaction.transactionId}
+                  <br />
+                  {formatDate(transaction.transactionDate)}
+                </p>
+              </div>
+            ))}
+            {!showAllTransactions && hasMoreTransactions ? (
+              <React.Fragment>
+                <p>{t('user:payment.hidden_transactions', { count: hiddenTransactionsCount })}</p>
+                <Button label={t('user:payment.show_all')} onClick={onShowAllTransactionsClick} />
+              </React.Fragment>
+            ) : null}
           </React.Fragment>
-        ) : null}
+        ) : (
+          <div>
+            <p>{!isLoading && t('user:payment.no_transactions')}</p>
+          </div>
+        )}
       </div>
       {isLoading && <LoadingOverlay inline />}
     </>

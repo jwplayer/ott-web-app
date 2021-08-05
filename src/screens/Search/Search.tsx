@@ -15,7 +15,6 @@ import useFirstRender from '../../hooks/useFirstRender';
 import useSearchPlaylist from '../../hooks/useSearchPlaylist';
 import { AccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
-import { configHasCleengOffer } from '../../utils/cleeng';
 
 import styles from './Search.module.scss';
 
@@ -31,6 +30,8 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const { t } = useTranslation('search');
   const config = ConfigStore.useState((state) => state.config);
   const { siteName, searchPlaylist, options } = config;
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
+
   const firstRender = useFirstRender();
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
@@ -39,8 +40,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 
-  const hasActiveSubscription = !!AccountStore.useState((state) => state.subscription);
-  const requiresSubscription = !!config.cleengId && configHasCleengOffer(config);
+  // User
+  const user = AccountStore.useState((state) => state.user);
+  const subscription = !!AccountStore.useState((state) => state.subscription);
 
   // Update the search bar query to match the route param on mount
   useEffect(() => {
@@ -106,8 +108,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
           onCardHover={onCardHover}
           isLoading={firstRender}
           enableCardTitles={options.shelveTitles}
-          hasActiveSubscription={hasActiveSubscription}
-          requiresSubscription={requiresSubscription}
+          accessModel={accessModel}
+          isLoggedIn={!!user}
+          hasSubscription={!!subscription}
         />
       </main>
     </div>

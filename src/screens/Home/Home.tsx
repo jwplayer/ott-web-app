@@ -19,7 +19,6 @@ import usePlaylist from '../../hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import scrollbarSize from '../../utils/dom';
 import { cardUrl } from '../../utils/formatting';
-import { configHasCleengOffer } from '../../utils/cleeng';
 
 import styles from './Home.module.scss';
 
@@ -38,6 +37,7 @@ const createItemData = memoize((content) => ({ content }));
 const Home = (): JSX.Element => {
   const history = useHistory();
   const config = ConfigStore.useState((state) => state.config);
+  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;
@@ -51,8 +51,9 @@ const Home = (): JSX.Element => {
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
 
-  const hasActiveSubscription = !!AccountStore.useState((state) => state.subscription);
-  const requiresSubscription = !!config.cleengId && configHasCleengOffer(config);
+  // User
+  const user = AccountStore.useState((state) => state.user);
+  const subscription = !!AccountStore.useState((state) => state.subscription);
 
   const onCardClick = useCallback(
     (playlistItem: PlaylistItem, playlistId?: string) => {
@@ -83,8 +84,9 @@ const Home = (): JSX.Element => {
                 enableCardTitles={config.options.shelveTitles}
                 title={playlist.title}
                 featured={contentItem.featured === true}
-                hasActiveSubscription={hasActiveSubscription}
-                requiresSubscription={requiresSubscription}
+                accessModel={accessModel}
+                isLoggedIn={!!user}
+                hasSubscription={!!subscription}
               />
             </div>
           </div>

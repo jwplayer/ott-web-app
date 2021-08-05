@@ -9,6 +9,8 @@ import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoin
 import ChevronLeft from '../../icons/ChevronLeft';
 import ChevronRight from '../../icons/ChevronRight';
 import { findPlaylistImageForWidth } from '../../utils/collection';
+import type { AccessModel } from '../../../types/Config';
+import { isAllowedToWatch } from '../../utils/cleeng';
 
 import styles from './Shelf.module.scss';
 
@@ -39,8 +41,9 @@ export type ShelfProps = {
   loading?: boolean;
   error?: unknown;
   title?: string;
-  hasActiveSubscription: boolean;
-  requiresSubscription: boolean;
+  accessModel: AccessModel;
+  isLoggedIn: boolean;
+  hasSubscription: boolean;
 };
 
 const Shelf: React.FC<ShelfProps> = ({
@@ -54,8 +57,9 @@ const Shelf: React.FC<ShelfProps> = ({
   featured = false,
   loading = false,
   error = null,
-  requiresSubscription,
-  hasActiveSubscription,
+  accessModel,
+  isLoggedIn,
+  hasSubscription,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
@@ -80,7 +84,7 @@ const Shelf: React.FC<ShelfProps> = ({
         featured={featured}
         disabled={!isInView}
         loading={loading}
-        isLocked={requiresSubscription && !hasActiveSubscription && item.requiresSubscription !== 'false'}
+        isLocked={!isAllowedToWatch(accessModel, isLoggedIn, item.requiresSubscription !== 'false', hasSubscription)}
       />
     ),
     [
@@ -92,8 +96,9 @@ const Shelf: React.FC<ShelfProps> = ({
       onCardHover,
       playlist.feedid,
       watchHistory,
-      requiresSubscription,
-      hasActiveSubscription,
+      accessModel,
+      isLoggedIn,
+      hasSubscription,
     ],
   );
 
