@@ -127,7 +127,6 @@ const User = (): JSX.Element => {
                   onReset={onReset}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
-                  onDeleteAccountClick={() => console.error('Sure?')}
                 />
               )}
             </AccountContainer>

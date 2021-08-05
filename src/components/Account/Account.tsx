@@ -28,7 +28,6 @@ type Props = {
   customerConsents?: CustomerConsent[];
   onUpdateEmailSubmit: (data: CustomerFormValues) => void;
   onUpdateInfoSubmit: (data: CustomerFormValues) => void;
-  onDeleteAccountClick: () => void;
   onUpdateConsentsSubmit: (consents: CustomerConsent[]) => void;
   onReset?: () => void;
   panelClassName?: string;
@@ -48,7 +47,6 @@ const Account = ({
   panelHeaderClassName,
   onUpdateEmailSubmit,
   onUpdateInfoSubmit,
-  onDeleteAccountClick,
   onUpdateConsentsSubmit,
   onReset,
 }: Props): JSX.Element => {
@@ -116,6 +114,7 @@ const Account = ({
                 helperText={errors?.email}
                 disabled={isLoading}
                 editing={editing === 'account'}
+                required
               />
               {editing === 'account' && (
                 <TextField
@@ -135,6 +134,7 @@ const Account = ({
                       {viewPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   }
+                  required
                 />
               )}
               <div className={styles.controls}>
@@ -147,7 +147,6 @@ const Account = ({
                       disabled={isLoading || !values.email || !values.confirmationPassword}
                     />
                     <Button label={t('account.cancel')} type="reset" variant="text" onClick={() => onCancelClick(handleReset)} />
-                    <Button label={t('account.delete_account')} type="button" onClick={onDeleteAccountClick} />
                   </>
                 ) : (
                   <Button label={t('account.edit_account')} type="button" onClick={() => setEditing('account')} />

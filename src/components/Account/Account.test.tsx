@@ -16,7 +16,6 @@ describe('<Account>', () => {
         onUpdateEmailSubmit={() => null}
         onUpdateInfoSubmit={() => null}
         onUpdateConsentsSubmit={() => null}
-        onDeleteAccountClick={() => null}
       />,
     );
 
