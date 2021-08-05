@@ -11,6 +11,7 @@ import Movie from '../../screens/Movie/Movie';
 import Search from '../../screens/Search/Search';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import AccountModal from '../../containers/AccountModal/AccountModal';
+import About from '../../screens/About/About';
 
 type Props = {
   error?: Error | null;
@@ -36,6 +37,7 @@ const Root: FC<Props> = ({ error }: Props) => {
         <Route path="/s/:id/:slug?" component={Series} />
         <Route path="/q/:query?" component={Search} />
         <Route path="/u/:page?" component={User} />
+        <Route path="/o/about" component={About} />
       </Switch>
       <AccountModal />
     </Layout>
