@@ -37,15 +37,19 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
           <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} role="option" />
         </div>
       ) : (
-        <Dropdown
-          options={options}
-          defaultLabel={defaultLabel}
-          valuePrefix={valuePrefix}
-          name={name}
-          value={value}
-          onChange={handleChange}
-          aria-label={t('filter_videos_by_genre')}
-        />
+        <div className={styles.filterDropDown}>
+          <Dropdown
+            className={styles.dropDown}
+            size="small"
+            options={options}
+            defaultLabel={defaultLabel}
+            valuePrefix={valuePrefix}
+            name={name}
+            value={value}
+            onChange={handleChange}
+            aria-label={t('filter_videos_by_genre')}
+          />
+        </div>
       )}
     </Fragment>
   );

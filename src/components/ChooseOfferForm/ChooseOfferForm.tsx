@@ -89,6 +89,7 @@ const ChooseOfferForm: React.FC<Props> = ({
                   <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
                 </li>
               </ul>
+              <div className={styles.fill} />
               <div className={styles.offerPrice}>
                 {getOfferPrice(monthlyOffer)} <small>/{t('periods.month')}</small>
               </div>
@@ -123,6 +124,7 @@ const ChooseOfferForm: React.FC<Props> = ({
                   <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
                 </li>
               </ul>
+              <div className={styles.fill} />
               <div className={styles.offerPrice}>
                 {getOfferPrice(yearlyOffer)} <small>/{t('periods.year')}</small>
               </div>
