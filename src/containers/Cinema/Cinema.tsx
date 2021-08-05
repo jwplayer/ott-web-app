@@ -125,7 +125,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
     }
 
     window.jwplayer ? initializePlayer() : addScript(scriptUrl).then(initializePlayer);
-  }, [item, onPlay, onPause, onUserActive, onUserInActive, onComplete, config.player, scriptUrl, enableWatchHistory, setPlayer]);
+  }, [item, onPlay, onPause, onUserActive, onUserInActive, onComplete, config.player, scriptUrl, enableWatchHistory, setPlayer, saveItem]);
 
   useEffect(() => {
     return () => {
