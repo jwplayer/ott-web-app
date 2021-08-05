@@ -18,6 +18,7 @@ describe.skip('<Payment>', () => {
         transactions={transactions as Transaction[]}
         activeSubscription={subscription as Subscription}
         activePaymentDetail={paymentDetail as PaymentDetail}
+        showAllTransactions={false}
         isLoading={false}
       />,
     );
