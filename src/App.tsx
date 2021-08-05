@@ -31,7 +31,10 @@ class App extends Component {
     }
 
     initializeFavorites();
-    initializeAccount();
+
+    if (config.cleengId) {
+      initializeAccount();
+    }
   }
 
   configLoadingHandler = (isLoading: boolean) => {
