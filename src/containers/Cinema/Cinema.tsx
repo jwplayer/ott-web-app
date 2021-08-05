@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import type { Config } from 'types/Config';
 import type { PlaylistItem } from 'types/playlist';
 import type { VideoProgress } from 'types/video';
@@ -31,6 +31,9 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const config: Config = useContext(ConfigContext);
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
+  const loadingRef = useRef(false);
+  const seekToRef = useRef(-1);
+  const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
   const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
@@ -47,10 +50,66 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const { saveItem } = useWatchHistory();
   useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress) : null));
 
+  const handlePlay = useCallback(() => onPlay && onPlay(), [onPlay]);
+
+  const handlePause = useCallback(() => {
+    enableWatchHistory && saveItem(item, getProgress);
+    onPause && onPause();
+  }, [enableWatchHistory, item, onPause, saveItem]);
+
+  const handleComplete = useCallback(() => {
+    enableWatchHistory && saveItem(item, getProgress);
+    onComplete && onComplete();
+  }, [enableWatchHistory, item, onComplete, saveItem]);
+
+  const handleUserActive = useCallback(() => onUserActive && onUserActive(), [onUserActive]);
+
+  const handleUserInactive = useCallback(() => onUserInActive && onUserInActive(), [onUserInActive]);
+
+  useEffect(() => {
+    if (!playerRef.current) return;
+
+    playerRef.current.on('complete', handleComplete);
+    playerRef.current.on('play', handlePlay);
+    playerRef.current.on('pause', handlePause);
+    playerRef.current.on('userActive', handleUserActive);
+    playerRef.current.on('userInactive', handleUserInactive);
+
+    return () => {
+      playerRef.current?.off('complete', handleComplete);
+      playerRef.current?.off('play', handlePlay);
+      playerRef.current?.off('pause', handlePause);
+      playerRef.current?.off('userActive', handleUserActive);
+      playerRef.current?.off('userInactive', handleUserInactive);
+    };
+  }, [handleComplete, handlePause, handlePlay, handleUserActive, handleUserInactive]);
+
+  useEffect(() => {
+    if (!window.jwplayer && !loadingRef.current) {
+      loadingRef.current = true;
+
+      addScript(scriptUrl).then(() => {
+        setLibLoaded(true);
+        loadingRef.current = false;
+      });
+    }
+  }, [scriptUrl]);
+
   useEffect(() => {
     if (!config.player) {
       return;
     }
+
+    const calculateWatchHistoryProgress = () => {
+      const { watchHistory } = watchHistoryStore.getRawState();
+      const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
+
+      if (watchHistoryItem && enableWatchHistory && watchHistoryItem.progress > VideoProgressMinMax.Min && watchHistoryItem.progress < VideoProgressMinMax.Max) {
+        seekToRef.current = watchHistoryItem.progress * watchHistoryItem.duration;
+      } else {
+        seekToRef.current = -1;
+      }
+    };
 
     const loadPlaylist = () => {
       if (!item || !playerRef.current) {
@@ -66,14 +125,11 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
 
       // load new item
       playerRef.current.load([deepCopy(item)]);
+      calculateWatchHistoryProgress();
     };
 
     const initializePlayer = () => {
       if (!window.jwplayer || !playerElementRef.current) return;
-
-      const { watchHistory } = watchHistoryStore.getRawState();
-      const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
-      let applyWatchHistory = !!watchHistory && enableWatchHistory;
 
       playerRef.current = window.jwplayer(playerElementRef.current);
 
@@ -86,49 +142,27 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
         autostart: true,
       });
 
+      calculateWatchHistoryProgress();
       setPlayer(playerRef.current);
 
-      const handlePlay = () => onPlay && onPlay();
-      const handlePause = () => {
-        enableWatchHistory && saveItem(item, getProgress);
-        onPause && onPause();
-      };
-      const handleComplete = () => () => {
-        enableWatchHistory && saveItem(item, getProgress);
-        onComplete && onComplete();
-      }
-      const handleUserActive = () => onUserActive && onUserActive();
-      const handleUserInactive = () => onUserInActive && onUserInActive();
-
       const handleBeforePlay = () => {
-        if (!applyWatchHistory) {
-          return;
-        }
-
-        applyWatchHistory = false; // Only the first time beforePlay
-        const { progress, duration } = watchHistoryItem || {};
-
-        if (playerRef.current && progress && duration && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max) {
-          playerRef.current.seek(duration * progress);
+        if (seekToRef.current > 0) {
+          playerRef.current?.seek(seekToRef.current);
+          seekToRef.current = -1;
         }
       };
-
-      playerRef.current.on('play', handlePlay);
-      playerRef.current.on('pause', handlePause);
-      playerRef.current.on('complete', handleComplete);
 
       playerRef.current.on('beforePlay', handleBeforePlay);
-
-      playerRef.current.on('userActive', handleUserActive);
-      playerRef.current.on('userInactive', handleUserInactive);
     };
 
     if (playerRef.current) {
       return loadPlaylist();
     }
 
-    window.jwplayer ? initializePlayer() : addScript(scriptUrl).then(initializePlayer);
-  }, [item, onPlay, onPause, onUserActive, onUserInActive, onComplete, config.player, scriptUrl, enableWatchHistory, setPlayer, saveItem]);
+    if (libLoaded) {
+      initializePlayer();
+    }
+  }, [libLoaded, item, onPlay, onPause, onUserActive, onUserInActive, onComplete, config.player, enableWatchHistory, setPlayer, saveItem]);
 
   useEffect(() => {
     return () => {
