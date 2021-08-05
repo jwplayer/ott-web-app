@@ -53,7 +53,6 @@ const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX
   };
 
   useEffect(() => {
-    // todo: only update new key/values?
     setValues(initialValues);
   }, [initialValues]);
 
@@ -61,7 +60,11 @@ const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX
     return children({ values });
   }
 
-  return <form noValidate>{children({ values, handleChange, handleSubmit, handleReset, hasChanged })}</form>;
+  return (
+    <form noValidate onSubmit={(event) => event.preventDefault()}>
+      {children({ values, handleChange, handleSubmit, handleReset, hasChanged })}
+    </form>
+  );
 };
 
 export default Form;
