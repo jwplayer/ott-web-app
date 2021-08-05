@@ -10,6 +10,7 @@ import type { Subscription } from '../../types/subscription';
 import { ConfigStore } from './ConfigStore';
 import { watchHistoryStore, restoreWatchHistory, serializeWatchHistory } from './WatchHistoryStore';
 import { favoritesStore, restoreFavorites, serializeFavorites } from './FavoritesStore';
+import { configHasCleengOffer } from '../utils/cleeng';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -111,20 +112,22 @@ export const getActiveSubscription = async (sandbox: boolean, customer: Customer
 };
 
 export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
+  const { config } = ConfigStore.getRawState();
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
   const customerId = decodedToken.customerId.toString();
   const response = await accountService.getCustomer({ customerId }, sandbox, auth.jwt);
 
   if (response.errors.length) throw new Error(response.errors[0]);
 
-  const subscription = await getActiveSubscription(sandbox, response.responseData, auth);
-
   AccountStore.update((s) => {
     s.loading = false;
     s.auth = auth;
     s.user = response.responseData;
-    s.subscription = subscription;
   });
+
+  if (configHasCleengOffer(config)) {
+    reloadActiveSubscription();
+  }
 };
 
 export const login = async (email: string, password: string) => {
@@ -330,11 +333,7 @@ export const updateSubscription = async (status: 'active' | 'cancelled') => {
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-  const updatedSubscription = await getActiveSubscription(cleengSandbox, user, auth);
-
-  AccountStore.update((s) => {
-    s.subscription = updatedSubscription;
-  });
+  await reloadActiveSubscription();
 
   return response.responseData;
 };
