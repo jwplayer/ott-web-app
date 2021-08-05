@@ -41,13 +41,7 @@ exports[`<About> renders and matches snapshot 1`] = `
       <br />
       - Support for live video streams (must be registered as external .m3u8 URLs in your JW Dashboard).
       <br />
-      - Customize the user interface with your own branding. The default app is configured for JW Player branding and content, but you can easily change this to use your own assets by modifying the \`config.json\` file. Advanced customization is possible (for example, editing the CSS files), but you will need to modify the source code and 
-      <a
-        href="docs/build-from-source.md"
-      >
-        build from source
-      </a>
-      .
+      - Customize the user interface with your own branding. The default app is configured for JW Player branding and content, but you can easily change this to use your own assets by modifying the \`config.json\` file. Advanced customization is possible (for example, editing the CSS files), but you will need to modify the source code and build from source.
       <br />
       - Site-wide video search and related video recommendations powered by 
       <a
