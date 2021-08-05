@@ -122,6 +122,7 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
 
 .option {
   white-space: normal;
+  background-color: rgba(0, 0, 0, 0.84);
   // Set focus on chrome
   outline-color: $select-focus;
 }
