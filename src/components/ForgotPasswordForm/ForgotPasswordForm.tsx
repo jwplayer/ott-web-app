@@ -12,13 +12,14 @@ import styles from './ForgotPasswordForm.module.scss';
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   error?: string;
   errors: FormErrors<ForgotPasswordFormData>;
   value: ForgotPasswordFormData;
   submitting: boolean;
 };
 
-const ForgotPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors, submitting }: Props) => {
+const ForgotPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors, submitting, onBlur }: Props) => {
   const { t } = useTranslation('account');
 
   return (
@@ -29,6 +30,7 @@ const ForgotPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors
       <TextField
         value={value.email}
         onChange={onChange}
+        onBlur={onBlur}
         label={t('reset.email')}
         placeholder={t('reset.email')}
         error={!!errors.email || !!errors.form}

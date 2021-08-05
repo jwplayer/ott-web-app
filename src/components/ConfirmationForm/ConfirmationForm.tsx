@@ -9,10 +9,11 @@ import styles from './ConfirmationForm.module.scss';
 
 type Props = {
   email?: string;
+  loggedIn?: boolean;
   onBackToLogin: () => void;
 };
 
-const ConfirmationForm: React.FC<Props> = ({ email, onBackToLogin }: Props) => {
+const ConfirmationForm: React.FC<Props> = ({ email, onBackToLogin, loggedIn }: Props) => {
   const { t } = useTranslation('account');
   const history = useHistory();
 
@@ -21,10 +22,14 @@ const ConfirmationForm: React.FC<Props> = ({ email, onBackToLogin }: Props) => {
       <h2 className={styles.title}>{t('reset.link_sent')}</h2>
       <p className={styles.text}>{t('reset.link_sent_text', { email: email })}</p>
       <Button onClick={onBackToLogin} className={styles.button} fullWidth color="primary" label={t('reset.back_login')} />
-      <span className={styles.notSure}>{t('reset.not_sure')}</span>
-      <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>
-        {t('reset.try_again')}
-      </Link>
+      {!loggedIn && (
+        <React.Fragment>
+          <span className={styles.notSure}>{t('reset.not_sure')}</span>
+          <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>
+            {t('reset.try_again')}
+          </Link>
+        </React.Fragment>
+      )}
     </div>
   );
 };
