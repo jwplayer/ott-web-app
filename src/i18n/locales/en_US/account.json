@@ -12,7 +12,7 @@
     "continue": "Continue",
     "coupon_applied": "Your coupon code has been applied",
     "coupon_discount": "Coupon discount",
-    "coupon_not_valid": "Coupon is not valid, please try again",
+    "coupon_not_valid": "Coupon code is not valid",
     "credit_card": "Credit Card",
     "days_trial": "You will be charged tomorrow.",
     "days_trial_plural": "You will be charged after {{count}} days.",
