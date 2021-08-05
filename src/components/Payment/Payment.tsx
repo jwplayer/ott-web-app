@@ -10,6 +10,8 @@ import Button from '../Button/Button';
 
 import styles from './Payment.module.scss';
 
+const VISIBLE_TRANSACTIONS = 4;
+
 type Props = {
   activeSubscription?: Subscription | null;
   activePaymentDetail?: PaymentDetail;
@@ -21,6 +23,8 @@ type Props = {
   onCompleteSubscriptionClick?: () => void;
   onCancelSubscriptionClick?: () => void;
   onRenewSubscriptionClick?: () => void;
+  onShowAllTransactionsClick?: () => void;
+  showAllTransactions: boolean;
 };
 
 const Payment = ({
@@ -34,8 +38,12 @@ const Payment = ({
   isLoading,
   panelClassName,
   panelHeaderClassName,
+  onShowAllTransactionsClick,
+  showAllTransactions,
 }: Props): JSX.Element => {
   const { t } = useTranslation(['user', 'account']);
+  const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
+  const hasMoreTransactions = hiddenTransactionsCount > 0;
 
   return (
     <>
@@ -101,22 +109,30 @@ const Payment = ({
           <h3>{t('user:payment.transactions')}</h3>
         </div>
         {transactions?.length ? (
-          transactions?.map((transaction) => (
-            <div className={styles.infoBox} key={transaction.transactionId}>
-              <p>
-                <strong>{transaction.offerTitle}</strong> <br />
-                {t('user:payment.price_payed_with', {
-                  price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
-                  method: transaction.paymentMethod,
-                })}
-              </p>
-              <p>
-                {transaction.transactionId}
-                <br />
-                {formatDate(transaction.transactionDate)}
-              </p>
-            </div>
-          ))
+          <React.Fragment>
+            {transactions?.slice(0, showAllTransactions ? 9999 : VISIBLE_TRANSACTIONS).map((transaction) => (
+              <div className={styles.infoBox} key={transaction.transactionId}>
+                <p>
+                  <strong>{transaction.offerTitle}</strong> <br />
+                  {t('user:payment.price_payed_with', {
+                    price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                    method: transaction.paymentMethod,
+                  })}
+                </p>
+                <p>
+                  {transaction.transactionId}
+                  <br />
+                  {formatDate(transaction.transactionDate)}
+                </p>
+              </div>
+            ))}
+            {!showAllTransactions && hasMoreTransactions ? (
+              <React.Fragment>
+                <p>{t('user:payment.hidden_transactions', { count: hiddenTransactionsCount })}</p>
+                <Button label={t('user:payment.show_all')} onClick={onShowAllTransactionsClick} />
+              </React.Fragment>
+            ) : null}
+          </React.Fragment>
         ) : (
           <div>
             <p>{!isLoading && t('user:payment.no_transactions')}</p>

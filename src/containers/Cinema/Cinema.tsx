@@ -93,7 +93,10 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
         enableWatchHistory && saveItem(item, getProgress);
         onPause && onPause();
       };
-      const handleComplete = () => onComplete && onComplete();
+      const handleComplete = () => () => {
+        enableWatchHistory && saveItem(item, getProgress);
+        onComplete && onComplete();
+      }
       const handleUserActive = () => onUserActive && onUserActive();
       const handleUserInactive = () => onUserInActive && onUserInActive();
 

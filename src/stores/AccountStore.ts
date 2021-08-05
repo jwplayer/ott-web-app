@@ -6,6 +6,7 @@ import * as subscriptionService from '../services/subscription.service';
 import type { AuthData, Capture, Customer, JwtDetails, CustomerConsent } from '../../types/account';
 import * as persist from '../utils/persist';
 import type { Subscription } from '../../types/subscription';
+import { configHasCleengOffer } from '../utils/cleeng';
 
 import { ConfigStore } from './ConfigStore';
 import { watchHistoryStore, restoreWatchHistory, serializeWatchHistory } from './WatchHistoryStore';
