@@ -52,15 +52,15 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
         </label>
       )}
       <div className={classNames(styles.dropdown, { [styles.fullWidth]: fullWidth })}>
-        <select id={id} className={styles.select} name={name} value={value} onChange={onChange} {...rest}>
+        <select id={id} className={styles.select} name={name} value={value} onChange={onChange} aria-required={required} {...rest}>
           {defaultLabel && (
-            <option className={classNames(styles.option, optionsStyle)} value="">
+            <option className={classNames(styles.option, optionsStyle)} value="" disabled={required} selected={value === ''}>
               {defaultLabel}
             </option>
           )}
           {options &&
             options.map((option) => (
-              <option className={classNames(styles.option, optionsStyle)} key={option} value={option} aria-required={required}>
+              <option className={classNames(styles.option, optionsStyle)} key={option} value={option} selected={value === option}>
                 {valuePrefix}
                 {option}
               </option>
