@@ -4,12 +4,7 @@
 
 $primary-color: variables.$white !default;
 $secondary-color: variables.$blue !default;
-$success-color: variables.$green !default;
-$light-color: variables.$gray-lighter !default;
 $dark-color: #2b2c39 !default;
-
-$facebook-color: #3b5998 !default;
-$twitter-color: #55acee !default;
 
 // Body
 
@@ -50,52 +45,10 @@ $link-color: #3990ff !default;
 
 // Card
 
-$card-watch-progress-color: $primary-color !default;
 $card-color: variables.$white !default;
 $card-border-hover-color: $primary-color !default;
-
-$card-info-color: #4a4a4a !default;
-
-$card-featured-info-color: variables.$white !default;
-
-$card-toast-primary-bg: $primary-color !default;
-$card-toast-primary-color: variables.$white !default;
-
-$card-toast-success-bg: $success-color !default;
-$card-toast-success-color: variables.$white !default;
-
-$card-menu-bg: variables.$black !default;
-
-$card-in-video-timeline-bg: $secondary-color !default;
-
-// CardSlider
-
-$card-slider-title-color: variables.$white !default;
-$card-slider-error-title-color: #979797 !default;
-$card-slider-button-color: variables.$white !default;
-$card-slider-button-hover-color: $card-slider-button-color !default;
-
-$card-slider-featured-bg: #111 !default;
-$card-slider-featured-button-color: variables.$white !default;
-$card-slider-featured-button-hover-color: $card-slider-featured-button-color !default;
-
-$card-slider-odd-bg-color: transparent !default;
-
-$card-slider-loading-bg: variables.$black !default;
-$card-slider-loading-card-bg: $secondary-color !default;
-
-$card-slider-error-bg: variables.$black !default;
-$card-slider-error-card-bg: $secondary-color !default;
-
-// CardGrid
-
-$card-grid-title-color: $secondary-color !default;
-
-// Cookies
-
-$cookies-title-color: $primary-color !default;
-$cookies-color: $dark-color !default;
-$cookies-bg: variables.$white !default;
+$card-tag-bg: $dark-color !default;
+$card-loading-bg-color: $secondary-color !default;
 
 // FormFeedback
 
@@ -106,56 +59,18 @@ $form-feedback-warning-color: variables.$white !default;
 $form-feedback-success-bg-color: variables.$green !default;
 $form-feedback-success-color: variables.$black !default;
 
-// Footer
-
-$footer-color: variables.$white !default;
-
-// Header
-
-$header-bg: transparent !default;
-$header-color: variables.$white !default;
-$header-fixed-shadow: 0 0 15px 0 rgba(variables.$black, 0.5) !default;
-
-$search-bg: $header-bg !default;
-$search-color: inherit !default;
-$search-border: 1px solid $light-color !default;
-
 // Modal
 
 $modal-bg: #202020 !default;
 $modal-color: variables.$white !default;
 $modal-backdrop-bg: rgba(variables.$black, 0.8) !default;
 
-// Offline
-
-$offline-bg: $primary-color !default;
-$offline-color: variables.$white !default;
-
 // Loading
 
 $loading-color: $primary-color !default;
 
-// Popups
-
-$popup-backdrop-bg: rgba(#000, 0.4) !default;
-$popup-bg: #20212d !default;
-$popup-color: variables.$white !default;
-
-$rail-button-block-bg: transparent !default;
-$rail-button-block-color: variables.$white !default;
-$rail-button-block-border-top: 1px solid variables.$white !default;
-
-// Scroll
-
-$scroll-track-bg: variables.$gray-darker !default;
-$scroll-indicator-bg: #7f899a !default;
-
-// Sidebar
-
-$sidebar-bg: #000 !default;
-$sidebar-color: variables.$white !default;
-
 // TextField
+
 $text-field-bg-color: rgba(variables.$black, 0.54) !default;
 $text-field-resting-border-color: rgba(variables.$white, 0.34) !default;
 $text-field-resting-color: rgba(variables.$white, 0.7) !default;
@@ -167,6 +82,7 @@ $text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
 $text-field-error-color: #ff0c3e !default;
 
 // Input
+
 $input-resting-border-color: rgba(variables.$white, 0.34) !default;
 $input-hover-border-color: rgba(variables.$white, 0.7) !default;
 $input-field-error-color: #ff0c3e !default;
@@ -177,32 +93,8 @@ $toggle-default-color: #585858 !default;
 $toggle-checked-color: #adadad !default;
 $toggle-button-bg: variables.$white !default;
 
-// Toolbar
-
-$toolbar-bg: $dark-color !default;
-$toolbar-color: variables.$white !default;
-$toolbar-hover-color: $primary-color !default;
-$toolbar-nav-border: 1px solid lighten($toolbar-bg, 5%) !default;
-
-$row-inverse-bg: #444 !default;
-$row-inverse-color: variables.$white !default;
-
-// Video
-
-$video-layout-bg: transparent !default;
-
-// VideoDetails
-
-$video-details-bg: transparent !default;
-$video-details-color: variables.$white !default;
-
-$video-details-tag-bg: $dark-color !default;
-$video-details-tag-hover-bg: darken($dark-color, 5%) !default;
-$video-details-tag-color: variables.$white !default;
-$video-details-tag-hover-color: variables.$white !default;
-$video-details-tag-shadow: 0 1px 0 variables.$black !default;
-
 // UserScreen
+
 $panel-bg: rgba(255, 255, 255, 0.08);
 $panel-box-shadow: 0 6px 10px rgb(0 0 0 / 14%), 0 1px 18px rgb(0 0 0 / 12%), 0 3px 5px rgb(0 0 0 / 20%);
 $panel-header-border-bottom: 1px solid rgba(255, 255, 255, 0.32);
