@@ -1,5 +1,6 @@
 @use 'sass:math';
-@use "../../styles/mixins/responsive";
+@use '../../styles/mixins/responsive';
+@use '../../styles/theme';
 @use '../../styles/variables';
 
 .card {
@@ -76,7 +77,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  background-color: var(--card-slider-loading-card-bg);
+  background-color: theme.$card-loading-bg-color;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -141,7 +142,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
   &.loading {
     width: 30%;
     height: 16px;
-    background-color: var(--card-slider-loading-card-bg);
+    background-color: theme.$card-loading-bg-color;
     border-radius: 5px;
   }
 
