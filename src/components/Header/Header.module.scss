@@ -89,7 +89,7 @@
 // Header search
 //
 .search {
-  width: 180px;
+  max-width: 180px;
 }
 
 //
@@ -163,11 +163,5 @@
 
   .search {
     width: 40px;
-  }
-}
-
-@include responsive.tablet-only() {
-  .menu {
-    width: 180px;
   }
 }
