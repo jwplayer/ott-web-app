@@ -54,13 +54,12 @@ const PersonalDetailsForm: React.FC<Props> = ({
     };
 
     if (values.length === 1) {
-      return <Checkbox key={key} checked={!!questionValues[key]} value={values[0]} header={question} label={values[0]} {...props} />;
+      return <Checkbox checked={!!questionValues[key]} value={values[0]} header={question} label={values[0]} {...props} />;
     } else if (values.length === 2) {
-      return <Radio key={key} values={values} value={questionValues[key]} header={question} {...props} />;
+      return <Radio values={values} value={questionValues[key]} header={question} {...props} />;
     } else if (values.length > 2) {
       return (
         <Dropdown
-          key={key}
           options={values}
           value={questionValues[key]}
           label={question}
