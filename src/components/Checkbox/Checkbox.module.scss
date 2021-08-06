@@ -93,13 +93,10 @@
     }
 
     &:checked {
-      background-color: theme.$forms-checkbox-bg;
+      background-color: var(--highlight-color, theme.$primary-color);
       &::before {
         font-size: 20px;
         transform: translateY(-3px) translateX(1px) scaleX(-0.95) rotate(-45deg);
-      }
-      &:hover {
-        background-color: theme.$forms-checkbox-bg-hover;
       }
     }
   }

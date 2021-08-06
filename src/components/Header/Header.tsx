@@ -59,6 +59,7 @@ const Header: React.FC<Props> = ({
   const [logoLoaded, setLogoLoaded] = useState(false);
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
+    [styles.brandCentered]: breakpoint <= Breakpoint.sm,
     [styles.mobileSearchActive]: searchActive && breakpoint <= Breakpoint.sm,
   });
 
@@ -101,7 +102,11 @@ const Header: React.FC<Props> = ({
 
     return isLoggedIn ? (
       <React.Fragment>
-        <IconButton className={classNames(styles.iconButton, styles.userMenuButton)} aria-label={t('open_user_menu')} onClick={() => toggleUserMenu(!userMenuOpen)}>
+        <IconButton
+          className={classNames(styles.iconButton, styles.userMenuButton)}
+          aria-label={t('open_user_menu')}
+          onClick={() => toggleUserMenu(!userMenuOpen)}
+        >
           <AccountCircle />
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
