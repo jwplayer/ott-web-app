@@ -51,6 +51,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
       error: !!questionErrors[key],
       helperText: questionErrors[key],
       required,
+      key,
     };
 
     if (values.length === 1) {
