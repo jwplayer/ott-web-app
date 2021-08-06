@@ -127,6 +127,11 @@
   margin-left: 8px;
 }
 
+.brandCentered {
+  .brand {
+    text-align: center;
+  }
+}
 //
 // mediaQueries
 // --------------------------------
@@ -168,8 +173,5 @@
 
   .search {
     width: 40px;
-  }
-  .brand {
-    text-align: center;
   }
 }
