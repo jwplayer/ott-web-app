@@ -1,0 +1,16 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.adyen-checkout__card-input .adyen-checkout__card__form {
+  .adyen-checkout__label__text {
+    color: variables.$white;
+    font-family: var(--body-font-family);
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  .adyen-checkout__error-text {
+    font-family: var(--body-font-family);
+    font-size: 14px;
+  }
+}
