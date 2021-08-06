@@ -215,7 +215,7 @@ const Account = ({
                   <Checkbox
                     key={index}
                     name={consent.name}
-                    value={values.consents?.[consent.name] || ''}
+                    value={values.consents?.[consent.value] || ''}
                     checked={(values.consents?.[consent.name] as boolean) || false}
                     onChange={(event) => (handleChange ? handleChange(event, { nestInto: 'consents' }) : null)}
                     label={formatConsentLabel(consent.label)}

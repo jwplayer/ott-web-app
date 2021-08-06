@@ -52,16 +52,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
         </label>
       )}
       <div className={classNames(styles.dropdown, { [styles.fullWidth]: fullWidth })}>
-        <select
-          id={id}
-          className={styles.select}
-          name={name}
-          value={value}
-          onChange={onChange}
-          aria-required={required}
-          defaultValue={defaultLabel}
-          {...rest}
-        >
+        <select id={id} className={styles.select} name={name} value={value} onChange={onChange} aria-required={required} {...rest}>
           {defaultLabel && (
             <option className={classNames(styles.option, optionsStyle)} value="" disabled={required}>
               {defaultLabel}

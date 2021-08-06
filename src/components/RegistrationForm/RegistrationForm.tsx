@@ -96,12 +96,12 @@ const RegistrationForm: React.FC<Props> = ({
         label={t('registration.password')}
         placeholder={t('registration.password')}
         error={!!errors.password || !!errors.form}
-        helperText={(
+        helperText={
           <React.Fragment>
             <PasswordStrength password={values.password} />
             {t('registration.password_helper_text')}
           </React.Fragment>
-        )}
+        }
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
@@ -118,10 +118,10 @@ const RegistrationForm: React.FC<Props> = ({
         <Checkbox
           key={index}
           name={consent.name}
-          value={consent.name}
+          value={consent.value || ''}
           error={consentErrors?.includes(consent.name)}
           required={consent.required}
-          checked={consentValues[consent.name]}
+          checked={consentValues[consent.name] || false}
           onChange={onConsentChange}
           label={formatConsentLabel(consent.label)}
         />
