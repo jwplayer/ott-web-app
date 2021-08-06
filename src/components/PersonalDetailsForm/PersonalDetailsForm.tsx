@@ -63,7 +63,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
           options={values}
           value={questionValues[key]}
           label={question}
-          defaultLabel={!props.required ? t('personal_details.select_answer') : undefined}
+          defaultLabel={t('personal_details.select_answer')}
           {...props}
           fullWidth
         />
