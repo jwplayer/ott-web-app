@@ -54,7 +54,7 @@ const Adyen: React.FC<Props> = ({ onChange, onSubmit, error, environment = 'test
         }
       };
     }
-  }, [id, onChange, onSubmit, scriptsLoaded]);
+  }, [environment, id, onChange, onSubmit, scriptsLoaded]);
 
   return (
     <div className={styles.adyen}>
