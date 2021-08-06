@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -24,8 +24,8 @@ const PersonalDetails = () => {
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 
-  const fields = data ? Object.fromEntries(data.settings.map((item) => [item.key, item])) : {};
-  const questions = data ? (data.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[]) : [];
+  const fields = useMemo(() => Object.fromEntries(data?.settings.map((item) => [item.key, item]) || []), [data]);
+  const questions = useMemo(() => data?.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[] || [], [data]);
 
   const nextStep = useCallback(() => {
     history.replace(addQueryParam(history, 'u', accessModel === 'SVOD' ? 'choose-offer' : 'welcome'));
@@ -33,7 +33,11 @@ const PersonalDetails = () => {
 
   useEffect(() => {
     if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();
-  }, [data, nextStep]);
+
+    if (data && questions) {
+      setQuestionValues(Object.fromEntries(questions.map(question => [question.key, ''])))
+    }
+  }, [data, nextStep, questions]);
 
   const initialValues: PersonalDetailsFormData = {
     firstName: '',
