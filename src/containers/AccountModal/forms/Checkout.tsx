@@ -20,8 +20,10 @@ import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '../../../utils/formatting';
 import { reloadActiveSubscription } from '../../../stores/AccountStore';
+import { ConfigStore } from '../../../stores/ConfigStore';
 
 const Checkout = () => {
+  const { cleengSandbox } = ConfigStore.useState((s) => s.config);
   const { t } = useTranslation('account');
   const history = useHistory();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -166,7 +168,7 @@ const Checkout = () => {
     }
 
     if (paymentMethod?.methodName === 'card') {
-      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} />;
+      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={cleengSandbox ? 'test' : 'live'} />;
     } else if (paymentMethod?.methodName === 'paypal') {
       return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
     }

@@ -5,7 +5,7 @@ import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { useWatchHistory } from '../../stores/WatchHistoryStore';
-import { playlistLimit } from '../../config';
+import { PLAYLIST_LIMIT } from '../../config';
 
 type ChildrenParams = {
   playlist: Playlist;
@@ -29,7 +29,7 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, c
     isLoading,
     error,
     data: fetchedPlaylist = { title: '', playlist: [] },
-  }: UsePlaylistResult = usePlaylist(playlistId, relatedItem?.mediaid, !isAlternativeShelf && !!playlistId, true, playlistLimit);
+  }: UsePlaylistResult = usePlaylist(playlistId, relatedItem?.mediaid, !isAlternativeShelf && !!playlistId, true, PLAYLIST_LIMIT);
 
   let playlist = fetchedPlaylist;
 
