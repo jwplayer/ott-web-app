@@ -25,6 +25,7 @@ Scenario('I can close the modal', ({ I }) => {
   I.click('Sign up');
   I.see('Email');
 });
+
 Scenario('I can switch to the Sign In modal', ({ I }) => {
   I.click('a[class="_link_1uj3n_1"]');
   I.see('Forgot password');
@@ -41,7 +42,7 @@ Scenario('I get warned when filling in incorrect credentials', async ({ I }) => 
   I.fillField('Email', 'test');
   I.pressKey('Tab');
   I.see('Please re-enter your email details');
-  I.fillField('Email', '1234@test.org');
+  I.fillField('Email', '12345@test.org');
   I.dontSee('Please re-enter your email details');
 
   let color
