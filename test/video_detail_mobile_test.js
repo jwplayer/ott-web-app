@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 Feature('video_detail').tag('@mobile');
 
 Scenario('Video detail screen loads', ({ I }) => {
@@ -21,9 +23,14 @@ Scenario('Video detail screen loads', ({ I }) => {
 Scenario('I can expand the description', async ({ I }) => {
   I.seeElement('div[aria-label="Expand"]');
   I.dontSeeElement('div[aria-label="Collapse"]');
+  const maxHeight = await I.grabCssPropertyFrom('div[class="_textContainer_12ck1_11 _description_k71vc_110 _collapsed_12ck1_15"]', 'max-height');
+  assert.strictEqual('60px', maxHeight);
+
   I.click('div[aria-label="Expand"]');
   I.seeElement('div[aria-label="Collapse"]');
   I.dontSeeElement('div[aria-label="Expand"]');
+  const maxHeightExpanded = await I.grabCssPropertyFrom('div[class="_textContainer_12ck1_11 _description_k71vc_110"]', 'max-height');
+  assert.strictEqual('200px', maxHeightExpanded);
 })
 
 Scenario('I can watch a video',  async ({ I }) => {
