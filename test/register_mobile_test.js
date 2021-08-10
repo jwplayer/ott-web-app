@@ -32,6 +32,11 @@ Scenario('I can switch to the Sign In modal', ({ I }) => {
   I.see('Already have an account?')
 });
 
+Scenario('The submit button is disabled when the form is incompletely filled in', async ({ I }) => {
+  const submitDisabled = await I.grabAttributeFrom('button[type="submit"]', 'disabled');
+  assert.strictEqual(true, submitDisabled);
+});
+
 Scenario('I get warned when filling in incorrect credentials', async ({ I }) => {
   I.fillField('Email', 'test');
   I.pressKey('Tab');

@@ -23,6 +23,7 @@ Scenario('I can close the modal', ({ I }) => {
   I.click('Sign up');
   I.see('Email');
 });
+
 Scenario('I can switch to the Sign In modal', ({ I }) => {
   I.click('a[class="_link_1uj3n_1"]');
   I.see('Forgot password');
@@ -30,11 +31,16 @@ Scenario('I can switch to the Sign In modal', ({ I }) => {
   I.see('Already have an account?')
 });
 
+Scenario('The submit button is disabled when the form is incompletely filled in', async ({ I }) => {
+  const submitDisabled = await I.grabAttributeFrom('button[type="submit"]', 'disabled');
+  assert.strictEqual(true, submitDisabled);
+});
+
 Scenario('I get warned when filling in incorrect credentials', async ({ I }) => {
   I.fillField('Email', 'test');
   I.pressKey('Tab');
   I.see('Please re-enter your email details');
-  I.fillField('Email', '1234@test.org');
+  I.fillField('Email', '12345@test.org');
   I.dontSee('Please re-enter your email details');
 
   let color
