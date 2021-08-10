@@ -23,6 +23,11 @@ Scenario('I can close the modal', ({ I }) => {
   I.dontSee('Email');
   I.click('Sign in');
   I.see('Email');
+
+  I.forceClick('div[data-testid="backdrop"]');
+  I.dontSee('Email');
+  I.click('Sign in');
+  I.see('Email');
 });
 
 Scenario('I can toggle to view password', async ({ I }) => {
@@ -42,6 +47,7 @@ Scenario('I get a warning when the form is incompletely filled in', ({ I }) => {
   I.click('button[type="submit"]');
   I.see('This field is required');
   I.seeNumberOfElements('div[class="_helperText_1rxvx_5"]', 2);
+  I.seeCssPropertiesOnElements('div[class="_container_1rxvx_8"]', { 'border-color': '#ff0c3e'});
 
   I.fillField('Email', '12345@test');
   I.fillField('password', 'test');
