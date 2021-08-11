@@ -88,8 +88,7 @@ Scenario('I can toggle to view password', async ({ I }) => {
 
 Scenario('I can\'t submit without checking requird consents', async ({ I }) => {
   I.click('Continue');
-  const borderColor = await I.grabCssPropertyFrom('input[name="terms"]', 'border-color');
-  assert.strictEqual('rgba(255, 61, 101, 0.72)', borderColor);
+  I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#ff0c3e'});
 });
 
 Scenario('I can submit to register', ({ I }) => {
