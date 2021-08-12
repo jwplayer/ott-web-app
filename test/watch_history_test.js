@@ -1,55 +1,61 @@
 const assert = require('assert');
 
 Feature('watch_history').tag('@desktop');
+// todo: mobile
 
-Scenario('I can get a video stored to my local watch history',  ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk&c=test--no-cleeng&play=1');
-  I.click({ css: 'div[class="jw-icon jw-icon-display jw-button-color jw-reset"]'});
-  // todo: fix player and check if item gets added to locally stored watchHistory
-});
-
-Scenario('I can see my locally stored watch history at the Home screen', async({ I })=> {
-  I.amOnPage('http://localhost:8080/?c=test--no-cleeng');
-  // todo: fix player and check locally stored watchHistory at the home screen
-});
-
-Scenario('I can get my watch history stored to my account after login', async({ I })=> {
-  I.amOnPage('http://localhost:8080?c=test--accounts');
-  I.loginWithAccount();
-  // todo: fix player and check storage to account
-});
-
-Scenario('I can see my watch history from my account on the Home screen', ({ I })=> {
+Scenario('I can get my watch progress stored (locally)',  ({ I }) => {
+  I.amOnPage('http://localhost:8080/m/JfDmsRlE/agent-327?r=sR5VypYk&c=test--no-cleeng&play=1');
+  I.wait(2);
+  I.executeScript(() => window.jwplayer().seek(100));
+  I.click('div[class="_cinema_1w0uk_1 _fill_1w0uk_1"]'); //re-enable controls overlay
+  I.click('div[aria-label="Back"]');
+  I.wait();
   I.see('Continue watching');
+});
+Scenario('I can continue watching', ({ I }) => {
+  I.click('Continue watching');
+  I.wait();
+  I.click({ css: 'div[class="jw-icon jw-icon-display jw-button-color jw-reset"]'}); // Play button
+  I.see("01:40");
+});
 
+Scenario('I can see my watch history on the Home screen', async({ I })=> {
+  I.amOnPage('http://localhost:8080/?c=test--no-cleeng');
+  I.see('Continue watching');
   within('div[data-mediaid="continue-watching"]', async () => {
-    I.see('Blocking');
-    I.see('S1:E1');
-    I.see('Big Buck Bunny');
-    I.see('10 min');
+    I.see('Agent 327');
+    I.see('4 min');
   });
 });
 
-Scenario('I only see items watched between 5% and 95%', ({ I })=> {
+Scenario('I can see my watch progress (between 5 and 95%)', async({ I })=> {
   const pixelsToNumber = value => Number(value.substring(0, value.indexOf('px')));
-  const getProgress = async ariaLabel => {
-    const progressContainer = locate('div[class="_progressContainer_19f2q_204"]').inside(locate(`div[aria-label="${ariaLabel}"]`));
-    const containerWidth = await I.grabCssPropertyFrom(progressContainer, 'width');
-    const progressBar = locate('div[class="_progressBar_19f2q_214"]').inside(locate(`div[aria-label="${ariaLabel}"]`));
-    const progressWidth = await I.grabCssPropertyFrom(progressBar, 'width');
-    return Math.round(100 * pixelsToNumber(progressWidth) / pixelsToNumber(containerWidth));
-  };
 
-  within('div[data-mediaid="continue-watching"]', async () => {
-    const progress1 = await getProgress('Play Blocking');
-    const progress2 = await getProgress('Play Big Buck Bunny');
-    assert.strictEqual(progress1 > 5 && progress1 < 95, true);
-    assert.strictEqual(progress2 > 5 && progress2 < 95, true);
-  }); 
+  const continueWatchingShelf = locate('div[data-mediaid="continue-watching"]');
+  const continueWatchingItem = locate(`div[aria-label="Play Agent 327"]`).inside(continueWatchingShelf);
+  const progressContainer = locate('div[class="_progressContainer_19f2q_204"]').inside(continueWatchingItem);
+  const containerWidth = await I.grabCssPropertyFrom(progressContainer, 'width');
+  const progressBar = locate('div[class="_progressBar_19f2q_214"]').inside(continueWatchingItem);
+  const progressWidth = await I.grabCssPropertyFrom(progressBar, 'width');
+  const percentage = Math.round(100 * pixelsToNumber(progressWidth) / pixelsToNumber(containerWidth));
+
+  assert.strictEqual(percentage > 5 && percentage < 95, true);
 });
 
-Scenario('I can continue watching and watch immediately', ({ I }) => {
-  I.click('Play Blocking', 'div[data-mediaid="continue-watching"]');
-  I.seeInCurrentUrl('play=1');
-  I.see('Beginner');
+Scenario('I can continue watching from home immediately', async({ I })=> {
+  within('div[data-mediaid="continue-watching"]', async () => {
+    I.click('div[aria-label="Play Agent 327"]');
+    I.seeInCurrentUrl('play=1');
+  });
+});
+
+Scenario('I can get my watch history stored to my account after login', async({ I })=> {
+  I.loginWithAccount();
+  I.wait(5);
+  I.amOnPage('/');
+  I.refreshPage();
+  I.dontSee('Continue watching');
+  I.loginWithAccount();
+  I.wait(5);
+  I.see('Continue watching');
 });
