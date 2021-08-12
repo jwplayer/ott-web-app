@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('watch_history').tag('@desktop');
+Feature('watch_history').tag('@mobile');
 
 Scenario('I can get a video stored to my local watch history',  ({ I }) => {
   I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk&c=test--no-cleeng&play=1');
@@ -15,7 +15,7 @@ Scenario('I can see my locally stored watch history at the Home screen', async({
 
 Scenario('I can get my watch history stored to my account after login', async({ I })=> {
   I.amOnPage('http://localhost:8080?c=test--accounts');
-  I.loginWithAccount();
+  I.loginWithAccountMobile();
   // todo: fix player and check storage to account
 });
 
@@ -25,8 +25,6 @@ Scenario('I can see my watch history from my account on the Home screen', ({ I }
   within('div[data-mediaid="continue-watching"]', async () => {
     I.see('Blocking');
     I.see('S1:E1');
-    I.see('Big Buck Bunny');
-    I.see('10 min');
   });
 });
 
@@ -41,15 +39,12 @@ Scenario('I only see items watched between 5% and 95%', ({ I })=> {
   };
 
   within('div[data-mediaid="continue-watching"]', async () => {
-    const progress1 = await getProgress('Play Blocking');
-    const progress2 = await getProgress('Play Big Buck Bunny');
-    assert.strictEqual(progress1 > 5 && progress1 < 95, true);
-    assert.strictEqual(progress2 > 5 && progress2 < 95, true);
+    const progress = await getProgress('Play Blocking');
+    assert.strictEqual(progress > 5 && progress < 95, true);
   }); 
 });
 
 Scenario('I can continue watching and watch immediately', ({ I }) => {
-  I.click('Play Blocking', 'div[data-mediaid="continue-watching"]');
+  I.click('div[data-mediaid="continue-watching"]');
   I.seeInCurrentUrl('play=1');
-  I.see('Beginner');
 });
