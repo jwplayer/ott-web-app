@@ -1,4 +1,4 @@
-Feature('account').tag('@desktop')
+Feature('payments').tag('@desktop')
 
 // todo: run same test with loginMobile for @mobile
 
@@ -24,7 +24,6 @@ Scenario('I can see offered subscriptions', ({ I })=> {
     I.see('First month free');
     I.see('Cancel anytime');
     I.see('Watch on all devices');
-    I.see('€');
     I.see('6,99');
     I.see('/month');
   });
@@ -33,7 +32,6 @@ Scenario('I can see offered subscriptions', ({ I })=> {
     I.see('First 14 days free');
     I.see('Cancel anytime');
     I.see('Watch on all devices');
-    I.see('€');
     I.see('50,00');
     I.see('/year');
   });

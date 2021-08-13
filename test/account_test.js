@@ -124,8 +124,6 @@ Scenario('I can update my personal details', ({ I }) => {
   I.fillField('lastName', 'Generated');
   I.click('Save');
   I.dontSee('Save');
-  I.see('Testbot New Name');
-  I.see('Generated');
 
   // Reset for future testing purposes
   I.click('Edit information');
