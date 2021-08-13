@@ -71,7 +71,7 @@ Scenario('I get strength feedback when typing in a password', ({ I }) => {
   I.see('Very strong');
 });
 
-Scenario('I can toggle to view password', async ({ I }) => {
+Scenario('I can toggle to view/hide my password', async ({ I }) => {
   let inputType = await I.grabAttributeFrom('input[name="password"]', 'type');
   assert.strictEqual('password', inputType);
 

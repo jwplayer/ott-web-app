@@ -10,7 +10,6 @@ Scenario('I login first because the player doesn\'t work (todo: remove this once
   I.login();
 })
 
-
 // Scenario('I can get my watch progress stored (locally)',  ({ I }) => {
 //   I.amOnPage('http://localhost:8080/m/JfDmsRlE/agent-327?r=sR5VypYk&c=test--no-cleeng&play=1');
 //   I.wait(2);
@@ -58,12 +57,13 @@ Scenario('I can continue watching from home immediately', async({ I })=> {
 });
 
 // Scenario('I can get my watch history stored to my account after login', async({ I })=> {
-//   I.loginWithAccount();
+  // I.amOnPage('http://localhost:8080?c=test--accounts');
+  // I.login();
 //   I.wait(5);
 //   I.amOnPage('/');
 //   I.refreshPage();
 //   I.dontSee('Continue watching');
-//   I.loginWithAccount();
+//   I.login();
 //   I.wait(5);
 //   I.see('Continue watching');
 // });
