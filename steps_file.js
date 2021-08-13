@@ -6,20 +6,20 @@ module.exports = function() {
     // Define custom steps here, use 'this' to access default methods of I.
     // It is recommended to place a general 'login' function here.
 
-    login: function () {
+    login: function (email = '12345@test.org', password = 'Ax854bZ!$') {
       this.amOnPage('/');
       this.click('Sign in');
-      this.fillField('Email', '12345@test.org');
-      this.fillField('password', 'Ax854bZ!$');
+      this.fillField('Email', email);
+      this.fillField('password', password);
       this.click('button[type="submit"]');
       this.wait(5);
     },
-    loginMobile: function () {
+    loginMobile: function (email = '12345@test.org', password = 'Ax854bZ!$') {
       this.amOnPage('/');
       this.click('div[aria-label="Open menu"]');
       this.click('Sign in');
-      this.fillField('Email', '12345@test.org');
-      this.fillField('password', 'Ax854bZ!$');
+      this.fillField('Email', email);
+      this.fillField('password', password);
       this.click('button[type="submit"]');
       this.wait(5);
     }
