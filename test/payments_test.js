@@ -66,7 +66,7 @@ Scenario('I can choose an offer', async ({ I }) => {
   I.see('Free trial');
   // I.see('-50,00');
   I.see('Payment method fee');
-  I.see('0,00');
+  // I.see('0,00');
   I.see('Total');
   I.see('Applicable tax (21%)');
 
