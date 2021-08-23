@@ -5,6 +5,7 @@ import { addScript, addStyleSheet } from '../../utils/dom';
 import useOpaqueId from '../../hooks/useOpaqueId';
 import Button from '../Button/Button';
 import FormFeedback from '../FormFeedback/FormFeedback';
+import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '../../config';
 
 import styles from './Adyen.module.scss';
 import './AdyenForm.scss';
@@ -13,9 +14,10 @@ type Props = {
   onChange?: (data: AdyenEventData) => void;
   onSubmit: (data: AdyenEventData) => void;
   error?: string;
+  environment?: 'test' | 'live';
 };
 
-const Adyen: React.FC<Props> = ({ onChange, onSubmit, error }) => {
+const Adyen: React.FC<Props> = ({ onChange, onSubmit, error, environment = 'test' }) => {
   const { t } = useTranslation('account');
   const id = useOpaqueId('adyen', 'checkout');
   const adyenRef = useRef<AdyenCheckout>(null) as React.MutableRefObject<AdyenCheckout>;
@@ -24,22 +26,22 @@ const Adyen: React.FC<Props> = ({ onChange, onSubmit, error }) => {
   useEffect(() => {
     const loadExternalScripts = async () => {
       await Promise.all([
-        addScript('https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/3.10.1/adyen.js'),
-        addStyleSheet('https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/3.11.4/adyen.css'),
+        addScript(`https://checkoutshopper-${environment}.adyen.com/checkoutshopper/sdk/3.10.1/adyen.js`),
+        addStyleSheet(`https://checkoutshopper-${environment}.adyen.com/checkoutshopper/sdk/3.11.4/adyen.css`),
       ]);
 
       setScriptsLoaded(true);
     };
 
     loadExternalScripts();
-  }, []);
+  }, [environment]);
 
   useEffect(() => {
     if (scriptsLoaded) {
       const configuration = {
         showPayButton: false,
-        environment: 'test',
-        clientKey: 'test_I4OFGUUCEVB5TI222AS3N2Y2LY6PJM3K',
+        clientKey: environment === 'test' ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
+        environment,
         onSubmit,
         onChange,
       };
@@ -53,7 +55,7 @@ const Adyen: React.FC<Props> = ({ onChange, onSubmit, error }) => {
         }
       };
     }
-  }, [id, onChange, onSubmit, scriptsLoaded]);
+  }, [environment, id, onChange, onSubmit, scriptsLoaded]);
 
   return (
     <div className={styles.adyen}>
