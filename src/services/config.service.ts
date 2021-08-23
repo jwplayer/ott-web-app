@@ -116,7 +116,7 @@ const parseDeprecatedConfig = (config: Config) => {
   }
 
   try {
-    const { menu, id, analyticsToken, adSchedule, description, cleengId, cleengSandbox, ...options } = JSON.parse(config.description);
+    const { menu, id, analyticsToken, adSchedule, description, cleengId, cleengSandbox, json, ...options } = JSON.parse(config.description);
 
     const updatedConfig = {
       menu: menu || [],
@@ -127,7 +127,12 @@ const parseDeprecatedConfig = (config: Config) => {
       cleengId,
       cleengSandbox,
       options: Object.assign(config.options, options),
+      json: config.json || {},
     };
+
+    if (typeof json === 'object' && json !== null) {
+      updatedConfig.json = Object.assign(updatedConfig.json, json);
+    }
 
     return Object.assign(config, updatedConfig);
   } catch (error: unknown) {
