@@ -7,6 +7,7 @@ import Button from '../Button/Button';
 import FormFeedback from '../FormFeedback/FormFeedback';
 
 import styles from './Adyen.module.scss';
+import './AdyenForm.scss';
 
 type Props = {
   onChange?: (data: AdyenEventData) => void;

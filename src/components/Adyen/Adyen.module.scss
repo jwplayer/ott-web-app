@@ -3,20 +3,6 @@
 
 .adyen {
   margin-bottom: 24px;
-
-  :global {
-    .adyen-checkout__label__text {
-      color: variables.$white;
-      font-family: var(--body-font-family);
-      font-size: 16px;
-      line-height: 18px;
-    }
-
-    .adyen-checkout__error-text {
-      font-family: var(--body-font-family);
-      font-size: 14px;
-    }
-  }
 }
 
 .container {
