@@ -104,7 +104,12 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       const { watchHistory } = watchHistoryStore.getRawState();
       const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
 
-      if (watchHistoryItem && enableWatchHistory && watchHistoryItem.progress > VideoProgressMinMax.Min && watchHistoryItem.progress < VideoProgressMinMax.Max) {
+      if (
+        watchHistoryItem &&
+        enableWatchHistory &&
+        watchHistoryItem.progress > VideoProgressMinMax.Min &&
+        watchHistoryItem.progress < VideoProgressMinMax.Max
+      ) {
         seekToRef.current = watchHistoryItem.progress * watchHistoryItem.duration;
       } else {
         seekToRef.current = -1;
@@ -124,14 +129,14 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       }
 
       // load new item
-      playerRef.current.load([deepCopy(item)]);
+      playerRef.current.setConfig({ playlist: [deepCopy(item)], autostart: true });
       calculateWatchHistoryProgress();
     };
 
     const initializePlayer = () => {
       if (!window.jwplayer || !playerElementRef.current) return;
 
-      playerRef.current = window.jwplayer(playerElementRef.current);
+      playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
       playerRef.current.setup({
         playlist: [deepCopy(item)],
