@@ -1,9 +1,13 @@
-.snowpack
-build
+# project or build
 node_modules
+build
+.snowpack
+coverage
+output
+src/i18n/locales/**/*_old.json
+yarn-error.log
+
+# os or editor
 .idea
 .DS_Store
-/coverage
-src/i18n/locales/**/*_old.json
-/output
 /.vscode/settings.json
