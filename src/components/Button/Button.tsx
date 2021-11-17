@@ -24,6 +24,7 @@ type Props = {
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  id?: string;
 } & React.AriaAttributes;
 
 const Button: React.FC<Props> = ({

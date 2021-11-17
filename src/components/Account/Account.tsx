@@ -224,6 +224,7 @@ const Account = ({
                 ))}
                 <div className={styles.controls}>
                   <Button
+                    id="submit_consents"
                     className={styles.submitConsents}
                     type="button"
                     label={t('account.update_consents')}
