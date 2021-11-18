@@ -69,13 +69,18 @@ The allowed scopes are:
 - home
 - playlist
 - videodetail
+- player
 - series
 - search
+- user
 - watchhistory
 - favorites
 - analytics
 - pwa
 - seo
+- auth
+- menu
+- payment
 
 ### Subject
 

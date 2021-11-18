@@ -16,7 +16,6 @@
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:styles": "stylelint \"src/**/*.scss\"",
-    "create-base": "node scripts/blueprint/index.js",
     "commit-msg": "commitlint --edit $1",
     "pre-commit": "lint-staged && TZ=UTC yarn test --coverage --watchAll=false --ci --bail=1",
     "codecept:mobile": "codeceptjs -c codecept.mobile.js run --steps",
@@ -112,5 +111,8 @@
   "browserslist": [
     "defaults",
     "not IE 11"
-  ]
+  ],
+  "optionalDependencies": {
+    "lighthouse": "^8.6.0"
+  }
 }
