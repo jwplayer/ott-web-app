@@ -64,7 +64,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
 
   const padLeft = (value: number) => {
     return value > 0 && value < 10 ? `0${value}` : value.toString();
-  }
+  };
 
   const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -108,7 +108,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
       onChange(date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '');
     }
 
-    if (nextSibling && (name === 'month' && month.length === 2) || ( name === 'date' && date.length === 2)) {
+    if ((nextSibling && name === 'month' && month.length === 2) || (name === 'date' && date.length === 2)) {
       setTimeout(() => nextSibling.focus(), 1);
     }
   };
