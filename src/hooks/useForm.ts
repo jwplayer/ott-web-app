@@ -63,10 +63,10 @@ export default function useForm<T extends GenericFormValues>(
     const newValues = { ...values, [name]: value };
 
     setValues(newValues);
-    setTouched(current => ({ ...current, [name]: value }));
+    setTouched((current) => ({ ...current, [name]: value }));
 
     if (errors[name]) {
-      validateField(name, newValues)
+      validateField(name, newValues);
     }
   };
 

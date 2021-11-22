@@ -73,11 +73,18 @@ const Registration = () => {
 
   const validationSchema: SchemaOf<RegistrationFormData> = object().shape({
     email: string().email(t('registration.field_is_not_valid_email')).required(t('registration.field_required')),
-    password: string().matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password')).required(t('registration.field_required')),
+    password: string()
+      .matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password'))
+      .required(t('registration.field_required')),
   });
 
   const initialRegistrationValues: RegistrationFormData = { email: '', password: '' };
-  const { handleSubmit, handleChange, handleBlur, values, errors, submitting } = useForm(initialRegistrationValues, registrationSubmitHandler, validationSchema, true);
+  const { handleSubmit, handleChange, handleBlur, values, errors, submitting } = useForm(
+    initialRegistrationValues,
+    registrationSubmitHandler,
+    validationSchema,
+    true,
+  );
 
   return (
     <RegistrationForm

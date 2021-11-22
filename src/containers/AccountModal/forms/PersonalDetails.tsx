@@ -25,7 +25,10 @@ const PersonalDetails = () => {
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 
   const fields = useMemo(() => Object.fromEntries(data?.settings.map((item) => [item.key, item]) || []), [data]);
-  const questions = useMemo(() => data?.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[] || [], [data]);
+  const questions = useMemo(
+    () => (data?.settings.filter((item) => !!(item as CleengCaptureQuestionField).question) as CleengCaptureQuestionField[]) || [],
+    [data],
+  );
 
   const nextStep = useCallback(() => {
     history.replace(addQueryParam(history, 'u', accessModel === 'SVOD' ? 'choose-offer' : 'welcome'));
@@ -35,7 +38,7 @@ const PersonalDetails = () => {
     if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();
 
     if (data && questions) {
-      setQuestionValues(Object.fromEntries(questions.map(question => [question.key, ''])))
+      setQuestionValues(Object.fromEntries(questions.map((question) => [question.key, ''])));
     }
   }, [data, nextStep, questions]);
 

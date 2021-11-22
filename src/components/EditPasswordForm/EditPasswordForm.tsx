@@ -41,12 +41,12 @@ const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, onBlur, value, 
         label={t('reset.new_password')}
         placeholder={t('reset.password')}
         error={!!errors.password || !!errors.form}
-        helperText={(
+        helperText={
           <React.Fragment>
             <PasswordStrength password={value.password} />
             {t('reset.password_helper_text')}
           </React.Fragment>
-        )}
+        }
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
