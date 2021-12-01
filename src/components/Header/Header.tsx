@@ -13,6 +13,7 @@ import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../Button/Button';
 import Popover from '../Popover/Popover';
 import UserMenu from '../UserMenu/UserMenu';
+import { getPublicUrl } from '../../utils/domHelpers';
 
 import styles from './Header.module.scss';
 
@@ -131,7 +132,7 @@ const Header: React.FC<Props> = ({
         </div>
         {logoSrc && (
           <div className={styles.brand}>
-            <Logo src={logoSrc} onLoad={() => setLogoLoaded(true)} />
+            <Logo src={getPublicUrl(logoSrc)} onLoad={() => setLogoLoaded(true)} />
           </div>
         )}
         <nav className={styles.nav} aria-label="menu">

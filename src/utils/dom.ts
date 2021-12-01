@@ -1,3 +1,5 @@
+import { getPublicUrl } from './domHelpers';
+
 export const canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 let size: number;
@@ -24,7 +26,7 @@ export const addScript = (src: string): Promise<void> => {
     const script: HTMLScriptElement = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
-    script.src = src;
+    script.src = getPublicUrl(src);
     script.onload = () => resolve();
     script.onerror = (error) => {
       console.info('Error loading external script', error);
