@@ -116,7 +116,7 @@
 $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 @each $base, $modifier in $aspects {
   .aspect#{$base}#{$modifier} {
-    padding-top: math.percentage($modifier/$base);
+    padding-top: math.percentage(math.div($modifier, $base));
   }
 }
 
@@ -184,7 +184,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 }
 
 .lock {
-  margin-right: variables.$base-spacing / 2;
+  margin-right: calc(variables.$base-spacing / 2);
   padding: 2px 6px;
   > svg {
     width: 16px;
