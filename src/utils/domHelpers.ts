@@ -7,10 +7,10 @@ export function getPublicUrl(url: string) {
     return url;
   }
 
-  const baseUrl = import.meta.env.SNOWPACK_PUBLIC_BASE_URL;
+  const baseUrl = import.meta.env.SNOWPACK_PUBLIC_BASE_URL || '';
   const trimSlashes = (s: string) => s.replace(/^\/+|\/+$/g, '');
 
-  return '/' + [baseUrl, url].map(trimSlashes).join('/');
+  return (baseUrl ? '/' : '') + [baseUrl, url].map(trimSlashes).join('/');
 }
 
 export default function scrollbarSize(recalc?: boolean) {
