@@ -2,7 +2,7 @@
   "name": "jw-ott-webapp",
   "version": "1.1.1",
   "main": "index.js",
-  "repository": "https://github.com/Videodock/jw-ott-webapp.git",
+  "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "Robin van Zanten",
   "private": true,
   "scripts": {

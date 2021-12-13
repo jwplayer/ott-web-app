@@ -16,8 +16,8 @@ Clone this repository on your local machine using the following commands:
 
 ```shell
 $ cd ~/
-$ git clone https://github.com/jwplayer/jw-ott-webapp.git
-$ cd jw-ott-webapp
+$ git clone https://github.com/jwplayer/ott-web-app.git
+$ cd ott-web-app
 ```
 
 ## Install dependencies
