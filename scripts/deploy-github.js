@@ -88,6 +88,7 @@ function build() {
   if (customDomain) {
     fs.writeFileSync('./build/CNAME', customDomain);
   }
+  shPrint('cp ./build/index.html ./build/404.html');
 }
 
 function deploy() {
