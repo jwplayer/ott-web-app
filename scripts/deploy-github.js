@@ -77,6 +77,7 @@ function getEnv() {
   return {
     ...process.env,
     SNOWPACK_PUBLIC_BASE_URL: getBaseUrl(),
+    SNOWPACK_PUBLIC_GITHUB_PAGES: true,
   }
 }
 

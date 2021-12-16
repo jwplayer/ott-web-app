@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { I18nextProvider, getI18n } from 'react-i18next';
 import type { Config } from 'types/Config';
 
+import Router from './components/Router/Router';
 import Root from './components/Root/Root';
 import ConfigProvider from './providers/ConfigProvider';
 import QueryProvider from './providers/QueryProvider';
@@ -11,7 +11,6 @@ import './styles/main.scss';
 import { restoreWatchHistory } from './stores/WatchHistoryStore';
 import { initializeFavorites } from './stores/FavoritesStore';
 import { initializeAccount } from './stores/AccountStore';
-import { getPublicUrl } from './utils/domHelpers';
 
 interface State {
   error: Error | null;
@@ -61,7 +60,7 @@ class App extends Component {
             onValidationError={this.configErrorHandler}
             onValidationCompleted={this.configValidationCompletedHandler}
           >
-            <Router basename={getPublicUrl('/')}>
+            <Router>
               <Root error={this.state.error} />
             </Router>
           </ConfigProvider>
