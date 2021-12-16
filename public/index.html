@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/">
   <meta charset="utf-8" />
   <title>JW OTT Webapp</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,9 +9,9 @@
   <meta name="twitter:card" content="summary" data-react-helmet="true"  />
   <meta property="og:title" content="JW OTT Webapp" data-react-helmet="true" >
   <meta property="og:description" content="JW OTT Webapp is an open-source, dynamically generated video website." data-react-helmet="true">
-  <meta property="og:image" content="/images/icon-256x256.png" data-react-helmet="true">
+  <meta property="og:image" content="%PUBLIC_URL%/images/icon-256x256.png" data-react-helmet="true">
 
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" type="image/x-icon" />
 
   <!-- Pre-connect JW Player origins -->
   <link rel="preconnect" href="https://content.jwplatform.com"/>
@@ -21,18 +20,18 @@
 
   <!-- Safari web app -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="%PUBLIC_URL%/images/apple-touch-icon.png">
 
   <!-- Chrome, Firefox OS and Opera -->
   <meta name="theme-color" content="#000000">
   <!-- Windows Phone -->
   <meta name="msapplication-navbutton-color" content="#000000">
-  <meta name="msapplication-config" content="/browserconfig.xml">
+  <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml">
   <!-- iOS Safari -->
   <meta name="apple-mobile-web-app-status-bar-style" content="#000000">
 
   <!-- Manifest -->
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 </head>
 <body>
   <div id="root"></div>

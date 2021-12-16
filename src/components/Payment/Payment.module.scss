@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: variables.$base-spacing;
-  padding: variables.$base-spacing / 2 variables.$base-spacing;
+  padding: calc(variables.$base-spacing / 2) variables.$base-spacing;
 
   font-size: 14px;
   line-height: 18px;
