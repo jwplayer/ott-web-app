@@ -29,10 +29,10 @@ Github pages have some [usage limits](https://docs.github.com/en/pages/getting-s
 
 ### Usage Instructions
 
-1. Confirm that you can [build this project from source](./build-from-source.md). Be sure to install optional dependencies.
-2. Enable the [Github Pages feature](https://docs.github.com/en/pages/getting-started-with-github-pages) for the `gh-pages` branch in your repository.
-3. Run `yarn deploy:github`. Be sure to follow the instructions that appear on the screen.
-4. (Optional) If you need a customization option, review `yarn deploy:github --help`.
+1. (Optional) If you need a customization option, review `yarn deploy:github --help`.
+2. Confirm that you can [build this project from source](./build-from-source.md). Be sure to install optional dependencies.
+3. Enable the [Github Pages feature](https://docs.github.com/en/pages/getting-started-with-github-pages) for the `gh-pages` branch in your repository.
+4. Run `yarn deploy:github`. Be sure to follow the instructions that appear on the screen. If you want to connect your github deployment to a custom domain remember to add `--custom-domain=mydomain.com`
 
 <br />
 
