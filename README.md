@@ -9,6 +9,8 @@ To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify
 - [Configure JW OTT Webapp](./docs/configuration.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Frameworks, SDK's and Libraries](./docs/frameworks.md)
+- [Backend Services](./docs/backend-services.md)
+- [Developer Guidelines](./docs/developer-guidelines.md)
 
 ## Supported Features
 
@@ -31,6 +33,12 @@ To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify
 - Security-related features (encrypted HLS, DRM, signed URLs)
 - Self-hosted JW Players
 
+## Getting started
+
+- Clone this repository
+- Run `yarn` to install dependencies
+- Run `yarn start`
+
 ## Support and Bug Reporting
 
-To report bugs and feature requests, or request help using JW OTT Webapp, use this repository's [Issues](./issues) page.
+To report bugs and feature requests, or request help using JW OTT Webapp, use this repository's [Issues](https://github.com/jwplayer/ott-web-app/issues) page.
