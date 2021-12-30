@@ -38,6 +38,11 @@ const Root: FC<Props> = ({ error }: Props) => {
         <Route path="/q/:query?" component={Search} />
         <Route path="/u/:page?" component={User} />
         <Route path="/o/about" component={About} />
+        <Route>
+          <ErrorPage title={t('notfound_error_heading', 'Not found')}>
+            <p>{t('notfound_error_description', "This page doesn't exist.")}</p>
+          </ErrorPage>
+        </Route>
       </Switch>
       <AccountModal />
     </Layout>

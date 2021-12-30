@@ -10,7 +10,7 @@ button {
   display: flex;
   flex-direction: column;
   > * {
-    margin-bottom: variables.$base-spacing / 2;
+    margin-bottom: calc(variables.$base-spacing / 2);
   }
 }
 

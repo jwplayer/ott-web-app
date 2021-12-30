@@ -11,6 +11,7 @@ import './styles/main.scss';
 import { restoreWatchHistory } from './stores/WatchHistoryStore';
 import { initializeFavorites } from './stores/FavoritesStore';
 import { initializeAccount } from './stores/AccountStore';
+import { getPublicUrl } from './utils/domHelpers';
 
 interface State {
   error: Error | null;
@@ -60,7 +61,7 @@ class App extends Component {
             onValidationError={this.configErrorHandler}
             onValidationCompleted={this.configValidationCompletedHandler}
           >
-            <Router>
+            <Router basename={getPublicUrl('/')}>
               <Root error={this.state.error} />
             </Router>
           </ConfigProvider>

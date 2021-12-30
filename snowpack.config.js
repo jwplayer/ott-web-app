@@ -1,6 +1,8 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
+require('./scripts/_dotenv');
+
 module.exports = {
   mount: {
     public: { url: '/', static: true },
@@ -80,5 +82,6 @@ module.exports = {
   },
   buildOptions: {
     /* ... */
+    baseUrl: process.env.SNOWPACK_PUBLIC_BASE_URL || '',
   },
 };
