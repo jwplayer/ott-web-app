@@ -68,7 +68,7 @@ function getBaseUrl() {
     return envBaseUrl;
   }
   const defaultBaseUrl = customDomain
-    ? '/'
+    ? ''
     : '/' + getGithubDir() + '/';
   return defaultBaseUrl;
 }
@@ -77,6 +77,7 @@ function getEnv() {
   return {
     ...process.env,
     SNOWPACK_PUBLIC_BASE_URL: getBaseUrl(),
+    SNOWPACK_PUBLIC_GITHUB_PAGES: true,
   }
 }
 
@@ -110,6 +111,7 @@ function help() {
     "--deploy - don't ask for deploy confirmation",
     '--deploy-args="--help" - pass arguments to gh-pages, in this case gh-pages --help',
     '--github-remote="origin" - select github remote to use to detect github project name, default is "origin"',
+    '--custom-domain="example.com" - (no slashes) deploy to custom domain instead of github directory',
     '',
   ].join('\n'));
 }
