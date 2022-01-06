@@ -12,7 +12,7 @@ This guide is focused specifically for developers contributing towards this open
 
 ## Bug Reports
 
-A bug is a demonstrable problem caused by code in the repository. Bug reports are very helpful! If you think you've found a bug in the player we'd love to know about it (and fix it).
+A bug is a demonstrable problem caused by code in the repository. Bug reports are very helpful! If you think you've found a bug we'd love to know about it (and fix it).
 
 ### Hold Up!
 
@@ -113,11 +113,11 @@ While far from comprehensive, following these guidelines will get the easy stuff
 ##### Size
 1. Do your best to keep your PRs as small and focused as possible
    - If your PR is large, consider breaking it into smaller ones
-2. **Large additions to the code base must be justified** - we strive to keep the player as small as possible
+2. **Large additions to the code base must be justified** - we strive to keep the codebase as small as possible
 3. Additions to `package.json` must be backed by good reasons
 
 ## Feature Requests
-Feature requests are also welcome, but may not fit within the scope of the player. It's up to you to make the case for your feature and convince us that it's worth implementing. We encourage you to try and solve your problem using the existing code, [services](docs/backend-services.md), or [Configuration](docs/configuration.md) first. As always, you're free to fork the player and implement what you want - feel free to ask questions by following our [Questions / Discussions](#Questions-/-Discussions) guidelines.
+Feature requests are also welcome, but may not fit within the scope of the application. It's up to you to make the case for your feature and convince us that it's worth implementing. We encourage you to try and solve your problem using the existing code, [services](docs/backend-services.md), or [Configuration](docs/configuration.md) first. As always, you're free to fork the repo and implement what you want - feel free to ask questions by following our [Questions / Discussions](#Questions-/-Discussions) guidelines.
 
 ### How Do I Submit A (Good) Feature Request?
 
@@ -125,7 +125,7 @@ Feature suggestions are initially tracked as [GitHub issues](https://guides.gith
 
 * **Title** Use a clear and descriptive title for the issue to identify the suggestion.
 * **Problem** Describe the problem you're trying to solve. Include the business goals driving this need. Explain why this feature would be useful to other JW Player users and isn't something that can or should be implemented in a fork or using the API. Please provide as much information as possible, as this is the most important section.
-* **Current solutions / workarounds** How would you solve these problems today, even partially? What have you already tried? You can also talk list some other video players or applications where this feature already exists.
+* **Current solutions / workarounds** How would you solve these problems today, even partially? What have you already tried? You can also list some other video players or applications where this feature already exists.
 * **Proposed solutions (optional)** Feel free to make a specific suggestion of how you'd solve the problem. We love hearing suggestions, though we may not implement them literally.
 * **Resources** Links/additional materials section. Do you have any research on this ask? Can you point us to any relevant documentation or articles that will help us understand your request?
 
