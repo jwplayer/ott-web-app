@@ -36,27 +36,6 @@
 <body>
   <div id="root"></div>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <script>
-    // TODO: move this to /src/ and only for dev builds
-    var urlSearchParams = new URLSearchParams(window.location.search);
-    var configId =
-          urlSearchParams.get('c') ||
-          window.localStorage.getItem('jwshowcase.config');
-
-    if (configId) {
-      window.localStorage.setItem('jwshowcase.config', configId);
-
-      if (configId.includes('test--')) {
-        window.configLocation = 'https://jw-ott-webapp.s3.eu-central-1.amazonaws.com/' + configId + '.json';
-      } else {
-        window.configLocation =
-          'https://' + configId + '.jwpapp.com/config.json';
-      }
-      window.configId = configId;
-    } else {
-      window.configLocation = './config.json';
-    }
-  </script>
   <script type="module" src="/dist/index.js"></script>
 </body>
 </html>

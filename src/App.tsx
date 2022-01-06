@@ -55,7 +55,7 @@ class App extends Component {
       <I18nextProvider i18n={getI18n()}>
         <QueryProvider>
           <ConfigProvider
-            configLocation={window.configLocation || './config.json'}
+            configLocation={window.configLocation || '/config.json'}
             onLoading={this.configLoadingHandler}
             onValidationError={this.configErrorHandler}
             onValidationCompleted={this.configValidationCompletedHandler}
