@@ -14,14 +14,13 @@ The following tools are needed to start building JW OTT Webapp. Follow the instr
 
 ## Build the JW OTT Webapp
 
-1. Clone the **jw-ott-webapp** repository on your local machine.
+1. Clone the **ott-web-app** repository on your local machine.
 
 ```shell
 $ cd ~/
 
-$ git clone https://github.com/jwplayer/jw-ott-webapp.git
-
-$ cd jw-ott-webapp
+$ git clone https://github.com/jwplayer/ott-web-app.git
+$ cd ott-web-app
 ```
 
 <br />
