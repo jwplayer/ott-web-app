@@ -1,4 +1,3 @@
-/** @type {{InjectManifest: module:workbox-webpack-plugin.InjectManifest, GenerateSW: module:workbox-webpack-plugin.GenerateSW}} */
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const webpack = require('webpack');
 
