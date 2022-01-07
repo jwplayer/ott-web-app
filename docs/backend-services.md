@@ -2,7 +2,7 @@
 
 The application is built as a single page web app that can run without its own dedicated backend. This is useful for
 hosting it with a very simple, static host, like github pages. The server serves the static web content and the frontend
-calls the [JW player platform Delivery API](https://developer.jwplayer.com/jwplayer/docs) directly.
+calls the [JW Player Delivery API](https://developer.jwplayer.com/jwplayer/docs) directly.
 However, for additional functionality, the application can also connect to other backends to provide user
 accounts / authentication, subscription management, and checkout flows. 
 
