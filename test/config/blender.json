@@ -1,1 +1,54 @@
-{"adSchedule": null, "analyticsToken": null, "assets": {"banner": "https://cdn.jwplayer.com/images/nwthWC1U.png"}, "content": [{"backgroundColor": "#000000", "enableText": true, "featured": true, "playlistId": "CJE23b5T"}, {"backgroundColor": "#000000", "enableText": true, "playlistId": "sR5VypYk"}, {"backgroundColor": "#000000", "enableText": true, "playlistId": "o45EkQBf"}], "continuePlaylist": null, "custom": [], "description": "{\n  \"menu\": [{\n    \"label\": \"Films\", \n    \"playlistId\": \"sR5VypYk\",\n    \"filterTags\": \"Action,Comedy,Fantasy,Drama\"\n  },{\n    \"label\": \"Courses\",\n    \"playlistId\": \"o45EkQBf\",\n    \"filterTags\": \"Beginner,Advanced\"\n  }],\n  \"dynamicBlur\": true,\n  \"posterFading\": true,\n  \"analyticsToken\":\"lDd_MCg4EeuMunbqcIJccw\"\n }", "favoritesPlaylist": null, "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)", "menu": [], "options": {"backgroundColor": "#000000", "enableAddToHome": false, "enableCasting": false, "enableContinueWatching": true, "enableCookieNotice": false, "enableHeader": true, "enableInVideoSearch": false, "enableSharing": false, "highlightColor": "#CCCCCC", "rightRail": {"enabled": true}, "showcaseContentOnly": false, "useRecommendationsPlaylist": true, "videoTitlePosition": "above"}, "player": "7xMa4gNw", "recommendationsPlaylist": "fuD6TWcf", "searchPlaylist": "tQ832H1H", "siteName": "Blender", "theme": "light", "version": "2"}
+{
+  "adSchedule": null,
+  "analyticsToken": null,
+  "assets": {
+    "banner": "https://cdn.jwplayer.com/images/nwthWC1U.png"
+  },
+  "content": [
+    {
+      "backgroundColor": "#000000",
+      "enableText": true,
+      "featured": true,
+      "playlistId": "CJE23b5T"
+    },
+    {
+      "backgroundColor": "#000000",
+      "enableText": true,
+      "playlistId": "sR5VypYk"
+    },
+    {
+      "backgroundColor": "#000000",
+      "enableText": true,
+      "playlistId": "o45EkQBf"
+    }
+  ],
+  "continuePlaylist": null,
+  "custom": [],
+  "description": "Blender",
+  "favoritesPlaylist": null,
+  "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
+  "menu": [],
+  "options": {
+    "backgroundColor": "#000000",
+    "enableAddToHome": false,
+    "enableCasting": false,
+    "enableContinueWatching": true,
+    "enableCookieNotice": false,
+    "enableHeader": true,
+    "enableInVideoSearch": false,
+    "enableSharing": false,
+    "highlightColor": "#CCCCCC",
+    "rightRail": {
+      "enabled": true
+    },
+    "showcaseContentOnly": false,
+    "useRecommendationsPlaylist": true,
+    "videoTitlePosition": "above"
+  },
+  "player": "7xMa4gNw",
+  "recommendationsPlaylist": "fuD6TWcf",
+  "searchPlaylist": "tQ832H1H",
+  "siteName": "Blender",
+  "theme": "light",
+  "version": "2"
+}
