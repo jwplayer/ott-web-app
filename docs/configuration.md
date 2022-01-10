@@ -227,3 +227,24 @@ Set this parameter to `true` if you want to enable the Poster Fading feature. By
 
 Set this parameter to `false` if you want to disable titles below the cards on the home, playlist and search screen.  
 
+---
+
+**cleengId** (optional)
+
+The ID of your Cleeng ID environment if you would like to integrate with Cleeng as a backend for account, subscription, and checkout functionality. Omit this key in your config to disable Cleeng and the related functionality. See [docs/backend-services](backend-services.md) for more details.
+
+---
+
+**cleengSandbox** (optional)
+
+This setting determines which Cleeng mediastore URL is used. If false or not defined, the Cleeng production URL is used (https://mediastore.cleeng.com). If true, the Cleeng sandbox URL is used (https://mediastore-sandbox.cleeng.com). Note, this setting is ignored if Cleeng is not enabled (i.e. there is not Cleeng ID defined)
+
+---
+
+**json.cleengMonthlyOffer** (optional)
+
+If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least 1 offer ID (either this or the yearly offer property.)  The application uses this ID to map to an offer that you've configured in your Cleeng environment under Offers to represent your monthly subscription. Note that the only the data used from the Cleeng offer is the price, the free days, and the free period and the app does not verify if the offer length is actually monthly.  If no monthly or yearly offer is configured, the Payments section will not be shown.
+
+**json.cleengYearlyOffer** (optional)
+
+If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least 1 offer ID (either this or the monthly offer property.)  The application uses this ID to map to an offer that you've configured in your Cleeng environment under Offers to represent your yearly subscription. Note that the only the data used from the Cleeng offer is the price, the free days, and the free period and the app does not verify if the offer length is actually yearly.  If no monthly or yearly offer is configured, the Payments section will not be shown.
