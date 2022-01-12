@@ -1,13 +1,15 @@
-/** @type {import("snowpack").SnowpackUserConfig } */
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const webpack = require('webpack');
 
 require('./scripts/_dotenv');
 
 module.exports = {
-  mount: {
-    public: { url: '/', static: true },
-    src: { url: '/dist' },
-  },
+  mount: Object.assign({
+        public: { url: '/', static: true },
+        src: { url: '/dist' },
+      // Only include the test-data directory in non-production builds
+      }, process.env.NODE_ENV === 'production' ? {} : {test: {url: '/test-data'}}
+  ),
   alias: {},
   plugins: [
     '@snowpack/plugin-postcss',
@@ -43,6 +45,9 @@ module.exports = {
         }
 
         config.plugins.push(new WorkboxPlugin.GenerateSW())
+        config.plugins.push(new webpack.DefinePlugin({
+          NODE_ENV_COMPILE_CONST: process.env.NODE_ENV || 'production',
+        }))
 
         return config;
       },

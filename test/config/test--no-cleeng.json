@@ -1,6 +1,6 @@
 {
   "assets": {
-    "banner": "/images/logo.png"
+    "banner": "https://cdn.jwplayer.com/images/nwthWC1U.png"
   },
   "content": [
     {
@@ -32,7 +32,6 @@
   "description": "Blender demo site",
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
   "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
-  "cleengId": "440058292",
   "cleengSandbox": true,
   "options": {
     "dynamicBlur": true,
@@ -42,12 +41,10 @@
     "enableContinueWatching": true,
     "highlightColor": null
   },
-  "player": "WVso3U0h",
+  "player": "7xMa4gNw",
   "recommendationsPlaylist": "fuD6TWcf",
   "searchPlaylist": "tQ832H1H",
   "siteName": "Blender",
   "json": {
-    "cleengMonthlyOffer": "S970187168_NL",
-    "cleengYearlyOffer": "S467691538_NL"
   }
 }
