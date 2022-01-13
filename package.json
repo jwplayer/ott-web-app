@@ -18,8 +18,8 @@
     "lint:styles": "stylelint \"src/**/*.scss\"",
     "commit-msg": "commitlint --edit $1",
     "pre-commit": "lint-staged && TZ=UTC yarn test --coverage --watchAll=false --ci --bail=1",
-    "codecept:mobile": "codeceptjs -c codecept.mobile.js run --steps",
-    "codecept:desktop": "codeceptjs -c codecept.desktop.js run --steps",
+    "codecept:mobile": "codeceptjs -c test-e2e/codecept.mobile.js run --steps",
+    "codecept:desktop": "codeceptjs -c test-e2e/codecept.desktop.js run --steps",
     "deploy:github": "node ./scripts/deploy-github.js"
   },
   "dependencies": {

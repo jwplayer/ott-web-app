@@ -8,7 +8,7 @@ module.exports = {
         public: { url: '/', static: true },
         src: { url: '/dist' },
       // Only include the test-data directory in non-production builds
-      }, process.env.NODE_ENV === 'production' ? {} : {test: {url: '/test-data'}}
+      }, process.env.NODE_ENV === 'production' ? {} : {"test-e2e/data": {url: '/test-data'}}
   ),
   alias: {},
   plugins: [

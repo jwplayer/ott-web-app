@@ -1,4 +1,3 @@
-const { devices } = require('playwright');
 const { setHeadlessWhen } = require('@codeceptjs/configure');
 
 // turn on headless mode when running with HEADLESS=true environment variable
@@ -6,23 +5,22 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
-  grep     : '@mobile',
-  tests    : './test/*_test.js',
+  grep     : '@desktop',
+  tests    : './tests/*.js',
   output   : './output',
   helpers  : {
     Playwright: {
       url    : 'http://localhost:8080',
       show   : false,
       browser: 'chromium',
-      emulate: devices['iPhone SE'],
     }
   },
   include  : {
-    I: './steps_file.js'
+    I: './utils/steps_file.js'
   },
   bootstrap: null,
   mocha    : {},
-  name     : 'mobile',
+  name     : 'desktop',
   plugins  : {
     pauseOnFail     : {},
     retryFailedStep : {

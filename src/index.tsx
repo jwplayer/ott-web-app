@@ -20,7 +20,7 @@ if (typeof NODE_ENV_COMPILE_CONST === 'undefined' || NODE_ENV_COMPILE_CONST !== 
     window.sessionStorage.setItem('config-file-override', configFile);
   }
 
-  window.configLocation = configFile ? `/test-data/config/${configFile}.json` : '/config.json';
+  window.configLocation = configFile ? `/test-data/config.${configFile}.json` : '/config.json';
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
