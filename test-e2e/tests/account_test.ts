@@ -1,4 +1,4 @@
-const assert = require('assert');
+import * as assert from "assert";
 
 Feature('account').tag('@desktop')
 
@@ -46,7 +46,7 @@ Scenario('I can edit my email', ({ I }) => {
   I.wait(2);
   I.see('Email already exists!');
   //todo: missing 'wrong password' message in application
-  
+
   I.click('Edit account');
   I.fillField('email', '123456@test.org');
   I.fillField('confirmationPassword', 'Ax854bZ!$');
@@ -87,7 +87,7 @@ Scenario('I can reset my password', ({ I }) => {
   I.see('If you want to edit your password, click \'YES, Reset\' to receive password reset instruction on your mail');
   I.see('Yes, reset');
   I.see('No, thanks');
-  
+
   I.click('No, thanks');
   I.dontSee('Yes, reset');
   I.click('Edit password');
@@ -115,10 +115,10 @@ Scenario('I can update my personal details', ({ I }) => {
   I.see('(Optional)');
   I.see('Save');
   I.see('Cancel');
-  
+
   I.click('Cancel');
   I.dontSee('Save');
-  
+
   I.click('Edit information');
   I.fillField('firstName', 'Testbot New Name');
   I.fillField('lastName', 'Generated');

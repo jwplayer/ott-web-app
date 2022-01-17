@@ -1,10 +1,9 @@
-const assert = require('assert');
+import * as assert from "assert";
 
-Feature('register').tag('@mobile');
+Feature('register').tag('@desktop');
 
 Scenario('I can open the register modal', ({ I }) => {
   I.amOnPage('http://localhost:8080?c=test--accounts');
-  I.click('div[aria-label="Open menu"]')
   I.click('Sign up');
   I.see('Email');
   I.see('Password');
@@ -21,7 +20,6 @@ Scenario('I can open the register modal', ({ I }) => {
 Scenario('I can close the modal', ({ I }) => {
   I.click('div[aria-label="Close"]');
   I.dontSee('Email');
-  I.click('div[aria-label="Open menu"]')
   I.click('Sign up');
   I.see('Email');
 });
@@ -73,7 +71,7 @@ Scenario('I get strength feedback when typing in a password', ({ I }) => {
   I.see('Very strong');
 });
 
-Scenario('I can toggle to view password', async ({ I }) => {
+Scenario('I can toggle to view/hide my password', async ({ I }) => {
   let inputType = await I.grabAttributeFrom('input[name="password"]', 'type');
   assert.strictEqual('password', inputType);
 
@@ -95,7 +93,7 @@ Scenario('I can submit to register', ({ I }) => {
   I.checkOption('Terms and Conditions');
   I.click('Continue');
   I.wait(5);
-  
+
   I.see('There is already a user with this email');
 
   // todo: Add a random script to register with a unique email?
