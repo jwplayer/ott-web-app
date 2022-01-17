@@ -1,3 +1,5 @@
+require('ts-node/register');
+
 const { setHeadlessWhen } = require('@codeceptjs/configure');
 
 // turn on headless mode when running with HEADLESS=true environment variable
@@ -5,8 +7,10 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
-  grep     : '@desktop',
-  tests    : './tests/*.js',
+  tests    : [
+    './tests/*.js',
+    './tests/*.ts'
+  ],
   output   : './output',
   helpers  : {
     Playwright: {
