@@ -21,7 +21,6 @@ Scenario('I can slide within the featured shelf', ({ I }) => {
   I.amOnPage('http://localhost:8080?c=blender');
   I.see('Blender Channel');
   I.see('LIVE');
-  I.seeElement({ css: 'div[aria-label="Item locked"]' })
   I.dontSee('Spring');
   I.dontSee('8 min');
   I.click({ css: 'div[aria-label="Slide right"]' });
@@ -36,7 +35,7 @@ Scenario('I can slide within the featured shelf', ({ I }) => {
   I.dontSee('Spring');
 });
 
-//todo: 
+//todo:
 // within('div[data-mediaid="sR5VypYk"]', () => {});
 
 Scenario('I can slide within non-featured shelves', ({ I }) => {
