@@ -1,10 +1,9 @@
-const assert = require('assert');
+import * as assert from "assert";
 
-Feature('login').tag('@mobile');
+Feature('login').tag('@desktop');
 
 Scenario('Signing buttons show for config', ({ I }) => {
   I.amOnPage('http://localhost:8080?c=test--accounts');
-  I.click('div[aria-label="Open menu"]')
   I.see('Sign in');
   I.see('Sign up');
 });
@@ -22,13 +21,11 @@ Scenario('I can open the log in modal', ({ I }) => {
 Scenario('I can close the modal', ({ I }) => {
   I.click('div[aria-label="Close"]');
   I.dontSee('Email');
-  I.click('div[aria-label="Open menu"]')
   I.click('Sign in');
   I.see('Email');
 
   I.forceClick('div[data-testid="backdrop"]');
   I.dontSee('Email');
-  I.click('div[aria-label="Open menu"]')
   I.click('Sign in');
   I.see('Email');
 });
@@ -67,12 +64,12 @@ Scenario('I get a warning when the form is incompletely filled in', ({ I }) => {
   I.fillField('password', 'Ax854bZ!$');
   I.click('button[type="submit"]');
   I.dontSee('Incorrect email/password combination');
-  I.wait(3);  
+  I.wait(3);
   I.dontSee('Email');
 });
 
 Scenario('I can use the User menu', ({ I }) => {
-  I.click('div[aria-label="Open menu"]');
+  I.click('div[aria-label="Open user menu"]');
   I.see('Account');
   I.see('Favorites');
   I.see('Log out');

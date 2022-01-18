@@ -1,4 +1,4 @@
-const assert = require('assert');
+import * as assert from "assert";
 
 Feature('favorites').tag('@desktop').tag('@mobile');
 
@@ -11,7 +11,7 @@ Scenario('I can add a video to my favorites', async ({ I }) => {
   I.seeElement({ css: 'button[aria-label="Remove from favorites"]' });
 
   const savedFavorites = await I.executeScript(function() {
-    return JSON.parse(localStorage.getItem('jwshowcase.favorites'));
+    return JSON.parse(localStorage.getItem('jwshowcase.favorites') || '');
   });
 
   assert.deepEqual(savedFavorites, [{ mediaid: 'DqGECHhT', title: 'Central Intelligence', duration: '109', tags: 'action and adventure and fun,comedy,trailer,simi dash feed'}]);
@@ -23,7 +23,7 @@ Scenario('I can remove a video from my favorites', async({ I }) => {
   I.seeElement({ css: 'button[aria-label="Add to favorites"]' });
 
   const savedFavorites = await I.executeScript(function() {
-    return JSON.parse(localStorage.getItem('jwshowcase.favorites'));
+    return JSON.parse(localStorage.getItem('jwshowcase.favorites') || '');
   });
 
   assert.strictEqual(savedFavorites.length, 0);

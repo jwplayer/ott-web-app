@@ -1,10 +1,9 @@
-const assert = require('assert');
+import * as assert from "assert";
 
-Feature('search').tag('@mobile');
+Feature('search').tag('@desktop');
 
-Scenario('I can activate the search bar by clicking on the search icon', ({ I }) => {
+Scenario('Search bar is visible', ({ I }) => {
   I.amOnPage('http://localhost:8080');
-  I.click({ css: 'div[aria-label="Open search"]' });
   I.seeElement({ css: 'input[aria-label="Search"]' });
 });
 
@@ -35,10 +34,4 @@ Scenario('I can clear the search phrase with the clear button', async ({ I }) =>
 
 Scenario('I see a message when the search phrase is empty', async ({ I }) => {
   I.see('Type something in the search box to start searching');
-});
-
-Scenario('I can close the search bar by clicking the close icon', async ({ I }) => {
-  I.click({ css: 'div[aria-label="Close search"]' });
-  I.dontSee({ css: 'input[aria-label="Search"]' })
-  I.seeCurrentUrlEquals('http://localhost:8080/');
 });

@@ -1,3 +1,5 @@
+require('ts-node/register');
+
 const { devices } = require('playwright');
 const { setHeadlessWhen } = require('@codeceptjs/configure');
 
@@ -6,8 +8,10 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
-  grep     : '@mobile',
-  tests    : './tests/*.js',
+  tests    : [
+    './tests/*.js',
+    './tests/*.ts'
+  ],
   output   : './output',
   helpers  : {
     Playwright: {

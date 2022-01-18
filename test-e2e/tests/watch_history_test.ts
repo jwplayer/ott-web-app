@@ -1,4 +1,4 @@
-const assert = require('assert');
+import * as assert from "assert";
 
 Feature('watch_history').tag('@desktop');
 

@@ -18,8 +18,8 @@
     "lint:styles": "stylelint \"src/**/*.scss\"",
     "commit-msg": "commitlint --edit $1",
     "pre-commit": "lint-staged && TZ=UTC yarn test --coverage --watchAll=false --ci --bail=1",
-    "codecept:mobile": "codeceptjs -c test-e2e/codecept.mobile.js run --steps",
-    "codecept:desktop": "codeceptjs -c test-e2e/codecept.desktop.js run --steps",
+    "codecept:mobile": "cd test-e2e && codeceptjs -c codecept.mobile.js run --steps --grep '@mobile'",
+    "codecept:desktop": "cd test-e2e && codeceptjs -c codecept.desktop.js run --steps --grep '@desktop'",
     "deploy:github": "node ./scripts/deploy-github.js"
   },
   "dependencies": {
@@ -98,6 +98,7 @@
     "stylelint-declaration-strict-value": "^1.7.12",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.20.0",
+    "ts-node": "^10.4.0",
     "typescript": "^4.3.4",
     "workbox-webpack-plugin": "^6.1.5"
   },
