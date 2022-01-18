@@ -32,7 +32,7 @@
   "description": "Blender demo site",
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
   "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
-  "cleengId": "292636325",
+  "cleengId": "440058292",
   "cleengSandbox": true,
   "options": {
     "dynamicBlur": true,
@@ -42,7 +42,7 @@
     "enableContinueWatching": true,
     "highlightColor": null
   },
-  "player": "7xMa4gNw",
+  "player": "WVso3U0h",
   "recommendationsPlaylist": "fuD6TWcf",
   "searchPlaylist": "tQ832H1H",
   "siteName": "Blender",

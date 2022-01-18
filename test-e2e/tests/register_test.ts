@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import * as assert from 'assert';
 
 Feature('register').tag('@desktop');
 
-Scenario('I can open the register modal', ({ I }) => {
+Scenario('I can open the register modal',  ({ I }) => {
   I.amOnPage('http://localhost:8080?c=test--accounts');
   I.click('Sign up');
   I.see('Email');

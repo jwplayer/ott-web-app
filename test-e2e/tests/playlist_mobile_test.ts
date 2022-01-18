@@ -1,12 +1,15 @@
 Feature('playlist').tag('@mobile');
 
-Scenario('Playlist screen loads on mobile', ({ I }) => {
+Before(({I}) => {
   I.amOnPage('http://localhost:8080/p/sR5VypYk');
+})
+
+Scenario('Playlist screen loads on mobile', ({ I }) => {
   I.see('All Films');
   I.see('Agent 327');
   I.see('Big Buck Bunny');
   I.see('Caminandes 1: Llama Drama');
-  I.see('Caminandes 2: Gran Dillama');
+  I.see('Caminandes 2: Gran Dillama')
 });
 
 Scenario('I see the filter options', ({ I }) => {
@@ -14,6 +17,8 @@ Scenario('I see the filter options', ({ I }) => {
 });
 
 Scenario('I can change the filter to action', ({ I }) => {
+  I.see('All');
+
   I.selectOption('Filter videos by genre', 'Action');
 
   I.see('Agent 327');
@@ -25,7 +30,15 @@ Scenario('I can change the filter to action', ({ I }) => {
 });
 
 Scenario('I can reset the filter by selection the "All" option', ({ I }) => {
+  I.selectOption('Filter videos by genre', 'Action');
+
+  I.see('Agent 327');
+  I.dontSee('Big Buck Bunny');
+  I.dontSee('Caminandes 1: Llama Drama');
+  I.dontSee('Caminandes 2: Gran Dillama');
+
   I.selectOption('Filter videos by genre', 'All');
+
   I.see('Agent 327');
   I.see('Big Buck Bunny');
   I.see('Caminandes 1: Llama Drama');

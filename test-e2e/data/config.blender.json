@@ -1,6 +1,6 @@
 {
   "adSchedule": null,
-  "analyticsToken": null,
+  "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
   "assets": {
     "banner": "https://cdn.jwplayer.com/images/nwthWC1U.png"
   },
@@ -27,9 +27,18 @@
   "description": "Blender",
   "favoritesPlaylist": null,
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
-  "menu": [],
+  "menu": [{
+    "label": "Films",
+    "playlistId": "sR5VypYk",
+    "filterTags": "Action,Comedy,Fantasy,Drama"
+  },{
+    "label": "Courses",
+    "playlistId": "o45EkQBf",
+    "filterTags": "Beginner,Advanced"
+  }],
   "options": {
     "backgroundColor": "#000000",
+    "dynamicBlur": true,
     "enableAddToHome": false,
     "enableCasting": false,
     "enableContinueWatching": true,
@@ -41,11 +50,12 @@
     "rightRail": {
       "enabled": true
     },
+    "posterFading": true,
     "showcaseContentOnly": false,
     "useRecommendationsPlaylist": true,
     "videoTitlePosition": "above"
   },
-  "player": "7xMa4gNw",
+  "player": "WVso3U0h",
   "recommendationsPlaylist": "fuD6TWcf",
   "searchPlaylist": "tQ832H1H",
   "siteName": "Blender",

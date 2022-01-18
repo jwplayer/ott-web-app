@@ -1,52 +1,59 @@
-import * as assert from "assert";
+import * as assert from 'assert';
+
+import {functions, constants, selectors} from '../utils/utils';
 
 Feature('login').tag('@mobile');
 
-Scenario('Signing buttons show for config', ({ I }) => {
+Before(({I}) => {
   I.amOnPage('http://localhost:8080?c=test--accounts');
-  I.click('div[aria-label="Open menu"]')
-  I.see('Sign in');
-  I.see('Sign up');
+});
+
+Scenario('Signin buttons show for config', ({ I }) => {
+  functions.openDrawer(I);
 });
 
 Scenario('I can open the log in modal', ({ I }) => {
-  I.click('Sign in');
-  I.see('Sign in');
-  I.see('Email');
-  I.see('Password');
-  I.see('Forgot password');
-  I.see('New to Blender?');
-  I.see('Sign up');
+  openLoginModal(I);
 });
 
 Scenario('I can close the modal', ({ I }) => {
+  openLoginModal(I);
+
   I.click('div[aria-label="Close"]');
   I.dontSee('Email');
-  I.click('div[aria-label="Open menu"]')
-  I.click('Sign in');
-  I.see('Email');
+  functions.openDrawer(I);
+});
+
+Scenario('I can close the modal by clicking outside', ({ I }) => {
+  openLoginModal(I);
 
   I.forceClick('div[data-testid="backdrop"]');
   I.dontSee('Email');
-  I.click('div[aria-label="Open menu"]')
-  I.click('Sign in');
-  I.see('Email');
+  functions.openDrawer(I);
 });
 
 Scenario('I can toggle to view password', async ({ I }) => {
+  openLoginModal(I);
+
   let inputType = await I.grabAttributeFrom('input[name="password"]', 'type');
   assert.strictEqual('password', inputType);
 
+  async function getPasswordType() {
+    return await I.grabAttributeFrom('input[name="password"]', 'type');
+  }
+
   I.click('div[aria-label="View password"]');
-  inputType = await I.grabAttributeFrom('input[name="password"]', 'type');
+  inputType = await getPasswordType();
   assert.strictEqual('text', inputType);
 
   I.click('div[aria-label="Hide password"]');
-  inputType = await I.grabAttributeFrom('input[name="password"]', 'type');
+  inputType = await getPasswordType();
   assert.strictEqual('password', inputType);
 })
 
 Scenario('I get a warning when the form is incompletely filled in', ({ I }) => {
+  openLoginModal(I);
+
   I.click('button[type="submit"]');
   I.see('This field is required');
   I.seeNumberOfElements('div[class="_helperText_1rxvx_5"]', 2);
@@ -58,27 +65,65 @@ Scenario('I get a warning when the form is incompletely filled in', ({ I }) => {
   I.dontSee('This field is required');
   I.see('Please re-enter your email details and try again');
 
-  I.fillField('Email', '12345@test.org');
+  I.fillField('Email', constants.username);
   I.dontSee('Please re-enter your email details and try again');
   I.click('button[type="submit"]');
-  I.see('Incorrect email/password combination');
+  I.waitForElement('text="Incorrect email/password combination"', 5);
 
-
-  I.fillField('password', 'Ax854bZ!$');
+  I.fillField('password', constants.password);
   I.click('button[type="submit"]');
   I.dontSee('Incorrect email/password combination');
-  I.wait(3);
+  I.waitForInvisible('Sign in', 5);
   I.dontSee('Email');
+  I.dontSee('Password');
+  I.dontSee('Sign in');
 });
 
 Scenario('I can use the User menu', ({ I }) => {
-  I.click('div[aria-label="Open menu"]');
-  I.see('Account');
-  I.see('Favorites');
+  login(I);
+  functions.openDrawer(I, true);
+
   I.see('Log out');
 });
 
 Scenario('I can log out', ({ I })=> {
+  login(I);
+
+  functions.openDrawer(I, true);
+
   I.click('Log out');
   I.see('Sign in');
 });
+
+function openLoginModal(I) {
+  functions.openDrawer(I, false);
+
+  I.click('Sign in');
+  I.seeElement(selectors.loginForm);
+  I.see('Sign in');
+  I.see('Email');
+  I.see('Password');
+  I.see('Forgot password');
+  I.see('New to Blender?');
+  I.see('Sign up');
+}
+
+function login(I) {
+  openLoginModal(I);
+  submitLoginForm(I);
+}
+
+function submitLoginForm(I) {
+  I.fillField('Email', constants.username);
+  I.dontSee('Please re-enter your email details and try again');
+  I.fillField('Password', constants.password);
+  I.dontSee('This field is required');
+
+  I.click('button[type="submit"]');
+
+  I.dontSee('Incorrect email/password combination');
+  I.waitForInvisible(selectors.loginForm, 5);
+  I.dontSee('Email');
+  I.dontSee('Password');
+  I.dontSee('button[type="submit"]');
+}

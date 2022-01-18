@@ -1,14 +1,9 @@
-import * as assert from "assert";
+import * as assert from 'assert';
 
 Feature('favorites').tag('@desktop').tag('@mobile');
 
 Scenario('I can add a video to my favorites', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/DqGECHhT/central-intelligence?list=WXu7kuaW');
-  I.see('Favorite');
-
-  I.scrollTo({ css: 'button[aria-label="Add to favorites"]' });
-  I.forceClick({ css: 'button[aria-label="Add to favorites"]' });
-  I.seeElement({ css: 'button[aria-label="Remove from favorites"]' });
+  addVideoToFavorites(I);
 
   const savedFavorites = await I.executeScript(function() {
     return JSON.parse(localStorage.getItem('jwshowcase.favorites') || '');
@@ -18,6 +13,7 @@ Scenario('I can add a video to my favorites', async ({ I }) => {
 });
 
 Scenario('I can remove a video from my favorites', async({ I }) => {
+  addVideoToFavorites(I);
   I.forceClick({ css: 'button[aria-label="Remove from favorites"]' });
 
   I.seeElement({ css: 'button[aria-label="Add to favorites"]' });
@@ -33,14 +29,18 @@ Scenario('I can see my favorited videos on the home page', async ({ I }) => {
   I.amOnPage('http://localhost:8080/');
   I.dontSee('Favorites');
 
+  addVideoToFavorites(I);
+
+  I.amOnPage('http://localhost:8080/');
+  I.see('Favorites')
+  I.see('Central Intelligence', { css: '[data-mediaid="favorites"]'});
+});
+
+function addVideoToFavorites(I) {
   I.amOnPage('http://localhost:8080/m/DqGECHhT/central-intelligence?list=WXu7kuaW');
   I.see('Favorite');
 
   I.scrollTo({ css: 'button[aria-label="Add to favorites"]' });
   I.forceClick({ css: 'button[aria-label="Add to favorites"]' });
   I.seeElement({ css: 'button[aria-label="Remove from favorites"]' });
-
-  I.amOnPage('http://localhost:8080/');
-  I.see('Favorites')
-  I.see('Central Intelligence', { css: '[data-mediaid="favorites"]'});
-});
+}

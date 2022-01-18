@@ -8,6 +8,7 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
+  grep: '@mobile',
   tests    : [
     './tests/*.js',
     './tests/*.ts'
@@ -17,8 +18,8 @@ exports.config = {
     Playwright: {
       url    : 'http://localhost:8080',
       show   : false,
-      browser: 'chromium',
-      emulate: devices['iPhone SE'],
+      channel: 'chrome',
+      emulate: devices['Pixel 5'],
     }
   },
   include  : {
