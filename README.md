@@ -42,3 +42,7 @@ To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify
 ## Support and Bug Reporting
 
 To report bugs and feature requests, or request help using JW OTT Webapp, use this repository's [Issues](https://github.com/jwplayer/ott-web-app/issues) page.
+
+## Software License
+
+This project is licensed under under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).  See [LICENSE.txt](LICENSE.txt) for more details.
