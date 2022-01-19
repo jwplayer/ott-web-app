@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-Feature('series');
+Feature('series').tag('@mobile @desktop');
 
 Scenario('I can see series', ({ I }) => {
   I.amOnPage('http://localhost:8080/s/L24UEeMK/fantasy-vehicle-creation?e=I3k8wgIs&c=test--no-cleeng');
@@ -25,11 +25,10 @@ Scenario('I can see series', ({ I }) => {
 
 Scenario('I can play other episodes from the series', async ({ I }) => {
   I.amOnPage('http://localhost:8080/s/L24UEeMK/fantasy-vehicle-creation?e=I3k8wgIs&c=test--no-cleeng');
+
   I.scrollTo('text="Modeling Part 1"');
   I.click('div[aria-label="Play Modeling Part 1"]');
-  I.usePlaywrightTo('ssss', ({sdfsf}) => {
-    sdfsf.test();
-  });
+
   // Scroll to the top when a new episode is selected (takes a short time)
   I.wait(2);
   assert.strictEqual((await I.grabPageScrollPosition()).y, 0);

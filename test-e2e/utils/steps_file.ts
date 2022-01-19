@@ -1,8 +1,8 @@
-/* global jwplayer:readonly */
+import * as assert from 'assert';
 
-// in this file you can append custom step methods to 'I' object
-
-const assert = require("assert");
+declare global {
+  let jwplayer: () => {getState: () => string};
+}
 
 module.exports = function() {
   return actor({
@@ -10,7 +10,7 @@ module.exports = function() {
     // Define custom steps here, use 'this' to access default methods of I.
     // It is recommended to place a general 'login' function here.
 
-    login: function (email = '12345@test.org', password = 'Ax854bZ!$') {
+    login: function (this: CodeceptJS.I, email = '12345@test.org', password = 'Ax854bZ!$') {
       this.amOnPage('/');
       this.click('Sign in');
       this.fillField('Email', email);
@@ -18,7 +18,7 @@ module.exports = function() {
       this.click('button[type="submit"]');
       this.wait(5);
     },
-    loginMobile: function (email = '12345@test.org', password = 'Ax854bZ!$') {
+    loginMobile: function (this: CodeceptJS.I, email = '12345@test.org', password = 'Ax854bZ!$') {
       this.amOnPage('/');
       this.click('div[aria-label="Open menu"]');
       this.click('Sign in');
@@ -27,15 +27,15 @@ module.exports = function() {
       this.click('button[type="submit"]');
       this.wait(5);
     },
-    swipeLeft: async function(args) {
+    swipeLeft: async function (this: CodeceptJS.I, args) {
       args.direction = 'left';
       await this.swipe(args);
     },
-    swipeRight: async function(args) {
+    swipeRight: async function (this: CodeceptJS.I, args) {
       args.direction = 'right';
       await this.swipe(args);
     },
-    swipe: async function(args) {
+    swipe: async function (this: CodeceptJS.I, args) {
       await this.executeScript((args) => {
         const xpath = args.xpath || `//*[text() = "${args.text}"]`;
 
@@ -45,6 +45,10 @@ module.exports = function() {
 
         const element = document.evaluate(xpath, document, null, XPathResult.ANY_UNORDERED_NODE_TYPE,
             null).singleNodeValue;
+
+        if (!element) {
+          throw `Could not find element by xpath: "${xpath}"`;
+        }
 
         element.dispatchEvent(new TouchEvent('touchstart',
             {
@@ -56,7 +60,8 @@ module.exports = function() {
                   clientX: points.x1,
                   clientY: points.y1
                 })
-              ]}));
+              ]
+            }));
 
         element.dispatchEvent(new TouchEvent('touchend',
             {
@@ -68,7 +73,8 @@ module.exports = function() {
                   clientX: points.x2,
                   clientY: points.y2
                 })
-              ]}));
+              ]
+            }));
 
       }, args);
 
@@ -78,13 +84,13 @@ module.exports = function() {
       this.see(title);
       await this.waitForPlayerState('playing', ['buffering', 'idle', ''], tries);
     },
-    waitForPlayerState: async function (expectedState, allowedStates = [], tries = 5) {
+    waitForPlayerState: async function (this: CodeceptJS.I, expectedState, allowedStates: string[] = [], tries = 5) {
       // Since this check executes a script in the browser, it won't use the codecept retries,
       // so we have to manually retry (this is because the video can take time to load and the state will be buffering)
-      for(let i = 0; i < tries; i++) {
+      for (let i = 0; i < tries; i++) {
         const state = await this.executeScript(() => typeof jwplayer === 'undefined' ? '' : jwplayer().getState());
 
-        console.debug(`    Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
+        await this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
 
         if (state === expectedState) {
           return;
@@ -99,7 +105,7 @@ module.exports = function() {
 
       assert.fail(`Player did not reach "${expectedState}"`);
     },
-    checkPlayerClosed: async function () {
+    checkPlayerClosed: async function (this: CodeceptJS.I) {
       this.dontSeeElement('div[class*="jwplayer"]');
       this.dontSeeElement('video');
       // eslint-disable-next-line no-console

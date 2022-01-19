@@ -1,14 +1,16 @@
 Feature('home').tag('@mobile');
 
+Before(({I}) => {
+  I.amOnPage('http://localhost:8080?c=blender');
+});
+
 Scenario('Mobile home screen loads', ({ I }) => {
-  I.amOnPage('http://localhost:8080');
   I.see('Blender');
   I.see('Agent 327');
   I.see('LIVE');
 });
 
 Scenario('Menu button opens the sidebar', ({ I }) => {
-  I.amOnPage('http://localhost:8080');
   I.click('[aria-label="Open menu"]');
   I.see('Home');
   I.see('Films');
@@ -18,50 +20,49 @@ Scenario('Menu button opens the sidebar', ({ I }) => {
   I.see('The Daily Dweebs');
 });
 
-Scenario('I can slide within the featured shelf', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=blender');
+Scenario('I can slide within the featured shelf', async ({ I }) => {
   I.see('Blender Channel');
   I.see('LIVE');
-  I.seeElement({ css: 'div[aria-label="Item locked"]' })
   I.dontSee('Spring');
   I.dontSee('8 min');
+  await I.swipeLeft({text:'Blender Channel'});
 
-  // todo: Simulate swipe events
+  I.waitForElement('text=Spring', 3);
+  I.see('8 min');
+  I.waitForInvisible('text="Blender Channel"', 3);
+  I.dontSee('Blender Channel');
+  I.dontSee('LIVE');
 
-  // I.click({ css: 'div[aria-label="Slide right"]' });
-  // I.wait(0.4);
-  // I.see('Spring');
-  // I.see('8 min');
-  // I.dontSee('Blender Channel');
-  // I.dontSee('LIVE');
-  // I.click({ css: 'div[aria-label="Slide left"]' }, 'div[class="_shelfContainer_1i652_13 _featured_1i652_16"]');
-  // I.wait(0.4);
-  // I.see('Blender Channel');
-  // I.dontSee('Spring');
+  await I.swipeLeft({text: 'Spring'});
+
+  I.waitForElement('text="Blender Channel"', 3);
+  I.dontSee('Spring');
 });
 
-Scenario('I can slide within non-featured shelves', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=blender');
-  I.scrollTo({ css: 'div[data-mediaid="sR5VypYk"]' });
+Scenario('I can slide within non-featured shelves', async ({ I }) => {
   I.see('All Films');
   I.see('Agent 327');
   I.see('4 min');
   I.dontSee('Cosmos Laundromat');
   I.dontSee('13 min');
-  // I.click({ css: 'div[aria-label="Slide right"]' }, 'div[data-mediaid="sR5VypYk"]');
-  // I.wait(0.4);
-  // I.see('Cosmos Laundromat');
-  // I.see('13 min');
-  // I.dontSee('Agent 327');
-  // I.click({ css: 'div[aria-label="Slide left"]' }, 'div[data-mediaid="sR5VypYk"]');
-  // I.wait(0.4);
-  // I.see('Agent 327');
-  // I.dontSee('Cosmos Laundromat');
+  await I.swipeLeft({text: 'Agent 327'});
+  I.see('Big Buck Bunny');
+  I.see('10 min');
+  I.dontSee('Agent 327');
+  await I.swipeRight({text: 'Big Buck Bunny'});
+
+  I.see('Agent 327');
+  I.dontSee('Big Buck Bunny');
+
+  await I.swipeRight({text: 'Agent 327'});
+
+  I.dontSee('Agent 327');
+  I.see('The Daily Dweebs');
 });
 
 Scenario('I can see the footer', ({ I }) => {
-  I.scrollPageToBottom('Blender Foundation');
+  I.scrollPageToBottom();
+  I.see('© Blender Foundation');
   I.see('cloud.blender.org');
   I.click('cloud.blender.org');
 });
-
