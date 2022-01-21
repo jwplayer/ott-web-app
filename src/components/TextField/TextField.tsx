@@ -26,6 +26,7 @@ type Props = {
   multiline?: boolean;
   rows?: number;
   editing?: boolean;
+  testId?: string;
 };
 
 const TextField: React.FC<Props> = ({
@@ -40,6 +41,7 @@ const TextField: React.FC<Props> = ({
   rows = 3,
   editing = true,
   value,
+  testId,
   ...rest
 }: Props) => {
   const id = useOpaqueId('text-field', rest.name);
@@ -68,7 +70,7 @@ const TextField: React.FC<Props> = ({
   }
 
   return (
-    <div className={textFieldClassName}>
+    <div className={textFieldClassName} data-testid={testId}>
       <label htmlFor={id} className={styles.label}>
         {label}
         {!rest.required && editing ? <span>{t('optional')}</span> : null}

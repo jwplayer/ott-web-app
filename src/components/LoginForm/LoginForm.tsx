@@ -46,6 +46,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         name="email"
         type="email"
         required
+        testId="email-input"
       />
       <TextField
         value={values.password}
@@ -62,6 +63,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
           </IconButton>
         }
         required
+        testId="password-input"
       />
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>

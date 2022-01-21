@@ -1,4 +1,4 @@
-Feature('seo').tag('@desktop');
+Feature('seo').tag('@desktop-only');
 
 Scenario('It renders the correct meta tags for the home screen', ({ I }) => {
   I.amOnPage('http://localhost:8080');

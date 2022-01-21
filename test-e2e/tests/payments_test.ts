@@ -1,4 +1,4 @@
-Feature('payments').tag('@desktop')
+Feature('payments').tag('@desktop-only')
 
 // todo: run same test with loginMobile for @mobile
 // todo: mock price difference for locale (server vs local)
@@ -20,7 +20,7 @@ Scenario('I can see offered subscriptions', ({ I })=> {
   I.see('Subscription');
   I.see('All movies and series of Blender');
 
-  within('label[for="monthly"]', () => { 
+  within('label[for="monthly"]', () => {
     I.see('Monthly');
     I.see('First month free');
     I.see('Cancel anytime');
@@ -28,7 +28,7 @@ Scenario('I can see offered subscriptions', ({ I })=> {
     // I.see('6,99');
     I.see('/month');
   });
-  within('label[for="yearly"]', () => { 
+  within('label[for="yearly"]', () => {
     I.see('Yearly');
     I.see('First 14 days free');
     I.see('Cancel anytime');
@@ -39,7 +39,7 @@ Scenario('I can see offered subscriptions', ({ I })=> {
   });
   I.see('Continue');
 
-  I.click('div[aria-label="Close"]');
+  I.clickCloseButton();
   I.dontSee('Monthly');
 });
 
@@ -97,7 +97,7 @@ Scenario('I can redeem coupons', ({I}) => {
   I.click('Redeem coupon');
   I.seeElement('input[name="couponCode"]');
   I.see('Apply');
-  
+
   I.click('div[aria-label="Close coupon form"]');
   I.dontSee('Coupon code');
 
@@ -133,7 +133,7 @@ Scenario('I can redeem coupons', ({I}) => {
 //   I.see('/year');
 // });
 
-Scenario('I can cancel my subscription', ({ I }) => { 
+Scenario('I can cancel my subscription', ({ I }) => {
   I.login();
   I.amOnPage('/u/payments');
   I.wait(7);
@@ -147,7 +147,7 @@ Scenario('I can cancel my subscription', ({ I }) => {
 
   I.click('Cancel subscription');
   I.see('We are sorry to see you go.');
-  I.click('div[aria-label="Close"]');
+  I.clickCloseButton();
   I.dontSee('We are sorry to see you go.');
 
   I.click('Cancel subscription');
@@ -168,7 +168,7 @@ Scenario('I can renew my subscription', ({ I })=> {
   I.see('Next billing date will be ');
   // I.see('50,00');
   I.see('/year');
-  
+
   I.click('No, thanks');
   I.dontSee('Renew your subscription');
 

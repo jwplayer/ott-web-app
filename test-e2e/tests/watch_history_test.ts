@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-Feature('watch_history').tag('@desktop');
+Feature('watch_history').tag('@desktop-only');
 
 // todo: Most are commented out, because the player doesn't run on Chromium
 // To test locally: set firefox as browser in config

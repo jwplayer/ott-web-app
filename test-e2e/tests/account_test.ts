@@ -1,12 +1,12 @@
 import * as assert from 'assert';
 
-Feature('account').tag('@desktop')
+Feature('account').tag('@desktop-only')
 
 // todo: run same test with loginMobile for @mobile
 
-Scenario('I can see my account data', ({ I }) => {
+Scenario('I can see my account data', async ({ I }) => {
   I.amOnPage('http://localhost:8080?c=test--subscription');
-  I.login();
+  await I.login();
 
   I.click('div[aria-label="Open user menu"]');
   I.click('Account');
@@ -82,7 +82,7 @@ Scenario('I can toggle to view/hide my password', async ({ I }) => {
   I.click('Cancel');
 })
 
-Scenario('I can reset my password', ({ I }) => {
+Scenario('I can reset my password', async ({ I }) => {
   I.click('Edit password');
   I.see('If you want to edit your password, click \'YES, Reset\' to receive password reset instruction on your mail');
   I.see('Yes, reset');
@@ -92,7 +92,7 @@ Scenario('I can reset my password', ({ I }) => {
   I.dontSee('Yes, reset');
   I.click('Edit password');
   I.see('Yes, reset');
-  I.click('div[aria-label="Close"]');
+  I.clickCloseButton();
   I.dontSee('Yes, reset');
   I.click('Edit password');
 
@@ -104,8 +104,8 @@ Scenario('I can reset my password', ({ I }) => {
   I.click('Back to login');
   I.see('Sign in');
 
-  I.click('div[aria-label="Close"]')
-  I.login();
+  I.clickCloseButton();
+  await I.login();
   I.click('div[aria-label="Open user menu"]');
   I.click('Account');
 })

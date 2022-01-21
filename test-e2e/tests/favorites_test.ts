@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-Feature('favorites').tag('@desktop').tag('@mobile');
+Feature('favorites');
 
 Scenario('I can add a video to my favorites', async ({ I }) => {
   addVideoToFavorites(I);

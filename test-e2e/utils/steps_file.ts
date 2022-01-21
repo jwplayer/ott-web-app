@@ -1,5 +1,7 @@
 import * as assert from 'assert';
 
+import constants from './constants';
+
 declare global {
   let jwplayer: () => {getState: () => string};
 }
@@ -10,22 +12,55 @@ module.exports = function() {
     // Define custom steps here, use 'this' to access default methods of I.
     // It is recommended to place a general 'login' function here.
 
-    login: function (this: CodeceptJS.I, email = '12345@test.org', password = 'Ax854bZ!$') {
-      this.amOnPage('/');
+    login: async function (this: CodeceptJS.I, email = constants.username, password = constants.password) {
+      const isMobile = await this.isMobile();
+
+      if (isMobile) {
+        this.openMenuDrawer();
+      }
+
       this.click('Sign in');
-      this.fillField('Email', email);
+      this.fillField('email', email);
       this.fillField('password', password);
-      this.click('button[type="submit"]');
-      this.wait(5);
+      this.submitForm();
+
+      return {
+        isMobile,
+        isDesktop: !isMobile,
+        email,
+        password
+      }
     },
-    loginMobile: function (this: CodeceptJS.I, email = '12345@test.org', password = 'Ax854bZ!$') {
-      this.amOnPage('/');
-      this.click('div[aria-label="Open menu"]');
-      this.click('Sign in');
-      this.fillField('Email', email);
-      this.fillField('password', password);
+    submitForm: function(this: CodeceptJS.I, loaderTimeout: number | false = 5) {
       this.click('button[type="submit"]');
-      this.wait(5);
+      this.waitForLoaderDone(loaderTimeout);
+    },
+    waitForLoaderDone: function(this: CodeceptJS.I, timeout: number | false = 5) {
+      // Specify false when the loader is NOT expected to be shown at all
+      if (timeout === false) {
+        this.dontSeeElement('[class*=_loadingOverlay]');
+      } else {
+        this.seeElement('[class*=_loadingOverlay]');
+        this.waitForInvisible('[class*=_loadingOverlay]', timeout);
+      }
+    },
+    openMenuDrawer: function (this: CodeceptJS.I) {
+      this.click('div[aria-label="Open menu"]');
+    },
+    openUserMenu: function(this: CodeceptJS.I) {
+      this.click('div[aria-label="Open user menu"]');
+    },
+    clickCloseButton: function(this: CodeceptJS.I) {
+      this.click('div[aria-label="Close"]');
+    },
+    seeAll: function(this: CodeceptJS.I, allStrings: string[]) {
+      allStrings.forEach(s => this.see(s));
+    },
+    dontSeeAny: function(this: CodeceptJS.I, allStrings: string[]) {
+      allStrings.forEach(s => this.dontSee(s));
+    },
+    waitForAllInvisible: function(this: CodeceptJS.I, allStrings: string[], timeout: number | undefined = undefined) {
+      allStrings.forEach(s => this.waitForInvisible(s, timeout));
     },
     swipeLeft: async function (this: CodeceptJS.I, args) {
       args.direction = 'left';
@@ -77,8 +112,6 @@ module.exports = function() {
             }));
 
       }, args);
-
-      this.wait(1);
     },
     waitForPlayerPlaying: async function (title, tries = 10) {
       this.see(title);
@@ -111,6 +144,25 @@ module.exports = function() {
       // eslint-disable-next-line no-console
       assert.equal(await this.executeScript(() => typeof jwplayer === 'undefined' ? undefined : jwplayer().getState),
           undefined);
+    },
+    isMobile: async function(this: CodeceptJS.I) {
+      return await this.usePlaywrightTo('Get is Mobile', async ({browserContext}) => {
+        return browserContext._options.isMobile;
+      }) || false;
+    },
+    isDesktop: async function(this: CodeceptJS.I) {
+      return !await this.isMobile();
+    },
+    enableClipboard: async function(this: CodeceptJS.I) {
+      await this.usePlaywrightTo('Setup the clipboard', async ({browserContext}) => {
+        await browserContext.grantPermissions(["clipboard-read", "clipboard-write"]);
+      });
+    },
+    readClipboard: async function(this: CodeceptJS.I) {
+      return await this.executeScript(() => navigator.clipboard.readText());
+    },
+    writeClipboard: async function(this: CodeceptJS.I, text: string) {
+      await this.executeScript((text) => navigator.clipboard.writeText(text), text);
     }
   });
 }
