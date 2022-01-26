@@ -9,8 +9,8 @@ const agent327Description = 'Hendrik IJzerbroot – Agent 327 – is a secret ag
 
 Scenario('Video detail screen loads', ({ I }) => {
   I.amOnPage('http://localhost:8080');
-  openVideo(I, 'Agent 327');
-  I.see('Agent 327');
+  openVideo(I, agent327Title);
+  I.see(agent327Title);
   I.see('2021');
   I.see('4m');
   I.see('Action');

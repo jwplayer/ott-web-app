@@ -1,5 +1,7 @@
 import * as assert from 'assert';
 
+import {constants} from "./utils";
+
 declare global {
   let jwplayer: () => {getState: () => string};
 }
@@ -10,7 +12,7 @@ module.exports = function() {
     // Define custom steps here, use 'this' to access default methods of I.
     // It is recommended to place a general 'login' function here.
 
-    login: function (this: CodeceptJS.I, email = '12345@test.org', password = 'Ax854bZ!$') {
+    login: function (this: CodeceptJS.I, email = constants.username, password = constants.password) {
       this.amOnPage('/');
       this.click('Sign in');
       this.fillField('Email', email);
@@ -18,7 +20,7 @@ module.exports = function() {
       this.click('button[type="submit"]');
       this.wait(5);
     },
-    loginMobile: function (this: CodeceptJS.I, email = '12345@test.org', password = 'Ax854bZ!$') {
+    loginMobile: function (this: CodeceptJS.I, email = constants.username, password = constants.password) {
       this.amOnPage('/');
       this.click('div[aria-label="Open menu"]');
       this.click('Sign in');
