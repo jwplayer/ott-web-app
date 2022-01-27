@@ -9,7 +9,7 @@ Scenario('I can add a video to my favorites', async ({ I }) => {
     return JSON.parse(localStorage.getItem('jwshowcase.favorites') || '');
   });
 
-  assert.deepEqual(savedFavorites, [{ mediaid: 'DqGECHhT', title: 'Central Intelligence', duration: '109', tags: 'action and adventure and fun,comedy,trailer,simi dash feed'}]);
+  assert.deepEqual(savedFavorites, [{ mediaid: '6o9KxWAo', title: 'Tears of Steel', duration: 734, tags: 'movie,Action'}]);
 });
 
 Scenario('I can remove a video from my favorites', async({ I }) => {
@@ -33,11 +33,11 @@ Scenario('I can see my favorited videos on the home page', async ({ I }) => {
 
   I.amOnPage('http://localhost:8080/');
   I.see('Favorites')
-  I.see('Central Intelligence', { css: '[data-mediaid="favorites"]'});
+  I.see('Tears of Steel', { css: '[data-mediaid="favorites"]'});
 });
 
 function addVideoToFavorites(I) {
-  I.amOnPage('http://localhost:8080/m/DqGECHhT/central-intelligence?list=WXu7kuaW');
+  I.amOnPage('http://localhost:8080/m/6o9KxWAo/tears-of-steel?r=D4soEviP');
   I.see('Favorite');
 
   I.scrollTo({ css: 'button[aria-label="Add to favorites"]' });

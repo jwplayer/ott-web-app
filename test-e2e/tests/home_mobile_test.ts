@@ -15,7 +15,7 @@ Scenario('Menu button opens the sidebar', ({ I }) => {
   I.see('Home');
   I.see('Films');
   I.click('Films');
-  I.amOnPage('http://localhost:8080/p/sR5VypYk');
+  I.amOnPage('http://localhost:8080/p/dGSUzs9o');
   I.see('All Films');
   I.see('The Daily Dweebs');
 });

@@ -4,13 +4,12 @@ import {constants, selectors} from '../utils/utils';
 
 Feature('video_detail').tag('@mobile');
 
-const agent327Title = 'Agent 327';
 const agent327Description = 'Hendrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.';
 
 Scenario('Video detail screen loads', ({ I }) => {
   I.amOnPage('http://localhost:8080');
-  openVideo(I, agent327Title);
-  I.see(agent327Title);
+  openVideo(I, 'Agent 327');
+  I.see('Agent 327');
   I.see('2021');
   I.see('4m');
   I.see('Action');
@@ -63,7 +62,7 @@ Scenario('I can return to the video detail screen', async ({ I }) => {
 
 Scenario('I can play other media from the related shelf', ({ I }) => {
   I.amOnPage('http://localhost:8080?c=test--no-cleeng');
-  openVideo(I, agent327Title);
+  openVideo(I, 'Agent 327');
   openVideo(I, 'Elephants Dream');
   I.see('Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.')
   openVideo(I,'Coffee Run');
@@ -71,7 +70,7 @@ Scenario('I can play other media from the related shelf', ({ I }) => {
 });
 
 Scenario('I can play a trailer', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk&c=test--no-cleeng');
+  I.amOnPage('http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o&c=test--no-cleeng');
 
   I.click('Trailer');
   await I.waitForPlayerPlaying('Elephants Dream - Trailer');
@@ -82,7 +81,7 @@ Scenario('I can play a trailer', async ({ I }) => {
 });
 
 Scenario('I can play a trailer without signing in', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk');
+  I.amOnPage('http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o');
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');
@@ -100,7 +99,7 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
 });
 
 Scenario('I can play a video after signing in', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk&c=test--accounts');
+  I.amOnPage('http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o&c=test--accounts');
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');
@@ -128,7 +127,7 @@ Scenario('I can share the media', async ({ I }) => {
     await browserContext.grantPermissions(["clipboard-read", "clipboard-write"]);
   });
 
-  const url = 'http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk&c=test--no-cleeng';
+  const url = 'http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o&c=test--no-cleeng';
 
   I.amOnPage(url);
 
@@ -150,7 +149,7 @@ function openVideo(I, name) {
 }
 
 async function playBigBuckBunny(I) {
-  I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk&c=test--no-cleeng');
+  I.amOnPage('http://localhost:8080/m/awWEFyPu/big-buck-bunny?r=dGSUzs9o&c=test--no-cleeng');
   I.waitForText('Start watching', 5);
   I.dontSeeInCurrentUrl('play=1');
   I.click('Start watching');

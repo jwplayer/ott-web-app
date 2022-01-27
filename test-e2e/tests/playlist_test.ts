@@ -1,7 +1,7 @@
 Feature('playlist').tag('@desktop');
 
 Scenario('Playlist screen loads', ({ I }) => {
-  I.amOnPage('http://localhost:8080/p/sR5VypYk');
+  I.amOnPage('http://localhost:8080/p/dGSUzs9o');
   I.see('All Films');
   I.see('Agent 327');
   I.see('Big Buck Bunny');
@@ -36,5 +36,5 @@ Scenario('I can reset the filter by clicking on "All"', ({ I }) => {
 
 Scenario('I can click on a card and navigate to the video screen', ({ I }) => {
   I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeInCurrentUrl('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk')
+  I.seeInCurrentUrl('http://localhost:8080/m/awWEFyPu/big-buck-bunny?r=dGSUzs9o')
 });

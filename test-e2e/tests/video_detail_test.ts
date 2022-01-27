@@ -20,7 +20,7 @@ Scenario('Video detail screen loads', ({ I }) => {
 });
 
 Scenario('I can watch a video',  async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk&c=test--no-cleeng');
+  I.amOnPage('http://localhost:8080/m/awWEFyPu/big-buck-bunny?r=dGSUzs9o&c=test--no-cleeng');
   I.wait(0.5);
   I.see('Start watching');
   I.dontSeeInCurrentUrl('play=1');
