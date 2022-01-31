@@ -6,26 +6,26 @@
     {
       "enableText": true,
       "featured": true,
-      "playlistId": "CJE23b5T"
+      "playlistId": "JSKF03bk"
     },
     {
       "enableText": true,
-      "playlistId": "sR5VypYk"
+      "playlistId": "dGSUzs9o"
     },
     {
       "enableText": true,
-      "playlistId": "o45EkQBf"
+      "playlistId": "xQaFzykq"
     }
   ],
   "menu": [
     {
       "label": "Films",
-      "playlistId": "sR5VypYk",
+      "playlistId": "dGSUzs9o",
       "filterTags": "Action,Comedy,Fantasy,Drama"
     },
     {
       "label": "Courses",
-      "playlistId": "o45EkQBf",
+      "playlistId": "xQaFzykq",
       "filterTags": "Beginner,Advanced"
     }
   ],
@@ -42,9 +42,9 @@
     "enableContinueWatching": true,
     "highlightColor": null
   },
-  "player": "WVso3U0h",
-  "recommendationsPlaylist": "fuD6TWcf",
-  "searchPlaylist": "tQ832H1H",
+  "player": "ou7L8htR",
+  "recommendationsPlaylist": "IHBjjkSN",
+  "searchPlaylist": "D4soEviP",
   "siteName": "Blender",
   "json": {
     "cleengMonthlyOffer": "S970187168_NL",

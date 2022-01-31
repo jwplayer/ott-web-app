@@ -7,6 +7,7 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
+  grep: '@desktop',
   tests    : [
     './tests/*.js',
     './tests/*.ts'
@@ -20,7 +21,7 @@ exports.config = {
     }
   },
   include  : {
-    I: './utils/steps_file.js'
+    I: './utils/steps_file.ts'
   },
   bootstrap: null,
   mocha    : {},

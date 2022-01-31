@@ -1,17 +1,20 @@
 import * as assert from "assert";
 
+import {constants, selectors} from '../utils/utils';
+
 Feature('video_detail').tag('@mobile');
+
+const agent327Description = 'Hendrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.';
 
 Scenario('Video detail screen loads', ({ I }) => {
   I.amOnPage('http://localhost:8080');
-  I.scrollTo({ css: 'div[aria-label="Play Agent 327"]'});
-  I.click({ css: 'div[aria-label="Play Agent 327"]'});
+  openVideo(I, 'Agent 327');
   I.see('Agent 327');
   I.see('2021');
   I.see('4m');
   I.see('Action');
   I.see('CC-BY');
-  I.see('endrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.');
+  I.see(agent327Description);
   I.see('Sign up to start watching!');
   I.see('Favorite');
   I.see('Share');
@@ -21,80 +24,140 @@ Scenario('Video detail screen loads', ({ I }) => {
 });
 
 Scenario('I can expand the description', async ({ I }) => {
+  I.amOnPage('http://localhost:8080?c=test--no-cleeng');
+  openVideo(I, 'Agent 327');
+
+  async function checkHeight(expectedHeight) {
+    assert.strictEqual(expectedHeight,
+        await I.grabCssPropertyFrom(`text="${agent327Description}"`, 'max-height'));
+  }
+
   I.seeElement('div[aria-label="Expand"]');
   I.dontSeeElement('div[aria-label="Collapse"]');
-  const maxHeight = await I.grabCssPropertyFrom('div[class="_textContainer_12ck1_11 _description_k71vc_110 _collapsed_12ck1_15"]', 'max-height');
-  assert.strictEqual('60px', maxHeight);
+  await checkHeight('60px');
 
   I.click('div[aria-label="Expand"]');
+
   I.seeElement('div[aria-label="Collapse"]');
   I.dontSeeElement('div[aria-label="Expand"]');
-  const maxHeightExpanded = await I.grabCssPropertyFrom('div[class="_textContainer_12ck1_11 _description_k71vc_110"]', 'max-height');
-  assert.strictEqual('200px', maxHeightExpanded);
+  await checkHeight('160px');
+
+  I.click('div[aria-label="Collapse"]');
+
+  I.seeElement('div[aria-label="Expand"]');
+  I.dontSeeElement('div[aria-label="Collapse"]');
+  await checkHeight('60px');
 })
 
-Scenario('I can watch a video',  async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk&c=test--no-cleeng');
-  I.wait(0.5);
-  I.see('Start watching');
-  I.dontSeeInCurrentUrl('play=1');
-  I.click('Start watching');
-  I.seeInCurrentUrl('play=1');
-  I.wait();
-  I.click({ css: 'div[class="jw-icon jw-icon-display jw-button-color jw-reset"]'});
-  // todo: test the videoplayer playing, using another helper?
-});
+Scenario('I can watch a video', async ({ I }) => await playBigBuckBunny(I));
 
-Scenario('I can return to the video detail screen', ({ I }) => {
+Scenario('I can return to the video detail screen', async ({ I }) => {
+  await playBigBuckBunny(I);
+
   I.click('div[aria-label="Back"]');
-  I.dontSeeInCurrentUrl('play=1');
+
+  await I.checkPlayerClosed();
   I.see('Start watching');
 });
 
 Scenario('I can play other media from the related shelf', ({ I }) => {
-  I.click('div[aria-label="Play Elephants Dream"]');
-  I.see('Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software.');
-  I.click('div[aria-label="Play Coffee Run"]');
+  I.amOnPage('http://localhost:8080?c=test--no-cleeng');
+  openVideo(I, 'Agent 327');
+  openVideo(I, 'Elephants Dream');
+  I.see('Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.')
+  openVideo(I,'Coffee Run');
   I.see('Coffee Run was directed by Hjalti Hjalmarsson and produced by the team at Blender Animation Studio.');
 });
 
-Scenario('I can play a trailer', ({ I }) => {
+Scenario('I can play a trailer', async ({ I }) => {
+  I.amOnPage('http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o&c=test--no-cleeng');
+
   I.click('Trailer');
-  I.wait(0.5);
-  I.see('Coffee Run - Trailer');
+  await I.waitForPlayerPlaying('Elephants Dream - Trailer');
+
   I.click('div[aria-label="Close"]');
-  I.dontSee('Coffee Run - Trailer');
+  await I.checkPlayerClosed();
+  I.dontSee('Elephants Dream - Trailer');
 });
 
-Scenario('I can share the media', ({ I }) => {
+Scenario('I can play a trailer without signing in', async ({ I }) => {
+  I.amOnPage('http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o');
+
+  I.see('Sign up to start watching!');
+  I.click('Sign up to start watching!');
+  await I.checkPlayerClosed();
+  I.waitForText('Email', 5);
+  I.see('Password');
+  I.click('div[aria-label=Close]');
+
+  I.click('Trailer');
+  await I.waitForPlayerPlaying('Elephants Dream - Trailer');
+
+  I.click('div[aria-label="Close"]');
+  await I.checkPlayerClosed();
+  I.dontSee('Elephants Dream - Trailer');
+});
+
+Scenario('I can play a video after signing in', async ({ I }) => {
+  I.amOnPage('http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o&c=test--accounts');
+
+  I.see('Sign up to start watching!');
+  I.click('Sign up to start watching!');
+  await I.checkPlayerClosed();
+  I.see('Email');
+  I.see('Password');
+  I.click('Sign in', selectors.registrationForm);
+  I.fillField('Email', constants.username);
+  I.fillField('Password', constants.password);
+  I.click('button[type=submit]');
+
+  I.see('Start watching');
+  I.dontSee('Sign up to start watching!');
+  I.click('Start watching');
+
+  await I.waitForPlayerPlaying('Elephants Dream');
+
+  I.click('div[aria-label="Back"]');
+
+  await I.checkPlayerClosed();
+});
+
+Scenario('I can share the media', async ({ I }) => {
+  I.usePlaywrightTo('Setup the clipboard', async ({browserContext}) => {
+    await browserContext.grantPermissions(["clipboard-read", "clipboard-write"]);
+  });
+
+  const url = 'http://localhost:8080/m/eFPH2tVG/elephants-dream?r=dGSUzs9o&c=test--no-cleeng';
+
+  I.amOnPage(url);
+
+  // Empty the clipboard
+  await I.executeScript(() => navigator.clipboard.writeText(''));
+  assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), '');
+
   I.click('Share');
   I.see('Copied url');
-  I.wait();
-  I.dontSee('Copied url');
+
+  // The url should be copied to the clipboard
+  assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), url);
+  I.waitForInvisible('text="Copied url"', 5);
 });
 
-Scenario('I can see series', ({ I }) => {
-  I.amOnPage('http://localhost:8080/s/L24UEeMK/fantasy-vehicle-creation?e=I3k8wgIs&c=test--no-cleeng');
-  I.see('Fantasy Vehicle Creation');
-  I.see('S1:E1');
-  I.see('Blocking');
-  I.see('2019');
-  I.see('5 episodes');
-  I.see('Advanced');
-  I.see('CC-BY');
-  I.see('Let\'s get started with the Art of Blocking!');
-  I.see('Start watching');
-  I.see('Favorite');
-  I.see('Share');
-  I.see('Current episode', { css: 'div[aria-label="Play Blocking"]'});
-  I.see('Concept Art');
-  I.see('S1:E2', { css: 'div[aria-label="Play Concept Art"]'})
-})
+function openVideo(I, name) {
+  I.scrollTo({ css: `div[aria-label="Play ${name}"]`});
+  I.click({ css: `div[aria-label="Play ${name}"]`});
+}
 
-Scenario('I can play other episodes from the series', ({ I }) => {
-  I.click('div[aria-label="Play Modeling Part 1"]');
-  I.see('S1:E3');
-  I.see('Finally we are creating the high-res model for our scene! In this chapter we will go over a few basic modeling techniques as well as the first part of the production timelapse.');
-  I.click('div[aria-label="Play Texturing and Lighting"]');
-  I.see('Placing the lights and creating the environment then finishes up this workshop!');
-});
+async function playBigBuckBunny(I) {
+  I.amOnPage('http://localhost:8080/m/awWEFyPu/big-buck-bunny?r=dGSUzs9o&c=test--no-cleeng');
+  I.waitForText('Start watching', 5);
+  I.dontSeeInCurrentUrl('play=1');
+  I.click('Start watching');
+
+  I.seeInCurrentUrl('play=1');
+
+  I.waitForElement('div[class*="jwplayer"]', 10);
+  I.waitForElement('video', 5);
+
+  await I.waitForPlayerPlaying('Big Buck Bunny');
+}

@@ -3894,10 +3894,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codeceptjs@^3.0.7:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.2.2.tgz#d2cc2948098cb4db8f6117243d44b0deb288a7ca"
-  integrity sha512-mlShe0DuX+uGzyCx/49n5jOJNsv2Q4Uxzcf3kNJROm60GkEl+hP0aH3BWEgBdI4r4XkCuG5+VOU0KB6wFAgTdg==
+codeceptjs@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.2.3.tgz#992cb9ead53159b49fe9f4193abecd9fcab73b20"
+  integrity sha512-ju+rirffFXnPNG/ZBzqsVRzGmJ9j2e6iHfOXl/J+D3XYVp92zvjUpX0cBFdooPqOI8/eA4v/RyxZ74UtITxB+Q==
   dependencies:
     "@codeceptjs/configure" "^0.6.2"
     "@codeceptjs/helper" "^1.0.2"

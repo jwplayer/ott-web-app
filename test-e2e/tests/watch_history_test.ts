@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from 'assert';
 
 Feature('watch_history').tag('@desktop');
 
@@ -11,7 +11,7 @@ Scenario('I login first because the player doesn\'t work (todo: remove this once
 })
 
 // Scenario('I can get my watch progress stored (locally)',  ({ I }) => {
-//   I.amOnPage('http://localhost:8080/m/JfDmsRlE/agent-327?r=sR5VypYk&c=test--no-cleeng&play=1');
+//   I.amOnPage('http://localhost:8080/m/uB8aRnu6/agent-327?r=dGSUzs9o&c=test--no-cleeng&play=1');
 //   I.wait(2);
 //   I.executeScript(() => window.jwplayer().seek(100));
 //   I.click('div[class="_cinema_1w0uk_1 _fill_1w0uk_1"]'); //re-enable controls overlay

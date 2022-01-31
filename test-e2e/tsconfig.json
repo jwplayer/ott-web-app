@@ -8,6 +8,6 @@
     "esModuleInterop": true,
     "module": "commonjs",
     "strictNullChecks": true,
-    "types": ["codeceptjs"],
+    "types": ["codeceptjs", "node"],
   },
 }

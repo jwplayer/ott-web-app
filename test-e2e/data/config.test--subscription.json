@@ -6,33 +6,33 @@
     {
       "enableText": true,
       "featured": true,
-      "playlistId": "CJE23b5T"
+      "playlistId": "JSKF03bk"
     },
     {
       "enableText": true,
-      "playlistId": "sR5VypYk"
+      "playlistId": "dGSUzs9o"
     },
     {
       "enableText": true,
-      "playlistId": "o45EkQBf"
+      "playlistId": "xQaFzykq"
     }
   ],
   "menu": [
     {
       "label": "Films",
-      "playlistId": "sR5VypYk",
+      "playlistId": "dGSUzs9o",
       "filterTags": "Action,Comedy,Fantasy,Drama"
     },
     {
       "label": "Courses",
-      "playlistId": "o45EkQBf",
+      "playlistId": "xQaFzykq",
       "filterTags": "Beginner,Advanced"
     }
   ],
   "description": "Blender demo site",
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
   "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
-  "cleengId": "292636325",
+  "cleengId": "440058292",
   "cleengSandbox": true,
   "options": {
     "dynamicBlur": true,
@@ -42,12 +42,12 @@
     "enableContinueWatching": true,
     "highlightColor": null
   },
-  "player": "7xMa4gNw",
-  "recommendationsPlaylist": "fuD6TWcf",
-  "searchPlaylist": "tQ832H1H",
+  "player": "ou7L8htR",
+  "recommendationsPlaylist": "IHBjjkSN",
+  "searchPlaylist": "D4soEviP",
   "siteName": "Blender",
   "json": {
-    "cleengMonthlyOffer": "S916977979_NL",
-    "cleengYearlyOffer": "S345569153_NL"
+    "cleengMonthlyOffer": "S970187168_NL",
+    "cleengYearlyOffer": "S467691538_NL"
   }
 }

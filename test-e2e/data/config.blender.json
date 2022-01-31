@@ -1,6 +1,6 @@
 {
   "adSchedule": null,
-  "analyticsToken": null,
+  "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
   "assets": {
     "banner": "https://cdn.jwplayer.com/images/nwthWC1U.png"
   },
@@ -9,17 +9,17 @@
       "backgroundColor": "#000000",
       "enableText": true,
       "featured": true,
-      "playlistId": "CJE23b5T"
+      "playlistId": "JSKF03bk"
     },
     {
       "backgroundColor": "#000000",
       "enableText": true,
-      "playlistId": "sR5VypYk"
+      "playlistId": "dGSUzs9o"
     },
     {
       "backgroundColor": "#000000",
       "enableText": true,
-      "playlistId": "o45EkQBf"
+      "playlistId": "xQaFzykq"
     }
   ],
   "continuePlaylist": null,
@@ -27,9 +27,18 @@
   "description": "Blender",
   "favoritesPlaylist": null,
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
-  "menu": [],
+  "menu": [{
+    "label": "Films",
+    "playlistId": "dGSUzs9o",
+    "filterTags": "Action,Comedy,Fantasy,Drama"
+  },{
+    "label": "Courses",
+    "playlistId": "xQaFzykq",
+    "filterTags": "Beginner,Advanced"
+  }],
   "options": {
     "backgroundColor": "#000000",
+    "dynamicBlur": true,
     "enableAddToHome": false,
     "enableCasting": false,
     "enableContinueWatching": true,
@@ -41,13 +50,14 @@
     "rightRail": {
       "enabled": true
     },
+    "posterFading": true,
     "showcaseContentOnly": false,
     "useRecommendationsPlaylist": true,
     "videoTitlePosition": "above"
   },
-  "player": "7xMa4gNw",
-  "recommendationsPlaylist": "fuD6TWcf",
-  "searchPlaylist": "tQ832H1H",
+  "player": "ou7L8htR",
+  "recommendationsPlaylist": "IHBjjkSN",
+  "searchPlaylist": "D4soEviP",
   "siteName": "Blender",
   "theme": "light",
   "version": "2"
