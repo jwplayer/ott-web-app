@@ -1,7 +1,7 @@
 Feature('playlist');
 
 Before(({I}) => {
-  I.amOnPage('http://localhost:8080/p/sR5VypYk');
+  I.amOnPage('http://localhost:8080/p/dGSUzs9o');
 
   I.seeAll(actionFilms);
   I.seeAll(comedyFilms);
@@ -50,7 +50,7 @@ Scenario('I can filter and click on a card and navigate to the video screen', as
   await selectFilterAndCheck(I, 'Comedy');
 
   I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeInCurrentUrl('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk')
+  I.seeInCurrentUrl('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=dGSUzs9o')
 });
 
 async function selectFilterAndCheck(I: CodeceptJS.I, option) {

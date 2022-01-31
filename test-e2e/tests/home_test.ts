@@ -74,7 +74,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideRight(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide right"]' }, 'div[data-mediaid="sR5VypYk"]');
+      I.click({ css: 'div[aria-label="Slide right"]' }, 'div[data-mediaid="dGSUzs9o"]');
     } else {
       await I.swipeLeft({text:swipeText});
     }
@@ -82,7 +82,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideLeft(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide left"]' }, 'div[data-mediaid="sR5VypYk"]');
+      I.click({ css: 'div[aria-label="Slide left"]' }, 'div[data-mediaid="dGSUzs9o"]');
     } else {
       await I.swipeRight({text:swipeText});
     }

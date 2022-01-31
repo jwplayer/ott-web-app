@@ -24,30 +24,33 @@ Scenario('Video detail screen loads', ({ I }) => {
   I.see('11 min', { css: 'div[aria-label="Play Elephants Dream"]'})
 });
 
-Scenario('I can expand the description (@mobile-only)', async ({ I }) => {
+Scenario('I can expand the description (@mobile-only)', ({ I }) => {
   I.amOnPage('http://localhost:8080?c=test--no-cleeng');
   openVideo(I, 'Agent 327');
 
-  async function checkHeight(expectedHeight) {
-    assert.strictEqual(expectedHeight,
-        await I.grabCssPropertyFrom(`text="${agent327Description}"`, 'max-height'));
+  function checkHeight(height) {
+    // Putting a wait here because the expand / collapse takes a non-zero amount of time
+    // and sometimes codecept goes too fast and catches it before it's done animating
+    I.wait(1);
+
+    I.seeCssPropertiesOnElements(`text="${agent327Description}"`, {'max-height': height});
   }
 
   I.seeElement('div[aria-label="Expand"]');
   I.dontSeeElement('div[aria-label="Collapse"]');
-  await checkHeight('60px');
+  checkHeight('60px');
 
   I.click('div[aria-label="Expand"]');
 
   I.seeElement('div[aria-label="Collapse"]');
   I.dontSeeElement('div[aria-label="Expand"]');
-  await checkHeight('160px');
+  checkHeight('160px');
 
   I.click('div[aria-label="Collapse"]');
 
   I.seeElement('div[aria-label="Expand"]');
   I.dontSeeElement('div[aria-label="Collapse"]');
-  await checkHeight('60px');
+  checkHeight('60px');
 })
 
 Scenario('I can watch a video', async ({ I }) => await playBigBuckBunny(I));
@@ -71,7 +74,7 @@ Scenario('I can play other media from the related shelf', ({ I }) => {
 });
 
 Scenario('I can play a trailer', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk&c=test--no-cleeng');
+  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o&c=test--no-cleeng');
 
   I.click('Trailer');
   await I.waitForPlayerPlaying('Elephants Dream - Trailer');
@@ -82,7 +85,7 @@ Scenario('I can play a trailer', async ({ I }) => {
 });
 
 Scenario('I can play a trailer without signing in', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk');
+  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o');
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');
@@ -100,7 +103,7 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
 });
 
 Scenario('I can play a video after signing in', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk&c=test--accounts');
+  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o&c=test--accounts');
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');
@@ -126,7 +129,7 @@ Scenario('I can play a video after signing in', async ({ I }) => {
 Scenario('I can share the media', async ({ I }) => {
   await I.enableClipboard();
 
-  const url = 'http://localhost:8080/m/8pN9r7vd/elephants-dream?r=sR5VypYk&c=test--no-cleeng';
+  const url = 'http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o&c=test--no-cleeng';
 
   I.amOnPage(url);
 
@@ -148,7 +151,7 @@ function openVideo(I, name) {
 }
 
 async function playBigBuckBunny(I) {
-  I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk&c=test--no-cleeng');
+  I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=dGSUzs9o&c=test--no-cleeng');
   I.waitForText('Start watching', 5);
   I.dontSeeInCurrentUrl('play=1');
   I.click('Start watching');
