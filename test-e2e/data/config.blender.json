@@ -9,17 +9,17 @@
       "backgroundColor": "#000000",
       "enableText": true,
       "featured": true,
-      "playlistId": "CJE23b5T"
+      "playlistId": "JSKF03bk"
     },
     {
       "backgroundColor": "#000000",
       "enableText": true,
-      "playlistId": "sR5VypYk"
+      "playlistId": "dGSUzs9o"
     },
     {
       "backgroundColor": "#000000",
       "enableText": true,
-      "playlistId": "o45EkQBf"
+      "playlistId": "xQaFzykq"
     }
   ],
   "continuePlaylist": null,
@@ -29,11 +29,11 @@
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
   "menu": [{
     "label": "Films",
-    "playlistId": "sR5VypYk",
+    "playlistId": "dGSUzs9o",
     "filterTags": "Action,Comedy,Fantasy,Drama"
   },{
     "label": "Courses",
-    "playlistId": "o45EkQBf",
+    "playlistId": "xQaFzykq",
     "filterTags": "Beginner,Advanced"
   }],
   "options": {
@@ -55,9 +55,9 @@
     "useRecommendationsPlaylist": true,
     "videoTitlePosition": "above"
   },
-  "player": "WVso3U0h",
-  "recommendationsPlaylist": "fuD6TWcf",
-  "searchPlaylist": "tQ832H1H",
+  "player": "ou7L8htR",
+  "recommendationsPlaylist": "IHBjjkSN",
+  "searchPlaylist": "D4soEviP",
   "siteName": "Blender",
   "theme": "light",
   "version": "2"

@@ -30,7 +30,7 @@ Scenario('Header button navigates to playlist screen', async ({ I }) => {
 
   I.see('Films');
   I.click({text: 'Films'});
-  I.amOnPage('http://localhost:8080/p/sR5VypYk');
+  I.amOnPage('http://localhost:8080/p/dGSUzs9o');
   I.see('All Films');
   I.see('The Daily Dweebs');
 });

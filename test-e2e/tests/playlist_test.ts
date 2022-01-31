@@ -43,7 +43,7 @@ Scenario('I can reset the filter by selection the "All" option', async ({ I }) =
 
 Scenario('I can click on a card and navigate to the video screen', ({ I }) => {
   I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeInCurrentUrl('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=sR5VypYk')
+  I.seeInCurrentUrl('http://localhost:8080/m/awWEFyPu/big-buck-bunny?r=dGSUzs9o')
 });
 
 Scenario('I can filter and click on a card and navigate to the video screen', async ({ I }) => {
