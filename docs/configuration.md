@@ -223,7 +223,7 @@ Set this parameter to `true` if you want to enable the Poster Fading feature. By
 
 ---
 
-**options.shelveTitles** (optional)
+**options.shelfTitles** (optional)
 
 Set this parameter to `false` if you want to disable titles below the cards on the home, playlist and search screen.  
 

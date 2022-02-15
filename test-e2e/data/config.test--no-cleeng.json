@@ -37,7 +37,7 @@
     "dynamicBlur": true,
     "posterFading": true,
     "backgroundColor": null,
-    "shelveTitles": true,
+    "shelfTitles": true,
     "enableContinueWatching": true,
     "highlightColor": null
   },

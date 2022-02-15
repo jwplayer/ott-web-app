@@ -21,7 +21,7 @@ const defaultConfig: Config = {
   cleengSandbox: true,
   options: {
     enableSharing: true,
-    shelveTitles: true,
+    shelfTitles: true,
   },
 };
 

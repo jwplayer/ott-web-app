@@ -28,7 +28,7 @@ const optionsSchema: SchemaOf<Options> = object({
   enableSharing: boolean().notRequired(),
   dynamicBlur: boolean().notRequired(),
   posterFading: boolean().notRequired(),
-  shelveTitles: boolean().notRequired(),
+  shelfTitles: boolean().notRequired(),
 });
 
 const configSchema: SchemaOf<Config> = object({
