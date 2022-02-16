@@ -2,21 +2,17 @@
 
 Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events. By organizing content into a series, viewers are guided through the content.
 
-
 Series have a predefined sequence of episodes and can be split in seasons
 
-<img title="" src="img/series.jpg" alt="Series" width="516">
+<img title="" src="img/series.jpg" alt="Series" width="580">
 
 Series are tagged with `Series` in [shelves and libraries](shelves-and-libraries.md):
 
-<img title="" src="img/series-in-library.jpg" alt="Series in library" width="473">
+<img title="" src="img/series-in-library.jpg" alt="Series in library" width="581">
 
 Series are defined through 'series playlist'. This is handled in the first piece of this article.
 
-
 In the near future JW player will native series construct. This is handled in the second part of this article.
-
-
 
 ## Series through playlist
 
@@ -123,7 +119,7 @@ JW Player will get native series management from the JW Dashboard:
 
 This section describes how this will work. 
 
-## Creating native series in the dashboard
+### Creating native series in the dashboard
 
 1. Customers define series 
 
@@ -172,7 +168,7 @@ GET series?media_ids=dwEE1oBP,1q2w3e4r
 }
 ```
 
-## Native series detail window
+### Native series detail window
 
 The serie detail window loads the series playlist using a GET Series endpoint:
 
