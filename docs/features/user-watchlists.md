@@ -86,7 +86,11 @@ curl 'https://api.jwplayer.com/v2/sites/<property-id>/playlists/watchlist_playli
 
 ## Configuration
 
-The continue watchting feature can be enabled and disabled in the app config.  See [configuration](/docs/configuration.md) 
+The continue watchting feature can be enabled and disabled in the [app config](/docs/configuration.md). 
+
+```
+
+```
 
 ## Cleeng
 

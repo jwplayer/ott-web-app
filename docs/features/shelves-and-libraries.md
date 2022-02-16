@@ -14,7 +14,7 @@ The homepage contains shelves. The standard usage is:
 
 - shelves are sorted on popular or new content 'new action movies'
 
-The are some special shelves
+The are some special shelves:
 
 - featured shelf: highlight special videos, manually curated and visualized in top of the homepage
 
@@ -41,16 +41,58 @@ Videos are published to shelves and libraries using playlists:
 - For dynamic plyalist items are added based on tags and sorted on most viewed, most recently published or alfabetically
 
 - Playlists apply geoblocking: only the video available in the country of the viewer are returned. It used the IP address to determine the country
-
- <img src="./img/playlist-shelf-lib.jpg" title="" alt="Shelves" width="600">
+  
+  <img src="./img/playlist-shelf-lib.jpg" title="" alt="Shelves" width="600">
 
 ## Images
-- The poster image is available in different resolutions
-- Some platforms require alternate poster images. That needs to be handled with custom properties and a CMS that handles the images Future: alternate thumbnails from JW platform
 
-## Retrieving shelves and libraries
+Each media item has a poster images:
 
+- The static thumbnail is automatically taken from a frame of the video
 
+- The motion thumbnail (mp4/no audio) that is automatically derived from the first 5 seconds of the video   
+
+- It’s possible to choose a custom thumbnail. The static thumbnail can be selected from the stills of the media item.
+
+- It’s not possible to have no thumbnails
+
+- The static thumbnails are automatically resized to 320px-1920px widths, keeping the image ratio stable
+
+The motion image is not used in the web app. 
+
+The JW Player dashboard, nor the web app support alternate video images at this moment. E.g. alternate image for the video detail page.
+
+## Shelf and library configuration
+
+Shelves and libraries can be defined in the [app config](/docs/configuration.md), rather then being hardcoded. This allows customer to change the content from the JW Dashboard. The `filterTags` are used to define the filterbox in the library screen. 
+
+```
+{
+  "content": [
+    {
+      "enableText": true,
+      "featured": true,
+      "playlistId": "JSKF03bk"
+    },
+    {
+      "enableText": true,
+      "playlistId": "dGSUzs9o"
+    }
+  ],
+  "menu": [
+    {
+      "label": "Films",
+      "playlistId": "dGSUzs9o",
+      "filterTags": "Action,Comedy,Fantasy,Drama"
+    },
+    {
+      "label": "Courses",
+      "playlistId": "xQaFzykq",
+      "filterTags": "Beginner,Advanced"
+    }
+  ]
+}
+```
 
 ## Retrieving shelf and library contents
 
@@ -62,7 +104,7 @@ GET Playlist\<playlistid>
  "title":"Video Title",
  "description":"Lorem ipsum dolor sit amet",  “ 
  "images":[
-  {"src":"./media/dwEE1oBP/poster.jpg?width=640 " }, 
+  {"src":"./media/dwEE1oBP/poster.jpg?width=640" }, 
   {"src":"./media/dwEE1oBP/poster.jpg?width=1280" }
   {"src":"./media/dwEE1oBP/poster.mp4?width=1280" }]
 },
@@ -71,4 +113,5 @@ GET Playlist\<playlistid>
 ```
 
 For large libraries, (>500) its possible to paginate. 
+
 It’s possible to query based on tags and custom parameters
