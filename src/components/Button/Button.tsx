@@ -53,18 +53,32 @@ const Button: React.FC<Props> = ({
   const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
   const span = <span className={styles.buttonLabel}>{label}</span>;
 
-  return to ? (
-    <NavLink className={buttonClassName} to={to} activeClassName={styles.active} {...rest} exact>
+  if (!to) {
+    return (
+      <button className={buttonClassName} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
+        {icon}
+        {span}
+        {children}
+      </button>
+    );
+  }
+
+  if (to.startsWith('/')) {
+    return (
+      <NavLink className={buttonClassName} to={to} activeClassName={styles.active} {...rest} exact>
+        {icon}
+        {span}
+        {children}
+      </NavLink>
+    );
+  }
+
+  return (
+    <a className={buttonClassName} href={to} {...rest}>
       {icon}
       {span}
       {children}
-    </NavLink>
-  ) : (
-    <button className={buttonClassName} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
-      {icon}
-      {span}
-      {children}
-    </button>
+    </a>
   );
 };
 export default Button;

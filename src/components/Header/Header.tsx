@@ -14,6 +14,7 @@ import Button from '../Button/Button';
 import Popover from '../Popover/Popover';
 import UserMenu from '../UserMenu/UserMenu';
 import { getPublicUrl } from '../../utils/domHelpers';
+import { getLoginUrl, getSignUpUrl } from '../../services/sso.service';
 
 import styles from './Header.module.scss';
 
@@ -48,8 +49,6 @@ const Header: React.FC<Props> = ({
   onSearchButtonClick,
   searchEnabled,
   onCloseSearchButtonClick,
-  onLoginButtonClick,
-  onSignUpButtonClick,
   isLoggedIn,
   userMenuOpen,
   toggleUserMenu,
@@ -116,8 +115,8 @@ const Header: React.FC<Props> = ({
       </React.Fragment>
     ) : (
       <div className={styles.buttonContainer}>
-        <Button onClick={onLoginButtonClick} label={t('sign_in')} />
-        <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
+        <Button label={t('sign_in')} to={getLoginUrl()} />
+        <Button variant="contained" color="primary" label={t('sign_up')} to={getSignUpUrl()} />
       </div>
     );
   };

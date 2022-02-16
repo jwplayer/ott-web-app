@@ -20,6 +20,10 @@ export type Config = {
   options: Options;
   genres?: string[];
   json?: Record<string, unknown>;
+  sso?: {
+    host: string;
+    clientId: string;
+  };
 };
 
 export type Simple = {

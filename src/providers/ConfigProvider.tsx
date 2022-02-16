@@ -58,6 +58,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
           ConfigStore.update((s) => {
             s.config = configWithDefaults;
             s.accessModel = accessModel;
+            s.isLoading = false;
           });
 
           setCssVariables(configValidated.options);

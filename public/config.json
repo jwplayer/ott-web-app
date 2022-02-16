@@ -49,5 +49,9 @@
   "json": {
     "cleengMonthlyOffer": "S970187168_NL",
     "cleengYearlyOffer": "S467691538_NL"
+  },
+  "sso": {
+    "host": "https://jw-hackweek.auth.us-east-2.amazoncognito.com",
+    "clientId": "56bq9fkmv7j8m25a51k1vq3kdn"
   }
 }

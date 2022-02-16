@@ -10,7 +10,7 @@ type ConfigStore = {
 
 export const ConfigStore = new Store<ConfigStore>({
   configLocation: '',
-  isLoading: false,
+  isLoading: true,
   config: {
     id: '',
     siteName: '',
