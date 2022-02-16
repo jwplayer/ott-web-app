@@ -5,11 +5,11 @@ Series enables customers to bundle episodic content such as TV shows and learnin
 
 Series have a predefined sequence of episodes and can be split in seasons
 
-![Series](img/series.jpg)
+<img title="" src="img/series.jpg" alt="Series" width="516">
 
 Series are tagged with `Series` in [shelves and libraries](shelves-and-libraries.md):
 
-![Series in library](img/series-in-library.jpg)
+<img title="" src="img/series-in-library.jpg" alt="Series in library" width="473">
 
 Series are defined through 'series playlist'. This is handled in the first piece of this article.
 
@@ -44,7 +44,7 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
 
 [Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this  playlis refer to series. These are identified using the `seriesId` , which links to the  playlist that contains the episodes. 
 
-```json
+```
 GET playlist/o45EkQBf
 {
   "title":"All Courses",
@@ -72,7 +72,7 @@ GET playlist/o45EkQBf
 
 The serie detail window loads the series playlist using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). The episodelabel(e.g. `S1:E1`)  is coming from `seasonNumber` and `episodeNumber` 
 
-```json
+```
 GET playlist/xdAqW8ya
 {
   "title":"Primitive Animals",
@@ -135,7 +135,7 @@ This section describes how this will work.
 
 [Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlis refer to series. These can be recognized with the tag `Series`
 
-```json
+```
 GET playlist\<playlistid>
 [
     {
@@ -152,7 +152,7 @@ GET playlist\<playlistid>
 
 Since the playlist includes an episode metadata, it needs to be  overwritten with a series metadata. This series metadata is retrieve using the the the following endpoint:
 
-```json
+```
 GET series?media_ids=dwEE1oBP,1q2w3e4r
 {
     "dwEE1oBP": {
@@ -176,7 +176,7 @@ GET series?media_ids=dwEE1oBP,1q2w3e4r
 
 The serie detail window loads the series playlist using a GET Series endpoint:
 
-```json
+```
 GET series/{series_id}
 { 
   "title": "A Series of Unfortunate Events",
@@ -209,7 +209,7 @@ GET series/{series_id}
 
 Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently we use the a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
 
-```json
+```
 GET playlist?mediaids=zxcvbnma,lkjhgfds
 [{
     "title": "Big Buck Bunny",
