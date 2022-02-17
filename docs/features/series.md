@@ -1,17 +1,11 @@
 # Series
 
 Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events. By organizing content into a series, viewers are guided through the content.
-
 Series have a predefined sequence of episodes and can be split in seasons
-
 <img title="" src="img/series.jpg" alt="Series" width="580">
-
 Series are tagged with `Series` in [shelves and libraries](shelves-and-libraries.md):
-
 <img title="" src="img/series-in-library.jpg" alt="Series in library" width="581">
-
 Series are defined through 'series playlist'. This is handled in the first piece of this article.
-
 In the near future JW player will native series construct. This is handled in the second part of this article.
 
 ## Series through playlist
@@ -19,7 +13,6 @@ In the near future JW player will native series construct. This is handled in th
 ### Creating series playlists in the dashboard
 
 Series are not a native construct in the JW Dashboard at this moment. So customers create a 'series playlist' and set the sequences and episodes using custom parameters.
-
 The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to do this: 
 
 1. Create a Series playlist that automaticlaly adds media as episodes based on series tag, e.g. `seriesId_xdAqW8ya`
@@ -35,19 +28,19 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
 3. Add a media item that points to the series playlist using a parameter, e.g:  `seriesId: xdAqW8ya`. It's used as the card:
 
 4. Add the card to playlists  used in [shelves and libraries](shelves-and-libraries.md) E.g. library 'All Shows'
-
-### Series in libraries and shelves
-
-[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this  playlis refer to series. These are identified using the `seriesId` , which links to the  playlist that contains the episodes. 
-
-```
-GET playlist/o45EkQBf
-{
-  "title":"All Courses",
-  "description":"",
-  "kind":"DYNAMIC",
-  "feedid":"o45EkQBf",
-  "playlist":[
+   
+   ### Series in libraries and shelves
+   
+   [Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this  playlis refer to series. These are identified using the `seriesId` , which links to the  playlist that contains the episodes. 
+   
+   ```
+   GET playlist/o45EkQBf
+   {
+   "title":"All Courses",
+   "description":"",
+   "kind":"DYNAMIC",
+   "feedid":"o45EkQBf",
+   "playlist":[
     {
       "mediaid":"txHnOU0x",
       "seriesId":"xdAqW8ya",
@@ -60,22 +53,22 @@ GET playlist/o45EkQBf
       "tags":"course,Beginner"
     },
     { }
-  ]
-}
-```
-
-### Serie detail window
-
-The serie detail window loads the series playlist using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). The episodelabel(e.g. `S1:E1`)  is coming from `seasonNumber` and `episodeNumber` 
-
-```
-GET playlist/xdAqW8ya
-{
-  "title":"Primitive Animals",
-  "description":"Aimed at beginners, this workshop helps you connect basic Blender functionality into a complete workflow and mindset for building characters.",
-  "kind":"DYNAMIC",
-  "feedid":"xdAqW8ya",
-  "playlist":[
+   ]
+   }
+   ```
+   
+   ### Serie detail window
+   
+   The serie detail window loads the series playlist using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). The episodelabel(e.g. `S1:E1`)  is coming from `seasonNumber` and `episodeNumber` 
+   
+   ```
+   GET playlist/xdAqW8ya
+   {
+   "title":"Primitive Animals",
+   "description":"Aimed at beginners, this workshop helps you connect basic Blender functionality into a complete workflow and mindset for building characters.",
+   "kind":"DYNAMIC",
+   "feedid":"xdAqW8ya",
+   "playlist":[
     {
       "title":"Blocking",
       "mediaid":"zKT3MFut",
@@ -104,36 +97,33 @@ GET playlist/xdAqW8ya
       "genre":"Beginner",
       "rating":"CC-BY"
     }
-}
-```
-
-## Native series - Coming soon
-
-JW Player will get native series management from the JW Dashboard:
-
+   }
+   ```
+   
+   ## Native series - Coming soon
+   
+   JW Player will get native series management from the JW Dashboard:
 - simplifies the series creation workflow
 
 - automatically calculate the number of episodes and duration of series
 
 - contains trailers and bonus content
-
-This section describes how this will work. 
-
-### Creating native series in the dashboard
-
+  This section describes how this will work. 
+  
+  ### Creating native series in the dashboard
 1. Customers define series 
 
 2. Customers publish their series by putting an episode into a playlist
 
 3. The episode can be recognized with the tag `Series` 
-
-### Native series in shelves and libraries
-
-[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlis refer to series. These can be recognized with the tag `Series`
-
-```
-GET playlist\<playlistid>
-[
+   
+   ### Native series in shelves and libraries
+   
+   [Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlis refer to series. These can be recognized with the tag `Series`
+   
+   ```
+   GET playlist\<playlistid>
+   [
     {
         "medaid":"dwEE1oBP",
         "title":"Video Title",
@@ -143,14 +133,14 @@ GET playlist\<playlistid>
         "sources":[],
         "tracks":[]
     }
-]
-```
-
-Since the playlist includes an episode metadata, it needs to be  overwritten with a series metadata. This series metadata is retrieve using the the the following endpoint:
-
-```
-GET series?media_ids=dwEE1oBP,1q2w3e4r
-{
+   ]
+   ```
+   
+   Since the playlist includes an episode metadata, it needs to be  overwritten with a series metadata. This series metadata is retrieve using the the the following endpoint:
+   
+   ```
+   GET series?media_ids=dwEE1oBP,1q2w3e4r
+   {
     "dwEE1oBP": {
         "series": [
             {
@@ -165,21 +155,21 @@ GET series?media_ids=dwEE1oBP,1q2w3e4r
         ]
     },
     "1q2w3e4r": null
-}
-```
-
-### Native series detail window
-
-The serie detail window loads the series playlist using a GET Series endpoint:
-
-```
-GET series/{series_id}
-{ 
-  "title": "A Series of Unfortunate Events",
-  "description": "The series follow’
-  "showrunner": "Mark Hudis"
-  "series_id": "12345678",
-  "seasons": [
+   }
+   ```
+   
+   ### Native series detail window
+   
+   The serie detail window loads the series playlist using a GET Series endpoint:
+   
+   ```
+   GET series/{series_id}
+   { 
+   "title": "A Series of Unfortunate Events",
+   "description": "The series follow’
+   "showrunner": "Mark Hudis"
+   "series_id": "12345678",
+   "seasons": [
     {
       "season_id": "abcdefgh",
       "season_number": 1,
@@ -201,13 +191,13 @@ GET series/{series_id}
       ]
     }
     ]}]
-```
-
-Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently we use the a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
-
-```
-GET playlist?mediaids=zxcvbnma,lkjhgfds
-[{
+   ```
+   
+   Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently we use the a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
+   
+   ```
+   GET playlist?mediaids=zxcvbnma,lkjhgfds
+   [{
     "title": "Big Buck Bunny",
     "description": "Lorem ipsum",
     "playlist": [
@@ -219,7 +209,11 @@ GET playlist?mediaids=zxcvbnma,lkjhgfds
             "description": Lorem ipsum,
             "tags": "movie,Comedy"
     ]
-}
-```
+   }
+   ```
+   
+   This playlist type is developed for [user watchlists](user-watchlist.md) but will also work here. Make sure the  watchlist is created.
 
-This playlist type is developed for [user watchlists](user-watchlist.md) but will also work here. Make sure the  watchlist is created. 
+## Native series and search
+
+Customer are advised to exclude serie episodes from the search playlists by using tags. Likewise customer should ensure the serie title and description are part of the first episode.

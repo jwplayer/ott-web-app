@@ -101,7 +101,7 @@ Thesee metrics are desribed below.
 
 | Name                    | Key  | Rqd | Values                                  | Example | Description                                                      |
 | ----------------------- | ---- | --- | --------------------------------------- | ------- | ---------------------------------------------------------------- |
-| SDK Platform            | sdk  | Yes | See <sup>1</sup                         | 3       | Used to identify the platform. <sup>2</sup>.                     |
+| SDK Platform            | sdk  | Yes | See <sup>1</sup>                        | 3       | Used to identify the platform. <sup>2</sup>.                     |
 | JW Partner Player ID    | ppid | No  | 0: reserved for JWP, 1-99: for partners | 2       | Provided JW Partner Player ID.                                   |
 | Ping Spec Version       | psv  | No  | SemVer                                  | 1.0.0   | Version of the JW Ping Specification referenced.                 |
 | External Player Version | epv  | No  | \-                                      | 1.2.3   | Version number of external video player (not a JW player or SDK) |

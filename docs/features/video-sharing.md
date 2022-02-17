@@ -2,8 +2,6 @@
 
 ![Share video](img/share-video.jpg)
 
-
-
 Viewers can share a video: 
 
 - On the desktop this will copy the URL to the clipboard  
@@ -18,11 +16,7 @@ Sharing can be enabled/disabled in the [app config](/docs/configuration.md)
 
 The player also has a share button. It's advised that customers disable this in the  [the JW Player Config](https://support.jwplayer.com/articles/how-to-implement-social-sharing) that is linked to their web-app config.
 
-
-
 ![Disable sharing in player](img/share-player.jpg)
-
-
 
 ## Deeplink to devices
 
@@ -31,5 +25,3 @@ In some cases opening a video URL on mobile device should open the native app ra
 This is not supported at this moment in web app. This requires logic to detect the device and route the user to the local app or the app store in case the app is not install yet. 
 
 Services as [brach.io](branch.io) and [Google Firebase Dynamic Links]([Firebase Dynamic Links | Deep link potential users to the right place inside your app](https://firebase.google.com/products/dynamic-links)) solve this problem.
-
-

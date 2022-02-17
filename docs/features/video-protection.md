@@ -1,6 +1,7 @@
 # Video Protection
 
 Videos can be protected in JW platform in two ways:
+
 - **Signed URLs:** A player can only **access** video URLs from JW Player backend using a time-bound JWT token
 - **DRM:** A player can only **play** videos using a time-bound decryption key. 
 
@@ -32,7 +33,8 @@ This is how a decoded token looks like:
 ```
 {
   "resource": "/v2/playlists/Xw0oaD4q",
-  "exp": 1893456000,
+  "exp": 1893456000
+}
 ```
 
 Notice that every token grants access to a unique resource. It's not possible to have token that grant access to a collection of resources.
@@ -41,7 +43,8 @@ The tokens are generated using the property API key. See [the documenation](http
 
 ## DRM
 
-JW [supports](https://support.jwplayer.com/articles/drm-with-jw-stream-policy-reference) three DRM systems
+JW [supports](https://developer.jwplayer.com/jwplayer/docs/enable-drm-with-jw-stream) three DRM systems
+
 * Widevine (Google ecosystem)
 * PlayReady (Microsoft ecosystem)
 * Fairplay (Apple ecosystem)
@@ -65,6 +68,8 @@ GET media/PEEzDfdA/drm/:drm_policy_id?token=:tokenA>
 
 The full details of this endpoint can be found [here](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id-drm-policy-id).
 
+
+
 ## Custom Entitlement Service
 
 The entitlement service should generates the `SignedMediaURLs` based on the given access model (see below) and media item. 
@@ -76,6 +81,7 @@ The service interface could look like this:
 ### Video access models
 
 The entitlement service provide signed URL based on the access model: 
+
 - Advertising-based (AVOD): all videos can be accessed, as they are served with advertisements
 - Authentication-based (AUTHVOD): videos can be accessed if the user is loggged in
 - Subscription-based (SVOD): videos can be accessed if the user has a valid subscription
