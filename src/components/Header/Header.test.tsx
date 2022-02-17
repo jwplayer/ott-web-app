@@ -1,12 +1,17 @@
 import React from 'react';
 
-import Button from '../Button/Button';
 import { render } from '../../testUtils';
+import { ConfigStore } from '../../stores/ConfigStore';
+import Button from '../Button/Button';
 
 import Header from './Header';
 
 describe('<Header />', () => {
   test('renders header', () => {
+    ConfigStore.update((s) => {
+      s.config.sso = { host: 'https://www.aws.com', clientId: '12345CLIENT' };
+    });
+
     const playlistMenuItems = [<Button key="key" label="Home" to="/" />];
     const { container } = render(
       <Header

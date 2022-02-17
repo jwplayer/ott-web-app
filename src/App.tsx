@@ -11,6 +11,7 @@ import './styles/main.scss';
 import { restoreWatchHistory } from './stores/WatchHistoryStore';
 import { initializeFavorites } from './stores/FavoritesStore';
 import { initializeAccount } from './stores/AccountStore';
+import IdentityProvider from './providers/IdentityProvider';
 
 interface State {
   error: Error | null;
@@ -61,7 +62,9 @@ class App extends Component {
             onValidationCompleted={this.configValidationCompletedHandler}
           >
             <Router>
-              <Root error={this.state.error} />
+              <IdentityProvider>
+                <Root error={this.state.error} />
+              </IdentityProvider>
             </Router>
           </ConfigProvider>
         </QueryProvider>

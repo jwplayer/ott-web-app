@@ -17,7 +17,16 @@ type Props = {
 const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active = false, startIcon, small = false }: Props) => {
   const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
 
-  if (to) {
+  if (!to) {
+    return (
+      <div className={classNames(styles.menuButton, { [styles.active]: active })} onClick={onClick} tabIndex={tabIndex}>
+        {icon}
+        <span className={styles.label}>{label}</span>
+      </div>
+    );
+  }
+
+  if (to.startsWith('/')) {
     return (
       <NavLink
         className={classNames(styles.menuButton, { [styles.small]: small })}
@@ -34,10 +43,10 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active 
   }
 
   return (
-    <div className={classNames(styles.menuButton, { [styles.active]: active })} onClick={onClick} tabIndex={tabIndex}>
+    <a className={classNames(styles.menuButton, { [styles.small]: small })} href={to} tabIndex={tabIndex}>
       {icon}
       <span className={styles.label}>{label}</span>
-    </div>
+    </a>
   );
 };
 

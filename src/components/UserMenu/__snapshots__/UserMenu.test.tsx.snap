@@ -95,7 +95,7 @@ exports[`<UserMenu> renders and matches snapshot 1`] = `
     <li>
       <a
         class="menuButton"
-        href="/u/logout"
+        href="https://www.aws.com/logout?client_id=12345CLIENT&response_type=code&logout_uri=http://localhost/sso/logout"
         tabindex="0"
       >
         <div

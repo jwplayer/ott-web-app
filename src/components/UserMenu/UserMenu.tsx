@@ -9,6 +9,7 @@ import Exit from '../../icons/Exit';
 import MenuButton from '../MenuButton/MenuButton';
 
 import styles from './UserMenu.module.scss';
+import { getLogoutUrl } from '../../services/sso.service';
 
 type Props = {
   inPopover?: boolean;
@@ -34,7 +35,7 @@ const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
       )}
       <hr className={classNames(styles.divider, { [styles.inPopover]: inPopover })} />
       <li>
-        <MenuButton small={inPopover} onClick={onClick} to="/u/logout" label={t('nav.logout')} startIcon={<Exit />} />
+        <MenuButton small={inPopover} onClick={onClick} to={getLogoutUrl()} label={t('nav.logout')} startIcon={<Exit />} />
       </li>
     </ul>
   );

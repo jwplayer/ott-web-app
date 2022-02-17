@@ -106,12 +106,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
     return 'SVOD';
   };
 
-  return (
-    <ConfigContext.Provider value={config}>
-      {loading ? <LoadingOverlay /> : null}
-      {children}
-    </ConfigContext.Provider>
-  );
+  return <ConfigContext.Provider value={config}>{loading ? <LoadingOverlay /> : children}</ConfigContext.Provider>;
 };
 
 export default ConfigProvider;

@@ -18,6 +18,7 @@ type AccountStore = {
   auth: AuthData | null;
   user: Customer | null;
   subscription: Subscription | null;
+  accessToken: string | null;
 };
 
 export const AccountStore = new Store<AccountStore>({
@@ -25,6 +26,7 @@ export const AccountStore = new Store<AccountStore>({
   auth: null,
   user: null,
   subscription: null,
+  accessToken: null,
 });
 
 const setLoading = (loading: boolean) => {
@@ -224,11 +226,7 @@ export const updateConsents = async (customerConsents: CustomerConsent[]) => {
 
   if (!auth || !user) throw new Error('no auth');
 
-  const updateConsentsResponse = await accountService.updateCustomerConsents(
-    { id: user.id.toString(), consents: customerConsents },
-    cleengSandbox,
-    auth.jwt,
-  );
+  const updateConsentsResponse = await accountService.updateCustomerConsents({ id: user.id.toString(), consents: customerConsents }, cleengSandbox, auth.jwt);
 
   if (updateConsentsResponse.errors.length) throw new Error(updateConsentsResponse.errors[0]);
 

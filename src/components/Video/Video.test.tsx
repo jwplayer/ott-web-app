@@ -2,10 +2,16 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import type { PlaylistItem } from 'types/playlist';
 
+import { ConfigStore } from '../../stores/ConfigStore';
+
 import Video from './Video';
 
 describe('<Video>', () => {
   test('renders and matches snapshot', () => {
+    ConfigStore.update((s) => {
+      s.config.sso = { host: 'https://www.aws.com', clientId: '12345CLIENT' };
+    });
+
     const item = {
       description: 'Test item description',
       duration: 354,

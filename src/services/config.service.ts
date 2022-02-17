@@ -31,6 +31,8 @@ const optionsSchema: SchemaOf<Options> = object({
   shelveTitles: boolean().notRequired(),
 });
 
+// There's a bug with yup schema for defined strings: https://github.com/jquense/yup/issues/1367
+// @ts-ignore
 const configSchema: SchemaOf<Config> = object({
   id: string().notRequired(),
   siteName: string().defined(),
@@ -51,6 +53,10 @@ const configSchema: SchemaOf<Config> = object({
   cleengSandbox: boolean().default(true),
   genres: array().of(string()).notRequired(),
   json: object().notRequired(),
+  sso: object({
+    host: string().defined(),
+    clientId: string().defined(),
+  }).notRequired(),
 }).defined();
 
 const loadConfig = async (configLocation: string) => {

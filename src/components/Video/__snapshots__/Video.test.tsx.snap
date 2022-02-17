@@ -38,8 +38,9 @@ exports[`<Video> renders and matches snapshot 1`] = `
         <div
           class="buttonBar"
         >
-          <button
+          <a
             class="button bigButton primary active large"
+            href="https://www.aws.com/oauth2/authorize?client_id=12345CLIENT&response_type=code&redirect_uri=http://localhost/sso/login&state=eyJyZXR1cm5VcmwiOiIvIn0%3D"
           >
             <div
               class="startIcon"
@@ -61,7 +62,7 @@ exports[`<Video> renders and matches snapshot 1`] = `
             <span>
               Start watching
             </span>
-          </button>
+          </a>
           <button
             aria-label="video:add_to_favorites"
             class="button default outlined"

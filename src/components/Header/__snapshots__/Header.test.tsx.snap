@@ -73,7 +73,7 @@ exports[`<Header /> renders header 1`] = `
       >
         <a
           class="button default outlined"
-          href="#"
+          href="https://www.aws.com/oauth2/authorize?client_id=12345CLIENT&response_type=code&redirect_uri=http://localhost/sso/login&state=eyJyZXR1cm5VcmwiOiIvIn0%3D"
         >
           <span>
             sign_in
@@ -81,7 +81,7 @@ exports[`<Header /> renders header 1`] = `
         </a>
         <a
           class="button primary"
-          href="#"
+          href="https://www.aws.com/signup?client_id=12345CLIENT&response_type=code&redirect_uri=http://localhost/sso/login&state=eyJyZXR1cm5VcmwiOiIvIn0%3D"
         >
           <span>
             sign_up

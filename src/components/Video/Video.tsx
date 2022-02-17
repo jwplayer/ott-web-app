@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,8 @@ import Modal from '../Modal/Modal';
 import FavoriteBorder from '../../icons/FavoriteBorder';
 import Fade from '../Animation/Fade/Fade';
 import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
+import { IdentityContext } from '../../providers/IdentityProvider';
+import { getLoginUrl } from '../../services/sso.service';
 
 import styles from './Video.module.scss';
 
@@ -111,6 +113,8 @@ const Video: React.FC<Props> = ({
     if (play || playTrailer) setUserActive(true);
   }, [play, playTrailer]);
 
+  const { user } = useContext(IdentityContext);
+
   return (
     <div className={styles.video}>
       <div
@@ -133,6 +137,7 @@ const Video: React.FC<Props> = ({
               variant="contained"
               size="large"
               label={startWatchingLabel}
+              to={!user ? getLoginUrl() : undefined}
               startIcon={allowedToWatch ? <Play /> : undefined}
               onClick={onStartWatchingClick}
               active={play}
