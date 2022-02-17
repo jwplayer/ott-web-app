@@ -14,11 +14,11 @@ The homepage contains shelves. The standard usage is:
 
 - shelves are sorted on popular or new content 'new action movies'
 
-The are some special shelves:
+There are some special shelves:
 
-- featured shelf: highlight special videos, manually curated and visualized in top of the homepage
+- featured shelf: highlight special videos, manually curated and visualized in the top of the homepage
 
-- favorite shelf: a list of video a user likes to watch in the future. See [Watchlist](user-watchlists.md)
+- favorite shelf: a list of videos a user likes to watch in the future. See [Watchlist](user-watchlists.md)
 
 - continue watching shelf:  a list of videos a user has not completed yet. See [Watchlist](user-watchlists.md)
 
@@ -34,19 +34,19 @@ A library allows viewers to browse all videos. The standard usage is:
 
 Videos are published to shelves and libraries using playlists:
 
-- Playlist can be managed through JW Dashboard
+- Playlist are managed through JW Dashboard
 
 - For manual paylist the items and their sorting are determined manually
 
-- For dynamic plyalist items are added based on tags and sorted on most viewed, most recently published or alfabetically
+- For dynamic playlist items are added based on tags and sorted on most viewed, most recently published or alphabetically
 
-- Playlists apply geoblocking: only the video available in the country of the viewer are returned. It used the IP address to determine the country
-  
-  <img src="./img/playlist-shelf-lib.jpg" title="" alt="Shelves" width="600">
+- Playlists apply geoblocking: only the video available in the viewer's country are returned. It uses the IP address to determine the country.
+
+<img src="./img/playlist-shelf-lib.jpg" title="" alt="Shelves" width="600">
 
 ## Images
 
-Each media item has a poster images:
+Each media item has poster images:
 
 - The static thumbnail is automatically taken from a frame of the video
 
@@ -54,17 +54,17 @@ Each media item has a poster images:
 
 - It’s possible to choose a custom thumbnail. The static thumbnail can be selected from the stills of the media item.
 
-- It’s not possible to have no thumbnails
+- It’s not possible to have no thumbnails.
 
-- The static thumbnails are automatically resized to 320px-1920px widths, keeping the image ratio stable
+- The static thumbnails are automatically resized to 320px-1920px widths, keeping the image ratio stable.
 
 The motion image is not used in the web app. 
 
-The JW Player dashboard, nor the web app support alternate video images at this moment. E.g. alternate image for the video detail page.
+The JW Player dashboard, nor the web app support alternate video images at this moment. E.g. an hero image for the video detail page.
 
 ## Shelf and library configuration
 
-Shelves and libraries can be defined in the [app config](/docs/configuration.md), rather then being hardcoded. This allows customer to change the content from the JW Dashboard. The `filterTags` are used to define the filterbox in the library screen. 
+Shelves and libraries can be defined in the [app config](/docs/configuration.md), rather than hardcoded. This allows customer to change the content from the JW Dashboard. The `filterTags` are used to define the filterbox in the library screen. 
 
 ```
 {
@@ -96,7 +96,7 @@ Shelves and libraries can be defined in the [app config](/docs/configuration.md)
 
 ## Retrieving shelf and library contents
 
-Shelf an library contents are retrieved as a playlist. They can be retrieved with the Playlist API 
+Shelf and library contents are retrieved as a playlist. They can be retrieved with the Playlist API 
 
 ```
 GET Playlist\<playlistid>
@@ -112,6 +112,6 @@ GET Playlist\<playlistid>
 ]
 ```
 
-For large libraries, (>500) its possible to paginate. 
+For large libraries, (>500) it is possible to paginate. 
 
-It’s possible to query based on tags and custom parameters
+It is possible to query based on tags and custom parameters

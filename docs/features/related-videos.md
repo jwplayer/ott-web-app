@@ -4,13 +4,13 @@
 
 Related videos are a shelf in the [video detail screen](video-detail.md) showing content with similar metadata.
 
-Related videos are powered through [recommendation playlist](https://support.jwplayer.com/topics/recommendations) is used. If the recommendations algorithm cannot find related videos.
+Related videos are powered through [recommendation playlist](https://support.jwplayer.com/topics/recommendations) is used. 
 
-## Retrieve search results
+## Retrieve related videos
 
-A [recommendatioins playlist](https://support.jwplayer.com/topics/recommendations) is used. The playlist id is retrieved from the [app config](/docs/configuration.md). The playlist id is retrieved from the [app config](/docs/configuration.md): `recommendationsPlaylist`
+A [recommendations playlist](https://support.jwplayer.com/topics/recommendations) is used for the related videos shelf. The playlist id is retrieved from the [app config](/docs/configuration.md): `recommendationsPlaylist`
 
-Queries are done using the https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id.
+Queries are done using the [playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id):
 
 ```
 GET playlists/fuD6TWcf?related_media_id=dwEE1oBP
@@ -41,4 +41,4 @@ GET playlists/fuD6TWcf?related_media_id=dwEE1oBP
 
 ## Configuration
 
-The feature can be enabled and disabled in the [app config](/docs/configuration.md)by having`recommendationsPlaylist` set to `NULL`
+The feature can be enabled and disabled in the [app config](/docs/configuration.md) by having`recommendationsPlaylist` set to `NULL`

@@ -1,11 +1,15 @@
 # Series
 
-Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events. By organizing content into a series, viewers are guided through the content.
+Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events. 
+
+By organizing content into a series, viewers are guided through the content.
+
 Series have a predefined sequence of episodes and can be split in seasons
 <img title="" src="img/series.jpg" alt="Series" width="580">
 Series are tagged with `Series` in [shelves and libraries](shelves-and-libraries.md):
 <img title="" src="img/series-in-library.jpg" alt="Series in library" width="581">
 Series are defined through 'series playlist'. This is handled in the first piece of this article.
+
 In the near future JW player will native series construct. This is handled in the second part of this article.
 
 ## Series through playlist
@@ -15,7 +19,7 @@ In the near future JW player will native series construct. This is handled in th
 Series are not a native construct in the JW Dashboard at this moment. So customers create a 'series playlist' and set the sequences and episodes using custom parameters.
 The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to do this: 
 
-1. Create a Series playlist that automaticlaly adds media as episodes based on series tag, e.g. `seriesId_xdAqW8ya`
+1. Create a Series playlist that automatically adds media as episodes based on series tag, e.g. `seriesId_xdAqW8ya`
 
 2. Upload the media items and
    
@@ -216,4 +220,4 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
 
 ## Native series and search
 
-Customer are advised to exclude serie episodes from the search playlists by using tags. Likewise customer should ensure the serie title and description are part of the first episode.
+Customer are advised to exclude series episodes from the search playlists by using tags. Likewise customers should ensure the serie title and description are part of the first episode.

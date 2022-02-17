@@ -30,7 +30,7 @@ On the homepage
 
 The player
 
-- The player automatically resumes from the previous drop off poin
+- The player automatically resumes from the previous drop off point
 
 ## Storage
 
@@ -86,9 +86,7 @@ curl 'https://api.jwplayer.com/v2/sites/<property-id>/playlists/watchlist_playli
 
 ## Configuration
 
-The continue watchting feature can be enabled and disabled in the [app config](/docs/configuration.md). 
-
-
+The continue watching feature can be enabled and disabled in the [app config](/docs/configuration.md). 
 
 ## Cleeng
 

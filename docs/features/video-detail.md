@@ -1,10 +1,10 @@
 # Video detail
 
-A video detail page is where a viewer evalutates a published video, before deciding to play the video. 
+A video detail page is where a viewer evaluates a published video, before deciding to play the video. 
 
 ![Video detail](./img/video-detail.jpg)
 
-This page displays attributes that are common to all videos such as:
+This page displays attributes that are common to all videos, such as:
 
 - Title
 - Year
@@ -18,15 +18,15 @@ This page displays attributes that are common to all videos such as:
 
 - The poster image is available in different resolutions
 
-- Some platforms require alternate poster images. That needs to be handled with custom properties and a CMS that handles the images
+- Some platforms require alternate poster images. That needs to be solved with custom properties and a CMS that handles the images.
 
 ## Trailers
 
-Customers can add movie trailers to a video, they are added as a custom field  `trailerId`The trailer is just another media item to play. See example below.
+Customers can add movie trailers to a video through the a custom field  `trailerId`. The trailer is just another media item to play. See example below.
 
 ### Retrieving video detail data
 
-Video metadata can be retrievied from [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id) 
+Video metadata can be retrieved from [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id) 
 
 ```
 GET media/dwEE1oBP

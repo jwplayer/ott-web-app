@@ -2,7 +2,7 @@
 
 By understanding how viewers consume content across OTT Apps, customers can create informed monetization and engagement strategies. 
 
-Video analytics also allows JW Player to calculate recommendations and trending videos and are a critical component in monetizing videos.
+Video analytics also allows JW Player to calculate recommendations and trending videos, which are critical in monetizing videos.
 
 ## Video Event Endpoint
 
@@ -41,7 +41,7 @@ The app sends the following events (param `e`) to JW platform:
 
 The event trigger implementation for the ott web app can be found at [jwpltx.js](/public/jwpltx.js)
 
-Note that `navigator.sendBeacon()` is used to call the endpoints. The browser will not do CORS checks on this operation. It furthermore minimizes performance impact as the browser doesn't wait for response of the server.
+Note that `navigator.sendBeacon()` is used to call the endpoints. The browser will not do CORS checks on this operation. It furthermore minimizes performance impact as the browser doesn't wait for the response of the server.
 
 ## Analytics ID
 
@@ -59,7 +59,7 @@ Each event comes with a set of data sent through the query parameters of the JWP
 - Media - The media that is being watched
 - Quantile - How much the user watched a particular movie
 
-Thesee metrics are desribed below. 
+Theee metrics are described below. 
 
 ### Session Metrics
 
@@ -180,7 +180,7 @@ Any decimal values are truncated to an integer.
 
 ### Live Streams
 
-For live streams, this quantile distribution is ignored and time ticks are sent at a pre-set interval. We recommend 20 seconds. The following values are sent:
+For live streams, this quantile distribution is ignored and time ticks are sent at pre-set intervals. We recommend 20 seconds. The following values are sent:
 
 - pw (Quantile watched): -1
 - q (Quantiles): 0
