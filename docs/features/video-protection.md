@@ -1,9 +1,7 @@
 # Video Protection
 
 Videos can be protected in JW platform in two ways:
-
 - **Signed URLs:** A player can only **access** video URLs from JW Player backend using a time-bound JWT token
-
 - **DRM:** A player can only **play** videos using a time-bound decryption key. 
 
 The  JW Web Player, as well as the other SDKs, supports these mechanismns out-the-box but they require a server side entitlement service which is **NOT** part of the web app and needs to be **custom developed**.
@@ -44,12 +42,9 @@ The tokens are generated using the property API key. See [the documenation](http
 ## DRM
 
 JW [supports](https://support.jwplayer.com/articles/drm-with-jw-stream-policy-reference) three DRM systems
-
-- Widevine (Google ecosystem)
-
-- PlayReady (Microsoft ecosystem)
-
-- Fairplay (Apple ecosystem)
+* Widevine (Google ecosystem)
+* PlayReady (Microsoft ecosystem)
+* Fairplay (Apple ecosystem)
 
 These  system require a time-bound decryption key, which can be fetched from the license URL. 
 
