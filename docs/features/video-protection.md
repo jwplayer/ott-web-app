@@ -12,10 +12,10 @@ This article outlines such entitlement service should work.
 
 ## Signed URLs
 
-With [URL signing](https://support.jwplayer.com/articles/how-to-enable-url-token-signing) enabled on the JW property, a video client can only access the media URLs when it has a valid JWT token:
+With [URL signing](https://support.jwplayer.com/articles/how-to-enable-url-token-signing) enabled on the JW property, a video client can only access the media URLs from JW backends when it has a valid JWT token:
 
 ```
-GET media/PEEzDfdA?token=:tokenA>
+GET media/PEEzDfdA?token=:tokenA
 {
  "title":"Video Title",
  "description":"Lorem ipsum dolor sit amet", 
@@ -29,7 +29,7 @@ Notice that the API response will also have all video URLs signed, making subseq
 
 ### Token generation
 
-The tokens are generated using the property API key. See [here](https://developer.jwplayer.com/jwplayer/docs/protect-your-content-with-signed-urls) for more info. This is how a decoded token looks like:
+This is how a decoded token looks like:
 
 ```
 {
@@ -39,7 +39,7 @@ The tokens are generated using the property API key. See [here](https://develope
 
 Notice that every token grants access to a unique resource. It's not possible to have token that grant access to a collection of resources.
 
-Below you can find an example on how to sign URLs using Python.
+The tokens are generated using the property API key. See [the documenation](https://developer.jwplayer.com/jwplayer/docs/protect-your-content-with-signed-urls) on how to generate a token.
 
 ## DRM
 
@@ -99,28 +99,3 @@ I's possible to have free content. This is indicated with media parameter `requi
 Notice that each time a user accesses a video, the service would have to check against the subscription provider (e.g., Cleeng) to validate if there is the subscription. This request can be slow and might have consumption limits. 
 
 To ensure a fast user experience this subscription status can be stored in ``UserSubscriptionToken``: a signed time-bound claim that the user has valid subscription. This claim would be exchanged when signing URLs. 
-
-### Python signing example
-
-```py
-import json
-import math
-import time
-from jose import jwt
-
-def generate_signed_url(resource_path: str, api_secret: str, expiration: int) -> str:
-    """
-    Generates JWT signed delivery URL for a given resource path
-    Args:
-        resource_path: Resource path of the resource to request
-        api_secret: V1 API Secret
-        expiration: Signature lifetime, in minutes
-    """
-    exp = math.ceil((time.time() + expiration))
-    payload = {
-        "resource": resource_path,
-        "exp": exp,
-    }
-    token = jwt.encode(payload, api_secret, algorithm="HS256")
-    return f"https://cdn.jwplayer.com{resource_path}?token={token}"
-```
