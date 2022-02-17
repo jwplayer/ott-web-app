@@ -76,11 +76,8 @@ The service interface could look like this:
 ### Video access models
 
 The entitlement service provide signed URL based on the access model: 
-
 - Advertising-based (AVOD): all videos can be accessed, as they are served with advertisements
-
 - Authentication-based (AUTHVOD): videos can be accessed if the user is loggged in
-
 - Subscription-based (SVOD): videos can be accessed if the user has a valid subscription
 
 This access model could be stored in the in the [app config](/docs/configuration.md).
