@@ -1,41 +1,31 @@
 # Series
+Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events.  By organizing content into a series, viewers are guided through the content. Series have a predefined sequence of episodes and can be split in seasons.
 
-Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events. 
-
-By organizing content into a series, viewers are guided through the content.
-
-Series have a predefined sequence of episodes and can be split in seasons
 <img title="" src="img/series.jpg" alt="Series" width="580">
+
 Series are tagged with `Series` in [shelves and libraries](shelves-and-libraries.md):
+
 <img title="" src="img/series-in-library.jpg" alt="Series in library" width="581">
+
 Series are defined through 'series playlist'. This is handled in the first piece of this article.
 
 In the near future JW player will native series construct. This is handled in the second part of this article.
 
 ## Series through playlist
+Series are not a native construct in the JW Dashboard at this moment. So customers create a 'series playlist' and set the sequences and episodes using custom parameters.
 
 ### Creating series playlists in the dashboard
-
-Series are not a native construct in the JW Dashboard at this moment. So customers create a 'series playlist' and set the sequences and episodes using custom parameters.
-The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to do this: 
-
+The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to create a serie playlist: 
 1. Create a Series playlist that automatically adds media as episodes based on series tag, e.g. `seriesId_xdAqW8ya`
-
 2. Upload the media items and
-   
-   - tag them with the series id. E.g. `seriesId_xdAqW8ya`
-   
+   - tag them with the series id. E.g. `seriesId_xdAqW8ya` 
    - provide it with the episode number e.g. `episodeNumber: 1`
-   
    - provide it with the season number e.g. `seasonNumber: 1`
-
 3. Add a media item that points to the series playlist using a parameter, e.g:  `seriesId: xdAqW8ya`. It's used as the card:
-
 4. Add the card to playlists  used in [shelves and libraries](shelves-and-libraries.md) E.g. library 'All Shows'
    
-   ### Series in libraries and shelves
-   
-   [Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this  playlis refer to series. These are identified using the `seriesId` , which links to the  playlist that contains the episodes. 
+### Series in libraries and shelves
+[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this  playlis refer to series. These are identified using the `seriesId` , which links to the  playlist that contains the episodes. 
    
    ```
    GET playlist/o45EkQBf
@@ -61,9 +51,8 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
    }
    ```
    
-   ### Serie detail window
-   
-   The serie detail window loads the series playlist using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). The episodelabel(e.g. `S1:E1`)  is coming from `seasonNumber` and `episodeNumber` 
+### Serie detail window
+The serie detail window loads the series playlist using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). The episodelabel(e.g. `S1:E1`)  is coming from `seasonNumber` and `episodeNumber` 
    
    ```
    GET playlist/xdAqW8ya
@@ -103,27 +92,21 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
     }
    }
    ```
-   
-   ## Native series - Coming soon
-   
-   JW Player will get native series management from the JW Dashboard:
+
+## Native series - Coming soon
+JW Player will get native series management from the JW Dashboard:
 - simplifies the series creation workflow
-
 - automatically calculate the number of episodes and duration of series
-
 - contains trailers and bonus content
   This section describes how this will work. 
   
-  ### Creating native series in the dashboard
+### Creating native series in the dashboard
 1. Customers define series 
-
 2. Customers publish their series by putting an episode into a playlist
-
 3. The episode can be recognized with the tag `Series` 
-   
-   ### Native series in shelves and libraries
-   
-   [Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlis refer to series. These can be recognized with the tag `Series`
+
+### Native series in shelves and libraries
+[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlis refer to series. These can be recognized with the tag `Series`
    
    ```
    GET playlist\<playlistid>
@@ -140,7 +123,7 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
    ]
    ```
    
-   Since the playlist includes an episode metadata, it needs to be  overwritten with a series metadata. This series metadata is retrieve using the the the following endpoint:
+Since the playlist includes an episode metadata, it needs to be  overwritten with a series metadata. This series metadata is retrieve using the the the following endpoint:
    
    ```
    GET series?media_ids=dwEE1oBP,1q2w3e4r
@@ -162,11 +145,11 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
    }
    ```
    
-   ### Native series detail window
+### Native series detail window
+
+The serie detail window loads the series playlist using a GET Series endpoint:
    
-   The serie detail window loads the series playlist using a GET Series endpoint:
-   
-   ```
+ ```
    GET series/{series_id}
    { 
    "title": "A Series of Unfortunate Events",
@@ -195,11 +178,11 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
       ]
     }
     ]}]
-   ```
+```
    
-   Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently we use the a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
+Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently we use the a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
    
-   ```
+```
    GET playlist?mediaids=zxcvbnma,lkjhgfds
    [{
     "title": "Big Buck Bunny",
@@ -216,8 +199,7 @@ The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-p
    }
    ```
    
-   This playlist type is developed for [user watchlists](user-watchlist.md) but will also work here. Make sure the  watchlist is created.
+This playlist type is developed for [user watchlists](user-watchlist.md) but will also work here. Make sure the  watchlist is created.
 
 ## Native series and search
-
 Customer are advised to exclude series episodes from the search playlists by using tags. Likewise customers should ensure the serie title and description are part of the first episode.
