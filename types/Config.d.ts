@@ -3,6 +3,7 @@
  * */
 
 export type Config = {
+  siteId: string;
   id?: string;
   siteName: string;
   description: string;
@@ -23,6 +24,7 @@ export type Config = {
   sso?: {
     host: string;
     clientId: string;
+    signingService: string;
   };
 };
 

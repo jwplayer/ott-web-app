@@ -12,6 +12,7 @@ import { restoreWatchHistory } from './stores/WatchHistoryStore';
 import { initializeFavorites } from './stores/FavoritesStore';
 import { initializeAccount } from './stores/AccountStore';
 import IdentityProvider from './providers/IdentityProvider';
+import MediaLoader from './providers/MediaLoader';
 
 interface State {
   error: Error | null;
@@ -63,7 +64,9 @@ class App extends Component {
           >
             <Router>
               <IdentityProvider>
-                <Root error={this.state.error} />
+                <MediaLoader>
+                  <Root error={this.state.error} />
+                </MediaLoader>
               </IdentityProvider>
             </Router>
           </ConfigProvider>

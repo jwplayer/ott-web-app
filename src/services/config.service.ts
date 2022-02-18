@@ -34,6 +34,7 @@ const optionsSchema: SchemaOf<Options> = object({
 // There's a bug with yup schema for defined strings: https://github.com/jquense/yup/issues/1367
 // @ts-ignore
 const configSchema: SchemaOf<Config> = object({
+  siteId: string().required(),
   id: string().notRequired(),
   siteName: string().defined(),
   description: string().defined(),
@@ -56,6 +57,7 @@ const configSchema: SchemaOf<Config> = object({
   sso: object({
     host: string().defined(),
     clientId: string().defined(),
+    signingService: string().defined(),
   }).notRequired(),
 }).defined();
 

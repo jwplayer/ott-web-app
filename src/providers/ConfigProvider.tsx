@@ -9,6 +9,7 @@ import { addScript } from '../utils/dom';
 import { ConfigStore } from '../stores/ConfigStore';
 
 const defaultConfig: Config = {
+  siteId: '',
   id: '',
   siteName: '',
   description: '',
@@ -106,6 +107,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
     return 'SVOD';
   };
 
+  // Don't render UI while loading (too many downstream dependencies don't gracefully handle no-data)
   return <ConfigContext.Provider value={config}>{loading ? <LoadingOverlay /> : children}</ConfigContext.Provider>;
 };
 

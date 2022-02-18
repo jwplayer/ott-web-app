@@ -12,6 +12,7 @@ export const ConfigStore = new Store<ConfigStore>({
   configLocation: '',
   isLoading: true,
   config: {
+    siteId: '',
     id: '',
     siteName: '',
     description: '',

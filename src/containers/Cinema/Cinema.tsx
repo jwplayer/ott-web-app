@@ -11,9 +11,10 @@ import { watchHistoryStore, useWatchHistory } from '../../stores/WatchHistorySto
 import { ConfigContext } from '../../providers/ConfigProvider';
 import { addScript } from '../../utils/dom';
 import useOttAnalytics from '../../hooks/useOttAnalytics';
-import { deepCopy } from '../../utils/collection';
 
 import styles from './Cinema.module.scss';
+import { fetchMediaById } from '../../services/api.service';
+import { deepCopy } from '../../utils/collection';
 
 type Props = {
   item: PlaylistItem;
@@ -117,47 +118,51 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
     };
 
     const loadPlaylist = () => {
-      if (!item || !playerRef.current) {
-        return;
-      }
+      fetchMediaById(item.mediaid).then((itemToPlay) => {
+        if (!item || !playerRef.current) {
+          return;
+        }
 
-      const currentItem = playerRef.current?.getPlaylistItem() as PlaylistItem | null;
+        const currentItem = playerRef.current?.getPlaylistItem() as PlaylistItem | null;
 
-      // we already loaded this item
-      if (currentItem && currentItem.mediaid === item.mediaid) {
-        return;
-      }
+        // we already loaded this item
+        if (currentItem && currentItem.mediaid === item.mediaid) {
+          return;
+        }
 
-      // load new item
-      playerRef.current.setConfig({ playlist: [deepCopy(item)], autostart: true });
-      calculateWatchHistoryProgress();
+        // load new item
+        playerRef.current.setConfig({ playlist: [deepCopy(itemToPlay)], autostart: true });
+        calculateWatchHistoryProgress();
+      });
     };
 
     const initializePlayer = () => {
-      if (!window.jwplayer || !playerElementRef.current) return;
+      fetchMediaById(item.mediaid).then((itemToPlay) => {
+        if (!window.jwplayer || !playerElementRef.current) return;
 
-      playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
+        playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      playerRef.current.setup({
-        playlist: [deepCopy(item)],
-        aspect: false,
-        width: '100%',
-        height: '100%',
-        mute: false,
-        autostart: true,
+        playerRef.current.setup({
+          playlist: [deepCopy(itemToPlay)],
+          aspect: false,
+          width: '100%',
+          height: '100%',
+          mute: false,
+          autostart: true,
+        });
+
+        calculateWatchHistoryProgress();
+        setPlayer(playerRef.current);
+
+        const handleBeforePlay = () => {
+          if (seekToRef.current > 0) {
+            playerRef.current?.seek(seekToRef.current);
+            seekToRef.current = -1;
+          }
+        };
+
+        playerRef.current.on('beforePlay', handleBeforePlay);
       });
-
-      calculateWatchHistoryProgress();
-      setPlayer(playerRef.current);
-
-      const handleBeforePlay = () => {
-        if (seekToRef.current > 0) {
-          playerRef.current?.seek(seekToRef.current);
-          seekToRef.current = -1;
-        }
-      };
-
-      playerRef.current.on('beforePlay', handleBeforePlay);
     };
 
     if (playerRef.current) {

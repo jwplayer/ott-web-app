@@ -1,4 +1,5 @@
 {
+  "siteId": "W4krJFoQ",
   "assets": {
     "banner": "/images/logo.png"
   },
@@ -6,26 +7,26 @@
     {
       "enableText": true,
       "featured": true,
-      "playlistId": "JSKF03bk"
+      "playlistId": "UiGEhkeN"
     },
     {
       "enableText": true,
-      "playlistId": "dGSUzs9o"
+      "playlistId": "wL0fq2R8"
     },
     {
       "enableText": true,
-      "playlistId": "xQaFzykq"
+      "playlistId": "P9i25z4h"
     }
   ],
   "menu": [
     {
       "label": "Films",
-      "playlistId": "dGSUzs9o",
+      "playlistId": "wL0fq2R8",
       "filterTags": "Action,Comedy,Fantasy,Drama"
     },
     {
       "label": "Courses",
-      "playlistId": "xQaFzykq",
+      "playlistId": "P9i25z4h",
       "filterTags": "Beginner,Advanced"
     }
   ],
@@ -42,16 +43,13 @@
     "enableContinueWatching": true,
     "highlightColor": null
   },
-  "player": "ou7L8htR",
-  "recommendationsPlaylist": "IHBjjkSN",
-  "searchPlaylist": "D4soEviP",
+  "player": "GsBbq0KB",
+  "recommendationsPlaylist": "9STvE6rD",
+  "searchPlaylist": "HKNRvfiR",
   "siteName": "Blender",
-  "json": {
-    "cleengMonthlyOffer": "S970187168_NL",
-    "cleengYearlyOffer": "S467691538_NL"
-  },
   "sso": {
     "host": "https://jw-hackweek.auth.us-east-2.amazoncognito.com",
-    "clientId": "56bq9fkmv7j8m25a51k1vq3kdn"
+    "clientId": "56bq9fkmv7j8m25a51k1vq3kdn",
+    "signingService": "http://localhost:8081"
   }
 }

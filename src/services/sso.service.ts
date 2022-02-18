@@ -1,4 +1,6 @@
 import { ConfigStore } from '../stores/ConfigStore';
+import { AccountStore } from '../stores/AccountStore';
+import { addQueryParams } from '../utils/formatting';
 
 export interface State {
   returnUrl: string;
@@ -72,14 +74,29 @@ export async function exchangeCode(code: string) {
 
     return {
       accessToken: responseData.access_token,
+      id_token: responseData.id_token,
       userData: userData,
     };
-  } else {
-    // @ts-ignore
-    if (typeof NODE_ENV_COMPILE_CONST === 'undefined' || NODE_ENV_COMPILE_CONST !== 'production') {
-      throw 'Error exchanging code: ' + response;
-    }
+  }
+
+  // @ts-ignore
+  if (typeof NODE_ENV_COMPILE_CONST === 'undefined' || NODE_ENV_COMPILE_CONST !== 'production') {
+    throw 'Error exchanging code: ' + response;
   }
 
   return undefined;
+}
+
+export function signUrl(url: string, page_limit?: number, related_media_id?: string) {
+  const { sso, siteId } = ConfigStore.getRawState().config;
+  const token = AccountStore.getRawState().accessToken || '';
+
+  if (!sso || !siteId) {
+    return url;
+  }
+
+  return addQueryParams(`${sso?.signingService}/v1/signed?site_id=${siteId}&token=${token}&resource=${url}`, {
+    page_limit: page_limit?.toString(),
+    related_media_id,
+  });
 }

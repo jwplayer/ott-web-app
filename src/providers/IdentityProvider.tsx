@@ -42,7 +42,7 @@ export default function IdentityProvider({ children }: { children: JSX.Element }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSsoLoginPath]);
 
-  // Don't render UI during code exchange
+  // Don't render UI during code exchange (this is essentially a non-ui endpoint)
   if (isSsoLoginPath || isSsoLogoutPath) {
     return <LoadingOverlay />;
   }
@@ -72,8 +72,6 @@ export default function IdentityProvider({ children }: { children: JSX.Element }
         history.push('/');
         return;
       }
-      // eslint-disable-next-line no-console
-      console.log(data);
       setState({
         accessToken: data.accessToken,
         user: {
