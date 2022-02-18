@@ -8,7 +8,7 @@ import LoginForm from './LoginForm';
 describe('<LoginForm>', () => {
   test('renders and matches snapshot', () => {
     ConfigStore.update((s) => {
-      s.config.sso = { host: 'https://www.aws.com', clientId: '12345CLIENT' };
+      s.config.sso = { host: 'https://www.aws.com', clientId: '12345CLIENT', signingService: 'http://localhost:5454' };
     });
 
     const { container } = render(

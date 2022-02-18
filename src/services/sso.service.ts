@@ -87,7 +87,7 @@ export async function exchangeCode(code: string) {
   return undefined;
 }
 
-export function signUrl(url: string, page_limit?: number, related_media_id?: string) {
+export function signUrl(url: string, queryParams?: { page_limit?: string; related_media_id?: string; search?: string }) {
   const { sso, siteId } = ConfigStore.getRawState().config;
   const token = AccountStore.getRawState().accessToken || '';
 
@@ -95,8 +95,5 @@ export function signUrl(url: string, page_limit?: number, related_media_id?: str
     return url;
   }
 
-  return addQueryParams(`${sso?.signingService}/v1/signed?site_id=${siteId}&token=${token}&resource=${url}`, {
-    page_limit: page_limit?.toString(),
-    related_media_id,
-  });
+  return addQueryParams(`${sso?.signingService}/v1/signed?site_id=${siteId}&token=${token}&resource=${url}`, queryParams || {});
 }

@@ -1,8 +1,9 @@
 import type { Playlist, PlaylistItem } from '../../types/playlist';
 import { MediaStore } from '../providers/MediaLoader';
 import { AccountStore } from '../stores/AccountStore';
+import { deepCopy } from '../utils/collection';
 
-import { getLoginUrl, signUrl } from './sso.service';
+import { signUrl } from './sso.service';
 
 /**
  * Get data
@@ -22,12 +23,12 @@ export const getDataOrThrow = async (response: Response) => {
     const playlist = data as Playlist;
 
     if (s.playlists && playlist && playlist.feedid) {
-      s.playlists[playlist.feedid] = playlist;
+      s.playlists[playlist.feedid] = deepCopy(playlist);
     }
 
     playlist?.playlist?.forEach((item) => {
       if (s.items) {
-        s.items[item.mediaid] = item;
+        s.items[item.mediaid] = deepCopy(item);
       }
     });
   });
@@ -42,7 +43,7 @@ export const getDataOrThrow = async (response: Response) => {
  * @param limit
  */
 export const getPlaylistById = (id: string, relatedMediaId?: string, limit?: number): Promise<Playlist | undefined> => {
-  const url = signUrl(`/v2/playlists/${id}`, limit, relatedMediaId);
+  const url = signUrl(`/v2/playlists/${id}`, { page_limit: limit?.toString(), related_media_id: relatedMediaId });
 
   return fetch(url).then(getDataOrThrow);
 };
@@ -53,7 +54,7 @@ export const getPlaylistById = (id: string, relatedMediaId?: string, limit?: num
  * @param {string} query
  */
 export const getSearchPlaylist = (playlistId: string, query: string): Promise<Playlist | undefined> => {
-  return fetch(signUrl(`/v2/playlists/${playlistId}?search=${encodeURIComponent(query)}`)).then(getDataOrThrow);
+  return fetch(signUrl(`/v2/playlists/${playlistId}`, { search: encodeURIComponent(query) })).then(getDataOrThrow);
 };
 
 /**
@@ -75,12 +76,7 @@ export async function getMediaById(id: string): Promise<PlaylistItem | undefined
 export const fetchMediaById = (id: string): Promise<PlaylistItem | undefined> => {
   return fetch(signUrl(`/v2/media/${id}`))
     .then((res) => getDataOrThrow(res) as Promise<Playlist>)
-    .then((data) => data.playlist[0])
-    .catch(() => {
-      // Trigger a login prompt if any errors occur
-      window.location.href = getLoginUrl();
-      return undefined;
-    });
+    .then((data) => data.playlist[0]);
 };
 
 /**

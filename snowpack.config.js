@@ -88,5 +88,6 @@ module.exports = {
   buildOptions: {
     /* ... */
     baseUrl: process.env.SNOWPACK_PUBLIC_BASE_URL || '',
+    sourceMap: true
   },
 };

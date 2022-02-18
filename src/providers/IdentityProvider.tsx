@@ -2,7 +2,6 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 
 import { exchangeCode, State } from '../services/sso.service';
-
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 import { AccountStore } from '../stores/AccountStore';
 import type { Customer } from '../../types/account';

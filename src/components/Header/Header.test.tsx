@@ -9,7 +9,7 @@ import Header from './Header';
 describe('<Header />', () => {
   test('renders header', () => {
     ConfigStore.update((s) => {
-      s.config.sso = { host: 'https://www.aws.com', clientId: '12345CLIENT' };
+      s.config.sso = { host: 'https://www.aws.com', clientId: '12345CLIENT', signingService: 'localhost' };
     });
 
     const playlistMenuItems = [<Button key="key" label="Home" to="/" />];
