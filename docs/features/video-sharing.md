@@ -3,9 +3,7 @@
 ![Share video](img/share-video.jpg)
 
 Viewers can share a video: 
-
 - On the desktop this will copy the URL to the clipboard  
-
 - On mobile devices, this will share the URL through the device sharing window  
 
 ## Configuration
