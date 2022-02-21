@@ -70,7 +70,11 @@ The full details of this endpoint can be found [here](https://developer.jwplayer
 
 ## Custom Entitlement Service
 
-The entitlement service should generate the `SignedMediaURLs` based on the given access model (see below) and media item. 
+The entitlement service should generate the `SignedMediaURLs` based on:
+- the general video access model (see below)
+- the specific media item being accessed (free or not)
+- the users authentication (who is the user)
+- the users entitlements (what did he buy)
 
 The service interface could look like this: 
 
