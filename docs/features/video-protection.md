@@ -32,7 +32,7 @@ This is what a decoded token looks like:
 
 ```
 {
-  "resource": "/v2/playlists/Xw0oaD4q",
+  "resource": "/v2/media/Xw0oaD4q",
   "exp": 1893456000
 }
 ```
@@ -54,7 +54,7 @@ These systems require a time-bound decryption key, which can be fetched from the
 Also all DRM URLs require to be signed with a token.
 
 ```
-GET media/PEEzDfdA/drm/:drm_policy_id?token=:tokenA>
+GET media/PEEzDfdA/drm/:drm_policy_id?token=:tokenA
 {
  "title":"Video Title",
  "description":"Lorem ipsum dolor sit amet", 
