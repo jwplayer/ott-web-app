@@ -14,17 +14,17 @@ This article outlines such entitlement service should work.
 With [URL signing](https://support.jwplayer.com/articles/how-to-enable-url-token-signing) enabled on the JW property, a video client can only access the media URLs from JW backends when it has a valid JWT token:
 
 ```
-GET media/PEEzDfdA?token=:tokenA
+GET media/PEEzDfdA?token=<tokenA>
 {
  "title":"Video Title",
  "description":"Lorem ipsum dolor sit amet", 
- "sources":[https://content.jwplatform.com/manifests/PEEzDfdA.m3u8?token=:tokenB]
+ "sources":[https://content.jwplatform.com/manifests/PEEzDfdA.m3u8?token=<tokenB>]
 }
 ```
 
 Missing or invalid tokens will result in a `403` forbidden.
 
-Notice that the API response will also have all video URLs signed, making subsequent calls easy.
+Notice that the API response will also have all video URLs signed, making subsequent calls accessing the video sources easy.
 
 ### Token generation
 
@@ -54,14 +54,14 @@ These systems require a time-bound decryption key, which can be fetched from the
 Also all DRM URLs require to be signed with a token.
 
 ```
-GET media/PEEzDfdA/drm/:drm_policy_id?token=:tokenA
+GET media/PEEzDfdA/drm/:drm_policy_id?token=<tokenA>
 {
  "title":"Video Title",
  "description":"Lorem ipsum dolor sit amet", 
  "sources":[{
    "drm":{
-      "file":":https://content.jwplatform.com/manifests/PEEzDfdA.m3u8?token=:tokenB",
-      "widevine":{"url":":widevine_license_url?token=:tokenC"}
+      "file":":https://content.jwplatform.com/manifests/PEEzDfdA.m3u8?token=<tokenB>",
+      "widevine":{"url":"<widevine_license_url>?token=<tokenC>"}
 }]
 }
 ```
@@ -78,7 +78,7 @@ The entitlement service should generate the `SignedMediaURLs` based on:
 
 The service interface could look like this: 
 
-`GET /entitlement/:siteid/video-signature/:mediaid`
+`GET /entitlement/<siteid>/video-signature/<mediaid>`
 
 ### Video access models
 
