@@ -8,7 +8,6 @@ import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl } from '../../utils/formatting';
-import AccountContainer from '../../containers/Account/AccountContainer';
 import SubscriptionContainer from '../../containers/Subscription/SubscriptionContainer';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
@@ -106,35 +105,7 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Switch>
           <Route path="/u/my-account">
-            <AccountContainer>
-              {({
-                customer,
-                errors,
-                isLoading,
-                consentsLoading,
-                publisherConsents,
-                customerConsents,
-                onUpdateEmailSubmit,
-                onUpdateInfoSubmit,
-                onUpdateConsentsSubmit,
-                onReset,
-              }) => (
-                <AccountComponent
-                  customer={customer}
-                  errors={errors}
-                  isLoading={isLoading}
-                  consentsLoading={consentsLoading}
-                  publisherConsents={publisherConsents}
-                  customerConsents={customerConsents}
-                  onUpdateEmailSubmit={onUpdateEmailSubmit}
-                  onUpdateInfoSubmit={onUpdateInfoSubmit}
-                  onUpdateConsentsSubmit={onUpdateConsentsSubmit}
-                  onReset={onReset}
-                  panelClassName={styles.panel}
-                  panelHeaderClassName={styles.panelHeader}
-                />
-              )}
-            </AccountContainer>
+            <AccountComponent panelClassName={styles.spanel} panelHeaderClassName={styles.panelHeader} />
           </Route>
           <Route path="/u/favorites">
             <PlaylistContainer playlistId={PersonalShelf.Favorites} showEmpty>

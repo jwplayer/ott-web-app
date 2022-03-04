@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Consent, Customer, CustomerConsent, UpdateCustomerPayload } from 'types/account';
-import type { CustomerFormValues, FormErrors, GenericFormValues } from 'types/form';
+import type { GenericFormValues, CustomerFormErrors } from 'types/form';
 import { useHistory } from 'react-router-dom';
 
 import { formatConsentsFromValues, formatConsentValues } from '../../utils/collection';
@@ -9,51 +8,32 @@ import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import useToggle from '../../hooks/useToggle';
 import Button from '../../components/Button/Button';
-import Spinner from '../../components/Spinner/Spinner';
 import Form from '../Form/Form';
 import IconButton from '../IconButton/IconButton';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import TextField from '../TextField/TextField';
 import Checkbox from '../Checkbox/Checkbox';
 import { addQueryParam } from '../../utils/history';
+import { AccountStore, updateConsents, updateUser } from '../../stores/AccountStore';
 
 import styles from './Account.module.scss';
 
 type Props = {
-  customer: Customer;
-  errors?: FormErrors<UpdateCustomerPayload>;
-  isLoading: boolean;
-  consentsLoading: boolean;
-  publisherConsents?: Consent[];
-  customerConsents?: CustomerConsent[];
-  onUpdateEmailSubmit: (data: CustomerFormValues) => void;
-  onUpdateInfoSubmit: (data: CustomerFormValues) => void;
-  onUpdateConsentsSubmit: (consents: CustomerConsent[]) => void;
-  onReset?: () => void;
   panelClassName?: string;
   panelHeaderClassName?: string;
 };
 
 type Editing = 'none' | 'account' | 'password' | 'info' | 'consents';
 
-const Account = ({
-  customer,
-  errors,
-  isLoading,
-  consentsLoading,
-  publisherConsents,
-  customerConsents,
-  panelClassName,
-  panelHeaderClassName,
-  onUpdateEmailSubmit,
-  onUpdateInfoSubmit,
-  onUpdateConsentsSubmit,
-  onReset,
-}: Props): JSX.Element => {
+const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const history = useHistory();
   const [editing, setEditing] = useState<Editing>('none');
+  const [errors, setErrors] = useState<CustomerFormErrors | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
   const [viewPassword, toggleViewPassword] = useToggle();
+
+  const { user: customer, customerConsents, publisherConsents } = AccountStore.useState((state) => state);
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
   const initialValues = useMemo(() => ({ ...customer, consents: consentValues }), [customer, consentValues]);
 
@@ -69,31 +49,67 @@ const Account = ({
     return label;
   };
 
-  const handleSubmit = (values: GenericFormValues) => {
+  const translateErrors = (errors?: string[]) => {
+    const formErrors: CustomerFormErrors = {};
+
+    errors?.map((error) => {
+      switch (error) {
+        case 'Invalid param email':
+          formErrors.email = 'Invalid email address!';
+          break;
+        case 'Customer email already exists':
+          formErrors.email = 'Email already exists!';
+          break;
+        case 'Please enter a valid e-mail address.':
+          formErrors.email = 'Please enter a valid e-mail address.';
+          break;
+        case 'Invalid confirmationPassword': {
+          formErrors.confirmationPassword = 'Password incorrect!';
+          break;
+        }
+        default:
+          console.info('Unknown error', error);
+          return;
+      }
+    });
+    return formErrors;
+  };
+
+  async function handleSubmit(values: GenericFormValues) {
+    let response: ApiResponse | undefined = undefined;
+    setIsLoading(true);
     switch (editing) {
       case 'account':
-        return onUpdateEmailSubmit(values as CustomerFormValues);
+        response = await updateUser({ email: values.email, confirmationPassword: values.confirmationPassword });
+        break;
       case 'info':
-        return onUpdateInfoSubmit(values as CustomerFormValues);
+        response = await updateUser({ firstName: values.firstName, lastName: values.lastName });
+        break;
       case 'consents':
-        return onUpdateConsentsSubmit(formatConsentsFromValues(publisherConsents, values));
+        response = await updateConsents(formatConsentsFromValues(publisherConsents, values));
+        break;
       default:
         return;
     }
-  };
+
+    setErrors(translateErrors(response?.errors));
+
+    if (response && !response?.errors?.length) {
+      setEditing('none');
+    }
+
+    setIsLoading(false);
+  }
+
   const onCancelClick = (formResetHandler?: () => void): void => {
     formResetHandler && formResetHandler();
+    setErrors(undefined);
     setEditing('none');
-    onReset && onReset();
   };
 
   const editPasswordClickHandler = () => {
     history.push(addQueryParam(history, 'u', 'reset-password'));
   };
-
-  useEffect(() => {
-    !isLoading && setEditing('none');
-  }, [isLoading]);
 
   return (
     <Form initialValues={initialValues} onSubmit={handleSubmit}>
@@ -127,10 +143,7 @@ const Account = ({
                   type={viewPassword ? 'text' : 'password'}
                   disabled={isLoading}
                   rightControl={
-                    <IconButton
-                      aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')}
-                      onClick={() => toggleViewPassword()}
-                    >
+                    <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
                       {viewPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   }
@@ -203,13 +216,11 @@ const Account = ({
               </div>
             </div>
           </div>
-          <div className={panelClassName}>
-            <div className={panelHeaderClassName}>
-              <h3>{t('account.terms_and_tracking')}</h3>
-            </div>
-            {consentsLoading ? (
-              <Spinner size="small" />
-            ) : publisherConsents ? (
+          {publisherConsents && (
+            <div className={panelClassName}>
+              <div className={panelHeaderClassName}>
+                <h3>{t('account.terms_and_tracking')}</h3>
+              </div>
               <div className={styles.flexBox} onClick={() => setEditing('consents')}>
                 {publisherConsents.map((consent, index) => (
                   <Checkbox
@@ -233,8 +244,8 @@ const Account = ({
                   />
                 </div>
               </div>
-            ) : null}
-          </div>
+            </div>
+          )}
         </>
       )}
     </Form>

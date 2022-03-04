@@ -5,8 +5,12 @@ exports[`<Account> renders and matches snapshot 1`] = `
   <form
     novalidate=""
   >
-    <div>
-      <div>
+    <div
+      class="panel-class"
+    >
+      <div
+        class="header-class"
+      >
         <h3>
           account.email
         </h3>
@@ -41,8 +45,12 @@ exports[`<Account> renders and matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div>
-      <div>
+    <div
+      class="panel-class"
+    >
+      <div
+        class="header-class"
+      >
         <h3>
           account.security
         </h3>
@@ -64,8 +72,12 @@ exports[`<Account> renders and matches snapshot 1`] = `
         </button>
       </div>
     </div>
-    <div>
-      <div>
+    <div
+      class="panel-class"
+    >
+      <div
+        class="header-class"
+      >
         <h3>
           account.about_you
         </h3>
@@ -115,11 +127,54 @@ exports[`<Account> renders and matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div>
-      <div>
+    <div
+      class="panel-class"
+    >
+      <div
+        class="header-class"
+      >
         <h3>
           account.terms_and_tracking
         </h3>
+      </div>
+      <div
+        class="flexBox"
+      >
+        <div
+          class="checkbox"
+        >
+          <div
+            class="row"
+          >
+            <input
+              id="check-box_1235_marketing"
+              name="marketing"
+              type="checkbox"
+              value=""
+            />
+            <label
+              for="check-box_1235_marketing"
+            >
+              
+              Receive Marketing Emails
+            </label>
+          </div>
+        </div>
+        <div
+          class="controls"
+        >
+          <button
+            aria-disabled="true"
+            class="button submitConsents default outlined disabled"
+            disabled=""
+            id="submit_consents"
+            type="button"
+          >
+            <span>
+              account.update_consents
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </form>
