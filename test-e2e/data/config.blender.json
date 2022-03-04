@@ -22,10 +22,8 @@
       "playlistId": "xQaFzykq"
     }
   ],
-  "continuePlaylist": null,
-  "custom": [],
+  "custom": {},
   "description": "Blender",
-  "favoritesPlaylist": null,
   "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
   "menu": [{
     "label": "Films",
@@ -39,21 +37,11 @@
   "options": {
     "backgroundColor": "#000000",
     "dynamicBlur": true,
-    "enableAddToHome": false,
     "enableCasting": false,
     "enableContinueWatching": true,
-    "enableCookieNotice": false,
-    "enableHeader": true,
-    "enableInVideoSearch": false,
     "enableSharing": false,
     "highlightColor": "#CCCCCC",
-    "rightRail": {
-      "enabled": true
-    },
-    "posterFading": true,
-    "showcaseContentOnly": false,
-    "useRecommendationsPlaylist": true,
-    "videoTitlePosition": "above"
+    "posterFading": true
   },
   "player": "ou7L8htR",
   "recommendationsPlaylist": "IHBjjkSN",
