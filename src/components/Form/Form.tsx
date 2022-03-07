@@ -1,70 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, createContext, SetStateAction} from 'react';
 import type { GenericFormValues } from 'types/form';
 
-type Return = {
-  values: GenericFormValues;
-  handleChange?: (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, options?: HandleChangeOptions | undefined) => void;
-  handleSubmit?: () => void;
-  handleReset?: () => void;
-  hasChanged?: boolean;
-};
+import type {FormSectionProps} from "./FormSection";
+import {FormSection} from "./FormSection";
 
-type Props = {
-  initialValues: GenericFormValues;
-  editing?: boolean;
-  children: ({ values, handleChange }: Return) => JSX.Element;
-  onSubmit: (values: GenericFormValues) => void;
-};
+interface Props<TData> {
+  initialValues: TData;
+  isLoading?: boolean;
+  onReset?: () => void;
+  children?: FormSectionProps<TData, string[]>[];
+}
 
-type HandleChangeOptions = {
-  nestInto: string;
-};
+export interface FormContext<TData> {
+  isLoading?: boolean;
+  cancel: () => void;
+  formState: FormState<TData>;
+  setFormState: React.Dispatch<SetStateAction<FormState<TData>>>;
+}
 
-const Form = ({ initialValues, editing = true, children, onSubmit }: Props): JSX.Element => {
-  const [values, setValues] = useState<GenericFormValues>(initialValues);
-  const [hasChanged, setHasChanged] = useState(false);
+interface FormState<TData> {
+  values: TData;
+  activeSectionId: string | undefined;
+  isDirty: boolean;
+  isBusy: boolean;
+  errors?: string[];
+}
 
-  const handleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, options?: HandleChangeOptions) => {
-    if (!event.currentTarget) return;
+export const FormContext = createContext<FormContext<GenericFormValues> | undefined>(undefined);
 
-    const name = event.currentTarget.name;
-    const value = event.currentTarget.type === 'checkbox' ? (event.currentTarget as HTMLInputElement).checked : event.currentTarget.value;
+function Form<TData extends GenericFormValues>({ isLoading, initialValues, onReset, children }: Props<TData>): JSX.Element {
+  const [state, setState] = useState<FormState<TData>>({
+    values: initialValues,
+    activeSectionId: undefined,
+    isDirty: false,
+    isBusy: false,
+  });
 
-    setHasChanged(true);
-
-    if (options?.nestInto) {
-      const oldSubValues = values[options.nestInto];
-      const subValues = { ...oldSubValues, [name]: value };
-      return setValues({ ...values, [options.nestInto]: subValues });
-    }
-
-    setValues({ ...values, [name]: value });
-  };
-
-  const handleSubmit = (event?: React.FormEvent) => {
-    event && event.preventDefault();
-    onSubmit && onSubmit(values);
-    setHasChanged(false);
-  };
-
-  const handleReset = () => {
-    setValues(initialValues);
-    setHasChanged(false);
-  };
-
-  useEffect(() => {
-    setValues(initialValues);
-  }, [initialValues]);
-
-  if (!editing) {
-    return children({ values });
+  function cancel() {
+    setState((s) => {
+      return {
+        ...s,
+        values: initialValues,
+        isDirty: false,
+        activeSectionId: undefined,
+        errors: undefined,
+      };
+    });
+    onReset && onReset();
   }
 
+  useEffect(() => {
+    setState((s) => {
+      return {
+        ...s,
+        values: initialValues,
+      };
+    });
+  }, [initialValues]);
+
   return (
-    <form noValidate onSubmit={(event) => event.preventDefault()}>
-      {children({ values, handleChange, handleSubmit, handleReset, hasChanged })}
-    </form>
+    <FormContext.Provider
+      value={{
+        isLoading,
+        cancel,
+        formState: state,
+        setFormState: setState,
+      }}
+    >
+      {children?.map((props, i) => (
+          <FormSection key={i} {...props} />
+      ))}
+    </FormContext.Provider>
   );
-};
+}
 
 export default Form;

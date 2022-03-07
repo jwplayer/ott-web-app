@@ -2,181 +2,169 @@
 
 exports[`<Account> renders and matches snapshot 1`] = `
 <div>
-  <form
-    novalidate=""
+  <div
+    class="panel-class"
   >
     <div
-      class="panel-class"
+      class="header-class"
+    >
+      <h3>
+        account.email
+      </h3>
+    </div>
+    <div
+      class="flexBox"
     >
       <div
-        class="header-class"
+        class="textField"
       >
-        <h3>
+        <label
+          class="label"
+          for="text-field_1235_email"
+        >
           account.email
-        </h3>
-      </div>
-      <div
-        class="flexBox"
-      >
-        <div
-          class="textField"
-        >
-          <label
-            class="label"
-            for="text-field_1235_email"
-          >
-            account.email
-          </label>
-          <p>
-            email@domain.com
-          </p>
-        </div>
-        <div
-          class="controls"
-        >
-          <button
-            class="button default outlined"
-            type="button"
-          >
-            <span>
-              account.edit_account
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div
-      class="panel-class"
-    >
-      <div
-        class="header-class"
-      >
-        <h3>
-          account.security
-        </h3>
-      </div>
-      <div>
-        <strong>
-          account.password
-        </strong>
+        </label>
         <p>
-          ****************
+          email@domain.com
         </p>
-        <button
-          class="button default outlined"
-          type="button"
-        >
-          <span>
-            account.edit_password
-          </span>
-        </button>
       </div>
     </div>
     <div
-      class="panel-class"
+      class="controls"
+    >
+      <button
+        class="button default outlined"
+        type="button"
+      >
+        <span>
+          account.edit_account
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.security
+      </h3>
+    </div>
+    <div
+      class="flexBox"
+    >
+      <strong>
+        account.password
+      </strong>
+      <p>
+        ****************
+      </p>
+    </div>
+    <div
+      class="controls"
+    >
+      <button
+        class="button default outlined"
+        type="button"
+      >
+        <span>
+          account.edit_password
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.about_you
+      </h3>
+    </div>
+    <div
+      class="flexBox"
     >
       <div
-        class="header-class"
+        class="textField"
       >
-        <h3>
-          account.about_you
-        </h3>
-      </div>
-      <div>
-        <div
-          class="flexBox"
+        <label
+          class="label"
+          for="text-field_1235_firstName"
         >
-          <div
-            class="textField"
+          account.firstname
+        </label>
+        <p>
+          John
+        </p>
+      </div>
+      <div
+        class="textField"
+      >
+        <label
+          class="label"
+          for="text-field_1235_lastName"
+        >
+          account.lastname
+        </label>
+        <p>
+          Doe
+        </p>
+      </div>
+    </div>
+    <div
+      class="controls"
+    >
+      <button
+        class="button default outlined"
+        type="button"
+      >
+        <span>
+          account.edit_information
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.terms_and_tracking
+      </h3>
+    </div>
+    <div
+      class="flexBox"
+    >
+      <div
+        class="checkbox"
+      >
+        <div
+          class="row"
+        >
+          <input
+            id="check-box_1235_consents.marketing"
+            name="consents.marketing"
+            type="checkbox"
+            value=""
+          />
+          <label
+            for="check-box_1235_consents.marketing"
           >
-            <label
-              class="label"
-              for="text-field_1235_firstName"
-            >
-              account.firstname
-            </label>
-            <p>
-              John
-            </p>
-          </div>
-          <div
-            class="textField"
-          >
-            <label
-              class="label"
-              for="text-field_1235_lastName"
-            >
-              account.lastname
-            </label>
-            <p>
-              Doe
-            </p>
-          </div>
-          <div
-            class="controls"
-          >
-            <button
-              class="button default outlined"
-              type="button"
-            >
-              <span>
-                account.edit_information
-              </span>
-            </button>
-          </div>
+            
+            Receive Marketing Emails
+          </label>
         </div>
       </div>
     </div>
     <div
-      class="panel-class"
-    >
-      <div
-        class="header-class"
-      >
-        <h3>
-          account.terms_and_tracking
-        </h3>
-      </div>
-      <div
-        class="flexBox"
-      >
-        <div
-          class="checkbox"
-        >
-          <div
-            class="row"
-          >
-            <input
-              id="check-box_1235_marketing"
-              name="marketing"
-              type="checkbox"
-              value=""
-            />
-            <label
-              for="check-box_1235_marketing"
-            >
-              
-              Receive Marketing Emails
-            </label>
-          </div>
-        </div>
-        <div
-          class="controls"
-        >
-          <button
-            aria-disabled="true"
-            class="button submitConsents default outlined disabled"
-            disabled=""
-            id="submit_consents"
-            type="button"
-          >
-            <span>
-              account.update_consents
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </form>
+      class="controls"
+    />
+  </div>
 </div>
 `;
