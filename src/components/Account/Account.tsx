@@ -52,26 +52,37 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   const translateErrors = (errors?: string[]) => {
     const formErrors: CustomerFormErrors = {};
 
-    errors?.map((error) => {
-      switch (error) {
-        case 'Invalid param email':
-          formErrors.email = 'Invalid email address!';
-          break;
-        case 'Customer email already exists':
-          formErrors.email = 'Email already exists!';
-          break;
-        case 'Please enter a valid e-mail address.':
-          formErrors.email = 'Please enter a valid e-mail address.';
-          break;
-        case 'Invalid confirmationPassword': {
-          formErrors.confirmationPassword = 'Password incorrect!';
-          break;
+    // Some errors are combined in a single CSV string instead of one string per error
+    errors
+      ?.flatMap((e) => e.split(','))
+      .map((error) => {
+        switch (error.trim()) {
+          case 'Invalid param email':
+            formErrors.email = t('account.errors.invalid_param_email');
+            break;
+          case 'Customer email already exists':
+            formErrors.email = t('account.errors.email_exists');
+            break;
+          case 'Please enter a valid e-mail address.':
+            formErrors.email = t('account.errors.please_enter_valid_email');
+            break;
+          case 'Invalid confirmationPassword': {
+            formErrors.confirmationPassword = t('account.errors.invalid_password');
+            break;
+          }
+          case 'firstName can have max 50 characters.': {
+            formErrors.firstName = t('account.errors.first_name_too_long');
+            break;
+          }
+          case 'lastName can have max 50 characters.': {
+            formErrors.lastName = t('account.errors.last_name_too_long');
+            break;
+          }
+          default:
+            console.info('Unknown error', error);
+            return;
         }
-        default:
-          console.info('Unknown error', error);
-          return;
-      }
-    });
+      });
     return formErrors;
   };
 
