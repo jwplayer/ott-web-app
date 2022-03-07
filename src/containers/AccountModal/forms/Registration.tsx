@@ -22,6 +22,9 @@ const Registration = () => {
 
   const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConsentValues((current) => ({ ...current, [event.target.name]: event.target.checked }));
+
+    // Clear the errors for any checkbox that's toggled
+    setConsentErrors((errors) => errors.filter((e) => e !== event.target.name));
   };
 
   useEffect(() => {
