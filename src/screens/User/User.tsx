@@ -105,7 +105,7 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Switch>
           <Route path="/u/my-account">
-            <AccountComponent panelClassName={styles.spanel} panelHeaderClassName={styles.panelHeader} />
+            <AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
           </Route>
           <Route path="/u/favorites">
             <PlaylistContainer playlistId={PersonalShelf.Favorites} showEmpty>
