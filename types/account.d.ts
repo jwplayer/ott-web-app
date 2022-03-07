@@ -58,29 +58,9 @@ export type RegisterPayload = {
   externalData?: string;
 };
 
-export type PersonalDetailsCustomField = {
-  name: string;
-  label: string;
-  type: 'text' | 'number' | 'dropdown' | 'radio' | 'checkbox' | 'date';
-  value?: string;
-  values?: string[];
-  question?: string;
-  validationType?: string;
-  validations: Record<string, unknown>[] | null;
-};
-
 export type CaptureFirstNameLastName = {
   firstName: string;
   lastName: string;
-};
-
-export type CaptureAddress = {
-  address?: string;
-  address2?: string;
-  city?: string;
-  state?: string;
-  postCode?: string;
-  country?: string;
 };
 
 export type CleengCaptureField = {
@@ -254,7 +234,7 @@ type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
-type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, Customer>;
+type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, never>;
 type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = CleengEmptyRequest<LocalesData>;
 type GetCaptureStatus = CleengAuthRequest<GetCaptureStatusPayload, GetCaptureStatusResponse>;

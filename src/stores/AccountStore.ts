@@ -3,9 +3,10 @@ import jwtDecode from 'jwt-decode';
 
 import * as accountService from '../services/account.service';
 import * as subscriptionService from '../services/subscription.service';
-import type { AuthData, Capture, Customer, JwtDetails, CustomerConsent } from '../../types/account';
+import type { AuthData, Capture, Customer, JwtDetails, CustomerConsent, Consent } from '../../types/account';
 import * as persist from '../utils/persist';
 import type { Subscription } from '../../types/subscription';
+import { fetchCustomerConsents, fetchPublisherConsents, updateCustomer } from '../services/account.service';
 
 import { ConfigStore } from './ConfigStore';
 import { watchHistoryStore, restoreWatchHistory, serializeWatchHistory } from './WatchHistoryStore';
@@ -18,6 +19,8 @@ type AccountStore = {
   auth: AuthData | null;
   user: Customer | null;
   subscription: Subscription | null;
+  customerConsents: CustomerConsent[] | null;
+  publisherConsents: Consent[] | null;
 };
 
 export const AccountStore = new Store<AccountStore>({
@@ -25,6 +28,8 @@ export const AccountStore = new Store<AccountStore>({
   auth: null,
   user: null,
   subscription: null,
+  customerConsents: null,
+  publisherConsents: null,
 });
 
 const setLoading = (loading: boolean) => {
@@ -79,6 +84,30 @@ export const initializeAccount = async () => {
   setLoading(false);
 };
 
+export async function updateUser(values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string }) {
+  const { auth, user } = AccountStore.getRawState();
+
+  if (!auth || !user) throw new Error('no auth');
+
+  const {
+    config: { cleengSandbox },
+  } = ConfigStore.getRawState();
+
+  const response = await updateCustomer({ ...values, id: user.id.toString() }, cleengSandbox, auth.jwt);
+
+  if (!response) {
+    return { errors: Array.of('Unknown error') };
+  }
+
+  if (response.errors?.length === 0) {
+    AccountStore.update((s) => {
+      s.user = response.responseData;
+    });
+  }
+
+  return response;
+}
+
 const getFreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
   const result = await accountService.refreshToken({ refreshToken: auth.refreshToken }, sandbox);
 
@@ -127,6 +156,9 @@ export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
   if (accessModel === 'SVOD') {
     reloadActiveSubscription();
   }
+
+  getCustomerConsents();
+  getPublisherConsents();
 };
 
 export const login = async (email: string, password: string) => {
@@ -154,6 +186,8 @@ export const logout = async () => {
   AccountStore.update((s) => {
     s.auth = null;
     s.user = null;
+    s.customerConsents = null;
+    s.publisherConsents = null;
   });
 
   restoreFavorites();
@@ -224,16 +258,49 @@ export const updateConsents = async (customerConsents: CustomerConsent[]) => {
 
   if (!auth || !user) throw new Error('no auth');
 
-  const updateConsentsResponse = await accountService.updateCustomerConsents(
-    { id: user.id.toString(), consents: customerConsents },
-    cleengSandbox,
-    auth.jwt,
-  );
+  const response = await accountService.updateCustomerConsents({ id: user.id.toString(), consents: customerConsents }, cleengSandbox, auth.jwt);
 
-  if (updateConsentsResponse.errors.length) throw new Error(updateConsentsResponse.errors[0]);
+  await getCustomerConsents();
 
-  return updateConsentsResponse.responseData;
+  return response;
 };
+
+export async function getCustomerConsents() {
+  const { auth, user } = AccountStore.getRawState();
+  const {
+    config: { cleengSandbox },
+  } = ConfigStore.getRawState();
+
+  if (!auth || !user) throw new Error('no auth');
+
+  const response = await fetchCustomerConsents({ customerId: user.id.toString() }, cleengSandbox, auth.jwt);
+
+  if (response && !response.errors?.length) {
+    AccountStore.update((s) => {
+      s.customerConsents = response.responseData.consents;
+    });
+  }
+
+  return response;
+}
+
+export async function getPublisherConsents() {
+  const {
+    config: { cleengSandbox, cleengId },
+  } = ConfigStore.getRawState();
+
+  if (!cleengId) throw new Error('cleengId is not configured');
+
+  const response = await fetchPublisherConsents({ publisherId: cleengId }, cleengSandbox);
+
+  if (response && !response.errors?.length) {
+    AccountStore.update((s) => {
+      s.publisherConsents = response.responseData.consents;
+    });
+  }
+
+  return response;
+}
 
 export const getCaptureStatus = async () => {
   const {

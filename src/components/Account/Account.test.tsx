@@ -1,23 +1,20 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import type { Customer } from 'types/account';
+import type { Consent } from 'types/account';
 
 import customer from '../../fixtures/customer.json';
+import { AccountStore } from '../../stores/AccountStore';
 
 import Account from './Account';
 
 describe('<Account>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(
-      <Account
-        customer={customer as Customer}
-        isLoading={false}
-        consentsLoading={false}
-        onUpdateEmailSubmit={() => null}
-        onUpdateInfoSubmit={() => null}
-        onUpdateConsentsSubmit={() => null}
-      />,
-    );
+    AccountStore.update((s) => {
+      s.user = customer;
+      s.publisherConsents = Array.of({ name: 'marketing', label: 'Receive Marketing Emails' } as Consent);
+    });
+
+    const { container } = render(<Account panelClassName={'panel-class'} panelHeaderClassName={'header-class'} />);
 
     // todo
     expect(container).toMatchSnapshot();

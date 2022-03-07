@@ -60,7 +60,7 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
   ),
 });
 
-const formatConsentValues = (publisherConsents?: Consent[], customerConsents?: CustomerConsent[]) => {
+const formatConsentValues = (publisherConsents: Consent[] | null, customerConsents: CustomerConsent[] | null) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
@@ -89,7 +89,7 @@ const extractConsentValues = (consents?: Consent[]) => {
   return values;
 };
 
-const formatConsentsFromValues = (publisherConsents?: Consent[], values?: GenericFormValues) => {
+const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: GenericFormValues) => {
   const consents: CustomerConsent[] = [];
 
   if (!publisherConsents || !values) return consents;
