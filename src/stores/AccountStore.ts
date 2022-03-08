@@ -331,6 +331,8 @@ export const updateCaptureAnswers = async (capture: Capture) => {
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
+  await afterLogin(cleengSandbox, auth);
+
   return response.responseData;
 };
 

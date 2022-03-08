@@ -38,5 +38,7 @@ async function tryToCopyPassword(I: CodeceptJS.I, name, expectedResult) {
 }
 
 export default {
-  testPasswordToggling
+  testPasswordToggling,
+  createRandomEmail: function() { return `dummy-${Date.now()}-${Math.floor(Math.random()*10**6)}@jwplayer.com`; },
+  createRandomPassword: function() { return `ABCDefgh${Math.floor(Math.random()*10**12)}!`; }
 };

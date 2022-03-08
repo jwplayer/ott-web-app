@@ -3,18 +3,13 @@ import passwordUtils from "../utils/password_utils";
 
 Feature('register');
 
-const duplicateUserError = 'There is already a user with this email address';
-
 Before(async ({I}) => {
   I.amOnPage('http://localhost:8080?c=test--accounts');
 
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
+  await I.openRegisterForm();
+});
 
-  I.click('Sign up');
-
-  I.waitForElement(constants.registrationFormSelector, 5);
+Scenario('I can open the register modal', ({ I }) => {
   I.see('Email');
   I.see('Password');
   I.see('Use a minimum of 8 characters (case sensitive) with at least one number');
@@ -25,9 +20,7 @@ Before(async ({I}) => {
   I.see('Continue');
   I.see('Already have an account?');
   I.see('Sign in');
-});
 
-Scenario('I can open the register modal', ({ I }) => {
   I.seeElement(constants.registrationFormSelector);
 });
 
@@ -121,15 +114,16 @@ Scenario('I get warned for duplicate users', ({ I }) => {
   I.checkOption('Terms and Conditions');
   I.click('Continue');
   I.waitForLoaderDone(5);
-  I.see(duplicateUserError);
+  I.see(constants.duplicateUserError);
 });
 
-Scenario('I can register', ({ I }) => {
-  I.fillField('Email', `dummy-${Date.now()}-${Math.floor(Math.random()*10**6)}@jwplayer.com`);
-  I.fillField('Password', `ABCDefgh${Math.floor(Math.random()*10**12)}!`);
-  I.checkOption('Terms and Conditions');
-  I.click('Continue');
-  I.waitForElement('form[data-testid="personal_details-form"]', 15);
-  I.dontSee(duplicateUserError);
-  I.dontSee(constants.registrationFormSelector);
+Scenario('I can register', async ({ I }) => {
+  await I.fillRegisterForm({
+    email: passwordUtils.createRandomEmail(),
+    password: passwordUtils.createRandomPassword(),
+    firstName: 'John',
+    lastName: 'Doe'
+  });
+
+  I.see('Welcome to Blender');
 });

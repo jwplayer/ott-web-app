@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 
 import constants from './constants';
+import passwordUtils from "./password_utils";
 
 declare global {
   let jwplayer: () => {getState: () => string};
@@ -22,7 +23,7 @@ module.exports = function() {
       this.click('Sign in');
       this.fillField('email', email);
       this.fillField('password', password);
-      this.submitForm();
+      this.submitForm(10);
 
       return {
         isMobile,
@@ -30,6 +31,50 @@ module.exports = function() {
         email,
         password
       }
+    },
+    logout: async function(this: CodeceptJS.I) {
+      const isMobile = await this.isMobile();
+
+      if (isMobile) {
+        this.openMenuDrawer();
+      } else {
+        this.openUserMenu();
+      }
+
+      this.click('Log out');
+    },
+    openRegisterForm: async function(this: CodeceptJS.I) {
+      const isMobile = await this.isMobile();
+
+      if (isMobile) {
+        this.openMenuDrawer();
+      }
+
+      this.click('Sign up');
+      this.waitForElement(constants.registrationFormSelector, 10);
+
+      return {isMobile};
+    },
+    fillRegisterForm: function(this: CodeceptJS.I, args: {
+      email: string,
+      password: string,
+      firstName: string,
+      lastName: string
+    }) {
+      this.fillField('Email', args.email);
+      this.fillField('Password', args.password);
+
+      this.checkOption('Terms and Conditions');
+      this.click('Continue');
+      this.waitForElement('form[data-testid="personal_details-form"]', 15);
+      this.dontSee(constants.duplicateUserError);
+      this.dontSee(constants.registrationFormSelector);
+
+      this.fillField('firstName', args.firstName);
+      this.fillField('lastName', args.lastName);
+
+      this.click('Continue');
+      this.waitForLoaderDone(10);
     },
     submitForm: function(this: CodeceptJS.I, loaderTimeout: number | false = 5) {
       this.click('button[type="submit"]');
