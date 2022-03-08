@@ -2,126 +2,169 @@
 
 exports[`<Account> renders and matches snapshot 1`] = `
 <div>
-  <form
-    novalidate=""
+  <div
+    class="panel-class"
   >
-    <div>
-      <div>
-        <h3>
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.email
+      </h3>
+    </div>
+    <div
+      class="flexBox"
+    >
+      <div
+        class="textField"
+      >
+        <label
+          class="label"
+          for="text-field_1235_email"
+        >
           account.email
-        </h3>
+        </label>
+        <p>
+          email@domain.com
+        </p>
+      </div>
+    </div>
+    <div
+      class="controls"
+    >
+      <button
+        class="button default outlined"
+        type="button"
+      >
+        <span>
+          account.edit_account
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.security
+      </h3>
+    </div>
+    <div
+      class="flexBox"
+    >
+      <strong>
+        account.password
+      </strong>
+      <p>
+        ****************
+      </p>
+    </div>
+    <div
+      class="controls"
+    >
+      <button
+        class="button default outlined"
+        type="button"
+      >
+        <span>
+          account.edit_password
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.about_you
+      </h3>
+    </div>
+    <div
+      class="flexBox"
+    >
+      <div
+        class="textField"
+      >
+        <label
+          class="label"
+          for="text-field_1235_firstName"
+        >
+          account.firstname
+        </label>
+        <p>
+          John
+        </p>
       </div>
       <div
-        class="flexBox"
+        class="textField"
+      >
+        <label
+          class="label"
+          for="text-field_1235_lastName"
+        >
+          account.lastname
+        </label>
+        <p>
+          Doe
+        </p>
+      </div>
+    </div>
+    <div
+      class="controls"
+    >
+      <button
+        class="button default outlined"
+        type="button"
+      >
+        <span>
+          account.edit_information
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.terms_and_tracking
+      </h3>
+    </div>
+    <div
+      class="flexBox"
+    >
+      <div
+        class="checkbox"
       >
         <div
-          class="textField"
+          class="row"
         >
+          <input
+            id="check-box_1235_consents.marketing"
+            name="consents.marketing"
+            type="checkbox"
+            value=""
+          />
           <label
-            class="label"
-            for="text-field_1235_email"
+            for="check-box_1235_consents.marketing"
           >
-            account.email
+            
+            Receive Marketing Emails
           </label>
-          <p>
-            email@domain.com
-          </p>
-        </div>
-        <div
-          class="controls"
-        >
-          <button
-            class="button default outlined"
-            type="button"
-          >
-            <span>
-              account.edit_account
-            </span>
-          </button>
         </div>
       </div>
     </div>
-    <div>
-      <div>
-        <h3>
-          account.security
-        </h3>
-      </div>
-      <div>
-        <strong>
-          account.password
-        </strong>
-        <p>
-          ****************
-        </p>
-        <button
-          class="button default outlined"
-          type="button"
-        >
-          <span>
-            account.edit_password
-          </span>
-        </button>
-      </div>
-    </div>
-    <div>
-      <div>
-        <h3>
-          account.about_you
-        </h3>
-      </div>
-      <div>
-        <div
-          class="flexBox"
-        >
-          <div
-            class="textField"
-          >
-            <label
-              class="label"
-              for="text-field_1235_firstName"
-            >
-              account.firstname
-            </label>
-            <p>
-              John
-            </p>
-          </div>
-          <div
-            class="textField"
-          >
-            <label
-              class="label"
-              for="text-field_1235_lastName"
-            >
-              account.lastname
-            </label>
-            <p>
-              Doe
-            </p>
-          </div>
-          <div
-            class="controls"
-          >
-            <button
-              class="button default outlined"
-              type="button"
-            >
-              <span>
-                account.edit_information
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div>
-        <h3>
-          account.terms_and_tracking
-        </h3>
-      </div>
-    </div>
-  </form>
+    <div
+      class="controls"
+    />
+  </div>
 </div>
 `;

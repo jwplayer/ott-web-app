@@ -47,7 +47,7 @@ export type Options = {
   enableSharing?: boolean;
   dynamicBlur?: boolean;
   posterFading?: boolean;
-  shelveTitles?: boolean;
+  shelfTitles?: boolean;
 };
 
 export type AccessModel = 'AVOD' | 'AUTHVOD' | 'SVOD';

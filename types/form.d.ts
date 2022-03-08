@@ -6,7 +6,3 @@ export type GenericFormErrors = { form: string };
 export type GenericFormValues = Record<string, string | boolean | GenericFormValues>;
 export type FormErrors<T> = Partial<T & GenericFormErrors>;
 export type FormValues<T> = Partial<T & GenericFormValues>;
-
-export type CustomerFormValues = FormValues<UpdateCustomerPayload>;
-export type CustomerConsentsFormValues = FormValues<UpdateCustomerConsentsPayload>;
-export type CustomerFormErrors = FormErrors<UpdateCustomerPayload>;

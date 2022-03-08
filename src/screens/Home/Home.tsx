@@ -81,7 +81,7 @@ const Home = (): JSX.Element => {
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
                 enableTitle={contentItem.enableText}
-                enableCardTitles={config.options.shelveTitles}
+                enableCardTitles={config.options.shelfTitles}
                 title={playlist.title}
                 featured={contentItem.featured === true}
                 accessModel={accessModel}
@@ -118,7 +118,7 @@ const Home = (): JSX.Element => {
       const tilesToShow = tileBreakpoints[breakpoint];
       const shelfTitlesHeight = item.enableText ? 40 : 0;
       const shelfMetaHeight = shelfTitlesHeight + 12;
-      const cardMetaHeight = config.options.shelveTitles ? 40 : 0;
+      const cardMetaHeight = config.options.shelfTitles ? 40 : 0;
       const shelfHorizontalMargin = isMobile ? 76 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);

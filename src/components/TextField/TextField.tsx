@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
+import HelperText from '../HelperText/HelperText';
 
 import styles from './TextField.module.scss';
 
@@ -84,7 +85,7 @@ const TextField: React.FC<Props> = ({
       ) : (
         <p>{value}</p>
       )}
-      {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
+      <HelperText error={error}>{helperText}</HelperText>
     </div>
   );
 };

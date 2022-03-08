@@ -1,61 +1,43 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {useMemo} from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Consent, Customer, CustomerConsent, UpdateCustomerPayload } from 'types/account';
-import type { CustomerFormValues, FormErrors, GenericFormValues } from 'types/form';
 import { useHistory } from 'react-router-dom';
 
 import { formatConsentsFromValues, formatConsentValues } from '../../utils/collection';
 import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import useToggle from '../../hooks/useToggle';
-import Button from '../../components/Button/Button';
-import Spinner from '../../components/Spinner/Spinner';
+import Button from '../Button/Button';
 import Form from '../Form/Form';
 import IconButton from '../IconButton/IconButton';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import TextField from '../TextField/TextField';
 import Checkbox from '../Checkbox/Checkbox';
 import { addQueryParam } from '../../utils/history';
-
-import styles from './Account.module.scss';
+import { AccountStore, updateConsents, updateUser } from '../../stores/AccountStore';
+import HelperText from '../HelperText/HelperText';
+import type {FormSectionContentArgs, FormSectionProps} from '../Form/FormSection';
 
 type Props = {
-  customer: Customer;
-  errors?: FormErrors<UpdateCustomerPayload>;
-  isLoading: boolean;
-  consentsLoading: boolean;
-  publisherConsents?: Consent[];
-  customerConsents?: CustomerConsent[];
-  onUpdateEmailSubmit: (data: CustomerFormValues) => void;
-  onUpdateInfoSubmit: (data: CustomerFormValues) => void;
-  onUpdateConsentsSubmit: (consents: CustomerConsent[]) => void;
-  onReset?: () => void;
   panelClassName?: string;
   panelHeaderClassName?: string;
 };
 
-type Editing = 'none' | 'account' | 'password' | 'info' | 'consents';
+interface FormErrors {
+  email?: string;
+  confirmationPassword?: string;
+  firstName?: string;
+  lastName?: string;
+  form?: string;
+}
 
-const Account = ({
-  customer,
-  errors,
-  isLoading,
-  consentsLoading,
-  publisherConsents,
-  customerConsents,
-  panelClassName,
-  panelHeaderClassName,
-  onUpdateEmailSubmit,
-  onUpdateInfoSubmit,
-  onUpdateConsentsSubmit,
-  onReset,
-}: Props): JSX.Element => {
+const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const history = useHistory();
-  const [editing, setEditing] = useState<Editing>('none');
   const [viewPassword, toggleViewPassword] = useToggle();
+
+  const { user: customer, customerConsents, publisherConsents } = AccountStore.useState((state) => state);
+
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
-  const initialValues = useMemo(() => ({ ...customer, consents: consentValues }), [customer, consentValues]);
+  const initialValues = useMemo(() => ({ ...customer, consents: consentValues, confirmationPassword: '' }), [customer, consentValues]);
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
     // @todo sanitize consent label to prevent XSS
@@ -69,174 +51,182 @@ const Account = ({
     return label;
   };
 
-  const handleSubmit = (values: GenericFormValues) => {
-    switch (editing) {
-      case 'account':
-        return onUpdateEmailSubmit(values as CustomerFormValues);
-      case 'info':
-        return onUpdateInfoSubmit(values as CustomerFormValues);
-      case 'consents':
-        return onUpdateConsentsSubmit(formatConsentsFromValues(publisherConsents, values));
-      default:
-        return;
+  function translateErrors(errors?: string[]): FormErrors {
+    const formErrors: FormErrors = {};
+
+    // Some errors are combined in a single CSV string instead of one string per error
+    errors?.flatMap((e) => e.split(','))
+      .forEach((error) => {
+        switch (error.trim()) {
+          case 'Invalid param email':
+            formErrors.email = t('account.errors.invalid_param_email');
+            break;
+          case 'Customer email already exists':
+            formErrors.email = t('account.errors.email_exists');
+            break;
+          case 'Please enter a valid e-mail address.':
+            formErrors.email = t('account.errors.please_enter_valid_email');
+            break;
+          case 'Invalid confirmationPassword': {
+            formErrors.confirmationPassword = t('account.errors.invalid_password');
+            break;
+          }
+          case 'firstName can have max 50 characters.': {
+            formErrors.firstName = t('account.errors.first_name_too_long');
+            break;
+          }
+          case 'lastName can have max 50 characters.': {
+            formErrors.lastName = t('account.errors.last_name_too_long');
+            break;
+          }
+          default: {
+            formErrors.form = 'An unknown error occurred';
+            // @ts-ignore
+            if (typeof NODE_ENV_COMPILE_CONST === 'undefined' || NODE_ENV_COMPILE_CONST !== 'production') {
+              console.info('Unknown error', error);
+            }
+            break;
+          }
+        }
+      });
+
+    return formErrors;
+  }
+
+  function formSection(props: FormSectionProps<typeof initialValues, FormErrors>) {
+    return {
+      ...props,
+      className: panelClassName,
+      panelHeaderClassName: panelHeaderClassName,
+      saveButton: t('account.save'),
+      cancelButton: t('account.cancel'),
+      content: (args: FormSectionContentArgs<typeof initialValues, string[]>) => {
+        // This function just allows the sections below to use the FormError type instead of an array of errors
+        const formErrors = translateErrors(args.errors);
+
+        // Render the section content, but also add a warning text if there's a form level error
+        return (
+          <>
+            {props.content({...args, errors: formErrors})}
+            <HelperText error={!!(formErrors?.form)}>{formErrors?.form}</HelperText>
+          </>
+        );
+      }
     }
-  };
-  const onCancelClick = (formResetHandler?: () => void): void => {
-    formResetHandler && formResetHandler();
-    setEditing('none');
-    onReset && onReset();
-  };
+  }
 
   const editPasswordClickHandler = () => {
     history.push(addQueryParam(history, 'u', 'reset-password'));
   };
 
-  useEffect(() => {
-    !isLoading && setEditing('none');
-  }, [isLoading]);
-
   return (
-    <Form initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ values, handleChange, handleReset, handleSubmit, hasChanged }) => (
-        <>
-          {isLoading && <LoadingOverlay transparentBackground />}
-          <div className={panelClassName}>
-            <div className={panelHeaderClassName}>
-              <h3>{t('account.email')}</h3>
-            </div>
-            <div className={styles.flexBox}>
+    <Form initialValues={initialValues}>
+      {[
+        formSection({
+          label: t('account.email'),
+          submit: (values) => updateUser({ email: values.email || '', confirmationPassword: values.confirmationPassword }),
+          canSave: (values) => !!(values.email && values.confirmationPassword),
+          editButton: t('account.edit_account'),
+          content: (section) => (
+            <>
               <TextField
-                name="email"
-                label={t('account.email')}
-                value={values.email as string}
-                onChange={handleChange}
-                error={!!errors?.email}
-                helperText={errors?.email}
-                disabled={isLoading}
-                editing={editing === 'account'}
-                required
-              />
-              {editing === 'account' && (
-                <TextField
-                  name="confirmationPassword"
-                  label={t('account.confirm_password')}
-                  value={values.confirmationPassword as string}
-                  onChange={handleChange}
-                  error={!!errors?.confirmationPassword}
-                  helperText={errors?.confirmationPassword}
-                  type={viewPassword ? 'text' : 'password'}
-                  disabled={isLoading}
-                  rightControl={
-                    <IconButton
-                      aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')}
-                      onClick={() => toggleViewPassword()}
-                    >
-                      {viewPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  }
+                  name="email"
+                  label={t('account.email')}
+                  value={section.values.email || ''}
+                  onChange={section.onChange}
+                  error={!!section.errors?.email}
+                  helperText={section.errors?.email}
+                  disabled={section.isBusy}
+                  editing={section.isEditing}
                   required
+              />
+              {section.isEditing && (
+                <TextField
+                    name="confirmationPassword"
+                    label={t('account.confirm_password')}
+                    value={section.values.confirmationPassword as string}
+                    onChange={section.onChange}
+                    error={!!section.errors?.confirmationPassword}
+                    helperText={section.errors?.confirmationPassword}
+                    type={viewPassword ? 'text' : 'password'}
+                    disabled={section.isBusy}
+                    rightControl={
+                      <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
+                        {viewPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    }
+                    required
                 />
               )}
-              <div className={styles.controls}>
-                {editing === 'account' ? (
-                  <>
-                    <Button
-                      label={t('account.save')}
-                      type="submit"
-                      onClick={handleSubmit}
-                      disabled={isLoading || !values.email || !values.confirmationPassword}
-                    />
-                    <Button label={t('account.cancel')} type="reset" variant="text" onClick={() => onCancelClick(handleReset)} />
-                  </>
-                ) : (
-                  <Button label={t('account.edit_account')} type="button" onClick={() => setEditing('account')} />
-                )}
-              </div>
-            </div>
-          </div>
-          <div className={panelClassName}>
-            <div className={panelHeaderClassName}>
-              <h3>{t('account.security')}</h3>
-            </div>
-            <div>
+            </>
+          )
+        }),
+        formSection({
+          label: t('account.security'),
+          editButton: (
+              <Button
+                  label={t('account.edit_password')}
+                  type="button"
+                  onClick={() => (customer ? editPasswordClickHandler() : null)}
+              />
+          ),
+          content: () => (
+            <>
               <strong>{t('account.password')}</strong>
               <p>****************</p>
-              <Button label={t('account.edit_password')} type="button" onClick={() => (customer ? editPasswordClickHandler() : null)} />
-            </div>
-          </div>
-          <div className={panelClassName}>
-            <div className={panelHeaderClassName}>
-              <h3>{t('account.about_you')}</h3>
-            </div>
-            <div>
-              <div className={styles.flexBox}>
-                <TextField
+            </>
+          )
+        }),
+        formSection({
+          label: t('account.about_you'),
+          editButton: t('account.edit_information'),
+          submit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
+          content: (section) => (
+            <>
+              <TextField
                   name="firstName"
                   label={t('account.firstname')}
-                  value={values.firstName as string}
-                  onChange={handleChange}
-                  error={!!errors?.firstName}
-                  helperText={errors?.firstName}
-                  disabled={isLoading}
-                  editing={editing === 'info'}
-                />
-                <TextField
+                  value={section.values.firstName || ''}
+                  onChange={section.onChange}
+                  error={!!section.errors?.firstName}
+                  helperText={section.errors?.firstName}
+                  disabled={section.isBusy}
+                  editing={section.isEditing}
+              />
+              <TextField
                   name="lastName"
                   label={t('account.lastname')}
-                  value={values.lastName as string}
-                  onChange={handleChange}
-                  error={!!errors?.lastName}
-                  helperText={errors?.lastName}
-                  disabled={isLoading}
-                  editing={editing === 'info'}
+                  value={section.values.lastName || ''}
+                  onChange={section.onChange}
+                  error={!!section.errors?.lastName}
+                  helperText={section.errors?.lastName}
+                  disabled={section.isBusy}
+                  editing={section.isEditing}
+              />
+            </>
+          )
+        }),
+        formSection({
+          label: t('account.terms_and_tracking'),
+          saveButton: t('account.update_consents'),
+          submit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
+          content: (section) => (
+            <>
+              {publisherConsents?.map((consent, index) => (
+                <Checkbox
+                  key={index}
+                  name={`consents.${consent.name}`}
+                  value={consent.value || ''}
+                  checked={(section.values.consents?.[consent.name] as boolean) || false}
+                  onChange={section.onChange}
+                  label={formatConsentLabel(consent.label)}
+                  disabled={consent.required || section.isBusy}
                 />
-                <div className={styles.controls}>
-                  {editing === 'info' ? (
-                    <>
-                      <Button label={t('account.save')} type="submit" disabled={!hasChanged} onClick={handleSubmit} />
-                      <Button type="reset" variant="text" label={t('account.cancel')} onClick={() => setEditing('none')} />
-                    </>
-                  ) : (
-                    <Button type="button" label={t('account.edit_information')} onClick={() => setEditing('info')} />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={panelClassName}>
-            <div className={panelHeaderClassName}>
-              <h3>{t('account.terms_and_tracking')}</h3>
-            </div>
-            {consentsLoading ? (
-              <Spinner size="small" />
-            ) : publisherConsents ? (
-              <div className={styles.flexBox} onClick={() => setEditing('consents')}>
-                {publisherConsents.map((consent, index) => (
-                  <Checkbox
-                    key={index}
-                    name={consent.name}
-                    value={consent.value || ''}
-                    checked={(values.consents?.[consent.name] as boolean) || false}
-                    onChange={(event) => (handleChange ? handleChange(event, { nestInto: 'consents' }) : null)}
-                    label={formatConsentLabel(consent.label)}
-                    disabled={consent.required}
-                  />
-                ))}
-                <div className={styles.controls}>
-                  <Button
-                    id="submit_consents"
-                    className={styles.submitConsents}
-                    type="button"
-                    label={t('account.update_consents')}
-                    disabled={!hasChanged}
-                    onClick={handleSubmit}
-                  />
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </>
-      )}
+              ))}
+            </>
+          )
+        })
+      ]}
     </Form>
   );
 };

@@ -7,6 +7,14 @@
     "edit_information": "",
     "edit_password": "",
     "email": "",
+    "errors": {
+      "email_exists": "",
+      "first_name_too_long": "",
+      "invalid_param_email": "",
+      "invalid_password": "",
+      "last_name_too_long": "",
+      "please_enter_valid_email": ""
+    },
     "firstname": "",
     "hide_password": "",
     "lastname": "",

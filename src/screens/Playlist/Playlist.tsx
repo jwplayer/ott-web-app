@@ -71,7 +71,7 @@ function Playlist({
           onCardClick={onCardClick}
           onCardHover={onCardHover}
           isLoading={isLoading}
-          enableCardTitles={config.options.shelveTitles}
+          enableCardTitles={config.options.shelfTitles}
           accessModel={accessModel}
           isLoggedIn={!!user}
           hasSubscription={!!subscription}

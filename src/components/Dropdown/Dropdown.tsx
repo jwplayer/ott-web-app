@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
+import HelperText from '../HelperText/HelperText';
 
 import styles from './Dropdown.module.scss';
 
@@ -67,7 +68,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
             ))}
         </select>
       </div>
-      {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
+      <HelperText error={error}>{helperText}</HelperText>
     </div>
   );
 };
