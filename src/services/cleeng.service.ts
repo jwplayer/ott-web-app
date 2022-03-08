@@ -14,7 +14,9 @@ export const performRequest = async (sandbox: boolean, path: string = '/', metho
 
     return await resp.json();
   } catch (error: unknown) {
-    return error;
+    return {
+      errors: Array.of(error as string),
+    };
   }
 };
 
