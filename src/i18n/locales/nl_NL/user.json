@@ -13,7 +13,8 @@
       "invalid_param_email": "",
       "invalid_password": "",
       "last_name_too_long": "",
-      "please_enter_valid_email": ""
+      "please_enter_valid_email": "",
+      "unknown_error": ""
     },
     "firstname": "",
     "hide_password": "",

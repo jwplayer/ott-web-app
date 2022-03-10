@@ -13,7 +13,8 @@
       "invalid_param_email": "Invalid email address!",
       "invalid_password": "Password incorrect!",
       "last_name_too_long": "Please limit Last Name to 50 characters or fewer.",
-      "please_enter_valid_email": "Please enter a valid email address."
+      "please_enter_valid_email": "Please enter a valid email address.",
+      "unknown_error": "An unknown error occurred"
     },
     "firstname": "First name",
     "hide_password": "Hide password",
