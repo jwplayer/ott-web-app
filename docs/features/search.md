@@ -35,7 +35,4 @@ GET playlists/tQ832H1H?search=bunny
 ```
 
 ## Configuration
-
-The feature can be enabled and disabled in the [app config](/docs/configuration.md) by having `searchPlaylist` set to `NULL`
-
-## 
+The feature can be enabled in the [app config](/docs/configuration.md) by setting `searchPlaylist`  to the ID of the recommendations playlist you want to use.

@@ -67,7 +67,7 @@ Theee metrics are described below.
 | --------------------- | --- | --- | -------------------- | ---------------------- | --------------------------------------------------------------------------- |
 | Analytics ID          | aid | Yes | \[a-zA-Z0-9+\_\]{22} | a17e8PTFFffxLgpVuA4vVw | See Analytics ID                                                            |
 | Timestamp (Epoch, ms) | sa  | Yes | Unix Epoch Time      | 1539132609637          | The unix epoch time on client machine when ping sent.                       |
-| Ping Event Type>      | e   | Yes | e, i, s or t         | s                      | Event code of the ping.                                                     |
+| Ping Event Type       | e   | Yes | e, i, s or t         | s                      | Event code of the ping.                                                     |
 | Feed ID               | fed | Yes | \[0-9a-zA-Z\]{8}     | ON53iLoH               | Unique ID for a feed or playlist coming out of the JW platform.             |
 | Embed ID              | emi | Yes | \[0-9a-z\]{12}       | v7wabv10ynek           | Unique ID generated on embed for the player instance.                       |
 | Play ID               | pli | Yes | \[0-9a-z\]{12}       | rc55ceo9sozn           | Unique ID generated for playlist items successfully loaded into the player  |

@@ -41,4 +41,4 @@ GET playlists/fuD6TWcf?related_media_id=dwEE1oBP
 
 ## Configuration
 
-The feature can be enabled and disabled in the [app config](/docs/configuration.md) by having`recommendationsPlaylist` set to `NULL`
+The feature can be enabled in the [app config](/docs/configuration.md) by setting `recommendationsPlaylist`  to the ID of the recommendations playlist you want to use.

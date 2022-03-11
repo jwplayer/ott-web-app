@@ -71,6 +71,7 @@ The full details of this endpoint can be found [here](https://developer.jwplayer
 ## Custom Authorization Service
 
 The authorization service should generate the `SignedMediaURLs` based on:
+
 - the general video access model (see below)
 - the specific media item being accessed (free or not)
 - the users authentication (who is the user)
@@ -82,22 +83,24 @@ The service interface could look like this:
 
 ### Video access models
 
-The authorization service provides signed URLs based on the access model: 
+The authorization service provides signed URLs based on the access model. Common access models are:  
 
 - Advertising-based (AVOD): all videos can be accessed, as they are served with advertisements
 - Authentication-based (AUTHVOD): videos can be accessed if the user is logged in
 - Subscription-based (SVOD): videos can be accessed if the user has a valid subscription
 
-This access model could be stored in the [app config](/docs/configuration.md). 
+Note that there are many variations of these access models. 
 
 ### Free content
 
 It's possible to have free content. This is indicated with media parameter `requiresSubscription`. 
 
 ### Users and entitlements
+
 The users and their entitlements are typically stored in a subscription management service like Cleeng. 
 
 Users and their entitlements might also be split: 
+
 - Users at identity providers like Okta or Amazon Cognito
 - Entitlements at a subscription provider like Cleeng
 
