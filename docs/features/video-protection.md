@@ -5,9 +5,9 @@ Videos can be protected in JW platform in two ways:
 - **Signed URLs:** A player can only **access** video URLs from JW Player backend using a time-bound JWT token
 - **DRM:** A player can only **play** videos using a time-bound decryption key. 
 
-The  JW Web Player, as well as the other SDKs, supports these mechanismns out-the-box. However this require a server side entitlement service which is **NOT** part of the web app and needs to be **custom developed**.
+The  JW Web Player, as well as the other SDKs, supports these mechanismns out-the-box. However this requires a server side authorization service which is **NOT** part of the web app and needs to be **custom developed**.
 
-This article outlines such entitlement service should work. 
+This article outlines such authorization service should work. 
 
 ## Signed URLs
 
@@ -68,9 +68,9 @@ GET media/PEEzDfdA/drm/:drm_policy_id?token=<tokenA>
 
 The full details of this endpoint can be found [here](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id-drm-policy-id).
 
-## Custom Entitlement Service
+## Custom Authorization Service
 
-The entitlement service should generate the `SignedMediaURLs` based on:
+The authorization service should generate the `SignedMediaURLs` based on:
 - the general video access model (see below)
 - the specific media item being accessed (free or not)
 - the users authentication (who is the user)
@@ -78,11 +78,11 @@ The entitlement service should generate the `SignedMediaURLs` based on:
 
 The service interface could look like this: 
 
-`GET /entitlement/<siteid>/video-signature/<mediaid>`
+`GET /authorization/<siteid>/video-signature/<mediaid>`
 
 ### Video access models
 
-The entitlement service provides signed URLs based on the access model: 
+The authorization service provides signed URLs based on the access model: 
 
 - Advertising-based (AVOD): all videos can be accessed, as they are served with advertisements
 - Authentication-based (AUTHVOD): videos can be accessed if the user is logged in
