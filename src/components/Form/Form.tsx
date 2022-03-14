@@ -13,7 +13,7 @@ interface Props<TData> {
 
 export interface FormContext<TData> {
   isLoading?: boolean;
-  cancel: () => void;
+  onCancel: () => void;
   formState: FormState<TData>;
   setFormState: React.Dispatch<SetStateAction<FormState<TData>>>;
 }
@@ -36,8 +36,8 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
     isBusy: false,
   });
 
-  const cancel = useCallback(
-    function cancel() {
+  const onCancel = useCallback(
+    function onCancel() {
       setState((s) => {
         return {
           ...s,
@@ -65,7 +65,7 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
     <FormContext.Provider
       value={{
         isLoading,
-        cancel,
+        onCancel,
         formState: state,
         setFormState: setState,
       }}

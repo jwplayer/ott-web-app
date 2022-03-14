@@ -45,7 +45,7 @@ export function FormSection<TData extends GenericFormValues>({
     formState: { values, activeSectionId, isDirty, errors: formErrors, isBusy },
     setFormState,
     isLoading,
-    cancel,
+    onCancel,
   } = useContext(FormContext) as FormContext<TData>;
 
   const isEditing = sectionId === activeSectionId;
@@ -58,7 +58,7 @@ export function FormSection<TData extends GenericFormValues>({
       const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
 
       if (!isEditing) {
-        cancel();
+        onCancel();
       }
 
       setFormState((oldState) => {
@@ -83,7 +83,7 @@ export function FormSection<TData extends GenericFormValues>({
         };
       });
     },
-    [isEditing, cancel, sectionId, setFormState],
+    [isEditing, onCancel, sectionId, setFormState],
   );
 
   const handleSubmit = useCallback(
@@ -131,7 +131,7 @@ export function FormSection<TData extends GenericFormValues>({
   const onEdit = useCallback(
     function onEdit() {
       if (!isEditing) {
-        cancel();
+        onCancel();
 
         setFormState((s) => {
           return {
@@ -141,7 +141,7 @@ export function FormSection<TData extends GenericFormValues>({
         });
       }
     },
-    [isEditing, cancel, sectionId, setFormState],
+    [isEditing, onCancel, sectionId, setFormState],
   );
 
   return (
@@ -164,7 +164,7 @@ export function FormSection<TData extends GenericFormValues>({
               {saveButton && (
                 <Button label={saveButton} type="submit" onClick={handleSubmit} disabled={!isDirty || isLoading || (canSave && !canSave(values))} />
               )}
-              {cancelButton && <Button label={cancelButton} type="reset" variant="text" onClick={cancel} />}
+              {cancelButton && <Button label={cancelButton} type="reset" variant="text" onClick={onCancel} />}
             </>
           ) : (
             editButton &&
