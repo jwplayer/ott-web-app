@@ -5,10 +5,10 @@ import 'wicg-inert';
 
 import registerServiceWorker from './registerServiceWorker';
 import App from './App';
-import { isDevCompileTimeConstant } from './utils/common';
+import { IS_DEV_BUILD } from './utils/common';
 
 // This code is only used for (integration) testing and will be optimized away in production builds
-if (isDevCompileTimeConstant) {
+if (IS_DEV_BUILD) {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const configFile = urlSearchParams.get('c') || window.sessionStorage.getItem('config-file-override');
 

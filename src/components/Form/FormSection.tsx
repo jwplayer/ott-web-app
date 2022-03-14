@@ -51,11 +51,11 @@ export function FormSection<TData extends GenericFormValues>({
   const isEditing = sectionId === activeSectionId;
 
   const onChange = useCallback(
-    function onChange(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
-      if (!event.currentTarget) return;
+    function onChange({ currentTarget }: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
+      if (!currentTarget) return;
 
-      const name = event.currentTarget.name;
-      const value = event.currentTarget.type === 'checkbox' ? (event.currentTarget as HTMLInputElement).checked : event.currentTarget.value;
+      const { name, type } = currentTarget;
+      const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
 
       if (!isEditing) {
         cancel();

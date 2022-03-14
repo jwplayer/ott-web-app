@@ -52,4 +52,4 @@ export function calculateContrastColor(color: string) {
 
 // NODE_ENV_COMPILE_CONST is defined at compile time using the webpack define plugin.
 // NODE_ENV_COMPILE_CONST is undefined when running the snowpack dev server, so allow test code in that case
-export const isDevCompileTimeConstant = typeof NODE_ENV_COMPILE_CONST === 'undefined' || NODE_ENV_COMPILE_CONST !== 'production';
+export const IS_DEV_BUILD = typeof NODE_ENV_COMPILE_CONST === 'undefined' || NODE_ENV_COMPILE_CONST !== 'production';

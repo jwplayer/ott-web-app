@@ -15,7 +15,7 @@ import { addQueryParam } from '../../utils/history';
 import { AccountStore, updateConsents, updateUser } from '../../stores/AccountStore';
 import HelperText from '../HelperText/HelperText';
 import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
-import { isDevCompileTimeConstant } from '../../utils/common';
+import { IS_DEV_BUILD } from '../../utils/common';
 
 type Props = {
   panelClassName?: string;
@@ -84,7 +84,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
           default: {
             formErrors.form = t('account.errors.unknown_error');
 
-            if (isDevCompileTimeConstant) {
+            if (IS_DEV_BUILD) {
               console.info('Unknown error', error);
             }
             break;
