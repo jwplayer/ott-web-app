@@ -128,8 +128,8 @@ export function FormSection<TData extends GenericFormValues>({
     [onSubmit, setFormState, values],
   );
 
-  const edit = useCallback(
-    function edit() {
+  const onEdit = useCallback(
+    function onEdit() {
       if (!isEditing) {
         cancel();
 
@@ -171,7 +171,7 @@ export function FormSection<TData extends GenericFormValues>({
             (typeof editButton === 'object' ? (
               (editButton as ReactElement)
             ) : (
-              <Button label={editButton as string} type="button" onClick={edit} disabled={isLoading} />
+              <Button label={editButton as string} type="button" onClick={onEdit} disabled={isLoading} />
             ))
           )}
         </div>
