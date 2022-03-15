@@ -1,6 +1,6 @@
 {
   "id": 839256565,
-  "customerId": 362344331,
+  "customerId": "362344331",
   "paymentGateway": "adyen",
   "paymentMethod": "card",
   "paymentMethodSpecificParams": {

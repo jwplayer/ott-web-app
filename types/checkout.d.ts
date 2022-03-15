@@ -45,7 +45,7 @@ export type OrderOffer = {
 
 export type Order = {
   id: number;
-  customerId: number;
+  customerId: string;
   customer: {
     locale: string;
     email: string
@@ -96,7 +96,7 @@ export type Payment = {
   status: string,
   totalAmount: number,
   currency: string,
-  customerId: number,
+  customerId: string,
   paymentGateway: string,
   paymentMethod: string,
   externalPaymentId: string|number,

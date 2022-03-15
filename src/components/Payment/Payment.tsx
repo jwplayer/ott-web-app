@@ -1,36 +1,32 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PaymentDetail, Subscription, Transaction } from 'types/subscription';
+import { useHistory } from 'react-router-dom';
 
 import { formatDate, formatPrice } from '../../utils/formatting';
 import TextField from '../TextField/TextField';
 import type { Customer } from '../../../types/account';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Button from '../Button/Button';
+import { addQueryParam } from '../../utils/history';
 
 import styles from './Payment.module.scss';
 
 const VISIBLE_TRANSACTIONS = 4;
 
 type Props = {
-  activeSubscription?: Subscription | null;
-  activePaymentDetail?: PaymentDetail;
-  transactions: Transaction[];
+  activeSubscription: Subscription | null;
+  activePaymentDetail: PaymentDetail | null;
+  transactions: Transaction[] | null;
   customer: Customer;
   isLoading: boolean;
   panelClassName?: string;
   panelHeaderClassName?: string;
-  onCompleteSubscriptionClick?: () => void;
-  onCancelSubscriptionClick?: () => void;
-  onRenewSubscriptionClick?: () => void;
   onShowAllTransactionsClick?: () => void;
   showAllTransactions: boolean;
 };
 
 const Payment = ({
-  onCompleteSubscriptionClick,
-  onCancelSubscriptionClick,
-  onRenewSubscriptionClick,
   activePaymentDetail,
   activeSubscription,
   transactions,
@@ -44,6 +40,19 @@ const Payment = ({
   const { t } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
   const hasMoreTransactions = hiddenTransactionsCount > 0;
+  const history = useHistory();
+
+  function onCompleteSubscriptionClick() {
+    history.push(addQueryParam(history, 'u', 'choose-offer'));
+  }
+
+  function onCancelSubscriptionClick() {
+    history.push(addQueryParam(history, 'u', 'unsubscribe'));
+  }
+
+  function onRenewSubscriptionClick() {
+    history.push(addQueryParam(history, 'u', 'renew-subscription'));
+  }
 
   return (
     <>
@@ -90,11 +99,7 @@ const Payment = ({
               editing={false}
             />
             <div className={styles.cardDetails}>
-              <TextField
-                label={t('user:payment.expiry_date')}
-                value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate}
-                editing={false}
-              />
+              <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
               <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
             </div>
           </div>

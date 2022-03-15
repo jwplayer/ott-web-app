@@ -8,7 +8,6 @@ import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl } from '../../utils/formatting';
-import SubscriptionContainer from '../../containers/Subscription/SubscriptionContainer';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import Button from '../../components/Button/Button';
 import AccountComponent from '../../components/Account/Account';
@@ -19,7 +18,6 @@ import BalanceWallet from '../../icons/BalanceWallet';
 import Exit from '../../icons/Exit';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { AccountStore, logout } from '../../stores/AccountStore';
-import { addQueryParam } from '../../utils/history';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog';
 import { ConfigStore } from '../../stores/ConfigStore';
@@ -35,25 +33,13 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, loading } = AccountStore.useState((state) => state);
+  const { user: customer, subscription, transactions, activePayment, loading } = AccountStore.useState((state) => state);
 
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
-
-  const handleCompleteSubscriptionClick = () => {
-    history.push(addQueryParam(history, 'u', 'choose-offer'));
-  };
-
-  const handleCancelSubscriptionClick = () => {
-    history.push(addQueryParam(history, 'u', 'unsubscribe'));
-  };
-
-  const handleRenewSubscriptionClick = () => {
-    history.push(addQueryParam(history, 'u', 'renew-subscription'));
-  };
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
@@ -135,24 +121,17 @@ const User = (): JSX.Element => {
           </Route>
           <Route path="/u/payments">
             {accessModel === 'SVOD' ? (
-              <SubscriptionContainer>
-                {({ activePaymentDetail, transactions, isLoading }) => (
-                  <Payment
-                    activeSubscription={subscription}
-                    activePaymentDetail={activePaymentDetail}
-                    transactions={transactions}
-                    customer={customer}
-                    isLoading={isLoading}
-                    panelClassName={styles.panel}
-                    panelHeaderClassName={styles.panelHeader}
-                    onCompleteSubscriptionClick={handleCompleteSubscriptionClick}
-                    onCancelSubscriptionClick={handleCancelSubscriptionClick}
-                    onRenewSubscriptionClick={handleRenewSubscriptionClick}
-                    onShowAllTransactionsClick={() => setShowAllTransactions(true)}
-                    showAllTransactions={showAllTransactions}
-                  />
-                )}
-              </SubscriptionContainer>
+              <Payment
+                activeSubscription={subscription}
+                activePaymentDetail={activePayment}
+                transactions={transactions}
+                customer={customer}
+                isLoading={loading}
+                panelClassName={styles.panel}
+                panelHeaderClassName={styles.panelHeader}
+                onShowAllTransactionsClick={() => setShowAllTransactions(true)}
+                showAllTransactions={showAllTransactions}
+              />
             ) : (
               <Redirect to="/u/my-account" />
             )}

@@ -8,7 +8,7 @@ export type AuthData = {
 };
 
 export type JwtDetails = {
-  customerId: number;
+  customerId: string;
   exp: number;
   publisherId: number;
 };
@@ -151,7 +151,7 @@ export type RefreshTokenPayload = {
 };
 
 export type Customer = {
-  id: number;
+  id: string;
   email: string;
   country: string;
   regDate: string;
