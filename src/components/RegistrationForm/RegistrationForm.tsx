@@ -105,10 +105,7 @@ const RegistrationForm: React.FC<Props> = ({
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
-          <IconButton
-            aria-label={viewPassword ? t('registration.hide_password') : t('registration.view_password')}
-            onClick={() => toggleViewPassword()}
-          >
+          <IconButton aria-label={viewPassword ? t('registration.hide_password') : t('registration.view_password')} onClick={() => toggleViewPassword()}>
             {viewPassword ? <Visibility /> : <VisibilityOff />}
           </IconButton>
         }
@@ -120,6 +117,7 @@ const RegistrationForm: React.FC<Props> = ({
           name={consent.name}
           value={consent.value || ''}
           error={consentErrors?.includes(consent.name)}
+          helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required') : undefined}
           required={consent.required}
           checked={consentValues[consent.name] || false}
           onChange={onConsentChange}

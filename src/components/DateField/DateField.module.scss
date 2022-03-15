@@ -6,10 +6,6 @@
   margin-bottom: 8px;
 
   &.error {
-    .helperText {
-      color: theme.$text-field-error-color;
-    }
-
     .container {
       border-color: theme.$text-field-error-color;
     }
@@ -102,10 +98,4 @@
     width: 60px;
     padding-left: 4px;
   }
-}
-
-.helperText {
-  margin-top: 4px;
-  font-size: 12px;
-  text-align: left;
 }

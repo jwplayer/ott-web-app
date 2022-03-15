@@ -95,6 +95,7 @@
   },
   "registration": {
     "already_account": "",
+    "consent_required": "",
     "continue": "",
     "email": "",
     "field_is_not_valid_email": "",

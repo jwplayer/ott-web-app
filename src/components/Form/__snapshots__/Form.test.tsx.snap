@@ -2,13 +2,32 @@
 
 exports[`<Form> renders Form 1`] = `
 <div>
-  <form
-    novalidate=""
-  >
-    <input
-      name="test"
-      value="Testing"
-    />
-  </form>
+  <div>
+    <div>
+      <h3>
+        Edit This
+      </h3>
+    </div>
+    <div
+      class="flexBox"
+    >
+      <input
+        name="test"
+        value="Testing"
+      />
+    </div>
+    <div
+      class="controls"
+    >
+      <button
+        class="button default outlined"
+        type="button"
+      >
+        <span>
+          Edit Button
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;

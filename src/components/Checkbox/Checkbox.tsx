@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
+import HelperText from '../HelperText/HelperText';
 
 import styles from './Checkbox.module.scss';
 
@@ -38,7 +39,9 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
           {label}
         </label>
       </div>
-      {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
+      <HelperText error={error} className={error ? styles.helperTextError : undefined}>
+        {helperText}
+      </HelperText>
     </div>
   );
 };

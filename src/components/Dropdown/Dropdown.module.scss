@@ -17,9 +17,6 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
     .dropdown {
       border-color: theme.$text-field-error-color;
     }
-    .helperText {
-      color: theme.$text-field-error-color;
-    }
   }
 
   &.medium {
@@ -68,6 +65,7 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
     margin-right: 9px;
     background-color: $select-arrow;
     clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    //noinspection CssUnknownProperty
     -webkit-clip-path: polygon(100% 0%, 0 0%, 50% 100%); /* stylelint-disable-line */
     content: '';
     justify-self: end;
@@ -126,10 +124,4 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
   background-color: rgba(0, 0, 0, 0.84);
   // Set focus on chrome
   outline-color: $select-focus;
-}
-
-.helperText {
-  margin-top: 4px;
-  font-size: 12px;
-  text-align: left;
 }

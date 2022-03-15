@@ -118,7 +118,7 @@
 
 .buttonContainer {
   > button:first-child {
-    margin-right: calc(variables.$base-spacing / 2);
+    margin-right: calc(#{variables.$base-spacing} / 2);
     margin-left: variables.$base-spacing;
   }
 }

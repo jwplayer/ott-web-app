@@ -39,6 +39,6 @@
   padding: 0 variables.$base-spacing;
 
   > button:first-child {
-    margin-bottom: calc(variables.$base-spacing / 2);
+    margin-bottom: calc(#{variables.$base-spacing} / 2);
   }
 }
