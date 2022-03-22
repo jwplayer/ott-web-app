@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode, useContext} from 'react';
+import React, { ReactElement, ReactNode, useCallback, useContext } from 'react';
 
 import Button from '../Button/Button';
 import type { GenericFormValues } from '../../../types/form';
@@ -24,140 +24,154 @@ export interface FormSectionProps<TData extends GenericFormValues, TErrors> {
   saveButton?: string;
   cancelButton?: string;
   canSave?: (values: TData) => boolean;
-  submit?: (values: TData) => Promise<{ errors?: string[] }> | void;
-  children?: never;
+  onSubmit?: (values: TData) => Promise<{ errors?: string[] }> | void;
   content: (args: FormSectionContentArgs<TData, TErrors>) => ReactNode;
+  children?: never;
 }
 
-export function FormSection<TData extends GenericFormValues>(props: FormSectionProps<TData, string[]>): ReactElement<FormSectionProps<TData, string[]>> | null {
-  const sectionId = useOpaqueId(props.label);
+export function FormSection<TData extends GenericFormValues>({
+  className,
+  panelHeaderClassName,
+  label,
+  editButton,
+  saveButton,
+  cancelButton,
+  canSave,
+  onSubmit,
+  content,
+}: FormSectionProps<TData, string[]>): ReactElement<FormSectionProps<TData, string[]>> | null {
+  const sectionId = useOpaqueId(label);
   const {
     formState: { values, activeSectionId, isDirty, errors: formErrors, isBusy },
     setFormState,
     isLoading,
-    cancel,
+    onCancel,
   } = useContext(FormContext) as FormContext<TData>;
 
-  function onChange(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    if (!event.currentTarget) return;
+  const isEditing = sectionId === activeSectionId;
 
-    const name = event.currentTarget.name;
-    const value = event.currentTarget.type === 'checkbox' ? (event.currentTarget as HTMLInputElement).checked : event.currentTarget.value;
+  const onChange = useCallback(
+    function onChange({ currentTarget }: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
+      if (!currentTarget) return;
 
-    if (activeSectionId !== sectionId) {
-      cancel();
-    }
+      const { name, type } = currentTarget;
+      const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
 
-    setFormState((oldState) => {
-      const newValues = { ...oldState.values };
+      if (!isEditing) {
+        onCancel();
+      }
 
-      // This logic handles nested names like 'consents.terms'
-      name.split('.').reduce((parent, field, index, arr) => {
-        if (index === arr.length - 1) {
-          parent[field] = value;
-        } else {
-          parent[field] = { ...parent[field] } || {};
+      setFormState((oldState) => {
+        const newValues = { ...oldState.values };
+
+        // This logic handles nested names like 'consents.terms'
+        name.split('.').reduce((parent, field, index, arr) => {
+          if (index === arr.length - 1) {
+            parent[field] = value;
+          } else {
+            parent[field] = { ...parent[field] } || {};
+          }
+
+          return parent[field];
+        }, newValues);
+
+        return {
+          ...oldState,
+          values: newValues,
+          isDirty: true,
+          activeSectionId: sectionId,
+        };
+      });
+    },
+    [isEditing, onCancel, sectionId, setFormState],
+  );
+
+  const handleSubmit = useCallback(
+    async function handleSubmit(event?: React.FormEvent) {
+      event && event.preventDefault();
+
+      if (onSubmit) {
+        let response: { errors?: string[] } | void;
+
+        try {
+          setFormState((s) => {
+            return { ...s, isBusy: true };
+          });
+          response = await onSubmit(values);
+        } catch (error: unknown) {
+          response = { errors: Array.of(error as string) };
         }
 
-        return parent[field];
-      }, newValues);
+        // Don't leave edit mode if there are errors
+        if (response?.errors?.length) {
+          setFormState((s) => {
+            return {
+              ...s,
+              errors: response?.errors,
+              isBusy: false,
+            };
+          });
 
-      return {
-        ...oldState,
-        values: newValues,
-        isDirty: true,
-        activeSectionId: sectionId,
-      };
-    });
-  }
-
-  async function handleSubmit(event?: React.FormEvent) {
-    event && event.preventDefault();
-
-    if (props.submit) {
-      let response: { errors?: string[] } | void;
-
-      try {
-        setFormState((s) => {
-          return { ...s, isBusy: true };
-        });
-        response = await props.submit(values);
-      } catch (error: unknown) {
-        response = { errors: Array.of(error as string) };
+          return;
+        }
       }
-
-      // Don't leave edit mode if there are errors
-      if (response?.errors?.length) {
-        setFormState((s) => {
-          return {
-            ...s,
-            errors: response?.errors,
-            isBusy: false,
-          };
-        });
-
-        return;
-      }
-    }
-
-    setFormState((s) => {
-      return {
-        ...s,
-        activeSectionId: undefined,
-        isDirty: false,
-        isBusy: false,
-      };
-    });
-  }
-
-  function edit() {
-    if (activeSectionId !== sectionId) {
-      cancel();
 
       setFormState((s) => {
         return {
           ...s,
-          activeSectionId: sectionId,
+          activeSectionId: undefined,
+          isDirty: false,
+          isBusy: false,
         };
       });
-    }
-  }
+    },
+    [onSubmit, setFormState, values],
+  );
 
-  const isEditing = sectionId === activeSectionId;
+  const onEdit = useCallback(
+    function onEdit() {
+      if (!isEditing) {
+        onCancel();
+
+        setFormState((s) => {
+          return {
+            ...s,
+            activeSectionId: sectionId,
+          };
+        });
+      }
+    },
+    [isEditing, onCancel, sectionId, setFormState],
+  );
 
   return (
-    <div className={props.className}>
-      <div className={props.panelHeaderClassName}>
-        <h3>{props.label}</h3>
+    <div className={className}>
+      <div className={panelHeaderClassName}>
+        <h3>{label}</h3>
       </div>
       {isBusy && isEditing && <LoadingOverlay transparentBackground />}
       {isEditing ? (
         <form className={styles.flexBox} noValidate onSubmit={(event) => event.preventDefault()}>
-          {props.content({ values, isEditing, isBusy, onChange, errors: formErrors })}
+          {content({ values, isEditing, isBusy, onChange, errors: formErrors })}
         </form>
       ) : (
-        <div className={styles.flexBox}>{props.content({ values, isEditing, isBusy, onChange })}</div>
+        <div className={styles.flexBox}>{content({ values, isEditing, isBusy, onChange })}</div>
       )}
-      {(props.saveButton || props.editButton || props.cancelButton) && (
+      {(saveButton || editButton || cancelButton) && (
         <div className={styles.controls}>
           {isEditing ? (
             <>
-              {props.saveButton && (
-                <Button
-                  label={props.saveButton}
-                  type="submit"
-                  onClick={handleSubmit}
-                  disabled={!isDirty || isLoading || (props.canSave && !props.canSave(values))}
-                />
+              {saveButton && (
+                <Button label={saveButton} type="submit" onClick={handleSubmit} disabled={!isDirty || isLoading || (canSave && !canSave(values))} />
               )}
-              {props.cancelButton && <Button label={props.cancelButton} type="reset" variant="text" onClick={cancel} />}
+              {cancelButton && <Button label={cancelButton} type="reset" variant="text" onClick={onCancel} />}
             </>
           ) : (
-            props.editButton &&
-            (typeof props.editButton === 'object' ? (
-              (props.editButton as ReactElement)
+            editButton &&
+            (typeof editButton === 'object' ? (
+              (editButton as ReactElement)
             ) : (
-              <Button label={props.editButton as string} type="button" onClick={edit} disabled={isLoading} />
+              <Button label={editButton as string} type="button" onClick={onEdit} disabled={isLoading} />
             ))
           )}
         </div>

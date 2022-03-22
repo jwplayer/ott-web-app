@@ -45,8 +45,9 @@ module.exports = {
         }
 
         config.plugins.push(new WorkboxPlugin.GenerateSW())
+        // Need to add double quotes in the string since this value gets substituted raw at compile time
         config.plugins.push(new webpack.DefinePlugin({
-          NODE_ENV_COMPILE_CONST: process.env.NODE_ENV || 'production',
+          NODE_ENV_COMPILE_CONST: `"${process.env.NODE_ENV}"` || '"production"',
         }))
 
         return config;

@@ -1,8 +1,8 @@
-import React, {useState, useEffect, createContext, SetStateAction} from 'react';
+import React, { useState, useEffect, createContext, SetStateAction, useCallback } from 'react';
 import type { GenericFormValues } from 'types/form';
 
-import type {FormSectionProps} from "./FormSection";
-import {FormSection} from "./FormSection";
+import type { FormSectionProps } from './FormSection';
+import { FormSection } from './FormSection';
 
 interface Props<TData> {
   initialValues: TData;
@@ -13,7 +13,7 @@ interface Props<TData> {
 
 export interface FormContext<TData> {
   isLoading?: boolean;
-  cancel: () => void;
+  onCancel: () => void;
   formState: FormState<TData>;
   setFormState: React.Dispatch<SetStateAction<FormState<TData>>>;
 }
@@ -36,18 +36,21 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
     isBusy: false,
   });
 
-  function cancel() {
-    setState((s) => {
-      return {
-        ...s,
-        values: initialValues,
-        isDirty: false,
-        activeSectionId: undefined,
-        errors: undefined,
-      };
-    });
-    onReset && onReset();
-  }
+  const onCancel = useCallback(
+    function onCancel() {
+      setState((s) => {
+        return {
+          ...s,
+          values: initialValues,
+          isDirty: false,
+          activeSectionId: undefined,
+          errors: undefined,
+        };
+      });
+      onReset && onReset();
+    },
+    [initialValues, onReset],
+  );
 
   useEffect(() => {
     setState((s) => {
@@ -62,13 +65,13 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
     <FormContext.Provider
       value={{
         isLoading,
-        cancel,
+        onCancel,
         formState: state,
         setFormState: setState,
       }}
     >
       {children?.map((props, i) => (
-          <FormSection key={i} {...props} />
+        <FormSection key={i} {...props} />
       ))}
     </FormContext.Provider>
   );
