@@ -1,7 +1,9 @@
+import constants from "../utils/constants";
+
 Feature('home');
 
 Before(({I}) => {
-  I.amOnPage('http://localhost:8080?c=blender');
+  I.useConfig('blender');
 });
 
 Scenario('Home screen loads', async ({ I }) => {
@@ -30,7 +32,7 @@ Scenario('Header button navigates to playlist screen', async ({ I }) => {
 
   I.see('Films');
   I.click({text: 'Films'});
-  I.amOnPage('http://localhost:8080/p/dGSUzs9o');
+  I.amOnPage(`${constants.baseUrl}p/${constants.filmsPlaylistId}`);
   I.see('All Films');
   I.see('The Daily Dweebs');
 });
@@ -74,7 +76,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideRight(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide right"]' }, 'div[data-mediaid="dGSUzs9o"]');
+      I.click({ css: 'div[aria-label="Slide right"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
     } else {
       await I.swipeLeft({text:swipeText});
     }
@@ -82,7 +84,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideLeft(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide left"]' }, 'div[data-mediaid="dGSUzs9o"]');
+      I.click({ css: 'div[aria-label="Slide left"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
     } else {
       await I.swipeRight({text:swipeText});
     }

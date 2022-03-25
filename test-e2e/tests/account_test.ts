@@ -1,9 +1,5 @@
-import assert from "assert";
-
-import passwordUtils from "../utils/password_utils";
+import passwordUtils, {LoginContext} from "../utils/password_utils";
 import constants from '../utils/constants';
-
-Feature('account');
 
 const editAccount = 'Edit account';
 const editDetials = 'Edit information';
@@ -13,57 +9,34 @@ const firstNameField = 'firstName';
 const lastNameField = 'lastName';
 const consentCheckbox = 'Yes, I want to receive Blender updates by email.';
 
-const email = passwordUtils.createRandomEmail();
-const password = passwordUtils.createRandomPassword();
-const firstName = 'Testing';
-const lastName = 'Userski';
-let isRegistered = false;
+let loginContext: LoginContext;
+const firstName = 'John Q.';
+const lastName = 'Tester';
 
-Before(async({I})=> {
-  I.amOnPage('http://localhost:8080?c=test--subscription');
+Feature('account');
 
-  let isMobile;
+Before(({I})=> {
+  I.useConfig('test--subscription');
 
-  if (!isRegistered) {
-    isMobile = (await I.openRegisterForm()).isMobile;
-    await I.fillRegisterForm({
-      email,
-      password,
-      firstName,
-      lastName
-    });
+  loginContext = I.registerOrLogin(loginContext, () => {
+    I.fillField('firstName', firstName);
+    I.fillField('lastName', lastName);
 
-    I.see('Subscription');
+    I.click('Continue');
+    I.waitForLoaderDone(10);
+
     I.clickCloseButton();
-
-    isRegistered = true;
-  } else {
-    isMobile = (await I.login(email, password)).isMobile;
-  }
-
-  if (isMobile) {
-    I.openMenuDrawer();
-  } else {
-    I.openUserMenu();
-  }
-
-  I.click('Account');
+  });
 });
 
-function openAccountForm(I: CodeceptJS.I, isMobile) {
-  if (isMobile) {
-    I.openMenuDrawer();
-  } else {
-    I.openUserMenu();
-  }
+Scenario('I can see my account data', async ({ I }) => {
+  I.seeCurrentUrlEquals(constants.baseUrl);
+  await I.openMainMenu();
 
   I.click('Account');
-}
-
-Scenario('I can see my account data', async ({ I }) => {
 
   I.see('Email');
-  I.see(email);
+  I.see(loginContext.email);
   I.see(editAccount);
 
   I.see('Security');
@@ -73,42 +46,46 @@ Scenario('I can see my account data', async ({ I }) => {
 
   I.see('About you');
   I.see('First name');
+  I.see(firstName);
   I.see('Last name');
+  I.see(lastName);
   I.see('Edit information');
 
   I.see('Terms & tracking');
   I.see('I accept the Terms and Conditions of Cleeng.');
   I.see('Yes, I want to receive Blender updates by email.');
+
+  I.seeCurrentUrlEquals(constants.accountsUrl);
 });
 
-Scenario('I can cancel Edit account', ({ I }) => {
+Scenario('I can cancel Edit account', async ({ I }) => {
   editAndCancel(I, editAccount, [
-    {name: emailField, startingValue: email, newValue: 'user@email.nl'},
+    {name: emailField, startingValue: loginContext.email, newValue: 'user@email.nl'},
     {name: passwordField, startingValue: '', newValue: 'pass123!?'},
   ]);
 });
 
-Scenario('I get a duplicate email warning', ({ I }) => {
+Scenario('I get a duplicate email warning', async ({ I }) => {
   editAndCancel(I, editAccount, [
     {
       name: emailField,
-      startingValue: email,
+      startingValue: loginContext.email,
       newValue: constants.username,
       expectedError: 'Email already exists!'
     }, {
       name: passwordField,
       startingValue: '',
-      newValue: password
+      newValue: loginContext.password
     }
   ]);
 });
 
-Scenario('I get a wrong password warning', ({ I }) => {
+Scenario('I get a wrong password warning', async ({ I }) => {
   editAndCancel(I, editAccount, [
     {
       name: emailField,
-      startingValue: email,
-      newValue: email
+      startingValue: loginContext.email,
+      newValue: loginContext.email
     }, {
       name: passwordField,
       startingValue: '',
@@ -119,22 +96,15 @@ Scenario('I get a wrong password warning', ({ I }) => {
 });
 
 Scenario('I can toggle to view/hide my password', async ({ I }) => {
+  I.amOnPage(constants.accountsUrl);
+
   I.click('Edit account');
-  let inputType = await I.grabAttributeFrom('input[name="confirmationPassword"]', 'type');
-  assert.strictEqual('password', inputType);
-
-  I.click('div[aria-label="View password"]');
-  inputType = await I.grabAttributeFrom('input[name="confirmationPassword"]', 'type');
-  assert.strictEqual('text', inputType);
-
-  I.click('div[aria-label="Hide password"]');
-  inputType = await I.grabAttributeFrom('input[name="confirmationPassword"]', 'type');
-  assert.strictEqual('password', inputType);
-
-  I.click('Cancel');
-})
+  await passwordUtils.testPasswordToggling(I, 'confirmationPassword');
+});
 
 Scenario('I can reset my password', async ({ I }) => {
+  I.amOnPage(constants.accountsUrl);
+
   I.click('Edit password');
   I.see('If you want to edit your password, click \'YES, Reset\' to receive password reset instruction on your mail');
   I.see('Yes, reset');
@@ -150,79 +120,71 @@ Scenario('I can reset my password', async ({ I }) => {
 
   I.click('Yes, reset');
   I.see('Password link sent');
-  I.see(`Please check your inbox at ${email}`);
+  I.see(`Please check your inbox at ${loginContext.email}`);
   I.see('Back to login');
 
   I.click('Back to login');
   I.see('Sign in');
 
   I.clickCloseButton();
-  await I.login(email, password);
+  I.login({email: loginContext.email, password: loginContext.password});
   I.click('div[aria-label="Open user menu"]');
   I.click('Account');
 })
 
-Scenario('I can update firstName', ({ I }) => {
+Scenario('I can update firstName', async ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      startingValue: firstName,
-      newValue: 'a'
+      newValue: ''
     }
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      startingValue: 'a',
-      newValue: 'John'
+      newValue: 'Jack'
     }
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      startingValue: '',
       newValue: firstName
     }
   ]);
 });
 
-Scenario('I can update lastName', ({ I }) => {
+Scenario('I can update lastName', async ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
-      startingValue: lastName,
-      newValue: 'b'
+      newValue: ''
     }
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
-      startingValue: 'b',
-      newValue: 'Johnson'
+      newValue: 'Jones'
     }
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
-      startingValue: '',
       newValue: lastName
     }
   ]);
 });
 
-Scenario('I can update details', ({ I }) => {
+Scenario('I can update details', async ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      startingValue: firstName,
       newValue: ''
     }, {
       name: lastNameField,
-      startingValue: lastName,
       newValue: ''
     }
   ]);
@@ -230,11 +192,9 @@ Scenario('I can update details', ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      startingValue: '',
       newValue: 'Newname'
     }, {
       name: lastNameField,
-      startingValue: '',
       newValue: 'McName'
     }
   ]);
@@ -242,11 +202,9 @@ Scenario('I can update details', ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      startingValue: 'Newname',
       newValue: firstName
     }, {
       name: lastNameField,
-      startingValue: 'McName',
       newValue: lastName
     }
   ]);
@@ -269,6 +227,8 @@ Scenario('I see name limit errors', async ({ I })=> {
 });
 
 Scenario('I can update my consents', async ({ I })=> {
+  I.amOnPage(constants.accountsUrl);
+
   I.dontSeeCheckboxIsChecked(consentCheckbox)
   I.dontSee('Save');
   I.dontSee('Cancel');
@@ -300,28 +260,28 @@ Scenario('I can change email', async ({ I }) => {
   const newEmail = passwordUtils.createRandomEmail();
 
   editAndSave(I, editAccount, [
-    {name: emailField, startingValue: email, newValue: newEmail},
-    {name: passwordField, startingValue: '', newValue: password},
+    {name: emailField, newValue: newEmail},
+    {name: passwordField, newValue: loginContext.password},
   ]);
 
   await I.logout();
 
-  const isMobile = (await I.login(newEmail, password)).isMobile;
-
-  openAccountForm(I, isMobile);
+  I.login({email: newEmail, password: loginContext.password});
 
   editAndSave(I, editAccount, [
-    {name: emailField, startingValue: newEmail, newValue: email},
-    {name: passwordField, startingValue: '', newValue: password},
+    {name: emailField, newValue: loginContext.email},
+    {name: passwordField, newValue: loginContext.password},
   ]);
 });
 
 function editAndSave(
     I: CodeceptJS.I,
     editButton: string,
-    fields: {name: string, startingValue: string, newValue: string, expectedError?: string}[]) {
+    fields: {name: string, newValue: string, expectedError?: string}[]
+) {
 
-  // noinspection DuplicatedCode
+  I.amOnPage(constants.accountsUrl);
+
   I.click(editButton);
 
   I.see('Save');
@@ -329,9 +289,9 @@ function editAndSave(
 
   const fieldsWithPaths = fields.map(f => { return {...f, xpath: `//input[@name='${f.name}']`};});
 
-  fieldsWithPaths.forEach(field => {
+  for (const field of fieldsWithPaths) {
     I.seeElement(field.xpath);
-    I.waitForValue(field.xpath, field.startingValue, 0);
+
     if (field.newValue) {
       I.fillField(field.xpath, field.newValue);
     } else {
@@ -339,7 +299,7 @@ function editAndSave(
       I.pressKey(['Control', 'a']);
       I.pressKey('Backspace');
     }
-  });
+  }
 
   I.click('Save');
   I.waitForLoaderDone(5);
@@ -357,11 +317,10 @@ function editAndSave(
 
   I.click(editButton);
 
-  fieldsWithPaths.forEach(field => {
+  for (const field of fieldsWithPaths) {
     I.seeElement(field.xpath);
-
-    I.waitForValue(field.xpath, field.name !== passwordField ? field.newValue : '', 0);
-  });
+    I.waitForValue(field.xpath, field.name !== passwordField ? field.newValue : '');
+  }
 
   I.click('Cancel');
 }
@@ -369,8 +328,9 @@ function editAndSave(
 function editAndCancel(
     I: CodeceptJS.I,
     editButton: string,
-    fields: {name: string, startingValue: string, newValue: string, expectedError?: string}[]) {
-
+    fields: {name: string, startingValue: string, newValue: string, expectedError?: string}[]
+) {
+  I.amOnPage(constants.accountsUrl);
   I.click(editButton);
 
   I.see('Save');
@@ -378,27 +338,30 @@ function editAndCancel(
 
   const fieldsWithPaths = fields.map(f => { return {...f, xpath: `//input[@name='${f.name}']`};});
 
-  fieldsWithPaths.forEach(field => {
+  for (const field of fieldsWithPaths) {
     I.seeElement(field.xpath);
     I.waitForValue(field.xpath, field.startingValue, 0);
     I.fillField(field.xpath, field.newValue);
-  });
+  }
 
   // If expecting errors, try to save first
   if (fieldsWithPaths.some(field => field.expectedError)) {
     I.click('Save');
+    I.waitForLoaderDone();
 
     I.see('Save');
     I.see('Cancel');
 
-    fieldsWithPaths.forEach(field => {
+    for (const field of fieldsWithPaths) {
       I.seeElement(field.xpath);
-      I.waitForValue(field.xpath, field.newValue, 0);
+      if (field.name !== passwordField) {
+        I.waitForValue(field.xpath, field.newValue, 0);
+      }
 
       if (field.expectedError) {
         I.see(field.expectedError, `//input[@name='${field.name}']/../..`);
       }
-    });
+    }
   }
 
   I.click('Cancel');
@@ -415,8 +378,8 @@ function editAndCancel(
 
   I.click(editButton);
 
-  fieldsWithPaths.forEach(field => {
+  for (const field of fieldsWithPaths) {
     I.seeElement(field.xpath);
     I.waitForValue(field.xpath, field.name === passwordField ? '' : field.startingValue, 0);
-  });
+  }
 }

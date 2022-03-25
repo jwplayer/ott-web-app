@@ -1,52 +1,68 @@
-Feature('payments').tag('@desktop-only')
+import {LoginContext} from "../utils/password_utils";
+import constants from "../utils/constants";
 
-// todo: run same test with loginMobile for @mobile
-// todo: mock price difference for locale (server vs local)
+let paidLoginContext: LoginContext;
+let couponLoginContext: LoginContext;
 
-Scenario('I can see my payments data', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=test--subscription');
-  I.login('complete-subscription@test.org');
+const today = new Date();
 
-  I.click('div[aria-label="Open user menu"]');
+const monthlyPrice = formatPrice(6.99);
+const yearlyPrice = formatPrice(50);
+
+Feature('payments');
+
+Before(async ({I}) => {
+  I.useConfig('test--subscription');
+  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+});
+
+Scenario('I can see my payments data', async ({ I }) => {
+  await I.openMainMenu();
+
   I.click('Payments');
-
   I.see('Subscription details');
-  I.see('Payment method');
-  I.see('Transactions');
-})
+  I.see('You have no subscription. Complete your subscription to start watching all movies and series.');
+  I.see('Complete subscription');
 
-Scenario('I can see offered subscriptions', ({ I })=> {
+  I.see('Payment method');
+  I.see('No payment methods');
+
+  I.see('Transactions');
+  I.see('No transactions');
+});
+
+Scenario('I can see offered subscriptions', async ({ I })=> {
+  I.amOnPage(constants.paymentsUrl);
+
   I.click('Complete subscription');
   I.see('Subscription');
   I.see('All movies and series of Blender');
 
-  within('label[for="monthly"]', () => {
+  await within('label[for="monthly"]', () => {
     I.see('Monthly');
     I.see('First month free');
     I.see('Cancel anytime');
     I.see('Watch on all devices');
-    // I.see('6,99');
+    I.see(monthlyPrice);
     I.see('/month');
   });
-  within('label[for="yearly"]', () => {
+
+  await within('label[for="yearly"]', () => {
     I.see('Yearly');
     I.see('First 14 days free');
     I.see('Cancel anytime');
     I.see('Watch on all devices');
-    // I.see('€');
-    // I.see('50,00');
+    I.see(yearlyPrice);
     I.see('/year');
   });
-  I.see('Continue');
 
-  I.clickCloseButton();
-  I.dontSee('Monthly');
+  I.see('Continue');
 });
 
 Scenario('I can choose an offer', async ({ I }) => {
-  I.click('Complete subscription');
+  I.amOnPage(constants.offersUrl);
+
   I.click('label[for="monthly"]');
-  I.wait();
   I.seeCssPropertiesOnElements('label[for="monthly"]', { 'color': '#000000' });
   I.seeCssPropertiesOnElements('label[for="yearly"]', { 'color': '#ffffff' });
 
@@ -55,20 +71,24 @@ Scenario('I can choose an offer', async ({ I }) => {
   I.seeCssPropertiesOnElements('label[for="yearly"]', { 'color': '#000000' });
 
   I.click('Continue');
-  I.wait(4);
+  I.waitForLoaderDone();
 
   I.see('Yearly subscription');
   I.see('You will be charged after 14 days.');
-  // I.see('50,00');
+  I.see(yearlyPrice);
   I.see('/year');
 
   I.see('Redeem coupon');
   I.see('Free trial');
-  // I.see('-50,00');
+  I.see(formatPrice(-50));
   I.see('Payment method fee');
-  // I.see('0,00');
+  I.see(formatPrice(0));
   I.see('Total');
   I.see('Applicable tax (21%)');
+});
+
+Scenario('I can see payment types', ({I}) => {
+  goToCheckout(I);
 
   I.see('Credit Card');
   I.see('PayPal');
@@ -77,23 +97,86 @@ Scenario('I can choose an offer', async ({ I }) => {
   I.see('Expiry date');
   I.see('CVC / CVV');
   I.see('Continue');
+  I.dontSee('Clicking \'continue\' will bring you to the PayPal site.');
 
+  I.click('PayPal');
+
+  I.see('Clicking \'continue\' will bring you to the PayPal site.');
+  I.dontSee('Card number');
+  I.dontSee('Expiry date');
+  I.dontSee('CVC / CVV');
+  I.see('Continue');
 });
 
-// Todo
-// Scenario('I can open the PayPal site', ({ I })=>{
-//   I.click('PayPal');
-//   I.see('Clicking \'continue\' will bring you to the PayPal site.');
-//   I.click('Continue');
-//   I.seeInCurrentUrl('paypal.com');
-//   I.amOnPage('http://localhost:8080/u/payments?c=test--subscription')
-//   I.wait(4);
-//   I.click('Complete subscription');
-//   I.click('Continue');
-//   I.wait(4);
-// });
+Scenario('I can open the PayPal site', ({ I })=> {
+  goToCheckout(I);
 
-Scenario('I can redeem coupons', ({I}) => {
+  I.click('PayPal');
+  I.click('Continue');
+
+  I.waitInUrl('paypal.com', 15);
+});
+
+const cardInfo = Array.of(
+    'Card number',
+    '•••• •••• •••• 1111',
+    'Expiry date',
+    '03/2030',
+    'CVC / CVV',
+    '******'
+
+);
+Scenario('I can finish my subscription', async ({ I }) => {
+  goToCheckout(I);
+
+  I.see('Credit Card');
+
+  // Adyen credit card form is loaded asynchronously, so wait for it
+  I.waitForElement('[class*=adyen-checkout__field--cardNumber]', 5);
+
+  // Each of the 3 credit card fields is a separate iframe
+  I.switchTo('[class*="adyen-checkout__field--cardNumber"] iframe');
+  I.fillField('Card number', '5555444433331111');
+  I.switchTo(null); // Exit the iframe context back to the main document
+
+  I.switchTo('[class*="adyen-checkout__field--expiryDate"] iframe');
+  I.fillField('Expiry date', '03/30');
+  I.switchTo(null); // Exit the iframe context back to the main document
+
+  I.switchTo('[class*="adyen-checkout__field--securityCode"] iframe');
+  I.fillField('Security code', '737');
+  I.switchTo(null); // Exit the iframe context back to the main document
+
+  finishAndCheckSubscription(I, addDays(today, 14));
+
+  I.seeAll(cardInfo);
+});
+
+Scenario('I can cancel my subscription', ({ I }) => {
+  cancelPlan(I, addDays(today, 14));
+
+  // Still see payment info
+  I.seeAll(cardInfo);
+});
+
+Scenario('I can renew my subscription', ({ I })=> {
+  renewPlan(I, addDays(today, 14));
+});
+
+// This is written as a second test suite so that the login context is a different user.
+// Otherwise there's no way to re-enter payment info and add a coupon code
+Feature('payments-coupon');
+
+Before(async ({I}) => {
+  I.useConfig('test--subscription');
+
+  couponLoginContext = await I.registerOrLogin(couponLoginContext);
+});
+
+
+Scenario('I can redeem coupons', async ({I}) => {
+  goToCheckout(I);
+
   I.click('Redeem coupon');
   I.seeElement('input[name="couponCode"]');
   I.see('Apply');
@@ -104,79 +187,124 @@ Scenario('I can redeem coupons', ({I}) => {
   I.click('Redeem coupon');
   I.fillField('couponCode', 'test75');
   I.click('Apply');
-  I.wait(4);
+  I.waitForLoaderDone();
   I.see('Your coupon code has been applied');
-  // I.see('-37,50');
-  // I.see('12,50');
-  // I.see('2,17');
+  I.see(formatPrice(-37.50));
+  I.see(formatPrice(12.50));
+  I.see(formatPrice(2.17));
 
   I.fillField('couponCode', 'test100');
   I.click('Apply');
-  I.wait(4);
+  I.waitForLoaderDone();
   I.see('No payment needed')
-  // I.dontSee('12,50');
+  I.dontSee(formatPrice(12.50));
+
+  finishAndCheckSubscription(I, addYear(today));
+
+  I.see('No payment methods');
 });
 
-// Todo: how to test this recurrently?
-// Scenario('I can finish my subscription', ({ I }) => {
-//   I.click('Continue');
-//   I.wait(4);
-//   I.see('Welcome to blender');
-//   I.see('Thank you for subscribing to Blender. Please enjoy all our content.');
-//   I.see('Start watching (');
-//   I.click('div[aria-label="Close"]');
+Scenario('I can cancel a free subscription', async ({I}) => {
+  cancelPlan(I, addYear(today));
 
-//   I.see('Monthly subscription');
-//   I.see('Next billing date is on');
-//   I.see('€');
-//   I.see('50,00');
-//   I.see('/year');
-// });
+  I.see('No payment methods');
+});
 
-Scenario('I can cancel my subscription', ({ I }) => {
-  I.login();
-  I.amOnPage('/u/payments');
-  I.wait(7);
+Scenario('I can renew a free subscription', ({I}) => {
+  renewPlan(I, addYear(today));
+});
+
+function goToCheckout(I: CodeceptJS.I) {
+  I.amOnPage(constants.offersUrl);
+
+  I.click('Continue');
+  I.waitForLoaderDone();
+}
+
+function formatPrice(price: number) {
+  // eslint-disable-next-line no-irregular-whitespace
+  return `€ ${price.toFixed(2).replace('.', ',')}`;
+}
+
+function addDays(date: Date, days: number) {
+  const newDate = new Date(date.valueOf())
+  newDate.setDate(newDate.getDate() + days);
+  return newDate;
+}
+
+function addYear(date: Date) {
+  const newDate = new Date(date.valueOf())
+  newDate.setFullYear(newDate.getFullYear() + 1);
+  return newDate;
+}
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US');
+}
+
+function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date) {
+  I.click('Continue');
+  I.waitForLoaderDone(15);
+  I.see('Welcome to Blender');
+  I.see('Thank you for subscribing to Blender. Please enjoy all our content.');
+
+  I.click('Start watching');
+
+  I.waitForLoaderDone();
+  I.see('Annual subscription');
+  I.see(yearlyPrice);
+  I.see('/year');
+  I.see('Next billing date is on ' + formatDate(billingDate));
+  I.see('Cancel subscription');
+
+  I.see('Annual subscription (recurring) to JW Player');
+  I.see(formatPrice(0) + ' payed with card');
+  I.see(formatDate(today));
+}
+
+function cancelPlan(I: CodeceptJS.I, expirationDate: Date) {
+  I.amOnPage(constants.paymentsUrl);
   I.click('Cancel subscription');
   I.see('We are sorry to see you go.');
   I.see('You will be unsubscribed from your current plan by clicking the unsubscribe button below.');
   I.see('Unsubscribe');
-  I.see('No, thanks');
+  // Make sure the cancel button works
   I.click('No, thanks');
-  I.dontSee('We are sorry to see you go.');
 
-  I.click('Cancel subscription');
-  I.see('We are sorry to see you go.');
-  I.clickCloseButton();
-  I.dontSee('We are sorry to see you go.');
+  I.dontSee('This plan will expire');
 
   I.click('Cancel subscription');
   I.click('Unsubscribe');
-  I.wait(6);
-  I.see('Miss you already.')
-  I.see('You have been successfully unsubscribed. Your current plan will expire on')
-
+  I.waitForLoaderDone(10);
+  I.see('Miss you already.');
+  I.see('You have been successfully unsubscribed. Your current plan will expire on ' + formatDate(expirationDate));
   I.click('Return to profile');
   I.see('Renew subscription');
-});
+  I.see('This plan will expire on ' + formatDate(expirationDate));
+}
 
-Scenario('I can renew my subscription', ({ I })=> {
+function renewPlan(I: CodeceptJS.I, billingDate: Date) {
+  I.amOnPage(constants.paymentsUrl);
   I.click('Renew subscription');
   I.see('Renew your subscription');
   I.see('By clicking the button below you can renew your plan.');
-  I.see('Annual subscription (recurring) to videodock');
-  I.see('Next billing date will be ');
-  // I.see('50,00');
+  I.see('Annual subscription (recurring) to JW Player');
+  I.see('Next billing date will be ' + formatDate(billingDate));
+  I.see(yearlyPrice);
   I.see('/year');
 
   I.click('No, thanks');
-  I.dontSee('Renew your subscription');
+  I.see('Renew subscription');
 
   I.click('Renew subscription');
-  I.click('Renew subscription', 'div[class="_dialog_18t28_1"]');
-  I.wait(6);
+
+  I.click('Renew subscription', '[class*=_dialog]');
+  I.waitForLoaderDone(10);
   I.see('Your subscription has been renewed');
-  I.see('You have been successfully resubscribed.'); //todo: test for valid dates
+  I.see(`You have been successfully resubscribed. Your fee will be ${yearlyPrice} starting from ${formatDate(billingDate)}`)
   I.click('Back to profile');
+
+  I.see('Annual subscription');
+  I.see('Next billing date is on');
   I.see('Cancel subscription');
-});
+}

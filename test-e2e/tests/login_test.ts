@@ -1,18 +1,16 @@
 import constants from '../utils/constants';
 import passwordUtils from '../utils/password_utils';
 
-Feature('login');
-
 const fieldRequired = 'This field is required';
 const invalidEmail = 'Please re-enter your email details and try again.';
 const incorrectLogin = 'Incorrect email/password combination';
 const formFeedback = 'div[class*=formFeedback]';
 
-Before(({I}) => {
-  I.amOnPage('http://localhost:8080?c=test--accounts');
-});
+Feature('login');
 
 Scenario('Sign-in buttons show for accounts config', async ({ I }) => {
+  I.useConfig('test--accounts');
+
   if (await I.isMobile()) {
     I.openMenuDrawer();
   }
@@ -22,7 +20,7 @@ Scenario('Sign-in buttons show for accounts config', async ({ I }) => {
 });
 
 Scenario('Sign-in buttons don\'t show for config without accounts', async ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=test--no-cleeng');
+  I.useConfig('test--no-cleeng');
 
   I.dontSee('Sign in');
   I.dontSee('Sign up');
@@ -36,12 +34,35 @@ Scenario('Sign-in buttons don\'t show for config without accounts', async ({ I }
 });
 
 Scenario('I can open the log in modal', async ({ I }) => {
-  await openLoginModal(I);
+  I.useConfig('test--accounts');
+
+  if (await I.isMobile()) {
+    I.openMenuDrawer();
+  }
+
+  I.click('Sign in');
+  I.waitForElement(constants.loginFormSelector, 15);
+
+  I.seeCurrentUrlEquals(constants.loginUrl);
+
+  I.see('Sign in');
+  I.see('Email');
+  I.see('Password');
+  I.see('Forgot password');
+  I.see('New to Blender?');
+  I.see('Sign up');
 });
 
-Scenario('I can close the modal', async ({ I }) => {
-  await openLoginModal(I);
+Feature('login - start from login page');
 
+Before(({I}) => {
+  I.useConfig('test--accounts', constants.loginUrl);
+
+  I.waitForElement(constants.loginFormSelector, 10);
+});
+
+
+Scenario('I can close the modal', async ({ I }) => {
   I.clickCloseButton();
   I.dontSee('Email');
   I.dontSee('Password');
@@ -49,8 +70,6 @@ Scenario('I can close the modal', async ({ I }) => {
 });
 
 Scenario('I can close the modal by clicking outside', async ({ I }) => {
-  await openLoginModal(I);
-
   I.forceClick('div[data-testid="backdrop"]');
 
   I.dontSee('Email');
@@ -59,14 +78,10 @@ Scenario('I can close the modal by clicking outside', async ({ I }) => {
 });
 
 Scenario('I can toggle to view password', async ({ I }) => {
-  await openLoginModal(I);
-
   await passwordUtils.testPasswordToggling(I);
 });
 
 Scenario('I get a warning when the form is incompletely filled in', async ({ I }) => {
-  await openLoginModal(I);
-
   tryToSubmitForm(I);
 
   checkField(I, 'email', fieldRequired);
@@ -74,8 +89,6 @@ Scenario('I get a warning when the form is incompletely filled in', async ({ I }
 });
 
 Scenario('I see email warnings', async ({ I }) => {
-  await openLoginModal(I);
-
   I.fillField('email', 'danny@email.com');
   I.fillField('password', 'Password');
 
@@ -107,8 +120,6 @@ Scenario('I see email warnings', async ({ I }) => {
 });
 
 Scenario('I see empty password warnings', async ({ I }) => {
-  await openLoginModal(I);
-
   I.fillField('email', 'danny@email.com');
   I.fillField('password', 'Password');
 
@@ -133,8 +144,6 @@ Scenario('I see empty password warnings', async ({ I }) => {
 });
 
 Scenario('I see a login error message', async ({ I }) => {
-  await openLoginModal(I);
-
   I.fillField('email', 'danny@email.com');
   I.fillField('password', 'Password');
 
@@ -152,19 +161,15 @@ Scenario('I see a login error message', async ({ I }) => {
 });
 
 Scenario('I can login', async ({ I }) => {
-  const {isMobile, isDesktop} = await I.login();
-
-  if (isMobile) {
-    I.openMenuDrawer();
-  }
+  I.login();
 
   I.dontSee('Sign in');
   I.dontSee('Sign up');
 
-  // Open the user menu
-  if (isDesktop) {
-    I.click('div[aria-label="Open user menu"]');
-  }
+  await I.openMainMenu()
+
+  I.dontSee('Sign in');
+  I.dontSee('Sign up');
 
   I.see('Account');
   I.see('Favorites');
@@ -172,13 +177,9 @@ Scenario('I can login', async ({ I }) => {
 });
 
 Scenario('I can log out', async ({ I })=> {
-  const {isMobile} = await I.login();
+  I.login();
 
-  if (isMobile) {
-    I.openMenuDrawer();
-  } else {
-    I.openUserMenu();
-  }
+  const isMobile = await I.openMainMenu();
 
   I.click('Log out');
 
@@ -189,22 +190,6 @@ Scenario('I can log out', async ({ I })=> {
   I.see('Sign in');
   I.see('Sign up');
 });
-
-async function openLoginModal(I: CodeceptJS.I) {
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
-
-  I.click('Sign in');
-  I.waitForElement(constants.loginFormSelector, 5);
-
-  I.see('Sign in');
-  I.see('Email');
-  I.see('Password');
-  I.see('Forgot password');
-  I.see('New to Blender?');
-  I.see('Sign up');
-}
 
 function tryToSubmitForm(I: CodeceptJS.I) {
   I.submitForm(false);

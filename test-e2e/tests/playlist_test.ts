@@ -1,7 +1,9 @@
+import constants from "../utils/constants";
+
 Feature('playlist');
 
 Before(({I}) => {
-  I.amOnPage('http://localhost:8080/p/dGSUzs9o');
+  I.amOnPage(constants.filmsPlaylistUrl);
 
   I.seeAll(actionFilms);
   I.seeAll(comedyFilms);
@@ -43,14 +45,14 @@ Scenario('I can reset the filter by selection the "All" option', async ({ I }) =
 
 Scenario('I can click on a card and navigate to the video screen', ({ I }) => {
   I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeInCurrentUrl('http://localhost:8080/m/awWEFyPu/big-buck-bunny?r=dGSUzs9o')
+  I.seeCurrentUrlEquals(constants.bigBuckBunnyDetailUrl);
 });
 
 Scenario('I can filter and click on a card and navigate to the video screen', async ({ I }) => {
   await selectFilterAndCheck(I, 'Comedy');
 
   I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeInCurrentUrl('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=dGSUzs9o')
+  I.seeInCurrentUrl(constants.bigBuckBunnyDetailUrl)
 });
 
 async function selectFilterAndCheck(I: CodeceptJS.I, option) {

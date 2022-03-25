@@ -54,6 +54,21 @@ const Payment = ({
     history.push(addQueryParam(history, 'u', 'renew-subscription'));
   }
 
+  function getTitle(period: Subscription['period']) {
+    switch (period) {
+      case 'month':
+        return t('user:payment.monthly_subscription');
+      case 'year':
+        return t('user:payment.annual_subscription');
+      case 'day':
+        return t('user:payment.daily_subscription');
+      case 'week':
+        return t('user:payment.weekly_subscription');
+      default:
+        throw 'Unknown period';
+    }
+  }
+
   return (
     <>
       <div className={panelClassName}>
@@ -64,7 +79,7 @@ const Payment = ({
           <React.Fragment>
             <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
               <p>
-                <strong>{t('user:payment.monthly_subscription')}</strong> <br />
+                <strong>{getTitle(activeSubscription.period)}</strong> <br />
                 {activeSubscription.status === 'active'
                   ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
                   : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
@@ -80,7 +95,7 @@ const Payment = ({
               <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
             )}
           </React.Fragment>
-        ) : (
+        ) : isLoading ? null : (
           <React.Fragment>
             <p>{t('user:payment.no_subscription')}</p>
             <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} onClick={onCompleteSubscriptionClick} />

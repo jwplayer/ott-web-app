@@ -50,6 +50,7 @@ const User = (): JSX.Element => {
   }, [history, customer, loading]);
 
   useEffect(() => {
+    // Todo: Make logout a function, not a route (https://stackoverflow.com/questions/3521290/logout-get-or-post)
     if (location.pathname === '/u/logout') {
       logout();
       history.push('/');

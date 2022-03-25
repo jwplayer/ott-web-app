@@ -1,12 +1,14 @@
 import * as assert from 'assert';
 
-Feature('search');
+import constants from "../utils/constants";
 
 const openSearchLocator = { css: 'div[aria-label="Open search"]' };
 const searchBarLocator = { css: 'input[aria-label="Search"]' };
 const emptySearchPrompt = 'Type something in the search box to start searching';
 const clearSearchLocator = { css: 'div[aria-label="Clear search"]' };
 const closeSearchLocator = { css: 'div[aria-label="Close search"]' };
+
+Feature('search');
 
 Before(({I}) => {
   I.amOnPage('http://localhost:8080');
@@ -27,7 +29,7 @@ Scenario('Opening / activating search bar stays on home page', async ({ I }) => 
 });
 
 Scenario('Closing search return to original page (@mobile-only)', async ({ I }) => {
-  const url = 'http://localhost:8080/m/8pN9r7vd/elephants-dream';
+  const url = constants.elephantsDreamDetailUrl;
   const title = 'Elephants Dream';
 
   I.amOnPage(url);

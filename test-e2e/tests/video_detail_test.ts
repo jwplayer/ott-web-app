@@ -4,18 +4,15 @@ import constants from '../utils/constants';
 
 Feature('video_detail');
 
-const agent327Title = 'Agent 327';
-const agent327Description = 'Hendrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.';
-
 Scenario('Video detail screen loads', ({ I }) => {
-  I.amOnPage('http://localhost:8080');
+  I.amOnPage(constants.baseUrl);
   openVideo(I, 'Agent 327');
   I.see('Agent 327');
   I.see('2021');
   I.see('4m');
   I.see('Action');
   I.see('CC-BY');
-  I.see(agent327Description);
+  I.see(constants.agent327Description);
   I.see('Sign up to start watching!');
   I.see('Favorite');
   I.see('Share');
@@ -25,7 +22,7 @@ Scenario('Video detail screen loads', ({ I }) => {
 });
 
 Scenario('I can expand the description (@mobile-only)', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=test--no-cleeng');
+  I.useConfig('test--no-cleeng');
   openVideo(I, 'Agent 327');
 
   function checkHeight(height) {
@@ -33,7 +30,7 @@ Scenario('I can expand the description (@mobile-only)', ({ I }) => {
     // and sometimes codecept goes too fast and catches it before it's done animating
     I.wait(1);
 
-    I.seeCssPropertiesOnElements(`text="${agent327Description}"`, {'max-height': height});
+    I.seeCssPropertiesOnElements(`text="${constants.agent327Description}"`, {'max-height': height});
   }
 
   I.seeElement('div[aria-label="Expand"]');
@@ -65,8 +62,8 @@ Scenario('I can return to the video detail screen', async ({ I }) => {
 });
 
 Scenario('I can play other media from the related shelf', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=test--no-cleeng');
-  openVideo(I, agent327Title);
+  I.useConfig('test--no-cleeng');
+  openVideo(I, 'Agent 327');
   openVideo(I, 'Elephants Dream');
   I.see('Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.')
   openVideo(I,'Coffee Run');
@@ -74,7 +71,7 @@ Scenario('I can play other media from the related shelf', ({ I }) => {
 });
 
 Scenario('I can play a trailer', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o&c=test--no-cleeng');
+  I.useConfig('test--no-cleeng', constants.elephantsDreamDetailUrl);
 
   I.click('Trailer');
   await I.waitForPlayerPlaying('Elephants Dream - Trailer');
@@ -85,7 +82,7 @@ Scenario('I can play a trailer', async ({ I }) => {
 });
 
 Scenario('I can play a trailer without signing in', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o');
+  I.amOnPage(constants.elephantsDreamDetailUrl);
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');
@@ -103,7 +100,7 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
 });
 
 Scenario('I can play a video after signing in', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o&c=test--accounts');
+  I.useConfig('test--accounts', constants.elephantsDreamDetailUrl);
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');
@@ -129,7 +126,7 @@ Scenario('I can play a video after signing in', async ({ I }) => {
 Scenario('I can share the media', async ({ I }) => {
   await I.enableClipboard();
 
-  const url = 'http://localhost:8080/m/8pN9r7vd/elephants-dream?r=dGSUzs9o&c=test--no-cleeng';
+  const url = constants.elephantsDreamDetailUrl + '&c=test--no-cleeng';
 
   I.amOnPage(url);
 
@@ -151,7 +148,7 @@ function openVideo(I, name) {
 }
 
 async function playBigBuckBunny(I) {
-  I.amOnPage('http://localhost:8080/m/dwEE1oBP/big-buck-bunny?r=dGSUzs9o&c=test--no-cleeng');
+  I.useConfig('test--no-cleeng', constants.bigBuckBunnyDetailUrl);
   I.waitForText('Start watching', 5);
   I.dontSeeInCurrentUrl('play=1');
   I.click('Start watching');

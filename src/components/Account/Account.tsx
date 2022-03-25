@@ -15,7 +15,7 @@ import { addQueryParam } from '../../utils/history';
 import { AccountStore, updateConsents, updateUser } from '../../stores/AccountStore';
 import HelperText from '../HelperText/HelperText';
 import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
-import { IS_DEV_BUILD } from '../../utils/common';
+import { logDev } from '../../utils/common';
 
 type Props = {
   panelClassName?: string;
@@ -83,10 +83,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
           }
           default: {
             formErrors.form = t('account.errors.unknown_error');
-
-            if (IS_DEV_BUILD) {
-              console.info('Unknown error', error);
-            }
+            logDev('Unknown error', error);
             break;
           }
         }
@@ -146,7 +143,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
                 <TextField
                   name="confirmationPassword"
                   label={t('account.confirm_password')}
-                  value={section.values.confirmationPassword as string}
+                  value={section.values.confirmationPassword}
                   onChange={section.onChange}
                   error={!!section.errors?.confirmationPassword}
                   helperText={section.errors?.confirmationPassword}

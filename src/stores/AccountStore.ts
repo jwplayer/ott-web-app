@@ -150,17 +150,20 @@ export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
   if (response.errors.length) throw new Error(response.errors[0]);
 
   AccountStore.update((s) => {
-    s.loading = false;
     s.auth = auth;
     s.user = response.responseData;
   });
 
   if (accessModel === 'SVOD') {
-    reloadActiveSubscription();
+    await reloadActiveSubscription();
   }
 
-  getCustomerConsents();
-  getPublisherConsents();
+  await getCustomerConsents();
+  await getPublisherConsents();
+
+  AccountStore.update((s) => {
+    s.loading = false;
+  });
 };
 
 export const login = async (email: string, password: string) => {
@@ -356,19 +359,30 @@ export const updateSubscription = async (status: 'active' | 'cancelled') => {
   });
 };
 
-export const reloadActiveSubscription = async () => {
+export async function reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }) {
+  AccountStore.update((s) => {
+    s.loading = true;
+  });
+
   return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
     const activeSubscription = await getActiveSubscription({ cleengSandbox, customerId, jwt });
     const transactions = await getAllTransactions({ cleengSandbox, customerId, jwt });
     const activePayment = await getActivePayment({ cleengSandbox, customerId, jwt });
 
-    AccountStore.update((s) => {
-      s.subscription = activeSubscription;
-      s.transactions = transactions;
-      s.activePayment = activePayment;
-    });
+    // The subscription data takes a few seconds to load after it's purchased,
+    // so here's a delay mechanism to give it time to process
+    if (delay > 0) {
+      window.setTimeout(() => reloadActiveSubscription(), delay);
+    } else {
+      AccountStore.update((s) => {
+        s.subscription = activeSubscription;
+        s.transactions = transactions;
+        s.activePayment = activePayment;
+        s.loading = false;
+      });
+    }
   });
-};
+}
 
 async function getActiveSubscription({ cleengSandbox, customerId, jwt }: { cleengSandbox: boolean; customerId: string; jwt: string }) {
   const response = await subscriptionService.getSubscriptions({ customerId }, cleengSandbox, jwt);
