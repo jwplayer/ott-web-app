@@ -302,7 +302,7 @@ function editAndSave(
   }
 
   I.click('Save');
-  I.waitForLoaderDone(5);
+  I.waitForLoaderDone(10);
 
   I.dontSee('Save');
   I.dontSee('Cancel');

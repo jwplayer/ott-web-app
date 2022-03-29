@@ -70,10 +70,6 @@ const persistWatchHistory = () => {
   return persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
 };
 
-export const initializeWatchHistory = () => {
-  restoreWatchHistory();
-};
-
 export const createWatchHistoryItem = (item: PlaylistItem | undefined, videoProgress: VideoProgress): WatchHistoryItem => {
   return {
     mediaid: item?.mediaid,

@@ -2,8 +2,8 @@ const baseUrl = 'http://localhost:8080/';
 const filmsPlaylistId = 'dGSUzs9o';
 
 export default {
-  username: '12345@test.org',
-  password: 'Ax854bZ!$',
+  username: 'ott-test-account@jwplayer.com',
+  password: '_KmjpSVedX2uTD3yTq&xA',
   loginFormSelector: 'form[data-testid="login-form"]',
   registrationFormSelector: 'form[data-testid="registration-form"]',
   duplicateUserError: 'There is already a user with this email address',

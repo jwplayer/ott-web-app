@@ -83,8 +83,8 @@ export const initializeAccount = async () => {
 
       if (refreshedAuthData) {
         await afterLogin(cleengSandbox, refreshedAuthData);
-        restoreWatchHistory();
-        restoreFavorites();
+        await restoreWatchHistory();
+        await restoreFavorites();
       }
     }
   } catch (error: unknown) {
@@ -176,8 +176,8 @@ export const login = async (email: string, password: string) => {
 
     await afterLogin(cleengSandbox, response.responseData);
 
-    restoreFavorites();
-    restoreWatchHistory();
+    await restoreFavorites();
+    await restoreWatchHistory();
   });
 };
 
@@ -191,8 +191,8 @@ export const logout = async () => {
     s.publisherConsents = null;
   });
 
-  restoreFavorites();
-  restoreWatchHistory();
+  await restoreFavorites();
+  await restoreWatchHistory();
 };
 
 export const register = async (email: string, password: string) => {

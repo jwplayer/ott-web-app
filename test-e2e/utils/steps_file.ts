@@ -28,6 +28,9 @@ module.exports = function() {
       this.fillField('password', password);
       this.submitForm(15);
 
+      this.dontSee('Incorrect email/password combination');
+      this.dontSee(constants.loginFormSelector);
+
       return {
         email,
         password
@@ -174,7 +177,7 @@ module.exports = function() {
       // Since this check executes a script in the browser, it won't use the codecept retries,
       // so we have to manually retry (this is because the video can take time to load and the state will be buffering)
       for (let i = 0; i < tries; i++) {
-        const state = await this.executeScript(() => typeof jwplayer === 'undefined' ? '' : jwplayer().getState());
+        const state = await this.executeScript(() => typeof jwplayer === 'undefined' || typeof jwplayer().getState === 'undefined' ? '' : jwplayer().getState());
 
         await this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
 

@@ -25,15 +25,15 @@ class App extends Component {
     this.setState({ error });
   }
 
-  initializeServices(config: Config) {
+  async initializeServices(config: Config) {
     if (config.options.enableContinueWatching) {
-      restoreWatchHistory();
+      await restoreWatchHistory();
     }
 
-    initializeFavorites();
+    await initializeFavorites();
 
     if (config.cleengId) {
-      initializeAccount();
+      await initializeAccount();
     }
   }
 
@@ -46,8 +46,8 @@ class App extends Component {
     console.info('Error while loading the config.json:', error);
   };
 
-  configValidationCompletedHandler = (config: Config) => {
-    this.initializeServices(config);
+  configValidationCompletedHandler = async (config: Config) => {
+    await this.initializeServices(config);
   };
 
   render() {
