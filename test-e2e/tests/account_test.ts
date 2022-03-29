@@ -128,8 +128,6 @@ Scenario('I can reset my password', async ({ I }) => {
 
   I.clickCloseButton();
   I.login({email: loginContext.email, password: loginContext.password});
-  I.click('div[aria-label="Open user menu"]');
-  I.click('Account');
 })
 
 Scenario('I can update firstName', async ({ I }) => {
