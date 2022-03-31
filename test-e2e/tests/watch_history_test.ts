@@ -142,6 +142,8 @@ async function playVideo(I: CodeceptJS.I, seekTo: number) {
   await I.executeScript((seekTo) => window.jwplayer().seek(seekTo), seekTo);
   I.click('div[class="_cinema_1w0uk_1 _fill_1w0uk_1"]'); //re-enable controls overlay
   I.click('div[aria-label="Back"]');
+
+  I.waitForText(seekTo < videoLength && seekTo > 0 ? 'Continue watching' : 'Start watching', 3);
 }
 
 async function checkProgress(
