@@ -9,9 +9,21 @@ const today = new Date();
 const monthlyPrice = formatPrice(6.99);
 const yearlyPrice = formatPrice(50);
 
+const cardInfo = Array.of(
+    'Card number',
+    '•••• •••• •••• 1111',
+    'Expiry date',
+    '03/2030',
+    'CVC / CVV',
+    '******'
+);
+
 Feature('payments');
 
 Before(async ({I}) => {
+  // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
+  overrideIP(I);
+
   I.useConfig('test--subscription');
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 });
@@ -59,7 +71,7 @@ Scenario('I can see offered subscriptions', async ({ I })=> {
   I.see('Continue');
 });
 
-Scenario('I can choose an offer', async ({ I }) => {
+Scenario('I can choose an offer', ({ I }) => {
   I.amOnPage(constants.offersUrl);
 
   I.click('label[for="monthly"]');
@@ -85,6 +97,7 @@ Scenario('I can choose an offer', async ({ I }) => {
   I.see(formatPrice(0));
   I.see('Total');
   I.see('Applicable tax (21%)');
+  I.clickCloseButton();
 });
 
 Scenario('I can see payment types', ({I}) => {
@@ -115,18 +128,11 @@ Scenario('I can open the PayPal site', ({ I })=> {
   I.click('Continue');
 
   I.waitInUrl('paypal.com', 15);
+  // I'm sorry, I don't know why, but this test ends in a way that causes the next test to fail
+  I.amOnPage(constants.baseUrl);
 });
 
-const cardInfo = Array.of(
-    'Card number',
-    '•••• •••• •••• 1111',
-    'Expiry date',
-    '03/2030',
-    'CVC / CVV',
-    '******'
-
-);
-Scenario('I can finish my subscription', async ({ I }) => {
+Scenario('I can finish my subscription', ({ I }) => {
   goToCheckout(I);
 
   I.see('Credit Card');
@@ -168,6 +174,9 @@ Scenario('I can renew my subscription', ({ I })=> {
 Feature('payments-coupon');
 
 Before(async ({I}) => {
+  // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
+  overrideIP(I);
+
   I.useConfig('test--subscription');
 
   couponLoginContext = await I.registerOrLogin(couponLoginContext);
@@ -307,4 +316,9 @@ function renewPlan(I: CodeceptJS.I, billingDate: Date) {
   I.see('Annual subscription');
   I.see('Next billing date is on');
   I.see('Cancel subscription');
+}
+
+function overrideIP(I: CodeceptJS.I) {
+  // Set this as a cookie so it persists between page navigations (local storage would also work, but the permissions don't work)
+  I.setCookie({name: 'overrideIP', value: '101.33.29.0', domain: 'localhost', path: '/'})
 }

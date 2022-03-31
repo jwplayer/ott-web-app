@@ -59,3 +59,11 @@ export function logDev(message: unknown, ...optionalParams: unknown[]) {
     console.info(message, optionalParams);
   }
 }
+
+export function getOverrideIP() {
+  return document.cookie
+    .split(';')
+    .find((s) => s.trim().startsWith('overrideIP'))
+    ?.split('=')[1]
+    .trim();
+}

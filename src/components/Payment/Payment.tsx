@@ -85,7 +85,7 @@ const Payment = ({
                   : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
               </p>
               <p className={styles.price}>
-                <strong>{formatPrice(activeSubscription.totalPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
+                <strong>{formatPrice(activeSubscription.nextPaymentPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
                 <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
               </p>
             </div>
