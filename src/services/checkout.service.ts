@@ -1,17 +1,11 @@
-import type {
-  CreateOrder,
-  GetOffer,
-  GetPaymentMethods,
-  PaymentWithAdyen,
-  PaymentWithoutDetails,
-  PaymentWithPayPal,
-  UpdateOrder,
-} from '../../types/checkout';
+import type { CreateOrder, GetOffer, GetPaymentMethods, PaymentWithAdyen, PaymentWithoutDetails, PaymentWithPayPal, UpdateOrder } from '../../types/checkout';
+import { getOverrideIP, IS_DEV_BUILD } from '../utils/common';
 
 import { get, post, patch } from './cleeng.service';
 
 export const getOffer: GetOffer = async (payload, sandbox) => {
-  return get(sandbox, `/offers/${payload.offerId}`);
+  // @ts-ignore
+  return get(sandbox, `/offers/${payload.offerId}${IS_DEV_BUILD && getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
 };
 
 export const createOrder: CreateOrder = async (payload, sandbox, jwt) => {
@@ -31,6 +25,10 @@ export const paymentWithoutDetails: PaymentWithoutDetails = async (payload, sand
 };
 
 export const paymentWithAdyen: PaymentWithAdyen = async (payload, sandbox, jwt) => {
+  if (IS_DEV_BUILD) {
+    // @ts-ignore
+    payload.customerIP = getOverrideIP();
+  }
   return post(sandbox, '/connectors/adyen/payments', JSON.stringify(payload), jwt);
 };
 

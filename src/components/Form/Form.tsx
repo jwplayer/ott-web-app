@@ -53,13 +53,16 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
   );
 
   useEffect(() => {
-    setState((s) => {
-      return {
-        ...s,
-        values: initialValues,
-      };
-    });
-  }, [initialValues]);
+    // Don't overwrite values if a section is being edited, since that would wipe out anything the user has entered
+    if (!state.activeSectionId) {
+      setState((s) => {
+        return {
+          ...s,
+          values: initialValues,
+        };
+      });
+    }
+  }, [initialValues, state.activeSectionId]);
 
   return (
     <FormContext.Provider

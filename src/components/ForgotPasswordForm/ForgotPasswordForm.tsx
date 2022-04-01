@@ -6,6 +6,7 @@ import TextField from '../TextField/TextField';
 import type { FormErrors } from '../../../types/form';
 import type { ForgotPasswordFormData } from '../../../types/account';
 import FormFeedback from '../FormFeedback/FormFeedback';
+import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './ForgotPasswordForm.module.scss';
 
@@ -23,7 +24,7 @@ const ForgotPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors
   const { t } = useTranslation('account');
 
   return (
-    <form onSubmit={onSubmit} data-testid="forgot-password-form" noValidate className={styles.forgotPasswordForm}>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'forgot-password-form' : undefined} noValidate className={styles.forgotPasswordForm}>
       <h2 className={styles.title}>{t('reset.forgot_password')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <p className={styles.text}>{t('reset.forgot_text')}</p>

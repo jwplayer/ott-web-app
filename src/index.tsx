@@ -5,21 +5,9 @@ import 'wicg-inert';
 
 import registerServiceWorker from './registerServiceWorker';
 import App from './App';
-import { IS_DEV_BUILD } from './utils/common';
+import { overrideConfig } from './utils/configOverride';
 
-// This code is only used for (integration) testing and will be optimized away in production builds
-if (IS_DEV_BUILD) {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const configFile = urlSearchParams.get('c') || window.sessionStorage.getItem('config-file-override');
-
-  // Use session storage to cache any config location override set from the url parameter so it can be restored
-  // on subsequent navigation if the query string gets lost, but it doesn't persist if you close the tab
-  if (configFile) {
-    window.sessionStorage.setItem('config-file-override', configFile);
-  }
-
-  window.configLocation = configFile ? `/test-data/config.${configFile}.json` : '/config.json';
-}
+overrideConfig();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

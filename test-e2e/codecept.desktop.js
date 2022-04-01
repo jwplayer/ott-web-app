@@ -7,17 +7,17 @@ const { setHeadlessWhen } = require('@codeceptjs/configure');
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
-  grep: '@desktop',
+  grep: '(?=.*)^(?!.*@mobile-only)',
   tests    : [
     './tests/*.js',
     './tests/*.ts'
   ],
-  output   : './output',
+  output   : './output/desktop',
   helpers  : {
     Playwright: {
       url    : 'http://localhost:8080',
       show   : false,
-      browser: 'chromium',
+      channel: 'chrome'
     }
   },
   include  : {

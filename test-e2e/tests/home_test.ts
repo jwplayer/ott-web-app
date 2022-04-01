@@ -1,65 +1,129 @@
-Feature('home').tag('@desktop');
+import constants from "../utils/constants";
 
-Scenario('Desktop home screen loads', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=blender');
-  I.see('Agent 327');
-  I.see('Home');
-  I.see('Films');
-  I.see('Courses');
+Feature('home');
+
+Before(({I}) => {
+  I.useConfig('blender');
 });
 
-Scenario('Header button navigates to playlist screen', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=blender');
+Scenario('Home screen loads', async ({ I }) => {
+  I.see('Blender');
+  I.see('Agent 327');
+  I.see('LIVE');
+
+  // On mobile, the headings are nested in the hamburger menu
+  if (await I.isMobile()) {
+    I.waitForInvisible('Home', 0);
+    I.waitForInvisible('Films', 0);
+    I.waitForInvisible('Courses', 0);
+
+    I.openMenuDrawer();
+  }
+
+  I.waitForInvisible('Home', 0);
+  I.waitForInvisible('Films', 0);
+  I.waitForInvisible('Courses', 0);
+});
+
+Scenario('Header button navigates to playlist screen', async ({ I }) => {
+  if (await I.isMobile()) {
+    I.openMenuDrawer();
+  }
+
   I.see('Films');
-  I.click('Films');
-  I.amOnPage('http://localhost:8080/p/dGSUzs9o');
+  I.click({text: 'Films'});
+  I.amOnPage(`${constants.baseUrl}p/${constants.filmsPlaylistId}`);
   I.see('All Films');
   I.see('The Daily Dweebs');
 });
 
-Scenario('I can slide within the featured shelf', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=blender');
+Scenario('I can slide within the featured shelf', async ({ I }) => {
+  const isDesktop = await I.isDesktop();
+
+  async function slide(swipeText) {
+    if (isDesktop) {
+      I.click({ css: 'div[aria-label="Slide right"]' });
+    } else {
+      await I.swipeLeft({text:swipeText});
+    }
+  }
+
   I.see('Blender Channel');
   I.see('LIVE');
   I.dontSee('Spring');
   I.dontSee('8 min');
-  I.click({ css: 'div[aria-label="Slide right"]' });
-  I.wait(0.4);
-  I.see('Spring');
+
+  await slide('Blender Channel');
+
+  I.waitForElement('text=Spring', 3);
   I.see('8 min');
+  I.waitForInvisible('text="Blender Channel"', 3);
   I.dontSee('Blender Channel');
   I.dontSee('LIVE');
-  I.click({ css: 'div[aria-label="Slide left"]' }, 'div[class="_shelfContainer_1i652_13 _featured_1i652_16"]');
-  I.wait(0.4);
-  I.see('Blender Channel');
+
+  // Without this extra wait, the second slide action happens too fast after the first and even though the
+  // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.
+  I.wait(1);
+
+  await slide('Spring');
+
+  I.waitForElement('text="Blender Channel"', 3);
   I.dontSee('Spring');
 });
 
-//todo:
-// within('div[data-mediaid="dGSUzs9o"]', () => {});
+Scenario('I can slide within non-featured shelves', async ({ I }) => {
+  const isDesktop = await I.isDesktop();
 
-Scenario('I can slide within non-featured shelves', ({ I }) => {
-  I.amOnPage('http://localhost:8080?c=blender');
-  I.scrollTo({ css: 'div[data-mediaid="dGSUzs9o"]' });
+  async function slideRight(swipeText) {
+    if (isDesktop) {
+      I.click({ css: 'div[aria-label="Slide right"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
+    } else {
+      await I.swipeLeft({text:swipeText});
+    }
+  }
+
+  async function slideLeft(swipeText) {
+    if (isDesktop) {
+      I.click({ css: 'div[aria-label="Slide left"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
+    } else {
+      await I.swipeRight({text:swipeText});
+    }
+  }
+
+  const rightMedia = isDesktop
+      ? {name: 'Cosmos Laundromat', duration: '13 min'}
+      : {name: 'Big Buck Bunny', duration: '10 min'};
+
   I.see('All Films');
   I.see('Agent 327');
   I.see('4 min');
-  I.dontSee('Cosmos Laundromat');
-  I.dontSee('13 min');
-  I.click({ css: 'div[aria-label="Slide right"]' }, 'div[data-mediaid="dGSUzs9o"]');
-  I.wait(0.4);
-  I.see('Cosmos Laundromat');
-  I.see('13 min');
+  I.dontSee(rightMedia.name);
+  I.dontSee(rightMedia.duration);
+  await slideRight( 'Agent 327');
+  I.waitForElement(`text="${rightMedia.name}"`, 3);
+  I.see(rightMedia.duration);
   I.dontSee('Agent 327');
-  I.click({ css: 'div[aria-label="Slide left"]' }, 'div[data-mediaid="dGSUzs9o"]');
-  I.wait(0.4);
-  I.see('Agent 327');
-  I.dontSee('Cosmos Laundromat');
+
+  // Without this extra wait, the second slide action happens too fast after the first and even though the
+  // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.
+  I.wait(1);
+  await slideLeft(rightMedia.name);
+
+  I.waitForElement('text="Agent 327"', 3);
+  I.dontSee(rightMedia);
+
+  // Without this extra wait, the second slide action happens too fast after the first and even though the
+  // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.
+  I.wait(1);
+  await slideLeft('Agent 327');
+
+  I.waitForText('The Daily Dweebs', 3);
+  I.dontSee('Agent 327');
 });
 
 Scenario('I can see the footer', ({ I }) => {
-  I.scrollPageToBottom('Blender Foundation');
+  I.scrollPageToBottom();
+  I.see('© Blender Foundation');
   I.see('cloud.blender.org');
   I.click('cloud.blender.org');
 });
-

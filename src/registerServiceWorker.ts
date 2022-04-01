@@ -9,6 +9,7 @@
 // This link also includes instructions on opting out of this behavior.
 
 import { getPublicUrl } from './utils/domHelpers';
+import { logDev } from './utils/common';
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -71,7 +72,7 @@ function registerValidSW(swUrl: string) {
               window.dispatchEvent(event);
             }
           } else {
-            console.info('Service worker ready');
+            logDev('Service worker ready');
           }
         };
 
@@ -83,7 +84,7 @@ function registerValidSW(swUrl: string) {
       };
     })
     .catch((error) => {
-      console.error('Error during service worker registration:', error);
+      logDev('Error during service worker registration:', error);
     });
 }
 
