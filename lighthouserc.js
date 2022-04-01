@@ -2,7 +2,7 @@ module.exports = {
   ci: {
     collect: {
       url: ['http://127.0.0.1:4000'],
-      startServerCommand: 'http-server ./build -p 4000 -g',
+      startServerCommand: 'node ./test-lhci/server.js',
       startServerReadyPattern: 'Available on',
       numberOfRuns: 1,
     },
@@ -11,6 +11,9 @@ module.exports = {
     },
     assert: {
       preset: 'lighthouse:no-pwa',
+      assertions: {
+        "csp-xss": "warn"
+      }
     },
   },
 };

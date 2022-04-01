@@ -9,22 +9,14 @@
 // This link also includes instructions on opting out of this behavior.
 
 import { getPublicUrl } from './utils/domHelpers';
-import { logDev } from './utils/common';
-
-const isLocalhost = Boolean(
-  window.location.hostname === 'localhost' ||
-    // [::1] is the IPv6 localhost address.
-    window.location.hostname === '[::1]' ||
-    // 127.0.0.1/8 is considered localhost for IPv4.
-    window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
-);
+import { IS_DEV_BUILD, logDev } from './utils/common';
 
 export default function register() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       const swUrl = '/service-worker.js';
 
-      if (!isLocalhost) {
+      if (!IS_DEV_BUILD) {
         // Is not local host. Just register service worker
         registerValidSW(swUrl);
       } else {

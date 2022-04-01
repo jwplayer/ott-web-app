@@ -13,9 +13,9 @@ import type {
   GetCaptureStatus,
   UpdateCaptureAnswers,
 } from '../../types/account';
+import { getOverrideIP, IS_DEV_BUILD } from '../utils/common';
 
 import { post, put, patch, get } from './cleeng.service';
-import { getOverrideIP, IS_DEV_BUILD } from '../utils/common';
 
 export const login: Login = async (payload, sandbox) => {
   if (IS_DEV_BUILD) {

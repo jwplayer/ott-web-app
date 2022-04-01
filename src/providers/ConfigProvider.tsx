@@ -30,7 +30,7 @@ export const ConfigContext = createContext<Config>(defaultConfig);
 export type ProviderProps = {
   children: ReactNode;
   configLocation: string;
-  onLoading: (isLoading: boolean) => void;
+  onLoading?: (isLoading: boolean) => void;
   onValidationError: (error: Error) => void;
   onValidationCompleted: (config: Config) => void;
 };
@@ -41,7 +41,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
 
   useEffect(() => {
     const loadAndValidateConfig = async (configLocation: string) => {
-      onLoading(true);
+      onLoading && onLoading(true);
       setLoading(true);
       const config = await loadConfig(configLocation).catch((error) => {
         onValidationError(error);
@@ -62,13 +62,13 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
 
           setCssVariables(configValidated.options);
           maybeInjectAnalyticsLibrary(config);
-          onLoading(false);
+          onLoading && onLoading(false);
           setLoading(false);
           onValidationCompleted(config);
         })
         .catch((error: Error) => {
           onValidationError(error);
-          onLoading(false);
+          onLoading && onLoading(false);
           setLoading(false);
         });
     };

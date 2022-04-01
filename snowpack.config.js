@@ -2,6 +2,8 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const webpack = require('webpack');
 
 require('./scripts/_dotenv');
+const CompressionPlugin = require("compression-webpack-plugin");
+const zlib = require("zlib");
 
 module.exports = {
   mount: Object.assign({
@@ -17,6 +19,7 @@ module.exports = {
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-sass',
     ['@snowpack/plugin-webpack', {
+    
       extendConfig: (config) => {
         // FIXES https://github.com/snowpackjs/snowpack/discussions/2810
         const babelRule = config.module.rules.find((rule) =>
@@ -49,6 +52,22 @@ module.exports = {
         config.plugins.push(new webpack.DefinePlugin({
           NODE_ENV_COMPILE_CONST: `"${process.env.NODE_ENV}"` || '"production"',
         }))
+
+        config.plugins.push(
+          new CompressionPlugin({
+            filename: "[path][base].br",
+            algorithm: "brotliCompress",
+            test: /\.(js|css|html|svg)$/,
+            compressionOptions: {
+              params: {
+                [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+              },
+            },
+            threshold: 10240,
+            minRatio: 0.8,
+            deleteOriginalAssets: false,
+          })
+        );
 
         return config;
       },

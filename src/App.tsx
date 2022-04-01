@@ -37,10 +37,6 @@ class App extends Component {
     }
   }
 
-  configLoadingHandler = (isLoading: boolean) => {
-    console.info(`Loading config: ${isLoading}`);
-  };
-
   configErrorHandler = (error: Error) => {
     this.setState({ error });
     console.info('Error while loading the config.json:', error);
@@ -56,7 +52,6 @@ class App extends Component {
         <QueryProvider>
           <ConfigProvider
             configLocation={window.configLocation || '/config.json'}
-            onLoading={this.configLoadingHandler}
             onValidationError={this.configErrorHandler}
             onValidationCompleted={this.configValidationCompletedHandler}
           >
