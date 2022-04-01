@@ -14,6 +14,7 @@ import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './LoginForm.module.scss';
 
@@ -33,7 +34,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const history = useHistory();
 
   return (
-    <form onSubmit={onSubmit} data-testid="login-form" noValidate>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'login-form' : undefined} noValidate>
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
@@ -46,7 +47,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         name="email"
         type="email"
         required
-        testId="email-input"
+        testId="login-email-input"
       />
       <TextField
         value={values.password}
@@ -63,7 +64,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
           </IconButton>
         }
         required
-        testId="password-input"
+        testId="login-password-input"
       />
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>

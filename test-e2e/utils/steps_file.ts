@@ -177,6 +177,7 @@ module.exports = function() {
       // Since this check executes a script in the browser, it won't use the codecept retries,
       // so we have to manually retry (this is because the video can take time to load and the state will be buffering)
       for (let i = 0; i < tries; i++) {
+        // In theory this expression can be simplified, but without the typeof's codecept throws an error when the value is undefined.
         const state = await this.executeScript(() => typeof jwplayer === 'undefined' || typeof jwplayer().getState === 'undefined' ? '' : jwplayer().getState());
 
         await this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
@@ -201,11 +202,7 @@ module.exports = function() {
       assert.equal(await this.executeScript(() => typeof jwplayer === 'undefined' ? undefined : jwplayer().getState),
           undefined);
     },
-    isMobile: async function(this: CodeceptJS.I, isMobile?: boolean) {
-      if (isMobile !== undefined) {
-        return isMobile;
-      }
-
+    isMobile: async function(this: CodeceptJS.I) {
       return await this.usePlaywrightTo('Get is Mobile', async ({browserContext}) => {
         return browserContext._options.isMobile;
       }) || false;

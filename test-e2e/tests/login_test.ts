@@ -220,8 +220,8 @@ function checkField(I: CodeceptJS.I, field, error: string | boolean = false) {
 
   // If error === true, there's an error, but no associated message
   if (error && error !== true) {
-    I.see(error, `[data-testid=${field}-input]`);
-    I.seeCssPropertiesOnElements(`[data-testId="${field}-input"] [class*=helperText]`, { 'color': '#ff0c3e'});
+    I.see(error, `[data-testid=login-${field}-input]`);
+    I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=helperText]`, { 'color': '#ff0c3e'});
   } else {
     I.dontSeeElement('[class*=helperText]', `[data-testid="${field}-input"]`);
   }
@@ -231,14 +231,14 @@ function checkField(I: CodeceptJS.I, field, error: string | boolean = false) {
   // different places and accidentally triggering the wrong css color
   // Hover:
   I.click(`input[name="${field}"]`);
-  I.seeCssPropertiesOnElements(`[data-testId="${field}-input"] [class*=container]`,
+  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`,
       {'border-color': hoverColor});
   // Active (no hover):
   I.moveCursorTo('button[type=submit]');
-  I.seeCssPropertiesOnElements(`[data-testId="${field}-input"] [class*=container]`,
+  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`,
       {'border-color': activeColor});
   // Resting:
   I.click('div[class*=banner]');
-  I.seeCssPropertiesOnElements(`[data-testId="${field}-input"] [class*=container]`,
+  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`,
       {'border-color': restingColor});
 }

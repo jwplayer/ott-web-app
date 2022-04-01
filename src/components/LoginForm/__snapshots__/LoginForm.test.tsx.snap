@@ -13,7 +13,7 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
     </h2>
     <div
       class="textField"
-      data-testid="email-input"
+      data-testid="login-email-input"
     >
       <label
         class="label"
@@ -37,7 +37,7 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
     </div>
     <div
       class="textField rightControl"
-      data-testid="password-input"
+      data-testid="login-password-input"
     >
       <label
         class="label"
@@ -102,7 +102,7 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
       class="bottom"
     >
       login.not_registered
-       
+
       <a
         class="link"
         href="/?u=create-account"

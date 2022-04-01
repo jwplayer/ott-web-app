@@ -11,6 +11,7 @@ import Radio from '../Radio/Radio';
 import DateField from '../DateField/DateField';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import FormFeedback from '../FormFeedback/FormFeedback';
+import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './PersonalDetailsForm.module.scss';
 
@@ -59,23 +60,14 @@ const PersonalDetailsForm: React.FC<Props> = ({
     } else if (values.length === 2) {
       return <Radio values={values} value={questionValues[key]} header={question} {...props} />;
     } else if (values.length > 2) {
-      return (
-        <Dropdown
-          options={values}
-          value={questionValues[key]}
-          label={question}
-          defaultLabel={t('personal_details.select_answer')}
-          {...props}
-          fullWidth
-        />
-      );
+      return <Dropdown options={values} value={questionValues[key]} label={question} defaultLabel={t('personal_details.select_answer')} {...props} fullWidth />;
     }
 
     return null;
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid="personal_details-form" noValidate>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'personal_details-form' : undefined} noValidate>
       <h2 className={styles.title}>{t('personal_details.title')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       {fields.firstNameLastName?.enabled ? (
