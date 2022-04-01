@@ -102,7 +102,7 @@ exports[`<LoginForm> renders and matches snapshot 1`] = `
       class="bottom"
     >
       login.not_registered
-
+       
       <a
         class="link"
         href="/?u=create-account"
