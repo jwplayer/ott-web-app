@@ -1,4 +1,8 @@
 {
+  "include": [
+    ".",
+    "../types",
+  ],
   "ts-node": {
     "files": true
   },

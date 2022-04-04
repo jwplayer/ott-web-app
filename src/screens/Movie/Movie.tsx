@@ -22,6 +22,7 @@ import { ConfigStore } from '../../stores/ConfigStore';
 import { AccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 import { isAllowedToWatch } from '../../utils/cleeng';
+import { addConfigParamToUrl } from '../../utils/configOverride';
 
 import styles from './Movie.module.scss';
 
@@ -83,7 +84,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
       return;
     }
 
-    copyToClipboard(window.location.href);
+    copyToClipboard(addConfigParamToUrl(window.location.href));
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };

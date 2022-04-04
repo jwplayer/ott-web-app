@@ -11,6 +11,7 @@ import { getOfferPrice } from '../../utils/subscription';
 import DialogBackButton from '../DialogBackButton/DialogBackButton';
 import type { FormErrors } from '../../../types/form';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './ChooseOfferForm.module.scss';
 
@@ -25,16 +26,7 @@ type Props = {
   submitting: boolean;
 };
 
-const ChooseOfferForm: React.FC<Props> = ({
-  values,
-  errors,
-  onChange,
-  onSubmit,
-  submitting,
-  yearlyOffer,
-  monthlyOffer,
-  onBackButtonClickHandler,
-}: Props) => {
+const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, submitting, yearlyOffer, monthlyOffer, onBackButtonClickHandler }: Props) => {
   const { siteName } = useContext(ConfigContext);
   const { t } = useTranslation('account');
 
@@ -55,7 +47,7 @@ const ChooseOfferForm: React.FC<Props> = ({
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid="choose-offer-form" noValidate>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'choose-offer-form' : undefined} noValidate>
       {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
       <h2 className={styles.title}>{t('choose_offer.subscription')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.all_movies_and_series_of_platform', { siteName })}</h3>

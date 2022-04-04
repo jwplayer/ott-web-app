@@ -34,7 +34,7 @@ export const createOrder = async (offerId: string, paymentMethodId?: number) => 
 
   const createOrderPayload: CreateOrderPayload = {
     offerId,
-    customerId: user.id.toString(),
+    customerId: user.id,
     country: user.country,
     currency: localesResponse.responseData.currency,
     customerIP: user.lastUserIp,
