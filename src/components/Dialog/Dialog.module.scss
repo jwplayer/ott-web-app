@@ -11,6 +11,7 @@
   background-color: theme.$modal-bg;
   border-radius: 6px;
   -ms-overflow-style: none;
+  //noinspection CssUnknownProperty
   scrollbar-width: none;
 
   &::-webkit-scrollbar {

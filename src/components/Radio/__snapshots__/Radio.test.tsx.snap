@@ -2,8 +2,66 @@
 
 exports[`<Radio> renders and matches snapshot 1`] = `
 <div>
-  <div
-    class="container"
-  />
+  <div>
+    <div
+      class="header"
+    >
+      Choose a Value
+      <span>
+        optional
+      </span>
+    </div>
+    <div
+      class="radio"
+    >
+      <input
+        checked=""
+        id="radio_1235_radio0"
+        name="radio"
+        type="radio"
+        value="value1"
+      />
+      <label
+        for="radio_1235_radio0"
+      >
+        value1
+      </label>
+    </div>
+    <div
+      class="radio"
+    >
+      <input
+        id="radio_1235_radio1"
+        name="radio"
+        type="radio"
+        value="value2"
+      />
+      <label
+        for="radio_1235_radio1"
+      >
+        value2
+      </label>
+    </div>
+    <div
+      class="radio"
+    >
+      <input
+        id="radio_1235_radio2"
+        name="radio"
+        type="radio"
+        value="value3"
+      />
+      <label
+        for="radio_1235_radio2"
+      >
+        value3
+      </label>
+    </div>
+    <div
+      class="helperText"
+    >
+      This is required!
+    </div>
+  </div>
 </div>
 `;

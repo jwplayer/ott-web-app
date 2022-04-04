@@ -1,0 +1,12 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.helperText {
+  margin-top: 4px;
+  font-size: 12px;
+  text-align: left;
+
+  &.error {
+    color: theme.$text-field-error-color;
+  }
+}

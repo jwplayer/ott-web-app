@@ -99,6 +99,7 @@
   },
   "registration": {
     "already_account": "Already have an account?",
+    "consent_required": "This field is required",
     "continue": "Continue",
     "email": "Email",
     "field_is_not_valid_email": "Please re-enter your email details",

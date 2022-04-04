@@ -8,9 +8,17 @@ describe('<Form>', () => {
 
   it('renders Form', () => {
     const { container } = render(
-      <Form initialValues={initialValues} onSubmit={() => null}>
-        {({ values, handleChange }) => <input name="test" value={values.test || ''} onChange={handleChange} />}
-      </Form>,
+      <Form initialValues={initialValues}>
+        {[
+          {
+            label: 'Edit This',
+            editButton: 'Edit Button',
+            saveButton: 'Save Button',
+            cancelButton: 'Cancel Button',
+            content: (section => <input name="test" value={section.values.test || ''} />)
+          }
+        ]}
+      </Form>
     );
     expect(container).toMatchSnapshot();
   });

@@ -50,6 +50,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const searchButtonClickHandler = () => {
     UIStore.update((s) => {
       s.searchActive = true;
+      s.preSearchPage = history.location;
     });
   };
 

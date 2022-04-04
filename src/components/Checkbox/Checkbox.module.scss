@@ -5,7 +5,7 @@
   display: inline-block;
 
   label {
-    margin-left: calc(variables.$base-spacing / 2);
+    margin-left: calc(#{variables.$base-spacing} / 2);
     font-size: 14px;
     cursor: pointer;
 
@@ -25,13 +25,6 @@
       &:not(:checked) {
         border: 2px solid theme.$input-field-error-color;
       }
-    }
-
-    .helperText {
-      margin-top: -5px;
-      margin-left: 35px;
-      color: theme.$text-field-error-color;
-      font-size: 10px;
     }
   }
 
@@ -108,8 +101,9 @@
   align-items: center;
 }
 
-.helperText {
-  margin-top: 4px;
-  font-size: 12px;
-  text-align: left;
+.helperTextError {
+  margin-top: -5px;
+  margin-left: 35px;
+  color: theme.$text-field-error-color;
+  font-size: 10px;
 }

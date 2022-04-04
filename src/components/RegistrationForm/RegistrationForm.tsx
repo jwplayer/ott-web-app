@@ -16,6 +16,7 @@ import Checkbox from '../Checkbox/Checkbox';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Link from '../Link/Link';
+import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './RegistrationForm.module.scss';
 
@@ -74,7 +75,7 @@ const RegistrationForm: React.FC<Props> = ({
   }
 
   return (
-    <form onSubmit={onSubmit} data-testid="registration-form" noValidate>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'registration-form' : undefined} noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
@@ -105,10 +106,7 @@ const RegistrationForm: React.FC<Props> = ({
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
-          <IconButton
-            aria-label={viewPassword ? t('registration.hide_password') : t('registration.view_password')}
-            onClick={() => toggleViewPassword()}
-          >
+          <IconButton aria-label={viewPassword ? t('registration.hide_password') : t('registration.view_password')} onClick={() => toggleViewPassword()}>
             {viewPassword ? <Visibility /> : <VisibilityOff />}
           </IconButton>
         }
@@ -120,6 +118,7 @@ const RegistrationForm: React.FC<Props> = ({
           name={consent.name}
           value={consent.value || ''}
           error={consentErrors?.includes(consent.name)}
+          helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required') : undefined}
           required={consent.required}
           checked={consentValues[consent.name] || false}
           onChange={onConsentChange}

@@ -3,15 +3,7 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
-import {
-  CheckoutStore,
-  createOrder,
-  updateOrder,
-  getPaymentMethods,
-  paymentWithoutDetails,
-  adyenPayment,
-  paypalPayment,
-} from '../../../stores/CheckoutStore';
+import { CheckoutStore, createOrder, updateOrder, getPaymentMethods, paymentWithoutDetails, adyenPayment, paypalPayment } from '../../../stores/CheckoutStore';
 import { addQueryParam } from '../../../utils/history';
 import useForm from '../../../hooks/useForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -106,7 +98,7 @@ const Checkout = () => {
       setUpdatingOrder(true);
       setPaymentError(undefined);
       await paymentWithoutDetails();
-      await reloadActiveSubscription();
+      await reloadActiveSubscription({ delay: 1000 });
       history.replace(addQueryParam(history, 'u', 'welcome'));
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -145,7 +137,7 @@ const Checkout = () => {
         setUpdatingOrder(true);
         setPaymentError(undefined);
         await adyenPayment(data.data.paymentMethod);
-        await reloadActiveSubscription();
+        await reloadActiveSubscription({ delay: 1000 });
         history.replace(addQueryParam(history, 'u', 'welcome'));
       } catch (error: unknown) {
         if (error instanceof Error) {

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
+import HelperText from '../HelperText/HelperText';
 
 import styles from './DateField.module.scss';
 
@@ -162,7 +163,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           id={id}
         />
       </div>
-      {helperText ? <div className={styles.helperText}>{helperText}</div> : null}
+      <HelperText error={error}>{helperText}</HelperText>
     </div>
   );
 };

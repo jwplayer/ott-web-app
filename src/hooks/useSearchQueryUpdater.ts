@@ -19,10 +19,14 @@ const useSearchQueryUpdater = () => {
     updateSearchPath.current(query);
   }, []);
   const resetSearchQuery = useCallback(() => {
+    const returnPage = UIStore.getRawState().preSearchPage;
+
     UIStore.update((state) => {
       state.searchQuery = '';
+      state.preSearchPage = undefined;
     });
-    history.push('/');
+
+    history.push(returnPage || '/');
   }, [history]);
 
   return { updateSearchQuery, resetSearchQuery };
