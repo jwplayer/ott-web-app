@@ -68,8 +68,8 @@ To ensure a **cross-device experience**, we standardize on the following datafor
 ```
 
 ## Watchlist playlist
+The media metadata for the stored media ids an be retrieved through a [watchlist playlist](https://developer.jwplayer.com/jwplayer/docs/creating-and-using-a-watchlist-playlist):
 
-The media metadata for the stored media ids an be retrieved through a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
 
 ```
 curl 'https://cdn.jwplayer.com/apps/watchlists/<watchlist-id>?media_ids=<media-ids-comma-seperated>'
