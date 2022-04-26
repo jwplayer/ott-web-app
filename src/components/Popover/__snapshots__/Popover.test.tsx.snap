@@ -10,6 +10,7 @@ exports[`<Popover> renders and matches snapshot 1`] = `
     >
       <a
         aria-current="page"
+        aria-label="Home"
         class="menuButton active"
         href="/"
         tabindex="0"

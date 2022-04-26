@@ -12,6 +12,7 @@ import Search from '../../screens/Search/Search';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import AccountModal from '../../containers/AccountModal/AccountModal';
 import About from '../../screens/About/About';
+import AuthProvider from '../../providers/AuthProvider';
 
 type Props = {
   error?: Error | null;
@@ -36,7 +37,11 @@ const Root: FC<Props> = ({ error }: Props) => {
         <Route path="/m/:id/:slug?" component={Movie} exact />
         <Route path="/s/:id/:slug?" component={Series} />
         <Route path="/q/:query?" component={Search} />
-        <Route path="/u/:page?" component={User} />
+        <Route path="/u/:page?">
+          <AuthProvider>
+            <User />
+          </AuthProvider>
+        </Route>
         <Route path="/o/about" component={About} />
         <Route>
           <ErrorPage title={t('notfound_error_heading', 'Not found')}>
