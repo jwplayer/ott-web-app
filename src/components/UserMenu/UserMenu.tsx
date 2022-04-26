@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 
 import AccountCircle from '../../icons/AccountCircle';
 import Favorite from '../../icons/Favorite';
 import BalanceWallet from '../../icons/BalanceWallet';
 import Exit from '../../icons/Exit';
 import MenuButton from '../MenuButton/MenuButton';
+import { logout } from '../../stores/AccountStore';
 
 import styles from './UserMenu.module.scss';
 
@@ -18,6 +20,14 @@ type Props = {
 
 const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
   const { t } = useTranslation('user');
+
+  const onLogout = useCallback(() => {
+    if (onClick) {
+      onClick();
+    }
+
+    logout();
+  }, [onClick]);
 
   const menuItems = (
     <ul className={styles.menuItems}>
@@ -34,7 +44,7 @@ const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
       )}
       <hr className={classNames(styles.divider, { [styles.inPopover]: inPopover })} />
       <li>
-        <MenuButton small={inPopover} onClick={onClick} to="/u/logout" label={t('nav.logout')} startIcon={<Exit />} />
+        <MenuButton small={inPopover} onClick={onLogout} label={t('nav.logout')} startIcon={<Exit />} />
       </li>
     </ul>
   );

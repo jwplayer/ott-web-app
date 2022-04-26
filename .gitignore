@@ -10,4 +10,4 @@ yarn-error.log
 # os or editor
 .idea
 .DS_Store
-/.vscode/settings.json
+.vscode/

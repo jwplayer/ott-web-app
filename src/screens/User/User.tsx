@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
 
@@ -27,7 +27,6 @@ import styles from './User.module.scss';
 const User = (): JSX.Element => {
   const accessModel = ConfigStore.useState((s) => s.accessModel);
   const history = useHistory();
-  const location = useLocation();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
@@ -40,22 +39,9 @@ const User = (): JSX.Element => {
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+  const onLogout = useCallback(() => logout(), []);
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
-
-  useEffect(() => {
-    if (!loading && !customer) {
-      history.replace('/');
-    }
-  }, [history, customer, loading]);
-
-  useEffect(() => {
-    // Todo: Make logout a function, not a route (https://stackoverflow.com/questions/3521290/logout-get-or-post)
-    if (location.pathname === '/u/logout') {
-      logout();
-      history.push('/');
-    }
-  }, [location, history]);
 
   if (!customer) {
     return (
@@ -83,7 +69,7 @@ const User = (): JSX.Element => {
                 </li>
               )}
               <li className={styles.logoutLi}>
-                <Button to="/u/logout" label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
+                <Button onClick={onLogout} label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
               </li>
             </ul>
           </div>
@@ -136,9 +122,6 @@ const User = (): JSX.Element => {
             ) : (
               <Redirect to="/u/my-account" />
             )}
-          </Route>
-          <Route path="/u/logout">
-            <LoadingOverlay transparentBackground />
           </Route>
           <Route path="/u/:other?">
             <Redirect to="/u/my-account" />
