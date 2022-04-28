@@ -40,8 +40,8 @@ Github pages have some [usage limits](https://docs.github.com/en/pages/getting-s
 
 The `yarn deploy:github` command executes a simple nodejs script located in `scripts/deploy-github.js`. The script executes the following commands:
 
-1. Runs `yarn build` with `SNOWPACK_PUBLIC_BASE_URL` envvar.<br/><br />That envvar is used to set the URL location of the project. By default if `SNOWPACK_PUBLIC_BASE_URL` is empty, the value will be based on the `git remote get-url origin` command. You can also pass your own `SNOWPACK_PUBLIC_BASE_URL` envvar by running `SNOWPACK_PUBLIC_BASE_URL=/my-base/ yarn deploy:github`.
-2. Runs `yarn gh-pages -o origin -d build`.<br /><br />You can change the remote from *origin* to *myremote* by running `yarn deploy:github --github-remote=myremote`.  The `yarn deploy:github` command uses the GitHub remote to compute the default value for `SNOWPACK_PUBLIC_BASE_URL`.
+1. Runs `yarn build` with `APP_GITLAB_PUBLIC_BASE_URL` envvar.<br/><br />That envvar is used to set the URL location of the project. By default if `APP_GITLAB_PUBLIC_BASE_URL` is empty, the value will be based on the `git remote get-url origin` command. You can also pass your own `APP_GITLAB_PUBLIC_BASE_URL` envvar by running `APP_GITLAB_PUBLIC_BASE_URL=/my-base/ yarn deploy:github`.
+2. Runs `yarn gh-pages -o origin -d build`.<br /><br />You can change the remote from *origin* to *myremote* by running `yarn deploy:github --github-remote=myremote`.  The `yarn deploy:github` command uses the GitHub remote to compute the default value for `APP_GITLAB_PUBLIC_BASE_URL`.
 
 <br />
 

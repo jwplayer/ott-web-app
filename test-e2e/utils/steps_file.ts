@@ -1,7 +1,5 @@
 import * as assert from 'assert';
 
-import {configFileQueryKey} from "../../src/utils/configOverride";
-
 import constants from './constants';
 import passwordUtils, {LoginContext} from "./password_utils";
 
@@ -9,6 +7,7 @@ declare global {
   let jwplayer: () => {getState: () => string};
 }
 
+const configFileQueryKey = 'c';
 const loaderElement = '[class*=_loadingOverlay]';
 
 module.exports = function() {

@@ -63,7 +63,7 @@ function getGithubUser() {
 
 function getBaseUrl() {
   const customDomain = getArg('--custom-domain');
-  const envBaseUrl = process.env.SNOWPACK_PUBLIC_BASE_URL
+  const envBaseUrl = process.env.APP_GITLAB_PUBLIC_BASE_URL
   if (envBaseUrl) {
     return envBaseUrl;
   }
@@ -76,8 +76,8 @@ function getBaseUrl() {
 function getEnv() {
   return {
     ...process.env,
-    SNOWPACK_PUBLIC_BASE_URL: getBaseUrl(),
-    SNOWPACK_PUBLIC_GITHUB_PAGES: true,
+    APP_GITLAB_PUBLIC_BASE_URL: getBaseUrl(),
+    APP_PUBLIC_GITHUB_PAGES: true,
   }
 }
 
@@ -103,7 +103,7 @@ function help() {
     'Displaying help message',
     '',
     'This script deploys ott-web-app to github pages. It executes "yarn build" and then "yarn gh-pages".',
-    'Druing the build step it ensures that that SNOWPACK_PUBLIC_BASE_URL envvar is set to the name of your github project or if you used --custom-domain argument, it ensures that proper CNAME file required by github is provided.',
+    'During the build step it ensures that that APP_GITLAB_PUBLIC_BASE_URL envvar is set to the name of your github project or if you used --custom-domain argument, it ensures that proper CNAME file required by github is provided.',
     '',
     'Command line arguments:',
     "--build - don't ask for build confirmation",
