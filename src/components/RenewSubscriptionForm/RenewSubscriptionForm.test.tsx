@@ -14,8 +14,8 @@ describe('<RenewSubscriptionForm>', () => {
       <RenewSubscriptionForm
         customer={customer as Customer}
         subscription={subscription as Subscription}
-        onConfirm={jest.fn()}
-        onClose={jest.fn()}
+        onConfirm={vi.fn()}
+        onClose={vi.fn()}
         error={null}
         submitting={false}
       />,

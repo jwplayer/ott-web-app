@@ -5,7 +5,7 @@ import MenuButton from './MenuButton';
 
 describe('<MenuButton>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<MenuButton label="Label" onClick={jest.fn()} />);
+    const { container } = render(<MenuButton label="Label" onClick={vi.fn()} />);
 
     expect(container).toMatchSnapshot();
   });

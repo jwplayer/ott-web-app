@@ -1,16 +1,15 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
-
-import { render } from '../../testUtils';
+import { renderWithRouter } from 'test/testUtils';
 
 import LoginForm from './LoginForm';
 
 describe('<LoginForm>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(
+    const { container } = renderWithRouter(
       <LoginForm
-        onSubmit={jest.fn()}
-        onChange={jest.fn()}
+        onSubmit={vi.fn()}
+        onChange={vi.fn()}
         values={{
           email: '',
           password: '',
@@ -24,10 +23,10 @@ describe('<LoginForm>', () => {
   });
 
   test('sets the correct values in the form fields', () => {
-    const { getByLabelText } = render(
+    const { getByLabelText } = renderWithRouter(
       <LoginForm
-        onSubmit={jest.fn()}
-        onChange={jest.fn()}
+        onSubmit={vi.fn()}
+        onChange={vi.fn()}
         values={{
           email: 'myemail@email.com',
           password: 'mypassword',
@@ -42,10 +41,10 @@ describe('<LoginForm>', () => {
   });
 
   test('sets the correct errors in the form fields', () => {
-    const { queryByText } = render(
+    const { queryByText } = renderWithRouter(
       <LoginForm
-        onSubmit={jest.fn()}
-        onChange={jest.fn()}
+        onSubmit={vi.fn()}
+        onChange={vi.fn()}
         values={{
           email: 'myemail@email.com',
           password: 'mypassword',
@@ -61,10 +60,10 @@ describe('<LoginForm>', () => {
   });
 
   test('disables the submit button when submitting is true', () => {
-    const { getByRole } = render(
+    const { getByRole } = renderWithRouter(
       <LoginForm
-        onSubmit={jest.fn()}
-        onChange={jest.fn()}
+        onSubmit={vi.fn()}
+        onChange={vi.fn()}
         values={{
           email: 'myemail@email.com',
           password: 'mypassword',
@@ -78,11 +77,11 @@ describe('<LoginForm>', () => {
   });
 
   test('calls the onSubmit callback when the form gets submitted', () => {
-    const onSubmit = jest.fn();
-    const { getByTestId } = render(
+    const onSubmit = vi.fn();
+    const { getByTestId } = renderWithRouter(
       <LoginForm
         onSubmit={onSubmit}
-        onChange={jest.fn()}
+        onChange={vi.fn()}
         values={{
           email: 'myemail@email.com',
           password: 'mypassword',
@@ -98,10 +97,10 @@ describe('<LoginForm>', () => {
   });
 
   test('calls the onChange callback when a text field changes', () => {
-    const onChange = jest.fn();
-    const { getByLabelText } = render(
+    const onChange = vi.fn();
+    const { getByLabelText } = renderWithRouter(
       <LoginForm
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         onChange={onChange}
         values={{
           email: '',

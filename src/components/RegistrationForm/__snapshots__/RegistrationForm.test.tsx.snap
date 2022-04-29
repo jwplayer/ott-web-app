@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`<RegistrationForm> renders and matches snapshot 1`] = `
+exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
 <div>
   <form
     data-testid="registration-form"

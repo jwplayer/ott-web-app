@@ -9,7 +9,7 @@ describe('<Radio>', () => {
       <Radio
         name="radio"
         header={'Choose a Value'}
-        onChange={jest.fn()}
+        onChange={vi.fn()}
         value="value1"
         values={Array.of('value1', 'value2', 'value3')}
         helperText={'This is required!'}

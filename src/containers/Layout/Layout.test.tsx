@@ -1,12 +1,11 @@
 import React from 'react';
-
-import { render } from '../../testUtils';
+import { renderWithRouter } from 'test/testUtils';
 
 import Layout from './Layout';
 
 describe('<Layout />', () => {
   test('renders layout', () => {
-    const { container } = render(<Layout />);
+    const { container } = renderWithRouter(<Layout />);
 
     expect(container).toMatchSnapshot();
   });

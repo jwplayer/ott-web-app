@@ -6,7 +6,7 @@ import Dialog from './Dialog';
 describe('<Dialog>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
-      <Dialog onClose={jest.fn()} open>
+      <Dialog onClose={vi.fn()} open>
         Dialog contents
       </Dialog>,
     );

@@ -11,8 +11,8 @@ describe('<CardGrid>', () => {
     const { container } = render(
       <CardGrid
         playlist={placeholderData.playlist}
-        onCardHover={jest.fn()}
-        onCardClick={jest.fn()}
+        onCardHover={vi.fn()}
+        onCardClick={vi.fn()}
         isLoading={false}
         accessModel={'SVOD'}
         isLoggedIn={true}

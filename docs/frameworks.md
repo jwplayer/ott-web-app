@@ -27,16 +27,16 @@ The Virtual DOM compares the components’ previous states and updates only the 
 
 [Read more.](https://reactjs.org/docs/getting-started.html)
 
-## Snowpack
+## Vite
 
-Snowpack is a frontend build tool. Snowpack leverages JavaScript's native module system (known as ESM) to avoid unnecessary work.
+Vite is a modern frontend build tool. It takes advantage of modern browser support form ES modules to drastically decrease bundling overhead and improve build and dev server start time.
 
 - Instant startup
 - Build once, cache forever
 - HMR feat. Fast Refresh
 - Easy configuration
 
-[Read more.](https://www.snowpack.dev/tutorials/quick-start)
+[Read more.](https://vitejs.dev/guide/)
 
 ## React query
 
@@ -60,17 +60,18 @@ React Router is a collection of navigational components that compose declarative
 
 [Read more.](https://reactrouter.com/web/guides/quick-start)
 
-## Jest
+## Vitest
 
-Jest is a JavaScript test runner, that is, a JavaScript library for creating, running, and structuring tests. It allows the developer to write tests that are easy to read and maintain.
+Vitest is a JavaScript test runner explicitly written to work with vite builds without requiring any duplicated build pipeline.
 
 - Fast in execution
 - Simple mock functions
 - Manual module mocks
 - Snapshot testing
 - Built-in coverage reports
+- Works seamlessly with vite
 
-[Read more.](https://jestjs.io/docs/getting-started)
+[Read more.](https://vitest.dev/guide/)
 
 ## Sass
 

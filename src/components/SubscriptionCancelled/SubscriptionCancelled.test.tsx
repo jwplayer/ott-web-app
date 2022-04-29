@@ -5,7 +5,7 @@ import SubscriptionCancelled from './SubscriptionCancelled';
 
 describe('<SubscriptionCancelled>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<SubscriptionCancelled onClose={jest.fn()} expiresDate="12/12/2021" />);
+    const { container } = render(<SubscriptionCancelled onClose={vi.fn()} expiresDate="12/12/2021" />);
 
     expect(container).toMatchSnapshot();
   });

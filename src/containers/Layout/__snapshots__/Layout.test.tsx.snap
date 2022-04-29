@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`<Layout /> renders layout 1`] = `
+exports[`<Layout /> > renders layout 1`] = `
 <div>
   <div
     class="layout"

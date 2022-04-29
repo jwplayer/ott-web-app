@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`<MarkdownComponent> renders and matches snapshot 1`] = `
+exports[`<MarkdownComponent> > renders and matches snapshot 1`] = `
 <div>
   <div>
     This is a test markdown string with a 

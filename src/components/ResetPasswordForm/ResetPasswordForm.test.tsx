@@ -5,7 +5,7 @@ import ResetPasswordForm from './ResetPasswordForm';
 
 describe('<ResetPassword>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<ResetPasswordForm onCancel={jest.fn()} onReset={jest.fn()} submitting={false} />);
+    const { container } = render(<ResetPasswordForm onCancel={vi.fn()} onReset={vi.fn()} submitting={false} />);
 
     expect(container).toMatchSnapshot();
   });

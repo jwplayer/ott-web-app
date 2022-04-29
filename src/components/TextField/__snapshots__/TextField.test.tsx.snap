@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`<TextField> renders and matches multiline snapshot 1`] = `
+exports[`<TextField> > renders and matches multiline snapshot 1`] = `
 <div>
   <div
     class="textField"
@@ -30,7 +30,7 @@ exports[`<TextField> renders and matches multiline snapshot 1`] = `
 </div>
 `;
 
-exports[`<TextField> renders and matches snapshot 1`] = `
+exports[`<TextField> > renders and matches snapshot 1`] = `
 <div>
   <div
     class="textField"
