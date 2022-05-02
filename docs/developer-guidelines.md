@@ -69,6 +69,7 @@ The allowed scopes are:
 - auth
 - menu
 - payment
+- e2e
 
 ### Subject
 
