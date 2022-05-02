@@ -62,7 +62,7 @@
     "subscription_details": "",
     "subscription_expires_on": "",
     "transactions": "",
-    "price_payed_with_card": "",
-    "weeky_subscription": ""
+    "weekly_subscription": "",
+    "price_payed_with_card": ""
   }
 }
