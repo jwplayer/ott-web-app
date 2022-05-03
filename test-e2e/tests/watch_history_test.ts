@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants from "../utils/constants";
+import constants from '../utils/constants';
 
 import LocatorOrString = CodeceptJS.LocatorOrString;
 
@@ -8,11 +8,11 @@ const videoLength = 231;
 
 Feature('watch_history - local');
 
-Before(({I}) => {
+Before(({ I }) => {
   I.useConfig('test--no-cleeng');
 });
 
-Scenario('I can get my watch progress stored (locally)',  async ({ I }) => {
+Scenario('I can get my watch progress stored (locally)', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
   I.dontSee('Continue watching');
 
@@ -30,7 +30,7 @@ Scenario('I can continue watching', async ({ I }) => {
   await checkElapsed(I, 1, 40);
 });
 
-Scenario('I can see my watch history on the Home screen', async({ I })=> {
+Scenario('I can see my watch history on the Home screen', async ({ I }) => {
   I.seeCurrentUrlEquals(constants.baseUrl);
   I.dontSee('Continue watching');
 
@@ -45,7 +45,7 @@ Scenario('I can see my watch history on the Home screen', async({ I })=> {
   });
 
   const xpath = '//*[@data-mediaid="continue-watching"]//*[@aria-label="Play Agent 327"]';
-  await checkProgress(I, xpath, 200/videoLength * 100);
+  await checkProgress(I, xpath, (200 / videoLength) * 100);
 
   I.click(xpath);
   await I.waitForPlayerPlaying('Agent 327');
@@ -77,11 +77,11 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
 
 Feature('watch_history - logged in');
 
-Before(({I}) => {
+Before(({ I }) => {
   I.useConfig('test--accounts');
 });
 
-Scenario('I can get my watch history when logged in', async({ I })=> {
+Scenario('I can get my watch history when logged in', async ({ I }) => {
   I.login();
   await playVideo(I, 0);
   I.see('Start watching');
@@ -91,10 +91,10 @@ Scenario('I can get my watch history when logged in', async({ I })=> {
 
   I.see('Continue watching');
   I.dontSee('Start watching');
-  await checkProgress(I, '//button[contains(., "Continue watching")]', 80 / videoLength * 100, 5, '_progressRail_', '_progress_');
+  await checkProgress(I, '//button[contains(., "Continue watching")]', (80 / videoLength) * 100, 5, '_progressRail_', '_progress_');
 });
 
-Scenario('I can get my watch history stored to my account after login', async({ I })=> {
+Scenario('I can get my watch history stored to my account after login', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
   I.dontSee('Continue watching');
   I.see('Sign up to start watching');
@@ -103,7 +103,7 @@ Scenario('I can get my watch history stored to my account after login', async({ 
   I.amOnPage(constants.agent327DetailUrl);
   I.dontSee('Start watching');
   I.see('Continue watching');
-  await checkProgress(I, '//button[contains(., "Continue watching")]', 80 / videoLength * 100, 5, '_progressRail_', '_progress_');
+  await checkProgress(I, '//button[contains(., "Continue watching")]', (80 / videoLength) * 100, 5, '_progressRail_', '_progress_');
 
   I.click('Continue watching');
   await I.waitForPlayerPlaying('Agent 327');
@@ -111,12 +111,13 @@ Scenario('I can get my watch history stored to my account after login', async({ 
   await checkElapsed(I, 1, 20);
 });
 
-Scenario('I can see my watch history on the Home screen when logged in', async({ I })=> {
+Scenario('I can see my watch history on the Home screen when logged in', async ({ I }) => {
+  const xpath = '//*[@data-mediaid="continue-watching"]//*[@aria-label="Play Agent 327"]';
+
   I.seeCurrentUrlEquals(constants.baseUrl);
   I.dontSee('Continue watching');
 
   I.login();
-
   I.see('Continue watching');
 
   await within('div[data-mediaid="continue-watching"]', async () => {
@@ -124,17 +125,16 @@ Scenario('I can see my watch history on the Home screen when logged in', async({
     I.see('4 min');
   });
 
-  const xpath = '//*[@data-mediaid="continue-watching"]//*[@aria-label="Play Agent 327"]';
-  await checkProgress(I, xpath, 80/videoLength * 100);
+  await checkProgress(I, xpath, (80 / videoLength) * 100);
 
+  // Automatic scroll leads to click problems for some reasons
+  I.scrollTo(xpath);
   I.click(xpath);
   await I.waitForPlayerPlaying('Agent 327');
-  I.click('video');
 
   await checkElapsed(I, 1, 20);
   I.seeInCurrentUrl('play=1');
 });
-
 
 async function playVideo(I: CodeceptJS.I, seekTo: number) {
   I.amOnPage(constants.agent327DetailUrl + '&play=1');
@@ -146,18 +146,18 @@ async function playVideo(I: CodeceptJS.I, seekTo: number) {
 }
 
 async function checkProgress(
-    I: CodeceptJS.I,
-    context: LocatorOrString,
-    expectedPercent: number,
-    tolerance: number = 5,
-    containerClass: string = '_progressContainer',
-    barClass: string = '_progressBar'
+  I: CodeceptJS.I,
+  context: LocatorOrString,
+  expectedPercent: number,
+  tolerance: number = 5,
+  containerClass: string = '_progressContainer',
+  barClass: string = '_progressBar',
 ) {
-  await within(context, async () => {
+  return within(context, async () => {
     const containerWidth = await I.grabCssPropertyFrom(`div[class*=${containerClass}]`, 'width');
     const progressWidth = await I.grabCssPropertyFrom(`div[class*=${barClass}]`, 'width');
 
-    const percentage = Math.round(100 * pixelsToNumber(progressWidth) / pixelsToNumber(containerWidth));
+    const percentage = Math.round((100 * pixelsToNumber(progressWidth)) / pixelsToNumber(containerWidth));
 
     await I.say(`Checking that percentage ${percentage} is between ${expectedPercent - tolerance} and ${expectedPercent + tolerance}`);
 
@@ -177,13 +177,12 @@ function pixelsToNumber(value: string) {
 
 async function checkElapsed(I: CodeceptJS.I, expectedMinutes: number, expectedSeconds: number, bufferSeconds: number = 5) {
   const elapsed = await I.grabTextFrom('[class*=jw-text-elapsed]');
-  const [minutes, seconds] = elapsed.split(':').map(item => Number.parseInt(item));
+  const [minutes, seconds] = elapsed.split(':').map((item) => Number.parseInt(item));
   assert.strictEqual(minutes, expectedMinutes);
 
   if (seconds < expectedSeconds || seconds > expectedSeconds + bufferSeconds) {
-    assert.fail(`Elapsed time of ${minutes}m ${seconds}s is not within ${bufferSeconds} seconds of ${expectedMinutes}m ${expectedSeconds}s`)
+    assert.fail(`Elapsed time of ${minutes}m ${seconds}s is not within ${bufferSeconds} seconds of ${expectedMinutes}m ${expectedSeconds}s`);
   } else {
     assert.ok(expectedSeconds);
   }
-
 }
