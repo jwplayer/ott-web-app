@@ -110,10 +110,6 @@
       "stylelint"
     ]
   },
-  "browserslist": [
-    "defaults",
-    "not IE 11"
-  ],
   "optionalDependencies": {
     "gh-pages": "^3.2.3",
     "lighthouse": "^8.6.0"

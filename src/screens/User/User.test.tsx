@@ -3,7 +3,7 @@
 
 // import Home from './Home';
 
-describe.skip('Home Component tests', () => {
+describe.skip('User Component tests', () => {
   test('dummy test', () => {
     // render(<Home></Home>);
     // expect(screen.getByText('hello world')).toBeInTheDocument();
