@@ -25,12 +25,12 @@ const namespaces = fs.readdirSync(path.join(localesPath, defaultLocale))
 
 locales.forEach((locale) => {
   const content = namespaces.reduce((contents, namespace) => {
-    return contents + `export { default as ${namespace.replace('.json', '')} } from \'./${locale}/${namespace}\';\n`;
+    return contents + `export { default as ${namespace.replace('.json', '')} } from './${locale}/${namespace}';\n`;
   }, fileHeader);
 
   fs.writeFileSync(path.join(localesPath, `${locale}.ts`), content, { encoding: 'utf-8' });
 });
 
-console.log('');
-console.log(`Generated entries for the following locales: ${locales.join(', ')}`);
-console.log('');
+console.info('');
+console.info(`Generated entries for the following locales: ${locales.join(', ')}`);
+console.info('');
