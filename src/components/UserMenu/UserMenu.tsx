@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { useHistory } from 'react-router-dom';
 
 import AccountCircle from '../../icons/AccountCircle';
 import Favorite from '../../icons/Favorite';

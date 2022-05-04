@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
 
@@ -42,6 +42,12 @@ const User = (): JSX.Element => {
   const onLogout = useCallback(() => logout(), []);
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
+
+  useEffect(() => {
+    if (!loading && !customer) {
+      history.replace('/');
+    }
+  }, [history, customer, loading]);
 
   if (!customer) {
     return (
