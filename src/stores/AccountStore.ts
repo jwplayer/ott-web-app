@@ -193,8 +193,6 @@ export const logout = async () => {
 
   await restoreFavorites();
   await restoreWatchHistory();
-
-  window.location.href = '/';
 };
 
 export const register = async (email: string, password: string) => {

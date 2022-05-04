@@ -175,6 +175,7 @@ module.exports = function () {
       }, args);
     },
     waitForPlayerPlaying: async function (title, tries = 10) {
+      this.seeElement('div[class*="jwplayer"]');
       this.see(title);
       await this.waitForPlayerState('playing', ['buffering', 'idle', ''], tries);
     },
@@ -183,9 +184,7 @@ module.exports = function () {
       // so we have to manually retry (this is because the video can take time to load and the state will be buffering)
       for (let i = 0; i < tries; i++) {
         // In theory this expression can be simplified, but without the typeof's codecept throws an error when the value is undefined.
-        const state = await this.executeScript(() =>
-          typeof jwplayer === 'undefined' || typeof jwplayer().getState === 'undefined' ? '' : jwplayer().getState(),
-        );
+        const state = await this.executeScript(() => jwplayer?.()?.getState());
 
         await this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
 
