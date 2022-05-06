@@ -1,7 +1,8 @@
 import React from 'react';
-import { renderWithRouter } from 'test/testUtils';
 
 import ConfirmationForm from './ConfirmationForm';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<ConfirmationForm>', () => {
   test('renders and matches snapshot', () => {

@@ -1,8 +1,9 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
-import { renderWithRouter } from 'test/testUtils';
 
 import Logo from './Logo';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<Logo/>', () => {
   it('renders and matches snapshot', () => {

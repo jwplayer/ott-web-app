@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import type { PlaylistItem } from 'types/playlist';
 import { useTranslation } from 'react-i18next';
 
 import Favorites from '../../components/Favorites/Favorites';
@@ -23,6 +22,8 @@ import ConfirmationDialog from '../../components/ConfirmationDialog/Confirmation
 import { ConfigStore } from '../../stores/ConfigStore';
 
 import styles from './User.module.scss';
+
+import type { PlaylistItem } from '#types/playlist';
 
 const User = (): JSX.Element => {
   const accessModel = ConfigStore.useState((s) => s.accessModel);

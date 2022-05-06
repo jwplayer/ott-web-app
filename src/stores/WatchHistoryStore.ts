@@ -1,7 +1,4 @@
 import { Store } from 'pullstate';
-import type { Playlist, PlaylistItem } from 'types/playlist';
-import type { VideoProgress } from 'types/video';
-import type { WatchHistoryItem } from 'types/watchHistory';
 
 import { VideoProgressMinMax } from '../config';
 import { PersonalShelf } from '../enum/PersonalShelf';
@@ -9,6 +6,10 @@ import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
 
 import { AccountStore, updatePersonalShelves } from './AccountStore';
+
+import type { WatchHistoryItem } from '#types/watchHistory';
+import type { VideoProgress } from '#types/video';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];

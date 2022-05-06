@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { mixed, object, string } from 'yup';
@@ -11,6 +10,8 @@ import { addQueryParam } from '../../../utils/history';
 import { getCaptureStatus, updateCaptureAnswers } from '../../../stores/AccountStore';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { ConfigStore } from '../../../stores/ConfigStore';
+
+import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
@@ -105,7 +106,12 @@ const PersonalDetails = () => {
             .map((key) => [key, obj[key]]),
         );
       const customAnswers = questions.map(
-        (question) => ({ question: question.question, questionId: question.key, value: questionValues[question.key] } as CaptureCustomAnswer),
+        (question) =>
+          ({
+            question: question.question,
+            questionId: question.key,
+            value: questionValues[question.key],
+          } as CaptureCustomAnswer),
       );
       await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
 
@@ -119,10 +125,7 @@ const PersonalDetails = () => {
     setSubmitting(false);
   };
 
-  const { setValue, handleSubmit, handleChange, values, errors, submitting } = useForm<PersonalDetailsFormData>(
-    initialValues,
-    PersonalDetailSubmitHandler,
-  );
+  const { setValue, handleSubmit, handleChange, values, errors, submitting } = useForm<PersonalDetailsFormData>(initialValues, PersonalDetailSubmitHandler);
 
   if (isLoading) {
     return (

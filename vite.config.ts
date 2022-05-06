@@ -1,36 +1,36 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import path from 'path';
+
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
-import {viteStaticCopy} from "vite-plugin-static-copy";
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { createHtmlPlugin } from 'vite-plugin-html';
 
-
 // noinspection JSUnusedGlobalSymbols
-export default ({ mode }: {mode: 'production' | 'development' | undefined}) => {
-
+export default ({ mode }: { mode: 'production' | 'development' | 'test' | undefined }) => {
   const plugins = [
     react(),
     eslintPlugin(), // Move linting to pre-build to match dashboard
     StylelintPlugin(),
     VitePWA(),
     createHtmlPlugin({
-      minify: true
-    })
+      minify: true,
+    }),
   ];
 
-// These files are only needed in dev / test, don't include in prod builds
-  if (mode === "development") {
+  // These files are only needed in dev / test, don't include in prod builds
+  if (mode === 'development' || mode === 'test') {
     plugins.push(
-        viteStaticCopy({
-          targets: [
-            {
-              src: 'test-e2e/data/*',
-              dest: 'test-data'
-            }
-          ]
-        })
+      viteStaticCopy({
+        targets: [
+          {
+            src: 'test-e2e/data/*',
+            dest: 'test-data',
+          },
+        ],
+      }),
     );
   }
 
@@ -44,8 +44,27 @@ export default ({ mode }: {mode: 'production' | 'development' | undefined}) => {
     build: {
       outDir: './build',
     },
-    css: {
-      devSourcemap: true
+    css:
+      mode === 'test'
+        ? {
+            modules: {
+              generateScopedName: (name) => name,
+            },
+          }
+        : {
+            devSourcemap: true,
+          },
+    resolve: {
+      alias: {
+        '#src': path.join(__dirname, 'src'),
+        '#test': path.join(__dirname, 'test'),
+        '#types': path.join(__dirname, 'types'),
+      },
+    },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: ['test/vitest.setup.ts'],
     },
   });
-}
+};

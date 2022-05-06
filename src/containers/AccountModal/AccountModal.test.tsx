@@ -1,7 +1,8 @@
 import React from 'react';
-import { renderWithRouter } from 'test/testUtils';
 
 import AccountModal from './AccountModal';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<AccountModal>', () => {
   test('renders and matches snapshot', () => {

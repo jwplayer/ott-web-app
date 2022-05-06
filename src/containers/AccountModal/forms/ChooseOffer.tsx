@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { object, SchemaOf, mixed } from 'yup';
-import type { ChooseOfferFormData, OfferPeriodicity } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
@@ -12,6 +11,8 @@ import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { CheckoutStore } from '../../../stores/CheckoutStore';
 import { addQueryParam, removeQueryParam } from '../../../utils/history';
 import { ConfigStore } from '../../../stores/ConfigStore';
+
+import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 
 const ChooseOffer = () => {
   const history = useHistory();

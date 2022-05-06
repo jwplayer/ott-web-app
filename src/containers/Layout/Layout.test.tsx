@@ -1,7 +1,8 @@
 import React from 'react';
-import { renderWithRouter } from 'test/testUtils';
 
 import Layout from './Layout';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<Layout />', () => {
   test('renders layout', () => {

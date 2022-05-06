@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
-import type { PlaylistItem } from 'types/playlist';
 import { Helmet } from 'react-helmet';
 
 import { cardUrl } from '../../utils/formatting';
@@ -14,6 +13,8 @@ import { AccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Playlist.module.scss';
+
+import type { PlaylistItem } from '#types/playlist';
 
 type PlaylistRouteParams = {
   id: string;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -21,6 +20,8 @@ import Fade from '../Animation/Fade/Fade';
 import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
 
 import styles from './Video.module.scss';
+
+import type { PlaylistItem } from '#types/playlist';
 
 type Poster = 'fading' | 'normal';
 

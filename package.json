@@ -8,30 +8,28 @@
   "scripts": {
     "prepare": "husky install",
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",
     "test-coverage": "TZ=UTC vitest run --coverage",
     "i18next": "i18next src/{components,containers,screens}/**/{**/,/}*.tsx && node ./scripts/i18next/generate.js",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write \"{**/*,*}.{js,ts,jsx,tsx}\"",
+    "lint": "prettier --check \"{**/*,*}.{js,ts,jsx,tsx}\" && eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "lint:styles": "stylelint \"src/**/*.scss\"",
     "commit-msg": "commitlint --edit $1",
-    "pre-commit": "lint-staged && TZ=UTC yarn test --coverage",
+    "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test --coverage",
     "codecept:mobile": "cd test-e2e && codeceptjs -c codecept.mobile.js run --steps",
     "codecept:desktop": "cd test-e2e && codeceptjs -c codecept.desktop.js run --steps",
     "deploy:github": "node ./scripts/deploy-github.js"
   },
   "dependencies": {
-    "async": "^2.6.1",
     "classnames": "^2.3.1",
+    "history": "^4.10.1",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",
-    "jake": "^10.6.1",
     "jwt-decode": "^3.1.2",
     "lodash.merge": "^4.6.2",
     "memoize-one": "^5.2.1",
-    "minimist": "^1.2.5",
     "pullstate": "^1.22.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -40,11 +38,11 @@
     "react-query": "^3.13.10",
     "react-router-dom": "^5.2.0",
     "react-virtualized": "^9.22.3",
-    "tile-dock": "https://github.com/RCVZ/tile-dock-temp",
     "wicg-inert": "^3.1.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@codeceptjs/configure": "^0.8.0",
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
     "@testing-library/jest-dom": "^5.16.4",
@@ -63,14 +61,12 @@
     "c8": "^7.11.2",
     "codeceptjs": "^3.2.3",
     "confusing-browser-globals": "^1.0.10",
+    "depcheck": "^1.4.3",
     "eslint": "^7.31.0",
-    "eslint-config-react": "^1.1.7",
     "eslint-plugin-codeceptjs": "^1.3.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-rulesdir": "^0.2.0",
-    "eslint-watch": "^7.0.0",
     "faker": "^5.5.1",
     "husky": "^6.0.0",
     "i18next-parser": "^4.2.0",
@@ -78,13 +74,11 @@
     "lint-staged": "^10.5.4",
     "playwright": "^1.12.3",
     "postcss": "^8.3.5",
-    "postcss-cli": "^8.3.1",
     "postcss-import": "^14.0.2",
-    "postcss-scss": "^4.0.0",
+    "postcss-scss": "^4.0.4",
     "prettier": "^2.3.2",
     "react-app-polyfill": "^3.0.0",
     "sass": "^1.49.10",
-    "start-server-and-test": "^1.12.6",
     "stylelint": "^13.13.1",
     "stylelint-config-recommended-scss": "^4.3.0",
     "stylelint-declaration-strict-value": "^1.7.12",
@@ -102,9 +96,13 @@
     "workbox-build": "^6.5.2",
     "workbox-window": "^6.5.2"
   },
+  "peerDependencies": {
+    "react-router": "^5.2.1"
+  },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "prettier --write"
+    "{**/*,*}.{js,ts,jsx,tsx}": [
+      "prettier --check",
+      "eslint"
     ],
     "src/**/*.scss": [
       "stylelint"

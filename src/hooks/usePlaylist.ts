@@ -1,8 +1,9 @@
 import { UseBaseQueryResult, useQuery } from 'react-query';
-import type { Playlist } from 'types/playlist';
 
 import { generatePlaylistPlaceholder } from '../utils/collection';
 import { getPlaylistById } from '../services/api.service';
+
+import type { Playlist } from '#types/playlist';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 

@@ -1,7 +1,8 @@
 import React from 'react';
-import { renderWithRouter } from 'test/testUtils';
 
 import UserMenu from './UserMenu';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<UserMenu>', () => {
   test('renders and matches snapshot', () => {

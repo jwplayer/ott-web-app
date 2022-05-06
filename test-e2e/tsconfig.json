@@ -3,6 +3,9 @@
     ".",
     "../types",
   ],
+  "exclude": [
+    "../node_modules"
+  ],
   "ts-node": {
     "files": true
   },
@@ -13,5 +16,7 @@
     "module": "commonjs",
     "strictNullChecks": true,
     "types": ["codeceptjs", "node"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
 }

@@ -1,9 +1,8 @@
-import type { Playlist, PlaylistItem } from 'types/playlist';
-
-import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from './media';
+import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from '#src/utils/media';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
-  if (!seconds || typeof seconds !== 'number') return null;
+  if (!seconds) return null;
 
   const minutes = Math.ceil(seconds / 60);
 
@@ -21,7 +20,7 @@ export const formatDurationTag = (seconds: number): string | null => {
  */
 
 export const formatDuration = (duration: number): string | null => {
-  if (!duration || typeof duration !== 'number') return null;
+  if (!duration) return null;
 
   const hours = Math.floor(duration / 3600);
   const minutes = Math.round((duration - hours * 3600) / 60);

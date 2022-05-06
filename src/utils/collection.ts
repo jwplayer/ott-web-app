@@ -1,7 +1,7 @@
-import type { Consent, CustomerConsent } from 'types/account';
-import type { Config } from 'types/Config';
-import type { GenericFormValues } from 'types/form';
-import type { Playlist, PlaylistItem } from 'types/playlist';
+import type { Consent, CustomerConsent } from '#types/account';
+import type { Config } from '#types/Config';
+import type { GenericFormValues } from '#types/form';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
   const menuItem = config.menu.find((item) => item.playlistId === playlistId);

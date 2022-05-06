@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { ChooseOfferFormData } from 'types/account';
 
 import Button from '../Button/Button';
 import CheckCircle from '../../icons/CheckCircle';
@@ -14,6 +13,8 @@ import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './ChooseOfferForm.module.scss';
+
+import type { ChooseOfferFormData } from '#types/account';
 
 type Props = {
   values: ChooseOfferFormData;

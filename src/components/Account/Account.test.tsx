@@ -1,11 +1,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import type { Consent } from 'types/account';
 
 import customer from '../../fixtures/customer.json';
 import { AccountStore } from '../../stores/AccountStore';
 
 import Account from './Account';
+
+import type { Consent } from '#types/account';
 
 describe('<Account>', () => {
   test('renders and matches snapshot', () => {

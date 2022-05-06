@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import type { Playlist, PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +12,8 @@ import type { AccessModel } from '../../../types/Config';
 import { isAllowedToWatch } from '../../utils/cleeng';
 
 import styles from './Shelf.module.scss';
+
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const tileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
@@ -87,19 +88,7 @@ const Shelf: React.FC<ShelfProps> = ({
         isLocked={!isAllowedToWatch(accessModel, isLoggedIn, item.requiresSubscription !== 'false', hasSubscription)}
       />
     ),
-    [
-      enableCardTitles,
-      featured,
-      imageSourceWidth,
-      loading,
-      onCardClick,
-      onCardHover,
-      playlist.feedid,
-      watchHistory,
-      accessModel,
-      isLoggedIn,
-      hasSubscription,
-    ],
+    [enableCardTitles, featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory, accessModel, isLoggedIn, hasSubscription],
   );
 
   const renderRightControl = useCallback(

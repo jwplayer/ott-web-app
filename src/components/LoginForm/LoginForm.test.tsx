@@ -1,8 +1,9 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
-import { renderWithRouter } from 'test/testUtils';
 
 import LoginForm from './LoginForm';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<LoginForm>', () => {
   test('renders and matches snapshot', () => {

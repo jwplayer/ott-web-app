@@ -3,8 +3,6 @@ import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
 import { useHistory } from 'react-router-dom';
-import type { Content } from 'types/Config';
-import type { PlaylistItem } from 'types/playlist';
 import classNames from 'classnames';
 
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
@@ -21,6 +19,9 @@ import scrollbarSize from '../../utils/dom';
 import { cardUrl } from '../../utils/formatting';
 
 import styles from './Home.module.scss';
+
+import type { PlaylistItem } from '#types/playlist';
+import type { Content } from '#types/Config';
 
 type rowData = {
   index: number;

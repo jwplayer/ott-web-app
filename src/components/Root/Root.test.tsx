@@ -1,7 +1,8 @@
 import React from 'react';
-import { mockWindowLocation, renderWithRouter } from 'test/testUtils';
 
 import Root from './Root';
+
+import { mockWindowLocation, renderWithRouter } from '#test/testUtils';
 
 describe('<Root />', () => {
   it('renders error page when error prop is passed', () => {

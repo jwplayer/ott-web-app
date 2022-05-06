@@ -1,8 +1,9 @@
-import React, { useState, useEffect, createContext, SetStateAction, useCallback } from 'react';
-import type { GenericFormValues } from 'types/form';
+import React, { createContext, SetStateAction, useCallback, useEffect, useState } from 'react';
 
 import type { FormSectionProps } from './FormSection';
 import { FormSection } from './FormSection';
+
+import type { GenericFormValues } from '#types/form';
 
 interface Props<TData> {
   initialValues: TData;

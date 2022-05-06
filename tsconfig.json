@@ -15,7 +15,17 @@
     "jsx": "preserve",
     "baseUrl": "./",
     /* paths - import rewriting/resolving */
-    "paths": {},
+    "paths": {
+      "#src/*": [
+        "./src/*"
+      ],
+      "#test/*": [
+        "./test/*"
+      ],
+      "#types/*": [
+        "./types/*"
+      ]
+    },
     /* noEmit - Vite builds (emits) files, not tsc. */
     "noEmit": true,
     /* Additional Options */

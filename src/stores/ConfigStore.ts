@@ -1,5 +1,6 @@
 import { Store } from 'pullstate';
-import type { AccessModel, Config } from 'types/Config';
+
+import type { AccessModel, Config } from '#types/Config';
 
 type ConfigStore = {
   configLocation: string;

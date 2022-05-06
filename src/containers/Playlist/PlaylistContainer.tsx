@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import type { Playlist, PlaylistItem } from 'types/playlist';
 
 import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
 import { useFavorites } from '../../stores/FavoritesStore';
 import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import { PLAYLIST_LIMIT } from '../../config';
+
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type ChildrenParams = {
   playlist: Playlist;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import type { PlaylistItem } from 'types/playlist';
 
 import Video from './Video';
+
+import type { PlaylistItem } from '#types/playlist';
 
 describe('<Video>', () => {
   test('renders and matches snapshot', () => {
