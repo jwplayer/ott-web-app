@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { render } from '../../testUtils';
-
 import RegistrationForm from './RegistrationForm';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<RegistrationForm>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(
+    const { container } = renderWithRouter(
       <RegistrationForm
-        onSubmit={jest.fn()}
-        onChange={jest.fn()}
-        onBlur={jest.fn()}
+        onSubmit={vi.fn()}
+        onChange={vi.fn()}
+        onBlur={vi.fn()}
         values={{ email: '', password: '' }}
         errors={{}}
         submitting={false}
@@ -18,7 +18,7 @@ describe('<RegistrationForm>', () => {
         consentValues={{}}
         loading={false}
         canSubmit={true}
-        onConsentChange={jest.fn()}
+        onConsentChange={vi.fn()}
       />,
     );
 

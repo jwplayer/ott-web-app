@@ -92,7 +92,7 @@ While far from comprehensive, following these guidelines will get the easy stuff
 
 ##### Style
 
-1. This project uses snowpack + webpack plugin to build and compile. **Code produced by the build must work across all supported browsers and devices - Chrome, FF, Safari, Edge, and IE 9-11**
+1. This project uses vite to build and compile. **Code produced by the build must work across all supported browsers and devices - modern Chrome, FF, Safari, and Edge**
 2. Ensure that your code matches the formatting of the codebase by running ```yarn format```
 3. Ensure that your code follows our styleguide by passing our ESLint rules
    - You can run lint analysis by running ```yarn lint```

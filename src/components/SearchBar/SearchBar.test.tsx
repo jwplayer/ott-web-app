@@ -5,19 +5,19 @@ import SearchBar from './SearchBar';
 
 describe('<SearchBar>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<SearchBar query="My search query" onQueryChange={jest.fn()} onClearButtonClick={jest.fn()} />);
+    const { container } = render(<SearchBar query="My search query" onQueryChange={vi.fn()} onClearButtonClick={vi.fn()} />);
 
     expect(container).toMatchSnapshot();
   });
 
   test('uses query param to fill the search bar input', () => {
-    const { getByLabelText } = render(<SearchBar query="my search query" onQueryChange={jest.fn()} />);
+    const { getByLabelText } = render(<SearchBar query="my search query" onQueryChange={vi.fn()} />);
 
     expect((getByLabelText('search_bar.search_label') as HTMLInputElement).value).toEqual('my search query');
   });
 
   test('calls the onQueryChange callback when the user types in the search input', () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { getByLabelText } = render(<SearchBar onQueryChange={callback} />);
 
     const searchInput = getByLabelText('search_bar.search_label') as HTMLInputElement;
@@ -29,8 +29,8 @@ describe('<SearchBar>', () => {
   });
 
   test('shows the clear search input button when there is a query', () => {
-    const callback = jest.fn();
-    const { getByLabelText } = render(<SearchBar onClearButtonClick={callback} query="testing..." onQueryChange={jest.fn()} />);
+    const callback = vi.fn();
+    const { getByLabelText } = render(<SearchBar onClearButtonClick={callback} query="testing..." onQueryChange={vi.fn()} />);
 
     fireEvent.click(getByLabelText('search_bar.clear_search_label'));
 

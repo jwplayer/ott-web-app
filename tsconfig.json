@@ -2,7 +2,11 @@
   "include": [
     "src",
     "types",
-    "scripts"
+    "scripts",
+    "test",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.setup.ts"
   ],
   "compilerOptions": {
     "module": "esnext",
@@ -11,8 +15,18 @@
     "jsx": "preserve",
     "baseUrl": "./",
     /* paths - import rewriting/resolving */
-    "paths": {},
-    /* noEmit - Snowpack builds (emits) files, not tsc. */
+    "paths": {
+      "#src/*": [
+        "./src/*"
+      ],
+      "#test/*": [
+        "./test/*"
+      ],
+      "#types/*": [
+        "./types/*"
+      ]
+    },
+    /* noEmit - Vite builds (emits) files, not tsc. */
     "noEmit": true,
     /* Additional Options */
     "strict": true,
@@ -25,6 +39,11 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     // Fallthrough must be documented
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "@types/jwplayer"
+    ]
   }
 }

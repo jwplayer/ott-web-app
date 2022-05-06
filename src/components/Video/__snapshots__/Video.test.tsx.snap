@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`<Video> renders and matches snapshot 1`] = `
+exports[`<Video> > renders and matches snapshot 1`] = `
 <div>
   <div
     class="video"

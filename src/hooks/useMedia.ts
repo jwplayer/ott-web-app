@@ -1,7 +1,8 @@
 import { UseBaseQueryResult, useQuery } from 'react-query';
-import type { PlaylistItem } from 'types/playlist';
 
 import { getMediaById } from '../services/api.service';
+
+import type { PlaylistItem } from '#types/playlist';
 
 export type UseMediaResult<TData = PlaylistItem, TError = unknown> = UseBaseQueryResult<TData, TError>;
 

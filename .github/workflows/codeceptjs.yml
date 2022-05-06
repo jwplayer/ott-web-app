@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         node-version: [14.x]
         config: [desktop, mobile]
@@ -25,6 +26,6 @@ jobs:
       - name: Start dev server
         run: yarn start &
       - name: Run tests
-        run: wait-on http://localhost:8080 && yarn codecept:${{ matrix.config }}
+        run: wait-on -v -t 30000 -c ./scripts/waitOnConfig.js http-get://localhost:8080 && yarn codecept:${{ matrix.config }}
         env:
           CI: true

@@ -10,9 +10,7 @@ import SubscriptionRenewed from './SubscriptionRenewed';
 
 describe('<SubscriptionRenewed>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(
-      <SubscriptionRenewed customer={customer as Customer} subscription={subscription as Subscription} onClose={jest.fn()} />,
-    );
+    const { container } = render(<SubscriptionRenewed customer={customer as Customer} subscription={subscription as Subscription} onClose={vi.fn()} />);
 
     expect(container).toMatchSnapshot();
   });

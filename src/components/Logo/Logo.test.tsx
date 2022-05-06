@@ -1,20 +1,20 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 
-import { render } from '../../testUtils';
-
 import Logo from './Logo';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<Logo/>', () => {
   it('renders and matches snapshot', () => {
-    const { container } = render(<Logo src="123" onLoad={jest.fn()} />);
+    const { container } = renderWithRouter(<Logo src="123" onLoad={vi.fn()} />);
 
     expect(container).toMatchSnapshot();
   });
 
   it('calls the onLoad function after the image has been loaded', () => {
-    const onLoad = jest.fn();
-    const { getByAltText } = render(<Logo src="testimage" onLoad={onLoad} />);
+    const onLoad = vi.fn();
+    const { getByAltText } = renderWithRouter(<Logo src="testimage" onLoad={onLoad} />);
 
     fireEvent.load(getByAltText('logo'));
 
@@ -22,8 +22,8 @@ describe('<Logo/>', () => {
   });
 
   it('calls the onLoad function when the image fails to load', () => {
-    const onLoad = jest.fn();
-    const { getByAltText } = render(<Logo src="testimage" onLoad={onLoad} />);
+    const onLoad = vi.fn();
+    const { getByAltText } = renderWithRouter(<Logo src="testimage" onLoad={onLoad} />);
 
     fireEvent.error(getByAltText('logo'));
 

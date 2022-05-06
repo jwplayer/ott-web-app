@@ -6,7 +6,7 @@ import Modal from './Modal';
 describe('<Modal>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
-      <Modal open={true} onClose={jest.fn()}>
+      <Modal open={true} onClose={vi.fn()}>
         <p>Test modal</p>
       </Modal>,
     );
@@ -15,7 +15,7 @@ describe('<Modal>', () => {
   });
 
   test('calls the onClose function when clicking the backdrop', () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     const { getByTestId } = render(<Modal open={true} onClose={onClose} />);
 
     fireEvent.click(getByTestId('backdrop'));
@@ -24,7 +24,7 @@ describe('<Modal>', () => {
   });
 
   test('should add aria-hidden and inert attributes on the root div when open', () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     const { getByTestId, rerender } = render(
       <div id="root" data-testid="root">
         <Modal open={true} onClose={onClose} />
@@ -45,7 +45,7 @@ describe('<Modal>', () => {
   });
 
   test('should add overflowY hidden on the body element when open', () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     const { container, rerender } = render(<Modal open={true} onClose={onClose} />);
 
     expect(container.parentNode).toHaveStyle({ overflowY: 'hidden' });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import type { FormErrors, GenericFormValues, UseFormChangeHandler, UseFormBlurHandler, UseFormSubmitHandler } from 'types/form';
 import { ValidationError, AnySchema } from 'yup';
+
+import type { FormErrors, GenericFormValues, UseFormChangeHandler, UseFormBlurHandler, UseFormSubmitHandler } from '#types/form';
 
 export type UseFormReturnValue<T> = {
   values: T;

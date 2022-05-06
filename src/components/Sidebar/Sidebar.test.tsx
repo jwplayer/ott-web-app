@@ -1,15 +1,16 @@
 import React from 'react';
 
-import Button from '../Button/Button';
-import { render } from '../../testUtils';
-
 import Sidebar from './Sidebar';
+
+import { renderWithRouter } from '#test/testUtils';
+import Button from '#src/components/Button/Button';
 
 describe('<SideBar />', () => {
   const playlistMenuItems = [<Button key="key" label="Home" to="/" />];
+
   test('renders sideBar', () => {
-    const { container } = render(
-      <Sidebar isOpen={true} onClose={jest.fn()}>
+    const { container } = renderWithRouter(
+      <Sidebar isOpen={true} onClose={vi.fn()}>
         {playlistMenuItems}
       </Sidebar>,
     );

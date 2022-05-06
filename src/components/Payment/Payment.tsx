@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { PaymentDetail, Subscription, Transaction } from 'types/subscription';
 import { useHistory } from 'react-router-dom';
 
 import { formatDate, formatPrice } from '../../utils/formatting';
@@ -11,6 +10,8 @@ import Button from '../Button/Button';
 import { addQueryParam } from '../../utils/history';
 
 import styles from './Payment.module.scss';
+
+import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 
 const VISIBLE_TRANSACTIONS = 4;
 

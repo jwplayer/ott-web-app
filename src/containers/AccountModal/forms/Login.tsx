@@ -1,6 +1,5 @@
 import React from 'react';
 import { object, string, SchemaOf } from 'yup';
-import type { LoginFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
@@ -9,6 +8,8 @@ import { login } from '../../../stores/AccountStore';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { removeQueryParam } from '../../../utils/history';
 import { ConfigStore } from '../../../stores/ConfigStore';
+
+import type { LoginFormData } from '#types/account';
 
 const Login = () => {
   const { siteName } = ConfigStore.useState((s) => s.config);

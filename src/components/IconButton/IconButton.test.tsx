@@ -8,7 +8,7 @@ import IconButton from './IconButton';
 describe('<IconButton>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
-      <IconButton aria-label="Icon button" onClick={jest.fn()}>
+      <IconButton aria-label="Icon button" onClick={vi.fn()}>
         <Close />
       </IconButton>,
     );

@@ -1,8 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import type { RegistrationFormData, Consent } from 'types/account';
-import type { FormErrors } from 'types/form';
 
 import useToggle from '../../hooks/useToggle';
 import { addQueryParam } from '../../utils/history';
@@ -19,6 +17,9 @@ import Link from '../Link/Link';
 import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './RegistrationForm.module.scss';
+
+import type { FormErrors } from '#types/form';
+import type { RegistrationFormData, Consent } from '#types/account';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;

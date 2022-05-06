@@ -13,8 +13,8 @@ describe('<OffersForm>', () => {
       <ChooseOfferForm
         values={{ periodicity: 'monthly' }}
         errors={{}}
-        onChange={jest.fn()}
-        onSubmit={jest.fn()}
+        onChange={vi.fn()}
+        onSubmit={vi.fn()}
         submitting={false}
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
@@ -29,8 +29,8 @@ describe('<OffersForm>', () => {
       <ChooseOfferForm
         values={{ periodicity: 'monthly' }}
         errors={{}}
-        onChange={jest.fn()}
-        onSubmit={jest.fn()}
+        onChange={vi.fn()}
+        onSubmit={vi.fn()}
         submitting={false}
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
@@ -45,8 +45,8 @@ describe('<OffersForm>', () => {
       <ChooseOfferForm
         values={{ periodicity: 'yearly' }}
         errors={{}}
-        onChange={jest.fn()}
-        onSubmit={jest.fn()}
+        onChange={vi.fn()}
+        onSubmit={vi.fn()}
         submitting={false}
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
@@ -57,13 +57,13 @@ describe('<OffersForm>', () => {
   });
 
   test('calls the onChange callback when changing the offer', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { getByLabelText } = render(
       <ChooseOfferForm
         values={{ periodicity: 'monthly' }}
         errors={{}}
         onChange={onChange}
-        onSubmit={jest.fn()}
+        onSubmit={vi.fn()}
         submitting={false}
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
@@ -76,12 +76,12 @@ describe('<OffersForm>', () => {
   });
 
   test('calls the onSubmit callback when submitting the form', () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     const { getByTestId } = render(
       <ChooseOfferForm
         values={{ periodicity: 'monthly' }}
         errors={{}}
-        onChange={jest.fn()}
+        onChange={vi.fn()}
         onSubmit={onSubmit}
         submitting={false}
         monthlyOffer={monthlyOffer as Offer}

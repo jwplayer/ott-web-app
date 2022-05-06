@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { object, string, SchemaOf } from 'yup';
-import type { RegistrationFormData } from 'types/account';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
@@ -10,6 +9,8 @@ import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { addQueryParam } from '../../../utils/history';
 import { extractConsentValues, checkConsentsFromValues } from '../../../utils/collection';
 import { getPublisherConsents, register, updateConsents } from '../../../stores/AccountStore';
+
+import type { RegistrationFormData } from '#types/account';
 
 const Registration = () => {
   const history = useHistory();

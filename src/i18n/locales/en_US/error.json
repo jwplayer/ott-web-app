@@ -1,4 +1,6 @@
 {
   "generic_error_description": "There was an issue loading the application",
-  "generic_error_heading": "Try refreshing this page or come back later."
+  "generic_error_heading": "Try refreshing this page or come back later.",
+  "notfound_error_description": "This page doesn't exist.",
+  "notfound_error_heading": "Not found"
 }

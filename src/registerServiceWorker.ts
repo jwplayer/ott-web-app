@@ -22,7 +22,7 @@ const isLocalhost = Boolean(
 export default function register() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      const swUrl = '/service-worker.js';
+      const swUrl = '/sw.js';
 
       if (!isLocalhost) {
         // Is not local host. Just register service worker

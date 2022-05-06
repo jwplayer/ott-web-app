@@ -7,7 +7,7 @@ export function getPublicUrl(url: string) {
     return url;
   }
 
-  const baseUrl = import.meta.env.SNOWPACK_PUBLIC_BASE_URL || '';
+  const baseUrl = import.meta.env.APP_GITHUB_PUBLIC_BASE_URL || '';
   const trimSlashes = (s: string) => s.replace(/^\/+|\/+$/g, '');
 
   return (baseUrl ? '/' : '') + [baseUrl, url].map(trimSlashes).join('/');

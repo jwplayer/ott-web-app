@@ -1,14 +1,9 @@
 import * as assert from 'assert';
 
-import { configFileQueryKey } from '../../src/utils/configOverride';
-
 import constants from './constants';
 import passwordUtils, { LoginContext } from './password_utils';
 
-declare global {
-  let jwplayer: () => { getState: () => string };
-}
-
+const configFileQueryKey = 'c';
 const loaderElement = '[class*=_loadingOverlay]';
 
 module.exports = function () {
@@ -137,7 +132,16 @@ module.exports = function () {
         const xpath = args.xpath || `//*[text() = "${args.text}"]`;
 
         const points =
-          args.direction === 'left' ? { x1: 100, y1: 1, x2: 50, y2: 1 } : args.direction === 'right' ? { x1: 50, y1: 1, x2: 100, y2: 1 } : args.points;
+          args.direction === 'left'
+            ? { x1: 100, y1: 1, x2: 50, y2: 1 }
+            : args.direction === 'right'
+            ? {
+                x1: 50,
+                y1: 1,
+                x2: 100,
+                y2: 1,
+              }
+            : args.points;
 
         const element = document.evaluate(xpath, document, null, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
 
@@ -184,7 +188,9 @@ module.exports = function () {
       // so we have to manually retry (this is because the video can take time to load and the state will be buffering)
       for (let i = 0; i < tries; i++) {
         // In theory this expression can be simplified, but without the typeof's codecept throws an error when the value is undefined.
-        const state = await this.executeScript(() => jwplayer?.()?.getState());
+        const state = await this.executeScript(() =>
+          typeof window.jwplayer === 'undefined' || typeof window.jwplayer().getState === 'undefined' ? '' : jwplayer().getState(),
+        );
 
         await this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
 

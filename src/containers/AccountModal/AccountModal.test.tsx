@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { render } from '../../testUtils';
-
 import AccountModal from './AccountModal';
+
+import { renderWithRouter } from '#test/testUtils';
 
 describe('<AccountModal>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<AccountModal />);
+    const { container } = renderWithRouter(<AccountModal />);
 
     expect(container).toMatchSnapshot();
   });

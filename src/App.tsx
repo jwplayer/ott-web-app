@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { I18nextProvider, getI18n } from 'react-i18next';
-import type { Config } from 'types/Config';
+import { getI18n, I18nextProvider } from 'react-i18next';
 
-import Router from './components/Router/Router';
-import Root from './components/Root/Root';
-import ConfigProvider from './providers/ConfigProvider';
-import QueryProvider from './providers/QueryProvider';
-import './i18n/config';
-import './styles/main.scss';
-import { restoreWatchHistory } from './stores/WatchHistoryStore';
-import { initializeFavorites } from './stores/FavoritesStore';
-import { initializeAccount } from './stores/AccountStore';
+import type { Config } from '#types/Config';
+import Router from '#src/components/Router/Router';
+import Root from '#src/components/Root/Root';
+import ConfigProvider from '#src/providers/ConfigProvider';
+import QueryProvider from '#src/providers/QueryProvider';
+import { restoreWatchHistory } from '#src/stores/WatchHistoryStore';
+import { initializeFavorites } from '#src/stores/FavoritesStore';
+import { initializeAccount } from '#src/stores/AccountStore';
+import '#src/i18n/config';
+import '#src/styles/main.scss';
 
 interface State {
   error: Error | null;

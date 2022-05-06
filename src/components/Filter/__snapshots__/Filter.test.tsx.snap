@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`<Filter> renders Filter 1`] = `
+exports[`<Filter> > renders Filter 1`] = `
 <div>
   <div
     class="filterRow"

@@ -30,10 +30,6 @@ module.exports = {
     // Browser conf
     browser: true,
     es6    : true,
-
-    // Jest conf
-    jest: true,
-    node: true,
   },
 
   rules    : {
@@ -64,6 +60,8 @@ module.exports = {
         'newlines-between': 'always',
       },
     ],
+    // Not needed in React 17
+    'react/react-in-jsx-scope': 'off'
   },
   overrides: [
     {

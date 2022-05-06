@@ -1,8 +1,4 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import type { Config } from 'types/Config';
-import type { PlaylistItem } from 'types/playlist';
-import type { VideoProgress } from 'types/video';
-import type { JWPlayer } from 'types/jwplayer';
 import classNames from 'classnames';
 
 import { VideoProgressMinMax } from '../../config';
@@ -14,6 +10,11 @@ import useOttAnalytics from '../../hooks/useOttAnalytics';
 import { deepCopy } from '../../utils/collection';
 
 import styles from './Cinema.module.scss';
+
+import type { JWPlayer } from '#types/jwplayer';
+import type { VideoProgress } from '#types/video';
+import type { PlaylistItem } from '#types/playlist';
+import type { Config } from '#types/Config';
 
 type Props = {
   item: PlaylistItem;

@@ -139,7 +139,13 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
 async function playVideo(I: CodeceptJS.I, seekTo: number) {
   I.amOnPage(constants.agent327DetailUrl + '&play=1');
   await I.waitForPlayerPlaying('Agent 327');
-  await I.executeScript((seekTo) => window.jwplayer().seek(seekTo), seekTo);
+  await I.executeScript((seekTo) => {
+    if (!window.jwplayer) {
+      throw "Can't find jwplayer ref";
+    }
+
+    window.jwplayer().seek(seekTo);
+  }, seekTo);
   I.click('div[class="_cinema_1w0uk_1 _fill_1w0uk_1"]'); //re-enable controls overlay
   I.click('div[aria-label="Back"]');
   I.waitForClickable(seekTo < videoLength && seekTo > 0 ? 'Continue watching' : 'Start watching', 5);

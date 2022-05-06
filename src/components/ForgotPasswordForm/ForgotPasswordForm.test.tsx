@@ -1,13 +1,12 @@
 import React from 'react';
-
-import { render } from '../../testUtils';
+import { render } from '@testing-library/react';
 
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 describe('<ForgotPasswordForm>', () => {
   test('renders and matches snapshot type forgot', () => {
     const { container } = render(
-      <ForgotPasswordForm submitting={false} onSubmit={jest.fn()} onChange={jest.fn()} value={{ email: '' }} errors={{}} onBlur={jest.fn()} />,
+      <ForgotPasswordForm submitting={false} onSubmit={vi.fn()} onChange={vi.fn()} value={{ email: '' }} errors={{}} onBlur={vi.fn()} />,
     );
 
     expect(container).toMatchSnapshot();

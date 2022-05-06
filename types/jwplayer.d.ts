@@ -1,3 +1,5 @@
+import '@types/jwplayer';
+
 export type JWPlayer = jwplayer.JWPlayer & {
   on(event: 'userActive' | 'userInactive', callback: () => void);
   off(event: 'userActive' | 'userInactive', callback: () => void);

@@ -11,7 +11,7 @@ describe('<Welcome>', () => {
   });
 
   test('calls the onCloseButtonClick callback when clicking the close button', () => {
-    const onCloseButtonClick = jest.fn();
+    const onCloseButtonClick = vi.fn();
     const { getByText } = render(<Welcome onCloseButtonClick={onCloseButtonClick} siteName="Sitename!" />);
 
     fireEvent.click(getByText('checkout.start_watching'));
@@ -20,19 +20,19 @@ describe('<Welcome>', () => {
   });
 
   test('calls the onCloseButtonClick callback when clicking the close button', () => {
-    jest.useFakeTimers();
-    const onCountdownCompleted = jest.fn();
+    vi.useFakeTimers();
+    const onCountdownCompleted = vi.fn();
 
     render(<Welcome onCountdownCompleted={onCountdownCompleted} siteName="Sitename!" />);
 
     let i = 10;
     while (i--) {
       act(() => {
-        jest.runAllTimers();
+        vi.runAllTimers();
       });
     }
 
     expect(onCountdownCompleted).toBeCalled();
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 });

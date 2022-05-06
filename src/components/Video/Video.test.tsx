@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import type { PlaylistItem } from 'types/playlist';
 
 import Video from './Video';
+
+import type { PlaylistItem } from '#types/playlist';
 
 describe('<Video>', () => {
   test('renders and matches snapshot', () => {
@@ -30,17 +31,17 @@ describe('<Video>', () => {
         item={item}
         allowedToWatch={true}
         startWatchingLabel="Start watching"
-        onStartWatchingClick={jest.fn()}
-        goBack={jest.fn()}
+        onStartWatchingClick={vi.fn()}
+        goBack={vi.fn()}
         poster="fading"
         hasShared={false}
-        onShareClick={jest.fn()}
+        onShareClick={vi.fn()}
         enableSharing
         isFavorited={false}
-        onFavoriteButtonClick={jest.fn()}
+        onFavoriteButtonClick={vi.fn()}
         playTrailer={false}
-        onTrailerClick={jest.fn()}
-        onTrailerClose={jest.fn()}
+        onTrailerClick={vi.fn()}
+        onTrailerClose={vi.fn()}
       />,
     );
 

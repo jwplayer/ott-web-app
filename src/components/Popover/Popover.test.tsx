@@ -1,15 +1,16 @@
 import React from 'react';
 
-import { render } from '../../testUtils';
-import MenuButton from '../MenuButton/MenuButton';
-
 import Popover from './Popover';
+
+import { renderWithRouter } from '#test/testUtils';
+import MenuButton from '#src/components/MenuButton/MenuButton';
 
 describe('<Popover>', () => {
   test('renders and matches snapshot', () => {
     const menuItems = [<MenuButton key="key" label="Home" to="/" />];
-    const { container } = render(
-      <Popover isOpen={true} onClose={jest.fn()}>
+
+    const { container } = renderWithRouter(
+      <Popover isOpen={true} onClose={vi.fn()}>
         {menuItems}
       </Popover>,
     );

@@ -1,7 +1,8 @@
-import type { Config, Content, Options, Menu } from 'types/Config';
 import { string, boolean, array, object, SchemaOf } from 'yup';
 
 import { PersonalShelf } from '../enum/PersonalShelf';
+
+import type { Config, Content, Options, Menu } from '#types/Config';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts

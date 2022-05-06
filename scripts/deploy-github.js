@@ -1,8 +1,38 @@
-const { exec, execSync } = require('child_process');
+const { execSync } = require('child_process');
 const { Buffer } = require('buffer');
 const fs = require('fs');
 
-require('./_dotenv.js');
+const customDomain = getArg('--custom-domain').replace('https://', '').replace('http://', '');
+const deploymentData = getDeploymentData();
+
+function getDeploymentData() {
+  if (customDomain) {
+    if (customDomain.indexOf('/') >= 0) {
+      throw 'Custom domain must be a valid domain without paths (i.e. "showcase-github.jwplayer.com", not "showcase-github.jwplayer.com/ott-web-app")';
+    }
+
+    return {
+      baseUrl: '',
+      deployUrl: `https://${customDomain}`
+    };
+  }
+
+  const gitUrlParts = sh(`git remote get-url ${getGitRemote()}`)
+    .replace('https://github.com/', '')
+    .split('/');
+
+  if (gitUrlParts.length !== 2) {
+    throw "Unable to determine Org and Project from git url";
+  }
+
+  const githubOrg = gitUrlParts[0];
+  const githubProject = gitUrlParts[1].slice(0, -4);
+
+  return {
+    baseUrl: githubProject,
+    deployUrl: `https://${githubOrg}.github.io/${githubProject}`
+  };
+}
 
 function log(str) {
   console.info(`🐙 Github Deployment: ${str}`);
@@ -24,10 +54,10 @@ function shPrint(command, options) {
 
 function confirm(arg) {
   if (!process.argv.includes(arg)) {
-    log('Are you sure? (y/n)');
-    if (shRead() != 'y') {
-      log('Skipping');
-      return false;
+    log('Are you sure? (y/N)');
+    if (shRead().toLowerCase() !== 'y') {
+      log('User cancelled');
+      process.exit(1);
     }
   }
   return true
@@ -45,45 +75,17 @@ function getGitRemote() {
   return getArg('--git-remote') || 'origin';
 }
 
-function getGitUrl() {
-  return sh(`git remote get-url ${getGitRemote()}`);
-}
-
-function getGithubDir() {
-  const url = getGitUrl();
-  const ghProject = url.match(/([^/]+)\.git$/)[1];
-  return ghProject;
-}
-
-function getGithubUser() {
-  const url = getGitUrl();
-  const ghUser = url.match(/:([^:]+)\//)[1];
-  return ghUser;
-}
-
-function getBaseUrl() {
-  const customDomain = getArg('--custom-domain');
-  const envBaseUrl = process.env.SNOWPACK_PUBLIC_BASE_URL
-  if (envBaseUrl) {
-    return envBaseUrl;
-  }
-  const defaultBaseUrl = customDomain
-    ? ''
-    : '/' + getGithubDir() + '/';
-  return defaultBaseUrl;
-}
-
 function getEnv() {
   return {
     ...process.env,
-    SNOWPACK_PUBLIC_BASE_URL: getBaseUrl(),
-    SNOWPACK_PUBLIC_GITHUB_PAGES: true,
+    APP_GITHUB_PUBLIC_BASE_URL: process.env.APP_GITHUB_PUBLIC_BASE_URL || deploymentData.baseUrl,
+    APP_PUBLIC_GITHUB_PAGES: true,
   }
 }
 
 function build() {
   log('Build step');
-  const customDomain = getArg('--custom-domain');
+
   if (!confirm('--build')) return;
   shPrint(`yarn build ${getArg('--build-args')}`, { env: getEnv() });
   if (customDomain) {
@@ -103,7 +105,7 @@ function help() {
     'Displaying help message',
     '',
     'This script deploys ott-web-app to github pages. It executes "yarn build" and then "yarn gh-pages".',
-    'Druing the build step it ensures that that SNOWPACK_PUBLIC_BASE_URL envvar is set to the name of your github project or if you used --custom-domain argument, it ensures that proper CNAME file required by github is provided.',
+    'During the build step it ensures that that APP_GITHUB_PUBLIC_BASE_URL envvar is set to the name of your github project or if you used --custom-domain argument, it ensures that proper CNAME file required by github is provided.',
     '',
     'Command line arguments:',
     "--build - don't ask for build confirmation",
@@ -122,12 +124,7 @@ function run() {
     return;
   }
 
-  const customDomain = getArg('--custom-domain');
-  const url = customDomain
-    ? `https://${customDomain}/`
-    : `https://${getGithubUser()}.github.io/${getGithubDir()}`;
-
-  log(`Application will be located at ${url}`);
+  log(`Application will be located at ${deploymentData.deployUrl}`);
 
   build();
   deploy();

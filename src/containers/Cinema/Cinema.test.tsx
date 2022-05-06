@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import type { PlaylistItem } from 'types/playlist';
 
 import Cinema from './Cinema';
+
+import type { PlaylistItem } from '#types/playlist';
 
 describe('<Cinema>', () => {
   test('renders and matches snapshot', () => {

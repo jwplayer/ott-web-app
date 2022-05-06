@@ -57,7 +57,7 @@ const sliceItems = <T,>(items: T[], isMultiPage: boolean, index: number, tilesTo
   return makeTiles(items, itemsSlice);
 };
 
-const TileDock = <T extends unknown>({
+function TileDock<T>({
   items,
   tilesToShow = 6,
   cycleMode = 'endless',
@@ -72,7 +72,7 @@ const TileDock = <T extends unknown>({
   renderLeftControl,
   renderRightControl,
   renderPaginationDots,
-}: TileDockProps<T>) => {
+}: TileDockProps<T>) {
   const [index, setIndex] = useState<number>(0);
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
@@ -281,6 +281,6 @@ const TileDock = <T extends unknown>({
       {paginationDots()}
     </div>
   );
-};
+}
 
 export default TileDock;

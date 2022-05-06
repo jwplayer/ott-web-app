@@ -1,7 +1,7 @@
 import React from 'react';
+import { render } from '@testing-library/react';
 
 import Button from '../Button/Button';
-import { render } from '../../testUtils';
 
 import Header from './Header';
 
@@ -10,18 +10,18 @@ describe('<Header />', () => {
     const playlistMenuItems = [<Button key="key" label="Home" to="/" />];
     const { container } = render(
       <Header
-        onMenuButtonClick={jest.fn()}
+        onMenuButtonClick={vi.fn()}
         searchBarProps={{
           query: '',
-          onQueryChange: jest.fn(),
+          onQueryChange: vi.fn(),
         }}
         searchEnabled
         searchActive={false}
-        onSearchButtonClick={jest.fn()}
-        onCloseSearchButtonClick={jest.fn()}
-        onLoginButtonClick={jest.fn()}
+        onSearchButtonClick={vi.fn()}
+        onCloseSearchButtonClick={vi.fn()}
+        onLoginButtonClick={vi.fn()}
         userMenuOpen={false}
-        toggleUserMenu={jest.fn()}
+        toggleUserMenu={vi.fn()}
         isLoggedIn={false}
         canLogin={true}
         showPaymentsMenuItem={true}

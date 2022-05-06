@@ -1,7 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { PersonalDetailsFormData, CleengCaptureField, CleengCaptureQuestionField } from 'types/account';
-import type { FormErrors } from 'types/form';
 
 import TextField from '../TextField/TextField';
 import Button from '../Button/Button';
@@ -14,6 +12,9 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './PersonalDetailsForm.module.scss';
+
+import type { FormErrors } from '#types/form';
+import type { PersonalDetailsFormData, CleengCaptureField, CleengCaptureQuestionField } from '#types/account';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
