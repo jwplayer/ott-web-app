@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Favorites from '../../components/Favorites/Favorites';
@@ -28,7 +28,6 @@ import type { PlaylistItem } from '#types/playlist';
 const User = (): JSX.Element => {
   const accessModel = ConfigStore.useState((s) => s.accessModel);
   const history = useHistory();
-  const location = useLocation();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
@@ -41,6 +40,10 @@ const User = (): JSX.Element => {
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
+  const onLogout = useCallback(() => {
+    // Empty customer on a user page leads to history.replace (code bellow), so we don't repeat it here
+    logout();
+  }, []);
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
@@ -49,14 +52,6 @@ const User = (): JSX.Element => {
       history.replace('/');
     }
   }, [history, customer, loading]);
-
-  useEffect(() => {
-    // Todo: Make logout a function, not a route (https://stackoverflow.com/questions/3521290/logout-get-or-post)
-    if (location.pathname === '/u/logout') {
-      logout();
-      history.push('/');
-    }
-  }, [location, history]);
 
   if (!customer) {
     return (
@@ -84,7 +79,7 @@ const User = (): JSX.Element => {
                 </li>
               )}
               <li className={styles.logoutLi}>
-                <Button to="/u/logout" label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
+                <Button onClick={onLogout} label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
               </li>
             </ul>
           </div>
@@ -137,9 +132,6 @@ const User = (): JSX.Element => {
             ) : (
               <Redirect to="/u/my-account" />
             )}
-          </Route>
-          <Route path="/u/logout">
-            <LoadingOverlay transparentBackground />
           </Route>
           <Route path="/u/:other?">
             <Redirect to="/u/my-account" />

@@ -47,7 +47,7 @@ module.exports = function () {
         this.openUserMenu();
       }
 
-      this.click('Log out');
+      this.click('div[aria-label="Log out"]');
     },
     // This function will register the user on the first call and return the context
     // then assuming context is passed in the next time, will log that same user back in

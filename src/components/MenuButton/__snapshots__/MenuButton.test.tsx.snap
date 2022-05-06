@@ -3,6 +3,7 @@
 exports[`<MenuButton> > renders and matches snapshot 1`] = `
 <div>
   <div
+    aria-label="Label"
     class="menuButton"
     tabindex="0"
   >

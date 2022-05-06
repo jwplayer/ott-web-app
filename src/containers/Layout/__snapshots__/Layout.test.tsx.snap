@@ -90,6 +90,7 @@ exports[`<Layout /> > renders layout 1`] = `
         >
           <a
             aria-current="page"
+            aria-label="home"
             class="menuButton active"
             href="/"
             tabindex="-1"
