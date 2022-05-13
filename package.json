@@ -114,6 +114,7 @@
   },
   "resolutions": {
     "react-virtualized": "git+https://git@github.com/remorses/react-virtualized-fixed-import.git#9.22.3",
-    "glob-parent": "^5.1.2"
+    "glob-parent": "^5.1.2",
+    "codeceptjs/**/ansi-regex": "^4.1.1"
   }
 }
