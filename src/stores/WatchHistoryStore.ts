@@ -5,11 +5,12 @@ import { PersonalShelf } from '../enum/PersonalShelf';
 import { getMediaById } from '../services/api.service';
 import * as persist from '../utils/persist';
 
-import { AccountStore, updatePersonalShelves } from './AccountStore';
+import { useAccountStore } from './AccountStore';
 
 import type { WatchHistoryItem } from '#types/watchHistory';
 import type { VideoProgress } from '#types/video';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { updatePersonalShelves } from '#src/stores/AccountController';
 
 type WatchHistoryStore = {
   watchHistory: WatchHistoryItem[];
@@ -24,7 +25,7 @@ export const watchHistoryStore = new Store<WatchHistoryStore>({
 });
 
 export const restoreWatchHistory = async () => {
-  const { user } = AccountStore.getRawState();
+  const { user } = useAccountStore.getState();
 
   const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(PERSIST_KEY_WATCH_HISTORY);
 
@@ -62,7 +63,7 @@ export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]) => {
 
 const persistWatchHistory = () => {
   const { watchHistory } = watchHistoryStore.getRawState();
-  const { user } = AccountStore.getRawState();
+  const { user } = useAccountStore.getState();
 
   if (user) {
     return updatePersonalShelves();

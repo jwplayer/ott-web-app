@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
-import { formatConsentsFromValues, formatConsentValues } from '../../utils/collection';
+import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
 import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import useToggle from '../../hooks/useToggle';
@@ -11,11 +11,13 @@ import Form from '../Form/Form';
 import IconButton from '../IconButton/IconButton';
 import TextField from '../TextField/TextField';
 import Checkbox from '../Checkbox/Checkbox';
-import { addQueryParam } from '../../utils/history';
-import { AccountStore, updateConsents, updateUser } from '../../stores/AccountStore';
 import HelperText from '../HelperText/HelperText';
-import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
-import { logDev } from '../../utils/common';
+
+import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
+import { addQueryParam } from '#src/utils/history';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { logDev } from '#src/utils/common';
+import { updateConsents, updateUser } from '#src/stores/AccountController';
 
 type Props = {
   panelClassName?: string;
@@ -35,10 +37,17 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   const history = useHistory();
   const [viewPassword, toggleViewPassword] = useToggle();
 
-  const { user: customer, customerConsents, publisherConsents } = AccountStore.useState((state) => state);
+  const { user: customer, customerConsents, publisherConsents } = useAccountStore();
 
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
-  const initialValues = useMemo(() => ({ ...customer, consents: consentValues, confirmationPassword: '' }), [customer, consentValues]);
+  const initialValues = useMemo(
+    () => ({
+      ...customer,
+      consents: consentValues,
+      confirmationPassword: '',
+    }),
+    [customer, consentValues],
+  );
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
     // @todo sanitize consent label to prevent XSS
@@ -123,7 +132,11 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
       {[
         formSection({
           label: t('account.email'),
-          onSubmit: (values) => updateUser({ email: values.email || '', confirmationPassword: values.confirmationPassword }),
+          onSubmit: (values) =>
+            updateUser({
+              email: values.email || '',
+              confirmationPassword: values.confirmationPassword,
+            }),
           canSave: (values) => !!(values.email && values.confirmationPassword),
           editButton: t('account.edit_account'),
           content: (section) => (

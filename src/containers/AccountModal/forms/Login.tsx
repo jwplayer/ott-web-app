@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
-import { login } from '../../../stores/AccountStore';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { removeQueryParam } from '../../../utils/history';
 import { ConfigStore } from '../../../stores/ConfigStore';
 
 import type { LoginFormData } from '#types/account';
+import { login } from '#src/stores/AccountController';
 
 const Login = () => {
   const { siteName } = ConfigStore.useState((s) => s.config);

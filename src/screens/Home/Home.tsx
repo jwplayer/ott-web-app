@@ -1,4 +1,4 @@
-import React, { CSSProperties, useRef, useEffect, useCallback } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import { useWatchHistory } from '../../stores/WatchHistoryStore';
@@ -53,8 +53,8 @@ const Home = (): JSX.Element => {
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = !!AccountStore.useState((state) => state.subscription);
+  const user = useAccountStore((state) => state.user);
+  const subscription = !!useAccountStore((state) => state.subscription);
 
   const onCardClick = useCallback(
     (playlistItem: PlaylistItem, playlistId?: string) => {

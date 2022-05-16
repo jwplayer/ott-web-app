@@ -13,7 +13,7 @@ import CardGrid from '../../components/CardGrid/CardGrid';
 import { cardUrl } from '../../utils/formatting';
 import useFirstRender from '../../hooks/useFirstRender';
 import useSearchPlaylist from '../../hooks/useSearchPlaylist';
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Search.module.scss';
@@ -41,8 +41,8 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = !!AccountStore.useState((state) => state.subscription);
+  const user = useAccountStore((state) => state.user);
+  const subscription = !!useAccountStore((state) => state.subscription);
 
   // Update the search bar query to match the route param on mount
   useEffect(() => {

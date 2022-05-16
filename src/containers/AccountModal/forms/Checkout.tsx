@@ -11,8 +11,8 @@ import Adyen from '../../../components/Adyen/Adyen';
 import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '../../../utils/formatting';
-import { reloadActiveSubscription } from '../../../stores/AccountStore';
 import { ConfigStore } from '../../../stores/ConfigStore';
+import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 const Checkout = () => {
   const { cleengSandbox } = ConfigStore.useState((s) => s.config);

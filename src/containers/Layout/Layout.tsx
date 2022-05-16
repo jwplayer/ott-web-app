@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import { UIStore } from '../../stores/UIStore';
 import Button from '../../components/Button/Button';
@@ -33,7 +33,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const searchActive = UIStore.useState((s) => s.searchActive);
   const userMenuOpen = UIStore.useState((s) => s.userMenuOpen);
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const isLoggedIn = !!AccountStore.useState((state) => state.user);
+  const isLoggedIn = !!useAccountStore((state) => state.user);
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 

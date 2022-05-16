@@ -9,7 +9,7 @@ import CardGrid from '../../components/CardGrid/CardGrid';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import Filter from '../../components/Filter/Filter';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import { ConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Playlist.module.scss';
@@ -38,8 +38,8 @@ function Playlist({
   const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = !!AccountStore.useState((state) => state.subscription);
+  const user = useAccountStore((state) => state.user);
+  const subscription = !!useAccountStore((state) => state.subscription);
 
   useEffect(() => {
     // reset filter when the playlist id changes

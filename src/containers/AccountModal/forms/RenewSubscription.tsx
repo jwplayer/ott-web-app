@@ -4,14 +4,16 @@ import { useHistory } from 'react-router';
 
 import { removeQueryParam } from '../../../utils/history';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { AccountStore, updateSubscription } from '../../../stores/AccountStore';
+import { useAccountStore } from '../../../stores/AccountStore';
 import RenewSubscriptionForm from '../../../components/RenewSubscriptionForm/RenewSubscriptionForm';
 import SubscriptionRenewed from '../../../components/SubscriptionRenewed/SubscriptionRenewed';
+
+import { updateSubscription } from '#src/stores/AccountController';
 
 const RenewSubscription = () => {
   const { t } = useTranslation('account');
   const history = useHistory();
-  const { subscription, user } = AccountStore.useState((s) => s);
+  const { subscription, user } = useAccountStore();
   const [renewed, setRenewed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

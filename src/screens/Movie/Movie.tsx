@@ -19,7 +19,7 @@ import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
 import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 import { isAllowedToWatch } from '../../utils/cleeng';
 import { addConfigParamToUrl } from '../../utils/configOverride';
@@ -69,8 +69,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = AccountStore.useState((state) => state.subscription);
+  const user = useAccountStore((state) => state.user);
+  const subscription = useAccountStore((state) => state.subscription);
   const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers

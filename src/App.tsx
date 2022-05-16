@@ -8,9 +8,9 @@ import ConfigProvider from '#src/providers/ConfigProvider';
 import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryStore';
 import { initializeFavorites } from '#src/stores/FavoritesStore';
-import { initializeAccount } from '#src/stores/AccountStore';
 import '#src/i18n/config';
 import '#src/styles/main.scss';
+import { initializeAccount } from '#src/stores/AccountController';
 
 interface State {
   error: Error | null;

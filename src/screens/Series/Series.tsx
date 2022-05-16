@@ -22,7 +22,7 @@ import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistorySto
 import { VideoProgressMinMax } from '../../config';
 import { ConfigStore } from '../../stores/ConfigStore';
 import { isAllowedToWatch } from '../../utils/cleeng';
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 
 import styles from './Series.module.scss';
@@ -53,11 +53,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const itemRequiresSubscription = item?.requiresSubscription !== 'false';
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
-  const {
-    isLoading: playlistIsLoading,
-    error: playlistError,
-    data: seriesPlaylist = { title: '', playlist: [] },
-  } = usePlaylist(id, undefined, true, false);
+  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist = { title: '', playlist: [] } } = usePlaylist(id, undefined, true, false);
   const [seasonFilter, setSeasonFilter] = useState<string>('');
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
@@ -80,8 +76,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = AccountStore.useState((state) => state.subscription);
+  const user = useAccountStore((state) => state.user);
+  const subscription = useAccountStore((state) => state.subscription);
   const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers

@@ -16,7 +16,7 @@ import Favorite from '../../icons/Favorite';
 import BalanceWallet from '../../icons/BalanceWallet';
 import Exit from '../../icons/Exit';
 import { useFavorites } from '../../stores/FavoritesStore';
-import { AccountStore, logout } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog';
 import { ConfigStore } from '../../stores/ConfigStore';
@@ -24,6 +24,7 @@ import { ConfigStore } from '../../stores/ConfigStore';
 import styles from './User.module.scss';
 
 import type { PlaylistItem } from '#types/playlist';
+import { logout } from '#src/stores/AccountController';
 
 const User = (): JSX.Element => {
   const accessModel = ConfigStore.useState((s) => s.accessModel);
@@ -33,7 +34,7 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, transactions, activePayment, loading } = AccountStore.useState((state) => state);
+  const { user: customer, subscription, transactions, activePayment, loading } = useAccountStore();
 
   const updateBlurImage = useBlurImageUpdater();
   const { clearList: clearFavorites } = useFavorites();

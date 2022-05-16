@@ -8,9 +8,9 @@ import Favorite from '../../icons/Favorite';
 import BalanceWallet from '../../icons/BalanceWallet';
 import Exit from '../../icons/Exit';
 import MenuButton from '../MenuButton/MenuButton';
-import { logout } from '../../stores/AccountStore';
 
 import styles from './UserMenu.module.scss';
+import { logout } from '#src/stores/AccountController';
 
 type Props = {
   inPopover?: boolean;
