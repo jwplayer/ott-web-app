@@ -7,14 +7,7 @@
 - Format the code through `yarn format`
 - Lint through `yarn lint`
 - Lint and fix through `yarn lint --fix`
-
-## How to use the create-base script
-
-The `yarn create-base` can be used to quickly scaffold a component, container or screen.
-
-- use `yarn create-base components/YourComponentName` to create a base component
-- use `yarn create-base containers/YourContainerName` to create a base container
-- use `yarn create-base screens/YourScreenName` to create a base screen
+- The JW organization requires personal access tokens for all of their repositories. In order to create a branch or pull request you'll need to [Generate a Personal Access Token](https://github.com/settings/tokens) and then [store it in your git config](https://stackoverflow.com/questions/46645843/where-to-store-my-git-personal-access-token/67360592). (For token permissions, `repo` should be sufficient.) 
 
 ## Git Commit Guidelines (conventional changelog)
 
