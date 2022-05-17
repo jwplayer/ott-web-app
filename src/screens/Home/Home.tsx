@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { useAccountStore } from '../../stores/AccountStore';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/UseConfigStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
@@ -37,8 +37,8 @@ const createItemData = memoize((content) => ({ content }));
 
 const Home = (): JSX.Element => {
   const history = useHistory();
-  const config = ConfigStore.useState((state) => state.config);
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const config = useConfigStore((state) => state.config);
+  const accessModel = useConfigStore((state) => state.accessModel);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;

@@ -14,7 +14,7 @@ import { cardUrl } from '../../utils/formatting';
 import useFirstRender from '../../hooks/useFirstRender';
 import useSearchPlaylist from '../../hooks/useSearchPlaylist';
 import { useAccountStore } from '../../stores/AccountStore';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/UseConfigStore';
 
 import styles from './Search.module.scss';
 
@@ -28,9 +28,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   },
 }) => {
   const { t } = useTranslation('search');
-  const config = ConfigStore.useState((state) => state.config);
+  const config = useConfigStore((state) => state.config);
+  const accessModel = useConfigStore((state) => state.accessModel);
   const { siteName, searchPlaylist, options } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
 
   const firstRender = useFirstRender();
   const searchQuery = UIStore.useState((s) => s.searchQuery);

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { object, SchemaOf, mixed } from 'yup';
+import { mixed, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
@@ -10,16 +10,16 @@ import { getOffer } from '../../../services/checkout.service';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { CheckoutStore } from '../../../stores/CheckoutStore';
 import { addQueryParam, removeQueryParam } from '../../../utils/history';
-import { ConfigStore } from '../../../stores/ConfigStore';
+import { useConfigStore } from '../../../stores/UseConfigStore';
 
 import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = ConfigStore.useState((s) => s.config);
+  const config = useConfigStore((s) => s.config);
   const { cleengSandbox, json } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const accessModel = useConfigStore((s) => s.accessModel);
   const hasOffer = accessModel === 'SVOD';
   const offer = CheckoutStore.useState((s) => s.offer);
 

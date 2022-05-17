@@ -18,7 +18,7 @@ import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
 import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/UseConfigStore';
 import { useAccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 import { isAllowedToWatch } from '../../utils/cleeng';
@@ -39,8 +39,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const feedId = searchParams.get('l');
 
   // Config
-  const { options, recommendationsPlaylist, siteName } = ConfigStore.useState((s) => s.config);
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const { options, recommendationsPlaylist, siteName } = useConfigStore((s) => s.config);
+  const accessModel = useConfigStore((s) => s.accessModel);
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 

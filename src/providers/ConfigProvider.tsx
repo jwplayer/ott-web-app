@@ -6,7 +6,7 @@ import loadConfig, { validateConfig } from '../services/config.service';
 import type { AccessModel, Config, Options } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 import { addScript } from '../utils/dom';
-import { ConfigStore } from '../stores/ConfigStore';
+import { useConfigStore } from '../stores/UseConfigStore';
 
 const defaultConfig: Config = {
   id: '',
@@ -55,9 +55,9 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
           setConfig(configWithDefaults);
 
           const accessModel = calculateAccessModel(configWithDefaults);
-          ConfigStore.update((s) => {
-            s.config = configWithDefaults;
-            s.accessModel = accessModel;
+          useConfigStore.setState({
+            config: configWithDefaults,
+            accessModel,
           });
 
           setCssVariables(configValidated.options);

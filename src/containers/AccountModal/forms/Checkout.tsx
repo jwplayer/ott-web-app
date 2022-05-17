@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
-import { CheckoutStore, createOrder, updateOrder, getPaymentMethods, paymentWithoutDetails, adyenPayment, paypalPayment } from '../../../stores/CheckoutStore';
+import { adyenPayment, CheckoutStore, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '../../../stores/CheckoutStore';
 import { addQueryParam } from '../../../utils/history';
 import useForm from '../../../hooks/useForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -11,11 +11,11 @@ import Adyen from '../../../components/Adyen/Adyen';
 import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '../../../utils/formatting';
-import { ConfigStore } from '../../../stores/ConfigStore';
+import { useConfigStore } from '../../../stores/UseConfigStore';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 const Checkout = () => {
-  const { cleengSandbox } = ConfigStore.useState((s) => s.config);
+  const { cleengSandbox } = useConfigStore((s) => s.config);
   const { t } = useTranslation('account');
   const history = useHistory();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
