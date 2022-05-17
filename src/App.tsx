@@ -8,7 +8,7 @@ import ConfigProvider from '#src/providers/ConfigProvider';
 import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';
-import { initializeFavorites } from '#src/stores/FavoritesStore';
+import { initializeFavorites } from '#src/stores/FavoritesController';
 import '#src/i18n/config';
 import '#src/styles/main.scss';
 

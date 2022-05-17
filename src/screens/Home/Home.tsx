@@ -9,7 +9,7 @@ import shallow from 'zustand/shallow';
 import styles from './Home.module.scss';
 
 import PlaylistContainer from '#src/containers/Playlist/PlaylistContainer';
-import { favoritesStore } from '#src/stores/FavoritesStore';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
@@ -45,7 +45,7 @@ const Home = (): JSX.Element => {
 
   const watchHistory = useWatchHistoryStore((state) => state.getPlaylist());
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
-  const favorites = favoritesStore.useState((state) => state.favorites);
+  const favorites = useFavoritesStore((state) => state.favorites);
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
   const updateBlurImage = useBlurImageUpdater(playlist);
