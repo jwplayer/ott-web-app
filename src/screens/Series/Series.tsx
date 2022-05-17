@@ -42,8 +42,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const feedId = searchParams.get('l');
 
   // Config
-  const { options, siteName } = useConfigStore((s) => s.config);
-  const accessModel = useConfigStore((s) => s.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { options, siteName } = config;
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 

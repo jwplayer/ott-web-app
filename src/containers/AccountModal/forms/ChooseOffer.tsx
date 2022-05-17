@@ -17,9 +17,8 @@ import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = useConfigStore((s) => s.config);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { cleengSandbox, json } = config;
-  const accessModel = useConfigStore((s) => s.accessModel);
   const hasOffer = accessModel === 'SVOD';
   const { offer, setOffer } = useCheckoutStore(({ offer, setOffer }) => ({ offer, setOffer }), shallow);
 

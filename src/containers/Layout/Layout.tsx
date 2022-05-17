@@ -2,6 +2,7 @@ import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
 import { useAccountStore } from '../../stores/AccountStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
@@ -25,9 +26,8 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const history = useHistory();
   const { t } = useTranslation('common');
-  const config = useConfigStore((s) => s.config);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
-  const accessModel = useConfigStore((s) => s.accessModel);
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const searchActive = UIStore.useState((s) => s.searchActive);
