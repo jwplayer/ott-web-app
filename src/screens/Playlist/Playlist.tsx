@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import shallow from 'zustand/shallow';
 
 import { cardUrl } from '../../utils/formatting';
 import usePlaylist from '../../hooks/usePlaylist';
@@ -38,8 +39,7 @@ function Playlist({
   const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = !!useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   useEffect(() => {
     // reset filter when the playlist id changes

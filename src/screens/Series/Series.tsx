@@ -3,6 +3,7 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { useFavorites } from '../../stores/FavoritesStore';
@@ -76,8 +77,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers

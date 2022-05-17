@@ -3,6 +3,7 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { UIStore } from '../../stores/UIStore';
@@ -41,8 +42,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = !!useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   // Update the search bar query to match the route param on mount
   useEffect(() => {

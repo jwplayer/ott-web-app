@@ -4,6 +4,7 @@ import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
+import shallow from 'zustand/shallow';
 
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
@@ -53,8 +54,7 @@ const Home = (): JSX.Element => {
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = !!useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
     (playlistItem: PlaylistItem, playlistId?: string) => {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
 import Dialog from '../../components/Dialog/Dialog';
 import useQueryParam from '../../hooks/useQueryParam';
@@ -28,7 +29,7 @@ const AccountModal = () => {
   const viewParam = useQueryParam('u');
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
-  const { loading, auth } = useAccountStore();
+  const { loading, auth } = useAccountStore(({ loading, auth }) => ({ loading, auth }), shallow);
   const config = useConfigStore((s) => s.config);
   const {
     assets: { banner },

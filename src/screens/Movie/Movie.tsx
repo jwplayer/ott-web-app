@@ -3,6 +3,7 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import { useFavorites } from '../../stores/FavoritesStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
@@ -69,8 +70,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers
