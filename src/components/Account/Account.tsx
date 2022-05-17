@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import shallow from 'zustand/shallow';
 
 import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
 import Visibility from '../../icons/Visibility';
@@ -37,7 +38,14 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   const history = useHistory();
   const [viewPassword, toggleViewPassword] = useToggle();
 
-  const { user: customer, customerConsents, publisherConsents } = useAccountStore();
+  const { customer, customerConsents, publisherConsents } = useAccountStore(
+    ({ user, customerConsents, publisherConsents }) => ({
+      customer: user,
+      customerConsents,
+      publisherConsents,
+    }),
+    shallow,
+  );
 
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
   const initialValues = useMemo(

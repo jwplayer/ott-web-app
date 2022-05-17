@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { object, SchemaOf, mixed } from 'yup';
+import { mixed, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 import shallow from 'zustand/shallow';
 
 import { addQueryParam, removeQueryParam } from '#src/utils/history';
-import { ConfigStore } from '#src/stores/ConfigStore';
-import { getOffer } from '#src/services/checkout.service';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import { getOffer } from '#src/services/checkout.service';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#src/components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -17,9 +17,9 @@ import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = ConfigStore.useState((s) => s.config);
+  const config = useConfigStore((s) => s.config);
   const { cleengSandbox, json } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const accessModel = useConfigStore((s) => s.accessModel);
   const hasOffer = accessModel === 'SVOD';
   const { offer, setOffer } = useCheckoutStore(({ offer, setOffer }) => ({ offer, setOffer }), shallow);
 

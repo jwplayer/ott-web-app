@@ -7,7 +7,7 @@ import { fetchCustomerConsents, fetchPublisherConsents, updateCustomer } from '#
 import { favoritesStore, restoreFavorites, serializeFavorites } from '#src/stores/FavoritesStore';
 import { restoreWatchHistory, serializeWatchHistory, watchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { AuthData, Capture, CustomerConsent, JwtDetails } from '#types/account';
-import { ConfigStore } from '#src/stores/ConfigStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
 
@@ -26,7 +26,7 @@ export const authNeedsRefresh = (auth: AuthData): boolean => {
 
 export const setJwtRefreshTimeout = () => {
   const auth = useAccountStore.getState().auth;
-  const cleengSandbox = ConfigStore.getRawState().config.cleengSandbox;
+  const cleengSandbox = useConfigStore.getState().config.cleengSandbox;
 
   window.clearTimeout(refreshTimeout);
 
@@ -40,7 +40,7 @@ export const handleVisibilityChange = () => {
 
   // document is visible again, test if we need to renew the token
   const auth = useAccountStore.getState().auth;
-  const cleengSandbox = ConfigStore.getRawState().config.cleengSandbox;
+  const cleengSandbox = useConfigStore.getState().config.cleengSandbox;
 
   // user is not logged in
   if (!auth) return;
@@ -55,7 +55,7 @@ export const handleVisibilityChange = () => {
 export const initializeAccount = async () => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
 
   if (!cleengId) {
     useAccountStore.getState().setLoading(false);
@@ -105,7 +105,7 @@ export async function updateUser(values: { firstName: string; lastName: string }
 
   const {
     config: { cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
 
   const response = await updateCustomer({ ...values, id: user.id.toString() }, cleengSandbox, auth.jwt);
 
@@ -142,7 +142,7 @@ const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
 };
 
 export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
-  const { accessModel } = ConfigStore.getRawState();
+  const { accessModel } = useConfigStore.getState();
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
   const customerId = decodedToken.customerId;
   const response = await accountService.getCustomer({ customerId }, sandbox, auth.jwt);
@@ -413,7 +413,7 @@ async function getActivePayment({ cleengSandbox, customerId, jwt }: { cleengSand
 function useConfig<T>(callback: (config: { cleengId: string; cleengSandbox: boolean }) => T): T {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
 

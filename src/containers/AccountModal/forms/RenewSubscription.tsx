@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
 import { removeQueryParam } from '../../../utils/history';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -13,7 +14,7 @@ import { updateSubscription } from '#src/stores/AccountController';
 const RenewSubscription = () => {
   const { t } = useTranslation('account');
   const history = useHistory();
-  const { subscription, user } = useAccountStore();
+  const { subscription, user } = useAccountStore(({ subscription, user }) => ({ subscription, user }), shallow);
   const [renewed, setRenewed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -3,6 +3,7 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { useFavorites } from '../../stores/FavoritesStore';
@@ -20,7 +21,7 @@ import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 import { isAllowedToWatch } from '../../utils/cleeng';
 import { useAccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
@@ -41,8 +42,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const feedId = searchParams.get('l');
 
   // Config
-  const { options, siteName } = ConfigStore.useState((s) => s.config);
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const { options, siteName } = useConfigStore((s) => s.config);
+  const accessModel = useConfigStore((s) => s.accessModel);
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 
@@ -76,8 +77,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers

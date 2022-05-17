@@ -1,18 +1,18 @@
 import React from 'react';
-import { object, string, SchemaOf } from 'yup';
+import { object, SchemaOf, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { removeQueryParam } from '../../../utils/history';
-import { ConfigStore } from '../../../stores/ConfigStore';
+import { useConfigStore } from '../../../stores/ConfigStore';
 
 import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
 
 const Login = () => {
-  const { siteName } = ConfigStore.useState((s) => s.config);
+  const { siteName } = useConfigStore((s) => s.config);
   const history = useHistory();
   const { t } = useTranslation('account');
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {

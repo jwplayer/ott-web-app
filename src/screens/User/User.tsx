@@ -19,7 +19,7 @@ import { useFavorites } from '../../stores/FavoritesStore';
 import { useAccountStore } from '../../stores/AccountStore';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './User.module.scss';
 
@@ -27,7 +27,7 @@ import type { PlaylistItem } from '#types/playlist';
 import { logout } from '#src/stores/AccountController';
 
 const User = (): JSX.Element => {
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const accessModel = useConfigStore((s) => s.accessModel);
   const history = useHistory();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();

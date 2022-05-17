@@ -4,11 +4,12 @@ import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
+import shallow from 'zustand/shallow';
 
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { useAccountStore } from '../../stores/AccountStore';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
@@ -37,8 +38,8 @@ const createItemData = memoize((content) => ({ content }));
 
 const Home = (): JSX.Element => {
   const history = useHistory();
-  const config = ConfigStore.useState((state) => state.config);
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const config = useConfigStore((state) => state.config);
+  const accessModel = useConfigStore((state) => state.accessModel);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;
@@ -53,8 +54,7 @@ const Home = (): JSX.Element => {
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = !!useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
     (playlistItem: PlaylistItem, playlistId?: string) => {

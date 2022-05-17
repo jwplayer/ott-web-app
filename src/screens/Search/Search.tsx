@@ -3,6 +3,7 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { UIStore } from '../../stores/UIStore';
@@ -14,7 +15,7 @@ import { cardUrl } from '../../utils/formatting';
 import useFirstRender from '../../hooks/useFirstRender';
 import useSearchPlaylist from '../../hooks/useSearchPlaylist';
 import { useAccountStore } from '../../stores/AccountStore';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Search.module.scss';
 
@@ -28,9 +29,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   },
 }) => {
   const { t } = useTranslation('search');
-  const config = ConfigStore.useState((state) => state.config);
+  const config = useConfigStore((state) => state.config);
+  const accessModel = useConfigStore((state) => state.accessModel);
   const { siteName, searchPlaylist, options } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
 
   const firstRender = useFirstRender();
   const searchQuery = UIStore.useState((s) => s.searchQuery);
@@ -41,8 +42,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   // User
-  const user = useAccountStore((state) => state.user);
-  const subscription = !!useAccountStore((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   // Update the search bar query to match the route param on mount
   useEffect(() => {

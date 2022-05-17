@@ -1,14 +1,14 @@
 import type { CreateOrderPayload, UpdateOrderPayload } from '#types/checkout';
 import { getLocales } from '#src/services/account.service';
 import * as checkoutService from '#src/services/checkout.service';
-import { ConfigStore } from '#src/stores/ConfigStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 
 export const createOrder = async (offerId: string, paymentMethodId?: number) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
   const { user, auth } = useAccountStore.getState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
@@ -41,7 +41,7 @@ export const createOrder = async (offerId: string, paymentMethodId?: number) => 
 export const updateOrder = async (orderId: number, paymentMethodId?: number, couponCode?: string | null) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
   const { user, auth } = useAccountStore.getState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
@@ -70,7 +70,7 @@ export const updateOrder = async (orderId: number, paymentMethodId?: number, cou
 export const getPaymentMethods = async () => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
   const { user, auth } = useAccountStore.getState();
   const { paymentMethods } = useCheckoutStore.getState();
 
@@ -90,7 +90,7 @@ export const getPaymentMethods = async () => {
 export const paymentWithoutDetails = async () => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
   const { user, auth } = useAccountStore.getState();
   const { order } = useCheckoutStore.getState();
 
@@ -109,7 +109,7 @@ export const paymentWithoutDetails = async () => {
 export const adyenPayment = async (paymentMethod: AdyenPaymentMethod) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
   const { user, auth } = useAccountStore.getState();
   const { order } = useCheckoutStore.getState();
 
@@ -135,7 +135,7 @@ export const adyenPayment = async (paymentMethod: AdyenPaymentMethod) => {
 export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
+  } = useConfigStore.getState();
   const { user, auth } = useAccountStore.getState();
   const { order } = useCheckoutStore.getState();
 

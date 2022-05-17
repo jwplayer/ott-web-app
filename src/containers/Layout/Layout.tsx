@@ -14,7 +14,7 @@ import DynamicBlur from '../../components/DynamicBlur/DynamicBlur';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { addQueryParam } from '../../utils/history';
 import UserMenu from '../../components/UserMenu/UserMenu';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Layout.module.scss';
 
@@ -25,9 +25,9 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const history = useHistory();
   const { t } = useTranslation('common');
-  const config = ConfigStore.useState((s) => s.config);
+  const config = useConfigStore((s) => s.config);
   const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const accessModel = useConfigStore((s) => s.accessModel);
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const searchActive = UIStore.useState((s) => s.searchActive);
