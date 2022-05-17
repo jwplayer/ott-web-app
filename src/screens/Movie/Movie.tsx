@@ -40,8 +40,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const feedId = searchParams.get('l');
 
   // Config
-  const { options, recommendationsPlaylist, siteName } = useConfigStore((s) => s.config);
-  const accessModel = useConfigStore((s) => s.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { options, recommendationsPlaylist, siteName } = config;
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 

@@ -27,8 +27,7 @@ function Playlist({
   },
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
-  const config = useConfigStore((state) => state.config);
-  const accessModel = useConfigStore((state) => state.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
 
   const { isLoading, isPlaceholderData, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
 

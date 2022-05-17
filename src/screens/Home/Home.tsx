@@ -38,8 +38,7 @@ const createItemData = memoize((content) => ({ content }));
 
 const Home = (): JSX.Element => {
   const history = useHistory();
-  const config = useConfigStore((state) => state.config);
-  const accessModel = useConfigStore((state) => state.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
   const content: Content[] = config?.content;

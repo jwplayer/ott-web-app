@@ -29,8 +29,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   },
 }) => {
   const { t } = useTranslation('search');
-  const config = useConfigStore((state) => state.config);
-  const accessModel = useConfigStore((state) => state.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName, searchPlaylist, options } = config;
 
   const firstRender = useFirstRender();

@@ -3,6 +3,7 @@ import { mixed, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';
@@ -17,9 +18,8 @@ import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = useConfigStore((s) => s.config);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { cleengSandbox, json } = config;
-  const accessModel = useConfigStore((s) => s.accessModel);
   const hasOffer = accessModel === 'SVOD';
   const offer = CheckoutStore.useState((s) => s.offer);
 
