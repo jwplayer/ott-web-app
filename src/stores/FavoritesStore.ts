@@ -6,7 +6,8 @@ import * as persist from '../utils/persist';
 import type { Favorite } from '../../types/favorite';
 import { getMediaByIds } from '../services/api.service';
 
-import { AccountStore, updatePersonalShelves } from './AccountStore';
+import { updatePersonalShelves } from '#src/stores/AccountController';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 type FavoritesStore = {
   favorites: Favorite[];
@@ -19,7 +20,7 @@ export const favoritesStore = new Store<FavoritesStore>({
 });
 
 export const restoreFavorites = async () => {
-  const { user } = AccountStore.getRawState();
+  const { user } = useAccountStore.getState();
   const savedItems = user ? user.externalData?.favorites : persist.getItem<Favorite[]>(PERSIST_KEY_FAVORITES);
 
   if (savedItems) {
@@ -38,7 +39,7 @@ export const serializeFavorites = (favorites: Favorite[]) => {
 
 export const persistFavorites = () => {
   const { favorites } = favoritesStore.getRawState();
-  const { user } = AccountStore.getRawState();
+  const { user } = useAccountStore.getState();
 
   if (user) {
     return updatePersonalShelves();

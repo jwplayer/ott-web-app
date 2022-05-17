@@ -2,8 +2,9 @@ import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import { UIStore } from '../../stores/UIStore';
 import Button from '../../components/Button/Button';
@@ -14,7 +15,7 @@ import DynamicBlur from '../../components/DynamicBlur/DynamicBlur';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { addQueryParam } from '../../utils/history';
 import UserMenu from '../../components/UserMenu/UserMenu';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Layout.module.scss';
 
@@ -25,15 +26,14 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const history = useHistory();
   const { t } = useTranslation('common');
-  const config = ConfigStore.useState((s) => s.config);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const blurImage = UIStore.useState((s) => s.blurImage);
   const searchQuery = UIStore.useState((s) => s.searchQuery);
   const searchActive = UIStore.useState((s) => s.searchActive);
   const userMenuOpen = UIStore.useState((s) => s.userMenuOpen);
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const isLoggedIn = !!AccountStore.useState((state) => state.user);
+  const isLoggedIn = !!useAccountStore((state) => state.user);
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 

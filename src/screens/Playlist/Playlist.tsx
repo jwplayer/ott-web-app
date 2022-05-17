@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import shallow from 'zustand/shallow';
 
 import { cardUrl } from '../../utils/formatting';
 import usePlaylist from '../../hooks/usePlaylist';
@@ -9,8 +10,8 @@ import CardGrid from '../../components/CardGrid/CardGrid';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import Filter from '../../components/Filter/Filter';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { AccountStore } from '../../stores/AccountStore';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useAccountStore } from '../../stores/AccountStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Playlist.module.scss';
 
@@ -26,8 +27,7 @@ function Playlist({
   },
 }: RouteComponentProps<PlaylistRouteParams>) {
   const history = useHistory();
-  const config = ConfigStore.useState((state) => state.config);
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
 
   const { isLoading, isPlaceholderData, error, data: { title, playlist } = { title: '', playlist: [] } } = usePlaylist(id);
 
@@ -38,8 +38,7 @@ function Playlist({
   const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = !!AccountStore.useState((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   useEffect(() => {
     // reset filter when the playlist id changes

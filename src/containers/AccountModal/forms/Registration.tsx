@@ -8,9 +8,9 @@ import RegistrationForm from '../../../components/RegistrationForm/RegistrationF
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { addQueryParam } from '../../../utils/history';
 import { extractConsentValues, checkConsentsFromValues } from '../../../utils/collection';
-import { getPublisherConsents, register, updateConsents } from '../../../stores/AccountStore';
 
 import type { RegistrationFormData } from '#types/account';
+import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
 
 const Registration = () => {
   const history = useHistory();

@@ -4,8 +4,8 @@ import * as checkoutService from '../services/checkout.service';
 import type { CreateOrderPayload, Offer, Order, PaymentMethod, UpdateOrderPayload } from '../../types/checkout';
 import { getLocales } from '../services/account.service';
 
-import { ConfigStore } from './ConfigStore';
-import { AccountStore } from './AccountStore';
+import { useConfigStore } from './ConfigStore';
+import { useAccountStore } from './AccountStore';
 
 type CheckoutStore = {
   offer: Offer | null;
@@ -22,8 +22,8 @@ export const CheckoutStore = new Store<CheckoutStore>({
 export const createOrder = async (offerId: string, paymentMethodId?: number) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
-  const { user, auth } = AccountStore.getRawState();
+  } = useConfigStore.getState();
+  const { user, auth } = useAccountStore.getState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
   if (!user || !auth) throw new Error('user is not logged in');
@@ -59,8 +59,8 @@ export const createOrder = async (offerId: string, paymentMethodId?: number) => 
 export const updateOrder = async (orderId: number, paymentMethodId?: number, couponCode?: string | null) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
-  const { user, auth } = AccountStore.getRawState();
+  } = useConfigStore.getState();
+  const { user, auth } = useAccountStore.getState();
 
   if (!cleengId) throw new Error('cleengId is not configured');
   if (!user || !auth) throw new Error('user is not logged in');
@@ -92,8 +92,8 @@ export const updateOrder = async (orderId: number, paymentMethodId?: number, cou
 export const getPaymentMethods = async () => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
-  const { user, auth } = AccountStore.getRawState();
+  } = useConfigStore.getState();
+  const { user, auth } = useAccountStore.getState();
   const { paymentMethods } = CheckoutStore.getRawState();
 
   if (paymentMethods) return paymentMethods; // already fetched payment methods
@@ -114,8 +114,8 @@ export const getPaymentMethods = async () => {
 export const paymentWithoutDetails = async () => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
-  const { user, auth } = AccountStore.getRawState();
+  } = useConfigStore.getState();
+  const { user, auth } = useAccountStore.getState();
   const { order } = CheckoutStore.getRawState();
 
   if (!order) throw new Error('No order created');
@@ -133,15 +133,22 @@ export const paymentWithoutDetails = async () => {
 export const adyenPayment = async (paymentMethod: AdyenPaymentMethod) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
-  const { user, auth } = AccountStore.getRawState();
+  } = useConfigStore.getState();
+  const { user, auth } = useAccountStore.getState();
   const { order } = CheckoutStore.getRawState();
 
   if (!order) throw new Error('No order created');
   if (!cleengId) throw new Error('cleengId is not configured');
   if (!user || !auth) throw new Error('user is not logged in');
 
-  const response = await checkoutService.paymentWithAdyen({ orderId: order.id, card: paymentMethod }, cleengSandbox, auth.jwt);
+  const response = await checkoutService.paymentWithAdyen(
+    {
+      orderId: order.id,
+      card: paymentMethod,
+    },
+    cleengSandbox,
+    auth.jwt,
+  );
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
   if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
@@ -152,15 +159,24 @@ export const adyenPayment = async (paymentMethod: AdyenPaymentMethod) => {
 export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string) => {
   const {
     config: { cleengId, cleengSandbox },
-  } = ConfigStore.getRawState();
-  const { user, auth } = AccountStore.getRawState();
+  } = useConfigStore.getState();
+  const { user, auth } = useAccountStore.getState();
   const { order } = CheckoutStore.getRawState();
 
   if (!order) throw new Error('No order created');
   if (!cleengId) throw new Error('cleengId is not configured');
   if (!user || !auth) throw new Error('user is not logged in');
 
-  const response = await checkoutService.paymentWithPayPal({ orderId: order.id, successUrl, cancelUrl, errorUrl }, cleengSandbox, auth.jwt);
+  const response = await checkoutService.paymentWithPayPal(
+    {
+      orderId: order.id,
+      successUrl,
+      cancelUrl,
+      errorUrl,
+    },
+    cleengSandbox,
+    auth.jwt,
+  );
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
