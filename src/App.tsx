@@ -6,11 +6,11 @@ import Router from '#src/components/Router/Router';
 import Root from '#src/components/Root/Root';
 import ConfigProvider from '#src/providers/ConfigProvider';
 import QueryProvider from '#src/providers/QueryProvider';
-import { restoreWatchHistory } from '#src/stores/WatchHistoryStore';
+import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
+import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesStore';
 import '#src/i18n/config';
 import '#src/styles/main.scss';
-import { initializeAccount } from '#src/stores/AccountController';
 
 interface State {
   error: Error | null;

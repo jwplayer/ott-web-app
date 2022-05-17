@@ -5,27 +5,26 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import { useFavorites } from '../../stores/FavoritesStore';
-import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
-import type { PlaylistItem } from '../../../types/playlist';
-import VideoComponent from '../../components/Video/Video';
-import ErrorPage from '../../components/ErrorPage/ErrorPage';
-import CardGrid from '../../components/CardGrid/CardGrid';
-import useMedia from '../../hooks/useMedia';
-import { generateMovieJSONLD } from '../../utils/structuredData';
-import { copyToClipboard } from '../../utils/dom';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
-import { watchHistoryStore } from '../../stores/WatchHistoryStore';
-import { VideoProgressMinMax } from '../../config';
-import { useConfigStore } from '../../stores/ConfigStore';
-import { useAccountStore } from '../../stores/AccountStore';
-import { addQueryParam } from '../../utils/history';
-import { isAllowedToWatch } from '../../utils/cleeng';
-import { addConfigParamToUrl } from '../../utils/configOverride';
-
 import styles from './Movie.module.scss';
+
+import { useFavorites } from '#src/stores/FavoritesStore';
+import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
+import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
+import type { PlaylistItem } from '#src/../types/playlist';
+import VideoComponent from '#src/components/Video/Video';
+import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import CardGrid from '#src/components/CardGrid/CardGrid';
+import useMedia from '#src/hooks/useMedia';
+import { generateMovieJSONLD } from '#src/utils/structuredData';
+import { copyToClipboard } from '#src/utils/dom';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import useRecommendedPlaylist from '#src/hooks/useRecommendationsPlaylist';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { addQueryParam } from '#src/utils/history';
+import { isAllowedToWatch } from '#src/utils/cleeng';
+import { addConfigParamToUrl } from '#src/utils/configOverride';
 
 type MovieRouteParams = {
   id: string;
@@ -56,12 +55,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   const { hasItem, saveItem, removeItem } = useFavorites();
 
-  const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
-  const watchHistoryItem =
-    item &&
-    watchHistory.find(({ mediaid, progress }) => {
-      return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
-    });
+  const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
   const progress = watchHistoryItem?.progress;
 
   // General state

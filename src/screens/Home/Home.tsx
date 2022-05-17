@@ -6,23 +6,22 @@ import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import shallow from 'zustand/shallow';
 
-import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
-import { favoritesStore } from '../../stores/FavoritesStore';
-import { useAccountStore } from '../../stores/AccountStore';
-import { useConfigStore } from '../../stores/ConfigStore';
-import { PersonalShelf } from '../../enum/PersonalShelf';
-import { useWatchHistory } from '../../stores/WatchHistoryStore';
-import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '../../components/Shelf/Shelf';
-import usePlaylist from '../../hooks/usePlaylist';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
-import scrollbarSize from '../../utils/dom';
-import { cardUrl } from '../../utils/formatting';
-
 import styles from './Home.module.scss';
 
+import PlaylistContainer from '#src/containers/Playlist/PlaylistContainer';
+import { favoritesStore } from '#src/stores/FavoritesStore';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
+import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
+import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '#src/components/Shelf/Shelf';
+import usePlaylist from '#src/hooks/usePlaylist';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import scrollbarSize from '#src/utils/dom';
+import { cardUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import type { Content } from '#types/Config';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 
 type rowData = {
   index: number;
@@ -44,9 +43,8 @@ const Home = (): JSX.Element => {
   const content: Content[] = config?.content;
   const itemData: ItemData = createItemData(content);
 
-  const { getPlaylist: getWatchHistoryPlaylist, getDictionary: getWatchHistoryDictionary } = useWatchHistory();
-  const watchHistory = getWatchHistoryPlaylist();
-  const watchHistoryDictionary = getWatchHistoryDictionary();
+  const watchHistory = useWatchHistoryStore((state) => state.getPlaylist());
+  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
   const favorites = favoritesStore.useState((state) => state.favorites);
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);

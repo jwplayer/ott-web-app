@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
 import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
 import { useFavorites } from '../../stores/FavoritesStore';
-import { useWatchHistory } from '../../stores/WatchHistoryStore';
+import { useWatchHistoryStore } from '../../stores/WatchHistoryStore';
 import { PLAYLIST_LIMIT } from '../../config';
 
 import type { Playlist, PlaylistItem } from '#types/playlist';
@@ -36,8 +36,7 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, c
 
   const { getPlaylist: getFavoritesPlaylist } = useFavorites();
   const favoritesPlaylist = getFavoritesPlaylist();
-  const { getPlaylist: getWatchHistoryPlaylist } = useWatchHistory();
-  const watchHistoryPlaylist = getWatchHistoryPlaylist();
+  const watchHistoryPlaylist = useWatchHistoryStore((state) => state.getPlaylist());
 
   useEffect(() => {
     if (playlist && onPlaylistUpdate) onPlaylistUpdate(playlist);
