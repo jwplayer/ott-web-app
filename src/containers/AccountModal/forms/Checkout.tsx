@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import { addQueryParam } from '#src/utils/history';
 import useForm from '#src/hooks/useForm';
@@ -25,7 +26,7 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const [order, offer, paymentMethods] = useCheckoutStore((s) => [s.order, s.offer, s.paymentMethods]);
+  const { order, offer, paymentMethods } = useCheckoutStore(({ order, offer, paymentMethods }) => ({ order, offer, paymentMethods }), shallow);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);

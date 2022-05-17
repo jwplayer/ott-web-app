@@ -8,6 +8,7 @@ import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { useAccountStore } from '../../../stores/AccountStore';
 import SubscriptionCancelled from '../../../components/SubscriptionCancelled/SubscriptionCancelled';
 import { formatDate } from '../../../utils/formatting';
+
 import { updateSubscription } from '#src/stores/AccountController';
 
 const CancelSubscription = () => {

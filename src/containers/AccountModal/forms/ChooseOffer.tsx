@@ -3,6 +3,7 @@ import { object, SchemaOf, mixed } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
 import { addQueryParam, removeQueryParam } from '#src/utils/history';
 import { ConfigStore } from '#src/stores/ConfigStore';
@@ -20,7 +21,7 @@ const ChooseOffer = () => {
   const { cleengSandbox, json } = config;
   const accessModel = ConfigStore.useState((s) => s.accessModel);
   const hasOffer = accessModel === 'SVOD';
-  const [offer, setOffer] = useCheckoutStore((s) => [s.offer, s.setOffer]);
+  const { offer, setOffer } = useCheckoutStore(({ offer, setOffer }) => ({ offer, setOffer }), shallow);
 
   const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
   const cleengYearlyOffer = json?.cleengYearlyOffer as string;
