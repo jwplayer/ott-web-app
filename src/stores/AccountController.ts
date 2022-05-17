@@ -5,11 +5,12 @@ import { getPaymentDetails, getTransactions } from '#src/services/subscription.s
 import * as accountService from '#src/services/account.service';
 import { fetchCustomerConsents, fetchPublisherConsents, updateCustomer } from '#src/services/account.service';
 import { favoritesStore, restoreFavorites, serializeFavorites } from '#src/stores/FavoritesStore';
-import { restoreWatchHistory, serializeWatchHistory, watchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { AuthData, Capture, CustomerConsent, JwtDetails } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
+import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -221,7 +222,7 @@ export const register = async (email: string, password: string) => {
 
 export const updatePersonalShelves = async () => {
   return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const { watchHistory } = watchHistoryStore.getRawState();
+    const { watchHistory } = useWatchHistoryStore.getState();
     const { favorites } = favoritesStore.getRawState();
 
     if (!watchHistory && !favorites) return;
