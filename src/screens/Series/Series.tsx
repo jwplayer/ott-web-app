@@ -8,7 +8,6 @@ import shallow from 'zustand/shallow';
 import styles from './Series.module.scss';
 
 import CardGrid from '#src/components/CardGrid/CardGrid';
-import { useFavorites } from '#src/stores/FavoritesStore';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL } from '#src/utils/formatting';
 import Filter from '#src/components/Filter/Filter';
@@ -26,6 +25,8 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { isAllowedToWatch } from '#src/utils/cleeng';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { addQueryParam } from '#src/utils/history';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { removeItem, saveItem } from '#src/stores/FavoritesController';
 
 type SeriesRouteParams = {
   id: string;
@@ -58,14 +59,13 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
-  const { hasItem, saveItem, removeItem } = useFavorites();
+  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
 
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
   const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
   const progress = watchHistoryItem?.progress;
 
   // General state
-  const isFavorited = !!item && hasItem(item);
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 

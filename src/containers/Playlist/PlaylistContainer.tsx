@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { PersonalShelf, PersonalShelves } from '../../enum/PersonalShelf';
-import usePlaylist, { UsePlaylistResult } from '../../hooks/usePlaylist';
-import { useFavorites } from '../../stores/FavoritesStore';
-import { useWatchHistoryStore } from '../../stores/WatchHistoryStore';
-import { PLAYLIST_LIMIT } from '../../config';
-
+import { PersonalShelf, PersonalShelves } from '#src/enum/PersonalShelf';
+import usePlaylist, { UsePlaylistResult } from '#src/hooks/usePlaylist';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { PLAYLIST_LIMIT } from '#src/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type ChildrenParams = {
@@ -34,8 +33,7 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, c
 
   let playlist = fetchedPlaylist;
 
-  const { getPlaylist: getFavoritesPlaylist } = useFavorites();
-  const favoritesPlaylist = getFavoritesPlaylist();
+  const favoritesPlaylist = useFavoritesStore((state) => state.getPlaylist());
   const watchHistoryPlaylist = useWatchHistoryStore((state) => state.getPlaylist());
 
   useEffect(() => {

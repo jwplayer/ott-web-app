@@ -7,7 +7,6 @@ import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
 
-import { useFavorites } from '#src/stores/FavoritesStore';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#src/../types/playlist';
@@ -25,6 +24,8 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { addQueryParam } from '#src/utils/history';
 import { isAllowedToWatch } from '#src/utils/cleeng';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { removeItem, saveItem } from '#src/stores/FavoritesController';
 
 type MovieRouteParams = {
   id: string;
@@ -53,13 +54,12 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
 
-  const { hasItem, saveItem, removeItem } = useFavorites();
+  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
 
   const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
   const progress = watchHistoryItem?.progress;
 
   // General state
-  const isFavorited = !!item && hasItem(item);
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
