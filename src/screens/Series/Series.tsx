@@ -20,7 +20,7 @@ import { filterSeries, getFiltersFromSeries } from '../../utils/collection';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistory, watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 import { isAllowedToWatch } from '../../utils/cleeng';
 import { useAccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';

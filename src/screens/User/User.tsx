@@ -19,7 +19,7 @@ import { useFavorites } from '../../stores/FavoritesStore';
 import { useAccountStore } from '../../stores/AccountStore';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './User.module.scss';
 

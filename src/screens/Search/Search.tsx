@@ -14,7 +14,7 @@ import { cardUrl } from '../../utils/formatting';
 import useFirstRender from '../../hooks/useFirstRender';
 import useSearchPlaylist from '../../hooks/useSearchPlaylist';
 import { useAccountStore } from '../../stores/AccountStore';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Search.module.scss';
 

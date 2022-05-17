@@ -14,7 +14,7 @@ import DynamicBlur from '../../components/DynamicBlur/DynamicBlur';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { addQueryParam } from '../../utils/history';
 import UserMenu from '../../components/UserMenu/UserMenu';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Layout.module.scss';
 

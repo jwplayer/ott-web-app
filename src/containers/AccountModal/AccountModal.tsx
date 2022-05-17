@@ -8,7 +8,7 @@ import PaymentFailed from '../../components/PaymentFailed/PaymentFailed';
 import Welcome from '../../components/Welcome/Welcome';
 import { useAccountStore } from '../../stores/AccountStore';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './AccountModal.module.scss';
 import Login from './forms/Login';

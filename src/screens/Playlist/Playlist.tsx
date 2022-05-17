@@ -10,7 +10,7 @@ import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import Filter from '../../components/Filter/Filter';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { useAccountStore } from '../../stores/AccountStore';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Playlist.module.scss';
 

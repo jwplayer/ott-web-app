@@ -8,7 +8,7 @@ import PersonalDetailsForm from '../../../components/PersonalDetailsForm/Persona
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { addQueryParam } from '../../../utils/history';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { useConfigStore } from '../../../stores/UseConfigStore';
+import { useConfigStore } from '../../../stores/ConfigStore';
 
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
 import { getCaptureStatus, updateCaptureAnswers } from '#src/stores/AccountController';

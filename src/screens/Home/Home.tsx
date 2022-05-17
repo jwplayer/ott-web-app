@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 import { favoritesStore } from '../../stores/FavoritesStore';
 import { useAccountStore } from '../../stores/AccountStore';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import { useWatchHistory } from '../../stores/WatchHistoryStore';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';

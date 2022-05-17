@@ -4,7 +4,7 @@ import * as checkoutService from '../services/checkout.service';
 import type { CreateOrderPayload, Offer, Order, PaymentMethod, UpdateOrderPayload } from '../../types/checkout';
 import { getLocales } from '../services/account.service';
 
-import { useConfigStore } from './UseConfigStore';
+import { useConfigStore } from './ConfigStore';
 import { useAccountStore } from './AccountStore';
 
 type CheckoutStore = {

@@ -10,7 +10,7 @@ import { getOffer } from '../../../services/checkout.service';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { CheckoutStore } from '../../../stores/CheckoutStore';
 import { addQueryParam, removeQueryParam } from '../../../utils/history';
-import { useConfigStore } from '../../../stores/UseConfigStore';
+import { useConfigStore } from '../../../stores/ConfigStore';
 
 import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 

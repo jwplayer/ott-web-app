@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import LoginForm from '../../../components/LoginForm/LoginForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { removeQueryParam } from '../../../utils/history';
-import { useConfigStore } from '../../../stores/UseConfigStore';
+import { useConfigStore } from '../../../stores/ConfigStore';
 
 import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';

@@ -7,7 +7,7 @@ import { fetchCustomerConsents, fetchPublisherConsents, updateCustomer } from '#
 import { favoritesStore, restoreFavorites, serializeFavorites } from '#src/stores/FavoritesStore';
 import { restoreWatchHistory, serializeWatchHistory, watchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { AuthData, Capture, CustomerConsent, JwtDetails } from '#types/account';
-import { useConfigStore } from '#src/stores/UseConfigStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
 

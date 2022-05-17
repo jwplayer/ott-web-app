@@ -6,7 +6,7 @@ import loadConfig, { validateConfig } from '../services/config.service';
 import type { AccessModel, Config, Options } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 import { addScript } from '../utils/dom';
-import { useConfigStore } from '../stores/UseConfigStore';
+import { useConfigStore } from '../stores/ConfigStore';
 
 const defaultConfig: Config = {
   id: '',

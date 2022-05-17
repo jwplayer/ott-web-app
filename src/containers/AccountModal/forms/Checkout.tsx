@@ -11,7 +11,7 @@ import Adyen from '../../../components/Adyen/Adyen';
 import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '../../../utils/formatting';
-import { useConfigStore } from '../../../stores/UseConfigStore';
+import { useConfigStore } from '../../../stores/ConfigStore';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 const Checkout = () => {

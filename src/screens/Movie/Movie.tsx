@@ -18,7 +18,7 @@ import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
 import { watchHistoryStore } from '../../stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '../../config';
-import { useConfigStore } from '../../stores/UseConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 import { useAccountStore } from '../../stores/AccountStore';
 import { addQueryParam } from '../../utils/history';
 import { isAllowedToWatch } from '../../utils/cleeng';
