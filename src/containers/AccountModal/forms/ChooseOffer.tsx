@@ -4,14 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';
-import { getOffer } from '../../../services/checkout.service';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { CheckoutStore } from '../../../stores/CheckoutStore';
-import { addQueryParam, removeQueryParam } from '../../../utils/history';
-import { ConfigStore } from '../../../stores/ConfigStore';
-
+import { addQueryParam, removeQueryParam } from '#src/utils/history';
+import { ConfigStore } from '#src/stores/ConfigStore';
+import { getOffer } from '#src/services/checkout.service';
+import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import ChooseOfferForm from '#src/components/ChooseOfferForm/ChooseOfferForm';
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 
 const ChooseOffer = () => {
@@ -21,7 +20,7 @@ const ChooseOffer = () => {
   const { cleengSandbox, json } = config;
   const accessModel = ConfigStore.useState((s) => s.accessModel);
   const hasOffer = accessModel === 'SVOD';
-  const offer = CheckoutStore.useState((s) => s.offer);
+  const [offer, setOffer] = useCheckoutStore((s) => [s.offer, s.setOffer]);
 
   const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
   const cleengYearlyOffer = json?.cleengYearlyOffer as string;
@@ -42,9 +41,7 @@ const ChooseOffer = () => {
       return setErrors({ form: t('choose_offer.offer_not_found') });
     }
 
-    CheckoutStore.update((s) => {
-      s.offer = offer;
-    });
+    setOffer(offer);
 
     history.push(addQueryParam(history, 'u', 'checkout'));
 
