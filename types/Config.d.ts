@@ -50,4 +50,10 @@ export type Options = {
   shelfTitles?: boolean;
 };
 
-export type AccessModel = 'AVOD' | 'AUTHVOD' | 'SVOD';
+/**
+ * AVOD: Advert based
+ * AUTHVOD: Authorisation based, needs registration
+ * SVOD: Subscription based
+ * TVOD: Transactional based, per item
+ * */
+export type AccessModel = 'AVOD' | 'AUTHVOD' | 'SVOD' | 'TVOD';

@@ -50,7 +50,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
-  const itemRequiresSubscription = item?.requiresSubscription !== 'false'; // || item.free ?
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
@@ -67,9 +66,15 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
-  // User
+  // User, accessModel, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
+  const isItemFree = item?.requiresSubscription === 'false' || !!item?.free;
+
+  const mediaOffers = useMemo(() => filterCleengMediaOffers(item?.productIds), [item]);
+  const hasForcedOffer = mediaOffers?.some((offer) => offer.forced);
+  const skipEntitlement = isItemFree || (subscription && !hasForcedOffer);
+  const { isEntitled } = useEntitlement(mediaOffers, !skipEntitlement);
+  const allowedToWatch = isAllowedToWatch(hasForcedOffer ? 'TVOD' : accessModel, !!user, isItemFree, !!subscription, isEntitled);
 
   // Handlers
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));

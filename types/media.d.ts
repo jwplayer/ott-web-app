@@ -5,3 +5,8 @@ export type Media = {
   title: string;
   playlist: PlaylistItem[];
 };
+
+export type MediaOffer = {
+  offerId: string;
+  forced: boolean;
+};
