@@ -38,6 +38,7 @@ export type PlaylistItem = {
   title: string;
   tracks: Track[];
   variations?: Record<string, unknown>;
+  productIds?: string;
 };
 
 export type Link = {

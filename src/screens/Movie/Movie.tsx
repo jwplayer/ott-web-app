@@ -4,27 +4,28 @@ import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
-import { useFavorites } from '../../stores/FavoritesStore';
-import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
-import type { PlaylistItem } from '../../../types/playlist';
-import VideoComponent from '../../components/Video/Video';
-import ErrorPage from '../../components/ErrorPage/ErrorPage';
-import CardGrid from '../../components/CardGrid/CardGrid';
-import useMedia from '../../hooks/useMedia';
-import { generateMovieJSONLD } from '../../utils/structuredData';
-import { copyToClipboard } from '../../utils/dom';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
-import { watchHistoryStore } from '../../stores/WatchHistoryStore';
-import { VideoProgressMinMax } from '../../config';
-import { ConfigStore } from '../../stores/ConfigStore';
-import { AccountStore } from '../../stores/AccountStore';
-import { addQueryParam } from '../../utils/history';
-import { isAllowedToWatch } from '../../utils/cleeng';
-import { addConfigParamToUrl } from '../../utils/configOverride';
-
 import styles from './Movie.module.scss';
+
+import { useFavorites } from '#src/stores/FavoritesStore';
+import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
+import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
+import type { PlaylistItem } from '#src/../types/playlist';
+import VideoComponent from '#src/components/Video/Video';
+import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import CardGrid from '#src/components/CardGrid/CardGrid';
+import useMedia from '#src/hooks/useMedia';
+import { generateMovieJSONLD } from '#src/utils/structuredData';
+import { copyToClipboard } from '#src/utils/dom';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import useRecommendedPlaylist from '#src/hooks/useRecommendationsPlaylist';
+import { watchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { VideoProgressMinMax } from '#src/config';
+import { ConfigStore } from '#src/stores/ConfigStore';
+import { AccountStore } from '#src/stores/AccountStore';
+import { addQueryParam } from '#src/utils/history';
+import { filterCleengMediaOffers, isAllowedToWatch } from '#src/utils/cleeng';
+import { addConfigParamToUrl } from '#src/utils/configOverride';
+import useEntitlement from '#src/hooks/useEntitlement';
 
 type MovieRouteParams = {
   id: string;
@@ -48,10 +49,14 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
-  const itemRequiresSubscription = item?.requiresSubscription !== 'false';
+  const itemRequiresSubscription = item?.requiresSubscription !== 'false'; // || item.free ?
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
+
+  // AccessModel & entitlement
+  const mediaOffer = useMemo(() => (item?.productIds && filterCleengMediaOffers(item.productIds)) || undefined, [item]);
+  useEntitlement(mediaOffer);
 
   const { hasItem, saveItem, removeItem } = useFavorites();
 
