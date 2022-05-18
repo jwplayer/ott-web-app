@@ -54,10 +54,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
 
-  // AccessModel & entitlement
-  const mediaOffer = useMemo(() => (item?.productIds && filterCleengMediaOffers(item.productIds)) || undefined, [item]);
-  useEntitlement(mediaOffer);
-
   const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
   const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
   const progress = watchHistoryItem?.progress;
