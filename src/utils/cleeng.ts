@@ -20,10 +20,13 @@ export const isAllowedToWatch = (
 
 export const filterCleengMediaOffers = (offerIds: string = ''): MediaOffer[] => {
   return offerIds
+    .replace(/\s/g, '')
     .split(',')
     .reduce<MediaOffer[]>(
       (offers, offerId) =>
-        offerId?.indexOf('cleeng:') === 0 ? [...offers, { offerId: offerId.slice(offerId.indexOf(':')), forced: offerId[0] === '!' }] : offers,
+        offerId.indexOf('cleeng:') === 0 || offerId?.indexOf('!cleeng:') === 0
+          ? [...offers, { offerId: offerId.slice(offerId.indexOf(':') + 1), forced: offerId[0] === '!' }]
+          : offers,
       [],
     );
 };
