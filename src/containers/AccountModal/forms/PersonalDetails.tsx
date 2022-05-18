@@ -7,11 +7,11 @@ import { useQuery } from 'react-query';
 import PersonalDetailsForm from '../../../components/PersonalDetailsForm/PersonalDetailsForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import { addQueryParam } from '../../../utils/history';
-import { getCaptureStatus, updateCaptureAnswers } from '../../../stores/AccountStore';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { ConfigStore } from '../../../stores/ConfigStore';
+import { useConfigStore } from '../../../stores/ConfigStore';
 
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
+import { getCaptureStatus, updateCaptureAnswers } from '#src/stores/AccountController';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
@@ -20,7 +20,7 @@ const yupConditional = (required: boolean, message: string) => {
 const PersonalDetails = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const accessModel = useConfigStore((s) => s.accessModel);
   const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});

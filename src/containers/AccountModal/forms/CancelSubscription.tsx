@@ -5,14 +5,16 @@ import { useHistory } from 'react-router';
 import CancelSubscriptionForm from '../../../components/CancelSubscriptionForm/CancelSubscriptionForm';
 import { removeQueryParam } from '../../../utils/history';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { AccountStore, updateSubscription } from '../../../stores/AccountStore';
+import { useAccountStore } from '../../../stores/AccountStore';
 import SubscriptionCancelled from '../../../components/SubscriptionCancelled/SubscriptionCancelled';
 import { formatDate } from '../../../utils/formatting';
+
+import { updateSubscription } from '#src/stores/AccountController';
 
 const CancelSubscription = () => {
   const { t } = useTranslation('account');
   const history = useHistory();
-  const subscription = AccountStore.useState((s) => s.subscription);
+  const subscription = useAccountStore((s) => s.subscription);
   const [cancelled, setCancelled] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

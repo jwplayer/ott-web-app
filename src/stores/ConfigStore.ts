@@ -1,15 +1,15 @@
-import { Store } from 'pullstate';
+import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
 
-type ConfigStore = {
+type ConfigState = {
   configLocation: string;
   isLoading: boolean;
   config: Config;
   accessModel: AccessModel;
 };
 
-export const ConfigStore = new Store<ConfigStore>({
+export const useConfigStore = createStore<ConfigState>('ConfigStore', () => ({
   configLocation: '',
   isLoading: false,
   config: {
@@ -27,4 +27,4 @@ export const ConfigStore = new Store<ConfigStore>({
     },
   },
   accessModel: 'SVOD',
-});
+}));

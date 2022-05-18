@@ -2,10 +2,11 @@ import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
-import { AccountStore } from '../../stores/AccountStore';
+import { useAccountStore } from '../../stores/AccountStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
-import { UIStore } from '../../stores/UIStore';
+import { useUIStore } from '../../stores/UIStore';
 import Button from '../../components/Button/Button';
 import MarkdownComponent from '../../components/MarkdownComponent/MarkdownComponent';
 import Header from '../../components/Header/Header';
@@ -14,7 +15,7 @@ import DynamicBlur from '../../components/DynamicBlur/DynamicBlur';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { addQueryParam } from '../../utils/history';
 import UserMenu from '../../components/UserMenu/UserMenu';
-import { ConfigStore } from '../../stores/ConfigStore';
+import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Layout.module.scss';
 
@@ -25,15 +26,19 @@ type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   const history = useHistory();
   const { t } = useTranslation('common');
-  const config = ConfigStore.useState((s) => s.config);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
-  const blurImage = UIStore.useState((s) => s.blurImage);
-  const searchQuery = UIStore.useState((s) => s.searchQuery);
-  const searchActive = UIStore.useState((s) => s.searchActive);
-  const userMenuOpen = UIStore.useState((s) => s.userMenuOpen);
+  const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
+    ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({
+      blurImage,
+      searchQuery,
+      searchActive,
+      userMenuOpen,
+    }),
+    shallow,
+  );
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const isLoggedIn = !!AccountStore.useState((state) => state.user);
+  const isLoggedIn = !!useAccountStore((state) => state.user);
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
@@ -48,17 +53,17 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   }, [searchActive]);
 
   const searchButtonClickHandler = () => {
-    UIStore.update((s) => {
-      s.searchActive = true;
-      s.preSearchPage = history.location;
+    useUIStore.setState({
+      searchActive: true,
+      preSearchPage: history.location,
     });
   };
 
   const closeSearchButtonClickHandler = () => {
     resetSearchQuery();
 
-    UIStore.update((s) => {
-      s.searchActive = false;
+    useUIStore.setState({
+      searchActive: false,
     });
   };
 
@@ -71,8 +76,8 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   const toggleUserMenu = (value: boolean) =>
-    UIStore.update((state) => {
-      state.userMenuOpen = value;
+    useUIStore.setState({
+      userMenuOpen: value,
     });
 
   const renderUserActions = () => {

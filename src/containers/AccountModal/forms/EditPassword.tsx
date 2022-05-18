@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
-import { changePassword } from '../../../stores/AccountStore';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import type { EditPasswordFormData } from '../../../../types/account';
-import EditPasswordForm from '../../../components/EditPasswordForm/EditPasswordForm';
-import useQueryParam from '../../../hooks/useQueryParam';
-import { addQueryParams } from '../../../utils/formatting';
+import type { EditPasswordFormData } from '#types/account';
+import EditPasswordForm from '#src/components/EditPasswordForm/EditPasswordForm';
+import { changePassword } from '#src/stores/AccountController';
+import useQueryParam from '#src/hooks/useQueryParam';
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import { addQueryParams } from '#src/utils/formatting';
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation('account');

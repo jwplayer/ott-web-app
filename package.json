@@ -30,7 +30,6 @@
     "jwt-decode": "^3.1.2",
     "lodash.merge": "^4.6.2",
     "memoize-one": "^5.2.1",
-    "pullstate": "^1.22.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
@@ -39,7 +38,8 @@
     "react-router-dom": "^5.2.0",
     "react-virtualized": "^9.22.3",
     "wicg-inert": "^3.1.1",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "zustand": "^3.6.9"
   },
   "devDependencies": {
     "@codeceptjs/configure": "^0.8.0",

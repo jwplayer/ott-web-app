@@ -3,28 +3,29 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-
-import { useFavorites } from '../../stores/FavoritesStore';
-import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { cardUrl, movieURL, videoUrl } from '../../utils/formatting';
-import type { PlaylistItem } from '../../../types/playlist';
-import VideoComponent from '../../components/Video/Video';
-import ErrorPage from '../../components/ErrorPage/ErrorPage';
-import CardGrid from '../../components/CardGrid/CardGrid';
-import useMedia from '../../hooks/useMedia';
-import { generateMovieJSONLD } from '../../utils/structuredData';
-import { copyToClipboard } from '../../utils/dom';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import useRecommendedPlaylist from '../../hooks/useRecommendationsPlaylist';
-import { watchHistoryStore } from '../../stores/WatchHistoryStore';
-import { VideoProgressMinMax } from '../../config';
-import { ConfigStore } from '../../stores/ConfigStore';
-import { AccountStore } from '../../stores/AccountStore';
-import { addQueryParam } from '../../utils/history';
-import { isAllowedToWatch } from '../../utils/cleeng';
-import { addConfigParamToUrl } from '../../utils/configOverride';
+import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
+
+import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
+import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
+import type { PlaylistItem } from '#src/../types/playlist';
+import VideoComponent from '#src/components/Video/Video';
+import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import CardGrid from '#src/components/CardGrid/CardGrid';
+import useMedia from '#src/hooks/useMedia';
+import { generateMovieJSONLD } from '#src/utils/structuredData';
+import { copyToClipboard } from '#src/utils/dom';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import useRecommendedPlaylist from '#src/hooks/useRecommendationsPlaylist';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { addQueryParam } from '#src/utils/history';
+import { isAllowedToWatch } from '#src/utils/cleeng';
+import { addConfigParamToUrl } from '#src/utils/configOverride';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { removeItem, saveItem } from '#src/stores/FavoritesController';
 
 type MovieRouteParams = {
   id: string;
@@ -39,8 +40,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const feedId = searchParams.get('l');
 
   // Config
-  const { options, recommendationsPlaylist, siteName } = ConfigStore.useState((s) => s.config);
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { options, recommendationsPlaylist, siteName } = config;
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 
@@ -53,24 +54,17 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
 
-  const { hasItem, saveItem, removeItem } = useFavorites();
+  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
 
-  const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
-  const watchHistoryItem =
-    item &&
-    watchHistory.find(({ mediaid, progress }) => {
-      return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
-    });
+  const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
   const progress = watchHistoryItem?.progress;
 
   // General state
-  const isFavorited = !!item && hasItem(item);
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = AccountStore.useState((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers
