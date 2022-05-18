@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { UIStore } from '../stores/UIStore';
+import { useUIStore } from '../stores/UIStore';
 import type { PlaylistItem } from '../../types/playlist';
 
 const useBlurImageUpdater = (data?: PlaylistItem[] | PlaylistItem) => {
@@ -9,14 +9,14 @@ const useBlurImageUpdater = (data?: PlaylistItem[] | PlaylistItem) => {
 
     if (!targetItem?.image) return;
 
-    UIStore.update((state) => {
-      state.blurImage = targetItem.image;
+    useUIStore.setState({
+      blurImage: targetItem.image,
     });
   }, [data]);
 
   return useCallback((image: string) => {
-    UIStore.update((state) => {
-      state.blurImage = image;
+    useUIStore.setState({
+      blurImage: image,
     });
   }, []);
 };

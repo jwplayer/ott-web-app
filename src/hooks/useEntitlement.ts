@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 
 import type { GetEntitlementsResponse } from '../../types/checkout';
 
-import { ConfigStore } from '#src/stores/ConfigStore';
-import { AccountStore } from '#src/stores/AccountStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
 import { getEntitlements } from '#src/services/checkout.service';
 
 export type UseEntitlementResult = {
@@ -20,8 +20,8 @@ type QueryResult = {
 };
 
 const useEntitlement: UseEntitlement = (offerIds = [], enabled = true) => {
-  const sandbox = ConfigStore.useState(({ config }) => config?.cleengSandbox);
-  const jwt = AccountStore.useState(({ auth }) => auth?.jwt);
+  const sandbox = useConfigStore(({ config }) => config?.cleengSandbox);
+  const jwt = useAccountStore(({ auth }) => auth?.jwt);
 
   const entitlementQueries = useQueries(
     offerIds.map((offerId) => ({

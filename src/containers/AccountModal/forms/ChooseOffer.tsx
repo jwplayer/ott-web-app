@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react';
-import { object, SchemaOf, mixed } from 'yup';
+import { mixed, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
+import shallow from 'zustand/shallow';
 
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';
-import { getOffer } from '../../../services/checkout.service';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { CheckoutStore } from '../../../stores/CheckoutStore';
-import { addQueryParam, removeQueryParam } from '../../../utils/history';
-import { ConfigStore } from '../../../stores/ConfigStore';
-
+import { addQueryParam, removeQueryParam } from '#src/utils/history';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import { getOffer } from '#src/services/checkout.service';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import ChooseOfferForm from '#src/components/ChooseOfferForm/ChooseOfferForm';
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
 
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = ConfigStore.useState((s) => s.config);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { cleengSandbox, json } = config;
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
   const hasOffer = accessModel === 'SVOD';
-  const offer = CheckoutStore.useState((s) => s.offer);
+  const { offer, setOffer } = useCheckoutStore(({ offer, setOffer }) => ({ offer, setOffer }), shallow);
 
   const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
   const cleengYearlyOffer = json?.cleengYearlyOffer as string;
@@ -42,9 +41,7 @@ const ChooseOffer = () => {
       return setErrors({ form: t('choose_offer.offer_not_found') });
     }
 
-    CheckoutStore.update((s) => {
-      s.offer = offer;
-    });
+    setOffer(offer);
 
     history.push(addQueryParam(history, 'u', 'checkout'));
 

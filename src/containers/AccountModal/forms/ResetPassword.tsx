@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
-import { resetPassword, AccountStore, logout } from '../../../stores/AccountStore';
-import { removeQueryParam, addQueryParam } from '../../../utils/history';
+import { useAccountStore } from '../../../stores/AccountStore';
+import { addQueryParam, removeQueryParam } from '../../../utils/history';
 import ResetPasswordForm from '../../../components/ResetPasswordForm/ResetPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import ForgotPasswordForm from '../../../components/ForgotPasswordForm/ForgotPasswordForm';
@@ -14,6 +14,8 @@ import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { addQueryParams } from '../../../utils/formatting';
 import { logDev } from '../../../utils/common';
 
+import { logout, resetPassword } from '#src/stores/AccountController';
+
 type Prop = {
   type: 'confirmation' | 'forgot' | 'reset' | 'edit';
 };
@@ -21,7 +23,7 @@ type Prop = {
 const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const { t } = useTranslation('account');
   const history = useHistory();
-  const user = AccountStore.useState((state) => state.user);
+  const user = useAccountStore((state) => state.user);
   const [resetPasswordSubmitting, setResetPasswordSubmitting] = useState<boolean>(false);
 
   const cancelClickHandler = () => {

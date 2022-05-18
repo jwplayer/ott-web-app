@@ -1,21 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
-import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
-import { CheckoutStore, createOrder, updateOrder, getPaymentMethods, paymentWithoutDetails, adyenPayment, paypalPayment } from '../../../stores/CheckoutStore';
-import { addQueryParam } from '../../../utils/history';
-import useForm from '../../../hooks/useForm';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import Adyen from '../../../components/Adyen/Adyen';
-import PayPal from '../../../components/PayPal/PayPal';
-import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
-import { addQueryParams } from '../../../utils/formatting';
-import { reloadActiveSubscription } from '../../../stores/AccountStore';
-import { ConfigStore } from '../../../stores/ConfigStore';
+import CheckoutForm from '#src/components/CheckoutForm/CheckoutForm';
+import { addQueryParam } from '#src/utils/history';
+import useForm from '#src/hooks/useForm';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import Adyen from '#src/components/Adyen/Adyen';
+import PayPal from '#src/components/PayPal/PayPal';
+import NoPaymentRequired from '#src/components/NoPaymentRequired/NoPaymentRequired';
+import { addQueryParams } from '#src/utils/formatting';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import { adyenPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
+import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 const Checkout = () => {
-  const { cleengSandbox } = ConfigStore.useState((s) => s.config);
+  const { cleengSandbox } = useConfigStore((s) => s.config);
   const { t } = useTranslation('account');
   const history = useHistory();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -24,7 +26,7 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const { order, offer, paymentMethods } = CheckoutStore.useState((s) => s);
+  const { order, offer, paymentMethods } = useCheckoutStore(({ order, offer, paymentMethods }) => ({ order, offer, paymentMethods }), shallow);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);

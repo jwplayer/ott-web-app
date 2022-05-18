@@ -3,10 +3,11 @@ import type { RouteComponentProps } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
 
-import { useFavorites } from '#src/stores/FavoritesStore';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#src/../types/playlist';
@@ -18,13 +19,13 @@ import { generateMovieJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '#src/hooks/useRecommendationsPlaylist';
-import { watchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { VideoProgressMinMax } from '#src/config';
-import { ConfigStore } from '#src/stores/ConfigStore';
-import { AccountStore } from '#src/stores/AccountStore';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
 import { addQueryParam } from '#src/utils/history';
 import { filterCleengMediaOffers, isAllowedToWatch } from '#src/utils/cleeng';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
+import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import useEntitlement from '#src/hooks/useEntitlement';
 
 type MovieRouteParams = {
@@ -40,8 +41,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const feedId = searchParams.get('l');
 
   // Config
-  const { options, recommendationsPlaylist, siteName } = ConfigStore.useState((s) => s.config);
-  const accessModel = ConfigStore.useState((s) => s.accessModel);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { options, recommendationsPlaylist, siteName } = config;
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 
@@ -58,24 +59,16 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const mediaOffer = useMemo(() => (item?.productIds && filterCleengMediaOffers(item.productIds)) || undefined, [item]);
   useEntitlement(mediaOffer);
 
-  const { hasItem, saveItem, removeItem } = useFavorites();
-
-  const watchHistory = watchHistoryStore.useState((s) => s.watchHistory);
-  const watchHistoryItem =
-    item &&
-    watchHistory.find(({ mediaid, progress }) => {
-      return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
-    });
+  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
+  const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
   const progress = watchHistoryItem?.progress;
 
   // General state
-  const isFavorited = !!item && hasItem(item);
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User
-  const user = AccountStore.useState((state) => state.user);
-  const subscription = AccountStore.useState((state) => state.subscription);
+  const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
 
   // Handlers
