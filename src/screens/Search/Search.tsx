@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
-import { UIStore } from '../../stores/UIStore';
+import { useUIStore } from '../../stores/UIStore';
 import useSearchQueryUpdater from '../../hooks/useSearchQueryUpdater';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import type { PlaylistItem } from '../../../types/playlist';
@@ -33,7 +33,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const { siteName, searchPlaylist, options } = config;
 
   const firstRender = useFirstRender();
-  const searchQuery = UIStore.useState((s) => s.searchQuery);
+  const searchQuery = useUIStore((state) => state.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
   const history = useHistory();
   const { isFetching, error, data: { playlist } = { playlist: [] } } = useSearchPlaylist(searchPlaylist || '', query, firstRender);
@@ -55,9 +55,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   }, [firstRender, query, searchQuery, updateSearchQuery]);
 
   const onCardClick = (playlistItem: PlaylistItem) => {
-    UIStore.update((s) => {
-      s.searchQuery = '';
-      s.searchActive = false;
+    useUIStore.setState({
+      searchQuery: '',
+      searchActive: false,
     });
 
     history.push(cardUrl(playlistItem, searchPlaylist));
