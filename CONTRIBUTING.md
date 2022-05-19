@@ -2,6 +2,8 @@
 
 Thanks for considering contributing to our repo! We appreciate all contributions to the app, large or small. Please take the time to read through this document before making a contribution to ensure a fun and effective process for everyone involved.
 
+You can read the [Developer Guidelines](./docs/developer-guidelines.md) for advice on how to get your development environment setup.
+
 ## General guidelines
 
 Are you having trouble getting started with the OTT Web App, configuration, or customization? If so, please check the [developer docs](https://github.com/jwplayer/ott-web-app/tree/develop/docs) before submitting an issue here.
