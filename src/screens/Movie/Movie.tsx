@@ -23,7 +23,6 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { addQueryParam } from '#src/utils/history';
-import { filterCleengMediaOffers, isAllowedToWatch } from '#src/utils/cleeng';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
 import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import useEntitlement from '#src/hooks/useEntitlement';
@@ -62,15 +61,9 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
-  // User, accessModel, entitlement
+  // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const isItemFree = item?.requiresSubscription === 'false' || !!item?.free;
-
-  const mediaOffers = useMemo(() => filterCleengMediaOffers(item?.productIds), [item]);
-  const hasForcedOffer = mediaOffers?.some((offer) => offer.forced);
-  const skipEntitlement = isItemFree || (subscription && !hasForcedOffer);
-  const { isEntitled } = useEntitlement(mediaOffers, !skipEntitlement);
-  const allowedToWatch = isAllowedToWatch(hasForcedOffer ? 'TVOD' : accessModel, !!user, isItemFree, !!subscription, isEntitled);
+  const { isEntitled, isMediaEntitlementLoading, hasPremierOffer } = useEntitlement(item);
 
   // Handlers
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
@@ -96,18 +89,21 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
     return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
   }, [history, id, playlist, searchParams]);
 
-  const formatStartWatchingLabel = (): string => {
-    if (!allowedToWatch && !user) return t('sign_up_to_start_watching');
-    if (!allowedToWatch && !subscription) return t('complete_your_subscription');
-    return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
-  };
+  const startWatchingLabel = useMemo((): string => {
+    if (isEntitled) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
+    if (!user) return t('sign_up_to_start_watching');
+    if (!subscription && !hasPremierOffer) return t('complete_your_subscription');
+
+    return t('buy');
+  }, [isEntitled, user, subscription, hasPremierOffer, progress, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    if (!allowedToWatch && !user) return history.push(addQueryParam(history, 'u', 'create-account'));
-    if (!allowedToWatch && !subscription) return history.push('/u/payments');
+    if (isEntitled) return item && history.push(videoUrl(item, searchParams.get('r'), true));
+    if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
+    if (!subscription && !hasPremierOffer) return history.push('/u/payments');
 
-    return item && history.push(videoUrl(item, searchParams.get('r'), true));
-  }, [allowedToWatch, user, subscription, history, item, searchParams]);
+    return history.push(addQueryParam(history, 'u', 'choose-offer'));
+  }, [isEntitled, user, subscription, history, item, searchParams, hasPremierOffer]);
 
   // Effects
   useEffect(() => {
@@ -122,7 +118,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   }, [id]);
 
   // UI
-  if (isLoading && !item) return <LoadingOverlay />;
+  if ((isLoading && !item) || isMediaEntitlementLoading) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title={t('video_not_found')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;
@@ -159,9 +155,9 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         item={item}
         feedId={feedId ?? undefined}
         trailerItem={trailerItem}
-        play={play && allowedToWatch}
-        allowedToWatch={allowedToWatch}
-        startWatchingLabel={formatStartWatchingLabel()}
+        play={play && isEntitled}
+        isEntitled={isEntitled}
+        startWatchingLabel={startWatchingLabel}
         onStartWatchingClick={handleStartWatchingClick}
         goBack={goBack}
         onComplete={handleComplete}

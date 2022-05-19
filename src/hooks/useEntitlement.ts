@@ -1,51 +1,67 @@
 import { useQueries } from 'react-query';
 import { useMemo } from 'react';
+import shallow from 'zustand/shallow';
 
 import type { GetEntitlementsResponse } from '../../types/checkout';
-import type { MediaOffer } from '../../types/media';
+import { filterCleengMediaOffers } from '../utils/cleeng';
+import type { PlaylistItem } from '../../types/playlist';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getEntitlements } from '#src/services/checkout.service';
 
-export type UseEntitlementResult = {
-  isEntitled: boolean;
-  isLoading: boolean;
-  error: unknown | null;
+export type QueriesResult = {
+  isMediaEntitled: boolean;
+  isMediaEntitlementLoading: boolean;
 };
 
-export type UseEntitlement = (mediaOffers?: MediaOffer[], enabled?: boolean) => UseEntitlementResult;
+export type UseEntitlementResult = {
+  isEntitled: boolean;
+  isMediaEntitlementLoading: boolean;
+  hasMediaOffers: boolean;
+  hasPremierOffer: boolean;
+};
+
+export type UseEntitlement = (playlistItem?: PlaylistItem) => UseEntitlementResult;
 
 type QueryResult = {
   responseData?: GetEntitlementsResponse;
 };
 
-const useEntitlement: UseEntitlement = (mediaOffers = [], enabled = true) => {
-  const sandbox = useConfigStore(({ config }) => config?.cleengSandbox);
-  const jwt = useAccountStore(({ auth }) => auth?.jwt);
+const useEntitlement: UseEntitlement = (playlistItem) => {
+  const { sandbox, accessModel } = useConfigStore(({ config, accessModel }) => ({ sandbox: config?.cleengSandbox, accessModel }), shallow);
+  const { user, subscription, jwt } = useAccountStore(({ user, subscription, auth }) => ({ user, subscription, jwt: auth?.jwt }), shallow);
 
-  const entitlementQueries = useQueries(
+  const isItemFree = playlistItem?.requiresSubscription === 'false' || !!playlistItem?.free;
+  const mediaOffers = useMemo(() => filterCleengMediaOffers(playlistItem?.productIds) || [], [playlistItem]);
+  const hasPremierOffer = mediaOffers?.some((offer) => offer.premier);
+  const skipMediaEntitlement = isItemFree || (subscription && !hasPremierOffer);
+
+  const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['mediaOffer', offerId],
-      queryFn: () => getEntitlements({ offerId: offerId || '' }, sandbox, jwt || ''),
-      enabled: enabled && !!jwt && !!offerId,
+      queryFn: () => getEntitlements({ offerId }, sandbox, jwt || ''),
+      enabled: !!playlistItem && !!jwt && !!offerId && !skipMediaEntitlement,
     })),
   );
 
-  const evaluateEntitlement = (queryResult: QueryResult) => !!queryResult?.responseData?.accessGranted;
+  const { isMediaEntitled, isMediaEntitlementLoading } = useMemo(() => {
+    const isEntitled = mediaEntitlementQueries.some((item) => item.isSuccess && (item as QueryResult)?.responseData?.accessGranted);
 
-  return useMemo(
-    () =>
-      entitlementQueries.reduce<UseEntitlementResult>(
-        (prev, cur) => ({
-          isLoading: prev.isLoading || cur.isLoading,
-          error: prev.error || cur.error,
-          isEntitled: prev.isEntitled || (cur.isSuccess && evaluateEntitlement(cur as QueryResult)),
-        }),
-        { isEntitled: false, isLoading: false, error: null },
-      ),
-    [entitlementQueries],
-  );
+    return { isMediaEntitled: isEntitled, isMediaEntitlementLoading: !isEntitled && mediaEntitlementQueries.some((item) => item.isLoading) };
+  }, [mediaEntitlementQueries]);
+
+  const isEntitled = useMemo(() => {
+    if (isItemFree) return true;
+    if (accessModel === 'AVOD' && !mediaOffers) return true;
+    if (accessModel === 'AUTHVOD' && !!user && !mediaOffers) return true;
+    if (accessModel === 'SVOD' && !!subscription && !hasPremierOffer) return true;
+    if (accessModel === 'SVOD' && isMediaEntitled) return true;
+
+    return false;
+  }, [accessModel, user, subscription]);
+
+  return { isEntitled, isMediaEntitlementLoading, hasMediaOffers: mediaOffers?.length > 0, hasPremierOffer };
 };
 
 export default useEntitlement;

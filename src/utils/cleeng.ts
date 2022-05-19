@@ -1,31 +1,48 @@
 import type { AccessModel } from '../../types/Config';
 import type { MediaOffer } from '../../types/media';
+import type { PlaylistItem } from '../../types/playlist';
 
-export const isAllowedToWatch = (
-  accessModel: AccessModel,
-  isLoggedIn: boolean,
-  isItemFree: boolean,
-  hasSubscription: boolean,
-  isEntitled?: boolean,
-): boolean => {
-  if (accessModel === 'AVOD') return true;
-  if (isItemFree) return true;
-  if (accessModel === 'AUTHVOD' && isLoggedIn) return true;
-  if (accessModel === 'SVOD' && hasSubscription) return true;
-  if (accessModel === 'SVOD' && isEntitled) return true;
-  if (accessModel === 'TVOD' && isEntitled) return true;
+/**
+ * The appearance of the lock icon, depending on the access model
+ *
+ * @param accessModel Platform AccessModel, excluding TVOD, which can only be applied per item
+ * @param isLoggedIn
+ * @param hasSubscription
+ * @param playlistItem Used to define if the items is 'free' or has mediaOffers
+ * @returns
+ */
 
-  return false;
+export const showLock = (accessModel: AccessModel, isLoggedIn: boolean, hasSubscription: boolean, playlistItem: PlaylistItem): boolean => {
+  const isItemFree = playlistItem?.requiresSubscription === 'false' || !!playlistItem?.free;
+  const mediaOffers = filterCleengMediaOffers(playlistItem?.productIds);
+
+  if (isItemFree) return false;
+  if (accessModel === 'AVOD' && !mediaOffers) return false;
+  if (accessModel === 'AUTHVOD' && isLoggedIn && !mediaOffers) return false;
+  if (accessModel === 'SVOD' && hasSubscription && !mediaOffers?.some((offer) => offer.premier)) return false;
+
+  return true;
 };
 
-export const filterCleengMediaOffers = (offerIds: string = ''): MediaOffer[] => {
+/**
+ * Filters Cleeng MediaOffers from offers string
+ *
+ * @param offerIds String of comma separated key/value pairs, i.e. "cleeng:S916977979_NL, !cleeng:S91633379_NL, other_vendor:xyz123"
+ * Key is vendor, value is the offerId.
+ * Vendor keys starting with an exclamation mark represent a 'Premier Access' offer (TVOD only)
+ *
+ * @returns An array of MediaOffer { offerId, premier }
+ */
+export const filterCleengMediaOffers = (offerIds?: string): MediaOffer[] | null => {
+  if (!offerIds) return null;
+
   return offerIds
     .replace(/\s/g, '')
     .split(',')
     .reduce<MediaOffer[]>(
       (offers, offerId) =>
-        offerId.indexOf('cleeng:') === 0 || offerId?.indexOf('!cleeng:') === 0
-          ? [...offers, { offerId: offerId.slice(offerId.indexOf(':') + 1), forced: offerId[0] === '!' }]
+        offerId.indexOf('cleeng:') === 0 || offerId.indexOf('!cleeng:') === 0
+          ? [...offers, { offerId: offerId.slice(offerId.indexOf(':') + 1), premier: offerId[0] === '!' }]
           : offers,
       [],
     );

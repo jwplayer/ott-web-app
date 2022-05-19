@@ -31,7 +31,7 @@ type Props = {
   feedId?: string;
   trailerItem?: PlaylistItem;
   play: boolean;
-  allowedToWatch: boolean;
+  isEntitled: boolean;
   startWatchingLabel: string;
   progress?: number;
   onStartWatchingClick: () => void;
@@ -57,7 +57,7 @@ const Video: React.FC<Props> = ({
   feedId,
   trailerItem,
   play,
-  allowedToWatch,
+  isEntitled,
   startWatchingLabel,
   onStartWatchingClick,
   progress,
@@ -134,7 +134,7 @@ const Video: React.FC<Props> = ({
               variant="contained"
               size="large"
               label={startWatchingLabel}
-              startIcon={allowedToWatch ? <Play /> : undefined}
+              startIcon={isEntitled ? <Play /> : undefined}
               onClick={onStartWatchingClick}
               active={play}
               fullWidth={breakpoint < Breakpoint.md}

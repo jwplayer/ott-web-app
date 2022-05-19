@@ -8,5 +8,5 @@ export type Media = {
 
 export type MediaOffer = {
   offerId: string;
-  forced: boolean;
+  premier: boolean;
 };
