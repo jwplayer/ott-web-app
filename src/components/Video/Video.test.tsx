@@ -29,7 +29,7 @@ describe('<Video>', () => {
         title="Test video"
         play
         item={item}
-        allowedToWatch={true}
+        isEntitled={true}
         startWatchingLabel="Start watching"
         onStartWatchingClick={vi.fn()}
         goBack={vi.fn()}
