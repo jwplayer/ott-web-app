@@ -2,17 +2,16 @@ import React, { useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import Card from '../Card/Card';
-import TileDock from '../TileDock/TileDock';
-import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
-import ChevronLeft from '../../icons/ChevronLeft';
-import ChevronRight from '../../icons/ChevronRight';
-import { findPlaylistImageForWidth } from '../../utils/collection';
-import type { AccessModel } from '../../../types/Config';
-import { showLock } from '../../utils/cleeng';
-
 import styles from './Shelf.module.scss';
 
+import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
+import ChevronLeft from '#src/icons/ChevronLeft';
+import ChevronRight from '#src/icons/ChevronRight';
+import { findPlaylistImageForWidth } from '#src/utils/collection';
+import type { AccessModel } from '#types/Config';
+import { showLock } from '#src/utils/cleeng';
+import TileDock from '#src/components/TileDock/TileDock';
+import Card from '#src/components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const tileBreakpoints: Breakpoints = {

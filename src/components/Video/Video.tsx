@@ -2,25 +2,24 @@ import React, { useState, useEffect, useCallback } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import CollapsibleText from '../CollapsibleText/CollapsibleText';
-import Cinema from '../../containers/Cinema/Cinema';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
-import Favorite from '../../icons/Favorite';
-import PlayTrailer from '../../icons/PlayTrailer';
-import Share from '../../icons/Share';
-import Check from '../../icons/Check';
-import ArrowLeft from '../../icons/ArrowLeft';
-import Play from '../../icons/Play';
-import Button from '../Button/Button';
-import IconButton from '../IconButton/IconButton';
-import { formatDuration } from '../../utils/formatting';
-import Modal from '../Modal/Modal';
-import FavoriteBorder from '../../icons/FavoriteBorder';
-import Fade from '../Animation/Fade/Fade';
-import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
-
 import styles from './Video.module.scss';
 
+import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
+import Button from '#src/components/Button/Button';
+import IconButton from '#src/components/IconButton/IconButton';
+import Modal from '#src/components/Modal/Modal';
+import Fade from '#src/components/Animation/Fade/Fade';
+import ModalCloseButton from '#src/components/ModalCloseButton/ModalCloseButton';
+import Cinema from '#src/containers/Cinema/Cinema';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import Favorite from '#src/icons/Favorite';
+import PlayTrailer from '#src/icons/PlayTrailer';
+import Share from '#src/icons/Share';
+import Check from '#src/icons/Check';
+import ArrowLeft from '#src/icons/ArrowLeft';
+import Play from '#src/icons/Play';
+import { formatDuration } from '#src/utils/formatting';
+import FavoriteBorder from '#src/icons/FavoriteBorder';
 import type { PlaylistItem } from '#types/playlist';
 
 type Poster = 'fading' | 'normal';

@@ -5,10 +5,9 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import useEntitlement from '../../hooks/useEntitlement';
-
 import styles from './Series.module.scss';
 
+import useEntitlement from '#src/hooks/useEntitlement';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL } from '#src/utils/formatting';

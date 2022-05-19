@@ -1,15 +1,15 @@
 import React from 'react';
 import type { GridCellProps } from 'react-virtualized';
 
-import type { PlaylistItem } from '../../../types/playlist';
-import VirtualizedGrid from '../VirtualizedGrid/VirtualizedGrid';
-import Card from '../Card/Card';
-import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
-import { chunk, findPlaylistImageForWidth } from '../../utils/collection';
-import type { AccessModel } from '../../../types/Config';
-import { showLock } from '../../utils/cleeng';
-
 import styles from './CardGrid.module.scss';
+
+import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
+import { chunk, findPlaylistImageForWidth } from '#src/utils/collection';
+import { showLock } from '#src/utils/cleeng';
+import Card from '#src/components/Card/Card';
+import VirtualizedGrid from '#src/components/VirtualizedGrid/VirtualizedGrid';
+import type { AccessModel } from '#types/Config';
+import type { PlaylistItem } from '#types/playlist';
 
 const defaultCols: Breakpoints = {
   [Breakpoint.xs]: 2,

@@ -2,10 +2,9 @@ import { useQueries } from 'react-query';
 import { useMemo } from 'react';
 import shallow from 'zustand/shallow';
 
-import type { GetEntitlementsResponse } from '../../types/checkout';
-import { filterCleengMediaOffers } from '../utils/cleeng';
-import type { PlaylistItem } from '../../types/playlist';
-
+import type { GetEntitlementsResponse } from '#types/checkout';
+import { filterCleengMediaOffers } from '#src/utils/cleeng';
+import type { PlaylistItem } from '#types/playlist';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getEntitlements } from '#src/services/checkout.service';
