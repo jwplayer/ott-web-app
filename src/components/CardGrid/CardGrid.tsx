@@ -7,7 +7,7 @@ import Card from '../Card/Card';
 import useBreakpoint, { Breakpoint, Breakpoints } from '../../hooks/useBreakpoint';
 import { chunk, findPlaylistImageForWidth } from '../../utils/collection';
 import type { AccessModel } from '../../../types/Config';
-import { isAllowedToWatch } from '../../utils/cleeng';
+import { showLock } from '../../utils/cleeng';
 
 import styles from './CardGrid.module.scss';
 
@@ -77,7 +77,7 @@ function CardGrid({
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
             currentLabel={currentCardLabel}
-            isLocked={!isAllowedToWatch(accessModel, isLoggedIn, playlistItem.requiresSubscription !== 'false', hasSubscription)}
+            isLocked={showLock(accessModel, isLoggedIn, hasSubscription, playlistItem)}
           />
         </div>
       </div>

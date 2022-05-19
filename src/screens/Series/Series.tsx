@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
+import useEntitlement from '../../hooks/useEntitlement';
+
 import styles from './Series.module.scss';
 
 import CardGrid from '#src/components/CardGrid/CardGrid';
@@ -22,7 +24,6 @@ import { filterSeries, getFiltersFromSeries } from '#src/utils/collection';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import { isAllowedToWatch } from '#src/utils/cleeng';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { addQueryParam } from '#src/utils/history';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
@@ -51,7 +52,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // Media
   const { isLoading, error, data: item } = useMedia(episodeId);
-  const itemRequiresSubscription = item?.requiresSubscription !== 'false';
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist = { title: '', playlist: [] } } = usePlaylist(id, undefined, true, false);
@@ -69,9 +69,9 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
-  // User
+  // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const allowedToWatch = isAllowedToWatch(accessModel, !!user, itemRequiresSubscription, !!subscription);
+  const { isEntitled, isMediaEntitlementLoading, hasPremierOffer } = useEntitlement(item);
 
   // Handlers
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
@@ -97,18 +97,21 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
     return nextItem && history.push(episodeURL(seriesPlaylist, nextItem.mediaid, true));
   }, [history, item, seriesPlaylist]);
 
-  const formatStartWatchingLabel = (): string => {
-    if (!allowedToWatch && !user) return t('sign_up_to_start_watching');
-    if (!allowedToWatch && !subscription) return t('complete_your_subscription');
-    return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
-  };
+  const startWatchingLabel = useMemo((): string => {
+    if (isEntitled) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
+    if (!user) return t('sign_up_to_start_watching');
+    if (!subscription && !hasPremierOffer) return t('complete_your_subscription');
+
+    return t('buy');
+  }, [isEntitled, progress, user, subscription, hasPremierOffer, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    if (!allowedToWatch && !user) return history.push(addQueryParam(history, 'u', 'create-account'));
-    if (!allowedToWatch && !subscription) return history.push('/u/payments');
+    if (isEntitled) return history.push(episodeURL(seriesPlaylist, item?.mediaid, true));
+    if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
+    if (!subscription && !hasPremierOffer) return history.push('/u/payments');
 
-    return history.push(episodeURL(seriesPlaylist, item?.mediaid, true));
-  }, [allowedToWatch, user, history, subscription, seriesPlaylist, item?.mediaid]);
+    return history.push(addQueryParam(history, 'u', 'choose-offer'));
+  }, [isEntitled, user, history, subscription, seriesPlaylist, item?.mediaid, hasPremierOffer]);
 
   // Effects
   useEffect(() => {
@@ -129,7 +132,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   }, [history, searchParams, seriesPlaylist]);
 
   // UI
-  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
+  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e') || isMediaEntitlementLoading) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title={t('episode_not_found')} />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title={t('series_not_found')} />;
 
@@ -168,10 +171,10 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         item={item}
         feedId={feedId ?? undefined}
         trailerItem={trailerItem}
-        play={play && allowedToWatch}
-        allowedToWatch={allowedToWatch}
+        play={play && isEntitled}
+        isEntitled={isEntitled}
         progress={progress}
-        startWatchingLabel={formatStartWatchingLabel()}
+        startWatchingLabel={startWatchingLabel}
         onStartWatchingClick={handleStartWatchingClick}
         goBack={goBack}
         onComplete={handleComplete}

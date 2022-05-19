@@ -9,7 +9,7 @@ import ChevronLeft from '../../icons/ChevronLeft';
 import ChevronRight from '../../icons/ChevronRight';
 import { findPlaylistImageForWidth } from '../../utils/collection';
 import type { AccessModel } from '../../../types/Config';
-import { isAllowedToWatch } from '../../utils/cleeng';
+import { showLock } from '../../utils/cleeng';
 
 import styles from './Shelf.module.scss';
 
@@ -85,7 +85,7 @@ const Shelf: React.FC<ShelfProps> = ({
         featured={featured}
         disabled={!isInView}
         loading={loading}
-        isLocked={!isAllowedToWatch(accessModel, isLoggedIn, item.requiresSubscription !== 'false', hasSubscription)}
+        isLocked={showLock(accessModel, isLoggedIn, hasSubscription, item)}
       />
     ),
     [enableCardTitles, featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory, accessModel, isLoggedIn, hasSubscription],
