@@ -14,6 +14,31 @@
   font-size: 18px;
 }
 
+.offerGroupSwitch {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  margin-bottom: 24px;
+
+  > input  {
+    &:checked + .label {
+      border-radius: 4px;
+      transform: scale(1.02);
+    }
+  }
+}
+
+.offerGroupLabel {
+  transition: transform 0.3s ease-out;
+  
+  &:nth-child(2) {
+    border-radius: 4px 0 0 4px;
+  }
+  &:nth-child(4) {
+    border-radius: 0 4px 4px 0;
+  }
+}
+
 .offers {
   display: flex;
   margin: 0 -4px 24px;

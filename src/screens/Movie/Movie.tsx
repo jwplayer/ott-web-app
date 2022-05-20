@@ -7,10 +7,11 @@ import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
 
+import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
-import type { PlaylistItem } from '#src/../types/playlist';
+import type { PlaylistItem } from '#types/playlist';
 import VideoComponent from '#src/components/Video/Video';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import CardGrid from '#src/components/CardGrid/CardGrid';
@@ -63,7 +64,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled, isMediaEntitlementLoading, hasPremierOffer } = useEntitlement(item);
+  const { isEntitled, isMediaEntitlementLoading, mediaOffers, hasPremierOffer } = useEntitlement(item);
+  const setRequestedMediaOffers = useCheckoutStore((s) => s.setRequestedMediaOffers);
 
   // Handlers
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
@@ -116,6 +118,16 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   }, [id]);
+
+  useEffect(() => {
+    if (isEntitled) return;
+
+    setRequestedMediaOffers(mediaOffers.length ? mediaOffers : null);
+
+    return () => {
+      setRequestedMediaOffers(null);
+    };
+  }, [isEntitled, mediaOffers, setRequestedMediaOffers]);
 
   // UI
   if ((isLoading && !item) || isMediaEntitlementLoading) return <LoadingOverlay />;
