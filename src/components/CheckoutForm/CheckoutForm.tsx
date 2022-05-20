@@ -134,14 +134,14 @@ const CheckoutForm: React.FC<Props> = ({
                 <td className={styles.couponCell}>
                   {t('checkout.coupon_discount')}
                   <br />
-                  <small>
-                    (
-                    {t('checkout.discount_period', {
-                      count: order.discount.periods,
-                      period: t(`periods.${offer.period}`, { count: order.discount.periods }),
-                    })}
-                    )
-                  </small>
+                  {!!offer.period && (
+                    <small>
+                      {t('checkout.discount_period', {
+                        count: order.discount.periods,
+                        period: t(`periods.${offer.period}`, { count: order.discount.periods }),
+                      })}
+                    </small>
+                  )}
                 </td>
                 <td>{formatPrice(-order.priceBreakdown.discountAmount * (1 + order.taxRate), order.currency, offer.customerCountry)}</td>
               </tr>

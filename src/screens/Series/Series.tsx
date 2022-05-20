@@ -70,7 +70,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled, isMediaEntitlementLoading, hasPremierOffer } = useEntitlement(item);
+  const { isEntitled, isMediaEntitlementLoading, mediaOffers } = useEntitlement(item);
 
   // Handlers
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
@@ -99,18 +99,18 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const startWatchingLabel = useMemo((): string => {
     if (isEntitled) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
     if (!user) return t('sign_up_to_start_watching');
-    if (!subscription && !hasPremierOffer) return t('complete_your_subscription');
+    if (mediaOffers.length) return t('buy');
 
-    return t('buy');
-  }, [isEntitled, progress, user, subscription, hasPremierOffer, t]);
+    return t('complete_your_subscription');
+  }, [isEntitled, progress, user, mediaOffers, t]);
 
   const handleStartWatchingClick = useCallback(() => {
     if (isEntitled) return history.push(episodeURL(seriesPlaylist, item?.mediaid, true));
     if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
-    if (!subscription && !hasPremierOffer) return history.push('/u/payments');
+    if (mediaOffers.length) return history.push(addQueryParam(history, 'u', 'choose-offer'));
 
-    return history.push(addQueryParam(history, 'u', 'choose-offer'));
-  }, [isEntitled, user, history, subscription, seriesPlaylist, item?.mediaid, hasPremierOffer]);
+    return history.push('/u/payments');
+  }, [isEntitled, user, history, seriesPlaylist, item?.mediaid, mediaOffers]);
 
   // Effects
   useEffect(() => {

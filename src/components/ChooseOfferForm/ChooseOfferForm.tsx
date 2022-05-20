@@ -166,7 +166,7 @@ const ChooseOfferForm: React.FC<Props> = ({
               ariaLabel={offer.offerTitle}
               secondBenefit={
                 !!offer.durationPeriod && !!offer.durationAmount
-                  ? t('choose_offer.tvod_access', { period: offer.durationPeriod, amount: offer.durationAmount })
+                  ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
                   : undefined
               }
             />
