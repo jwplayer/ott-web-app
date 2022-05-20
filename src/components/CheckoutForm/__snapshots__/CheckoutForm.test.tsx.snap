@@ -35,7 +35,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
         class="orderInfo"
       >
         <p
-          class="orderTitle"
+          class="orderTitle orderTitleMargin"
         >
           checkout.monthly
         </p>

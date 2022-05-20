@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
 import CheckoutForm from '#src/components/CheckoutForm/CheckoutForm';
-import { addQueryParam } from '#src/utils/history';
+import { addQueryParam, removeQueryParam } from '#src/utils/history';
 import useForm from '#src/hooks/useForm';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import Adyen from '#src/components/Adyen/Adyen';
@@ -26,7 +26,15 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const { order, offer, paymentMethods } = useCheckoutStore(({ order, offer, paymentMethods }) => ({ order, offer, paymentMethods }), shallow);
+  const { order, offer, offerType, paymentMethods } = useCheckoutStore(
+    ({ order, offer, offerType, paymentMethods }) => ({ order, offer, offerType, paymentMethods }),
+    shallow,
+  );
+
+  const paymentSuccessUrl = useMemo(
+    () => (offerType === 'svod' ? addQueryParams(window.location.href, { u: 'welcome' }) : removeQueryParam(history, 'u')),
+    [history, offerType],
+  );
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);
@@ -101,7 +109,7 @@ const Checkout = () => {
       setPaymentError(undefined);
       await paymentWithoutDetails();
       await reloadActiveSubscription({ delay: 1000 });
-      history.replace(addQueryParam(history, 'u', 'welcome'));
+      history.replace(paymentSuccessUrl);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setPaymentError(error.message);
@@ -115,10 +123,9 @@ const Checkout = () => {
     try {
       setPaymentError(undefined);
       setUpdatingOrder(true);
-      const successUrl = addQueryParams(window.location.href, { u: 'welcome' });
       const cancelUrl = addQueryParams(window.location.href, { u: 'paypal-cancelled' });
       const errorUrl = addQueryParams(window.location.href, { u: 'paypal-error' });
-      const response = await paypalPayment(successUrl, cancelUrl, errorUrl);
+      const response = await paypalPayment(paymentSuccessUrl, cancelUrl, errorUrl);
 
       if (response.redirectUrl) {
         window.location.href = response.redirectUrl;
@@ -140,7 +147,7 @@ const Checkout = () => {
         setPaymentError(undefined);
         await adyenPayment(data.data.paymentMethod);
         await reloadActiveSubscription({ delay: 1000 });
-        history.replace(addQueryParam(history, 'u', 'welcome'));
+        history.replace(paymentSuccessUrl);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setPaymentError(error.message);
@@ -149,7 +156,7 @@ const Checkout = () => {
 
       setUpdatingOrder(false);
     },
-    [history],
+    [history, paymentSuccessUrl],
   );
 
   const renderPaymentMethod = () => {
@@ -171,7 +178,7 @@ const Checkout = () => {
   };
 
   // loading state
-  if (!offer || !order || !paymentMethods) {
+  if (!offer || !order || !paymentMethods || !offerType) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
@@ -183,6 +190,7 @@ const Checkout = () => {
     <CheckoutForm
       order={order}
       offer={offer}
+      offerType={offerType}
       onBackButtonClick={backButtonClickHandler}
       paymentMethods={paymentMethods}
       paymentMethodId={paymentMethodId}

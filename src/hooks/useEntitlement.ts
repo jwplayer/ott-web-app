@@ -19,7 +19,6 @@ export type UseEntitlementResult = {
   isEntitled: boolean;
   isMediaEntitlementLoading: boolean;
   mediaOffers: MediaOffer[];
-  hasPremierOffer: boolean;
 };
 
 export type UseEntitlement = (playlistItem?: PlaylistItem) => UseEntitlementResult;
@@ -30,7 +29,10 @@ type QueryResult = {
 
 const useEntitlement: UseEntitlement = (playlistItem) => {
   const { sandbox, accessModel } = useConfigStore(({ config, accessModel }) => ({ sandbox: config?.cleengSandbox, accessModel }), shallow);
-  const { user, subscription, jwt } = useAccountStore(({ user, subscription, auth }) => ({ user, subscription, jwt: auth?.jwt }), shallow);
+  const { user, subscription, transactions, jwt } = useAccountStore(
+    ({ user, subscription, transactions, auth }) => ({ user, subscription, transactions, jwt: auth?.jwt }),
+    shallow,
+  );
 
   const isItemFree = playlistItem?.requiresSubscription === 'false' || !!playlistItem?.free;
   const mediaOffers = useMemo(() => filterCleengMediaOffers(playlistItem?.productIds) || [], [playlistItem]);
@@ -39,29 +41,29 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
 
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
-      queryKey: ['mediaOffer', offerId],
+      queryKey: ['mediaOffer', offerId, transactions?.map((t) => t.transactionId).join(',')],
       queryFn: () => getEntitlements({ offerId }, sandbox, jwt || ''),
       enabled: !!playlistItem && !!jwt && !!offerId && !skipMediaEntitlement,
     })),
   );
 
   const { isMediaEntitled, isMediaEntitlementLoading } = useMemo(() => {
-    const isEntitled = mediaEntitlementQueries.some((item) => item.isSuccess && (item as QueryResult)?.responseData?.accessGranted);
+    const isEntitled = mediaEntitlementQueries.some((item) => item.isSuccess && (item.data as QueryResult)?.responseData?.accessGranted);
 
     return { isMediaEntitled: isEntitled, isMediaEntitlementLoading: !isEntitled && mediaEntitlementQueries.some((item) => item.isLoading) };
   }, [mediaEntitlementQueries]);
 
   const isEntitled = useMemo(() => {
     if (isItemFree) return true;
-    if (accessModel === 'AVOD' && !mediaOffers.length) return true;
-    if (accessModel === 'AUTHVOD' && !!user && !mediaOffers.length) return true;
+    if (accessModel === 'AVOD' && (!mediaOffers.length || isMediaEntitled)) return true;
+    if (accessModel === 'AUTHVOD' && !!user && (!mediaOffers.length || isMediaEntitled)) return true;
     if (accessModel === 'SVOD' && !!subscription && !hasPremierOffer) return true;
     if (accessModel === 'SVOD' && isMediaEntitled) return true;
 
     return false;
-  }, [accessModel, user, subscription]);
+  }, [accessModel, user, subscription, mediaOffers.length, hasPremierOffer, isMediaEntitled]);
 
-  return { isEntitled, isMediaEntitlementLoading, mediaOffers, hasPremierOffer };
+  return { isEntitled, isMediaEntitlementLoading, mediaOffers };
 };
 
 export default useEntitlement;

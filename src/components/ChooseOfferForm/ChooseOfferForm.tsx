@@ -117,7 +117,7 @@ const ChooseOfferForm: React.FC<Props> = ({
       <h2 className={styles.title}>{t('choose_offer.subscription')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.all_movies_and_series_of_platform', { siteName })}</h3>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      {!!tvodOffers.length && (
+      {!!tvodOffers.length && (!!yearlyOffer || !!monthlyOffer) && (
         <div className={styles.offerGroupSwitch}>
           <input className={styles.radio} onChange={onChange} type="radio" name="offerType" id="svod" value="svod" checked={values.offerType === 'svod'} />
           <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
@@ -166,7 +166,7 @@ const ChooseOfferForm: React.FC<Props> = ({
               ariaLabel={offer.offerTitle}
               secondBenefit={
                 !!offer.durationPeriod && !!offer.durationAmount
-                  ? t('choose_offer.tvod_access', { period: offer.durationPeriod, amount: offer.durationAmount })
+                  ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
                   : undefined
               }
             />
