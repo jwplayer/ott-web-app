@@ -39,9 +39,12 @@ export type EditPasswordFormData = {
 };
 
 export type OfferPeriodicity = 'monthly' | 'yearly';
+export type OfferType = 'svod' | 'tvod';
 
 export type ChooseOfferFormData = {
+  offerType: OfferType;
   periodicity: OfferPeriodicity;
+  tvodOfferId?: string;
 };
 
 export type RegisterPayload = {

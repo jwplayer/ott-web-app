@@ -1,19 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import Button from '../Button/Button';
-import CheckCircle from '../../icons/CheckCircle';
-import { ConfigContext } from '../../providers/ConfigProvider';
-import type { Offer } from '../../../types/checkout';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import { getOfferPrice } from '../../utils/subscription';
-import DialogBackButton from '../DialogBackButton/DialogBackButton';
-import type { FormErrors } from '../../../types/form';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '../../utils/common';
+import classNames from 'classnames';
 
 import styles from './ChooseOfferForm.module.scss';
 
+import Button from '#src/components/Button/Button';
+import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import DialogBackButton from '#src/components/DialogBackButton/DialogBackButton';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import CheckCircle from '#src/icons/CheckCircle';
+import { ConfigContext } from '#src/providers/ConfigProvider';
+import type { Offer } from '#types/checkout';
+import { getOfferPrice } from '#src/utils/subscription';
+import type { FormErrors } from '#types/form';
+import { IS_DEV_BUILD } from '#src/utils/common';
 import type { ChooseOfferFormData } from '#types/account';
 
 type Props = {
@@ -24,28 +24,92 @@ type Props = {
   onBackButtonClickHandler?: () => void;
   monthlyOffer?: Offer;
   yearlyOffer?: Offer;
+  tvodOffers: Offer[];
   submitting: boolean;
 };
 
-const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, submitting, yearlyOffer, monthlyOffer, onBackButtonClickHandler }: Props) => {
+type OfferBoxProps = {
+  offer: Offer;
+  radioKey: 'periodicity' | 'tvodOfferId';
+  radioValue: string;
+  title: string;
+  ariaLabel: string;
+  secondBenefit?: string;
+  periodString?: string;
+};
+type OfferBox = ({ offer, radioKey, radioValue, title, ariaLabel, secondBenefit, periodString }: OfferBoxProps) => JSX.Element;
+
+const ChooseOfferForm: React.FC<Props> = ({
+  values,
+  errors,
+  onChange,
+  onSubmit,
+  submitting,
+  yearlyOffer,
+  monthlyOffer,
+  tvodOffers,
+  onBackButtonClickHandler,
+}: Props) => {
   const { siteName } = useContext(ConfigContext);
   const { t } = useTranslation('account');
 
-  const getFreeTrialText = (offer: Offer) => {
-    if (offer.freeDays > 0) {
-      return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
-    } else if (offer.freePeriods) {
-      // t('periods.day')
-      // t('periods.week')
-      // t('periods.month')
-      // t('periods.year')
-      const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
+  const getFreeTrialText = useCallback(
+    (offer: Offer) => {
+      if (offer.freeDays && offer.freeDays > 0) {
+        return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
+      } else if (offer.freePeriods) {
+        // t('periods.day')
+        // t('periods.week')
+        // t('periods.month')
+        // t('periods.year')
+        const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
 
-      return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
-    }
+        return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
+      }
 
-    return null;
-  };
+      return null;
+    },
+    [t],
+  );
+
+  const OfferBox: OfferBox = ({ offer, radioKey, radioValue, title, ariaLabel, secondBenefit, periodString }) => (
+    <div className={styles.offer}>
+      <input
+        className={styles.radio}
+        onChange={onChange}
+        type="radio"
+        name={radioKey}
+        value={radioValue}
+        id={radioValue}
+        checked={values[radioKey] === radioValue}
+        aria-label={ariaLabel}
+      />
+      <label className={styles.label} htmlFor={radioValue}>
+        <h4 className={styles.offerTitle}>{title}</h4>
+        <hr className={styles.offerDivider} />
+        <ul className={styles.offerBenefits}>
+          {(offer.freeDays && offer.freeDays > 0) || (offer.freePeriods && offer.freePeriods > 0) ? (
+            <li>
+              <CheckCircle /> {getFreeTrialText(offer)}
+            </li>
+          ) : null}
+
+          {!!secondBenefit && (
+            <li>
+              <CheckCircle /> {secondBenefit}
+            </li>
+          )}
+          <li>
+            <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
+          </li>
+        </ul>
+        <div className={styles.fill} />
+        <div className={styles.offerPrice}>
+          {getOfferPrice(offer)} {!!periodString && <small>/{periodString}</small>}
+        </div>
+      </label>
+    </div>
+  );
 
   return (
     <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'choose-offer-form' : undefined} noValidate>
@@ -53,78 +117,63 @@ const ChooseOfferForm: React.FC<Props> = ({ values, errors, onChange, onSubmit, 
       <h2 className={styles.title}>{t('choose_offer.subscription')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.all_movies_and_series_of_platform', { siteName })}</h3>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      <div className={styles.offers}>
-        {monthlyOffer ? (
-          <div className={styles.offer}>
-            <input
-              className={styles.radio}
-              onChange={onChange}
-              type="radio"
-              name="periodicity"
-              value="monthly"
-              id="monthly"
-              checked={values.periodicity === 'monthly'}
-              aria-label={t('choose_offer.monthly_subscription')}
+      {!!tvodOffers.length && (
+        <div className={styles.offerGroupSwitch}>
+          <input className={styles.radio} onChange={onChange} type="radio" name="offerType" id="svod" value="svod" checked={values.offerType === 'svod'} />
+          <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
+            {t('choose_offer.subscription')}
+          </label>
+          <input className={styles.radio} onChange={onChange} type="radio" name="offerType" id="tvod" value="tvod" checked={values.offerType === 'tvod'} />
+          <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="tvod">
+            {t('choose_offer.one_time_only')}
+          </label>
+        </div>
+      )}
+      {values.offerType === 'svod' ? (
+        <div className={styles.offers}>
+          {!!monthlyOffer && (
+            <OfferBox
+              offer={monthlyOffer}
+              radioKey="periodicity"
+              radioValue="monthly"
+              title={t('choose_offer.monthly')}
+              ariaLabel={t('choose_offer.monthly_subscription')}
+              secondBenefit={t('choose_offer.benefits.cancel_anytime')}
+              periodString={t('periods.month')}
             />
-            <label className={styles.label} htmlFor="monthly">
-              <h4 className={styles.offerTitle}>{t('choose_offer.monthly')}</h4>
-              <hr className={styles.offerDivider} />
-              <ul className={styles.offerBenefits}>
-                {monthlyOffer.freeDays > 0 || monthlyOffer.freePeriods > 0 ? (
-                  <li>
-                    <CheckCircle /> {getFreeTrialText(monthlyOffer)}
-                  </li>
-                ) : null}
-                <li>
-                  <CheckCircle /> {t('choose_offer.benefits.cancel_anytime')}
-                </li>
-                <li>
-                  <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
-                </li>
-              </ul>
-              <div className={styles.fill} />
-              <div className={styles.offerPrice}>
-                {getOfferPrice(monthlyOffer)} <small>/{t('periods.month')}</small>
-              </div>
-            </label>
-          </div>
-        ) : null}
-        {yearlyOffer ? (
-          <div className={styles.offer}>
-            <input
-              className={styles.radio}
-              onChange={onChange}
-              type="radio"
-              name="periodicity"
-              value="yearly"
-              id="yearly"
-              checked={values.periodicity === 'yearly'}
-              aria-label={t('choose_offer.yearly_subscription')}
+          )}
+          {!!yearlyOffer && (
+            <OfferBox
+              offer={yearlyOffer}
+              radioKey="periodicity"
+              radioValue="yearly"
+              title={t('choose_offer.yearly')}
+              ariaLabel={t('choose_offer.yearly_subscription')}
+              secondBenefit={t('choose_offer.benefits.cancel_anytime')}
+              periodString={t('periods.year')}
             />
-            <label className={styles.label} htmlFor="yearly">
-              <h4 className={styles.offerTitle}>{t('choose_offer.yearly')}</h4>
-              <hr className={styles.offerDivider} />
-              <ul className={styles.offerBenefits}>
-                {yearlyOffer.freeDays > 0 || yearlyOffer.freePeriods > 0 ? (
-                  <li>
-                    <CheckCircle /> {getFreeTrialText(yearlyOffer)}
-                  </li>
-                ) : null}
-                <li>
-                  <CheckCircle /> {t('choose_offer.benefits.cancel_anytime')}
-                </li>
-                <li>
-                  <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
-                </li>
-              </ul>
-              <div className={styles.fill} />
-              <div className={styles.offerPrice}>
-                {getOfferPrice(yearlyOffer)} <small>/{t('periods.year')}</small>
-              </div>
-            </label>
-          </div>
-        ) : null}
-      </div>
+          )}
+        </div>
+      ) : (
+        <div className={styles.offers}>
+          {tvodOffers?.map((offer) => (
+            <OfferBox
+              offer={offer}
+              radioKey="tvodOfferId"
+              radioValue={offer.offerId}
+              key={offer.offerId}
+              title={offer.offerTitle}
+              ariaLabel={offer.offerTitle}
+              secondBenefit={
+                !!offer.durationPeriod && !!offer.durationAmount
+                  ? t('choose_offer.tvod_access', { period: offer.durationPeriod, amount: offer.durationAmount })
+                  : undefined
+              }
+            />
+          ))}
+        </div>
+      )}
+
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
     </form>

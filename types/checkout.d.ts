@@ -12,7 +12,9 @@ export type Offer = {
   discountedCustomerPriceInclTax: number | null;
   discountedCustomerPriceExclTax: number | null;
   discountPeriods: number | null;
-  offerUrl: string;
+  durationPeriod?: string | null; // Duration isn't sent from Cleeng yet
+  durationAmount?: number | null; //
+  offerUrl: string | null;
   offerTitle: string;
   offerDescription: null;
   active: boolean;
@@ -26,12 +28,12 @@ export type Offer = {
   averageRating: number;
   contentType: string | null;
   period: 'day' | 'week' | 'month' | 'year';
-  freePeriods: number;
-  freeDays: number;
+  freePeriods: number | null;
+  freeDays: number | null;
   expiresAt: string | null;
   accessToTags: string[];
   videoId: string | null;
-  contentExternalId: string | null;
+  contentExternalId: number | null;
   contentExternalData: string | null;
   contentAgeRestriction: string | null;
 };
