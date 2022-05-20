@@ -55,8 +55,8 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
 
   const isEntitled = useMemo(() => {
     if (isItemFree) return true;
-    if (accessModel === 'AVOD' && !mediaOffers.length) return true;
-    if (accessModel === 'AUTHVOD' && !!user && !mediaOffers.length) return true;
+    if (accessModel === 'AVOD' && (!mediaOffers.length || isMediaEntitled)) return true;
+    if (accessModel === 'AUTHVOD' && !!user && (!mediaOffers.length || isMediaEntitled)) return true;
     if (accessModel === 'SVOD' && !!subscription && !hasPremierOffer) return true;
     if (accessModel === 'SVOD' && isMediaEntitled) return true;
 
