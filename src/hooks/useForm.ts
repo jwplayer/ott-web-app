@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ValidationError, AnySchema } from 'yup';
 
 import type { FormErrors, GenericFormValues, UseFormChangeHandler, UseFormBlurHandler, UseFormSubmitHandler } from '#types/form';
@@ -53,9 +53,9 @@ export default function useForm<T extends GenericFormValues>(
     }
   };
 
-  const setValue = (name: keyof T, value: string | boolean) => {
+  const setValue = useCallback((name: keyof T, value: string | boolean) => {
     setValues((current) => ({ ...current, [name]: value }));
-  };
+  }, []);
 
   const handleChange: UseFormChangeHandler = (event) => {
     const name = event.target.name;

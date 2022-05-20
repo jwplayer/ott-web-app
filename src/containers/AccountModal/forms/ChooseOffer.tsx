@@ -18,7 +18,7 @@ import type { Offer } from '#types/checkout';
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { config } = useConfigStore(({ config }) => ({ config }), shallow);
   const { cleengSandbox, json } = config;
   const { setOffer, setOfferType } = useCheckoutStore(({ setOffer, setOfferType }) => ({ setOffer, setOfferType }), shallow);
 
@@ -28,8 +28,12 @@ const ChooseOffer = () => {
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers: requestedMediaOffers || [] }));
 
   // `useQueries` is not strongly typed :-(
-  const { data: monthlyOfferData } = useQuery(['offer', cleengMonthlyOffer], () => getOffer({ offerId: cleengMonthlyOffer }, cleengSandbox));
-  const { data: yearlyOfferData } = useQuery(['offer', cleengYearlyOffer], () => getOffer({ offerId: cleengYearlyOffer }, cleengSandbox));
+  const { data: monthlyOfferData, isLoading: isMonthlyOfferLoading } = useQuery(['offer', cleengMonthlyOffer], () =>
+    getOffer({ offerId: cleengMonthlyOffer }, cleengSandbox),
+  );
+  const { data: yearlyOfferData, isLoading: isYearlyOfferLoading } = useQuery(['offer', cleengYearlyOffer], () =>
+    getOffer({ offerId: cleengYearlyOffer }, cleengSandbox),
+  );
 
   const tvodOfferQueries = useQueries(
     requestedMediaOffers?.map(({ offerId }) => ({
@@ -39,17 +43,20 @@ const ChooseOffer = () => {
     })),
   );
 
+  const isTvodOffersLoading = useMemo(() => tvodOfferQueries.some(({ isLoading }) => isLoading), [tvodOfferQueries]);
+
   const tvodOffers = useMemo(
     () => tvodOfferQueries.reduce<Offer[]>((prev, cur) => (cur.isSuccess && cur.data?.responseData ? [...prev, cur.data.responseData] : prev), []),
     [tvodOfferQueries],
   );
 
-  const hasOffer = accessModel === 'SVOD' || requestedMediaOffers.length;
+  const isOffersLoading = isMonthlyOfferLoading || isYearlyOfferLoading || isTvodOffersLoading;
+  const hasOffer = !!tvodOffers.length || !!monthlyOfferData || !!yearlyOfferData;
 
   useEffect(() => {
     // close auth modal when there are no offers defined in the config
-    if (!hasOffer) history.replace(removeQueryParam(history, 'u'));
-  }, [hasOffer, history]);
+    if (!isOffersLoading && !hasOffer) history.replace(removeQueryParam(history, 'u'));
+  }, [isOffersLoading, hasOffer, history]);
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async (
     { offerType, periodicity, tvodOfferId },
@@ -84,10 +91,18 @@ const ChooseOffer = () => {
     periodicity: 'yearly',
     tvodOfferId: requestedMediaOffers[0]?.offerId,
   };
-  const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
+  const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
+
+  useEffect(() => {
+    if (isOffersLoading) return;
+    if (yearlyOfferData?.responseData || monthlyOfferData?.responseData) return;
+
+    // If all queries are finished, but no yearly/monthly: switch to tvod
+    setValue('offerType', 'tvod');
+  }, [isOffersLoading, setValue, yearlyOfferData?.responseData, monthlyOfferData?.responseData]);
 
   // loading state
-  if (!hasOffer || ((!monthlyOfferData?.responseData || !yearlyOfferData?.responseData) && !tvodOffers.length)) {
+  if (!hasOffer || isOffersLoading) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
