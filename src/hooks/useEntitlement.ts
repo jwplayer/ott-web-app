@@ -10,11 +10,6 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getEntitlements } from '#src/services/checkout.service';
 
-export type QueriesResult = {
-  isMediaEntitled: boolean;
-  isMediaEntitlementLoading: boolean;
-};
-
 export type UseEntitlementResult = {
   isEntitled: boolean;
   isMediaEntitlementLoading: boolean;

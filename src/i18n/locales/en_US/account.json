@@ -54,7 +54,7 @@
     "offer_not_found": "Offer not found, please try reloading the page",
     "one_time_only": "One time only",
     "subscription": "Subscription",
-    "tvod_access": "{{ count }} {{ period }} access",
+    "tvod_access": "{{count}} {{period}} access",
     "yearly": "Yearly",
     "yearly_subscription": "Yearly subscription"
   },

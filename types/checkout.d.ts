@@ -13,7 +13,7 @@ export type Offer = {
   discountedCustomerPriceExclTax: number | null;
   discountPeriods: number | null;
   durationPeriod?: string | null; // Duration isn't sent from Cleeng yet
-  durationAmount?: number | null; //
+  durationAmount?: number | null; // Same for this
   offerUrl: string | null;
   offerTitle: string;
   offerDescription: null;

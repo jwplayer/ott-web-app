@@ -18,14 +18,14 @@ import type { Offer } from '#types/checkout';
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const { config } = useConfigStore(({ config }) => ({ config }), shallow);
+  const config = useConfigStore(({ config }) => config);
   const { cleengSandbox, json } = config;
   const { setOffer, setOfferType } = useCheckoutStore(({ setOffer, setOfferType }) => ({ setOffer, setOfferType }), shallow);
 
   const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
   const cleengYearlyOffer = json?.cleengYearlyOffer as string;
 
-  const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers: requestedMediaOffers || [] }));
+  const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers: requestedMediaOffers || [] }), shallow);
 
   // `useQueries` is not strongly typed :-(
   const { data: monthlyOfferData, isLoading: isMonthlyOfferLoading } = useQuery(['offer', cleengMonthlyOffer], () =>
@@ -37,7 +37,7 @@ const ChooseOffer = () => {
 
   const tvodOfferQueries = useQueries(
     requestedMediaOffers?.map(({ offerId }) => ({
-      queryKey: ['requestedMediaOffer', offerId],
+      queryKey: ['offer', offerId],
       queryFn: () => getOffer({ offerId }, cleengSandbox),
       enabled: !!offerId,
     })),

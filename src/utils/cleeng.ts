@@ -8,7 +8,7 @@ import type { PlaylistItem } from '../../types/playlist';
  * @param accessModel Platform AccessModel, excluding TVOD, which can only be applied per item
  * @param isLoggedIn
  * @param hasSubscription
- * @param playlistItem Used to define if the items is 'free' or has mediaOffers
+ * @param playlistItem Used to define if the item is 'free' or has mediaOffers
  * @returns
  */
 

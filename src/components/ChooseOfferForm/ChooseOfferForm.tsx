@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -53,24 +53,21 @@ const ChooseOfferForm: React.FC<Props> = ({
   const { siteName } = useContext(ConfigContext);
   const { t } = useTranslation('account');
 
-  const getFreeTrialText = useCallback(
-    (offer: Offer) => {
-      if (offer.freeDays && offer.freeDays > 0) {
-        return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
-      } else if (offer.freePeriods) {
-        // t('periods.day')
-        // t('periods.week')
-        // t('periods.month')
-        // t('periods.year')
-        const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
+  const getFreeTrialText = (offer: Offer) => {
+    if (offer.freeDays && offer.freeDays > 0) {
+      return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
+    } else if (offer.freePeriods) {
+      // t('periods.day')
+      // t('periods.week')
+      // t('periods.month')
+      // t('periods.year')
+      const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
 
-        return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
-      }
+      return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
+    }
 
-      return null;
-    },
-    [t],
-  );
+    return null;
+  };
 
   const OfferBox: OfferBox = ({ offer, radioKey, radioValue, title, ariaLabel, secondBenefit, periodString }) => (
     <div className={styles.offer}>
