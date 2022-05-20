@@ -1,18 +1,20 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-
-import Button from '../Button/Button';
-import type { Offer, Order, PaymentMethod } from '../../../types/checkout';
-import IconButton from '../IconButton/IconButton';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import { formatPrice } from '../../utils/formatting';
-import Close from '../../icons/Close';
-import DialogBackButton from '../DialogBackButton/DialogBackButton';
-import PayPal from '../../icons/PayPal';
-import CreditCard from '../../icons/CreditCard';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import classNames from 'classnames';
 
 import styles from './CheckoutForm.module.scss';
+
+import Button from '#src/components/Button/Button';
+import type { Offer, Order, PaymentMethod } from '#types/checkout';
+import IconButton from '#src/components/IconButton/IconButton';
+import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import { formatPrice } from '#src/utils/formatting';
+import Close from '#src/icons/Close';
+import DialogBackButton from '#src/components/DialogBackButton/DialogBackButton';
+import PayPal from '#src/icons/PayPal';
+import CreditCard from '#src/icons/CreditCard';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import type { OfferType } from '#types/account';
 
 type Props = {
   paymentMethodId?: number;
@@ -30,6 +32,7 @@ type Props = {
   couponInputValue: string;
   order: Order;
   offer: Offer;
+  offerType: OfferType;
   renderPaymentMethod?: () => JSX.Element | null;
   submitting: boolean;
 };
@@ -39,6 +42,7 @@ const CheckoutForm: React.FC<Props> = ({
   paymentMethods,
   order,
   offer,
+  offerType,
   onBackButtonClick,
   onPaymentMethodChange,
   couponFormOpen,
@@ -64,7 +68,7 @@ const CheckoutForm: React.FC<Props> = ({
   };
 
   const getFreeTrialText = (offer: Offer) => {
-    if (offer.freeDays > 0) {
+    if (offer.freeDays && offer.freeDays > 0) {
       return t('checkout.days_trial', { count: offer.freeDays });
     } else if (offer.freePeriods) {
       // t('periods.day')
@@ -82,18 +86,20 @@ const CheckoutForm: React.FC<Props> = ({
   const cardPaymentMethod = paymentMethods?.find((method) => method.methodName === 'card');
   const paypalPaymentMethod = paymentMethods?.find((method) => method.methodName === 'paypal');
 
+  const orderTitle = offerType === 'svod' ? (offer.period === 'month' ? t('checkout.monthly') : t('checkout.yearly')) : offer.offerTitle;
+
   return (
     <div>
       <DialogBackButton onClick={onBackButtonClick} />
       <h2 className={styles.title}>{t('checkout.payment_method')}</h2>
       <div className={styles.order}>
         <div className={styles.orderInfo}>
-          <p className={styles.orderTitle}>{offer.period === 'month' ? t('checkout.monthly') : t('checkout.yearly')}</p>
+          <p className={classNames(styles.orderTitle, { [styles.orderTitleMargin]: offerType === 'svod' })}>{orderTitle}</p>
           {order.discount.type === 'trial' ? <p className={styles.orderBillingDate}>{getFreeTrialText(offer)}</p> : null}
         </div>
         <div className={styles.orderPrice}>
           <span>{formatPrice(offer.customerPriceInclTax, order.currency, offer.customerCountry)}</span>
-          <small>/{getOfferPeriod()}</small>
+          {offerType === 'svod' && <small>/{getOfferPeriod()}</small>}
         </div>
       </div>
       <div className={styles.couponForm}>

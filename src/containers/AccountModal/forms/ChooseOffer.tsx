@@ -20,7 +20,7 @@ const ChooseOffer = () => {
   const { t } = useTranslation('account');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { cleengSandbox, json } = config;
-  const { offer, setOffer } = useCheckoutStore(({ offer, setOffer }) => ({ offer, setOffer }), shallow);
+  const { setOffer, setOfferType } = useCheckoutStore(({ setOffer, setOfferType }) => ({ setOffer, setOfferType }), shallow);
 
   const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
   const cleengYearlyOffer = json?.cleengYearlyOffer as string;
@@ -51,19 +51,23 @@ const ChooseOffer = () => {
     if (!hasOffer) history.replace(removeQueryParam(history, 'u'));
   }, [hasOffer, history]);
 
-  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async (formData, { setSubmitting, setErrors }) => {
+  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async (
+    { offerType, periodicity, tvodOfferId },
+    { setSubmitting, setErrors },
+  ) => {
     const offer =
-      formData.offerType === 'svod'
-        ? formData.periodicity === 'monthly'
+      offerType === 'svod'
+        ? periodicity === 'monthly'
           ? monthlyOfferData?.responseData
           : yearlyOfferData?.responseData
-        : tvodOffers.find(({ offerId }) => offerId === formData.tvodOfferId);
+        : tvodOffers.find(({ offerId }) => offerId === tvodOfferId);
 
     if (!offer) {
       return setErrors({ form: t('choose_offer.offer_not_found') });
     }
 
     setOffer(offer);
+    setOfferType(offerType);
 
     history.push(addQueryParam(history, 'u', 'checkout'));
 
@@ -77,7 +81,7 @@ const ChooseOffer = () => {
   });
   const initialValues: ChooseOfferFormData = {
     offerType: 'svod',
-    periodicity: offer?.period === 'month' ? 'monthly' : 'yearly',
+    periodicity: 'yearly',
     tvodOfferId: requestedMediaOffers[0]?.offerId,
   };
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
