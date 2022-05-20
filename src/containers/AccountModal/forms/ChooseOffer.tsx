@@ -49,6 +49,7 @@ const ChooseOffer = () => {
     () => tvodOfferQueries.reduce<Offer[]>((prev, cur) => (cur.isSuccess && cur.data?.responseData ? [...prev, cur.data.responseData] : prev), []),
     [tvodOfferQueries],
   );
+  const premierOfferId = requestedMediaOffers.some((offer) => offer.premier);
 
   const isOffersLoading = isMonthlyOfferLoading || isYearlyOfferLoading || isTvodOffersLoading;
   const hasOffer = !!tvodOffers.length || !!monthlyOfferData || !!yearlyOfferData;
@@ -95,11 +96,11 @@ const ChooseOffer = () => {
 
   useEffect(() => {
     if (isOffersLoading) return;
-    if (yearlyOfferData?.responseData || monthlyOfferData?.responseData) return;
+    if ((yearlyOfferData?.responseData || monthlyOfferData?.responseData) && !premierOfferId) return;
 
-    // If all queries are finished, but no yearly/monthly: switch to tvod
+    // If there is a premium offer, or no montly and yearly: switch to tvod
     setValue('offerType', 'tvod');
-  }, [isOffersLoading, setValue, yearlyOfferData?.responseData, monthlyOfferData?.responseData]);
+  }, [isOffersLoading, setValue, yearlyOfferData?.responseData, monthlyOfferData?.responseData, premierOfferId]);
 
   // loading state
   if (!hasOffer || isOffersLoading) {
@@ -117,8 +118,8 @@ const ChooseOffer = () => {
       values={values}
       errors={errors}
       submitting={submitting}
-      monthlyOffer={monthlyOfferData?.responseData}
-      yearlyOffer={yearlyOfferData?.responseData}
+      monthlyOffer={!premierOfferId ? monthlyOfferData?.responseData : undefined}
+      yearlyOffer={!premierOfferId ? yearlyOfferData?.responseData : undefined}
       tvodOffers={tvodOffers}
     />
   );
