@@ -52,7 +52,12 @@ const ChooseOffer = () => {
   }, [hasOffer, history]);
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async (formData, { setSubmitting, setErrors }) => {
-    const offer = formData.periodicity === 'monthly' ? monthlyOfferData?.responseData : yearlyOfferData?.responseData;
+    const offer =
+      formData.offerType === 'svod'
+        ? formData.periodicity === 'monthly'
+          ? monthlyOfferData?.responseData
+          : yearlyOfferData?.responseData
+        : tvodOffers.find(({ offerId }) => offerId === formData.tvodOfferId);
 
     if (!offer) {
       return setErrors({ form: t('choose_offer.offer_not_found') });
@@ -73,7 +78,7 @@ const ChooseOffer = () => {
   const initialValues: ChooseOfferFormData = {
     offerType: 'svod',
     periodicity: offer?.period === 'month' ? 'monthly' : 'yearly',
-    tvodOfferId: tvodOffers?.[0]?.offerId,
+    tvodOfferId: requestedMediaOffers[0]?.offerId,
   };
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
 
