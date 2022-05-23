@@ -64,7 +64,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled, isMediaEntitlementLoading, mediaOffers } = useEntitlement(item);
+  const { isEntitled, mediaOffers } = useEntitlement(item);
   const setRequestedMediaOffers = useCheckoutStore((s) => s.setRequestedMediaOffers);
 
   // Handlers
@@ -93,8 +93,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   const startWatchingLabel = useMemo((): string => {
     if (isEntitled) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
-    if (!user) return t('sign_up_to_start_watching');
     if (mediaOffers.length) return t('buy');
+    if (!user) return t('sign_up_to_start_watching');
 
     return t('complete_your_subscription');
   }, [isEntitled, user, mediaOffers, progress, t]);
@@ -130,7 +130,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   }, [isEntitled, mediaOffers, setRequestedMediaOffers]);
 
   // UI
-  if ((isLoading && !item) || isMediaEntitlementLoading) return <LoadingOverlay />;
+  if (isLoading && !item) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title={t('video_not_found')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;

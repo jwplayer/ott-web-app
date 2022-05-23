@@ -70,7 +70,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled, isMediaEntitlementLoading, mediaOffers } = useEntitlement(item);
+  const { isEntitled, mediaOffers } = useEntitlement(item);
 
   // Handlers
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
@@ -98,8 +98,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   const startWatchingLabel = useMemo((): string => {
     if (isEntitled) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
-    if (!user) return t('sign_up_to_start_watching');
     if (mediaOffers.length) return t('buy');
+    if (!user) return t('sign_up_to_start_watching');
 
     return t('complete_your_subscription');
   }, [isEntitled, progress, user, mediaOffers, t]);
@@ -131,7 +131,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   }, [history, searchParams, seriesPlaylist]);
 
   // UI
-  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e') || isMediaEntitlementLoading) return <LoadingOverlay />;
+  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
   if ((!isLoading && error) || !item) return <ErrorPage title={t('episode_not_found')} />;
   if (playlistError || !seriesPlaylist) return <ErrorPage title={t('series_not_found')} />;
 
