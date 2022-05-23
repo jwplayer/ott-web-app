@@ -20,7 +20,7 @@ const filterRelatedMediaItem = (playlist: Playlist | undefined, relatedMediaId?:
   return playlist;
 };
 
-export default function usePlaylist (
+export default function usePlaylist(
   playlistId: string,
   params: PlaylistParams = {},
   enabled: boolean = true,
@@ -38,7 +38,7 @@ export default function usePlaylist (
         const { host, drmPolicyId } = signingConfig;
         const token = await getPublicToken(host, 'playlist', playlistId, jwt, params, drmPolicyId);
 
-        const playlist = await getDRMPlaylistById(playlistId, signingConfig.drmPolicyId, {
+        const playlist = await getDRMPlaylistById(playlistId, drmPolicyId, {
           ...params,
           token,
         });
@@ -46,9 +46,7 @@ export default function usePlaylist (
         return filterRelatedMediaItem(playlist, params.related_media_id);
       }
 
-      const playlist = await getPlaylistById(playlistId, {}).then(filterRelatedMediaItem);
-
-      return filterRelatedMediaItem(playlist, params.related_media_id);
+      return filterRelatedMediaItem(await getPlaylistById(playlistId, {}), params.related_media_id);
     },
     {
       enabled: !!playlistId && enabled,
