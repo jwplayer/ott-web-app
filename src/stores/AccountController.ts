@@ -182,6 +182,9 @@ export const logout = async () => {
   useAccountStore.setState({
     auth: null,
     user: null,
+    subscription: null,
+    transactions: null,
+    activePayment: null,
     customerConsents: null,
     publisherConsents: null,
   });
