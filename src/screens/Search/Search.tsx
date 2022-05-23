@@ -37,7 +37,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const searchQuery = useUIStore((state) => state.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
   const history = useHistory();
-  const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(searchPlaylist || '', { search: query }, !firstRender, !!query);
+  const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(searchPlaylist || '', { search: query || '' }, !firstRender, !!query);
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 

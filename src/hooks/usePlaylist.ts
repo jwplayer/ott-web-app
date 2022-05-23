@@ -46,7 +46,7 @@ export default function usePlaylist(
         return filterRelatedMediaItem(playlist, params.related_media_id);
       }
 
-      return filterRelatedMediaItem(await getPlaylistById(playlistId, {}), params.related_media_id);
+      return filterRelatedMediaItem(await getPlaylistById(playlistId, params), params.related_media_id);
     },
     {
       enabled: !!playlistId && enabled,
