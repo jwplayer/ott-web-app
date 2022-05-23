@@ -20,6 +20,13 @@ export type Config = {
   options: Options;
   genres?: string[];
   json?: Record<string, unknown>;
+  contentSigningService?: ContentSigningConfig;
+};
+
+export type ContentSigningConfig = {
+  host: string;
+  drmEnabled?: boolean;
+  drmPolicyId?: string;
 };
 
 export type Simple = {

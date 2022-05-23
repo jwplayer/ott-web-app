@@ -13,11 +13,12 @@ import type { PlaylistItem } from '../../../types/playlist';
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { cardUrl } from '../../utils/formatting';
 import useFirstRender from '../../hooks/useFirstRender';
-import useSearchPlaylist from '../../hooks/useSearchPlaylist';
 import { useAccountStore } from '../../stores/AccountStore';
 import { useConfigStore } from '../../stores/ConfigStore';
 
 import styles from './Search.module.scss';
+
+import usePlaylist from '#src/hooks/usePlaylist';
 
 type SearchRouteParams = {
   query: string;
@@ -36,7 +37,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const searchQuery = useUIStore((state) => state.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
   const history = useHistory();
-  const { isFetching, error, data: { playlist } = { playlist: [] } } = useSearchPlaylist(searchPlaylist || '', query, firstRender);
+  const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(searchPlaylist || '', { search: query }, !firstRender, !!query);
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 

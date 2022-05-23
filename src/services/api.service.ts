@@ -1,5 +1,5 @@
 import { addQueryParams } from '../utils/formatting';
-import type { Playlist, PlaylistItem } from '../../types/playlist';
+import type { Playlist, PlaylistItem, PlaylistParams } from '../../types/playlist';
 import { API_BASE_URL } from '../config';
 
 /**
@@ -21,32 +21,50 @@ export const getDataOrThrow = async (response: Response) => {
 /**
  * Get playlist by id
  * @param {string} id
- * @param relatedMediaId
+ * @param params
  */
-export const getPlaylistById = (id: string, relatedMediaId?: string, limit?: number): Promise<Playlist | undefined> => {
-  const url = addQueryParams(`${API_BASE_URL}/v2/playlists/${id}`, {
-    related_media_id: relatedMediaId,
-    page_limit: limit?.toString(),
-  });
+export const getPlaylistById = (id: string, params: PlaylistParams = {}): Promise<Playlist | undefined> => {
+  const url = addQueryParams(`${API_BASE_URL}/v2/playlists/${id}`, params);
 
   return fetch(url).then(getDataOrThrow);
 };
 
 /**
- * Get search playlist
- * @param {string} playlistId
- * @param {string} query
+ * Get DRM playlist by id
  */
-export const getSearchPlaylist = (playlistId: string, query: string): Promise<Playlist | undefined> => {
-  return fetch(`${API_BASE_URL}/v2/playlists/${playlistId}?search=${encodeURIComponent(query)}`).then(getDataOrThrow);
+export const getDRMPlaylistById = async (id: string, policyId: string, params: PlaylistParams = {}): Promise<Playlist | undefined> => {
+  const url = addQueryParams(`${API_BASE_URL}/v2/playlists/${id}/drm/${policyId}`, params);
+
+  return fetch(url).then(getDataOrThrow);
 };
 
 /**
  * Get media by id
  * @param {string} id
+ * @param {string} [token]
  */
-export const getMediaById = (id: string): Promise<PlaylistItem | undefined> => {
-  return fetch(`${API_BASE_URL}/v2/media/${id}`)
+export const getMediaById = (id: string, token?: string): Promise<PlaylistItem | undefined> => {
+  const url = addQueryParams(`${API_BASE_URL}/v2/media/${id}`, {
+    token,
+  });
+
+  return fetch(url)
+    .then((res) => getDataOrThrow(res) as Promise<Playlist>)
+    .then((data) => data.playlist[0]);
+};
+
+/**
+ * Get media by id
+ * @param {string} id
+ * @param {string} policyId
+ * @param {string} token
+ */
+export const getDRMMediaById = (id: string, policyId: string, token: string): Promise<PlaylistItem | undefined> => {
+  const url = addQueryParams(`${API_BASE_URL}/v2/media/${id}/drm/${policyId}`, {
+    token,
+  });
+
+  return fetch(url)
     .then((res) => getDataOrThrow(res) as Promise<Playlist>)
     .then((data) => data.playlist[0]);
 };
