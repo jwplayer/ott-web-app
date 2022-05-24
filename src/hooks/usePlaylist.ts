@@ -1,57 +1,42 @@
-import { UseBaseQueryResult, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
-import { generatePlaylistPlaceholder } from '../utils/collection';
-import { getDRMPlaylistById, getPlaylistById } from '../services/api.service';
-
+import useSignedUrl from '#src/hooks/useSignedUrl';
+import { getPlaylistById } from '#src/services/api.service';
+import { generatePlaylistPlaceholder } from '#src/utils/collection';
 import type { Playlist, PlaylistParams } from '#types/playlist';
-import { useConfigStore } from '#src/stores/ConfigStore';
-import { getPublicToken } from '#src/services/entitlement.service';
-import { useAccountStore } from '#src/stores/AccountStore';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
-export type UsePlaylistResult<TData = Playlist, TError = unknown> = UseBaseQueryResult<TData, TError>;
-
-const filterRelatedMediaItem = (playlist: Playlist | undefined, relatedMediaId?: string): Playlist | undefined => {
-  if (playlist?.playlist && relatedMediaId) {
-    playlist.playlist = playlist.playlist.filter((playlistItem) => playlistItem.mediaid !== relatedMediaId);
+/**
+ * Filter out media item with the given id
+ */
+const filterMediaItem = (playlist: Playlist | undefined, mediaId?: string) => {
+  if (playlist?.playlist && mediaId) {
+    playlist.playlist = playlist.playlist.filter((playlistItem) => playlistItem.mediaid !== mediaId);
   }
 
   return playlist;
 };
 
-export default function usePlaylist(
-  playlistId: string,
-  params: PlaylistParams = {},
-  enabled: boolean = true,
-  usePlaceholderData: boolean = true,
-): UsePlaylistResult {
-  const jwt = useAccountStore((store) => store.auth?.jwt);
-  const signingConfig = useConfigStore((store) => store.config.contentSigningService);
+export default function usePlaylist(playlistId: string, params: PlaylistParams = {}, enabled: boolean = true, usePlaceholderData: boolean = true) {
+  const { token, signingEnabled, drmEnabled, drmPolicyId, isLoading } = useSignedUrl('playlist', playlistId, params, enabled);
 
-  return useQuery(
-    ['playlist', playlistId, params],
+  const queryResult = useQuery(
+    ['playlist', playlistId, params, token],
     async () => {
-      const drmEnabled = !!signingConfig?.host && !!signingConfig?.drmEnabled && !!signingConfig?.drmPolicyId;
+      const playlist = await getPlaylistById(playlistId, { ...params, token }, drmEnabled ? drmPolicyId : undefined);
 
-      if (drmEnabled && signingConfig?.drmEnabled && signingConfig?.drmPolicyId) {
-        const { host, drmPolicyId } = signingConfig;
-        const token = await getPublicToken(host, 'playlist', playlistId, jwt, params, drmPolicyId);
-
-        const playlist = await getDRMPlaylistById(playlistId, drmPolicyId, {
-          ...params,
-          token,
-        });
-
-        return filterRelatedMediaItem(playlist, params.related_media_id);
-      }
-
-      return filterRelatedMediaItem(await getPlaylistById(playlistId, params), params.related_media_id);
+      return filterMediaItem(playlist, params.related_media_id);
     },
     {
-      enabled: !!playlistId && enabled,
+      enabled: !!playlistId && enabled && (!signingEnabled || !!token),
       placeholderData: usePlaceholderData ? placeholderData : undefined,
       retry: false,
     },
   );
+
+  return {
+    ...queryResult,
+    isLoading: isLoading || queryResult.isLoading,
+  };
 }
