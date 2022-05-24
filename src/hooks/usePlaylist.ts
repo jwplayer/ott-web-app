@@ -2,9 +2,9 @@ import { UseBaseQueryResult, useQuery } from 'react-query';
 
 import { generatePlaylistPlaceholder } from '../utils/collection';
 import { getPlaylistById } from '../services/api.service';
-import { filterMediaOffers } from '../utils/entitlements';
+import { transformMediaItem } from '../utils/media';
 
-import type { Playlist, PlaylistItem } from '#types/playlist';
+import type { Playlist } from '#types/playlist';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
@@ -23,11 +23,7 @@ export default function usePlaylist(
       const playlist = await getPlaylistById(playlistId, relatedMediaId, limit);
 
       // Parse TVOD media offers, if present
-      if (playlist?.playlist)
-        playlist.playlist = playlist.playlist.map((item: PlaylistItem) => ({
-          ...item,
-          mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
-        }));
+      if (playlist?.playlist) playlist.playlist = playlist.playlist.map(transformMediaItem);
 
       return playlist;
     },

@@ -1,5 +1,7 @@
 import type { PlaylistItem } from '../../types/playlist';
 
+import { filterMediaOffers } from './entitlements';
+
 type DeprecatedPlaylistItem = {
   seriesPlayListId?: string;
   seriesPlaylistId?: string;
@@ -36,4 +38,13 @@ export const getSeriesIdFromEpisode = (item: PlaylistItem) => {
   }
 
   return null;
+};
+
+// Transfrom media items
+// Parses productId into MediaOffer[] for all cleeng offers
+export const transformMediaItem = (item: PlaylistItem) => {
+  return {
+    ...item,
+    mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
+  };
 };

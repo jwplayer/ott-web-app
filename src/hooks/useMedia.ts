@@ -1,7 +1,7 @@
 import { UseBaseQueryResult, useQuery } from 'react-query';
 
 import { getMediaById } from '../services/api.service';
-import { filterMediaOffers } from '../utils/entitlements';
+import { transformMediaItem } from '../utils/media';
 
 import type { PlaylistItem } from '#types/playlist';
 
@@ -11,11 +11,10 @@ export default function useMedia(mediaId: string, enabled: boolean = true): UseM
   return useQuery(
     ['media', mediaId],
     async () => {
-      // Parse TVOD media offers, if present
       const media = await getMediaById(mediaId);
-      if (media?.productIds) media.mediaOffers = filterMediaOffers('cleeng', media.productIds);
 
-      return media;
+      // Parse TVOD media offers, if present
+      return !!media && transformMediaItem(media);
     },
     {
       enabled: !!mediaId && enabled,

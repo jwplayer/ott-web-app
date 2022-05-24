@@ -2,6 +2,8 @@ import { useQueries } from 'react-query';
 import { useMemo } from 'react';
 import shallow from 'zustand/shallow';
 
+import { isLocked } from '../utils/entitlements';
+
 import type { MediaOffer } from '#types/media';
 import type { GetEntitlementsResponse } from '#types/checkout';
 import type { PlaylistItem } from '#types/playlist';
@@ -28,16 +30,14 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
     shallow,
   );
 
-  const isItemFree = playlistItem?.requiresSubscription === 'false' || !!playlistItem?.free;
+  const isPreEntitled = playlistItem && !isLocked(accessModel, !!user, !!subscription, playlistItem);
   const mediaOffers = playlistItem?.mediaOffers || [];
-  const hasPremierOffer = mediaOffers?.some((offer) => offer.premier);
-  const skipMediaEntitlement = isItemFree || (subscription && !hasPremierOffer);
 
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['mediaOffer', offerId, transactions?.map((t) => t.transactionId).join(',')],
       queryFn: () => getEntitlements({ offerId }, sandbox, jwt || ''),
-      enabled: !!playlistItem && !!jwt && !!offerId && !skipMediaEntitlement,
+      enabled: !!playlistItem && !!jwt && !!offerId && !isPreEntitled,
     })),
   );
 
@@ -47,26 +47,12 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
     return { isMediaEntitled: isEntitled, isMediaEntitlementLoading: !isEntitled && mediaEntitlementQueries.some((item) => item.isLoading) };
   }, [mediaEntitlementQueries]);
 
-  const isEntitled = useMemo(() => {
-    // Properties that make the item free: Access
-    if (isItemFree) return true;
+  // Properties that make the item free: Access
+  // AVOD - Regular items free, TVOD items need entitlement
+  // AuthVOD - Regular items user should be logged in, TVOD items need entitlement
+  // SVOD - Regular item user should have subscription OR entitlement, premier items only entitlement
 
-    // AVOD - Regular items free, TVOD items need entitlement
-    if (accessModel === 'AVOD' && (!mediaOffers.length || isMediaEntitled)) return true;
-
-    // AuthVOD - Regular items user should be logged in, TVOD items need entitlement
-    if (accessModel === 'AUTHVOD' && !!user && (!mediaOffers.length || isMediaEntitled)) return true;
-
-    // SVOD - Regular item and subscription? Access
-    if (accessModel === 'SVOD' && !!subscription && !hasPremierOffer) return true;
-
-    // SVOD + TVOD - No subscription or item is premier? Need entitlement
-    if (accessModel === 'SVOD' && isMediaEntitled) return true;
-
-    return false;
-  }, [accessModel, user, subscription, mediaOffers.length, hasPremierOffer, isMediaEntitled]);
-
-  return { isEntitled, isMediaEntitlementLoading, mediaOffers };
+  return { isEntitled: !!playlistItem && (isPreEntitled || isMediaEntitled), isMediaEntitlementLoading, mediaOffers };
 };
 
 export default useEntitlement;
