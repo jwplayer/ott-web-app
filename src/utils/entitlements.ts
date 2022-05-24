@@ -13,7 +13,7 @@ import type { PlaylistItem } from '../../types/playlist';
  */
 export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubscription: boolean, playlistItem: PlaylistItem): boolean => {
   const isItemFree = playlistItem?.requiresSubscription === 'false' || !!playlistItem?.free;
-  const mediaOffers = filterCleengMediaOffers(playlistItem?.productIds);
+  const mediaOffers = playlistItem?.mediaOffers;
 
   if (isItemFree) return false;
   if (accessModel === 'AVOD' && !mediaOffers) return false;
@@ -24,7 +24,7 @@ export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubsc
 };
 
 /**
- * Filters Cleeng MediaOffers from offers string
+ * Filters MediaOffers from offers string
  *
  * @param offerIds String of comma separated key/value pairs, i.e. "cleeng:S916977979_NL, !cleeng:S91633379_NL, other_vendor:xyz123"
  * Key is vendor, value is the offerId.
@@ -32,7 +32,7 @@ export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubsc
  *
  * @returns An array of MediaOffer { offerId, premier }
  */
-export const filterCleengMediaOffers = (offerIds?: string): MediaOffer[] | null => {
+export const filterMediaOffers = (vendorPrefix: string, offerIds?: string): MediaOffer[] | null => {
   if (!offerIds) return null;
 
   return offerIds
@@ -40,7 +40,7 @@ export const filterCleengMediaOffers = (offerIds?: string): MediaOffer[] | null 
     .split(',')
     .reduce<MediaOffer[]>(
       (offers, offerId) =>
-        offerId.indexOf('cleeng:') === 0 || offerId.indexOf('!cleeng:') === 0
+        offerId.indexOf(`${vendorPrefix}:`) === 0 || offerId.indexOf(`!${vendorPrefix}:`) === 0
           ? [...offers, { offerId: offerId.slice(offerId.indexOf(':') + 1), premier: offerId[0] === '!' }]
           : offers,
       [],

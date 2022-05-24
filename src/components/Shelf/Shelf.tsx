@@ -9,7 +9,7 @@ import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
 import { findPlaylistImageForWidth } from '#src/utils/collection';
 import type { AccessModel } from '#types/Config';
-import { isLocked } from '#src/utils/cleeng';
+import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#src/components/TileDock/TileDock';
 import Card from '#src/components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
