@@ -15,7 +15,6 @@ import type { PlaylistItem } from '#types/playlist';
 import type { Config } from '#types/Config';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import type { VideoProgress } from '#types/video';
-import useEventCallback from '#src/hooks/useEventCallback';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
 
 type Props = {
@@ -40,9 +39,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
   const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
-  const playlistItemCallback = usePlaylistItemCallback();
-
-  const handlePlaylistItemCallback = useEventCallback(playlistItemCallback);
+  const handlePlaylistItemCallback = usePlaylistItemCallback();
 
   const getProgress = useCallback((): VideoProgress | null => {
     if (!playerRef.current) return null;
