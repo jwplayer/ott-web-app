@@ -28,7 +28,7 @@ export const authNeedsRefresh = (auth: AuthData): boolean => {
 
 export const setJwtRefreshTimeout = () => {
   const auth = useAccountStore.getState().auth;
-  const cleengSandbox = useConfigStore.getState().config.cleengSandbox;
+  const cleengSandbox = Boolean(useConfigStore.getState().config?.integrations.cleeng?.useSandbox);
 
   window.clearTimeout(refreshTimeout);
 
@@ -42,7 +42,7 @@ export const handleVisibilityChange = () => {
 
   // document is visible again, test if we need to renew the token
   const auth = useAccountStore.getState().auth;
-  const cleengSandbox = useConfigStore.getState().config.cleengSandbox;
+  const cleengSandbox = Boolean(useConfigStore.getState().config?.integrations?.cleeng?.useSandbox);
 
   // user is not logged in
   if (!auth) return;
@@ -55,9 +55,9 @@ export const handleVisibilityChange = () => {
 };
 
 export const initializeAccount = async () => {
-  const {
-    config: { cleengId, cleengSandbox },
-  } = useConfigStore.getState();
+  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
+  const cleengId = cleeng?.id;
+  const cleengSandbox = Boolean(cleeng?.useSandbox);
 
   if (!cleengId) {
     useAccountStore.getState().setLoading(false);
@@ -105,9 +105,7 @@ export async function updateUser(values: { firstName: string; lastName: string }
 
   if (!auth || !user) throw new Error('no auth');
 
-  const {
-    config: { cleengSandbox },
-  } = useConfigStore.getState();
+  const cleengSandbox = Boolean(useConfigStore.getState().config?.integrations?.cleeng?.useSandbox);
 
   const response = await updateCustomer({ ...values, id: user.id.toString() }, cleengSandbox, auth.jwt);
 
@@ -413,9 +411,9 @@ async function getActivePayment({ cleengSandbox, customerId, jwt }: { cleengSand
 }
 
 function useConfig<T>(callback: (config: { cleengId: string; cleengSandbox: boolean }) => T): T {
-  const {
-    config: { cleengId, cleengSandbox },
-  } = useConfigStore.getState();
+  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
+  const cleengId = cleeng?.id;
+  const cleengSandbox = Boolean(cleeng?.useSandbox);
 
   if (!cleengId) throw new Error('cleengId is not configured');
 

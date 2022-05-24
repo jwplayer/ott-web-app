@@ -16,14 +16,18 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', () => ({
     id: '',
     siteName: '',
     description: '',
-    footerText: '',
     player: '',
     assets: {},
     content: [],
     menu: [],
-    cleengSandbox: true,
-    options: {
+    integrations: {
+      cleeng: {
+        useSandbox: true,
+      },
+    },
+    styling: {
       shelfTitles: true,
+      footerText: '',
     },
   },
   accessModel: 'SVOD',

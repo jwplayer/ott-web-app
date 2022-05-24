@@ -8,21 +8,19 @@ const deploymentData = getDeploymentData();
 function getDeploymentData() {
   if (customDomain) {
     if (customDomain.indexOf('/') >= 0) {
-      throw 'Custom domain must be a valid domain without paths (i.e. "showcase-github.jwplayer.com", not "showcase-github.jwplayer.com/ott-web-app")';
+      throw 'Custom domain must be a valid domain without paths (i.e. "app-github.jwplayer.com", not "app-github.jwplayer.com/ott-web-app")';
     }
 
     return {
       baseUrl: '',
-      deployUrl: `https://${customDomain}`
+      deployUrl: `https://${customDomain}`,
     };
   }
 
-  const gitUrlParts = sh(`git remote get-url ${getGitRemote()}`)
-    .replace('https://github.com/', '')
-    .split('/');
+  const gitUrlParts = sh(`git remote get-url ${getGitRemote()}`).replace('https://github.com/', '').split('/');
 
   if (gitUrlParts.length !== 2) {
-    throw "Unable to determine Org and Project from git url";
+    throw 'Unable to determine Org and Project from git url';
   }
 
   const githubOrg = gitUrlParts[0];
@@ -30,7 +28,7 @@ function getDeploymentData() {
 
   return {
     baseUrl: githubProject,
-    deployUrl: `https://${githubOrg}.github.io/${githubProject}`
+    deployUrl: `https://${githubOrg}.github.io/${githubProject}`,
   };
 }
 
@@ -38,10 +36,10 @@ function log(str) {
   console.info(`🐙 Github Deployment: ${str}`);
 }
 
-function shRead(bs=100) {
+function shRead(bs = 100) {
   const buf = Buffer.alloc(bs);
   const len = fs.readSync(0, buf);
-  return buf.toString('utf-8', 0, len-1);
+  return buf.toString('utf-8', 0, len - 1);
 }
 
 function sh(command, options) {
@@ -60,11 +58,11 @@ function confirm(arg) {
       process.exit(1);
     }
   }
-  return true
+  return true;
 }
 
 function getArg(arg) {
-  const buildFlags = process.argv.find(it => it.startsWith(arg));
+  const buildFlags = process.argv.find((it) => it.startsWith(arg));
   if (!buildFlags) {
     return '';
   }
@@ -80,7 +78,7 @@ function getEnv() {
     ...process.env,
     APP_GITHUB_PUBLIC_BASE_URL: process.env.APP_GITHUB_PUBLIC_BASE_URL || deploymentData.baseUrl,
     APP_PUBLIC_GITHUB_PAGES: true,
-  }
+  };
 }
 
 function build() {
@@ -101,21 +99,23 @@ function deploy() {
 }
 
 function help() {
-  log([
-    'Displaying help message',
-    '',
-    'This script deploys ott-web-app to github pages. It executes "yarn build" and then "yarn gh-pages".',
-    'During the build step it ensures that that APP_GITHUB_PUBLIC_BASE_URL envvar is set to the name of your github project or if you used --custom-domain argument, it ensures that proper CNAME file required by github is provided.',
-    '',
-    'Command line arguments:',
-    "--build - don't ask for build confirmation",
-    '--build-args="--help" - pass arguments to yarn build, in this case yarn build --help',
-    "--deploy - don't ask for deploy confirmation",
-    '--deploy-args="--help" - pass arguments to gh-pages, in this case gh-pages --help',
-    '--github-remote="origin" - select github remote to use to detect github project name, default is "origin"',
-    '--custom-domain="example.com" - (no slashes) deploy to custom domain instead of github directory',
-    '',
-  ].join('\n'));
+  log(
+    [
+      'Displaying help message',
+      '',
+      'This script deploys ott-web-app to github pages. It executes "yarn build" and then "yarn gh-pages".',
+      'During the build step it ensures that that APP_GITHUB_PUBLIC_BASE_URL envvar is set to the name of your github project or if you used --custom-domain argument, it ensures that proper CNAME file required by github is provided.',
+      '',
+      'Command line arguments:',
+      "--build - don't ask for build confirmation",
+      '--build-args="--help" - pass arguments to yarn build, in this case yarn build --help',
+      "--deploy - don't ask for deploy confirmation",
+      '--deploy-args="--help" - pass arguments to gh-pages, in this case gh-pages --help',
+      '--github-remote="origin" - select github remote to use to detect github project name, default is "origin"',
+      '--custom-domain="example.com" - (no slashes) deploy to custom domain instead of github directory',
+      '',
+    ].join('\n'),
+  );
 }
 
 function run() {

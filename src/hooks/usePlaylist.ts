@@ -10,7 +10,7 @@ const placeholderData = generatePlaylistPlaceholder(30);
 export type UsePlaylistResult<TData = Playlist, TError = unknown> = UseBaseQueryResult<TData, TError>;
 
 export default function usePlaylist(
-  playlistId: string,
+  playlistId?: string,
   relatedMediaId?: string,
   enabled: boolean = true,
   usePlaceholderData: boolean = true,

@@ -3,7 +3,7 @@ import merge from 'lodash.merge';
 
 import { calculateContrastColor } from '../utils/common';
 import loadConfig, { validateConfig } from '../services/config.service';
-import type { AccessModel, Config, Options } from '../../types/Config';
+import type { AccessModel, Config, Styling } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 import { addScript } from '../utils/dom';
 import { useConfigStore } from '../stores/ConfigStore';
@@ -12,16 +12,22 @@ const defaultConfig: Config = {
   id: '',
   siteName: '',
   description: '',
-  footerText: '',
   player: '',
   assets: {},
   content: [],
   menu: [],
-  cleengId: null,
-  cleengSandbox: true,
-  options: {
-    enableSharing: true,
+  integrations: {
+    cleeng: {
+      id: null,
+      useSandbox: true,
+    },
+  },
+  styling: {
+    footerText: '',
     shelfTitles: true,
+  },
+  features: {
+    enableSharing: true,
   },
 };
 
@@ -60,7 +66,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
             accessModel,
           });
 
-          setCssVariables(configValidated.options);
+          setCssVariables(configValidated.styling);
           maybeInjectAnalyticsLibrary(config);
           onLoading(false);
           setLoading(false);
@@ -75,7 +81,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
     loadAndValidateConfig(configLocation);
   }, [configLocation, onLoading, onValidationError, onValidationCompleted]);
 
-  const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Options) => {
+  const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Styling) => {
     const root = document.querySelector(':root') as HTMLElement;
 
     if (root && backgroundColor) {
@@ -100,8 +106,10 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
   };
 
   const calculateAccessModel = (config: Config): AccessModel => {
-    if (!config.cleengId) return 'AVOD';
-    if (!config.json?.cleengMonthlyOffer && !config.json?.cleengYearlyOffer) return 'AUTHVOD';
+    const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
+
+    if (!id) return 'AVOD';
+    if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
     return 'SVOD';
   };
 

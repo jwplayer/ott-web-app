@@ -15,6 +15,7 @@ import type { PlaylistItem } from '#types/playlist';
 import type { Config } from '#types/Config';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import type { VideoProgress } from '#types/video';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
 
 type Props = {
   item: PlaylistItem;
@@ -36,7 +37,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const seekToRef = useRef(-1);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
-  const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
+  const enableWatchHistory = config.content.some((el) => el.type === PersonalShelf.ContinueWatching) && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
 
   const getProgress = useCallback((): VideoProgress | null => {

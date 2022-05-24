@@ -10,7 +10,7 @@ import { renderWithRouter } from '#test/testUtils';
 describe('<Favorites>', () => {
   test('renders and matches snapshot', () => {
     const { container } = renderWithRouter(
-      <PlaylistContainer playlistId={PersonalShelf.Favorites}>
+      <PlaylistContainer type={PersonalShelf.Favorites}>
         {({ playlist, error, isLoading }) => (
           <Favorites
             playlist={playlist.playlist}

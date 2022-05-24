@@ -6,45 +6,62 @@
     {
       "enableText": true,
       "featured": true,
-      "playlistId": "JSKF03bk"
+      "type": "playlist",
+      "contentId": "JSKF03bk"
     },
     {
       "enableText": true,
-      "playlistId": "dGSUzs9o"
+      "type": "favorites"
     },
     {
       "enableText": true,
-      "playlistId": "xQaFzykq"
+      "type": "continue_watching"
+    },
+    {
+      "enableText": true,
+      "type": "playlist",
+      "contentId": "dGSUzs9o"
+    },
+    {
+      "enableText": true,
+      "type": "playlist",
+      "contentId": "xQaFzykq"
     }
   ],
   "menu": [
     {
       "label": "Films",
-      "playlistId": "dGSUzs9o",
+      "contentId": "dGSUzs9o",
+      "type": "playlist",
       "filterTags": "Action,Comedy,Fantasy,Drama"
     },
     {
       "label": "Courses",
-      "playlistId": "xQaFzykq",
+      "contentId": "xQaFzykq",
+      "type": "playlist",
       "filterTags": "Beginner,Advanced"
     }
   ],
+  "features": {
+    "recommendationsPlaylist": "IHBjjkSN",
+    "searchPlaylist": "D4soEviP"
+  },
+  "integrations": {
+    "cleeng": {
+      "useSandbox": true
+    }
+  },
   "description": "Blender demo site",
-  "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
   "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
-  "cleengSandbox": true,
-  "options": {
+  "styling": {
+    "backgroundColor": null,
+    "highlightColor": null,
+    "headerBackground": null,
     "dynamicBlur": true,
     "posterFading": true,
-    "backgroundColor": null,
     "shelfTitles": true,
-    "enableContinueWatching": true,
-    "highlightColor": null
+    "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)"
   },
   "player": "ou7L8htR",
-  "recommendationsPlaylist": "IHBjjkSN",
-  "searchPlaylist": "D4soEviP",
-  "siteName": "Blender",
-  "json": {
-  }
+  "siteName": "Blender"
 }

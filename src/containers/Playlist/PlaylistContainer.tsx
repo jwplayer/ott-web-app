@@ -15,7 +15,8 @@ type ChildrenParams = {
 };
 
 type Props = {
-  playlistId: string;
+  playlistId?: string;
+  type: 'playlist' | 'continue_watching' | 'favorites';
   relatedItem?: PlaylistItem;
   onPlaylistUpdate?: (playlist: Playlist) => void;
   children: (childrenParams: ChildrenParams) => JSX.Element;
@@ -23,7 +24,7 @@ type Props = {
   showEmpty?: boolean;
 };
 
-const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
+const PlaylistContainer = ({ playlistId, type, relatedItem, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const {
     isLoading,
@@ -40,10 +41,10 @@ const PlaylistContainer = ({ playlistId, relatedItem, onPlaylistUpdate, style, c
     if (playlist && onPlaylistUpdate) onPlaylistUpdate(playlist);
   }, [playlist, onPlaylistUpdate]);
 
-  if (playlistId === PersonalShelf.Favorites) playlist = favoritesPlaylist;
-  if (playlistId === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
+  if (type === PersonalShelf.Favorites) playlist = favoritesPlaylist;
+  if (type === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
 
-  if (!playlistId) return <p>No playlist id</p>;
+  if (!playlistId && !type) return <p>No playlist id and type</p>;
   if (!playlist.playlist.length && !showEmpty) {
     return null;
   }

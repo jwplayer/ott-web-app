@@ -27,7 +27,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const history = useHistory();
   const { t } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { menu, assets, options, siteName, description, footerText, searchPlaylist, cleengId } = config;
+  const { menu, assets, siteName, description, integrations, styling, features } = config;
+  const cleengId = integrations?.cleeng?.id;
+  const { searchPlaylist } = features || {};
+  const { footerText, dynamicBlur } = styling || {};
+
   const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
     ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({
       blurImage,
@@ -43,7 +47,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
   const [sideBarOpen, setSideBarOpen] = useState(false);
-  const hasDynamicBlur = options.dynamicBlur === true;
+  const hasDynamicBlur = dynamicBlur === true;
   const banner = assets.banner;
 
   useEffect(() => {
@@ -128,13 +132,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
-            <Button key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} variant="text" />
+            <Button key={item.contentId} label={item.label} to={`/p/${item.contentId}`} variant="text" />
           ))}
         </Header>
         <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
           <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
           {menu.map((item) => (
-            <MenuButton key={item.playlistId} label={item.label} to={`/p/${item.playlistId}`} tabIndex={sideBarOpen ? 0 : -1} />
+            <MenuButton key={item.contentId} label={item.label} to={`/p/${item.contentId}`} tabIndex={sideBarOpen ? 0 : -1} />
           ))}
           <hr className={styles.divider} />
           {renderUserActions()}

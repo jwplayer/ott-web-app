@@ -39,12 +39,12 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
 
   I.see('Continue watching');
 
-  await within('div[data-mediaid="continue-watching"]', async () => {
+  await within('div[data-mediaid="continue_watching"]', async () => {
     I.see('Agent 327');
     I.see('4 min');
   });
 
-  const xpath = '//*[@data-mediaid="continue-watching"]//*[@aria-label="Play Agent 327"]';
+  const xpath = '//*[@data-mediaid="continue_watching"]//*[@aria-label="Play Agent 327"]';
   await checkProgress(I, xpath, (200 / videoLength) * 100);
 
   I.click(xpath);
@@ -112,7 +112,7 @@ Scenario('I can get my watch history stored to my account after login', async ({
 });
 
 Scenario('I can see my watch history on the Home screen when logged in', async ({ I }) => {
-  const xpath = '//*[@data-mediaid="continue-watching"]//*[@aria-label="Play Agent 327"]';
+  const xpath = '//*[@data-mediaid="continue_watching"]//*[@aria-label="Play Agent 327"]';
 
   I.seeCurrentUrlEquals(constants.baseUrl);
   I.dontSee('Continue watching');
@@ -120,7 +120,7 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
   I.login();
   I.see('Continue watching');
 
-  await within('div[data-mediaid="continue-watching"]', async () => {
+  await within('div[data-mediaid="continue_watching"]', async () => {
     I.see('Agent 327');
     I.see('4 min');
   });

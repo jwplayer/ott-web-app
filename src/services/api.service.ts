@@ -23,7 +23,11 @@ export const getDataOrThrow = async (response: Response) => {
  * @param {string} id
  * @param relatedMediaId
  */
-export const getPlaylistById = (id: string, relatedMediaId?: string, limit?: number): Promise<Playlist | undefined> => {
+export const getPlaylistById = (id?: string, relatedMediaId?: string, limit?: number): Promise<Playlist | undefined> => {
+  if (!id) {
+    return Promise.resolve(undefined);
+  }
+
   const url = addQueryParams(`${API_BASE_URL}/v2/playlists/${id}`, {
     related_media_id: relatedMediaId,
     page_limit: limit?.toString(),

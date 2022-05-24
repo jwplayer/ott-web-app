@@ -18,16 +18,16 @@ const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { cleengSandbox, json } = config;
+  const { useSandbox, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
   const hasOffer = accessModel === 'SVOD';
   const { offer, setOffer } = useCheckoutStore(({ offer, setOffer }) => ({ offer, setOffer }), shallow);
 
-  const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
-  const cleengYearlyOffer = json?.cleengYearlyOffer as string;
+  const cleengMonthlyOffer = monthlyOffer as string;
+  const cleengYearlyOffer = yearlyOffer as string;
 
   // `useQueries` is not strongly typed :-(
-  const { data: monthlyOfferData } = useQuery(['offer', cleengMonthlyOffer], () => getOffer({ offerId: cleengMonthlyOffer }, cleengSandbox));
-  const { data: yearlyOfferData } = useQuery(['offer', cleengYearlyOffer], () => getOffer({ offerId: cleengYearlyOffer }, cleengSandbox));
+  const { data: monthlyOfferData } = useQuery(['offer', cleengMonthlyOffer], () => getOffer({ offerId: cleengMonthlyOffer }, Boolean(useSandbox)));
+  const { data: yearlyOfferData } = useQuery(['offer', cleengYearlyOffer], () => getOffer({ offerId: cleengYearlyOffer }, Boolean(useSandbox)));
 
   useEffect(() => {
     // close auth modal when there are no offers defined in the config

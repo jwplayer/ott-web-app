@@ -9,7 +9,7 @@ import styles from './Welcome.module.scss';
 type Props = {
   onCloseButtonClick?: () => void;
   onCountdownCompleted?: () => void;
-  siteName: string;
+  siteName?: string;
 };
 
 const Welcome: React.FC<Props> = ({ onCloseButtonClick, onCountdownCompleted, siteName }) => {
@@ -20,14 +20,7 @@ const Welcome: React.FC<Props> = ({ onCloseButtonClick, onCountdownCompleted, si
     <div className={styles.welcome}>
       <h2>{t('checkout.welcome_title', { siteName })}</h2>
       <p>{t('checkout.welcome_description', { siteName })}</p>
-      <Button
-        variant="contained"
-        color="primary"
-        label={t('checkout.start_watching', { countdown })}
-        onClick={onCloseButtonClick}
-        size="large"
-        fullWidth
-      />
+      <Button variant="contained" color="primary" label={t('checkout.start_watching', { countdown })} onClick={onCloseButtonClick} size="large" fullWidth />
     </div>
   );
 };

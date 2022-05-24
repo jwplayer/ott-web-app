@@ -41,9 +41,9 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { options, recommendationsPlaylist, siteName } = config;
-  const posterFading: boolean = options?.posterFading === true;
-  const enableSharing: boolean = options?.enableSharing === true;
+  const { siteName, styling, features } = config;
+  const posterFading: boolean = styling?.posterFading === true;
+  const enableSharing: boolean = features?.enableSharing === true;
 
   const { t } = useTranslation('video');
 
@@ -52,7 +52,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const itemRequiresSubscription = item?.requiresSubscription !== 'false';
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
-  const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
+  const { data: playlist } = useRecommendedPlaylist(features?.recommendationsPlaylist || '', item);
 
   const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
 
@@ -182,7 +182,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
               isLoading={isLoading}
               currentCardItem={item}
               currentCardLabel={t('currently_playing')}
-              enableCardTitles={options.shelfTitles}
+              enableCardTitles={styling.shelfTitles}
               accessModel={accessModel}
               isLoggedIn={!!user}
               hasSubscription={!!subscription}
