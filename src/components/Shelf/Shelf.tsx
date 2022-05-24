@@ -9,7 +9,7 @@ import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
 import { findPlaylistImageForWidth } from '#src/utils/collection';
 import type { AccessModel } from '#types/Config';
-import { showLock } from '#src/utils/cleeng';
+import { isLocked } from '#src/utils/cleeng';
 import TileDock from '#src/components/TileDock/TileDock';
 import Card from '#src/components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
@@ -84,7 +84,7 @@ const Shelf: React.FC<ShelfProps> = ({
         featured={featured}
         disabled={!isInView}
         loading={loading}
-        isLocked={showLock(accessModel, isLoggedIn, hasSubscription, item)}
+        isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
       />
     ),
     [enableCardTitles, featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory, accessModel, isLoggedIn, hasSubscription],

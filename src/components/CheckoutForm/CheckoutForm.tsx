@@ -68,7 +68,7 @@ const CheckoutForm: React.FC<Props> = ({
   };
 
   const getFreeTrialText = (offer: Offer) => {
-    if (offer.freeDays && offer.freeDays > 0) {
+    if (offer.freeDays) {
       return t('checkout.days_trial', { count: offer.freeDays });
     } else if (offer.freePeriods) {
       // t('periods.day')

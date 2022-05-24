@@ -12,7 +12,7 @@ describe('<OffersForm>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
       <ChooseOfferForm
-        values={{ offerType: 'svod', periodicity: 'monthly' }}
+        values={{ offerId: 'S916977979_NL' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
@@ -20,6 +20,8 @@ describe('<OffersForm>', () => {
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
         tvodOffers={[tvodOffer as Offer]}
+        offerType={'svod'}
+        setOfferType={vi.fn()}
       />,
     );
 
@@ -29,7 +31,7 @@ describe('<OffersForm>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
       <ChooseOfferForm
-        values={{ offerType: 'tvod', periodicity: 'monthly' }}
+        values={{ offerId: 'R892134629_NL' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
@@ -37,6 +39,8 @@ describe('<OffersForm>', () => {
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
         tvodOffers={[tvodOffer as Offer]}
+        offerType={'tvod'}
+        setOfferType={vi.fn()}
       />,
     );
 
@@ -46,7 +50,7 @@ describe('<OffersForm>', () => {
   test('checks the monthly offer correctly', () => {
     const { getByLabelText } = render(
       <ChooseOfferForm
-        values={{ offerType: 'svod', periodicity: 'monthly' }}
+        values={{ offerId: 'S916977979_NL' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
@@ -54,6 +58,8 @@ describe('<OffersForm>', () => {
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
         tvodOffers={[tvodOffer as Offer]}
+        offerType={'svod'}
+        setOfferType={vi.fn()}
       />,
     );
 
@@ -63,7 +69,7 @@ describe('<OffersForm>', () => {
   test('checks the yearly offer correctly', () => {
     const { getByLabelText } = render(
       <ChooseOfferForm
-        values={{ offerType: 'svod', periodicity: 'yearly' }}
+        values={{ offerId: 'S345569153_NL' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
@@ -71,6 +77,8 @@ describe('<OffersForm>', () => {
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
         tvodOffers={[tvodOffer as Offer]}
+        offerType={'svod'}
+        setOfferType={vi.fn()}
       />,
     );
 
@@ -80,7 +88,7 @@ describe('<OffersForm>', () => {
   test('checks the tvod offer correctly', () => {
     const { getByLabelText } = render(
       <ChooseOfferForm
-        values={{ offerType: 'tvod', periodicity: 'yearly', tvodOfferId: 'R892134629_NL' }}
+        values={{ offerId: 'R892134629_NL' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
@@ -88,6 +96,8 @@ describe('<OffersForm>', () => {
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
         tvodOffers={[tvodOffer as Offer]}
+        offerType={'tvod'}
+        setOfferType={vi.fn()}
       />,
     );
 
@@ -98,7 +108,7 @@ describe('<OffersForm>', () => {
     const onChange = vi.fn();
     const { getByLabelText } = render(
       <ChooseOfferForm
-        values={{ offerType: 'svod', periodicity: 'monthly' }}
+        values={{ offerId: 'S916977979_NL' }}
         errors={{}}
         onChange={onChange}
         onSubmit={vi.fn()}
@@ -106,6 +116,8 @@ describe('<OffersForm>', () => {
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
         tvodOffers={[tvodOffer as Offer]}
+        offerType={'svod'}
+        setOfferType={vi.fn()}
       />,
     );
 
@@ -118,7 +130,7 @@ describe('<OffersForm>', () => {
     const onSubmit = vi.fn();
     const { getByTestId } = render(
       <ChooseOfferForm
-        values={{ offerType: 'svod', periodicity: 'monthly' }}
+        values={{ offerId: 'S916977979_NL' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={onSubmit}
@@ -126,6 +138,8 @@ describe('<OffersForm>', () => {
         monthlyOffer={monthlyOffer as Offer}
         yearlyOffer={yearlyOffer as Offer}
         tvodOffers={[tvodOffer as Offer]}
+        offerType={'svod'}
+        setOfferType={vi.fn()}
       />,
     );
 

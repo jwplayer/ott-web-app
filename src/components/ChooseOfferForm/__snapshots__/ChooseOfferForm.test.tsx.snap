@@ -57,14 +57,14 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           aria-label="choose_offer.monthly_subscription"
           checked=""
           class="radio"
-          id="monthly"
-          name="periodicity"
+          id="S916977979_NL"
+          name="offerId"
           type="radio"
-          value="monthly"
+          value="S916977979_NL"
         />
         <label
           class="label"
-          for="monthly"
+          for="S916977979_NL"
         >
           <h4
             class="offerTitle"
@@ -150,14 +150,14 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
         <input
           aria-label="choose_offer.yearly_subscription"
           class="radio"
-          id="yearly"
-          name="periodicity"
+          id="S345569153_NL"
+          name="offerId"
           type="radio"
-          value="yearly"
+          value="S345569153_NL"
         />
         <label
           class="label"
-          for="yearly"
+          for="S345569153_NL"
         >
           <h4
             class="offerTitle"
@@ -306,9 +306,10 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
       >
         <input
           aria-label="One Time - TVOD offer"
+          checked=""
           class="radio"
           id="R892134629_NL"
-          name="tvodOfferId"
+          name="offerId"
           type="radio"
           value="R892134629_NL"
         />

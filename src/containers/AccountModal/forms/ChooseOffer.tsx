@@ -1,109 +1,71 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { mixed, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
-import { useQueries, useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 import shallow from 'zustand/shallow';
 
+import useOffers from '../../../hooks/useOffers';
+
 import { addQueryParam, removeQueryParam } from '#src/utils/history';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { getOffer } from '#src/services/checkout.service';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#src/components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import type { ChooseOfferFormData, OfferPeriodicity, OfferType } from '#types/account';
-import type { Offer } from '#types/checkout';
+import type { ChooseOfferFormData, OfferType } from '#types/account';
 
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const config = useConfigStore(({ config }) => config);
-  const { cleengSandbox, json } = config;
-  const { setOffer, setOfferType } = useCheckoutStore(({ setOffer, setOfferType }) => ({ setOffer, setOfferType }), shallow);
+  const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
+  const { tvodOffers, yearlyOffer, monthlyOffer, hasPremierOffer, isLoadingOffers } = useOffers();
+  const allOffers = useMemo(() => [yearlyOffer, monthlyOffer, ...tvodOffers], [yearlyOffer, monthlyOffer, tvodOffers]);
+  const [offerType, updateOfferType] = useState<OfferType>('svod');
 
-  const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
-  const cleengYearlyOffer = json?.cleengYearlyOffer as string;
+  const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
+    offerId: mixed<string>().required(t('choose_offer.field_required')),
+  });
 
-  const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers: requestedMediaOffers || [] }), shallow);
+  const initialValues: ChooseOfferFormData = {
+    offerId: yearlyOffer?.offerId || monthlyOffer?.offerId || allOffers?.[0]?.offerId,
+  };
 
-  // `useQueries` is not strongly typed :-(
-  const { data: monthlyOfferData, isLoading: isMonthlyOfferLoading } = useQuery(['offer', cleengMonthlyOffer], () =>
-    getOffer({ offerId: cleengMonthlyOffer }, cleengSandbox),
+  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async ({ offerId }, { setSubmitting, setErrors }) => {
+    const offer = allOffers.find((offer) => offer?.offerId === offerId);
+
+    if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
+
+    setOffer(offer);
+    setSubmitting(false);
+    history.push(addQueryParam(history, 'u', 'checkout'));
+  };
+
+  const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
+
+  const setOfferType = useCallback(
+    (offerType: OfferType) => {
+      updateOfferType(offerType);
+
+      const offerId = offerType === 'tvod' ? tvodOffers?.[0]?.offerId : yearlyOffer?.offerId || monthlyOffer?.offerId || '';
+      setValue('offerId', offerId);
+    },
+    [setValue, tvodOffers, monthlyOffer, yearlyOffer],
   );
-  const { data: yearlyOfferData, isLoading: isYearlyOfferLoading } = useQuery(['offer', cleengYearlyOffer], () =>
-    getOffer({ offerId: cleengYearlyOffer }, cleengSandbox),
-  );
-
-  const tvodOfferQueries = useQueries(
-    requestedMediaOffers?.map(({ offerId }) => ({
-      queryKey: ['offer', offerId],
-      queryFn: () => getOffer({ offerId }, cleengSandbox),
-      enabled: !!offerId,
-    })),
-  );
-
-  const isTvodOffersLoading = useMemo(() => tvodOfferQueries.some(({ isLoading }) => isLoading), [tvodOfferQueries]);
-
-  const tvodOffers = useMemo(
-    () => tvodOfferQueries.reduce<Offer[]>((prev, cur) => (cur.isSuccess && cur.data?.responseData ? [...prev, cur.data.responseData] : prev), []),
-    [tvodOfferQueries],
-  );
-  const premierOfferId = requestedMediaOffers.some((offer) => offer.premier);
-
-  const isOffersLoading = isMonthlyOfferLoading || isYearlyOfferLoading || isTvodOffersLoading;
-  const hasOffer = !!tvodOffers.length || !!monthlyOfferData || !!yearlyOfferData;
 
   useEffect(() => {
     // close auth modal when there are no offers defined in the config
-    if (!isOffersLoading && !hasOffer) history.replace(removeQueryParam(history, 'u'));
-  }, [isOffersLoading, hasOffer, history]);
-
-  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async (
-    { offerType, periodicity, tvodOfferId },
-    { setSubmitting, setErrors },
-  ) => {
-    const offer =
-      offerType === 'svod'
-        ? periodicity === 'monthly'
-          ? monthlyOfferData?.responseData
-          : yearlyOfferData?.responseData
-        : tvodOffers.find(({ offerId }) => offerId === tvodOfferId);
-
-    if (!offer) {
-      return setErrors({ form: t('choose_offer.offer_not_found') });
-    }
-
-    setOffer(offer);
-    setOfferType(offerType);
-
-    history.push(addQueryParam(history, 'u', 'checkout'));
-
-    setSubmitting(false);
-  };
-
-  const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
-    offerType: mixed<OfferType>().required(t('choose_offer.field_required')),
-    periodicity: mixed<OfferPeriodicity>().required(t('choose_offer.field_required')),
-    tvodOfferId: mixed<string>(),
-  });
-  const initialValues: ChooseOfferFormData = {
-    offerType: 'svod',
-    periodicity: 'yearly',
-    tvodOfferId: requestedMediaOffers[0]?.offerId,
-  };
-  const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
+    if (!isLoadingOffers && !allOffers.length) history.replace(removeQueryParam(history, 'u'));
+  }, [isLoadingOffers, allOffers, history]);
 
   useEffect(() => {
-    if (isOffersLoading) return;
-    if ((yearlyOfferData?.responseData || monthlyOfferData?.responseData) && !premierOfferId) return;
+    if (isLoadingOffers) return;
+    if ((yearlyOffer || monthlyOffer) && !hasPremierOffer) return;
 
     // If there is a premium offer, or no montly and yearly: switch to tvod
-    setValue('offerType', 'tvod');
-  }, [isOffersLoading, setValue, yearlyOfferData?.responseData, monthlyOfferData?.responseData, premierOfferId]);
+    setOfferType('tvod');
+  }, [isLoadingOffers, yearlyOffer, monthlyOffer, hasPremierOffer, setOfferType]);
 
   // loading state
-  if (!hasOffer || isOffersLoading) {
+  if (!allOffers.length || isLoadingOffers) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
@@ -118,9 +80,11 @@ const ChooseOffer = () => {
       values={values}
       errors={errors}
       submitting={submitting}
-      monthlyOffer={!premierOfferId ? monthlyOfferData?.responseData : undefined}
-      yearlyOffer={!premierOfferId ? yearlyOfferData?.responseData : undefined}
+      monthlyOffer={monthlyOffer}
+      yearlyOffer={yearlyOffer}
       tvodOffers={tvodOffers}
+      offerType={offerType}
+      setOfferType={setOfferType}
     />
   );
 };

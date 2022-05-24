@@ -14,7 +14,7 @@ import type { Offer } from '#types/checkout';
 import { getOfferPrice } from '#src/utils/subscription';
 import type { FormErrors } from '#types/form';
 import { IS_DEV_BUILD } from '#src/utils/common';
-import type { ChooseOfferFormData } from '#types/account';
+import type { ChooseOfferFormData, OfferType } from '#types/account';
 
 type Props = {
   values: ChooseOfferFormData;
@@ -26,18 +26,19 @@ type Props = {
   yearlyOffer?: Offer;
   tvodOffers: Offer[];
   submitting: boolean;
+  offerType: OfferType;
+  setOfferType: (offerType: OfferType) => void;
 };
 
 type OfferBoxProps = {
   offer: Offer;
-  radioKey: 'periodicity' | 'tvodOfferId';
-  radioValue: string;
   title: string;
   ariaLabel: string;
   secondBenefit?: string;
   periodString?: string;
 };
-type OfferBox = ({ offer, radioKey, radioValue, title, ariaLabel, secondBenefit, periodString }: OfferBoxProps) => JSX.Element;
+
+type OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }: OfferBoxProps) => JSX.Element;
 
 const ChooseOfferForm: React.FC<Props> = ({
   values,
@@ -49,12 +50,14 @@ const ChooseOfferForm: React.FC<Props> = ({
   monthlyOffer,
   tvodOffers,
   onBackButtonClickHandler,
+  offerType,
+  setOfferType,
 }: Props) => {
   const { siteName } = useContext(ConfigContext);
   const { t } = useTranslation('account');
 
   const getFreeTrialText = (offer: Offer) => {
-    if (offer.freeDays && offer.freeDays > 0) {
+    if (offer.freeDays) {
       return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
     } else if (offer.freePeriods) {
       // t('periods.day')
@@ -69,23 +72,25 @@ const ChooseOfferForm: React.FC<Props> = ({
     return null;
   };
 
-  const OfferBox: OfferBox = ({ offer, radioKey, radioValue, title, ariaLabel, secondBenefit, periodString }) => (
+  console.info(values.offerId);
+
+  const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }) => (
     <div className={styles.offer}>
       <input
         className={styles.radio}
         onChange={onChange}
         type="radio"
-        name={radioKey}
-        value={radioValue}
-        id={radioValue}
-        checked={values[radioKey] === radioValue}
+        name={'offerId'}
+        value={offer.offerId}
+        id={offer.offerId}
+        checked={values.offerId === offer.offerId}
         aria-label={ariaLabel}
       />
-      <label className={styles.label} htmlFor={radioValue}>
+      <label className={styles.label} htmlFor={offer.offerId}>
         <h4 className={styles.offerTitle}>{title}</h4>
         <hr className={styles.offerDivider} />
         <ul className={styles.offerBenefits}>
-          {(offer.freeDays && offer.freeDays > 0) || (offer.freePeriods && offer.freePeriods > 0) ? (
+          {offer.freeDays || offer.freePeriods ? (
             <li>
               <CheckCircle /> {getFreeTrialText(offer)}
             </li>
@@ -116,23 +121,37 @@ const ChooseOfferForm: React.FC<Props> = ({
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       {!!tvodOffers.length && (!!yearlyOffer || !!monthlyOffer) && (
         <div className={styles.offerGroupSwitch}>
-          <input className={styles.radio} onChange={onChange} type="radio" name="offerType" id="svod" value="svod" checked={values.offerType === 'svod'} />
+          <input
+            className={styles.radio}
+            onChange={() => setOfferType('svod')}
+            type="radio"
+            name="offerType"
+            id="svod"
+            value="svod"
+            checked={offerType === 'svod'}
+          />
           <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
             {t('choose_offer.subscription')}
           </label>
-          <input className={styles.radio} onChange={onChange} type="radio" name="offerType" id="tvod" value="tvod" checked={values.offerType === 'tvod'} />
+          <input
+            className={styles.radio}
+            onChange={() => setOfferType('tvod')}
+            type="radio"
+            name="offerType"
+            id="tvod"
+            value="tvod"
+            checked={offerType === 'tvod'}
+          />
           <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="tvod">
             {t('choose_offer.one_time_only')}
           </label>
         </div>
       )}
-      {values.offerType === 'svod' ? (
+      {offerType === 'svod' && (
         <div className={styles.offers}>
           {!!monthlyOffer && (
             <OfferBox
               offer={monthlyOffer}
-              radioKey="periodicity"
-              radioValue="monthly"
               title={t('choose_offer.monthly')}
               ariaLabel={t('choose_offer.monthly_subscription')}
               secondBenefit={t('choose_offer.benefits.cancel_anytime')}
@@ -142,8 +161,6 @@ const ChooseOfferForm: React.FC<Props> = ({
           {!!yearlyOffer && (
             <OfferBox
               offer={yearlyOffer}
-              radioKey="periodicity"
-              radioValue="yearly"
               title={t('choose_offer.yearly')}
               ariaLabel={t('choose_offer.yearly_subscription')}
               secondBenefit={t('choose_offer.benefits.cancel_anytime')}
@@ -151,13 +168,12 @@ const ChooseOfferForm: React.FC<Props> = ({
             />
           )}
         </div>
-      ) : (
+      )}
+      {offerType === 'tvod' && (
         <div className={styles.offers}>
           {tvodOffers?.map((offer) => (
             <OfferBox
               offer={offer}
-              radioKey="tvodOfferId"
-              radioValue={offer.offerId}
               key={offer.offerId}
               title={offer.offerTitle}
               ariaLabel={offer.offerTitle}

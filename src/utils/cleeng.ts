@@ -11,8 +11,7 @@ import type { PlaylistItem } from '../../types/playlist';
  * @param playlistItem Used to define if the item is 'free' or has mediaOffers
  * @returns
  */
-
-export const showLock = (accessModel: AccessModel, isLoggedIn: boolean, hasSubscription: boolean, playlistItem: PlaylistItem): boolean => {
+export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubscription: boolean, playlistItem: PlaylistItem): boolean => {
   const isItemFree = playlistItem?.requiresSubscription === 'false' || !!playlistItem?.free;
   const mediaOffers = filterCleengMediaOffers(playlistItem?.productIds);
 
