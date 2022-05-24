@@ -7,6 +7,7 @@ import shallow from 'zustand/shallow';
 
 import styles from './Series.module.scss';
 
+import useStartWatchingButton from '#src/hooks/useStartWatchingButton';
 import useEntitlement from '#src/hooks/useEntitlement';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
@@ -24,7 +25,6 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { addQueryParam } from '#src/utils/history';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { removeItem, saveItem } from '#src/stores/FavoritesController';
 
@@ -96,21 +96,13 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
     return nextItem && history.push(episodeURL(seriesPlaylist, nextItem.mediaid, true));
   }, [history, item, seriesPlaylist]);
 
-  const startWatchingLabel = useMemo((): string => {
-    if (isEntitled) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
-    if (mediaOffers.length) return t('buy');
-    if (!user) return t('sign_up_to_start_watching');
-
-    return t('complete_your_subscription');
-  }, [isEntitled, progress, user, mediaOffers, t]);
-
-  const handleStartWatchingClick = useCallback(() => {
-    if (isEntitled) return history.push(episodeURL(seriesPlaylist, item?.mediaid, true));
-    if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
-    if (mediaOffers.length) return history.push(addQueryParam(history, 'u', 'choose-offer'));
-
-    return history.push('/u/payments');
-  }, [isEntitled, user, history, seriesPlaylist, item?.mediaid, mediaOffers]);
+  const { startWatchingLabel, handleStartWatchingClick } = useStartWatchingButton(
+    isEntitled,
+    !!mediaOffers.length,
+    !!user,
+    progress,
+    item ? episodeURL(seriesPlaylist, item?.mediaid, true) : null,
+  );
 
   // Effects
   useEffect(() => {

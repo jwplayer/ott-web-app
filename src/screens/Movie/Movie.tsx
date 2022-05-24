@@ -7,6 +7,7 @@ import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
 
+import useStartWatchingButton from '#src/hooks/useStartWatchingButton';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
@@ -23,7 +24,6 @@ import useRecommendedPlaylist from '#src/hooks/useRecommendationsPlaylist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { addQueryParam } from '#src/utils/history';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
 import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import useEntitlement from '#src/hooks/useEntitlement';
@@ -91,21 +91,13 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
     return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
   }, [history, id, playlist, searchParams]);
 
-  const startWatchingLabel = useMemo((): string => {
-    if (isEntitled) return typeof progress === 'number' ? t('continue_watching') : t('start_watching');
-    if (mediaOffers.length) return t('buy');
-    if (!user) return t('sign_up_to_start_watching');
-
-    return t('complete_your_subscription');
-  }, [isEntitled, user, mediaOffers, progress, t]);
-
-  const handleStartWatchingClick = useCallback(() => {
-    if (isEntitled) return item && history.push(videoUrl(item, searchParams.get('r'), true));
-    if (!user) return history.push(addQueryParam(history, 'u', 'create-account'));
-    if (mediaOffers.length) return history.push(addQueryParam(history, 'u', 'choose-offer'));
-
-    return history.push('/u/payments');
-  }, [isEntitled, user, history, item, searchParams, mediaOffers]);
+  const { startWatchingLabel, handleStartWatchingClick } = useStartWatchingButton(
+    isEntitled,
+    !!mediaOffers.length,
+    !!user,
+    progress,
+    item ? videoUrl(item, searchParams.get('r'), true) : null,
+  );
 
   // Effects
   useEffect(() => {
