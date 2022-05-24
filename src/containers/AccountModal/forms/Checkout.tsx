@@ -26,10 +26,8 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const { order, offer, offerType, paymentMethods } = useCheckoutStore(
-    ({ order, offer, offerType, paymentMethods }) => ({ order, offer, offerType, paymentMethods }),
-    shallow,
-  );
+  const { order, offer, paymentMethods } = useCheckoutStore(({ order, offer, paymentMethods }) => ({ order, offer, paymentMethods }), shallow);
+  const offerType = offer?.period === null ? 'tvod' : 'svod';
 
   const paymentSuccessUrl = useMemo(
     () => (offerType === 'svod' ? addQueryParams(window.location.href, { u: 'welcome' }) : removeQueryParam(history, 'u')),

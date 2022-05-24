@@ -1,12 +1,10 @@
 import { useQueries } from 'react-query';
-import { useMemo } from 'react';
 import shallow from 'zustand/shallow';
-
-import { isLocked } from '../utils/entitlements';
 
 import type { MediaOffer } from '#types/media';
 import type { GetEntitlementsResponse } from '#types/checkout';
 import type { PlaylistItem } from '#types/playlist';
+import { isLocked } from '#src/utils/entitlements';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getEntitlements } from '#src/services/checkout.service';
@@ -23,10 +21,19 @@ type QueryResult = {
   responseData?: GetEntitlementsResponse;
 };
 
+/**
+ * useEntitlement()
+ *
+ * Free items: Access
+ * AVOD - Regular items free, TVOD items need entitlement
+ * AuthVOD - For regular items user should be logged in, TVOD items need entitlement
+ * SVOD - For regular items user should have subscription OR entitlement, premier items need entitlement
+ *
+ *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
   const { sandbox, accessModel } = useConfigStore(({ config, accessModel }) => ({ sandbox: config?.cleengSandbox, accessModel }), shallow);
-  const { user, subscription, transactions, jwt } = useAccountStore(
-    ({ user, subscription, transactions, auth }) => ({ user, subscription, transactions, jwt: auth?.jwt }),
+  const { user, subscription, transactions, auth } = useAccountStore(
+    ({ user, subscription, transactions, auth }) => ({ user, subscription, transactions, auth }),
     shallow,
   );
 
@@ -36,23 +43,17 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['mediaOffer', offerId, transactions?.map((t) => t.transactionId).join(',')],
-      queryFn: () => getEntitlements({ offerId }, sandbox, jwt || ''),
-      enabled: !!playlistItem && !!jwt && !!offerId && !isPreEntitled,
+      queryFn: () => getEntitlements({ offerId }, sandbox, auth?.jwt || ''),
+      enabled: !!playlistItem && !!auth?.jwt && !!offerId && !isPreEntitled,
     })),
   );
 
-  const { isMediaEntitled, isMediaEntitlementLoading } = useMemo(() => {
-    const isEntitled = mediaEntitlementQueries.some((item) => item.isSuccess && (item.data as QueryResult)?.responseData?.accessGranted);
+  const isMediaEntitled = mediaEntitlementQueries.some((item) => item.isSuccess && (item.data as QueryResult)?.responseData?.accessGranted);
+  const isMediaEntitlementLoading = !isMediaEntitled && mediaEntitlementQueries.some((item) => item.isLoading);
 
-    return { isMediaEntitled: isEntitled, isMediaEntitlementLoading: !isEntitled && mediaEntitlementQueries.some((item) => item.isLoading) };
-  }, [mediaEntitlementQueries]);
+  const isEntitled = !!playlistItem && (isPreEntitled || isMediaEntitled);
 
-  // Properties that make the item free: Access
-  // AVOD - Regular items free, TVOD items need entitlement
-  // AuthVOD - Regular items user should be logged in, TVOD items need entitlement
-  // SVOD - Regular item user should have subscription OR entitlement, premier items only entitlement
-
-  return { isEntitled: !!playlistItem && (isPreEntitled || isMediaEntitled), isMediaEntitlementLoading, mediaOffers };
+  return { isEntitled, isMediaEntitlementLoading, mediaOffers };
 };
 
 export default useEntitlement;
