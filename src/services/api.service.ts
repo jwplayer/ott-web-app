@@ -54,11 +54,11 @@ export const getMediaById = (id: string, token?: string, drmPolicyId?: string): 
  */
 export const getMediaByIds = async (ids: string[]): Promise<PlaylistItem[]> => {
   // @todo this should be updated when it will become possible to request multiple media items in a single request
-  const responses = await Promise.all(ids.map((id) => getMediaById(id)));
+  const responses = await Promise.allSettled(ids.map((id) => getMediaById(id)));
 
   function notEmpty<Value>(value: Value | null | undefined): value is Value {
     return value !== null && value !== undefined;
   }
 
-  return responses.filter(notEmpty);
+  return responses.map((result) => (result.status === 'fulfilled' ? result.value : null)).filter(notEmpty);
 };
