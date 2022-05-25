@@ -1,12 +1,10 @@
-type EntitlementJwt = {
-  resource: string;
-  exp: number;
-  iat: number;
-};
-
-type EntitlementResponse = {
+type GetTokenResponse = {
   entitled: boolean;
   token: string;
+};
+
+type GetPublicMediaTokensResponse = {
+  media: { [key: string]: string };
 };
 
 type EntitlementType = 'media' | 'playlist' | 'library';

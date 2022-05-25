@@ -1,6 +1,7 @@
 import { addQueryParams } from '../utils/formatting';
-import type { Playlist, PlaylistItem, PlaylistParams } from '../../types/playlist';
 import { API_BASE_URL } from '../config';
+
+import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 
 /**
  * Get data
@@ -24,7 +25,7 @@ export const getDataOrThrow = async (response: Response) => {
  * @param params
  * @param {string} [drmPolicyId]
  */
-export const getPlaylistById = (id: string, params: PlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
+export const getPlaylistById = (id: string, params: GetPlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
   const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
   const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
 
@@ -51,10 +52,12 @@ export const getMediaById = (id: string, token?: string, drmPolicyId?: string): 
 /**
  * Gets multiple media items by the given ids. Filters out items that don't exist.
  * @param {string[]} ids
+ * @param {Object} tokens
+ * @param {string} drmPolicyId
  */
-export const getMediaByIds = async (ids: string[]): Promise<PlaylistItem[]> => {
+export const getMediaByIds = async (ids: string[], tokens?: Record<string, string>, drmPolicyId?: string): Promise<PlaylistItem[]> => {
   // @todo this should be updated when it will become possible to request multiple media items in a single request
-  const responses = await Promise.allSettled(ids.map((id) => getMediaById(id)));
+  const responses = await Promise.allSettled(ids.map((id) => getMediaById(id, tokens?.[id], drmPolicyId)));
 
   function notEmpty<Value>(value: Value | null | undefined): value is Value {
     return value !== null && value !== undefined;
