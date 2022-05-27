@@ -1,13 +1,18 @@
 import { useQuery } from 'react-query';
 
 import { getPublicToken } from '#src/services/entitlement.service';
-import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
 
-const useSignedUrl = (type: EntitlementType, id?: string, params: GetPlaylistParams | GetMediaParams = {}, enabled: boolean = true) => {
-  const jwt = useAccountStore((store) => store.auth?.jwt);
+const useContentProtection = <T>(
+  type: EntitlementType,
+  id: string | undefined,
+  callback: (token?: string, drmPolicyId?: string) => Promise<T | undefined>,
+  params: GetPlaylistParams | GetMediaParams = {},
+  enabled: boolean = true,
+  placeholderData?: T,
+) => {
   const signingConfig = useConfigStore((store) => store.config.contentSigningService);
   const host = signingConfig?.host;
   const drmPolicyId = signingConfig?.drmPolicyId;
@@ -15,18 +20,27 @@ const useSignedUrl = (type: EntitlementType, id?: string, params: GetPlaylistPar
   const signingEnabled = !!host && drmEnabled && !!drmPolicyId;
 
   const { data: token, isLoading } = useQuery(
-    ['token', type, id, params, jwt],
+    ['token', type, id, params],
     () => {
       if (!!id && !!signingConfig?.host && signingConfig?.drmEnabled && !!signingConfig?.drmPolicyId) {
         const { host, drmPolicyId } = signingConfig;
 
-        return getPublicToken(host, type, id, jwt, params, drmPolicyId);
+        return getPublicToken(host, type, id, undefined, params, drmPolicyId);
       }
     },
     { enabled: signingEnabled && enabled && !!id, keepPreviousData: false, staleTime: 15 * 60 * 1000 },
   );
 
-  return { token, signingEnabled, drmEnabled, drmPolicyId, isLoading };
+  const queryResult = useQuery<T | undefined>([type, id, params, token], async () => callback(token, drmPolicyId), {
+    enabled: !!id && enabled && (!signingEnabled || !!token),
+    placeholderData: placeholderData,
+    retry: type === 'media',
+  });
+
+  return {
+    ...queryResult,
+    isLoading: isLoading || queryResult.isLoading,
+  };
 };
 
-export default useSignedUrl;
+export default useContentProtection;
