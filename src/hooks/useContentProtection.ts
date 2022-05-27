@@ -17,7 +17,7 @@ const useContentProtection = <T>(
   const host = signingConfig?.host;
   const drmPolicyId = signingConfig?.drmPolicyId;
   const drmEnabled = !!drmPolicyId;
-  const signingEnabled = !!host;
+  const signingEnabled = !!host && drmEnabled;
 
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
