@@ -16,13 +16,14 @@ const useContentProtection = <T>(
   const signingConfig = useConfigStore((store) => store.config.contentSigningService);
   const host = signingConfig?.host;
   const drmPolicyId = signingConfig?.drmPolicyId;
-  const drmEnabled = !!drmPolicyId && !!signingConfig?.drmEnabled;
-  const signingEnabled = !!host && drmEnabled && !!drmPolicyId;
+  const drmEnabled = !!drmPolicyId;
+  const signingEnabled = !!host;
 
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
     () => {
-      if (!!id && !!signingConfig?.host && signingConfig?.drmEnabled && !!signingConfig?.drmPolicyId) {
+      // we only want to sign public media/playlist URLs when DRM is enabled
+      if (!!id && !!host && drmEnabled) {
         const { host, drmPolicyId } = signingConfig;
 
         return getPublicToken(host, type, id, undefined, params, drmPolicyId);

@@ -406,10 +406,10 @@ export async function getMediaItems(mediaIds: string[]) {
   const signingConfig = useConfigStore.getState().config.contentSigningService;
   const host = signingConfig?.host;
   const drmPolicyId = signingConfig?.drmPolicyId;
-  const drmEnabled = !!drmPolicyId && !!signingConfig?.drmEnabled;
-  const signingEnabled = !!host && drmEnabled && !!drmPolicyId;
+  const drmEnabled = !!drmPolicyId;
+  const signingEnabled = !!host;
 
-  if (signingEnabled) {
+  if (signingEnabled && drmEnabled) {
     const getTokensPayload = Object.fromEntries(mediaIds.map((mediaId) => [mediaId, {}]));
     const tokens = await getPublicMediaTokens(host, getTokensPayload, jwt, drmPolicyId);
 

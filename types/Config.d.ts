@@ -24,8 +24,7 @@ export type Config = {
 };
 
 export type ContentSigningConfig = {
-  host?: string;
-  drmEnabled?: boolean;
+  host: string;
   drmPolicyId?: string;
 };
 

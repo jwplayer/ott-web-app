@@ -1,3 +1,4 @@
+import type { StringSchema } from 'yup';
 import { array, boolean, object, SchemaOf, string } from 'yup';
 
 import { PersonalShelf } from '../enum/PersonalShelf';
@@ -53,8 +54,8 @@ const configSchema: SchemaOf<Config> = object({
   genres: array().of(string()).notRequired(),
   json: object().notRequired(),
   contentSigningService: object().shape({
-    host: string().notRequired(),
-    drmEnabled: boolean().notRequired(),
+    // see {@link https://github.com/jquense/yup/issues/1367}
+    host: string().required() as StringSchema<string>,
     drmPolicyId: string().notRequired(),
   }),
 }).defined();

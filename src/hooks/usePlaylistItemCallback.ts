@@ -14,15 +14,14 @@ export const usePlaylistItemCallback = () => {
     const jwt = auth?.jwt;
     const host = signingConfig?.host;
     const drmPolicyId = signingConfig?.drmPolicyId;
-    const drmEnabled = !!drmPolicyId && !!signingConfig?.drmEnabled;
     const signingEnabled = !!host;
 
     if (!signingEnabled) return item;
 
     // if signing is enabled, we need to sign the media item first. Assuming that the media item given to the player
     // isn't signed.
-    const token = await getMediaToken(host, item.mediaid, jwt, {}, drmEnabled ? drmPolicyId : undefined);
+    const token = await getMediaToken(host, item.mediaid, jwt, {}, drmPolicyId);
 
-    return await getMediaById(item.mediaid, token, drmEnabled ? drmPolicyId : undefined);
+    return await getMediaById(item.mediaid, token, drmPolicyId);
   });
 };
