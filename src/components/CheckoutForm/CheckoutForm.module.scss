@@ -23,9 +23,13 @@
 }
 
 .orderTitle {
-  margin: 0 0 4px;
+  margin: 0;
   font-weight: var(--body-font-weight-bold);
   font-size: 14px;
+}
+
+.orderTitleMargin {
+  margin-bottom: 4px;
 }
 
 .orderBillingDate {

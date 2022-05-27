@@ -1,61 +1,56 @@
 import React, { useEffect } from 'react';
 import { mixed, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 import shallow from 'zustand/shallow';
 
+import useOffers from '../../../hooks/useOffers';
+
 import { addQueryParam, removeQueryParam } from '#src/utils/history';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { getOffer } from '#src/services/checkout.service';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#src/components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import type { ChooseOfferFormData, OfferPeriodicity } from '#types/account';
+import type { ChooseOfferFormData } from '#types/account';
 
 const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
-  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { cleengSandbox, json } = config;
-  const hasOffer = accessModel === 'SVOD';
-  const { offer, setOffer } = useCheckoutStore(({ offer, setOffer }) => ({ offer, setOffer }), shallow);
+  const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
+  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasTVODOffers, hasPremierOffer } = useOffers();
 
-  const cleengMonthlyOffer = json?.cleengMonthlyOffer as string;
-  const cleengYearlyOffer = json?.cleengYearlyOffer as string;
+  const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
+    offerId: mixed<string>().required(t('choose_offer.field_required')),
+  });
 
-  // `useQueries` is not strongly typed :-(
-  const { data: monthlyOfferData } = useQuery(['offer', cleengMonthlyOffer], () => getOffer({ offerId: cleengMonthlyOffer }, cleengSandbox));
-  const { data: yearlyOfferData } = useQuery(['offer', cleengYearlyOffer], () => getOffer({ offerId: cleengYearlyOffer }, cleengSandbox));
+  const initialValues: ChooseOfferFormData = {
+    offerId: defaultOfferId,
+  };
+
+  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async ({ offerId }, { setSubmitting, setErrors }) => {
+    const offer = offerId && offersDict[offerId];
+
+    if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
+
+    setOffer(offer);
+    setSubmitting(false);
+    history.push(addQueryParam(history, 'u', 'checkout'));
+  };
+
+  const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
 
   useEffect(() => {
     // close auth modal when there are no offers defined in the config
-    if (!hasOffer) history.replace(removeQueryParam(history, 'u'));
-  }, [hasOffer, history]);
+    if (!isLoading && !offers.length) history.replace(removeQueryParam(history, 'u'));
+  }, [isLoading, offers, history]);
 
-  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async (formData, { setSubmitting, setErrors }) => {
-    const offer = formData.periodicity === 'monthly' ? monthlyOfferData?.responseData : yearlyOfferData?.responseData;
-
-    if (!offer) {
-      return setErrors({ form: t('choose_offer.offer_not_found') });
-    }
-
-    setOffer(offer);
-
-    history.push(addQueryParam(history, 'u', 'checkout'));
-
-    setSubmitting(false);
-  };
-
-  const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
-    periodicity: mixed<OfferPeriodicity>().required(t('choose_offer.field_required')),
-  });
-  const initialValues: ChooseOfferFormData = { periodicity: offer?.period === 'month' ? 'monthly' : 'yearly' };
-  const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
+  useEffect(() => {
+    setValue('offerId', offers[offers.length - 1]?.offerId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offerType, setValue]);
 
   // loading state
-  if (!hasOffer || !monthlyOfferData?.responseData || !yearlyOfferData?.responseData) {
+  if (!offers.length || isLoading) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
@@ -70,8 +65,9 @@ const ChooseOffer = () => {
       values={values}
       errors={errors}
       submitting={submitting}
-      monthlyOffer={monthlyOfferData.responseData}
-      yearlyOffer={yearlyOfferData.responseData}
+      offers={offers}
+      offerType={offerType}
+      setOfferType={hasTVODOffers && !hasPremierOffer ? setOfferType : undefined}
     />
   );
 };
