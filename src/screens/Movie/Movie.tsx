@@ -7,8 +7,6 @@ import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
 
-import useStartWatchingButton from '#src/hooks/useStartWatchingButton';
-import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
@@ -21,18 +19,22 @@ import { generateMovieJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import useRecommendedPlaylist from '#src/hooks/useRecommendationsPlaylist';
-import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
 import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import useEntitlement from '#src/hooks/useEntitlement';
+import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 
 type MovieRouteParams = {
   id: string;
 };
 
 const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
+  const { t } = useTranslation('video');
+  const [hasShared, setHasShared] = useState<boolean>(false);
+  const [playTrailer, setPlayTrailer] = useState<boolean>(false);
+
   // Routing
   const history = useHistory();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
@@ -46,26 +48,18 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const posterFading: boolean = options?.posterFading === true;
   const enableSharing: boolean = options?.enableSharing === true;
 
-  const { t } = useTranslation('video');
-
   // Media
   const { isLoading, error, data: item } = useMedia(id);
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = useRecommendedPlaylist(recommendationsPlaylist || '', item);
 
+  // Favorite
   const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
-  const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
-  const progress = watchHistoryItem?.progress;
-
-  // General state
-  const [hasShared, setHasShared] = useState<boolean>(false);
-  const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled, mediaOffers } = useEntitlement(item);
-  const setRequestedMediaOffers = useCheckoutStore((s) => s.setRequestedMediaOffers);
+  const { isEntitled } = useEntitlement(item);
 
   // Handlers
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
@@ -91,14 +85,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
     return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
   }, [history, id, playlist, searchParams]);
 
-  const { startWatchingLabel, handleStartWatchingClick } = useStartWatchingButton(
-    isEntitled,
-    !!mediaOffers.length,
-    !!user,
-    progress,
-    item ? videoUrl(item, searchParams.get('r'), true) : null,
-  );
-
   // Effects
   useEffect(() => {
     document.body.style.overflowY = play ? 'hidden' : '';
@@ -110,16 +96,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   }, [id]);
-
-  useEffect(() => {
-    if (isEntitled) return;
-
-    setRequestedMediaOffers(mediaOffers.length ? mediaOffers : null);
-
-    return () => {
-      setRequestedMediaOffers(null);
-    };
-  }, [isEntitled, mediaOffers, setRequestedMediaOffers]);
 
   // UI
   if (isLoading && !item) return <LoadingOverlay />;
@@ -160,12 +136,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         feedId={feedId ?? undefined}
         trailerItem={trailerItem}
         play={play && isEntitled}
-        isEntitled={isEntitled}
-        startWatchingLabel={startWatchingLabel}
-        onStartWatchingClick={handleStartWatchingClick}
         goBack={goBack}
         onComplete={handleComplete}
-        progress={progress}
         poster={posterFading ? 'fading' : 'normal'}
         enableSharing={enableSharing}
         hasShared={hasShared}
@@ -175,6 +147,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+        startWatchingButton={<StartWatchingButton item={item} />}
       >
         {playlist ? (
           <>

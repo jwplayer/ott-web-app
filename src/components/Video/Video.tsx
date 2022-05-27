@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -17,7 +17,6 @@ import PlayTrailer from '#src/icons/PlayTrailer';
 import Share from '#src/icons/Share';
 import Check from '#src/icons/Check';
 import ArrowLeft from '#src/icons/ArrowLeft';
-import Play from '#src/icons/Play';
 import { formatDuration } from '#src/utils/formatting';
 import FavoriteBorder from '#src/icons/FavoriteBorder';
 import type { PlaylistItem } from '#types/playlist';
@@ -30,10 +29,6 @@ type Props = {
   feedId?: string;
   trailerItem?: PlaylistItem;
   play: boolean;
-  isEntitled: boolean;
-  startWatchingLabel: string;
-  progress?: number;
-  onStartWatchingClick: () => void;
   goBack: () => void;
   onComplete?: () => void;
   isFavorited: boolean;
@@ -47,6 +42,7 @@ type Props = {
   onTrailerClose: () => void;
   isSeries?: boolean;
   episodeCount?: number;
+  startWatchingButton: JSX.Element;
   children?: JSX.Element;
 };
 
@@ -56,10 +52,6 @@ const Video: React.FC<Props> = ({
   feedId,
   trailerItem,
   play,
-  isEntitled,
-  startWatchingLabel,
-  onStartWatchingClick,
-  progress,
   goBack,
   onComplete,
   poster,
@@ -73,6 +65,7 @@ const Video: React.FC<Props> = ({
   onTrailerClick,
   onTrailerClose,
   isSeries = false,
+  startWatchingButton,
   episodeCount,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -127,23 +120,7 @@ const Video: React.FC<Props> = ({
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
 
           <div className={styles.buttonBar}>
-            <Button
-              className={styles.bigButton}
-              color="primary"
-              variant="contained"
-              size="large"
-              label={startWatchingLabel}
-              startIcon={isEntitled ? <Play /> : undefined}
-              onClick={onStartWatchingClick}
-              active={play}
-              fullWidth={breakpoint < Breakpoint.md}
-            >
-              {progress ? (
-                <div className={styles.progressRail}>
-                  <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
-                </div>
-              ) : null}
-            </Button>
+            {startWatchingButton}
             {trailerItem && (
               <Button
                 className={styles.bigButton}

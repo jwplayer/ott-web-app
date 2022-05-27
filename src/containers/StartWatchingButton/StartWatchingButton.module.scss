@@ -1,0 +1,19 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+.progressRail {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba(variables.$black, 0.3);
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  background-color: var(--highlight-contrast-color, rgba(variables.$black, 0.4));
+}
