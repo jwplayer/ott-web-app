@@ -1,34 +1,27 @@
 import { useQueries } from 'react-query';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import shallow from 'zustand/shallow';
 
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { getOffer } from '#src/services/checkout.service';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import type { PlaylistItem } from '#types/playlist';
 import type { Offer } from '#types/checkout';
+import type { OfferType } from '#types/account';
+import { isSVODOffer } from '#src/utils/subscription';
 
-export type UseOffersResult = {
-  tvodOffers: Offer[];
-  monthlyOffer?: Offer;
-  yearlyOffer?: Offer;
-  hasPremierOffer: boolean;
-  isLoadingOffers: boolean;
-};
-
-export type UseOffers = (playlistItem?: PlaylistItem) => UseOffersResult;
-
-const useOffers: UseOffers = () => {
+const useOffers = () => {
   const { cleengSandbox, json } = useConfigStore(({ config }) => config, shallow);
-  const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers: requestedMediaOffers || [] }), shallow);
+  const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
+  const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
+  const tvodOfferIds = (requestedMediaOffers || []).map(({ offerId }) => offerId);
+  const [offerType, setOfferType] = useState<OfferType>('svod');
+
+  const monthlyOfferId = json?.cleengMonthlyOffer ? (json.cleengMonthlyOffer as string) : '';
+  const yearlyOfferId = json?.cleengYearlyOffer ? (json.cleengYearlyOffer as string) : '';
 
   const offerIds: string[] = useMemo(() => {
-    return [
-      ...requestedMediaOffers.map(({ offerId }) => offerId),
-      json?.cleengMonthlyOffer ? (json.cleengMonthlyOffer as string) : '',
-      json?.cleengYearlyOffer ? (json.cleengYearlyOffer as string) : '',
-    ].filter(Boolean);
-  }, [requestedMediaOffers, json?.cleengMonthlyOffer, json?.cleengYearlyOffer]);
+    return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), monthlyOfferId, yearlyOfferId].filter(Boolean);
+  }, [requestedMediaOffers, monthlyOfferId, yearlyOfferId]);
 
   const offerQueries = useQueries(
     offerIds.map((offerId) => ({
@@ -38,18 +31,31 @@ const useOffers: UseOffers = () => {
     })),
   );
 
-  const isLoadingOffers = useMemo(() => offerQueries.some(({ isLoading }) => isLoading), [offerQueries]);
+  const isLoading = offerQueries.some(({ isLoading }) => isLoading);
 
-  const offers = useMemo(
-    () => offerQueries.reduce<Offer[]>((prev, cur) => (cur.isSuccess && cur.data?.responseData ? [...prev, cur.data.responseData] : prev), []),
-    [offerQueries],
-  );
-  const tvodOffers = useMemo(() => offers.filter((offer) => offer.period === null), [offers]);
-  const hasPremierOffer = useMemo(() => !!requestedMediaOffers.some((offer) => offer.premier), [requestedMediaOffers]);
-  const monthlyOffer = useMemo(() => (!hasPremierOffer ? offers.find((offer) => offer.period === 'month') : undefined), [hasPremierOffer, offers]);
-  const yearlyOffer = useMemo(() => (!hasPremierOffer ? offers.find((offer) => offer.period === 'year') : undefined), [hasPremierOffer, offers]);
+  useEffect(() => {
+    if (isLoading) return;
+    if (hasPremierOffer) setOfferType('tvod');
+  }, [isLoading, hasPremierOffer, setOfferType]);
 
-  return { tvodOffers, monthlyOffer, yearlyOffer, hasPremierOffer, isLoadingOffers };
+  // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
+  return useMemo(() => {
+    const allOffers = offerQueries.reduce<Offer[]>((prev, cur) => (cur.isSuccess && cur.data?.responseData ? [...prev, cur.data.responseData] : prev), []);
+    const offers = allOffers.filter((offer) => (offerType === 'tvod' ? !isSVODOffer(offer) : isSVODOffer(offer)));
+    const offersDict = Object.fromEntries(offers.map((offer) => [offer.offerId, offer]));
+    const defaultOfferId = hasPremierOffer ? tvodOfferIds[0] : yearlyOfferId || monthlyOfferId;
+
+    return {
+      hasTVODOffers: allOffers.some((offer) => !isSVODOffer(offer)),
+      isLoading,
+      hasPremierOffer,
+      defaultOfferId,
+      offerType,
+      setOfferType,
+      offers,
+      offersDict,
+    };
+  }, [requestedMediaOffers, offerQueries]);
 };
 
 export default useOffers;

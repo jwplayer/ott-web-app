@@ -38,29 +38,8 @@ exports[`<Video> > renders and matches snapshot 1`] = `
         <div
           class="buttonBar"
         >
-          <button
-            class="button bigButton primary active large"
-          >
-            <div
-              class="startIcon"
-            >
-              <svg
-                aria-hidden="true"
-                class="icon"
-                focusable="false"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g>
-                  <path
-                    d="M8,5.14V19.14L19,12.14L8,5.14Z"
-                  />
-                </g>
-              </svg>
-            </div>
-            <span>
-              Start watching
-            </span>
+          <button>
+            Start watching
           </button>
           <button
             aria-label="video:add_to_favorites"

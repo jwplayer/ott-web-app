@@ -11,7 +11,7 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import CheckCircle from '#src/icons/CheckCircle';
 import { ConfigContext } from '#src/providers/ConfigProvider';
 import type { Offer } from '#types/checkout';
-import { getOfferPrice } from '#src/utils/subscription';
+import { getOfferPrice, isSVODOffer } from '#src/utils/subscription';
 import type { FormErrors } from '#types/form';
 import { IS_DEV_BUILD } from '#src/utils/common';
 import type { ChooseOfferFormData, OfferType } from '#types/account';
@@ -22,12 +22,10 @@ type Props = {
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onBackButtonClickHandler?: () => void;
-  monthlyOffer?: Offer;
-  yearlyOffer?: Offer;
-  tvodOffers: Offer[];
+  offers: Offer[];
   submitting: boolean;
   offerType: OfferType;
-  setOfferType: (offerType: OfferType) => void;
+  setOfferType?: (offerType: OfferType) => void;
 };
 
 type OfferBoxProps = {
@@ -46,9 +44,7 @@ const ChooseOfferForm: React.FC<Props> = ({
   onChange,
   onSubmit,
   submitting,
-  yearlyOffer,
-  monthlyOffer,
-  tvodOffers,
+  offers,
   onBackButtonClickHandler,
   offerType,
   setOfferType,
@@ -71,8 +67,6 @@ const ChooseOfferForm: React.FC<Props> = ({
 
     return null;
   };
-
-  console.info(values.offerId);
 
   const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }) => (
     <div className={styles.offer}>
@@ -113,13 +107,44 @@ const ChooseOfferForm: React.FC<Props> = ({
     </div>
   );
 
+  const renderOfferBox = (offer: Offer) => {
+    if (isSVODOffer(offer)) {
+      const isMonthly = offer.period === 'month';
+
+      return (
+        <OfferBox
+          offer={offer}
+          key={offer.offerId}
+          title={isMonthly ? t('choose_offer.monthly') : t('choose_offer.yearly')}
+          ariaLabel={isMonthly ? t('choose_offer.monthly_subscription') : t('choose_offer.yearly_subscription')}
+          secondBenefit={t('choose_offer.benefits.cancel_anytime')}
+          periodString={isMonthly ? t('periods.month') : t('periods.year')}
+        />
+      );
+    }
+
+    return (
+      <OfferBox
+        offer={offer}
+        key={offer.offerId}
+        title={offer.offerTitle}
+        ariaLabel={offer.offerTitle}
+        secondBenefit={
+          !!offer.durationPeriod && !!offer.durationAmount
+            ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
+            : undefined
+        }
+      />
+    );
+  };
+
   return (
     <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'choose-offer-form' : undefined} noValidate>
       {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
       <h2 className={styles.title}>{t('choose_offer.title')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      {!!tvodOffers.length && (!!yearlyOffer || !!monthlyOffer) && (
+      {setOfferType && (
         <div className={styles.offerGroupSwitch}>
           <input
             className={styles.radio}
@@ -147,46 +172,7 @@ const ChooseOfferForm: React.FC<Props> = ({
           </label>
         </div>
       )}
-      {offerType === 'svod' && (
-        <div className={styles.offers}>
-          {!!monthlyOffer && (
-            <OfferBox
-              offer={monthlyOffer}
-              title={t('choose_offer.monthly')}
-              ariaLabel={t('choose_offer.monthly_subscription')}
-              secondBenefit={t('choose_offer.benefits.cancel_anytime')}
-              periodString={t('periods.month')}
-            />
-          )}
-          {!!yearlyOffer && (
-            <OfferBox
-              offer={yearlyOffer}
-              title={t('choose_offer.yearly')}
-              ariaLabel={t('choose_offer.yearly_subscription')}
-              secondBenefit={t('choose_offer.benefits.cancel_anytime')}
-              periodString={t('periods.year')}
-            />
-          )}
-        </div>
-      )}
-      {offerType === 'tvod' && (
-        <div className={styles.offers}>
-          {tvodOffers?.map((offer) => (
-            <OfferBox
-              offer={offer}
-              key={offer.offerId}
-              title={offer.offerTitle}
-              ariaLabel={offer.offerTitle}
-              secondBenefit={
-                !!offer.durationPeriod && !!offer.durationAmount
-                  ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
-                  : undefined
-              }
-            />
-          ))}
-        </div>
-      )}
-
+      <div className={styles.offers}>{offers.map(renderOfferBox)}</div>
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
     </form>

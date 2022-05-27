@@ -31,7 +31,13 @@ type QueryResult = {
  *
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
-  const { sandbox, accessModel } = useConfigStore(({ config, accessModel }) => ({ sandbox: config?.cleengSandbox, accessModel }), shallow);
+  const { sandbox, accessModel } = useConfigStore(
+    ({ config, accessModel }) => ({
+      sandbox: config?.cleengSandbox,
+      accessModel,
+    }),
+    shallow,
+  );
   const { user, subscription, transactions, auth } = useAccountStore(
     ({ user, subscription, transactions, auth }) => ({ user, subscription, transactions, auth }),
     shallow,

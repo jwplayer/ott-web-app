@@ -4,9 +4,13 @@ import { fireEvent, render } from '@testing-library/react';
 import monthlyOffer from '../../fixtures/monthlyOffer.json';
 import yearlyOffer from '../../fixtures/yearlyOffer.json';
 import tvodOffer from '../../fixtures/tvodOffer.json';
-import type { Offer } from '../../../types/checkout';
 
 import ChooseOfferForm from './ChooseOfferForm';
+
+import type { Offer } from '#types/checkout';
+
+const svodOffers = [monthlyOffer, yearlyOffer] as Offer[];
+const tvodOffers = [tvodOffer] as Offer[];
 
 describe('<OffersForm>', () => {
   test('renders and matches snapshot', () => {
@@ -17,9 +21,7 @@ describe('<OffersForm>', () => {
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
-        monthlyOffer={monthlyOffer as Offer}
-        yearlyOffer={yearlyOffer as Offer}
-        tvodOffers={[tvodOffer as Offer]}
+        offers={svodOffers}
         offerType={'svod'}
         setOfferType={vi.fn()}
       />,
@@ -36,9 +38,7 @@ describe('<OffersForm>', () => {
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
-        monthlyOffer={monthlyOffer as Offer}
-        yearlyOffer={yearlyOffer as Offer}
-        tvodOffers={[tvodOffer as Offer]}
+        offers={tvodOffers}
         offerType={'tvod'}
         setOfferType={vi.fn()}
       />,
@@ -55,9 +55,7 @@ describe('<OffersForm>', () => {
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
-        monthlyOffer={monthlyOffer as Offer}
-        yearlyOffer={yearlyOffer as Offer}
-        tvodOffers={[tvodOffer as Offer]}
+        offers={svodOffers}
         offerType={'svod'}
         setOfferType={vi.fn()}
       />,
@@ -74,9 +72,7 @@ describe('<OffersForm>', () => {
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
-        monthlyOffer={monthlyOffer as Offer}
-        yearlyOffer={yearlyOffer as Offer}
-        tvodOffers={[tvodOffer as Offer]}
+        offers={svodOffers}
         offerType={'svod'}
         setOfferType={vi.fn()}
       />,
@@ -93,9 +89,7 @@ describe('<OffersForm>', () => {
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
-        monthlyOffer={monthlyOffer as Offer}
-        yearlyOffer={yearlyOffer as Offer}
-        tvodOffers={[tvodOffer as Offer]}
+        offers={tvodOffers}
         offerType={'tvod'}
         setOfferType={vi.fn()}
       />,
@@ -113,9 +107,7 @@ describe('<OffersForm>', () => {
         onChange={onChange}
         onSubmit={vi.fn()}
         submitting={false}
-        monthlyOffer={monthlyOffer as Offer}
-        yearlyOffer={yearlyOffer as Offer}
-        tvodOffers={[tvodOffer as Offer]}
+        offers={svodOffers}
         offerType={'svod'}
         setOfferType={vi.fn()}
       />,
@@ -135,9 +127,7 @@ describe('<OffersForm>', () => {
         onChange={vi.fn()}
         onSubmit={onSubmit}
         submitting={false}
-        monthlyOffer={monthlyOffer as Offer}
-        yearlyOffer={yearlyOffer as Offer}
-        tvodOffers={[tvodOffer as Offer]}
+        offers={svodOffers}
         offerType={'svod'}
         setOfferType={vi.fn()}
       />,
