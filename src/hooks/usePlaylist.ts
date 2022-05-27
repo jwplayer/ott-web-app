@@ -2,7 +2,6 @@ import { UseBaseQueryResult, useQuery } from 'react-query';
 
 import { generatePlaylistPlaceholder } from '../utils/collection';
 import { getPlaylistById } from '../services/api.service';
-import { transformMediaItem } from '../utils/media';
 
 import type { Playlist } from '#types/playlist';
 
@@ -17,20 +16,9 @@ export default function usePlaylist(
   usePlaceholderData: boolean = true,
   limit?: number,
 ): UsePlaylistResult {
-  return useQuery(
-    ['playlist', playlistId, relatedMediaId],
-    async () => {
-      const playlist = await getPlaylistById(playlistId, relatedMediaId, limit);
-
-      // Parse TVOD media offers, if present
-      if (playlist?.playlist) playlist.playlist = playlist.playlist.map(transformMediaItem);
-
-      return playlist;
-    },
-    {
-      enabled: !!playlistId && enabled,
-      placeholderData: usePlaceholderData ? placeholderData : undefined,
-      retry: false,
-    },
-  );
+  return useQuery(['playlist', playlistId, relatedMediaId], () => getPlaylistById(playlistId, relatedMediaId, limit), {
+    enabled: !!playlistId && enabled,
+    placeholderData: usePlaceholderData ? placeholderData : undefined,
+    retry: false,
+  });
 }
