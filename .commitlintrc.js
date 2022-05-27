@@ -23,6 +23,7 @@ module.exports = {
         'payment',
         'e2e',
         'signing',
+        'entitlement',
       ],
     ],
   },

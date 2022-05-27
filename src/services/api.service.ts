@@ -1,6 +1,7 @@
 import { addQueryParams } from '../utils/formatting';
 import { API_BASE_URL } from '../config';
 
+import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 
 /**
@@ -20,16 +21,45 @@ export const getDataOrThrow = async (response: Response) => {
 };
 
 /**
+ * Transform incoming media items
+ * - Parses productId into MediaOffer[] for all cleeng offers
+ *
+ * @param item
+ */
+export const transformMediaItem = (item: PlaylistItem) => {
+  return {
+    ...item,
+    mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
+  };
+};
+
+/**
+ * Transform incoming playlists
+ *
+ * @param playlist
+ * @param relatedMediaId
+ */
+export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
+  playlist.playlist = playlist.playlist.map(transformMediaItem);
+
+  if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
+
+  return playlist;
+};
+
+/**
  * Get playlist by id
  * @param {string} id
  * @param params
  * @param {string} [drmPolicyId]
  */
-export const getPlaylistById = (id: string, params: GetPlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
+export const getPlaylistById = async (id: string, params: GetPlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
   const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
   const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
+  const response = await fetch(url);
+  const data = await getDataOrThrow(response);
 
-  return fetch(url).then(getDataOrThrow);
+  return transformPlaylist(data, params.related_media_id);
 };
 
 /**
@@ -38,15 +68,16 @@ export const getPlaylistById = (id: string, params: GetPlaylistParams = {}, drmP
  * @param {string} [token]
  * @param {string} [drmPolicyId]
  */
-export const getMediaById = (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
+export const getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
   const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, {
-    token,
-  });
+  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token });
+  const response = await fetch(url);
+  const data = (await getDataOrThrow(response)) as Playlist;
+  const mediaItem = data.playlist[0];
 
-  return fetch(url)
-    .then((res) => getDataOrThrow(res) as Promise<Playlist>)
-    .then((data) => data.playlist[0]);
+  if (!mediaItem) throw new Error('MediaItem not found');
+
+  return transformMediaItem(mediaItem);
 };
 
 /**

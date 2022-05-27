@@ -7,3 +7,8 @@ export type Media = {
   title: string;
   playlist: PlaylistItem[];
 };
+
+export type MediaOffer = {
+  offerId: string;
+  premier: boolean;
+};

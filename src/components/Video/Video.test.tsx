@@ -29,9 +29,6 @@ describe('<Video>', () => {
         title="Test video"
         play
         item={item}
-        allowedToWatch={true}
-        startWatchingLabel="Start watching"
-        onStartWatchingClick={vi.fn()}
         goBack={vi.fn()}
         poster="fading"
         hasShared={false}
@@ -42,6 +39,7 @@ describe('<Video>', () => {
         playTrailer={false}
         onTrailerClick={vi.fn()}
         onTrailerClose={vi.fn()}
+        startWatchingButton={<button>Start watching</button>}
       />,
     );
 
