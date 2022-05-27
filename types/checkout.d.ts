@@ -12,7 +12,9 @@ export type Offer = {
   discountedCustomerPriceInclTax: number | null;
   discountedCustomerPriceExclTax: number | null;
   discountPeriods: number | null;
-  offerUrl: string;
+  durationPeriod?: string | null; // Duration isn't sent from Cleeng yet
+  durationAmount?: number | null; // Same for this
+  offerUrl: string | null;
   offerTitle: string;
   offerDescription: null;
   active: boolean;
@@ -26,29 +28,29 @@ export type Offer = {
   averageRating: number;
   contentType: string | null;
   period: 'day' | 'week' | 'month' | 'year';
-  freePeriods: number;
-  freeDays: number;
+  freePeriods: number | null;
+  freeDays: number | null;
   expiresAt: string | null;
   accessToTags: string[];
   videoId: string | null;
-  contentExternalId: string | null;
+  contentExternalId: number | null;
   contentExternalData: string | null;
-  contentAgeRestriction: string | null
-}
+  contentAgeRestriction: string | null;
+};
 
 export type OrderOffer = {
   title: string;
   description: string | null;
   price: number;
   currency: string;
-}
+};
 
 export type Order = {
   id: number;
   customerId: string;
   customer: {
     locale: string;
-    email: string
+    email: string;
   };
   publisherId: number;
   offerId: string;
@@ -60,7 +62,7 @@ export type Order = {
     discountedPrice: number;
     taxValue: number;
     customerServiceFee: number;
-    paymentMethodFee: number
+    paymentMethodFee: number;
   };
   taxRate: number;
   taxBreakdown: string | null;
@@ -73,9 +75,9 @@ export type Order = {
   discount: {
     applied: boolean;
     type: string;
-    periods: number
+    periods: number;
   };
-  requiredPaymentDetails: boolean
+  requiredPaymentDetails: boolean;
 };
 
 export type PaymentMethod = {
@@ -91,26 +93,26 @@ export type PaymentMethodResponse = {
 };
 
 export type Payment = {
-  id: number,
-  orderId: number,
-  status: string,
-  totalAmount: number,
-  currency: string,
-  customerId: string,
-  paymentGateway: string,
-  paymentMethod: string,
-  externalPaymentId: string|number,
-  couponId: number | null,
-  amount: number,
-  country: string,
-  offerType: "subscription",
-  taxValue: number,
-  paymentMethodFee: number,
-  customerServiceFee: number,
-  rejectedReason: string | null,
-  refundedReason: string | null,
-  paymentDetailsId: number | null,
-  paymentOperation: string
+  id: number;
+  orderId: number;
+  status: string;
+  totalAmount: number;
+  currency: string;
+  customerId: string;
+  paymentGateway: string;
+  paymentMethod: string;
+  externalPaymentId: string | number;
+  couponId: number | null;
+  amount: number;
+  country: string;
+  offerType: 'subscription';
+  taxValue: number;
+  paymentMethodFee: number;
+  customerServiceFee: number;
+  rejectedReason: string | null;
+  refundedReason: string | null;
+  paymentDetailsId: number | null;
+  paymentOperation: string;
 };
 
 export type GetOfferPayload = {
@@ -165,6 +167,15 @@ export type PaymentWithPayPalResponse = {
   redirectUrl: string;
 };
 
+export type GetEntitlementsPayload = {
+  offerId: string;
+};
+
+export type GetEntitlementsResponse = {
+  accessGranted: boolean;
+  expiresAt: number;
+};
+
 export type GetOffer = CleengRequest<GetOfferPayload, Offer>;
 export type CreateOrder = CleengAuthRequest<CreateOrderPayload, CreateOrderResponse>;
 export type UpdateOrder = CleengAuthRequest<UpdateOrderPayload, UpdateOrderResponse>;
@@ -172,3 +183,4 @@ export type GetPaymentMethods = CleengEmptyAuthRequest<PaymentMethodResponse>;
 export type PaymentWithoutDetails = CleengAuthRequest<PaymentWithoutDetailsPayload, Payment>;
 export type PaymentWithAdyen = CleengAuthRequest<PaymentWithAdyenPayload, Payment>;
 export type PaymentWithPayPal = CleengAuthRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
+export type GetEntitlements = CleengAuthRequest<GetEntitlementsPayload, GetEntitlementsResponse>;

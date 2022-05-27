@@ -154,12 +154,7 @@ export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
     user: response.responseData,
   });
 
-  if (accessModel === 'SVOD') {
-    await reloadActiveSubscription();
-  }
-
-  await getCustomerConsents();
-  await getPublisherConsents();
+  await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getCustomerConsents(), getPublisherConsents()]);
 
   useAccountStore.setState({ loading: false });
 };
@@ -185,6 +180,9 @@ export const logout = async () => {
   useAccountStore.setState({
     auth: null,
     user: null,
+    subscription: null,
+    transactions: null,
+    activePayment: null,
     customerConsents: null,
     publisherConsents: null,
   });
@@ -299,6 +297,7 @@ export const updateCaptureAnswers = async (capture: Capture) => {
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
+    // @todo why is this needed?
     await afterLogin(cleengSandbox, auth);
 
     return response.responseData;
@@ -367,9 +366,11 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
   useAccountStore.setState({ loading: true });
 
   return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const activeSubscription = await getActiveSubscription({ cleengSandbox, customerId, jwt });
-    const transactions = await getAllTransactions({ cleengSandbox, customerId, jwt });
-    const activePayment = await getActivePayment({ cleengSandbox, customerId, jwt });
+    const [activeSubscription, transactions, activePayment] = await Promise.all([
+      getActiveSubscription({ cleengSandbox, customerId, jwt }),
+      getAllTransactions({ cleengSandbox, customerId, jwt }),
+      getActivePayment({ cleengSandbox, customerId, jwt }),
+    ]);
 
     // The subscription data takes a few seconds to load after it's purchased,
     // so here's a delay mechanism to give it time to process

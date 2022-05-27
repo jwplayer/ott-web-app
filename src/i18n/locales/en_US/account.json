@@ -38,7 +38,6 @@
     "yearly": "Yearly subscription"
   },
   "choose_offer": {
-    "all_movies_and_series_of_platform": "All movies and series of {{siteName}}",
     "benefits": {
       "cancel_anytime": "Cancel anytime",
       "first_days_free": "First day free",
@@ -52,7 +51,12 @@
     "monthly": "Monthly",
     "monthly_subscription": "Monthly subscription",
     "offer_not_found": "Offer not found, please try reloading the page",
+    "one_time_only": "This video",
     "subscription": "Subscription",
+    "title": "Choose plan",
+    "tvod_access": "{{count}} {{period}} access",
+    "tvod_access_plural": "{{count}} {{period}} access",
+    "watch_this_on_platform": "Watch this on {{siteName}}",
     "yearly": "Yearly",
     "yearly_subscription": "Yearly subscription"
   },

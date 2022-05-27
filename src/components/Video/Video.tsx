@@ -1,26 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import CollapsibleText from '../CollapsibleText/CollapsibleText';
-import Cinema from '../../containers/Cinema/Cinema';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
-import Favorite from '../../icons/Favorite';
-import PlayTrailer from '../../icons/PlayTrailer';
-import Share from '../../icons/Share';
-import Check from '../../icons/Check';
-import ArrowLeft from '../../icons/ArrowLeft';
-import Play from '../../icons/Play';
-import Button from '../Button/Button';
-import IconButton from '../IconButton/IconButton';
-import { formatDuration } from '../../utils/formatting';
-import Modal from '../Modal/Modal';
-import FavoriteBorder from '../../icons/FavoriteBorder';
-import Fade from '../Animation/Fade/Fade';
-import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
-
 import styles from './Video.module.scss';
 
+import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
+import Button from '#src/components/Button/Button';
+import IconButton from '#src/components/IconButton/IconButton';
+import Modal from '#src/components/Modal/Modal';
+import Fade from '#src/components/Animation/Fade/Fade';
+import ModalCloseButton from '#src/components/ModalCloseButton/ModalCloseButton';
+import Cinema from '#src/containers/Cinema/Cinema';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import Favorite from '#src/icons/Favorite';
+import PlayTrailer from '#src/icons/PlayTrailer';
+import Share from '#src/icons/Share';
+import Check from '#src/icons/Check';
+import ArrowLeft from '#src/icons/ArrowLeft';
+import { formatDuration } from '#src/utils/formatting';
+import FavoriteBorder from '#src/icons/FavoriteBorder';
 import type { PlaylistItem } from '#types/playlist';
 
 type Poster = 'fading' | 'normal';
@@ -31,10 +29,6 @@ type Props = {
   feedId?: string;
   trailerItem?: PlaylistItem;
   play: boolean;
-  allowedToWatch: boolean;
-  startWatchingLabel: string;
-  progress?: number;
-  onStartWatchingClick: () => void;
   goBack: () => void;
   onComplete?: () => void;
   isFavorited: boolean;
@@ -48,6 +42,7 @@ type Props = {
   onTrailerClose: () => void;
   isSeries?: boolean;
   episodeCount?: number;
+  startWatchingButton: JSX.Element;
   children?: JSX.Element;
 };
 
@@ -57,10 +52,6 @@ const Video: React.FC<Props> = ({
   feedId,
   trailerItem,
   play,
-  allowedToWatch,
-  startWatchingLabel,
-  onStartWatchingClick,
-  progress,
   goBack,
   onComplete,
   poster,
@@ -74,6 +65,7 @@ const Video: React.FC<Props> = ({
   onTrailerClick,
   onTrailerClose,
   isSeries = false,
+  startWatchingButton,
   episodeCount,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -128,23 +120,7 @@ const Video: React.FC<Props> = ({
           <CollapsibleText text={item.description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
 
           <div className={styles.buttonBar}>
-            <Button
-              className={styles.bigButton}
-              color="primary"
-              variant="contained"
-              size="large"
-              label={startWatchingLabel}
-              startIcon={allowedToWatch ? <Play /> : undefined}
-              onClick={onStartWatchingClick}
-              active={play}
-              fullWidth={breakpoint < Breakpoint.md}
-            >
-              {progress ? (
-                <div className={styles.progressRail}>
-                  <div className={styles.progress} style={{ width: `${progress * 100}%` }} />
-                </div>
-              ) : null}
-            </Button>
+            {startWatchingButton}
             {trailerItem && (
               <Button
                 className={styles.bigButton}

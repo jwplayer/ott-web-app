@@ -38,10 +38,10 @@ export type EditPasswordFormData = {
   password: string;
 };
 
-export type OfferPeriodicity = 'monthly' | 'yearly';
+export type OfferType = 'svod' | 'tvod';
 
 export type ChooseOfferFormData = {
-  periodicity: OfferPeriodicity;
+  offerId?: string;
 };
 
 export type RegisterPayload = {
