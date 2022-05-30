@@ -1,21 +1,10 @@
 import useContentProtection from '#src/hooks/useContentProtection';
 import { generatePlaylistPlaceholder } from '#src/utils/collection';
-import type { GetPlaylistParams, Playlist } from '#types/playlist';
+import type { GetPlaylistParams } from '#types/playlist';
 import { getPlaylistById } from '#src/services/api.service';
 import { queryClient } from '#src/providers/QueryProvider';
 
 const placeholderData = generatePlaylistPlaceholder(30);
-
-/**
- * Filter out media item with the given id
- */
-const filterMediaItem = (playlist: Playlist | undefined, mediaId?: string) => {
-  if (playlist?.playlist && mediaId) {
-    playlist.playlist = playlist.playlist.filter((playlistItem) => playlistItem.mediaid !== mediaId);
-  }
-
-  return playlist;
-};
 
 export default function usePlaylist(playlistId: string, params: GetPlaylistParams = {}, enabled: boolean = true, usePlaceholderData: boolean = true) {
   const callback = async (token?: string, drmPolicyId?: string) => {
@@ -27,7 +16,7 @@ export default function usePlaylist(playlistId: string, params: GetPlaylistParam
       queryClient.setQueryData(['media', playlistItem.mediaid, {}, undefined], playlistItem);
     });
 
-    return filterMediaItem(playlist);
+    return playlist;
   };
 
   return useContentProtection('playlist', playlistId, callback, params, enabled, usePlaceholderData ? placeholderData : undefined);

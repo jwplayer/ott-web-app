@@ -42,6 +42,7 @@ export const transformMediaItem = (item: PlaylistItem) => {
 export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
   playlist.playlist = playlist.playlist.map(transformMediaItem);
 
+  // remove the related media item (when this is a recommendations playlist)
   if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
 
   return playlist;
