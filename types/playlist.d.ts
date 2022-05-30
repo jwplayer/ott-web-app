@@ -1,3 +1,5 @@
+export type GetPlaylistParams = { page_limit?: string; related_media_id?: string; token?: string; search?: string };
+
 export type Image = {
   src: string;
   type: string;
@@ -18,7 +20,6 @@ export type Track = {
 export type PlaylistItem = {
   description: string;
   duration: number;
-  episodeNumber?: string;
   feedid: string;
   image: string;
   images: Image[];
@@ -28,7 +29,6 @@ export type PlaylistItem = {
   pubdate: number;
   rating: string;
   requiresSubscription?: string | null;
-  seasonNumber?: string;
   sources: Source[];
   seriesId?: string;
   episodeNumber?: string;
@@ -56,11 +56,4 @@ export type Playlist = {
   links?: Link;
   playlist: PlaylistItem[];
   title: string;
-};
-
-export type Media = {
-  description?: string;
-  feed_instance_id: string;
-  kind: string;
-  playlist: PlaylistItem[];
 };

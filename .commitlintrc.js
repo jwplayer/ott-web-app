@@ -22,6 +22,7 @@ module.exports = {
         'menu',
         'payment',
         'e2e',
+        'signing',
         'entitlement',
       ],
     ],

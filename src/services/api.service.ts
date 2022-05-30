@@ -1,8 +1,8 @@
 import { addQueryParams } from '../utils/formatting';
-import type { Playlist, PlaylistItem } from '../../types/playlist';
 import { API_BASE_URL } from '../config';
 
 import { filterMediaOffers } from '#src/utils/entitlements';
+import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 
 /**
  * Get data
@@ -42,6 +42,7 @@ export const transformMediaItem = (item: PlaylistItem) => {
 export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
   playlist.playlist = playlist.playlist.map(transformMediaItem);
 
+  // remove the related media item (when this is a recommendations playlist)
   if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
 
   return playlist;
@@ -50,42 +51,32 @@ export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) =
 /**
  * Get playlist by id
  * @param {string} id
- * @param relatedMediaId
+ * @param params
+ * @param {string} [drmPolicyId]
  */
-export const getPlaylistById = async (id?: string, relatedMediaId?: string, limit?: number): Promise<Playlist | undefined> => {
+export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
   if (!id) {
     return undefined;
   }
 
-  const url = addQueryParams(`${API_BASE_URL}/v2/playlists/${id}`, {
-    related_media_id: relatedMediaId,
-    page_limit: limit?.toString(),
-  });
-
+  const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
+  const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 
-  return transformPlaylist(data, relatedMediaId);
-};
-
-/**
- * Get search playlist
- * @param {string} playlistId
- * @param {string} query
- */
-export const getSearchPlaylist = async (playlistId: string, query: string): Promise<Playlist | undefined> => {
-  const response = await fetch(`${API_BASE_URL}/v2/playlists/${playlistId}?search=${encodeURIComponent(query)}`);
-  const data = await getDataOrThrow(response);
-
-  return transformPlaylist(data);
+  return transformPlaylist(data, params.related_media_id);
 };
 
 /**
  * Get media by id
  * @param {string} id
+ * @param {string} [token]
+ * @param {string} [drmPolicyId]
  */
-export const getMediaById = async (id: string): Promise<PlaylistItem | undefined> => {
-  const response = await fetch(`${API_BASE_URL}/v2/media/${id}`);
+export const getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
+  const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
+  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token });
+  const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
   const mediaItem = data.playlist[0];
 
@@ -97,10 +88,12 @@ export const getMediaById = async (id: string): Promise<PlaylistItem | undefined
 /**
  * Gets multiple media items by the given ids. Filters out items that don't exist.
  * @param {string[]} ids
+ * @param {Object} tokens
+ * @param {string} drmPolicyId
  */
-export const getMediaByIds = async (ids: string[]): Promise<PlaylistItem[]> => {
+export const getMediaByIds = async (ids: string[], tokens?: Record<string, string>, drmPolicyId?: string): Promise<PlaylistItem[]> => {
   // @todo this should be updated when it will become possible to request multiple media items in a single request
-  const responses = await Promise.allSettled(ids.map((id) => getMediaById(id)));
+  const responses = await Promise.allSettled(ids.map((id) => getMediaById(id, tokens?.[id], drmPolicyId)));
 
   function notEmpty<Value>(value: Value | null | undefined): value is Value {
     return value !== null && value !== undefined;

@@ -1,3 +1,5 @@
+export type GetMediaParams = { poster_width?: number; default_source_fallback?: boolean; token?: string; max_resolution?: number };
+
 export type Media = {
   description?: string;
   feed_instance_id: string;

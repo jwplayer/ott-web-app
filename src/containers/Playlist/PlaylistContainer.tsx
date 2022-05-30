@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { PersonalShelf, PersonalShelves } from '#src/enum/PersonalShelf';
-import usePlaylist, { UsePlaylistResult } from '#src/hooks/usePlaylist';
+import usePlaylist from '#src/hooks/usePlaylist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { PLAYLIST_LIMIT } from '#src/config';
@@ -24,14 +24,13 @@ type Props = {
   showEmpty?: boolean;
 };
 
-const PlaylistContainer = ({ playlistId, type, relatedItem, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
+const PlaylistContainer = ({ playlistId, type, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const {
     isLoading,
     error,
     data: fetchedPlaylist = { title: '', playlist: [] },
-  }: UsePlaylistResult = usePlaylist(playlistId, relatedItem?.mediaid, !isAlternativeShelf && !!playlistId, true, PLAYLIST_LIMIT);
-
+  } = usePlaylist(playlistId, { page_limit: PLAYLIST_LIMIT.toString() }, !isAlternativeShelf, true);
   let playlist = fetchedPlaylist;
 
   const favoritesPlaylist = useFavoritesStore((state) => state.getPlaylist());
@@ -47,10 +46,6 @@ const PlaylistContainer = ({ playlistId, type, relatedItem, onPlaylistUpdate, st
   if (!playlistId && !type) return <p>No playlist id and type</p>;
   if (!playlist.playlist.length && !showEmpty) {
     return null;
-  }
-
-  if (relatedItem && !playlist.playlist.some(({ mediaid }) => mediaid === relatedItem.mediaid)) {
-    playlist.playlist.unshift(relatedItem);
   }
 
   return children({ playlist, isLoading, error, style });

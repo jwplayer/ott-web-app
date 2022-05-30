@@ -18,6 +18,12 @@ export type Config = {
   styling: Styling;
   features?: Features;
   custom?: Record<string, unknown>;
+  contentSigningService?: ContentSigningConfig;
+};
+
+export type ContentSigningConfig = {
+  host: string;
+  drmPolicyId?: string;
 };
 
 export type ContentType = 'playlist' | 'continue_watching' | 'favorites';

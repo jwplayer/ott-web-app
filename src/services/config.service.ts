@@ -1,4 +1,4 @@
-import { string, boolean, array, object, SchemaOf, mixed } from 'yup';
+import { string, boolean, array, object, SchemaOf, StringSchema, mixed } from 'yup';
 
 import type { Config, Content, Menu, Styling, Features, Cleeng } from '#types/Config';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
@@ -65,6 +65,11 @@ const configSchema: SchemaOf<Config> = object({
     cleeng: cleengSchema.notRequired(),
   }).notRequired(),
   custom: object().notRequired(),
+  contentSigningService: object().shape({
+    // see {@link https://github.com/jquense/yup/issues/1367}
+    host: string().required() as StringSchema<string>,
+    drmPolicyId: string().notRequired(),
+  }),
 }).defined();
 
 const loadConfig = async (configLocation: string) => {

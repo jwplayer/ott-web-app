@@ -18,11 +18,11 @@ import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import useRecommendedPlaylist from '#src/hooks/useRecommendationsPlaylist';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
 import { removeItem, saveItem } from '#src/stores/FavoritesController';
+import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 
@@ -52,7 +52,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { isLoading, error, data: item } = useMedia(id);
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
-  const { data: playlist } = useRecommendedPlaylist(features?.recommendationsPlaylist || '', item);
+  const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Favorite
   const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));

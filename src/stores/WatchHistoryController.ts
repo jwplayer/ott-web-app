@@ -1,7 +1,6 @@
 import { useAccountStore } from '#src/stores/AccountStore';
 import * as persist from '#src/utils/persist';
-import { getMediaByIds } from '#src/services/api.service';
-import { updatePersonalShelves } from '#src/stores/AccountController';
+import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { PlaylistItem } from '#types/playlist';
 import type { WatchHistoryItem } from '#types/watchHistory';
@@ -18,7 +17,7 @@ export const restoreWatchHistory = async () => {
     // Store savedItems immediately, so we can show the watch history while we fetch the mediaItems
     useWatchHistoryStore.setState({ watchHistory: savedItems });
 
-    const watchHistoryItems = await getMediaByIds(savedItems.map((item) => item.mediaid));
+    const watchHistoryItems = await getMediaItems(savedItems.map((item) => item.mediaid));
     const watchHistoryItemsDict = Object.fromEntries(watchHistoryItems.map((item) => [item.mediaid, item]));
 
     const watchHistory = savedItems.map((item) => {

@@ -46,6 +46,8 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const isPreEntitled = playlistItem && !isLocked(accessModel, !!user, !!subscription, playlistItem);
   const mediaOffers = playlistItem?.mediaOffers || [];
 
+  // This entitlement query is invalidated by adding all transaction IDs to the queryKey. Perhaps a more optimal way is
+  // to invalidate the query cache after the payment.
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['mediaOffer', offerId, transactions?.map((t) => t.transactionId).join(',')],
