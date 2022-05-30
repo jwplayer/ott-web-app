@@ -1,7 +1,6 @@
 import { useAccountStore } from '#src/stores/AccountStore';
-import { updatePersonalShelves } from '#src/stores/AccountController';
+import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
 import * as persist from '#src/utils/persist';
-import { getMediaByIds } from '#src/services/api.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Favorite } from '#types/favorite';
 import type { PlaylistItem } from '#types/playlist';
@@ -13,7 +12,7 @@ export const restoreFavorites = async () => {
   const savedItems = user ? user.externalData?.favorites : persist.getItem<Favorite[]>(PERSIST_KEY_FAVORITES);
 
   if (savedItems) {
-    const playlistItems = await getMediaByIds(savedItems.map(({ mediaid }) => mediaid));
+    const playlistItems = await getMediaItems(savedItems.map(({ mediaid }) => mediaid));
     const favorites = playlistItems.map((item) => createFavorite(item));
 
     useFavoritesStore.setState({ favorites });

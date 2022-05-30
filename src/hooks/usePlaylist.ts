@@ -1,24 +1,23 @@
-import { UseBaseQueryResult, useQuery } from 'react-query';
-
-import { generatePlaylistPlaceholder } from '../utils/collection';
-import { getPlaylistById } from '../services/api.service';
-
-import type { Playlist } from '#types/playlist';
+import useContentProtection from '#src/hooks/useContentProtection';
+import { generatePlaylistPlaceholder } from '#src/utils/collection';
+import type { GetPlaylistParams } from '#types/playlist';
+import { getPlaylistById } from '#src/services/api.service';
+import { queryClient } from '#src/providers/QueryProvider';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
-export type UsePlaylistResult<TData = Playlist, TError = unknown> = UseBaseQueryResult<TData, TError>;
+export default function usePlaylist(playlistId: string, params: GetPlaylistParams = {}, enabled: boolean = true, usePlaceholderData: boolean = true) {
+  const callback = async (token?: string, drmPolicyId?: string) => {
+    const playlist = await getPlaylistById(playlistId, { token, ...params }, drmPolicyId);
 
-export default function usePlaylist(
-  playlistId: string,
-  relatedMediaId?: string,
-  enabled: boolean = true,
-  usePlaceholderData: boolean = true,
-  limit?: number,
-): UsePlaylistResult {
-  return useQuery(['playlist', playlistId, relatedMediaId], () => getPlaylistById(playlistId, relatedMediaId, limit), {
-    enabled: !!playlistId && enabled,
-    placeholderData: usePlaceholderData ? placeholderData : undefined,
-    retry: false,
-  });
+    // This pre-caches all playlist items and makes navigating a lot faster. This doesn't work when DRM is enabled
+    // because of the token mechanism.
+    playlist?.playlist?.forEach((playlistItem) => {
+      queryClient.setQueryData(['media', playlistItem.mediaid, {}, undefined], playlistItem);
+    });
+
+    return playlist;
+  };
+
+  return useContentProtection('playlist', playlistId, callback, params, enabled, usePlaceholderData ? placeholderData : undefined);
 }

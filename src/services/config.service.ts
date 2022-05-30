@@ -1,8 +1,9 @@
-import { string, boolean, array, object, SchemaOf } from 'yup';
+import type { StringSchema } from 'yup';
+import { array, boolean, object, SchemaOf, string } from 'yup';
 
 import { PersonalShelf } from '../enum/PersonalShelf';
 
-import type { Config, Content, Options, Menu } from '#types/Config';
+import type { Config, Content, Menu, Options } from '#types/Config';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
@@ -52,6 +53,11 @@ const configSchema: SchemaOf<Config> = object({
   cleengSandbox: boolean().default(true),
   genres: array().of(string()).notRequired(),
   json: object().notRequired(),
+  contentSigningService: object().shape({
+    // see {@link https://github.com/jquense/yup/issues/1367}
+    host: string().required() as StringSchema<string>,
+    drmPolicyId: string().notRequired(),
+  }),
 }).defined();
 
 const loadConfig = async (configLocation: string) => {

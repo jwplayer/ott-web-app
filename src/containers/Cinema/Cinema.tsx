@@ -15,6 +15,7 @@ import type { PlaylistItem } from '#types/playlist';
 import type { Config } from '#types/Config';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import type { VideoProgress } from '#types/video';
+import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
 
 type Props = {
   item: PlaylistItem;
@@ -38,6 +39,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
   const enableWatchHistory = config.options.enableContinueWatching && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
+  const handlePlaylistItemCallback = usePlaylistItemCallback();
 
   const getProgress = useCallback((): VideoProgress | null => {
     if (!playerRef.current) return null;
@@ -158,6 +160,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       };
 
       playerRef.current.on('beforePlay', handleBeforePlay);
+      playerRef.current.setPlaylistItemCallback(handlePlaylistItemCallback);
     };
 
     if (playerRef.current) {
@@ -167,7 +170,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, onPlay, onPause, onUserActive, onUserInActive, onComplete, config.player, enableWatchHistory, setPlayer]);
+  }, [libLoaded, item, onPlay, onPause, onUserActive, onUserInActive, onComplete, config.player, enableWatchHistory, setPlayer, handlePlaylistItemCallback]);
 
   useEffect(() => {
     return () => {
