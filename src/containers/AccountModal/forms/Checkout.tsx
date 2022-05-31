@@ -17,8 +17,7 @@ import { adyenPayment, createOrder, getPaymentMethods, paymentWithoutDetails, pa
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 const Checkout = () => {
-  const config = useConfigStore((s) => s.config);
-  const cleengSandbox = Boolean(config?.integrations?.cleeng?.useSandbox);
+  const { cleengSandbox } = useConfigStore((state) => state.getCleengData());
 
   const { t } = useTranslation('account');
   const history = useHistory();

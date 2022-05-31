@@ -6,9 +6,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 
 export const createOrder = async (offerId: string, paymentMethodId?: number) => {
-  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
-  const cleengId = cleeng?.id;
-  const cleengSandbox = Boolean(cleeng?.useSandbox);
+  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
 
   const { user, auth } = useAccountStore.getState();
 
@@ -40,9 +38,7 @@ export const createOrder = async (offerId: string, paymentMethodId?: number) => 
 };
 
 export const updateOrder = async (orderId: number, paymentMethodId?: number, couponCode?: string | null) => {
-  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
-  const cleengId = cleeng?.id;
-  const cleengSandbox = Boolean(cleeng?.useSandbox);
+  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
 
   const { user, auth } = useAccountStore.getState();
 
@@ -70,9 +66,7 @@ export const updateOrder = async (orderId: number, paymentMethodId?: number, cou
 };
 
 export const getPaymentMethods = async () => {
-  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
-  const cleengId = cleeng?.id;
-  const cleengSandbox = Boolean(cleeng?.useSandbox);
+  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
 
   const { user, auth } = useAccountStore.getState();
   const { paymentMethods } = useCheckoutStore.getState();
@@ -91,9 +85,7 @@ export const getPaymentMethods = async () => {
 };
 
 export const paymentWithoutDetails = async () => {
-  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
-  const cleengId = cleeng?.id;
-  const cleengSandbox = Boolean(cleeng?.useSandbox);
+  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
 
   const { user, auth } = useAccountStore.getState();
   const { order } = useCheckoutStore.getState();
@@ -111,10 +103,7 @@ export const paymentWithoutDetails = async () => {
 };
 
 export const adyenPayment = async (paymentMethod: AdyenPaymentMethod) => {
-  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
-  const cleengId = cleeng?.id;
-  const cleengSandbox = Boolean(cleeng?.useSandbox);
-
+  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
   const { user, auth } = useAccountStore.getState();
   const { order } = useCheckoutStore.getState();
 
@@ -138,10 +127,7 @@ export const adyenPayment = async (paymentMethod: AdyenPaymentMethod) => {
 };
 
 export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string) => {
-  const cleeng = useConfigStore.getState().config?.integrations?.cleeng;
-  const cleengId = cleeng?.id;
-  const cleengSandbox = Boolean(cleeng?.useSandbox);
-
+  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
   const { user, auth } = useAccountStore.getState();
   const { order } = useCheckoutStore.getState();
 

@@ -43,7 +43,10 @@ const PlaylistContainer = ({ playlistId, type, onPlaylistUpdate, style, children
   if (type === PersonalShelf.Favorites) playlist = favoritesPlaylist;
   if (type === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
 
-  if (!playlistId && !type) return <p>No playlist id and type</p>;
+  if (!playlistId && !type) {
+    throw new Error('Playlist without contentId and type was set in the content config section. Please check the config validity');
+  }
+
   if (!playlist.playlist.length && !showEmpty) {
     return null;
   }

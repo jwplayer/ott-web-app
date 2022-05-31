@@ -286,9 +286,10 @@ Use the `integrations.cleeng` object to to integrate with Cleeng.
 {
   "integrations": {
     "cleeng": {
-    "enableSharing": true,
-    "recommendationsPlaylist": "IHBjjkSN",
-    "searchPlaylist": "D4soEviP"
+      "id": "440058292",
+      "useSandbox": true,
+      "monthlyOffer": "S970187168_NL",
+      "yearlyOffer": "S467691538_NL"
     }
 }
 ```

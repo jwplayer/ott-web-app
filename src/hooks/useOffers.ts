@@ -10,10 +10,7 @@ import type { OfferType } from '#types/account';
 import { isSVODOffer } from '#src/utils/subscription';
 
 const useOffers = () => {
-  const integrations = useConfigStore(({ config }) => config?.integrations, shallow);
-  const cleengSandbox = Boolean(integrations?.cleeng?.useSandbox);
-  const monthlyOfferId = integrations?.cleeng?.monthlyOffer || '';
-  const yearlyOfferId = integrations?.cleeng?.yearlyOffer || '';
+  const { cleengSandbox, monthlyOfferId, yearlyOfferId } = useConfigStore((state) => state.getCleengData());
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
