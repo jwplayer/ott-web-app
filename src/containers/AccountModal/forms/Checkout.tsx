@@ -3,6 +3,8 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
+import { isSVODOffer } from '../../../utils/subscription';
+
 import CheckoutForm from '#src/components/CheckoutForm/CheckoutForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/history';
 import useForm from '#src/hooks/useForm';
@@ -27,12 +29,11 @@ const Checkout = () => {
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
   const { order, offer, paymentMethods } = useCheckoutStore(({ order, offer, paymentMethods }) => ({ order, offer, paymentMethods }), shallow);
-  const offerType = offer?.period === null ? 'tvod' : 'svod';
+  const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
 
-  const paymentSuccessUrl = useMemo(
-    () => (offerType === 'svod' ? addQueryParams(window.location.href, { u: 'welcome' }) : removeQueryParam(history, 'u')),
-    [history, offerType],
-  );
+  const paymentSuccessUrl = useMemo(() => {
+    return offerType === 'svod' ? addQueryParam(history, 'u', 'welcome') : removeQueryParam(history, 'u');
+  }, [history, offerType]);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);
@@ -123,7 +124,8 @@ const Checkout = () => {
       setUpdatingOrder(true);
       const cancelUrl = addQueryParams(window.location.href, { u: 'paypal-cancelled' });
       const errorUrl = addQueryParams(window.location.href, { u: 'paypal-error' });
-      const response = await paypalPayment(paymentSuccessUrl, cancelUrl, errorUrl);
+      const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
+      const response = await paypalPayment(successUrl, cancelUrl, errorUrl);
 
       if (response.redirectUrl) {
         window.location.href = response.redirectUrl;
