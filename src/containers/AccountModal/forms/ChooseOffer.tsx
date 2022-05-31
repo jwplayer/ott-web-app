@@ -8,6 +8,7 @@ import useOffers from '../../../hooks/useOffers';
 
 import { addQueryParam, removeQueryParam } from '#src/utils/history';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#src/components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -17,6 +18,7 @@ const ChooseOffer = () => {
   const history = useHistory();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
+  const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasTVODOffers, hasPremierOffer } = useOffers();
 
   const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
@@ -67,7 +69,7 @@ const ChooseOffer = () => {
       submitting={submitting}
       offers={offers}
       offerType={offerType}
-      setOfferType={hasTVODOffers && !hasPremierOffer ? setOfferType : undefined}
+      setOfferType={accessModel === 'SVOD' && hasTVODOffers && !hasPremierOffer ? setOfferType : undefined}
     />
   );
 };
