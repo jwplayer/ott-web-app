@@ -12,10 +12,12 @@ import { addQueryParam } from '../../utils/history';
 import styles from './Payment.module.scss';
 
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
+import type { AccessModel } from '#types/Config';
 
 const VISIBLE_TRANSACTIONS = 4;
 
 type Props = {
+  accessModel: AccessModel;
   activeSubscription: Subscription | null;
   activePaymentDetail: PaymentDetail | null;
   transactions: Transaction[] | null;
@@ -28,6 +30,7 @@ type Props = {
 };
 
 const Payment = ({
+  accessModel,
   activePaymentDetail,
   activeSubscription,
   transactions,
@@ -72,37 +75,39 @@ const Payment = ({
 
   return (
     <>
-      <div className={panelClassName}>
-        <div className={panelHeaderClassName}>
-          <h3>{t('user:payment.subscription_details')}</h3>
+      {accessModel === 'SVOD' && (
+        <div className={panelClassName}>
+          <div className={panelHeaderClassName}>
+            <h3>{t('user:payment.subscription_details')}</h3>
+          </div>
+          {activeSubscription ? (
+            <React.Fragment>
+              <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
+                <p>
+                  <strong>{getTitle(activeSubscription.period)}</strong> <br />
+                  {activeSubscription.status === 'active'
+                    ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
+                    : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
+                </p>
+                <p className={styles.price}>
+                  <strong>{formatPrice(activeSubscription.nextPaymentPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
+                  <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
+                </p>
+              </div>
+              {activeSubscription.status === 'active' ? (
+                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
+              ) : (
+                <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
+              )}
+            </React.Fragment>
+          ) : isLoading ? null : (
+            <React.Fragment>
+              <p>{t('user:payment.no_subscription')}</p>
+              <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} onClick={onCompleteSubscriptionClick} />
+            </React.Fragment>
+          )}
         </div>
-        {activeSubscription ? (
-          <React.Fragment>
-            <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
-              <p>
-                <strong>{getTitle(activeSubscription.period)}</strong> <br />
-                {activeSubscription.status === 'active'
-                  ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
-                  : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
-              </p>
-              <p className={styles.price}>
-                <strong>{formatPrice(activeSubscription.nextPaymentPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
-                <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
-              </p>
-            </div>
-            {activeSubscription.status === 'active' ? (
-              <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
-            ) : (
-              <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
-            )}
-          </React.Fragment>
-        ) : isLoading ? null : (
-          <React.Fragment>
-            <p>{t('user:payment.no_subscription')}</p>
-            <Button variant="contained" color="primary" label={t('user:payment.complete_subscription')} onClick={onCompleteSubscriptionClick} />
-          </React.Fragment>
-        )}
-      </div>
+      )}
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
           <h3>{t('user:payment.payment_method')}</h3>
