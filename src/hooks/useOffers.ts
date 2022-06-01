@@ -20,7 +20,6 @@ const useOffers = () => {
   const { cleengSandbox, json } = config;
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
-  const tvodOfferIds = (requestedMediaOffers || []).map(({ offerId }) => offerId);
   const [offerType, setOfferType] = useState<OfferType>(accessModel === 'SVOD' ? 'svod' : 'tvod');
 
   const monthlyOfferId = json?.cleengMonthlyOffer ? (json.cleengMonthlyOffer as string) : '';
@@ -50,7 +49,9 @@ const useOffers = () => {
     const allOffers = offerQueries.reduce<Offer[]>((prev, cur) => (cur.isSuccess && cur.data?.responseData ? [...prev, cur.data.responseData] : prev), []);
     const offers = allOffers.filter((offer) => (offerType === 'tvod' ? !isSVODOffer(offer) : isSVODOffer(offer)));
     const offersDict = Object.fromEntries(offers.map((offer) => [offer.offerId, offer]));
-    const defaultOfferId = hasPremierOffer ? tvodOfferIds[0] : yearlyOfferId || monthlyOfferId;
+    // we need to get the offerIds from the offer responses since it contains different offerIds based on the customers
+    // location. E.g. if an offer is configured as `S12345678` it becomes `S12345678_US` in the US.
+    const defaultOfferId = offers[offers.length - 1]?.offerId;
 
     return {
       hasTVODOffers: allOffers.some((offer) => !isSVODOffer(offer)),
