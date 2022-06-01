@@ -28,7 +28,15 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const { order, offer, paymentMethods } = useCheckoutStore(({ order, offer, paymentMethods }) => ({ order, offer, paymentMethods }), shallow);
+  const { order, offer, paymentMethods, setOrder } = useCheckoutStore(
+    ({ order, offer, paymentMethods, setOrder }) => ({
+      order,
+      offer,
+      paymentMethods,
+      setOrder,
+    }),
+    shallow,
+  );
   const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
 
   const paymentSuccessUrl = useMemo(() => {
@@ -78,6 +86,11 @@ const Checkout = () => {
 
     create();
   }, [history, offer]);
+
+  // clear the order after closing the checkout modal
+  useEffect(() => {
+    return () => setOrder(null);
+  }, [setOrder]);
 
   const backButtonClickHandler = () => {
     history.push(addQueryParam(history, 'u', 'choose-offer'));
