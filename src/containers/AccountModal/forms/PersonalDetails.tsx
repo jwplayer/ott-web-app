@@ -12,6 +12,7 @@ import { useConfigStore } from '../../../stores/ConfigStore';
 
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
 import { getCaptureStatus, updateCaptureAnswers } from '#src/stores/AccountController';
+import useOffers from '#src/hooks/useOffers';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
@@ -22,6 +23,7 @@ const PersonalDetails = () => {
   const { t } = useTranslation('account');
   const accessModel = useConfigStore((s) => s.accessModel);
   const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
+  const { hasTVODOffers } = useOffers();
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 
@@ -32,8 +34,10 @@ const PersonalDetails = () => {
   );
 
   const nextStep = useCallback(() => {
-    history.replace(addQueryParam(history, 'u', accessModel === 'SVOD' ? 'choose-offer' : 'welcome'));
-  }, [history, accessModel]);
+    const hasOffers = accessModel === 'SVOD' || (accessModel === 'AUTHVOD' && hasTVODOffers);
+
+    history.replace(addQueryParam(history, 'u', hasOffers ? 'choose-offer' : 'welcome'));
+  }, [history, accessModel, hasTVODOffers]);
 
   useEffect(() => {
     if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();

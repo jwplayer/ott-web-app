@@ -47,9 +47,8 @@ const ChooseOffer = () => {
   }, [isLoading, offers, history]);
 
   useEffect(() => {
-    setValue('offerId', offers[offers.length - 1]?.offerId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offerType, setValue]);
+    setValue('offerId', defaultOfferId);
+  }, [setValue, defaultOfferId]);
 
   // loading state
   if (!offers.length || isLoading) {

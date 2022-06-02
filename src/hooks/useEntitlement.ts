@@ -38,25 +38,30 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
     }),
     shallow,
   );
-  const { user, subscription, transactions, auth } = useAccountStore(
-    ({ user, subscription, transactions, auth }) => ({ user, subscription, transactions, auth }),
+  const { user, subscription, auth } = useAccountStore(
+    ({ user, subscription, auth }) => ({
+      user,
+      subscription,
+      auth,
+    }),
     shallow,
   );
 
   const isPreEntitled = playlistItem && !isLocked(accessModel, !!user, !!subscription, playlistItem);
   const mediaOffers = playlistItem?.mediaOffers || [];
 
-  // This entitlement query is invalidated by adding all transaction IDs to the queryKey. Perhaps a more optimal way is
-  // to invalidate the query cache after the payment.
+  // this query is invalidated when the subscription gets reloaded
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
-      queryKey: ['mediaOffer', offerId, transactions?.map((t) => t.transactionId).join(',')],
+      queryKey: ['entitlements', offerId],
       queryFn: () => getEntitlements({ offerId }, sandbox, auth?.jwt || ''),
       enabled: !!playlistItem && !!auth?.jwt && !!offerId && !isPreEntitled,
+      refetchOnMount: 'always' as const,
     })),
   );
 
-  const isMediaEntitled = mediaEntitlementQueries.some((item) => item.isSuccess && (item.data as QueryResult)?.responseData?.accessGranted);
+  // when the user is logged out the useQueries will be disabled but could potentially return its cached data
+  const isMediaEntitled = !!auth?.jwt && mediaEntitlementQueries.some((item) => item.isSuccess && (item.data as QueryResult)?.responseData?.accessGranted);
   const isMediaEntitlementLoading = !isMediaEntitled && mediaEntitlementQueries.some((item) => item.isLoading);
 
   const isEntitled = !!playlistItem && (isPreEntitled || isMediaEntitled);

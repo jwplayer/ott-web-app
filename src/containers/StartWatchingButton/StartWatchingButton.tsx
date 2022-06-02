@@ -13,7 +13,7 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import type { PlaylistItem } from '#types/playlist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { getSeriesId, isEpisode } from '#src/utils/media';
+import { getSeriesIdFromEpisode } from '#src/utils/media';
 import { episodeURLFromEpisode, videoUrl } from '#src/utils/formatting';
 
 type Props = {
@@ -49,9 +49,9 @@ const StartWatchingButton: React.VFC<Props> = ({ item }) => {
   }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    const seriesId = getSeriesId(item);
+    const seriesId = getSeriesIdFromEpisode(item);
     const playlistId = searchParams.get('r');
-    const videoPlayUrl = isEpisode(item) && seriesId ? episodeURLFromEpisode(item, seriesId, playlistId, true) : videoUrl(item, playlistId, true);
+    const videoPlayUrl = seriesId ? episodeURLFromEpisode(item, seriesId, playlistId, true) : videoUrl(item, playlistId, true);
 
     if (isEntitled) return videoPlayUrl && history.push(videoPlayUrl);
     if (!isLoggedIn) return history.push(addQueryParam(history, 'u', 'create-account'));
