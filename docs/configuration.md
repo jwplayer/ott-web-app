@@ -247,4 +247,72 @@ If Cleeng is enabled, and you want to show the Payments and Subscription functio
 
 **json.cleengYearlyOffer** (optional)
 
-If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least 1 offer ID (either this or the monthly offer property.)  The application uses this ID to map to an offer that you've configured in your Cleeng environment under Offers to represent your yearly subscription. Note that the only the data used from the Cleeng offer is the price, the free days, and the free period and the app does not verify if the offer length is actually yearly.  If no monthly or yearly offer is configured, the Payments section will not be shown.
+If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least 1
+offer ID (either this or the monthly offer property.)  The application uses this ID to map to an offer that you've
+configured in your Cleeng environment under Offers to represent your yearly subscription. Note that the only the data
+used from the Cleeng offer is the price, the free days, and the free period and the app does not verify if the offer
+length is actually yearly. If no monthly or yearly offer is configured, the Payments section will not be shown.
+
+---
+
+**contentSigningService.host** (optional)
+
+This setting can be set to configure a content signing service
+when [URL Signing](https://support.jwplayer.com/articles/how-to-enable-url-token-signing) is enabled for your JW
+Dashboard property.
+
+Before playing a media, a POST request is made to the following URL: `${host}/media/${mediaid}/sign`. The response
+should return the following payload for the implementation code to use the token:
+
+```json
+{
+  "entitled": true,
+  "token": "JWT_TOKEN"
+}
+```
+
+The token can be generated using the example in the
+official [URL Signing Documentation](https://developer.jwplayer.com/jwplayer/docs/protect-your-content-with-signed-urls.
+
+---
+
+**contentSigningService.drmPolicyId** (optional)
+
+When DRM is enabled for your JW Dashboard Property, all playlist and media requests MUST use the DRM specific endpoints.
+When this property is configured, OTT Web App automatically does this automatically for you but all DRM requests must be
+signed as well.
+
+For this to work the entitlement service must implement the following endpoints:
+
+**Default public endpoints:**
+
+The public endpoints receive the same payload as the URL signing endpoint, but also receives the `drmPolicyId` in the
+path.
+
+[POST] `${host}/media/${mediaid}/sign_public/drm/${drmPolicyId}`
+[POST] `${host}/playlist/${mediaid}/sign_public/drm/${drmPolicyId}`
+
+**Watchlist endpoint**
+
+[POST] `${host}/media/${mediaid}/sign_all_public/drm/${drmPolicyId}`
+
+In order to sign multiple media items at once for the favorites and watch history shelves, a different endpoint is used.
+The request body contains all media IDs which needs to be signed, for example:
+
+```json
+{
+  "mediaid1": {},
+  "mediaid2": {}
+}
+```
+
+> **note:** the empty object `{}` is used when using URL params which also need to be included in the JWT token.
+
+The response should be a dictionary with mediaId and token pairs:
+
+```json
+{
+  "mediaid1": "JWT_TOKEN",
+  "mediaid2": "JWT_TOKEN"
+}
+```
