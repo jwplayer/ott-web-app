@@ -6,7 +6,7 @@ import { queryClient } from '#src/providers/QueryProvider';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
-export default function usePlaylist(playlistId: string, params: GetPlaylistParams = {}, enabled: boolean = true, usePlaceholderData: boolean = true) {
+export default function usePlaylist(playlistId?: string, params: GetPlaylistParams = {}, enabled: boolean = true, usePlaceholderData: boolean = true) {
   const callback = async (token?: string, drmPolicyId?: string) => {
     const playlist = await getPlaylistById(playlistId, { token, ...params }, drmPolicyId);
 

@@ -9,6 +9,8 @@ import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
+
 import '#src/i18n/config';
 import '#src/styles/main.scss';
 
@@ -26,13 +28,13 @@ class App extends Component {
   }
 
   async initializeServices(config: Config) {
-    if (config.options.enableContinueWatching) {
+    if (config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await restoreWatchHistory();
     }
 
     await initializeFavorites();
 
-    if (config.cleengId) {
+    if (config?.integrations?.cleeng?.id) {
       await initializeAccount();
     }
   }

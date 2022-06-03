@@ -33,7 +33,7 @@ type QueryResult = {
 const useEntitlement: UseEntitlement = (playlistItem) => {
   const { sandbox, accessModel } = useConfigStore(
     ({ config, accessModel }) => ({
-      sandbox: config?.cleengSandbox,
+      sandbox: Boolean(config?.integrations?.cleeng?.useSandbox),
       accessModel,
     }),
     shallow,

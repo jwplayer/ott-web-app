@@ -1,46 +1,57 @@
-import type { StringSchema } from 'yup';
-import { array, boolean, object, SchemaOf, string } from 'yup';
+import { string, boolean, array, object, SchemaOf, StringSchema, mixed } from 'yup';
 
-import { PersonalShelf } from '../enum/PersonalShelf';
-
-import type { Config, Content, Menu, Options } from '#types/Config';
+import type { Config, Content, Menu, Styling, Features, Cleeng } from '#types/Config';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
 
 const contentSchema: SchemaOf<Content> = object({
-  playlistId: string().defined(),
+  contentId: string().notRequired(),
+  title: string().notRequired(),
   featured: boolean().notRequired(),
   enableText: boolean().notRequired(),
+  backgroundColor: string().nullable().notRequired(),
+  type: mixed().oneOf(['playlist', 'continue_watching', 'favorites']),
 }).defined();
 
 const menuSchema: SchemaOf<Menu> = object().shape({
   label: string().defined(),
-  playlistId: string().defined(),
+  contentId: string().defined(),
   filterTags: string().notRequired(),
+  type: mixed().oneOf(['playlist']).notRequired(),
 });
 
-const optionsSchema: SchemaOf<Options> = object({
-  backgroundColor: string().nullable(),
-  highlightColor: string().nullable(),
-  enableContinueWatching: boolean().notRequired(),
-  headerBackground: string().notRequired(),
+const featuresSchema: SchemaOf<Features> = object({
   enableCasting: boolean().notRequired(),
   enableSharing: boolean().notRequired(),
+  recommendationsPlaylist: string().nullable(),
+  searchPlaylist: string().nullable(),
+});
+
+const cleengSchema: SchemaOf<Cleeng> = object({
+  id: string().nullable(),
+  monthlyOffer: string().nullable(),
+  yearlyOffer: string().nullable(),
+  useSandbox: boolean().default(true),
+});
+
+const stylingSchema: SchemaOf<Styling> = object({
+  backgroundColor: string().nullable(),
+  highlightColor: string().nullable(),
+  headerBackground: string().nullable(),
   dynamicBlur: boolean().notRequired(),
   posterFading: boolean().notRequired(),
   shelfTitles: boolean().notRequired(),
+  footerText: string().nullable(),
 });
 
 const configSchema: SchemaOf<Config> = object({
   id: string().notRequired(),
-  siteName: string().defined(),
+  siteName: string().notRequired(),
   description: string().defined(),
-  footerText: string().nullable(),
-  player: string().defined(),
-  recommendationsPlaylist: string().nullable(),
-  searchPlaylist: string().nullable(),
+  player: string().nullable(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
   assets: object({
@@ -48,11 +59,12 @@ const configSchema: SchemaOf<Config> = object({
   }).defined(),
   content: array().of(contentSchema),
   menu: array().of(menuSchema),
-  options: optionsSchema.notRequired(),
-  cleengId: string().nullable(),
-  cleengSandbox: boolean().default(true),
-  genres: array().of(string()).notRequired(),
-  json: object().notRequired(),
+  styling: stylingSchema.notRequired(),
+  features: featuresSchema.notRequired(),
+  integrations: object({
+    cleeng: cleengSchema.notRequired(),
+  }).notRequired(),
+  custom: object().notRequired(),
   contentSigningService: object().shape({
     // see {@link https://github.com/jquense/yup/issues/1367}
     host: string().required() as StringSchema<string>,
@@ -78,73 +90,22 @@ const loadConfig = async (configLocation: string) => {
 
   const data = await response.json();
 
-  addPersonalShelves(data);
-  addContentDefaultOptions(data);
-
-  if (data.version) {
-    return parseDeprecatedConfig(data);
-  }
+  enrichConfig(data);
 
   return data;
-};
-
-/**
- * Add the personal shelves if not already defined: Favorites, ContinueWatching
- * @param {Config} data
- */
-const addPersonalShelves = (data: Config) => {
-  if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.Favorites)) {
-    data.content.push({ playlistId: PersonalShelf.Favorites });
-  }
-
-  if (data.options.enableContinueWatching) {
-    if (!data.content.some(({ playlistId }) => playlistId === PersonalShelf.ContinueWatching)) {
-      data.content.splice(1, 0, { playlistId: PersonalShelf.ContinueWatching });
-    }
-  }
 };
 
 /**
  * Add content default options
  * @param {Config} data
  */
-const addContentDefaultOptions = (data: Config) => {
+const enrichConfig = (data: Config) => {
+  if (!data.content.some(({ type }) => type === PersonalShelf.Favorites)) {
+    data.content.push({ type: PersonalShelf.Favorites });
+  }
+
   data.content = data.content.map((content) => Object.assign({ enableText: true, featured: false }, content));
-};
-
-/**
- * Serialize deprecated config to v3 config
- * @param {Config} config
- * @returns {Config}
- */
-const parseDeprecatedConfig = (config: Config) => {
-  if (!config.description.startsWith('{')) {
-    return config;
-  }
-
-  try {
-    const { menu, id, analyticsToken, adSchedule, description, cleengId, cleengSandbox, json, ...options } = JSON.parse(config.description);
-
-    const updatedConfig = {
-      menu: menu || [],
-      id: id || 'showcase-id',
-      analyticsToken: analyticsToken || null,
-      adSchedule: adSchedule || null,
-      description: description || '',
-      cleengId,
-      cleengSandbox,
-      options: Object.assign(config.options, options),
-      json: config.json || {},
-    };
-
-    if (typeof json === 'object' && json !== null) {
-      updatedConfig.json = Object.assign(updatedConfig.json, json);
-    }
-
-    return Object.assign(config, updatedConfig);
-  } catch (error: unknown) {
-    throw new Error('Failed to JSON parse the `description` property');
-  }
+  data.siteName = data.siteName || 'My OTT Application';
 };
 
 export const validateConfig = (config: Config): Promise<Config> => {

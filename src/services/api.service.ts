@@ -54,7 +54,11 @@ export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) =
  * @param params
  * @param {string} [drmPolicyId]
  */
-export const getPlaylistById = async (id: string, params: GetPlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
+export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
+  if (!id) {
+    return undefined;
+  }
+
   const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
   const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
   const response = await fetch(url);

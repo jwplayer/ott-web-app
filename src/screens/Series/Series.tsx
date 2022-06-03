@@ -47,9 +47,9 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { options, siteName } = config;
-  const posterFading: boolean = options?.posterFading === true;
-  const enableSharing: boolean = options?.enableSharing === true;
+  const { styling, features, siteName } = config;
+  const posterFading: boolean = styling?.posterFading === true;
+  const enableSharing: boolean = features?.enableSharing === true;
 
   // Media
   const { isLoading, error, data: item } = useMedia(episodeId);
@@ -185,7 +185,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
             isLoading={isLoading}
             currentCardItem={item}
             currentCardLabel={t('current_episode')}
-            enableCardTitles={options.shelfTitles}
+            enableCardTitles={styling.shelfTitles}
             accessModel={accessModel}
             isLoggedIn={!!user}
             hasSubscription={!!subscription}

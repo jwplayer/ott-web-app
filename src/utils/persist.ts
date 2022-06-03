@@ -4,7 +4,7 @@
  *
  */
 
-const LOCAL_STORAGE_PREFIX = `jwshowcase.`;
+const LOCAL_STORAGE_PREFIX = `jwapp.`;
 
 const setItem = (key: string, value: unknown) => {
   const storageKey = `${LOCAL_STORAGE_PREFIX}${key}`;

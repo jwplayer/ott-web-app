@@ -9,44 +9,63 @@
       "backgroundColor": "#000000",
       "enableText": true,
       "featured": true,
-      "playlistId": "JSKF03bk"
+      "type": "playlist",
+      "contentId": "JSKF03bk"
     },
     {
       "backgroundColor": "#000000",
       "enableText": true,
-      "playlistId": "dGSUzs9o"
+      "type": "favorites"
     },
     {
       "backgroundColor": "#000000",
       "enableText": true,
-      "playlistId": "xQaFzykq"
+      "type": "continue_watching"
+    },
+    {
+      "backgroundColor": "#000000",
+      "enableText": true,
+      "type": "playlist",
+      "contentId": "dGSUzs9o"
+    },
+    {
+      "backgroundColor": "#000000",
+      "enableText": true,
+      "type": "playlist",
+      "contentId": "xQaFzykq"
+    }
+  ],
+  "menu": [
+    {
+      "label": "Films",
+      "contentId": "dGSUzs9o",
+      "type": "playlist",
+      "filterTags": "Action,Comedy,Fantasy,Drama"
+    },
+    {
+      "label": "Courses",
+      "contentId": "xQaFzykq",
+      "type": "playlist",
+      "filterTags": "Beginner,Advanced"
     }
   ],
   "custom": {},
   "description": "Blender",
-  "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
-  "menu": [{
-    "label": "Films",
-    "playlistId": "dGSUzs9o",
-    "filterTags": "Action,Comedy,Fantasy,Drama"
-  },{
-    "label": "Courses",
-    "playlistId": "xQaFzykq",
-    "filterTags": "Beginner,Advanced"
-  }],
-  "options": {
+  "styling": {
     "backgroundColor": "#000000",
     "dynamicBlur": true,
-    "enableCasting": false,
-    "enableContinueWatching": true,
-    "enableSharing": false,
     "highlightColor": "#CCCCCC",
-    "posterFading": true
+    "headerBackground": null,
+    "posterFading": true,
+    "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)"
+  },
+  "features": {
+    "recommendationsPlaylist": "IHBjjkSN",
+    "searchPlaylist": "D4soEviP",
+    "enable_casting": false,
+    "enable_sharing": false
   },
   "player": "ou7L8htR",
-  "recommendationsPlaylist": "IHBjjkSN",
-  "searchPlaylist": "D4soEviP",
   "siteName": "Blender",
-  "theme": "light",
-  "version": "2"
+  "theme": "light"
 }

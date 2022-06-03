@@ -5,7 +5,7 @@ import usePlaylist from '#src/hooks/usePlaylist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { PLAYLIST_LIMIT } from '#src/config';
-import type { Playlist } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type ChildrenParams = {
   playlist: Playlist;
@@ -15,14 +15,16 @@ type ChildrenParams = {
 };
 
 type Props = {
-  playlistId: string;
+  playlistId?: string;
+  type: 'playlist' | 'continue_watching' | 'favorites';
+  relatedItem?: PlaylistItem;
   onPlaylistUpdate?: (playlist: Playlist) => void;
   children: (childrenParams: ChildrenParams) => JSX.Element;
   style?: React.CSSProperties;
   showEmpty?: boolean;
 };
 
-const PlaylistContainer = ({ playlistId, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
+const PlaylistContainer = ({ playlistId, type, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
   const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
   const {
     isLoading,
@@ -38,10 +40,13 @@ const PlaylistContainer = ({ playlistId, onPlaylistUpdate, style, children, show
     if (playlist && onPlaylistUpdate) onPlaylistUpdate(playlist);
   }, [playlist, onPlaylistUpdate]);
 
-  if (playlistId === PersonalShelf.Favorites) playlist = favoritesPlaylist;
-  if (playlistId === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
+  if (type === PersonalShelf.Favorites) playlist = favoritesPlaylist;
+  if (type === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
 
-  if (!playlistId) return <p>No playlist id</p>;
+  if (!playlistId && !type) {
+    throw new Error('Playlist without contentId and type was set in the content config section. Please check the config validity');
+  }
+
   if (!playlist.playlist.length && !showEmpty) {
     return null;
   }

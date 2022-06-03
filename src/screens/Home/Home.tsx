@@ -47,7 +47,7 @@ const Home = (): JSX.Element => {
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
   const favorites = useFavoritesStore((state) => state.favorites);
 
-  const { data: { playlist } = { playlist: [] } } = usePlaylist(content[0]?.playlistId);
+  const { data: { playlist } = { playlist: [] } } = usePlaylist(content.find((el) => el.contentId)?.contentId as string);
   const updateBlurImage = useBlurImageUpdater(playlist);
 
   // User
@@ -66,8 +66,11 @@ const Home = (): JSX.Element => {
 
     const contentItem: Content = itemData.content[index];
 
+    // For 'continue_watching' and 'favorites' sections there may be no contentId
+    const playlistKey = contentItem.contentId || contentItem.type;
+
     return (
-      <PlaylistContainer key={contentItem.playlistId} playlistId={contentItem.playlistId} style={style}>
+      <PlaylistContainer key={playlistKey} type={contentItem.type} playlistId={contentItem.contentId} style={style}>
         {({ playlist, error, isLoading, style }) => (
           <div key={key} style={style} role="row" className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}>
             <div role="cell">
@@ -79,8 +82,8 @@ const Home = (): JSX.Element => {
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
                 enableTitle={contentItem.enableText}
-                enableCardTitles={config.options.shelfTitles}
-                title={playlist.title}
+                enableCardTitles={config.styling.shelfTitles}
+                title={contentItem?.title || playlist.title}
                 featured={contentItem.featured === true}
                 accessModel={accessModel}
                 isLoggedIn={!!user}
@@ -100,8 +103,8 @@ const Home = (): JSX.Element => {
     const isTablet = !isDesktop && !isMobile;
 
     if (!item) return 0;
-    if (item.playlistId === PersonalShelf.ContinueWatching && !watchHistory.playlist.length) return 0;
-    if (item.playlistId === PersonalShelf.Favorites && !favorites.length) return 0;
+    if (item.type === PersonalShelf.ContinueWatching && !watchHistory.playlist.length) return 0;
+    if (item.type === PersonalShelf.Favorites && !favorites.length) return 0;
 
     const calculateFeatured = () => {
       const tilesToShow = featuredTileBreakpoints[breakpoint];
@@ -116,7 +119,7 @@ const Home = (): JSX.Element => {
       const tilesToShow = tileBreakpoints[breakpoint];
       const shelfTitlesHeight = item.enableText ? 40 : 0;
       const shelfMetaHeight = shelfTitlesHeight + 12;
-      const cardMetaHeight = config.options.shelfTitles ? 40 : 0;
+      const cardMetaHeight = config.styling.shelfTitles ? 40 : 0;
       const shelfHorizontalMargin = isMobile ? 76 : 0;
       const cardWidth = (document.body.offsetWidth - shelfHorizontalMargin) / tilesToShow;
       const cardHeight = cardWidth * (9 / 16);

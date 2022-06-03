@@ -31,13 +31,13 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
 }) => {
   const { t } = useTranslation('search');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, searchPlaylist, options } = config;
+  const { siteName, features, styling } = config;
 
   const firstRender = useFirstRender();
   const searchQuery = useUIStore((state) => state.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
   const history = useHistory();
-  const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(searchPlaylist || '', { search: query || '' }, true, !!query);
+  const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 
@@ -61,7 +61,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
       searchActive: false,
     });
 
-    history.push(cardUrl(playlistItem, searchPlaylist));
+    history.push(cardUrl(playlistItem, features?.searchPlaylist));
   };
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
@@ -107,7 +107,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
           onCardClick={onCardClick}
           onCardHover={onCardHover}
           isLoading={firstRender}
-          enableCardTitles={options.shelfTitles}
+          enableCardTitles={styling.shelfTitles}
           accessModel={accessModel}
           isLoggedIn={!!user}
           hasSubscription={!!subscription}

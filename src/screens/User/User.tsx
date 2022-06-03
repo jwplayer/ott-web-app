@@ -91,7 +91,7 @@ const User = (): JSX.Element => {
             <AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
           </Route>
           <Route path="/u/favorites">
-            <PlaylistContainer playlistId={PersonalShelf.Favorites} showEmpty>
+            <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
               {({ playlist, error, isLoading }) => (
                 <Favorites
                   playlist={playlist.playlist}

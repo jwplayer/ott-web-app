@@ -6,46 +6,63 @@
     {
       "enableText": true,
       "featured": true,
-      "playlistId": "JSKF03bk"
+      "contentId": "JSKF03bk",
+      "type": "playlist"
     },
     {
       "enableText": true,
-      "playlistId": "dGSUzs9o"
+      "type": "favorites"
     },
     {
       "enableText": true,
-      "playlistId": "xQaFzykq"
+      "type": "continue_watching"
+    },
+    {
+      "enableText": true,
+      "contentId": "dGSUzs9o",
+      "type": "playlist"
+    },
+    {
+      "enableText": true,
+      "contentId": "xQaFzykq",
+      "type": "playlist"
     }
   ],
   "menu": [
     {
       "label": "Films",
-      "playlistId": "dGSUzs9o",
-      "filterTags": "Action,Comedy,Fantasy,Drama"
+      "contentId": "dGSUzs9o",
+      "filterTags": "Action,Comedy,Fantasy,Drama",
+      "type": "playlist"
     },
     {
       "label": "Courses",
-      "playlistId": "xQaFzykq",
-      "filterTags": "Beginner,Advanced"
+      "contentId": "xQaFzykq",
+      "filterTags": "Beginner,Advanced",
+      "type": "playlist"
     }
   ],
-  "description": "Blender demo site",
-  "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)",
-  "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
-  "cleengId": "440058292",
-  "cleengSandbox": true,
-  "options": {
+  "features": {
+    "recommendationsPlaylist": "IHBjjkSN",
+    "searchPlaylist": "D4soEviP"
+  },
+  "integrations": {
+    "cleeng": {
+      "id": "440058292",
+      "useSandbox": true
+    }
+  },
+  "styling": {
+    "backgroundColor": null,
+    "highlightColor": null,
+    "headerBackground": null,
     "dynamicBlur": true,
     "posterFading": true,
-    "backgroundColor": null,
     "shelfTitles": true,
-    "enableContinueWatching": true,
-    "highlightColor": null
+    "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)"
   },
+  "description": "Blender demo site",
+  "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
   "player": "ou7L8htR",
-  "recommendationsPlaylist": "IHBjjkSN",
-  "searchPlaylist": "D4soEviP",
-  "siteName": "Blender",
-  "json": {
-  }
+  "siteName": "Blender"
 }

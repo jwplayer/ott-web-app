@@ -10,20 +10,14 @@ import type { OfferType } from '#types/account';
 import { isSVODOffer } from '#src/utils/subscription';
 
 const useOffers = () => {
-  const { config, accessModel } = useConfigStore(
-    ({ config, accessModel }) => ({
-      config,
-      accessModel,
-    }),
-    shallow,
-  );
-  const { cleengSandbox, json } = config;
+  const {
+    cleeng: { cleengSandbox, monthlyOfferId, yearlyOfferId },
+    accessModel,
+  } = useConfigStore(({ getCleengData, accessModel }) => ({ cleeng: getCleengData(), accessModel }), shallow);
+
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
   const [offerType, setOfferType] = useState<OfferType>(accessModel === 'SVOD' ? 'svod' : 'tvod');
-
-  const monthlyOfferId = json?.cleengMonthlyOffer ? (json.cleengMonthlyOffer as string) : '';
-  const yearlyOfferId = json?.cleengYearlyOffer ? (json.cleengYearlyOffer as string) : '';
 
   const offerIds: string[] = useMemo(() => {
     return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), monthlyOfferId, yearlyOfferId].filter(Boolean);

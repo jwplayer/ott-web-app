@@ -44,15 +44,15 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { options, recommendationsPlaylist, siteName } = config;
-  const posterFading: boolean = options?.posterFading === true;
-  const enableSharing: boolean = options?.enableSharing === true;
+  const { siteName, styling, features } = config;
+  const posterFading: boolean = styling?.posterFading === true;
+  const enableSharing: boolean = features?.enableSharing === true;
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
   useBlurImageUpdater(item);
   const { data: trailerItem } = useMedia(item?.trailerId || '');
-  const { data: playlist } = usePlaylist(recommendationsPlaylist || '', { related_media_id: id });
+  const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Favorite
   const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
@@ -160,7 +160,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
               isLoading={isLoading}
               currentCardItem={item}
               currentCardLabel={t('currently_playing')}
-              enableCardTitles={options.shelfTitles}
+              enableCardTitles={styling.shelfTitles}
               accessModel={accessModel}
               isLoggedIn={!!user}
               hasSubscription={!!subscription}
