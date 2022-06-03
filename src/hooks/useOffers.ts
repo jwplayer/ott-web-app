@@ -13,7 +13,7 @@ const useOffers = () => {
   const {
     cleeng: { cleengSandbox, monthlyOfferId, yearlyOfferId },
     accessModel,
-  } = useConfigStore(({ getCleengData, accessModel }) => ({ cleeng: getCleengData(), accessModel }));
+  } = useConfigStore(({ getCleengData, accessModel }) => ({ cleeng: getCleengData(), accessModel }), shallow);
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
