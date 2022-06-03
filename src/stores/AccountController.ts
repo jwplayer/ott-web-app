@@ -14,6 +14,7 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getPublicMediaTokens } from '#src/services/entitlement.service';
 import { getMediaByIds } from '#src/services/api.service';
+import { queryClient } from '#src/providers/QueryProvider';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -176,6 +177,9 @@ export const login = async (email: string, password: string) => {
 
 export const logout = async () => {
   persist.removeItem(PERSIST_KEY_ACCOUNT);
+
+  // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
+  await queryClient.invalidateQueries('entitlements');
 
   useAccountStore.setState({
     auth: null,
@@ -375,15 +379,22 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
     // The subscription data takes a few seconds to load after it's purchased,
     // so here's a delay mechanism to give it time to process
     if (delay > 0) {
-      window.setTimeout(() => reloadActiveSubscription(), delay);
-    } else {
-      useAccountStore.setState({
-        subscription: activeSubscription,
-        loading: false,
-        transactions,
-        activePayment,
+      return new Promise((resolve: (value?: unknown) => void) => {
+        window.setTimeout(() => {
+          reloadActiveSubscription().finally(resolve);
+        }, delay);
       });
     }
+
+    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
+    await queryClient.invalidateQueries('entitlements');
+
+    useAccountStore.setState({
+      subscription: activeSubscription,
+      loading: false,
+      transactions,
+      activePayment,
+    });
   });
 }
 

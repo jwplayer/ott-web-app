@@ -73,7 +73,7 @@ const User = (): JSX.Element => {
               <li>
                 <Button to="/u/favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
               </li>
-              {accessModel === 'SVOD' && (
+              {accessModel !== 'AVOD' && (
                 <li>
                   <Button to="/u/payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
                 </li>
@@ -117,8 +117,9 @@ const User = (): JSX.Element => {
             />
           </Route>
           <Route path="/u/payments">
-            {accessModel === 'SVOD' ? (
+            {accessModel !== 'AVOD' ? (
               <Payment
+                accessModel={accessModel}
                 activeSubscription={subscription}
                 activePaymentDetail={activePayment}
                 transactions={transactions}

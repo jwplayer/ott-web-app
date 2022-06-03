@@ -88,7 +88,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     if (!cleengId) return null;
 
     return isLoggedIn ? (
-      <UserMenu showPaymentsItem={accessModel === 'SVOD'} />
+      <UserMenu showPaymentsItem={accessModel !== 'AVOD'} />
     ) : (
       <div className={styles.buttonContainer}>
         <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
@@ -128,7 +128,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           userMenuOpen={userMenuOpen}
           toggleUserMenu={toggleUserMenu}
           canLogin={!!cleengId}
-          showPaymentsMenuItem={accessModel === 'SVOD'}
+          showPaymentsMenuItem={accessModel !== 'AVOD'}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

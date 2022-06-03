@@ -134,7 +134,7 @@ const CheckoutForm: React.FC<Props> = ({
                 <td className={styles.couponCell}>
                   {t('checkout.coupon_discount')}
                   <br />
-                  {!!offer.period && (
+                  {!!offer.period && offerType === 'svod' && (
                     <small>
                       {t('checkout.discount_period', {
                         count: order.discount.periods,
