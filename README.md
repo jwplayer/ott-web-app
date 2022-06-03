@@ -28,9 +28,8 @@ To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify
 - A grid view for a particular playlist of videos, with the ability to deep-link to the playlist through a static URL.
 - Social sharing options using the device native sharing dialog.
 
-## Unsupported Features
+## Unsupported Feature(s)
 
-- Security-related features (encrypted HLS, DRM, signed URLs)
 - Self-hosted JW Players
 
 ## Getting started
