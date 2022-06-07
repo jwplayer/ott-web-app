@@ -15,6 +15,7 @@ jobs:
       - name: 'Checkout source code'
         uses: 'actions/checkout@v2'
         with:
+          persist-credentials: false
           ref: ${{ github.ref }}
       - name: 'cat package.json'
         run: cat ./package.json
