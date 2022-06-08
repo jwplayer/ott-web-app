@@ -32,6 +32,7 @@ type Props = {
   goBack: () => void;
   onComplete?: () => void;
   isFavorited: boolean;
+  isFavoritesEnabled: boolean;
   onFavoriteButtonClick: () => void;
   poster: Poster;
   enableSharing: boolean;
@@ -59,6 +60,7 @@ const Video: React.FC<Props> = ({
   hasShared,
   onShareClick,
   isFavorited,
+  isFavoritesEnabled,
   onFavoriteButtonClick,
   children,
   playTrailer,
@@ -132,14 +134,16 @@ const Video: React.FC<Props> = ({
                 fullWidth={breakpoint < Breakpoint.md}
               />
             )}
-            <Button
-              label={t('video:favorite')}
-              aria-label={isFavorited ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
-              startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
-              onClick={onFavoriteButtonClick}
-              color={isFavorited ? 'primary' : 'default'}
-              fullWidth={breakpoint < Breakpoint.md}
-            />
+            {isFavoritesEnabled && (
+              <Button
+                label={t('video:favorite')}
+                aria-label={isFavorited ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
+                startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
+                onClick={onFavoriteButtonClick}
+                color={isFavorited ? 'primary' : 'default'}
+                fullWidth={breakpoint < Breakpoint.md}
+              />
+            )}
             {enableSharing && (
               <Button
                 label={hasShared ? t('video:copied_url') : t('video:share')}

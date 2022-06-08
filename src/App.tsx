@@ -9,7 +9,6 @@ import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
 
 import '#src/i18n/config';
 import '#src/styles/main.scss';
@@ -28,11 +27,14 @@ class App extends Component {
   }
 
   async initializeServices(config: Config) {
-    if (config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
+    // We only request favorites and continue_watching data if these features are enabled
+    if (config?.features?.continue_watching_list) {
       await restoreWatchHistory();
     }
 
-    await initializeFavorites();
+    if (config?.features?.favorites_list) {
+      await initializeFavorites();
+    }
 
     if (config?.integrations?.cleeng?.id) {
       await initializeAccount();
@@ -45,7 +47,7 @@ class App extends Component {
 
   configErrorHandler = (error: Error) => {
     this.setState({ error });
-    console.info('Error while loading the config.json:', error);
+    console.error('Error while loading the config.json:', error);
   };
 
   configValidationCompletedHandler = async (config: Config) => {

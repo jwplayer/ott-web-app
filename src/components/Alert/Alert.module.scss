@@ -1,0 +1,17 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.title {
+  margin-bottom: 24px;
+  font-family: theme.$body-font-family;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.body {
+  font-family: theme.$body-font-family;
+}
+
+.confirmButton {
+  margin-bottom: 8px;
+}

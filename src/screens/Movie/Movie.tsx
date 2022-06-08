@@ -14,6 +14,7 @@ import type { PlaylistItem } from '#types/playlist';
 import VideoComponent from '#src/components/Video/Video';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import CardGrid from '#src/components/CardGrid/CardGrid';
+import Alert from '#src/components/Alert/Alert';
 import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
@@ -25,6 +26,7 @@ import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/constants/watchlist';
 
 type MovieRouteParams = {
   id: string;
@@ -34,6 +36,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { t } = useTranslation('video');
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
+  const [isFavoritesWarningShown, setIsFavoritesWarningShown] = useState(false);
 
   // Routing
   const history = useHistory();
@@ -45,8 +48,10 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName, styling, features } = config;
+
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
+  const isFavoritesEnabled: boolean = Boolean(features?.favorites_list);
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
@@ -55,13 +60,40 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Favorite
-  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
+  const { isFavorited, favoritesCount } = useFavoritesStore((state) => ({
+    isFavorited: !!item && state.hasItem(item),
+    favoritesCount: state.favorites?.length || 0,
+  }));
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(item);
 
   // Handlers
+  const onFavoritesWarningToggle = useCallback(() => {
+    setIsFavoritesWarningShown(!isFavoritesWarningShown);
+  }, [setIsFavoritesWarningShown, isFavoritesWarningShown]);
+
+  const onFavoriteButtonClick = useCallback(() => {
+    if (!item) {
+      return;
+    }
+
+    if (isFavorited) {
+      removeItem(item);
+
+      return;
+    }
+
+    // If we exceed the max available number of favorites, we show a warning
+    if (favoritesCount >= MAX_WATCHLIST_ITEMS_COUNT) {
+      onFavoritesWarningToggle();
+      return;
+    }
+
+    saveItem(item);
+  }, [item, isFavorited, favoritesCount, onFavoritesWarningToggle]);
+
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
   const onShareClick = (): void => {
@@ -130,6 +162,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         ))}
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
+
       <VideoComponent
         title={item.title}
         item={item}
@@ -146,27 +179,37 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
-        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+        isFavoritesEnabled={isFavoritesEnabled}
+        onFavoriteButtonClick={onFavoriteButtonClick}
         startWatchingButton={<StartWatchingButton item={item} />}
       >
-        {playlist ? (
-          <>
-            <div className={styles.related}>
-              <h3>{playlist.title}</h3>
-            </div>
-            <CardGrid
-              playlist={playlist.playlist}
-              onCardClick={onCardClick}
-              isLoading={isLoading}
-              currentCardItem={item}
-              currentCardLabel={t('currently_playing')}
-              enableCardTitles={styling.shelfTitles}
-              accessModel={accessModel}
-              isLoggedIn={!!user}
-              hasSubscription={!!subscription}
-            />
-          </>
-        ) : undefined}
+        <>
+          {playlist ? (
+            <>
+              <div className={styles.related}>
+                <h3>{playlist.title}</h3>
+              </div>
+              <CardGrid
+                playlist={playlist.playlist}
+                onCardClick={onCardClick}
+                isLoading={isLoading}
+                currentCardItem={item}
+                currentCardLabel={t('currently_playing')}
+                enableCardTitles={styling.shelfTitles}
+                accessModel={accessModel}
+                isLoggedIn={!!user}
+                hasSubscription={!!subscription}
+              />
+            </>
+          ) : undefined}
+
+          <Alert
+            open={isFavoritesWarningShown}
+            title={t('video:favorites_warning.title')}
+            body={t('video:favorites_warning.body', { count: MAX_WATCHLIST_ITEMS_COUNT })}
+            onClose={onFavoritesWarningToggle}
+          />
+        </>
       </VideoComponent>
     </React.Fragment>
   );

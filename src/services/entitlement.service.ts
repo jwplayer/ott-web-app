@@ -35,9 +35,3 @@ export const getPublicToken = async (
 
   return data.token;
 };
-
-export const getPublicMediaTokens = async (host: string, payload: Record<string, GetMediaParams>, jwt?: string, drmPolicyId?: string) => {
-  const data = await getToken<GetPublicMediaTokensResponse>(`${host}/media/sign_all_public${drmPolicyId ? `/drm/${drmPolicyId}` : ''}`, payload, jwt);
-
-  return data.media;
-};

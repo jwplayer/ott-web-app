@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
 import Favorites from '../../components/Favorites/Favorites';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
@@ -27,7 +28,7 @@ import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 
 const User = (): JSX.Element => {
-  const accessModel = useConfigStore((s) => s.accessModel);
+  const { accessModel, favorites_list } = useConfigStore((s) => ({ accessModel: s.accessModel, favorites_list: s.config?.features?.favorites_list }), shallow);
   const history = useHistory();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
@@ -70,9 +71,11 @@ const User = (): JSX.Element => {
               <li>
                 <Button to="/u/my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
               </li>
-              <li>
-                <Button to="/u/favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
-              </li>
+              {favorites_list && (
+                <li>
+                  <Button to="/u/favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
+                </li>
+              )}
               {accessModel !== 'AVOD' && (
                 <li>
                   <Button to="/u/payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
@@ -90,32 +93,34 @@ const User = (): JSX.Element => {
           <Route path="/u/my-account">
             <AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
           </Route>
-          <Route path="/u/favorites">
-            <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
-              {({ playlist, error, isLoading }) => (
-                <Favorites
-                  playlist={playlist.playlist}
-                  error={error}
-                  isLoading={isLoading}
-                  onCardClick={onCardClick}
-                  onCardHover={onCardHover}
-                  onClearFavoritesClick={() => setClearFavoritesOpen(true)}
-                  accessModel={accessModel}
-                  hasSubscription={!!subscription}
-                />
-              )}
-            </PlaylistContainer>
-            <ConfirmationDialog
-              open={clearFavoritesOpen}
-              title={t('favorites.clear_favorites_title')}
-              body={t('favorites.clear_favorites_body')}
-              onConfirm={() => {
-                clearFavorites();
-                setClearFavoritesOpen(false);
-              }}
-              onClose={() => setClearFavoritesOpen(false)}
-            />
-          </Route>
+          {favorites_list && (
+            <Route path="/u/favorites">
+              <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
+                {({ playlist, error, isLoading }) => (
+                  <Favorites
+                    playlist={playlist.playlist}
+                    error={error}
+                    isLoading={isLoading}
+                    onCardClick={onCardClick}
+                    onCardHover={onCardHover}
+                    onClearFavoritesClick={() => setClearFavoritesOpen(true)}
+                    accessModel={accessModel}
+                    hasSubscription={!!subscription}
+                  />
+                )}
+              </PlaylistContainer>
+              <ConfirmationDialog
+                open={clearFavoritesOpen}
+                title={t('favorites.clear_favorites_title')}
+                body={t('favorites.clear_favorites_body')}
+                onConfirm={() => {
+                  clearFavorites();
+                  setClearFavoritesOpen(false);
+                }}
+                onClose={() => setClearFavoritesOpen(false)}
+              />
+            </Route>
+          )}
           <Route path="/u/payments">
             {accessModel !== 'AVOD' ? (
               <Payment

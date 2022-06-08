@@ -35,6 +35,7 @@ describe('<Video>', () => {
         onShareClick={vi.fn()}
         enableSharing
         isFavorited={false}
+        isFavoritesEnabled={true}
         onFavoriteButtonClick={vi.fn()}
         playTrailer={false}
         onTrailerClick={vi.fn()}

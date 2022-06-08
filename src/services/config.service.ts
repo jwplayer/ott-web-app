@@ -7,6 +7,25 @@ import { PersonalShelf } from '#src/enum/PersonalShelf';
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
 
+/**
+ * We check here that we:
+ * 1. Added favorites_list / continue_watching_list feature
+ * 2. Included a corresponding element (with favorites or continue_watching type) in the content array
+ */
+const checkAdditionalFeatures = (content: Content[], playlistId: string | undefined | null, type: PersonalShelf) => {
+  const hasAdditionalRowInContent = content.some((el) => el.type === type);
+
+  if (playlistId && !hasAdditionalRowInContent) {
+    throw new Error(`Please add an item with a '${type}' type to "content" array`);
+  }
+
+  if (!playlistId && hasAdditionalRowInContent) {
+    throw new Error(`Please add an additional feature ${type === PersonalShelf.Favorites ? 'favorites_list' : 'continue_watching_list'}`);
+  }
+
+  return true;
+};
+
 const contentSchema: SchemaOf<Content> = object({
   contentId: string().notRequired(),
   title: string().notRequired(),
@@ -28,6 +47,16 @@ const featuresSchema: SchemaOf<Features> = object({
   enableSharing: boolean().notRequired(),
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
+  continue_watching_list: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
+    // @ts-expect-error https://github.com/jquense/yup/issues/1631
+    const { content, features } = context.from[1].value as Config;
+    return checkAdditionalFeatures(content, value, PersonalShelf.ContinueWatching);
+  }),
+  favorites_list: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
+    // @ts-expect-error https://github.com/jquense/yup/issues/1631
+    const { content, features } = context.from[1].value as Config;
+    return checkAdditionalFeatures(content, value, PersonalShelf.Favorites);
+  }),
 });
 
 const cleengSchema: SchemaOf<Cleeng> = object({
@@ -74,7 +103,7 @@ const configSchema: SchemaOf<Config> = object({
 
 const loadConfig = async (configLocation: string) => {
   if (!configLocation) {
-    return null;
+    throw new Error('No config location found');
   }
 
   const response = await fetch(configLocation, {
@@ -85,30 +114,30 @@ const loadConfig = async (configLocation: string) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to load the config');
+    throw new Error('Failed to load the config. Please check the config path and the file availability');
   }
 
   const data = await response.json();
 
-  enrichConfig(data);
+  if (!data) {
+    throw new Error('No config found');
+  }
 
-  return data;
+  return enrichConfig(data);
 };
 
 /**
- * Add content default options
+ * Add default values to the config
  * @param {Config} data
  */
-const enrichConfig = (data: Config) => {
-  if (!data.content.some(({ type }) => type === PersonalShelf.Favorites)) {
-    data.content.push({ type: PersonalShelf.Favorites });
-  }
+const enrichConfig = (config: Config): Config => {
+  const { content, siteName } = config;
+  const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
 
-  data.content = data.content.map((content) => Object.assign({ enableText: true, featured: false }, content));
-  data.siteName = data.siteName || 'My OTT Application';
+  return { ...config, siteName: siteName || 'My OTT Application', content: updatedContent };
 };
 
-export const validateConfig = (config: Config): Promise<Config> => {
+export const validateConfig = (config?: Config): Promise<Config> => {
   return configSchema.validate(config, {
     strict: true,
   }) as Promise<Config>;

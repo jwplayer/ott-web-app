@@ -53,6 +53,13 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
         onValidationError(error);
       });
 
+      if (!config) {
+        onLoading(false);
+        setLoading(false);
+
+        return;
+      }
+
       validateConfig(config)
         .then((configValidated) => {
           const configWithDefaults = merge({}, defaultConfig, configValidated);

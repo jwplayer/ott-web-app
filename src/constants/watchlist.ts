@@ -1,0 +1,1 @@
+export const MAX_WATCHLIST_ITEMS_COUNT = 30;

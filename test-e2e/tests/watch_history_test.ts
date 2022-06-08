@@ -8,11 +8,9 @@ const videoLength = 231;
 
 Feature('watch_history - local');
 
-Before(({ I }) => {
-  I.useConfig('test--no-cleeng');
-});
-
 Scenario('I can get my watch progress stored (locally)', async ({ I }) => {
+  I.useConfig('test--no-cleeng');
+
   I.amOnPage(constants.agent327DetailUrl);
   I.dontSee('Continue watching');
 
@@ -22,6 +20,8 @@ Scenario('I can get my watch progress stored (locally)', async ({ I }) => {
 });
 
 Scenario('I can continue watching', async ({ I }) => {
+  I.useConfig('test--no-cleeng');
+
   I.amOnPage(constants.agent327DetailUrl);
   await playVideo(I, 100);
   I.click('Continue watching');
@@ -31,6 +31,8 @@ Scenario('I can continue watching', async ({ I }) => {
 });
 
 Scenario('I can see my watch history on the Home screen', async ({ I }) => {
+  I.useConfig('test--no-cleeng');
+
   I.seeCurrentUrlEquals(constants.baseUrl);
   I.dontSee('Continue watching');
 
@@ -56,6 +58,8 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
 });
 
 Scenario('Video removed from continue watching when finished', async ({ I }) => {
+  I.useConfig('test--no-cleeng');
+
   I.amOnPage(constants.agent327DetailUrl);
   await playVideo(I, 100);
   // Continue watching on video detail page
@@ -77,11 +81,9 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
 
 Feature('watch_history - logged in');
 
-Before(({ I }) => {
-  I.useConfig('test--accounts');
-});
-
 Scenario('I can get my watch history when logged in', async ({ I }) => {
+  I.useConfig('test--accounts');
+
   I.login();
   await playVideo(I, 0);
   I.see('Start watching');
@@ -95,6 +97,8 @@ Scenario('I can get my watch history when logged in', async ({ I }) => {
 });
 
 Scenario('I can get my watch history stored to my account after login', async ({ I }) => {
+  I.useConfig('test--accounts');
+
   I.amOnPage(constants.agent327DetailUrl);
   I.dontSee('Continue watching');
   I.see('Sign up to start watching');
@@ -112,6 +116,8 @@ Scenario('I can get my watch history stored to my account after login', async ({
 });
 
 Scenario('I can see my watch history on the Home screen when logged in', async ({ I }) => {
+  I.useConfig('test--accounts');
+
   const xpath = '//*[@data-mediaid="continue_watching"]//*[@aria-label="Play Agent 327"]';
 
   I.seeCurrentUrlEquals(constants.baseUrl);
@@ -134,6 +140,18 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
 
   await checkElapsed(I, 1, 20);
   I.seeInCurrentUrl('play=1');
+});
+
+Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
+  I.useConfig('test--watchlists');
+
+  I.dontSee('Continue watching');
+
+  await playVideo(I, 50);
+
+  I.amOnPage(constants.baseUrl);
+
+  I.dontSee('Continue watching');
 });
 
 async function playVideo(I: CodeceptJS.I, seekTo: number) {
