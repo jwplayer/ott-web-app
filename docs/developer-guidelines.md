@@ -21,7 +21,7 @@ In case there are multiple commits being merged, the biggest type of bump will b
 
 The github action will update the project package.json, create a release tag in github, and update the changelog based on the commit messages in the code being merged.
 
-**Note**: In order to access the repository, the action relies on a personal access token, which is stored as `ACTION_TOKEN` in the [repository secrets](https://github.com/jwplayer/ott-web-app/settings/secrets/actions). If this token needs to be updated, please generate a [Personal Access Token](https://github.com/settings/tokens) with the `public_repo` scope.
+**Note**: In order to access the repository and bypass the protected branch requirements, the action relies on a personal access token, which must belong to an admin of the repo, and which is stored as `ACTION_TOKEN` in the [repository secrets](https://github.com/jwplayer/ott-web-app/settings/secrets/actions). If this token needs to be updated, please generate a [Personal Access Token](https://github.com/settings/tokens) with the `public_repo` scope.
 
 ## Git Commit Guidelines (conventional changelog)
 
