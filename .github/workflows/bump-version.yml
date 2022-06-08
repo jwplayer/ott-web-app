@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Conventional Changelog Action
         uses: TriPSs/conventional-changelog-action@v3
         with:
