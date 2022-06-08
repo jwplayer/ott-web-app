@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Conventional Changelog Action
         uses: TriPSs/conventional-changelog-action@v3
