@@ -28,7 +28,7 @@ import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 
 const User = (): JSX.Element => {
-  const { accessModel, favorites_list } = useConfigStore((s) => ({ accessModel: s.accessModel, favorites_list: s.config?.features?.favorites_list }), shallow);
+  const { accessModel, favoritesList } = useConfigStore((s) => ({ accessModel: s.accessModel, favoritesList: s.config?.features?.favoritesList }), shallow);
   const history = useHistory();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
@@ -71,7 +71,7 @@ const User = (): JSX.Element => {
               <li>
                 <Button to="/u/my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
               </li>
-              {favorites_list && (
+              {favoritesList && (
                 <li>
                   <Button to="/u/favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
                 </li>
@@ -93,7 +93,7 @@ const User = (): JSX.Element => {
           <Route path="/u/my-account">
             <AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
           </Route>
-          {favorites_list && (
+          {favoritesList && (
             <Route path="/u/favorites">
               <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
                 {({ playlist, error, isLoading }) => (

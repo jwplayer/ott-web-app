@@ -10,13 +10,13 @@ const PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}
 
 export const restoreFavorites = async () => {
   const { user } = useAccountStore.getState();
-  const favorites_list = useConfigStore.getState().config.features?.favorites_list;
+  const favoritesList = useConfigStore.getState().config.features?.favoritesList;
 
   const savedItems = user ? user.externalData?.favorites : persist.getItem<Favorite[]>(PERSIST_KEY_FAVORITES);
 
-  if (savedItems?.length && favorites_list) {
+  if (savedItems?.length && favoritesList) {
     const playlistItems = await getMediaItems(
-      favorites_list,
+      favoritesList,
       savedItems.map(({ mediaid }) => mediaid),
     );
 
@@ -35,7 +35,7 @@ export const persistFavorites = () => {
   const { user } = useAccountStore.getState();
 
   if (user) {
-    updatePersonalShelves();
+    return updatePersonalShelves();
   }
 
   persist.setItem(PERSIST_KEY_FAVORITES, serializeFavorites(favorites));

@@ -28,9 +28,9 @@ type Props = {
 };
 
 const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
-  const { player, continue_watching_list } = useConfigStore(({ config }) => ({
+  const { player, continueWatchingList } = useConfigStore(({ config }) => ({
     player: config.player,
-    continue_watching_list: config.features?.continue_watching_list,
+    continueWatchingList: config.features?.continueWatchingList,
   }));
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
@@ -38,7 +38,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const seekToRef = useRef(-1);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const scriptUrl = `https://content.jwplatform.com/libraries/${player}.js`;
-  const enableWatchHistory = continue_watching_list && !isTrailer;
+  const enableWatchHistory = continueWatchingList && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
   const handlePlaylistItemCallback = usePlaylistItemCallback();
 

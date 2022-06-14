@@ -5,19 +5,19 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { PlaylistItem } from '#types/playlist';
 import type { WatchHistoryItem, SerializedWatchHistoryItem } from '#types/watchHistory';
-import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/constants/watchlist';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 const PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
 
 export const restoreWatchHistory = async () => {
   const { user } = useAccountStore.getState();
-  const continue_watching_list = useConfigStore.getState().config.features?.continue_watching_list;
+  const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;
 
   const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(PERSIST_KEY_WATCH_HISTORY);
 
-  if (savedItems?.length && continue_watching_list) {
+  if (savedItems?.length && continueWatchingList) {
     const watchHistoryItems = await getMediaItems(
-      continue_watching_list,
+      continueWatchingList,
       savedItems.map(({ mediaid }) => mediaid),
     );
 
@@ -48,7 +48,7 @@ export const persistWatchHistory = () => {
   const { user } = useAccountStore.getState();
 
   if (user) {
-    updatePersonalShelves();
+    return updatePersonalShelves();
   }
 
   persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
@@ -87,9 +87,10 @@ export const saveItem = (item: PlaylistItem, videoProgress: number | null) => {
     updatedHistory = [watchHistoryItem, ...watchHistory.filter(({ mediaid }) => mediaid !== watchHistoryItem.mediaid)];
   } else {
     updatedHistory = [watchHistoryItem, ...watchHistory];
-    if (watchHistory.length > MAX_WATCHLIST_ITEMS_COUNT) {
-      updatedHistory = updatedHistory.slice(0, watchHistory.length - 1);
-    }
+  }
+
+  if (watchHistory.length > MAX_WATCHLIST_ITEMS_COUNT) {
+    updatedHistory = updatedHistory.slice(0, MAX_WATCHLIST_ITEMS_COUNT - 1);
   }
 
   useWatchHistoryStore.setState({ watchHistory: updatedHistory });

@@ -25,8 +25,9 @@ import { addConfigParamToUrl } from '#src/utils/configOverride';
 import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
+import useToggle from '#src/hooks/useToggle';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
-import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/constants/watchlist';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 type MovieRouteParams = {
   id: string;
@@ -36,7 +37,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { t } = useTranslation('video');
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
-  const [isFavoritesWarningShown, setIsFavoritesWarningShown] = useState(false);
+  const [isFavoritesWarningShown, onFavoritesWarningToggle] = useToggle();
 
   // Routing
   const history = useHistory();
@@ -51,7 +52,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
-  const isFavoritesEnabled: boolean = Boolean(features?.favorites_list);
+  const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
@@ -70,10 +71,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { isEntitled } = useEntitlement(item);
 
   // Handlers
-  const onFavoritesWarningToggle = useCallback(() => {
-    setIsFavoritesWarningShown(!isFavoritesWarningShown);
-  }, [setIsFavoritesWarningShown, isFavoritesWarningShown]);
-
   const onFavoriteButtonClick = useCallback(() => {
     if (!item) {
       return;

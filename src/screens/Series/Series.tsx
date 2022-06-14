@@ -50,6 +50,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const { styling, features, siteName } = config;
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
+  const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
 
   // Media
   const { isLoading, error, data: item } = useMedia(episodeId);
@@ -160,6 +161,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
+        isFavoritesEnabled={isFavoritesEnabled}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
         startWatchingButton={<StartWatchingButton item={item} />}
         isSeries

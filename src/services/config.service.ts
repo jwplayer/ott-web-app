@@ -2,6 +2,7 @@ import { string, boolean, array, object, SchemaOf, StringSchema, mixed } from 'y
 
 import type { Config, Content, Menu, Styling, Features, Cleeng } from '#types/Config';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
+import i18n from '#src/i18n/config';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
@@ -9,7 +10,7 @@ import { PersonalShelf } from '#src/enum/PersonalShelf';
 
 /**
  * We check here that we:
- * 1. Added favorites_list / continue_watching_list feature
+ * 1. Added favoritesList / continueWatchingList feature
  * 2. Included a corresponding element (with favorites or continue_watching type) in the content array
  */
 const checkAdditionalFeatures = (content: Content[], playlistId: string | undefined | null, type: PersonalShelf) => {
@@ -20,7 +21,7 @@ const checkAdditionalFeatures = (content: Content[], playlistId: string | undefi
   }
 
   if (!playlistId && hasAdditionalRowInContent) {
-    throw new Error(`Please add an additional feature ${type === PersonalShelf.Favorites ? 'favorites_list' : 'continue_watching_list'}`);
+    throw new Error(`Please add an additional feature ${type === PersonalShelf.Favorites ? 'favoritesList' : 'continueWatchingList'}`);
   }
 
   return true;
@@ -47,12 +48,12 @@ const featuresSchema: SchemaOf<Features> = object({
   enableSharing: boolean().notRequired(),
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
-  continue_watching_list: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
+  continueWatchingList: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
     // @ts-expect-error https://github.com/jquense/yup/issues/1631
     const { content, features } = context.from[1].value as Config;
     return checkAdditionalFeatures(content, value, PersonalShelf.ContinueWatching);
   }),
-  favorites_list: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
+  favoritesList: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
     // @ts-expect-error https://github.com/jquense/yup/issues/1631
     const { content, features } = context.from[1].value as Config;
     return checkAdditionalFeatures(content, value, PersonalShelf.Favorites);
@@ -134,7 +135,7 @@ const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
   const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
 
-  return { ...config, siteName: siteName || 'My OTT Application', content: updatedContent };
+  return { ...config, siteName: siteName || i18n.t('common.default_site_name'), content: updatedContent };
 };
 
 export const validateConfig = (config?: Config): Promise<Config> => {

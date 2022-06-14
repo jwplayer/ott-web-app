@@ -66,8 +66,8 @@ export type Features = {
   enableSharing?: boolean;
   recommendationsPlaylist?: string | null;
   searchPlaylist?: string | null;
-  continue_watching_list?: string | null;
-  favorites_list?: string | null;
+  favoritesList?: string | null;
+  continueWatchingList?: string | null;
 };
 
 /**

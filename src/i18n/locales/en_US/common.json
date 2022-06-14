@@ -17,5 +17,6 @@
   "sign_in": "Sign in",
   "sign_up": "Sign up",
   "slide_left": "Slide left",
-  "slide_right": "Slide right"
+  "slide_right": "Slide right",
+  "default_site_name": "My OTT Application"
 }

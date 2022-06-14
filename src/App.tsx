@@ -9,6 +9,7 @@ import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
+import { logDev } from '#src/utils/common';
 
 import '#src/i18n/config';
 import '#src/styles/main.scss';
@@ -27,27 +28,28 @@ class App extends Component {
   }
 
   async initializeServices(config: Config) {
+    if (config?.integrations?.cleeng?.id) {
+      await initializeAccount();
+    }
+
     // We only request favorites and continue_watching data if these features are enabled
-    if (config?.features?.continue_watching_list) {
+    // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink if data differs
+    if (config?.features?.continueWatchingList) {
       await restoreWatchHistory();
     }
 
-    if (config?.features?.favorites_list) {
+    if (config?.features?.favoritesList) {
       await initializeFavorites();
-    }
-
-    if (config?.integrations?.cleeng?.id) {
-      await initializeAccount();
     }
   }
 
   configLoadingHandler = (isLoading: boolean) => {
-    console.info(`Loading config: ${isLoading}`);
+    logDev(`Loading config: ${isLoading}`);
   };
 
   configErrorHandler = (error: Error) => {
     this.setState({ error });
-    console.error('Error while loading the config.json:', error);
+    logDev('Error while loading the config.json:', error);
   };
 
   configValidationCompletedHandler = async (config: Config) => {

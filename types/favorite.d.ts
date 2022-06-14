@@ -5,6 +5,7 @@ export type Favorite = {
   title: string;
   tags: string;
   duration: number;
+  playlistItem: PlaylistItem;
 };
 
 export type SerializedFavorite = {

@@ -16,6 +16,9 @@ vi.stubGlobal(
 // Mock the translation infra
 // noinspection JSUnusedGlobalSymbols
 vi.mock('react-i18next', () => ({
+  default: () => ({
+    t: (str: string) => str,
+  }),
   // this mock makes sure any components using the translate HoC receive the t function as a prop
   withTranslation: () => (Component: ComponentType) => {
     Component.defaultProps = { ...Component.defaultProps, t: () => '' };
@@ -34,4 +37,10 @@ vi.mock('react-i18next', () => ({
       },
     };
   },
+}));
+
+vi.mock('#src/i18n/config', () => ({
+  default: () => ({
+    t: (str: string) => str,
+  }),
 }));

@@ -148,7 +148,7 @@ The eight-character Playlists IDs from the JW Player dashboard. These IDs popula
 
 It is  possible to use 'playlist', 'continue_watching' or 'favorites' as a type. With this, you can change the position of the shelves and turn on/off extra `continue_watching` and `favorites` shelves. 
 
-If you want to include `favorites` / `continue_watching` shelf, you should also add a corresponding playlist with `watchlist` type to features section (`features.favorites_list` and `features.continue_watching_list`). To exclude the shelves, remove a corresponding array item and a playlist in `features`.
+If you want to include `favorites` / `continue_watching` shelf, you should also add a corresponding playlist with `watchlist` type to features section (`features.favoritesList` and `features.continueWatchingList`). To exclude the shelves, remove a corresponding array item and a playlist in `features`.
 
 ```
 {
@@ -280,13 +280,13 @@ The eight-character Playlist ID of the Search playlist that you want to use to e
 
 ---
 
-**features.favorites_list** (optional)
+**features.favoritesList** (optional)
 
 The eight-character Playlist ID of the Watchlist playlist that you want to use to populate the "Favorites" shelf in your site.
 
 ---
 
-**features.continue_watching_list** (optional)
+**features.continueWatchingList** (optional)
 
 The eight-character Playlist ID of the Watchlist playlist that you want to use to populate the "Continue Watching" shelf in your site. 
 
