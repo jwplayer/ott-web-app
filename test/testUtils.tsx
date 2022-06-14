@@ -23,5 +23,4 @@ export const mockWindowLocation = (path: string) => {
   });
 };
 
-
 export { customRender as renderWithRouter };

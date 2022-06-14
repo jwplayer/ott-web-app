@@ -220,8 +220,7 @@ const misc = [
   'stroke',
 ];
 
-
-module.exports = (function() {
+module.exports = (function () {
   return {
     extends: ['stylelint-config-recommended-scss'],
 
@@ -254,8 +253,8 @@ module.exports = (function() {
 
         // Pseudo elements
         {
-          type    : 'rule',
-          name    : 'Pseudo Element',
+          type: 'rule',
+          name: 'Pseudo Element',
           selector: /^&:(:|-)/,
         },
 
@@ -264,35 +263,27 @@ module.exports = (function() {
 
         // State modifier
         {
-          type    : 'rule',
-          name    : 'State Modifier',
+          type: 'rule',
+          name: 'State Modifier',
           selector: /^&(:(?!:)|\[)/,
         },
 
         {
           type: 'at-rule',
           name: 'include',
-          parameter: new RegExp('responsive')
+          parameter: new RegExp('responsive'),
         },
       ],
 
       // Ensure logical and consistent property ordering
-      'order/properties-order': [
-        ...special,
-        ...positioning,
-        ...boxmodel,
-        ...typography,
-        ...visual,
-        ...animation,
-        ...misc,
-      ],
+      'order/properties-order': [...special, ...positioning, ...boxmodel, ...typography, ...visual, ...animation, ...misc],
 
       // Ensure that certain properties have a strict variable
       'scale-unlimited/declaration-strict-value': [
         ['/color/', 'z-index'],
         {
           ignoreValues: {
-            ''       : ['currentColor', 'inherit', 'transparent'],
+            '': ['currentColor', 'inherit', 'transparent'],
             'z-index': ['-1', '0', '1'],
           },
 
@@ -314,11 +305,9 @@ module.exports = (function() {
       'no-unknown-animations': true,
 
       'no-descending-specificity': null,
-      'at-rule-semicolon-newline-after'  : 'always',
+      'at-rule-semicolon-newline-after': 'always',
       'block-opening-brace-newline-after': 'always',
       'block-closing-brace-newline-after': 'always',
     },
   };
 })();
-
-

@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from 'assert';
 
 export interface LoginContext {
   email: string;
@@ -9,10 +9,10 @@ async function testPasswordToggling(I: CodeceptJS.I, name = 'password') {
   await I.enableClipboard();
   await I.writeClipboard('');
 
-  I.fillField({name}, 'password123!');
+  I.fillField({ name }, 'password123!');
 
   await checkPasswordType(I, name, 'password');
-// Whem the input type is password, you should not be able to copy the password value
+  // Whem the input type is password, you should not be able to copy the password value
   await tryToCopyPassword(I, name, '');
 
   I.click(`input[name="${name}"]+div div[aria-label="View password"]`);
@@ -25,7 +25,7 @@ async function testPasswordToggling(I: CodeceptJS.I, name = 'password') {
   I.click(`input[name="${name}"]+div div[aria-label="Hide password"]`);
   await checkPasswordType(I, name, 'password');
 
-// Password should not be able to be copied again and whatever is in the clipboard should stay in the clipboard
+  // Password should not be able to be copied again and whatever is in the clipboard should stay in the clipboard
   await tryToCopyPassword(I, name, 'dummy');
 }
 
@@ -45,6 +45,10 @@ async function tryToCopyPassword(I: CodeceptJS.I, name, expectedResult) {
 
 export default {
   testPasswordToggling,
-  createRandomEmail: function() { return `dummy-${Date.now()}-${Math.floor(Math.random()*10**6)}@jwplayer.com`; },
-  createRandomPassword: function() { return `ABCDefgh${Math.floor(Math.random()*10**12)}!`; }
+  createRandomEmail: function () {
+    return `dummy-${Date.now()}-${Math.floor(Math.random() * 10 ** 6)}@jwplayer.com`;
+  },
+  createRandomPassword: function () {
+    return `ABCDefgh${Math.floor(Math.random() * 10 ** 12)}!`;
+  },
 };

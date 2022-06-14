@@ -1,5 +1,5 @@
 module.exports = {
   headers: {
-    "accept": "text/html"
-  }
+    accept: 'text/html',
+  },
 };

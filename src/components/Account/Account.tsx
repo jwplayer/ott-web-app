@@ -48,6 +48,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   );
 
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
+
   const initialValues = useMemo(
     () => ({
       ...customer,

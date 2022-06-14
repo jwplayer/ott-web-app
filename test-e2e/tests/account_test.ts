@@ -1,4 +1,4 @@
-import passwordUtils, {LoginContext} from "../utils/password_utils";
+import passwordUtils, { LoginContext } from '../utils/password_utils';
 import constants from '../utils/constants';
 
 const editAccount = 'Edit account';
@@ -15,7 +15,7 @@ const lastName = 'Tester';
 
 Feature('account');
 
-Before(({I})=> {
+Before(({ I }) => {
   I.useConfig('test--subscription');
 
   loginContext = I.registerOrLogin(loginContext, () => {
@@ -60,8 +60,8 @@ Scenario('I can see my account data', async ({ I }) => {
 
 Scenario('I can cancel Edit account', async ({ I }) => {
   editAndCancel(I, editAccount, [
-    {name: emailField, startingValue: loginContext.email, newValue: 'user@email.nl'},
-    {name: passwordField, startingValue: '', newValue: 'pass123!?'},
+    { name: emailField, startingValue: loginContext.email, newValue: 'user@email.nl' },
+    { name: passwordField, startingValue: '', newValue: 'pass123!?' },
   ]);
 });
 
@@ -71,12 +71,13 @@ Scenario('I get a duplicate email warning', async ({ I }) => {
       name: emailField,
       startingValue: loginContext.email,
       newValue: constants.username,
-      expectedError: 'Email already exists!'
-    }, {
+      expectedError: 'Email already exists!',
+    },
+    {
       name: passwordField,
       startingValue: '',
-      newValue: loginContext.password
-    }
+      newValue: loginContext.password,
+    },
   ]);
 });
 
@@ -85,13 +86,14 @@ Scenario('I get a wrong password warning', async ({ I }) => {
     {
       name: emailField,
       startingValue: loginContext.email,
-      newValue: loginContext.email
-    }, {
+      newValue: loginContext.email,
+    },
+    {
       name: passwordField,
       startingValue: '',
       newValue: 'ABCDEF123!',
-      expectedError: 'Password incorrect!'
-    }
+      expectedError: 'Password incorrect!',
+    },
   ]);
 });
 
@@ -106,7 +108,7 @@ Scenario('I can reset my password', async ({ I }) => {
   I.amOnPage(constants.accountsUrl);
 
   I.click('Edit password');
-  I.see('If you want to edit your password, click \'YES, Reset\' to receive password reset instruction on your mail');
+  I.see("If you want to edit your password, click 'YES, Reset' to receive password reset instruction on your mail");
   I.see('Yes, reset');
   I.see('No, thanks');
 
@@ -127,29 +129,29 @@ Scenario('I can reset my password', async ({ I }) => {
   I.see('Sign in');
 
   I.clickCloseButton();
-  I.login({email: loginContext.email, password: loginContext.password});
-})
+  I.login({ email: loginContext.email, password: loginContext.password });
+});
 
 Scenario('I can update firstName', async ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      newValue: ''
-    }
+      newValue: '',
+    },
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      newValue: 'Jack'
-    }
+      newValue: 'Jack',
+    },
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      newValue: firstName
-    }
+      newValue: firstName,
+    },
   ]);
 });
 
@@ -157,22 +159,22 @@ Scenario('I can update lastName', async ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
-      newValue: ''
-    }
+      newValue: '',
+    },
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
-      newValue: 'Jones'
-    }
+      newValue: 'Jones',
+    },
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
-      newValue: lastName
-    }
+      newValue: lastName,
+    },
   ]);
 });
 
@@ -180,54 +182,58 @@ Scenario('I can update details', async ({ I }) => {
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      newValue: ''
-    }, {
+      newValue: '',
+    },
+    {
       name: lastNameField,
-      newValue: ''
-    }
+      newValue: '',
+    },
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      newValue: 'Newname'
-    }, {
+      newValue: 'Newname',
+    },
+    {
       name: lastNameField,
-      newValue: 'McName'
-    }
+      newValue: 'McName',
+    },
   ]);
 
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
-      newValue: firstName
-    }, {
+      newValue: firstName,
+    },
+    {
       name: lastNameField,
-      newValue: lastName
-    }
+      newValue: lastName,
+    },
   ]);
 });
 
-Scenario('I see name limit errors', async ({ I })=> {
+Scenario('I see name limit errors', async ({ I }) => {
   editAndCancel(I, editDetials, [
     {
       name: firstNameField,
       startingValue: firstName,
       newValue: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      expectedError: 'Please limit First Name to 50 characters or fewer.'
-    }, {
+      expectedError: 'Please limit First Name to 50 characters or fewer.',
+    },
+    {
       name: lastNameField,
       startingValue: lastName,
       newValue: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-      expectedError: 'Please limit Last Name to 50 characters or fewer.'
-    }
-  ])
+      expectedError: 'Please limit Last Name to 50 characters or fewer.',
+    },
+  ]);
 });
 
-Scenario('I can update my consents', async ({ I })=> {
+Scenario('I can update my consents', async ({ I }) => {
   I.amOnPage(constants.accountsUrl);
 
-  I.dontSeeCheckboxIsChecked(consentCheckbox)
+  I.dontSeeCheckboxIsChecked(consentCheckbox);
   I.dontSee('Save');
   I.dontSee('Cancel');
 
@@ -237,9 +243,9 @@ Scenario('I can update my consents', async ({ I })=> {
   I.see('Save');
   I.see('Cancel');
 
-  I.click("Cancel");
+  I.click('Cancel');
 
-  I.dontSeeCheckboxIsChecked(consentCheckbox)
+  I.dontSeeCheckboxIsChecked(consentCheckbox);
   I.dontSee('Save');
   I.dontSee('Cancel');
 
@@ -258,26 +264,21 @@ Scenario('I can change email', async ({ I }) => {
   const newEmail = passwordUtils.createRandomEmail();
 
   editAndSave(I, editAccount, [
-    {name: emailField, newValue: newEmail},
-    {name: passwordField, newValue: loginContext.password},
+    { name: emailField, newValue: newEmail },
+    { name: passwordField, newValue: loginContext.password },
   ]);
 
   await I.logout();
 
-  I.login({email: newEmail, password: loginContext.password});
+  I.login({ email: newEmail, password: loginContext.password });
 
   editAndSave(I, editAccount, [
-    {name: emailField, newValue: loginContext.email},
-    {name: passwordField, newValue: loginContext.password},
+    { name: emailField, newValue: loginContext.email },
+    { name: passwordField, newValue: loginContext.password },
   ]);
 });
 
-function editAndSave(
-    I: CodeceptJS.I,
-    editButton: string,
-    fields: {name: string, newValue: string, expectedError?: string}[]
-) {
-
+function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string; newValue: string; expectedError?: string }[]) {
   I.amOnPage(constants.accountsUrl);
 
   I.click(editButton);
@@ -285,7 +286,9 @@ function editAndSave(
   I.see('Save');
   I.see('Cancel');
 
-  const fieldsWithPaths = fields.map(f => { return {...f, xpath: `//input[@name='${f.name}']`};});
+  const fieldsWithPaths = fields.map((f) => {
+    return { ...f, xpath: `//input[@name='${f.name}']` };
+  });
 
   for (const field of fieldsWithPaths) {
     I.seeElement(field.xpath);
@@ -305,7 +308,7 @@ function editAndSave(
   I.dontSee('Save');
   I.dontSee('Cancel');
 
-  fieldsWithPaths.forEach(field => {
+  fieldsWithPaths.forEach((field) => {
     I.dontSee(field.xpath);
 
     if (field.newValue && field.name !== passwordField) {
@@ -323,18 +326,16 @@ function editAndSave(
   I.click('Cancel');
 }
 
-function editAndCancel(
-    I: CodeceptJS.I,
-    editButton: string,
-    fields: {name: string, startingValue: string, newValue: string, expectedError?: string}[]
-) {
+function editAndCancel(I: CodeceptJS.I, editButton: string, fields: { name: string; startingValue: string; newValue: string; expectedError?: string }[]) {
   I.amOnPage(constants.accountsUrl);
   I.click(editButton);
 
   I.see('Save');
   I.see('Cancel');
 
-  const fieldsWithPaths = fields.map(f => { return {...f, xpath: `//input[@name='${f.name}']`};});
+  const fieldsWithPaths = fields.map((f) => {
+    return { ...f, xpath: `//input[@name='${f.name}']` };
+  });
 
   for (const field of fieldsWithPaths) {
     I.seeElement(field.xpath);
@@ -343,7 +344,7 @@ function editAndCancel(
   }
 
   // If expecting errors, try to save first
-  if (fieldsWithPaths.some(field => field.expectedError)) {
+  if (fieldsWithPaths.some((field) => field.expectedError)) {
     I.click('Save');
     I.waitForLoaderDone();
 
@@ -367,7 +368,7 @@ function editAndCancel(
   I.dontSee('Save');
   I.dontSee('Cancel');
 
-  fieldsWithPaths.forEach(field => {
+  fieldsWithPaths.forEach((field) => {
     I.dontSee(field.xpath);
     if (field.name !== passwordField) {
       I.see(field.startingValue);
