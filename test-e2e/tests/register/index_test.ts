@@ -1,10 +1,14 @@
-import constants from '../utils/constants';
-import passwordUtils from "../utils/password_utils";
+import constants from '../../utils/constants';
+import passwordUtils from '../../utils/password_utils';
 
-Feature('register');
+Feature('register').retry(3);
+
+Before(async ({ I }) => {
+  I.useConfig('test--accounts', constants.registerUrl);
+});
 
 Scenario('I can open the register modal', async ({ I }) => {
-  I.useConfig('test--accounts');
+  I.amOnPage(constants.baseUrl);
   I.seeCurrentUrlEquals(constants.baseUrl);
 
   if (await I.isMobile()) {
@@ -30,12 +34,6 @@ Scenario('I can open the register modal', async ({ I }) => {
   I.seeElement(constants.registrationFormSelector);
 });
 
-Feature('register');
-
-Before(async ({I}) => {
-  I.useConfig('test--accounts', constants.registerUrl);
-});
-
 Scenario('I can close the modal', async ({ I }) => {
   I.clickCloseButton();
   I.dontSeeElement(constants.registrationFormSelector);
@@ -57,12 +55,12 @@ Scenario('I can switch to the Sign In modal', ({ I }) => {
   I.dontSee(constants.registrationFormSelector);
   I.click('Sign up', constants.loginFormSelector);
   I.seeElement(constants.registrationFormSelector);
-  I.see('Already have an account?')
+  I.see('Already have an account?');
   I.dontSeeElement(constants.loginFormSelector);
 });
 
 Scenario('The submit button is disabled when the form is incompletely filled in', async ({ I }) => {
-  I.seeAttributesOnElements('button[type="submit"]', {disabled: true});
+  I.seeAttributesOnElements('button[type="submit"]', { disabled: true });
 });
 
 Scenario('I get warned when filling in incorrect credentials', async ({ I }) => {
@@ -73,8 +71,7 @@ Scenario('I get warned when filling in incorrect credentials', async ({ I }) => 
   I.dontSee('Please re-enter your email details');
 
   function checkColor(expectedColor) {
-    I.seeCssPropertiesOnElements('text="Use a minimum of 8 characters (case sensitive) with at least one number"',
-        {color: expectedColor});
+    I.seeCssPropertiesOnElements('text="Use a minimum of 8 characters (case sensitive) with at least one number"', { color: expectedColor });
   }
 
   checkColor('rgb(255, 255, 255)');
@@ -92,13 +89,12 @@ Scenario('I get strength feedback when typing in a password', async ({ I }) => {
 
   function checkFeedback(password, expectedColor, expectedText) {
     I.fillField('password', password);
-    I.seeCssPropertiesOnElements('div[class*="passwordStrengthFill"]',
-        {'background-color': expectedColor});
+    I.seeCssPropertiesOnElements('div[class*="passwordStrengthFill"]', { 'background-color': expectedColor });
     I.see(expectedText);
 
-    I.seeCssPropertiesOnElements(`text="${expectedText}"`, {color: expectedColor});
+    I.seeCssPropertiesOnElements(`text="${expectedText}"`, { color: expectedColor });
 
-    textOptions.filter(opt => opt !== expectedText).forEach(opt => I.dontSee(opt));
+    textOptions.filter((opt) => opt !== expectedText).forEach((opt) => I.dontSee(opt));
   }
 
   checkFeedback('1111aaaa', 'orangered', 'Weak');
@@ -109,15 +105,15 @@ Scenario('I get strength feedback when typing in a password', async ({ I }) => {
 
 Scenario('I can toggle to view password', async ({ I }) => {
   await passwordUtils.testPasswordToggling(I);
-})
+});
 
-Scenario('I can\'t submit without checking required consents', async ({ I }) => {
+Scenario('I can`t submit without checking required consents', async ({ I }) => {
   I.fillField('Email', 'test@123.org');
   I.fillField('Password', 'pAssword123!');
 
   I.click('Continue');
 
-  I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#ff0c3e'});
+  I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#ff0c3e' });
 });
 
 Scenario('I get warned for duplicate users', ({ I }) => {
