@@ -3,28 +3,32 @@ import { string, boolean, array, object, SchemaOf, StringSchema, mixed } from 'y
 import type { Config, Content, Menu, Styling, Features, Cleeng } from '#types/Config';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
 import i18n from '#src/i18n/config';
+import { logDev } from '#src/utils/common';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
 
 /**
- * We check here that we:
- * 1. Added favoritesList / continueWatchingList feature
- * 2. Included a corresponding element (with favorites or continue_watching type) in the content array
+ * We check here that if we added a content item with favorites / continue_watching type,
+ * then we also set up a corresponding playlistId (favoritesList / continueWatchingList)
  */
-const checkAdditionalFeatures = (content: Content[], playlistId: string | undefined | null, type: PersonalShelf) => {
-  const hasAdditionalRowInContent = content.some((el) => el.type === type);
+const checkContentItems = (config: Config) => {
+  const { content, features } = config;
 
-  if (playlistId && !hasAdditionalRowInContent) {
-    throw new Error(`Please add an item with a '${type}' type to "content" array`);
-  }
+  [PersonalShelf.ContinueWatching, PersonalShelf.Favorites].forEach((type) => {
+    const hasAdditionalRowInContent = content.some((el) => el.type === type);
+    const isFavoritesRow = type === PersonalShelf.Favorites;
+    const playlistId = isFavoritesRow ? features?.favoritesList : features?.continueWatchingList;
 
-  if (!playlistId && hasAdditionalRowInContent) {
-    throw new Error(`Please add an additional feature ${type === PersonalShelf.Favorites ? 'favoritesList' : 'continueWatchingList'}`);
-  }
-
-  return true;
+    if (!playlistId && hasAdditionalRowInContent) {
+      logDev(
+        `If you want to use a ${isFavoritesRow ? 'favorites' : 'continue_watching'} row please add a corresponding playlistId ${
+          isFavoritesRow ? 'favoritesList' : 'continueWatchingList'
+        } in a features section`,
+      );
+    }
+  });
 };
 
 const contentSchema: SchemaOf<Content> = object({
@@ -48,16 +52,8 @@ const featuresSchema: SchemaOf<Features> = object({
   enableSharing: boolean().notRequired(),
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
-  continueWatchingList: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
-    // @ts-expect-error https://github.com/jquense/yup/issues/1631
-    const { content, features } = context.from[1].value as Config;
-    return checkAdditionalFeatures(content, value, PersonalShelf.ContinueWatching);
-  }),
-  favoritesList: string().test('has-continue_watching-list-element', 'errorMessage', (value, context) => {
-    // @ts-expect-error https://github.com/jquense/yup/issues/1631
-    const { content, features } = context.from[1].value as Config;
-    return checkAdditionalFeatures(content, value, PersonalShelf.Favorites);
-  }),
+  continueWatchingList: string().nullable(),
+  favoritesList: string().nullable(),
 });
 
 const cleengSchema: SchemaOf<Cleeng> = object({
@@ -123,6 +119,8 @@ const loadConfig = async (configLocation: string) => {
   if (!data) {
     throw new Error('No config found');
   }
+
+  checkContentItems(data);
 
   return enrichConfig(data);
 };

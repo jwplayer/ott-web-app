@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import styles from './Cinema.module.scss';
@@ -8,9 +8,11 @@ import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { addScript } from '#src/utils/dom';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
+import { ConfigContext } from '#src/providers/ConfigProvider';
 import { deepCopy } from '#src/utils/collection';
 import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
+import type { Config } from '#types/Config';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
@@ -28,10 +30,10 @@ type Props = {
 };
 
 const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
-  const { player, continueWatchingList } = useConfigStore(({ config }) => ({
-    player: config.player,
-    continueWatchingList: config.features?.continueWatchingList,
-  }));
+  const config: Config = useContext(ConfigContext);
+  const player = config.player;
+  const continueWatchingList = config.features?.continueWatchingList;
+
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
   const loadingRef = useRef(false);

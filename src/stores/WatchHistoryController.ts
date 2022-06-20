@@ -79,15 +79,10 @@ export const saveItem = (item: PlaylistItem, videoProgress: number | null) => {
   if (!videoProgress) return;
 
   const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
-  const index = watchHistory.findIndex(({ mediaid }) => mediaid === watchHistoryItem.mediaid);
 
   let updatedHistory = watchHistory;
 
-  if (index > -1) {
-    updatedHistory = [watchHistoryItem, ...watchHistory.filter(({ mediaid }) => mediaid !== watchHistoryItem.mediaid)];
-  } else {
-    updatedHistory = [watchHistoryItem, ...watchHistory];
-  }
+  updatedHistory = [watchHistoryItem, ...watchHistory.filter(({ mediaid }) => mediaid !== watchHistoryItem.mediaid)];
 
   if (watchHistory.length > MAX_WATCHLIST_ITEMS_COUNT) {
     updatedHistory = updatedHistory.slice(0, MAX_WATCHLIST_ITEMS_COUNT - 1);

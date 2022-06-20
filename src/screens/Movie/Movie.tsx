@@ -8,6 +8,7 @@ import shallow from 'zustand/shallow';
 import styles from './Movie.module.scss';
 
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { toggleFavorite } from '#src/stores/FavoritesController';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
@@ -22,10 +23,8 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
-import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
-import useToggle from '#src/hooks/useToggle';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
@@ -37,7 +36,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { t } = useTranslation('video');
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
-  const [isFavoritesWarningShown, onFavoritesWarningToggle] = useToggle();
 
   // Routing
   const history = useHistory();
@@ -61,9 +59,10 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Favorite
-  const { isFavorited, favoritesCount } = useFavoritesStore((state) => ({
+  const { isFavorited, toggleWarning, isWarningShown } = useFavoritesStore((state) => ({
     isFavorited: !!item && state.hasItem(item),
-    favoritesCount: state.favorites?.length || 0,
+    isWarningShown: state.isWarningShown,
+    toggleWarning: state.toggleWarning,
   }));
 
   // User, entitlement
@@ -72,24 +71,12 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Handlers
   const onFavoriteButtonClick = useCallback(() => {
-    if (!item) {
-      return;
-    }
+    toggleFavorite(item);
+  }, [item]);
 
-    if (isFavorited) {
-      removeItem(item);
-
-      return;
-    }
-
-    // If we exceed the max available number of favorites, we show a warning
-    if (favoritesCount >= MAX_WATCHLIST_ITEMS_COUNT) {
-      onFavoritesWarningToggle();
-      return;
-    }
-
-    saveItem(item);
-  }, [item, isFavorited, favoritesCount, onFavoritesWarningToggle]);
+  const onToggleWarning = useCallback(() => {
+    toggleWarning();
+  }, [toggleWarning]);
 
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
@@ -201,10 +188,10 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
           ) : undefined}
 
           <Alert
-            open={isFavoritesWarningShown}
+            open={isWarningShown}
             title={t('video:favorites_warning.title')}
             body={t('video:favorites_warning.body', { count: MAX_WATCHLIST_ITEMS_COUNT })}
-            onClose={onFavoritesWarningToggle}
+            onClose={onToggleWarning}
           />
         </>
       </VideoComponent>

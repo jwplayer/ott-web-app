@@ -10,6 +10,7 @@ import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
 import { logDev } from '#src/utils/common';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
 
 import '#src/i18n/config';
 import '#src/styles/main.scss';
@@ -32,13 +33,13 @@ class App extends Component {
       await initializeAccount();
     }
 
-    // We only request favorites and continue_watching data if these features are enabled
-    // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink if data differs
-    if (config?.features?.continueWatchingList) {
+    // We only request favorites and continue_watching data if there is a corresponding content item
+    // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink
+    if (config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await restoreWatchHistory();
     }
 
-    if (config?.features?.favoritesList) {
+    if (config.content.some((el) => el.type === PersonalShelf.Favorites)) {
       await initializeFavorites();
     }
   }
