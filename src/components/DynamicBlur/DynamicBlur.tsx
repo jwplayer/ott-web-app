@@ -25,13 +25,13 @@ const DynamicBlur = ({ url, transitionTime = 1, debounceTime = 350 }: Props): JS
       }
       if (currentImg !== 1) {
         firstImage.current.style.backgroundImage = `url('${url}')`;
-        firstImage.current.style.opacity = '0.3';
+        firstImage.current.style.opacity = '1';
         secondImage.current.style.opacity = '0';
         return setCurrentImg(1);
       } else {
         secondImage.current.style.backgroundImage = `url('${url}')`;
         firstImage.current.style.opacity = '0';
-        secondImage.current.style.opacity = '0.3';
+        secondImage.current.style.opacity = '1';
         return setCurrentImg(2);
       }
     };
