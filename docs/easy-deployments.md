@@ -7,7 +7,7 @@ The instructions in this document will help you deploy your fork of the ott-web-
 ## Prerequisites
 
 -  [Fork this repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
-- Follow the instructions in [docs/build-from-source.md](docs/build-from-source.md).
+- Follow the instructions in [docs/build-from-source.md](../docs/build-from-source.md).
 
 <br />
 
