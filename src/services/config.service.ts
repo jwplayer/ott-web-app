@@ -28,6 +28,8 @@ const featuresSchema: SchemaOf<Features> = object({
   enableSharing: boolean().notRequired(),
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
+  favoritesList: string().nullable(),
+  continueWatchingList: string().nullable(),
 });
 
 const cleengSchema: SchemaOf<Cleeng> = object({

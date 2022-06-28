@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import User from '../../screens/User/User';
-import Series from '../../screens/Series/Series';
+import SeriesSwitcher from '../../containers/SeriesSwitcher/SeriesSwitcher';
 import Layout from '../../containers/Layout/Layout';
 import Home from '../../screens/Home/Home';
 import Playlist from '../../screens/Playlist/Playlist';
@@ -34,7 +34,7 @@ const Root: FC<Props> = ({ error }: Props) => {
         <Route path="/" component={Home} exact />
         <Route path="/p/:id" component={Playlist} exact />
         <Route path="/m/:id/:slug?" component={Movie} exact />
-        <Route path="/s/:id/:slug?" component={Series} />
+        <Route path="/s/:id/:slug?" component={SeriesSwitcher} />
         <Route path="/q/:query?" component={Search} />
         <Route path="/u/:page?" component={User} />
         <Route path="/o/about" component={About} />

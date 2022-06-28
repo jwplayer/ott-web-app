@@ -1,24 +1,9 @@
 import { addQueryParams } from '../utils/formatting';
 import { API_BASE_URL } from '../config';
+import { getDataOrThrow } from '../utils/api';
 
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
-
-/**
- * Get data
- * @param response
- */
-export const getDataOrThrow = async (response: Response) => {
-  const data = await response.json();
-
-  if (!response.ok) {
-    const message = `Request '${response.url}' failed with ${response.status}`;
-
-    throw new Error(data?.message || message);
-  }
-
-  return data;
-};
 
 /**
  * Transform incoming media items
@@ -83,6 +68,27 @@ export const getMediaById = async (id: string, token?: string, drmPolicyId?: str
   if (!mediaItem) throw new Error('MediaItem not found');
 
   return transformMediaItem(mediaItem);
+};
+
+/**
+ * Get watchlist by playlistId
+ * @param {string} playlistId
+ * @param {string} [token]
+ * @param {string} [drmPolicyId]
+ */
+export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
+  if (!mediaIds?.length) {
+    return [];
+  }
+
+  const pathname = `/apps/watchlists/${playlistId}`;
+  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
+  const response = await fetch(url);
+  const data = (await getDataOrThrow(response)) as Playlist;
+
+  if (!data) throw new Error(`The data was not found using the watchlist ${playlistId}`);
+
+  return (data.playlist || []).map(transformMediaItem);
 };
 
 /**

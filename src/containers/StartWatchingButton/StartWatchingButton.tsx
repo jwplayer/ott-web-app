@@ -18,9 +18,10 @@ import { episodeURLFromEpisode, videoUrl } from '#src/utils/formatting';
 
 type Props = {
   item: PlaylistItem;
+  seriesId?: string;
 };
 
-const StartWatchingButton: React.VFC<Props> = ({ item }) => {
+const StartWatchingButton: React.VFC<Props> = ({ item, seriesId }) => {
   const { t } = useTranslation('video');
   const history = useHistory();
   const location = useLocation();
@@ -49,16 +50,16 @@ const StartWatchingButton: React.VFC<Props> = ({ item }) => {
   }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    const seriesId = getSeriesIdFromEpisode(item);
+    const parsedSeriesId = seriesId || getSeriesIdFromEpisode(item);
     const playlistId = searchParams.get('r');
-    const videoPlayUrl = seriesId ? episodeURLFromEpisode(item, seriesId, playlistId, true) : videoUrl(item, playlistId, true);
+    const videoPlayUrl = parsedSeriesId ? episodeURLFromEpisode(item, parsedSeriesId, playlistId, true) : videoUrl(item, playlistId, true);
 
     if (isEntitled) return videoPlayUrl && history.push(videoPlayUrl);
     if (!isLoggedIn) return history.push(addQueryParam(history, 'u', 'create-account'));
     if (hasMediaOffers) return history.push(addQueryParam(history, 'u', 'choose-offer'));
 
     return history.push('/u/payments');
-  }, [item, searchParams, isEntitled, history, isLoggedIn, hasMediaOffers]);
+  }, [item, seriesId, searchParams, isEntitled, history, isLoggedIn, hasMediaOffers]);
 
   useEffect(() => {
     // set the TVOD mediaOffers in the checkout store
