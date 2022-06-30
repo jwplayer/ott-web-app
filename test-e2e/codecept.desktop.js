@@ -8,8 +8,9 @@ setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
   grep: '(?=.*)^(?!.*@mobile-only)',
-  tests: ['./tests/*.js', './tests/*.ts'],
+  tests: ['./tests/**/*.js', './tests/**/*.ts'],
   output: './output/desktop',
+  timeout: 60,
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',
@@ -26,14 +27,21 @@ exports.config = {
   plugins: {
     pauseOnFail: {},
     retryFailedStep: {
+      minTimeout: 3000,
       enabled: true,
-      retries: 2,
+      retries: 3,
+    },
+    autoDelay: {
+      enabled: true,
     },
     tryTo: {
       enabled: true,
     },
     screenshotOnFail: {
       enabled: !process.env.CI,
+    },
+    allure: {
+      enabled: true,
     },
   },
 };

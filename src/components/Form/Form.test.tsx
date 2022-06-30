@@ -15,10 +15,10 @@ describe('<Form>', () => {
             editButton: 'Edit Button',
             saveButton: 'Save Button',
             cancelButton: 'Cancel Button',
-            content: (section => <input name="test" value={section.values.test || ''} />)
-          }
+            content: (section) => <input name="test" value={section.values.test || ''} />,
+          },
         ]}
-      </Form>
+      </Form>,
     );
     expect(container).toMatchSnapshot();
   });

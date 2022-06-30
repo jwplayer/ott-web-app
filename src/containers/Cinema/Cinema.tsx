@@ -13,7 +13,6 @@ import { deepCopy } from '#src/utils/collection';
 import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import type { Config } from '#types/Config';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
 
