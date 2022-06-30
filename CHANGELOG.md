@@ -86,6 +86,7 @@
 
 ### Features
 
+* **project:** BREAKING CHANGE adding new app config support ([9a29722](https://github.com/jwplayer/ott-web-app/commit/f8cf652f70b9ff9b42812259e965e1cb90d9c408))
 * **auth:** add backdrop click to login codecept test ([9a29722](https://github.com/jwplayer/ott-web-app/commit/9a29722eddbe8eb513c0094bc780969bccbf0b74))
 * **auth:** add login codecept tests ([1d74a18](https://github.com/jwplayer/ott-web-app/commit/1d74a18ce280c6162cb99102caf6b5fe1a7a413f))
 * **auth:** add register codecept tests ([b4bc475](https://github.com/jwplayer/ott-web-app/commit/b4bc475aafa39059ba31da9cce851266e1500d88))
@@ -98,6 +99,5 @@
 * **videodetail:** add codecept tests ([5fd6931](https://github.com/jwplayer/ott-web-app/commit/5fd6931762cd4d5bf8a972d4f054dbdf215beef7))
 * **watchhistory:** add codecept test ([120055f](https://github.com/jwplayer/ott-web-app/commit/120055f1fd31a1884fd552f44933a5880e53364b))
 * **watchhistory:** add mobile codecept test and login step ([1467b44](https://github.com/jwplayer/ott-web-app/commit/1467b44d6a67d7fd4cd0db36fefa520cac48a289))
-
 
 

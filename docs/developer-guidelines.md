@@ -13,6 +13,7 @@
 We use the [TriPSs/conventional-changelog-action](https://github.com/TriPSs/conventional-changelog-action) github [action](https://github.com/jwplayer/ott-web-app/actions/workflows/bump-version.yml) to do an automated version increment for any commit to the develop branch.  The type of version increment will be determined by the commit message(s) in the code being added as follows (see [Convential Commits](https://www.conventionalcommits.org/en/v1.0.0/) for more details):
 * `fix:` - perform a patch bump
 * `feat:` - perform a minor bump
+* `chore:` - no version change
 * commit body contains `BREAKING CHANGE:` - perform a major bump
 * `<type>!:` (i.e. `feat!:`) - perform a major bump
 
