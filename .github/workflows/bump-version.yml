@@ -4,8 +4,8 @@ name: 'Version Bump'
 on:
   # Triggers the workflow on push or pull request events but only for the "develop" branch
   push:
-    branches: [ "develop" ]
-    
+    branches: ['develop']
+
 jobs:
   bump-version:
     name: 'Bump Version on develop'
@@ -21,3 +21,4 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v3
         with:
           github-token: ${{ secrets.ACTION_TOKEN }}
+          release-count: '0'
