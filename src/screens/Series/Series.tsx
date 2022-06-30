@@ -9,7 +9,6 @@ import styles from './Series.module.scss';
 
 import useEntitlement from '#src/hooks/useEntitlement';
 import CardGrid from '#src/components/CardGrid/CardGrid';
-import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL } from '#src/utils/formatting';
 import Filter from '#src/components/Filter/Filter';
@@ -28,7 +27,6 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { toggleFavorite } from '#src/stores/FavoritesController';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
-import Alert from '#src/components/Alert/Alert';
 
 type SeriesRouteParams = {
   id: string;
@@ -64,10 +62,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
   // Favorite
-  const { isFavorited, toggleWarning, isWarningShown } = useFavoritesStore((state) => ({
+  const { isFavorited } = useFavoritesStore((state) => ({
     isFavorited: !!item && state.hasItem(item),
-    isWarningShown: state.isWarningShown,
-    toggleWarning: state.toggleWarning,
   }));
 
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
@@ -81,9 +77,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
     toggleFavorite(item);
   }, [item]);
 
-  const onToggleWarning = useCallback(() => {
-    toggleWarning();
-  }, [toggleWarning]);
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
   const onShareClick = (): void => {
@@ -206,12 +199,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
             accessModel={accessModel}
             isLoggedIn={!!user}
             hasSubscription={!!subscription}
-          />
-          <Alert
-            open={isWarningShown}
-            title={t('video:favorites_warning.title')}
-            body={t('video:favorites_warning.body', { count: MAX_WATCHLIST_ITEMS_COUNT })}
-            onClose={onToggleWarning}
           />
         </>
       </VideoComponent>

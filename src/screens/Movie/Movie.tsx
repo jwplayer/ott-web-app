@@ -15,7 +15,6 @@ import type { PlaylistItem } from '#types/playlist';
 import VideoComponent from '#src/components/Video/Video';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import CardGrid from '#src/components/CardGrid/CardGrid';
-import Alert from '#src/components/Alert/Alert';
 import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
@@ -26,7 +25,6 @@ import { addConfigParamToUrl } from '#src/utils/configOverride';
 import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
-import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 type MovieRouteParams = {
   id: string;
@@ -59,10 +57,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Favorite
-  const { isFavorited, toggleWarning, isWarningShown } = useFavoritesStore((state) => ({
+  const { isFavorited } = useFavoritesStore((state) => ({
     isFavorited: !!item && state.hasItem(item),
-    isWarningShown: state.isWarningShown,
-    toggleWarning: state.toggleWarning,
   }));
 
   // User, entitlement
@@ -73,10 +69,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const onFavoriteButtonClick = useCallback(() => {
     toggleFavorite(item);
   }, [item]);
-
-  const onToggleWarning = useCallback(() => {
-    toggleWarning();
-  }, [toggleWarning]);
 
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
@@ -184,13 +176,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
               />
             </>
           ) : undefined}
-
-          <Alert
-            open={isWarningShown}
-            title={t('video:favorites_warning.title')}
-            body={t('video:favorites_warning.body', { count: MAX_WATCHLIST_ITEMS_COUNT })}
-            onClose={onToggleWarning}
-          />
         </>
       </VideoComponent>
     </React.Fragment>

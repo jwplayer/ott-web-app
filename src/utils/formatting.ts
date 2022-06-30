@@ -39,8 +39,9 @@ export const addQueryParams = (url: string, queryParams: { [key: string]: string
   Object.keys(queryParams).forEach((key) => {
     const value = queryParams[key];
 
-    // null or undefined
-    if (value == null || !value?.length) return;
+    if (value == null) return;
+
+    if (typeof value === 'object' && !value?.length) return;
 
     const formattedValue = Array.isArray(value) ? value.join(',') : value;
 

@@ -7,6 +7,7 @@
     "confirm": "Yes"
   },
   "alert": {
+    "title": "An error occurred",
     "close": "Close"
   },
   "filter_videos_by_genre": "Filter videos by genre",

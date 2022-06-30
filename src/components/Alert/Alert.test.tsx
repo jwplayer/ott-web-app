@@ -9,7 +9,7 @@ vi.mock('../Dialog/Dialog', () => ({
 
 describe('<Alert>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Alert body="Body" title="Title" open={true} onClose={vi.fn()} />);
+    const { container } = render(<Alert message="Body" open={true} onClose={vi.fn()} />);
     expect(container).toMatchSnapshot();
   });
 });

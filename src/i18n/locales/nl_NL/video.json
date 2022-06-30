@@ -21,8 +21,5 @@
   "video_not_found": "",
   "watch_trailer": "",
   "share_video": "",
-  "favorites_warning": {
-    "title": "",
-    "body": ""
-  }
+  "favorites_warning": ""
 }

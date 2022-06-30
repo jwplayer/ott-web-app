@@ -38,7 +38,7 @@ exports.config = {
       enabled: true,
     },
     screenshotOnFail: {
-      enabled: !process.env.CI,
+      enabled: true,
     },
     allure: {
       enabled: true,

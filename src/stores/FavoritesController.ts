@@ -6,6 +6,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { PlaylistItem } from '#types/playlist';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
+import i18n from '#src/i18n/config';
 
 const PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}` : ''}`;
 
@@ -65,7 +66,7 @@ export const removeItem = (item: PlaylistItem) => {
 };
 
 export const toggleFavorite = (item: PlaylistItem | undefined) => {
-  const { favorites, hasItem, toggleWarning } = useFavoritesStore.getState();
+  const { favorites, hasItem, setWarning } = useFavoritesStore.getState();
 
   if (!item) {
     return;
@@ -81,7 +82,7 @@ export const toggleFavorite = (item: PlaylistItem | undefined) => {
 
   // If we exceed the max available number of favorites, we show a warning
   if (favorites?.length >= MAX_WATCHLIST_ITEMS_COUNT) {
-    toggleWarning();
+    setWarning(i18n.t('video:favorites_warning', { count: MAX_WATCHLIST_ITEMS_COUNT }));
     return;
   }
 

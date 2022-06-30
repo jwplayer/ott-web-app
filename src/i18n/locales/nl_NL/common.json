@@ -6,6 +6,10 @@
     "close": "",
     "confirm": ""
   },
+  "alert": {
+    "title": "",
+    "close": ""
+  },
   "filter_videos_by_genre": "",
   "home": "",
   "live": "",

@@ -8,7 +8,7 @@ exports[`<Alert> > renders and matches snapshot 1`] = `
     <h2
       class="title"
     >
-      Title
+      alert.title
     </h2>
     <p
       class="body"

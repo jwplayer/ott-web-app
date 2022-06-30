@@ -6,16 +6,18 @@ import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type FavoritesState = {
   favorites: Favorite[];
-  isWarningShown: boolean;
+  warning: string | null;
   hasItem: (item: PlaylistItem) => boolean;
   getPlaylist: () => Playlist;
-  toggleWarning: () => void;
+  setWarning: (warning: string) => void;
+  clearWarning: () => void;
 };
 
 export const useFavoritesStore = createStore<FavoritesState>('FavoritesState', (set, get) => ({
   favorites: [],
-  isWarningShown: false,
-  toggleWarning: () => set({ isWarningShown: !get().isWarningShown }),
+  warning: null,
+  setWarning: (message: string | null) => set({ warning: message }),
+  clearWarning: () => set({ warning: null }),
   hasItem: (item: PlaylistItem) => get().favorites.some((favoriteItem) => favoriteItem.mediaid === item.mediaid),
   getPlaylist: () =>
     ({
