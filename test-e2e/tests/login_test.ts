@@ -19,7 +19,7 @@ Scenario('Sign-in buttons show for accounts config', async ({ I }) => {
   I.see('Sign up');
 });
 
-Scenario('Sign-in buttons don\'t show for config without accounts', async ({ I }) => {
+Scenario("Sign-in buttons don't show for config without accounts", async ({ I }) => {
   I.useConfig('test--no-cleeng');
 
   I.dontSee('Sign in');
@@ -55,12 +55,11 @@ Scenario('I can open the log in modal', async ({ I }) => {
 
 Feature('login - start from login page');
 
-Before(({I}) => {
+Before(({ I }) => {
   I.useConfig('test--accounts', constants.loginUrl);
 
   I.waitForElement(constants.loginFormSelector, 10);
 });
-
 
 Scenario('I can close the modal', async ({ I }) => {
   I.clickCloseButton();
@@ -150,7 +149,7 @@ Scenario('I see a login error message', async ({ I }) => {
   I.submitForm();
 
   I.see(incorrectLogin);
-  I.seeCssPropertiesOnElements(formFeedback, {'background-color': 'rgb(255, 12, 62)'});
+  I.seeCssPropertiesOnElements(formFeedback, { 'background-color': 'rgb(255, 12, 62)' });
 
   checkField(I, 'email', true);
   checkField(I, 'password', true);
@@ -166,7 +165,7 @@ Scenario('I can login', async ({ I }) => {
   I.dontSee('Sign in');
   I.dontSee('Sign up');
 
-  await I.openMainMenu()
+  await I.openMainMenu();
 
   I.dontSee('Sign in');
   I.dontSee('Sign up');
@@ -176,7 +175,7 @@ Scenario('I can login', async ({ I }) => {
   I.see('Log out');
 });
 
-Scenario('I can log out', async ({ I })=> {
+Scenario('I can log out', async ({ I }) => {
   I.login();
 
   const isMobile = await I.openMainMenu();
@@ -208,7 +207,7 @@ function fillAndCheckField(I: CodeceptJS.I, field, value, error: string | boolea
     I.fillField(field, value);
   }
 
-  I.mo
+  I.mo;
 
   checkField(I, field, error);
 }
@@ -221,7 +220,7 @@ function checkField(I: CodeceptJS.I, field, error: string | boolean = false) {
   // If error === true, there's an error, but no associated message
   if (error && error !== true) {
     I.see(error, `[data-testid=login-${field}-input]`);
-    I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=helperText]`, { 'color': '#ff0c3e'});
+    I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=helperText]`, { color: '#ff0c3e' });
   } else {
     I.dontSeeElement('[class*=helperText]', `[data-testid="${field}-input"]`);
   }
@@ -231,14 +230,11 @@ function checkField(I: CodeceptJS.I, field, error: string | boolean = false) {
   // different places and accidentally triggering the wrong css color
   // Hover:
   I.click(`input[name="${field}"]`);
-  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`,
-      {'border-color': hoverColor});
+  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`, { 'border-color': hoverColor });
   // Active (no hover):
   I.moveCursorTo('button[type=submit]');
-  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`,
-      {'border-color': activeColor});
+  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`, { 'border-color': activeColor });
   // Resting:
   I.click('div[class*=banner]');
-  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`,
-      {'border-color': restingColor});
+  I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=container]`, { 'border-color': restingColor });
 }

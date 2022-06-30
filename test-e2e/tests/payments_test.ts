@@ -1,5 +1,5 @@
-import {LoginContext} from "../utils/password_utils";
-import constants from "../utils/constants";
+import { LoginContext } from '../utils/password_utils';
+import constants from '../utils/constants';
 
 let paidLoginContext: LoginContext;
 let couponLoginContext: LoginContext;
@@ -9,18 +9,11 @@ const today = new Date();
 const monthlyPrice = formatPrice(6.99);
 const yearlyPrice = formatPrice(50);
 
-const cardInfo = Array.of(
-    'Card number',
-    '•••• •••• •••• 1111',
-    'Expiry date',
-    '03/2030',
-    'CVC / CVV',
-    '******'
-);
+const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'CVC / CVV', '******');
 
 Feature('payments');
 
-Before(async ({I}) => {
+Before(async ({ I }) => {
   // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
   overrideIP(I);
 
@@ -43,7 +36,7 @@ Scenario('I can see my payments data', async ({ I }) => {
   I.see('No transactions');
 });
 
-Scenario('I can see offered subscriptions', async ({ I })=> {
+Scenario('I can see offered subscriptions', async ({ I }) => {
   I.amOnPage(constants.paymentsUrl);
 
   I.click('Complete subscription');
@@ -75,12 +68,12 @@ Scenario('I can choose an offer', ({ I }) => {
   I.amOnPage(constants.offersUrl);
 
   I.click('label[for="monthly"]');
-  I.seeCssPropertiesOnElements('label[for="monthly"]', { 'color': '#000000' });
-  I.seeCssPropertiesOnElements('label[for="yearly"]', { 'color': '#ffffff' });
+  I.seeCssPropertiesOnElements('label[for="monthly"]', { color: '#000000' });
+  I.seeCssPropertiesOnElements('label[for="yearly"]', { color: '#ffffff' });
 
   I.click('label[for="yearly"]');
-  I.seeCssPropertiesOnElements('label[for="monthly"]', { 'color': '#ffffff' });
-  I.seeCssPropertiesOnElements('label[for="yearly"]', { 'color': '#000000' });
+  I.seeCssPropertiesOnElements('label[for="monthly"]', { color: '#ffffff' });
+  I.seeCssPropertiesOnElements('label[for="yearly"]', { color: '#000000' });
 
   I.click('Continue');
   I.waitForLoaderDone();
@@ -100,7 +93,7 @@ Scenario('I can choose an offer', ({ I }) => {
   I.clickCloseButton();
 });
 
-Scenario('I can see payment types', ({I}) => {
+Scenario('I can see payment types', ({ I }) => {
   goToCheckout(I);
 
   I.see('Credit Card');
@@ -110,18 +103,18 @@ Scenario('I can see payment types', ({I}) => {
   I.see('Expiry date');
   I.see('CVC / CVV');
   I.see('Continue');
-  I.dontSee('Clicking \'continue\' will bring you to the PayPal site.');
+  I.dontSee("Clicking 'continue' will bring you to the PayPal site.");
 
   I.click('PayPal');
 
-  I.see('Clicking \'continue\' will bring you to the PayPal site.');
+  I.see("Clicking 'continue' will bring you to the PayPal site.");
   I.dontSee('Card number');
   I.dontSee('Expiry date');
   I.dontSee('CVC / CVV');
   I.see('Continue');
 });
 
-Scenario('I can open the PayPal site', ({ I })=> {
+Scenario('I can open the PayPal site', ({ I }) => {
   goToCheckout(I);
 
   I.click('PayPal');
@@ -165,7 +158,7 @@ Scenario('I can cancel my subscription', ({ I }) => {
   I.seeAll(cardInfo);
 });
 
-Scenario('I can renew my subscription', ({ I })=> {
+Scenario('I can renew my subscription', ({ I }) => {
   renewPlan(I, addDays(today, 14));
 });
 
@@ -173,7 +166,7 @@ Scenario('I can renew my subscription', ({ I })=> {
 // Otherwise there's no way to re-enter payment info and add a coupon code
 Feature('payments-coupon');
 
-Before(async ({I}) => {
+Before(async ({ I }) => {
   // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
   overrideIP(I);
 
@@ -182,8 +175,7 @@ Before(async ({I}) => {
   couponLoginContext = await I.registerOrLogin(couponLoginContext);
 });
 
-
-Scenario('I can redeem coupons', async ({I}) => {
+Scenario('I can redeem coupons', async ({ I }) => {
   goToCheckout(I);
 
   I.click('Redeem coupon');
@@ -198,28 +190,28 @@ Scenario('I can redeem coupons', async ({I}) => {
   I.click('Apply');
   I.waitForLoaderDone();
   I.see('Your coupon code has been applied');
-  I.see(formatPrice(-37.50));
-  I.see(formatPrice(12.50));
+  I.see(formatPrice(-37.5));
+  I.see(formatPrice(12.5));
   I.see(formatPrice(2.17));
 
   I.fillField('couponCode', 'test100');
   I.click('Apply');
   I.waitForLoaderDone();
-  I.see('No payment needed')
-  I.dontSee(formatPrice(12.50));
+  I.see('No payment needed');
+  I.dontSee(formatPrice(12.5));
 
   finishAndCheckSubscription(I, addYear(today));
 
   I.see('No payment methods');
 });
 
-Scenario('I can cancel a free subscription', async ({I}) => {
+Scenario('I can cancel a free subscription', async ({ I }) => {
   cancelPlan(I, addYear(today));
 
   I.see('No payment methods');
 });
 
-Scenario('I can renew a free subscription', ({I}) => {
+Scenario('I can renew a free subscription', ({ I }) => {
   renewPlan(I, addYear(today));
 });
 
@@ -236,13 +228,13 @@ function formatPrice(price: number) {
 }
 
 function addDays(date: Date, days: number) {
-  const newDate = new Date(date.valueOf())
+  const newDate = new Date(date.valueOf());
   newDate.setDate(newDate.getDate() + days);
   return newDate;
 }
 
 function addYear(date: Date) {
-  const newDate = new Date(date.valueOf())
+  const newDate = new Date(date.valueOf());
   newDate.setFullYear(newDate.getFullYear() + 1);
   return newDate;
 }
@@ -310,7 +302,7 @@ function renewPlan(I: CodeceptJS.I, billingDate: Date) {
   I.click('Renew subscription', '[class*=_dialog]');
   I.waitForLoaderDone(10);
   I.see('Your subscription has been renewed');
-  I.see(`You have been successfully resubscribed. Your fee will be ${yearlyPrice} starting from ${formatDate(billingDate)}`)
+  I.see(`You have been successfully resubscribed. Your fee will be ${yearlyPrice} starting from ${formatDate(billingDate)}`);
   I.click('Back to profile');
 
   I.see('Annual subscription');
@@ -320,5 +312,5 @@ function renewPlan(I: CodeceptJS.I, billingDate: Date) {
 
 function overrideIP(I: CodeceptJS.I) {
   // Set this as a cookie so it persists between page navigations (local storage would also work, but the permissions don't work)
-  I.setCookie({name: 'overrideIP', value: '101.33.29.0', domain: 'localhost', path: '/'})
+  I.setCookie({ name: 'overrideIP', value: '101.33.29.0', domain: 'localhost', path: '/' });
 }
