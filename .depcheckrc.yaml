@@ -1,15 +1,16 @@
 ignores: [
     # These are dependencies for vite and vite plugins that depcheck doesn't recognize as being used
-    "postcss-scss",
-    "stylelint-order",
-    "stylelint-config-recommended-scss",
-    "stylelint-declaration-strict-value",
-    "stylelint-scss",
+    'postcss-scss',
+    'stylelint-order',
+    'stylelint-config-recommended-scss',
+    'stylelint-declaration-strict-value',
+    'stylelint-scss',
     # This is used by commitlint in .commitlintrc.js
-    " @commitlint/config-conventional",
+    ' @commitlint/config-conventional',
     # These are vite aliases / tsconfig paths that point to specific local directories
     # Note the \\ is apparently necessary to escape the # or the ignore doesn't work
     "\\#src",
     "\\#test",
-    "\\#types"
-]
+    "\\#types",
+    'npm-run-all',
+  ]

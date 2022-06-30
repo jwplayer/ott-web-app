@@ -99,3 +99,5 @@
 * **videodetail:** add codecept tests ([5fd6931](https://github.com/jwplayer/ott-web-app/commit/5fd6931762cd4d5bf8a972d4f054dbdf215beef7))
 * **watchhistory:** add codecept test ([120055f](https://github.com/jwplayer/ott-web-app/commit/120055f1fd31a1884fd552f44933a5880e53364b))
 * **watchhistory:** add mobile codecept test and login step ([1467b44](https://github.com/jwplayer/ott-web-app/commit/1467b44d6a67d7fd4cd0db36fefa520cac48a289))
+
+
