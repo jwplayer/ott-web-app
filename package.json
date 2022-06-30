@@ -5,6 +5,9 @@
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "Robin van Zanten",
   "private": true,
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "prepare": "husky install",
     "start": "vite",
@@ -24,12 +27,17 @@
     "lint:ts": "tsc --pretty --noEmit -p .",
     "lint:stylelint": "stylelint '**/*.{css,scss}'",
     "commit-msg": "commitlint --edit $1",
+    "codecept:mobile": "cd test-e2e && rm -rf \"./output/mobile\" && codeceptjs --config ./codecept.mobile.js run-workers --suites 2 ",
+    "codecept:desktop": "cd test-e2e && rm -rf \"./output/desktop\" && codeceptjs --config ./codecept.desktop.js run-workers --suites 2 ",
+    "serve-report:mobile": "cd test-e2e && allure serve \"./output/mobile\"",
+    "serve-report:desktop": "cd test-e2e && allure serve \"./output/desktop\"",
+    "codecept-serve:mobile": "yarn codecept:mobile ; yarn serve-report:mobile",
+    "codecept-serve:desktop": "yarn codecept:desktop ; yarn serve-report:desktop",
     "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test-commit",
-    "codecept:mobile": "cd test-e2e && codeceptjs -c codecept.mobile.js run --steps",
-    "codecept:desktop": "cd test-e2e && codeceptjs -c codecept.desktop.js run --steps",
     "deploy:github": "node ./scripts/deploy-github.js"
   },
   "dependencies": {
+    "allure-commandline": "^2.17.2",
     "classnames": "^2.3.1",
     "history": "^4.10.1",
     "i18next": "^20.3.1",
@@ -67,7 +75,7 @@
     "@typescript-eslint/parser": "^5.17.0",
     "@vitejs/plugin-react": "^1.0.7",
     "c8": "^7.11.2",
-    "codeceptjs": "^3.2.3",
+    "codeceptjs": "3.3.0",
     "confusing-browser-globals": "^1.0.10",
     "depcheck": "^1.4.3",
     "eslint": "^7.31.0",

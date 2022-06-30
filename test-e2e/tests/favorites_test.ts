@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-Feature('favorites');
+Feature('favorites').retry(3);
 
 Scenario('I can add a video to my favorites', async ({ I }) => {
   addVideoToFavorites(I);

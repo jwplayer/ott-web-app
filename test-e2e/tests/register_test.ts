@@ -1,10 +1,14 @@
 import constants from '../utils/constants';
 import passwordUtils from '../utils/password_utils';
 
-Feature('register');
+Feature('register').retry(3);
+
+Before(async ({ I }) => {
+  I.useConfig('test--accounts', constants.registerUrl);
+});
 
 Scenario('I can open the register modal', async ({ I }) => {
-  I.useConfig('test--accounts');
+  I.amOnPage(constants.baseUrl);
   I.seeCurrentUrlEquals(constants.baseUrl);
 
   if (await I.isMobile()) {
@@ -28,12 +32,6 @@ Scenario('I can open the register modal', async ({ I }) => {
   I.see('Sign in');
 
   I.seeElement(constants.registrationFormSelector);
-});
-
-Feature('register');
-
-Before(async ({ I }) => {
-  I.useConfig('test--accounts', constants.registerUrl);
 });
 
 Scenario('I can close the modal', async ({ I }) => {
@@ -109,7 +107,7 @@ Scenario('I can toggle to view password', async ({ I }) => {
   await passwordUtils.testPasswordToggling(I);
 });
 
-Scenario("I can't submit without checking required consents", async ({ I }) => {
+Scenario('I can`t submit without checking required consents', async ({ I }) => {
   I.fillField('Email', 'test@123.org');
   I.fillField('Password', 'pAssword123!');
 

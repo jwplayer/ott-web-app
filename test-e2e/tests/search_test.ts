@@ -8,7 +8,7 @@ const emptySearchPrompt = 'Type something in the search box to start searching';
 const clearSearchLocator = { css: 'div[aria-label="Clear search"]' };
 const closeSearchLocator = { css: 'div[aria-label="Close search"]' };
 
-Feature('search');
+Feature('search').retry(3);
 
 Before(({ I }) => {
   I.amOnPage('http://localhost:8080');
@@ -114,9 +114,9 @@ Scenario('I can clear the search phrase with the clear button', async ({ I }) =>
 Scenario('I can clear the search phrase manually', async ({ I }) => {
   await openSearch(I);
   I.fillField(searchBarLocator, 'Hello');
-  I.seeElement(clearSearchLocator);
+
   I.click(searchBarLocator);
-  I.pressKey(['Control', 'a']);
+  I.pressKey(['CommandOrControl', 'A']);
   I.pressKey('Backspace');
 
   I.see(emptySearchPrompt);
@@ -152,7 +152,7 @@ function verifyOnHomePage(I: CodeceptJS.I) {
 
 async function openSearch(I: CodeceptJS.I) {
   if (await I.isMobile()) {
-    I.dontSee(searchBarLocator);
+    I.dontSeeElement(searchBarLocator);
     I.click(openSearchLocator);
   }
 

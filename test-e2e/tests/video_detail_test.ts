@@ -2,7 +2,7 @@ import * as assert from 'assert';
 
 import constants from '../utils/constants';
 
-Feature('video_detail');
+Feature('video_detail').retry(3);
 
 Scenario('Video detail screen loads', ({ I }) => {
   I.amOnPage(constants.baseUrl);
@@ -16,7 +16,6 @@ Scenario('Video detail screen loads', ({ I }) => {
   I.see('Sign up to start watching!');
   I.see('Favorite');
   I.see('Share');
-  I.see('Current video', { css: 'div[aria-label="Play Agent 327"]' });
   I.see('Elephants Dream');
   I.see('11 min', { css: 'div[aria-label="Play Elephants Dream"]' });
 });

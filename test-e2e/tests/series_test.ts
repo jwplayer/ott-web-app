@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-Feature('series');
+Feature('series').retry(3);
 
 Scenario('I can see series', ({ I }) => {
   I.amOnPage('http://localhost:8080/s/L24UEeMK/fantasy-vehicle-creation?e=I3k8wgIs&c=test--no-cleeng');

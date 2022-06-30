@@ -7,29 +7,21 @@ const emailField = 'email';
 const passwordField = 'confirmationPassword';
 const firstNameField = 'firstName';
 const lastNameField = 'lastName';
-const consentCheckbox = 'Yes, I want to receive Blender updates by email.';
+const consentCheckbox = 'Yes, I want to receive Blender updates by email';
 
 let loginContext: LoginContext;
 const firstName = 'John Q.';
 const lastName = 'Tester';
 
-Feature('account');
+Feature('account').retry(3);
 
 Before(({ I }) => {
   I.useConfig('test--subscription');
-
-  loginContext = I.registerOrLogin(loginContext, () => {
-    I.fillField('firstName', firstName);
-    I.fillField('lastName', lastName);
-
-    I.click('Continue');
-    I.waitForLoaderDone(10);
-
-    I.clickCloseButton();
-  });
 });
 
 Scenario('I can see my account data', async ({ I }) => {
+  registerOrLogin(I);
+
   I.seeCurrentUrlEquals(constants.baseUrl);
   await I.openMainMenu();
 
@@ -53,12 +45,14 @@ Scenario('I can see my account data', async ({ I }) => {
 
   I.see('Terms & tracking');
   I.see('I accept the Terms and Conditions of Cleeng.');
-  I.see('Yes, I want to receive Blender updates by email.');
+  I.see(consentCheckbox);
 
   I.seeCurrentUrlEquals(constants.accountsUrl);
 });
 
 Scenario('I can cancel Edit account', async ({ I }) => {
+  registerOrLogin(I);
+
   editAndCancel(I, editAccount, [
     { name: emailField, startingValue: loginContext.email, newValue: 'user@email.nl' },
     { name: passwordField, startingValue: '', newValue: 'pass123!?' },
@@ -66,6 +60,8 @@ Scenario('I can cancel Edit account', async ({ I }) => {
 });
 
 Scenario('I get a duplicate email warning', async ({ I }) => {
+  registerOrLogin(I);
+
   editAndCancel(I, editAccount, [
     {
       name: emailField,
@@ -82,6 +78,8 @@ Scenario('I get a duplicate email warning', async ({ I }) => {
 });
 
 Scenario('I get a wrong password warning', async ({ I }) => {
+  registerOrLogin(I);
+
   editAndCancel(I, editAccount, [
     {
       name: emailField,
@@ -98,13 +96,14 @@ Scenario('I get a wrong password warning', async ({ I }) => {
 });
 
 Scenario('I can toggle to view/hide my password', async ({ I }) => {
+  registerOrLogin(I);
   I.amOnPage(constants.accountsUrl);
-
-  I.click('Edit account');
+  I.click(editAccount);
   await passwordUtils.testPasswordToggling(I, 'confirmationPassword');
 });
 
 Scenario('I can reset my password', async ({ I }) => {
+  registerOrLogin(I);
   I.amOnPage(constants.accountsUrl);
 
   I.click('Edit password');
@@ -133,6 +132,8 @@ Scenario('I can reset my password', async ({ I }) => {
 });
 
 Scenario('I can update firstName', async ({ I }) => {
+  registerOrLogin(I);
+
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
@@ -156,6 +157,8 @@ Scenario('I can update firstName', async ({ I }) => {
 });
 
 Scenario('I can update lastName', async ({ I }) => {
+  registerOrLogin(I);
+
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
@@ -179,6 +182,8 @@ Scenario('I can update lastName', async ({ I }) => {
 });
 
 Scenario('I can update details', async ({ I }) => {
+  registerOrLogin(I);
+
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
@@ -214,6 +219,7 @@ Scenario('I can update details', async ({ I }) => {
 });
 
 Scenario('I see name limit errors', async ({ I }) => {
+  registerOrLogin(I);
   editAndCancel(I, editDetials, [
     {
       name: firstNameField,
@@ -231,6 +237,7 @@ Scenario('I see name limit errors', async ({ I }) => {
 });
 
 Scenario('I can update my consents', async ({ I }) => {
+  registerOrLogin(I);
   I.amOnPage(constants.accountsUrl);
 
   I.dontSeeCheckboxIsChecked(consentCheckbox);
@@ -261,6 +268,7 @@ Scenario('I can update my consents', async ({ I }) => {
 });
 
 Scenario('I can change email', async ({ I }) => {
+  registerOrLogin(I);
   const newEmail = passwordUtils.createRandomEmail();
 
   editAndSave(I, editAccount, [
@@ -277,6 +285,18 @@ Scenario('I can change email', async ({ I }) => {
     { name: passwordField, newValue: loginContext.password },
   ]);
 });
+
+function registerOrLogin(I: CodeceptJS.I) {
+  loginContext = I.registerOrLogin(loginContext, () => {
+    I.fillField('firstName', firstName);
+    I.fillField('lastName', lastName);
+
+    I.click('Continue');
+    I.waitForLoaderDone(10);
+
+    I.clickCloseButton();
+  });
+}
 
 function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string; newValue: string; expectedError?: string }[]) {
   I.amOnPage(constants.accountsUrl);
@@ -297,7 +317,7 @@ function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string
       I.fillField(field.xpath, field.newValue);
     } else {
       I.click(field.xpath);
-      I.pressKey(['Control', 'a']);
+      I.pressKey(['CommandOrControl', 'a']);
       I.pressKey('Backspace');
     }
   }

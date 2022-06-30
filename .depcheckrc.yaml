@@ -12,5 +12,8 @@ ignores: [
     "\\#src",
     "\\#test",
     "\\#types",
+    # To support e2e-reports
+    'allure-commandline',
+    # To run linting checks
     'npm-run-all',
   ]

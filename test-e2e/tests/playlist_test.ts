@@ -1,6 +1,6 @@
 import constants from '../utils/constants';
 
-Feature('playlist');
+Feature('playlist').retry(3);
 
 Before(({ I }) => {
   I.amOnPage(constants.filmsPlaylistUrl);

@@ -1,6 +1,6 @@
 import constants from '../utils/constants';
 
-Feature('home');
+Feature('home').retry(3);
 
 Before(({ I }) => {
   I.useConfig('blender');
@@ -31,7 +31,7 @@ Scenario('Header button navigates to playlist screen', async ({ I }) => {
   }
 
   I.see('Films');
-  I.click({ text: 'Films' });
+  I.click('Films');
   I.amOnPage(`${constants.baseUrl}p/${constants.filmsPlaylistId}`);
   I.see('All Films');
   I.see('The Daily Dweebs');
@@ -108,7 +108,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
   await slideLeft(rightMedia.name);
 
   I.waitForElement('text="Agent 327"', 3);
-  I.dontSee(rightMedia);
+  I.dontSee(rightMedia.name);
 
   // Without this extra wait, the second slide action happens too fast after the first and even though the
   // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.

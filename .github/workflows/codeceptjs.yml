@@ -4,13 +4,12 @@ on: [pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         config: [desktop, mobile]
 
     steps:
@@ -27,5 +26,10 @@ jobs:
         run: yarn start &
       - name: Run tests
         run: wait-on -v -t 30000 -c ./scripts/waitOnConfig.js http-get://localhost:8080 && yarn codecept:${{ matrix.config }}
-        env:
-          CI: true
+      - name: Uploading artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report-${{ matrix.config }}
+          path: ./test-e2e/output/${{ matrix.config }}
+          retention-days: 7

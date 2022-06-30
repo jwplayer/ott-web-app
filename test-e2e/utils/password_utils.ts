@@ -12,7 +12,7 @@ async function testPasswordToggling(I: CodeceptJS.I, name = 'password') {
   I.fillField({ name }, 'password123!');
 
   await checkPasswordType(I, name, 'password');
-  // Whem the input type is password, you should not be able to copy the password value
+  // When the input type is password, you should not be able to copy the password value
   await tryToCopyPassword(I, name, '');
 
   I.click(`input[name="${name}"]+div div[aria-label="View password"]`);
@@ -36,11 +36,15 @@ async function checkPasswordType(I: CodeceptJS.I, name, expectedType) {
 async function tryToCopyPassword(I: CodeceptJS.I, name, expectedResult) {
   // Use Ctrl + A, Ctrl + C to highlight and copy the password
   I.click(`input[name="${name}"]`);
-  I.pressKey(['Control', 'a']);
-  I.pressKey(['Control', 'c']);
 
-  I.wait(1);
-  assert.strictEqual(await I.readClipboard(), expectedResult);
+  await I.pressKey(['CommandOrControl', 'A']);
+  await I.pressKey(['CommandOrControl', 'C']);
+  // For some reason keyboard copy doesn't work when running via yarn
+  await I.executeScript(() => document.execCommand('copy'));
+
+  const clipboard = await I.readClipboard();
+
+  assert.strictEqual(clipboard, expectedResult);
 }
 
 export default {
