@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from 'assert';
 
 import constants from '../utils/constants';
 
@@ -16,9 +16,9 @@ Scenario('Video detail screen loads', ({ I }) => {
   I.see('Sign up to start watching!');
   I.see('Favorite');
   I.see('Share');
-  I.see('Current video', { css: 'div[aria-label="Play Agent 327"]'});
+  I.see('Current video', { css: 'div[aria-label="Play Agent 327"]' });
   I.see('Elephants Dream');
-  I.see('11 min', { css: 'div[aria-label="Play Elephants Dream"]'})
+  I.see('11 min', { css: 'div[aria-label="Play Elephants Dream"]' });
 });
 
 Scenario('I can expand the description (@mobile-only)', ({ I }) => {
@@ -30,7 +30,7 @@ Scenario('I can expand the description (@mobile-only)', ({ I }) => {
     // and sometimes codecept goes too fast and catches it before it's done animating
     I.wait(1);
 
-    I.seeCssPropertiesOnElements(`text="${constants.agent327Description}"`, {'max-height': height});
+    I.seeCssPropertiesOnElements(`text="${constants.agent327Description}"`, { 'max-height': height });
   }
 
   I.seeElement('div[aria-label="Expand"]');
@@ -48,7 +48,7 @@ Scenario('I can expand the description (@mobile-only)', ({ I }) => {
   I.seeElement('div[aria-label="Expand"]');
   I.dontSeeElement('div[aria-label="Collapse"]');
   checkHeight('60px');
-})
+});
 
 Scenario('I can watch a video', async ({ I }) => await playBigBuckBunny(I));
 
@@ -65,8 +65,10 @@ Scenario('I can play other media from the related shelf', ({ I }) => {
   I.useConfig('test--no-cleeng');
   openVideo(I, 'Agent 327');
   openVideo(I, 'Elephants Dream');
-  I.see('Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.')
-  openVideo(I,'Coffee Run');
+  I.see(
+    'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',
+  );
+  openVideo(I, 'Coffee Run');
   I.see('Coffee Run was directed by Hjalti Hjalmarsson and produced by the team at Blender Animation Studio.');
 });
 
@@ -143,8 +145,8 @@ Scenario('I can share the media', async ({ I }) => {
 });
 
 function openVideo(I, name) {
-  I.scrollTo({ css: `div[aria-label="Play ${name}"]`});
-  I.click({ css: `div[aria-label="Play ${name}"]`});
+  I.scrollTo({ css: `div[aria-label="Play ${name}"]` });
+  I.click({ css: `div[aria-label="Play ${name}"]` });
 }
 
 async function playBigBuckBunny(I) {

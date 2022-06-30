@@ -12,15 +12,7 @@ type Props = {
   direction?: 'left' | 'top' | 'right' | 'bottom';
 };
 
-const Slide = ({
-  open = true,
-  duration = 250,
-  delay = 0,
-  onOpenAnimationEnd,
-  onCloseAnimationEnd,
-  children,
-  direction = 'top',
-}: Props): JSX.Element | null => {
+const Slide = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children, direction = 'top' }: Props): JSX.Element | null => {
   const seconds = duration / 1000;
   const transition = `transform ${seconds}s ease, opacity ${seconds}s ease`; // todo: -webkit-transform;
   const directions = {

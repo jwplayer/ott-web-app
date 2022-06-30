@@ -26,8 +26,7 @@ const CollapsibleText: React.FC<Props> = ({ text, className, maxHeight = 'none' 
   useEffect(() => {
     divRef.current &&
       setDoesFlowOver(
-        divRef.current.scrollHeight > divRef.current.offsetHeight + clippablePixels ||
-          (maxHeight < divRef.current.offsetHeight && maxHeight !== 'none'),
+        divRef.current.scrollHeight > divRef.current.offsetHeight + clippablePixels || (maxHeight < divRef.current.offsetHeight && maxHeight !== 'none'),
       );
   }, [maxHeight, text, breakpoint]);
 
@@ -41,11 +40,7 @@ const CollapsibleText: React.FC<Props> = ({ text, className, maxHeight = 'none' 
         {text}
       </div>
       {doesFlowOver && (
-        <IconButton
-          aria-label={ariaLabel}
-          className={classNames(styles.chevron, { [styles.expanded]: expanded })}
-          onClick={() => setExpanded(!expanded)}
-        >
+        <IconButton aria-label={ariaLabel} className={classNames(styles.chevron, { [styles.expanded]: expanded })} onClick={() => setExpanded(!expanded)}>
           <ChevronRight />
         </IconButton>
       )}
