@@ -96,9 +96,9 @@ While far from comprehensive, following these guidelines will get the easy stuff
 
 1. This project uses vite to build and compile. **Code produced by the build must work across all supported browsers and devices - modern Chrome, FF, Safari, and Edge**
 2. Ensure that your code matches the formatting of the codebase by running ```yarn format```
-3. Ensure that your code follows our styleguide by passing our ESLint rules
+3. Ensure that your code follows our styleguide by passing our ESLint, Stylelint and TypeScript rules
    - You can run lint analysis by running ```yarn lint```
-   - You can fix lint errors by running ```yarn lint --fix```
+   - You can fix lint errors by running ```yarn format```
 4. Ensure that your code passes lighthouse analysis by running ```npx lhci autorun```
 5. Do your best to match our naming conventions and conform to the style of the code around you
 6. If you have a large or messy commit history, please rebase & squash your commit history

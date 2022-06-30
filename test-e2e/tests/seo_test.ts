@@ -1,4 +1,4 @@
-import constants from '../../utils/constants';
+import constants from '../utils/constants';
 
 const agent327PosterUrl = 'http://content.jwplatform.com/v2/media/uB8aRnu6/poster.jpg?width=720';
 const primitiveAnimalsDescription = "If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.";

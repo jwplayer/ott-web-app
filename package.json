@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "Robin van Zanten",
@@ -15,18 +15,25 @@
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",
     "test-coverage": "TZ=UTC vitest run --coverage",
+    "test-commit": "TZ=UTC vitest run --changed HEAD~1 --coverage",
     "i18next": "i18next src/{components,containers,screens}/**/{**/,/}*.tsx && node ./scripts/i18next/generate.js",
-    "format": "prettier --write \"{**/*,*}.{js,ts,jsx,tsx}\"",
-    "lint": "prettier --check \"{**/*,*}.{js,ts,jsx,tsx}\" && eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
-    "lint:styles": "stylelint \"src/**/*.scss\"",
+    "format": "run-s -c format:*",
+    "format:eslint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\" --fix",
+    "format:prettier": "prettier --write \"{**/*,*}.{js,ts,jsx,tsx}\"",
+    "format:stylelint": "stylelint --fix '**/*.{css,scss}'",
+    "lint": "run-s -c lint:*",
+    "lint:eslint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
+    "lint:prettier": "prettier --check \"{**/*,*}.{js,ts,jsx,tsx}\"",
+    "lint:ts": "tsc --pretty --noEmit -p .",
+    "lint:stylelint": "stylelint '**/*.{css,scss}'",
     "commit-msg": "commitlint --edit $1",
-    "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test --coverage",
     "codecept:mobile": "cd test-e2e && rm -rf \"./output/mobile\" && codeceptjs --config ./codecept.mobile.js run-workers --suites 2 ",
     "codecept:desktop": "cd test-e2e && rm -rf \"./output/desktop\" && codeceptjs --config ./codecept.desktop.js run-workers --suites 2 ",
     "serve-report:mobile": "cd test-e2e && allure serve \"./output/mobile\"",
     "serve-report:desktop": "cd test-e2e && allure serve \"./output/desktop\"",
     "codecept-serve:mobile": "yarn codecept:mobile ; yarn serve-report:mobile",
     "codecept-serve:desktop": "yarn codecept:desktop ; yarn serve-report:desktop",
+    "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test-commit",
     "deploy:github": "node ./scripts/deploy-github.js"
   },
   "dependencies": {
@@ -38,6 +45,7 @@
     "jwt-decode": "^3.1.2",
     "lodash.merge": "^4.6.2",
     "memoize-one": "^5.2.1",
+    "npm-run-all": "^4.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
@@ -106,15 +114,6 @@
   },
   "peerDependencies": {
     "react-router": "^5.2.1"
-  },
-  "lint-staged": {
-    "{**/*,*}.{js,ts,jsx,tsx}": [
-      "prettier --check",
-      "eslint"
-    ],
-    "src/**/*.scss": [
-      "stylelint"
-    ]
   },
   "optionalDependencies": {
     "gh-pages": "^3.2.3",

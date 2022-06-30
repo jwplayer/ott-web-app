@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants from '../../utils/constants';
+import constants from '../utils/constants';
 
 const openSearchLocator = { css: 'div[aria-label="Open search"]' };
 const searchBarLocator = { css: 'input[aria-label="Search"]' };

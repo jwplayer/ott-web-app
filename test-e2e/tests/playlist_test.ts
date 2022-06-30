@@ -1,4 +1,4 @@
-import constants from '../../utils/constants';
+import constants from '../utils/constants';
 
 Feature('playlist').retry(3);
 

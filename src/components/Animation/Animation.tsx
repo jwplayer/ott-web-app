@@ -12,15 +12,7 @@ type Props = {
 
 export type Status = 'opening' | 'open' | 'closing' | 'closed';
 
-const Animation = ({
-  createStyle,
-  open = true,
-  duration = 250,
-  delay = 0,
-  onOpenAnimationEnd,
-  onCloseAnimationEnd,
-  children,
-}: Props): JSX.Element | null => {
+const Animation = ({ createStyle, open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
   const [status, setStatus] = useState<Status>('closed');
   const [hasOpenedBefore, setHasOpenedBefore] = useState<boolean>(false);
   const seconds = duration / 1000;

@@ -1,5 +1,5 @@
-import constants from '../../utils/constants';
-import passwordUtils from '../../utils/password_utils';
+import constants from '../utils/constants';
+import passwordUtils from '../utils/password_utils';
 
 Feature('register').retry(3);
 

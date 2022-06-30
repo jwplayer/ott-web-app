@@ -4,9 +4,8 @@
 - Run the server through `yarn start`
 - Run the tests through `yarn test`
 - Run the e2e tests through `yarn codecept:mobile` and `yarn codecept:desktop`
-- Format the code through `yarn format`
-- Lint through `yarn lint`
-- Lint and fix through `yarn lint --fix`
+- Format the code through `yarn format` (or automatically do it via git hooks)
+- Lint through `yarn lint` (eslint, prettier, stylelint and tsc checks)
 - The JW organization requires personal access tokens for all of their repositories. In order to create a branch or pull request you'll need to [Generate a Personal Access Token](https://github.com/settings/tokens) and then [store it in your git config](https://stackoverflow.com/questions/46645843/where-to-store-my-git-personal-access-token/67360592). (For token permissions, `repo` should be sufficient.) 
 
 ## Versioning and Changelog
@@ -14,6 +13,7 @@
 We use the [TriPSs/conventional-changelog-action](https://github.com/TriPSs/conventional-changelog-action) github [action](https://github.com/jwplayer/ott-web-app/actions/workflows/bump-version.yml) to do an automated version increment for any commit to the develop branch.  The type of version increment will be determined by the commit message(s) in the code being added as follows (see [Convential Commits](https://www.conventionalcommits.org/en/v1.0.0/) for more details):
 * `fix:` - perform a patch bump
 * `feat:` - perform a minor bump
+* `chore:` - no version change
 * commit body contains `BREAKING CHANGE:` - perform a major bump
 * `<type>!:` (i.e. `feat!:`) - perform a major bump
 

@@ -1,5 +1,5 @@
-import passwordUtils, { LoginContext } from '../../utils/password_utils';
-import constants from '../../utils/constants';
+import passwordUtils, { LoginContext } from '../utils/password_utils';
+import constants from '../utils/constants';
 
 const editAccount = 'Edit account';
 const editDetials = 'Edit information';
@@ -220,7 +220,6 @@ Scenario('I can update details', async ({ I }) => {
 
 Scenario('I see name limit errors', async ({ I }) => {
   registerOrLogin(I);
-
   editAndCancel(I, editDetials, [
     {
       name: firstNameField,

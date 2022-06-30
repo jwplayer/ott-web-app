@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants from '../../utils/constants';
+import constants from '../utils/constants';
 
 Feature('video_detail').retry(3);
 
