@@ -1,4 +1,4 @@
-# project or build
+# project, build, and deployment
 node_modules
 build
 .snowpack
@@ -6,6 +6,7 @@ coverage
 output
 src/i18n/locales/**/*_old.json
 yarn-error.log
+.firebase
 
 # os or editor
 .idea
