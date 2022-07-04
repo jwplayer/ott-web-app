@@ -7,6 +7,7 @@ output
 src/i18n/locales/**/*_old.json
 yarn-error.log
 .firebase
+firebase-debug.log
 
 # os or editor
 .idea
