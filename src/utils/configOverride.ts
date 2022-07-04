@@ -9,7 +9,7 @@ function getStoredConfigOverride() {
 
 export function overrideConfig() {
   // This code is only used for (integration) testing and will be optimized away in production builds
-  if (IS_DEV_BUILD) {
+  if (IS_DEV_BUILD || import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG) {
     const url = new URL(window.location.href);
 
     const configFile = url.searchParams.get(configFileQueryKey) || getStoredConfigOverride();
