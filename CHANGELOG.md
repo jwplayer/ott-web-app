@@ -1,3 +1,15 @@
+# [2.1.0](https://github.com/jwplayer/ott-web-app/compare/v2.0.4...v2.1.0) (2022-07-05)
+
+
+### Features
+
+* **project:** support watchlists ([e71e6b4](https://github.com/jwplayer/ott-web-app/commit/e71e6b4d51a0f03d7e79376ff69c5c1ba47a5d53))
+* **project:** support watchlists ([bff95ab](https://github.com/jwplayer/ott-web-app/commit/bff95ab6729ab2f0b3bc945ef3e76431c205c859))
+* **project:** support watchlists ([b506b52](https://github.com/jwplayer/ott-web-app/commit/b506b5297f2f5d56b679c7768d70000192fcd5e0))
+* **project:** support watchlists ([0124428](https://github.com/jwplayer/ott-web-app/commit/0124428cc52ed623750eeee40bd9d2c62c4031f8))
+
+
+
 ## [2.0.4](https://github.com/jwplayer/ott-web-app/compare/v2.0.3...v2.0.4) (2022-06-30)
 
 
