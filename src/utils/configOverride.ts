@@ -1,34 +1,82 @@
-import { IS_DEV_BUILD } from './common';
+import { IS_DEV_BUILD } from '#src/utils/common';
 
+// In production, use local storage so the override persists indefinitely without the query string
+// In dev mode, use session storage so the override persists until the tab is closed and then resets
+const storage = IS_DEV_BUILD ? window.sessionStorage : window.localStorage;
+
+const configFileQueryKey = 'c';
 const configFileStorageKey = 'config-file-override';
-export const configFileQueryKey = 'c';
 
-function getStoredConfigOverride() {
-  return window.sessionStorage.getItem(configFileStorageKey);
+const defaultSource = import.meta.env.APP_CONFIG_DEFAULT_SOURCE.toLowerCase();
+const allowedSources = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').map((source) => source.toLowerCase()) || [];
+const unsafeAllowDynamicSources = import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG;
+
+export function getConfig() {
+  return formatSourceLocation(getConfigOverride() || defaultSource);
 }
 
-export function overrideConfig() {
-  // This code is only used for (integration) testing and will be optimized away in production builds
-  if (IS_DEV_BUILD || import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG) {
-    const url = new URL(window.location.href);
-
-    const configFile = url.searchParams.get(configFileQueryKey) || getStoredConfigOverride();
-    // Strip the config file query param from the URL since it's stored locally,
-    // and then the url stays clean and the user will be less likely to play with the param
-    if (url.searchParams.has(configFileQueryKey)) {
-      url.searchParams.delete(configFileQueryKey);
-
-      window.history.replaceState(null, '', url.toString());
-    }
-
-    // Use session storage to cache any config location override set from the url parameter so it can be restored
-    // on subsequent navigation if the query string gets lost, but it doesn't persist if you close the tab
-    if (configFile) {
-      window.sessionStorage.setItem(configFileStorageKey, configFile);
-    }
-
-    window.configLocation = configFile ? `/test-data/config.${configFile}.json` : '/config.json';
+function getConfigOverride() {
+  // Shortcut to determine if we can even use an override
+  if (allowedSources.length <= 0 && !unsafeAllowDynamicSources) {
+    return undefined;
   }
+
+  const url = new URL(window.location.href);
+
+  const configQuery = url.searchParams.get(configFileQueryKey)?.toLowerCase();
+
+  if (configQuery) {
+    // Strip the config file query param from the URL and history since it's stored locally,
+    // and then the url stays clean and the user will be less likely to play with the param
+    url.searchParams.delete(configFileQueryKey);
+    window.history.replaceState(null, '', url.toString());
+
+    // If it's valid, store it and return it
+    if (isValidConfigSource(configQuery)) {
+      storage.setItem(configFileStorageKey, configQuery);
+      return configQuery;
+    }
+  }
+
+  // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
+  if (url.searchParams.has(configFileQueryKey)) {
+    clearStoredConfig();
+    return undefined;
+  }
+
+  const storedSource = storage.getItem(configFileStorageKey)?.toLowerCase();
+
+  // Make sure the stored value is still valid before returning it
+  if (storedSource && isValidConfigSource(storedSource)) {
+    return storedSource;
+  }
+
+  return undefined;
+}
+
+function isValidConfigSource(source: string) {
+  // Dynamic values are valid as long as they are defined
+  if (unsafeAllowDynamicSources) {
+    return !!source;
+  }
+
+  return allowedSources.indexOf(source) >= 0;
+}
+
+function formatSourceLocation(source?: string) {
+  if (!source) {
+    return undefined;
+  }
+
+  if (source.match(/^[a-z,\d]{8}$/)) {
+    return `https://cdn.jwplayer.com/apps/configs/${source}.json`;
+  }
+
+  if (IS_DEV_BUILD && source.startsWith('test--')) {
+    return `/test-data/config.${source}.json`;
+  }
+
+  return source;
 }
 
 /***
@@ -37,7 +85,7 @@ export function overrideConfig() {
  * @param href The URL to append to as a string (i.e. window.location.href)
  */
 export function addConfigParamToUrl(href: string) {
-  const config = getStoredConfigOverride();
+  const config = getConfigOverride();
   const url = new URL(href);
 
   url.searchParams.delete(configFileQueryKey);
@@ -47,4 +95,8 @@ export function addConfigParamToUrl(href: string) {
   }
 
   return url.toString();
+}
+
+export function clearStoredConfig() {
+  storage.removeItem(configFileStorageKey);
 }
