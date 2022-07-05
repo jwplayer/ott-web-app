@@ -23,25 +23,27 @@ function getConfigOverride() {
 
   const url = new URL(window.location.href);
 
-  const configQuery = url.searchParams.get(configFileQueryKey)?.toLowerCase();
+  if (url.searchParams.has(configFileQueryKey)) {
+    const configQuery = url.searchParams.get(configFileQueryKey)?.toLowerCase();
 
-  if (configQuery) {
     // Strip the config file query param from the URL and history since it's stored locally,
     // and then the url stays clean and the user will be less likely to play with the param
     url.searchParams.delete(configFileQueryKey);
     window.history.replaceState(null, '', url.toString());
+
+    // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
+    if (!configQuery) {
+      clearStoredConfig();
+      return undefined;
+    }
 
     // If it's valid, store it and return it
     if (isValidConfigSource(configQuery)) {
       storage.setItem(configFileStorageKey, configQuery);
       return configQuery;
     }
-  }
 
-  // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
-  if (url.searchParams.has(configFileQueryKey)) {
-    clearStoredConfig();
-    return undefined;
+    // Yes this falls through to look up the stored value if the query string is invalid and that's OK
   }
 
   const storedSource = storage.getItem(configFileStorageKey)?.toLowerCase();
