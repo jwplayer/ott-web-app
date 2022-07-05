@@ -25,7 +25,7 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { removeItem, saveItem } from '#src/stores/FavoritesController';
+import { toggleFavorite } from '#src/stores/FavoritesController';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 
 type SeriesRouteParams = {
@@ -50,6 +50,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const { styling, features, siteName } = config;
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
+  const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
 
   // Media
   const { isLoading, error, data: item } = useMedia(episodeId);
@@ -60,7 +61,11 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
-  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
+  // Favorite
+  const { isFavorited } = useFavoritesStore((state) => ({
+    isFavorited: !!item && state.hasItem(item),
+  }));
+
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
 
   // User, entitlement
@@ -68,6 +73,10 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const { isEntitled } = useEntitlement(item);
 
   // Handlers
+  const onFavoriteButtonClick = useCallback(() => {
+    toggleFavorite(item);
+  }, [item]);
+
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
   const onShareClick = (): void => {
@@ -160,7 +169,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
-        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+        isFavoritesEnabled={isFavoritesEnabled}
+        onFavoriteButtonClick={onFavoriteButtonClick}
         startWatchingButton={<StartWatchingButton item={item} />}
         isSeries
       >

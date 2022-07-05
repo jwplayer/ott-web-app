@@ -65,3 +65,15 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
   await checkElapsed(I, 1, 20);
   I.seeInCurrentUrl('play=1');
 });
+
+Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
+  I.useConfig('test--watchlists');
+
+  I.dontSee('Continue watching');
+
+  await playVideo(I, 50);
+
+  I.amOnPage(constants.baseUrl);
+
+  I.dontSee('Continue watching');
+});

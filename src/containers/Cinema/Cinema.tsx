@@ -6,16 +6,14 @@ import styles from './Cinema.module.scss';
 import { VideoProgressMinMax } from '#src/config';
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { ConfigContext } from '#src/providers/ConfigProvider';
 import { addScript } from '#src/utils/dom';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
+import { ConfigContext } from '#src/providers/ConfigProvider';
 import { deepCopy } from '#src/utils/collection';
 import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import type { Config } from '#types/Config';
 import { saveItem } from '#src/stores/WatchHistoryController';
-import type { VideoProgress } from '#types/video';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
 
 type Props = {
@@ -32,24 +30,26 @@ type Props = {
 
 const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
   const config: Config = useContext(ConfigContext);
+  const player = config.player;
+  const continueWatchingList = config.features?.continueWatchingList;
+
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
   const loadingRef = useRef(false);
   const seekToRef = useRef(-1);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
-  const scriptUrl = `https://content.jwplatform.com/libraries/${config.player}.js`;
-  const enableWatchHistory = config.content.some((el) => el.type === PersonalShelf.ContinueWatching) && !isTrailer;
+  const scriptUrl = `https://content.jwplatform.com/libraries/${player}.js`;
+  const enableWatchHistory = continueWatchingList && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
   const handlePlaylistItemCallback = usePlaylistItemCallback();
 
-  const getProgress = useCallback((): VideoProgress | null => {
+  const getProgress = useCallback((): number | null => {
     if (!playerRef.current) return null;
 
-    const duration = playerRef.current.getDuration();
-    const progress = playerRef.current.getPosition() / duration;
+    const progress = playerRef.current.getPosition() / item.duration;
 
-    return { duration, progress };
-  }, []);
+    return progress;
+  }, [item]);
 
   useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress()) : null));
 
@@ -99,7 +99,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   }, [scriptUrl]);
 
   useEffect(() => {
-    if (!config.player) {
+    if (!player) {
       return;
     }
 
@@ -171,7 +171,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, onPlay, onPause, onUserActive, onUserInActive, onComplete, config.player, enableWatchHistory, setPlayer, handlePlaylistItemCallback]);
+  }, [libLoaded, item, onPlay, onPause, onUserActive, onUserInActive, onComplete, player, enableWatchHistory, setPlayer, handlePlaylistItemCallback]);
 
   useEffect(() => {
     return () => {

@@ -47,7 +47,7 @@ export async function checkProgress(
   });
 }
 
-function pixelsToNumber(value: string) {
+export function pixelsToNumber(value: string) {
   return Number(value.substring(0, value.indexOf('px')));
 }
 

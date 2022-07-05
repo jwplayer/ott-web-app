@@ -31,7 +31,7 @@ export const formatDuration = (duration: number): string | null => {
   return `${hoursString}${minutesString}`;
 };
 
-export const addQueryParams = (url: string, queryParams: { [key: string]: string | undefined | null }) => {
+export const addQueryParams = (url: string, queryParams: { [key: string]: string | string[] | undefined | null }) => {
   const queryStringIndex = url.indexOf('?');
   const urlWithoutSearch = queryStringIndex > -1 ? url.slice(0, queryStringIndex) : url;
   const urlSearchParams = new URLSearchParams(queryStringIndex > -1 ? url.slice(queryStringIndex) : undefined);
@@ -39,9 +39,13 @@ export const addQueryParams = (url: string, queryParams: { [key: string]: string
   Object.keys(queryParams).forEach((key) => {
     const value = queryParams[key];
 
-    if (typeof value !== 'string') return;
+    if (value == null) return;
 
-    urlSearchParams.set(key, value);
+    if (typeof value === 'object' && !value?.length) return;
+
+    const formattedValue = Array.isArray(value) ? value.join(',') : value;
+
+    urlSearchParams.set(key, formattedValue);
   });
   const queryString = urlSearchParams.toString();
 

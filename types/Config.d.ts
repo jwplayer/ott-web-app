@@ -66,9 +66,8 @@ export type Features = {
   enableSharing?: boolean;
   recommendationsPlaylist?: string | null;
   searchPlaylist?: string | null;
-  // TODO: https://github.com/jwplayer/ott-web-app/issues/43
-  // continue_watching_list?: string | null;
-  // favorites_list?: string | null;
+  favoritesList?: string | null;
+  continueWatchingList?: string | null;
 };
 
 /**

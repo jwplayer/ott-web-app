@@ -1,5 +1,5 @@
-import type { WatchHistoryItem } from './watchHistory';
-import type { Favorite } from './favorite';
+import type { SerializedWatchHistoryItem } from './watchHistory';
+import type { SerializedFavorite } from './favorite';
 
 export type AuthData = {
   jwt: string;
@@ -137,8 +137,8 @@ export type UpdateCustomerPayload = {
 };
 
 export type ExternalData = {
-  history?: WatchHistoryItem[];
-  favorites?: Favorite[];
+  history?: SerializedWatchHistoryItem[];
+  favorites?: SerializedFavorite[];
 };
 
 export type UpdateCustomerConsentsPayload = {

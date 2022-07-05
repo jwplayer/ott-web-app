@@ -9,6 +9,7 @@ import Button from '#src/components/Button/Button';
 import IconButton from '#src/components/IconButton/IconButton';
 import Modal from '#src/components/Modal/Modal';
 import Fade from '#src/components/Animation/Fade/Fade';
+import Alert from '#src/components/Alert/Alert';
 import ModalCloseButton from '#src/components/ModalCloseButton/ModalCloseButton';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
@@ -20,6 +21,7 @@ import ArrowLeft from '#src/icons/ArrowLeft';
 import { formatDuration } from '#src/utils/formatting';
 import FavoriteBorder from '#src/icons/FavoriteBorder';
 import type { PlaylistItem } from '#types/playlist';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
 
 type Poster = 'fading' | 'normal';
 
@@ -32,6 +34,7 @@ type Props = {
   goBack: () => void;
   onComplete?: () => void;
   isFavorited: boolean;
+  isFavoritesEnabled: boolean;
   onFavoriteButtonClick: () => void;
   poster: Poster;
   enableSharing: boolean;
@@ -59,6 +62,7 @@ const Video: React.FC<Props> = ({
   hasShared,
   onShareClick,
   isFavorited,
+  isFavoritesEnabled,
   onFavoriteButtonClick,
   children,
   playTrailer,
@@ -78,6 +82,11 @@ const Video: React.FC<Props> = ({
   const handlePlay = useCallback(() => setIsPlaying(true), []);
   const handlePause = useCallback(() => setIsPlaying(false), []);
   const handleComplete = useCallback(() => onComplete && onComplete(), [onComplete]);
+
+  const { clearWarning, warning } = useFavoritesStore((state) => ({
+    clearWarning: state.clearWarning,
+    warning: state.warning,
+  }));
 
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const isMobile = breakpoint === Breakpoint.xs;
@@ -132,14 +141,16 @@ const Video: React.FC<Props> = ({
                 fullWidth={breakpoint < Breakpoint.md}
               />
             )}
-            <Button
-              label={t('video:favorite')}
-              aria-label={isFavorited ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
-              startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
-              onClick={onFavoriteButtonClick}
-              color={isFavorited ? 'primary' : 'default'}
-              fullWidth={breakpoint < Breakpoint.md}
-            />
+            {isFavoritesEnabled && (
+              <Button
+                label={t('video:favorite')}
+                aria-label={isFavorited ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
+                startIcon={isFavorited ? <Favorite /> : <FavoriteBorder />}
+                onClick={onFavoriteButtonClick}
+                color={isFavorited ? 'primary' : 'default'}
+                fullWidth={breakpoint < Breakpoint.md}
+              />
+            )}
             {enableSharing && (
               <Button
                 label={hasShared ? t('video:copied_url') : t('video:share')}
@@ -185,6 +196,7 @@ const Video: React.FC<Props> = ({
           </Fade>
         </div>
       </Fade>
+      <Alert open={warning !== null} message={warning} onClose={clearWarning} />
       {!!trailerItem && (
         <Modal open={playTrailer} onClose={onTrailerClose}>
           <div className={styles.trailerModal}>

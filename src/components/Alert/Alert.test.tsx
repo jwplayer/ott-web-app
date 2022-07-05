@@ -1,16 +1,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import ConfirmationDialog from './ConfirmationDialog';
+import Alert from './Alert';
 
 vi.mock('../Dialog/Dialog', () => ({
   default: 'div',
 }));
 
-describe('<ConfirmationDialog>', () => {
+describe('<Alert>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<ConfirmationDialog body="Body" title="Title" open={true} onConfirm={vi.fn()} onClose={vi.fn()} />);
-
+    const { container } = render(<Alert message="Body" open={true} onClose={vi.fn()} />);
     expect(container).toMatchSnapshot();
   });
 });

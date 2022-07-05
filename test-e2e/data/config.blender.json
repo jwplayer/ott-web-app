@@ -62,6 +62,8 @@
   "features": {
     "recommendationsPlaylist": "IHBjjkSN",
     "searchPlaylist": "D4soEviP",
+    "favoritesList": "34CFUkws",
+    "continueWatchingList": "IJvotI4w",
     "enable_casting": false,
     "enable_sharing": false
   },

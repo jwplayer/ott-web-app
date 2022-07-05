@@ -9,7 +9,7 @@ const loaderElement = '[class*=_loadingOverlay]';
 const stepsObj = {
   useConfig: function (
     this: CodeceptJS.I,
-    config: 'test--subscription' | 'test--accounts' | 'test--no-cleeng' | 'blender',
+    config: 'test--subscription' | 'test--accounts' | 'test--no-cleeng' | 'test--watchlists' | 'blender',
     baseUrl: string = constants.baseUrl,
   ) {
     const url = new URL(baseUrl);

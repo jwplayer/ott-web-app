@@ -44,7 +44,9 @@
   ],
   "features": {
     "recommendationsPlaylist": "IHBjjkSN",
-    "searchPlaylist": "D4soEviP"
+    "searchPlaylist": "D4soEviP",
+    "favoritesList": "34CFUkws",
+    "continueWatchingList": "IJvotI4w"
   },
   "styling": {
     "backgroundColor": null,

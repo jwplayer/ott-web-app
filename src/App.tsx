@@ -9,6 +9,7 @@ import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
+import { logDev } from '#src/utils/common';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
 
 import '#src/i18n/config';
@@ -28,24 +29,28 @@ class App extends Component {
   }
 
   async initializeServices(config: Config) {
+    if (config?.integrations?.cleeng?.id) {
+      await initializeAccount();
+    }
+
+    // We only request favorites and continue_watching data if there is a corresponding content item
+    // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink
     if (config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await restoreWatchHistory();
     }
 
-    await initializeFavorites();
-
-    if (config?.integrations?.cleeng?.id) {
-      await initializeAccount();
+    if (config.content.some((el) => el.type === PersonalShelf.Favorites)) {
+      await initializeFavorites();
     }
   }
 
   configLoadingHandler = (isLoading: boolean) => {
-    console.info(`Loading config: ${isLoading}`);
+    logDev(`Loading config: ${isLoading}`);
   };
 
   configErrorHandler = (error: Error) => {
     this.setState({ error });
-    console.info('Error while loading the config.json:', error);
+    logDev('Error while loading the config.json:', error);
   };
 
   configValidationCompletedHandler = async (config: Config) => {

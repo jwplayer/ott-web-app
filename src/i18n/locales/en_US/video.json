@@ -20,5 +20,6 @@
   "trailer": "Trailer",
   "video_not_found": "Video not found",
   "watch_trailer": "Watch the trailer",
-  "share_video": "Share this video"
+  "share_video": "Share this video",
+  "favorites_warning": "Maximum amount of favorite videos exceeded. You can only add up to {{ count }} favorite videos. Please delete one and repeat the operation."
 }

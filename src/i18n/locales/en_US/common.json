@@ -6,6 +6,10 @@
     "close": "Cancel",
     "confirm": "Yes"
   },
+  "alert": {
+    "title": "An error occurred",
+    "close": "Close"
+  },
   "filter_videos_by_genre": "Filter videos by genre",
   "home": "Home",
   "live": "LIVE",
@@ -14,5 +18,6 @@
   "sign_in": "Sign in",
   "sign_up": "Sign up",
   "slide_left": "Slide left",
-  "slide_right": "Slide right"
+  "slide_right": "Slide right",
+  "default_site_name": "My OTT Application"
 }

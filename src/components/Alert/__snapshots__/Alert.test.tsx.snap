@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`<ConfirmationDialog> > renders and matches snapshot 1`] = `
+exports[`<Alert> > renders and matches snapshot 1`] = `
 <div>
   <div
     open=""
@@ -8,7 +8,7 @@ exports[`<ConfirmationDialog> > renders and matches snapshot 1`] = `
     <h2
       class="title"
     >
-      Title
+      alert.title
     </h2>
     <p
       class="body"
@@ -16,17 +16,10 @@ exports[`<ConfirmationDialog> > renders and matches snapshot 1`] = `
       Body
     </p>
     <button
-      class="button confirmButton primary fullWidth"
-    >
-      <span>
-        confirmation_dialog.confirm
-      </span>
-    </button>
-    <button
       class="button default outlined fullWidth"
     >
       <span>
-        confirmation_dialog.close
+        alert.close
       </span>
     </button>
   </div>

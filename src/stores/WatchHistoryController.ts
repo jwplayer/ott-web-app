@@ -1,31 +1,31 @@
 import { useAccountStore } from '#src/stores/AccountStore';
 import * as persist from '#src/utils/persist';
 import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { PlaylistItem } from '#types/playlist';
-import type { WatchHistoryItem } from '#types/watchHistory';
-import type { VideoProgress } from '#types/video';
+import type { WatchHistoryItem, SerializedWatchHistoryItem } from '#types/watchHistory';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 const PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
 
 export const restoreWatchHistory = async () => {
   const { user } = useAccountStore.getState();
+  const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;
 
   const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(PERSIST_KEY_WATCH_HISTORY);
 
-  if (savedItems) {
-    // Store savedItems immediately, so we can show the watch history while we fetch the mediaItems
-    useWatchHistoryStore.setState({ watchHistory: savedItems });
+  if (savedItems?.length && continueWatchingList) {
+    const watchHistoryItems = await getMediaItems(
+      continueWatchingList,
+      savedItems.map(({ mediaid }) => mediaid),
+    );
 
-    const watchHistoryItems = await getMediaItems(savedItems.map((item) => item.mediaid));
-    const watchHistoryItemsDict = Object.fromEntries(watchHistoryItems.map((item) => [item.mediaid, item]));
+    const watchHistoryItemsDict = Object.fromEntries((watchHistoryItems || []).map((item) => [item.mediaid, item]));
 
     const watchHistory = savedItems.map((item) => {
       if (watchHistoryItemsDict[item.mediaid]) {
-        return createWatchHistoryItem(watchHistoryItemsDict[item.mediaid], {
-          progress: item.progress,
-          duration: item.duration,
-        });
+        return createWatchHistoryItem(watchHistoryItemsDict[item.mediaid], item.progress);
       }
     });
 
@@ -36,12 +36,9 @@ export const restoreWatchHistory = async () => {
   }
 };
 
-export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]) => {
-  return watchHistory.map(({ mediaid, title, tags, duration, progress }) => ({
+export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {
+  return watchHistory.map(({ mediaid, progress }) => ({
     mediaid,
-    title,
-    tags,
-    duration,
     progress,
   }));
 };
@@ -54,34 +51,40 @@ export const persistWatchHistory = () => {
     return updatePersonalShelves();
   }
 
-  return persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
+  persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
 };
 
-export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: VideoProgress): WatchHistoryItem => {
+export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number): WatchHistoryItem => {
   return {
     mediaid: item.mediaid,
     title: item.title,
     tags: item.tags,
-    duration: videoProgress.duration,
-    progress: videoProgress.progress,
+    duration: item.duration,
+    progress: videoProgress,
     playlistItem: item,
   } as WatchHistoryItem;
 };
 
-export const saveItem = (item: PlaylistItem, videoProgress: VideoProgress | null) => {
+/**
+ *  If we already have an element with continue watching state, we:
+ *    1. Update the progress
+ *    2. Move the element to the continue watching list start
+ *  Otherwise:
+ *    1. Move the element to the continue watching list start
+ *    2. If there are many elements in continue watching state we remove the oldest one
+ */
+export const saveItem = (item: PlaylistItem, videoProgress: number | null) => {
   const { watchHistory } = useWatchHistoryStore.getState();
 
   if (!videoProgress) return;
 
   const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
-  const index = watchHistory.findIndex(({ mediaid }) => mediaid === watchHistoryItem.mediaid);
 
-  if (index > -1) {
-    watchHistory[index] = watchHistoryItem;
-    useWatchHistoryStore.setState({ watchHistory });
-  } else {
-    useWatchHistoryStore.setState({ watchHistory: [watchHistoryItem].concat(watchHistory) });
-  }
+  const updatedHistory = watchHistory.filter(({ mediaid }) => mediaid !== watchHistoryItem.mediaid);
+  updatedHistory.unshift(watchHistoryItem);
+  updatedHistory.splice(MAX_WATCHLIST_ITEMS_COUNT);
+
+  useWatchHistoryStore.setState({ watchHistory: updatedHistory });
 
   persistWatchHistory();
 };
