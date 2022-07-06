@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "vite",
-    "start:dev-api": "APP_API_ENV='dev' vite",
+    "start:dev-api": "APP_API_ENV='dev' yarn start",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",

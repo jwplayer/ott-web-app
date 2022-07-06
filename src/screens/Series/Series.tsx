@@ -15,11 +15,11 @@ import Filter from '#src/components/Filter/Filter';
 import type { PlaylistItem } from '#src/../types/playlist';
 import VideoComponent from '#src/components/Video/Video';
 import useMedia from '#src/hooks/useMedia';
-import usePlaylist from '#src/hooks/usePlaylist';
+import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
-import { filterSeries, getFiltersFromSeries } from '#src/utils/collection';
+import { filterSeries, getFiltersFromSeries } from '#src/utils/series';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -52,11 +52,15 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const enableSharing: boolean = features?.enableSharing === true;
 
   // Media
-  const { isLoading, error, data: item } = useMedia(episodeId);
-  useBlurImageUpdater(item);
+  const {
+    isLoading,
+    isPlaylistError,
+    isItemError,
+    data: { seriesPlaylist, nextItemId, item, seriesId },
+  } = useSeriesData(id, episodeId);
+
   const { data: trailerItem } = useMedia(item?.trailerId || '');
-  const { isLoading: playlistIsLoading, error: playlistError, data: seriesPlaylist = { title: '', playlist: [] } } = usePlaylist(id, {}, true, false);
-  const [seasonFilter, setSeasonFilter] = useState<string>('');
+  const [seasonFilter, setSeasonFilter] = useState<string>(item?.seasonNumber || '1');
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
@@ -66,6 +70,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(item);
+
+  useBlurImageUpdater(item);
 
   // Handlers
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
@@ -82,14 +88,12 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };
+
   const handleComplete = useCallback(() => {
-    if (!item || !seriesPlaylist) return;
-
-    const index = seriesPlaylist.playlist.findIndex(({ mediaid }) => mediaid === item.mediaid);
-    const nextItem = seriesPlaylist.playlist[index + 1];
-
-    return nextItem && history.push(episodeURL(seriesPlaylist, nextItem.mediaid, true));
-  }, [history, item, seriesPlaylist]);
+    if (nextItemId) {
+      history.push(episodeURL(seriesPlaylist, nextItemId, true));
+    }
+  }, [history, nextItemId, seriesPlaylist]);
 
   // Effects
   useEffect(() => {
@@ -109,10 +113,14 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
     }
   }, [history, searchParams, seriesPlaylist]);
 
+  useEffect(() => {
+    setSeasonFilter(item?.seasonNumber || '');
+  }, [item?.seasonNumber, setSeasonFilter]);
+
   // UI
-  if ((!item && isLoading) || playlistIsLoading || !searchParams.has('e')) return <LoadingOverlay />;
-  if ((!isLoading && error) || !item) return <ErrorPage title={t('episode_not_found')} />;
-  if (playlistError || !seriesPlaylist) return <ErrorPage title={t('series_not_found')} />;
+  if (isLoading) return <LoadingOverlay />;
+  if ((!isLoading && isItemError) || !item) return <ErrorPage title={t('episode_not_found')} />;
+  if (isPlaylistError) return <ErrorPage title={t('series_not_found')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
@@ -161,7 +169,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
         onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
-        startWatchingButton={<StartWatchingButton item={item} />}
+        startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}
         isSeries
       >
         <>

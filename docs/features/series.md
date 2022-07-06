@@ -166,7 +166,7 @@ The series detail window loads the series playlist using a GET Series endpoint:
   ]}]
 ```
 
-Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently we use the a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
+Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id) can be used:
 
 ```
    GET playlist?mediaids=zxcvbnma,lkjhgfds
@@ -184,8 +184,6 @@ Notice that the episodes don't include metadata (title, description, image, etc.
     ]
    }
 ```
-
-**(!)** By default now `features.favoritesList` is used. This is to be changed in the future.
 
 This playlist type is developed for [user watchlists](user-watchlist.md) but will also work here. Make sure the  watchlist is created.
 

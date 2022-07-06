@@ -4,6 +4,7 @@ import { getDataOrThrow } from '../utils/api';
 
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
+import type { Series, GetSeriesParams } from '#types/series';
 
 /**
  * Transform incoming media items
@@ -71,27 +72,6 @@ export const getMediaById = async (id: string, token?: string, drmPolicyId?: str
 };
 
 /**
- * Get watchlist by playlistId
- * @param {string} playlistId
- * @param {string} [token]
- * @param {string} [drmPolicyId]
- */
-export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
-  if (!mediaIds?.length) {
-    return [];
-  }
-
-  const pathname = `/apps/watchlists/${playlistId}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
-  const response = await fetch(url);
-  const data = (await getDataOrThrow(response)) as Playlist;
-
-  if (!data) throw new Error(`The data was not found using the watchlist ${playlistId}`);
-
-  return (data.playlist || []).map(transformMediaItem);
-};
-
-/**
  * Gets multiple media items by the given ids. Filters out items that don't exist.
  * @param {string[]} ids
  * @param {Object} tokens
@@ -106,4 +86,22 @@ export const getMediaByIds = async (ids: string[], tokens?: Record<string, strin
   }
 
   return responses.map((result) => (result.status === 'fulfilled' ? result.value : null)).filter(notEmpty);
+};
+
+/**
+ * Get series by id
+ * @param {string} id
+ * @param params
+ */
+export const getSeries = async (id?: string, params: GetSeriesParams = {}): Promise<Series | undefined> => {
+  if (!id) {
+    return undefined;
+  }
+
+  const pathname = `/apps/series/${id}`;
+  const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
+  const response = await fetch(url);
+  const data = await getDataOrThrow(response);
+
+  return data;
 };

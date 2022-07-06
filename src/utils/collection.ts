@@ -16,18 +16,6 @@ const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
   return playlist.filter(({ tags }) => (tags ? tags.split(',').includes(filter) : false));
 };
 
-const getFiltersFromSeries = (series: PlaylistItem[]): string[] =>
-  series.reduce(
-    (filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')),
-    [],
-  );
-
-const filterSeries = (playlist: PlaylistItem[], filter: string) => {
-  if (!filter) return playlist;
-
-  return playlist.filter(({ seasonNumber }) => seasonNumber === filter);
-};
-
 const chunk = <T>(input: T[], size: number) => {
   return input?.reduce((arr: T[][], item, idx: number) => {
     return idx % size === 0 ? [...arr, [item]] : [...arr.slice(0, -1), [...arr.slice(-1)[0], item]];
@@ -135,9 +123,7 @@ const deepCopy = (obj: unknown) => {
 
 export {
   getFiltersFromConfig,
-  getFiltersFromSeries,
   filterPlaylist,
-  filterSeries,
   chunk,
   findPlaylistImageForWidth,
   generatePlaylistPlaceholder,

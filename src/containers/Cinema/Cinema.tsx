@@ -17,6 +17,7 @@ import { saveItem } from '#src/stores/WatchHistoryController';
 import type { VideoProgress } from '#types/video';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
+import useEventCallback from '#src/hooks/useEventCallback';
 
 type Props = {
   item: PlaylistItem;
@@ -53,30 +54,30 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
 
   useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress()) : null));
 
-  const handlePlay = useCallback(() => {
+  const handlePlay = useEventCallback(() => {
     onPlay && onPlay();
-  }, [onPlay]);
+  });
 
-  const handlePause = useCallback(() => {
+  const handlePause = useEventCallback(() => {
     enableWatchHistory && saveItem(item, getProgress());
     onPause && onPause();
-  }, [enableWatchHistory, getProgress, item, onPause]);
+  });
 
-  const handleComplete = useCallback(() => {
+  const handleComplete = useEventCallback(() => {
     enableWatchHistory && saveItem(item, getProgress());
     onComplete && onComplete();
-  }, [enableWatchHistory, getProgress, item, onComplete]);
+  });
 
-  const handleUserActive = useCallback(() => onUserActive && onUserActive(), [onUserActive]);
+  const handleUserActive = useEventCallback(() => onUserActive && onUserActive());
 
-  const handleUserInactive = useCallback(() => onUserInActive && onUserInActive(), [onUserInActive]);
+  const handleUserInactive = useEventCallback(() => onUserInActive && onUserInActive());
 
-  const handleBeforePlay = useCallback(() => {
+  const handleBeforePlay = useEventCallback(() => {
     if (seekToRef.current > 0) {
       playerRef.current?.seek(seekToRef.current);
       seekToRef.current = -1;
     }
-  }, [seekToRef, playerRef]);
+  });
 
   const attachEvents = useCallback(() => {
     playerRef.current?.on('beforePlay', handleBeforePlay);
@@ -140,8 +141,6 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       }
       // load new item
       playerRef.current.load([deepCopy(item)]);
-      detachEvents();
-      attachEvents();
       calculateWatchHistoryProgress();
     };
 
