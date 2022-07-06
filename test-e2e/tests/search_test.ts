@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants from "../utils/constants";
+import constants from '../utils/constants';
 
 const openSearchLocator = { css: 'div[aria-label="Open search"]' };
 const searchBarLocator = { css: 'input[aria-label="Search"]' };
@@ -8,9 +8,9 @@ const emptySearchPrompt = 'Type something in the search box to start searching';
 const clearSearchLocator = { css: 'div[aria-label="Clear search"]' };
 const closeSearchLocator = { css: 'div[aria-label="Close search"]' };
 
-Feature('search');
+Feature('search').retry(3);
 
-Before(({I}) => {
+Before(({ I }) => {
   I.amOnPage('http://localhost:8080');
   verifyOnHomePage(I);
 });
@@ -91,11 +91,11 @@ Scenario('I get empty search results when no videos match', async ({ I }) => {
   I.dontSee(emptySearchPrompt);
 });
 
-Scenario('The search URL is encoded', async({ I }) => {
+Scenario('The search URL is encoded', async ({ I }) => {
   await openSearch(I);
 
   I.fillField(searchBarLocator, 'Hello/World! How are you? 這是中國人');
-  I.seeCurrentUrlEquals('http://localhost:8080/q/Hello%2FWorld!%20How%20are%20you%3F%20%E9%80%99%E6%98%AF%E4%B8%AD%E5%9C%8B%E4%BA%BA')
+  I.seeCurrentUrlEquals('http://localhost:8080/q/Hello%2FWorld!%20How%20are%20you%3F%20%E9%80%99%E6%98%AF%E4%B8%AD%E5%9C%8B%E4%BA%BA');
 });
 
 Scenario('I can clear the search phrase with the clear button', async ({ I }) => {
@@ -114,9 +114,9 @@ Scenario('I can clear the search phrase with the clear button', async ({ I }) =>
 Scenario('I can clear the search phrase manually', async ({ I }) => {
   await openSearch(I);
   I.fillField(searchBarLocator, 'Hello');
-  I.seeElement(clearSearchLocator);
+
   I.click(searchBarLocator);
-  I.pressKey(['Control', 'a']);
+  I.pressKey(['CommandOrControl', 'A']);
   I.pressKey('Backspace');
 
   I.see(emptySearchPrompt);
@@ -132,8 +132,7 @@ function checkSearchResults(I: CodeceptJS.I, expectedResults: string[]) {
     I.see('Search results');
     I.dontSee(emptySearchPrompt);
     I.dontSee('No results found');
-    expectedResults.forEach(result => I.see(result));
-
+    expectedResults.forEach((result) => I.see(result));
   } else {
     I.dontSee('Search results');
     I.dontSeeElement('div[class*="cell"]');
@@ -153,7 +152,7 @@ function verifyOnHomePage(I: CodeceptJS.I) {
 
 async function openSearch(I: CodeceptJS.I) {
   if (await I.isMobile()) {
-    I.dontSee(searchBarLocator);
+    I.dontSeeElement(searchBarLocator);
     I.click(openSearchLocator);
   }
 

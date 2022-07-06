@@ -14,6 +14,7 @@ describe.skip('<Payment>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
       <Payment
+        accessModel="AVOD"
         customer={customer as Customer}
         transactions={transactions as Transaction[]}
         activeSubscription={subscription as Subscription}

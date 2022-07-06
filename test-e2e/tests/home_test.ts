@@ -1,8 +1,8 @@
-import constants from "../utils/constants";
+import constants from '../utils/constants';
 
-Feature('home');
+Feature('home').retry(3);
 
-Before(({I}) => {
+Before(({ I }) => {
   I.useConfig('blender');
 });
 
@@ -31,7 +31,7 @@ Scenario('Header button navigates to playlist screen', async ({ I }) => {
   }
 
   I.see('Films');
-  I.click({text: 'Films'});
+  I.click('Films');
   I.amOnPage(`${constants.baseUrl}p/${constants.filmsPlaylistId}`);
   I.see('All Films');
   I.see('The Daily Dweebs');
@@ -44,7 +44,7 @@ Scenario('I can slide within the featured shelf', async ({ I }) => {
     if (isDesktop) {
       I.click({ css: 'div[aria-label="Slide right"]' });
     } else {
-      await I.swipeLeft({text:swipeText});
+      await I.swipeLeft({ text: swipeText });
     }
   }
 
@@ -78,7 +78,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
     if (isDesktop) {
       I.click({ css: 'div[aria-label="Slide right"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
     } else {
-      await I.swipeLeft({text:swipeText});
+      await I.swipeLeft({ text: swipeText });
     }
   }
 
@@ -86,20 +86,18 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
     if (isDesktop) {
       I.click({ css: 'div[aria-label="Slide left"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
     } else {
-      await I.swipeRight({text:swipeText});
+      await I.swipeRight({ text: swipeText });
     }
   }
 
-  const rightMedia = isDesktop
-      ? {name: 'Cosmos Laundromat', duration: '13 min'}
-      : {name: 'Big Buck Bunny', duration: '10 min'};
+  const rightMedia = isDesktop ? { name: 'Cosmos Laundromat', duration: '13 min' } : { name: 'Big Buck Bunny', duration: '10 min' };
 
   I.see('All Films');
   I.see('Agent 327');
   I.see('4 min');
   I.dontSee(rightMedia.name);
   I.dontSee(rightMedia.duration);
-  await slideRight( 'Agent 327');
+  await slideRight('Agent 327');
   I.waitForElement(`text="${rightMedia.name}"`, 3);
   I.see(rightMedia.duration);
   I.dontSee('Agent 327');
@@ -110,7 +108,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
   await slideLeft(rightMedia.name);
 
   I.waitForElement('text="Agent 327"', 3);
-  I.dontSee(rightMedia);
+  I.dontSee(rightMedia.name);
 
   // Without this extra wait, the second slide action happens too fast after the first and even though the
   // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.

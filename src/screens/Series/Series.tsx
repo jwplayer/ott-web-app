@@ -25,7 +25,7 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { removeItem, saveItem } from '#src/stores/FavoritesController';
+import { toggleFavorite } from '#src/stores/FavoritesController';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 
 type SeriesRouteParams = {
@@ -50,6 +50,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const { styling, features, siteName } = config;
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
+  const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
 
   // Media
   const {
@@ -64,7 +65,11 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
-  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
+  // Favorite
+  const { isFavorited } = useFavoritesStore((state) => ({
+    isFavorited: !!item && state.hasItem(item),
+  }));
+
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
 
   // User, entitlement
@@ -74,6 +79,10 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   useBlurImageUpdater(item);
 
   // Handlers
+  const onFavoriteButtonClick = useCallback(() => {
+    toggleFavorite(item);
+  }, [item]);
+
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
   const onShareClick = (): void => {
@@ -120,7 +129,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   // UI
   if (isLoading) return <LoadingOverlay />;
   if ((!isLoading && isItemError) || !item) return <ErrorPage title={t('episode_not_found')} />;
-  if (isPlaylistError) return <ErrorPage title={t('series_not_found')} />;
+  if (isPlaylistError) return <ErrorPage title={t('series_error')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
@@ -168,7 +177,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
-        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+        isFavoritesEnabled={isFavoritesEnabled}
+        onFavoriteButtonClick={onFavoriteButtonClick}
         startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}
         isSeries
       >

@@ -10,15 +10,15 @@ interface AdyenEventData {
   isValid: boolean;
   data: {
     paymentMethod: AdyenPaymentMethod;
-  }
+  };
 }
 
 interface AdyenConfiguration {
   onSubmit: (data: AdyenEventData) => void;
   onChange: (data: AdyenEventData) => void;
-  showPayButton: boolean,
-  environment: 'test' | 'live',
-  clientKey: string,
+  showPayButton: boolean;
+  environment: 'test' | 'live';
+  clientKey: string;
 }
 
 interface AdyenCheckout {

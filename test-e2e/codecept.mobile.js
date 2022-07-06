@@ -9,36 +9,41 @@ setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
   grep: '(?=.*)^(?!.*@desktop-only)',
-  tests    : [
-    './tests/*.js',
-    './tests/*.ts'
-  ],
-  output   : './output/mobile',
-  helpers  : {
+  tests: ['./tests/**/*.js', './tests/**/*.ts'],
+  output: './output/mobile',
+  timeout: 60,
+  helpers: {
     Playwright: {
-      url    : 'http://localhost:8080',
-      show   : false,
+      url: 'http://localhost:8080',
+      show: false,
       channel: 'chrome',
       emulate: devices['Pixel 5'],
-    }
+    },
   },
-  include  : {
-    I: './utils/steps_file.ts'
+  include: {
+    I: './utils/steps_file.ts',
   },
   bootstrap: null,
-  mocha    : {},
-  name     : 'mobile',
-  plugins  : {
-    pauseOnFail     : {},
-    retryFailedStep : {
+  mocha: {},
+  name: 'mobile',
+  plugins: {
+    pauseOnFail: {},
+    retryFailedStep: {
+      minTimeout: 3000,
       enabled: true,
-      retries: 2,
+      retries: 3,
     },
-    tryTo           : {
-      enabled: true
+    autoDelay: {
+      enabled: true,
+    },
+    tryTo: {
+      enabled: true,
     },
     screenshotOnFail: {
-      enabled: !process.env.CI
-    }
-  }
+      enabled: true,
+    },
+    allure: {
+      enabled: true,
+    },
+  },
 };

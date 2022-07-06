@@ -34,7 +34,7 @@ The player
 
 ## Storage
 
-For non-logged in users, the watch history is stored clientside in a cookie
+For non-logged in users, the watch history is stored clientside in local storage.
 
 For logged in users, the favorites and watch history are stored server side at the subscription or authentication provider to enable **cross-device watch history**
 
@@ -46,9 +46,6 @@ To ensure a **cross-device experience**, we standardize on the following datafor
 "history":[ //todo formalize
          {
             "mediaid":"JfDmsRlE",
-            "title":"Agent 327",
-            "tags":"movie,Action",
-            "duration":231.458,
             "progress":0.1168952164107527
          }
       ]
@@ -60,9 +57,6 @@ To ensure a **cross-device experience**, we standardize on the following datafor
 "favorites":[ //todo formalize
          {
             "mediaid":"JfDmsRlE",
-            "title":"Agent 327",
-            "tags":"movie,Action",
-            "duration":231
          }
      ]
 ```
@@ -112,44 +106,19 @@ Example data format
       "history":[
          {
             "mediaid":"JfDmsRlE",
-            "title":"Agent 327",
-            "tags":"movie,Action",
-            "duration":231.458,
             "progress":0.1168952164107527
          }
        ],
       "favorites":[
          {
             "mediaid":"JfDmsRlE",
-            "title":"Agent 327",
-            "tags":"movie,Action",
-            "duration":231
          }
       ]
 }
 ```
 
-### Max 25 items
+### Max 48 items
 
-The externalData attribute of Cleeng can contain max 5000 characters. This is 50-75 objects. 
+The length of one stringified object of Continue Watching equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only Continue Watching objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for Continue Watching. We also leave some extra space for possible further updates.
 
-So we maximize the number of history and favorite objects to 25 and rotate the oldest one out based on the 'updated' attribute
-
-The following storage optimized format is under discussion to ensure more items can be stored:
-
-## Optimized format (draft)
-
-```
-"history":[ //todo formalize
-         {
-            "mediaid":"JfDmsRlE",
-            "progress":0.1168952164107527,
-            "updated":1643900003
-         },
-         {
-            "mediaid":"3qMpbJM6",
-            "progress":0.81687652164107234,
-            "updated":1643900203
-         }
-      ]
-```
+We rotate the oldest continue watching object to the first item position after its progress property gets a new value.

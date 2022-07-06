@@ -39,7 +39,8 @@ export default (seriesId: string): UseQueryResult<{ series: Series; playlist: Pl
     {
       // 8 hours
       staleTime: 60 * 1000 * 60 * 8,
-      retry: 0,
+      retry: 2,
+      retryDelay: 200,
     },
   );
 };

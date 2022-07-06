@@ -3,5 +3,5 @@ module.exports = {
     // Browser conf
     browser: false,
     node: true,
-  }
+  },
 };

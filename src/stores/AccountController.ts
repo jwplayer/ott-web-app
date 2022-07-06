@@ -12,8 +12,7 @@ import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
-import { getPublicMediaTokens } from '#src/services/entitlement.service';
-import { getMediaByIds } from '#src/services/api.service';
+import { getMediaByWatchlist } from '#src/services/api.service';
 import { queryClient } from '#src/providers/QueryProvider';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
@@ -399,31 +398,17 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
 }
 
 /**
- * Get multiple media items for the given IDs. This performs multiple GET requests and optionally fetches the tokens
- * needed when URL signing (with DRM) is enabled.
+ * Get multiple media items for the given IDs. This function uses watchlists to get several medias via just one request.
  *
- * @todo This function is temporarily until we add support for the watchlist playlist
- * {@link https://github.com/jwplayer/ott-web-app/issues/43}. We could also refactor the favorites and watch history
- * playlist to use the `usePlaylist` hook as well.
- *
+ * @param watchlistId
  * @param mediaIds
  */
-export async function getMediaItems(mediaIds: string[]) {
-  const jwt = useAccountStore.getState().auth?.jwt;
-  const signingConfig = useConfigStore.getState().config.contentSigningService;
-  const host = signingConfig?.host;
-  const drmPolicyId = signingConfig?.drmPolicyId;
-  const drmEnabled = !!drmPolicyId;
-  const signingEnabled = !!host;
-
-  if (signingEnabled && drmEnabled) {
-    const getTokensPayload = Object.fromEntries(mediaIds.map((mediaId) => [mediaId, {}]));
-    const tokens = await getPublicMediaTokens(host, getTokensPayload, jwt, drmPolicyId);
-
-    return getMediaByIds(mediaIds, tokens, drmPolicyId);
+export async function getMediaItems(watchlistId: string | undefined | null, mediaIds: string[]) {
+  if (!watchlistId) {
+    throw new Error('No watchlist defined');
   }
 
-  return getMediaByIds(mediaIds);
+  return getMediaByWatchlist(watchlistId, mediaIds);
 }
 
 async function getActiveSubscription({ cleengSandbox, customerId, jwt }: { cleengSandbox: boolean; customerId: string; jwt: string }) {

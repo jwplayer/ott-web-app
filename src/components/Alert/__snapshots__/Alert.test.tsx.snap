@@ -1,0 +1,27 @@
+// Vitest Snapshot v1
+
+exports[`<Alert> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    open=""
+  >
+    <h2
+      class="title"
+    >
+      alert.title
+    </h2>
+    <p
+      class="body"
+    >
+      Body
+    </p>
+    <button
+      class="button default outlined fullWidth"
+    >
+      <span>
+        alert.close
+      </span>
+    </button>
+  </div>
+</div>
+`;

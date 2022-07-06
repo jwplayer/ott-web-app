@@ -12,7 +12,7 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
   const plugins = [
     react(),
-    eslintPlugin(), // Move linting to pre-build to match dashboard
+    eslintPlugin({ emitError: mode === 'production' }), // Move linting to pre-build to match dashboard
     StylelintPlugin(),
     VitePWA(),
     createHtmlPlugin({

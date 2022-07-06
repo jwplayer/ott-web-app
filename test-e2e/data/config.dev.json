@@ -45,7 +45,8 @@
   "features": {
     "recommendationsPlaylist": "PMEZ9NJK",
     "searchPlaylist": "WhJF9BxP",
-    "favoritesList": "t29IQEhj"
+    "favoritesList": "t29IQEhj",
+    "continueWatchingList": "t29IQEhj"
   },
   "integrations": {
     "cleeng": {

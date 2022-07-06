@@ -12,12 +12,10 @@ import type { Series, GetSeriesParams } from '#types/series';
  *
  * @param item
  */
-export const transformMediaItem = (item: PlaylistItem) => {
-  return {
-    ...item,
-    mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
-  };
-};
+export const transformMediaItem = (item: PlaylistItem) => ({
+  ...item,
+  mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
+});
 
 /**
  * Transform incoming playlists
@@ -51,6 +49,27 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
   const data = await getDataOrThrow(response);
 
   return transformPlaylist(data, params.related_media_id);
+};
+
+/**
+ * Get watchlist by playlistId
+ * @param {string} playlistId
+ * @param {string} [token]
+ * @param {string} [drmPolicyId]
+ */
+export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
+  if (!mediaIds?.length) {
+    return [];
+  }
+
+  const pathname = `/apps/watchlists/${playlistId}`;
+  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
+  const response = await fetch(url);
+  const data = (await getDataOrThrow(response)) as Playlist;
+
+  if (!data) throw new Error(`The data was not found using the watchlist ${playlistId}`);
+
+  return (data.playlist || []).map(transformMediaItem);
 };
 
 /**

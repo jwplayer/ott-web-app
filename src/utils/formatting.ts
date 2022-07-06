@@ -44,9 +44,9 @@ export const addQueryParams = (url: string, queryParams: { [key: string]: string
 
     if (typeof value === 'object' && !value?.length) return;
 
-    const formattedValue = Array.isArray(value) && value ? value.join(',') : String(value);
+    const formattedValue = Array.isArray(value) ? value.join(',') : value;
 
-    urlSearchParams.set(key, formattedValue);
+    urlSearchParams.set(key, String(formattedValue));
   });
   const queryString = urlSearchParams.toString();
 

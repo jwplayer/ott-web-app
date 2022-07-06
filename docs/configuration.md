@@ -146,7 +146,9 @@ The eight-character Playlists IDs from the JW Player dashboard. These IDs popula
 
 **content[].type**
 
-It is  possible to use 'playlist', 'continue_watching' or 'favorites' as a type. With this, you can change the position of the shelves and turn on/off extra `continue_watching` shelf (just include / exclude it in / from the array). Example:
+It is  possible to use 'playlist', 'continue_watching' or 'favorites' as a type. With this, you can change the position of the shelves and turn on/off extra `continue_watching` and `favorites` shelves. 
+
+If you want to include `favorites` / `continue_watching` shelf, you should also add a corresponding playlist with `watchlist` type to features section (`features.favoritesList` and `features.continueWatchingList`). To exclude the shelves, remove a corresponding array item and a playlist in `features`.
 
 ```
 {
@@ -278,6 +280,18 @@ The eight-character Playlist ID of the Search playlist that you want to use to e
 
 ---
 
+**features.favoritesList** (optional)
+
+The eight-character Playlist ID of the Watchlist playlist that you want to use to populate the "Favorites" shelf in your site.
+
+---
+
+**features.continueWatchingList** (optional)
+
+The eight-character Playlist ID of the Watchlist playlist that you want to use to populate the "Continue Watching" shelf in your site. 
+
+---
+
 **integrations.cleeng**
 
 Use the `integrations.cleeng` object to to integrate with Cleeng.
@@ -348,7 +362,7 @@ official [URL Signing Documentation](https://developer.jwplayer.com/jwplayer/doc
 **contentSigningService.drmPolicyId** (optional)
 
 When DRM is enabled for your JW Dashboard Property, all playlist and media requests MUST use the DRM specific endpoints.
-When this property is configured, OTT Web App automatically does this automatically for you but all DRM requests must be
+When this property is configured, OTT Web App automatically does this for you but all DRM requests must be
 signed as well.
 
 For this to work the entitlement service must implement the following endpoints:

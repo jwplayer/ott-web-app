@@ -1,3 +1,34 @@
 // Vitest Snapshot v1
 
-exports[`<ConfirmationDialog> > renders and matches snapshot 1`] = `<div />`;
+exports[`<ConfirmationDialog> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    open=""
+  >
+    <h2
+      class="title"
+    >
+      Title
+    </h2>
+    <p
+      class="body"
+    >
+      Body
+    </p>
+    <button
+      class="button confirmButton primary fullWidth"
+    >
+      <span>
+        confirmation_dialog.confirm
+      </span>
+    </button>
+    <button
+      class="button default outlined fullWidth"
+    >
+      <span>
+        confirmation_dialog.close
+      </span>
+    </button>
+  </div>
+</div>
+`;

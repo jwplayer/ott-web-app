@@ -14,11 +14,11 @@ module.exports = {
     ts: ['JavascriptLexer'],
     jsx: ['JsxLexer'],
     tsx: ['JsxLexer'],
-    default: ['JavascriptLexer']
+    default: ['JavascriptLexer'],
   },
   lineEnding: 'auto',
   locales: ['en_US', 'nl_NL'],
   namespaceSeparator: ':',
   output: 'src/i18n/locales/$LOCALE/$NAMESPACE.json',
   sort: true,
-}
+};

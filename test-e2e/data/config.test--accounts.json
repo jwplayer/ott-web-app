@@ -19,13 +19,13 @@
     },
     {
       "enableText": true,
-      "contentId": "dGSUzs9o",
-      "type": "playlist"
+      "type": "playlist",
+      "contentId": "dGSUzs9o"
     },
     {
       "enableText": true,
-      "contentId": "xQaFzykq",
-      "type": "playlist"
+      "type": "playlist",
+      "contentId": "xQaFzykq"
     }
   ],
   "menu": [
@@ -44,7 +44,9 @@
   ],
   "features": {
     "recommendationsPlaylist": "IHBjjkSN",
-    "searchPlaylist": "D4soEviP"
+    "searchPlaylist": "D4soEviP",
+    "favoritesList": "34CFUkws",
+    "continueWatchingList": "IJvotI4w"
   },
   "integrations": {
     "cleeng": {

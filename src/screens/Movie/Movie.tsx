@@ -8,6 +8,7 @@ import shallow from 'zustand/shallow';
 import styles from './Movie.module.scss';
 
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { toggleFavorite } from '#src/stores/FavoritesController';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
@@ -21,7 +22,6 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { addConfigParamToUrl } from '#src/utils/configOverride';
-import { removeItem, saveItem } from '#src/stores/FavoritesController';
 import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
@@ -45,8 +45,10 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName, styling, features } = config;
+
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
+  const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
@@ -55,13 +57,19 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Favorite
-  const isFavorited = useFavoritesStore((state) => !!item && state.hasItem(item));
+  const { isFavorited } = useFavoritesStore((state) => ({
+    isFavorited: !!item && state.hasItem(item),
+  }));
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(item);
 
   // Handlers
+  const onFavoriteButtonClick = useCallback(() => {
+    toggleFavorite(item);
+  }, [item]);
+
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
   const onShareClick = (): void => {
@@ -130,6 +138,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         ))}
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
+
       <VideoComponent
         title={item.title}
         item={item}
@@ -146,27 +155,28 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorited={isFavorited}
-        onFavoriteButtonClick={() => (isFavorited ? removeItem(item) : saveItem(item))}
+        isFavoritesEnabled={isFavoritesEnabled}
+        onFavoriteButtonClick={onFavoriteButtonClick}
         startWatchingButton={<StartWatchingButton item={item} />}
       >
-        {playlist ? (
-          <>
-            <div className={styles.related}>
-              <h3>{playlist.title}</h3>
-            </div>
-            <CardGrid
-              playlist={playlist.playlist}
-              onCardClick={onCardClick}
-              isLoading={isLoading}
-              currentCardItem={item}
-              currentCardLabel={t('currently_playing')}
-              enableCardTitles={styling.shelfTitles}
-              accessModel={accessModel}
-              isLoggedIn={!!user}
-              hasSubscription={!!subscription}
-            />
-          </>
-        ) : undefined}
+        <>
+          {playlist ? (
+            <>
+              <div className={styles.related}>
+                <h3>{playlist.title}</h3>
+              </div>
+              <CardGrid
+                playlist={playlist.playlist}
+                onCardClick={onCardClick}
+                isLoading={isLoading}
+                enableCardTitles={styling.shelfTitles}
+                accessModel={accessModel}
+                isLoggedIn={!!user}
+                hasSubscription={!!subscription}
+              />
+            </>
+          ) : undefined}
+        </>
       </VideoComponent>
     </React.Fragment>
   );
