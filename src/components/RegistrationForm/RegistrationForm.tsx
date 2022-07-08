@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import DOMPurify from 'dompurify';
 
 import useToggle from '../../hooks/useToggle';
 import { addQueryParam } from '../../utils/history';
@@ -56,9 +57,9 @@ const RegistrationForm: React.FC<Props> = ({
   const history = useHistory();
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
-    // @todo sanitize consent label to prevent XSS
-    const hasHrefOpenTag = /<a(.|\n)*?>/.test(label);
-    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(label);
+    const sanitizedLabel = DOMPurify.sanitize(label);
+    const hasHrefOpenTag = /<a(.|\n)*?>/.test(sanitizedLabel);
+    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(sanitizedLabel);
 
     if (hasHrefOpenTag && hasHrefCloseTag) {
       return <span dangerouslySetInnerHTML={{ __html: label }} />;
