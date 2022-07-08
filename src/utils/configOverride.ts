@@ -3,24 +3,21 @@ import { IS_DEV_BUILD } from '#src/utils/common';
 // In production, use local storage so the override persists indefinitely without the query string
 // In dev mode, use session storage so the override persists until the tab is closed and then resets
 const storage = IS_DEV_BUILD ? window.sessionStorage : window.localStorage;
+const CONFIG_HOST = import.meta.env.APP_CONFIG_API_HOST;
+const INCLUDE_TEST_CONFIGS = import.meta.env.APP_INCLUDE_TEST_CONFIGS;
 
 const configFileQueryKey = 'c';
 const configFileStorageKey = 'config-file-override';
 
-const defaultSource = import.meta.env.APP_CONFIG_DEFAULT_SOURCE.toLowerCase();
-const allowedSources = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').map((source) => source.toLowerCase()) || [];
-const unsafeAllowDynamicSources = import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG;
+const DEFAULT_SOURCE = import.meta.env.APP_CONFIG_DEFAULT_SOURCE?.toLowerCase();
+const ALLOWED_SOURCES = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').map((source) => source.toLowerCase()) || [];
+const UNSAFE_ALLOW_DYNAMIC_CONFIG = import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG;
 
 export function getConfig() {
-  return formatSourceLocation(getConfigOverride() || defaultSource);
+  return formatSourceLocation(getConfigOverride() || DEFAULT_SOURCE);
 }
 
 function getConfigOverride() {
-  // Shortcut to determine if we can even use an override
-  if (allowedSources.length <= 0 && !unsafeAllowDynamicSources) {
-    return undefined;
-  }
-
   const url = new URL(window.location.href);
 
   if (url.searchParams.has(configFileQueryKey)) {
@@ -58,11 +55,15 @@ function getConfigOverride() {
 
 function isValidConfigSource(source: string) {
   // Dynamic values are valid as long as they are defined
-  if (unsafeAllowDynamicSources) {
+  if (UNSAFE_ALLOW_DYNAMIC_CONFIG) {
     return !!source;
   }
 
-  return allowedSources.indexOf(source) >= 0;
+  if (INCLUDE_TEST_CONFIGS && source.startsWith('test--')) {
+    return true;
+  }
+
+  return ALLOWED_SOURCES.indexOf(source) >= 0;
 }
 
 function formatSourceLocation(source?: string) {
@@ -71,10 +72,10 @@ function formatSourceLocation(source?: string) {
   }
 
   if (source.match(/^[a-z,\d]{8}$/)) {
-    return `https://cdn.jwplayer.com/apps/configs/${source}.json`;
+    return `${CONFIG_HOST}/apps/configs/${source}.json`;
   }
 
-  if (IS_DEV_BUILD && source.startsWith('test--')) {
+  if (INCLUDE_TEST_CONFIGS && source.startsWith('test--')) {
     return `/test-data/config.${source}.json`;
   }
 

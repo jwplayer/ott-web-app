@@ -4,7 +4,7 @@ JW OTT Webapp uses a JSON configuration file to store all configuration paramete
 
 ## Dynamic Configuration File Sources
 
-Using environment variables for build parameters, you can adjust what config file the application loads at startup and which if any it will allow to be set using the `c=<config source>` query param. The location can be specified using either the 8-character ID of the config from the dashboard (i.e. `gnnuzabk`), in which case the file will be loaded from the JW Player App Config delivery endpoint, or a relative (i.e. `/config.json`) or absolute (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`) path, in which case the file will be loaded using fetch to make a 'get' request.  
+Using environment variables for build parameters, you can adjust what config file the application loads at startup and which, if any, it will allow to be set using the `c=<config source>` query param. The location can be specified using either the 8-character ID of the config from the JW Player dashboard (i.e. `gnnuzabk`), in which case the file will be loaded from the JW Player App Config delivery endpoint, or a relative (i.e. `/config.json`) or absolute (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`) path, in which case the file will be loaded using fetch to make a 'get' request.  
 
 As mentioned above, if you have 1 or more allowed sources (see [`APP_CONFIG_ALLOWED_SOURCES`](#configuration-file-source-build-params) below), you can switch between them using the `c` query parameter when you first navigate to the web app. The parameter is automatically evaluated, loaded, and stored in local storage so that the query string can be cleaned from the URL and remain somewhat hidden from end users.
 

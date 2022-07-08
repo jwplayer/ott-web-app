@@ -21,7 +21,7 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' | undefi
   ];
 
   // These files are only needed in dev / test, don't include in prod builds
-  if (mode === 'development' || mode === 'test') {
+  if (process.env.APP_INCLUDE_TEST_CONFIGS) {
     plugins.push(
       viteStaticCopy({
         targets: [
