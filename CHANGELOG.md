@@ -1,3 +1,12 @@
+# [2.2.0](https://github.com/jwplayer/ott-web-app/compare/v2.1.0...v2.2.0) (2022-07-08)
+
+
+### Features
+
+* **project:** sanitize html content ([658f199](https://github.com/jwplayer/ott-web-app/commit/658f1993d198c51eef24ba47b86c5786a5ee6560)), closes [#47](https://github.com/jwplayer/ott-web-app/issues/47)
+
+
+
 # [2.1.0](https://github.com/jwplayer/ott-web-app/compare/v2.0.4...v2.1.0) (2022-07-05)
 
 
