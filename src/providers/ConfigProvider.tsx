@@ -1,4 +1,4 @@
-import React, { createContext, FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import merge from 'lodash.merge';
 
 import { calculateContrastColor } from '../utils/common';
@@ -31,18 +31,15 @@ const defaultConfig: Config = {
   },
 };
 
-export const ConfigContext = createContext<Config>(defaultConfig);
-
-export type ProviderProps = {
-  children: ReactNode;
+export type Props = {
+  children: JSX.Element;
   configLocation: string;
   onLoading: (isLoading: boolean) => void;
   onValidationError: (error: Error) => void;
   onValidationCompleted: (config: Config) => void;
 };
 
-const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLocation, onLoading, onValidationError, onValidationCompleted }) => {
-  const [config, setConfig] = useState<Config>(defaultConfig);
+const ConfigProvider: FunctionComponent<Props> = ({ children, configLocation, onLoading, onValidationError, onValidationCompleted }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -63,9 +60,6 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
       validateConfig(config)
         .then((configValidated) => {
           const configWithDefaults = merge({}, defaultConfig, configValidated);
-
-          // @todo refactor this provider to use the ConfigStore exclusively
-          setConfig(configWithDefaults);
 
           const accessModel = calculateAccessModel(configWithDefaults);
           useConfigStore.setState({
@@ -120,7 +114,7 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
     return 'SVOD';
   };
 
-  return <ConfigContext.Provider value={config}>{loading ? <LoadingOverlay /> : children}</ConfigContext.Provider>;
+  return loading ? <LoadingOverlay /> : children;
 };
 
 export default ConfigProvider;
