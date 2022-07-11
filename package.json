@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "start": "vite",
+    "start": "APP_INCLUDE_TEST_CONFIGS=1 vite",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",

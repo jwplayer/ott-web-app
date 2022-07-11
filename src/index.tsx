@@ -4,9 +4,6 @@ import 'wicg-inert';
 
 import registerServiceWorker from './registerServiceWorker';
 import App from './App';
-import { overrideConfig } from './utils/configOverride';
-
-overrideConfig();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

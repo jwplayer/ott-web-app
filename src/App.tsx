@@ -11,9 +11,9 @@ import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
 import { logDev } from '#src/utils/common';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
-
 import '#src/i18n/config';
 import '#src/styles/main.scss';
+import { clearStoredConfig, getConfig } from '#src/utils/configOverride';
 
 interface State {
   error: Error | null;
@@ -51,6 +51,7 @@ class App extends Component {
   configErrorHandler = (error: Error) => {
     this.setState({ error });
     logDev('Error while loading the config.json:', error);
+    clearStoredConfig();
   };
 
   configValidationCompletedHandler = async (config: Config) => {
@@ -62,7 +63,7 @@ class App extends Component {
       <I18nextProvider i18n={getI18n()}>
         <QueryProvider>
           <ConfigProvider
-            configLocation={window.configLocation || '/config.json'}
+            configLocation={getConfig()}
             onLoading={this.configLoadingHandler}
             onValidationError={this.configErrorHandler}
             onValidationCompleted={this.configValidationCompletedHandler}
