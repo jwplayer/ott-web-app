@@ -35,5 +35,9 @@ export const getSeriesIdFromEpisode = (item: PlaylistItem | undefined) => {
     return seriesIdTag.split('_')[1];
   }
 
+  if (item.seriesId) {
+    return item.seriesId;
+  }
+
   return null;
 };

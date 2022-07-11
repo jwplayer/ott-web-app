@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import styles from './Cinema.module.scss';
 
-import { API_BASE_URL, VideoProgressMinMax } from '#src/config';
+import { VideoProgressMinMax } from '#src/config';
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { addScript } from '#src/utils/dom';
@@ -39,7 +39,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const loadingRef = useRef(false);
   const seekToRef = useRef(-1);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
-  const scriptUrl = `${API_BASE_URL}/libraries/${config.player}.js`;
+  const scriptUrl = `${import.meta.env.APP_CONFIG_API_HOST}/libraries/${config.player}.js`;
   const enableWatchHistory = continueWatchingList && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
   const handlePlaylistItemCallback = usePlaylistItemCallback();

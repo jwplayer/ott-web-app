@@ -19,7 +19,7 @@ import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
-import { filterSeries, getFiltersFromSeries } from '#src/utils/series';
+import { filterSeries, getFiltersFromSeries, getNextItemId, enrichMediaItems } from '#src/utils/series';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -27,6 +27,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { toggleFavorite } from '#src/stores/FavoritesController';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
+import { getSeriesIdFromEpisode } from '#src/utils/media';
 
 type SeriesRouteParams = {
   id: string;
@@ -54,13 +55,19 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   // Media
   const {
-    isLoading,
+    isLoading: isPlaylistLoading,
     isPlaylistError,
-    isItemError,
-    data: { seriesPlaylist, nextItemId, item, seriesId },
-  } = useSeriesData(id, episodeId);
+    data: { series, seriesPlaylist },
+  } = useSeriesData(id);
+  const { data: rawItem, isLoading: isEpisodeLoading, isError: isItemError } = useMedia(episodeId);
+  const { data: trailerItem } = useMedia(rawItem?.trailerId || '');
 
-  const { data: trailerItem } = useMedia(item?.trailerId || '');
+  const item = series && rawItem ? enrichMediaItems(series, [rawItem])[0] : rawItem;
+  const nextItemId = getNextItemId(item, series, seriesPlaylist);
+
+  const seriesId = getSeriesIdFromEpisode(item);
+  const isLoading = isPlaylistLoading || isEpisodeLoading;
+
   const [seasonFilter, setSeasonFilter] = useState<string>(item?.seasonNumber || '1');
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);

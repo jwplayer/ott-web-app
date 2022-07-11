@@ -1,5 +1,5 @@
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { Series } from '#types/series';
+import type { EpisodeWithSeason, Season, Series } from '#types/series';
 
 export const getFiltersFromSeries = (series: PlaylistItem[]): string[] =>
   series.reduce(
@@ -43,5 +43,20 @@ export const getNextItemId = (item: PlaylistItem | undefined, series: Series | u
 
   const index = seriesPlaylist?.playlist?.findIndex(({ mediaid }) => mediaid === item.mediaid);
 
-  return seriesPlaylist.playlist[index + 1].mediaid;
+  return seriesPlaylist?.playlist?.[index + 1]?.mediaid;
+};
+
+/** We need to add episodeNumber and seasonNumber to each media item we got
+ *  That will help with further data retrieval
+ */
+export const enrichMediaItems = (series: Series | undefined, mediaItems: PlaylistItem[] | undefined): PlaylistItem[] => {
+  const episodes = (series?.seasons || []).flatMap((season: Season) => season.episodes.map((episode) => ({ ...episode, season_number: season.season_number })));
+
+  const itemsWithEpisodes = (mediaItems || []).map((item) => {
+    const episode = episodes.find((episode) => episode.media_id === item?.mediaid) as EpisodeWithSeason;
+
+    return { ...item, seasonNumber: String(episode.season_number), episodeNumber: String(episode.episode_number) };
+  });
+
+  return itemsWithEpisodes;
 };

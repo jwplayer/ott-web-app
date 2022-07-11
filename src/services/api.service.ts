@@ -1,5 +1,4 @@
 import { addQueryParams } from '../utils/formatting';
-import { API_BASE_URL } from '../config';
 import { getDataOrThrow } from '../utils/api';
 
 import { filterMediaOffers } from '#src/utils/entitlements';
@@ -44,7 +43,7 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
   }
 
   const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
+  const url = addQueryParams(`${import.meta.env.APP_CONFIG_API_HOST}${pathname}`, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 
@@ -63,7 +62,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
   }
 
   const pathname = `/apps/watchlists/${playlistId}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
+  const url = addQueryParams(`${import.meta.env.APP_CONFIG_API_HOST}${pathname}`, { token, media_ids: mediaIds });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
 
@@ -80,7 +79,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
  */
 export const getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
   const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token });
+  const url = addQueryParams(`${import.meta.env.APP_CONFIG_API_HOST}${pathname}`, { token });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
   const mediaItem = data.playlist[0];
@@ -112,13 +111,13 @@ export const getMediaByIds = async (ids: string[], tokens?: Record<string, strin
  * @param {string} id
  * @param params
  */
-export const getSeries = async (id?: string, params: GetSeriesParams = {}): Promise<Series | undefined> => {
+export const getSeries = async (id: string, params: GetSeriesParams = {}): Promise<Series | undefined> => {
   if (!id) {
-    return undefined;
+    throw new Error('Series ID is required');
   }
 
   const pathname = `/apps/series/${id}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
+  const url = addQueryParams(`${import.meta.env.APP_CONFIG_API_HOST}${pathname}`, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 

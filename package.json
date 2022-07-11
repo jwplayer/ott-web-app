@@ -11,7 +11,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "APP_INCLUDE_TEST_CONFIGS=1 vite",
-    "start:dev-api": "APP_CONFIG_API_HOST='dev' yarn start",
+    "start:dev-api": "APP_CONFIG_API_HOST=https://content-portal.jwplatform.com yarn start",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",

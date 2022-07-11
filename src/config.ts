@@ -1,6 +1,3 @@
-// Use yarn start:dev-api to expose APP_API_ENV variable and use dev api host
-export const API_BASE_URL = import.meta.env.APP_API_ENV === 'dev' ? 'https://content-portal.jwplatform.com' : 'https://content.jwplatform.com';
-
 export const VideoProgressMinMax = {
   Min: 0.05,
   Max: 0.95,
