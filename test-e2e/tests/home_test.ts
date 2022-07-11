@@ -3,7 +3,7 @@ import constants from '../utils/constants';
 Feature('home').retry(3);
 
 Before(({ I }) => {
-  I.useConfig('blender');
+  I.useConfig('test--blender');
 });
 
 Scenario('Home screen loads', async ({ I }) => {

@@ -24,6 +24,7 @@ module.exports = {
         'e2e',
         'signing',
         'entitlement',
+        'config',
       ],
     ],
   },

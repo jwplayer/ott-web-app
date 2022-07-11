@@ -1,6 +1,7 @@
 import merge from 'lodash.merge';
 
 import { calculateContrastColor } from '../utils/common';
+import { getConfig } from '../utils/configOverride';
 import loadConfig, { validateConfig } from '../services/config.service';
 import type { AccessModel, Config, Styling } from '../../types/Config';
 import { addScript } from '../utils/dom';
@@ -62,12 +63,18 @@ const calculateAccessModel = (config: Config): AccessModel => {
 };
 
 export const loadAndValidateConfig = async (
-  configLocation: string,
   onLoading: (isLoading: boolean) => void,
   onValidationError: (error: Error) => void,
   onValidationCompleted: (config: Config) => void,
 ) => {
   onLoading(true);
+
+  const configLocation = getConfig();
+
+  if (!configLocation) {
+    onValidationError(new Error('Config not defined'));
+    return;
+  }
 
   const config = await loadConfig(configLocation).catch((error) => {
     onValidationError(error);

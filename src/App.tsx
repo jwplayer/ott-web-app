@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { getI18n, I18nextProvider } from 'react-i18next';
 
-import { DEFAULT_CONFIG_LOCATION } from './config';
-
 import type { Config } from '#types/Config';
 import Router from '#src/components/Router/Router';
 import Root from '#src/components/Root/Root';
@@ -12,9 +10,9 @@ import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
 import { logDev } from '#src/utils/common';
-import { loadAndValidateConfig } from '#src/utils/config';
+import { loadAndValidateConfig } from '#src/utils/configLoad';
+import { clearStoredConfig } from '#src/utils/configOverride';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
-
 import '#src/i18n/config';
 import '#src/styles/main.scss';
 
@@ -57,6 +55,7 @@ class App extends Component {
   configErrorHandler = (error: Error) => {
     this.setState({ error });
     this.setState({ isLoading: false });
+    clearStoredConfig();
     logDev('Error while loading the config.json:', error);
   };
 
@@ -66,12 +65,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    loadAndValidateConfig(
-      window.configLocation || DEFAULT_CONFIG_LOCATION,
-      this.configLoadingHandler,
-      this.configErrorHandler,
-      this.configValidationCompletedHandler,
-    );
+    loadAndValidateConfig(this.configLoadingHandler, this.configErrorHandler, this.configValidationCompletedHandler);
   }
 
   render() {
