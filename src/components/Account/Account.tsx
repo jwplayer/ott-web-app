@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import shallow from 'zustand/shallow';
+import DOMPurify from 'dompurify';
 
 import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
 import Visibility from '../../icons/Visibility';
@@ -59,9 +60,9 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   );
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
-    // @todo sanitize consent label to prevent XSS
-    const hasHrefOpenTag = /<a(.|\n)*?>/.test(label);
-    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(label);
+    const sanitizedLabel = DOMPurify.sanitize(label);
+    const hasHrefOpenTag = /<a(.|\n)*?>/.test(sanitizedLabel);
+    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(sanitizedLabel);
 
     if (hasHrefOpenTag && hasHrefCloseTag) {
       return <span dangerouslySetInnerHTML={{ __html: label }} />;

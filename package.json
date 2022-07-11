@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "Robin van Zanten",
@@ -10,8 +10,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "start": "vite",
-    "start:dev-api": "APP_API_ENV='dev' yarn start",
+    "start": "APP_INCLUDE_TEST_CONFIGS=1 vite",
+    "start:dev-api": "APP_CONFIG_API_HOST='dev' yarn start",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",
@@ -40,6 +40,7 @@
   "dependencies": {
     "allure-commandline": "^2.17.2",
     "classnames": "^2.3.1",
+    "dompurify": "^2.3.8",
     "history": "^4.10.1",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",
@@ -64,6 +65,7 @@
     "@commitlint/config-conventional": "^12.1.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^11.2.6",
+    "@types/dompurify": "^2.3.3",
     "@types/jwplayer": "^8.2.7",
     "@types/lodash.merge": "^4.6.6",
     "@types/node": "^17.0.23",

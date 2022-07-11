@@ -3,10 +3,11 @@ import merge from 'lodash.merge';
 
 import { calculateContrastColor } from '../utils/common';
 import loadConfig, { validateConfig } from '../services/config.service';
-import type { AccessModel, Config, Styling } from '../../types/Config';
 import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
 import { addScript } from '../utils/dom';
 import { useConfigStore } from '../stores/ConfigStore';
+
+import type { AccessModel, Config, Styling } from '#types/Config';
 
 const defaultConfig: Config = {
   id: '',
@@ -35,7 +36,7 @@ export const ConfigContext = createContext<Config>(defaultConfig);
 
 export type ProviderProps = {
   children: ReactNode;
-  configLocation: string;
+  configLocation?: string;
   onLoading: (isLoading: boolean) => void;
   onValidationError: (error: Error) => void;
   onValidationCompleted: (config: Config) => void;
@@ -46,7 +47,12 @@ const ConfigProvider: FunctionComponent<ProviderProps> = ({ children, configLoca
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const loadAndValidateConfig = async (configLocation: string) => {
+    const loadAndValidateConfig = async (configLocation?: string) => {
+      if (!configLocation) {
+        onValidationError(new Error('Config not defined'));
+        return;
+      }
+
       onLoading(true);
       setLoading(true);
       const config = await loadConfig(configLocation).catch((error) => {

@@ -1,3 +1,21 @@
+# [2.3.0](https://github.com/jwplayer/ott-web-app/compare/v2.2.0...v2.3.0) (2022-07-11)
+
+
+### Features
+
+* **config:** add dynamic config options at build ([6520ad0](https://github.com/jwplayer/ott-web-app/commit/6520ad0bb23d562a000c18bffa1fa1bfb857ba38))
+
+
+
+# [2.2.0](https://github.com/jwplayer/ott-web-app/compare/v2.1.0...v2.2.0) (2022-07-08)
+
+
+### Features
+
+* **project:** sanitize html content ([658f199](https://github.com/jwplayer/ott-web-app/commit/658f1993d198c51eef24ba47b86c5786a5ee6560)), closes [#47](https://github.com/jwplayer/ott-web-app/issues/47)
+
+
+
 # [2.1.0](https://github.com/jwplayer/ott-web-app/compare/v2.0.4...v2.1.0) (2022-07-05)
 
 
