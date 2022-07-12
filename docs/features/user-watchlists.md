@@ -9,7 +9,7 @@
 This watchlist contains movies a user would like to watch in the future. It has the following behavior:
 
 - In the video detail screen, the user can 'favorite' a movie
-- On the homepage, a 'favorite' shelf appears, allowing the user
+- On the homepage, a 'favorite' shelf appears, allowing the user to watch a media item
 - The user menu shows a link to the list of favorites, including a 'clear' button
 
 ## Continue watchlist
@@ -40,10 +40,10 @@ For logged in users, the favorites and watch history are stored server side at t
 
 To ensure a **cross-device experience**, we standardize on the following dataformat: 
 
-### Watch history format
+### Continue Watching format
 
 ```
-"history":[ //todo formalize
+"history":[
          {
             "mediaid":"JfDmsRlE",
             "progress":0.1168952164107527
@@ -51,10 +51,10 @@ To ensure a **cross-device experience**, we standardize on the following datafor
       ]
 ```
 
-### Favorites history format
+### Favorites format
 
 ```
-"favorites":[ //todo formalize
+"favorites":[
          {
             "mediaid":"JfDmsRlE",
          }
@@ -80,7 +80,7 @@ curl 'https://api.jwplayer.com/v2/sites/<property-id>/playlists/watchlist_playli
 
 ## Configuration
 
-The continue watching feature can be enabled and disabled in the [app config](/docs/configuration.md). 
+The continue watching and favorites features can be enabled and disabled in the [app config](/docs/configuration.md). 
 
 ## Cleeng
 
@@ -118,6 +118,8 @@ Example data format
 ```
 
 ### Max 48 items
+
+Cleeng customer externalData attribute has maxsize of 5000 symbols.
 
 The length of one stringified object of Continue Watching equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only Continue Watching objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for Continue Watching. We also leave some extra space for possible further updates.
 
