@@ -9,7 +9,7 @@
 This watchlist contains movies a user would like to watch in the future. It has the following behavior:
 
 - In the video detail screen, the user can 'favorite' a movie
-- On the homepage, a 'favorite' shelf appears, allowing the user
+- On the homepage, a 'favorite' shelf appears, allowing the user to watch a media item
 - The user menu shows a link to the list of favorites, including a 'clear' button
 
 ## Continue watchlist
@@ -43,7 +43,7 @@ To ensure a **cross-device experience**, we standardize on the following datafor
 ### Watch history format
 
 ```
-"history":[ //todo formalize
+"history":[
          {
             "mediaid":"JfDmsRlE",
             "progress":0.1168952164107527
@@ -51,10 +51,10 @@ To ensure a **cross-device experience**, we standardize on the following datafor
       ]
 ```
 
-### Favorites history format
+### Favorites format
 
 ```
-"favorites":[ //todo formalize
+"favorites":[
          {
             "mediaid":"JfDmsRlE",
          }
@@ -80,7 +80,7 @@ curl 'https://api.jwplayer.com/v2/sites/<property-id>/playlists/watchlist_playli
 
 ## Configuration
 
-The continue watching feature can be enabled and disabled in the [app config](/docs/configuration.md). 
+The continue watching and favorites features can be enabled and disabled in the [app config](/docs/configuration.md). 
 
 ## Cleeng
 
@@ -94,7 +94,7 @@ For Cleeng we store the watch history in the `customer externalData` attribute. 
 curl 'https://mediastore-sandbox.cleeng.com/customers/123456789' \
   -X 'PATCH' \
   -H 'authorization: Bearer <token>' \
-  --data-raw '{"id":"123456789","externalData":{"history":[{"mediaid":"JfDmsRlE","title":"Agent 327","tags":"movie,Action","duration":231.458,"progress":0.1168952164107527},{"mediaid":"3qMpbJM6","title":"Blender Channel","tags":"live","duration":0,"progress":null}],"favorites":[{"mediaid":"JfDmsRlE","title":"Agent 327","tags":"movie,Action","duration":231}]}}'
+  --data-raw '{"id":"123456789","externalData":{"history":[{"mediaid":"JfDmsRlE","progress":0.1168952164107527},{"mediaid":"3qMpbJM6","progress":null}],"favorites":[{"mediaid":"JfDmsRlE"}]}}'
 ```
 
 Example data format
@@ -119,6 +119,8 @@ Example data format
 
 ### Max 48 items
 
-The length of one stringified object of Continue Watching equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only Continue Watching objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for Continue Watching. We also leave some extra space for possible further updates.
+Cleeng customer `externalData` attribute has maxsize of 5000 symbols.
+
+The length of one stringified object of History equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only History objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for History. We also leave some extra space for possible further updates.
 
 We rotate the oldest continue watching object to the first item position after its progress property gets a new value.
