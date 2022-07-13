@@ -9,7 +9,6 @@ exports[`<ConfigSelect> > renders and matches snapshot 1`] = `
       class="dropdown"
     >
       <select
-        aria-label="select_config"
         aria-required="false"
         class="select"
         id="1235"
