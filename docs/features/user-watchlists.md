@@ -40,7 +40,7 @@ For logged in users, the favorites and watch history are stored server side at t
 
 To ensure a **cross-device experience**, we standardize on the following dataformat: 
 
-### Continue Watching format
+### Watch history format
 
 ```
 "history":[
@@ -94,7 +94,7 @@ For Cleeng we store the watch history in the `customer externalData` attribute. 
 curl 'https://mediastore-sandbox.cleeng.com/customers/123456789' \
   -X 'PATCH' \
   -H 'authorization: Bearer <token>' \
-  --data-raw '{"id":"123456789","externalData":{"history":[{"mediaid":"JfDmsRlE","title":"Agent 327","tags":"movie,Action","duration":231.458,"progress":0.1168952164107527},{"mediaid":"3qMpbJM6","title":"Blender Channel","tags":"live","duration":0,"progress":null}],"favorites":[{"mediaid":"JfDmsRlE","title":"Agent 327","tags":"movie,Action","duration":231}]}}'
+  --data-raw '{"id":"123456789","externalData":{"history":[{"mediaid":"JfDmsRlE","progress":0.1168952164107527},{"mediaid":"3qMpbJM6","progress":null}],"favorites":[{"mediaid":"JfDmsRlE"}]}}'
 ```
 
 Example data format
@@ -119,8 +119,8 @@ Example data format
 
 ### Max 48 items
 
-Cleeng customer externalData attribute has maxsize of 5000 symbols.
+Cleeng customer `externalData` attribute has maxsize of 5000 symbols.
 
-The length of one stringified object of Continue Watching equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only Continue Watching objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for Continue Watching. We also leave some extra space for possible further updates.
+The length of one stringified object of History equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only History objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for History. We also leave some extra space for possible further updates.
 
 We rotate the oldest continue watching object to the first item position after its progress property gets a new value.
