@@ -65,3 +65,33 @@ export function getOverrideIP() {
     ?.split('=')[1]
     .trim();
 }
+
+/**
+ * True value:
+ * 1. Boolean true value
+ * 2. Any number !== 0
+ * 3. 'yes' or 'true' string
+ */
+export const hasTrueValue = (value: undefined | null | string | number | boolean): boolean => {
+  // null, undefined or empty string
+  if (!value) {
+    return false;
+  }
+
+  if (typeof value === 'boolean') {
+    return value;
+  }
+
+  // 0 equals to false, other numbers equal to true
+  if (typeof value === 'number') {
+    return Boolean(value);
+  }
+
+  if (!Number.isNaN(value)) {
+    return Number(value) > 0;
+  }
+
+  const strValue = value.toLowerCase();
+
+  return strValue === 'true' || strValue === 'yes';
+};

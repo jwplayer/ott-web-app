@@ -106,7 +106,9 @@ const loadConfig = async (configLocation: string) => {
   const response = await fetch(configLocation, {
     headers: {
       Accept: 'application/json',
+      'Access-Control-Allow-Origin': '*',
     },
+    mode: 'cors',
     method: 'GET',
   });
 

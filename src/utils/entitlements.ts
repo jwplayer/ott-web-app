@@ -2,6 +2,8 @@ import type { AccessModel } from '../../types/Config';
 import type { MediaOffer } from '../../types/media';
 import type { PlaylistItem } from '../../types/playlist';
 
+import { hasTrueValue } from '#src/utils/common';
+
 /**
  * The appearance of the lock icon, depending on the access model
  *
@@ -12,7 +14,7 @@ import type { PlaylistItem } from '../../types/playlist';
  * @returns
  */
 export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubscription: boolean, playlistItem: PlaylistItem): boolean => {
-  const isItemFree = playlistItem?.requiresSubscription === 'false' || !!playlistItem?.free;
+  const isItemFree = !hasTrueValue(playlistItem?.requiresSubscription) || hasTrueValue(playlistItem?.free?.toLowerCase());
   const mediaOffers = playlistItem?.mediaOffers;
 
   if (isItemFree) return false;
