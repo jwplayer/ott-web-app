@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import styles from './Cinema.module.scss';
@@ -8,14 +8,13 @@ import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { addScript } from '#src/utils/dom';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
-import { ConfigContext } from '#src/providers/ConfigProvider';
 import { deepCopy } from '#src/utils/collection';
 import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
-import type { Config } from '#types/Config';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
 import useEventCallback from '#src/hooks/useEventCallback';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   item: PlaylistItem;
@@ -30,16 +29,15 @@ type Props = {
 };
 
 const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
-  const config: Config = useContext(ConfigContext);
-  const player = config.player;
-  const continueWatchingList = config.features?.continueWatchingList;
+  const { player, features } = useConfigStore((s) => s.config);
+  const continueWatchingList = features?.continueWatchingList;
 
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
   const loadingRef = useRef(false);
   const seekToRef = useRef(-1);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
-  const scriptUrl = `${import.meta.env.API_BASE_URL}/libraries/${config.player}.js`;
+  const scriptUrl = `${import.meta.env.API_BASE_URL}/libraries/${player}.js`;
   const enableWatchHistory = continueWatchingList && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
   const handlePlaylistItemCallback = usePlaylistItemCallback();
@@ -173,7 +171,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, config.player, enableWatchHistory, setPlayer, handlePlaylistItemCallback, detachEvents, attachEvents, player]);
+  }, [libLoaded, item, enableWatchHistory, setPlayer, handlePlaylistItemCallback, detachEvents, attachEvents, player]);
 
   useEffect(() => {
     return () => {

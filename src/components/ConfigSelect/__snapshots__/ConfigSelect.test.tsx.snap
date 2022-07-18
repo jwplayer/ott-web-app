@@ -1,0 +1,63 @@
+// Vitest Snapshot v1
+
+exports[`<ConfigSelect> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="container dropdown"
+  >
+    <div
+      class="dropdown"
+    >
+      <select
+        aria-required="false"
+        class="select"
+        id="1235"
+        name="config-select"
+      >
+        <option
+          class="option"
+          value=""
+        >
+          Default config
+        </option>
+        <option
+          class="option"
+          value="test--accounts"
+        >
+          test--accounts
+        </option>
+        <option
+          class="option"
+          value="test--blender"
+        >
+          test--blender
+        </option>
+        <option
+          class="option"
+          value="test--dev"
+        >
+          test--dev
+        </option>
+        <option
+          class="option"
+          value="test--no-cleeng"
+        >
+          test--no-cleeng
+        </option>
+        <option
+          class="option"
+          value="test--subscription"
+        >
+          test--subscription
+        </option>
+        <option
+          class="option"
+          value="test--watchlists"
+        >
+          test--watchlists
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+`;
