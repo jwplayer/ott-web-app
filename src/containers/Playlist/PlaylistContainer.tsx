@@ -6,6 +6,7 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { PLAYLIST_LIMIT } from '#src/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import type { ContentType } from '#types/Config';
 
 type ChildrenParams = {
   playlist: Playlist;
@@ -16,7 +17,7 @@ type ChildrenParams = {
 
 type Props = {
   playlistId?: string;
-  type: 'playlist' | 'continue_watching' | 'favorites';
+  type: ContentType;
   relatedItem?: PlaylistItem;
   onPlaylistUpdate?: (playlist: Playlist) => void;
   children: (childrenParams: ChildrenParams) => JSX.Element;
@@ -25,7 +26,7 @@ type Props = {
 };
 
 const PlaylistContainer = ({ playlistId, type, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
-  const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
+  const isAlternativeShelf = PersonalShelves.some((shelfType) => shelfType === type);
   const {
     isLoading,
     error,
