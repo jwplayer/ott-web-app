@@ -35,6 +35,7 @@ function Playlist({
 
   const categories = getFiltersFromConfig(config, id);
   const filteredPlaylist = useMemo(() => filterPlaylist(playlist, filter), [playlist, filter]);
+  const shouldShowFilter = !isLoading && !isPlaceholderData && Boolean(categories.length);
   const updateBlurImage = useBlurImageUpdater(filteredPlaylist);
 
   // User
@@ -63,7 +64,7 @@ function Playlist({
       </Helmet>
       <header className={styles.header}>
         <h2>{isLoading || isPlaceholderData ? 'Loading' : title}</h2>
-        {!isLoading && !isPlaceholderData && <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
+        {shouldShowFilter && <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
       </header>
       <main className={styles.main}>
         <CardGrid

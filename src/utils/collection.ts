@@ -5,7 +5,7 @@ import type { Playlist, PlaylistItem } from '#types/playlist';
 
 const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
   const menuItem = config.menu.find((item) => item.contentId === playlistId);
-  const filters = menuItem?.filterTags?.split(',');
+  const filters = menuItem?.filterTags?.split(',').filter(Boolean);
 
   return filters || [];
 };
