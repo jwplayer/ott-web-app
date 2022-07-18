@@ -1,3 +1,12 @@
+# [2.4.0](https://github.com/jwplayer/ott-web-app/compare/v2.3.0...v2.4.0) (2022-07-18)
+
+
+### Features
+
+* **series:** add new series-api ([29e8599](https://github.com/jwplayer/ott-web-app/commit/29e8599a57a2fa2498022d2e03e4055202375c7d))
+
+
+
 # [2.3.0](https://github.com/jwplayer/ott-web-app/compare/v2.2.0...v2.3.0) (2022-07-11)
 
 
