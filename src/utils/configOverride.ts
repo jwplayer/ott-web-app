@@ -3,7 +3,7 @@ import { IS_DEV_BUILD } from '#src/utils/common';
 // In production, use local storage so the override persists indefinitely without the query string
 // In dev mode, use session storage so the override persists until the tab is closed and then resets
 const storage = IS_DEV_BUILD ? window.sessionStorage : window.localStorage;
-const CONFIG_HOST = import.meta.env.APP_CONFIG_API_HOST;
+const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
 const INCLUDE_TEST_CONFIGS = import.meta.env.APP_INCLUDE_TEST_CONFIGS;
 
 const configFileQueryKey = 'c';

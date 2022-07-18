@@ -9,7 +9,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { createHtmlPlugin } from 'vite-plugin-html';
 
 // noinspection JSUnusedGlobalSymbols
-export default ({ mode }: { mode: 'production' | 'development' | 'test' | undefined }) => {
+export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
   const plugins = [
     react(),
     eslintPlugin({ emitError: mode === 'production' }), // Move linting to pre-build to match dashboard

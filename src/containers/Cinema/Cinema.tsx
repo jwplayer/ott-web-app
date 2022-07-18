@@ -13,6 +13,7 @@ import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
+import useEventCallback from '#src/hooks/useEventCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
@@ -36,7 +37,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const loadingRef = useRef(false);
   const seekToRef = useRef(-1);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
-  const scriptUrl = `https://content.jwplatform.com/libraries/${player}.js`;
+  const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${player}.js`;
   const enableWatchHistory = continueWatchingList && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
   const handlePlaylistItemCallback = usePlaylistItemCallback();
@@ -51,39 +52,47 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
 
   useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress()) : null));
 
-  const handlePlay = useCallback(() => onPlay && onPlay(), [onPlay]);
+  const handlePlay = useEventCallback(() => {
+    onPlay && onPlay();
+  });
 
-  const handlePause = useCallback(() => {
+  const handlePause = useEventCallback(() => {
     enableWatchHistory && saveItem(item, getProgress());
     onPause && onPause();
-  }, [enableWatchHistory, getProgress, item, onPause]);
+  });
 
-  const handleComplete = useCallback(() => {
+  const handleComplete = useEventCallback(() => {
     enableWatchHistory && saveItem(item, getProgress());
     onComplete && onComplete();
-  }, [enableWatchHistory, getProgress, item, onComplete]);
+  });
 
-  const handleUserActive = useCallback(() => onUserActive && onUserActive(), [onUserActive]);
+  const handleUserActive = useEventCallback(() => onUserActive && onUserActive());
 
-  const handleUserInactive = useCallback(() => onUserInActive && onUserInActive(), [onUserInActive]);
+  const handleUserInactive = useEventCallback(() => onUserInActive && onUserInActive());
 
-  useEffect(() => {
-    if (!playerRef.current) return;
+  const handleBeforePlay = useEventCallback(() => {
+    if (seekToRef.current > 0) {
+      playerRef.current?.seek(seekToRef.current);
+      seekToRef.current = -1;
+    }
+  });
 
-    playerRef.current.on('complete', handleComplete);
-    playerRef.current.on('play', handlePlay);
-    playerRef.current.on('pause', handlePause);
-    playerRef.current.on('userActive', handleUserActive);
-    playerRef.current.on('userInactive', handleUserInactive);
+  const attachEvents = useCallback(() => {
+    playerRef.current?.on('beforePlay', handleBeforePlay);
+    playerRef.current?.on('complete', handleComplete);
+    playerRef.current?.on('play', handlePlay);
+    playerRef.current?.on('pause', handlePause);
+    playerRef.current?.on('userActive', handleUserActive);
+    playerRef.current?.on('userInactive', handleUserInactive);
+  }, [playerRef, handleComplete, handlePlay, handlePause, handleUserActive, handleUserInactive, handleBeforePlay]);
 
-    return () => {
-      playerRef.current?.off('complete', handleComplete);
-      playerRef.current?.off('play', handlePlay);
-      playerRef.current?.off('pause', handlePause);
-      playerRef.current?.off('userActive', handleUserActive);
-      playerRef.current?.off('userInactive', handleUserInactive);
-    };
-  }, [handleComplete, handlePause, handlePlay, handleUserActive, handleUserInactive]);
+  const detachEvents = useCallback(() => {
+    playerRef.current?.off('complete');
+    playerRef.current?.off('play');
+    playerRef.current?.off('pause');
+    playerRef.current?.off('userActive');
+    playerRef.current?.off('userInactive');
+  }, []);
 
   useEffect(() => {
     if (!window.jwplayer && !loadingRef.current) {
@@ -128,9 +137,8 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
       if (currentItem && currentItem.mediaid === item.mediaid) {
         return;
       }
-
       // load new item
-      playerRef.current.setConfig({ playlist: [deepCopy(item)], autostart: true });
+      playerRef.current.load([deepCopy(item)]);
       calculateWatchHistoryProgress();
     };
 
@@ -146,19 +154,13 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
         height: '100%',
         mute: false,
         autostart: true,
+        repeat: false,
       });
 
+      attachEvents();
       calculateWatchHistoryProgress();
       setPlayer(playerRef.current);
 
-      const handleBeforePlay = () => {
-        if (seekToRef.current > 0) {
-          playerRef.current?.seek(seekToRef.current);
-          seekToRef.current = -1;
-        }
-      };
-
-      playerRef.current.on('beforePlay', handleBeforePlay);
       playerRef.current.setPlaylistItemCallback(handlePlaylistItemCallback);
     };
 
@@ -169,15 +171,17 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, onPlay, onPause, onUserActive, onUserInActive, onComplete, player, enableWatchHistory, setPlayer, handlePlaylistItemCallback]);
+  }, [libLoaded, item, enableWatchHistory, setPlayer, handlePlaylistItemCallback, detachEvents, attachEvents, player]);
 
   useEffect(() => {
     return () => {
       if (playerRef.current) {
+        // Detaching events before component unmount
+        detachEvents();
         playerRef.current.remove();
       }
     };
-  }, []);
+  }, [detachEvents]);
 
   return (
     <div className={classNames(styles.cinema, { [styles.fill]: !isTrailer })}>

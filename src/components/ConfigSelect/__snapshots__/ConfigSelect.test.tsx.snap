@@ -34,6 +34,12 @@ exports[`<ConfigSelect> > renders and matches snapshot 1`] = `
         </option>
         <option
           class="option"
+          value="test--dev"
+        >
+          test--dev
+        </option>
+        <option
+          class="option"
           value="test--no-cleeng"
         >
           test--no-cleeng

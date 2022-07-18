@@ -1,8 +1,8 @@
 import constants from '../utils/constants';
 
-const agent327PosterUrl = 'http://content.jwplatform.com/v2/media/uB8aRnu6/poster.jpg?width=720';
+const agent327PosterUrl = `http://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=720`;
 const primitiveAnimalsDescription = "If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.";
-const primitiveAnimalsPosterUrl = 'http://content.jwplatform.com/v2/media/zKT3MFut/poster.jpg?width=720';
+const primitiveAnimalsPosterUrl = `http://cdn.jwplayer.com/v2/media/zKT3MFut/poster.jpg?width=720`;
 
 Feature('seo').retry(3);
 

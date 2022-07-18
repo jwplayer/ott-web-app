@@ -21,7 +21,7 @@ export const isEpisode = (item: PlaylistItem) => {
   return item && typeof item.episodeNumber !== 'undefined';
 };
 
-export const getSeriesIdFromEpisode = (item: PlaylistItem) => {
+export const getSeriesIdFromEpisode = (item: PlaylistItem | undefined) => {
   if (!item || !isEpisode(item)) {
     return null;
   }
@@ -33,6 +33,10 @@ export const getSeriesIdFromEpisode = (item: PlaylistItem) => {
 
   if (seriesIdTag) {
     return seriesIdTag.split('_')[1];
+  }
+
+  if (item.seriesId) {
+    return item.seriesId;
   }
 
   return null;
