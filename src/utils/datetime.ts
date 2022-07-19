@@ -1,4 +1,11 @@
 /**
+ * Returns true when the given string is a valid date string
+ */
+export function isValidDateString(input: string) {
+  return input ? new Date(input).toString() !== 'Invalid Date' : false;
+}
+
+/**
  * Seconds to ISO8601 duration or date string
  */
 export function secondsToISO8601(input: number, timeOnly: boolean = false): string {
@@ -22,3 +29,23 @@ export function secondsToISO8601(input: number, timeOnly: boolean = false): stri
 
   return isoString;
 }
+
+/**
+ * Returns a Date instance with the time set to the beginning of the day
+ */
+export const startOfDay = () => {
+  const date = new Date();
+  date.setHours(0, 0, 0);
+
+  return date;
+};
+
+/**
+ * Returns a Date instance with the time set to the end of the day
+ */
+export const endOfDay = () => {
+  const date = new Date();
+  date.setHours(23, 59, 59);
+
+  return date;
+};
