@@ -24,22 +24,22 @@ describe('epgService', () => {
     // missing title
     const schedule1 = await epgService.parseSchedule([
       {
-        startsAt: '2022-07-19T09:00:00Z',
-        endsAt: '2022-07-19T12:00:00Z',
+        startTime: '2022-07-19T09:00:00Z',
+        endTime: '2022-07-19T12:00:00Z',
       },
     ]);
-    // missing startsAt
+    // missing startTime
     const schedule2 = await epgService.parseSchedule([
       {
         title: 'The title',
-        endsAt: '2022-07-19T12:00:00Z',
+        endTime: '2022-07-19T12:00:00Z',
       },
     ]);
-    // missing endsAt
+    // missing endTime
     const schedule3 = await epgService.parseSchedule([
       {
         title: 'The title',
-        startsAt: '2022-07-19T09:00:00Z',
+        startTime: '2022-07-19T09:00:00Z',
       },
     ]);
 
@@ -48,21 +48,21 @@ describe('epgService', () => {
     expect(schedule3.length).toEqual(0);
   });
 
-  test('parseSchedule should remove programs where the startsAt or endsAt are not valid ISO8601', async () => {
-    // invalid startsAt
+  test('parseSchedule should remove programs where the startTime or endTime are not valid ISO8601', async () => {
+    // invalid startTime
     const schedule1 = await epgService.parseSchedule([
       {
         title: 'Test item',
-        startsAt: 'this is not ISO8601',
-        endsAt: '2022-07-19T12:00:00Z',
+        startTime: 'this is not ISO8601',
+        endTime: '2022-07-19T12:00:00Z',
       },
     ]);
-    // invalid endsAt
+    // invalid endTime
     const schedule2 = await epgService.parseSchedule([
       {
         title: 'The title',
-        startsAt: '2022-07-19T09:00:00Z',
-        endsAt: 'this is not ISO8601',
+        startTime: '2022-07-19T09:00:00Z',
+        endTime: 'this is not ISO8601',
       },
     ]);
 
