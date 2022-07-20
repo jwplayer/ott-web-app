@@ -2,7 +2,7 @@ import { array, object, string } from 'yup';
 
 import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
-import { isValidDateString } from '#src/utils/datetime';
+import { addDays, endOfDay, isValidDateString, startOfDay, subDays } from '#src/utils/datetime';
 import { logDev } from '#src/utils/common';
 
 const AUTHENTICATION_HEADER = 'API-KEY';
@@ -49,7 +49,24 @@ const epgProgramSchema = object().shape({
 });
 
 class EpgService {
-  async transformProgram(data: unknown) {
+  /**
+   * Generate a static EpgProgram which is used to fill the schedule when empty.
+   */
+  generateStaticProgram(): EpgProgram {
+    return {
+      id: 'no-program',
+      title: 'No program',
+      description: 'There is no information available for this program.',
+      startTime: subDays(startOfDay(), 1).toJSON(),
+      endTime: addDays(endOfDay(), 1).toJSON(),
+      image: undefined,
+    };
+  }
+
+  /**
+   * Validate the given data with the epgProgramSchema and transform it into an EpgProgram
+   */
+  async transformProgram(data: unknown): Promise<EpgProgram> {
     const program = await epgProgramSchema.validate(data);
 
     return {
@@ -106,7 +123,11 @@ class EpgService {
    */
   async getSchedule(item: PlaylistItem) {
     const schedule = await this.fetchSchedule(item);
-    const programs = await this.parseSchedule(schedule);
+    let programs = await this.parseSchedule(schedule);
+
+    if (!programs.length) {
+      programs = [this.generateStaticProgram()];
+    }
 
     return {
       title: item.title,
