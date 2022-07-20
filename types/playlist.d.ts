@@ -44,6 +44,7 @@ export type PlaylistItem = {
   productIds?: string;
   mediaOffers?: MediaOffer[] | null;
   scheduleUrl?: string | null;
+  scheduleToken?: string;
   scheduleDataFormat?: string;
   scheduleDemo?: string;
 };

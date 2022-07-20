@@ -5,6 +5,8 @@ import { getDataOrThrow } from '#src/utils/api';
 import { isValidDateString } from '#src/utils/datetime';
 import { logDev } from '#src/utils/common';
 
+const AUTHENTICATION_HEADER = 'API-KEY';
+
 export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => {
   if (input.status === 'fulfilled') {
     return true;
@@ -77,8 +79,17 @@ class EpgService {
   async fetchSchedule(item: PlaylistItem) {
     if (!item.scheduleUrl) return undefined;
 
+    const headers = new Headers();
+
+    // add authentication token when `scheduleToken` is defined
+    if (item.scheduleToken) {
+      headers.set(AUTHENTICATION_HEADER, item.scheduleToken);
+    }
+
     try {
-      const response = await fetch(item.scheduleUrl);
+      const response = await fetch(item.scheduleUrl, {
+        headers,
+      });
 
       // await needed to ensure the error is caught here
       return await getDataOrThrow(response);
