@@ -1,23 +1,67 @@
+import { afterEach, beforeEach, describe, expect } from 'vitest';
+import { mockFetch, mockGet } from 'vi-fetch';
+
 import epgService, { EpgProgram } from '#src/services/epg.service';
 import scheduleFixture from '#src/fixtures/schedule.json';
 import livePlaylistFixture from '#src/fixtures/livePlaylist.json';
-import type { Playlist, PlaylistItem } from '#types/playlist';
+import type { Playlist } from '#types/playlist';
 
 const livePlaylist = livePlaylistFixture as Playlist;
 const scheduleData = scheduleFixture as EpgProgram[];
 
 describe('epgService', () => {
+  beforeEach(() => {
+    mockFetch.clearAll();
+  });
+
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
+  test('fetchSchedule performs a request', async () => {
+    const mock = mockGet('/epg/channel1.json').willResolve([]);
+    const data = await epgService.fetchSchedule(livePlaylist.playlist[0]);
+
+    expect(data).toEqual([]);
+    expect(mock).toHaveFetched();
+  });
+
   test('getSchedule fetches and validates a valid schedule', async () => {
-    const spy = vitest.spyOn(epgService, 'fetchSchedule').mockImplementation(() => Promise.resolve(scheduleData));
+    const mock = mockGet('/epg/channel1.json').willResolve(scheduleData);
     const schedule = await epgService.getSchedule(livePlaylist.playlist[0]);
 
-    expect(spy).toBeCalled();
+    expect(mock).toHaveFetched();
     expect(schedule.title).toEqual('Channel 1');
     expect(schedule.programs.length).toEqual(10);
+  });
+
+  test('getSchedules fetches and validates multiple schedules', async () => {
+    const channel1Mock = mockGet('/epg/channel1.json').willResolve(scheduleData);
+    const channel2Mock = mockGet('/epg/channel2.json').willResolve([]);
+    const channel3Mock = mockGet('/epg/does-not-exist.json').willFail('', 404, 'Not found');
+
+    // getSchedules for multiple playlist items
+    const schedules = await epgService.getSchedules(livePlaylist.playlist);
+
+    // make sure we are testing a playlist with three media items
+    expect(livePlaylistFixture.playlist.length).toBe(3);
+
+    // all channels have fetched
+    expect(channel1Mock).toHaveFetchedTimes(1);
+    expect(channel2Mock).toHaveFetchedTimes(1);
+    expect(channel3Mock).toHaveFetchedTimes(1);
+
+    // valid schedule with 10 programs
+    expect(schedules[0].title).toEqual('Channel 1');
+    expect(schedules[0].programs.length).toEqual(10);
+
+    // empty schedule
+    expect(schedules[1].title).toEqual('Channel 2');
+    expect(schedules[1].programs.length).toEqual(0);
+
+    // failed fetching the schedule request
+    expect(schedules[2].title).toEqual('Channel 3');
+    expect(schedules[2].programs.length).toEqual(0);
   });
 
   test('parseSchedule should remove programs where required fields are missing', async () => {
@@ -68,32 +112,5 @@ describe('epgService', () => {
 
     expect(schedule1.length).toEqual(0);
     expect(schedule2.length).toEqual(0);
-  });
-
-  test('getSchedules fetches and validates multiple schedules', async () => {
-    const spy = vitest.spyOn(epgService, 'fetchSchedule').mockImplementation((item: PlaylistItem) => {
-      if (item.title === 'Channel 1') return Promise.resolve(scheduleData);
-      if (item.title === 'Channel 2') return Promise.resolve([]);
-      return Promise.reject(new Error('Something went wrong'));
-    });
-
-    // getSchedules for multiple playlist items
-    const schedules = await epgService.getSchedules(livePlaylist.playlist);
-
-    // make sure we are testing a playlist with three media items
-    expect(livePlaylistFixture.playlist.length).toBe(3);
-    expect(spy).toBeCalledTimes(3);
-
-    // valid schedule with 10 programs
-    expect(schedules[0].title).toEqual('Channel 1');
-    expect(schedules[0].programs.length).toEqual(10);
-
-    // empty schedule
-    expect(schedules[1].title).toEqual('Channel 2');
-    expect(schedules[1].programs.length).toEqual(0);
-
-    // failed fetching the schedule request
-    expect(schedules[2].title).toEqual('Channel 3');
-    expect(schedules[2].programs.length).toEqual(0);
   });
 });
