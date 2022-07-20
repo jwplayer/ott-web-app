@@ -5,7 +5,6 @@ import epgService, { EpgProgram } from '#src/services/epg.service';
 import scheduleFixture from '#src/fixtures/schedule.json';
 import livePlaylistFixture from '#src/fixtures/livePlaylist.json';
 import type { Playlist } from '#types/playlist';
-import { addDays, endOfDay, startOfDay, subDays } from '#src/utils/datetime';
 
 const livePlaylist = livePlaylistFixture as Playlist;
 const scheduleData = scheduleFixture as EpgProgram[];
@@ -13,10 +12,12 @@ const scheduleData = scheduleFixture as EpgProgram[];
 describe('epgService', () => {
   beforeEach(() => {
     mockFetch.clearAll();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   test('fetchSchedule performs a request', async () => {
@@ -60,6 +61,9 @@ describe('epgService', () => {
     const channel3Mock = mockGet('/epg/does-not-exist.json').willFail('', 404, 'Not found');
     const channel4Mock = mockGet('/epg/network-error.json').willThrow(new Error('Network error'));
 
+    // mock the date
+    vi.setSystemTime(new Date(2022, 1, 1, 14, 30, 10, 500));
+
     const schedule2 = await epgService.getSchedule(livePlaylist.playlist[1]);
     const schedule3 = await epgService.getSchedule(livePlaylist.playlist[2]);
     const schedule4 = await epgService.getSchedule(livePlaylist.playlist[3]);
@@ -71,8 +75,8 @@ describe('epgService', () => {
       id: 'no-program',
       title: 'No program',
       description: 'There is no information available for this program.',
-      startTime: subDays(startOfDay(), 1).toJSON(),
-      endTime: addDays(endOfDay(), 1).toJSON(),
+      startTime: '2022-01-31T00:00:00.000Z',
+      endTime: '2022-02-02T23:59:59.999Z',
       image: undefined,
     });
 
@@ -83,8 +87,8 @@ describe('epgService', () => {
       id: 'no-program',
       title: 'No program',
       description: 'There is no information available for this program.',
-      startTime: subDays(startOfDay(), 1).toJSON(),
-      endTime: addDays(endOfDay(), 1).toJSON(),
+      startTime: '2022-01-31T00:00:00.000Z',
+      endTime: '2022-02-02T23:59:59.999Z',
       image: undefined,
     });
 
@@ -95,8 +99,8 @@ describe('epgService', () => {
       id: 'no-program',
       title: 'No program',
       description: 'There is no information available for this program.',
-      startTime: subDays(startOfDay(), 1).toJSON(),
-      endTime: addDays(endOfDay(), 1).toJSON(),
+      startTime: '2022-01-31T00:00:00.000Z',
+      endTime: '2022-02-02T23:59:59.999Z',
       image: undefined,
     });
   });
