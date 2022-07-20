@@ -5,7 +5,14 @@ import { getDataOrThrow } from '#src/utils/api';
 import { isValidDateString } from '#src/utils/datetime';
 import { logDev } from '#src/utils/common';
 
-export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => input.status === 'fulfilled';
+export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => {
+  if (input.status === 'fulfilled') {
+    return true;
+  }
+
+  logDev(`An error occurred resolving a promise: `, input.reason);
+  return false;
+};
 
 export type EpgChannel = {
   title: string;
