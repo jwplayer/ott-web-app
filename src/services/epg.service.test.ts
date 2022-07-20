@@ -22,8 +22,27 @@ describe('epgService', () => {
     const mock = mockGet('/epg/channel1.json').willResolve([]);
     const data = await epgService.fetchSchedule(livePlaylist.playlist[0]);
 
+    const request = mock.getRouteCalls()[0];
+    const requestHeaders = request?.[1]?.headers;
+
     expect(data).toEqual([]);
     expect(mock).toHaveFetched();
+    expect(requestHeaders).toEqual(new Headers()); // no headers expected
+  });
+
+  test('fetchSchedule adds authentication token', async () => {
+    const mock = mockGet('/epg/channel1.json').willResolve([]);
+    const item = Object.assign({}, livePlaylist.playlist[0]);
+
+    item.scheduleToken = 'AUTH-TOKEN';
+    const data = await epgService.fetchSchedule(item);
+
+    const request = mock.getRouteCalls()[0];
+    const requestHeaders = request?.[1]?.headers;
+
+    expect(data).toEqual([]);
+    expect(mock).toHaveFetched();
+    expect(requestHeaders).toEqual(new Headers({ 'API-KEY': 'AUTH-TOKEN' }));
   });
 
   test('getSchedule fetches and validates a valid schedule', async () => {
