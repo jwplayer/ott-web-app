@@ -32,7 +32,7 @@ describe('epgService', () => {
 
     expect(mock).toHaveFetched();
     expect(schedule.title).toEqual('Channel 1');
-    expect(schedule.programs.length).toEqual(10);
+    expect(schedule.programs.length).toEqual(14);
   });
 
   test('getSchedules fetches and validates multiple schedules', async () => {
@@ -53,7 +53,7 @@ describe('epgService', () => {
 
     // valid schedule with 10 programs
     expect(schedules[0].title).toEqual('Channel 1');
-    expect(schedules[0].programs.length).toEqual(10);
+    expect(schedules[0].programs.length).toEqual(14);
 
     // empty schedule
     expect(schedules[1].title).toEqual('Channel 2');
@@ -112,5 +112,68 @@ describe('epgService', () => {
 
     expect(schedule1.length).toEqual(0);
     expect(schedule2.length).toEqual(0);
+  });
+
+  test('parseSchedule should transform valid program entries', async () => {
+    const program1 = await epgService.transformProgram({
+      id: '1234-1234-1234-1234',
+      title: 'Test item',
+      startTime: '2022-07-19T12:00:00Z',
+      endTime: '2022-07-19T15:00:00Z',
+    });
+    const program2 = await epgService.transformProgram({
+      id: '1234-1234-1234-1234',
+      title: 'Test item 2',
+      startTime: '2022-07-19T12:00:00Z',
+      endTime: '2022-07-19T15:00:00Z',
+      chapterPointCustomProperties: [],
+    });
+    const program3 = await epgService.transformProgram({
+      id: '1234-1234-1234-1234',
+      title: 'Test item 3',
+      startTime: '2022-07-19T12:00:00Z',
+      endTime: '2022-07-19T15:00:00Z',
+      chapterPointCustomProperties: [
+        {
+          key: 'description',
+          value: 'A description',
+        },
+        {
+          key: 'image',
+          value: 'https://cdn.jwplayer/logo.jpg',
+        },
+        {
+          key: 'other-key',
+          value: 'this property should be ignored',
+        },
+      ],
+    });
+
+    expect(program1).toEqual({
+      id: '1234-1234-1234-1234',
+      title: 'Test item',
+      startTime: '2022-07-19T12:00:00Z',
+      endTime: '2022-07-19T15:00:00Z',
+      description: undefined,
+      image: undefined,
+    });
+
+    expect(program2).toEqual({
+      id: '1234-1234-1234-1234',
+      title: 'Test item 2',
+      startTime: '2022-07-19T12:00:00Z',
+      endTime: '2022-07-19T15:00:00Z',
+      description: undefined,
+      image: undefined,
+    });
+
+    expect(program3).toEqual({
+      id: '1234-1234-1234-1234',
+      title: 'Test item 3',
+      startTime: '2022-07-19T12:00:00Z',
+      endTime: '2022-07-19T15:00:00Z',
+      description: 'A description',
+      image: 'https://cdn.jwplayer/logo.jpg',
+    });
   });
 });

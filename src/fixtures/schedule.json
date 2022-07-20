@@ -146,6 +146,57 @@
       {
         "key": "image",
         "value": "https://www.themoviedb.org/t/p/w1066_and_h600_bestv2/akuD37ySZGUkXR7LNb1oOHCboy8.jpg"
+      },
+      {
+        "key": "other-property",
+        "value": "This property should be ignored"
+      }
+    ]
+  },
+  {
+    "id": "cbec3682-eae8-44d4-9cc1-a97b3e95413c",
+    "title": "Empty properties",
+    "startTime": "2022-07-15T07:00:00",
+    "endTime": "2022-07-15T07:40:00",
+    "chapterPointCustomProperties": []
+  },
+  {
+    "id": "c909c1ba-ba8f-485f-880e-12974b82819d",
+    "title": "No image",
+    "startTime": "2022-07-15T07:00:00",
+    "endTime": "2022-07-15T07:40:00",
+    "chapterPointCustomProperties": [
+      {
+        "key": "description",
+        "value": "Item description"
+      }
+    ]
+  },
+  {
+    "id": "6ab2c86e-d435-4311-a3bf-12a96c5f6603",
+    "title": "No description",
+    "startTime": "2022-07-15T07:00:00",
+    "endTime": "2022-07-15T07:40:00",
+    "chapterPointCustomProperties": [
+      {
+        "key": "image",
+        "value": "https://cdn.jwplayer.com/image.jpg"
+      }
+    ]
+  },
+  {
+    "id": "9507d674-506f-415f-85b6-cf32baaa2c2f",
+    "title": "Empty image and description",
+    "startTime": "2022-07-15T07:00:00",
+    "endTime": "2022-07-15T07:40:00",
+    "chapterPointCustomProperties": [
+      {
+        "key": "description",
+        "value": ""
+      },
+      {
+        "key": "image",
+        "value": ""
       }
     ]
   },

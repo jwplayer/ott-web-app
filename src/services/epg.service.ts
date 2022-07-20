@@ -34,30 +34,23 @@ const epgProgramSchema = object().shape({
   chapterPointCustomProperties: array().of(
     object().shape({
       key: string().required(),
-      value: string().required(),
+      value: string().test('required-but-empty', 'value is required', (value: unknown) => typeof value === 'string'),
     }),
   ),
 });
 
 class EpgService {
   async transformProgram(data: unknown) {
-    const incomingProgram = await epgProgramSchema.validate(data);
-    const transformed: EpgProgram = {
-      id: incomingProgram.id,
-      title: incomingProgram.title,
-      startTime: incomingProgram.startTime,
-      endTime: incomingProgram.endTime,
+    const program = await epgProgramSchema.validate(data);
+
+    return {
+      id: program.id,
+      title: program.title,
+      startTime: program.startTime,
+      endTime: program.endTime,
+      image: program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || undefined,
+      description: program.chapterPointCustomProperties?.find((item) => item.key === 'description')?.value || undefined,
     };
-
-    const customProperties = incomingProgram.chapterPointCustomProperties;
-
-    // map customProperties
-    if (customProperties) {
-      transformed.image = customProperties.find((item) => item.key === 'image')?.value || '';
-      transformed.description = customProperties.find((item) => item.key === 'description')?.value || '';
-    }
-
-    return transformed;
   }
 
   /**
@@ -75,11 +68,18 @@ class EpgService {
    * Fetch the schedule data for the given PlaylistItem
    */
   async fetchSchedule(item: PlaylistItem) {
-    if (!item.scheduleUrl) return [];
+    if (!item.scheduleUrl) return undefined;
 
-    const response = await fetch(item.scheduleUrl);
+    try {
+      const response = await fetch(item.scheduleUrl);
 
-    return getDataOrThrow(response);
+      // await needed to ensure the error is caught here
+      return await getDataOrThrow(response);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        logDev(`Fetch failed for EPG schedule: '${item.scheduleUrl}'`, error);
+      }
+    }
   }
 
   /**
@@ -87,14 +87,8 @@ class EpgService {
    * When there is no program (empty schedule) or the request fails, it returns a static program.
    */
   async getSchedule(item: PlaylistItem) {
-    let programs: EpgProgram[] = [];
-
-    try {
-      const schedule = await this.fetchSchedule(item);
-      programs = await this.parseSchedule(schedule);
-    } catch (error: unknown) {
-      logDev(error);
-    }
+    const schedule = await this.fetchSchedule(item);
+    const programs = await this.parseSchedule(schedule);
 
     return {
       title: item.title,
