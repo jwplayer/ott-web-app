@@ -12,7 +12,7 @@ import PlaylistContainer from '#src/containers/Playlist/PlaylistContainer';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { Shelf } from '#src/enum/PersonalShelf';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '#src/components/Shelf/Shelf';
 import usePlaylist from '#src/hooks/usePlaylist';
@@ -43,8 +43,12 @@ const Home = (): JSX.Element => {
   const content: Content[] = config?.content;
   const itemData: ItemData = createItemData(content);
 
-  const watchHistory = useWatchHistoryStore((state) => state.getPlaylist());
-  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
+  const { continueWatchingPlaylist, watchHistoryDictionary, watchedItem } = useWatchHistoryStore(({ getPlaylist, getDictionary, getWatchedItem }) => ({
+    continueWatchingPlaylist: getPlaylist(),
+    watchHistoryDictionary: getDictionary(),
+    watchedItem: getWatchedItem(),
+  }));
+
   const favorites = useFavoritesStore((state) => state.favorites);
 
   const { data: { playlist } = { playlist: [] } } = usePlaylist(content.find((el) => el.contentId)?.contentId as string);
@@ -55,7 +59,7 @@ const Home = (): JSX.Element => {
 
   const onCardClick = useCallback(
     (playlistItem: PlaylistItem, playlistId?: string) => {
-      history.push(cardUrl(playlistItem, playlistId, playlistId === PersonalShelf.ContinueWatching));
+      history.push(cardUrl(playlistItem, playlistId, playlistId === Shelf.ContinueWatching));
     },
     [history],
   );
@@ -78,7 +82,7 @@ const Home = (): JSX.Element => {
                 loading={isLoading}
                 error={error}
                 playlist={playlist}
-                watchHistory={playlist.feedid === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
+                watchHistory={playlist.feedid === Shelf.ContinueWatching ? watchHistoryDictionary : undefined}
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
                 enableTitle={contentItem.enableText}
@@ -103,8 +107,9 @@ const Home = (): JSX.Element => {
     const isTablet = !isDesktop && !isMobile;
 
     if (!item) return 0;
-    if (item.type === PersonalShelf.ContinueWatching && !watchHistory.playlist.length) return 0;
-    if (item.type === PersonalShelf.Favorites && !favorites.length) return 0;
+    if (item.type === Shelf.ContinueWatching && !continueWatchingPlaylist.playlist.length) return 0;
+    if (item.type === Shelf.Favorites && !favorites.length) return 0;
+    if (item.type === Shelf.Recommendations && !watchedItem) return 0;
 
     const calculateFeatured = () => {
       const tilesToShow = featuredTileBreakpoints[breakpoint];
@@ -131,10 +136,10 @@ const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (favorites || watchHistory) {
+    if (favorites || continueWatchingPlaylist || watchedItem) {
       (listRef.current as unknown as List)?.recomputeRowHeights();
     }
-  }, [favorites, watchHistory]);
+  }, [favorites, continueWatchingPlaylist, watchedItem]);
 
   return (
     <div className={styles.home}>

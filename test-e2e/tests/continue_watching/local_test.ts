@@ -3,7 +3,7 @@ import constants from '../../utils/constants';
 
 const videoLength = 231;
 
-Feature('watch_history - local').retry(3);
+Feature('continue_watching - local').retry(3);
 
 Before(({ I }) => {
   I.useConfig('test--no-cleeng');
@@ -13,14 +13,14 @@ Scenario('I can get my watch progress stored (locally)', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
   I.dontSee('Continue watching');
 
-  await playVideo(I, 100);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100);
 
   I.see('Continue watching');
 });
 
 Scenario('I can continue watching', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
-  await playVideo(I, 100);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100);
   I.click('Continue watching');
   await I.waitForPlayerPlaying('Agent 327');
   I.click('video');
@@ -31,7 +31,7 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
   I.seeCurrentUrlEquals(constants.baseUrl);
   I.dontSee('Continue watching');
 
-  await playVideo(I, 200);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 200);
   I.amOnPage(constants.baseUrl);
 
   I.see('Continue watching');
@@ -54,7 +54,7 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
 
 Scenario('Video removed from continue watching when finished', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
-  await playVideo(I, 100);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100);
   // Continue watching on video detail page
   I.see('Continue watching');
 
@@ -62,7 +62,7 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
   I.amOnPage(constants.baseUrl);
   I.see('Continue watching');
 
-  await playVideo(I, videoLength);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, videoLength);
 
   I.see('Start watching');
   I.dontSee('Continue watching');

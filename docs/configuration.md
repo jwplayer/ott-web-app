@@ -135,9 +135,13 @@ The eight-character Playlists IDs from the JW Player dashboard. These IDs popula
 
 **content[].type**
 
-It is  possible to use 'playlist', 'continue_watching' or 'favorites' as a type. With this, you can change the position of the shelves and turn on/off extra `continue_watching` and `favorites` shelves. 
+It is  possible to use 'playlist', 'continue_watching', 'favorites' or 'recommendations' as a type. With this, you can change the position of the shelves and turn on/off extra `continue_watching`, `favorites` and `recommendations` shelves. 
 
-If you want to include `favorites` / `continue_watching` shelf, you should also add a corresponding playlist with `watchlist` type to features section (`features.favoritesList` and `features.continueWatchingList`). To exclude the shelves, remove a corresponding array item and a playlist in `features`.
+If you want to include `favorites` / `continue_watching` / shelf, you should also add a corresponding playlist with `watchlist` type to features section (`features.favoritesList` and `features.continueWatchingList`). 
+
+If you want to include `recommendations` shelf, you should add a recommendations playlist to features section (`features.recommendationsPlaylist`) and also continue_watching watchlist (`features.continueWatchingList`. Recommendations playlist is also used to show Related Videos on a movie page.
+
+To exclude the shelves, remove a corresponding array item and a playlist in `features`.
 
 ```
 {
@@ -260,6 +264,8 @@ Set this parameter to `false` if you want to disable the "Share" button on the v
 **features.recommendationsPlaylist** (optional)
 
 The eight-character Playlist ID of the Recommendations playlist that you want to use to populate the "Related Videos" shelf in your site. Note that Recommendations requires a JW Player Enterprise license. For more information about Recommendations playlists, see [this JW Player Support article](https://support.jwplayer.com/customer/portal/articles/2191721-jw-recommendations).
+
+Recommendations playlist is also used to show 'Because you watched' shelf on the home screen.
 
 ---
 

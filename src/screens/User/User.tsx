@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow';
 
 import Favorites from '../../components/Favorites/Favorites';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
-import { PersonalShelf } from '../../enum/PersonalShelf';
+import { Shelf } from '../../enum/PersonalShelf';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl } from '../../utils/formatting';
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
@@ -95,7 +95,7 @@ const User = (): JSX.Element => {
           </Route>
           {favoritesList && (
             <Route path="/u/favorites">
-              <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
+              <PlaylistContainer type={Shelf.Favorites} showEmpty>
                 {({ playlist, error, isLoading }) => (
                   <Favorites
                     playlist={playlist.playlist}

@@ -1,5 +1,5 @@
-import { VideoProgressMinMax } from '../config';
-import { PersonalShelf } from '../enum/PersonalShelf';
+import { VideoProgressMinMax, DAY_IN_MS, BECAUSE_YOU_WATCHED_MAX_PERIOD } from '../config';
+import { Shelf } from '../enum/PersonalShelf';
 
 import { createStore } from './utils';
 
@@ -11,6 +11,7 @@ type WatchHistoryState = {
   playlistItemsLoaded: boolean;
   getItem: (item: PlaylistItem) => WatchHistoryItem | undefined;
   getPlaylist: () => Playlist;
+  getWatchedItem: () => PlaylistItem | undefined;
   getDictionary: () => { [key: string]: number };
 };
 
@@ -23,7 +24,7 @@ export const useWatchHistoryStore = createStore<WatchHistoryState>('WatchHistory
     }),
   getPlaylist: () =>
     ({
-      feedid: PersonalShelf.ContinueWatching,
+      feedid: Shelf.ContinueWatching,
       title: 'Continue watching',
       playlist: get()
         .watchHistory.filter(({ playlistItem, progress }) => !!playlistItem && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max)
@@ -35,4 +36,14 @@ export const useWatchHistoryStore = createStore<WatchHistoryState>('WatchHistory
 
       return dict;
     }, {}),
+  getWatchedItem: () => {
+    const playlist = get().watchHistory.find(({ playlistItem, progress, lastTimeWatched }) => {
+      // We need only an item watched not more than 60 days ago
+      const hasMaxPeriodExpired = !lastTimeWatched || (Date.now() - lastTimeWatched) / DAY_IN_MS > BECAUSE_YOU_WATCHED_MAX_PERIOD;
+
+      return !!playlistItem && progress > VideoProgressMinMax.Max && !hasMaxPeriodExpired;
+    });
+
+    return playlist?.playlistItem;
+  },
 }));

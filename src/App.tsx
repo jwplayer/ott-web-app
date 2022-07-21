@@ -12,7 +12,7 @@ import { initializeFavorites } from '#src/stores/FavoritesController';
 import { logDev } from '#src/utils/common';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { clearStoredConfig } from '#src/utils/configOverride';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { Shelf } from '#src/enum/PersonalShelf';
 import '#src/i18n/config';
 import '#src/styles/main.scss';
 
@@ -36,13 +36,13 @@ class App extends Component {
       await initializeAccount();
     }
 
-    // We only request favorites and continue_watching data if there is a corresponding content item
+    // We only request favorites, continue_watching or recommendations data if there is a corresponding content item
     // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink
-    if (config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
+    if (config.content.some((el) => el.type === Shelf.ContinueWatching || el.type === Shelf.Recommendations)) {
       await restoreWatchHistory();
     }
 
-    if (config.content.some((el) => el.type === PersonalShelf.Favorites)) {
+    if (config.content.some((el) => el.type === Shelf.Favorites)) {
       await initializeFavorites();
     }
   }

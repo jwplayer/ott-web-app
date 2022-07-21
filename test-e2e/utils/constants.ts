@@ -16,7 +16,10 @@ export default {
   paymentsUrl: `${baseUrl}u/payments`,
   offersUrl: `${baseUrl}u/payments?u=choose-offer`,
   filmsPlaylistUrl: `${baseUrl}p/${filmsPlaylistId}`,
+  agent327Title: 'Agent 327',
+  caminandes1Title: 'Caminandes 1: Llama Drama',
   agent327DetailUrl: `${baseUrl}m/uB8aRnu6/agent-327?r=${filmsPlaylistId}`,
+  caminandesDetailUrl: `${baseUrl}m/gZcSEpbE/caminandes-1-llama-drama?r=${filmsPlaylistId}`,
   elephantsDreamDetailUrl: `${baseUrl}m/8pN9r7vd/elephants-dream?r=${filmsPlaylistId}`,
   primitiveAnimalsDetailUrl: `${baseUrl}s/xdAqW8ya/primitive-animals?e=zKT3MFut`,
   agent327Description:

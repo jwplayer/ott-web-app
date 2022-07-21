@@ -1,4 +1,9 @@
-export type GetPlaylistParams = { page_limit?: string; related_media_id?: string; token?: string; search?: string };
+export type GetPlaylistParams = {
+  page_limit?: string;
+  related_media_id?: string | undefined;
+  token?: string;
+  search?: string;
+};
 
 export type Image = {
   src: string;

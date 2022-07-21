@@ -12,6 +12,14 @@ This watchlist contains movies a user would like to watch in the future. It has 
 - On the homepage, a 'favorite' shelf appears, allowing the user to watch a media item
 - The user menu shows a link to the list of favorites, including a 'clear' button
 
+## Because you watched watchlist
+
+This watchlist contains movies a user may like to watch in the future. It has the following behavior:
+
+- On the homepage, a 'Because you watched' shelf appears, allowing the user to watch a media item
+- Media items in the shelf are retrieved via a recommendations playlist based on the last watched video.
+- Last watched video should be watched more than 95% and not be older than 60 days. 
+
 ## Continue watchlist
 
 This watchlist contains movies a user has not entirely watched. It has the following behavior:
@@ -46,7 +54,8 @@ To ensure a **cross-device experience**, we standardize on the following datafor
 "history":[
          {
             "mediaid":"JfDmsRlE",
-            "progress":0.1168952164107527
+            "progress":0.1168952164107527,
+            "lastTimeWatched": 1658396819784
          }
       ]
 ```
@@ -94,7 +103,7 @@ For Cleeng we store the watch history in the `customer externalData` attribute. 
 curl 'https://mediastore-sandbox.cleeng.com/customers/123456789' \
   -X 'PATCH' \
   -H 'authorization: Bearer <token>' \
-  --data-raw '{"id":"123456789","externalData":{"history":[{"mediaid":"JfDmsRlE","progress":0.1168952164107527},{"mediaid":"3qMpbJM6","progress":null}],"favorites":[{"mediaid":"JfDmsRlE"}]}}'
+  --data-raw '{"id":"123456789","externalData":{"history":[{"mediaid":"JfDmsRlE","progress":0.1168952164107527, "lastTimeWatched":1658396819784},{"mediaid":"3qMpbJM6","progress":null, "lastTimeWatched":null}],"favorites":[{"mediaid":"JfDmsRlE"}]}}'
 ```
 
 Example data format
@@ -106,7 +115,8 @@ Example data format
       "history":[
          {
             "mediaid":"JfDmsRlE",
-            "progress":0.1168952164107527
+            "progress":0.1168952164107527,
+            "lastTimeWatched":1658396819784
          }
        ],
       "favorites":[
@@ -121,6 +131,6 @@ Example data format
 
 Cleeng customer `externalData` attribute has maxsize of 5000 symbols.
 
-The length of one stringified object of History equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only History objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for History. We also leave some extra space for possible further updates.
+The length of one stringified object of History equals to 84 symbols (84 x 30 items = 2520), one Favorites object equals to 22 symbols (22 * 30 items = 660). So in total we have 2520 + 660 = 3180 symbols.
 
 We rotate the oldest continue watching object to the first item position after its progress property gets a new value.

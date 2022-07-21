@@ -6,9 +6,9 @@ import LocatorOrString = CodeceptJS.LocatorOrString;
 
 const videoLength = 231;
 
-export async function playVideo(I: CodeceptJS.I, seekTo: number) {
-  I.amOnPage(constants.agent327DetailUrl + '&play=1');
-  await I.waitForPlayerPlaying('Agent 327');
+export async function playVideo(I: CodeceptJS.I, title: string, url: string, seekTo: number) {
+  I.amOnPage(url + '&play=1');
+  await I.waitForPlayerPlaying(title);
   await I.executeScript((seekTo) => {
     if (!window.jwplayer) {
       throw "Can't find jwplayer ref";

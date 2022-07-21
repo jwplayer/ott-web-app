@@ -25,7 +25,7 @@ export const restoreWatchHistory = async () => {
 
     const watchHistory = savedItems.map((item) => {
       if (watchHistoryItemsDict[item.mediaid]) {
-        return createWatchHistoryItem(watchHistoryItemsDict[item.mediaid], item.progress);
+        return createWatchHistoryItem(watchHistoryItemsDict[item.mediaid], item.progress, item.lastTimeWatched);
       }
     });
 
@@ -37,9 +37,10 @@ export const restoreWatchHistory = async () => {
 };
 
 export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {
-  return watchHistory.map(({ mediaid, progress }) => ({
+  return watchHistory.map(({ mediaid, progress, lastTimeWatched }) => ({
     mediaid,
     progress,
+    lastTimeWatched,
   }));
 };
 
@@ -54,13 +55,14 @@ export const persistWatchHistory = () => {
   persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
 };
 
-export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number): WatchHistoryItem => {
+export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number, lastTimeWatched: number | undefined): WatchHistoryItem => {
   return {
     mediaid: item.mediaid,
     title: item.title,
     tags: item.tags,
     duration: item.duration,
     progress: videoProgress,
+    lastTimeWatched,
     playlistItem: item,
   } as WatchHistoryItem;
 };
@@ -78,7 +80,7 @@ export const saveItem = (item: PlaylistItem, videoProgress: number | null) => {
 
   if (!videoProgress) return;
 
-  const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
+  const watchHistoryItem = createWatchHistoryItem(item, videoProgress, Date.now());
 
   const updatedHistory = watchHistory.filter(({ mediaid }) => mediaid !== watchHistoryItem.mediaid);
   updatedHistory.unshift(watchHistoryItem);

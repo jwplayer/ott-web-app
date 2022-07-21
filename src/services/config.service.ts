@@ -1,7 +1,7 @@
 import { string, boolean, array, object, SchemaOf, StringSchema, mixed } from 'yup';
 
 import type { Config, Content, Menu, Styling, Features, Cleeng } from '#types/Config';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { PersonalShelves, Shelf } from '#src/enum/PersonalShelf';
 import i18n from '#src/i18n/config';
 import { logDev } from '#src/utils/common';
 
@@ -16,9 +16,9 @@ import { logDev } from '#src/utils/common';
 const checkContentItems = (config: Config) => {
   const { content, features } = config;
 
-  [PersonalShelf.ContinueWatching, PersonalShelf.Favorites].forEach((type) => {
+  PersonalShelves.forEach((type) => {
     const hasAdditionalRowInContent = content.some((el) => el.type === type);
-    const isFavoritesRow = type === PersonalShelf.Favorites;
+    const isFavoritesRow = type === Shelf.Favorites;
     const playlistId = isFavoritesRow ? features?.favoritesList : features?.continueWatchingList;
 
     if (!playlistId && hasAdditionalRowInContent) {
@@ -37,7 +37,7 @@ const contentSchema: SchemaOf<Content> = object({
   featured: boolean().notRequired(),
   enableText: boolean().notRequired(),
   backgroundColor: string().nullable().notRequired(),
-  type: mixed().oneOf(['playlist', 'continue_watching', 'favorites']),
+  type: mixed().oneOf(['playlist', 'continue_watching', 'favorites', 'recommendations']),
 }).defined();
 
 const menuSchema: SchemaOf<Menu> = object().shape({

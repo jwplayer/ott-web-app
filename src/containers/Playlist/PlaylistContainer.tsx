@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 
-import { PersonalShelf, PersonalShelves } from '#src/enum/PersonalShelf';
+import { Shelf, PersonalShelves } from '#src/enum/PersonalShelf';
 import usePlaylist from '#src/hooks/usePlaylist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { PLAYLIST_LIMIT } from '#src/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type ChildrenParams = {
   playlist: Playlist;
@@ -16,7 +17,7 @@ type ChildrenParams = {
 
 type Props = {
   playlistId?: string;
-  type: 'playlist' | 'continue_watching' | 'favorites';
+  type: Shelf;
   relatedItem?: PlaylistItem;
   onPlaylistUpdate?: (playlist: Playlist) => void;
   children: (childrenParams: ChildrenParams) => JSX.Element;
@@ -25,23 +26,34 @@ type Props = {
 };
 
 const PlaylistContainer = ({ playlistId, type, onPlaylistUpdate, style, children, showEmpty = false }: Props): JSX.Element | null => {
-  const isAlternativeShelf = PersonalShelves.includes(playlistId as PersonalShelf);
+  const recommendationsPlaylist = useConfigStore((s) => s.config?.features?.recommendationsPlaylist) as string;
+  const favoritesPlaylist = useFavoritesStore((state) => state.getPlaylist());
+  const { continueWatchingPlaylist, watchedItem } = useWatchHistoryStore((state) => ({
+    continueWatchingPlaylist: state.getPlaylist(),
+    watchedItem: state.getWatchedItem(),
+  }));
+
+  const isAlternativeShelf = PersonalShelves.includes(playlistId as Shelf);
+  const isRecommendationsShelf = type === Shelf.Recommendations;
+
+  const id = isRecommendationsShelf ? recommendationsPlaylist : playlistId;
+  const playlistQueryEnabled = isRecommendationsShelf && !!watchedItem ? true : !isAlternativeShelf;
+  const related_media_id = isRecommendationsShelf ? watchedItem?.mediaid : undefined;
+
   const {
     isLoading,
     error,
     data: fetchedPlaylist = { title: '', playlist: [] },
-  } = usePlaylist(playlistId, { page_limit: PLAYLIST_LIMIT.toString() }, !isAlternativeShelf, true);
+  } = usePlaylist(id, { page_limit: PLAYLIST_LIMIT.toString(), related_media_id }, playlistQueryEnabled, !isRecommendationsShelf);
   let playlist = fetchedPlaylist;
-
-  const favoritesPlaylist = useFavoritesStore((state) => state.getPlaylist());
-  const watchHistoryPlaylist = useWatchHistoryStore((state) => state.getPlaylist());
 
   useEffect(() => {
     if (playlist && onPlaylistUpdate) onPlaylistUpdate(playlist);
   }, [playlist, onPlaylistUpdate]);
 
-  if (type === PersonalShelf.Favorites) playlist = favoritesPlaylist;
-  if (type === PersonalShelf.ContinueWatching) playlist = watchHistoryPlaylist;
+  if (type === Shelf.Favorites) playlist = favoritesPlaylist;
+  if (type === Shelf.ContinueWatching) playlist = continueWatchingPlaylist;
+  if (type === Shelf.Recommendations) playlist.title = `Because you watched ${watchedItem?.title}`;
 
   if (!playlistId && !type) {
     throw new Error('Playlist without contentId and type was set in the content config section. Please check the config validity');
