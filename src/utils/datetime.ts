@@ -1,12 +1,6 @@
 /**
- * Returns true when the given string is a valid date string
- */
-export function isValidDateString(input: string) {
-  return input ? new Date(input).toString() !== 'Invalid Date' : false;
-}
-
-/**
  * Seconds to ISO8601 duration or date string
+ * TODO: use date-fns to replace this util
  */
 export function secondsToISO8601(input: number, timeOnly: boolean = false): string {
   if (!input) {
@@ -29,41 +23,3 @@ export function secondsToISO8601(input: number, timeOnly: boolean = false): stri
 
   return isoString;
 }
-
-/**
- * Returns a Date instance with the time set to the beginning of the day
- */
-export const startOfDay = () => {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
-
-  return date;
-};
-
-/**
- * Returns a Date instance with the time set to the end of the day
- */
-export const endOfDay = () => {
-  const date = new Date();
-  date.setHours(23, 59, 59, 999);
-
-  return date;
-};
-
-/**
- * Add X days to the given date
- */
-export const addDays = (date: Date, days: number) => {
-  date.setDate(date.getDate() + days);
-
-  return date;
-};
-
-/**
- * Subtract X days from the given date
- */
-export const subDays = (date: Date, days: number) => {
-  date.setDate(date.getDate() - days);
-
-  return date;
-};
