@@ -13,14 +13,14 @@ Scenario('I can get my watch progress stored (locally)', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
   I.dontSee('Continue watching');
 
-  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100, videoLength);
 
   I.see('Continue watching');
 });
 
 Scenario('I can continue watching', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
-  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100, videoLength);
   I.click('Continue watching');
   await I.waitForPlayerPlaying('Agent 327');
   I.click('video');
@@ -31,7 +31,7 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
   I.seeCurrentUrlEquals(constants.baseUrl);
   I.dontSee('Continue watching');
 
-  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 200);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 200, videoLength);
   I.amOnPage(constants.baseUrl);
 
   I.see('Continue watching');
@@ -54,7 +54,7 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
 
 Scenario('Video removed from continue watching when finished', async ({ I }) => {
   I.amOnPage(constants.agent327DetailUrl);
-  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 100, videoLength);
   // Continue watching on video detail page
   I.see('Continue watching');
 
@@ -62,7 +62,7 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
   I.amOnPage(constants.baseUrl);
   I.see('Continue watching');
 
-  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, videoLength);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, videoLength, videoLength);
 
   I.see('Start watching');
   I.dontSee('Continue watching');

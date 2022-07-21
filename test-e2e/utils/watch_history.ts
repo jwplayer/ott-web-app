@@ -1,12 +1,8 @@
 import * as assert from 'assert';
 
-import constants from './constants';
-
 import LocatorOrString = CodeceptJS.LocatorOrString;
 
-const videoLength = 231;
-
-export async function playVideo(I: CodeceptJS.I, title: string, url: string, seekTo: number) {
+export async function playVideo(I: CodeceptJS.I, title: string, url: string, seekTo: number, videoLength: number) {
   I.amOnPage(url + '&play=1');
   await I.waitForPlayerPlaying(title);
   await I.executeScript((seekTo) => {
