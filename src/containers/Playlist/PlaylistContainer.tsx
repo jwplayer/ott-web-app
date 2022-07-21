@@ -33,7 +33,7 @@ const PlaylistContainer = ({ playlistId, type, onPlaylistUpdate, style, children
     watchedItem: state.getWatchedItem(),
   }));
 
-  const isAlternativeShelf = PersonalShelves.includes(playlistId as Shelf);
+  const isAlternativeShelf = PersonalShelves.some((shelfType) => shelfType === type);
   const isRecommendationsShelf = type === Shelf.Recommendations;
 
   const id = isRecommendationsShelf ? recommendationsPlaylist : playlistId;

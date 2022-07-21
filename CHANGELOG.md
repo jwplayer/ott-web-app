@@ -1,3 +1,21 @@
+## [2.4.2](https://github.com/jwplayer/ott-web-app/compare/v2.4.1...v2.4.2) (2022-07-19)
+
+
+### Bug Fixes
+
+* **project:** assets object not required anymore ([d17f6e4](https://github.com/jwplayer/ott-web-app/commit/d17f6e4781ade0808921931aef094d6adf274849))
+
+
+
+## [2.4.1](https://github.com/jwplayer/ott-web-app/compare/v2.4.0...v2.4.1) (2022-07-18)
+
+
+### Bug Fixes
+
+* **project:** bug fixes after preview check ([3e8a0df](https://github.com/jwplayer/ott-web-app/commit/3e8a0df1ebbd7963632302bc8d0974230bd3e611))
+
+
+
 # [2.4.0](https://github.com/jwplayer/ott-web-app/compare/v2.3.0...v2.4.0) (2022-07-18)
 
 

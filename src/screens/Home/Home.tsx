@@ -58,8 +58,8 @@ const Home = (): JSX.Element => {
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
-    (playlistItem: PlaylistItem, playlistId?: string) => {
-      history.push(cardUrl(playlistItem, playlistId, playlistId === Shelf.ContinueWatching));
+    (playlistItem, playlistId, type) => {
+      history.push(cardUrl(playlistItem, playlistId, type === Shelf.ContinueWatching));
     },
     [history],
   );
@@ -74,15 +74,16 @@ const Home = (): JSX.Element => {
     const playlistKey = contentItem.contentId || contentItem.type;
 
     return (
-      <PlaylistContainer key={playlistKey} type={contentItem.type} playlistId={contentItem.contentId} style={style}>
+      <PlaylistContainer key={`${playlistKey}_${index}`} type={contentItem.type} playlistId={contentItem.contentId} style={style}>
         {({ playlist, error, isLoading, style }) => (
           <div key={key} style={style} role="row" className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}>
             <div role="cell">
               <ShelfComponent
                 loading={isLoading}
                 error={error}
+                type={contentItem.type}
                 playlist={playlist}
-                watchHistory={playlist.feedid === Shelf.ContinueWatching ? watchHistoryDictionary : undefined}
+                watchHistory={contentItem.type === Shelf.ContinueWatching ? watchHistoryDictionary : undefined}
                 onCardClick={onCardClick}
                 onCardHover={onCardHover}
                 enableTitle={contentItem.enableText}

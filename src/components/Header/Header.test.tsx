@@ -5,6 +5,10 @@ import Button from '../Button/Button';
 
 import Header from './Header';
 
+vi.mock('react-router-dom', () => ({
+  NavLink: () => 'a',
+}));
+
 describe('<Header />', () => {
   test('renders header', () => {
     const playlistMenuItems = [<Button key="key" label="Home" to="/" />];

@@ -39,7 +39,9 @@ exports[`<Header /> > renders header 1`] = `
       <nav
         aria-label="menu"
         class="nav"
-      />
+      >
+        a
+      </nav>
       <div
         class="search"
       >
