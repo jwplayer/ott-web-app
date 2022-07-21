@@ -8,7 +8,8 @@ import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint
 import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
 import { findPlaylistImageForWidth } from '#src/utils/collection';
-import type { AccessModel, ContentType } from '#types/Config';
+import type { AccessModel } from '#types/Config';
+import type { Shelf as ShelfT } from '#src/enum/PersonalShelf';
 import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#src/components/TileDock/TileDock';
 import Card from '#src/components/Card/Card';
@@ -32,8 +33,8 @@ export const featuredTileBreakpoints: Breakpoints = {
 
 export type ShelfProps = {
   playlist: Playlist;
-  type: ContentType;
-  onCardClick: (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => void;
+  type: ShelfT;
+  onCardClick: (playlistItem: PlaylistItem, playlistId: string | undefined, type: ShelfT) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
   enableTitle?: boolean;

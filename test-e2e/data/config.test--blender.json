@@ -25,6 +25,11 @@
     {
       "backgroundColor": "#000000",
       "enableText": true,
+      "type": "recommendations"
+    },
+    {
+      "backgroundColor": "#000000",
+      "enableText": true,
       "type": "playlist",
       "contentId": "dGSUzs9o"
     },

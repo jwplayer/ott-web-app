@@ -1,11 +1,9 @@
-import * as assert from 'assert';
-
 import constants from '../../utils/constants';
 import { playVideo, checkProgress, checkElapsed } from '../../utils/watch_history';
 
 const videoLength = 231;
 
-Feature('watch_history - logged in').retry(3);
+Feature('continue_watching - logged in').retry(3);
 
 Before(({ I }) => {
   I.useConfig('test--accounts');
@@ -13,11 +11,11 @@ Before(({ I }) => {
 
 Scenario('I can get my watch history when logged in', async ({ I }) => {
   I.login();
-  await playVideo(I, 0);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 0, videoLength);
   I.see('Start watching');
   I.dontSee('Continue watching');
 
-  await playVideo(I, 80);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 80, videoLength);
 
   I.see('Continue watching');
   I.dontSee('Start watching');
@@ -71,7 +69,7 @@ Scenario('I do not see continue_watching videos on the home page and video page 
 
   I.dontSee('Continue watching');
 
-  await playVideo(I, 50);
+  await playVideo(I, constants.agent327Title, constants.agent327DetailUrl, 50, videoLength);
 
   I.amOnPage(constants.baseUrl);
 

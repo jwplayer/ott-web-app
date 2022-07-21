@@ -2,6 +2,8 @@
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
 
+import { Shelf } from '#src/enum/PersonalShelf';
+
 export type Config = {
   id?: string;
   siteName?: string;
@@ -26,12 +28,10 @@ export type ContentSigningConfig = {
   drmPolicyId?: string;
 };
 
-export type ContentType = 'playlist' | 'continue_watching' | 'favorites';
-
 export type Content = {
   contentId?: string;
   title?: string;
-  type: ContentType;
+  type: Shelf;
   featured?: boolean;
   enableText?: boolean;
   backgroundColor?: string | null;
@@ -40,7 +40,7 @@ export type Content = {
 export type Menu = {
   label: string;
   contentId: string;
-  type?: Extract<ContentType, 'playlist'>;
+  type?: Shelf.Playlist;
   filterTags?: string;
 };
 

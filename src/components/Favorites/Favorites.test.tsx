@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PersonalShelf } from '../../enum/PersonalShelf';
+import { Shelf } from '../../enum/PersonalShelf';
 import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
 
 import Favorites from './Favorites';
@@ -10,7 +10,7 @@ import { renderWithRouter } from '#test/testUtils';
 describe('<Favorites>', () => {
   test('renders and matches snapshot', () => {
     const { container } = renderWithRouter(
-      <PlaylistContainer type={PersonalShelf.Favorites}>
+      <PlaylistContainer type={Shelf.Favorites}>
         {({ playlist, error, isLoading }) => (
           <Favorites
             playlist={playlist.playlist}
