@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -9,12 +9,12 @@ import FormFeedback from '#src/components/FormFeedback/FormFeedback';
 import DialogBackButton from '#src/components/DialogBackButton/DialogBackButton';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import CheckCircle from '#src/icons/CheckCircle';
-import { ConfigContext } from '#src/providers/ConfigProvider';
 import type { Offer } from '#types/checkout';
 import { getOfferPrice, isSVODOffer } from '#src/utils/subscription';
 import type { FormErrors } from '#types/form';
 import { IS_DEV_BUILD } from '#src/utils/common';
 import type { ChooseOfferFormData, OfferType } from '#types/account';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   values: ChooseOfferFormData;
@@ -49,7 +49,7 @@ const ChooseOfferForm: React.FC<Props> = ({
   offerType,
   setOfferType,
 }: Props) => {
-  const { siteName } = useContext(ConfigContext);
+  const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation('account');
 
   const getFreeTrialText = (offer: Offer) => {

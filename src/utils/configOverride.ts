@@ -3,7 +3,7 @@ import { IS_DEV_BUILD } from '#src/utils/common';
 // In production, use local storage so the override persists indefinitely without the query string
 // In dev mode, use session storage so the override persists until the tab is closed and then resets
 const storage = IS_DEV_BUILD ? window.sessionStorage : window.localStorage;
-const CONFIG_HOST = import.meta.env.APP_CONFIG_API_HOST;
+const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
 const INCLUDE_TEST_CONFIGS = import.meta.env.APP_INCLUDE_TEST_CONFIGS;
 
 const configFileQueryKey = 'c';
@@ -16,6 +16,18 @@ const UNSAFE_ALLOW_DYNAMIC_CONFIG = import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CON
 export function getConfig() {
   return formatSourceLocation(getConfigOverride() || DEFAULT_SOURCE);
 }
+
+export const setStoredConfig = (value: string) => {
+  storage.setItem(configFileStorageKey, value);
+};
+
+export const getStoredConfig = () => {
+  return storage.getItem(configFileStorageKey)?.toLowerCase();
+};
+
+export const clearStoredConfig = () => {
+  storage.removeItem(configFileStorageKey);
+};
 
 function getConfigOverride() {
   const url = new URL(window.location.href);
@@ -36,14 +48,14 @@ function getConfigOverride() {
 
     // If it's valid, store it and return it
     if (isValidConfigSource(configQuery)) {
-      storage.setItem(configFileStorageKey, configQuery);
+      setStoredConfig(configQuery);
       return configQuery;
     }
 
     // Yes this falls through to look up the stored value if the query string is invalid and that's OK
   }
 
-  const storedSource = storage.getItem(configFileStorageKey)?.toLowerCase();
+  const storedSource = getStoredConfig();
 
   // Make sure the stored value is still valid before returning it
   if (storedSource && isValidConfigSource(storedSource)) {
@@ -98,8 +110,4 @@ export function addConfigParamToUrl(href: string) {
   }
 
   return url.toString();
-}
-
-export function clearStoredConfig() {
-  storage.removeItem(configFileStorageKey);
 }

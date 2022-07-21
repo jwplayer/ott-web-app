@@ -11,7 +11,7 @@
   "favorite": "Favorite",
   "remove_from_favorites": "Remove from favorites",
   "season_prefix": "Season ",
-  "series_not_found": "Series not found",
+  "series_error": "An error occurred while requesting series",
   "share": "Share",
   "sign_up_to_start_watching": "Sign up to start watching!",
   "start_watching": "Start watching",

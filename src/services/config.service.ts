@@ -82,7 +82,7 @@ const configSchema: SchemaOf<Config> = object({
   adSchedule: string().nullable(),
   assets: object({
     banner: string().notRequired(),
-  }).defined(),
+  }).notRequired(),
   content: array().of(contentSchema),
   menu: array().of(menuSchema),
   styling: stylingSchema.notRequired(),

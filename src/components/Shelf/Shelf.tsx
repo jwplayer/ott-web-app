@@ -8,7 +8,7 @@ import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint
 import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
 import { findPlaylistImageForWidth } from '#src/utils/collection';
-import type { AccessModel } from '#types/Config';
+import type { AccessModel, ContentType } from '#types/Config';
 import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#src/components/TileDock/TileDock';
 import Card from '#src/components/Card/Card';
@@ -32,7 +32,8 @@ export const featuredTileBreakpoints: Breakpoints = {
 
 export type ShelfProps = {
   playlist: Playlist;
-  onCardClick: (playlistItem: PlaylistItem, playlistId?: string) => void;
+  type: ContentType;
+  onCardClick: (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
   enableTitle?: boolean;
@@ -48,6 +49,7 @@ export type ShelfProps = {
 
 const Shelf: React.FC<ShelfProps> = ({
   playlist,
+  type,
   onCardClick,
   onCardHover,
   title,
@@ -79,7 +81,7 @@ const Shelf: React.FC<ShelfProps> = ({
         seriesId={item.seriesId}
         seasonNumber={item.seasonNumber}
         episodeNumber={item.episodeNumber}
-        onClick={isInView ? () => onCardClick(item, playlist.feedid) : undefined}
+        onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
         onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
         featured={featured}
         disabled={!isInView}
@@ -87,7 +89,20 @@ const Shelf: React.FC<ShelfProps> = ({
         isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
       />
     ),
-    [enableCardTitles, featured, imageSourceWidth, loading, onCardClick, onCardHover, playlist.feedid, watchHistory, accessModel, isLoggedIn, hasSubscription],
+    [
+      enableCardTitles,
+      featured,
+      imageSourceWidth,
+      loading,
+      onCardClick,
+      onCardHover,
+      playlist.feedid,
+      watchHistory,
+      accessModel,
+      isLoggedIn,
+      hasSubscription,
+      type,
+    ],
   );
 
   const renderRightControl = useCallback(

@@ -5,7 +5,7 @@ import type { Playlist, PlaylistItem } from '#types/playlist';
 
 const getFiltersFromConfig = (config: Config, playlistId: string): string[] => {
   const menuItem = config.menu.find((item) => item.contentId === playlistId);
-  const filters = menuItem?.filterTags?.split(',');
+  const filters = menuItem?.filterTags?.split(',').filter(Boolean);
 
   return filters || [];
 };
@@ -14,18 +14,6 @@ const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
   if (!filter) return playlist;
 
   return playlist.filter(({ tags }) => (tags ? tags.split(',').includes(filter) : false));
-};
-
-const getFiltersFromSeries = (series: PlaylistItem[]): string[] =>
-  series.reduce(
-    (filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')),
-    [],
-  );
-
-const filterSeries = (playlist: PlaylistItem[], filter: string) => {
-  if (!filter) return playlist;
-
-  return playlist.filter(({ seasonNumber }) => seasonNumber === filter);
 };
 
 const chunk = <T>(input: T[], size: number) => {
@@ -135,9 +123,7 @@ const deepCopy = (obj: unknown) => {
 
 export {
   getFiltersFromConfig,
-  getFiltersFromSeries,
   filterPlaylist,
-  filterSeries,
   chunk,
   findPlaylistImageForWidth,
   generatePlaylistPlaceholder,

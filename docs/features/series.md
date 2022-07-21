@@ -91,24 +91,26 @@ GET playlist/xdAqW8ya
 }
 ```
 
-## Native series - Coming soon
+## Native series
 
-JW Player will get native series management from the JW Dashboard:
+JW Player has native series management from the JW Dashboard:
 
 - simplifies the series creation workflow
 - automatically calculate the number of episodes and duration of series
 - contains trailers and bonus content
-  This section describes how this will work. 
+
+This section describes how this will work. 
 
 ### Creating native series in the dashboard
 
 1. Customers define series 
-2. Customers publish their series by putting an episode into a playlist
-3. The episode can be recognized with the tag `Series` 
+2. Customers create media items each of which represents a series
+3. Customers add a `seriesId` custom param to created media items
+4. Customers publish their series by putting media items into a playlist
 
 ### Native series in shelves and libraries
 
-[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlis refer to series. These can be recognized with the tag `Series`
+[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlis refer to series. These can be recognized with the `seriesId` custom param.
 
 ```
 GET playlist\<playlistid>
@@ -117,7 +119,7 @@ GET playlist\<playlistid>
      "medaid":"dwEE1oBP",
      "title":"Video Title",
      "description":"Lorem ipsum",
-     "tags":["Series"],
+     "seriesId": "aSZZ1oBP",
      "images":[],
      "sources":[],
      "tracks":[]
@@ -125,39 +127,21 @@ GET playlist\<playlistid>
 ]
 ```
 
-Since the playlist includes an episode metadata, it needs to be  overwritten with a series metadata. This series metadata is retrieve using the the the following endpoint:
-
-```
-GET series?media_ids=dwEE1oBP,1q2w3e4r
-{
- "dwEE1oBP": {
-     "series": [
-         {
-             "serieid": "ssFF1oBP",
-             "title": "My series",
-             "description": "Lorem Ipsum",
-             "total_duration": 9000,
-             "episode_count": 15,
-             "season_count": 2,
-             "custom_field": "abc"
-         }
-     ]
- },
- "1q2w3e4r": null
-}
-```
+We do not show episode number and season number for separate series episodes. If you click on such an item, you will see a simple movie page.
 
 ### Native series detail window
 
-The serie detail window loads the series playlist using a GET Series endpoint:
+The series detail window loads the series playlist using a GET Series endpoint:
 
 ```
-  GET series/{series_id}
+  GET /apps/series/{series_id}
   { 
   "title": "A Series of Unfortunate Events",
   "description": "The series follow’
-  "showrunner": "Mark Hudis"
   "series_id": "12345678",
+  "total_duration": 12,
+  "episode_count": 2,
+  "episodes": [],
   "seasons": [
    {
      "season_id": "abcdefgh",
@@ -179,10 +163,10 @@ The serie detail window loads the series playlist using a GET Series endpoint:
        },
      ]
    }
-   ]}]
+  ]}]
 ```
 
-Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently we use the a [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id):
+Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently [watchlist playlist](https://developer.jwplayer.com/jwplayer/reference/get_apps-watchlists-playlist-id) can be used:
 
 ```
    GET playlist?mediaids=zxcvbnma,lkjhgfds
@@ -206,3 +190,7 @@ This playlist type is developed for [user watchlists](user-watchlist.md) but wil
 ## Native series and search
 
 Customer are advised to exclude series episodes from the search playlists by using tags. Likewise customers should ensure the series title and description are part of the first episode.
+
+## Coming soon
+
+We will add full Favorites and Continue Watching support

@@ -4,6 +4,21 @@ JW OTT Webapp is an open-source, dynamically generated video website built aroun
 
 To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify.app/](https://jw-ott-webapp.netlify.app/).
 
+**Look at amazing examples built on the basis of JW OTT Webapp!**
+
+<table>
+  <tr>
+    <td>
+      <p>Symphony (<a href="https://symphony.live/">symphony.live</a>)</p>
+      <img src="./images/symphony.png" alt="hover text">
+    </td>
+    <td>
+      <p>FansChoice.tv (<a href="https://www.fanschoice.tv/">fanschoice.tv</a>)</p>
+      <img src="./images/fanschoice.png" alt="accessibility text">
+    </td>
+  </tr>
+</table>
+
 ## Documentation
 
 - [Configure JW OTT Webapp](./docs/configuration.md)

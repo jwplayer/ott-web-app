@@ -1,24 +1,9 @@
 import { addQueryParams } from '../utils/formatting';
-import { API_BASE_URL } from '../config';
+import { getDataOrThrow } from '../utils/api';
 
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
-
-/**
- * Get data
- * @param response
- */
-export const getDataOrThrow = async (response: Response) => {
-  const data = await response.json();
-
-  if (!response.ok) {
-    const message = `Request '${response.url}' failed with ${response.status}`;
-
-    throw new Error(data?.message || message);
-  }
-
-  return data;
-};
+import type { Series, GetSeriesParams } from '#types/series';
 
 /**
  * Transform incoming media items
@@ -58,7 +43,7 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
   }
 
   const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, params);
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 
@@ -77,7 +62,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
   }
 
   const pathname = `/apps/watchlists/${playlistId}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
 
@@ -94,7 +79,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
  */
 export const getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
   const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
-  const url = addQueryParams(`${API_BASE_URL}${pathname}`, { token });
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { token });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
   const mediaItem = data.playlist[0];
@@ -119,4 +104,22 @@ export const getMediaByIds = async (ids: string[], tokens?: Record<string, strin
   }
 
   return responses.map((result) => (result.status === 'fulfilled' ? result.value : null)).filter(notEmpty);
+};
+
+/**
+ * Get series by id
+ * @param {string} id
+ * @param params
+ */
+export const getSeries = async (id: string, params: GetSeriesParams = {}): Promise<Series | undefined> => {
+  if (!id) {
+    throw new Error('Series ID is required');
+  }
+
+  const pathname = `/apps/series/${id}`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
+  const response = await fetch(url);
+  const data = await getDataOrThrow(response);
+
+  return data;
 };

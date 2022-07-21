@@ -136,7 +136,7 @@ const Header: React.FC<Props> = ({
           </div>
         )}
         <nav className={styles.nav} aria-label="menu">
-          {logoLoaded ? children : null}
+          {logoLoaded || !logoSrc ? children : null}
         </nav>
         <div className={styles.search}>{searchEnabled ? search : null}</div>
         {renderUserActions()}

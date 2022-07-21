@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "2.3.0",
+  "version": "2.4.2",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "Robin van Zanten",
@@ -11,6 +11,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "APP_INCLUDE_TEST_CONFIGS=1 vite",
+    "start:dev-api": "APP_API_BASE_URL=https://content-portal.jwplatform.com yarn start",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",

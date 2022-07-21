@@ -1,21 +1,22 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { ConfigContext } from '../providers/ConfigProvider';
 import type { PlaylistItem } from '../../types/playlist';
 
+import { useConfigStore } from '#src/stores/ConfigStore';
+
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
-  const config = useContext(ConfigContext);
+  const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
   useEffect(() => {
-    if (!window.jwpltx || !config.analyticsToken || !player || !item) {
+    if (!window.jwpltx || !analyticsToken || !player || !item) {
       return;
     }
 
     const playlistItemHandler = () => {
-      if (!config.analyticsToken) return;
+      if (!analyticsToken) return;
 
-      window.jwpltx.ready(config.analyticsToken, window.location.hostname, feedId, item.mediaid, item.title);
+      window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title);
     };
 
     const completeHandler = () => {
