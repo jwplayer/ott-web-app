@@ -17,7 +17,7 @@ import Sidebar from '#src/components/Sidebar/Sidebar';
 import DynamicBlur from '#src/components/DynamicBlur/DynamicBlur';
 import MenuButton from '#src/components/MenuButton/MenuButton';
 import UserMenu from '#src/components/UserMenu/UserMenu';
-import ConfigSelect from '#src/components/ConfigSelect';
+import DevTools from '#src/components/DevTools/DevTools';
 import { addQueryParam } from '#src/utils/history';
 
 type LayoutProps = {
@@ -33,12 +33,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const { searchPlaylist } = features || {};
   const { footerText, dynamicBlur } = styling || {};
 
-  const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
-    ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({
+  const { blurImage, searchQuery, searchActive, userMenuOpen, showDebugTools } = useUIStore(
+    ({ blurImage, searchQuery, searchActive, userMenuOpen, showDebugTools }) => ({
       blurImage,
       searchQuery,
       searchActive,
       userMenuOpen,
+      showDebugTools,
     }),
     shallow,
   );
@@ -73,10 +74,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   const loginButtonClickHandler = () => {
+    setSideBarOpen(false);
     history.push(addQueryParam(history, 'u', 'login'));
   };
 
   const signUpButtonClickHandler = () => {
+    setSideBarOpen(false);
     history.push(addQueryParam(history, 'u', 'create-account'));
   };
 
@@ -89,7 +92,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     if (!cleengId) return null;
 
     return isLoggedIn ? (
-      <UserMenu showPaymentsItem={accessModel !== 'AVOD'} />
+      <UserMenu showPaymentsItem={accessModel !== 'AVOD'} onClick={loginButtonClickHandler} />
     ) : (
       <div className={styles.buttonContainer}>
         <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
@@ -137,9 +140,15 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           ))}
         </Header>
         <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
-          <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
+          <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} onClick={() => setSideBarOpen(false)} />
           {menu.map((item) => (
-            <MenuButton key={item.contentId} label={item.label} to={`/p/${item.contentId}`} tabIndex={sideBarOpen ? 0 : -1} />
+            <MenuButton
+              key={item.contentId}
+              label={item.label}
+              to={`/p/${item.contentId}`}
+              tabIndex={sideBarOpen ? 0 : -1}
+              onClick={() => setSideBarOpen(false)}
+            />
           ))}
           <hr className={styles.divider} />
           {renderUserActions()}
@@ -152,8 +161,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         </div>
       )}
 
-      {/* Config select control to improve testing experience */}
-      {import.meta.env.APP_INCLUDE_TEST_CONFIGS && <ConfigSelect />}
+      {showDebugTools && <DevTools />}
     </div>
   );
 };

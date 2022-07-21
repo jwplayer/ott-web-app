@@ -34,9 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
             <Close />
           </IconButton>
         </div>
-        <nav className={styles.group} onClick={onClose}>
-          {children}
-        </nav>
+        <nav className={styles.group}>{children}</nav>
       </div>
     </Fragment>
   );

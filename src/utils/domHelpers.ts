@@ -1,3 +1,5 @@
+import { GITHUB_PUBLIC_BASE_URL } from '#src/env';
+
 export const canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 let size: number;
@@ -7,7 +9,7 @@ export function getPublicUrl(url: string) {
     return url;
   }
 
-  const baseUrl = import.meta.env.APP_GITHUB_PUBLIC_BASE_URL || '';
+  const baseUrl = GITHUB_PUBLIC_BASE_URL || '';
   const trimSlashes = (s: string) => s.replace(/^\/+|\/+$/g, '');
 
   return (baseUrl ? '/' : '') + [baseUrl, url].map(trimSlashes).join('/');

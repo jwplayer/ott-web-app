@@ -37,7 +37,7 @@ Scenario('I can see my favorited videos on the home page', async ({ I }) => {
 });
 
 Scenario('I do not see favorited videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig('test--watchlists');
+  I.useConfig('watchlists--config');
 
   I.amOnPage('http://localhost:8080/');
   I.dontSee('Favorites');

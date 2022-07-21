@@ -1,20 +1,15 @@
-import { IS_DEV_BUILD } from '#src/utils/common';
+import { IS_DEV_OR_TEST_BUILD, API_HOST, INCLUDE_CONFIGS, UNSAFE_ALLOW_DYNAMIC_CONFIG, CONFIG_DEFAULT_SOURCE, CONFIG_ALLOWED_SOURCES } from '#src/env';
+import { useUIStore } from '#src/stores/UIStore';
 
 // In production, use local storage so the override persists indefinitely without the query string
 // In dev mode, use session storage so the override persists until the tab is closed and then resets
-const storage = IS_DEV_BUILD ? window.sessionStorage : window.localStorage;
-const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
-const INCLUDE_TEST_CONFIGS = import.meta.env.APP_INCLUDE_TEST_CONFIGS;
+const storage = IS_DEV_OR_TEST_BUILD ? window.sessionStorage : window.localStorage;
 
 const configFileQueryKey = 'c';
 const configFileStorageKey = 'config-file-override';
 
-const DEFAULT_SOURCE = import.meta.env.APP_CONFIG_DEFAULT_SOURCE?.toLowerCase();
-const ALLOWED_SOURCES = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').map((source) => source.toLowerCase()) || [];
-const UNSAFE_ALLOW_DYNAMIC_CONFIG = import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG;
-
 export function getConfig() {
-  return formatSourceLocation(getConfigOverride() || DEFAULT_SOURCE);
+  return formatSourceLocation(getConfigOverride() || CONFIG_DEFAULT_SOURCE);
 }
 
 export const setStoredConfig = (value: string) => {
@@ -22,7 +17,7 @@ export const setStoredConfig = (value: string) => {
 };
 
 export const getStoredConfig = () => {
-  return storage.getItem(configFileStorageKey)?.toLowerCase();
+  return storage.getItem(configFileStorageKey);
 };
 
 export const clearStoredConfig = () => {
@@ -33,7 +28,9 @@ function getConfigOverride() {
   const url = new URL(window.location.href);
 
   if (url.searchParams.has(configFileQueryKey)) {
-    const configQuery = url.searchParams.get(configFileQueryKey)?.toLowerCase();
+    useUIStore.setState({ showDebugTools: false });
+
+    const configQuery = url.searchParams.get(configFileQueryKey);
 
     // Strip the config file query param from the URL and history since it's stored locally,
     // and then the url stays clean and the user will be less likely to play with the param
@@ -53,6 +50,10 @@ function getConfigOverride() {
     }
 
     // Yes this falls through to look up the stored value if the query string is invalid and that's OK
+  } else {
+    if (INCLUDE_CONFIGS !== 'dev') {
+      useUIStore.setState({ showDebugTools: true });
+    }
   }
 
   const storedSource = getStoredConfig();
@@ -66,16 +67,12 @@ function getConfigOverride() {
 }
 
 function isValidConfigSource(source: string) {
-  // Dynamic values are valid as long as they are defined
-  if (UNSAFE_ALLOW_DYNAMIC_CONFIG) {
+  // Dynamic values are valid as long as they are defined, value can be 0 | 1
+  if (Number(UNSAFE_ALLOW_DYNAMIC_CONFIG)) {
     return !!source;
   }
 
-  if (INCLUDE_TEST_CONFIGS && source.startsWith('test--')) {
-    return true;
-  }
-
-  return ALLOWED_SOURCES.indexOf(source) >= 0;
+  return CONFIG_ALLOWED_SOURCES.indexOf(source) >= 0;
 }
 
 function formatSourceLocation(source?: string) {
@@ -83,12 +80,12 @@ function formatSourceLocation(source?: string) {
     return undefined;
   }
 
-  if (source.match(/^[a-z,\d]{8}$/)) {
-    return `${CONFIG_HOST}/apps/configs/${source}.json`;
+  if (['prod', 'test', 'dev'].includes(INCLUDE_CONFIGS) && source.includes('--config')) {
+    return `/configs/${INCLUDE_CONFIGS}/${source}.json`;
   }
 
-  if (INCLUDE_TEST_CONFIGS && source.startsWith('test--')) {
-    return `/test-data/config.${source}.json`;
+  if (source.match(/^[a-z,\d]{8}$/)) {
+    return `${API_HOST}/apps/configs/${source}.json`;
   }
 
   return source;

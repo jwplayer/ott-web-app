@@ -10,8 +10,9 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "start": "APP_INCLUDE_TEST_CONFIGS=1 vite",
-    "start:dev-api": "APP_API_BASE_URL=https://content-portal.jwplatform.com yarn start",
+    "start": "vite",
+    "start:e2e-test": "APP_MODE=test APP_INCLUDE_CONFIGS=test vite",
+    "start:dev-api": "APP_API_BASE_URL=https://content-portal.jwplatform.com APP_INCLUDE_CONFIGS=dev yarn start",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",

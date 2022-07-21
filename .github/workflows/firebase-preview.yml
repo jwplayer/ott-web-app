@@ -10,9 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: yarn && APP_UNSAFE_ALLOW_DYNAMIC_CONFIG=1 APP_INCLUDE_TEST_CONFIGS=1 yarn build
+        run: yarn && APP_UNSAFE_ALLOW_DYNAMIC_CONFIG=1 APP_INCLUDE_CONFIGS=test yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           expires: 30d

@@ -4,7 +4,7 @@ import passwordUtils from '../utils/password_utils';
 Feature('register').retry(3);
 
 Before(async ({ I }) => {
-  I.useConfig('test--accounts', constants.registerUrl);
+  I.useConfig('accounts--config', constants.registerUrl);
 });
 
 Scenario('I can open the register modal', async ({ I }) => {

@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly APP_CONFIG_DEFAULT_SOURCE: string | undefined;
   readonly APP_CONFIG_ALLOWED_SOURCES: string | undefined;
   readonly APP_UNSAFE_ALLOW_DYNAMIC_CONFIG: string | undefined;
+  readonly APP_INCLUDE_CONFIGS: 'dev' | 'test' | 'prod';
 }
 
 interface ImportMeta {

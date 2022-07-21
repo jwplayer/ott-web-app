@@ -10,11 +10,12 @@ import type {
   PaymentWithPayPal,
   UpdateOrder,
 } from '#types/checkout';
-import { getOverrideIP, IS_DEV_BUILD } from '#src/utils/common';
+import { getOverrideIP } from '#src/utils/common';
+import { IS_DEV_OR_TEST_BUILD } from '#src/env';
 
 export const getOffer: GetOffer = async (payload, sandbox) => {
   // @ts-ignore
-  return get(sandbox, `/offers/${payload.offerId}${IS_DEV_BUILD && getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
+  return get(sandbox, `/offers/${payload.offerId}${IS_DEV_OR_TEST_BUILD && getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
 };
 
 export const createOrder: CreateOrder = async (payload, sandbox, jwt) => {
@@ -34,7 +35,7 @@ export const paymentWithoutDetails: PaymentWithoutDetails = async (payload, sand
 };
 
 export const paymentWithAdyen: PaymentWithAdyen = async (payload, sandbox, jwt) => {
-  if (IS_DEV_BUILD) {
+  if (IS_DEV_OR_TEST_BUILD) {
     // @ts-ignore
     payload.customerIP = getOverrideIP();
   }

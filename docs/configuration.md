@@ -30,6 +30,15 @@ A space separated list of 8-character IDs and/or url paths for config files that
 
   **Warning** - Generally the `APP_UNSAFE_ALLOW_DYNAMIC_CONFIG` option should only be used for dev and test, because it opens up your application so that anyone can specify their own config to run on your domain 
 
+---
+
+**APP_INCLUDE_CONFIGS** (dev | test | prod) - We can specify which config folder to use to get local configs from. It can be useful to differentiate having several environments. Some configs can be used for testing, some for production, some for the dev environment. We differentiate them this way.
+    - `dev` these configs are used internally by JW Player developers to test new features
+    - `test` these configs are used for end-to-end testing and local development.
+    - `prod` configs in this folders are used both for production and local manual testing. They are also available on our preview page: https://app-preview.jwplayer.com/
+  
+(!) Configs have `${NAME}--config.json` format, where words are separated by `-` sign. We also add `siteName` to the beginning of each config. You can also notice that every folder has its default config which is used in case a dynamically retrieved value can't resolved (default value is set in `APP_CONFIG_DEFAULT_SOURCE` env).
+
 ## Available Configuration Parameters
 
 These are the available configuration parameters for the JW OTT Webapp's config.json file.

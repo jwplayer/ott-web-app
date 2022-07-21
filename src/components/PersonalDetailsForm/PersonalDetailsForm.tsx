@@ -9,7 +9,7 @@ import Radio from '../Radio/Radio';
 import DateField from '../DateField/DateField';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import FormFeedback from '../FormFeedback/FormFeedback';
-import { IS_DEV_BUILD } from '../../utils/common';
+import { IS_DEV_OR_TEST_BUILD } from '../../env';
 
 import styles from './PersonalDetailsForm.module.scss';
 
@@ -68,7 +68,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'personal_details-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_OR_TEST_BUILD ? 'personal_details-form' : undefined} noValidate>
       <h2 className={styles.title}>{t('personal_details.title')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       {fields.firstNameLastName?.enabled ? (

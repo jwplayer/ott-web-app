@@ -15,6 +15,7 @@ import { saveItem } from '#src/stores/WatchHistoryController';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { API_HOST } from '#src/env';
 
 type Props = {
   item: PlaylistItem;
@@ -37,7 +38,7 @@ const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActi
   const loadingRef = useRef(false);
   const seekToRef = useRef(-1);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
-  const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${player}.js`;
+  const scriptUrl = `${API_HOST}/libraries/${player}.js`;
   const enableWatchHistory = continueWatchingList && !isTrailer;
   const setPlayer = useOttAnalytics(item, feedId);
   const handlePlaylistItemCallback = usePlaylistItemCallback();

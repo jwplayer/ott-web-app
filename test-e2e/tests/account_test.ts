@@ -16,7 +16,7 @@ const lastName = 'Tester';
 Feature('account').retry(3);
 
 Before(({ I }) => {
-  I.useConfig('test--subscription');
+  I.useConfig('subscription--config');
 });
 
 Scenario('I can see my account data', async ({ I }) => {

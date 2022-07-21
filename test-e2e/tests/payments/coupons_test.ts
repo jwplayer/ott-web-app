@@ -14,7 +14,7 @@ Feature('payments-coupon').retry(3);
 Before(async ({ I }) => {
   // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
   overrideIP(I);
-  I.useConfig('test--subscription');
+  I.useConfig('subscription--config');
 });
 
 Scenario('I can redeem coupons', async ({ I }) => {

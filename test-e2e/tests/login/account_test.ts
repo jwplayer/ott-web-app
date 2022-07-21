@@ -10,7 +10,7 @@ const formFeedback = 'div[class*=formFeedback]';
 Feature('login - account').retry(3);
 
 Before(({ I }) => {
-  I.useConfig('test--accounts', constants.loginUrl);
+  I.useConfig('accounts--config', constants.loginUrl);
   I.waitForElement(constants.loginFormSelector, 10);
 });
 

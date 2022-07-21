@@ -1,3 +1,5 @@
+import { IS_DEV_BUILD } from '../env';
+
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | null;
   const callable = (...args: unknown[]) => {
@@ -49,8 +51,6 @@ export function calculateContrastColor(color: string) {
   // http://stackoverflow.com/a/3943023/112731
   return rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114 > 186 ? '#000000' : '#FFFFFF';
 }
-
-export const IS_DEV_BUILD = import.meta.env.DEV;
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
   if (IS_DEV_BUILD) {

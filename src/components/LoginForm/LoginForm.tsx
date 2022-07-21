@@ -12,7 +12,7 @@ import Visibility from '../../icons/Visibility';
 import VisibilityOff from '../../icons/VisibilityOff';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '../../utils/common';
+import { IS_DEV_OR_TEST_BUILD } from '../../env';
 
 import styles from './LoginForm.module.scss';
 
@@ -35,7 +35,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const history = useHistory();
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'login-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_OR_TEST_BUILD ? 'login-form' : undefined} noValidate>
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField

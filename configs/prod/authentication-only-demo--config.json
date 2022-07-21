@@ -1,13 +1,13 @@
 {
   "assets": {
-    "banner": "https://cdn.jwplayer.com/images/nwthWC1U.png"
+    "banner": "/images/logo.png"
   },
   "content": [
     {
       "enableText": true,
       "featured": true,
       "type": "playlist",
-      "contentId": "1zmOSKaL"
+      "contentId": "JSKF03bk"
     },
     {
       "enableText": true,
@@ -20,40 +20,34 @@
     {
       "enableText": true,
       "type": "playlist",
-      "contentId": "Od6sNmYL"
+      "contentId": "dGSUzs9o"
     },
     {
       "enableText": true,
       "type": "playlist",
-      "contentId": "W4I2TupL"
+      "contentId": "xQaFzykq"
     }
   ],
   "menu": [
     {
       "label": "Films",
-      "contentId": "1zmOSKaL",
+      "contentId": "dGSUzs9o",
       "type": "playlist",
       "filterTags": "Action,Comedy,Fantasy,Drama"
     },
     {
       "label": "Courses",
-      "contentId": "W4I2TupL",
+      "contentId": "xQaFzykq",
       "type": "playlist",
       "filterTags": "Beginner,Advanced"
     }
   ],
   "features": {
-    "recommendationsPlaylist": "PMEZ9NJK",
-    "searchPlaylist": "WhJF9BxP",
-    "favoritesList": "t29IQEhj",
-    "continueWatchingList": "t29IQEhj"
+    "recommendationsPlaylist": "IHBjjkSN",
+    "searchPlaylist": "D4soEviP",
+    "favoritesList": "34CFUkws",
+    "continueWatchingList": "IJvotI4w"
   },
-  "integrations": {
-    "cleeng": {
-      "useSandbox": true
-    }
-  },
-  "description": "Blender demo site",
   "styling": {
     "backgroundColor": null,
     "highlightColor": null,
@@ -63,6 +57,14 @@
     "shelfTitles": true,
     "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)"
   },
-  "player": "0EXRiFaG",
+  "description": "Blender demo site",
+  "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
+  "integrations": {
+    "cleeng": {
+      "id": "440058292",
+      "useSandbox": true
+    }
+  },
+  "player": "ou7L8htR",
   "siteName": "Blender"
 }

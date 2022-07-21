@@ -19,3 +19,10 @@ export function removeQueryParam(history: History, key: string): string {
 
   return `${history.location.pathname}${searchParams ? `?${searchParams}` : ''}`;
 }
+
+export function getQueryParam(value: string): string {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const params = Object.fromEntries(urlSearchParams.entries());
+
+  return params[value];
+}
