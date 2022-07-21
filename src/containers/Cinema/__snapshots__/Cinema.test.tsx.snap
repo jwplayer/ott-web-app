@@ -13,6 +13,7 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
       >
         <div
           class="container"
+          data-testid="player-container"
         >
           <div />
         </div>
