@@ -2,8 +2,9 @@ import { array, object, string } from 'yup';
 
 import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
-import { isValidDateString } from '#src/utils/datetime';
+import { addDays, endOfDay, isValidDateString, startOfDay, subDays } from '#src/utils/datetime';
 import { logDev } from '#src/utils/common';
+import i18n from '#src/i18n/config';
 
 const AUTHENTICATION_HEADER = 'API-KEY';
 
@@ -49,7 +50,24 @@ const epgProgramSchema = object().shape({
 });
 
 class EpgService {
-  async transformProgram(data: unknown) {
+  /**
+   * Generate a static EpgProgram which is used to fill the schedule when empty.
+   */
+  generateStaticProgram({ id, title, description }: { id: string; title: string; description: string }): EpgProgram {
+    return {
+      id,
+      title,
+      description,
+      startTime: subDays(startOfDay(), 1).toJSON(),
+      endTime: addDays(endOfDay(), 1).toJSON(),
+      image: undefined,
+    };
+  }
+
+  /**
+   * Validate the given data with the epgProgramSchema and transform it into an EpgProgram
+   */
+  async transformProgram(data: unknown): Promise<EpgProgram> {
     const program = await epgProgramSchema.validate(data);
 
     return {
@@ -77,7 +95,10 @@ class EpgService {
    * Fetch the schedule data for the given PlaylistItem
    */
   async fetchSchedule(item: PlaylistItem) {
-    if (!item.scheduleUrl) return undefined;
+    if (!item.scheduleUrl) {
+      logDev('Tried requesting a schedule for an item with missing `scheduleUrl`', item);
+      return undefined;
+    }
 
     const headers = new Headers();
 
@@ -106,7 +127,17 @@ class EpgService {
    */
   async getSchedule(item: PlaylistItem) {
     const schedule = await this.fetchSchedule(item);
-    const programs = await this.parseSchedule(schedule);
+    let programs = await this.parseSchedule(schedule);
+
+    if (!programs.length) {
+      programs = [
+        this.generateStaticProgram({
+          id: `no-program-${item.mediaid}`,
+          title: schedule ? i18n.t('epg:empty_schedule_program.title') : i18n.t('epg:failed_schedule_program.title'),
+          description: schedule ? i18n.t('epg:empty_schedule_program.description') : i18n.t('epg:failed_schedule_program.description'),
+        }),
+      ];
+    }
 
     return {
       title: item.title,

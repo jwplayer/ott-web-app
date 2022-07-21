@@ -41,7 +41,7 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('#src/i18n/config', () => ({
-  default: () => ({
+  default: {
     t: (str: string) => str,
-  }),
+  },
 }));

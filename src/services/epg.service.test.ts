@@ -12,10 +12,12 @@ const scheduleData = scheduleFixture as EpgProgram[];
 describe('epgService', () => {
   beforeEach(() => {
     mockFetch.clearAll();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   test('fetchSchedule performs a request', async () => {
@@ -54,33 +56,91 @@ describe('epgService', () => {
     expect(schedule.programs.length).toEqual(14);
   });
 
+  test('getSchedule adds a static program when the schedule is empty or fails', async () => {
+    const mock1 = mockGet('/epg/channel2.json').willResolve([]);
+    const mock2 = mockGet('/epg/does-not-exist.json').willFail('', 404, 'Not found');
+    const mock3 = mockGet('/epg/network-error.json').willThrow(new Error('Network error'));
+
+    // mock the date
+    vi.setSystemTime(new Date(2022, 1, 1, 14, 30, 10, 500));
+
+    const emptySchedule = await epgService.getSchedule(livePlaylist.playlist[1]);
+    const failedSchedule = await epgService.getSchedule(livePlaylist.playlist[2]);
+    const networkErrorSchedule = await epgService.getSchedule(livePlaylist.playlist[3]);
+
+    expect(mock1).toHaveFetched();
+    expect(emptySchedule.title).toEqual('Channel 2');
+    expect(emptySchedule.programs.length).toEqual(1);
+    expect(emptySchedule.programs[0]).toMatchObject({
+      id: 'no-program-NS2Q213',
+      title: 'epg:empty_schedule_program.title',
+      description: 'epg:empty_schedule_program.description',
+      startTime: '2022-01-31T00:00:00.000Z',
+      endTime: '2022-02-02T23:59:59.999Z',
+      image: undefined,
+    });
+
+    expect(mock2).toHaveFetched();
+    expect(failedSchedule.title).toEqual('Channel 3');
+    expect(failedSchedule.programs.length).toEqual(1);
+    expect(failedSchedule.programs[0]).toMatchObject({
+      id: 'no-program-JDODS53',
+      title: 'epg:failed_schedule_program.title',
+      description: 'epg:failed_schedule_program.description',
+      startTime: '2022-01-31T00:00:00.000Z',
+      endTime: '2022-02-02T23:59:59.999Z',
+      image: undefined,
+    });
+
+    expect(mock3).toHaveFetched();
+    expect(networkErrorSchedule.title).toEqual('Channel 4');
+    expect(networkErrorSchedule.programs.length).toEqual(1);
+    expect(networkErrorSchedule.programs[0]).toMatchObject({
+      id: 'no-program-SDF23CJ',
+      title: 'epg:failed_schedule_program.title',
+      description: 'epg:failed_schedule_program.description',
+      startTime: '2022-01-31T00:00:00.000Z',
+      endTime: '2022-02-02T23:59:59.999Z',
+      image: undefined,
+    });
+  });
+
   test('getSchedules fetches and validates multiple schedules', async () => {
     const channel1Mock = mockGet('/epg/channel1.json').willResolve(scheduleData);
     const channel2Mock = mockGet('/epg/channel2.json').willResolve([]);
     const channel3Mock = mockGet('/epg/does-not-exist.json').willFail('', 404, 'Not found');
+    const channel4Mock = mockGet('/epg/network-error.json').willThrow(new Error('Network error'));
 
     // getSchedules for multiple playlist items
     const schedules = await epgService.getSchedules(livePlaylist.playlist);
 
-    // make sure we are testing a playlist with three media items
-    expect(livePlaylistFixture.playlist.length).toBe(3);
+    // make sure we are testing a playlist with four media items
+    expect(livePlaylistFixture.playlist.length).toBe(4);
 
     // all channels have fetched
     expect(channel1Mock).toHaveFetchedTimes(1);
     expect(channel2Mock).toHaveFetchedTimes(1);
     expect(channel3Mock).toHaveFetchedTimes(1);
+    expect(channel4Mock).toHaveFetchedTimes(1);
 
     // valid schedule with 10 programs
     expect(schedules[0].title).toEqual('Channel 1');
     expect(schedules[0].programs.length).toEqual(14);
 
-    // empty schedule
+    // empty schedule (with static program)
     expect(schedules[1].title).toEqual('Channel 2');
-    expect(schedules[1].programs.length).toEqual(0);
+    expect(schedules[1].programs.length).toEqual(1);
+    expect(schedules[1].programs[0].title).toEqual('epg:empty_schedule_program.title');
 
-    // failed fetching the schedule request
+    // failed fetching the schedule request (with static program)
     expect(schedules[2].title).toEqual('Channel 3');
-    expect(schedules[2].programs.length).toEqual(0);
+    expect(schedules[2].programs.length).toEqual(1);
+    expect(schedules[2].programs[0].title).toEqual('epg:failed_schedule_program.title');
+
+    // network error (with static program)
+    expect(schedules[3].title).toEqual('Channel 4');
+    expect(schedules[3].programs.length).toEqual(1);
+    expect(schedules[3].programs[0].title).toEqual('epg:failed_schedule_program.title');
   });
 
   test('parseSchedule should remove programs where required fields are missing', async () => {

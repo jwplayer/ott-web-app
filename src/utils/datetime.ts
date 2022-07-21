@@ -35,7 +35,7 @@ export function secondsToISO8601(input: number, timeOnly: boolean = false): stri
  */
 export const startOfDay = () => {
   const date = new Date();
-  date.setHours(0, 0, 0);
+  date.setHours(0, 0, 0, 0);
 
   return date;
 };
@@ -45,7 +45,25 @@ export const startOfDay = () => {
  */
 export const endOfDay = () => {
   const date = new Date();
-  date.setHours(23, 59, 59);
+  date.setHours(23, 59, 59, 999);
+
+  return date;
+};
+
+/**
+ * Add X days to the given date
+ */
+export const addDays = (date: Date, days: number) => {
+  date.setDate(date.getDate() + days);
+
+  return date;
+};
+
+/**
+ * Subtract X days from the given date
+ */
+export const subDays = (date: Date, days: number) => {
+  date.setDate(date.getDate() - days);
 
   return date;
 };

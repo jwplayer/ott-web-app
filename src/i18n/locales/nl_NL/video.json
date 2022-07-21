@@ -9,6 +9,7 @@
   "episode_not_found": "",
   "episodes": "",
   "favorite": "",
+  "favorites_warning": "",
   "remove_from_favorites": "",
   "season_prefix": "",
   "series_error": "",
@@ -20,6 +21,6 @@
   "trailer": "",
   "video_not_found": "",
   "watch_trailer": "",
-  "share_video": "",
-  "favorites_warning": ""
+  "favorites_warning_plural": "",
+  "share_video": ""
 }
