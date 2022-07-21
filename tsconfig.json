@@ -41,6 +41,7 @@
     // Fallthrough must be documented
     "noFallthroughCasesInSwitch": true,
     "types": [
+      "vi-fetch/matchers",
       "vitest/globals",
       "@testing-library/jest-dom",
       "@types/jwplayer"
