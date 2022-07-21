@@ -67,10 +67,10 @@ export function getOverrideIP() {
 }
 
 /**
- * True value:
+ * Here we check that the value in the custom param can be considered to be True:
  * 1. Boolean true value
  * 2. Any number !== 0
- * 3. 'yes' or 'true' string
+ * 3. 'yes' or 'true' string in lower / upper case
  */
 export const hasTrueValue = (value: undefined | null | string | number | boolean): boolean => {
   // null, undefined or empty string
@@ -87,11 +87,42 @@ export const hasTrueValue = (value: undefined | null | string | number | boolean
     return Boolean(value);
   }
 
-  if (!Number.isNaN(value)) {
+  if (!isNaN(Number(value))) {
     return Number(value) > 0;
   }
 
   const strValue = value.toLowerCase();
 
   return strValue === 'true' || strValue === 'yes';
+};
+
+/**
+ * @deprecated We should use true and hasTrueValue check for new properties
+ * Here we check that the value in the custom param can be considered to be False:
+ * 1. Boolean false value
+ * 2. Number === 0
+ * 3. 'no' or 'false' string in lower / upper case
+ */
+export const hasFalseValue = (value: undefined | null | string | number | boolean): boolean => {
+  // null, undefined or empty string
+  if (!value) {
+    return false;
+  }
+
+  if (typeof value === 'boolean') {
+    return !value;
+  }
+
+  // 0 equals to false, other numbers equal to true
+  if (typeof value === 'number') {
+    return !value;
+  }
+
+  if (!isNaN(Number(value))) {
+    return Number(value) === 0;
+  }
+
+  const strValue = value.toLowerCase();
+
+  return strValue === 'false' || strValue === 'no';
 };
