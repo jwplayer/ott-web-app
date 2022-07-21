@@ -1,192 +1,140 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import classNames from 'classnames';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import styles from './Cinema.module.scss';
 
-import { VideoProgressMinMax } from '#src/config';
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
-import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { addScript } from '#src/utils/dom';
-import useOttAnalytics from '#src/hooks/useOttAnalytics';
-import { deepCopy } from '#src/utils/collection';
-import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
-import useEventCallback from '#src/hooks/useEventCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import Fade from '#src/components/Animation/Fade/Fade';
+import IconButton from '#src/components/IconButton/IconButton';
+import ArrowLeft from '#src/icons/ArrowLeft';
+import Player from '#src/components/Player/Player';
+import type { JWPlayer } from '#types/jwplayer';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { VideoProgressMinMax } from '#src/config';
 
 type Props = {
+  open: boolean;
   item: PlaylistItem;
   onPlay?: () => void;
   onPause?: () => void;
   onComplete?: () => void;
-  onUserActive?: () => void;
-  onUserInActive?: () => void;
+  onClose?: () => void;
   feedId?: string;
-  isTrailer?: boolean;
-  playerId?: string;
+  title: string;
+  videoMeta: string;
+  isSeries: boolean;
+  seriesMeta?: string;
+  episodeTitle?: string;
 };
 
-const Cinema: React.FC<Props> = ({ item, onPlay, onPause, onComplete, onUserActive, onUserInActive, feedId, isTrailer = false }: Props) => {
+const calculateVideoStartTime = (item: PlaylistItem) => {
+  const { watchHistory } = useWatchHistoryStore.getState();
+  const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
+
+  if (watchHistoryItem && watchHistoryItem.progress > VideoProgressMinMax.Min && watchHistoryItem.progress < VideoProgressMinMax.Max) {
+    return watchHistoryItem.progress * watchHistoryItem.duration;
+  }
+
+  return 0;
+};
+
+const Cinema: React.FC<Props> = ({ open, item, title, videoMeta, isSeries, seriesMeta, episodeTitle, onPlay, onPause, onComplete, onClose, feedId }: Props) => {
+  const { t } = useTranslation();
+
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
+  const enableWatchHistory = !!continueWatchingList;
 
-  const playerElementRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<JWPlayer>();
-  const loadingRef = useRef(false);
-  const seekToRef = useRef(-1);
-  const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
-  const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${player}.js`;
-  const enableWatchHistory = continueWatchingList && !isTrailer;
-  const setPlayer = useOttAnalytics(item, feedId);
+  const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [userActive, setUserActive] = useState(true);
+  const [startTime, setStartTime] = useState(enableWatchHistory ? calculateVideoStartTime(item) : 0);
+
   const handlePlaylistItemCallback = usePlaylistItemCallback();
 
   const getProgress = useCallback((): number | null => {
-    if (!playerRef.current) return null;
+    if (!playerInstance) return null;
 
-    const progress = playerRef.current.getPosition() / item.duration;
-
-    return progress;
-  }, [item]);
+    return playerInstance.getPosition() / item.duration;
+  }, [playerInstance, item.duration]);
 
   useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress()) : null));
 
-  const handlePlay = useEventCallback(() => {
-    onPlay && onPlay();
-  });
-
-  const handlePause = useEventCallback(() => {
-    enableWatchHistory && saveItem(item, getProgress());
-    onPause && onPause();
-  });
-
-  const handleComplete = useEventCallback(() => {
-    enableWatchHistory && saveItem(item, getProgress());
-    onComplete && onComplete();
-  });
-
-  const handleUserActive = useEventCallback(() => onUserActive && onUserActive());
-
-  const handleUserInactive = useEventCallback(() => onUserInActive && onUserInActive());
-
-  const handleBeforePlay = useEventCallback(() => {
-    if (seekToRef.current > 0) {
-      playerRef.current?.seek(seekToRef.current);
-      seekToRef.current = -1;
-    }
-  });
-
-  const attachEvents = useCallback(() => {
-    playerRef.current?.on('beforePlay', handleBeforePlay);
-    playerRef.current?.on('complete', handleComplete);
-    playerRef.current?.on('play', handlePlay);
-    playerRef.current?.on('pause', handlePause);
-    playerRef.current?.on('userActive', handleUserActive);
-    playerRef.current?.on('userInactive', handleUserInactive);
-  }, [playerRef, handleComplete, handlePlay, handlePause, handleUserActive, handleUserInactive, handleBeforePlay]);
-
-  const detachEvents = useCallback(() => {
-    playerRef.current?.off('complete');
-    playerRef.current?.off('play');
-    playerRef.current?.off('pause');
-    playerRef.current?.off('userActive');
-    playerRef.current?.off('userInactive');
+  const handleReady = useCallback((player?: JWPlayer) => {
+    setPlayerInstance(player);
   }, []);
 
-  useEffect(() => {
-    if (!window.jwplayer && !loadingRef.current) {
-      loadingRef.current = true;
+  const handlePlay = useCallback(() => {
+    setIsPlaying(true);
+    onPlay && onPlay();
+  }, [onPlay]);
 
-      addScript(scriptUrl).then(() => {
-        setLibLoaded(true);
-        loadingRef.current = false;
-      });
-    }
-  }, [scriptUrl]);
+  const handlePause = useCallback(() => {
+    setIsPlaying(false);
+    enableWatchHistory && saveItem(item, getProgress());
+    onPause && onPause();
+  }, [enableWatchHistory, getProgress, item, onPause]);
 
-  useEffect(() => {
-    if (!player) {
-      return;
-    }
+  const handleComplete = useCallback(() => {
+    enableWatchHistory && saveItem(item, getProgress());
+    onComplete && onComplete();
+  }, [enableWatchHistory, getProgress, item, onComplete]);
 
-    const calculateWatchHistoryProgress = () => {
-      const { watchHistory } = useWatchHistoryStore.getState();
-      const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
-
-      if (
-        watchHistoryItem &&
-        enableWatchHistory &&
-        watchHistoryItem.progress > VideoProgressMinMax.Min &&
-        watchHistoryItem.progress < VideoProgressMinMax.Max
-      ) {
-        seekToRef.current = watchHistoryItem.progress * watchHistoryItem.duration;
-      } else {
-        seekToRef.current = -1;
-      }
-    };
-
-    const loadPlaylist = () => {
-      if (!item || !playerRef.current) {
-        return;
-      }
-
-      const currentItem = playerRef.current?.getPlaylistItem() as PlaylistItem | null;
-
-      // we already loaded this item
-      if (currentItem && currentItem.mediaid === item.mediaid) {
-        return;
-      }
-      // load new item
-      playerRef.current.load([deepCopy(item)]);
-      calculateWatchHistoryProgress();
-    };
-
-    const initializePlayer = () => {
-      if (!window.jwplayer || !playerElementRef.current) return;
-
-      playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
-
-      playerRef.current.setup({
-        playlist: [deepCopy(item)],
-        aspect: false,
-        width: '100%',
-        height: '100%',
-        mute: false,
-        autostart: true,
-        repeat: false,
-      });
-
-      attachEvents();
-      calculateWatchHistoryProgress();
-      setPlayer(playerRef.current);
-
-      playerRef.current.setPlaylistItemCallback(handlePlaylistItemCallback);
-    };
-
-    if (playerRef.current) {
-      return loadPlaylist();
-    }
-
-    if (libLoaded) {
-      initializePlayer();
-    }
-  }, [libLoaded, item, enableWatchHistory, setPlayer, handlePlaylistItemCallback, detachEvents, attachEvents, player]);
+  const handleUserActive = useCallback(() => setUserActive(true), []);
+  const handleUserInactive = useCallback(() => setUserActive(false), []);
 
   useEffect(() => {
-    return () => {
-      if (playerRef.current) {
-        // Detaching events before component unmount
-        detachEvents();
-        playerRef.current.remove();
-      }
-    };
-  }, [detachEvents]);
+    if (enableWatchHistory) setStartTime(calculateVideoStartTime(item));
+  }, [enableWatchHistory, item, open]);
+
+  useEffect(() => {
+    if (open) setUserActive(true);
+  }, [open]);
 
   return (
-    <div className={classNames(styles.cinema, { [styles.fill]: !isTrailer })}>
-      <div ref={playerElementRef} />
-    </div>
+    <Fade open={open}>
+      <div className={styles.playerContainer}>
+        <div className={styles.player}>
+          <Player
+            playerId={player}
+            feedId={feedId}
+            item={item}
+            onReady={handleReady}
+            onPlay={handlePlay}
+            onPause={handlePause}
+            onComplete={handleComplete}
+            onUserActive={handleUserActive}
+            onUserInActive={handleUserInactive}
+            onPlaylistItemCallback={handlePlaylistItemCallback}
+            startTime={startTime}
+          />
+        </div>
+        <Fade open={!isPlaying || userActive}>
+          <div className={styles.playerOverlay}>
+            <div className={styles.playerContent}>
+              <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
+                <ArrowLeft />
+              </IconButton>
+              <div>
+                <h2 className={styles.title}>{title}</h2>
+                <div className={styles.metaContainer}>
+                  {isSeries && (
+                    <div className={styles.seriesMeta}>
+                      <strong>{seriesMeta}</strong> - {episodeTitle}
+                    </div>
+                  )}
+                  <div className={styles.meta}>{videoMeta}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </div>
+    </Fade>
   );
 };
 

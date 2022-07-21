@@ -10,7 +10,7 @@ import styles from './Series.module.scss';
 import useEntitlement from '#src/hooks/useEntitlement';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
-import { episodeURL } from '#src/utils/formatting';
+import { episodeURL, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
 import Filter from '#src/components/Filter/Filter';
 import type { PlaylistItem } from '#src/../types/playlist';
 import VideoComponent from '#src/components/Video/Video';
@@ -19,7 +19,7 @@ import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
 import { copyToClipboard } from '#src/utils/dom';
-import { filterSeries, getFiltersFromSeries, getNextItemId, enrichMediaItems } from '#src/utils/series';
+import { enrichMediaItems, filterSeries, getFiltersFromSeries, getNextItemId } from '#src/utils/series';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -28,12 +28,16 @@ import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { toggleFavorite } from '#src/stores/FavoritesController';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import { getSeriesIdFromEpisode } from '#src/utils/media';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import Cinema from '#src/containers/Cinema/Cinema';
+import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
 
 type SeriesRouteParams = {
   id: string;
 };
 
 const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
+  const breakpoint = useBreakpoint();
   const { t } = useTranslation('video');
   const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
@@ -72,9 +76,13 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
+  const isLargeScreen = breakpoint >= Breakpoint.md;
+  const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
+  const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
+
   // Favorite
-  const { isFavorited } = useFavoritesStore((state) => ({
-    isFavorited: !!item && state.hasItem(item),
+  const { isFavorite } = useFavoritesStore((state) => ({
+    isFavorite: !!item && state.hasItem(item),
   }));
 
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
@@ -141,6 +149,9 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
 
+  const videoMeta = formatVideoMetaString(t, item, true, seriesPlaylist.playlist.length);
+  const seriesMeta = formatSeriesMetaString(item);
+
   return (
     <React.Fragment>
       <Helmet>
@@ -167,23 +178,34 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         ))}
         {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
       </Helmet>
+      <Cinema
+        open={play && isEntitled}
+        onClose={goBack}
+        item={item}
+        title={seriesPlaylist.title}
+        episodeTitle={item.title}
+        videoMeta={videoMeta}
+        seriesMeta={seriesMeta}
+        onComplete={handleComplete}
+        feedId={feedId ?? undefined}
+        isSeries
+      />
+      <TrailerModal item={trailerItem} title={trailerItem?.title || ''} open={playTrailer} onClose={() => setPlayTrailer(false)} />
       <VideoComponent
         title={seriesPlaylist.title}
-        episodeCount={seriesPlaylist.playlist.length}
-        item={item}
-        feedId={feedId ?? undefined}
-        trailerItem={trailerItem}
-        play={play && isEntitled}
-        goBack={goBack}
-        onComplete={handleComplete}
-        poster={posterFading ? 'fading' : 'normal'}
+        description={item.description}
+        episodeTitle={item.title}
+        videoMeta={videoMeta}
+        seriesMeta={seriesMeta}
+        poster={poster}
+        posterMode={posterFading ? 'fading' : 'normal'}
         enableSharing={enableSharing}
         hasShared={hasShared}
         onShareClick={onShareClick}
         playTrailer={playTrailer}
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
-        isFavorited={isFavorited}
+        isFavorite={isFavorite}
         isFavoritesEnabled={isFavoritesEnabled}
         onFavoriteButtonClick={onFavoriteButtonClick}
         startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}

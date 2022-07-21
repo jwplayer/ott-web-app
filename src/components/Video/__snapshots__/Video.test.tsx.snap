@@ -22,7 +22,7 @@ exports[`<Video> > renders and matches snapshot 1`] = `
           <div
             class="meta"
           >
-            1970 • 6m  • Tester • CC_CC
+            Video meta
           </div>
         </div>
         <div
@@ -32,7 +32,7 @@ exports[`<Video> > renders and matches snapshot 1`] = `
             class="textContainer description"
             style="max-height: none;"
           >
-            Test item description
+            Video description
           </div>
         </div>
         <div
@@ -94,73 +94,8 @@ exports[`<Video> > renders and matches snapshot 1`] = `
       </div>
       <div
         class="poster fading"
-        style="background-image: url(http://test/img.jpg);"
+        style="background-image: url(posterimage);"
       />
-    </div>
-    <div
-      style="transition: opacity 0.25s ease-in-out; opacity: 0;"
-    >
-      <div
-        class="playerContainer"
-      >
-        <div
-          class="player"
-        >
-          <div
-            class="cinema fill"
-          >
-            <div />
-          </div>
-        </div>
-        <div
-          style="transition: opacity 0.25s ease-in-out; opacity: 0;"
-        >
-          <div
-            class="playerOverlay"
-          >
-            <div
-              class="playerContent"
-            >
-              <div
-                aria-label="common:back"
-                class="iconButton backButton"
-                role="button"
-                tabindex="0"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="icon"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g>
-                    <path
-                      d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <div>
-                <h2
-                  class="title"
-                >
-                  Test video
-                </h2>
-                <div
-                  class="metaContainer"
-                >
-                  <div
-                    class="meta"
-                  >
-                    1970 • 6m  • Tester • CC_CC
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

@@ -1,3 +1,5 @@
+import type { TFunction } from 'i18next';
+
 import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from '#src/utils/media';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
@@ -120,3 +122,17 @@ export const formatPrice = (price: number, currency: string, country: string) =>
     currency: currency,
   }).format(price);
 };
+
+export const formatVideoMetaString = (t: TFunction, item: PlaylistItem, isSeries = false, episodeCount?: number) => {
+  const metaData = [];
+
+  if (item.pubdate) metaData.push(new Date(item.pubdate * 1000).getFullYear());
+  if (!isSeries && item.duration) metaData.push(formatDuration(item.duration));
+  if (isSeries && episodeCount) metaData.push(t('video:total_episodes', { count: episodeCount }));
+  if (item.genre) metaData.push(item.genre);
+  if (item.rating) metaData.push(item.rating);
+
+  return metaData.join(' • ');
+};
+
+export const formatSeriesMetaString = (item: PlaylistItem) => `S${item.seasonNumber}:E${item.episodeNumber}`;

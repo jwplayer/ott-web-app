@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Cinema from './Cinema';
+import Player from './Player';
 
 import type { PlaylistItem } from '#types/playlist';
 
@@ -24,9 +24,7 @@ describe('<Cinema>', () => {
       title: 'Test item title',
       tracks: [],
     } as PlaylistItem;
-    const { container } = render(
-      <Cinema item={item} onPlay={() => null} onPause={() => null} isSeries={false} open={true} title={item.title} videoMeta="video meta" />,
-    );
+    const { container } = render(<Player item={item} onPlay={() => null} onPause={() => null} />);
 
     expect(container).toMatchSnapshot();
   });
