@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './Cinema.module.scss';
@@ -31,30 +31,28 @@ type Props = {
   episodeTitle?: string;
 };
 
-const calculateVideoStartTime = (item: PlaylistItem) => {
-  const { watchHistory } = useWatchHistoryStore.getState();
-  const watchHistoryItem = watchHistory.find(({ mediaid }) => mediaid === item.mediaid);
-
-  if (watchHistoryItem && watchHistoryItem.progress > VideoProgressMinMax.Min && watchHistoryItem.progress < VideoProgressMinMax.Max) {
-    return watchHistoryItem.progress * watchHistoryItem.duration;
-  }
-
-  return 0;
-};
-
 const Cinema: React.FC<Props> = ({ open, item, title, videoMeta, isSeries, seriesMeta, episodeTitle, onPlay, onPause, onComplete, onClose, feedId }: Props) => {
   const { t } = useTranslation();
-
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const enableWatchHistory = !!continueWatchingList;
 
+  // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [userActive, setUserActive] = useState(true);
-  const [startTime, setStartTime] = useState(enableWatchHistory ? calculateVideoStartTime(item) : 0);
 
-  const handlePlaylistItemCallback = usePlaylistItemCallback();
+  // watch history
+  const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
+  const videoProgress = watchHistoryItem?.progress;
+
+  const startTime = useMemo(() => {
+    if (videoProgress && videoProgress > VideoProgressMinMax.Min && videoProgress < VideoProgressMinMax.Max) {
+      return videoProgress * item.duration;
+    }
+
+    return 0;
+  }, [item, videoProgress]);
 
   const getProgress = useCallback((): number | null => {
     if (!playerInstance) return null;
@@ -64,6 +62,7 @@ const Cinema: React.FC<Props> = ({ open, item, title, videoMeta, isSeries, serie
 
   useWatchHistoryListener(() => (enableWatchHistory ? saveItem(item, getProgress()) : null));
 
+  // player events
   const handleReady = useCallback((player?: JWPlayer) => {
     setPlayerInstance(player);
   }, []);
@@ -86,13 +85,13 @@ const Cinema: React.FC<Props> = ({ open, item, title, videoMeta, isSeries, serie
 
   const handleUserActive = useCallback(() => setUserActive(true), []);
   const handleUserInactive = useCallback(() => setUserActive(false), []);
+  const handlePlaylistItemCallback = usePlaylistItemCallback();
 
-  useEffect(() => {
-    if (enableWatchHistory) setStartTime(calculateVideoStartTime(item));
-  }, [enableWatchHistory, item, open]);
-
+  // effects
   useEffect(() => {
     if (open) setUserActive(true);
+    if (!open) saveItem(item, getProgress());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (

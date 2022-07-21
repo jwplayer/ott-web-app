@@ -8,6 +8,7 @@ import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
+import { logDev } from '#src/utils/common';
 
 type Props = {
   playerId?: string | null;
@@ -42,6 +43,7 @@ const Player: React.FC<Props> = ({
   const playerRef = useRef<JWPlayer>();
   const loadingRef = useRef(false);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
+  const startTimeRef = useRef(startTime);
   const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
   const setPlayer = useOttAnalytics(item, feedId);
 
@@ -100,10 +102,11 @@ const Player: React.FC<Props> = ({
 
       // we already loaded this item
       if (currentItem && currentItem.mediaid === item.mediaid) {
+        logDev('Calling loadPlaylist with the same item, check the dependencies');
         return;
       }
       // load new item
-      playerRef.current.load([deepCopy({ ...item, starttime: startTime })]);
+      playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current })]);
     };
 
     const initializePlayer = () => {
@@ -113,7 +116,7 @@ const Player: React.FC<Props> = ({
 
       playerRef.current.setup({
         aspectratio: false,
-        playlist: [deepCopy({ ...item, starttime: startTime })],
+        playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
         width: '100%',
         height: '100%',
         mute: false,
@@ -132,7 +135,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, startTime, setPlayer]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer]);
 
   useEffect(() => {
     return () => {
@@ -145,7 +148,7 @@ const Player: React.FC<Props> = ({
   }, [detachEvents]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="player-container">
       <div ref={playerElementRef} />
     </div>
   );

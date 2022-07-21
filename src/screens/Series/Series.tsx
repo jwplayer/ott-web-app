@@ -190,7 +190,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         feedId={feedId ?? undefined}
         isSeries
       />
-      <TrailerModal item={trailerItem} title={trailerItem?.title || ''} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
       <VideoComponent
         title={seriesPlaylist.title}
         description={item.description}
