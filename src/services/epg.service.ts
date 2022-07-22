@@ -1,8 +1,8 @@
 import { array, object, string } from 'yup';
+import { addDays, differenceInDays, endOfDay, isValid, set, startOfDay, subDays } from 'date-fns';
 
 import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
-import { addDays, endOfDay, isValidDateString, startOfDay, subDays } from '#src/utils/datetime';
 import { logDev } from '#src/utils/common';
 import i18n from '#src/i18n/config';
 
@@ -37,10 +37,10 @@ const epgProgramSchema = object().shape({
   title: string().required(),
   startTime: string()
     .required()
-    .test((value) => (value ? isValidDateString(value) : false)),
+    .test((value) => (value ? isValid(new Date(value)) : false)),
   endTime: string()
     .required()
-    .test((value) => (value ? isValidDateString(value) : false)),
+    .test((value) => (value ? isValid(new Date(value)) : false)),
   chapterPointCustomProperties: array().of(
     object().shape({
       key: string().required(),
@@ -58,10 +58,30 @@ class EpgService {
       id,
       title,
       description,
-      startTime: subDays(startOfDay(), 1).toJSON(),
-      endTime: addDays(endOfDay(), 1).toJSON(),
+      startTime: subDays(startOfDay(new Date()), 1).toJSON(),
+      endTime: addDays(endOfDay(new Date()), 1).toJSON(),
       image: undefined,
     };
+  }
+
+  /**
+   * Update the start and end time properties of the given programs with the current date.
+   * This can be used when having a static schedule or while developing
+   */
+  generateDemoPrograms(programs: EpgProgram[]) {
+    const today = new Date();
+    const demoStartDate = set(new Date(programs[0]?.startTime), {
+      date: today.getDate(),
+      month: today.getMonth(),
+      year: today.getFullYear(),
+    });
+    const daysDelta = differenceInDays(demoStartDate, new Date(programs[0]?.startTime));
+
+    return programs.map((program) => ({
+      ...program,
+      startTime: addDays(new Date(program.startTime), daysDelta).toJSON(),
+      endTime: addDays(new Date(program.endTime), daysDelta).toJSON(),
+    }));
   }
 
   /**
@@ -83,12 +103,13 @@ class EpgService {
   /**
    * Ensure the given data validates to the EpgProgram schema
    */
-  async parseSchedule(data: unknown) {
+  async parseSchedule(data: unknown, demo = false) {
     if (!Array.isArray(data)) return [];
 
     const transformResults = await Promise.allSettled(data.map((program) => this.transformProgram(program)));
+    const programs = transformResults.filter(isFulfilled).map((result) => result.value);
 
-    return transformResults.filter(isFulfilled).map((result) => result.value);
+    return demo ? this.generateDemoPrograms(programs) : programs;
   }
 
   /**
@@ -127,7 +148,7 @@ class EpgService {
    */
   async getSchedule(item: PlaylistItem) {
     const schedule = await this.fetchSchedule(item);
-    let programs = await this.parseSchedule(schedule);
+    let programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
 
     if (!programs.length) {
       programs = [
