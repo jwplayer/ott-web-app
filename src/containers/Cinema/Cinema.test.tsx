@@ -25,7 +25,7 @@ describe('<Cinema>', () => {
       tracks: [],
     } as PlaylistItem;
     const { container } = render(
-      <Cinema item={item} onPlay={() => null} onPause={() => null} isSeries={false} open={true} title={item.title} videoMeta="video meta" />,
+      <Cinema item={item} onPlay={() => null} onPause={() => null} open={true} title={item.title} primaryMetadata="Primary metadata" />,
     );
 
     expect(container).toMatchSnapshot();

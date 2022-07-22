@@ -9,7 +9,8 @@ describe('<VideoDetails>', () => {
       <VideoDetails
         title="Test video"
         description="Video description"
-        videoMeta="Video meta"
+        primaryMetadata="Primary metadata string"
+        secondaryMetadata={<strong>Secondary metadata string</strong>}
         poster="posterimage"
         posterMode="fading"
         hasTrailer={true}
@@ -18,7 +19,6 @@ describe('<VideoDetails>', () => {
         onFavoriteButtonClick={vi.fn()}
         playTrailer={false}
         onTrailerClick={vi.fn()}
-        onTrailerClose={vi.fn()}
         startWatchingButton={<button>Start watching</button>}
         shareButton={<button>share</button>}
       />,

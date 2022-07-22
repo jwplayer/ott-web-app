@@ -102,7 +102,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
 
-  const videoMeta = formatVideoMetaString(t, item);
+  const primaryMetadata = formatVideoMetaString(t, item);
 
   return (
     <React.Fragment>
@@ -135,8 +135,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         onClose={goBack}
         item={item}
         title={item.title}
-        videoMeta={videoMeta}
-        isSeries={false}
+        primaryMetadata={primaryMetadata}
         onComplete={handleComplete}
         feedId={feedId ?? undefined}
       />
@@ -145,12 +144,11 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
       <VideoDetails
         title={item.title}
         description={item.description}
-        videoMeta={videoMeta}
+        primaryMetadata={primaryMetadata}
         hasTrailer={!!trailerItem}
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
         onTrailerClick={() => setPlayTrailer(true)}
-        onTrailerClose={() => setPlayTrailer(false)}
         isFavorite={isFavorite}
         isFavoritesEnabled={isFavoritesEnabled}
         onFavoriteButtonClick={onFavoriteButtonClick}

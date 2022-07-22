@@ -16,9 +16,8 @@ type PosterMode = 'fading' | 'normal';
 type Props = {
   title: string;
   description: string;
-  videoMeta: string;
-  seriesMeta?: string;
-  episodeTitle?: string;
+  primaryMetadata: React.ReactNode;
+  secondaryMetadata?: React.ReactNode;
   isFavorite: boolean;
   isFavoritesEnabled: boolean;
   onFavoriteButtonClick: () => void;
@@ -26,19 +25,16 @@ type Props = {
   posterMode: PosterMode;
   hasTrailer: boolean;
   onTrailerClick: () => void;
-  onTrailerClose: () => void;
   playTrailer: boolean;
-  isSeries?: boolean;
-  startWatchingButton: JSX.Element;
-  shareButton: JSX.Element | null;
+  startWatchingButton: React.ReactNode;
+  shareButton: React.ReactNode;
 };
 
 const VideoDetails: React.FC<Props> = ({
   title,
   description,
-  videoMeta,
-  seriesMeta,
-  episodeTitle,
+  primaryMetadata,
+  secondaryMetadata,
   poster,
   posterMode,
   isFavorite,
@@ -50,7 +46,6 @@ const VideoDetails: React.FC<Props> = ({
   onTrailerClick,
   startWatchingButton,
   shareButton,
-  isSeries = false,
 }) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation(['video', 'common']);
@@ -67,12 +62,8 @@ const VideoDetails: React.FC<Props> = ({
         <div className={styles.info}>
           <h2 className={styles.title}>{title}</h2>
           <div className={styles.metaContainer}>
-            <div className={styles.meta}>{videoMeta}</div>
-            {isSeries && (
-              <div className={styles.seriesMeta}>
-                <strong>{seriesMeta}</strong> - {episodeTitle}
-              </div>
-            )}
+            <div className={styles.primaryMetadata}>{primaryMetadata}</div>
+            {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
           </div>
           <CollapsibleText text={description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
 

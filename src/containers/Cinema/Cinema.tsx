@@ -25,13 +25,11 @@ type Props = {
   onClose?: () => void;
   feedId?: string;
   title: string;
-  videoMeta: string;
-  isSeries: boolean;
-  seriesMeta?: string;
-  episodeTitle?: string;
+  primaryMetadata: React.ReactNode;
+  secondaryMetadata?: React.ReactNode;
 };
 
-const Cinema: React.FC<Props> = ({ open, item, title, videoMeta, isSeries, seriesMeta, episodeTitle, onPlay, onPause, onComplete, onClose, feedId }: Props) => {
+const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondaryMetadata, onPlay, onPause, onComplete, onClose, feedId }: Props) => {
   const { t } = useTranslation();
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
@@ -130,12 +128,8 @@ const Cinema: React.FC<Props> = ({ open, item, title, videoMeta, isSeries, serie
               <div>
                 <h2 className={styles.title}>{title}</h2>
                 <div className={styles.metaContainer}>
-                  {isSeries && (
-                    <div className={styles.seriesMeta}>
-                      <strong>{seriesMeta}</strong> - {episodeTitle}
-                    </div>
-                  )}
-                  <div className={styles.meta}>{videoMeta}</div>
+                  {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
+                  <div className={styles.primaryMetadata}>{primaryMetadata}</div>
                 </div>
               </div>
             </div>

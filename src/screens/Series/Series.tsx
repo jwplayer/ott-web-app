@@ -130,8 +130,12 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
 
-  const videoMeta = formatVideoMetaString(t, item, true, seriesPlaylist.playlist.length);
-  const seriesMeta = formatSeriesMetaString(item);
+  const primaryMetadata = formatVideoMetaString(t, item, true, seriesPlaylist.playlist.length);
+  const secondaryMetadata = (
+    <>
+      <strong>{formatSeriesMetaString(item)}</strong> - {item.title}
+    </>
+  );
 
   return (
     <React.Fragment>
@@ -164,33 +168,32 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         onClose={goBack}
         item={item}
         title={seriesPlaylist.title}
-        episodeTitle={item.title}
-        videoMeta={videoMeta}
-        seriesMeta={seriesMeta}
+        primaryMetadata={primaryMetadata}
+        secondaryMetadata={
+          <>
+            <strong>{secondaryMetadata}</strong> - {item.title}
+          </>
+        }
         onComplete={handleComplete}
         feedId={feedId ?? undefined}
-        isSeries
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
       <FavoritesWarningDialog />
       <VideoDetails
         title={seriesPlaylist.title}
         description={item.description}
-        episodeTitle={item.title}
-        videoMeta={videoMeta}
-        seriesMeta={seriesMeta}
+        primaryMetadata={primaryMetadata}
+        secondaryMetadata={secondaryMetadata}
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
         hasTrailer={!!trailerItem}
         playTrailer={playTrailer}
         onTrailerClick={() => setPlayTrailer(true)}
-        onTrailerClose={() => setPlayTrailer(false)}
         isFavorite={isFavorite}
         isFavoritesEnabled={isFavoritesEnabled}
         onFavoriteButtonClick={onFavoriteButtonClick}
         shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
         startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}
-        isSeries
       >
         <>
           <div className={styles.episodes}>

@@ -20,9 +20,16 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           class="metaContainer"
         >
           <div
-            class="meta"
+            class="primaryMetadata"
           >
-            Video meta
+            Primary metadata string
+          </div>
+          <div
+            class="secondaryMetadata"
+          >
+            <strong>
+              Secondary metadata string
+            </strong>
           </div>
         </div>
         <div

@@ -57,9 +57,9 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
                 class="metaContainer"
               >
                 <div
-                  class="meta"
+                  class="primaryMetadata"
                 >
-                  video meta
+                  Primary metadata
                 </div>
               </div>
             </div>

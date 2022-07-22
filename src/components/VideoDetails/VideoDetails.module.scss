@@ -65,7 +65,7 @@
   flex-direction: column;
 }
 
-.meta {
+.primaryMetadata {
   margin-bottom: 8px;
   font-size: 16px;
   line-height: 18px;
@@ -77,16 +77,12 @@
   }
 }
 
-.seriesMeta {
+.secondaryMetadata {
   margin-top: 24px;
   margin-bottom: 8px;
   font-size: 20px;
   line-height: 20px;
   letter-spacing: 0.5px;
-
-  &.seriesMetaPlayer {
-    margin-top: 4px;
-  }
 
   @include responsive.mobile-only() {
     order: 1;
