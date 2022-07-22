@@ -11,7 +11,7 @@ import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev } from '#src/utils/common';
 
 type Props = {
-  playerId?: string | null;
+  playerId: string;
   feedId?: string;
   item: PlaylistItem;
   onReady?: (player?: JWPlayer) => void;
