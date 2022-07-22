@@ -29,7 +29,6 @@ import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Cinema from '#src/containers/Cinema/Cinema';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
 import ShareButton from '#src/components/ShareButton/ShareButton';
-import FavoritesWarningDialog from '#src/containers/FavoritesWarningDialog/FavoritesWarningDialog';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import Button from '#src/components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
@@ -171,7 +170,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         feedId={feedId ?? undefined}
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
-      <FavoritesWarningDialog />
       <VideoDetails
         title={seriesPlaylist.title}
         description={item.description}
