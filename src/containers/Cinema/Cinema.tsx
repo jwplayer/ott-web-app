@@ -41,16 +41,17 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
   const [userActive, setUserActive] = useState(true);
 
   // watch history
-  const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
-  const videoProgress = watchHistoryItem?.progress;
+  const watchHistoryItem = useWatchHistoryStore((state) => (!!item && enableWatchHistory ? state.getItem(item) : undefined));
 
   const startTime = useMemo(() => {
+    const videoProgress = watchHistoryItem?.progress;
+
     if (videoProgress && videoProgress > VideoProgressMinMax.Min && videoProgress < VideoProgressMinMax.Max) {
       return videoProgress * item.duration;
     }
 
     return 0;
-  }, [item, videoProgress]);
+  }, [item.duration, watchHistoryItem?.progress]);
 
   const getProgress = useCallback((): number | null => {
     if (!playerInstance) return null;
