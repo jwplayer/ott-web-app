@@ -10,7 +10,7 @@ import styles from './Series.module.scss';
 import useEntitlement from '#src/hooks/useEntitlement';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
-import { episodeURL, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
+import { episodeURL, episodeURLFromEpisode, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
 import Filter from '#src/components/Filter/Filter';
 import type { PlaylistItem } from '#src/../types/playlist';
 import VideoDetails from '#src/components/VideoDetails/VideoDetails';
@@ -118,6 +118,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   if (isLoading) return <LoadingOverlay />;
   if ((!isLoading && isItemError) || !item) return <ErrorPage title={t('episode_not_found')} />;
   if (isPlaylistError) return <ErrorPage title={t('series_error')} />;
+  if (!seriesId) return <ErrorPage title={t('series_error')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
@@ -178,7 +179,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
         shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
-        startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}
+        startWatchingButton={<StartWatchingButton item={item} playUrl={episodeURLFromEpisode(item, seriesId, feedId, true)} />}
         favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
         trailerButton={
           !!trailerItem && (

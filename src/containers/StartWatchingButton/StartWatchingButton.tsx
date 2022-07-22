@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 
 import styles from './StartWatchingButton.module.scss';
 
@@ -13,18 +13,15 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import type { PlaylistItem } from '#types/playlist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { episodeURLFromEpisode, videoUrl } from '#src/utils/formatting';
 
 type Props = {
   item: PlaylistItem;
-  seriesId?: string | null;
+  playUrl: string;
 };
 
-const StartWatchingButton: React.VFC<Props> = ({ item, seriesId }) => {
+const StartWatchingButton: React.VFC<Props> = ({ item, playUrl }) => {
   const { t } = useTranslation('video');
   const history = useHistory();
-  const location = useLocation();
-  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const breakpoint = useBreakpoint();
 
   // account
@@ -49,15 +46,12 @@ const StartWatchingButton: React.VFC<Props> = ({ item, seriesId }) => {
   }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    const playlistId = searchParams.get('r');
-    const videoPlayUrl = seriesId ? episodeURLFromEpisode(item, seriesId, playlistId, true) : videoUrl(item, playlistId, true);
-
-    if (isEntitled) return videoPlayUrl && history.push(videoPlayUrl);
+    if (isEntitled) return playUrl && history.push(playUrl);
     if (!isLoggedIn) return history.push(addQueryParam(history, 'u', 'create-account'));
     if (hasMediaOffers) return history.push(addQueryParam(history, 'u', 'choose-offer'));
 
     return history.push('/u/payments');
-  }, [item, seriesId, searchParams, isEntitled, history, isLoggedIn, hasMediaOffers]);
+  }, [isEntitled, playUrl, history, isLoggedIn, hasMediaOffers]);
 
   useEffect(() => {
     // set the TVOD mediaOffers in the checkout store

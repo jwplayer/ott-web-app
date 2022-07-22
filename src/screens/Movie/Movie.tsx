@@ -138,7 +138,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
         shareButton={enableSharing && <ShareButton title={item.title} description={item.description} url={canonicalUrl} />}
-        startWatchingButton={<StartWatchingButton item={item} />}
+        startWatchingButton={<StartWatchingButton item={item} playUrl={videoUrl(item, feedId, true)} />}
         favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
         trailerButton={
           !!trailerItem && (

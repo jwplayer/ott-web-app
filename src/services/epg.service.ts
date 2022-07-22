@@ -18,6 +18,7 @@ export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is Promise
 };
 
 export type EpgChannel = {
+  id: string;
   title: string;
   image: string;
   programs: EpgProgram[];
@@ -161,7 +162,9 @@ class EpgService {
     }
 
     return {
+      id: item.mediaid,
       title: item.title,
+      image: item.image,
       programs,
     } as EpgChannel;
   }

@@ -40,6 +40,11 @@
       "contentId": "xQaFzykq",
       "type": "playlist",
       "filterTags": "Beginner,Advanced"
+    },
+    {
+      "label": "Live",
+      "contentId": "WppSIFKF",
+      "type": "playlist"
     }
   ],
   "features": {
