@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`<Cinema> > renders and matches snapshot 1`] = `
+exports[`<Player> > renders and matches snapshot 1`] = `
 <div>
   <div
     class="container"
