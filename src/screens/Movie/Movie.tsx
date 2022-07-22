@@ -17,17 +17,17 @@ import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
-import { copyToClipboard } from '#src/utils/dom';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { addConfigParamToUrl } from '#src/utils/configOverride';
 import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
+import ShareButton from '#src/components/ShareButton/ShareButton';
+import FavoritesWarningDialog from '#src/containers/FavoritesWarningDialog/FavoritesWarningDialog';
 
 type MovieRouteParams = {
   id: string;
@@ -35,7 +35,7 @@ type MovieRouteParams = {
 
 const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const { t } = useTranslation('video');
-  const [hasShared, setHasShared] = useState<boolean>(false);
+
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const breakpoint = useBreakpoint();
 
@@ -80,18 +80,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
-  const onShareClick = (): void => {
-    if (!item) return;
 
-    if (typeof navigator.share === 'function') {
-      navigator.share({ title: item.title, text: item.description, url: window.location.href });
-      return;
-    }
-
-    copyToClipboard(addConfigParamToUrl(window.location.href));
-    setHasShared(true);
-    setTimeout(() => setHasShared(false), 2000);
-  };
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
 
@@ -102,13 +91,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   }, [history, id, playlist, searchParams]);
 
   // Effects
-  useEffect(() => {
-    document.body.style.overflowY = play ? 'hidden' : '';
-    return () => {
-      document.body.style.overflowY = '';
-    };
-  }, [play]);
-
   useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   }, [id]);
@@ -152,28 +134,27 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         open={play && isEntitled}
         onClose={goBack}
         item={item}
-        title={`${item.title} - Trailer`}
+        title={item.title}
         videoMeta={videoMeta}
         isSeries={false}
         onComplete={handleComplete}
         feedId={feedId ?? undefined}
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <FavoritesWarningDialog />
       <VideoComponent
         title={item.title}
         description={item.description}
         videoMeta={videoMeta}
-        trailerItem={trailerItem}
+        hasTrailer={!!trailerItem}
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
-        enableSharing={enableSharing}
-        hasShared={hasShared}
-        onShareClick={onShareClick}
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorite={isFavorite}
         isFavoritesEnabled={isFavoritesEnabled}
         onFavoriteButtonClick={onFavoriteButtonClick}
+        shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
         startWatchingButton={<StartWatchingButton item={item} />}
         playTrailer={playTrailer}
       >

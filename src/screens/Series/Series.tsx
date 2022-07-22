@@ -18,7 +18,6 @@ import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
-import { copyToClipboard } from '#src/utils/dom';
 import { enrichMediaItems, filterSeries, getFiltersFromSeries, getNextItemId } from '#src/utils/series';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -31,6 +30,8 @@ import { getSeriesIdFromEpisode } from '#src/utils/media';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Cinema from '#src/containers/Cinema/Cinema';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
+import ShareButton from '#src/components/ShareButton/ShareButton';
+import FavoritesWarningDialog from '#src/containers/FavoritesWarningDialog/FavoritesWarningDialog';
 
 type SeriesRouteParams = {
   id: string;
@@ -39,7 +40,6 @@ type SeriesRouteParams = {
 const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('video');
-  const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // Routing
@@ -100,18 +100,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
-  const onShareClick = (): void => {
-    if (!item) return;
-
-    if (typeof navigator.share === 'function') {
-      navigator.share({ title: item.title, text: item.description, url: window.location.href });
-      return;
-    }
-
-    copyToClipboard(window.location.href);
-    setHasShared(true);
-    setTimeout(() => setHasShared(false), 2000);
-  };
 
   const handleComplete = useCallback(() => {
     if (nextItemId) {
@@ -120,13 +108,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   }, [history, nextItemId, seriesPlaylist]);
 
   // Effects
-  useEffect(() => {
-    document.body.style.overflowY = play ? 'hidden' : '';
-    return () => {
-      document.body.style.overflowY = '';
-    };
-  }, [play]);
-
   useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   }, [episodeId]);
@@ -191,6 +172,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         isSeries
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <FavoritesWarningDialog />
       <VideoComponent
         title={seriesPlaylist.title}
         description={item.description}
@@ -199,15 +181,14 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         seriesMeta={seriesMeta}
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
-        enableSharing={enableSharing}
-        hasShared={hasShared}
-        onShareClick={onShareClick}
+        hasTrailer={!!trailerItem}
         playTrailer={playTrailer}
         onTrailerClick={() => setPlayTrailer(true)}
         onTrailerClose={() => setPlayTrailer(false)}
         isFavorite={isFavorite}
         isFavoritesEnabled={isFavoritesEnabled}
         onFavoriteButtonClick={onFavoriteButtonClick}
+        shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
         startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}
         isSeries
       >

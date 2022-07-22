@@ -12,9 +12,7 @@ describe('<Video>', () => {
         videoMeta="Video meta"
         poster="posterimage"
         posterMode="fading"
-        hasShared={false}
-        onShareClick={vi.fn()}
-        enableSharing
+        hasTrailer={true}
         isFavorite={false}
         isFavoritesEnabled={true}
         onFavoriteButtonClick={vi.fn()}
@@ -22,6 +20,7 @@ describe('<Video>', () => {
         onTrailerClick={vi.fn()}
         onTrailerClose={vi.fn()}
         startWatchingButton={<button>Start watching</button>}
+        shareButton={<button>share</button>}
       />,
     );
 

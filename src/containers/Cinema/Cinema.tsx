@@ -89,8 +89,16 @@ const Cinema: React.FC<Props> = ({ open, item, title, videoMeta, isSeries, serie
 
   // effects
   useEffect(() => {
-    if (open) setUserActive(true);
-    if (!open) saveItem(item, getProgress());
+    if (open) {
+      setUserActive(true);
+      document.body.style.overflowY = 'hidden';
+    } else {
+      saveItem(item, getProgress());
+    }
+
+    return () => {
+      document.body.style.overflowY = '';
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 

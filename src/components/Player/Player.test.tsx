@@ -5,7 +5,7 @@ import Player from './Player';
 
 import type { PlaylistItem } from '#types/playlist';
 
-describe('<Cinema>', () => {
+describe('<Player>', () => {
   test('renders and matches snapshot', () => {
     const item = {
       description: 'Test item description',
