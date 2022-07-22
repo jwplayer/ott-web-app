@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import styles from './Video.module.scss';
+import styles from './VideoDetails.module.scss';
 
 import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
 import Button from '#src/components/Button/Button';
@@ -33,7 +33,7 @@ type Props = {
   shareButton: JSX.Element | null;
 };
 
-const Video: React.FC<Props> = ({
+const VideoDetails: React.FC<Props> = ({
   title,
   description,
   videoMeta,
@@ -109,4 +109,4 @@ const Video: React.FC<Props> = ({
   );
 };
 
-export default Video;
+export default VideoDetails;

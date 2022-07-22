@@ -1,12 +1,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Video from './Video';
+import VideoDetails from './VideoDetails';
 
-describe('<Video>', () => {
+describe('<VideoDetails>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
-      <Video
+      <VideoDetails
         title="Test video"
         description="Video description"
         videoMeta="Video meta"

@@ -12,7 +12,7 @@ import { toggleFavorite } from '#src/stores/FavoritesController';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, formatVideoMetaString, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
-import VideoComponent from '#src/components/Video/Video';
+import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useMedia from '#src/hooks/useMedia';
@@ -142,7 +142,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
       <FavoritesWarningDialog />
-      <VideoComponent
+      <VideoDetails
         title={item.title}
         description={item.description}
         videoMeta={videoMeta}
@@ -174,7 +174,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
             />
           </>
         ) : undefined}
-      </VideoComponent>
+      </VideoDetails>
     </React.Fragment>
   );
 };

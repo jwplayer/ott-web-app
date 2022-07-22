@@ -13,7 +13,7 @@ import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
 import Filter from '#src/components/Filter/Filter';
 import type { PlaylistItem } from '#src/../types/playlist';
-import VideoComponent from '#src/components/Video/Video';
+import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
@@ -173,7 +173,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
       <FavoritesWarningDialog />
-      <VideoComponent
+      <VideoDetails
         title={seriesPlaylist.title}
         description={item.description}
         episodeTitle={item.title}
@@ -219,7 +219,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
             hasSubscription={!!subscription}
           />
         </>
-      </VideoComponent>
+      </VideoDetails>
     </React.Fragment>
   );
 };
