@@ -158,7 +158,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         onComplete={handleComplete}
         feedId={feedId ?? undefined}
       />
-      <TrailerModal item={trailerItem} title={trailerItem?.title || ''} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
       <VideoComponent
         title={item.title}
         description={item.description}
