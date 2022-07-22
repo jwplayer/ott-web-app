@@ -13,14 +13,10 @@ describe('<VideoDetails>', () => {
         secondaryMetadata={<strong>Secondary metadata string</strong>}
         poster="posterimage"
         posterMode="fading"
-        hasTrailer={true}
-        isFavorite={false}
-        isFavoritesEnabled={true}
-        onFavoriteButtonClick={vi.fn()}
-        playTrailer={false}
-        onTrailerClick={vi.fn()}
         startWatchingButton={<button>Start watching</button>}
         shareButton={<button>share</button>}
+        favoriteButton={<button>favorite</button>}
+        trailerButton={<button>play trailer</button>}
       />,
     );
 

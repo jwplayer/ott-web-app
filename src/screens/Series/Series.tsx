@@ -23,8 +23,6 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { toggleFavorite } from '#src/stores/FavoritesController';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import { getSeriesIdFromEpisode } from '#src/utils/media';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
@@ -32,6 +30,9 @@ import Cinema from '#src/containers/Cinema/Cinema';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
 import ShareButton from '#src/components/ShareButton/ShareButton';
 import FavoritesWarningDialog from '#src/containers/FavoritesWarningDialog/FavoritesWarningDialog';
+import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
+import Button from '#src/components/Button/Button';
+import PlayTrailer from '#src/icons/PlayTrailer';
 
 type SeriesRouteParams = {
   id: string;
@@ -80,11 +81,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
   const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
 
-  // Favorite
-  const { isFavorite } = useFavoritesStore((state) => ({
-    isFavorite: !!item && state.hasItem(item),
-  }));
-
+  // Watch history
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
 
   // User, entitlement
@@ -94,10 +91,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   useBlurImageUpdater(item);
 
   // Handlers
-  const onFavoriteButtonClick = useCallback(() => {
-    toggleFavorite(item);
-  }, [item]);
-
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
 
@@ -186,14 +179,21 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         secondaryMetadata={secondaryMetadata}
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
-        hasTrailer={!!trailerItem}
-        playTrailer={playTrailer}
-        onTrailerClick={() => setPlayTrailer(true)}
-        isFavorite={isFavorite}
-        isFavoritesEnabled={isFavoritesEnabled}
-        onFavoriteButtonClick={onFavoriteButtonClick}
         shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
         startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}
+        favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
+        trailerButton={
+          !!trailerItem && (
+            <Button
+              label={t('video:trailer')}
+              aria-label={t('video:watch_trailer')}
+              startIcon={<PlayTrailer />}
+              onClick={() => setPlayTrailer(true)}
+              active={playTrailer}
+              fullWidth={breakpoint < Breakpoint.md}
+            />
+          )
+        }
       >
         <>
           <div className={styles.episodes}>

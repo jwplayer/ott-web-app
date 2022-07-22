@@ -7,8 +7,6 @@ import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
 
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { toggleFavorite } from '#src/stores/FavoritesController';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, formatVideoMetaString, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
@@ -28,6 +26,9 @@ import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
 import ShareButton from '#src/components/ShareButton/ShareButton';
 import FavoritesWarningDialog from '#src/containers/FavoritesWarningDialog/FavoritesWarningDialog';
+import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
+import PlayTrailer from '#src/icons/PlayTrailer';
+import Button from '#src/components/Button/Button';
 
 type MovieRouteParams = {
   id: string;
@@ -64,20 +65,11 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
   const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
 
-  // Favorite
-  const { isFavorite } = useFavoritesStore((state) => ({
-    isFavorite: !!item && state.hasItem(item),
-  }));
-
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(item);
 
   // Handlers
-  const onFavoriteButtonClick = useCallback(() => {
-    toggleFavorite(item);
-  }, [item]);
-
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
 
@@ -145,16 +137,23 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         title={item.title}
         description={item.description}
         primaryMetadata={primaryMetadata}
-        hasTrailer={!!trailerItem}
         poster={poster}
         posterMode={posterFading ? 'fading' : 'normal'}
-        onTrailerClick={() => setPlayTrailer(true)}
-        isFavorite={isFavorite}
-        isFavoritesEnabled={isFavoritesEnabled}
-        onFavoriteButtonClick={onFavoriteButtonClick}
-        shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
+        shareButton={enableSharing && <ShareButton title={item.title} description={item.description} url={canonicalUrl} />}
         startWatchingButton={<StartWatchingButton item={item} />}
-        playTrailer={playTrailer}
+        favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
+        trailerButton={
+          !!trailerItem && (
+            <Button
+              label={t('video:trailer')}
+              aria-label={t('video:watch_trailer')}
+              startIcon={<PlayTrailer />}
+              onClick={() => setPlayTrailer(true)}
+              active={playTrailer}
+              fullWidth={breakpoint < Breakpoint.md}
+            />
+          )
+        }
       >
         {playlist ? (
           <>

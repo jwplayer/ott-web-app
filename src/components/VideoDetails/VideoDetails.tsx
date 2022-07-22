@@ -1,15 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 
 import styles from './VideoDetails.module.scss';
 
 import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
-import Button from '#src/components/Button/Button';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import Favorite from '#src/icons/Favorite';
-import PlayTrailer from '#src/icons/PlayTrailer';
-import FavoriteBorder from '#src/icons/FavoriteBorder';
 
 type PosterMode = 'fading' | 'normal';
 
@@ -18,16 +13,12 @@ type Props = {
   description: string;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
-  isFavorite: boolean;
-  isFavoritesEnabled: boolean;
-  onFavoriteButtonClick: () => void;
   poster?: string;
   posterMode: PosterMode;
-  hasTrailer: boolean;
-  onTrailerClick: () => void;
-  playTrailer: boolean;
   startWatchingButton: React.ReactNode;
   shareButton: React.ReactNode;
+  favoriteButton: React.ReactNode;
+  trailerButton: React.ReactNode;
 };
 
 const VideoDetails: React.FC<Props> = ({
@@ -37,19 +28,13 @@ const VideoDetails: React.FC<Props> = ({
   secondaryMetadata,
   poster,
   posterMode,
-  isFavorite,
-  isFavoritesEnabled,
-  onFavoriteButtonClick,
   children,
-  hasTrailer,
-  playTrailer,
-  onTrailerClick,
   startWatchingButton,
   shareButton,
+  favoriteButton,
+  trailerButton,
 }) => {
   const breakpoint: Breakpoint = useBreakpoint();
-  const { t } = useTranslation(['video', 'common']);
-
   const isMobile = breakpoint === Breakpoint.xs;
 
   return (
@@ -69,27 +54,8 @@ const VideoDetails: React.FC<Props> = ({
 
           <div className={styles.buttonBar}>
             {startWatchingButton}
-            {hasTrailer && (
-              <Button
-                className={styles.bigButton}
-                label={t('video:trailer')}
-                aria-label={t('video:watch_trailer')}
-                startIcon={<PlayTrailer />}
-                onClick={onTrailerClick}
-                active={playTrailer}
-                fullWidth={breakpoint < Breakpoint.md}
-              />
-            )}
-            {isFavoritesEnabled && (
-              <Button
-                label={t('video:favorite')}
-                aria-label={isFavorite ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
-                startIcon={isFavorite ? <Favorite /> : <FavoriteBorder />}
-                onClick={onFavoriteButtonClick}
-                color={isFavorite ? 'primary' : 'default'}
-                fullWidth={breakpoint < Breakpoint.md}
-              />
-            )}
+            {trailerButton}
+            {favoriteButton}
             {shareButton}
           </div>
         </div>
