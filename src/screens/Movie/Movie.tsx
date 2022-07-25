@@ -7,24 +7,27 @@ import shallow from 'zustand/shallow';
 
 import styles from './Movie.module.scss';
 
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { toggleFavorite } from '#src/stores/FavoritesController';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
-import { cardUrl, movieURL, videoUrl } from '#src/utils/formatting';
+import { cardUrl, formatVideoMetaString, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
-import VideoComponent from '#src/components/Video/Video';
+import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
-import { copyToClipboard } from '#src/utils/dom';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { addConfigParamToUrl } from '#src/utils/configOverride';
 import usePlaylist from '#src/hooks/usePlaylist';
 import useEntitlement from '#src/hooks/useEntitlement';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
+import Cinema from '#src/containers/Cinema/Cinema';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
+import ShareButton from '#src/components/ShareButton/ShareButton';
+import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
+import PlayTrailer from '#src/icons/PlayTrailer';
+import Button from '#src/components/Button/Button';
 
 type MovieRouteParams = {
   id: string;
@@ -32,8 +35,9 @@ type MovieRouteParams = {
 
 const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
   const { t } = useTranslation('video');
-  const [hasShared, setHasShared] = useState<boolean>(false);
+
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
+  const breakpoint = useBreakpoint();
 
   // Routing
   const history = useHistory();
@@ -56,34 +60,18 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
-  // Favorite
-  const { isFavorited } = useFavoritesStore((state) => ({
-    isFavorited: !!item && state.hasItem(item),
-  }));
+  const isLargeScreen = breakpoint >= Breakpoint.md;
+  const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
+  const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(item);
 
   // Handlers
-  const onFavoriteButtonClick = useCallback(() => {
-    toggleFavorite(item);
-  }, [item]);
-
   const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
   const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
-  const onShareClick = (): void => {
-    if (!item) return;
 
-    if (typeof navigator.share === 'function') {
-      navigator.share({ title: item.title, text: item.description, url: window.location.href });
-      return;
-    }
-
-    copyToClipboard(addConfigParamToUrl(window.location.href));
-    setHasShared(true);
-    setTimeout(() => setHasShared(false), 2000);
-  };
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
 
@@ -95,13 +83,6 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   // Effects
   useEffect(() => {
-    document.body.style.overflowY = play ? 'hidden' : '';
-    return () => {
-      document.body.style.overflowY = '';
-    };
-  }, [play]);
-
-  useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   }, [id]);
 
@@ -111,6 +92,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
 
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
+
+  const primaryMetadata = formatVideoMetaString(t, item);
 
   return (
     <React.Fragment>
@@ -138,46 +121,55 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         ))}
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
-
-      <VideoComponent
-        title={item.title}
+      <Cinema
+        open={play && isEntitled}
+        onClose={goBack}
         item={item}
-        feedId={feedId ?? undefined}
-        trailerItem={trailerItem}
-        play={play && isEntitled}
-        goBack={goBack}
+        title={item.title}
+        primaryMetadata={primaryMetadata}
         onComplete={handleComplete}
-        poster={posterFading ? 'fading' : 'normal'}
-        enableSharing={enableSharing}
-        hasShared={hasShared}
-        onShareClick={onShareClick}
-        playTrailer={playTrailer}
-        onTrailerClick={() => setPlayTrailer(true)}
-        onTrailerClose={() => setPlayTrailer(false)}
-        isFavorited={isFavorited}
-        isFavoritesEnabled={isFavoritesEnabled}
-        onFavoriteButtonClick={onFavoriteButtonClick}
+        feedId={feedId ?? undefined}
+      />
+      <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <VideoDetails
+        title={item.title}
+        description={item.description}
+        primaryMetadata={primaryMetadata}
+        poster={poster}
+        posterMode={posterFading ? 'fading' : 'normal'}
+        shareButton={enableSharing && <ShareButton title={item.title} description={item.description} url={canonicalUrl} />}
         startWatchingButton={<StartWatchingButton item={item} />}
+        favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
+        trailerButton={
+          !!trailerItem && (
+            <Button
+              label={t('video:trailer')}
+              aria-label={t('video:watch_trailer')}
+              startIcon={<PlayTrailer />}
+              onClick={() => setPlayTrailer(true)}
+              active={playTrailer}
+              fullWidth={breakpoint < Breakpoint.md}
+            />
+          )
+        }
       >
-        <>
-          {playlist ? (
-            <>
-              <div className={styles.related}>
-                <h3>{playlist.title}</h3>
-              </div>
-              <CardGrid
-                playlist={playlist.playlist}
-                onCardClick={onCardClick}
-                isLoading={isLoading}
-                enableCardTitles={styling.shelfTitles}
-                accessModel={accessModel}
-                isLoggedIn={!!user}
-                hasSubscription={!!subscription}
-              />
-            </>
-          ) : undefined}
-        </>
-      </VideoComponent>
+        {playlist ? (
+          <>
+            <div className={styles.related}>
+              <h3>{playlist.title}</h3>
+            </div>
+            <CardGrid
+              playlist={playlist.playlist}
+              onCardClick={onCardClick}
+              isLoading={isLoading}
+              enableCardTitles={styling.shelfTitles}
+              accessModel={accessModel}
+              isLoggedIn={!!user}
+              hasSubscription={!!subscription}
+            />
+          </>
+        ) : undefined}
+      </VideoDetails>
     </React.Fragment>
   );
 };

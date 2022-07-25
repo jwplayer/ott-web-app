@@ -60,8 +60,8 @@ class App extends Component {
   };
 
   configValidationCompletedHandler = async (config: Config) => {
-    this.setState({ isLoading: false });
     await this.initializeServices(config);
+    this.setState({ isLoading: false });
   };
 
   componentDidMount() {

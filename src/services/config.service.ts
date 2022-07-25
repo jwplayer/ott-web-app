@@ -77,7 +77,7 @@ const configSchema: SchemaOf<Config> = object({
   id: string().notRequired(),
   siteName: string().notRequired(),
   description: string().defined(),
-  player: string().nullable(),
+  player: string().defined(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
   assets: object({

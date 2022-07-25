@@ -62,4 +62,5 @@ export type Playlist = {
   links?: Link;
   playlist: PlaylistItem[];
   title: string;
+  contentType?: string;
 };
