@@ -93,7 +93,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = item ? `${window.location.origin}${movieURL(item)}` : window.location.href;
 
-  const primaryMetadata = formatVideoMetaString(t, item);
+  const primaryMetadata = formatVideoMetaString(item);
 
   return (
     <React.Fragment>

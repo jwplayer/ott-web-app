@@ -123,7 +123,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
 
-  const primaryMetadata = formatVideoMetaString(t, item, true, seriesPlaylist.playlist.length);
+  const primaryMetadata = formatVideoMetaString(item, t('video:total_episodes', { count: seriesPlaylist.playlist.length }));
   const secondaryMetadata = (
     <>
       <strong>{formatSeriesMetaString(item)}</strong> - {item.title}

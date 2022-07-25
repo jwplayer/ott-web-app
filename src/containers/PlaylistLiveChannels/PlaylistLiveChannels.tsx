@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
 import { Epg, Layout } from 'planby';
 import { useHistory, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -21,6 +22,8 @@ import useEntitlement from '#src/hooks/useEntitlement';
 import { addQueryParams } from '#src/utils/formatting';
 
 function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playlist: Playlist }) {
+  const { t } = useTranslation('epg');
+
   // Config
   const { config } = useConfigStore(({ config }) => ({ config }), shallow);
   const { siteName, styling, features } = config;
@@ -57,6 +60,9 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   }
 
   const pageTitle = `${title} - ${siteName}`;
+  const programTitle = program?.title || t('empty_schedule_program.title') || '';
+  const programDescription = program?.description || t('empty_schedule_program.description') || '';
+  const primaryMetadata = t('on_channel', { name: channel.title });
 
   return (
     <>
@@ -66,19 +72,12 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       {channelMediaItem && (
-        <Cinema
-          open={play && isEntitled}
-          onClose={goBack}
-          item={channelMediaItem}
-          title={program?.title || 'No program information'}
-          primaryMetadata={`On ${channel?.title}`}
-          feedId={feedid}
-        />
+        <Cinema open={play && isEntitled} onClose={goBack} item={channelMediaItem} title={programTitle} primaryMetadata={primaryMetadata} feedId={feedid} />
       )}
       <VideoDetails
-        title={program?.title || ''}
-        description={program?.description || 'No description'}
-        primaryMetadata={`On ${channel?.title}`}
+        title={programTitle}
+        description={programDescription}
+        primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
         startWatchingButton={channelMediaItem ? <StartWatchingButton item={channelMediaItem} playUrl={addQueryParams(`/p/${feedid}`, { play: 1 })} /> : null}
         shareButton={
