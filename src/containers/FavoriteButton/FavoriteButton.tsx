@@ -43,7 +43,7 @@ const FavoriteButton: React.VFC<Props> = ({ item }) => {
         color={isFavorite ? 'primary' : 'default'}
         fullWidth={breakpoint < Breakpoint.md}
       />
-      <Alert open={warning !== null} message={warning} onClose={clearWarning} />;
+      <Alert open={warning !== null} message={warning} onClose={clearWarning} />
     </>
   );
 };
