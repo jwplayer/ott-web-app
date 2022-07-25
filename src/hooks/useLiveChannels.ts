@@ -1,11 +1,15 @@
 import { useQuery } from 'react-query';
-import { isAfter, isBefore } from 'date-fns';
-import { useCallback, useEffect, useState } from 'react';
+import { isAfter, isBefore, subHours } from 'date-fns';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { PlaylistItem } from '#types/playlist';
 import epgService, { EpgChannel, EpgProgram } from '#src/services/epg.service';
 
 const isLiveProgram = (program: EpgProgram) => isBefore(new Date(program.startTime), new Date()) && isAfter(new Date(program.endTime), new Date());
+const isVodProgram = (program: EpgProgram) =>
+  isBefore(new Date(program.startTime), new Date()) &&
+  isBefore(new Date(program.endTime), new Date()) &&
+  isAfter(new Date(program.startTime), subHours(new Date(), 8));
 
 const useLiveChannels = (playlist: PlaylistItem[]) => {
   const { data: channels = [] } = useQuery(['live-channels', ...playlist.map(({ mediaid }) => mediaid)], async () => {
@@ -15,6 +19,9 @@ const useLiveChannels = (playlist: PlaylistItem[]) => {
   const [autoUpdate, setAutoUpdate] = useState(true);
   const [channel, setChannel] = useState<EpgChannel | undefined>(channels[0]);
   const [program, setProgram] = useState<EpgProgram | undefined>();
+
+  const isLive = useMemo(() => program && isLiveProgram(program), [program]);
+  const isVod = useMemo(() => program && isVodProgram(program), [program]);
 
   const setLiveProgram = (currentChannel: EpgChannel | undefined) => {
     if (!currentChannel) return;
@@ -66,6 +73,8 @@ const useLiveChannels = (playlist: PlaylistItem[]) => {
     channels,
     program,
     setActiveChannel,
+    isVod,
+    isLive,
   };
 };
 

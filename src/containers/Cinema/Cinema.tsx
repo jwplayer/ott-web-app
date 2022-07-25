@@ -27,9 +27,26 @@ type Props = {
   title: string;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
+  liveStartDateTime?: string | null;
+  liveEndDateTime?: string | null;
+  liveCatchup?: boolean;
 };
 
-const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondaryMetadata, onPlay, onPause, onComplete, onClose, feedId }: Props) => {
+const Cinema: React.FC<Props> = ({
+  open,
+  item,
+  title,
+  primaryMetadata,
+  secondaryMetadata,
+  onPlay,
+  onPause,
+  onComplete,
+  onClose,
+  feedId,
+  liveStartDateTime,
+  liveEndDateTime,
+  liveCatchup,
+}: Props) => {
   const { t } = useTranslation();
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
@@ -50,7 +67,7 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
       return videoProgress * item.duration;
     }
 
-    return 0;
+    return -1;
   }, [item.duration, watchHistoryItem?.progress]);
 
   const getProgress = useCallback((): number | null => {
@@ -65,6 +82,10 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
   const handleReady = useCallback((player?: JWPlayer) => {
     setPlayerInstance(player);
   }, []);
+
+  const handleFirstFrame = useCallback(() => {
+    if (liveCatchup) playerInstance?.seek(0);
+  }, [liveCatchup, playerInstance]);
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
@@ -84,7 +105,7 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
 
   const handleUserActive = useCallback(() => setUserActive(true), []);
   const handleUserInactive = useCallback(() => setUserActive(false), []);
-  const handlePlaylistItemCallback = usePlaylistItemCallback();
+  const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
   // effects
   useEffect(() => {
@@ -111,6 +132,7 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
             feedId={feedId}
             item={item}
             onReady={handleReady}
+            onFirstFrame={handleFirstFrame}
             onPlay={handlePlay}
             onPause={handlePause}
             onComplete={handleComplete}
