@@ -71,7 +71,9 @@ const Cinema: React.FC<Props> = ({
   }, [item.duration, watchHistoryItem?.progress]);
 
   const getProgress = useCallback((): number | null => {
-    if (!playerInstance) return null;
+    if (!playerInstance) {
+      return null;
+    }
 
     return playerInstance.getPosition() / item.duration;
   }, [playerInstance, item.duration]);
@@ -84,8 +86,12 @@ const Cinema: React.FC<Props> = ({
   }, []);
 
   const handleFirstFrame = useCallback(() => {
-    if (liveCatchup) playerInstance?.seek(0);
-  }, [liveCatchup, playerInstance]);
+    // when playing a livestream, the first moment we can seek to the beginning of the DVR range is after the
+    // firstFrame event.
+    if (liveFromBeginning) {
+      playerInstance?.seek(0);
+    }
+  }, [liveFromBeginning, playerInstance]);
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
