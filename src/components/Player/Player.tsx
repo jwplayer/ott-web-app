@@ -69,7 +69,17 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('userInactive', handleUserInactive);
     playerRef.current?.on('firstFrame', handleFirstFrame);
     playerRef.current?.setPlaylistItemCallback(handlePlaylistItemCallback);
-  }, [handleReady, handleBeforePlay, handleComplete, handlePlay, handlePause, handleUserActive, handleUserInactive, handlePlaylistItemCallback]);
+  }, [
+    handleReady,
+    handleBeforePlay,
+    handleComplete,
+    handlePlay,
+    handlePause,
+    handleUserActive,
+    handleUserInactive,
+    handleFirstFrame,
+    handlePlaylistItemCallback,
+  ]);
 
   const detachEvents = useCallback(() => {
     playerRef.current?.off('ready');
