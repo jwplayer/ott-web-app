@@ -24,6 +24,7 @@ import useEntitlement from '#src/hooks/useEntitlement';
 import { addQueryParams } from '#src/utils/formatting';
 import Button from '#src/components/Button/Button';
 import Play from '#src/icons/Play';
+import useLiveProgram from '#src/hooks/useLiveProgram';
 
 function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
@@ -44,11 +45,12 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   const play = searchParams.get('play') === '1';
   const liveStartDateTime = searchParams.get('start');
   const liveEndDateTime = searchParams.get('end');
-  const liveCatchup = searchParams.get('catchup') === '1';
+  const liveFromBeginning = searchParams.get('beginning') === '1';
   const goBack = () => history.push(`/p/${feedid}`, false);
 
   // EPG data
-  const { isLive, isVod, channels, channel, program, setActiveChannel } = useLiveChannels(playlist);
+  const { channels, channel, program, setActiveChannel } = useLiveChannels(playlist, !liveFromBeginning);
+  const { isLive, isVod, isWatchableFromBeginning } = useLiveProgram(program);
   const { getEpgProps, getLayoutProps } = usePlanByEpg(channels);
 
   // Media item
@@ -71,6 +73,9 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   const programDescription = program?.description || t('empty_schedule_program.description') || '';
   const primaryMetadata = t('on_channel', { name: channel.title });
 
+  const canWatch = isLive || (isVod && isWatchableFromBeginning);
+  const canWatchFromBeginning = isEntitled && isLive && isWatchableFromBeginning;
+
   return (
     <>
       <Helmet>
@@ -88,7 +93,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
           feedId={feedid}
           liveStartDateTime={liveStartDateTime}
           liveEndDateTime={liveEndDateTime}
-          liveCatchup={liveCatchup}
+          liveFromBeginning={liveFromBeginning}
         />
       )}
       <VideoDetails
@@ -106,9 +111,9 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
                   start: isVod ? program?.startTime : undefined,
                   end: isVod ? program?.endTime : undefined,
                 })}
-                disabled={!isVod && !isLive}
+                disabled={!canWatch}
               />
-              {isEntitled && isLive && (
+              {canWatchFromBeginning && (
                 <Button
                   className={styles.catchupButton}
                   onClick={() =>
@@ -116,7 +121,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
                       addQueryParams(`/p/${feedid}`, {
                         play: 1,
                         start: program?.startTime,
-                        catchup: 1,
+                        beginning: 1,
                       }),
                     )
                   }

@@ -1,58 +1,59 @@
 import { useQuery } from 'react-query';
-import { isAfter, isBefore, subHours } from 'date-fns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import type { PlaylistItem } from '#types/playlist';
 import epgService, { EpgChannel, EpgProgram } from '#src/services/epg.service';
+import { programIsLive } from '#src/utils/epg';
 
-const isLiveProgram = (program: EpgProgram) => isBefore(new Date(program.startTime), new Date()) && isAfter(new Date(program.endTime), new Date());
-const isVodProgram = (program: EpgProgram) =>
-  isBefore(new Date(program.startTime), new Date()) &&
-  isBefore(new Date(program.endTime), new Date()) &&
-  isAfter(new Date(program.startTime), subHours(new Date(), 8));
+/**
+ * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.
+ *
+ * It automatically selects the first channel and currently live program. It also updates the program information when
+ * the current program is not live anymore.
+ *
+ * The `enableAutoUpdate` argument can be used to ignore the auto update mechanism. For example, when playing a live
+ * program from the beginning, we don't want to update the program information in the middle of the program.
+ */
+const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
+  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist));
 
-const useLiveChannels = (playlist: PlaylistItem[]) => {
-  const { data: channels = [] } = useQuery(['live-channels', ...playlist.map(({ mediaid }) => mediaid)], async () => {
-    return await epgService.getSchedules(playlist);
-  });
-
-  const [autoUpdate, setAutoUpdate] = useState(true);
+  const [autoUpdate, setAutoUpdate] = useState(enableAutoUpdate);
   const [channel, setChannel] = useState<EpgChannel | undefined>(channels[0]);
   const [program, setProgram] = useState<EpgProgram | undefined>();
 
-  const isLive = useMemo(() => program && isLiveProgram(program), [program]);
-  const isVod = useMemo(() => program && isVodProgram(program), [program]);
-
+  // helper function to select the live program of the current channel
   const setLiveProgram = (currentChannel: EpgChannel | undefined) => {
     if (!currentChannel) return;
-    const liveProgram = currentChannel.programs.find(isLiveProgram);
+    const liveProgram = currentChannel.programs.find(programIsLive);
 
     if (!program || program.id !== liveProgram?.id) {
-      setProgram(currentChannel.programs.find(isLiveProgram));
+      setProgram(liveProgram);
     }
   };
 
+  // this effect updates the program when watching the live stream and the next program starts
   useEffect(() => {
-    if (!autoUpdate) return;
+    if (!autoUpdate || !enableAutoUpdate) return;
 
-    const intervalId = window.setInterval(() => setLiveProgram(channel), 2_500);
+    const intervalId = window.setInterval(() => setLiveProgram(channel), 5_000);
 
     return () => clearInterval(intervalId);
-  }, [channel, autoUpdate]);
+  }, [channel, autoUpdate, enableAutoUpdate]);
 
+  // auto select first channel and program when the data is loaded
   useEffect(() => {
-    const currentChannel = channel || channels[0];
+    const firstChannel = channels[0];
 
-    // auto select first channel
-    if (!channel && currentChannel) setChannel(currentChannel);
+    // auto select first channel when no channel is selected
+    if (!channel && firstChannel) {
+      setChannel(firstChannel);
 
-    // auto select live program
-    setLiveProgram(currentChannel);
+      // auto select live program
+      setLiveProgram(firstChannel);
+    }
   }, [channels]);
 
-  /**
-   * Update the selected channel and optionally the program
-   */
+  // update the selected channel and optionally the program
   const setActiveChannel = useCallback(
     (id: string, programId?: string) => {
       const channel = channels?.find((channel) => channel.id === id);
@@ -62,7 +63,10 @@ const useLiveChannels = (playlist: PlaylistItem[]) => {
 
         setChannel(channel);
         setProgram(program);
-        setAutoUpdate(!!program && isLiveProgram(program));
+
+        // enable auto update when there is no program information or when the program is live
+        // when the user clicks on a VOD item, we don't want to update the information automatically
+        setAutoUpdate(!program || programIsLive(program));
       }
     },
     [channels],
@@ -73,8 +77,6 @@ const useLiveChannels = (playlist: PlaylistItem[]) => {
     channels,
     program,
     setActiveChannel,
-    isVod,
-    isLive,
   };
 };
 

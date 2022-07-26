@@ -29,7 +29,7 @@ type Props = {
   secondaryMetadata?: React.ReactNode;
   liveStartDateTime?: string | null;
   liveEndDateTime?: string | null;
-  liveCatchup?: boolean;
+  liveFromBeginning?: boolean;
 };
 
 const Cinema: React.FC<Props> = ({
@@ -45,7 +45,7 @@ const Cinema: React.FC<Props> = ({
   feedId,
   liveStartDateTime,
   liveEndDateTime,
-  liveCatchup,
+  liveFromBeginning,
 }: Props) => {
   const { t } = useTranslation();
   const { player, features } = useConfigStore((s) => s.config);
@@ -67,7 +67,8 @@ const Cinema: React.FC<Props> = ({
       return videoProgress * item.duration;
     }
 
-    return -1;
+    // start at the beginning of the video (only for VOD content)
+    return 0;
   }, [item.duration, watchHistoryItem?.progress]);
 
   const getProgress = useCallback((): number | null => {
