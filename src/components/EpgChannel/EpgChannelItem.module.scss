@@ -1,0 +1,13 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.epgChannelBox {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: variables.$base-spacing;
+  background-color: theme.$box-bg;
+  border-radius: 4px;
+}
