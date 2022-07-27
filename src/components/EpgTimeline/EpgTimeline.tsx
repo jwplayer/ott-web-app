@@ -13,7 +13,7 @@ type Props = {
   sidebarWidth: number;
 };
 
-const EpgTimeline: React.VFC<Props> = ({ isBaseTimeFormat, isSidebar, dayWidth, hourWidth, numberOfHoursInDay, offsetStartHoursRange, sidebarWidth }) => {
+const EpgTimeline: React.VFC<Props> = ({ isBaseTimeFormat, dayWidth, hourWidth, numberOfHoursInDay, offsetStartHoursRange }) => {
   const { time, dividers, formatTime } = useTimeline(numberOfHoursInDay, isBaseTimeFormat);
 
   const renderDividers = () => dividers.map((_, index) => <div className={styles.timelineDivider} key={index} style={{ marginRight: hourWidth / 4 }} />);
@@ -25,24 +25,9 @@ const EpgTimeline: React.VFC<Props> = ({ isBaseTimeFormat, isSidebar, dayWidth, 
     </div>
   );
 
-  // const renderLeftControl = () => (
-  //   <div className={styles.leftControl} role="button" onClick={() => {}}>
-  //     <ChevronLeft />
-  //   </div>
-  // );
-
-  // const renderRightControl = () => (
-  //   <div className={styles.rightControl} role="button" onClick={() => {}}>
-  //     <ChevronRight />
-  //   </div>
-  // );
-
   return (
-    <div className={styles.timelineContainer} style={{ width: dayWidth, left: isSidebar ? sidebarWidth : 0 }}>
-      {/* {renderLeftControl()} */}
-
+    <div className={styles.timelineContainer} style={{ width: dayWidth }}>
       {time.map((_, index) => renderTime(index))}
-      {/* {renderRightControl()} */}
     </div>
   );
 };

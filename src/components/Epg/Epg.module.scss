@@ -1,0 +1,38 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.timelineControl {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.timelineNowButton {
+  justify-content: center;
+  width: 160px;
+  margin-right: auto;
+}
+
+.leftControl,
+.rightControl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  transition: transform 0.3s ease-out;
+
+  > svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.leftControl {
+  margin-right: variables.$base-spacing;
+}
