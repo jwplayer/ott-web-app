@@ -25,7 +25,7 @@ const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
   useEffect(() => {
     if (!autoUpdate || !enableAutoUpdate) return;
 
-    const intervalId = window.setInterval(() => setProgram(getLiveProgram(channel)), 5_000);
+    const intervalId = window.setInterval(() => channel && setProgram(getLiveProgram(channel)), 5_000);
 
     return () => clearInterval(intervalId);
   }, [channel, autoUpdate, enableAutoUpdate]);
