@@ -3,11 +3,23 @@
 
 .epgChannelBox {
   position: absolute;
+  width: 100%;
+  padding: 8px 4px;
+}
+
+.epgChannelContent {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-bottom: variables.$base-spacing;
+  height: 100%;
   background-color: theme.$box-bg;
+  border-radius: 4px;
+}
+
+.epgChannelLogo {
+  max-width: 75px;
+  max-height: 75px;
   border-radius: 4px;
 }

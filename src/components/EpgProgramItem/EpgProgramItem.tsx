@@ -33,9 +33,9 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive }) => {
       <div className={classNames(styles.epgProgramContent, { [styles.active]: isActive, [styles.live]: isLive })} style={{ width: styles.width }}>
         {isMinWidth && <img className={styles.epgProgramImage} src={image} alt="Preview" />}
         <div>
-          <div className={styles.epgProgramText}>
+          {/* <div className={styles.epgProgramText}>
             {sinceTime} - {tillTime}
-          </div>
+          </div> */}
           <div className={styles.epgProgramTitle}>{title}</div>
           <div className={styles.epgProgramText}>
             {sinceTime} - {tillTime}
