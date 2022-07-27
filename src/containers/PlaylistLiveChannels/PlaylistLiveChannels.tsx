@@ -153,7 +153,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
                 {...rest}
               />
             )}
-            renderChannel={({ channel }) => <ChannelItem key={channel.uuid} channel={channel} />}
+            renderChannel={({ channel }) => <ChannelItem key={channel.uuid} channel={channel} onClick={(channel) => setActiveChannel(channel.uuid)} />}
           />
         </Epg>
       </VideoDetails>
