@@ -5,6 +5,8 @@ import { Epg, Layout } from 'planby';
 import { useHistory, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
+import styles from './PlaylistLiveChannels.module.scss';
+
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist } from '#types/playlist';
@@ -20,6 +22,9 @@ import usePlanByEpg from '#src/hooks/usePlanByEpg';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { addQueryParams } from '#src/utils/formatting';
+import Button from '#src/components/Button/Button';
+import Play from '#src/icons/Play';
+import useLiveProgram from '#src/hooks/useLiveProgram';
 
 function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
@@ -38,10 +43,14 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   const history = useHistory();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const play = searchParams.get('play') === '1';
+  const liveStartDateTime = searchParams.get('start');
+  const liveEndDateTime = searchParams.get('end');
+  const liveFromBeginning = searchParams.get('beginning') === '1';
   const goBack = () => history.push(`/p/${feedid}`, false);
 
   // EPG data
-  const { channels, channel, program, setActiveChannel } = useLiveChannels(playlist);
+  const { channels, channel, program, setActiveChannel } = useLiveChannels(playlist, !liveFromBeginning);
+  const { isLive, isVod, isWatchableFromBeginning } = useLiveProgram(program);
   const { getEpgProps, getLayoutProps } = usePlanByEpg(channels);
 
   // Media item
@@ -64,6 +73,9 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   const programDescription = program?.description || t('empty_schedule_program.description') || '';
   const primaryMetadata = t('on_channel', { name: channel.title });
 
+  const canWatch = isLive || (isVod && isWatchableFromBeginning);
+  const canWatchFromBeginning = isEntitled && isLive && isWatchableFromBeginning;
+
   return (
     <>
       <Helmet>
@@ -72,14 +84,54 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       {channelMediaItem && (
-        <Cinema open={play && isEntitled} onClose={goBack} item={channelMediaItem} title={programTitle} primaryMetadata={primaryMetadata} feedId={feedid} />
+        <Cinema
+          open={play && isEntitled}
+          onClose={goBack}
+          item={channelMediaItem}
+          title={programTitle}
+          primaryMetadata={primaryMetadata}
+          feedId={feedid}
+          liveStartDateTime={liveStartDateTime}
+          liveEndDateTime={liveEndDateTime}
+          liveFromBeginning={liveFromBeginning}
+        />
       )}
       <VideoDetails
         title={programTitle}
         description={programDescription}
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
-        startWatchingButton={channelMediaItem ? <StartWatchingButton item={channelMediaItem} playUrl={addQueryParams(`/p/${feedid}`, { play: 1 })} /> : null}
+        startWatchingButton={
+          channelMediaItem ? (
+            <>
+              <StartWatchingButton
+                item={channelMediaItem}
+                playUrl={addQueryParams(`/p/${feedid}`, {
+                  play: 1,
+                  start: isVod ? program?.startTime : undefined,
+                  end: isVod ? program?.endTime : undefined,
+                })}
+                disabled={!canWatch}
+              />
+              {canWatchFromBeginning && (
+                <Button
+                  className={styles.catchupButton}
+                  onClick={() =>
+                    history.push(
+                      addQueryParams(`/p/${feedid}`, {
+                        play: 1,
+                        start: program?.startTime,
+                        beginning: 1,
+                      }),
+                    )
+                  }
+                  label={t('start_from_beginning')}
+                  startIcon={<Play />}
+                />
+              )}
+            </>
+          ) : null
+        }
         shareButton={
           enableSharing && channelMediaItem ? (
             <ShareButton title={channelMediaItem.title} description={channelMediaItem.description} url={window.location.href} />

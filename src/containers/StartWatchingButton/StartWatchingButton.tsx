@@ -17,9 +17,10 @@ import { useAccountStore } from '#src/stores/AccountStore';
 type Props = {
   item: PlaylistItem;
   playUrl: string;
+  disabled?: boolean;
 };
 
-const StartWatchingButton: React.VFC<Props> = ({ item, playUrl }) => {
+const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false }) => {
   const { t } = useTranslation('video');
   const history = useHistory();
   const breakpoint = useBreakpoint();
@@ -69,6 +70,7 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl }) => {
       startIcon={isEntitled ? <Play /> : undefined}
       onClick={handleStartWatchingClick}
       fullWidth={breakpoint < Breakpoint.md}
+      disabled={disabled}
     >
       {videoProgress ? (
         <div className={styles.progressRail}>

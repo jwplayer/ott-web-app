@@ -1,0 +1,8 @@
+@use '../../styles/mixins/responsive';
+
+.catchupButton {
+  @include responsive.mobile-and-tablet() {
+    flex: 2 !important;
+    white-space: nowrap;
+  }
+}
