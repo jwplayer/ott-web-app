@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 import type { PlaylistItem } from '#types/playlist';
 import epgService, { EpgChannel, EpgProgram } from '#src/services/epg.service';
-import { programIsLive } from '#src/utils/epg';
+import { getLiveProgram, programIsLive } from '#src/utils/epg';
+import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
 
 /**
  * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.
@@ -15,32 +16,25 @@ import { programIsLive } from '#src/utils/epg';
  * program from the beginning, we don't want to update the program information in the middle of the program.
  */
 const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
-  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist));
+  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist), {
+    refetchInterval: LIVE_CHANNELS_REFETCH_INTERVAL,
+  });
 
   const [autoUpdate, setAutoUpdate] = useState(enableAutoUpdate);
-  const [channel, setChannel] = useState<EpgChannel | undefined>(channels[0]);
+  const [channel, setChannel] = useState<EpgChannel | undefined>();
   const [program, setProgram] = useState<EpgProgram | undefined>();
-
-  // helper function to select the live program of the current channel
-  const setLiveProgram = (currentChannel: EpgChannel | undefined) => {
-    if (!currentChannel) return;
-    const liveProgram = currentChannel.programs.find(programIsLive);
-
-    if (!program || program.id !== liveProgram?.id) {
-      setProgram(liveProgram);
-    }
-  };
 
   // this effect updates the program when watching the live stream and the next program starts
   useEffect(() => {
     if (!autoUpdate || !enableAutoUpdate) return;
 
-    const intervalId = window.setInterval(() => setLiveProgram(channel), 5_000);
+    const intervalId = window.setInterval(() => channel && setProgram(getLiveProgram(channel)), 5_000);
 
     return () => clearInterval(intervalId);
   }, [channel, autoUpdate, enableAutoUpdate]);
 
   // auto select first channel and program when the data is loaded
+  // update channel and program state with the latest data
   useEffect(() => {
     const firstChannel = channels[0];
 
@@ -49,7 +43,23 @@ const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
       setChannel(firstChannel);
 
       // auto select live program
-      setLiveProgram(firstChannel);
+      setProgram(getLiveProgram(firstChannel));
+    }
+
+    // update the current channel with the updated data
+    if (channel) {
+      const updatedChannel = channels.find(({ id }) => id === channel.id);
+
+      // find the current program in the updated data
+      let updatedProgram = program && updatedChannel?.programs.find(({ id }) => id === program?.id);
+
+      // if the program doesn't exist, use the live program
+      if (!updatedProgram && updatedChannel) {
+        updatedProgram = getLiveProgram(updatedChannel);
+      }
+
+      setChannel(updatedChannel);
+      setProgram(updatedProgram);
     }
   }, [channels]);
 
@@ -58,16 +68,20 @@ const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
     (id: string, programId?: string) => {
       const channel = channels?.find((channel) => channel.id === id);
 
-      if (channel) {
-        const program = channel.programs.find((program) => program.id === programId);
-
-        setChannel(channel);
-        setProgram(program);
-
-        // enable auto update when there is no program information or when the program is live
-        // when the user clicks on a VOD item, we don't want to update the information automatically
-        setAutoUpdate(!program || programIsLive(program));
+      // early return when no channel was found
+      if (!channel) {
+        return;
       }
+
+      // select the found program or live program when no programId is given
+      const program = programId ? channel.programs.find((program) => program.id === programId) : getLiveProgram(channel);
+
+      setChannel(channel);
+      setProgram(program);
+
+      // enable auto update when there is no program information or when the program is live
+      // when the user clicks on a VOD item, we don't want to update the information automatically
+      setAutoUpdate(!program || programIsLive(program));
     },
     [channels],
   );

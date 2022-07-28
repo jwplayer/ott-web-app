@@ -1,6 +1,6 @@
 import { isAfter, isFuture, isPast, subHours } from 'date-fns';
 
-import type { EpgProgram } from '#src/services/epg.service';
+import type { EpgChannel, EpgProgram } from '#src/services/epg.service';
 
 /**
  * Returns true when the program is currently live e.g. the startTime is before now and the endTime is after now
@@ -30,4 +30,11 @@ export const programIsFullyWatchable = (program: EpgProgram, liveStreamCatchupHo
   const maxStartTime = subHours(new Date(), liveStreamCatchupHours);
 
   return isAfter(startTime, maxStartTime);
+};
+
+/**
+ * Get the live program of the given channel
+ */
+export const getLiveProgram = (channel: EpgChannel) => {
+  return channel.programs.find(programIsLive);
 };

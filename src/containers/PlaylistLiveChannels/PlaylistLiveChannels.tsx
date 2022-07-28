@@ -4,6 +4,7 @@ import shallow from 'zustand/shallow';
 import { Epg, Layout } from 'planby';
 import { useHistory, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { differenceInSeconds, format } from 'date-fns';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
@@ -21,10 +22,11 @@ import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchi
 import usePlanByEpg from '#src/hooks/usePlanByEpg';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useEntitlement from '#src/hooks/useEntitlement';
-import { addQueryParams } from '#src/utils/formatting';
+import { addQueryParams, formatDurationTag } from '#src/utils/formatting';
 import Button from '#src/components/Button/Button';
 import Play from '#src/icons/Play';
 import useLiveProgram from '#src/hooks/useLiveProgram';
+import Tag from '#src/components/Tag/Tag';
 
 function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
@@ -57,6 +59,52 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   const channelMediaItem = useMemo(() => playlist.find(({ mediaid }) => channel?.id === mediaid), [channel?.id, playlist]);
   const { isEntitled } = useEntitlement(channelMediaItem);
 
+  const videoDetails = useMemo(() => {
+    if (program) {
+      return {
+        title: program.title,
+        description: program.description || '',
+        poster: program.image,
+        canWatch: isLive || (isVod && isWatchableFromBeginning),
+        canWatchFromBeginning: isEntitled && isLive && isWatchableFromBeginning,
+      };
+    }
+
+    return {
+      title: channel?.title || '',
+      description: channel?.description || '',
+      poster: channel?.image,
+      canWatch: true,
+      canWatchFromBeginning: false,
+    };
+  }, [channel, isEntitled, isLive, isVod, isWatchableFromBeginning, program]);
+
+  const primaryMetadata = useMemo(() => {
+    if (!channel) {
+      return '';
+    }
+
+    if (!program) {
+      return <Tag isLive>{t('common:live')}</Tag>;
+    }
+
+    const startTime = new Date(program.startTime);
+    const endTime = new Date(program.endTime);
+    const durationInSeconds = differenceInSeconds(endTime, startTime);
+    const duration = formatDurationTag(durationInSeconds);
+
+    return (
+      <>
+        <Tag className={styles.tag} isLive={isLive}>
+          {isLive ? t('common:live') : `${format(startTime, 'p')} - ${format(endTime, 'p')}`}
+        </Tag>
+        {t('on_channel', { name: channel.title })}
+        {' • '}
+        {duration}
+      </>
+    );
+  }, [channel, isLive, program, t]);
+
   // Effects
   useEffect(() => {
     const toImage = program?.image || channelMediaItem?.image;
@@ -69,12 +117,6 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   }
 
   const pageTitle = `${title} - ${siteName}`;
-  const programTitle = program?.title || t('empty_schedule_program.title') || '';
-  const programDescription = program?.description || t('empty_schedule_program.description') || '';
-  const primaryMetadata = t('on_channel', { name: channel.title });
-
-  const canWatch = isLive || (isVod && isWatchableFromBeginning);
-  const canWatchFromBeginning = isEntitled && isLive && isWatchableFromBeginning;
 
   return (
     <>
@@ -88,7 +130,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
           open={play && isEntitled}
           onClose={goBack}
           item={channelMediaItem}
-          title={programTitle}
+          title={videoDetails.title}
           primaryMetadata={primaryMetadata}
           feedId={feedid}
           liveStartDateTime={liveStartDateTime}
@@ -97,10 +139,11 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         />
       )}
       <VideoDetails
-        title={programTitle}
-        description={programDescription}
+        title={videoDetails.title}
+        description={videoDetails.description}
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
+        poster={videoDetails.poster}
         startWatchingButton={
           channelMediaItem ? (
             <>
@@ -111,9 +154,9 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
                   start: isVod ? program?.startTime : undefined,
                   end: isVod ? program?.endTime : undefined,
                 })}
-                disabled={!canWatch}
+                disabled={!videoDetails.canWatch}
               />
-              {canWatchFromBeginning && (
+              {videoDetails.canWatchFromBeginning && (
                 <Button
                   className={styles.catchupButton}
                   onClick={() =>
@@ -153,7 +196,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
                 {...rest}
               />
             )}
-            renderChannel={({ channel }) => <ChannelItem key={channel.uuid} channel={channel} />}
+            renderChannel={({ channel }) => <ChannelItem key={channel.uuid} channel={channel} onClick={(channel) => setActiveChannel(channel.uuid)} />}
           />
         </Epg>
       </VideoDetails>

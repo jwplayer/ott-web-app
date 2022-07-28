@@ -43,6 +43,7 @@
 .info {
   width: 70%;
   max-width: 650px;
+  min-height: 300px;
 
   @include responsive.tablet-only() {
     width: 350px;
@@ -58,6 +59,7 @@
 
 .title {
   @include typography.video-title-base;
+  margin-bottom: calc(variables.$base-spacing / 2);
 }
 
 .metaContainer {
