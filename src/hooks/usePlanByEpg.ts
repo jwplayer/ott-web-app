@@ -26,6 +26,7 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
   }, [channels]);
 
   const theme = useMemo(() => makeTheme(config.styling.highlightColor, config.styling.backgroundColor), [config]);
+
   return useEpg({
     channels: epgChannels,
     epg: epgPrograms,
