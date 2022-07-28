@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
 import { useHistory, useLocation } from 'react-router';
@@ -18,7 +18,7 @@ import ShareButton from '#src/components/ShareButton/ShareButton';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useEntitlement from '#src/hooks/useEntitlement';
-import { addQueryParams, formatDurationTag } from '#src/utils/formatting';
+import { addQueryParams, formatDurationTag, liveChannelsURL } from '#src/utils/formatting';
 import Button from '#src/components/Button/Button';
 import Play from '#src/icons/Play';
 import useLiveProgram from '#src/hooks/useLiveProgram';
@@ -41,13 +41,15 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   const history = useHistory();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const play = searchParams.get('play') === '1';
+  const channelId = searchParams.get('channel') ?? undefined;
   const liveStartDateTime = searchParams.get('start');
   const liveEndDateTime = searchParams.get('end');
   const liveFromBeginning = searchParams.get('beginning') === '1';
-  const goBack = () => history.push(`/p/${feedid}`, false);
+  const goBack = () => feedid && history.push(liveChannelsURL(feedid, channelId));
 
   // EPG data
-  const { channels, channel, program, setActiveChannel } = useLiveChannels(playlist, !liveFromBeginning);
+  const [initialChannelId] = useState(channelId);
+  const { channels, channel, program, setActiveChannel } = useLiveChannels(playlist, initialChannelId, !liveFromBeginning);
   const { isLive, isVod, isWatchableFromBeginning } = useLiveProgram(program);
 
   // Media item
@@ -106,6 +108,11 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
     if (toImage) updateBlurImage(toImage);
   }, [channelMediaItem?.image, program, updateBlurImage]);
 
+  useEffect(() => {
+    // update the channel id in URL
+    if (channel && feedid) history.replace(liveChannelsURL(feedid, channel.id));
+  }, [history, feedid, channel]);
+
   // Loading
   if (!channel) {
     return <LoadingOverlay />;
@@ -144,8 +151,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
             <>
               <StartWatchingButton
                 item={channelMediaItem}
-                playUrl={addQueryParams(`/p/${feedid}`, {
-                  play: 1,
+                playUrl={addQueryParams(liveChannelsURL(feedid || '', channelId, true), {
                   start: isVod ? program?.startTime : undefined,
                   end: isVod ? program?.endTime : undefined,
                 })}
@@ -156,8 +162,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
                   className={styles.catchupButton}
                   onClick={() =>
                     history.push(
-                      addQueryParams(`/p/${feedid}`, {
-                        play: 1,
+                      addQueryParams(liveChannelsURL(feedid || '', channelId, true), {
                         start: program?.startTime,
                         beginning: 1,
                       }),

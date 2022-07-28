@@ -9,13 +9,13 @@ import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
 /**
  * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.
  *
- * It automatically selects the first channel and currently live program. It also updates the program information when
- * the current program is not live anymore.
+ * It automatically selects the initial channel (or first channel) and currently live program. It also updates the
+ * program information when the current program is not live anymore.
  *
  * The `enableAutoUpdate` argument can be used to ignore the auto update mechanism. For example, when playing a live
  * program from the beginning, we don't want to update the program information in the middle of the program.
  */
-const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
+const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | undefined, enableAutoUpdate = true) => {
   const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist), {
     refetchInterval: LIVE_CHANNELS_REFETCH_INTERVAL,
   });
@@ -33,17 +33,17 @@ const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
     return () => clearInterval(intervalId);
   }, [channel, autoUpdate, enableAutoUpdate]);
 
-  // auto select first channel and program when the data is loaded
+  // auto select initial channel (fallback to first channel) and program when the data is loaded
   // update channel and program state with the latest data
   useEffect(() => {
-    const firstChannel = channels[0];
+    const selectedChannel = channels.find(({ id }) => id === initialChannelId) || channels[0];
 
     // auto select first channel when no channel is selected
-    if (!channel && firstChannel) {
-      setChannel(firstChannel);
+    if (!channel && selectedChannel) {
+      setChannel(selectedChannel);
 
       // auto select live program
-      setProgram(getLiveProgram(firstChannel));
+      setProgram(getLiveProgram(selectedChannel));
     }
 
     // update the current channel with the updated data
@@ -58,7 +58,6 @@ const useLiveChannels = (playlist: PlaylistItem[], enableAutoUpdate = true) => {
         updatedProgram = getLiveProgram(updatedChannel);
       }
 
-      setChannel(updatedChannel);
       setProgram(updatedProgram);
     }
   }, [channels]);
