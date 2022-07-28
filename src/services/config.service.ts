@@ -133,7 +133,7 @@ const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
   const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
 
-  return { ...config, siteName: siteName || i18n.t('common.default_site_name'), content: updatedContent };
+  return { ...config, siteName: siteName || i18n.t('common:default_site_name'), content: updatedContent };
 };
 
 export const validateConfig = (config?: Config): Promise<Config> => {

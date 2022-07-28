@@ -1,0 +1,24 @@
+@use '../../styles/variables';
+
+.container {
+  padding: 16px;
+}
+
+.button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+
+  min-width: auto;
+
+  margin-bottom: 8px;
+  margin-left: 8px;
+}
+
+.dropdown {
+  > div {
+    min-width: 200px;
+  }
+}

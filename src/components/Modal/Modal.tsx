@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import scrollbarSize from '../../utils/dom';
 import Fade from '../Animation/Fade/Fade';
 import Grow from '../Animation/Grow/Grow';
-import { IS_DEV_BUILD } from '../../utils/common';
+import { IS_DEV_OR_TEST_BUILD } from '../../env';
 
 import styles from './Modal.module.scss';
 
@@ -77,7 +77,7 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
   return ReactDOM.createPortal(
     <Fade open={open} duration={300} onCloseAnimationEnd={() => setVisible(false)}>
       <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
-        <div className={styles.backdrop} onClick={onClose} data-testid={IS_DEV_BUILD ? 'backdrop' : undefined} />
+        <div className={styles.backdrop} onClick={onClose} data-testid={IS_DEV_OR_TEST_BUILD ? 'backdrop' : undefined} />
         <div className={styles.container}>
           <AnimationComponent open={open} duration={200}>
             {children}

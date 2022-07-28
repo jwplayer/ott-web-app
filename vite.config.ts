@@ -20,14 +20,14 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
     }),
   ];
 
-  // These files are only needed in dev / test, don't include in prod builds
-  if (process.env.APP_INCLUDE_TEST_CONFIGS) {
+  // dev, test, prod
+  if (process.env.APP_INCLUDE_CONFIGS) {
     plugins.push(
       viteStaticCopy({
         targets: [
           {
-            src: 'test-e2e/data/*',
-            dest: 'test-data',
+            src: `configs/${process.env.APP_INCLUDE_CONFIGS}/`,
+            dest: 'configs',
           },
         ],
       }),
@@ -36,6 +36,7 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
 
   return defineConfig({
     plugins: plugins,
+    mode: process.env.APP_MODE || mode,
     publicDir: './public',
     envPrefix: 'APP_',
     server: {

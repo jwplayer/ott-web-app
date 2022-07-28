@@ -8,7 +8,7 @@ const videoLength = 231;
 Feature('watch_history - logged in').retry(3);
 
 Before(({ I }) => {
-  I.useConfig('test--accounts');
+  I.useConfig('accounts--config');
 });
 
 Scenario('I can get my watch history when logged in', async ({ I }) => {
@@ -67,7 +67,7 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
 });
 
 Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig('test--watchlists');
+  I.useConfig('watchlists--config');
 
   I.dontSee('Continue watching');
 

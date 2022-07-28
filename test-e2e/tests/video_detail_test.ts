@@ -21,7 +21,7 @@ Scenario('Video detail screen loads', ({ I }) => {
 });
 
 Scenario('I can expand the description (@mobile-only)', ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig('no-cleeng--config');
   openVideo(I, 'Agent 327');
 
   function checkHeight(height) {
@@ -61,7 +61,7 @@ Scenario('I can return to the video detail screen', async ({ I }) => {
 });
 
 Scenario('I can play other media from the related shelf', ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig('no-cleeng--config');
   openVideo(I, 'Agent 327');
   openVideo(I, 'Elephants Dream');
   I.see(
@@ -72,7 +72,7 @@ Scenario('I can play other media from the related shelf', ({ I }) => {
 });
 
 Scenario('I can play a trailer', async ({ I }) => {
-  I.useConfig('test--no-cleeng', constants.elephantsDreamDetailUrl);
+  I.useConfig('no-cleeng--config', constants.elephantsDreamDetailUrl);
 
   I.click('Trailer');
   await I.waitForPlayerPlaying('Elephants Dream - Trailer');
@@ -101,7 +101,7 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
 });
 
 Scenario('I can play a video after signing in', async ({ I }) => {
-  I.useConfig('test--accounts', constants.elephantsDreamDetailUrl);
+  I.useConfig('accounts--config', constants.elephantsDreamDetailUrl);
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');
@@ -127,7 +127,7 @@ Scenario('I can play a video after signing in', async ({ I }) => {
 Scenario('I can share the media', async ({ I }) => {
   await I.enableClipboard();
 
-  const url = constants.elephantsDreamDetailUrl + '&c=test--no-cleeng';
+  const url = constants.elephantsDreamDetailUrl + '&c=no-cleeng--config';
 
   I.amOnPage(url);
 
@@ -149,7 +149,7 @@ function openVideo(I, name) {
 }
 
 async function playBigBuckBunny(I) {
-  I.useConfig('test--no-cleeng', constants.bigBuckBunnyDetailUrl);
+  I.useConfig('no-cleeng--config', constants.bigBuckBunnyDetailUrl);
   I.waitForText('Start watching', 5);
   I.dontSeeInCurrentUrl('play=1');
   I.click('Start watching');

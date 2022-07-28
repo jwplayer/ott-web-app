@@ -3,11 +3,11 @@ import constants from '../../utils/constants';
 Feature('login - home').retry(3);
 
 Before(({ I }) => {
-  I.useConfig('test--accounts', constants.loginUrl);
+  I.useConfig('accounts--config', constants.loginUrl);
 });
 
 Scenario('Sign-in buttons show for accounts config', async ({ I }) => {
-  I.useConfig('test--accounts');
+  I.useConfig('accounts--config');
 
   if (await I.isMobile()) {
     I.openMenuDrawer();
@@ -18,7 +18,7 @@ Scenario('Sign-in buttons show for accounts config', async ({ I }) => {
 });
 
 Scenario('Sign-in buttons don`t show for config without accounts', async ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig('no-cleeng--config');
 
   I.dontSee('Sign in');
   I.dontSee('Sign up');
@@ -32,7 +32,7 @@ Scenario('Sign-in buttons don`t show for config without accounts', async ({ I })
 });
 
 Scenario('I can open the log in modal', async ({ I }) => {
-  I.useConfig('test--accounts');
+  I.useConfig('accounts--config');
 
   if (await I.isMobile()) {
     I.openMenuDrawer();

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
 import HelperText from '../HelperText/HelperText';
-import { IS_DEV_BUILD } from '../../utils/common';
+import { IS_DEV_OR_TEST_BUILD } from '../../env';
 
 import styles from './TextField.module.scss';
 
@@ -72,7 +72,7 @@ const TextField: React.FC<Props> = ({
   }
 
   return (
-    <div className={textFieldClassName} data-testid={IS_DEV_BUILD ? testId : undefined}>
+    <div className={textFieldClassName} data-testid={IS_DEV_OR_TEST_BUILD ? testId : undefined}>
       <label htmlFor={id} className={styles.label}>
         {label}
         {!rest.required && editing ? <span>{t('optional')}</span> : null}

@@ -6,7 +6,7 @@ const videoLength = 231;
 Feature('watch_history - local').retry(3);
 
 Before(({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig('no-cleeng--config');
 });
 
 Scenario('I can get my watch progress stored (locally)', async ({ I }) => {

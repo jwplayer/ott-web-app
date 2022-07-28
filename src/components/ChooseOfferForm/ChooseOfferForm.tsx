@@ -12,7 +12,7 @@ import CheckCircle from '#src/icons/CheckCircle';
 import type { Offer } from '#types/checkout';
 import { getOfferPrice, isSVODOffer } from '#src/utils/subscription';
 import type { FormErrors } from '#types/form';
-import { IS_DEV_BUILD } from '#src/utils/common';
+import { IS_DEV_OR_TEST_BUILD } from '#src/env';
 import type { ChooseOfferFormData, OfferType } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
@@ -139,7 +139,7 @@ const ChooseOfferForm: React.FC<Props> = ({
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'choose-offer-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={IS_DEV_OR_TEST_BUILD ? 'choose-offer-form' : undefined} noValidate>
       {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
       <h2 className={styles.title}>{t('choose_offer.title')}</h2>
       <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>

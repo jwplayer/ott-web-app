@@ -8,6 +8,7 @@ type UIState = {
   searchActive: boolean;
   userMenuOpen: boolean;
   preSearchPage?: LocationDescriptor<unknown>;
+  showDebugTools: boolean;
 };
 
 export const useUIStore = createStore<UIState>('UIStore', () => ({
@@ -15,4 +16,5 @@ export const useUIStore = createStore<UIState>('UIStore', () => ({
   searchQuery: '',
   searchActive: false,
   userMenuOpen: false,
+  showDebugTools: false,
 }));

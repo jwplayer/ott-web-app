@@ -23,7 +23,7 @@ jobs:
           yarn
           npm install wait-on -g
       - name: Start dev server
-        run: yarn start &
+        run: yarn start:e2e-test &
       - name: Run tests
         run: wait-on -v -t 30000 -c ./scripts/waitOnConfig.js http-get://localhost:8080 && yarn codecept:${{ matrix.config }}
       - name: Uploading artifact

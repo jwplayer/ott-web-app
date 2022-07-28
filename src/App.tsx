@@ -56,12 +56,12 @@ class App extends Component {
     this.setState({ error });
     this.setState({ isLoading: false });
     clearStoredConfig();
-    logDev('Error while loading the config.json:', error);
+    logDev('Error while loading the config file:', error);
   };
 
   configValidationCompletedHandler = async (config: Config) => {
-    this.setState({ isLoading: false });
     await this.initializeServices(config);
+    this.setState({ isLoading: false });
   };
 
   componentDidMount() {
