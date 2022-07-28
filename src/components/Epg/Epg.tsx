@@ -10,6 +10,7 @@ import Button from '../Button/Button';
 import EpgChannelItem from '../EpgChannel/EpgChannelItem';
 import EpgProgramItem from '../EpgProgramItem/EpgProgramItem';
 import EpgTimeline from '../EpgTimeline/EpgTimeline';
+import Spinner from '../Spinner/Spinner';
 
 import styles from './Epg.module.scss';
 
@@ -39,7 +40,7 @@ export default function Epg({ channels, setActiveChannel, program }: Props) {
           <ChevronRight />
         </div>
       </div>
-      <EpgContainer {...getEpgProps()}>
+      <EpgContainer {...getEpgProps()} loader={<Spinner className={styles.epgSpinner} />}>
         <Layout
           {...getLayoutProps()}
           renderTimeline={(props) => <EpgTimeline {...props} />}
