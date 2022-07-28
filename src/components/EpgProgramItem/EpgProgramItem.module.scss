@@ -25,6 +25,10 @@
   transition: background-color 0.4s ease-in-out, transform 0.1s ease, outline 0.1s ease;
   will-change: transform;
 
+  &.ended {
+    opacity: 0.1;
+  }
+
   &.live {
     outline: 2px solid theme.$primary-color;
   }
