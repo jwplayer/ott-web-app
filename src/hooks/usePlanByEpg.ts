@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { useEpg } from 'planby';
 
+import type { Config } from '#types/Config';
 import type { EpgChannel } from '#src/services/epg.service';
 
 /**
  * Return the Planby EPG props for the given channels
  */
-const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number) => {
+const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number, config: Config) => {
   const [epgChannels, epgPrograms] = useMemo(() => {
     return [
       channels.map((channel) => ({ uuid: channel.id, logo: channel.image })),
@@ -24,52 +25,7 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
     ];
   }, [channels]);
 
-  // Theme configuration for the Planby EPG with only the colors set that are used
-  // Fixed values are used because of the tecnical dept we have with the current setup of the config colors values and the theme values
-  const theme = {
-    primary: {
-      600: '#141523',
-      900: '#141523',
-    },
-    grey: {
-      300: '#fff',
-    },
-    white: '#fff',
-    green: {
-      300: '#fff',
-    },
-    loader: {
-      teal: '',
-      purple: '',
-      pink: '',
-      bg: '',
-    },
-    scrollbar: {
-      border: '',
-      thumb: {
-        bg: '',
-      },
-    },
-    gradient: {
-      blue: {
-        300: '',
-        600: '',
-        900: '',
-      },
-    },
-    text: {
-      grey: {
-        300: '',
-        500: '',
-      },
-    },
-    timeline: {
-      divider: {
-        bg: '',
-      },
-    },
-  };
-
+  const theme = useMemo(() => makeTheme(config.styling.highlightColor, config.styling.backgroundColor), [config]);
   return useEpg({
     channels: epgChannels,
     epg: epgPrograms,
@@ -83,5 +39,52 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
     theme,
   });
 };
+
+// Theme configuration for the Planby EPG with only the colors set that are used
+// Fixed values are used because the default highlightColor and backgroundColor are only available in SCSS
+
+const makeTheme = (primaryColor?: string | null, backgroundColor?: string | null) => ({
+  primary: {
+    600: backgroundColor || '#141523',
+    900: backgroundColor || '#141523',
+  },
+  grey: {
+    300: primaryColor || '#fff',
+  },
+  white: primaryColor || '#fff',
+  green: {
+    300: primaryColor || '#fff',
+  },
+  loader: {
+    teal: '',
+    purple: '',
+    pink: '',
+    bg: '',
+  },
+  scrollbar: {
+    border: '',
+    thumb: {
+      bg: '',
+    },
+  },
+  gradient: {
+    blue: {
+      300: '',
+      600: '',
+      900: '',
+    },
+  },
+  text: {
+    grey: {
+      300: '',
+      500: '',
+    },
+  },
+  timeline: {
+    divider: {
+      bg: '',
+    },
+  },
+});
 
 export default usePlanByEpg;

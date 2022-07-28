@@ -5,10 +5,9 @@ import { useHistory, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 
-import Epg from '../../components/Epg/Epg';
-
 import styles from './PlaylistLiveChannels.module.scss';
 
+import Epg from '#src/components/Epg/Epg';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist } from '#types/playlist';
@@ -179,7 +178,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         trailerButton={null}
         favoriteButton={null}
       >
-        <Epg channels={channels} setActiveChannel={setActiveChannel} program={program} />
+        <Epg channels={channels} setActiveChannel={setActiveChannel} program={program} config={config} />
       </VideoDetails>
     </>
   );

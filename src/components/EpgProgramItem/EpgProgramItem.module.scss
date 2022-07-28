@@ -34,7 +34,15 @@
   }
 
   &.selected {
-    background-color: var(--highlight-color, theme.$btn-primary-bg);
+    background-color: var(--highlight-color, theme.$primary-color);
+
+    .epgProgramTitle {
+      color: theme.$epg-title-selected-color;
+    }
+
+    .epgProgramText {
+      color: theme.$epg-text-selected-color;
+    }
   }
 
   &:hover {
@@ -91,10 +99,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  &.selected {
-    color: theme.$epg-title-selected-color;
-  }
-
   @include responsive.mobile-only {
     margin: auto 0;
     font-size: 14px;
@@ -110,10 +114,6 @@
   line-height: 16px;
   white-space: nowrap;
   text-overflow: ellipsis;
-
-  &.selected {
-    color: theme.$epg-text-selected-color;
-  }
 
   @include responsive.mobile-only {
     margin-top: auto;

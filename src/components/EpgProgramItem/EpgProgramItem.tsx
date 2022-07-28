@@ -46,9 +46,8 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact }) 
         {showLiveTagInImage && <div className={styles.epgLiveTag}>{t('live')}</div>}
         <div className={styles.epgProgramContent}>
           {compact && <div className={styles.epgLiveTag}>{t('live')}</div>}
-
-          <h3 className={classNames(styles.epgProgramTitle, { [styles.selected]: isActive })}>{title}</h3>
-          <span className={classNames(styles.epgProgramText, { [styles.selected]: isActive })}>
+          <h3 className={styles.epgProgramTitle}>{title}</h3>
+          <span className={styles.epgProgramText}>
             {sinceTime} - {tillTime}
           </span>
         </div>
