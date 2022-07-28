@@ -19,11 +19,12 @@ import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 type Props = {
   channels: EpgChannel[];
   setActiveChannel: (id: string, programId?: string | undefined) => void;
+  channel: EpgChannel | undefined;
   program: EpgProgram | undefined;
   config: Config;
 };
 
-export default function Epg({ channels, setActiveChannel, program, config }: Props) {
+export default function Epg({ channels, setActiveChannel, channel, program, config }: Props) {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
   const isSmall = breakpoint < Breakpoint.sm;
@@ -48,8 +49,15 @@ export default function Epg({ channels, setActiveChannel, program, config }: Pro
         <Layout
           {...getLayoutProps()}
           renderTimeline={(props) => <EpgTimeline {...props} />}
-          renderChannel={({ channel }) => (
-            <EpgChannelItem key={channel.uuid} channel={channel} channelItemWidth={channelItemWidth} sidebarWidth={sidebarWidth} />
+          renderChannel={({ channel: epgChannel }) => (
+            <EpgChannelItem
+              key={epgChannel.uuid}
+              channel={epgChannel}
+              channelItemWidth={channelItemWidth}
+              sidebarWidth={sidebarWidth}
+              onClick={(toChannel) => setActiveChannel(toChannel.uuid)}
+              isActive={channel?.id === epgChannel.uuid}
+            />
           )}
           renderProgram={({ program: programItem, ...rest }) => (
             <EpgProgramItem

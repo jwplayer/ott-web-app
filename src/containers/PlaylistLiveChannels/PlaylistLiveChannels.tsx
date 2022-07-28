@@ -183,7 +183,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         trailerButton={null}
         favoriteButton={null}
       >
-        <Epg channels={channels} setActiveChannel={setActiveChannel} program={program} config={config} />
+        <Epg channels={channels} setActiveChannel={setActiveChannel} channel={channel} program={program} config={config} />
       </VideoDetails>
     </>
   );
