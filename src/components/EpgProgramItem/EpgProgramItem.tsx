@@ -1,6 +1,7 @@
 import React from 'react';
 import { Program, useProgram } from 'planby';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import styles from './EpgProgramItem.module.scss';
 
@@ -8,9 +9,10 @@ type Props = {
   program: Program;
   onClick?: (program: Program) => void;
   isActive: boolean;
+  compact: boolean;
 };
 
-const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive }) => {
+const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact }) => {
   const {
     styles: { position },
     formatTime,
@@ -22,24 +24,28 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive }) => {
     isBaseTimeFormat: true,
   });
 
+  const { t } = useTranslation('common');
   const { data } = program;
   const { image, title, since, till } = data;
 
   const sinceTime = formatTime(since, set12HoursTimeFormat()).toLowerCase();
   const tillTime = formatTime(till, set12HoursTimeFormat()).toLowerCase();
 
+  const showImage = !compact && isMinWidth;
+  const showLiveTagInImage = !compact && isMinWidth && isLive;
+
   return (
     <div className={styles.epgProgramBox} style={position} onClick={() => onClick && onClick(program)}>
-      <div className={classNames(styles.epgProgramContent, { [styles.active]: isActive, [styles.live]: isLive })} style={{ width: styles.width }}>
-        {isMinWidth && <img className={styles.epgProgramImage} src={image} alt="Preview" />}
-        <div>
-          {/* <div className={styles.epgProgramText}>
+      <div className={classNames(styles.epgProgram, { [styles.selected]: isActive, [styles.live]: isLive })} style={{ width: styles.width }}>
+        {showImage && <img className={styles.epgProgramImage} src={image} alt="Preview" />}
+        {showLiveTagInImage && <div className={styles.epgLiveTag}>{t('live')}</div>}
+        <div className={styles.epgProgramContent}>
+          {compact && <div className={styles.epgLiveTag}>{t('live')}</div>}
+
+          <h3 className={classNames(styles.epgProgramTitle, { [styles.selected]: isActive })}>{title}</h3>
+          <span className={classNames(styles.epgProgramText, { [styles.selected]: isActive })}>
             {sinceTime} - {tillTime}
-          </div> */}
-          <div className={styles.epgProgramTitle}>{title}</div>
-          <div className={styles.epgProgramText}>
-            {sinceTime} - {tillTime}
-          </div>
+          </span>
         </div>
       </div>
     </div>

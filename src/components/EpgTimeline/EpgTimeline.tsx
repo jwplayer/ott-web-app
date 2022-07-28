@@ -13,7 +13,7 @@ type Props = {
   sidebarWidth: number;
 };
 
-const EpgTimeline: React.VFC<Props> = ({ isBaseTimeFormat, dayWidth, hourWidth, numberOfHoursInDay, offsetStartHoursRange }) => {
+const EpgTimeline: React.VFC<Props> = ({ isBaseTimeFormat, dayWidth, hourWidth, numberOfHoursInDay, offsetStartHoursRange, isSidebar, sidebarWidth }) => {
   const { time, dividers, formatTime } = useTimeline(numberOfHoursInDay, isBaseTimeFormat);
 
   const renderDividers = () => dividers.map((_, index) => <div className={styles.timelineDivider} key={index} style={{ marginRight: hourWidth / 4 }} />);
@@ -26,7 +26,7 @@ const EpgTimeline: React.VFC<Props> = ({ isBaseTimeFormat, dayWidth, hourWidth, 
   );
 
   return (
-    <div className={styles.timelineContainer} style={{ width: dayWidth }}>
+    <div className={styles.timelineContainer} style={{ width: dayWidth, left: isSidebar ? sidebarWidth : 0 }}>
       {time.map((_, index) => renderTime(index))}
     </div>
   );

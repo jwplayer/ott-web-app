@@ -3,18 +3,17 @@
 
 .epgChannelBox {
   position: absolute;
-  width: 100%;
-  padding: 8px 4px;
+  padding: 8px 0;
+  background-color: var(--body-background-color);
 }
 
-.epgChannelContent {
+.epgChannel {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 100%;
-  background-color: theme.$box-bg;
+  background-color: theme.$epg-box-bg;
   border-radius: 4px;
 }
 

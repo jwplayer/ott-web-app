@@ -1,6 +1,46 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
 
+.epg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: variables.$base-spacing;
+  background-color: var(--body-background-color);
+  border-radius: 4px;
+
+  // EpgContainer
+  > div:nth-child(2) {
+    padding: 0 !important;
+
+    // Planby Wrapper
+    > div {
+      // Planby Spacer
+      > div:first-child {
+        z-index: variables.$view-z-index !important;
+      }
+      // Planby ScrollContainer
+      > div:nth-child(2) {
+        overflow-y: hidden !important;
+        scrollbar-width: none !important;
+
+        &::-webkit-scrollbar {
+          display: none !important;
+        }
+        // Planby Timeline indicator
+        > div:first-child {
+          z-index: variables.$view-z-index !important;
+          box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+        }
+        // Planby Sidebar with Channels
+        > div[data-testid='sidebar'] {
+          z-index: variables.$view-z-index !important;
+        }
+      }
+    }
+  }
+}
+
 .timelineControl {
   display: flex;
   align-items: center;
