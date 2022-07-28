@@ -1,6 +1,7 @@
 import { Epg as EpgContainer, Layout } from 'planby';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isBefore, subHours } from 'date-fns';
 
 import styles from './Epg.module.scss';
 
@@ -27,12 +28,16 @@ type Props = {
 export default function Epg({ channels, setActiveChannel, channel, program, config }: Props) {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
+
   const isSmall = breakpoint < Breakpoint.sm;
   const sidebarWidth = isSmall ? 90 : 184;
   // the subtracted value is used for spacing in the sidebar
   const channelItemWidth = isSmall ? sidebarWidth - 16 : sidebarWidth - 24;
   const itemHeight = isSmall ? 90 : 106;
+
+  // Epg
   const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg(channels, sidebarWidth, itemHeight, config);
+  const catchupHoursDict = useMemo(() => Object.fromEntries(channels.map((channel) => [channel.id, channel.catchupHours])), [channels]);
 
   return (
     <div className={styles.epg}>
@@ -59,16 +64,22 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
               isActive={channel?.id === epgChannel.uuid}
             />
           )}
-          renderProgram={({ program: programItem, ...rest }) => (
-            <EpgProgramItem
-              key={programItem.data.id}
-              program={programItem}
-              onClick={(program) => setActiveChannel(program.data.channelUuid, program.data.id)}
-              isActive={program?.id === programItem.data.id}
-              compact={isSmall}
-              {...rest}
-            />
-          )}
+          renderProgram={({ program: programItem, ...rest }) => {
+            const catchupHours = catchupHoursDict[programItem.data.channelUuid];
+            const disabled = isBefore(new Date(programItem.data.since), subHours(new Date(), catchupHours));
+
+            return (
+              <EpgProgramItem
+                key={programItem.data.id}
+                program={programItem}
+                disabled={disabled}
+                onClick={(program) => !disabled && setActiveChannel(program.data.channelUuid, program.data.id)}
+                isActive={program?.id === programItem.data.id}
+                compact={isSmall}
+                {...rest}
+              />
+            );
+          }}
         />
       </EpgContainer>
     </div>

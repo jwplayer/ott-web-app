@@ -50,7 +50,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   // EPG data
   const [initialChannelId] = useState(channelId);
   const { channels, channel, program, setActiveChannel } = useLiveChannels(playlist, initialChannelId, !liveFromBeginning);
-  const { isLive, isVod, isWatchableFromBeginning } = useLiveProgram(program);
+  const { isLive, isVod, isWatchableFromBeginning } = useLiveProgram(program, channel?.catchupHours);
 
   // Media item
   const channelMediaItem = useMemo(() => playlist.find(({ mediaid }) => channel?.id === mediaid), [channel?.id, playlist]);

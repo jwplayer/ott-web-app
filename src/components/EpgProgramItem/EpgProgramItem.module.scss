@@ -25,8 +25,9 @@
   transition: background-color 0.4s ease-in-out, transform 0.1s ease, outline 0.1s ease;
   will-change: transform;
 
-  &.ended {
-    opacity: 0.1;
+  &.disabled {
+    cursor: default;
+    opacity: 0.4;
   }
 
   &.live {
@@ -45,7 +46,7 @@
     }
   }
 
-  &:hover {
+  &:not(.disabled):hover {
     outline: 2px solid theme.$primary-color;
     transform: scale(1.01);
   }

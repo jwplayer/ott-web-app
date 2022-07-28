@@ -22,6 +22,7 @@ export type EpgChannel = {
   description: string;
   image: string;
   programs: EpgProgram[];
+  catchupHours: number;
 };
 
 export type EpgProgram = {
@@ -150,12 +151,14 @@ class EpgService {
   async getSchedule(item: PlaylistItem) {
     const schedule = await this.fetchSchedule(item);
     const programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
+    const catchupHours = item.catchupHours && parseInt(item.catchupHours);
 
     return {
       id: item.mediaid,
       title: item.title,
       image: item.image,
       description: item.description,
+      catchupHours: catchupHours || 8,
       programs,
     } as EpgChannel;
   }

@@ -49,6 +49,7 @@ export type PlaylistItem = {
   scheduleToken?: string;
   scheduleDataFormat?: string;
   scheduleDemo?: string;
+  catchupHours?: string;
 };
 
 export type Link = {
