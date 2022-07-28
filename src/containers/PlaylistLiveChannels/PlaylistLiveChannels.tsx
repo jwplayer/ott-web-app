@@ -1,25 +1,21 @@
 import React, { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
-import { Epg, Layout } from 'planby';
 import { useHistory, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
+import Epg from '#src/components/Epg/Epg';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist } from '#types/playlist';
 import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import useLiveChannels from '#src/hooks/useLiveChannels';
-import Timeline from '#src/components/Epg/Timeline';
-import ProgramItem from '#src/components/Epg/ProgramItem';
-import ChannelItem from '#src/components/Epg/ChannelItem';
 import ShareButton from '#src/components/ShareButton/ShareButton';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
-import usePlanByEpg from '#src/hooks/usePlanByEpg';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { addQueryParams, formatDurationTag } from '#src/utils/formatting';
@@ -53,7 +49,6 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
   // EPG data
   const { channels, channel, program, setActiveChannel } = useLiveChannels(playlist, !liveFromBeginning);
   const { isLive, isVod, isWatchableFromBeginning } = useLiveProgram(program);
-  const { getEpgProps, getLayoutProps } = usePlanByEpg(channels);
 
   // Media item
   const channelMediaItem = useMemo(() => playlist.find(({ mediaid }) => channel?.id === mediaid), [channel?.id, playlist]);
@@ -183,22 +178,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         trailerButton={null}
         favoriteButton={null}
       >
-        <Epg isLoading={false} {...getEpgProps()}>
-          <Layout
-            {...getLayoutProps()}
-            renderTimeline={(props) => <Timeline {...props} />}
-            renderProgram={({ program: programItem, ...rest }) => (
-              <ProgramItem
-                key={programItem.data.id}
-                program={programItem}
-                onClick={(program) => setActiveChannel(program.data.channelUuid, program.data.id)}
-                isActive={program?.id === programItem.data.id}
-                {...rest}
-              />
-            )}
-            renderChannel={({ channel }) => <ChannelItem key={channel.uuid} channel={channel} onClick={(channel) => setActiveChannel(channel.uuid)} />}
-          />
-        </Epg>
+        <Epg channels={channels} setActiveChannel={setActiveChannel} program={program} config={config} />
       </VideoDetails>
     </>
   );
