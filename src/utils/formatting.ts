@@ -1,4 +1,4 @@
-import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from '#src/utils/media';
+import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isLiveChannel, isSeriesPlaceholder } from '#src/utils/media';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
@@ -64,14 +64,21 @@ export const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-+$/, '')
     .replace(/-/g, whitespaceChar);
 
-export const movieURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
+export const movieURL = (item: PlaylistItem, playlistId?: string | null, play = false) =>
   addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
 
-export const seriesURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+export const seriesURL = (item: PlaylistItem, playlistId?: string | null, play = false) => {
   const seriesId = getSeriesId(item);
 
   return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, {
     r: playlistId,
+    play: play ? '1' : null,
+  });
+};
+
+export const liveChannelsURL = (playlistId: string, channelId?: string, play = false) => {
+  return addQueryParams(`/p/${playlistId}`, {
+    channel: channelId,
     play: play ? '1' : null,
   });
 };
@@ -94,6 +101,10 @@ export const episodeURLFromEpisode = (item: PlaylistItem, seriesId: string, play
 };
 
 export const cardUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+  if (isLiveChannel(item)) {
+    return liveChannelsURL(item.liveChannelsId, item.mediaid, play);
+  }
+
   if (isEpisode(item)) {
     const seriesId = getSeriesIdFromEpisode(item);
 
