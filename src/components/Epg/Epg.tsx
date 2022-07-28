@@ -60,7 +60,10 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
               channel={epgChannel}
               channelItemWidth={channelItemWidth}
               sidebarWidth={sidebarWidth}
-              onClick={(toChannel) => setActiveChannel(toChannel.uuid)}
+              onClick={(toChannel) => {
+                setActiveChannel(toChannel.uuid);
+                onScrollToNow();
+              }}
               isActive={channel?.id === epgChannel.uuid}
             />
           )}
