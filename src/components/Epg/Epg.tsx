@@ -1,5 +1,6 @@
 import { Epg as EpgContainer, Layout } from 'planby';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import usePlanByEpg from '../../hooks/usePlanByEpg';
@@ -22,6 +23,7 @@ type Props = {
 
 export default function Epg({ channels, setActiveChannel, program }: Props) {
   const breakpoint = useBreakpoint();
+  const { t } = useTranslation('common');
   const isSmall = breakpoint < Breakpoint.sm;
   const sidebarWidth = isSmall ? 90 : 184;
   // the subracted values create a space for the sidebar
@@ -32,7 +34,7 @@ export default function Epg({ channels, setActiveChannel, program }: Props) {
   return (
     <div className={styles.epg}>
       <div className={styles.timelineControl}>
-        <Button className={styles.timelineNowButton} variant="contained" label={'now'} color="primary" onClick={onScrollToNow} />
+        <Button className={styles.timelineNowButton} variant="contained" label={t('now')} color="primary" onClick={onScrollToNow} />
         <div className={styles.leftControl} role="button" onClick={() => onScrollLeft()}>
           <ChevronLeft />
         </div>
