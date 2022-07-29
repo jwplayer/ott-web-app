@@ -23,3 +23,8 @@ export function secondsToISO8601(input: number, timeOnly: boolean = false): stri
 
   return isoString;
 }
+
+export const is12HourClock = () => {
+  const date = new Date(Date.UTC(2022, 6, 20, 18, 0, 0));
+  return /am|pm/.test(date.toLocaleTimeString());
+};

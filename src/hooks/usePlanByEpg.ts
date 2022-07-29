@@ -3,6 +3,9 @@ import { useEpg } from 'planby';
 
 import type { Config } from '#types/Config';
 import type { EpgChannel } from '#src/services/epg.service';
+import { is12HourClock } from '#src/utils/datetime';
+
+const isBaseTimeFormat = is12HourClock();
 
 /**
  * Return the Planby EPG props for the given channels
@@ -36,7 +39,7 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
     isSidebar: true,
     isTimeline: true,
     isLine: true,
-    isBaseTimeFormat: true, // TODO: based on locale
+    isBaseTimeFormat,
     theme,
   });
 };

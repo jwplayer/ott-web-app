@@ -11,9 +11,10 @@ type Props = {
   isActive: boolean;
   compact: boolean;
   disabled: boolean;
+  isBaseTimeFormat: boolean;
 };
 
-const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, disabled }) => {
+const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, disabled, isBaseTimeFormat }) => {
   const {
     styles: { position },
     formatTime,
@@ -22,7 +23,7 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, di
     isMinWidth,
   } = useProgram({
     program,
-    isBaseTimeFormat: true,
+    isBaseTimeFormat,
   });
 
   const { t } = useTranslation('common');

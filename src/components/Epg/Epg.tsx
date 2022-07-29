@@ -67,7 +67,7 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
               isActive={channel?.id === epgChannel.uuid}
             />
           )}
-          renderProgram={({ program: programItem, ...rest }) => {
+          renderProgram={({ program: programItem, isBaseTimeFormat }) => {
             const catchupHours = catchupHoursDict[programItem.data.channelUuid];
             const disabled = isBefore(new Date(programItem.data.since), subHours(new Date(), catchupHours));
 
@@ -79,7 +79,7 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
                 onClick={(program) => !disabled && setActiveChannel(program.data.channelUuid, program.data.id)}
                 isActive={program?.id === programItem.data.id}
                 compact={isSmall}
-                {...rest}
+                isBaseTimeFormat={isBaseTimeFormat}
               />
             );
           }}
