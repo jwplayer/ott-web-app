@@ -44,10 +44,10 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
     <div className={styles.epg}>
       <div className={styles.timelineControl}>
         <Button className={styles.timelineNowButton} variant="contained" label={t('now')} color="primary" onClick={onScrollToNow} />
-        <IconButton className={styles.leftControl} aria-label="button" onClick={() => onScrollLeft()}>
+        <IconButton className={styles.leftControl} aria-label={t('slide_left')} onClick={() => onScrollLeft()}>
           <ChevronLeft />
         </IconButton>
-        <IconButton className={styles.rightControl} aria-label="button" onClick={() => onScrollRight()}>
+        <IconButton className={styles.rightControl} aria-label={t('slide_right')} onClick={() => onScrollRight()}>
           <ChevronRight />
         </IconButton>
       </div>
