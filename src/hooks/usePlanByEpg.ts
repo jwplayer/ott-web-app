@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useEpg } from 'planby';
+import { endOfDay, startOfDay } from 'date-fns';
 
 import type { Config } from '#types/Config';
 import type { EpgChannel } from '#src/services/epg.service';
@@ -30,6 +31,11 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
 
   const theme = useMemo(() => makeTheme(config.styling.highlightColor, config.styling.backgroundColor), [config]);
 
+  // this mechanism updates the EPG component range when leaving the page open for a longer period
+  // the useEpg hook doesn't accept a formatted date and re-renders when not memoize the start and end dates
+  const date = startOfDay(new Date()).toJSON();
+  const [startDate, endDate] = useMemo(() => [startOfDay(new Date()), endOfDay(new Date())], [date]);
+
   return useEpg({
     channels: epgChannels,
     epg: epgPrograms,
@@ -40,6 +46,8 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
     isTimeline: true,
     isLine: true,
     isBaseTimeFormat,
+    startDate,
+    endDate,
     theme,
   });
 };
