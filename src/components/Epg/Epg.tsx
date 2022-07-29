@@ -30,11 +30,11 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
 
-  const isSmall = breakpoint < Breakpoint.sm;
-  const sidebarWidth = isSmall ? 90 : 184;
+  const isMobile = breakpoint < Breakpoint.sm;
+  const sidebarWidth = isMobile ? 90 : 184;
   // the subtracted value is used for spacing in the sidebar
-  const channelItemWidth = isSmall ? sidebarWidth - 16 : sidebarWidth - 24;
-  const itemHeight = isSmall ? 80 : 106;
+  const channelItemWidth = isMobile ? sidebarWidth - 16 : sidebarWidth - 24;
+  const itemHeight = isMobile ? 80 : 106;
 
   // Epg
   const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg(channels, sidebarWidth, itemHeight, config);
@@ -79,7 +79,7 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
                 disabled={disabled}
                 onClick={(program) => !disabled && setActiveChannel(program.data.channelUuid, program.data.id)}
                 isActive={program?.id === programItem.data.id}
-                compact={isSmall}
+                compact={isMobile}
                 isBaseTimeFormat={isBaseTimeFormat}
               />
             );
