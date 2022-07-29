@@ -1,10 +1,4 @@
 {
-  "empty_schedule_program": {
-    "description": "",
-    "title": ""
-  },
-  "failed_schedule_program": {
-    "description": "",
-    "title": ""
-  }
+  "on_channel": "",
+  "start_from_beginning": ""
 }

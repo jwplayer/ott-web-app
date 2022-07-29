@@ -1,6 +1,4 @@
-import type { TFunction } from 'i18next';
-
-import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isSeriesPlaceholder } from '#src/utils/media';
+import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isLiveChannel, isSeriesPlaceholder } from '#src/utils/media';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
@@ -66,14 +64,21 @@ export const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-+$/, '')
     .replace(/-/g, whitespaceChar);
 
-export const movieURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
+export const movieURL = (item: PlaylistItem, playlistId?: string | null, play = false) =>
   addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
 
-export const seriesURL = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+export const seriesURL = (item: PlaylistItem, playlistId?: string | null, play = false) => {
   const seriesId = getSeriesId(item);
 
   return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, {
     r: playlistId,
+    play: play ? '1' : null,
+  });
+};
+
+export const liveChannelsURL = (playlistId: string, channelId?: string, play = false) => {
+  return addQueryParams(`/p/${playlistId}`, {
+    channel: channelId,
     play: play ? '1' : null,
   });
 };
@@ -96,6 +101,10 @@ export const episodeURLFromEpisode = (item: PlaylistItem, seriesId: string, play
 };
 
 export const cardUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
+  if (isLiveChannel(item)) {
+    return liveChannelsURL(item.liveChannelsId, item.mediaid, play);
+  }
+
   if (isEpisode(item)) {
     const seriesId = getSeriesIdFromEpisode(item);
 
@@ -123,12 +132,12 @@ export const formatPrice = (price: number, currency: string, country: string) =>
   }).format(price);
 };
 
-export const formatVideoMetaString = (t: TFunction, item: PlaylistItem, isSeries = false, episodeCount?: number) => {
+export const formatVideoMetaString = (item: PlaylistItem, episodesLabel?: string) => {
   const metaData = [];
 
   if (item.pubdate) metaData.push(new Date(item.pubdate * 1000).getFullYear());
-  if (!isSeries && item.duration) metaData.push(formatDuration(item.duration));
-  if (isSeries && episodeCount) metaData.push(t('video:total_episodes', { count: episodeCount }));
+  if (!episodesLabel && item.duration) metaData.push(formatDuration(item.duration));
+  if (episodesLabel) metaData.push(episodesLabel);
   if (item.genre) metaData.push(item.genre);
   if (item.rating) metaData.push(item.rating);
 

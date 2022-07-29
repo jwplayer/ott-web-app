@@ -4,7 +4,6 @@ import { addDays, differenceInDays, endOfDay, isValid, set, startOfDay, subDays 
 import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
 import { logDev } from '#src/utils/common';
-import i18n from '#src/i18n/config';
 
 const AUTHENTICATION_HEADER = 'API-KEY';
 
@@ -18,9 +17,12 @@ export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is Promise
 };
 
 export type EpgChannel = {
+  id: string;
   title: string;
+  description: string;
   image: string;
   programs: EpgProgram[];
+  catchupHours: number;
 };
 
 export type EpgProgram = {
@@ -148,20 +150,15 @@ class EpgService {
    */
   async getSchedule(item: PlaylistItem) {
     const schedule = await this.fetchSchedule(item);
-    let programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
-
-    if (!programs.length) {
-      programs = [
-        this.generateStaticProgram({
-          id: `no-program-${item.mediaid}`,
-          title: schedule ? i18n.t('epg:empty_schedule_program.title') : i18n.t('epg:failed_schedule_program.title'),
-          description: schedule ? i18n.t('epg:empty_schedule_program.description') : i18n.t('epg:failed_schedule_program.description'),
-        }),
-      ];
-    }
+    const programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
+    const catchupHours = item.catchupHours && parseInt(item.catchupHours);
 
     return {
+      id: item.mediaid,
       title: item.title,
+      image: item.image,
+      description: item.description,
+      catchupHours: catchupHours || 8,
       programs,
     } as EpgChannel;
   }

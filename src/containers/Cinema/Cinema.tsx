@@ -27,9 +27,26 @@ type Props = {
   title: string;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
+  liveStartDateTime?: string | null;
+  liveEndDateTime?: string | null;
+  liveFromBeginning?: boolean;
 };
 
-const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondaryMetadata, onPlay, onPause, onComplete, onClose, feedId }: Props) => {
+const Cinema: React.FC<Props> = ({
+  open,
+  item,
+  title,
+  primaryMetadata,
+  secondaryMetadata,
+  onPlay,
+  onPause,
+  onComplete,
+  onClose,
+  feedId,
+  liveStartDateTime,
+  liveEndDateTime,
+  liveFromBeginning,
+}: Props) => {
   const { t } = useTranslation();
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
@@ -50,11 +67,14 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
       return videoProgress * item.duration;
     }
 
+    // start at the beginning of the video (only for VOD content)
     return 0;
   }, [item.duration, watchHistoryItem?.progress]);
 
   const getProgress = useCallback((): number | null => {
-    if (!playerInstance) return null;
+    if (!playerInstance) {
+      return null;
+    }
 
     return playerInstance.getPosition() / item.duration;
   }, [playerInstance, item.duration]);
@@ -65,6 +85,14 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
   const handleReady = useCallback((player?: JWPlayer) => {
     setPlayerInstance(player);
   }, []);
+
+  const handleFirstFrame = useCallback(() => {
+    // when playing a livestream, the first moment we can seek to the beginning of the DVR range is after the
+    // firstFrame event.
+    if (liveFromBeginning) {
+      playerInstance?.seek(0);
+    }
+  }, [liveFromBeginning, playerInstance]);
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
@@ -84,7 +112,7 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
 
   const handleUserActive = useCallback(() => setUserActive(true), []);
   const handleUserInactive = useCallback(() => setUserActive(false), []);
-  const handlePlaylistItemCallback = usePlaylistItemCallback();
+  const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
   // effects
   useEffect(() => {
@@ -111,6 +139,7 @@ const Cinema: React.FC<Props> = ({ open, item, title, primaryMetadata, secondary
             feedId={feedId}
             item={item}
             onReady={handleReady}
+            onFirstFrame={handleFirstFrame}
             onPlay={handlePlay}
             onPause={handlePause}
             onComplete={handleComplete}

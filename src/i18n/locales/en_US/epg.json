@@ -1,10 +1,4 @@
 {
-  "empty_schedule_program": {
-    "description": "No program information available",
-    "title": "No program information"
-  },
-  "failed_schedule_program": {
-    "description": "The program information failed to load",
-    "title": "Failed to load schedule"
-  }
+  "on_channel": "On {{name}}",
+  "start_from_beginning": "Start from beginning"
 }

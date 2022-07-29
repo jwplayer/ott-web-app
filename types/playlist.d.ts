@@ -43,10 +43,13 @@ export type PlaylistItem = {
   free?: string;
   productIds?: string;
   mediaOffers?: MediaOffer[] | null;
+  contentType?: string;
+  liveChannelsId?: string;
   scheduleUrl?: string | null;
   scheduleToken?: string;
   scheduleDataFormat?: string;
   scheduleDemo?: string;
+  catchupHours?: string;
 };
 
 export type Link = {
