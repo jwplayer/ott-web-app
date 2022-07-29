@@ -33,7 +33,7 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
   const sidebarWidth = isSmall ? 90 : 184;
   // the subtracted value is used for spacing in the sidebar
   const channelItemWidth = isSmall ? sidebarWidth - 16 : sidebarWidth - 24;
-  const itemHeight = isSmall ? 90 : 106;
+  const itemHeight = isSmall ? 80 : 106;
 
   // Epg
   const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg(channels, sidebarWidth, itemHeight, config);

@@ -52,7 +52,7 @@
   }
 
   @include responsive.mobile-only {
-    padding: variables.$base-spacing / 2;
+    padding: calc(variables.$base-spacing / 2);
   }
 }
 
@@ -90,12 +90,11 @@
 }
 
 .epgProgramTitle {
-  margin-bottom: 5px;
   overflow: hidden;
   color: theme.$epg-title-color;
   font-family: var(--body-font-family);
   font-weight: theme.$body-font-weight-bold;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 20px;
   white-space: nowrap;
   text-overflow: ellipsis;
