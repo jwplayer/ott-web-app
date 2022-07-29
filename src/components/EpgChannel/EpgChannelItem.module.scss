@@ -18,10 +18,6 @@
   cursor: pointer;
   transition: background-color 0.4s ease-in-out, border 0.1s ease;
 
-  &.active {
-    background-color: var(--primary-color);
-  }
-
   &:hover {
     border: 2px solid var(--primary-color);
   }
