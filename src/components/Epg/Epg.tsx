@@ -6,6 +6,7 @@ import { isBefore, subHours } from 'date-fns';
 import styles from './Epg.module.scss';
 
 import type { Config } from '#types/Config';
+import IconButton from '#src/components/IconButton/IconButton';
 import Button from '#src/components/Button/Button';
 import EpgChannelItem from '#src/components/EpgChannel/EpgChannelItem';
 import EpgProgramItem from '#src/components/EpgProgramItem/EpgProgramItem';
@@ -43,12 +44,12 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
     <div className={styles.epg}>
       <div className={styles.timelineControl}>
         <Button className={styles.timelineNowButton} variant="contained" label={t('now')} color="primary" onClick={onScrollToNow} />
-        <div className={styles.leftControl} role="button" onClick={() => onScrollLeft()}>
+        <IconButton className={styles.leftControl} aria-label="button" onClick={() => onScrollLeft()}>
           <ChevronLeft />
-        </div>
-        <div className={styles.rightControl} role="button" onClick={() => onScrollRight()}>
+        </IconButton>
+        <IconButton className={styles.rightControl} aria-label="button" onClick={() => onScrollRight()}>
           <ChevronRight />
-        </div>
+        </IconButton>
       </div>
       <EpgContainer {...getEpgProps()} loader={<Spinner className={styles.epgSpinner} />}>
         <Layout
