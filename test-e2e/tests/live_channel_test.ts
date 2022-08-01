@@ -67,7 +67,7 @@ Scenario('I can watch the current live program on the live channel screen', asyn
   I.see('Start watching');
 
   I.click('Start watching');
-  await I.waitForPlayerPlaying('The Flash');
+  I.seeElement('video');
 
   // to make sure the back button is visible and can be clicked on
   I.click('video');
@@ -154,7 +154,7 @@ Scenario('I can select a previous program on the same channel, and watch the vid
   I.see('The Flash', locate('h2').inside(videoDetailLocator));
 
   I.click('Start watching');
-  await I.waitForPlayerPlaying('The Flash');
+  I.seeElement('video');
 });
 
 Scenario('I can select an program on a other channel', async ({ I }) => {
