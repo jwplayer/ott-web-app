@@ -22,4 +22,5 @@ export default {
   agent327Description:
     'Hendrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.',
   bigBuckBunnyDetailUrl: `${baseUrl}m/awWEFyPu/big-buck-bunny?r=${filmsPlaylistId}`,
+  playlistLiveChannelId: 'fWpLtzVh',
 };
