@@ -67,6 +67,7 @@
     "@commitlint/config-conventional": "^12.1.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^11.2.6",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/dompurify": "^2.3.3",
     "@types/jwplayer": "^8.2.7",
     "@types/lodash.merge": "^4.6.6",
@@ -114,7 +115,7 @@
     "vite-plugin-pwa": "^0.11.13",
     "vite-plugin-static-copy": "^0.4.4",
     "vite-plugin-stylelint": "^2.1.0",
-    "vitest": "^0.10.0",
+    "vitest": "^0.19.1",
     "workbox-build": "^6.5.2",
     "workbox-window": "^6.5.2"
   },
