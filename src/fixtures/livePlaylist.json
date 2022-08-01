@@ -51,7 +51,7 @@
       "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
       "tags": "live",
       "scheduleUrl": "/epg/channel1.json",
-      "catchupHours": 7,
+      "catchupHours": "7",
       "sources": [
         {
           "file": "https://demo-use1.cdn.vustreams.com/live/b49bec86-f786-4b08-941c-a4ee80f70e1f/live.isml/b49bec86-f786-4b08-941c-a4ee80f70e1f.m3u8",
