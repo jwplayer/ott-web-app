@@ -58,6 +58,8 @@ const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | un
         updatedProgram = getLiveProgram(updatedChannel);
       }
 
+      // update channel with potential updated programs
+      setChannel(updatedChannel);
       setProgram(updatedProgram);
     }
   }, [channels]);

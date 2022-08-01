@@ -174,6 +174,7 @@ describe('useLiveChannels', () => {
 
     // first program is selected
     expect(result.current.program).toMatchObject({ id: 'program1' });
+    expect(result.current.channel?.programs.length).toBe(2);
     expect(mock).toHaveBeenCalledTimes(1);
 
     mock.mockResolvedValue(scheduleUpdate);
@@ -183,6 +184,7 @@ describe('useLiveChannels', () => {
 
     // the endTime for program1 should be changed
     expect(mock).toHaveBeenCalledTimes(2);
+    expect(result.current.channel?.programs.length).toBe(3);
     expect(result.current.program).toMatchObject({ id: 'program1', endTime: '2022-07-15T10:45:00Z' });
   });
 
