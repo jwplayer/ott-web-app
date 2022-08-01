@@ -17,7 +17,7 @@ export const createWrapper = () => {
       <QueryClientProvider client={client}>{children as ReactElement}</QueryClientProvider>
     </Router>
   );
-}
+};
 
 export const wrapper = ({ children }: WrapperProps) => (
   <Router>
