@@ -4,6 +4,7 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
 <div>
   <div
     class="video"
+    data-testid="video-detail"
   >
     <div
       class="main mainPadding"

@@ -45,6 +45,7 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, di
           [styles.disabled]: disabled,
         })}
         style={{ width: styles.width }}
+        data-testid={program.data.id}
       >
         {showImage && <img className={styles.epgProgramImage} src={image} alt="Preview" />}
         {showLiveTagInImage && <div className={styles.epgLiveTag}>{t('live')}</div>}
