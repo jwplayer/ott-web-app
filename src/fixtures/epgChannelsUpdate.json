@@ -1,0 +1,56 @@
+[
+  {
+    "id": "channel1",
+    "title": "Channel 1",
+    "description": "Description for Channel 1",
+    "image": "",
+    "programs": [
+      {
+        "id": "program1",
+        "title": "Program 1",
+        "startTime": "2022-07-15T10:00:00Z",
+        "endTime": "2022-07-15T10:45:00Z"
+      },
+      {
+        "id": "program2",
+        "title": "Program 2",
+        "startTime": "2022-07-15T10:45:00Z",
+        "endTime": "2022-07-15T11:00:00Z"
+      },
+      {
+        "id": "program5",
+        "title": "Program 5",
+        "startTime": "2022-07-15T11:00:00Z",
+        "endTime": "2022-07-15T11:30:00Z"
+      }
+    ],
+    "catchupHours": 2
+  },
+  {
+    "id": "channel2",
+    "title": "Channel 2",
+    "description": "Description for Channel 2",
+    "image": "",
+    "programs": [
+      {
+        "id": "program3",
+        "title": "Program 3",
+        "startTime": "2022-07-15T10:00:00Z",
+        "endTime": "2022-07-15T10:45:00Z"
+      },
+      {
+        "id": "program4",
+        "title": "Program 4",
+        "startTime": "2022-07-15T10:45:00Z",
+        "endTime": "2022-07-15T11:00:00Z"
+      },
+      {
+        "id": "program6",
+        "title": "Program 6",
+        "startTime": "2022-07-15T11:30:00Z",
+        "endTime": "2022-07-15T12:00:00Z"
+      }
+    ],
+    "catchupHours": 2
+  }
+]

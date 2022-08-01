@@ -37,7 +37,14 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
   const itemHeight = isMobile ? 80 : 106;
 
   // Epg
-  const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg(channels, sidebarWidth, itemHeight, config);
+  const { highlightColor, backgroundColor } = config.styling;
+  const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg(
+    channels,
+    sidebarWidth,
+    itemHeight,
+    highlightColor,
+    backgroundColor,
+  );
   const catchupHoursDict = useMemo(() => Object.fromEntries(channels.map((channel) => [channel.id, channel.catchupHours])), [channels]);
 
   return (

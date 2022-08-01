@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useEpg } from 'planby';
 import { endOfDay, startOfDay } from 'date-fns';
 
-import type { Config } from '#types/Config';
 import type { EpgChannel } from '#src/services/epg.service';
 import { is12HourClock } from '#src/utils/datetime';
 
@@ -11,7 +10,7 @@ const isBaseTimeFormat = is12HourClock();
 /**
  * Return the Planby EPG props for the given channels
  */
-const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number, config: Config) => {
+const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number, highlightColor?: string | null, backgroundColor?: string | null) => {
   const [epgChannels, epgPrograms] = useMemo(() => {
     return [
       channels.map((channel) => ({ uuid: channel.id, logo: channel.image })),
@@ -29,7 +28,7 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
     ];
   }, [channels]);
 
-  const theme = useMemo(() => makeTheme(config.styling.highlightColor, config.styling.backgroundColor), [config]);
+  const theme = useMemo(() => makeTheme(highlightColor, backgroundColor), [highlightColor, backgroundColor]);
 
   // this mechanism updates the EPG component range when leaving the page open for a longer period
   // the useEpg hook doesn't accept a formatted date and re-renders when not memoize the start and end dates
@@ -55,7 +54,7 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
 // Theme configuration for the Planby EPG with only the colors set that are used
 // Fixed values are used because the default highlightColor and backgroundColor are only available in SCSS
 
-const makeTheme = (primaryColor?: string | null, backgroundColor?: string | null) => ({
+export const makeTheme = (primaryColor?: string | null, backgroundColor?: string | null) => ({
   primary: {
     600: backgroundColor || '#141523',
     900: backgroundColor || '#141523',
