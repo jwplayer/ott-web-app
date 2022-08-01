@@ -20,10 +20,10 @@ const useLiveProgram = (program: EpgProgram | undefined, catchupHours: number | 
       setIsWatchableFromBeginning(!!program && programIsFullyWatchable(program, catchupHours));
     };
 
-    // update status every 5 seconds
+    // recalculate the program status every 5 seconds
     const intervalId = setInterval(calculateStatus, 5_000);
 
-    // update status when the program changes
+    // immediately update the program status when the program changes
     calculateStatus();
 
     return () => clearInterval(intervalId);

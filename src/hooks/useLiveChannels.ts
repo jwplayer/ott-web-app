@@ -14,6 +14,11 @@ import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
  *
  * The `enableAutoUpdate` argument can be used to ignore the auto update mechanism. For example, when playing a live
  * program from the beginning, we don't want to update the program information in the middle of the program.
+ *
+ * @todo The `enableAutoUpdate` mechanism has a drawback, when used the program information will not be updated anymore.
+ *       Meaning that when watching a program from the beginning, it will hold the current program until the user clicks
+ *       on a different program. This can be solved when we implement syncing the stream PDT with the schedule. Then the
+ *       program information will be reactive based on the current time in the stream.
  */
 const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | undefined, enableAutoUpdate = true) => {
   const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist), {

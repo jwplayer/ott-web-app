@@ -22,7 +22,7 @@ export const programIsVod = (program: EpgProgram) => {
 };
 
 /**
- * Returns true when the program is watchable from the beginning. This is when the startTime is withing the live stream
+ * Returns true when the program is watchable from the beginning. This is when the startTime is within the live stream
  * archive length.
  */
 export const programIsFullyWatchable = (program: EpgProgram, liveStreamCatchupHours = 8) => {
