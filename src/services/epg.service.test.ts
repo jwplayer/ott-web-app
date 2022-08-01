@@ -54,6 +54,7 @@ describe('epgService', () => {
     expect(mock).toHaveFetched();
     expect(schedule.title).toEqual('Channel 1');
     expect(schedule.programs.length).toEqual(14);
+    expect(schedule.catchupHours).toEqual(7);
   });
 
   test('getSchedule enabled demo mode when scheduleDemo is set', async () => {
