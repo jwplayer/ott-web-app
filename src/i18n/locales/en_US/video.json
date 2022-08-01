@@ -9,17 +9,17 @@
   "episode_not_found": "Episode not found",
   "episodes": "Episodes",
   "favorite": "Favorite",
+  "favorites_warning": "Maximum amount of favorite videos exceeded. You can only add up to {{maxCount}} favorite videos. Please delete one and repeat the operation.",
   "remove_from_favorites": "Remove from favorites",
   "season_prefix": "Season ",
   "series_error": "An error occurred while requesting series",
   "share": "Share",
   "sign_up_to_start_watching": "Sign up to start watching!",
   "start_watching": "Start watching",
-  "total_episodes": "{{ count }} episode",
-  "total_episodes_plural": "{{ count }} episodes",
+  "total_episodes": "{{count}} episode",
+  "total_episodes_plural": "{{count}} episodes",
   "trailer": "Trailer",
   "video_not_found": "Video not found",
   "watch_trailer": "Watch the trailer",
-  "share_video": "Share this video",
-  "favorites_warning": "Maximum amount of favorite videos exceeded. You can only add up to {{ count }} favorite videos. Please delete one and repeat the operation."
+  "share_video": "Share this video"
 }

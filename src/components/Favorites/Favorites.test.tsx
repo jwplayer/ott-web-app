@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PersonalShelf } from '../../enum/PersonalShelf';
-import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
+import PlaylistContainer from '../../containers/PlaylistContainer/PlaylistContainer';
 
 import Favorites from './Favorites';
 

@@ -4,7 +4,7 @@ import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountControl
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { PlaylistItem } from '#types/playlist';
-import type { WatchHistoryItem, SerializedWatchHistoryItem } from '#types/watchHistory';
+import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 const PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;

@@ -1,6 +1,6 @@
-import { string, boolean, array, object, SchemaOf, StringSchema, mixed } from 'yup';
+import { array, boolean, mixed, object, SchemaOf, string, StringSchema } from 'yup';
 
-import type { Config, Content, Menu, Styling, Features, Cleeng } from '#types/Config';
+import type { Cleeng, Config, Content, Features, Menu, Styling } from '#types/Config';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
 import i18n from '#src/i18n/config';
 import { logDev } from '#src/utils/common';
@@ -77,7 +77,7 @@ const configSchema: SchemaOf<Config> = object({
   id: string().notRequired(),
   siteName: string().notRequired(),
   description: string().defined(),
-  player: string().nullable(),
+  player: string().defined(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
   assets: object({
@@ -133,7 +133,7 @@ const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
   const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
 
-  return { ...config, siteName: siteName || i18n.t('common.default_site_name'), content: updatedContent };
+  return { ...config, siteName: siteName || i18n.t('common:default_site_name'), content: updatedContent };
 };
 
 export const validateConfig = (config?: Config): Promise<Config> => {

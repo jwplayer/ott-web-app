@@ -8,7 +8,7 @@ import shallow from 'zustand/shallow';
 
 import styles from './Home.module.scss';
 
-import PlaylistContainer from '#src/containers/Playlist/PlaylistContainer';
+import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';

@@ -5,11 +5,12 @@ import styles from './Spinner.module.scss';
 
 type Props = {
   size?: 'small' | 'medium';
+  className?: string;
 };
 
-const Spinner = ({ size = 'medium' }: Props): JSX.Element => {
+const Spinner = ({ size = 'medium', className = '' }: Props): JSX.Element => {
   return (
-    <div className={classNames(styles.buffer, { [styles.small]: size === 'small' })}>
+    <div className={classNames(styles.buffer, className, { [styles.small]: size === 'small' })}>
       <div />
       <div />
       <div />

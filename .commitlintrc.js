@@ -25,6 +25,7 @@ module.exports = {
         'signing',
         'entitlement',
         'config',
+        'epg',
       ],
     ],
   },

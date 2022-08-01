@@ -1,0 +1,30 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+
+.epgChannelBox {
+  position: absolute;
+  padding: 8px 0;
+  background-color: var(--body-background-color);
+}
+
+.epgChannel {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: theme.$epg-box-bg;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.4s ease-in-out, border 0.1s ease;
+
+  &:hover {
+    border: 2px solid var(--primary-color);
+  }
+}
+
+.epgChannelLogo {
+  max-width: 75px;
+  max-height: 75px;
+  border-radius: 4px;
+}

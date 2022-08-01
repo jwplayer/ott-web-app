@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
 import Favorites from '../../components/Favorites/Favorites';
-import PlaylistContainer from '../../containers/Playlist/PlaylistContainer';
+import PlaylistContainer from '../../containers/PlaylistContainer/PlaylistContainer';
 import { PersonalShelf } from '../../enum/PersonalShelf';
 import useBlurImageUpdater from '../../hooks/useBlurImageUpdater';
 import { cardUrl } from '../../utils/formatting';
@@ -28,7 +28,13 @@ import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 
 const User = (): JSX.Element => {
-  const { accessModel, favoritesList } = useConfigStore((s) => ({ accessModel: s.accessModel, favoritesList: s.config?.features?.favoritesList }), shallow);
+  const { accessModel, favoritesList } = useConfigStore(
+    (s) => ({
+      accessModel: s.accessModel,
+      favoritesList: s.config?.features?.favoritesList,
+    }),
+    shallow,
+  );
   const history = useHistory();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();

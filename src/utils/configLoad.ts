@@ -102,8 +102,5 @@ export const loadAndValidateConfig = async (
     })
     .catch((error: Error) => {
       onValidationError(error);
-    })
-    .finally(() => {
-      onLoading(false);
     });
 };

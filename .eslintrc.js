@@ -44,6 +44,8 @@ module.exports = {
     // Assignments in function returns is confusing and could lead to unwanted side-effects
     'no-return-assign': ['error', 'always'],
 
+    curly: ['error', 'multi-line'],
+
     // Strict import ordering
     'import/order': [
       'warn',

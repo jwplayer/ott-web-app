@@ -3,6 +3,7 @@
 
 export { default as account } from './en_US/account.json';
 export { default as common } from './en_US/common.json';
+export { default as epg } from './en_US/epg.json';
 export { default as error } from './en_US/error.json';
 export { default as menu } from './en_US/menu.json';
 export { default as search } from './en_US/search.json';

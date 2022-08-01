@@ -83,7 +83,7 @@ Scenario('I can play a trailer', async ({ I }) => {
 });
 
 Scenario('I can play a trailer without signing in', async ({ I }) => {
-  I.amOnPage(constants.elephantsDreamDetailUrl);
+  I.useConfig('test--accounts', constants.elephantsDreamDetailUrl);
 
   I.see('Sign up to start watching!');
   I.click('Sign up to start watching!');

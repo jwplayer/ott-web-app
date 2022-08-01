@@ -1,0 +1,222 @@
+{
+  "title": "Live Channels",
+  "description": "",
+  "kind": "MANUAL",
+  "feedid": "JSKF03bk",
+  "links": {
+    "first": "https://content.jwplatform.com/v2/playlists/JSKF03bk?page_limit=25&format=json&internal=false&page_offset=1",
+    "last": "https://content.jwplatform.com/v2/playlists/JSKF03bk?page_limit=25&format=json&internal=false&page_offset=1"
+  },
+  "playlist": [
+    {
+      "title": "Channel 1",
+      "mediaid": "LEBW145Q",
+      "link": "https://content.jwplatform.com/previews/LEBW145Q",
+      "image": "https://content.jwplatform.com/v2/media/LEBW145Q/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://content.jwplatform.com/v2/media/LEBW145Q/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/LEBW145Q/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/LEBW145Q/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/LEBW145Q/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/LEBW145Q/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/LEBW145Q/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "JSKF03bk",
+      "duration": 0,
+      "pubdate": 1615480440,
+      "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
+      "tags": "live",
+      "scheduleUrl": "/epg/channel1.json",
+      "catchupHours": "7",
+      "sources": [
+        {
+          "file": "https://demo-use1.cdn.vustreams.com/live/b49bec86-f786-4b08-941c-a4ee80f70e1f/live.isml/b49bec86-f786-4b08-941c-a4ee80f70e1f.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        }
+      ],
+      "variations": {},
+      "requiresSubscription": "false"
+    },
+    {
+      "title": "Channel 2",
+      "mediaid": "NS2Q213",
+      "link": "https://content.jwplatform.com/previews/NS2Q213",
+      "image": "https://content.jwplatform.com/v2/media/NS2Q213/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://content.jwplatform.com/v2/media/NS2Q213/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/NS2Q213/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/NS2Q213/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/NS2Q213/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/NS2Q213/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/NS2Q213/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "JSKF03bk",
+      "duration": 0,
+      "pubdate": 1615480440,
+      "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
+      "tags": "live",
+      "scheduleUrl": "/epg/channel2.json",
+      "sources": [
+        {
+          "file": "https://demo-use1.cdn.vustreams.com/live/b49bec86-f786-4b08-941c-a4ee80f70e1f/live.isml/b49bec86-f786-4b08-941c-a4ee80f70e1f.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        }
+      ],
+      "variations": {},
+      "requiresSubscription": "false"
+    },
+    {
+      "title": "Channel 3",
+      "mediaid": "JDODS53",
+      "link": "https://content.jwplatform.com/previews/JDODS53",
+      "image": "https://content.jwplatform.com/v2/media/JDODS53/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://content.jwplatform.com/v2/media/JDODS53/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/JDODS53/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/JDODS53/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/JDODS53/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/JDODS53/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/JDODS53/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "JSKF03bk",
+      "duration": 0,
+      "pubdate": 1615480440,
+      "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
+      "tags": "live",
+      "scheduleUrl": "/epg/does-not-exist.json",
+      "sources": [
+        {
+          "file": "https://demo-use1.cdn.vustreams.com/live/b49bec86-f786-4b08-941c-a4ee80f70e1f/live.isml/b49bec86-f786-4b08-941c-a4ee80f70e1f.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        }
+      ],
+      "variations": {},
+      "requiresSubscription": "false"
+    },
+    {
+      "title": "Channel 4",
+      "mediaid": "SDF23CJ",
+      "link": "https://content.jwplatform.com/previews/SDF23CJ",
+      "image": "https://content.jwplatform.com/v2/media/SDF23CJ/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://content.jwplatform.com/v2/media/SDF23CJ/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/SDF23CJ/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/SDF23CJ/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/SDF23CJ/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/SDF23CJ/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://content.jwplatform.com/v2/media/SDF23CJ/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "JSKF03bk",
+      "duration": 0,
+      "pubdate": 1615480440,
+      "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
+      "tags": "live",
+      "scheduleUrl": "/epg/network-error.json",
+      "sources": [
+        {
+          "file": "https://demo-use1.cdn.vustreams.com/live/b49bec86-f786-4b08-941c-a4ee80f70e1f/live.isml/b49bec86-f786-4b08-941c-a4ee80f70e1f.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        }
+      ],
+      "variations": {},
+      "requiresSubscription": "false"
+    }
+  ],
+  "feed_instance_id": "5f7f7d06-4f9e-4408-8baa-ff8cc469611a"
+}

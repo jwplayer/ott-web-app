@@ -1,4 +1,4 @@
-@use "variables";
+@use 'variables';
 
 // Colors
 
@@ -98,3 +98,11 @@ $toggle-button-bg: variables.$white !default;
 $panel-bg: rgba(255, 255, 255, 0.08);
 $panel-box-shadow: 0 6px 10px rgb(0 0 0 / 14%), 0 1px 18px rgb(0 0 0 / 12%), 0 3px 5px rgb(0 0 0 / 20%);
 $panel-header-border-bottom: 1px solid rgba(255, 255, 255, 0.32);
+
+// EpgChannel
+
+$epg-box-bg: rgba(255, 255, 255, 0.08);
+$epg-title-color: variables.$white;
+$epg-title-selected-color: variables.$black;
+$epg-text-color: rgba(variables.$white, 0.7) !default;
+$epg-text-selected-color: rgba(variables.$black, 0.7) !default;
