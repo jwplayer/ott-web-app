@@ -239,6 +239,48 @@ const stepsObj = {
   writeClipboard: async function (this: CodeceptJS.I, text: string) {
     await this.executeScript((text) => navigator.clipboard.writeText(text), text);
   },
+  scrollToShelf: async function (this: CodeceptJS.I, playlistId: string) {
+    const targetSelector = `[data-mediaid="${playlistId}"]`;
+
+    let tries = 5;
+    let visible = 0;
+
+    do {
+      visible = await this.grabNumberOfVisibleElements(targetSelector);
+
+      if (visible === 0) {
+        this.scrollTo('[role="row"]:last-child');
+        this.wait(0.2);
+      }
+    } while (visible === 0 && tries--);
+
+    assert.strictEqual(visible, 1, `Shelf row not found with id '${playlistId}'`);
+
+    this.scrollTo(targetSelector);
+  },
+  mockTimeAs: async function (this: CodeceptJS.I, hours: number, minutes: number, seconds: number) {
+    return this.usePlaywrightTo(`Mock current time as ${hours}:${minutes}:${seconds}`, async ({ page }) => {
+      const today = new Date().setUTCHours(hours, minutes, seconds, 0);
+      const mockedNow = today.valueOf();
+
+      await page.addInitScript(`{
+        // Extend Date constructor to default to mockedNow
+        Date = class extends Date {
+          constructor(...args) {
+            if (args.length === 0) {
+              super(${mockedNow});
+            } else {
+              super(...args);
+            }
+          }
+        }
+        // Override Date.now() to start from mockedNow
+        const __DateNowOffset = ${mockedNow} - Date.now();
+        const __DateNow = Date.now;
+        Date.now = () => __DateNow() + __DateNowOffset;
+      }`);
+    });
+  },
 };
 declare global {
   type Steps = typeof stepsObj;

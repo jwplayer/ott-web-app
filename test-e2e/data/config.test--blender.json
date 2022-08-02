@@ -33,6 +33,11 @@
       "enableText": true,
       "type": "playlist",
       "contentId": "xQaFzykq"
+    },
+    {
+      "enableText": true,
+      "type": "playlist",
+      "contentId": "fWpLtzVh"
     }
   ],
   "menu": [
@@ -47,6 +52,11 @@
       "contentId": "xQaFzykq",
       "type": "playlist",
       "filterTags": "Beginner,Advanced"
+    },
+    {
+      "label": "Live",
+      "contentId": "fWpLtzVh",
+      "type": "playlist"
     }
   ],
   "custom": {},
