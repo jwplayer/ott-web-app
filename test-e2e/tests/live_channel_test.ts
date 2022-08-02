@@ -44,16 +44,15 @@ Scenario('I can navigate to live channels from the live channels shelf', async (
   I.see('Live Channels');
   I.click('Play Channel 1');
 
-  // to account for the transition time
-  I.wait(0.4);
+  waitForEpgAnimation(I);
   I.see('LIVEOn Channel 1', locate('div').inside(videoDetailLocator));
 });
 
 Scenario('I can navigate to live channels from the header', ({ I }) => {
   I.see('Live');
   I.click('Live');
-  // to account for the transition time
-  I.wait(0.4);
+
+  waitForEpgAnimation(I);
   I.see('LIVEOn Channel 1', locate('div').inside(videoDetailLocator));
 });
 
@@ -115,8 +114,7 @@ Scenario('I can select a upcoming program on the same channel', async ({ I }) =>
 
   I.click(epgProgram(channel1UpcomingProgram));
 
-  // to account for the transition time
-  I.wait(0.4);
+  waitForEpgAnimation(I);
   await isSelectedProgram(I, channel1UpcomingProgram, 'channel 1');
 
   I.see('The Flash', locate('div').inside(videoDetailLocator));
@@ -142,8 +140,7 @@ Scenario('I can select a previous program on the same channel, and watch the vid
 
   I.click(epgProgram(channel1PreviousProgramId));
 
-  // to account for the transition time
-  I.wait(0.4);
+  waitForEpgAnimation(I);
   await isSelectedProgram(I, channel1PreviousProgramId, 'channel 1');
 
   I.dontSee('LIVEOn Channel 1', locate('div').inside(videoDetailLocator));
@@ -164,8 +161,7 @@ Scenario('I can select an program on a other channel', async ({ I }) => {
 
   I.click(epgChannel(channel2Id));
 
-  // to account for the transition time
-  I.wait(0.4);
+  waitForEpgAnimation(I);
 
   I.dontSee('LIVEOn Channel 1', locate('div').inside(videoDetailLocator));
 
@@ -176,8 +172,7 @@ Scenario('I can select an program on a other channel', async ({ I }) => {
   await isSelectedProgram(I, channel2LiveProgramId, 'channel 2');
 
   I.click(epgChannel(channel1Id));
-  // to account for the transition time
-  I.wait(0.4);
+  waitForEpgAnimation(I);
   I.dontSee('LIVEOn Channel 2', locate('div').inside(videoDetailLocator));
   I.see('LIVEOn Channel 1', locate('div').inside(videoDetailLocator));
 });
@@ -190,25 +185,21 @@ Scenario('I can navigate through the epg', async ({ I }) => {
   I.see('The Silent Sea');
   I.dontSee('House');
 
-  // to account for the transition time of smooth scroll
-  I.wait(1);
+  waitForEpgAnimation(I);
   I.click('Slide right');
 
   I.dontSee('The Silent Sea');
   I.see('Peaky Blinders');
 
   I.click('Slide right');
-  // to account for the transition time
-  I.wait(0.5);
 
+  waitForEpgAnimation(I);
   I.dontSee('Euphoria');
   I.see('Peaky Blinders');
 
   I.click('Now');
 
-  // to account for the transition time
-  I.wait(0.5);
-
+  waitForEpgAnimation(I);
   I.seeElement(epgProgram(channel1LiveProgramId));
   await isSelectedProgram(I, channel1LiveProgramId, 'channel 1');
 
@@ -239,4 +230,8 @@ async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, 
   }
 
   return true;
+}
+
+function waitForEpgAnimation(I: CodeceptJS.I, sec: number = 1) {
+  return I.wait(sec);
 }
