@@ -258,10 +258,10 @@ const stepsObj = {
 
     this.scrollTo(targetSelector);
   },
-  mockTimeAs: async function (this: CodeceptJS.I, time: string, locale: string = 'nl-NL') {
-    return this.usePlaywrightTo(`Mock current time as ${time}`, async ({ page }) => {
-      const currentDate = new Date().toLocaleDateString(locale);
-      const mockedNow = new Date(`${currentDate} ${time}`).valueOf();
+  mockTimeAs: async function (this: CodeceptJS.I, hours: number, minutes: number, seconds: number) {
+    return this.usePlaywrightTo(`Mock current time as ${hours}:${minutes}:${seconds}`, async ({ page }) => {
+      const today = new Date().setUTCHours(hours, minutes, seconds, 0);
+      const mockedNow = today.valueOf();
 
       await page.addInitScript(`{
         // Extend Date constructor to default to mockedNow
