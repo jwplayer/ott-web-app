@@ -40,7 +40,7 @@ const VideoDetails: React.FC<Props> = ({
   const isMobile = breakpoint === Breakpoint.xs;
 
   return (
-    <div className={styles.video} data-testid="video-detail">
+    <div className={styles.video} data-testid="video-details">
       <div
         className={classNames(styles.main, styles.mainPadding, {
           [styles.posterNormal]: poster === 'normal',
