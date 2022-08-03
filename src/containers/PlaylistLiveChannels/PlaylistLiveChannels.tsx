@@ -24,8 +24,9 @@ import Play from '#src/icons/Play';
 import useLiveProgram from '#src/hooks/useLiveProgram';
 import Tag from '#src/components/Tag/Tag';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import { generateMovieJSONLD } from '#src/utils/structuredData';
 
-function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playlist: Playlist }) {
+function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
   const breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
@@ -128,19 +129,40 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
     if (channel && feedid) history.replace(liveChannelsURL(feedid, channel.id));
   }, [history, feedid, channel]);
 
-  // Loading
-  if (!channel) {
+  // Loading (channel and feedid must be defined)
+  if (!channel || !feedid) {
     return <LoadingOverlay />;
   }
 
-  const pageTitle = `${title} - ${siteName}`;
+  // SEO (for channels)
+  const canonicalUrl = `${window.location.origin}${liveChannelsURL(feedid, channel.id)}`;
+  const pageTitle = `${channel.title} - ${siteName}`;
 
   return (
     <>
       <Helmet>
         <title>{pageTitle}</title>
+        <link rel="canonical" href={canonicalUrl} />
+        <meta name="description" content={channelMediaItem?.description} />
+        <meta property="og:description" content={channelMediaItem?.description} />
         <meta property="og:title" content={pageTitle} />
+        <meta property="og:type" content="video.other" />
+        {channelMediaItem?.image && <meta property="og:image" content={channelMediaItem.image?.replace(/^https:/, 'http:')} />}
+        {channelMediaItem?.image && <meta property="og:image:secure_url" content={channelMediaItem.image?.replace(/^http:/, 'https:')} />}
+        <meta property="og:image:width" content={channelMediaItem?.image ? '720' : ''} />
+        <meta property="og:image:height" content={channelMediaItem?.image ? '406' : ''} />
         <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={channelMediaItem?.description} />
+        <meta name="twitter:image" content={channelMediaItem?.image} />
+        <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
+        <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
+        <meta property="og:video:type" content="text/html" />
+        <meta property="og:video:width" content="1280" />
+        <meta property="og:video:height" content="720" />
+        {channelMediaItem?.tags?.split(',').map((tag) => (
+          <meta property="og:video:tag" content={tag} key={tag} />
+        ))}
+        {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem)}</script> : null}
       </Helmet>
       {channelMediaItem && (
         <Cinema
@@ -167,7 +189,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
             <>
               <StartWatchingButton
                 item={channelMediaItem}
-                playUrl={addQueryParams(liveChannelsURL(feedid || '', channelId, true), {
+                playUrl={addQueryParams(liveChannelsURL(feedid, channelId, true), {
                   start: isVod ? program?.startTime : undefined,
                   end: isVod ? program?.endTime : undefined,
                 })}
