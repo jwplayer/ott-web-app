@@ -89,6 +89,7 @@ const Cinema: React.FC<Props> = ({
   const handleFirstFrame = useCallback(() => {
     // when playing a livestream, the first moment we can seek to the beginning of the DVR range is after the
     // firstFrame event.
+    // @todo this doesn't seem to work 100% out of the times. Confirm with player team if this is the best approach.
     if (liveFromBeginning) {
       playerInstance?.seek(0);
     }
