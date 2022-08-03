@@ -37,7 +37,7 @@ describe('usePlanByEpg', () => {
       isLine: true,
       isBaseTimeFormat: false,
       startDate: new Date('2022-07-26T00:00:00.000Z'),
-      endDate: new Date('2022-07-26T23:59:59.999Z'),
+      endDate: new Date('2022-07-27T00:00:00.000Z'),
       theme: makeTheme(),
     });
   });
@@ -50,7 +50,7 @@ describe('usePlanByEpg', () => {
     expect(mockFn).toHaveBeenCalled();
     expect(mockFn.mock.calls[0][0]).toMatchObject({
       startDate: new Date('2022-07-26T00:00:00.000Z'),
-      endDate: new Date('2022-07-26T23:59:59.999Z'),
+      endDate: new Date('2022-07-27T00:00:00.000Z'),
     });
 
     const startDate = mockFn.mock.calls[0][0].startDate;
@@ -63,7 +63,7 @@ describe('usePlanByEpg', () => {
     expect(mockFn).toHaveBeenCalledTimes(2);
     expect(mockFn.mock.calls[1][0]).toMatchObject({
       startDate: new Date('2022-07-26T00:00:00.000Z'),
-      endDate: new Date('2022-07-26T23:59:59.999Z'),
+      endDate: new Date('2022-07-27T00:00:00.000Z'),
     });
 
     // date instances should be the same
@@ -77,7 +77,7 @@ describe('usePlanByEpg', () => {
     expect(mockFn).toHaveBeenCalledTimes(3);
     expect(mockFn.mock.calls[2][0]).toMatchObject({
       startDate: new Date('2022-07-27T00:00:00.000Z'),
-      endDate: new Date('2022-07-27T23:59:59.999Z'),
+      endDate: new Date('2022-07-28T00:00:00.000Z'),
     });
   });
 
