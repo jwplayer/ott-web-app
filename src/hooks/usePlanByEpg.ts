@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useEpg } from 'planby';
-import { endOfDay, startOfDay } from 'date-fns';
+import { startOfToday, startOfTomorrow } from 'date-fns';
 
 import type { EpgChannel } from '#src/services/epg.service';
 import { is12HourClock } from '#src/utils/datetime';
@@ -32,8 +32,11 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
 
   // this mechanism updates the EPG component range when leaving the page open for a longer period
   // the useEpg hook doesn't accept a formatted date and re-renders when not memoize the start and end dates
-  const date = startOfDay(new Date()).toJSON();
-  const [startDate, endDate] = useMemo(() => [startOfDay(new Date()), endOfDay(new Date())], [date]);
+  // @todo ideally we want to render the schedule X hours before and after the current time, but this doesn't work (yet)
+  //       in the Planby component. E.g. `[subHours(new Date(), 12), addHours(new Date(), 12)]`. The `date` dependency
+  //       must also be changed to update every hour instead of daily.
+  const date = startOfToday().toJSON();
+  const [startDate, endDate] = useMemo(() => [startOfToday(), startOfTomorrow()], [date]);
 
   return useEpg({
     channels: epgChannels,
@@ -53,7 +56,6 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
 
 // Theme configuration for the Planby EPG with only the colors set that are used
 // Fixed values are used because the default highlightColor and backgroundColor are only available in SCSS
-
 export const makeTheme = (primaryColor?: string | null, backgroundColor?: string | null) => ({
   primary: {
     600: backgroundColor || '#141523',
