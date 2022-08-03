@@ -1,5 +1,10 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+$base-z-index: variables.$epg-z-index;
+$cover-z-index: $base-z-index + 1;
+$control-z-index: $base-z-index + 2;
 
 .epg {
   position: relative;
@@ -17,8 +22,9 @@
     > div {
       // Planby Spacer
       > div:first-child {
-        z-index: variables.$view-z-index !important;
+        z-index: variables.$epg-z-index;
       }
+
       // Planby ScrollContainer
       > div:nth-child(2) {
         overflow-y: hidden !important;
@@ -27,17 +33,23 @@
         &::-webkit-scrollbar {
           display: none !important;
         }
+
         // Planby Timeline indicator
         > div:first-child {
-          z-index: variables.$view-z-index !important;
+          z-index: $cover-z-index;
           box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
         }
+
         // Planby Sidebar with Channels
         > div[data-testid='sidebar'] {
-          z-index: variables.$view-z-index !important;
+          z-index: $cover-z-index;
         }
       }
     }
+  }
+
+  @include responsive.mobile-only() {
+    border-radius: 0;
   }
 }
 
@@ -53,12 +65,23 @@
   display: flex;
   align-items: center;
   width: 100%;
+
+  @include responsive.mobile-only() {
+    position: absolute;
+    z-index: $control-z-index;
+    width: 60px;
+    height: 60px;
+  }
 }
 
 .timelineNowButton {
   justify-content: center;
   width: 160px;
   margin-right: auto;
+
+  @include responsive.mobile-only() {
+    width: 60px;
+  }
 }
 
 .leftControl,
@@ -78,6 +101,11 @@
 
   &:hover {
     transform: scale(1.2);
+  }
+
+  // hide on mobile, swiping is much more convenient
+  @include responsive.mobile-only() {
+    display: none;
   }
 }
 

@@ -19,6 +19,7 @@ type Props = {
   shareButton: React.ReactNode;
   favoriteButton: React.ReactNode;
   trailerButton: React.ReactNode;
+  childrenPadding?: boolean;
 };
 
 const VideoDetails: React.FC<Props> = ({
@@ -33,6 +34,7 @@ const VideoDetails: React.FC<Props> = ({
   shareButton,
   favoriteButton,
   trailerButton,
+  childrenPadding = true,
 }) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
@@ -61,7 +63,7 @@ const VideoDetails: React.FC<Props> = ({
         </div>
         <div className={classNames(styles.poster, styles[posterMode])} style={{ backgroundImage: `url('${poster}')` }} />
       </div>
-      {!!children && <div className={classNames(styles.related, styles.mainPadding)}>{children}</div>}
+      {!!children && <div className={classNames(styles.related, { [styles.mainPadding]: childrenPadding })}>{children}</div>}
     </div>
   );
 };

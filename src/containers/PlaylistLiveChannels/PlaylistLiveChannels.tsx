@@ -23,9 +23,12 @@ import Button from '#src/components/Button/Button';
 import Play from '#src/icons/Play';
 import useLiveProgram from '#src/hooks/useLiveProgram';
 import Tag from '#src/components/Tag/Tag';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === Breakpoint.xs;
 
   // Config
   const { config } = useConfigStore(({ config }) => ({ config }), shallow);
@@ -102,6 +105,18 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
     );
   }, [channel, isLive, program, t]);
 
+  // Handlers
+  const handleProgramClick = (programId: string, channelId: string) => {
+    setActiveChannel(channelId, programId);
+
+    // scroll to top when clicking a program
+    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleChannelClick = (channelId: string) => {
+    setActiveChannel(channelId);
+  };
+
   // Effects
   useEffect(() => {
     const toImage = program?.image || channelMediaItem?.image;
@@ -146,6 +161,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
         poster={videoDetails.poster}
+        childrenPadding={!isMobile}
         startWatchingButton={
           channelMediaItem ? (
             <>
@@ -183,7 +199,7 @@ function PlaylistLiveChannels({ playlist: { feedid, title, playlist } }: { playl
         trailerButton={null}
         favoriteButton={null}
       >
-        <Epg channels={channels} setActiveChannel={setActiveChannel} channel={channel} program={program} config={config} />
+        <Epg channels={channels} onChannelClick={handleChannelClick} onProgramClick={handleProgramClick} channel={channel} program={program} config={config} />
       </VideoDetails>
     </>
   );
