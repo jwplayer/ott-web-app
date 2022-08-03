@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect } from 'vitest';
 import { mockFetch, mockGet } from 'vi-fetch';
+import { register, unregister } from 'timezone-mock';
 
 import epgService, { EpgProgram } from '#src/services/epg.service';
 import scheduleFixture from '#src/fixtures/schedule.json';
@@ -16,6 +17,8 @@ describe('epgService', () => {
   });
 
   afterEach(() => {
+    // must be called before `vi.useRealTimers()`
+    unregister();
     vi.restoreAllMocks();
     vi.useRealTimers();
   });
@@ -57,7 +60,7 @@ describe('epgService', () => {
     expect(schedule.catchupHours).toEqual(7);
   });
 
-  test('getSchedule enabled demo mode when scheduleDemo is set', async () => {
+  test('getSchedule enables the demo transformer when scheduleDemo is set', async () => {
     const mock = mockGet('/epg/channel1.json').willResolve(scheduleData);
 
     // mock the date
@@ -225,6 +228,47 @@ describe('epgService', () => {
 
     expect(schedule[3].startTime).toEqual('2036-06-04T05:30:00.000Z');
     expect(schedule[3].endTime).toEqual('2036-06-04T12:00:00.000Z');
+  });
+
+  test('parseSchedule should use the correct demo dates in different timezones', async () => {
+    // some date in the far future
+    vi.setSystemTime(new Date(2036, 5, 3, 1, 30, 10, 500));
+
+    register('Australia/Adelaide');
+
+    const schedule = await epgService.parseSchedule(
+      [
+        {
+          id: '1234-1234-1234-1234-1234',
+          title: 'Test item 1',
+          startTime: '2022-07-19T22:00:00Z',
+          endTime: '2022-07-19T23:30:00Z',
+        },
+      ],
+      true,
+    );
+
+    expect(schedule.length).toEqual(1);
+    expect(schedule[0].startTime).toEqual('2036-06-03T22:00:00.000Z');
+    expect(schedule[0].endTime).toEqual('2036-06-03T23:30:00.000Z');
+
+    register('US/Pacific');
+
+    const schedule2 = await epgService.parseSchedule(
+      [
+        {
+          id: '1234-1234-1234-1234-1234',
+          title: 'Test item 1',
+          startTime: '2022-07-19T22:00:00Z',
+          endTime: '2022-07-19T23:30:00Z',
+        },
+      ],
+      true,
+    );
+
+    expect(schedule2.length).toEqual(1);
+    expect(schedule2[0].startTime).toEqual('2036-06-03T22:00:00.000Z');
+    expect(schedule2[0].endTime).toEqual('2036-06-03T23:30:00.000Z');
   });
 
   test('transformProgram should transform valid program entries', async () => {

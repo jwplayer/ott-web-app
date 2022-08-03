@@ -1,5 +1,6 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
+@use '../../styles/mixins/responsive';
 
 .epgChannelBox {
   position: absolute;
@@ -21,10 +22,18 @@
   &:hover {
     border: 2px solid var(--primary-color);
   }
+
+  @include responsive.mobile-only() {
+    background-color: transparent;
+  }
 }
 
 .epgChannelLogo {
   max-width: 75px;
   max-height: 75px;
   border-radius: 4px;
+
+  @include responsive.mobile-only() {
+    max-width: 50px;
+  }
 }

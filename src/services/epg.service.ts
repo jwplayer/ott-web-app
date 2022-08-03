@@ -1,5 +1,5 @@
 import { array, object, string } from 'yup';
-import { addDays, differenceInDays, endOfDay, isValid, set, startOfDay, subDays } from 'date-fns';
+import { addDays, differenceInDays, endOfDay, isValid, startOfDay, subDays } from 'date-fns';
 
 import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
@@ -72,12 +72,14 @@ class EpgService {
    */
   generateDemoPrograms(programs: EpgProgram[]) {
     const today = new Date();
-    const demoStartDate = set(new Date(programs[0]?.startTime), {
-      date: today.getDate(),
-      month: today.getMonth(),
-      year: today.getFullYear(),
-    });
-    const daysDelta = differenceInDays(demoStartDate, new Date(programs[0]?.startTime));
+    const startDate = new Date(programs[0]?.startTime);
+
+    // this makes sure that the start of the day is correct. `startOfDay(startDate)` doesn't work since it can yield
+    // a different date depending on the timezone.
+    // for example, given a startTime of `2022-08-03T23:00:00Z` will parse to `2022-08-04T01:00:00+0200` in
+    // Europe/Amsterdam (GMT+2) which makes startOfDay return `2022-08-04T00:00:00+0200`.
+    const utcStartDate = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()));
+    const daysDelta = differenceInDays(today, utcStartDate);
 
     return programs.map((program) => ({
       ...program,

@@ -18,7 +18,7 @@ type Props = {
   variant?: Variant;
   onClick?: () => void;
   tabIndex?: number;
-  size?: 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
   to?: string;
   role?: string;
   className?: string;
@@ -43,10 +43,11 @@ const Button: React.FC<Props> = ({
   className,
   ...rest
 }: Props) => {
-  const buttonClassName = classNames(styles.button, className, [styles[color]], [styles[variant]], {
+  const buttonClassName = classNames(styles.button, className, styles[color], styles[variant], {
     [styles.active]: active,
     [styles.fullWidth]: fullWidth,
     [styles.large]: size === 'large',
+    [styles.small]: size === 'small',
     [styles.disabled]: disabled,
   });
 

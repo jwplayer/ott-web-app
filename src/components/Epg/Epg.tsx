@@ -20,20 +20,21 @@ import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type Props = {
   channels: EpgChannel[];
-  setActiveChannel: (id: string, programId?: string | undefined) => void;
+  onChannelClick: (channelId: string) => void;
+  onProgramClick: (programId: string, channelId: string) => void;
   channel: EpgChannel | undefined;
   program: EpgProgram | undefined;
   config: Config;
 };
 
-export default function Epg({ channels, setActiveChannel, channel, program, config }: Props) {
+export default function Epg({ channels, onChannelClick, onProgramClick, channel, program, config }: Props) {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
 
   const isMobile = breakpoint < Breakpoint.sm;
-  const sidebarWidth = isMobile ? 90 : 184;
+  const sidebarWidth = isMobile ? 70 : 184;
   // the subtracted value is used for spacing in the sidebar
-  const channelItemWidth = isMobile ? sidebarWidth - 16 : sidebarWidth - 24;
+  const channelItemWidth = isMobile ? sidebarWidth - 10 : sidebarWidth - 24;
   const itemHeight = isMobile ? 80 : 106;
 
   // Epg
@@ -50,7 +51,7 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
   return (
     <div className={styles.epg}>
       <div className={styles.timelineControl}>
-        <Button className={styles.timelineNowButton} variant="contained" label={t('now')} color="primary" onClick={onScrollToNow} />
+        <Button className={styles.timelineNowButton} variant="contained" label={t('now')} color="primary" onClick={onScrollToNow} size="small" />
         <IconButton className={styles.leftControl} aria-label={t('slide_left')} onClick={() => onScrollLeft()}>
           <ChevronLeft />
         </IconButton>
@@ -69,7 +70,7 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
               channelItemWidth={channelItemWidth}
               sidebarWidth={sidebarWidth}
               onClick={(toChannel) => {
-                setActiveChannel(toChannel.uuid);
+                onChannelClick(toChannel.uuid);
                 onScrollToNow();
               }}
               isActive={channel?.id === epgChannel.uuid}
@@ -84,7 +85,7 @@ export default function Epg({ channels, setActiveChannel, channel, program, conf
                 key={programItem.data.id}
                 program={programItem}
                 disabled={disabled}
-                onClick={(program) => !disabled && setActiveChannel(program.data.channelUuid, program.data.id)}
+                onClick={(program) => !disabled && onProgramClick(program.data.id, program.data.channelUuid)}
                 isActive={program?.id === programItem.data.id}
                 compact={isMobile}
                 isBaseTimeFormat={isBaseTimeFormat}
