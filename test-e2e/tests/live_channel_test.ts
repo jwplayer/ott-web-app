@@ -65,7 +65,7 @@ Scenario('I can watch the current live program on the live channel screen', asyn
   I.see('The Daily Show with Trevor Noah: Ears Edition', locate('h2').inside(videoDetailsLocator));
   I.see('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
   I.see('Start watching');
-  I.see('Watch from begin');
+  I.see('Watch from start');
 
   I.click('Start watching');
   I.seeElement('video');
