@@ -1,4 +1,8 @@
 {
+  "alert": {
+    "close": "",
+    "title": ""
+  },
   "back": "",
   "card_lock": "",
   "close_modal": "",
@@ -6,18 +10,15 @@
     "close": "",
     "confirm": ""
   },
-  "alert": {
-    "title": "",
-    "close": ""
-  },
+  "default_site_name": "",
   "filter_videos_by_genre": "",
   "home": "",
   "live": "",
+  "now:": "",
   "optional": "",
   "play_item": "",
   "sign_in": "",
   "sign_up": "",
   "slide_left": "",
-  "slide_right": "",
-  "default_site_name": ""
+  "slide_right": ""
 }

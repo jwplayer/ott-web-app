@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import 'react-app-polyfill/stable';
 import '@testing-library/jest-dom'; // Including this for the expect extensions
+import 'vi-fetch/setup';
 
 vi.stubGlobal(
   'matchMedia',
@@ -40,7 +41,7 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('#src/i18n/config', () => ({
-  default: () => ({
+  default: {
     t: (str: string) => str,
-  }),
+  },
 }));

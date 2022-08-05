@@ -1,6 +1,7 @@
 @use '../../styles/variables';
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
+@use '../../styles/mixins/typography';
 
 .video {
   color: var(--primary-color);
@@ -42,6 +43,7 @@
 .info {
   width: 70%;
   max-width: 650px;
+  min-height: 300px;
 
   @include responsive.tablet-only() {
     width: 350px;
@@ -56,20 +58,8 @@
 }
 
 .title {
-  color: var(--primary-color);
-  font-family: var(--body-font-family);
-  font-weight: var(--body-font-weight-bold);
-  font-size: 34px;
-  line-height: 40px;
-  letter-spacing: 0.25px;
-
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
-
-  @include responsive.mobile-only() {
-    font-size: 20px;
-    line-height: 20px;
-    letter-spacing: 0.15px;
-  }
+  @include typography.video-title-base;
+  margin-bottom: calc(variables.$base-spacing / 2);
 }
 
 .metaContainer {
@@ -77,7 +67,7 @@
   flex-direction: column;
 }
 
-.meta {
+.primaryMetadata {
   margin-bottom: 8px;
   font-size: 16px;
   line-height: 18px;
@@ -89,16 +79,12 @@
   }
 }
 
-.seriesMeta {
+.secondaryMetadata {
   margin-top: 24px;
   margin-bottom: 8px;
   font-size: 20px;
   line-height: 20px;
   letter-spacing: 0.5px;
-
-  &.seriesMetaPlayer {
-    margin-top: 4px;
-  }
 
   @include responsive.mobile-only() {
     order: 1;
@@ -133,7 +119,7 @@
     > button {
       flex: 1;
       padding: 0 12px;
-      
+
       &:first-child {
         flex-basis: 100%;
       }
@@ -213,86 +199,4 @@
 
 .related {
   position: relative;
-}
-
-.playerContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: variables.$player-z-index;
-  width: 100vw;
-  height: calc(100vh - calc(100vh - 100%));
-  overflow: hidden;
-  background-color: variables.$black;
-}
-
-.player {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.playerOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 100px;
-  padding: 24px 56px;
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0.25) 100%);
-  pointer-events: none;
-
-  @include responsive.mobile-only() {
-    padding-left: 16px;
-  }
-}
-
-.playerContent {
-  display: flex;
-  width: 80%;
-
-  @include responsive.mobile-only() {
-    width: 100%;
-  }
-}
-
-.backButton {
-  margin-right: 24px;
-  opacity: 1;
-  pointer-events: auto;
-
-  > svg {
-    width: 36px;
-    height: 36px;
-    -webkit-filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4)); /* stylelint-disable-line */
-    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4));
-  }
-}
-
-.trailerModal {
-  position: relative;
-  width: 80vw;
-  height: calc(80vw / 16 * 9);
-
-  @include responsive.mobile-only() {
-    width: 100vw;
-    height: calc(100vw / 16 * 9);
-  }
-}
-
-.trailerMeta {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 1;
-
-  &.hidden {
-    opacity: 0;
-    transition: opacity 0.6s ease;
-  }
 }

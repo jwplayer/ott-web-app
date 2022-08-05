@@ -10,32 +10,36 @@ import styles from './Series.module.scss';
 import useEntitlement from '#src/hooks/useEntitlement';
 import CardGrid from '#src/components/CardGrid/CardGrid';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
-import { episodeURL } from '#src/utils/formatting';
+import { episodeURL, episodeURLFromEpisode, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
 import Filter from '#src/components/Filter/Filter';
 import type { PlaylistItem } from '#src/../types/playlist';
-import VideoComponent from '#src/components/Video/Video';
+import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
-import { copyToClipboard } from '#src/utils/dom';
-import { filterSeries, getFiltersFromSeries, getNextItemId, enrichMediaItems } from '#src/utils/series';
+import { enrichMediaItems, filterSeries, getFiltersFromSeries, getNextItemId } from '#src/utils/series';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { toggleFavorite } from '#src/stores/FavoritesController';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import { getSeriesIdFromEpisode } from '#src/utils/media';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import Cinema from '#src/containers/Cinema/Cinema';
+import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
+import ShareButton from '#src/components/ShareButton/ShareButton';
+import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
+import Button from '#src/components/Button/Button';
+import PlayTrailer from '#src/icons/PlayTrailer';
 
 type SeriesRouteParams = {
   id: string;
 };
 
 const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
+  const breakpoint = useBreakpoint();
   const { t } = useTranslation('video');
-  const [hasShared, setHasShared] = useState<boolean>(false);
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // Routing
@@ -72,11 +76,11 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   const filters = getFiltersFromSeries(seriesPlaylist.playlist);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
-  // Favorite
-  const { isFavorited } = useFavoritesStore((state) => ({
-    isFavorited: !!item && state.hasItem(item),
-  }));
+  const isLargeScreen = breakpoint >= Breakpoint.md;
+  const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
+  const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
 
+  // Watch history
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
 
   // User, entitlement
@@ -86,24 +90,8 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   useBlurImageUpdater(item);
 
   // Handlers
-  const onFavoriteButtonClick = useCallback(() => {
-    toggleFavorite(item);
-  }, [item]);
-
   const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
   const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
-  const onShareClick = (): void => {
-    if (!item) return;
-
-    if (typeof navigator.share === 'function') {
-      navigator.share({ title: item.title, text: item.description, url: window.location.href });
-      return;
-    }
-
-    copyToClipboard(window.location.href);
-    setHasShared(true);
-    setTimeout(() => setHasShared(false), 2000);
-  };
 
   const handleComplete = useCallback(() => {
     if (nextItemId) {
@@ -112,13 +100,6 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   }, [history, nextItemId, seriesPlaylist]);
 
   // Effects
-  useEffect(() => {
-    document.body.style.overflowY = play ? 'hidden' : '';
-    return () => {
-      document.body.style.overflowY = '';
-    };
-  }, [play]);
-
   useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   }, [episodeId]);
@@ -137,9 +118,17 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   if (isLoading) return <LoadingOverlay />;
   if ((!isLoading && isItemError) || !item) return <ErrorPage title={t('episode_not_found')} />;
   if (isPlaylistError) return <ErrorPage title={t('series_error')} />;
+  if (!seriesId) return <ErrorPage title={t('series_error')} />;
 
   const pageTitle = `${item.title} - ${siteName}`;
   const canonicalUrl = seriesPlaylist && item ? `${window.location.origin}${episodeURL(seriesPlaylist, item.mediaid)}` : window.location.href;
+
+  const primaryMetadata = formatVideoMetaString(item, t('video:total_episodes', { count: seriesPlaylist.playlist.length }));
+  const secondaryMetadata = (
+    <>
+      <strong>{formatSeriesMetaString(item)}</strong> - {item.title}
+    </>
+  );
 
   return (
     <React.Fragment>
@@ -167,27 +156,43 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         ))}
         {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
       </Helmet>
-      <VideoComponent
-        title={seriesPlaylist.title}
-        episodeCount={seriesPlaylist.playlist.length}
+      <Cinema
+        open={play && isEntitled}
+        onClose={goBack}
         item={item}
-        feedId={feedId ?? undefined}
-        trailerItem={trailerItem}
-        play={play && isEntitled}
-        goBack={goBack}
+        title={seriesPlaylist.title}
+        primaryMetadata={primaryMetadata}
+        secondaryMetadata={
+          <>
+            <strong>{secondaryMetadata}</strong> - {item.title}
+          </>
+        }
         onComplete={handleComplete}
-        poster={posterFading ? 'fading' : 'normal'}
-        enableSharing={enableSharing}
-        hasShared={hasShared}
-        onShareClick={onShareClick}
-        playTrailer={playTrailer}
-        onTrailerClick={() => setPlayTrailer(true)}
-        onTrailerClose={() => setPlayTrailer(false)}
-        isFavorited={isFavorited}
-        isFavoritesEnabled={isFavoritesEnabled}
-        onFavoriteButtonClick={onFavoriteButtonClick}
-        startWatchingButton={<StartWatchingButton item={item} seriesId={seriesId} />}
-        isSeries
+        feedId={feedId ?? undefined}
+      />
+      <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <VideoDetails
+        title={seriesPlaylist.title}
+        description={item.description}
+        primaryMetadata={primaryMetadata}
+        secondaryMetadata={secondaryMetadata}
+        poster={poster}
+        posterMode={posterFading ? 'fading' : 'normal'}
+        shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
+        startWatchingButton={<StartWatchingButton item={item} playUrl={episodeURLFromEpisode(item, seriesId, feedId, true)} />}
+        favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
+        trailerButton={
+          !!trailerItem && (
+            <Button
+              label={t('video:trailer')}
+              aria-label={t('video:watch_trailer')}
+              startIcon={<PlayTrailer />}
+              onClick={() => setPlayTrailer(true)}
+              active={playTrailer}
+              fullWidth={breakpoint < Breakpoint.md}
+            />
+          )
+        }
       >
         <>
           <div className={styles.episodes}>
@@ -216,7 +221,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
             hasSubscription={!!subscription}
           />
         </>
-      </VideoComponent>
+      </VideoDetails>
     </React.Fragment>
   );
 };
