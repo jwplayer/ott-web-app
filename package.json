@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "Robin van Zanten",
