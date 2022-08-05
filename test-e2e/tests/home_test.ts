@@ -1,6 +1,6 @@
-import constants from '../utils/constants';
+import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
 
-Feature('home').retry(3);
+Feature('home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
   I.useConfig('test--blender');
@@ -32,7 +32,7 @@ Scenario('Header button navigates to playlist screen', async ({ I }) => {
 
   I.see('Films');
   I.click('Films');
-  I.amOnPage(`${constants.baseUrl}p/${constants.filmsPlaylistId}`);
+  I.seeInCurrentUrl(`${constants.baseUrl}p/`);
   I.see('All Films');
   I.see('The Daily Dweebs');
 });
@@ -76,7 +76,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideRight(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide right"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
+      I.click({ css: 'div[aria-label="Slide right"]' }, makeShelfXpath(ShelfId.allFilms));
     } else {
       await I.swipeLeft({ text: swipeText });
     }
@@ -84,7 +84,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideLeft(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide left"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
+      I.click({ css: 'div[aria-label="Slide left"]' }, makeShelfXpath(ShelfId.allFilms));
     } else {
       await I.swipeRight({ text: swipeText });
     }

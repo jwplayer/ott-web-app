@@ -1,9 +1,15 @@
 import constants from '../utils/constants';
 
-Feature('playlist').retry(3);
+Feature('playlist').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Before(({ I }) => {
-  I.amOnPage(constants.filmsPlaylistUrl);
+Before(async ({ I }) => {
+  I.useConfig('test--no-cleeng');
+
+  if (await I.isMobile()) {
+    I.openMenuDrawer();
+  }
+
+  I.click('Films');
 
   I.seeAll(actionFilms);
   I.seeAll(comedyFilms);
@@ -44,16 +50,22 @@ Scenario('I can reset the filter by selection the "All" option', async ({ I }) =
 });
 
 Scenario('I can click on a card and navigate to the video screen', ({ I }) => {
-  I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeCurrentUrlEquals(constants.bigBuckBunnyDetailUrl);
+  canNavigateToBigBuckBunny(I);
 });
 
 Scenario('I can filter and click on a card and navigate to the video screen', async ({ I }) => {
   await selectFilterAndCheck(I, 'Comedy');
-
-  I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeInCurrentUrl(constants.bigBuckBunnyDetailUrl);
+  canNavigateToBigBuckBunny(I);
 });
+
+function canNavigateToBigBuckBunny(I: CodeceptJS.I) {
+  I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
+
+  I.see(constants.bigBuckBunnyDescription);
+  I.see(constants.startWatchingButton);
+  I.seeInCurrentUrl(`${constants.baseUrl}m/`);
+  I.seeInCurrentUrl('big-buck-bunny?r=');
+}
 
 async function selectFilterAndCheck(I: CodeceptJS.I, option) {
   if (await I.isMobile()) {

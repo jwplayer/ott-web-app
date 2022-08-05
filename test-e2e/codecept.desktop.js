@@ -27,15 +27,9 @@ exports.config = {
   plugins: {
     pauseOnFail: {},
     retryFailedStep: {
-      minTimeout: 3000,
+      minTimeout: 100,
       enabled: true,
-      retries: 3,
-    },
-    autoDelay: {
-      enabled: true,
-    },
-    tryTo: {
-      enabled: true,
+      retries: 5,
     },
     screenshotOnFail: {
       enabled: true,

@@ -46,15 +46,15 @@ exports[`<ConfigSelect> > renders and matches snapshot 1`] = `
         </option>
         <option
           class="option"
-          value="test--subscription"
+          value="test--no-watchlists"
         >
-          test--subscription
+          test--no-watchlists
         </option>
         <option
           class="option"
-          value="test--watchlists"
+          value="test--subscription"
         >
-          test--watchlists
+          test--subscription
         </option>
       </select>
     </div>
