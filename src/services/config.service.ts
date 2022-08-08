@@ -1,8 +1,8 @@
 import { array, boolean, mixed, object, SchemaOf, string, StringSchema } from 'yup';
+import i18next from 'i18next';
 
 import type { Cleeng, Config, Content, Features, Menu, Styling } from '#types/Config';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
-import i18n from '#src/i18n/config';
 import { logDev } from '#src/utils/common';
 
 /**
@@ -125,15 +125,11 @@ const loadConfig = async (configLocation: string) => {
   return enrichConfig(data);
 };
 
-/**
- * Add default values to the config
- * @param {Config} data
- */
 const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
   const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
 
-  return { ...config, siteName: siteName || i18n.t('common:default_site_name'), content: updatedContent };
+  return { ...config, siteName: siteName || i18next.t('common:default_site_name'), content: updatedContent };
 };
 
 export const validateConfig = (config?: Config): Promise<Config> => {

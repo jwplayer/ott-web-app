@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
 import * as persist from '#src/utils/persist';
@@ -6,7 +8,6 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { PlaylistItem } from '#types/playlist';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
-import i18n from '#src/i18n/config';
 
 const PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}` : ''}`;
 
@@ -82,7 +83,7 @@ export const toggleFavorite = async (item: PlaylistItem | undefined) => {
 
   // If we exceed the max available number of favorites, we show a warning
   if (favorites?.length >= MAX_WATCHLIST_ITEMS_COUNT) {
-    setWarning(i18n.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
+    setWarning(i18next.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
     return;
   }
 
