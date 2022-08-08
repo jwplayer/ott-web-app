@@ -281,7 +281,13 @@ const stepsObj = {
       }`);
     });
   },
-  openVideoCard: async function (this: CodeceptJS.I, name: string, shelf?: ShelfId, scrollToTheRight: boolean = true) {
+  openVideoCard: async function (
+    this: CodeceptJS.I,
+    name: string,
+    shelf?: ShelfId,
+    scrollToTheRight: boolean = true,
+    preOpenCallback?: (locator: string) => void,
+  ) {
     const locator = `//div[@aria-label="Play ${name}"]`;
     const shelfXpath = shelf ? makeShelfXpath(shelf) : undefined;
 
@@ -316,7 +322,11 @@ const stepsObj = {
         this.click({ css: `div[aria-label="Slide ${scrollToTheRight ? 'right' : 'left'}"]` }, shelfXpath);
       }
 
-      this.wait(1);
+      this.wait(0.5);
+    }
+
+    if (preOpenCallback) {
+      preOpenCallback(shelfXpath + locator);
     }
 
     this.click(locator, shelfXpath);

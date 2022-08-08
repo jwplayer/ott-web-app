@@ -73,7 +73,7 @@ export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number
  *    1. Move the element to the continue watching list start
  *    2. If there are many elements in continue watching state we remove the oldest one
  */
-export const saveItem = (item: PlaylistItem, videoProgress: number | null) => {
+export const saveItem = async (item: PlaylistItem, videoProgress: number | null) => {
   const { watchHistory } = useWatchHistoryStore.getState();
 
   if (!videoProgress) return;
@@ -86,15 +86,5 @@ export const saveItem = (item: PlaylistItem, videoProgress: number | null) => {
 
   useWatchHistoryStore.setState({ watchHistory: updatedHistory });
 
-  persistWatchHistory();
-};
-
-export const removeItem = (item: PlaylistItem) => {
-  const { watchHistory } = useWatchHistoryStore.getState();
-
-  useWatchHistoryStore.setState({
-    watchHistory: watchHistory.filter(({ mediaid }) => mediaid !== item.mediaid),
-  });
-
-  persistWatchHistory();
+  await persistWatchHistory();
 };

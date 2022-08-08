@@ -52,7 +52,7 @@
   }
 
   @include responsive.mobile-only {
-    padding: calc(variables.$base-spacing / 2);
+    padding: calc(#{variables.$base-spacing} / 2);
   }
 }
 

@@ -4,8 +4,6 @@ import constants from './constants';
 
 import LocatorOrString = CodeceptJS.LocatorOrString;
 
-const videoLength = 231;
-
 export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, startButton: string = constants.startWatchingButton) {
   I.click(startButton);
   await I.waitForPlayerPlaying(title);
@@ -18,7 +16,9 @@ export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, 
   }, seekTo);
   I.click('div[data-testid="player-container"]'); //re-enable controls overlay
   I.click('div[aria-label="Back"]');
-  I.waitForClickable(seekTo < videoLength && seekTo > 0 ? constants.continueWatchingButton : constants.startWatchingButton, 5);
+
+  // We need to wait for the player to be removed before proceeding, otherwise race conditions occur when the player is reloaded
+  await I.waitForPlayerState('', ['paused']);
 }
 
 export async function checkProgress(

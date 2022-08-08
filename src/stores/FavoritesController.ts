@@ -44,28 +44,28 @@ export const persistFavorites = () => {
 };
 
 export const initializeFavorites = async () => {
-  restoreFavorites();
+  await restoreFavorites();
 };
 
-export const saveItem = (item: PlaylistItem) => {
+export const saveItem = async (item: PlaylistItem) => {
   const { favorites } = useFavoritesStore.getState();
 
   if (!favorites.some(({ mediaid }) => mediaid === item.mediaid)) {
     useFavoritesStore.setState({ favorites: [createFavorite(item)].concat(favorites) });
   }
 
-  persistFavorites();
+  await persistFavorites();
 };
 
-export const removeItem = (item: PlaylistItem) => {
+export const removeItem = async (item: PlaylistItem) => {
   const { favorites } = useFavoritesStore.getState();
 
   useFavoritesStore.setState({ favorites: favorites.filter(({ mediaid }) => mediaid !== item.mediaid) });
 
-  persistFavorites();
+  await persistFavorites();
 };
 
-export const toggleFavorite = (item: PlaylistItem | undefined) => {
+export const toggleFavorite = async (item: PlaylistItem | undefined) => {
   const { favorites, hasItem, setWarning } = useFavoritesStore.getState();
 
   if (!item) {
@@ -75,7 +75,7 @@ export const toggleFavorite = (item: PlaylistItem | undefined) => {
   const isFavorited = hasItem(item);
 
   if (isFavorited) {
-    removeItem(item);
+    await removeItem(item);
 
     return;
   }
@@ -86,13 +86,13 @@ export const toggleFavorite = (item: PlaylistItem | undefined) => {
     return;
   }
 
-  saveItem(item);
+  await saveItem(item);
 };
 
-export const clear = () => {
+export const clear = async () => {
   useFavoritesStore.setState({ favorites: [] });
 
-  persistFavorites();
+  await persistFavorites();
 };
 
 const createFavorite = (item: PlaylistItem): Favorite =>

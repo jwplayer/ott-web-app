@@ -23,12 +23,12 @@ const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const history = useHistory();
 
-  const onLogout = useCallback(() => {
+  const onLogout = useCallback(async () => {
     if (onClick) {
       onClick();
     }
 
-    logout();
+    await logout();
     history.replace('/');
   }, [onClick, history]);
 

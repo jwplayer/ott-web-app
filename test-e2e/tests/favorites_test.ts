@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants, { ShelfId } from '../utils/constants';
+import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
 
 const videoTitle = 'Tears of Steel';
 
@@ -46,7 +46,7 @@ Scenario('I can see my favorited videos on the home page', async ({ I }) => {
 
   I.amOnPage(constants.baseUrl);
   I.see(favoritesTitle);
-  I.see(videoTitle, ShelfId.favorites);
+  I.see(videoTitle, makeShelfXpath(ShelfId.favorites));
 });
 
 Scenario('I do not see favorited videos on the home page and video page if there is not such config setting', async ({ I }) => {

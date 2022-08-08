@@ -15,7 +15,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',
-      show: false,
+      show: !!process.env.SHOW,
       channel: 'chrome',
       emulate: devices['Pixel 5'],
     },

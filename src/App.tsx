@@ -64,8 +64,8 @@ class App extends Component {
     this.setState({ isLoading: false });
   };
 
-  componentDidMount() {
-    loadAndValidateConfig(this.configLoadingHandler, this.configErrorHandler, this.configValidationCompletedHandler);
+  async componentDidMount() {
+    await loadAndValidateConfig(this.configLoadingHandler, this.configErrorHandler, this.configValidationCompletedHandler);
   }
 
   render() {

@@ -3,9 +3,10 @@ import merge from 'lodash.merge';
 import { calculateContrastColor } from '../utils/common';
 import { getConfig } from '../utils/configOverride';
 import loadConfig, { validateConfig } from '../services/config.service';
-import type { AccessModel, Config, Styling } from '../../types/Config';
 import { addScript } from '../utils/dom';
 import { useConfigStore } from '../stores/ConfigStore';
+
+import type { AccessModel, Config, Styling } from '#types/Config';
 
 const defaultConfig: Config = {
   id: '',
@@ -65,7 +66,7 @@ const calculateAccessModel = (config: Config): AccessModel => {
 export const loadAndValidateConfig = async (
   onLoading: (isLoading: boolean) => void,
   onValidationError: (error: Error) => void,
-  onValidationCompleted: (config: Config) => void,
+  onValidationCompleted: (config: Config) => Promise<void>,
 ) => {
   onLoading(true);
 
@@ -86,7 +87,7 @@ export const loadAndValidateConfig = async (
   }
 
   await validateConfig(config)
-    .then((configValidated) => {
+    .then(async (configValidated) => {
       const configWithDefaults = merge({}, defaultConfig, configValidated);
 
       const accessModel = calculateAccessModel(configWithDefaults);
@@ -98,7 +99,7 @@ export const loadAndValidateConfig = async (
 
       setCssVariables(configValidated.styling);
       maybeInjectAnalyticsLibrary(config);
-      onValidationCompleted(config);
+      await onValidationCompleted(config);
     })
     .catch((error: Error) => {
       onValidationError(error);

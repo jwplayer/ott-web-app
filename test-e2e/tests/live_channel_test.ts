@@ -198,7 +198,7 @@ async function isSelectedProgram(I: CodeceptJS.I, programId: string, channel: st
     'background-color': programSelectedBackgroundColor,
     border: programLiveBorder,
   });
-  I.say(`I see the program is selected on ${channel}`);
+  await I.say(`I see the program is selected on ${channel}`);
 }
 
 async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string) {
@@ -206,7 +206,7 @@ async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string
     'background-color': programBackgroundColor,
     border: programLiveBorder,
   });
-  I.say(`I see the program is live on ${channel}`);
+  await I.say(`I see the program is live on ${channel}`);
 }
 
 async function isProgram(I: CodeceptJS.I, programId: string, channel: string) {
@@ -214,7 +214,7 @@ async function isProgram(I: CodeceptJS.I, programId: string, channel: string) {
     'background-color': programBackgroundColor,
     border: programBorder,
   });
-  I.say(`I see the program is not active nor selected on ${channel}`);
+  await I.say(`I see the program is not active nor selected on ${channel}`);
 }
 
 async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {

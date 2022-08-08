@@ -57,7 +57,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   // Media
   const { isLoading, error, data: item } = useMedia(id);
   useBlurImageUpdater(item);
-  const { data: trailerItem } = useMedia(item?.trailerId || '');
+  const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   const isLargeScreen = breakpoint >= Breakpoint.md;
@@ -141,7 +141,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
         startWatchingButton={<StartWatchingButton item={item} playUrl={videoUrl(item, feedId, true)} />}
         favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
         trailerButton={
-          !!trailerItem && (
+          (!!trailerItem || isTrailerLoading) && (
             <Button
               label={t('video:trailer')}
               aria-label={t('video:watch_trailer')}
@@ -149,6 +149,7 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
               onClick={() => setPlayTrailer(true)}
               active={playTrailer}
               fullWidth={breakpoint < Breakpoint.md}
+              disabled={!trailerItem}
             />
           )
         }

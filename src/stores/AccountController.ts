@@ -216,7 +216,7 @@ export const register = async (email: string, password: string) => {
 
     await afterLogin(cleengSandbox, responseRegister.responseData);
 
-    updatePersonalShelves();
+    await updatePersonalShelves();
   });
 };
 

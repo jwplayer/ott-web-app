@@ -66,7 +66,7 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
   I.amOnPage(constants.baseUrl);
   I.see(constants.continueWatchingShelfTitle);
 
-  await I.openVideoCard(videoTitle, ShelfId.favorites);
+  await I.openVideoCard(videoTitle, ShelfId.continueWatching);
   await playVideo(I, videoLength, videoTitle, constants.continueWatchingButton);
 
   I.see(constants.startWatchingButton);
@@ -75,6 +75,14 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
   I.amOnPage(constants.baseUrl);
 
   I.dontSee(constants.continueWatchingButton);
+  I.dontSee(constants.continueWatchingShelfTitle);
+
+  await I.openVideoCard(constants.agent327Title);
+  await playVideo(I, 50, constants.agent327Title);
+
+  I.amOnPage(constants.baseUrl);
+  I.see(constants.continueWatchingShelfTitle);
+  I.dontSee(videoTitle, makeShelfXpath(ShelfId.continueWatching));
 });
 
 Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {

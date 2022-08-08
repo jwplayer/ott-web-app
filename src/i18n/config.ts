@@ -11,7 +11,7 @@ export const resources = {
   'en-US': en_US,
 };
 
-i18n
+await i18n
   .use(initReactI18next)
   .use(languageDetector)
   .init({
