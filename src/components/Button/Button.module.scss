@@ -2,6 +2,7 @@
 @use '../../styles/theme';
 @use '../../styles/mixins/responsive';
 
+$small-button-height: 28px;
 $medium-button-height: 36px;
 $large-button-height: 40px;
 
@@ -45,6 +46,10 @@ $large-button-height: 40px;
   &.disabled {
     cursor: default;
     opacity: 0.5;
+  }
+
+  &.small {
+    height: $small-button-height;
   }
 
   &.large {

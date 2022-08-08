@@ -1,0 +1,18 @@
+[
+  {
+    "id": "f6b997d7-497f-4176-afa7-58f1d4bf761c",
+    "title": "Friends",
+    "startTime": "2022-07-14T20:00:00.000Z",
+    "endTime": "2022-07-14T20:30:00.000Z",
+    "chapterPointCustomProperties": [
+      {
+        "key": "description",
+        "value": "Follows the personal and professional lives of six twenty to thirty-something-year-old friends living in Manhattan."
+      },
+      {
+        "key": "image",
+        "value": "https://www.themoviedb.org/t/p/w1066_and_h600_bestv2/l0qVZIpXtIo7km9u5Yqh0nKPOr5.jpg"
+      }
+    ]
+  }
+]

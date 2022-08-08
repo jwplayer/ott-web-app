@@ -42,6 +42,7 @@ To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify
 - A "Favorites" feature for users to save videos for watching later. A separate list for "Continue Watching" is also kept so users can resume watching videos from where they left off. The lists are per-browser at this time (i.e., lists do not sync across user's browsers or devices). The "Continue Watching" list can be disabled in your JW OTT Webapp's `config.json` file.
 - A grid view for a particular playlist of videos, with the ability to deep-link to the playlist through a static URL.
 - Social sharing options using the device native sharing dialog.
+- 24x7 live channel(s) screen with Electronic Programming Guide (EPG) view.
 
 ## Unsupported Feature(s)
 

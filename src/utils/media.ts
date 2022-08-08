@@ -1,4 +1,6 @@
-import type { PlaylistItem } from '../../types/playlist';
+import type { PlaylistItem } from '#types/playlist';
+
+type RequiredProperties<T, P extends keyof T> = T & Required<Pick<T, P>>;
 
 type DeprecatedPlaylistItem = {
   seriesPlayListId?: string;
@@ -20,6 +22,9 @@ export const isSeriesPlaceholder = (item: PlaylistItem) => {
 export const isEpisode = (item: PlaylistItem) => {
   return item && typeof item.episodeNumber !== 'undefined';
 };
+
+export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType' | 'liveChannelsId'> =>
+  item.contentType === 'LiveChannel' && !!item.liveChannelsId;
 
 export const getSeriesIdFromEpisode = (item: PlaylistItem | undefined) => {
   if (!item || !isEpisode(item)) {

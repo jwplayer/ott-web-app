@@ -53,10 +53,12 @@ $search-height: 36px !default;
 // Z-index
 // --------------------------------
 
+$epg-z-index: 2 !default;
 $view-z-index: 5 !default;
 $loading-z-index: 10 !default;
 $header-z-index: 15 !default;
 $toolbar-z-index: 12 !default;
 $sidebar-z-index: 20 !default;
 $popups-z-index: 25 !default;
-$player-z-index: 30 !default;
+$modals-z-index: 30 !default;
+$player-z-index: 35 !default;

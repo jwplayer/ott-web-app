@@ -1,5 +1,6 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import React, { ReactNode, ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { render, RenderOptions } from '@testing-library/react';
 
 import QueryProvider from '../src/providers/QueryProvider';
@@ -7,6 +8,16 @@ import QueryProvider from '../src/providers/QueryProvider';
 interface WrapperProps {
   children?: ReactNode;
 }
+
+export const createWrapper = () => {
+  const client = new QueryClient();
+
+  return ({ children }: WrapperProps) => (
+    <Router>
+      <QueryClientProvider client={client}>{children as ReactElement}</QueryClientProvider>
+    </Router>
+  );
+};
 
 export const wrapper = ({ children }: WrapperProps) => (
   <Router>

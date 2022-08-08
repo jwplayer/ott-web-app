@@ -1,3 +1,12 @@
+# [2.5.0](https://github.com/jwplayer/ott-web-app/compare/v2.4.2...v2.5.0) (2022-08-05)
+
+
+### Features
+
+* **epg:** add epg component and live channel and schedule support ([3c84877](https://github.com/jwplayer/ott-web-app/commit/3c84877316f82fd165e368c24e2b4e92c7dd07ce))
+
+
+
 ## [2.4.2](https://github.com/jwplayer/ott-web-app/compare/v2.4.1...v2.4.2) (2022-07-19)
 
 

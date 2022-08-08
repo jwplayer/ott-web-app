@@ -82,7 +82,7 @@ export const toggleFavorite = (item: PlaylistItem | undefined) => {
 
   // If we exceed the max available number of favorites, we show a warning
   if (favorites?.length >= MAX_WATCHLIST_ITEMS_COUNT) {
-    setWarning(i18n.t('video:favorites_warning', { count: MAX_WATCHLIST_ITEMS_COUNT }));
+    setWarning(i18n.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
     return;
   }
 
