@@ -1,19 +1,32 @@
 import * as assert from 'assert';
 
-Feature('favorites').retry(3);
+import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
+
+const videoTitle = 'Tears of Steel';
+
+Feature('favorites').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+
+Before(({ I }) => {
+  I.useConfig('test--blender');
+});
+
+const favoritesTitle = 'Favorites';
 
 Scenario('I can add a video to my favorites', async ({ I }) => {
-  addVideoToFavorites(I);
+  await addVideoToFavorites(I);
 
   const savedFavorites = await I.executeScript(function () {
     return JSON.parse(localStorage.getItem('jwapp.favorites') || '');
   });
 
-  assert.deepEqual(savedFavorites, [{ mediaid: '6o9KxWAo' }]);
+  const url = new URL(await I.grabCurrentUrl());
+  const mediaId = url.pathname.split('/')[2];
+
+  assert.deepEqual(savedFavorites, [{ mediaid: mediaId }]);
 });
 
 Scenario('I can remove a video from my favorites', async ({ I }) => {
-  addVideoToFavorites(I);
+  await addVideoToFavorites(I);
   I.forceClick({ css: 'button[aria-label="Remove from favorites"]' });
 
   I.seeElement({ css: 'button[aria-label="Add to favorites"]' });
@@ -26,28 +39,33 @@ Scenario('I can remove a video from my favorites', async ({ I }) => {
 });
 
 Scenario('I can see my favorited videos on the home page', async ({ I }) => {
-  I.amOnPage('http://localhost:8080/');
-  I.dontSee('Favorites');
+  I.amOnPage(constants.baseUrl);
+  I.dontSee(favoritesTitle);
 
-  addVideoToFavorites(I);
+  await addVideoToFavorites(I);
 
-  I.amOnPage('http://localhost:8080/');
-  I.see('Favorites');
-  I.see('Tears of Steel', { css: '[data-mediaid="favorites"]' });
+  I.amOnPage(constants.baseUrl);
+  I.see(favoritesTitle);
+  I.see(videoTitle, makeShelfXpath(ShelfId.favorites));
 });
 
 Scenario('I do not see favorited videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig('test--watchlists');
+  await addVideoToFavorites(I);
 
-  I.amOnPage('http://localhost:8080/');
-  I.dontSee('Favorites');
+  I.useConfig('test--no-watchlists');
 
-  I.amOnPage('http://localhost:8080/m/6o9KxWAo/tears-of-steel?r=D4soEviP');
+  // No favorites section
+  I.amOnPage(constants.baseUrl);
+  I.dontSee(favoritesTitle);
+
+  // No favorites button
+  await I.openVideoCard(videoTitle, ShelfId.allFilms, false);
+  I.see(constants.signUpToWatch);
   I.dontSee('Favorite');
 });
 
-function addVideoToFavorites(I) {
-  I.amOnPage('http://localhost:8080/m/6o9KxWAo/tears-of-steel?r=D4soEviP');
+async function addVideoToFavorites(I) {
+  await I.openVideoCard(videoTitle, ShelfId.allFilms, false);
   I.see('Favorite');
 
   I.scrollTo({ css: 'button[aria-label="Add to favorites"]' });

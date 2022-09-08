@@ -7,7 +7,7 @@ const invalidEmail = 'Please re-enter your email details and try again.';
 const incorrectLogin = 'Incorrect email/password combination';
 const formFeedback = 'div[class*=formFeedback]';
 
-Feature('login - account').retry(3);
+Feature('login - account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
   I.useConfig('test--accounts', constants.loginUrl);

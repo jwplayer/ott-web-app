@@ -9,7 +9,7 @@ const cardInfo = Array.of('Card number', '•••• •••• ••••
 
 // This is written as a second test suite so that the login context is a different user.
 // Otherwise there's no way to re-enter payment info and add a coupon code
-Feature('payments-coupon').retry(3);
+Feature('payments-coupon').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
   // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL

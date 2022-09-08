@@ -18,7 +18,7 @@ import ShelfComponent, { featuredTileBreakpoints, tileBreakpoints } from '#src/c
 import usePlaylist from '#src/hooks/usePlaylist';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import scrollbarSize from '#src/utils/dom';
-import { cardUrl } from '#src/utils/formatting';
+import { cardUrl, slugify } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -71,28 +71,38 @@ const Home = (): JSX.Element => {
 
     return (
       <PlaylistContainer key={`${playlistKey}_${index}`} type={contentItem.type} playlistId={contentItem.contentId} style={style}>
-        {({ playlist, error, isLoading, style }) => (
-          <div key={key} style={style} role="row" className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}>
-            <div role="cell">
-              <ShelfComponent
-                loading={isLoading}
-                error={error}
-                type={contentItem.type}
-                playlist={playlist}
-                watchHistory={contentItem.type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                onCardClick={onCardClick}
-                onCardHover={onCardHover}
-                enableTitle={contentItem.enableText}
-                enableCardTitles={config.styling.shelfTitles}
-                title={contentItem?.title || playlist.title}
-                featured={contentItem.featured === true}
-                accessModel={accessModel}
-                isLoggedIn={!!user}
-                hasSubscription={!!subscription}
-              />
+        {({ playlist, error, isLoading, style }) => {
+          const title = contentItem?.title || playlist.title;
+
+          return (
+            <div
+              key={key}
+              style={style}
+              role="row"
+              className={classNames(styles.shelfContainer, { [styles.featured]: contentItem.featured })}
+              data-testid={`shelf-${contentItem.featured ? 'featured' : contentItem.type !== 'playlist' ? contentItem.type : slugify(title)}`}
+            >
+              <div role="cell">
+                <ShelfComponent
+                  loading={isLoading}
+                  error={error}
+                  type={contentItem.type}
+                  playlist={playlist}
+                  watchHistory={contentItem.type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
+                  onCardClick={onCardClick}
+                  onCardHover={onCardHover}
+                  enableTitle={contentItem.enableText}
+                  enableCardTitles={config.styling.shelfTitles}
+                  title={title}
+                  featured={contentItem.featured === true}
+                  accessModel={accessModel}
+                  isLoggedIn={!!user}
+                  hasSubscription={!!subscription}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          );
+        }}
       </PlaylistContainer>
     );
   };

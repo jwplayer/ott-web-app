@@ -64,7 +64,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
     data: { series, seriesPlaylist },
   } = useSeriesData(id);
   const { data: rawItem, isLoading: isEpisodeLoading, isError: isItemError } = useMedia(episodeId);
-  const { data: trailerItem } = useMedia(rawItem?.trailerId || '');
+  const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(rawItem?.trailerId || '');
 
   const item = series && rawItem ? enrichMediaItems(series, [rawItem])[0] : rawItem;
   const nextItemId = getNextItemId(item, series, seriesPlaylist);
@@ -182,7 +182,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
         startWatchingButton={<StartWatchingButton item={item} playUrl={episodeURLFromEpisode(item, seriesId, feedId, true)} />}
         favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
         trailerButton={
-          !!trailerItem && (
+          (!!trailerItem || isTrailerLoading) && (
             <Button
               label={t('video:trailer')}
               aria-label={t('video:watch_trailer')}
@@ -190,6 +190,7 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
               onClick={() => setPlayTrailer(true)}
               active={playTrailer}
               fullWidth={breakpoint < Breakpoint.md}
+              disabled={!trailerItem}
             />
           )
         }

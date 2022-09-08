@@ -34,7 +34,7 @@ export function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, t
   I.click('Continue');
   I.waitForLoaderDone(15);
   I.see('Welcome to Blender');
-  I.see('Thank you for subscribing to Blender. Please enjoy all our content.');
+  I.see('Thank you for subscribing to Blender (svod/tvod). Please enjoy all our content.');
 
   I.click('Start watching');
 

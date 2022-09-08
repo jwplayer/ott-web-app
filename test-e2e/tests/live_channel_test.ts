@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import constants from '../utils/constants';
+import constants, { ShelfId } from '../utils/constants';
 
 const programSelectedBackgroundColor = 'rgb(204, 204, 204)';
 const programLiveBorder = '2px solid rgb(255, 255, 255)';
@@ -16,10 +16,14 @@ const channel1PreviousProgramId = 'a2f80690-86e6-46e7-8a78-b243d5c8237e';
 const channel1UpcomingProgram = '6ffd595b-3cdb-431b-b444-934a0e4f63dc';
 const channel2LiveProgramId = 'b628784b-1061-4a61-98f3-fa48ce3ce81f';
 
-Feature('live channel').retry(3).tag('@desktop-only');
+Feature('live channel')
+  .retry(Number(process.env.TEST_RETRY_COUNT) || 0)
+  .tag('@desktop-only');
 
-Before(({ I }) => {
+Before(async ({ I }) => {
   I.useConfig('test--blender');
+  await I.mockTimeAs(8, 0, 0);
+  I.amOnPage(constants.baseUrl);
 });
 
 const videoDetailsLocator = locate({ css: 'div[data-testid="video-details"]' });
@@ -32,10 +36,7 @@ const makeEpgChannelLocator = (id: string) => locate({ css: `div[data-testid="${
 const liveChannelsCount = 5;
 
 Scenario('I can navigate to live channels from the live channels shelf', async ({ I }) => {
-  I.see('Blender');
-  I.see('Agent 327');
-
-  await I.scrollToShelf(constants.playlistLiveChannelId);
+  await I.scrollToShelf(ShelfId.liveChannels);
 
   for (let i = 1; i <= liveChannelsCount; i++) {
     I.see(`Channel ${i}`, shelfLocator);
@@ -57,10 +58,7 @@ Scenario('I can navigate to live channels from the header', ({ I }) => {
 });
 
 Scenario('I can watch the current live program on the live channel screen', async ({ I }) => {
-  await I.mockTimeAs(8, 0, 0);
-  // eslint-disable-next-line codeceptjs/no-pause-in-scenario
-  // pause();
-  I.amOnPage(`${constants.baseUrl}p/${constants.playlistLiveChannelId}`);
+  await I.openVideoCard('Channel 1');
 
   I.see('The Daily Show with Trevor Noah: Ears Edition', locate('h2').inside(videoDetailsLocator));
   I.see('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
@@ -78,9 +76,7 @@ Scenario('I can watch the current live program on the live channel screen', asyn
 });
 
 Scenario('I see the epg on the live channel screen', async ({ I }) => {
-  await I.mockTimeAs(8, 0, 0);
-
-  I.amOnPage(`${constants.baseUrl}p/${constants.playlistLiveChannelId}`);
+  await I.openVideoCard('Channel 1');
 
   I.see('The Daily Show with Trevor Noah: Ears Edition');
   I.see('Live');
@@ -104,10 +100,7 @@ Scenario('I see the epg on the live channel screen', async ({ I }) => {
 });
 
 Scenario('I can select an upcoming program on the same channel', async ({ I }) => {
-  await I.mockTimeAs(8, 0, 0);
-
-  I.amOnPage(`${constants.baseUrl}p/${constants.playlistLiveChannelId}`);
-
+  await I.openVideoCard('Channel 1');
   I.seeElement(makeEpgProgramLocator(channel1LiveProgramId));
   await isSelectedProgram(I, channel1LiveProgramId, 'channel 1');
 
@@ -130,10 +123,7 @@ Scenario('I can select an upcoming program on the same channel', async ({ I }) =
 });
 
 Scenario('I can select a previous program on the same channel and watch the video', async ({ I }) => {
-  await I.mockTimeAs(8, 0, 0);
-
-  I.amOnPage(`${constants.baseUrl}p/${constants.playlistLiveChannelId}`);
-
+  await I.openVideoCard('Channel 1');
   I.seeElement(makeEpgProgramLocator(channel1LiveProgramId));
   await isSelectedProgram(I, channel1LiveProgramId, 'channel 1');
 
@@ -157,10 +147,7 @@ Scenario('I can select a previous program on the same channel and watch the vide
 });
 
 Scenario('I can select a program on another channel', async ({ I }) => {
-  await I.mockTimeAs(8, 0, 0);
-
-  I.amOnPage(`${constants.baseUrl}p/${constants.playlistLiveChannelId}`);
-
+  await I.openVideoCard('Channel 1');
   I.click(makeEpgChannelLocator(channel2Id));
 
   waitForEpgAnimation(I);
@@ -180,10 +167,7 @@ Scenario('I can select a program on another channel', async ({ I }) => {
 });
 
 Scenario('I can navigate through the epg', async ({ I }) => {
-  await I.mockTimeAs(8, 0, 0);
-
-  I.amOnPage(`${constants.baseUrl}p/${constants.playlistLiveChannelId}`);
-
+  await I.openVideoCard('Channel 1');
   I.see('The Silent Sea');
   I.dontSee('House');
 
@@ -214,7 +198,7 @@ async function isSelectedProgram(I: CodeceptJS.I, programId: string, channel: st
     'background-color': programSelectedBackgroundColor,
     border: programLiveBorder,
   });
-  I.say(`I see the program is selected on ${channel}`);
+  await I.say(`I see the program is selected on ${channel}`);
 }
 
 async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string) {
@@ -222,7 +206,7 @@ async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string
     'background-color': programBackgroundColor,
     border: programLiveBorder,
   });
-  I.say(`I see the program is live on ${channel}`);
+  await I.say(`I see the program is live on ${channel}`);
 }
 
 async function isProgram(I: CodeceptJS.I, programId: string, channel: string) {
@@ -230,7 +214,7 @@ async function isProgram(I: CodeceptJS.I, programId: string, channel: string) {
     'background-color': programBackgroundColor,
     border: programBorder,
   });
-  I.say(`I see the program is not active nor selected on ${channel}`);
+  await I.say(`I see the program is not active nor selected on ${channel}`);
 }
 
 async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {

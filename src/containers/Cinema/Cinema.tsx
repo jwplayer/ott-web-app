@@ -121,7 +121,7 @@ const Cinema: React.FC<Props> = ({
       setUserActive(true);
       document.body.style.overflowY = 'hidden';
     } else {
-      saveItem(item, getProgress());
+      enableWatchHistory && saveItem(item, getProgress());
     }
 
     return () => {

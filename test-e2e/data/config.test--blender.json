@@ -60,7 +60,7 @@
     }
   ],
   "custom": {},
-  "description": "Blender",
+  "description": "Blender demo site",
   "styling": {
     "backgroundColor": "#000000",
     "dynamicBlur": true,

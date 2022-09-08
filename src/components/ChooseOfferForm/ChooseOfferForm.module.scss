@@ -70,14 +70,14 @@
   border: 1px solid rgba(variables.$white, 0.34);
   border-radius: 4px;
   cursor: pointer;
-  transition: border 0.2s ease, background 0.2s ease transform 0.3s ease-out;
+  transition: border 0.2s ease, background 0.2s ease, transform 0.3s ease-out;
 }
 
 .offerGroupLabel {
   padding: 8px 16px;
   font-weight: var(--body-font-weight-bold);
   font-size: 20px;
-  
+
   &:nth-child(2) {
     border-radius: 4px 0 0 4px;
   }

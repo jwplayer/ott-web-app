@@ -1,7 +1,7 @@
 import constants from '../utils/constants';
 import passwordUtils from '../utils/password_utils';
 
-Feature('register').retry(3);
+Feature('register').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
   I.useConfig('test--accounts', constants.registerUrl);

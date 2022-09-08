@@ -4,11 +4,9 @@ import constants from './constants';
 
 import LocatorOrString = CodeceptJS.LocatorOrString;
 
-const videoLength = 231;
-
-export async function playVideo(I: CodeceptJS.I, seekTo: number) {
-  I.amOnPage(constants.agent327DetailUrl + '&play=1');
-  await I.waitForPlayerPlaying('Agent 327');
+export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, startButton: string = constants.startWatchingButton) {
+  I.click(startButton);
+  await I.waitForPlayerPlaying(title);
   await I.executeScript((seekTo) => {
     if (!window.jwplayer) {
       throw "Can't find jwplayer ref";
@@ -18,7 +16,9 @@ export async function playVideo(I: CodeceptJS.I, seekTo: number) {
   }, seekTo);
   I.click('div[data-testid="player-container"]'); //re-enable controls overlay
   I.click('div[aria-label="Back"]');
-  I.waitForClickable(seekTo < videoLength && seekTo > 0 ? 'Continue watching' : 'Start watching', 5);
+
+  // We need to wait for the player to be removed before proceeding, otherwise race conditions occur when the player is reloaded
+  await I.waitForPlayerState('', ['paused']);
 }
 
 export async function checkProgress(

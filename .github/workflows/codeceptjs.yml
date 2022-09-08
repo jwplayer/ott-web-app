@@ -26,6 +26,9 @@ jobs:
         run: yarn start &
       - name: Run tests
         run: wait-on -v -t 30000 -c ./scripts/waitOnConfig.js http-get://localhost:8080 && yarn codecept:${{ matrix.config }}
+        env:
+          TEST_RETRY_COUNT: 2
+          WORKER_COUNT: 2
       - name: Uploading artifact
         if: always()
         uses: actions/upload-artifact@v3

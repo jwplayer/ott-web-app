@@ -47,9 +47,9 @@ const User = (): JSX.Element => {
 
   const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
-  const onLogout = useCallback(() => {
+  const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to history.replace (code bellow), so we don't repeat it here
-    logout();
+    await logout();
   }, []);
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
@@ -119,8 +119,8 @@ const User = (): JSX.Element => {
                 open={clearFavoritesOpen}
                 title={t('favorites.clear_favorites_title')}
                 body={t('favorites.clear_favorites_body')}
-                onConfirm={() => {
-                  clearFavorites();
+                onConfirm={async () => {
+                  await clearFavorites();
                   setClearFavoritesOpen(false);
                 }}
                 onClose={() => setClearFavoritesOpen(false)}

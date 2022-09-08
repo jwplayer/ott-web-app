@@ -13,7 +13,7 @@ import { logDev } from '#src/utils/common';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { clearStoredConfig } from '#src/utils/configOverride';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
-import '#src/i18n/config';
+import initI18n from '#src/i18n/config';
 import '#src/styles/main.scss';
 
 interface State {
@@ -24,7 +24,7 @@ interface State {
 class App extends Component {
   public state: State = {
     error: null,
-    isLoading: false,
+    isLoading: true,
   };
 
   componentDidCatch(error: Error) {
@@ -64,8 +64,9 @@ class App extends Component {
     this.setState({ isLoading: false });
   };
 
-  componentDidMount() {
-    loadAndValidateConfig(this.configLoadingHandler, this.configErrorHandler, this.configValidationCompletedHandler);
+  async componentDidMount() {
+    await initI18n();
+    await loadAndValidateConfig(this.configLoadingHandler, this.configErrorHandler, this.configValidationCompletedHandler);
   }
 
   render() {

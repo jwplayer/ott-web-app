@@ -24,8 +24,8 @@ const FavoriteButton: React.VFC<Props> = ({ item }) => {
     warning: state.warning,
   }));
 
-  const onFavoriteButtonClick = useCallback(() => {
-    toggleFavorite(item);
+  const onFavoriteButtonClick = useCallback(async () => {
+    await toggleFavorite(item);
   }, [item]);
 
   useEffect(() => {

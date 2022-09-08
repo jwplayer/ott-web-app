@@ -13,7 +13,7 @@ let loginContext: LoginContext;
 const firstName = 'John Q.';
 const lastName = 'Tester';
 
-Feature('account').retry(3);
+Feature('account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
   I.useConfig('test--subscription');

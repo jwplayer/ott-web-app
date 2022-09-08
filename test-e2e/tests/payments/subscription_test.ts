@@ -14,7 +14,7 @@ const yearlyLabel = `label[for="S467691538_NL"]`;
 
 const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'CVC / CVV', '******');
 
-Feature('payments').retry(3);
+Feature('payments').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
   // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL

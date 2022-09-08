@@ -1,6 +1,6 @@
-import constants from '../utils/constants';
+import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
 
-Feature('home').retry(3);
+Feature('home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
   I.useConfig('test--blender');
@@ -32,7 +32,7 @@ Scenario('Header button navigates to playlist screen', async ({ I }) => {
 
   I.see('Films');
   I.click('Films');
-  I.amOnPage(`${constants.baseUrl}p/${constants.filmsPlaylistId}`);
+  I.seeInCurrentUrl(`${constants.baseUrl}p/`);
   I.see('All Films');
   I.see('The Daily Dweebs');
 });
@@ -48,27 +48,29 @@ Scenario('I can slide within the featured shelf', async ({ I }) => {
     }
   }
 
-  I.see('Blender Channel');
-  I.see('LIVE');
-  I.dontSee('Spring');
-  I.dontSee('8 min');
+  await within(makeShelfXpath(ShelfId.featured), async () => {
+    I.see('Blender Channel');
+    I.see('LIVE');
+    I.dontSee('Spring');
+    I.dontSee('8 min');
 
-  await slide('Blender Channel');
+    await slide('Blender Channel');
 
-  I.waitForElement('text=Spring', 3);
-  I.see('8 min');
-  I.waitForInvisible('text="Blender Channel"', 3);
-  I.dontSee('Blender Channel');
-  I.dontSee('LIVE');
+    I.waitForElement('text=Spring', 3);
+    I.see('8 min');
+    I.waitForInvisible('text="Blender Channel"', 3);
+    I.dontSee('Blender Channel');
+    I.dontSee('LIVE');
 
-  // Without this extra wait, the second slide action happens too fast after the first and even though the
-  // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.
-  I.wait(1);
+    // Without this extra wait, the second slide action happens too fast after the first and even though the
+    // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.
+    I.wait(1);
 
-  await slide('Spring');
+    await slide('Spring');
 
-  I.waitForElement('text="Blender Channel"', 3);
-  I.dontSee('Spring');
+    I.waitForElement('text="Blender Channel"', 3);
+    I.dontSee('Spring');
+  });
 });
 
 Scenario('I can slide within non-featured shelves', async ({ I }) => {
@@ -76,7 +78,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideRight(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide right"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
+      I.click({ css: 'div[aria-label="Slide right"]' }, makeShelfXpath(ShelfId.allFilms));
     } else {
       await I.swipeLeft({ text: swipeText });
     }
@@ -84,7 +86,7 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 
   async function slideLeft(swipeText) {
     if (isDesktop) {
-      I.click({ css: 'div[aria-label="Slide left"]' }, `div[data-mediaid="${constants.filmsPlaylistId}"]`);
+      I.click({ css: 'div[aria-label="Slide left"]' }, makeShelfXpath(ShelfId.allFilms));
     } else {
       await I.swipeRight({ text: swipeText });
     }

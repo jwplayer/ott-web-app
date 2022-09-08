@@ -85,6 +85,7 @@ const Checkout = () => {
       return history.replace(addQueryParam(history, 'u', 'choose-offer'));
     }
 
+    // noinspection JSIgnoredPromiseFromCall
     create();
   }, [history, offer]);
 

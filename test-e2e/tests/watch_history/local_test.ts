@@ -1,51 +1,54 @@
-import { playVideo, checkProgress, checkElapsed } from '../../utils/watch_history';
-import constants from '../../utils/constants';
+import { checkElapsed, checkProgress, playVideo } from '../../utils/watch_history';
+import constants, { makeShelfXpath, ShelfId } from '../../utils/constants';
 
-const videoLength = 231;
+const videoTitle = constants.bigBuckBunnyTitle;
+const videoLength = 596;
 
-Feature('watch_history - local').retry(3);
+Feature('watch_history - local').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
   I.useConfig('test--no-cleeng');
 });
 
 Scenario('I can get my watch progress stored (locally)', async ({ I }) => {
-  I.amOnPage(constants.agent327DetailUrl);
-  I.dontSee('Continue watching');
+  await I.openVideoCard(videoTitle, ShelfId.allFilms);
+  I.dontSee(constants.continueWatchingButton);
 
-  await playVideo(I, 100);
+  await playVideo(I, 100, videoTitle);
 
-  I.see('Continue watching');
+  I.see(constants.continueWatchingButton);
 });
 
 Scenario('I can continue watching', async ({ I }) => {
-  I.amOnPage(constants.agent327DetailUrl);
-  await playVideo(I, 100);
-  I.click('Continue watching');
-  await I.waitForPlayerPlaying('Agent 327');
+  await I.openVideoCard(videoTitle);
+  await playVideo(I, 100, videoTitle);
+  I.click(constants.continueWatchingButton);
+  await I.waitForPlayerPlaying(videoTitle);
   I.click('video');
   await checkElapsed(I, 1, 40);
 });
 
 Scenario('I can see my watch history on the Home screen', async ({ I }) => {
   I.seeCurrentUrlEquals(constants.baseUrl);
-  I.dontSee('Continue watching');
+  I.dontSee(constants.continueWatchingButton);
 
-  await playVideo(I, 200);
+  await I.openVideoCard(videoTitle);
+  await playVideo(I, 200, videoTitle);
+
   I.amOnPage(constants.baseUrl);
 
-  I.see('Continue watching');
+  I.see(constants.continueWatchingButton);
 
-  await within('div[data-mediaid="continue_watching"]', async () => {
-    I.see('Agent 327');
-    I.see('4 min');
+  await within(makeShelfXpath(ShelfId.continueWatching), async () => {
+    I.see(videoTitle);
+    I.see('10 min');
   });
 
-  const xpath = '//*[@data-mediaid="continue_watching"]//*[@aria-label="Play Agent 327"]';
-  await checkProgress(I, xpath, (200 / videoLength) * 100);
+  const selector = `${makeShelfXpath(ShelfId.continueWatching)}//div[@aria-label="Play ${videoTitle}"]`;
+  await checkProgress(I, selector, (200 / videoLength) * 100);
 
-  I.click(xpath);
-  await I.waitForPlayerPlaying('Agent 327');
+  I.click(selector);
+  await I.waitForPlayerPlaying(videoTitle);
   I.click('video');
 
   await checkElapsed(I, 3, 20);
@@ -53,21 +56,47 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
 });
 
 Scenario('Video removed from continue watching when finished', async ({ I }) => {
-  I.amOnPage(constants.agent327DetailUrl);
-  await playVideo(I, 100);
+  await I.openVideoCard(videoTitle);
+  await playVideo(I, 100, videoTitle);
+
   // Continue watching on video detail page
-  I.see('Continue watching');
+  I.see(constants.continueWatchingButton);
 
   // Continue watching on home page
   I.amOnPage(constants.baseUrl);
-  I.see('Continue watching');
+  I.see(constants.continueWatchingShelfTitle);
 
-  await playVideo(I, videoLength);
+  await I.openVideoCard(videoTitle, ShelfId.continueWatching);
+  await playVideo(I, videoLength, videoTitle, constants.continueWatchingButton);
 
-  I.see('Start watching');
-  I.dontSee('Continue watching');
+  I.see(constants.startWatchingButton);
+  I.dontSee(constants.continueWatchingButton);
 
   I.amOnPage(constants.baseUrl);
 
-  I.dontSee('Continue watching');
+  I.dontSee(constants.continueWatchingButton);
+  I.dontSee(constants.continueWatchingShelfTitle);
+
+  await I.openVideoCard(constants.agent327Title);
+  await playVideo(I, 50, constants.agent327Title);
+
+  I.amOnPage(constants.baseUrl);
+  I.see(constants.continueWatchingShelfTitle);
+  I.dontSee(videoTitle, makeShelfXpath(ShelfId.continueWatching));
+});
+
+Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
+  I.useConfig('test--no-watchlists');
+
+  await I.openVideoCard(videoTitle);
+  I.dontSee(constants.continueWatchingButton);
+
+  await playVideo(I, 50, videoTitle);
+  I.see(constants.startWatchingButton);
+  I.dontSee(constants.continueWatchingButton);
+
+  I.amOnPage(constants.baseUrl);
+
+  // Looking for continue watching shelf, not button
+  I.dontSee(constants.continueWatchingShelfTitle);
 });

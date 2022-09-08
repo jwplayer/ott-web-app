@@ -19,9 +19,9 @@ const ShareButton = ({ title, description, url }: Props) => {
   const breakpoint = useBreakpoint();
   const [hasShared, setHasShared] = useState<boolean>(false);
 
-  const onShareClick = (): void => {
+  const onShareClick = async () => {
     if (typeof navigator.share === 'function') {
-      navigator.share({ title, text: description, url });
+      await navigator.share({ title, text: description, url });
       return;
     }
 

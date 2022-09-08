@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants from './constants';
+import constants, { makeShelfXpath, ShelfId } from './constants';
 import passwordUtils, { LoginContext } from './password_utils';
 
 const configFileQueryKey = 'c';
@@ -9,7 +9,7 @@ const loaderElement = '[class*=_loadingOverlay]';
 const stepsObj = {
   useConfig: function (
     this: CodeceptJS.I,
-    config: 'test--subscription' | 'test--accounts' | 'test--no-cleeng' | 'test--watchlists' | 'test--blender',
+    config: 'test--subscription' | 'test--accounts' | 'test--no-cleeng' | 'test--no-watchlists' | 'test--blender',
     baseUrl: string = constants.baseUrl,
   ) {
     const url = new URL(baseUrl);
@@ -239,8 +239,8 @@ const stepsObj = {
   writeClipboard: async function (this: CodeceptJS.I, text: string) {
     await this.executeScript((text) => navigator.clipboard.writeText(text), text);
   },
-  scrollToShelf: async function (this: CodeceptJS.I, playlistId: string) {
-    const targetSelector = `[data-mediaid="${playlistId}"]`;
+  scrollToShelf: async function (this: CodeceptJS.I, shelf: ShelfId) {
+    const targetSelector = makeShelfXpath(shelf);
 
     let tries = 5;
     let visible = 0;
@@ -254,7 +254,7 @@ const stepsObj = {
       }
     } while (visible === 0 && tries--);
 
-    assert.strictEqual(visible, 1, `Shelf row not found with id '${playlistId}'`);
+    assert.strictEqual(visible, 1, `Shelf row not found with id '${shelf}'`);
 
     this.scrollTo(targetSelector);
   },
@@ -281,8 +281,59 @@ const stepsObj = {
       }`);
     });
   },
+  openVideoCard: async function (
+    this: CodeceptJS.I,
+    name: string,
+    shelf?: ShelfId,
+    scrollToTheRight: boolean = true,
+    preOpenCallback?: (locator: string) => void,
+  ) {
+    const locator = `//div[@aria-label="Play ${name}"]`;
+    const shelfXpath = shelf ? makeShelfXpath(shelf) : undefined;
+
+    this.scrollTo(shelfXpath || locator);
+
+    const isMobile = await this.isMobile();
+    // Easy way to limit to 10 swipes
+    for (let i = 0; i < 10; i++) {
+      const [isElementVisible, tabindex] = await within(shelfXpath || 'body', async () => {
+        const isElementVisible = (await this.grabNumberOfVisibleElements(locator)) === 1;
+        const tabindex = isElementVisible ? Number(await this.grabAttributeFrom(locator, 'tabindex')) : -1;
+
+        return [isElementVisible, tabindex];
+      });
+
+      // If the item isn't virtualized yet, throw an error (we need more information)
+      if (!shelfXpath && !isElementVisible) {
+        throw `Can't find item with locator: "${locator}". Try specifying which shelf to look in.`;
+      }
+
+      if (tabindex >= 0) {
+        break;
+      }
+
+      if (isMobile) {
+        // This swipes on the current item in the carousel where the card we're trying to click is
+        await this.swipe({
+          xpath: shelfXpath ? `${shelfXpath}//*[@tabindex=0]` : `${locator}/ancestor::ul/li/div[@tabindex=0]`,
+          direction: scrollToTheRight ? 'left' : 'right',
+        });
+      } else {
+        this.click({ css: `div[aria-label="Slide ${scrollToTheRight ? 'right' : 'left'}"]` }, shelfXpath);
+      }
+
+      this.wait(0.5);
+    }
+
+    if (preOpenCallback) {
+      preOpenCallback(shelfXpath + locator);
+    }
+
+    this.click(locator, shelfXpath);
+  },
 };
 declare global {
+  // noinspection JSUnusedGlobalSymbols
   type Steps = typeof stepsObj;
 }
 

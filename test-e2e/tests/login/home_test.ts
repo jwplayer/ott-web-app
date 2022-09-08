@@ -1,6 +1,6 @@
 import constants from '../../utils/constants';
 
-Feature('login - home').retry(3);
+Feature('login - home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
   I.useConfig('test--accounts', constants.loginUrl);
@@ -47,6 +47,6 @@ Scenario('I can open the log in modal', async ({ I }) => {
   I.see('Email');
   I.see('Password');
   I.see('Forgot password');
-  I.see('New to Blender?');
+  I.see('New to Blender (authvod)?');
   I.see('Sign up');
 });

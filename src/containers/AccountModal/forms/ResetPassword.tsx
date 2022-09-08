@@ -30,9 +30,9 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     history.push(removeQueryParam(history, 'u'));
   };
 
-  const backToLoginClickHandler = () => {
+  const backToLoginClickHandler = async () => {
     if (user) {
-      logout();
+      await logout();
     }
     history.push(addQueryParams('/', { u: 'login' }));
   };

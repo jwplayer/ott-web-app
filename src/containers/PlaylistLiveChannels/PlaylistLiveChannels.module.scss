@@ -9,5 +9,5 @@
 }
 
 .tag {
-  margin-right: calc(variables.$base-spacing / 2);
+  margin-right: calc(#{variables.$base-spacing} / 2);
 }

@@ -33,6 +33,7 @@ const Adyen: React.FC<Props> = ({ onChange, onSubmit, error, environment = 'test
       setScriptsLoaded(true);
     };
 
+    // noinspection JSIgnoredPromiseFromCall
     loadExternalScripts();
   }, [environment]);
 

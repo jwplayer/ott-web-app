@@ -59,7 +59,7 @@
 
 .title {
   @include typography.video-title-base;
-  margin-bottom: calc(variables.$base-spacing / 2);
+  margin-bottom: calc(#{variables.$base-spacing} / 2);
 }
 
 .metaContainer {
