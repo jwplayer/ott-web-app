@@ -94,7 +94,7 @@
     "i18next-parser": "^4.2.0",
     "jsdom": "^19.0.0",
     "lint-staged": "^10.5.4",
-    "playwright": "^1.12.3",
+    "playwright": "^1.25.2",
     "postcss": "^8.3.5",
     "postcss-import": "^14.0.2",
     "postcss-scss": "^4.0.4",
@@ -125,7 +125,7 @@
   },
   "optionalDependencies": {
     "gh-pages": "^3.2.3",
-    "lighthouse": "^8.6.0"
+    "lighthouse": "^9.6.7"
   },
   "resolutions": {
     "react-virtualized": "git+https://git@github.com/remorses/react-virtualized-fixed-import.git#9.22.3",
