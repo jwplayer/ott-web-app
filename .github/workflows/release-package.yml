@@ -1,0 +1,29 @@
+name: Release Package
+
+on:
+  push:
+    branches: [ $default-branch ]
+    types: [closed]
+
+jobs:
+  if_merged:
+    # only publish artifact when PR was merged, not if it was closed without merging
+    if: github.event.pull_request.merged == true
+    publish-artifact:
+      runs-on: macos-latest
+      strategy:
+        matrix:
+          node-version: [ 16.x ]
+      permissions:
+        packages: write
+        contents: read
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: ${{ matrix.node-version }}
+            registry-url: https://npm.pkg.github.com/
+        - run: yarn
+        - run: yarn publish --out /artifacts/%s-%v.tgz
+          env:
+            NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
