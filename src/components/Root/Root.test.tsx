@@ -1,5 +1,4 @@
 import React from 'react';
-import { Route, Routes } from 'react-router';
 
 import Root from './Root';
 
@@ -9,11 +8,7 @@ describe('<Root />', () => {
   it('renders error page when error prop is passed', () => {
     mockWindowLocation('/');
     const error = new Error();
-    const { queryByText } = renderWithRouter(
-      <Routes>
-        <Route element={<Root error={error} />} />
-      </Routes>,
-    );
+    const { queryByText } = renderWithRouter(<Root error={error} />);
 
     expect(queryByText('generic_error_heading')).toBeDefined();
     expect(queryByText('generic_error_description')).toBeDefined();
