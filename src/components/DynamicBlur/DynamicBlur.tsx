@@ -1,55 +1,80 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
-
-import { debounce } from '../../utils/common';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './DynamicBlur.module.scss';
 
+import { debounce } from '#src/utils/common';
+import Fade from '#src/components/Animation/Fade/Fade';
+import Image from '#src/components/Image/Image';
+
 type Props = {
-  url: string;
+  image: string;
+  fallbackImage?: string;
   transitionTime?: number;
   debounceTime?: number;
 };
 
-const DynamicBlur = ({ url, transitionTime = 1, debounceTime = 350 }: Props): JSX.Element => {
-  const [currentUrl, setCurrentUrl] = useState<string>();
-  const [currentImg, setCurrentImg] = useState<number>();
-  const firstImage = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
-  const secondImage = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
-  const loadImgDebounced = useRef(debounce((url: string, currentImg: number) => loadImage(url, currentImg), debounceTime));
+type ImageCursor = {
+  image: string;
+  fallbackImage?: string;
+  visible: boolean;
+  loading: boolean;
+  key: string;
+};
 
-  const loadImage = (url: string, currentImg: number) => {
-    const img = document.createElement('img');
-    img.onload = () => {
-      if (!firstImage.current || !secondImage.current) {
-        return;
-      }
-      if (currentImg !== 1) {
-        firstImage.current.style.backgroundImage = `url('${url}')`;
-        firstImage.current.style.opacity = '1';
-        secondImage.current.style.opacity = '0';
-        return setCurrentImg(1);
-      } else {
-        secondImage.current.style.backgroundImage = `url('${url}')`;
-        firstImage.current.style.opacity = '0';
-        secondImage.current.style.opacity = '1';
-        return setCurrentImg(2);
-      }
-    };
-    img.src = url;
-  };
+const DynamicBlur = ({ image, fallbackImage, transitionTime = 1, debounceTime = 350 }: Props): JSX.Element => {
+  const [images, setImages] = useState<ImageCursor[]>([]);
+  const keyRef = useRef(0);
+  const updateImage = useMemo(
+    () =>
+      debounce((image, fallbackImage) => {
+        setImages((current) => [
+          {
+            image,
+            fallbackImage,
+            visible: true,
+            loading: true,
+            key: `key_${keyRef.current++}`,
+          },
+          ...current,
+        ]);
+      }, debounceTime),
+    [debounceTime],
+  );
 
   useEffect(() => {
-    if (url && url !== currentUrl) {
-      setCurrentUrl(url);
-      loadImgDebounced.current(url, currentImg);
-    }
-  }, [url, currentUrl, currentImg]);
+    if (image) updateImage(image, fallbackImage);
+  }, [updateImage, image, fallbackImage]);
+
+  const handleClose = (key: string) => {
+    setImages((current) => current.filter((image) => image.key !== key));
+  };
+
+  const handleLoad = (key: string) => {
+    setImages((current) =>
+      current.map((image) => {
+        if (image.key === key) {
+          return { ...image, loading: false };
+        }
+        return { ...image, visible: false };
+      }),
+    );
+  };
 
   return (
-    <React.Fragment>
-      <div ref={firstImage} style={{ transition: `opacity ${transitionTime}s ease-in-out` }} className={styles.BlurBackground} />
-      <div ref={secondImage} style={{ transition: `opacity ${transitionTime}s ease-in-out` }} className={styles.BlurBackground} />
-    </React.Fragment>
+    <div className={styles.dynamicBlur}>
+      {images.map((cursor) => (
+        <Fade
+          duration={transitionTime * 1000}
+          open={cursor.visible && !cursor.loading}
+          delay={cursor.visible ? 100 : 0}
+          key={cursor.key}
+          onCloseAnimationEnd={() => handleClose(cursor.key)}
+          keepMounted
+        >
+          <Image className={styles.image} src={cursor.image} fallbackSrc={cursor.fallbackImage} onLoad={() => handleLoad(cursor.key)} />
+        </Fade>
+      ))}
+    </div>
   );
 };
 

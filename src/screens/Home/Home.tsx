@@ -22,6 +22,7 @@ import { cardUrl, slugify } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { getShelfItemImages } from '#src/stores/ConfigController';
 
 type rowData = {
   index: number;
@@ -59,7 +60,12 @@ const Home = (): JSX.Element => {
     },
     [navigate],
   );
-  const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
+  const onCardHover = useCallback(
+    (playlistItem: PlaylistItem) => {
+      updateBlurImage(playlistItem);
+    },
+    [updateBlurImage],
+  );
 
   const rowRenderer = ({ index, key, style, itemData }: rowData) => {
     if (!itemData?.content?.[index]) return null;
@@ -93,6 +99,7 @@ const Home = (): JSX.Element => {
                   onCardHover={onCardHover}
                   enableTitle={contentItem.enableText}
                   enableCardTitles={config.styling.shelfTitles}
+                  getCardImages={getShelfItemImages}
                   title={title}
                   featured={contentItem.featured === true}
                   accessModel={accessModel}

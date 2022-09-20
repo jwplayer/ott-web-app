@@ -10,10 +10,13 @@ const getFiltersFromConfig = (config: Config, playlistId: string | undefined): s
   return filters || [];
 };
 
-const filterPlaylist = (playlist: PlaylistItem[], filter: string) => {
+const filterPlaylist = (playlist: Playlist, filter: string) => {
   if (!filter) return playlist;
 
-  return playlist.filter(({ tags }) => (tags ? tags.split(',').includes(filter) : false));
+  return {
+    ...playlist,
+    playlist: playlist.playlist.filter(({ tags }) => (tags ? tags.split(',').includes(filter) : false)),
+  };
 };
 
 const chunk = <T>(input: T[], size: number) => {

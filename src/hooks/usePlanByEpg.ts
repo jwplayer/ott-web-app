@@ -13,7 +13,7 @@ const isBaseTimeFormat = is12HourClock();
 const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number, highlightColor?: string | null, backgroundColor?: string | null) => {
   const [epgChannels, epgPrograms] = useMemo(() => {
     return [
-      channels.map((channel) => ({ uuid: channel.id, logo: channel.image })),
+      channels.map((channel) => ({ uuid: channel.id, logo: channel.image, fallbackLogo: channel.fallbackImage })),
       channels.flatMap((channel) =>
         channel.programs.map((program) => ({
           channelUuid: channel.id,

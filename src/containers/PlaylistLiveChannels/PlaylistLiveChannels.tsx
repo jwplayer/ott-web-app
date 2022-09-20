@@ -25,6 +25,7 @@ import useLiveProgram from '#src/hooks/useLiveProgram';
 import Tag from '#src/components/Tag/Tag';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
+import { getBackgroundItemImages } from '#src/stores/ConfigController';
 
 function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
@@ -71,14 +72,17 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
       };
     }
 
+    const [image, fallbackImage] = channelMediaItem ? getBackgroundItemImages(channelMediaItem, 1280) : [];
+
     return {
       title: channel?.title || '',
       description: channel?.description || '',
-      poster: channel?.image,
+      poster: image,
+      posterFallback: fallbackImage,
       canWatch: true,
       canWatchFromBeginning: false,
     };
-  }, [channel, isEntitled, isLive, isVod, isWatchableFromBeginning, program]);
+  }, [channel?.description, channel?.title, channelMediaItem, isEntitled, isLive, isVod, isWatchableFromBeginning, program]);
 
   const primaryMetadata = useMemo(() => {
     if (!channel) {
@@ -120,9 +124,9 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
 
   // Effects
   useEffect(() => {
-    const toImage = program?.image || channelMediaItem?.image;
+    const toImage = program?.image || channelMediaItem;
     if (toImage) updateBlurImage(toImage);
-  }, [channelMediaItem?.image, program, updateBlurImage]);
+  }, [channelMediaItem, program, updateBlurImage]);
 
   useEffect(() => {
     // update the channel id in URL
@@ -183,6 +187,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
         poster={videoDetails.poster}
+        posterFallback={videoDetails.posterFallback}
         childrenPadding={!isMobile}
         startWatchingButton={
           channelMediaItem ? (

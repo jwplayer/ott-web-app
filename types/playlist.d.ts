@@ -50,6 +50,7 @@ export type PlaylistItem = {
   scheduleDataFormat?: string;
   scheduleDemo?: string;
   catchupHours?: string;
+  [key: string]: unknown;
 };
 
 export type Link = {
@@ -66,4 +67,5 @@ export type Playlist = {
   playlist: PlaylistItem[];
   title: string;
   contentType?: string;
+  [key: string]: unknown;
 };

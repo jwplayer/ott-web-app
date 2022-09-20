@@ -1,18 +1,20 @@
-import React, { KeyboardEvent, memo } from 'react';
+import React, { KeyboardEvent, memo, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import { formatDurationTag } from '../../utils/formatting';
-import Lock from '../../icons/Lock';
-
 import styles from './Card.module.scss';
+
+import { formatDurationTag } from '#src/utils/formatting';
+import Lock from '#src/icons/Lock';
+import Image from '#src/components/Image/Image';
 
 type CardProps = {
   onClick?: () => void;
   onHover?: () => void;
   title: string;
   duration: number;
-  posterSource?: string;
+  image?: string;
+  fallbackImage?: string;
   seriesId?: string;
   seasonNumber?: string;
   episodeNumber?: string;
@@ -32,7 +34,8 @@ function Card({
   onHover,
   title,
   duration,
-  posterSource,
+  image,
+  fallbackImage,
   seriesId,
   seasonNumber,
   episodeNumber,
@@ -47,12 +50,16 @@ function Card({
   currentLabel,
 }: CardProps): JSX.Element {
   const { t } = useTranslation('common');
+  const [imageLoaded, setImageLoaded] = useState(false);
   const cardClassName = classNames(styles.card, {
     [styles.featured]: featured,
     [styles.disabled]: disabled,
   });
   const posterClassNames = classNames(styles.poster, styles[`aspect${posterAspect.replace(':', '')}`], {
     [styles.current]: isCurrent,
+  });
+  const posterImageClassNames = classNames(styles.posterImage, {
+    [styles.visible]: imageLoaded,
   });
 
   const renderTag = () => {
@@ -83,7 +90,8 @@ function Card({
       role="button"
       aria-label={t('play_item', { title })}
     >
-      <div className={posterClassNames} style={{ backgroundImage: posterSource ? `url(${posterSource})` : '' }}>
+      <div className={posterClassNames}>
+        <Image className={posterImageClassNames} src={image} fallbackSrc={fallbackImage} onLoad={() => setImageLoaded(true)} alt={title} />
         {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {!loading && (
           <div className={styles.meta}>

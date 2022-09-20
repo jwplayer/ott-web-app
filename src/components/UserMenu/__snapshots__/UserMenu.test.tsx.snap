@@ -3,21 +3,21 @@
 exports[`<UserMenu> > renders and matches snapshot 1`] = `
 <div>
   <ul
-    class="menuItems"
+    class="_menuItems_457528"
   >
     <li>
       <a
         aria-label="nav.account"
-        class="menuButton"
+        class="_menuButton_91706b"
         href="/u/my-account"
         tabindex="0"
       >
         <div
-          class="startIcon"
+          class="_startIcon_91706b"
         >
           <svg
             aria-hidden="true"
-            class="icon"
+            class="_icon_1e9999"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -37,16 +37,16 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     <li>
       <a
         aria-label="nav.favorites"
-        class="menuButton"
+        class="_menuButton_91706b"
         href="/u/favorites"
         tabindex="0"
       >
         <div
-          class="startIcon"
+          class="_startIcon_91706b"
         >
           <svg
             aria-hidden="true"
-            class="icon"
+            class="_icon_1e9999"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -66,16 +66,16 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     <li>
       <a
         aria-label="nav.payments"
-        class="menuButton"
+        class="_menuButton_91706b"
         href="/u/payments"
         tabindex="0"
       >
         <div
-          class="startIcon"
+          class="_startIcon_91706b"
         >
           <svg
             aria-hidden="true"
-            class="icon"
+            class="_icon_1e9999"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -93,20 +93,20 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
       </a>
     </li>
     <hr
-      class="divider"
+      class="_divider_457528"
     />
     <li>
       <div
         aria-label="nav.logout"
-        class="menuButton"
+        class="_menuButton_91706b"
         tabindex="0"
       >
         <div
-          class="startIcon"
+          class="_startIcon_91706b"
         >
           <svg
             aria-hidden="true"
-            class="icon"
+            class="_icon_1e9999"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

@@ -4,6 +4,7 @@ import { addDays, differenceInDays, endOfDay, isValid, startOfDay, subDays } fro
 import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
 import { logDev } from '#src/utils/common';
+import { getChannelLogoItemImages } from '#src/stores/ConfigController';
 
 const AUTHENTICATION_HEADER = 'API-KEY';
 
@@ -21,6 +22,7 @@ export type EpgChannel = {
   title: string;
   description: string;
   image: string;
+  fallbackImage?: string;
   programs: EpgProgram[];
   catchupHours: number;
 };
@@ -154,13 +156,15 @@ class EpgService {
     const schedule = await this.fetchSchedule(item);
     const programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
     const catchupHours = item.catchupHours && parseInt(item.catchupHours);
+    const [image, fallbackImage] = getChannelLogoItemImages(item, 320);
 
     return {
       id: item.mediaid,
       title: item.title,
-      image: item.image,
       description: item.description,
       catchupHours: catchupHours || 8,
+      image,
+      fallbackImage,
       programs,
     } as EpgChannel;
   }

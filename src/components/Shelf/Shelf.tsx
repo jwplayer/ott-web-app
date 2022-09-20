@@ -7,7 +7,6 @@ import styles from './Shelf.module.scss';
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
-import { findPlaylistImageForWidth } from '#src/utils/collection';
 import type { AccessModel, ContentType } from '#types/Config';
 import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#src/components/TileDock/TileDock';
@@ -35,6 +34,7 @@ export type ShelfProps = {
   type: ContentType;
   onCardClick: (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
+  getCardImages: (playlistItem: PlaylistItem, playlist: Playlist, width: number) => string[];
   watchHistory?: { [key: string]: number };
   enableTitle?: boolean;
   enableCardTitles?: boolean;
@@ -47,13 +47,14 @@ export type ShelfProps = {
   hasSubscription: boolean;
 };
 
-const Shelf: React.FC<ShelfProps> = ({
+const Shelf = ({
   playlist,
   type,
   onCardClick,
   onCardHover,
   title,
   watchHistory,
+  getCardImages,
   enableTitle = true,
   enableCardTitles = true,
   featured = false,
@@ -71,36 +72,42 @@ const Shelf: React.FC<ShelfProps> = ({
   const imageSourceWidth = (featured ? 640 : 320) * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
   const renderTile = useCallback(
-    (item, isInView) => (
-      <Card
-        title={item.title}
-        enableTitle={enableCardTitles}
-        duration={item.duration}
-        progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-        posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
-        seriesId={item.seriesId}
-        seasonNumber={item.seasonNumber}
-        episodeNumber={item.episodeNumber}
-        onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
-        onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
-        featured={featured}
-        disabled={!isInView}
-        loading={loading}
-        isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
-      />
-    ),
+    (item, isInView) => {
+      const [image, fallbackImage] = getCardImages(item, playlist, imageSourceWidth);
+
+      return (
+        <Card
+          title={item.title}
+          enableTitle={enableCardTitles}
+          duration={item.duration}
+          progress={watchHistory ? watchHistory[item.mediaid] : undefined}
+          image={image}
+          fallbackImage={fallbackImage}
+          seriesId={item.seriesId}
+          seasonNumber={item.seasonNumber}
+          episodeNumber={item.episodeNumber}
+          onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
+          onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
+          featured={featured}
+          disabled={!isInView}
+          loading={loading}
+          isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+        />
+      );
+    },
     [
-      enableCardTitles,
-      featured,
+      getCardImages,
+      playlist,
       imageSourceWidth,
-      loading,
-      onCardClick,
-      onCardHover,
-      playlist.feedid,
+      enableCardTitles,
       watchHistory,
+      onCardHover,
+      featured,
+      loading,
       accessModel,
       isLoggedIn,
       hasSubscription,
+      onCardClick,
       type,
     ],
   );

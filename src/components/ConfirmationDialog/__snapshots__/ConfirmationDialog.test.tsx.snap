@@ -6,24 +6,24 @@ exports[`<ConfirmationDialog> > renders and matches snapshot 1`] = `
     open=""
   >
     <h2
-      class="title"
+      class="_title_47d3b3"
     >
       Title
     </h2>
     <p
-      class="body"
+      class="_body_47d3b3"
     >
       Body
     </p>
     <button
-      class="button confirmButton primary fullWidth"
+      class="_button_f8f296 _confirmButton_47d3b3 _primary_f8f296 _fullWidth_f8f296"
     >
       <span>
         confirmation_dialog.confirm
       </span>
     </button>
     <button
-      class="button default outlined fullWidth"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
     >
       <span>
         confirmation_dialog.close

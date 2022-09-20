@@ -11,7 +11,6 @@ import CardGrid from '#src/components/CardGrid/CardGrid';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL, episodeURLFromEpisode, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
 import Filter from '#src/components/Filter/Filter';
-import type { PlaylistItem } from '#src/../types/playlist';
 import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
@@ -31,6 +30,8 @@ import ShareButton from '#src/components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import Button from '#src/components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
+import type { PlaylistItem } from '#types/playlist';
+import { getBackgroundItemImages, getShelfItemImages } from '#src/stores/ConfigController';
 
 const Series = (): JSX.Element => {
   const breakpoint = useBreakpoint();
@@ -70,12 +71,12 @@ const Series = (): JSX.Element => {
   const isLoading = isPlaylistLoading || isEpisodeLoading;
 
   const [seasonFilter, setSeasonFilter] = useState<string>(item?.seasonNumber || '1');
-  const filters = getFiltersFromSeries(seriesPlaylist.playlist);
-  const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist.playlist, seasonFilter), [seriesPlaylist, seasonFilter]);
+  const filters = getFiltersFromSeries(seriesPlaylist);
+  const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
-  const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
+  const [image, fallbackImage] = useMemo(() => (item ? getBackgroundItemImages(item, imageSourceWidth) : []), [item, imageSourceWidth]);
 
   // Watch history
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
@@ -173,7 +174,8 @@ const Series = (): JSX.Element => {
         description={item.description}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
-        poster={poster}
+        poster={image}
+        posterFallback={fallbackImage}
         posterMode={posterFading ? 'fading' : 'normal'}
         shareButton={enableSharing ? <ShareButton title={item.title} description={item.description} url={canonicalUrl} /> : null}
         startWatchingButton={<StartWatchingButton item={item} playUrl={episodeURLFromEpisode(item, seriesId, feedId, true)} />}
@@ -210,6 +212,7 @@ const Series = (): JSX.Element => {
             playlist={filteredPlaylist}
             onCardClick={onCardClick}
             watchHistory={watchHistoryDictionary}
+            getCardImages={getShelfItemImages}
             isLoading={isLoading}
             currentCardItem={item}
             currentCardLabel={t('current_episode')}

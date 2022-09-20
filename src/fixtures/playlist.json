@@ -1,0 +1,378 @@
+{
+  "title": "All Films",
+  "description": "",
+  "kind": "MANUAL",
+  "feedid": "dGSUzs9o",
+  "links": {
+    "first": "https://cdn.jwplayer.com/v2/playlists/dGSUzs9o?page_limit=25&format=json&internal=false&page_offset=1",
+    "last": "https://cdn.jwplayer.com/v2/playlists/dGSUzs9o?page_limit=25&format=json&internal=false&page_offset=1"
+  },
+  "playlist": [
+    {
+      "title": "Agent 327",
+      "mediaid": "uB8aRnu6",
+      "link": "https://cdn.jwplayer.com/previews/uB8aRnu6",
+      "image": "https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "dGSUzs9o",
+      "duration": 231,
+      "pubdate": 1610828100,
+      "description": "Hendrik IJzerbroot \u2013 Agent 327 \u2013 is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.",
+      "tags": "movie,Action,not_tvod_demo",
+      "sources": [
+        {
+          "file": "https://cdn.jwplayer.com/manifests/uB8aRnu6.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/uB8aRnu6-pMZwX1m8.mp4",
+          "type": "video/mp4",
+          "height": 134,
+          "width": 320,
+          "label": "180p",
+          "bitrate": 291246,
+          "filesize": 8409748,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/uB8aRnu6-2dZW2yp8.mp4",
+          "type": "video/mp4",
+          "height": 202,
+          "width": 480,
+          "label": "270p",
+          "bitrate": 417188,
+          "filesize": 12046315,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/uB8aRnu6-8Qy0yY7A.mp4",
+          "type": "video/mp4",
+          "height": 536,
+          "width": 1280,
+          "label": "720p",
+          "bitrate": 917932,
+          "filesize": 26505313,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/uB8aRnu6-DbFZkEix.m4a",
+          "type": "audio/mp4",
+          "label": "AAC Audio",
+          "bitrate": 113667,
+          "filesize": 3282150
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/uB8aRnu6-DOtNdye5.mp4",
+          "type": "video/mp4",
+          "height": 268,
+          "width": 640,
+          "label": "360p",
+          "bitrate": 459820,
+          "filesize": 13277303,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/uB8aRnu6-zm3B22Kr.mp4",
+          "type": "video/mp4",
+          "height": 402,
+          "width": 960,
+          "label": "540p",
+          "bitrate": 751474,
+          "filesize": 21698836,
+          "framerate": 24.0
+        }
+      ],
+      "tracks": [
+        {
+          "file": "https://cdn.jwplayer.com/strips/uB8aRnu6-120.vtt",
+          "kind": "thumbnails"
+        }
+      ],
+      "variations": {},
+      "original_mediaid": "JfDmsRlE",
+      "genre": "Action",
+      "rating": "CC-BY"
+    },
+    {
+      "title": "Big Buck Bunny",
+      "mediaid": "awWEFyPu",
+      "link": "https://cdn.jwplayer.com/previews/awWEFyPu",
+      "image": "https://cdn.jwplayer.com/v2/media/awWEFyPu/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/awWEFyPu/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/awWEFyPu/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/awWEFyPu/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/awWEFyPu/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/awWEFyPu/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/awWEFyPu/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "dGSUzs9o",
+      "duration": 596,
+      "pubdate": 1226866558,
+      "description": "Big Buck Bunny (code-named Project Peach) is a 2008 short computer-animated comedy film featuring animals of the forest, made by the Blender Institute, part of the Blender Foundation. Like the foundation's previous film, Elephants Dream, the film was made using Blender, a free and open-source software application for 3D computer modeling and animation developed by the same foundation.",
+      "tags": "movie,Comedy",
+      "sources": [
+        {
+          "file": "https://cdn.jwplayer.com/manifests/awWEFyPu.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/awWEFyPu-pMZwX1m8.mp4",
+          "type": "video/mp4",
+          "height": 180,
+          "width": 320,
+          "label": "180p",
+          "bitrate": 339129,
+          "filesize": 25265126,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/awWEFyPu-2dZW2yp8.mp4",
+          "type": "video/mp4",
+          "height": 270,
+          "width": 480,
+          "label": "270p",
+          "bitrate": 495847,
+          "filesize": 36940619,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/awWEFyPu-8Qy0yY7A.mp4",
+          "type": "video/mp4",
+          "height": 720,
+          "width": 1280,
+          "label": "720p",
+          "bitrate": 1491267,
+          "filesize": 111099463,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/awWEFyPu-DbFZkEix.m4a",
+          "type": "audio/mp4",
+          "label": "AAC Audio",
+          "bitrate": 113497,
+          "filesize": 8455553
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/awWEFyPu-DOtNdye5.mp4",
+          "type": "video/mp4",
+          "height": 360,
+          "width": 640,
+          "label": "360p",
+          "bitrate": 573895,
+          "filesize": 42755195,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/awWEFyPu-zm3B22Kr.mp4",
+          "type": "video/mp4",
+          "height": 540,
+          "width": 960,
+          "label": "540p",
+          "bitrate": 921840,
+          "filesize": 68677150,
+          "framerate": 24.0
+        }
+      ],
+      "tracks": [
+        {
+          "file": "https://cdn.jwplayer.com/strips/awWEFyPu-120.vtt",
+          "kind": "thumbnails"
+        }
+      ],
+      "variations": {},
+      "genre": "Comedy",
+      "rating": "CC-BY",
+      "skipMessage": "Skip Credits",
+      "skipOffset": "490",
+      "trailerId": "sQUr0MIH",
+      "requiresSubscription": "false"
+    },
+    {
+      "title": "Elephants Dream",
+      "mediaid": "eFPH2tVG",
+      "link": "https://cdn.jwplayer.com/previews/eFPH2tVG",
+      "image": "https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "dGSUzs9o",
+      "duration": 653,
+      "pubdate": 1163708156,
+      "description": "Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.",
+      "tags": "movie,Drama",
+      "sources": [
+        {
+          "file": "https://cdn.jwplayer.com/manifests/eFPH2tVG.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/eFPH2tVG-pMZwX1m8.mp4",
+          "type": "video/mp4",
+          "height": 180,
+          "width": 320,
+          "label": "180p",
+          "bitrate": 354024,
+          "filesize": 28897277,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/eFPH2tVG-2dZW2yp8.mp4",
+          "type": "video/mp4",
+          "height": 270,
+          "width": 480,
+          "label": "270p",
+          "bitrate": 508886,
+          "filesize": 41537842,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/eFPH2tVG-8Qy0yY7A.mp4",
+          "type": "video/mp4",
+          "height": 720,
+          "width": 1280,
+          "label": "720p",
+          "bitrate": 1709165,
+          "filesize": 139510633,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/eFPH2tVG-DbFZkEix.m4a",
+          "type": "audio/mp4",
+          "label": "AAC Audio",
+          "bitrate": 113548,
+          "filesize": 9268376
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/eFPH2tVG-6RImED4J.mp4",
+          "type": "video/mp4",
+          "height": 1080,
+          "width": 1920,
+          "label": "1080p",
+          "bitrate": 3426893,
+          "filesize": 279720173,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/eFPH2tVG-DOtNdye5.mp4",
+          "type": "video/mp4",
+          "height": 360,
+          "width": 640,
+          "label": "360p",
+          "bitrate": 591031,
+          "filesize": 48242957,
+          "framerate": 24.0
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/eFPH2tVG-zm3B22Kr.mp4",
+          "type": "video/mp4",
+          "height": 540,
+          "width": 960,
+          "label": "540p",
+          "bitrate": 1003263,
+          "filesize": 81891350,
+          "framerate": 24.0
+        }
+      ],
+      "tracks": [
+        {
+          "file": "https://cdn.jwplayer.com/strips/eFPH2tVG-120.vtt",
+          "kind": "thumbnails"
+        }
+      ],
+      "variations": {},
+      "original_mediaid": "8pN9r7vd",
+      "genre": "Drama",
+      "rating": "CC-BY",
+      "skipMessage": "Skip Credits",
+      "skipOffset": "9:30",
+      "trailerId": "EorcUZCU",
+      "requiresSubscription": "true"
+    }
+  ],
+  "feed_instance_id": "08cdaa1d-2630-4bbc-b181-a2d3ea7246a3"
+}

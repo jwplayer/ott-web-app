@@ -3,10 +3,10 @@
 exports[`<TextField> > renders and matches multiline snapshot 1`] = `
 <div>
   <div
-    class="textField"
+    class="_textField_e16c1b"
   >
     <label
-      class="label"
+      class="_label_e16c1b"
       for="text-field_1235_name"
     >
       Label
@@ -15,10 +15,10 @@ exports[`<TextField> > renders and matches multiline snapshot 1`] = `
       </span>
     </label>
     <div
-      class="container"
+      class="_container_e16c1b"
     >
       <textarea
-        class="input"
+        class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"
         placeholder="Placeholder"
@@ -33,10 +33,10 @@ exports[`<TextField> > renders and matches multiline snapshot 1`] = `
 exports[`<TextField> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="textField"
+    class="_textField_e16c1b"
   >
     <label
-      class="label"
+      class="_label_e16c1b"
       for="text-field_1235_name"
     >
       Label
@@ -45,10 +45,10 @@ exports[`<TextField> > renders and matches snapshot 1`] = `
       </span>
     </label>
     <div
-      class="container"
+      class="_container_e16c1b"
     >
       <input
-        class="input"
+        class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"
         placeholder="Placeholder"

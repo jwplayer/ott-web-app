@@ -3,30 +3,30 @@
 exports[`<VideoDetails> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="video"
+    class="_video_d0c133"
     data-testid="video-details"
   >
     <div
-      class="main mainPadding"
+      class="_main_d0c133 _mainPadding_d0c133"
     >
       <div
-        class="info"
+        class="_info_d0c133"
       >
         <h2
-          class="title"
+          class="_title_d0c133"
         >
           Test video
         </h2>
         <div
-          class="metaContainer"
+          class="_metaContainer_d0c133"
         >
           <div
-            class="primaryMetadata"
+            class="_primaryMetadata_d0c133"
           >
             Primary metadata string
           </div>
           <div
-            class="secondaryMetadata"
+            class="_secondaryMetadata_d0c133"
           >
             <strong>
               Secondary metadata string
@@ -34,17 +34,17 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="collapsibleText"
+          class="_collapsibleText_561522"
         >
           <div
-            class="textContainer description"
+            class="_textContainer_561522 _description_d0c133"
             style="max-height: none;"
           >
             Video description
           </div>
         </div>
         <div
-          class="buttonBar"
+          class="_buttonBar_d0c133"
         >
           <button>
             Start watching
@@ -60,9 +60,10 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           </button>
         </div>
       </div>
-      <div
-        class="poster fading"
-        style="background-image: url(posterimage);"
+      <img
+        alt="Test video"
+        class="_poster_d0c133 _fading_d0c133 _image_4c41c3"
+        src="posterimage"
       />
     </div>
   </div>

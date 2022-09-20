@@ -27,6 +27,7 @@ import ShareButton from '#src/components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import PlayTrailer from '#src/icons/PlayTrailer';
 import Button from '#src/components/Button/Button';
+import { getBackgroundItemImages, getShelfItemImages } from '#src/stores/ConfigController';
 
 const Movie = (): JSX.Element => {
   const { t } = useTranslation('video');
@@ -56,11 +57,15 @@ const Movie = (): JSX.Element => {
   const { isLoading, error, data: item } = useMedia(id);
   useBlurImageUpdater(item);
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(item?.trailerId || '');
-  const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
+  const {
+    data: playlist,
+    isLoading: playlistLoading,
+    isPlaceholderData: isPlaylistPlaceholderData,
+  } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   const isLargeScreen = breakpoint >= Breakpoint.md;
   const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
-  const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
+  const [image, fallbackImage] = useMemo(() => (item ? getBackgroundItemImages(item, imageSourceWidth) : []), [item, imageSourceWidth]);
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
@@ -133,7 +138,8 @@ const Movie = (): JSX.Element => {
         title={item.title}
         description={item.description}
         primaryMetadata={primaryMetadata}
-        poster={poster}
+        poster={image}
+        posterFallback={fallbackImage}
         posterMode={posterFading ? 'fading' : 'normal'}
         shareButton={enableSharing && <ShareButton title={item.title} description={item.description} url={canonicalUrl} />}
         startWatchingButton={<StartWatchingButton item={item} playUrl={videoUrl(item, feedId, true)} />}
@@ -155,15 +161,16 @@ const Movie = (): JSX.Element => {
         {playlist ? (
           <>
             <div className={styles.related}>
-              <h3>{playlist.title}</h3>
+              <h3>{isPlaylistPlaceholderData || playlistLoading ? t('common:loading') : playlist.title}</h3>
             </div>
             <CardGrid
-              playlist={playlist.playlist}
+              playlist={playlist}
               onCardClick={onCardClick}
               isLoading={isLoading}
               enableCardTitles={styling.shelfTitles}
               accessModel={accessModel}
               isLoggedIn={!!user}
+              getCardImages={getShelfItemImages}
               hasSubscription={!!subscription}
             />
           </>

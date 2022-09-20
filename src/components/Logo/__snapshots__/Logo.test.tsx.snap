@@ -7,7 +7,7 @@ exports[`<Logo/> > renders and matches snapshot 1`] = `
   >
     <img
       alt="logo"
-      class="logo"
+      class="_logo_f7d212"
       src="123"
     />
   </a>

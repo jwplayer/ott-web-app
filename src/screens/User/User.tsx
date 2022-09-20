@@ -26,12 +26,14 @@ import styles from './User.module.scss';
 import type { PlaylistItem } from '#types/playlist';
 import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
+import { getShelfItemImages } from '#src/stores/ConfigController';
 
 const User = (): JSX.Element => {
-  const { accessModel, favoritesList } = useConfigStore(
+  const { accessModel, favoritesList, shelfTitles } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
-      favoritesList: s.config?.features?.favoritesList,
+      favoritesList: s.config.features?.favoritesList,
+      shelfTitles: s.config.styling.shelfTitles,
     }),
     shallow,
   );
@@ -105,14 +107,16 @@ const User = (): JSX.Element => {
                   <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
                     {({ playlist, error, isLoading }) => (
                       <Favorites
-                        playlist={playlist.playlist}
+                        playlist={playlist}
                         error={error}
                         isLoading={isLoading}
                         onCardClick={onCardClick}
                         onCardHover={onCardHover}
                         onClearFavoritesClick={() => setClearFavoritesOpen(true)}
+                        getCardImages={getShelfItemImages}
                         accessModel={accessModel}
                         hasSubscription={!!subscription}
+                        shelfTitles={shelfTitles}
                       />
                     )}
                   </PlaylistContainer>

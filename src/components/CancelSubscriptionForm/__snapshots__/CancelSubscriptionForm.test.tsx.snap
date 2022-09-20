@@ -4,7 +4,7 @@ exports[`<CancelSubscriptionForm> > renders and matches snapshot 1`] = `
 <div>
   <div>
     <h2
-      class="title"
+      class="_title_dba43b"
     >
       cancel_subscription.title
     </h2>
@@ -13,14 +13,14 @@ exports[`<CancelSubscriptionForm> > renders and matches snapshot 1`] = `
     </p>
     <button
       aria-disabled="false"
-      class="button confirmButton primary fullWidth"
+      class="_button_f8f296 _confirmButton_dba43b _primary_f8f296 _fullWidth_f8f296"
     >
       <span>
         cancel_subscription.unsubscribe
       </span>
     </button>
     <button
-      class="button default outlined fullWidth"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
     >
       <span>
         cancel_subscription.no_thanks

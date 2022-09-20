@@ -3,55 +3,55 @@
 exports[`<ConfigSelect> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="container dropdown"
+    class="_container_bb73c6 _dropdown_40fc26"
   >
     <div
-      class="dropdown"
+      class="_dropdown_bb73c6"
     >
       <select
         aria-required="false"
-        class="select"
+        class="_select_bb73c6"
         id="1235"
         name="config-select"
       >
         <option
-          class="option"
+          class="_option_bb73c6"
           value=""
         >
           Default config
         </option>
         <option
-          class="option"
+          class="_option_bb73c6"
           value="test--accounts"
         >
           test--accounts
         </option>
         <option
-          class="option"
+          class="_option_bb73c6"
           value="test--blender"
         >
           test--blender
         </option>
         <option
-          class="option"
+          class="_option_bb73c6"
           value="test--dev"
         >
           test--dev
         </option>
         <option
-          class="option"
+          class="_option_bb73c6"
           value="test--no-cleeng"
         >
           test--no-cleeng
         </option>
         <option
-          class="option"
+          class="_option_bb73c6"
           value="test--no-watchlists"
         >
           test--no-watchlists
         </option>
         <option
-          class="option"
+          class="_option_bb73c6"
           value="test--subscription"
         >
           test--subscription

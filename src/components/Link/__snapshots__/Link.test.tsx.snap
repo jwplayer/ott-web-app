@@ -3,7 +3,7 @@
 exports[`<Link> > renders and matches snapshot 1`] = `
 <div>
   <a
-    class="link"
+    class="_link_a14c64"
   />
 </div>
 `;
