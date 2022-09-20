@@ -1,15 +1,15 @@
 import { useCallback, useRef } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { debounce } from '../utils/common';
 import { useUIStore } from '../stores/UIStore';
 
 const useSearchQueryUpdater = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const updateSearchPath = useRef(
     debounce((query: string) => {
-      history.push(`/q/${encodeURIComponent(query)}`);
+      navigate(`/q/${encodeURIComponent(query)}`);
     }, 250),
   );
   const updateSearchQuery = useCallback((query: string) => {
@@ -26,8 +26,8 @@ const useSearchQueryUpdater = () => {
       preSearchPage: undefined,
     });
 
-    history.push(returnPage || '/');
-  }, [history]);
+    navigate(returnPage || '/');
+  }, [navigate]);
 
   return { updateSearchQuery, resetSearchQuery };
 };

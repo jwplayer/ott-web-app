@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 import DOMPurify from 'dompurify';
 
@@ -16,7 +16,7 @@ import Checkbox from '../Checkbox/Checkbox';
 import HelperText from '../HelperText/HelperText';
 
 import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
-import { addQueryParam } from '#src/utils/history';
+import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { logDev } from '#src/utils/common';
 import { updateConsents, updateUser } from '#src/stores/AccountController';
@@ -36,7 +36,8 @@ interface FormErrors {
 
 const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element => {
   const { t } = useTranslation('user');
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
 
   const { customer, customerConsents, publisherConsents } = useAccountStore(
@@ -134,7 +135,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   }
 
   const editPasswordClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'reset-password'));
+    navigate(addQueryParam(location, 'u', 'reset-password'));
   };
 
   return (

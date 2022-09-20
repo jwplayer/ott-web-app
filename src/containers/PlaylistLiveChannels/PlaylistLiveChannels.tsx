@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
-import { useHistory, useLocation } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 
@@ -42,14 +42,14 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
 
   // Routing
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const play = searchParams.get('play') === '1';
   const channelId = searchParams.get('channel') ?? undefined;
   const liveStartDateTime = searchParams.get('start');
   const liveEndDateTime = searchParams.get('end');
   const liveFromBeginning = searchParams.get('beginning') === '1';
-  const goBack = () => feedid && history.push(liveChannelsURL(feedid, channelId));
+  const goBack = () => feedid && navigate(liveChannelsURL(feedid, channelId));
 
   // EPG data
   const [initialChannelId] = useState(channelId);
@@ -126,8 +126,8 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
 
   useEffect(() => {
     // update the channel id in URL
-    if (channel && feedid) history.replace(liveChannelsURL(feedid, channel.id));
-  }, [history, feedid, channel]);
+    if (channel && feedid) navigate(liveChannelsURL(feedid, channel.id), { replace: true });
+  }, [navigate, feedid, channel]);
 
   // Loading (channel and feedid must be defined)
   if (!channel || !feedid) {
@@ -199,7 +199,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
                 <Button
                   className={styles.catchupButton}
                   onClick={() =>
-                    history.push(
+                    navigate(
                       addQueryParams(liveChannelsURL(feedid || '', channelId, true), {
                         start: program?.startTime,
                         beginning: 1,

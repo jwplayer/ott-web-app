@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import type { RouteComponentProps } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
@@ -29,20 +28,19 @@ import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import PlayTrailer from '#src/icons/PlayTrailer';
 import Button from '#src/components/Button/Button';
 
-type MovieRouteParams = {
-  id: string;
-};
-
-const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.Element => {
+const Movie = (): JSX.Element => {
   const { t } = useTranslation('video');
 
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const breakpoint = useBreakpoint();
 
   // Routing
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const params = useParams();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const id = match?.params.id;
+  const id = params.id as string;
   const play = searchParams.get('play') === '1';
   const feedId = searchParams.get('l');
 
@@ -69,8 +67,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
   const { isEntitled } = useEntitlement(item);
 
   // Handlers
-  const goBack = () => item && history.push(videoUrl(item, searchParams.get('r'), false));
-  const onCardClick = (item: PlaylistItem) => history.push(cardUrl(item));
+  const goBack = () => item && navigate(videoUrl(item, searchParams.get('r'), false));
+  const onCardClick = (item: PlaylistItem) => navigate(cardUrl(item));
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -78,8 +76,8 @@ const Movie = ({ match, location }: RouteComponentProps<MovieRouteParams>): JSX.
     const index = playlist.playlist.findIndex(({ mediaid }) => mediaid === id);
     const nextItem = playlist.playlist[index + 1];
 
-    return nextItem && history.push(videoUrl(nextItem, searchParams.get('r'), true));
-  }, [history, id, playlist, searchParams]);
+    return nextItem && navigate(videoUrl(nextItem, searchParams.get('r'), true));
+  }, [navigate, id, playlist, searchParams]);
 
   // Effects
   useEffect(() => {

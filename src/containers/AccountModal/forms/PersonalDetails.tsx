@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { mixed, object, string } from 'yup';
 import { useQuery } from 'react-query';
 
 import PersonalDetailsForm from '../../../components/PersonalDetailsForm/PersonalDetailsForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import { addQueryParam } from '../../../utils/history';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { useConfigStore } from '../../../stores/ConfigStore';
 
+import { addQueryParam } from '#src/utils/location';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
 import { getCaptureStatus, updateCaptureAnswers } from '#src/stores/AccountController';
 import useOffers from '#src/hooks/useOffers';
@@ -19,7 +19,8 @@ const yupConditional = (required: boolean, message: string) => {
 };
 
 const PersonalDetails = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation('account');
   const accessModel = useConfigStore((s) => s.accessModel);
   const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
@@ -36,8 +37,8 @@ const PersonalDetails = () => {
   const nextStep = useCallback(() => {
     const hasOffers = accessModel === 'SVOD' || (accessModel === 'AUTHVOD' && hasTVODOffers);
 
-    history.replace(addQueryParam(history, 'u', hasOffers ? 'choose-offer' : 'welcome'));
-  }, [history, accessModel, hasTVODOffers]);
+    navigate(addQueryParam(location, 'u', hasOffers ? 'choose-offer' : 'welcome'), { replace: true });
+  }, [navigate, location, accessModel, hasTVODOffers]);
 
   useEffect(() => {
     if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();

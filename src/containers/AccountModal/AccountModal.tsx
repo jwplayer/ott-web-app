@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
 import Dialog from '../../components/Dialog/Dialog';
 import useQueryParam from '../../hooks/useQueryParam';
-import { addQueryParam, removeQueryParam } from '../../utils/history';
 import PaymentFailed from '../../components/PaymentFailed/PaymentFailed';
 import Welcome from '../../components/Welcome/Welcome';
 import { useAccountStore } from '../../stores/AccountStore';
@@ -22,10 +21,13 @@ import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
 
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
+
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
 const AccountModal = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const viewParam = useQueryParam('u');
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
@@ -44,12 +46,12 @@ const AccountModal = () => {
 
   useEffect(() => {
     if (!!viewParam && !loading && !auth && !isPublicView) {
-      history.push(addQueryParam(history, 'u', 'login'));
+      navigate(addQueryParam(location, 'u', 'login'));
     }
-  }, [viewParam, history, loading, auth, isPublicView]);
+  }, [viewParam, navigate, location, loading, auth, isPublicView]);
 
   const closeHandler = () => {
-    history.push(removeQueryParam(history, 'u'));
+    navigate(removeQueryParam(location, 'u'));
   };
 
   const renderForm = () => {

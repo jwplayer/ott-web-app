@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
 
@@ -15,7 +15,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 function PlaylistGrid({ playlist: { feedid: id, title, playlist } }: { playlist: Playlist }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
 
   const [filter, setFilter] = useState<string>('');
@@ -33,7 +33,7 @@ function PlaylistGrid({ playlist: { feedid: id, title, playlist } }: { playlist:
     setFilter('');
   }, [id]);
 
-  const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem, id));
+  const onCardClick = (playlistItem: PlaylistItem) => navigate(cardUrl(playlistItem, id));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
   const pageTitle = `${title} - ${config.siteName}`;
