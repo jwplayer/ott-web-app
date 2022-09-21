@@ -6,17 +6,13 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
     style="transition: opacity 0.25s ease-in-out; opacity: 0;"
   >
     <div
-      class="_playerContainer_555f3c"
+      class="_cinema_555f3c"
     >
       <div
-        class="_player_555f3c"
+        class="_container_20cd38"
+        data-testid="player-container"
       >
-        <div
-          class="_container_20cd38"
-          data-testid="player-container"
-        >
-          <div />
-        </div>
+        <div />
       </div>
       <div
         style="transition: opacity 0.25s ease-in-out; opacity: 0;"

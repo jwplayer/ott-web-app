@@ -6,9 +6,7 @@ import styles from './VideoDetails.module.scss';
 import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Image from '#src/components/Image/Image';
-import type { ImageData } from '#types/playlist';
-
-type PosterMode = 'fading' | 'normal';
+import type { ImageData, PosterMode } from '#types/playlist';
 
 type Props = {
   title: string;
@@ -21,22 +19,19 @@ type Props = {
   shareButton: React.ReactNode;
   favoriteButton: React.ReactNode;
   trailerButton: React.ReactNode;
-  childrenPadding?: boolean;
 };
 
-const VideoDetails: React.FC<Props> = ({
+const VideoDetails: React.VFC<Props> = ({
   title,
   description,
   primaryMetadata,
   secondaryMetadata,
   image,
   posterMode,
-  children,
   startWatchingButton,
   shareButton,
   favoriteButton,
   trailerButton,
-  childrenPadding = true,
 }) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
@@ -65,7 +60,6 @@ const VideoDetails: React.FC<Props> = ({
         </div>
         <Image className={classNames(styles.poster, styles[posterMode])} image={image} alt={title} width={1280} />
       </div>
-      {!!children && <div className={classNames(styles.related, { [styles.mainPadding]: childrenPadding })}>{children}</div>}
     </div>
   );
 };

@@ -4,14 +4,12 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import styles from './MediaSeriesEpisode.module.scss';
-
+import VideoLayout from '#src/components/VideoLayout/VideoLayout';
+import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
+import { isLocked } from '#src/utils/entitlements';
 import useEntitlement from '#src/hooks/useEntitlement';
-import CardGrid from '#src/components/CardGrid/CardGrid';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
-import Filter from '#src/components/Filter/Filter';
-import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
@@ -47,10 +45,11 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { styling, features, siteName } = config;
+  const { styling, features, siteName, custom } = config;
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
+  const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Media
   const {
@@ -111,6 +110,29 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
       <strong>{formatSeriesMetaString(episodeItem.seasonNumber, episodeItem.episodeNumber)}</strong> - {episodeItem.title}
     </>
   );
+  const episodesInSeason = seriesPlaylist.playlist.filter((i) => i.seasonNumber === episodeItem.seasonNumber).length;
+  const filterMetadata = ` ${t('video:season')} ${episodeItem.seasonNumber}/${filters.length} - ${t('video:episode')} ${
+    episodeItem.episodeNumber
+  }/${episodesInSeason}`;
+
+  const shareButton = enableSharing && <ShareButton title={episodeItem.title} description={episodeItem.description} url={canonicalUrl} />;
+  const startWatchingButton = <StartWatchingButton item={episodeItem} playUrl={episodeURL(episodeItem, seriesId, true, feedId)} />;
+
+  const favoriteButton = isFavoritesEnabled && <FavoriteButton item={episodeItem} />;
+  const trailerButton = (!!trailerItem || isTrailerLoading) && (
+    <Button
+      label={t('video:trailer')}
+      aria-label={t('video:watch_trailer')}
+      startIcon={<PlayTrailer />}
+      onClick={() => setPlayTrailer(true)}
+      active={playTrailer}
+      fullWidth={breakpoint < Breakpoint.md}
+      disabled={!trailerItem}
+    />
+  );
+
+  const isLoggedIn = !!user;
+  const hasSubscription = !!subscription;
 
   return (
     <React.Fragment>
@@ -138,73 +160,60 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
         ))}
         {seriesPlaylist && episodeItem ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, episodeItem)}</script> : null}
       </Helmet>
-      <Cinema
-        open={play && isEntitled}
-        onClose={goBack}
+      <VideoLayout
         item={episodeItem}
-        title={seriesPlaylist.title}
-        primaryMetadata={primaryMetadata}
-        secondaryMetadata={
-          <>
-            <strong>{secondaryMetadata}</strong> - {episodeItem.title}
-          </>
-        }
-        onComplete={handleComplete}
-        feedId={feedId ?? undefined}
-      />
-      <TrailerModal item={trailerItem} title={`${episodeItem.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
-      <VideoDetails
-        title={seriesPlaylist.title}
+        title={inlineLayout ? episodeItem.title : seriesPlaylist.title}
         description={episodeItem.description}
+        inlineLayout={inlineLayout}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
         image={episodeItem.backgroundImage}
+        shareButton={shareButton}
+        favoriteButton={favoriteButton}
+        trailerButton={trailerButton}
         posterMode={posterFading ? 'fading' : 'normal'}
-        shareButton={enableSharing ? <ShareButton title={episodeItem.title} description={episodeItem.description} url={canonicalUrl} /> : null}
-        startWatchingButton={<StartWatchingButton item={episodeItem} playUrl={episodeURL(data, seriesId, true, feedId)} />}
-        favoriteButton={isFavoritesEnabled && <FavoriteButton item={episodeItem} />}
-        trailerButton={
-          (!!trailerItem || isTrailerLoading) && (
-            <Button
-              label={t('video:trailer')}
-              aria-label={t('video:watch_trailer')}
-              startIcon={<PlayTrailer />}
-              onClick={() => setPlayTrailer(true)}
-              active={playTrailer}
-              fullWidth={breakpoint < Breakpoint.md}
-              disabled={!trailerItem}
+        startWatchingButton={startWatchingButton}
+        isLoading={isLoading}
+        accessModel={accessModel}
+        isLoggedIn={isLoggedIn}
+        hasSubscription={hasSubscription}
+        playlist={filteredPlaylist}
+        relatedTitle={inlineLayout ? seriesPlaylist.title : t('episodes')}
+        onItemClick={onCardClick}
+        enableCardTitles={styling.shelfTitles}
+        setFilter={setSeasonFilter}
+        currentFilter={seasonFilter}
+        filterValuePrefix={t('season_prefix')}
+        defaultFilterLabel={t('all_seasons')}
+        activeLabel={t('current_episode')}
+        watchHistory={watchHistoryDictionary}
+        filterMetadata={filterMetadata}
+        filters={filters}
+        player={
+          inlineLayout ? (
+            <InlinePlayer
+              isLoggedIn={isLoggedIn}
+              item={episodeItem}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
+              startWatchingButton={startWatchingButton}
+              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, episodeItem)}
+            />
+          ) : (
+            <Cinema
+              open={play && isEntitled}
+              onClose={goBack}
+              item={episodeItem}
+              title={seriesPlaylist.title}
+              primaryMetadata={primaryMetadata}
+              secondaryMetadata={secondaryMetadata}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
             />
           )
         }
-      >
-        <>
-          <div className={styles.episodes}>
-            <h3>{t('episodes')}</h3>
-            {filters.length > 1 && (
-              <Filter
-                name="categories"
-                value={seasonFilter}
-                valuePrefix={t('season_prefix')}
-                defaultLabel={t('all_seasons')}
-                options={filters}
-                setValue={setSeasonFilter}
-              />
-            )}
-          </div>
-          <CardGrid
-            playlist={filteredPlaylist}
-            onCardClick={onCardClick}
-            watchHistory={watchHistoryDictionary}
-            isLoading={isLoading}
-            currentCardItem={episodeItem}
-            currentCardLabel={t('current_episode')}
-            enableCardTitles={styling.shelfTitles}
-            accessModel={accessModel}
-            isLoggedIn={!!user}
-            hasSubscription={!!subscription}
-          />
-        </>
-      </VideoDetails>
+      />
+      <TrailerModal item={trailerItem} title={`${episodeItem.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
     </React.Fragment>
   );
 };
