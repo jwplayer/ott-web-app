@@ -151,7 +151,6 @@ const User = (): JSX.Element => {
               )
             }
           />
-          {/* <Route path=":other" element={<Navigate to="my-account" />} /> */}
           <Route path="*" element={<Navigate to="my-account" />} />
         </Routes>
       </div>

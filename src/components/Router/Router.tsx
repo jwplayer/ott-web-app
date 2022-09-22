@@ -30,7 +30,7 @@ export default function Router({ error }: Props) {
           <Route path="/m/:id/:slug" element={<Movie />} />
           <Route path="/s/:id/:slug" element={<Series />} />
           <Route path="/q/*" element={<Search />} />
-          <Route path="/u/:page/*" element={<User />} />
+          <Route path="/u/*" element={<User />} />
           <Route path="/o/about" element={<About />} />
           <Route
             path="/*"
