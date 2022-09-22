@@ -29,7 +29,7 @@ const Search = () => {
   const { updateSearchQuery } = useSearchQueryUpdater();
   const navigate = useNavigate();
   const params = useParams();
-  const query = params.query;
+  const query = params['*'];
   const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
 
   const updateBlurImage = useBlurImageUpdater(playlist);

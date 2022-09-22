@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createBrowserRouter, createRoutesFromElements, createHashRouter, RouterProvider, Route } from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Root from '../Root/Root';
@@ -29,7 +29,7 @@ export default function Router({ error }: Props) {
           <Route path="/p/:id" element={<Playlist />} />
           <Route path="/m/:id/:slug" element={<Movie />} />
           <Route path="/s/:id/:slug" element={<Series />} />
-          <Route path="/q/:query" element={<Search />} />
+          <Route path="/q/*" element={<Search />} />
           <Route path="/u/:page/*" element={<User />} />
           <Route path="/o/about" element={<About />} />
           <Route
