@@ -10,7 +10,7 @@ const LiveChannelsLayout = React.lazy(() => import('#src/containers/PlaylistLive
 
 function Playlist() {
   const params = useParams();
-  const id = params.id as string;
+  const id = params.id || '';
   const { isLoading, isPlaceholderData, error, data: playlist } = usePlaylist(id);
 
   if (isLoading || isPlaceholderData) {

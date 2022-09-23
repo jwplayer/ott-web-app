@@ -42,7 +42,7 @@ const Series = (): JSX.Element => {
   const location = useLocation();
   const params = useParams();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const id = params.id as string;
+  const id = params.id || '';
   const episodeId = searchParams.get('e') || '';
   const play = searchParams.get('play') === '1';
   const feedId = searchParams.get('l');
