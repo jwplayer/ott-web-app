@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import type { RouteComponentProps } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
@@ -20,15 +19,7 @@ import styles from './Search.module.scss';
 
 import usePlaylist from '#src/hooks/usePlaylist';
 
-type SearchRouteParams = {
-  query: string;
-};
-
-const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
-  match: {
-    params: { query },
-  },
-}) => {
+const Search = () => {
   const { t } = useTranslation('search');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName, features, styling } = config;
@@ -36,7 +27,9 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
   const firstRender = useFirstRender();
   const searchQuery = useUIStore((state) => state.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
-  const history = useHistory();
+  const navigate = useNavigate();
+  const params = useParams();
+  const query = params['*'];
   const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
 
   const updateBlurImage = useBlurImageUpdater(playlist);
@@ -61,7 +54,7 @@ const Search: React.FC<RouteComponentProps<SearchRouteParams>> = ({
       searchActive: false,
     });
 
-    history.push(cardUrl(playlistItem, features?.searchPlaylist));
+    navigate(cardUrl(playlistItem, features?.searchPlaylist));
   };
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 

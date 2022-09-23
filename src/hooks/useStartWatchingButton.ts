@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
-import { addQueryParam } from '../utils/history';
+import { addQueryParam } from '../utils/location';
 
 export type UseStartWatchingLabel = (
   isEntitled: boolean,
@@ -17,7 +17,8 @@ export type UseStartWatchingLabel = (
 
 const useStartWatchingButton: UseStartWatchingLabel = (isEntitled, hasMediaOffers, isLoggedIn, videoProgress, videoUrl) => {
   const { t } = useTranslation('video');
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const startWatchingLabel = useMemo((): string => {
     if (isEntitled) return typeof videoProgress === 'number' ? t('continue_watching') : t('start_watching');
@@ -28,12 +29,12 @@ const useStartWatchingButton: UseStartWatchingLabel = (isEntitled, hasMediaOffer
   }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    if (isEntitled) return videoUrl && history.push(videoUrl);
-    if (!isLoggedIn) return history.push(addQueryParam(history, 'u', 'create-account'));
-    if (hasMediaOffers) return history.push(addQueryParam(history, 'u', 'choose-offer'));
+    if (isEntitled) return videoUrl && navigate(videoUrl);
+    if (!isLoggedIn) return navigate(addQueryParam(location, 'u', 'create-account'));
+    if (hasMediaOffers) return navigate(addQueryParam(location, 'u', 'choose-offer'));
 
-    return history.push('/u/payments');
-  }, [isEntitled, isLoggedIn, history, videoUrl, hasMediaOffers]);
+    return navigate('/u/payments');
+  }, [isEntitled, isLoggedIn, location, videoUrl, hasMediaOffers, navigate]);
 
   return {
     startWatchingLabel,

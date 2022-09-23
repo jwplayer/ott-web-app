@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
@@ -35,7 +35,7 @@ const User = (): JSX.Element => {
     }),
     shallow,
   );
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
@@ -45,10 +45,10 @@ const User = (): JSX.Element => {
 
   const updateBlurImage = useBlurImageUpdater();
 
-  const onCardClick = (playlistItem: PlaylistItem) => history.push(cardUrl(playlistItem));
+  const onCardClick = (playlistItem: PlaylistItem) => navigate(cardUrl(playlistItem));
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
   const onLogout = useCallback(async () => {
-    // Empty customer on a user page leads to history.replace (code bellow), so we don't repeat it here
+    // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await logout();
   }, []);
 
@@ -56,9 +56,9 @@ const User = (): JSX.Element => {
 
   useEffect(() => {
     if (!loading && !customer) {
-      history.replace('/');
+      navigate('/', { replace: true });
     }
-  }, [history, customer, loading]);
+  }, [navigate, customer, loading]);
 
   if (!customer) {
     return (
@@ -75,16 +75,16 @@ const User = (): JSX.Element => {
           <div className={styles.panel}>
             <ul>
               <li>
-                <Button to="/u/my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
+                <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
               </li>
               {favoritesList && (
                 <li>
-                  <Button to="/u/favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
+                  <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
                 </li>
               )}
               {accessModel !== 'AVOD' && (
                 <li>
-                  <Button to="/u/payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
+                  <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
                 </li>
               )}
               <li className={styles.logoutLi}>
@@ -95,60 +95,64 @@ const User = (): JSX.Element => {
         </div>
       )}
       <div className={styles.mainColumn}>
-        <Switch>
-          <Route path="/u/my-account">
-            <AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />
-          </Route>
+        <Routes>
+          <Route path="my-account" element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />} />
           {favoritesList && (
-            <Route path="/u/favorites">
-              <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
-                {({ playlist, error, isLoading }) => (
-                  <Favorites
-                    playlist={playlist.playlist}
-                    error={error}
-                    isLoading={isLoading}
-                    onCardClick={onCardClick}
-                    onCardHover={onCardHover}
-                    onClearFavoritesClick={() => setClearFavoritesOpen(true)}
-                    accessModel={accessModel}
-                    hasSubscription={!!subscription}
+            <Route
+              path="favorites"
+              element={
+                <>
+                  <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
+                    {({ playlist, error, isLoading }) => (
+                      <Favorites
+                        playlist={playlist.playlist}
+                        error={error}
+                        isLoading={isLoading}
+                        onCardClick={onCardClick}
+                        onCardHover={onCardHover}
+                        onClearFavoritesClick={() => setClearFavoritesOpen(true)}
+                        accessModel={accessModel}
+                        hasSubscription={!!subscription}
+                      />
+                    )}
+                  </PlaylistContainer>
+                  <ConfirmationDialog
+                    open={clearFavoritesOpen}
+                    title={t('favorites.clear_favorites_title')}
+                    body={t('favorites.clear_favorites_body')}
+                    onConfirm={async () => {
+                      await clearFavorites();
+                      setClearFavoritesOpen(false);
+                    }}
+                    onClose={() => setClearFavoritesOpen(false)}
                   />
-                )}
-              </PlaylistContainer>
-              <ConfirmationDialog
-                open={clearFavoritesOpen}
-                title={t('favorites.clear_favorites_title')}
-                body={t('favorites.clear_favorites_body')}
-                onConfirm={async () => {
-                  await clearFavorites();
-                  setClearFavoritesOpen(false);
-                }}
-                onClose={() => setClearFavoritesOpen(false)}
-              />
-            </Route>
+                </>
+              }
+            />
           )}
-          <Route path="/u/payments">
-            {accessModel !== 'AVOD' ? (
-              <Payment
-                accessModel={accessModel}
-                activeSubscription={subscription}
-                activePaymentDetail={activePayment}
-                transactions={transactions}
-                customer={customer}
-                isLoading={loading}
-                panelClassName={styles.panel}
-                panelHeaderClassName={styles.panelHeader}
-                onShowAllTransactionsClick={() => setShowAllTransactions(true)}
-                showAllTransactions={showAllTransactions}
-              />
-            ) : (
-              <Redirect to="/u/my-account" />
-            )}
-          </Route>
-          <Route path="/u/:other?">
-            <Redirect to="/u/my-account" />
-          </Route>
-        </Switch>
+          <Route
+            path="payments"
+            element={
+              accessModel !== 'AVOD' ? (
+                <Payment
+                  accessModel={accessModel}
+                  activeSubscription={subscription}
+                  activePaymentDetail={activePayment}
+                  transactions={transactions}
+                  customer={customer}
+                  isLoading={loading}
+                  panelClassName={styles.panel}
+                  panelHeaderClassName={styles.panelHeader}
+                  onShowAllTransactionsClick={() => setShowAllTransactions(true)}
+                  showAllTransactions={showAllTransactions}
+                />
+              ) : (
+                <Navigate to="my-account" />
+              )
+            }
+          />
+          <Route path="*" element={<Navigate to="my-account" />} />
+        </Routes>
       </div>
     </div>
   );

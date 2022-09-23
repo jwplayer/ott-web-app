@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import type { RouteComponentProps } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
@@ -33,19 +32,17 @@ import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import Button from '#src/components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
 
-type SeriesRouteParams = {
-  id: string;
-};
-
-const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JSX.Element => {
+const Series = (): JSX.Element => {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('video');
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
 
   // Routing
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const id = match?.params.id;
+  const id = params.id || '';
   const episodeId = searchParams.get('e') || '';
   const play = searchParams.get('play') === '1';
   const feedId = searchParams.get('l');
@@ -90,14 +87,14 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
   useBlurImageUpdater(item);
 
   // Handlers
-  const goBack = () => item && seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid, false));
-  const onCardClick = (item: PlaylistItem) => seriesPlaylist && history.push(episodeURL(seriesPlaylist, item.mediaid));
+  const goBack = () => item && seriesPlaylist && navigate(episodeURL(seriesPlaylist, item.mediaid, false));
+  const onCardClick = (item: PlaylistItem) => seriesPlaylist && navigate(episodeURL(seriesPlaylist, item.mediaid));
 
   const handleComplete = useCallback(() => {
     if (nextItemId) {
-      history.push(episodeURL(seriesPlaylist, nextItemId, true));
+      navigate(episodeURL(seriesPlaylist, nextItemId, true));
     }
-  }, [history, nextItemId, seriesPlaylist]);
+  }, [navigate, nextItemId, seriesPlaylist]);
 
   // Effects
   useEffect(() => {
@@ -106,9 +103,9 @@ const Series = ({ match, location }: RouteComponentProps<SeriesRouteParams>): JS
 
   useEffect(() => {
     if (!searchParams.has('e') && seriesPlaylist?.playlist.length) {
-      history.replace(episodeURL(seriesPlaylist, seriesPlaylist.playlist[0].mediaid));
+      navigate(episodeURL(seriesPlaylist, seriesPlaylist.playlist[0].mediaid), { replace: true });
     }
-  }, [history, searchParams, seriesPlaylist]);
+  }, [navigate, searchParams, seriesPlaylist]);
 
   useEffect(() => {
     setSeasonFilter(item?.seasonNumber || '');

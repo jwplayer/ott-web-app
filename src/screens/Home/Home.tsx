@@ -2,7 +2,7 @@ import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
 import memoize from 'memoize-one';
 import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import List from 'react-virtualized/dist/commonjs/List';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import shallow from 'zustand/shallow';
 
@@ -36,7 +36,7 @@ type ItemData = {
 const createItemData = memoize((content) => ({ content }));
 
 const Home = (): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const breakpoint = useBreakpoint();
   const listRef = useRef<List>() as React.MutableRefObject<List>;
@@ -55,9 +55,9 @@ const Home = (): JSX.Element => {
 
   const onCardClick = useCallback(
     (playlistItem, playlistId, type) => {
-      history.push(cardUrl(playlistItem, playlistId, type === PersonalShelf.ContinueWatching));
+      navigate(cardUrl(playlistItem, playlistId, type === PersonalShelf.ContinueWatching));
     },
-    [history],
+    [navigate],
   );
   const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
 

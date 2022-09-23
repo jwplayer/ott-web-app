@@ -43,25 +43,26 @@ const Button: React.FC<Props> = ({
   className,
   ...rest
 }: Props) => {
-  const buttonClassName = classNames(styles.button, className, styles[color], styles[variant], {
-    [styles.active]: active,
-    [styles.fullWidth]: fullWidth,
-    [styles.large]: size === 'large',
-    [styles.small]: size === 'small',
-    [styles.disabled]: disabled,
-  });
+  const buttonClassName = (isActive: boolean) =>
+    classNames(styles.button, className, styles[color], styles[variant], {
+      [styles.active]: isActive,
+      [styles.fullWidth]: fullWidth,
+      [styles.large]: size === 'large',
+      [styles.small]: size === 'small',
+      [styles.disabled]: disabled,
+    });
 
   const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
   const span = <span className={styles.buttonLabel}>{label}</span>;
 
   return to ? (
-    <NavLink className={buttonClassName} to={to} activeClassName={styles.active} {...rest} exact>
+    <NavLink className={({ isActive }) => buttonClassName(isActive)} to={to} {...rest}>
       {icon}
       {span}
       {children}
     </NavLink>
   ) : (
-    <button className={buttonClassName} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
+    <button className={buttonClassName(active)} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
       {icon}
       {span}
       {children}

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -21,7 +21,7 @@ type Props = {
 
 const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
   const { t } = useTranslation('user');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const onLogout = useCallback(async () => {
     if (onClick) {
@@ -29,8 +29,8 @@ const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
     }
 
     await logout();
-    history.replace('/');
-  }, [onClick, history]);
+    navigate('/', { replace: true });
+  }, [onClick, navigate]);
 
   const menuItems = (
     <ul className={styles.menuItems}>

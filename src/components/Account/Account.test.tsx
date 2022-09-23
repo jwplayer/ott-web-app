@@ -1,8 +1,8 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 
 import customer from '../../fixtures/customer.json';
 import { useAccountStore } from '../../stores/AccountStore';
+import { renderWithRouter } from '../../../test/testUtils';
 
 import Account from './Account';
 
@@ -15,7 +15,7 @@ describe('<Account>', () => {
       publisherConsents: Array.of({ name: 'marketing', label: 'Receive Marketing Emails' } as Consent),
     });
 
-    const { container } = render(<Account panelClassName={'panel-class'} panelHeaderClassName={'header-class'} />);
+    const { container } = renderWithRouter(<Account panelClassName={'panel-class'} panelHeaderClassName={'header-class'} />);
 
     // todo
     expect(container).toMatchSnapshot();

@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import CancelSubscriptionForm from '../../../components/CancelSubscriptionForm/CancelSubscriptionForm';
-import { removeQueryParam } from '../../../utils/history';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import { useAccountStore } from '../../../stores/AccountStore';
 import SubscriptionCancelled from '../../../components/SubscriptionCancelled/SubscriptionCancelled';
-import { formatDate } from '../../../utils/formatting';
 
+import { formatDate } from '#src/utils/formatting';
+import { removeQueryParam } from '#src/utils/location';
 import { updateSubscription } from '#src/stores/AccountController';
 
 const CancelSubscription = () => {
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const subscription = useAccountStore((s) => s.subscription);
   const [cancelled, setCancelled] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -34,7 +35,7 @@ const CancelSubscription = () => {
   };
 
   const closeHandler = () => {
-    history.replace(removeQueryParam(history, 'u'));
+    navigate(removeQueryParam(location, 'u'), { replace: true });
   };
 
   if (!subscription) return null;
