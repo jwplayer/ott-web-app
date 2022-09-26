@@ -7,25 +7,25 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
     novalidate=""
   >
     <h2
-      class="title"
+      class="_title_7bd5f4"
     >
       login.sign_in
     </h2>
     <div
-      class="textField"
+      class="_textField_e16c1b"
       data-testid="login-email-input"
     >
       <label
-        class="label"
+        class="_label_e16c1b"
         for="text-field_1235_email"
       >
         login.email
       </label>
       <div
-        class="container"
+        class="_container_e16c1b"
       >
         <input
-          class="input"
+          class="_input_e16c1b"
           id="text-field_1235_email"
           name="email"
           placeholder="login.email"
@@ -36,20 +36,20 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="textField rightControl"
+      class="_textField_e16c1b _rightControl_e16c1b"
       data-testid="login-password-input"
     >
       <label
-        class="label"
+        class="_label_e16c1b"
         for="text-field_1235_password"
       >
         login.password
       </label>
       <div
-        class="container"
+        class="_container_e16c1b"
       >
         <input
-          class="input"
+          class="_input_e16c1b"
           id="text-field_1235_password"
           name="password"
           placeholder="login.password"
@@ -58,17 +58,17 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
           value=""
         />
         <div
-          class="control"
+          class="_control_e16c1b"
         >
           <div
             aria-label="login.view_password"
-            class="iconButton"
+            class="_iconButton_0fef65"
             role="button"
             tabindex="0"
           >
             <svg
               aria-hidden="true"
-              class="icon"
+              class="_icon_1e9999"
               focusable="false"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -84,14 +84,14 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <a
-      class="link link"
+      class="_link_a14c64 _link_7bd5f4"
       href="/?u=forgot-password"
     >
       login.forgot_password
     </a>
     <button
       aria-disabled="false"
-      class="button primary fullWidth large"
+      class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
       type="submit"
     >
       <span>
@@ -99,12 +99,12 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
       </span>
     </button>
     <p
-      class="bottom"
+      class="_bottom_7bd5f4"
     >
       login.not_registered
        
       <a
-        class="link"
+        class="_link_a14c64"
         href="/?u=create-account"
       >
         login.sign_up

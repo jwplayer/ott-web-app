@@ -19,10 +19,10 @@ type Props = {
 };
 
 export default function Router({ error }: Props) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('error');
 
-  /* 
-    Ideally we should define the routes outside the router, but it doesn't work with the current setup because we need to pass the error to the Root component.  
+  /*
+    Ideally we should define the routes outside the router, but it doesn't work with the current setup because we need to pass the error to the Root component.
     @todo: refactor the app to use the errorElements that can be passed to the route components. see https://reactrouter.com/en/main/route/error-element so that we can define the routes outside the router.
     And we should also consider moving the Router component to the containers folder or placing it directly in the src directory.
     */

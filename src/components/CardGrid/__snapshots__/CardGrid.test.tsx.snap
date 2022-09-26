@@ -3,7 +3,7 @@
 exports[`<CardGrid> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="container"
+    class="_container_7175d1"
   >
     <div
       style="overflow: visible; width: 0px;"
@@ -11,7 +11,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
       <div
         aria-label="grid"
         aria-readonly="true"
-        class="ReactVirtualized__Grid grid"
+        class="ReactVirtualized__Grid _grid_6d6ef6"
         role="grid"
         style="box-sizing: border-box; direction: ltr; height: auto; position: relative; width: 0px; will-change: transform; overflow-x: hidden; overflow-y: hidden;"
         tabindex="-1"

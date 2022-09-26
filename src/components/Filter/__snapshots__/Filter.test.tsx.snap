@@ -3,11 +3,11 @@
 exports[`<Filter> > renders Filter 1`] = `
 <div>
   <div
-    class="filterRow"
+    class="_filterRow_2153bc"
     role="listbox"
   >
     <button
-      class="button default outlined"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
     >
       <span>
@@ -15,7 +15,7 @@ exports[`<Filter> > renders Filter 1`] = `
       </span>
     </button>
     <button
-      class="button default outlined"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
     >
       <span>
@@ -23,7 +23,7 @@ exports[`<Filter> > renders Filter 1`] = `
       </span>
     </button>
     <button
-      class="button default outlined"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
     >
       <span>
@@ -31,7 +31,7 @@ exports[`<Filter> > renders Filter 1`] = `
       </span>
     </button>
     <button
-      class="button default outlined"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
     >
       <span>

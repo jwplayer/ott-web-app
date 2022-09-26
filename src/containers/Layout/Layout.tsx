@@ -106,7 +106,7 @@ const Layout = () => {
         <meta name="twitter:description" content={description} />
       </Helmet>
       <div className={styles.main}>
-        {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
+        {hasDynamicBlur && blurImage && <DynamicBlur image={blurImage} transitionTime={1} debounceTime={350} />}
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
           logoSrc={banner}

@@ -36,7 +36,7 @@ const useContentProtection = <T>(
     enabled: !!id && enabled && (!signingEnabled || !!token),
     placeholderData: placeholderData,
     retry: type === 'media',
-    keepPreviousData: type === 'media',
+    keepPreviousData: true,
   });
 
   return {

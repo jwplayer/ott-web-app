@@ -193,6 +193,26 @@ Scenario('I can navigate through the epg', async ({ I }) => {
   await isLiveProgram(I, channel2LiveProgramId, 'channel 2');
 });
 
+Scenario('I can see an alternate channel logo for Channel 1', async ({ I }) => {
+  await I.openVideoCard('Channel 1');
+  await I.seeEpgChannelLogoImage('Uh7zcqVm', 'https://img.jwplayer.com/v1/media/Uh7zcqVm/images/channel_logo.jpg?width=320');
+});
+
+Scenario('I can see the default channel logo for Channel 2', async ({ I }) => {
+  await I.openVideoCard('Channel 2');
+  await I.seeEpgChannelLogoImage('Z2evecey', 'https://cdn.jwplayer.com/v2/media/Z2evecey/poster.jpg?width=320');
+});
+
+Scenario('I can see an alternate background image for Channel 3', async ({ I }) => {
+  await I.openVideoCard('Channel 3');
+  await I.seeVideoDetailsBackgroundImage('Channel 3', 'https://img.jwplayer.com/v1/media/wewsVyR7/images/background.jpg?width=1280');
+});
+
+Scenario('I can see the default background image for Channel 4', async ({ I }) => {
+  await I.openVideoCard('Channel 4');
+  await I.seeVideoDetailsBackgroundImage('Channel 4', 'https://cdn.jwplayer.com/v2/media/kH7LozaK/poster.jpg?width=1280');
+});
+
 async function isSelectedProgram(I: CodeceptJS.I, programId: string, channel: string) {
   await checkStyle(I, makeEpgProgramLocator(programId), {
     'background-color': programSelectedBackgroundColor,

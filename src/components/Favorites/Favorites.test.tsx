@@ -13,7 +13,7 @@ describe('<Favorites>', () => {
       <PlaylistContainer type={PersonalShelf.Favorites}>
         {({ playlist, error, isLoading }) => (
           <Favorites
-            playlist={playlist.playlist}
+            playlist={playlist}
             error={error}
             isLoading={isLoading}
             onCardClick={() => null}

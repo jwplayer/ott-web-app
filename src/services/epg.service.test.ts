@@ -313,6 +313,8 @@ describe('epgService', () => {
       endTime: '2022-07-19T15:00:00Z',
       description: undefined,
       image: undefined,
+      shelfImage: undefined,
+      backgroundImage: undefined,
     });
 
     expect(program2).toEqual({
@@ -322,6 +324,8 @@ describe('epgService', () => {
       endTime: '2022-07-19T15:00:00Z',
       description: undefined,
       image: undefined,
+      shelfImage: undefined,
+      backgroundImage: undefined,
     });
 
     expect(program3).toEqual({
@@ -330,7 +334,8 @@ describe('epgService', () => {
       startTime: '2022-07-19T12:00:00Z',
       endTime: '2022-07-19T15:00:00Z',
       description: 'A description',
-      image: 'https://cdn.jwplayer/logo.jpg',
+      shelfImage: { image: 'https://cdn.jwplayer/logo.jpg' },
+      backgroundImage: { image: 'https://cdn.jwplayer/logo.jpg' },
     });
   });
 });

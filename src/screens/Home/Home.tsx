@@ -59,7 +59,12 @@ const Home = (): JSX.Element => {
     },
     [navigate],
   );
-  const onCardHover = useCallback((playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image), [updateBlurImage]);
+  const onCardHover = useCallback(
+    (playlistItem: PlaylistItem) => {
+      updateBlurImage(playlistItem);
+    },
+    [updateBlurImage],
+  );
 
   const rowRenderer = ({ index, key, style, itemData }: rowData) => {
     if (!itemData?.content?.[index]) return null;

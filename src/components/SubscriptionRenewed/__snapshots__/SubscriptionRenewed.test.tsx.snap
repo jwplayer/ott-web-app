@@ -4,7 +4,7 @@ exports[`<SubscriptionRenewed> > renders and matches snapshot 1`] = `
 <div>
   <div>
     <h2
-      class="title"
+      class="_title_d9af9c"
     >
       subscription_renewed.title
     </h2>
@@ -12,7 +12,7 @@ exports[`<SubscriptionRenewed> > renders and matches snapshot 1`] = `
       subscription_renewed.message
     </p>
     <button
-      class="button default outlined fullWidth"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
     >
       <span>
         subscription_renewed.back_to_profile

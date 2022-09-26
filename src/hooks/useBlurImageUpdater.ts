@@ -1,22 +1,28 @@
 import { useCallback, useEffect } from 'react';
 
-import { useUIStore } from '../stores/UIStore';
-import type { PlaylistItem } from '../../types/playlist';
+import { useUIStore } from '#src/stores/UIStore';
+import type { PlaylistItem } from '#types/playlist';
 
 const useBlurImageUpdater = (data?: PlaylistItem[] | PlaylistItem) => {
   useEffect(() => {
     const targetItem = Array.isArray(data) ? data?.[0] : data;
 
-    if (!targetItem?.image) return;
+    if (!targetItem) return;
 
     useUIStore.setState({
-      blurImage: targetItem.image,
+      blurImage: targetItem.backgroundImage,
     });
   }, [data]);
 
-  return useCallback((image: string) => {
+  return useCallback((item: PlaylistItem | string) => {
+    if (typeof item === 'string') {
+      return useUIStore.setState({
+        blurImage: { image: item, fallbackImage: item },
+      });
+    }
+
     useUIStore.setState({
-      blurImage: image,
+      blurImage: item.backgroundImage,
     });
   }, []);
 };

@@ -3,7 +3,7 @@
 exports[`<About> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="about"
+    class="_about_052cef"
   >
     <div>
       <h1>

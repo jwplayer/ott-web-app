@@ -3,18 +3,32 @@ import { getDataOrThrow } from '../utils/api';
 
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
-import type { Series, GetSeriesParams } from '#types/series';
+import type { GetSeriesParams, Series } from '#types/series';
+import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
+import { generateImageData } from '#src/utils/image';
+
+// change the values below to change the property used to look up the alternate image
+enum ImageProperty {
+  SHELF = 'shelfImage',
+  BACKGROUND = 'backgroundImage',
+  CHANNEL_LOGO = 'channelLogoImage',
+}
 
 /**
  * Transform incoming media items
  * - Parses productId into MediaOffer[] for all cleeng offers
- *
- * @param item
  */
-export const transformMediaItem = (item: PlaylistItem) => ({
-  ...item,
-  mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
-});
+export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
+  const config = ConfigStore.getState().config;
+
+  return {
+    ...item,
+    shelfImage: generateImageData(config, ImageProperty.SHELF, item, playlist),
+    backgroundImage: generateImageData(config, ImageProperty.BACKGROUND, item),
+    channelLogoImage: generateImageData(config, ImageProperty.CHANNEL_LOGO, item),
+    mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
+  };
+};
 
 /**
  * Transform incoming playlists
@@ -23,7 +37,7 @@ export const transformMediaItem = (item: PlaylistItem) => ({
  * @param relatedMediaId
  */
 export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
-  playlist.playlist = playlist.playlist.map(transformMediaItem);
+  playlist.playlist = playlist.playlist.map((item) => transformMediaItem(item, playlist));
 
   // remove the related media item (when this is a recommendations playlist)
   if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
@@ -54,7 +68,6 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
  * Get watchlist by playlistId
  * @param {string} playlistId
  * @param {string} [token]
- * @param {string} [drmPolicyId]
  */
 export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
   if (!mediaIds?.length) {
@@ -68,7 +81,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
 
   if (!data) throw new Error(`The data was not found using the watchlist ${playlistId}`);
 
-  return (data.playlist || []).map(transformMediaItem);
+  return (data.playlist || []).map((item) => transformMediaItem(item, data));
 };
 
 /**

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
-import { useNavigate, useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 
@@ -65,7 +65,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
       return {
         title: program.title,
         description: program.description || '',
-        poster: program.image,
+        image: program.backgroundImage,
         canWatch: isLive || (isVod && isWatchableFromBeginning),
         canWatchFromBeginning: isEntitled && isLive && isWatchableFromBeginning,
       };
@@ -74,11 +74,11 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
     return {
       title: channel?.title || '',
       description: channel?.description || '',
-      poster: channel?.image,
+      image: channel?.backgroundImage,
       canWatch: true,
       canWatchFromBeginning: false,
     };
-  }, [channel, isEntitled, isLive, isVod, isWatchableFromBeginning, program]);
+  }, [channel?.backgroundImage, channel?.description, channel?.title, isEntitled, isLive, isVod, isWatchableFromBeginning, program]);
 
   const primaryMetadata = useMemo(() => {
     if (!channel) {
@@ -120,9 +120,9 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
 
   // Effects
   useEffect(() => {
-    const toImage = program?.image || channelMediaItem?.image;
+    const toImage = program?.backgroundImage?.image || channelMediaItem;
     if (toImage) updateBlurImage(toImage);
-  }, [channelMediaItem?.image, program, updateBlurImage]);
+  }, [channelMediaItem, program, updateBlurImage]);
 
   useEffect(() => {
     // update the channel id in URL
@@ -182,7 +182,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
         description={videoDetails.description}
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
-        poster={videoDetails.poster}
+        image={videoDetails.image}
         childrenPadding={!isMobile}
         startWatchingButton={
           channelMediaItem ? (

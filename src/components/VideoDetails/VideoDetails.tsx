@@ -5,6 +5,8 @@ import styles from './VideoDetails.module.scss';
 
 import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import Image from '#src/components/Image/Image';
+import type { ImageData } from '#types/playlist';
 
 type PosterMode = 'fading' | 'normal';
 
@@ -13,7 +15,7 @@ type Props = {
   description: string;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
-  poster?: string;
+  image?: ImageData;
   posterMode: PosterMode;
   startWatchingButton: React.ReactNode;
   shareButton: React.ReactNode;
@@ -27,7 +29,7 @@ const VideoDetails: React.FC<Props> = ({
   description,
   primaryMetadata,
   secondaryMetadata,
-  poster,
+  image,
   posterMode,
   children,
   startWatchingButton,
@@ -43,7 +45,7 @@ const VideoDetails: React.FC<Props> = ({
     <div className={styles.video} data-testid="video-details">
       <div
         className={classNames(styles.main, styles.mainPadding, {
-          [styles.posterNormal]: poster === 'normal',
+          [styles.posterNormal]: posterMode === 'normal',
         })}
       >
         <div className={styles.info}>
@@ -61,7 +63,7 @@ const VideoDetails: React.FC<Props> = ({
             {shareButton}
           </div>
         </div>
-        <div className={classNames(styles.poster, styles[posterMode])} style={{ backgroundImage: `url('${poster}')` }} />
+        <Image className={classNames(styles.poster, styles[posterMode])} image={image} alt={title} width={1280} />
       </div>
       {!!children && <div className={classNames(styles.related, { [styles.mainPadding]: childrenPadding })}>{children}</div>}
     </div>

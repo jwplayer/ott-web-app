@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties } from 'react';
 
 import Animation, { Status } from '../Animation';
 
@@ -6,16 +6,19 @@ type Props = {
   open?: boolean;
   duration?: number;
   delay?: number;
+  keepMounted?: boolean;
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
-  children: ReactNode;
 };
 
-const Fade = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
+const Fade: React.FC<Props> = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, keepMounted, children }) => {
   const seconds = duration / 1000;
   const transition = `opacity ${seconds}s ease-in-out`;
 
-  const createStyle = (status: Status): CSSProperties => ({ transition, opacity: status === 'opening' || status === 'open' ? 1 : 0 });
+  const createStyle = (status: Status): CSSProperties => ({
+    transition,
+    opacity: status === 'opening' || status === 'open' ? 1 : 0,
+  });
 
   return (
     <Animation
@@ -25,6 +28,7 @@ const Fade = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCl
       delay={delay}
       onOpenAnimationEnd={onOpenAnimationEnd}
       onCloseAnimationEnd={onCloseAnimationEnd}
+      keepMounted={keepMounted}
     >
       {children}
     </Animation>

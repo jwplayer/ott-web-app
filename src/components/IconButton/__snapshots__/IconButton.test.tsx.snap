@@ -4,13 +4,13 @@ exports[`<IconButton> > renders and matches snapshot 1`] = `
 <div>
   <div
     aria-label="Icon button"
-    class="iconButton"
+    class="_iconButton_0fef65"
     role="button"
     tabindex="0"
   >
     <svg
       aria-hidden="true"
-      class="icon"
+      class="_icon_1e9999"
       focusable="false"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"

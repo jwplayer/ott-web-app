@@ -44,16 +44,9 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
     build: {
       outDir: './build',
     },
-    css:
-      mode === 'test'
-        ? {
-            modules: {
-              generateScopedName: (name) => name,
-            },
-          }
-        : {
-            devSourcemap: true,
-          },
+    css: {
+      devSourcemap: true,
+    },
     resolve: {
       alias: {
         '#src': path.join(__dirname, 'src'),
@@ -65,6 +58,7 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
       globals: true,
       environment: 'jsdom',
       setupFiles: ['test/vitest.setup.ts'],
+      css: true,
     },
   });
 };

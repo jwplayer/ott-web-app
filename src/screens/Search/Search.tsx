@@ -30,9 +30,9 @@ const Search = () => {
   const navigate = useNavigate();
   const params = useParams();
   const query = params['*'];
-  const { isFetching, error, data: { playlist } = { playlist: [] } } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
+  const { isFetching, error, data: playlist } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
 
-  const updateBlurImage = useBlurImageUpdater(playlist);
+  const updateBlurImage = useBlurImageUpdater(playlist?.playlist);
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
@@ -71,7 +71,7 @@ const Search = () => {
     return <ErrorPage title={t('start_typing')} />;
   }
 
-  if (!playlist.length) {
+  if (!playlist?.playlist.length) {
     return (
       <ErrorPage title={t('no_results_heading', { query })}>
         <h6>{t('suggestions')}</h6>
@@ -88,7 +88,7 @@ const Search = () => {
     <div className={styles.search}>
       <Helmet>
         <title>
-          {t('title', { results: playlist.length, query })} - {siteName}
+          {t('title', { results: playlist.playlist.length, query })} - {siteName}
         </title>
       </Helmet>
       <header className={styles.header}>

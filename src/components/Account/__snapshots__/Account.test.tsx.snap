@@ -13,13 +13,13 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </h3>
     </div>
     <div
-      class="flexBox"
+      class="_flexBox_1c1c63"
     >
       <div
-        class="textField"
+        class="_textField_e16c1b"
       >
         <label
-          class="label"
+          class="_label_e16c1b"
           for="text-field_1235_email"
         >
           account.email
@@ -30,10 +30,10 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="controls"
+      class="_controls_1c1c63"
     >
       <button
-        class="button default outlined"
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
         type="button"
       >
         <span>
@@ -53,7 +53,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </h3>
     </div>
     <div
-      class="flexBox"
+      class="_flexBox_1c1c63"
     >
       <strong>
         account.password
@@ -63,10 +63,10 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </p>
     </div>
     <div
-      class="controls"
+      class="_controls_1c1c63"
     >
       <button
-        class="button default outlined"
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
         type="button"
       >
         <span>
@@ -86,13 +86,13 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </h3>
     </div>
     <div
-      class="flexBox"
+      class="_flexBox_1c1c63"
     >
       <div
-        class="textField"
+        class="_textField_e16c1b"
       >
         <label
-          class="label"
+          class="_label_e16c1b"
           for="text-field_1235_firstName"
         >
           account.firstname
@@ -102,10 +102,10 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         </p>
       </div>
       <div
-        class="textField"
+        class="_textField_e16c1b"
       >
         <label
-          class="label"
+          class="_label_e16c1b"
           for="text-field_1235_lastName"
         >
           account.lastname
@@ -116,10 +116,10 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="controls"
+      class="_controls_1c1c63"
     >
       <button
-        class="button default outlined"
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
         type="button"
       >
         <span>
@@ -139,13 +139,13 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </h3>
     </div>
     <div
-      class="flexBox"
+      class="_flexBox_1c1c63"
     >
       <div
-        class="checkbox"
+        class="_checkbox_531f07"
       >
         <div
-          class="row"
+          class="_row_531f07"
         >
           <input
             id="check-box_1235_consents.marketing"
@@ -163,7 +163,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="controls"
+      class="_controls_1c1c63"
     />
   </div>
 </div>

@@ -4,13 +4,13 @@ exports[`<ModalCloseButton> > renders and matches snapshot 1`] = `
 <div>
   <div
     aria-label="close_modal"
-    class="iconButton modalCloseButton"
+    class="_iconButton_0fef65 _modalCloseButton_b92d69"
     role="button"
     tabindex="0"
   >
     <svg
       aria-hidden="true"
-      class="icon"
+      class="_icon_1e9999"
       focusable="false"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"

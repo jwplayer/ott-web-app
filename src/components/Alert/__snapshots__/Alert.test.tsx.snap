@@ -6,17 +6,17 @@ exports[`<Alert> > renders and matches snapshot 1`] = `
     open=""
   >
     <h2
-      class="title"
+      class="_title_fb2b94"
     >
       alert.title
     </h2>
     <p
-      class="body"
+      class="_body_fb2b94"
     >
       Body
     </p>
     <button
-      class="button default outlined fullWidth"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
     >
       <span>
         alert.close

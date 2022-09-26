@@ -58,10 +58,6 @@ const Movie = (): JSX.Element => {
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(item?.trailerId || '');
   const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
-  const isLargeScreen = breakpoint >= Breakpoint.md;
-  const imageSourceWidth = 640 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
-  const poster = item?.image.replace('720', imageSourceWidth.toString()); // Todo: should be taken from images (1280 should be sent from API)
-
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(item);
@@ -133,7 +129,7 @@ const Movie = (): JSX.Element => {
         title={item.title}
         description={item.description}
         primaryMetadata={primaryMetadata}
-        poster={poster}
+        image={item.backgroundImage}
         posterMode={posterFading ? 'fading' : 'normal'}
         shareButton={enableSharing && <ShareButton title={item.title} description={item.description} url={canonicalUrl} />}
         startWatchingButton={<StartWatchingButton item={item} playUrl={videoUrl(item, feedId, true)} />}
@@ -155,10 +151,10 @@ const Movie = (): JSX.Element => {
         {playlist ? (
           <>
             <div className={styles.related}>
-              <h3>{playlist.title}</h3>
+              <h3>{playlist.title || '\u00A0'}</h3>
             </div>
             <CardGrid
-              playlist={playlist.playlist}
+              playlist={playlist}
               onCardClick={onCardClick}
               isLoading={isLoading}
               enableCardTitles={styling.shelfTitles}
