@@ -129,15 +129,15 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 Scenario('I can see alternate shelf images for the `All Films` shelf', async ({ I }) => {
   // scroll to shelf to make it visible and for screenshot
   await I.scrollToShelf(ShelfId.allFilms);
-  await I.seeCardImageSrc('Agent 327', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/shelf.jpg?width=640');
-  await I.seeCardImageSrc('Big Buck Bunny', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/awWEFyPu/images/shelf.jpg?width=640');
+  await I.seeCardImageSrc('Agent 327', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/shelf.jpg?width=320');
+  await I.seeCardImageSrc('Big Buck Bunny', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/awWEFyPu/images/shelf.jpg?width=340');
 });
 
 Scenario('I can see poster images for the `All courses` shelf', async ({ I }) => {
   // scroll to shelf to make it visible and for screenshot
   await I.scrollToShelf(ShelfId.allCourses);
-  await I.seeCardImageSrc('Primitive Animals', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/9NZgbtMV/poster.jpg?width=640');
-  await I.seeCardImageSrc('Fantasy Vehicle Creation', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/b43Lsibs/poster.jpg?width=640');
+  await I.seeCardImageSrc('Primitive Animals', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/9NZgbtMV/poster.jpg?width=320');
+  await I.seeCardImageSrc('Fantasy Vehicle Creation', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/b43Lsibs/poster.jpg?width=320');
 });
 
 Scenario('I can see the footer', ({ I }) => {
