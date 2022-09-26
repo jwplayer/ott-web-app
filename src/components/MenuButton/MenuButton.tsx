@@ -25,6 +25,7 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active 
         onClick={onClick}
         to={to}
         tabIndex={tabIndex}
+        end
       >
         {icon}
         <span className={styles.label}>{label}</span>
