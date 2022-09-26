@@ -4,7 +4,7 @@ import { getDataOrThrow } from '../utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 import type { GetSeriesParams, Series } from '#types/series';
-import { useConfigStore } from '#src/stores/ConfigStore';
+import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
 import { generateImageData } from '#src/utils/image';
 
 // change the values below to change the property used to look up the alternate image
@@ -19,7 +19,7 @@ enum ImageProperty {
  * - Parses productId into MediaOffer[] for all cleeng offers
  */
 export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
-  const config = useConfigStore.getState().config;
+  const config = ConfigStore.getState().config;
 
   return {
     ...item,
