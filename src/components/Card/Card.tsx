@@ -90,14 +90,7 @@ function Card({
       aria-label={t('play_item', { title })}
     >
       <div className={posterClassNames}>
-        <Image
-          className={posterImageClassNames}
-          src={image?.image}
-          fallbackSrc={image?.fallbackImage}
-          width={featured ? 640 : 320}
-          onLoad={() => setImageLoaded(true)}
-          alt={title}
-        />
+        <Image className={posterImageClassNames} image={image} width={featured ? 640 : 320} onLoad={() => setImageLoaded(true)} alt={title} />
         {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {!loading && (
           <div className={styles.meta}>

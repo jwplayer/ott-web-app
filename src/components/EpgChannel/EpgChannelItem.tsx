@@ -26,7 +26,7 @@ const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWi
         onClick={() => onClick && onClick(channel)}
         data-testid={uuid}
       >
-        <Image className={styles.epgChannelLogo} src={channelLogoImage?.image} fallbackSrc={channelLogoImage?.fallbackImage} alt="Logo" width={320} />
+        <Image className={styles.epgChannelLogo} image={channelLogoImage} alt="Logo" width={320} />
       </div>
     </div>
   );

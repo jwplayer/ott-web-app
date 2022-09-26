@@ -10,10 +10,10 @@ export const generateImageData = (config: Config, propertyName: string, item: Pl
   // when a playlist is given, get the alternate image label from the playlist instead
   const contentImageLabel = playlist ? playlist[propertyName] : item[propertyName];
   const configImageLabel = config.custom?.[propertyName];
-  const imageLabel = typeof contentImageLabel === 'string' ? contentImageLabel : typeof configImageLabel === 'string' ? configImageLabel : undefined;
+  const imageLabel = contentImageLabel || configImageLabel;
 
   return {
-    image: imageLabel ? generateAlternateImageURL(item.mediaid, imageLabel, width) : posterImage,
+    image: typeof imageLabel === 'string' ? generateAlternateImageURL(item.mediaid, imageLabel, width) : posterImage,
     fallbackImage: imageLabel ? posterImage : undefined,
   };
 };

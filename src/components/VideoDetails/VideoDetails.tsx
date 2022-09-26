@@ -63,7 +63,7 @@ const VideoDetails: React.FC<Props> = ({
             {shareButton}
           </div>
         </div>
-        <Image className={classNames(styles.poster, styles[posterMode])} src={image?.image} fallbackSrc={image?.fallbackImage} alt={title} width={1280} />
+        <Image className={classNames(styles.poster, styles[posterMode])} image={image} alt={title} width={1280} />
       </div>
       {!!children && <div className={classNames(styles.related, { [styles.mainPadding]: childrenPadding })}>{children}</div>}
     </div>

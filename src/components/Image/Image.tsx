@@ -4,11 +4,11 @@ import classNames from 'classnames';
 import styles from './Image.module.scss';
 
 import { addQueryParams } from '#src/utils/formatting';
+import type { ImageData } from '#types/playlist';
 
 type Props = {
   className?: string;
-  src?: string;
-  fallbackSrc?: string;
+  image?: ImageData;
   onLoad?: () => void;
   alt?: string;
   width?: number;
@@ -18,22 +18,22 @@ const setWidth = (url: string, width: number) => {
   return addQueryParams(url, { width });
 };
 
-const Image = ({ className, src, fallbackSrc, onLoad, alt = '', width = 640 }: Props) => {
-  const [imgSrc, setImgSrc] = useState(src);
+const Image = ({ className, image, onLoad, alt = '', width = 640 }: Props) => {
+  const [imgSrc, setImgSrc] = useState(image?.image);
 
   const handleLoad = () => {
     if (onLoad) onLoad();
   };
 
   const handleError = () => {
-    if (fallbackSrc && fallbackSrc !== src) {
-      setImgSrc(fallbackSrc);
+    if (image?.fallbackImage && image.fallbackImage !== image.image) {
+      setImgSrc(image?.fallbackImage);
     }
   };
 
   useEffect(() => {
-    setImgSrc(src);
-  }, [src]);
+    setImgSrc(image?.image);
+  }, [image]);
 
   if (!imgSrc) return null;
 

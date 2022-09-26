@@ -69,13 +69,7 @@ const DynamicBlur = ({ image, transitionTime = 1, debounceTime = 350 }: Props): 
           onCloseAnimationEnd={() => handleClose(cursor.key)}
           keepMounted
         >
-          <Image
-            className={styles.image}
-            src={cursor.image.image}
-            fallbackSrc={cursor.image.fallbackImage}
-            onLoad={() => handleLoad(cursor.key)}
-            width={1280}
-          />
+          <Image className={styles.image} image={cursor.image} onLoad={() => handleLoad(cursor.key)} width={1280} />
         </Fade>
       ))}
     </div>
