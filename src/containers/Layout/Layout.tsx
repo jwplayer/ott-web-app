@@ -30,10 +30,9 @@ const Layout = () => {
   const { searchPlaylist } = features || {};
   const { footerText, dynamicBlur } = styling || {};
 
-  const { blurImage, blurFallbackImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
-    ({ blurImage, blurFallbackImage, searchQuery, searchActive, userMenuOpen }) => ({
+  const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
+    ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({
       blurImage,
-      blurFallbackImage,
       searchQuery,
       searchActive,
       userMenuOpen,
@@ -107,7 +106,7 @@ const Layout = () => {
         <meta name="twitter:description" content={description} />
       </Helmet>
       <div className={styles.main}>
-        {hasDynamicBlur && blurImage && <DynamicBlur image={blurImage} fallbackImage={blurFallbackImage} transitionTime={1} debounceTime={350} />}
+        {hasDynamicBlur && blurImage && <DynamicBlur image={blurImage} transitionTime={1} debounceTime={350} />}
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
           logoSrc={banner}

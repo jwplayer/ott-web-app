@@ -21,7 +21,6 @@ describe('<Favorites>', () => {
             onClearFavoritesClick={() => null}
             hasSubscription={true}
             accessModel={'SVOD'}
-            getCardImages={() => []}
           />
         )}
       </PlaylistContainer>,

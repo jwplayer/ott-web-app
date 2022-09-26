@@ -11,7 +11,7 @@ describe('<VideoDetails>', () => {
         description="Video description"
         primaryMetadata="Primary metadata string"
         secondaryMetadata={<strong>Secondary metadata string</strong>}
-        poster="posterimage"
+        image={{ image: 'http://image.jpg' }}
         posterMode="fading"
         startWatchingButton={<button>Start watching</button>}
         shareButton={<button>share</button>}
@@ -30,7 +30,7 @@ describe('<VideoDetails>', () => {
         description="Video description"
         primaryMetadata="Primary metadata string"
         secondaryMetadata={<strong>Secondary metadata string</strong>}
-        poster="http://image.jpg"
+        image={{ image: 'http://image.jpg' }}
         posterMode="fading"
         startWatchingButton={<button>Start watching</button>}
         shareButton={<button>share</button>}
@@ -39,7 +39,7 @@ describe('<VideoDetails>', () => {
       />,
     );
 
-    expect(getByAltText('Test video')).toHaveAttribute('src', 'http://image.jpg');
+    expect(getByAltText('Test video')).toHaveAttribute('src', 'http://image.jpg?width=1280');
   });
 
   test('renders the fallback image when the image fails to load', () => {
@@ -49,8 +49,7 @@ describe('<VideoDetails>', () => {
         description="Video description"
         primaryMetadata="Primary metadata string"
         secondaryMetadata={<strong>Secondary metadata string</strong>}
-        poster="http://image.jpg"
-        posterFallback="http://fallback.jpg"
+        image={{ image: 'http://image.jpg', fallbackImage: 'http://fallback.jpg' }}
         posterMode="fading"
         startWatchingButton={<button>Start watching</button>}
         shareButton={<button>share</button>}
@@ -59,10 +58,10 @@ describe('<VideoDetails>', () => {
       />,
     );
 
-    expect(getByAltText('Test video')).toHaveAttribute('src', 'http://image.jpg');
+    expect(getByAltText('Test video')).toHaveAttribute('src', 'http://image.jpg?width=1280');
 
     fireEvent.error(getByAltText('Test video'));
 
-    expect(getByAltText('Test video')).toHaveAttribute('src', 'http://fallback.jpg');
+    expect(getByAltText('Test video')).toHaveAttribute('src', 'http://fallback.jpg?width=1280');
   });
 });

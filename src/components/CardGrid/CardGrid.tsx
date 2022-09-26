@@ -23,7 +23,6 @@ type CardGridProps = {
   playlist: Playlist;
   onCardHover?: (item: PlaylistItem) => void;
   onCardClick: (item: PlaylistItem, playlistId?: string) => void;
-  getCardImages: (playlistItem: PlaylistItem, playlist: Playlist, width: number) => string[];
   watchHistory?: { [key: string]: number };
   isLoading: boolean;
   enableCardTitles?: boolean;
@@ -39,7 +38,6 @@ function CardGrid({
   playlist,
   onCardClick,
   onCardHover,
-  getCardImages,
   watchHistory,
   enableCardTitles = true,
   isLoading = false,
@@ -51,16 +49,13 @@ function CardGrid({
   hasSubscription,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
-  const isLargeScreen = breakpoint >= Breakpoint.md;
-  const imageSourceWidth = 320 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
   const rows = chunk<PlaylistItem>(playlist.playlist, cols[breakpoint]);
 
   const cellRenderer = ({ columnIndex, rowIndex, style }: GridCellProps) => {
     if (!rows[rowIndex][columnIndex]) return;
 
     const playlistItem: PlaylistItem = rows[rowIndex][columnIndex];
-    const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber } = playlistItem;
-    const [image, fallbackImage] = getCardImages(playlistItem, playlist, imageSourceWidth);
+    const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage } = playlistItem;
 
     return (
       <div className={styles.cell} style={style} key={mediaid} role="row">
@@ -70,8 +65,7 @@ function CardGrid({
             title={title}
             enableTitle={enableCardTitles}
             duration={duration}
-            image={image}
-            fallbackImage={fallbackImage}
+            image={shelfImage}
             progress={watchHistory ? watchHistory[mediaid] : undefined}
             seriesId={seriesId}
             episodeNumber={episodeNumber}

@@ -7,14 +7,14 @@ import styles from './Card.module.scss';
 import { formatDurationTag } from '#src/utils/formatting';
 import Lock from '#src/icons/Lock';
 import Image from '#src/components/Image/Image';
+import type { ImageData } from '#types/playlist';
 
 type CardProps = {
   onClick?: () => void;
   onHover?: () => void;
   title: string;
   duration: number;
-  image?: string;
-  fallbackImage?: string;
+  image?: ImageData;
   seriesId?: string;
   seasonNumber?: string;
   episodeNumber?: string;
@@ -35,7 +35,6 @@ function Card({
   title,
   duration,
   image,
-  fallbackImage,
   seriesId,
   seasonNumber,
   episodeNumber,
@@ -91,7 +90,14 @@ function Card({
       aria-label={t('play_item', { title })}
     >
       <div className={posterClassNames}>
-        <Image className={posterImageClassNames} src={image} fallbackSrc={fallbackImage} onLoad={() => setImageLoaded(true)} alt={title} />
+        <Image
+          className={posterImageClassNames}
+          src={image?.image}
+          fallbackSrc={image?.fallbackImage}
+          width={featured ? 640 : 320}
+          onLoad={() => setImageLoaded(true)}
+          alt={title}
+        />
         {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {!loading && (
           <div className={styles.meta}>

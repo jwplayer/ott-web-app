@@ -22,7 +22,6 @@ type Props = {
   onCardClick: (item: PlaylistItem) => void;
   onCardHover: (item: PlaylistItem) => void;
   onClearFavoritesClick: () => void;
-  getCardImages: (item: PlaylistItem, playlist: Playlist, width: number) => string[];
 };
 
 const cols: Breakpoints = {
@@ -43,7 +42,6 @@ const Favorites = ({
   onCardClick,
   onCardHover,
   onClearFavoritesClick,
-  getCardImages,
 }: Props): JSX.Element => {
   const { t } = useTranslation('user');
 
@@ -64,7 +62,6 @@ const Favorites = ({
           playlist={playlist}
           onCardClick={onCardClick}
           onCardHover={onCardHover}
-          getCardImages={getCardImages}
           cols={cols}
           isLoading={isLoading}
           enableCardTitles={shelfTitles}

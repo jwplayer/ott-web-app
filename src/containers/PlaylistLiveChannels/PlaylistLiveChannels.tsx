@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
-import { useNavigate, useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 
@@ -25,7 +25,6 @@ import useLiveProgram from '#src/hooks/useLiveProgram';
 import Tag from '#src/components/Tag/Tag';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
-import { getBackgroundItemImages } from '#src/stores/ConfigController';
 
 function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
@@ -66,23 +65,20 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
       return {
         title: program.title,
         description: program.description || '',
-        poster: program.image,
+        image: program.backgroundImage,
         canWatch: isLive || (isVod && isWatchableFromBeginning),
         canWatchFromBeginning: isEntitled && isLive && isWatchableFromBeginning,
       };
     }
 
-    const [image, fallbackImage] = channelMediaItem ? getBackgroundItemImages(channelMediaItem, 1280) : [];
-
     return {
       title: channel?.title || '',
       description: channel?.description || '',
-      poster: image,
-      posterFallback: fallbackImage,
+      image: channel?.backgroundImage,
       canWatch: true,
       canWatchFromBeginning: false,
     };
-  }, [channel?.description, channel?.title, channelMediaItem, isEntitled, isLive, isVod, isWatchableFromBeginning, program]);
+  }, [channel?.backgroundImage, channel?.description, channel?.title, isEntitled, isLive, isVod, isWatchableFromBeginning, program]);
 
   const primaryMetadata = useMemo(() => {
     if (!channel) {
@@ -124,7 +120,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
 
   // Effects
   useEffect(() => {
-    const toImage = program?.image || channelMediaItem;
+    const toImage = program?.backgroundImage?.image || channelMediaItem;
     if (toImage) updateBlurImage(toImage);
   }, [channelMediaItem, program, updateBlurImage]);
 
@@ -186,8 +182,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
         description={videoDetails.description}
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
-        poster={videoDetails.poster}
-        posterFallback={videoDetails.posterFallback}
+        image={videoDetails.image}
         childrenPadding={!isMobile}
         startWatchingButton={
           channelMediaItem ? (

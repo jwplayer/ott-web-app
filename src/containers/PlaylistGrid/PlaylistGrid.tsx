@@ -13,7 +13,6 @@ import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import { getShelfItemImages } from '#src/stores/ConfigController';
 
 function PlaylistGrid({ playlist }: { playlist: Playlist }) {
   const navigate = useNavigate();
@@ -55,7 +54,6 @@ function PlaylistGrid({ playlist }: { playlist: Playlist }) {
           playlist={filteredPlaylist}
           onCardClick={onCardClick}
           onCardHover={onCardHover}
-          getCardImages={getShelfItemImages}
           enableCardTitles={config.styling.shelfTitles}
           accessModel={accessModel}
           isLoggedIn={!!user}

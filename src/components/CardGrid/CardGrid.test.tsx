@@ -17,7 +17,6 @@ describe('<CardGrid>', () => {
         accessModel={'SVOD'}
         isLoggedIn={true}
         hasSubscription={true}
-        getCardImages={() => []}
       />,
     );
 

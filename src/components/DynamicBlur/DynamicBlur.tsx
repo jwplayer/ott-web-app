@@ -5,32 +5,30 @@ import styles from './DynamicBlur.module.scss';
 import { debounce } from '#src/utils/common';
 import Fade from '#src/components/Animation/Fade/Fade';
 import Image from '#src/components/Image/Image';
+import type { ImageData } from '#types/playlist';
 
 type Props = {
-  image: string;
-  fallbackImage?: string;
+  image: ImageData;
   transitionTime?: number;
   debounceTime?: number;
 };
 
 type ImageCursor = {
-  image: string;
-  fallbackImage?: string;
+  image: ImageData;
   visible: boolean;
   loading: boolean;
   key: string;
 };
 
-const DynamicBlur = ({ image, fallbackImage, transitionTime = 1, debounceTime = 350 }: Props): JSX.Element => {
+const DynamicBlur = ({ image, transitionTime = 1, debounceTime = 350 }: Props): JSX.Element => {
   const [images, setImages] = useState<ImageCursor[]>([]);
   const keyRef = useRef(0);
   const updateImage = useMemo(
     () =>
-      debounce((image, fallbackImage) => {
+      debounce((image) => {
         setImages((current) => [
           {
             image,
-            fallbackImage,
             visible: true,
             loading: true,
             key: `key_${keyRef.current++}`,
@@ -42,8 +40,8 @@ const DynamicBlur = ({ image, fallbackImage, transitionTime = 1, debounceTime = 
   );
 
   useEffect(() => {
-    if (image) updateImage(image, fallbackImage);
-  }, [updateImage, image, fallbackImage]);
+    if (image) updateImage(image);
+  }, [updateImage, image]);
 
   const handleClose = (key: string) => {
     setImages((current) => current.filter((image) => image.key !== key));
@@ -71,7 +69,13 @@ const DynamicBlur = ({ image, fallbackImage, transitionTime = 1, debounceTime = 
           onCloseAnimationEnd={() => handleClose(cursor.key)}
           keepMounted
         >
-          <Image className={styles.image} src={cursor.image} fallbackSrc={cursor.fallbackImage} onLoad={() => handleLoad(cursor.key)} />
+          <Image
+            className={styles.image}
+            src={cursor.image.image}
+            fallbackSrc={cursor.image.fallbackImage}
+            onLoad={() => handleLoad(cursor.key)}
+            width={1280}
+          />
         </Fade>
       ))}
     </div>

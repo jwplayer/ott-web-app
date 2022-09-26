@@ -15,7 +15,7 @@ type Props = {
 };
 
 const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWidth, onClick, isActive }) => {
-  const { position, logo, uuid, fallbackLogo } = channel;
+  const { position, uuid, channelLogoImage } = channel;
   const style = { top: position.top, height: position.height, width: sidebarWidth };
 
   return (
@@ -26,7 +26,7 @@ const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWi
         onClick={() => onClick && onClick(channel)}
         data-testid={uuid}
       >
-        <Image className={styles.epgChannelLogo} src={logo} fallbackSrc={fallbackLogo} alt="Logo" />
+        <Image className={styles.epgChannelLogo} src={channelLogoImage?.image} fallbackSrc={channelLogoImage?.fallbackImage} alt="Logo" />
       </div>
     </div>
   );

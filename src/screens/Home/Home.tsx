@@ -22,7 +22,6 @@ import { cardUrl, slugify } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { getShelfItemImages } from '#src/stores/ConfigController';
 
 type rowData = {
   index: number;
@@ -99,7 +98,6 @@ const Home = (): JSX.Element => {
                   onCardHover={onCardHover}
                   enableTitle={contentItem.enableText}
                   enableCardTitles={config.styling.shelfTitles}
-                  getCardImages={getShelfItemImages}
                   title={title}
                   featured={contentItem.featured === true}
                   accessModel={accessModel}

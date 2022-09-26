@@ -26,7 +26,6 @@ import styles from './User.module.scss';
 import type { PlaylistItem } from '#types/playlist';
 import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
-import { getShelfItemImages } from '#src/stores/ConfigController';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList, shelfTitles } = useConfigStore(
@@ -113,7 +112,6 @@ const User = (): JSX.Element => {
                         onCardClick={onCardClick}
                         onCardHover={onCardHover}
                         onClearFavoritesClick={() => setClearFavoritesOpen(true)}
-                        getCardImages={getShelfItemImages}
                         accessModel={accessModel}
                         hasSubscription={!!subscription}
                         shelfTitles={shelfTitles}

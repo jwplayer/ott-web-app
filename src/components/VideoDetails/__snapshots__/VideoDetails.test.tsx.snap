@@ -63,7 +63,7 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
       <img
         alt="Test video"
         class="_poster_d0c133 _fading_d0c133 _image_4c41c3"
-        src="posterimage"
+        src="http://image.jpg?width=1280"
       />
     </div>
   </div>

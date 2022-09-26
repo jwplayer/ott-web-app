@@ -3,15 +3,22 @@ import classNames from 'classnames';
 
 import styles from './Image.module.scss';
 
+import { addQueryParams } from '#src/utils/formatting';
+
 type Props = {
   className?: string;
   src?: string;
   fallbackSrc?: string;
   onLoad?: () => void;
   alt?: string;
+  width?: number;
 };
 
-const Image = ({ className, src, fallbackSrc, onLoad, alt = '' }: Props) => {
+const setWidth = (url: string, width: number) => {
+  return addQueryParams(url, { width });
+};
+
+const Image = ({ className, src, fallbackSrc, onLoad, alt = '', width = 640 }: Props) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   const handleLoad = () => {
@@ -30,7 +37,7 @@ const Image = ({ className, src, fallbackSrc, onLoad, alt = '' }: Props) => {
 
   if (!imgSrc) return null;
 
-  return <img className={classNames(className, styles.image)} src={imgSrc} onLoad={handleLoad} onError={handleError} alt={alt} />;
+  return <img className={classNames(className, styles.image)} src={setWidth(imgSrc, width)} onLoad={handleLoad} onError={handleError} alt={alt} />;
 };
 
 export default React.memo(Image);

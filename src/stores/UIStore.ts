@@ -2,8 +2,10 @@ import type { LocationDescriptor } from 'history';
 
 import { createStore } from './utils';
 
+import type { ImageData } from '#types/playlist';
+
 type UIState = {
-  blurImage: string;
+  blurImage?: ImageData;
   blurFallbackImage?: string;
   searchQuery: string;
   searchActive: boolean;
@@ -12,8 +14,7 @@ type UIState = {
 };
 
 export const useUIStore = createStore<UIState>('UIStore', () => ({
-  blurImage: '',
-  blurFallbackImage: '',
+  blurImage: undefined,
   searchQuery: '',
   searchActive: false,
   userMenuOpen: false,

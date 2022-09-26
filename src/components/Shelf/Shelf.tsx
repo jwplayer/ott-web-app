@@ -34,7 +34,6 @@ export type ShelfProps = {
   type: ContentType;
   onCardClick: (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
-  getCardImages: (playlistItem: PlaylistItem, playlist: Playlist, width: number) => string[];
   watchHistory?: { [key: string]: number };
   enableTitle?: boolean;
   enableCardTitles?: boolean;
@@ -54,7 +53,6 @@ const Shelf = ({
   onCardHover,
   title,
   watchHistory,
-  getCardImages,
   enableTitle = true,
   enableCardTitles = true,
   featured = false,
@@ -68,48 +66,27 @@ const Shelf = ({
   const { t } = useTranslation('common');
   const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
-  const isLargeScreen = breakpoint >= Breakpoint.md;
-  const imageSourceWidth = (featured ? 640 : 320) * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
   const renderTile = useCallback(
-    (item, isInView) => {
-      const [image, fallbackImage] = getCardImages(item, playlist, imageSourceWidth);
-
-      return (
-        <Card
-          title={item.title}
-          enableTitle={enableCardTitles}
-          duration={item.duration}
-          progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-          image={image}
-          fallbackImage={fallbackImage}
-          seriesId={item.seriesId}
-          seasonNumber={item.seasonNumber}
-          episodeNumber={item.episodeNumber}
-          onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
-          onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
-          featured={featured}
-          disabled={!isInView}
-          loading={loading}
-          isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
-        />
-      );
-    },
-    [
-      getCardImages,
-      playlist,
-      imageSourceWidth,
-      enableCardTitles,
-      watchHistory,
-      onCardHover,
-      featured,
-      loading,
-      accessModel,
-      isLoggedIn,
-      hasSubscription,
-      onCardClick,
-      type,
-    ],
+    (item: PlaylistItem, isInView: boolean) => (
+      <Card
+        title={item.title}
+        enableTitle={enableCardTitles}
+        duration={item.duration}
+        progress={watchHistory ? watchHistory[item.mediaid] : undefined}
+        image={item.shelfImage}
+        seriesId={item.seriesId}
+        seasonNumber={item.seasonNumber}
+        episodeNumber={item.episodeNumber}
+        onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
+        onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
+        featured={featured}
+        disabled={!isInView}
+        loading={loading}
+        isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+      />
+    ),
+    [playlist, enableCardTitles, watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, onCardClick, type],
   );
 
   const renderRightControl = useCallback(

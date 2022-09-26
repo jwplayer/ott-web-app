@@ -18,7 +18,6 @@ import { useConfigStore } from '../../stores/ConfigStore';
 import styles from './Search.module.scss';
 
 import usePlaylist from '#src/hooks/usePlaylist';
-import { getShelfItemImages } from '#src/stores/ConfigController';
 
 const Search = () => {
   const { t } = useTranslation('search');
@@ -100,7 +99,6 @@ const Search = () => {
           playlist={playlist}
           onCardClick={onCardClick}
           onCardHover={onCardHover}
-          getCardImages={getShelfItemImages}
           isLoading={firstRender}
           enableCardTitles={styling.shelfTitles}
           accessModel={accessModel}

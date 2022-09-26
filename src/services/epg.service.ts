@@ -1,10 +1,9 @@
 import { array, object, string } from 'yup';
 import { addDays, differenceInDays, endOfDay, isValid, startOfDay, subDays } from 'date-fns';
 
-import type { PlaylistItem } from '#types/playlist';
+import type { ImageData, PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
 import { logDev } from '#src/utils/common';
-import { getChannelLogoItemImages } from '#src/stores/ConfigController';
 
 const AUTHENTICATION_HEADER = 'API-KEY';
 
@@ -21,8 +20,8 @@ export type EpgChannel = {
   id: string;
   title: string;
   description: string;
-  image: string;
-  fallbackImage?: string;
+  channelLogoImage: ImageData;
+  backgroundImage: ImageData;
   programs: EpgProgram[];
   catchupHours: number;
 };
@@ -33,7 +32,8 @@ export type EpgProgram = {
   startTime: string;
   endTime: string;
   description?: string;
-  image?: string;
+  shelfImage?: ImageData;
+  backgroundImage?: ImageData;
 };
 
 const epgProgramSchema = object().shape({
@@ -64,7 +64,8 @@ class EpgService {
       description,
       startTime: subDays(startOfDay(new Date()), 1).toJSON(),
       endTime: addDays(endOfDay(new Date()), 1).toJSON(),
-      image: undefined,
+      shelfImage: undefined,
+      backgroundImage: undefined,
     };
   }
 
@@ -95,13 +96,16 @@ class EpgService {
    */
   async transformProgram(data: unknown): Promise<EpgProgram> {
     const program = await epgProgramSchema.validate(data);
+    const image = program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || '';
+    const imageData = image ? { image } : undefined;
 
     return {
       id: program.id,
       title: program.title,
       startTime: program.startTime,
       endTime: program.endTime,
-      image: program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || undefined,
+      shelfImage: imageData,
+      backgroundImage: imageData,
       description: program.chapterPointCustomProperties?.find((item) => item.key === 'description')?.value || undefined,
     };
   }
@@ -156,15 +160,14 @@ class EpgService {
     const schedule = await this.fetchSchedule(item);
     const programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
     const catchupHours = item.catchupHours && parseInt(item.catchupHours);
-    const [image, fallbackImage] = getChannelLogoItemImages(item, 320);
 
     return {
       id: item.mediaid,
       title: item.title,
       description: item.description,
       catchupHours: catchupHours || 8,
-      image,
-      fallbackImage,
+      channelLogoImage: item.channelLogoImage,
+      backgroundImage: item.backgroundImage,
       programs,
     } as EpgChannel;
   }
