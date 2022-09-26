@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.github_token }}
+          output-file: "false"
+      - name: Install deps
+        run: yarn
+      - name: Build App
+        env:
+          RELEASE_VERSION: ${{ steps.changelog.outputs.tag }}
+        run: |
+          yarn build
+          tar czf build-${RELEASE_VERSION}.tar.gz ./build
+          zip -r build-${RELEASE_VERSION}.zip ./build
+      - name: Append Release Notes
+        run: |
+          cat <<EOT >> .github/RELEASE_BODY_TEMPLATE.md
+          ${{ steps.changelog.outputs.clean_changelog }}
+          EOT
+          echo "Appended release notes"
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: ${{ steps.changelog.outputs.tag }}
+        with:
+          allowUpdates: true
+          artifacts: "build-*.tar.gz, build-*.zip"
+          tag: ${{ steps.changelog.outputs.tag }}
+          bodyFile: ".github/RELEASE_BODY_TEMPLATE.md"
+          token: ${{ secrets.github_token }}
