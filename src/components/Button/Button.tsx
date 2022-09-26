@@ -56,7 +56,7 @@ const Button: React.FC<Props> = ({
   const span = <span className={styles.buttonLabel}>{label}</span>;
 
   return to ? (
-    <NavLink className={({ isActive }) => buttonClassName(isActive)} to={to} {...rest}>
+    <NavLink className={({ isActive }) => buttonClassName(isActive)} to={to} {...rest} end>
       {icon}
       {span}
       {children}
