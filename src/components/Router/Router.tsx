@@ -18,7 +18,7 @@ type Props = {
   error?: Error | null;
 };
 
-export default function Router ({ error }: Props) {
+export default function Router({ error }: Props) {
   const { t } = useTranslation('error');
 
   /*

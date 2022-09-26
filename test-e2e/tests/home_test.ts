@@ -130,7 +130,7 @@ Scenario('I can see alternate shelf images for the `All Films` shelf', async ({ 
   // scroll to shelf to make it visible and for screenshot
   await I.scrollToShelf(ShelfId.allFilms);
   await I.seeCardImageSrc('Agent 327', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/shelf.jpg?width=320');
-  await I.seeCardImageSrc('Big Buck Bunny', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/awWEFyPu/images/shelf.jpg?width=340');
+  await I.seeCardImageSrc('Big Buck Bunny', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/awWEFyPu/images/shelf.jpg?width=320');
 });
 
 Scenario('I can see poster images for the `All courses` shelf', async ({ I }) => {
