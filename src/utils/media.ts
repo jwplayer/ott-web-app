@@ -1,4 +1,4 @@
-import type { PlaylistItem } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type RequiredProperties<T, P extends keyof T> = T & Required<Pick<T, P>>;
 
@@ -14,6 +14,9 @@ export const getSeriesId = (item: PlaylistItem & DeprecatedPlaylistItem) => {
 
   return item['seriesPlayListId'] || item.seriesPlaylistId || item.seriesId;
 };
+
+export const isPlaylist = (item: unknown): item is Playlist => !!item && typeof item === 'object' && 'feedid' in item;
+export const isPlaylistItem = (item: unknown): item is PlaylistItem => !!item && typeof item === 'object' && 'mediaid' in item;
 
 export const isSeriesPlaceholder = (item: PlaylistItem) => {
   return typeof getSeriesId(item) !== 'undefined';

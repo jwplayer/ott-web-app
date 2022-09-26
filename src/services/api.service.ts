@@ -136,3 +136,16 @@ export const getSeries = async (id: string, params: GetSeriesParams = {}): Promi
 
   return data;
 };
+
+/**
+ * Get all series for the given media_ids
+ * @param {string[]} mediaIds
+ */
+export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in typeof mediaIds[number]]: Series[] | undefined } | undefined> => {
+  const pathname = `/apps/series`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
+    media_ids: mediaIds.join(','),
+  });
+  const response = await fetch(url);
+  return await getDataOrThrow(response);
+};

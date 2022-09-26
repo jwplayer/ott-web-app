@@ -53,7 +53,7 @@ Scenario('It renders the correct structured metadata for the movie screen', asyn
       name: constants.agent327Title,
       description: constants.agent327Description,
       duration: 'PT3M51S',
-      thumbnailUrl: makeHttps(getPosterUrl(url, false)),
+      thumbnailUrl: makeHttps(getPosterUrl(url)),
       uploadDate: '2021-01-16T20:15:00.000Z',
     }),
     { css: 'script[type="application/ld+json"]' },
@@ -62,28 +62,30 @@ Scenario('It renders the correct structured metadata for the movie screen', asyn
 
 Scenario('It renders the correct meta tags for the series screen', async ({ I }) => {
   await I.openVideoCard(constants.primitiveAnimalsTitle);
-  I.waitForNavigation({ url: `${constants.baseUrl}s/*/primitive-animals?e=*` });
+  I.see('Primitive Animals');
 
   await checkMetaTags(I, 'Blocking', constants.primitiveAnimalsDescription, true);
 });
 
 Scenario('It renders the correct structured metadata for the series screen', async ({ I }) => {
   await I.openVideoCard(constants.primitiveAnimalsTitle);
-  I.waitForNavigation({ url: `${constants.baseUrl}s/*/primitive-animals?e=*` });
+  I.see('Primitive Animals');
 
   const url = await I.grabCurrentUrl();
+  const seriesId = getQueryParam(url, 'seriesId');
+
   I.seeTextEquals(
     JSON.stringify({
       '@context': 'http://schema.org/',
       '@type': 'TVEpisode',
-      '@id': url,
+      '@id': removeQueryParam(url, 'r'),
       episodeNumber: '1',
       seasonNumber: '1',
       name: 'Blocking',
       uploadDate: '2021-03-10T10:00:00.000Z',
       partOfSeries: {
         '@type': 'TVSeries',
-        '@id': removeQueryParam(url, 'e'),
+        '@id': `${constants.baseUrl}s/${seriesId}`,
         name: 'Primitive Animals',
         numberOfEpisodes: 4,
         numberOfSeasons: 1,
@@ -99,7 +101,7 @@ async function checkMetaTags(I: CodeceptJS.I, title: string, description, isSeri
   I.seeAttributesOnElements('meta[name="description"]', { content: description });
 
   const url = removeQueryParam(await I.grabCurrentUrl(), 'r');
-  const posterUrl = getPosterUrl(url, isSeries);
+  const posterUrl = getPosterUrl(url);
   I.seeAttributesOnElements('meta[property="og:title"]', { content: `${title} - Blender` });
   I.seeAttributesOnElements('meta[property="og:description"]', { content: description });
   I.seeAttributesOnElements('meta[property="og:type"]', { content: isSeries ? 'video.episode' : 'video.other' });
@@ -125,15 +127,20 @@ function removeQueryParam(href: string, param: string) {
   return url.toString();
 }
 
+function getQueryParam(href: string, param: string) {
+  const url = new URL(href);
+  return url.searchParams.get(param);
+}
+
 function makeHttps(href: string) {
   const url = new URL(href);
   url.protocol = 'https';
   return url.toString();
 }
 
-function getPosterUrl(href: string, isSeries: boolean) {
+function getPosterUrl(href: string) {
   const url = new URL(href);
-  const mediaId = isSeries ? url.searchParams.get('e') : url.pathname.split('/')[2];
+  const mediaId = url.pathname.split('/')[2];
 
   return `http://cdn.jwplayer.com/v2/media/${mediaId}/poster.jpg?width=720`;
 }

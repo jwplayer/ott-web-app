@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { getI18n, I18nextProvider } from 'react-i18next';
 
 import type { Config } from '#types/Config';
-import Router from '#src/components/Router/Router';
+import Router from '#src/containers/Router/Router';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
@@ -14,6 +14,7 @@ import { clearStoredConfig } from '#src/utils/configOverride';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
 import initI18n from '#src/i18n/config';
 
+import '#src/screenMapping';
 import '#src/styles/main.scss';
 
 interface State {
