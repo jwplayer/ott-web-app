@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import Dropdown from '../Dropdown/Dropdown';
 import Button from '../Button/Button';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
 import styles from './Filter.module.scss';
+
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type Props = {
   name: string;
@@ -13,10 +14,11 @@ type Props = {
   valuePrefix?: string;
   defaultLabel: string;
   options: string[];
+  dropDown?: boolean;
   setValue: (value: string) => void;
 };
 
-const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '' }) => {
+const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '', dropDown = false }) => {
   const { t } = useTranslation('common');
   const breakpoint: Breakpoint = useBreakpoint();
 
@@ -25,7 +27,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
   }
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
 
-  const showFilterRow = breakpoint >= Breakpoint.md && options.length < 6;
+  const showFilterRow = !dropDown && breakpoint >= Breakpoint.md && options.length < 6;
 
   return (
     <Fragment>
