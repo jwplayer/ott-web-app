@@ -1,0 +1,74 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+.videoInlineLayout {
+  position: relative;
+  display: grid;
+  width: 100%;
+  padding: 56px;
+  grid-template-areas:
+    'player related'
+    'details related';
+  grid-template-columns: 1fr 360px;
+  grid-template-rows: auto 1fr;
+
+  @include responsive.mobile-and-tablet() {
+    grid-template-areas:
+      'player'
+      'details'
+      'related';
+    grid-template-columns: 1fr;
+  }
+
+  @include responsive.desktop-small-only() {
+    padding: 24px;
+  }
+
+  @include responsive.tablet-only() {
+    padding: 24px;
+  }
+
+  @include responsive.mobile-only() {
+    padding: 16px;
+  }
+}
+
+.player {
+  grid-area: player;
+
+  @include responsive.mobile-only() {
+    margin: -16px -16px 0;
+  }
+}
+
+.videoDetailsInline {
+  grid-area: details;
+  height: 100%;
+}
+
+.relatedVideosList {
+  grid-area: related;
+  position: relative;
+
+  @include responsive.desktop-only() {
+    padding-left: 24px;
+  }
+}
+
+.relatedVideosGrid {
+  height: 100%;
+  padding: 37px 56px 0;
+
+  @include responsive.desktop-small-only() {
+    padding: 34px;
+  }
+
+  @include responsive.tablet-only() {
+    padding: 34px 24px;
+  }
+
+  @include responsive.mobile-only() {
+    padding: 16px;
+  }
+}
