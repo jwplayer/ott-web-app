@@ -1,0 +1,23 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+.related {
+  position: relative;
+  display: flex;
+  align-content: center;
+  padding-bottom: 16px;
+
+  > h3 {
+    margin-right: variables.$base-spacing;
+    font-family: var(--body-alt-font-family);
+    font-weight: var(--body-font-weight-bold);
+    font-size: 24px;
+    line-height: 26px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  @include responsive.mobile-and-tablet() {
+    justify-content: space-between;
+  }
+}
