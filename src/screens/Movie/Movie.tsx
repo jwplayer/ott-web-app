@@ -4,14 +4,15 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import styles from './Movie.module.scss';
-
+import VideoLayout from '#src/components/VideoLayout/VideoLayout';
+import VideoDetailsInline from '#src/components/VideoDetailsInline/VideoDetailsInline';
+import RelatedVideoList from '#src/components/RelatedVideoList/RelatedVideoList';
+import { isLocked } from '#src/utils/entitlements';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, formatVideoMetaString, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
-import CardGrid from '#src/components/CardGrid/CardGrid';
 import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
@@ -27,6 +28,8 @@ import ShareButton from '#src/components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import PlayTrailer from '#src/icons/PlayTrailer';
 import Button from '#src/components/Button/Button';
+import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
+import RelatedVideoGrid from '#src/components/RelatedVideoGrid/RelatedVideoGrid';
 
 const Movie = (): JSX.Element => {
   const { t } = useTranslation('video');
@@ -46,11 +49,12 @@ const Movie = (): JSX.Element => {
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, features } = config;
+  const { siteName, styling, features, custom } = config;
 
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
+  const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Media
   const { isLoading, error, data: item } = useMedia(id);
@@ -89,6 +93,25 @@ const Movie = (): JSX.Element => {
 
   const primaryMetadata = formatVideoMetaString(item);
 
+  const shareButton = enableSharing && <ShareButton title={item.title} description={item.description} url={canonicalUrl} />;
+  const startWatchingButton = <StartWatchingButton item={item} playUrl={videoUrl(item, feedId, true)} />;
+
+  const favoriteButton = isFavoritesEnabled && <FavoriteButton item={item} />;
+  const trailerButton = (!!trailerItem || isTrailerLoading) && (
+    <Button
+      label={t('video:trailer')}
+      aria-label={t('video:watch_trailer')}
+      startIcon={<PlayTrailer />}
+      onClick={() => setPlayTrailer(true)}
+      active={playTrailer}
+      fullWidth={breakpoint < Breakpoint.md}
+      disabled={!trailerItem}
+    />
+  );
+
+  const isLoggedIn = !!user;
+  const hasSubscription = !!subscription;
+
   return (
     <React.Fragment>
       <Helmet>
@@ -115,56 +138,80 @@ const Movie = (): JSX.Element => {
         ))}
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
-      <Cinema
-        open={play && isEntitled}
-        onClose={goBack}
-        item={item}
-        title={item.title}
-        primaryMetadata={primaryMetadata}
-        onComplete={handleComplete}
-        feedId={feedId ?? undefined}
+      <VideoLayout
+        inlineLayout={inlineLayout}
+        inlinePlayer={
+          <InlinePlayer
+            open={play && isEntitled}
+            item={item}
+            onComplete={handleComplete}
+            feedId={feedId ?? undefined}
+            startWatchingButton={startWatchingButton}
+            isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+          />
+        }
+        cinemaPlayer={
+          <Cinema
+            open={play && isEntitled}
+            onClose={goBack}
+            item={item}
+            title={item.title}
+            primaryMetadata={primaryMetadata}
+            onComplete={handleComplete}
+            feedId={feedId ?? undefined}
+          />
+        }
+        VideoDetailsInline={
+          <VideoDetailsInline
+            title={item.title}
+            live={item.duration === 0}
+            description={item.description}
+            primaryMetadata={primaryMetadata}
+            shareButton={shareButton}
+            favoriteButton={favoriteButton}
+            trailerButton={trailerButton}
+          />
+        }
+        videoDetails={
+          <VideoDetails
+            title={item.title}
+            description={item.description}
+            primaryMetadata={primaryMetadata}
+            image={item.backgroundImage}
+            posterMode={posterFading ? 'fading' : 'normal'}
+            shareButton={shareButton}
+            startWatchingButton={startWatchingButton}
+            favoriteButton={favoriteButton}
+            trailerButton={trailerButton}
+          />
+        }
+        relatedVideosGrid={
+          <RelatedVideoGrid
+            playlist={playlist}
+            onCardClick={onCardClick}
+            isLoading={isLoading}
+            enableCardTitles={styling.shelfTitles}
+            accessModel={accessModel}
+            isLoggedIn={isLoggedIn}
+            title={playlist?.title}
+            hasSubscription={hasSubscription}
+          />
+        }
+        relatedVideosList={
+          <RelatedVideoList
+            activeMediaId={item.mediaid}
+            activeLabel={t('current_video')}
+            title={playlist?.title}
+            playlist={playlist?.playlist}
+            onListItemClick={onCardClick}
+            isLoading={isLoading}
+            accessModel={accessModel}
+            isLoggedIn={isLoggedIn}
+            hasSubscription={hasSubscription}
+          />
+        }
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
-      <VideoDetails
-        title={item.title}
-        description={item.description}
-        primaryMetadata={primaryMetadata}
-        image={item.backgroundImage}
-        posterMode={posterFading ? 'fading' : 'normal'}
-        shareButton={enableSharing && <ShareButton title={item.title} description={item.description} url={canonicalUrl} />}
-        startWatchingButton={<StartWatchingButton item={item} playUrl={videoUrl(item, feedId, true)} />}
-        favoriteButton={isFavoritesEnabled && <FavoriteButton item={item} />}
-        trailerButton={
-          (!!trailerItem || isTrailerLoading) && (
-            <Button
-              label={t('video:trailer')}
-              aria-label={t('video:watch_trailer')}
-              startIcon={<PlayTrailer />}
-              onClick={() => setPlayTrailer(true)}
-              active={playTrailer}
-              fullWidth={breakpoint < Breakpoint.md}
-              disabled={!trailerItem}
-            />
-          )
-        }
-      >
-        {playlist ? (
-          <>
-            <div className={styles.related}>
-              <h3>{playlist.title || '\u00A0'}</h3>
-            </div>
-            <CardGrid
-              playlist={playlist}
-              onCardClick={onCardClick}
-              isLoading={isLoading}
-              enableCardTitles={styling.shelfTitles}
-              accessModel={accessModel}
-              isLoggedIn={!!user}
-              hasSubscription={!!subscription}
-            />
-          </>
-        ) : undefined}
-      </VideoDetails>
     </React.Fragment>
   );
 };
