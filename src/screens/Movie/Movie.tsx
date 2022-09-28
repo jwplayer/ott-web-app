@@ -161,7 +161,7 @@ const Movie = (): JSX.Element => {
             feedId={feedId ?? undefined}
           />
         }
-        VideoDetailsInline={
+        videoDetailsInline={
           <VideoDetailsInline
             title={item.title}
             live={item.duration === 0}

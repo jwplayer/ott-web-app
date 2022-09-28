@@ -197,7 +197,7 @@ const Series = (): JSX.Element => {
             feedId={feedId ?? undefined}
           />
         }
-        VideoDetailsInline={
+        videoDetailsInline={
           <VideoDetailsInline
             title={secondaryMetadata}
             description={item.description}
