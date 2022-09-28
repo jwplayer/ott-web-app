@@ -6,10 +6,10 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
     style="transition: opacity 0.25s ease-in-out; opacity: 0;"
   >
     <div
-      class="cinema"
+      class="_cinema_555f3c"
     >
       <div
-        class="container"
+        class="_container_20cd38"
         data-testid="player-container"
       >
         <div />
@@ -18,20 +18,20 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
         style="transition: opacity 0.25s ease-in-out; opacity: 0;"
       >
         <div
-          class="playerOverlay"
+          class="_playerOverlay_555f3c"
         >
           <div
-            class="playerContent"
+            class="_playerContent_555f3c"
           >
             <div
               aria-label="common:back"
-              class="iconButton backButton"
+              class="_iconButton_0fef65 _backButton_555f3c"
               role="button"
               tabindex="0"
             >
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,15 +45,15 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
             </div>
             <div>
               <h2
-                class="title"
+                class="_title_555f3c"
               >
                 Test item title
               </h2>
               <div
-                class="metaContainer"
+                class="_metaContainer_555f3c"
               >
                 <div
-                  class="primaryMetadata"
+                  class="_primaryMetadata_555f3c"
                 >
                   Primary metadata
                 </div>

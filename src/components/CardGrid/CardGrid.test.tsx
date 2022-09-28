@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import { generatePlaylistPlaceholder } from '../../utils/collection';
-
 import CardGrid from './CardGrid';
+
+import { generatePlaylistPlaceholder } from '#src/utils/collection';
 
 describe('<CardGrid>', () => {
   it('renders and matches snapshot', () => {
     const placeholderData = generatePlaylistPlaceholder();
     const { container } = render(
       <CardGrid
-        playlist={placeholderData.playlist}
+        playlist={placeholderData}
         onCardHover={vi.fn()}
         onCardClick={vi.fn()}
         isLoading={false}

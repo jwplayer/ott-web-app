@@ -3,10 +3,10 @@
 exports[`<Checkbox> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="checkbox"
+    class="_checkbox_531f07"
   >
     <div
-      class="row"
+      class="_row_531f07"
     >
       <input
         id="check-box_1235_name"

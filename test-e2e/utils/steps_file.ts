@@ -281,6 +281,23 @@ const stepsObj = {
       }`);
     });
   },
+  seeCardImageSrc: async function (this: CodeceptJS.I, name: string, shelf: ShelfId, src: string) {
+    const locator = `//img[@alt="${name}"]`;
+    await within(makeShelfXpath(shelf), async () => {
+      const cardSrc = await this.grabAttributeFrom(locator, 'src');
+      assert.equal(cardSrc, src, "img element src attribute doesn't match");
+    });
+  },
+  seeVideoDetailsBackgroundImage: async function (this: CodeceptJS.I, name: string, src: string) {
+    const imageLocator = locate({ css: `div[data-testid="video-details"] img[alt="${name}"]` });
+    const imgSrc = await this.grabAttributeFrom(imageLocator, 'src');
+    assert.equal(imgSrc, src, "img element src attribute doesn't match");
+  },
+  seeEpgChannelLogoImage: async function (this: CodeceptJS.I, channelId: string, src: string) {
+    const imageLocator = locate({ css: `div[data-testid="${channelId}"] img[alt="Logo"]` });
+    const imgSrc = await this.grabAttributeFrom(imageLocator, 'src');
+    assert.equal(imgSrc, src, "img element src attribute doesn't match");
+  },
   openVideoCard: async function (
     this: CodeceptJS.I,
     name: string,

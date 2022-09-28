@@ -7,7 +7,6 @@ import styles from './Shelf.module.scss';
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
-import { findPlaylistImageForWidth } from '#src/utils/collection';
 import type { AccessModel, ContentType } from '#types/Config';
 import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#src/components/TileDock/TileDock';
@@ -47,7 +46,7 @@ export type ShelfProps = {
   hasSubscription: boolean;
 };
 
-const Shelf: React.FC<ShelfProps> = ({
+const Shelf = ({
   playlist,
   type,
   onCardClick,
@@ -67,17 +66,15 @@ const Shelf: React.FC<ShelfProps> = ({
   const { t } = useTranslation('common');
   const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
-  const isLargeScreen = breakpoint >= Breakpoint.md;
-  const imageSourceWidth = (featured ? 640 : 320) * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
 
   const renderTile = useCallback(
-    (item, isInView) => (
+    (item: PlaylistItem, isInView: boolean) => (
       <Card
         title={item.title}
         enableTitle={enableCardTitles}
         duration={item.duration}
         progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-        posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
+        image={item.shelfImage}
         seriesId={item.seriesId}
         seasonNumber={item.seasonNumber}
         episodeNumber={item.episodeNumber}
@@ -89,20 +86,7 @@ const Shelf: React.FC<ShelfProps> = ({
         isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
       />
     ),
-    [
-      enableCardTitles,
-      featured,
-      imageSourceWidth,
-      loading,
-      onCardClick,
-      onCardHover,
-      playlist.feedid,
-      watchHistory,
-      accessModel,
-      isLoggedIn,
-      hasSubscription,
-      type,
-    ],
+    [playlist, enableCardTitles, watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, onCardClick, type],
   );
 
   const renderRightControl = useCallback(

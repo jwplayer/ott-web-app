@@ -3,7 +3,7 @@
 exports[`<Player> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="container"
+    class="_container_20cd38"
     data-testid="player-container"
   >
     <div />

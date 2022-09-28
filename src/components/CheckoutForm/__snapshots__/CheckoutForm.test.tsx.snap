@@ -5,13 +5,13 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
   <div>
     <div
       aria-label="Go back"
-      class="iconButton dialogBackButton"
+      class="_iconButton_0fef65 _dialogBackButton_248199"
       role="button"
       tabindex="0"
     >
       <svg
         aria-hidden="true"
-        class="icon"
+        class="_icon_1e9999"
         focusable="false"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
@@ -24,24 +24,24 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
       </svg>
     </div>
     <h2
-      class="title"
+      class="_title_abc9bc"
     >
       checkout.payment_method
     </h2>
     <div
-      class="order"
+      class="_order_abc9bc"
     >
       <div
-        class="orderInfo"
+        class="_orderInfo_abc9bc"
       >
         <p
-          class="orderTitle orderTitleMargin"
+          class="_orderTitle_abc9bc _orderTitleMargin_abc9bc"
         >
           checkout.monthly
         </p>
       </div>
       <div
-        class="orderPrice"
+        class="_orderPrice_abc9bc"
       >
         <span>
           € 6,99
@@ -53,10 +53,10 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="couponForm"
+      class="_couponForm_abc9bc"
     >
       <button
-        class="button default outlined"
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       >
         <span>
           checkout.redeem_coupon
@@ -65,7 +65,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
     </div>
     <div>
       <table
-        class="orderTotals"
+        class="_orderTotals_abc9bc"
       >
         <tbody>
           <tr>
@@ -98,10 +98,10 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
       </table>
     </div>
     <hr
-      class="divider"
+      class="_divider_abc9bc"
     />
     <div
-      class="paymentMethods"
+      class="_paymentMethods_abc9bc"
     />
     <div />
   </div>

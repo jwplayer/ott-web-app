@@ -4,12 +4,12 @@ import type { GridCellProps } from 'react-virtualized';
 import styles from './CardGrid.module.scss';
 
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
-import { chunk, findPlaylistImageForWidth } from '#src/utils/collection';
+import { chunk } from '#src/utils/collection';
 import { isLocked } from '#src/utils/entitlements';
 import Card from '#src/components/Card/Card';
 import VirtualizedGrid from '#src/components/VirtualizedGrid/VirtualizedGrid';
 import type { AccessModel } from '#types/Config';
-import type { PlaylistItem } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 const defaultCols: Breakpoints = {
   [Breakpoint.xs]: 2,
@@ -20,7 +20,7 @@ const defaultCols: Breakpoints = {
 };
 
 type CardGridProps = {
-  playlist: PlaylistItem[];
+  playlist: Playlist;
   onCardHover?: (item: PlaylistItem) => void;
   onCardClick: (item: PlaylistItem, playlistId?: string) => void;
   watchHistory?: { [key: string]: number };
@@ -49,15 +49,13 @@ function CardGrid({
   hasSubscription,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
-  const isLargeScreen = breakpoint >= Breakpoint.md;
-  const imageSourceWidth = 320 * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
-  const rows = chunk<PlaylistItem>(playlist, cols[breakpoint]);
+  const rows = chunk<PlaylistItem>(playlist.playlist, cols[breakpoint]);
 
   const cellRenderer = ({ columnIndex, rowIndex, style }: GridCellProps) => {
     if (!rows[rowIndex][columnIndex]) return;
 
     const playlistItem: PlaylistItem = rows[rowIndex][columnIndex];
-    const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber } = playlistItem;
+    const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage } = playlistItem;
 
     return (
       <div className={styles.cell} style={style} key={mediaid} role="row">
@@ -67,7 +65,7 @@ function CardGrid({
             title={title}
             enableTitle={enableCardTitles}
             duration={duration}
-            posterSource={findPlaylistImageForWidth(playlistItem, imageSourceWidth)}
+            image={shelfImage}
             progress={watchHistory ? watchHistory[mediaid] : undefined}
             seriesId={seriesId}
             episodeNumber={episodeNumber}

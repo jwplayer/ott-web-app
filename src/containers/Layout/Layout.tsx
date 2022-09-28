@@ -1,7 +1,7 @@
-import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
 import styles from './Layout.module.scss';
@@ -18,14 +18,11 @@ import DynamicBlur from '#src/components/DynamicBlur/DynamicBlur';
 import MenuButton from '#src/components/MenuButton/MenuButton';
 import UserMenu from '#src/components/UserMenu/UserMenu';
 import ConfigSelect from '#src/components/ConfigSelect';
-import { addQueryParam } from '#src/utils/history';
+import { addQueryParam } from '#src/utils/location';
 
-type LayoutProps = {
-  children?: ReactNode;
-};
-
-const Layout: FC<LayoutProps> = ({ children }) => {
-  const history = useHistory();
+const Layout = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { menu, assets, siteName, description, integrations, styling, features } = config;
@@ -60,7 +57,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const searchButtonClickHandler = () => {
     useUIStore.setState({
       searchActive: true,
-      preSearchPage: history.location,
+      preSearchPage: location,
     });
   };
 
@@ -73,11 +70,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   };
 
   const loginButtonClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'login'));
+    navigate(addQueryParam(location, 'u', 'login'));
   };
 
   const signUpButtonClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'create-account'));
+    navigate(addQueryParam(location, 'u', 'create-account'));
   };
 
   const toggleUserMenu = (value: boolean) =>
@@ -109,7 +106,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         <meta name="twitter:description" content={description} />
       </Helmet>
       <div className={styles.main}>
-        {hasDynamicBlur && blurImage && <DynamicBlur url={blurImage} transitionTime={1} debounceTime={350} />}
+        {hasDynamicBlur && blurImage && <DynamicBlur image={blurImage} transitionTime={1} debounceTime={350} />}
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
           logoSrc={banner}
@@ -144,7 +141,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           <hr className={styles.divider} />
           {renderUserActions()}
         </Sidebar>
-        {children}
+        <Outlet />
       </div>
       {!!footerText && (
         <div className={styles.footer}>

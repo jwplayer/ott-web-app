@@ -9,7 +9,7 @@ exports[`<Form> > renders Form 1`] = `
       </h3>
     </div>
     <div
-      class="flexBox"
+      class="_flexBox_1c1c63"
     >
       <input
         name="test"
@@ -17,10 +17,10 @@ exports[`<Form> > renders Form 1`] = `
       />
     </div>
     <div
-      class="controls"
+      class="_controls_1c1c63"
     >
       <button
-        class="button default outlined"
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
         type="button"
       >
         <span>

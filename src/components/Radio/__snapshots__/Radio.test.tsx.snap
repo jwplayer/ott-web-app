@@ -4,7 +4,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
 <div>
   <div>
     <div
-      class="header"
+      class="_header_d50e6e"
     >
       Choose a Value
       <span>
@@ -12,7 +12,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       </span>
     </div>
     <div
-      class="radio"
+      class="_radio_d50e6e"
     >
       <input
         checked=""
@@ -28,7 +28,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       </label>
     </div>
     <div
-      class="radio"
+      class="_radio_d50e6e"
     >
       <input
         id="radio_1235_radio1"
@@ -43,7 +43,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       </label>
     </div>
     <div
-      class="radio"
+      class="_radio_d50e6e"
     >
       <input
         id="radio_1235_radio2"
@@ -58,7 +58,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       </label>
     </div>
     <div
-      class="helperText"
+      class="_helperText_da58e0"
     >
       This is required!
     </div>

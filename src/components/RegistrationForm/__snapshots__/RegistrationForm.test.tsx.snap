@@ -7,24 +7,24 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
     novalidate=""
   >
     <h2
-      class="title"
+      class="_title_a472a0"
     >
       registration.sign_up
     </h2>
     <div
-      class="textField"
+      class="_textField_e16c1b"
     >
       <label
-        class="label"
+        class="_label_e16c1b"
         for="text-field_1235_email"
       >
         registration.email
       </label>
       <div
-        class="container"
+        class="_container_e16c1b"
       >
         <input
-          class="input"
+          class="_input_e16c1b"
           id="text-field_1235_email"
           name="email"
           placeholder="registration.email"
@@ -35,19 +35,19 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="textField rightControl"
+      class="_textField_e16c1b _rightControl_e16c1b"
     >
       <label
-        class="label"
+        class="_label_e16c1b"
         for="text-field_1235_password"
       >
         registration.password
       </label>
       <div
-        class="container"
+        class="_container_e16c1b"
       >
         <input
-          class="input"
+          class="_input_e16c1b"
           id="text-field_1235_password"
           name="password"
           placeholder="registration.password"
@@ -56,17 +56,17 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
           value=""
         />
         <div
-          class="control"
+          class="_control_e16c1b"
         >
           <div
             aria-label="registration.view_password"
-            class="iconButton"
+            class="_iconButton_0fef65"
             role="button"
             tabindex="0"
           >
             <svg
               aria-hidden="true"
-              class="icon"
+              class="_icon_1e9999"
               focusable="false"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -81,14 +81,14 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="helperText"
+        class="_helperText_da58e0"
       >
         registration.password_helper_text
       </div>
     </div>
     <button
       aria-disabled="false"
-      class="button continue primary fullWidth large"
+      class="_button_f8f296 _continue_a472a0 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
       type="submit"
     >
       <span>
@@ -96,12 +96,12 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
       </span>
     </button>
     <p
-      class="bottom"
+      class="_bottom_a472a0"
     >
       registration.already_account
        
       <a
-        class="link"
+        class="_link_a14c64"
         href="/?u=login"
       >
         login.sign_in

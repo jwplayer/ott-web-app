@@ -21,12 +21,11 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, tabIndex = 0, active 
     return (
       <NavLink
         aria-label={label}
-        className={classNames(styles.menuButton, { [styles.small]: small })}
+        className={({ isActive }) => classNames(styles.menuButton, { [styles.small]: small }, { [styles.active]: isActive })}
         onClick={onClick}
-        activeClassName={styles.active}
         to={to}
         tabIndex={tabIndex}
-        exact
+        end
       >
         {icon}
         <span className={styles.label}>{label}</span>

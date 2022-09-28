@@ -3,7 +3,6 @@ import { getI18n, I18nextProvider } from 'react-i18next';
 
 import type { Config } from '#types/Config';
 import Router from '#src/components/Router/Router';
-import Root from '#src/components/Root/Root';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
@@ -14,6 +13,7 @@ import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { clearStoredConfig } from '#src/utils/configOverride';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
 import initI18n from '#src/i18n/config';
+
 import '#src/styles/main.scss';
 
 interface State {
@@ -79,9 +79,7 @@ class App extends Component {
     return (
       <I18nextProvider i18n={getI18n()}>
         <QueryProvider>
-          <Router>
-            <Root error={error} />
-          </Router>
+          <Router error={error} />
         </QueryProvider>
       </I18nextProvider>
     );

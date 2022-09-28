@@ -3,14 +3,14 @@
 exports[`<ShareButton> > renders and matches snapshot 1`] = `
 <div>
   <button
-    class="button default outlined"
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
   >
     <div
-      class="startIcon"
+      class="_startIcon_f8f296"
     >
       <svg
         aria-hidden="true"
-        class="icon"
+        class="_icon_1e9999"
         focusable="false"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"

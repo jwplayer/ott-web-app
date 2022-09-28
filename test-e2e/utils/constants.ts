@@ -3,6 +3,7 @@ const baseUrl = 'http://localhost:8080/';
 export enum ShelfId {
   featured = 'featured',
   allFilms = 'all-films',
+  allCourses = 'all-courses',
   continueWatching = 'continue_watching',
   favorites = 'favorites',
   liveChannels = 'live-channels',

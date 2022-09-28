@@ -3,11 +3,11 @@
 exports[`<SearchBar> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="searchBar"
+    class="_searchBar_3bb1d7"
   >
     <svg
       aria-hidden="true"
-      class="icon icon"
+      class="_icon_1e9999 _icon_3bb1d7"
       focusable="false"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
@@ -20,20 +20,20 @@ exports[`<SearchBar> > renders and matches snapshot 1`] = `
     </svg>
     <input
       aria-label="search_bar.search_label"
-      class="input"
+      class="_input_3bb1d7"
       placeholder="search_bar.search_placeholder"
       type="text"
       value="My search query"
     />
     <div
       aria-label="search_bar.clear_search_label"
-      class="iconButton clearButton"
+      class="_iconButton_0fef65 _clearButton_3bb1d7"
       role="button"
       tabindex="0"
     >
       <svg
         aria-hidden="true"
-        class="icon"
+        class="_icon_1e9999"
         focusable="false"
         viewBox="0 0 18 18"
         xmlns="http://www.w3.org/2000/svg"

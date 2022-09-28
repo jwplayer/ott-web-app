@@ -1,10 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 
 import useToggle from '../../hooks/useToggle';
-import { addQueryParam } from '../../utils/history';
 import TextField from '../TextField/TextField';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
@@ -19,6 +18,7 @@ import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './RegistrationForm.module.scss';
 
+import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { RegistrationFormData, Consent } from '#types/account';
 
@@ -54,7 +54,7 @@ const RegistrationForm: React.FC<Props> = ({
   const [viewPassword, toggleViewPassword] = useToggle();
 
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const location = useLocation();
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
     const sanitizedLabel = DOMPurify.sanitize(label);
@@ -138,7 +138,7 @@ const RegistrationForm: React.FC<Props> = ({
         fullWidth
       />
       <p className={styles.bottom}>
-        {t('registration.already_account')} <Link to={addQueryParam(history, 'u', 'login')}>{t('login.sign_in')}</Link>
+        {t('registration.already_account')} <Link to={addQueryParam(location, 'u', 'login')}>{t('login.sign_in')}</Link>
       </p>
       {submitting && <LoadingOverlay transparentBackground inline />}
     </form>

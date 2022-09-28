@@ -1,26 +1,27 @@
 import React from 'react';
 import { object, SchemaOf, string } from 'yup';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import { removeQueryParam } from '../../../utils/history';
 import { useConfigStore } from '../../../stores/ConfigStore';
 
+import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
 
 const Login = () => {
   const { siteName } = useConfigStore((s) => s.config);
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation('account');
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await login(formData.email, formData.password);
 
       // close modal
-      history.push(removeQueryParam(history, 'u'));
+      navigate(removeQueryParam(location, 'u'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {

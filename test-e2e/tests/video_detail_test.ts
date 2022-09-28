@@ -25,6 +25,16 @@ Scenario('Video detail screen loads', async ({ I }) => {
   I.see('11 min', { css: 'div[aria-label="Play Elephants Dream"]' });
 });
 
+Scenario('I can see an alternate background image for Agent 327', async ({ I }) => {
+  await I.openVideoCard('Agent 327');
+  await I.seeVideoDetailsBackgroundImage('Agent 327', 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/background.jpg?width=1280');
+});
+
+Scenario('I can see the default background image for Elephants Dream', async ({ I }) => {
+  await I.openVideoCard('Elephants Dream');
+  await I.seeVideoDetailsBackgroundImage('Elephants Dream', 'https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=1280');
+});
+
 Scenario('I can expand the description (@mobile-only)', async ({ I }) => {
   await I.openVideoCard('Agent 327');
 

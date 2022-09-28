@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import styles from './StartWatchingButton.module.scss';
 
 import Play from '#src/icons/Play';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Button from '#src/components/Button/Button';
-import { addQueryParam } from '#src/utils/history';
+import { addQueryParam } from '#src/utils/location';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import type { PlaylistItem } from '#types/playlist';
@@ -22,7 +22,8 @@ type Props = {
 
 const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false }) => {
   const { t } = useTranslation('video');
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const breakpoint = useBreakpoint();
 
   // account
@@ -47,12 +48,12 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
   }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    if (isEntitled) return playUrl && history.push(playUrl);
-    if (!isLoggedIn) return history.push(addQueryParam(history, 'u', 'create-account'));
-    if (hasMediaOffers) return history.push(addQueryParam(history, 'u', 'choose-offer'));
+    if (isEntitled) return playUrl && navigate(playUrl);
+    if (!isLoggedIn) return navigate(addQueryParam(location, 'u', 'create-account'));
+    if (hasMediaOffers) return navigate(addQueryParam(location, 'u', 'choose-offer'));
 
-    return history.push('/u/payments');
-  }, [isEntitled, playUrl, history, isLoggedIn, hasMediaOffers]);
+    return navigate('/u/payments');
+  }, [isEntitled, playUrl, navigate, isLoggedIn, location, hasMediaOffers]);
 
   useEffect(() => {
     // set the TVOD mediaOffers in the checkout store

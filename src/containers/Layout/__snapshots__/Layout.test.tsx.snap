@@ -3,29 +3,29 @@
 exports[`<Layout /> > renders layout 1`] = `
 <div>
   <div
-    class="layout"
+    class="_layout_c71437"
   >
     <div
-      class="main"
+      class="_main_c71437"
     >
       <header
-        class="header static"
+        class="_header_f4f7a7 _static_f4f7a7"
       >
         <div
-          class="container"
+          class="_container_f4f7a7"
         >
           <div
-            class="menu"
+            class="_menu_f4f7a7"
           >
             <div
               aria-label="open_menu"
-              class="iconButton iconButton"
+              class="_iconButton_0fef65 _iconButton_f4f7a7"
               role="button"
               tabindex="0"
             >
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,11 +44,11 @@ exports[`<Layout /> > renders layout 1`] = `
           </div>
           <nav
             aria-label="menu"
-            class="nav"
+            class="_nav_f4f7a7"
           >
             <a
               aria-current="page"
-              class="button default text active"
+              class="_button_f8f296 _default_f8f296 _text_f8f296 _active_f8f296"
               href="/"
             >
               <span>
@@ -57,28 +57,28 @@ exports[`<Layout /> > renders layout 1`] = `
             </a>
           </nav>
           <div
-            class="search"
+            class="_search_f4f7a7"
           />
         </div>
       </header>
       <div
-        class="backdrop"
+        class="_backdrop_577f70"
       />
       <div
-        class="sidebar"
+        class="_sidebar_577f70"
       >
         <div
-          class="heading"
+          class="_heading_577f70"
         >
           <div
             aria-label="close_menu"
-            class="iconButton"
+            class="_iconButton_0fef65"
             role="button"
             tabindex="-1"
           >
             <svg
               aria-hidden="true"
-              class="icon"
+              class="_icon_1e9999"
               focusable="false"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -96,12 +96,12 @@ exports[`<Layout /> > renders layout 1`] = `
           </div>
         </div>
         <nav
-          class="group"
+          class="_group_577f70"
         >
           <a
             aria-current="page"
             aria-label="home"
-            class="menuButton active"
+            class="_menuButton_91706b _active_91706b"
             href="/"
             tabindex="-1"
           >
@@ -110,7 +110,7 @@ exports[`<Layout /> > renders layout 1`] = `
             </span>
           </a>
           <hr
-            class="divider"
+            class="_divider_c71437"
           />
         </nav>
       </div>

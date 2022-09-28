@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
 import { useAccountStore } from '../../../stores/AccountStore';
-import { addQueryParam, removeQueryParam } from '../../../utils/history';
 import ResetPasswordForm from '../../../components/ResetPasswordForm/ResetPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
 import ForgotPasswordForm from '../../../components/ForgotPasswordForm/ForgotPasswordForm';
 import type { ForgotPasswordFormData } from '../../../../types/account';
 import ConfirmationForm from '../../../components/ConfirmationForm/ConfirmationForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { addQueryParams } from '../../../utils/formatting';
-import { logDev } from '../../../utils/common';
 
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
+import { addQueryParams } from '#src/utils/formatting';
+import { logDev } from '#src/utils/common';
 import { logout, resetPassword } from '#src/stores/AccountController';
 
 type Prop = {
@@ -22,19 +22,20 @@ type Prop = {
 
 const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const user = useAccountStore((state) => state.user);
   const [resetPasswordSubmitting, setResetPasswordSubmitting] = useState<boolean>(false);
 
   const cancelClickHandler = () => {
-    history.push(removeQueryParam(history, 'u'));
+    navigate(removeQueryParam(location, 'u'));
   };
 
   const backToLoginClickHandler = async () => {
     if (user) {
       await logout();
     }
-    history.push(addQueryParams('/', { u: 'login' }));
+    navigate(addQueryParams('/', { u: 'login' }));
   };
 
   const resetPasswordClickHandler = async () => {
@@ -47,7 +48,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
       await resetPassword(user.email, resetUrl);
 
       setResetPasswordSubmitting(false);
-      history.push(addQueryParam(history, 'u', 'send-confirmation'));
+      navigate(addQueryParam(location, 'u', 'send-confirmation'));
     } catch (error: unknown) {
       logDev(error instanceof Error ? error.message : error);
     }
@@ -58,7 +59,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
 
     try {
       await resetPassword(formData.email, resetUrl);
-      history.push(addQueryParam(history, 'u', 'send-confirmation'));
+      navigate(addQueryParam(location, 'u', 'send-confirmation'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {

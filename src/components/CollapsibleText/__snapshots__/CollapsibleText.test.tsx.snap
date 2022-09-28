@@ -3,10 +3,10 @@
 exports[`<CollapsibleText> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="collapsibleText"
+    class="_collapsibleText_561522"
   >
     <div
-      class="textContainer"
+      class="_textContainer_561522"
       style="max-height: none;"
     >
       Test...
