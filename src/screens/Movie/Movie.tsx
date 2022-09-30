@@ -145,6 +145,7 @@ const Movie = (): JSX.Element => {
         trailerButton={trailerButton}
         posterMode={posterFading ? 'fading' : 'normal'}
         startWatchingButton={startWatchingButton}
+        image={item.backgroundImage}
         isLoading={isLoading}
         accessModel={accessModel}
         isLoggedIn={isLoggedIn}

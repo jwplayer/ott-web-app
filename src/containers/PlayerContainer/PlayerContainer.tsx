@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-
-import useQueryParam from '../../hooks/useQueryParam';
+import { useSearchParams } from 'react-router-dom';
 
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import type { PlaylistItem } from '#types/playlist';
@@ -40,7 +39,9 @@ const PlayerContainer: React.FC<Props> = ({
   liveFromBeginning,
   liveStartDateTime,
 }: Props) => {
-  const autostart = useQueryParam('play') === '1';
+  // useQueryParams is not used here because the useEffect in it causes play to be false on the first render
+  const [searchParams] = useSearchParams();
+  const autostart = searchParams.get('play') === '1';
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;

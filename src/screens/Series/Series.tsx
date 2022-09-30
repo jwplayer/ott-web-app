@@ -176,6 +176,7 @@ const Series = (): JSX.Element => {
         inlineLayout={inlineLayout}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
+        image={item.backgroundImage}
         shareButton={shareButton}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
