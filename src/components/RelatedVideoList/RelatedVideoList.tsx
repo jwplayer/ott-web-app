@@ -62,7 +62,7 @@ function RelatedVideoList({
           defaultLabel={defaultFilterLabel}
           options={filters}
           setValue={setFilter}
-          dropDown
+          forceDropdown
         />
       )}
     </div>

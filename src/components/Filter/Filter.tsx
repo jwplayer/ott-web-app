@@ -14,11 +14,11 @@ type Props = {
   valuePrefix?: string;
   defaultLabel: string;
   options: string[];
-  dropDown?: boolean;
+  forceDropdown?: boolean;
   setValue: (value: string) => void;
 };
 
-const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '', dropDown = false }) => {
+const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '', forceDropdown = false }) => {
   const { t } = useTranslation('common');
   const breakpoint: Breakpoint = useBreakpoint();
 
@@ -27,7 +27,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
   }
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
 
-  const showFilterRow = !dropDown && breakpoint >= Breakpoint.md && options.length < 6;
+  const showFilterRow = !forceDropdown && breakpoint >= Breakpoint.md && options.length < 6;
 
   return (
     <Fragment>
