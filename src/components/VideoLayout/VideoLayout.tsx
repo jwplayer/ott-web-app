@@ -1,7 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
 
-import type { AccessModel } from '../../../types/Config';
-import type { PosterMode, Playlist, PlaylistItem, ImageData } from '../../../types/playlist';
 import CardGrid from '../CardGrid/CardGrid';
 import Filter from '../Filter/Filter';
 import VideoDetails from '../VideoDetails/VideoDetails';
@@ -10,86 +9,98 @@ import VideoList from '../VideoList/VideoList';
 
 import styles from './VideoLayout.module.scss';
 
-type Props = {
-  inlineLayout: boolean;
-  inlinePlayer?: React.ReactNode;
-  cinema: React.ReactNode;
+import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';
+import type { AccessModel } from '#types/Config';
+
+type FilterProps = {
+  filterMetadata?: React.ReactNode;
+  filters?: string[];
+  currentFilter?: string;
+  defaultFilterLabel?: string;
+  filterValuePrefix?: string;
+  setFilter?: (value: string) => void;
+};
+
+type VideoDetailsProps = {
   title: string;
   description: string;
+  posterMode: PosterMode;
   image?: ImageData;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
-  posterMode: PosterMode;
-  startWatchingButton: React.ReactNode;
   shareButton: React.ReactNode;
   favoriteButton: React.ReactNode;
   trailerButton: React.ReactNode;
-  epg?: React.ReactNode;
+  startWatchingButton: React.ReactNode;
+  live?: boolean;
+};
+
+type VideoListProps = {
+  relatedTitle?: string;
+  onItemClick?: (item: PlaylistItem) => void;
+  onItemHover?: (item: PlaylistItem) => void;
+  watchHistory?: { [key: string]: number };
+  activeMediaId?: string;
+  activeLabel?: string;
+  enableCardTitles?: boolean;
+};
+
+type Props = {
+  inlineLayout: boolean;
+  player: React.ReactNode;
   isLoading: boolean;
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
   childrenPadding?: boolean;
   item?: PlaylistItem;
-  relatedContentProps?: {
-    playlist?: Playlist;
-    relatedTitle?: string;
-    enableCardTitles?: boolean;
-    onRelatedItemClick: (item: PlaylistItem, playlistId?: string) => void;
-    watchHistoryDictionary?: { [key: string]: number };
-    activeLabel?: string;
-    filterMetadata?: React.ReactNode;
-    filters?: string[];
-    currentFilter?: string;
-    defaultFilterLabel?: string;
-    filterValuePrefix?: string;
-    setFilter?: (value: string) => void;
-  };
-};
+  playlist?: Playlist;
+} & FilterProps &
+  VideoDetailsProps &
+  VideoListProps;
 
 const VideoLayout: React.FC<Props> = ({
   inlineLayout,
-  inlinePlayer,
-  cinema,
-  title,
-  description,
-  image,
-  primaryMetadata,
-  secondaryMetadata,
-  posterMode,
-  startWatchingButton,
-  shareButton,
-  favoriteButton,
-  trailerButton,
+  player,
+  playlist,
   accessModel,
   isLoading,
   isLoggedIn,
   item,
   hasSubscription,
-  relatedContentProps,
   childrenPadding,
-  epg,
-}: Props) => {
-  const {
-    relatedTitle,
-    enableCardTitles,
-    onRelatedItemClick,
-    setFilter,
-    currentFilter = '',
-    defaultFilterLabel = '',
-    watchHistoryDictionary,
-    filterMetadata,
-    filterValuePrefix,
-    filters,
-    activeLabel,
-    playlist,
-  } = relatedContentProps || {};
+  // video details
+  title,
+  description,
+  image,
+  posterMode,
+  primaryMetadata,
+  secondaryMetadata,
+  shareButton,
+  favoriteButton,
+  startWatchingButton,
+  trailerButton,
+  // list
+  onItemClick,
+  relatedTitle,
+  watchHistory,
+  activeLabel,
+  enableCardTitles = true,
+  // filters
+  filters,
+  setFilter,
+  filterMetadata,
+  filterValuePrefix,
+  currentFilter = '',
+  defaultFilterLabel = '',
+  children,
+}) => {
   const hasFilters = filters && filters.length > 0;
   const showFilters = hasFilters && setFilter;
 
   const renderFilters = (forceDropdown: boolean) => (
-    <div className={styles.filters}>
-      {!!filterMetadata && <span className={styles.filterMetadata}>{filterMetadata}</span>}
+    <div className={classNames(styles.filters, { [styles.filtersInline]: inlineLayout })}>
+      {!!filterMetadata && inlineLayout && <span className={styles.filterMetadata}>{filterMetadata}</span>}
       {showFilters && (
         <Filter
           name="categories"
@@ -104,25 +115,25 @@ const VideoLayout: React.FC<Props> = ({
     </div>
   );
 
-  if (inlineLayout && inlinePlayer) {
+  if (inlineLayout) {
     return (
       <div className={styles.videoInlineLayout}>
-        <div className={styles.player}>{inlinePlayer}</div>
-        {relatedContentProps && onRelatedItemClick && (
+        <div className={styles.player}>{player}</div>
+        {playlist && onItemClick && (
           <div className={styles.relatedVideosList}>
             <VideoList
               className={styles.videoList}
               header={
                 <>
-                  {relatedTitle && <h3 className={styles.relatedVideosListTitle}>{relatedTitle}</h3>}
+                  {title && <h3 className={styles.relatedVideosListTitle}>{relatedTitle}</h3>}
                   {hasFilters && renderFilters(true)}
                 </>
               }
               activeMediaId={item?.mediaid}
               activeLabel={activeLabel}
-              playlist={playlist?.playlist}
-              onListItemClick={onRelatedItemClick}
-              watchHistory={watchHistoryDictionary}
+              playlist={playlist}
+              onListItemClick={onItemClick}
+              watchHistory={watchHistory}
               isLoading={isLoading}
               accessModel={accessModel}
               isLoggedIn={isLoggedIn}
@@ -147,32 +158,34 @@ const VideoLayout: React.FC<Props> = ({
 
   return (
     <div className={styles.videoCinemaLayout}>
-      {cinema}
+      {player}
       <VideoDetails
         title={title}
         description={description}
-        primaryMetadata={primaryMetadata}
         image={image}
-        posterMode={posterMode}
-        shareButton={shareButton}
         startWatchingButton={startWatchingButton}
-        secondaryMetadata={secondaryMetadata}
+        childrenPadding={childrenPadding}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
-        childrenPadding={childrenPadding}
+        shareButton={shareButton}
+        posterMode={posterMode}
+        primaryMetadata={primaryMetadata}
+        secondaryMetadata={secondaryMetadata}
       >
-        {epg}
+        {children}
       </VideoDetails>
-      {!!epg && playlist && relatedContentProps && onRelatedItemClick && (
-        <div className={styles.relatedVideosGrid}>
-          {relatedTitle && <h3 className={styles.relatedVideosGridTitle}>{relatedTitle}</h3>}
-          {hasFilters && renderFilters(false)}
+      {playlist && onItemClick && (
+        <div className={styles.relatedVideos}>
+          <div className={styles.relatedVideosGrid}>
+            {relatedTitle && <h3 className={styles.relatedVideosGridTitle}>{relatedTitle}</h3>}
+            {hasFilters && renderFilters(false)}
+          </div>
           <CardGrid
             playlist={playlist}
-            onCardClick={onRelatedItemClick}
+            onCardClick={onItemClick}
             isLoading={isLoading}
             enableCardTitles={enableCardTitles}
-            watchHistory={watchHistoryDictionary}
+            watchHistory={watchHistory}
             accessModel={accessModel}
             isLoggedIn={isLoggedIn}
             currentCardItem={item}

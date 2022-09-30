@@ -173,6 +173,7 @@ const Series = (): JSX.Element => {
         item={item}
         title={item.title}
         description={item.description}
+        image={item.backgroundImage}
         inlineLayout={inlineLayout}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
@@ -186,41 +187,40 @@ const Series = (): JSX.Element => {
         accessModel={accessModel}
         isLoggedIn={isLoggedIn}
         hasSubscription={hasSubscription}
-        relatedContentProps={{
-          playlist: filteredPlaylist,
-          relatedTitle: seriesPlaylist.title,
-          onRelatedItemClick: onCardClick,
-          enableCardTitles: styling.shelfTitles,
-          setFilter: setSeasonFilter,
-          currentFilter: seasonFilter,
-          filterValuePrefix: t('season_prefix'),
-          defaultFilterLabel: t('all_seasons'),
-          activeLabel: t('current_episode'),
-          watchHistoryDictionary,
-          filterMetadata,
-          filters,
-        }}
-        inlinePlayer={
-          <InlinePlayer
-            isLoggedIn={isLoggedIn}
-            item={item}
-            onComplete={handleComplete}
-            feedId={feedId ?? undefined}
-            startWatchingButton={startWatchingButton}
-            paywall={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
-          />
-        }
-        cinema={
-          <Cinema
-            open={play && isEntitled}
-            onClose={goBack}
-            item={item}
-            title={seriesPlaylist.title}
-            primaryMetadata={primaryMetadata}
-            secondaryMetadata={secondaryMetadata}
-            onComplete={handleComplete}
-            feedId={feedId ?? undefined}
-          />
+        playlist={filteredPlaylist}
+        relatedTitle={seriesPlaylist.title}
+        onItemClick={onCardClick}
+        enableCardTitles={styling.shelfTitles}
+        setFilter={setSeasonFilter}
+        currentFilter={seasonFilter}
+        filterValuePrefix={t('season_prefix')}
+        defaultFilterLabel={t('all_seasons')}
+        activeLabel={t('current_episode')}
+        watchHistory={watchHistoryDictionary}
+        filterMetadata={filterMetadata}
+        filters={filters}
+        player={
+          inlineLayout ? (
+            <InlinePlayer
+              isLoggedIn={isLoggedIn}
+              item={item}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
+              startWatchingButton={startWatchingButton}
+              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+            />
+          ) : (
+            <Cinema
+              open={play && isEntitled}
+              onClose={goBack}
+              item={item}
+              title={seriesPlaylist.title}
+              primaryMetadata={primaryMetadata}
+              secondaryMetadata={secondaryMetadata}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
+            />
+          )
         }
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />

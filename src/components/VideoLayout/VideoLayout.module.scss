@@ -58,17 +58,9 @@
   }
 }
 
-.relatedVideosGrid {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%;
+.relatedVideos {
   padding: 37px 56px 0;
   padding-bottom: 16px;
-
-  @include responsive.mobile-and-tablet() {
-    justify-content: space-between;
-  }
 
   @include responsive.desktop-small-only() {
     padding: 34px;
@@ -80,6 +72,18 @@
 
   @include responsive.mobile-only() {
     padding: 16px;
+  }
+}
+
+.relatedVideosGrid {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-bottom: 16px;
+
+  @include responsive.mobile-and-tablet() {
+    justify-content: space-between;
   }
 }
 
@@ -105,6 +109,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.filtersInline {
   margin-bottom: variables.$base-spacing;
   padding-bottom: variables.$base-spacing;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);

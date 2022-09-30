@@ -136,47 +136,46 @@ const Movie = (): JSX.Element => {
       </Helmet>
       <VideoLayout
         item={item}
+        inlineLayout={inlineLayout}
+        isLoading={isLoading}
+        accessModel={accessModel}
+        isLoggedIn={isLoggedIn}
+        hasSubscription={hasSubscription}
         title={item.title}
         description={item.description}
-        inlineLayout={inlineLayout}
+        image={item.backgroundImage}
         primaryMetadata={primaryMetadata}
         shareButton={shareButton}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
         posterMode={posterFading ? 'fading' : 'normal'}
         startWatchingButton={startWatchingButton}
-        image={item.backgroundImage}
-        isLoading={isLoading}
-        accessModel={accessModel}
-        isLoggedIn={isLoggedIn}
-        hasSubscription={hasSubscription}
-        relatedContentProps={{
-          relatedTitle: playlist?.title,
-          onRelatedItemClick: onCardClick,
-          activeLabel: t('current_video'),
-          enableCardTitles: styling.shelfTitles,
-          playlist: playlist,
-        }}
-        inlinePlayer={
-          <InlinePlayer
-            isLoggedIn={isLoggedIn}
-            item={item}
-            onComplete={handleComplete}
-            feedId={feedId ?? undefined}
-            startWatchingButton={startWatchingButton}
-            paywall={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
-          />
-        }
-        cinema={
-          <Cinema
-            open={play && isEntitled}
-            onClose={goBack}
-            item={item}
-            title={item.title}
-            primaryMetadata={primaryMetadata}
-            onComplete={handleComplete}
-            feedId={feedId ?? undefined}
-          />
+        playlist={playlist}
+        relatedTitle={playlist?.title}
+        onItemClick={onCardClick}
+        activeLabel={t('current_video')}
+        enableCardTitles={styling.shelfTitles}
+        player={
+          inlineLayout ? (
+            <InlinePlayer
+              isLoggedIn={isLoggedIn}
+              item={item}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
+              startWatchingButton={startWatchingButton}
+              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+            />
+          ) : (
+            <Cinema
+              open={play && isEntitled}
+              onClose={goBack}
+              item={item}
+              title={item.title}
+              primaryMetadata={primaryMetadata}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
+            />
+          )
         }
       />
       <TrailerModal item={trailerItem} title={`${item.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />

@@ -216,7 +216,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
         shareButton={shareButton}
         trailerButton={null}
         favoriteButton={null}
-        cinema={
+        player={
           channelMediaItem && (
             <Cinema
               open={play && isEntitled}
@@ -231,17 +231,9 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
             />
           )
         }
-        epg={
-          <Epg
-            channels={channels}
-            onChannelClick={handleChannelClick}
-            onProgramClick={handleProgramClick}
-            channel={channel}
-            program={program}
-            config={config}
-          />
-        }
-      />
+      >
+        <Epg channels={channels} onChannelClick={handleChannelClick} onProgramClick={handleProgramClick} channel={channel} program={program} config={config} />
+      </VideoLayout>
     </>
   );
 }

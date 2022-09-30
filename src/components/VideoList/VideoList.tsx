@@ -7,13 +7,13 @@ import styles from './VideoList.module.scss';
 
 import { isLocked } from '#src/utils/entitlements';
 import type { AccessModel } from '#types/Config';
-import type { PlaylistItem } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type Props = {
-  playlist?: PlaylistItem[];
+  playlist?: Playlist;
   header?: React.ReactNode;
   onListItemHover?: (item: PlaylistItem) => void;
-  onListItemClick: (item: PlaylistItem, playlistId?: string) => void;
+  onListItemClick?: (item: PlaylistItem, playlistId?: string) => void;
   watchHistory?: { [key: string]: number };
   isLoading: boolean;
   activeMediaId?: string;
@@ -42,7 +42,7 @@ function VideoList({
     <div className={classNames(styles.container, !!className && className)}>
       {!!header && header}
       {playlist &&
-        playlist.map((playlistItem: PlaylistItem) => {
+        playlist.playlist.map((playlistItem: PlaylistItem) => {
           const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage } = playlistItem;
 
           return (
@@ -55,8 +55,8 @@ function VideoList({
               seriesId={seriesId}
               episodeNumber={episodeNumber}
               seasonNumber={seasonNumber}
-              onClick={() => onListItemClick(playlistItem, playlistItem.feedid)}
-              onHover={typeof onListItemHover === 'function' ? () => onListItemHover(playlistItem) : undefined}
+              onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
+              onHover={() => onListItemHover && onListItemHover(playlistItem)}
               loading={isLoading}
               isActive={activeMediaId === mediaid}
               activeLabel={activeLabel}
