@@ -1,5 +1,7 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+// import { render } from '@testing-library/react';
+
+import { renderWithRouter } from '../../../test/testUtils';
 
 import Cinema from './Cinema';
 
@@ -24,7 +26,7 @@ describe('<Cinema>', () => {
       title: 'Test item title',
       tracks: [],
     } as PlaylistItem;
-    const { container } = render(
+    const { container } = renderWithRouter(
       <Cinema item={item} onPlay={() => null} onPause={() => null} open={true} title={item.title} primaryMetadata="Primary metadata" />,
     );
 

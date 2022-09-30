@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import type { PlaylistItem } from '#types/playlist';
@@ -38,6 +39,8 @@ const PlayerContainer: React.FC<Props> = ({
   liveFromBeginning,
   liveStartDateTime,
 }: Props) => {
+  const [searchParams] = useSearchParams();
+  const autostart = searchParams.get('play') === '1';
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;
@@ -124,6 +127,7 @@ const PlayerContainer: React.FC<Props> = ({
       onUserInActive={onUserInActive}
       onPlaylistItemCallback={handlePlaylistItemCallback}
       startTime={startTime}
+      autostart={autostart}
     />
   );
 };

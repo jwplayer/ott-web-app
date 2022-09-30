@@ -24,6 +24,7 @@ type Props = {
   onFirstFrame?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
   startTime?: number;
+  autostart?: boolean;
 };
 
 const Player: React.FC<Props> = ({
@@ -40,6 +41,7 @@ const Player: React.FC<Props> = ({
   onPlaylistItemCallback,
   feedId,
   startTime = 0,
+  autostart,
 }: Props) => {
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
@@ -135,7 +137,7 @@ const Player: React.FC<Props> = ({
         width: '100%',
         height: '100%',
         mute: false,
-        autostart: true,
+        autostart,
         repeat: false,
       });
 
@@ -150,7 +152,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart]);
 
   useEffect(() => {
     return () => {
