@@ -25,6 +25,7 @@ type Props = {
   liveEndDateTime?: string | null;
   liveFromBeginning?: boolean;
   startWatchingButton: React.ReactNode;
+  isLogged: boolean;
   isLocked: boolean;
 };
 
@@ -39,6 +40,7 @@ const InlinePlayer: React.FC<Props> = ({
   liveEndDateTime,
   liveFromBeginning,
   startWatchingButton,
+  isLogged,
   isLocked,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
@@ -59,7 +61,7 @@ const InlinePlayer: React.FC<Props> = ({
           <h2 className={styles.callToAction}>{t('video:sign_up_to_start_watching')}</h2>
           <span className={styles.text}>{t('account:choose_offer.watch_this_on_platform', { siteName })}</span>
           {startWatchingButton}
-          <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />
+          {!isLogged && <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />}
         </div>
       </Fade>
       {!isLocked && (

@@ -142,6 +142,7 @@ const Movie = (): JSX.Element => {
         inlineLayout={inlineLayout}
         inlinePlayer={
           <InlinePlayer
+            isLogged={isLoggedIn}
             open={play && isEntitled}
             item={item}
             onComplete={handleComplete}
