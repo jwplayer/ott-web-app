@@ -173,7 +173,6 @@ const Series = (): JSX.Element => {
         item={item}
         title={item.title}
         description={item.description}
-        image={item.backgroundImage}
         inlineLayout={inlineLayout}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
