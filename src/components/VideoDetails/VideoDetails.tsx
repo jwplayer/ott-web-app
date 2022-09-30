@@ -6,9 +6,7 @@ import styles from './VideoDetails.module.scss';
 import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Image from '#src/components/Image/Image';
-import type { ImageData } from '#types/playlist';
-
-type PosterMode = 'fading' | 'normal';
+import type { ImageData, PosterMode } from '#types/playlist';
 
 type Props = {
   title: string;

@@ -4,16 +4,12 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import RelatedVideoGrid from '#src/components/RelatedVideoGrid/RelatedVideoGrid';
-import VideoDetailsInline from '#src/components/VideoDetailsInline/VideoDetailsInline';
 import VideoLayout from '#src/components/VideoLayout/VideoLayout';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
-import RelatedVideoList from '#src/components/RelatedVideoList/RelatedVideoList';
 import { isLocked } from '#src/utils/entitlements';
 import useEntitlement from '#src/hooks/useEntitlement';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL, episodeURLFromEpisode, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
-import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
@@ -174,7 +170,35 @@ const Series = (): JSX.Element => {
         {seriesPlaylist && item ? <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, item)}</script> : null}
       </Helmet>
       <VideoLayout
+        item={item}
+        title={item.title}
+        description={item.description}
         inlineLayout={inlineLayout}
+        primaryMetadata={primaryMetadata}
+        secondaryMetadata={secondaryMetadata}
+        shareButton={shareButton}
+        favoriteButton={favoriteButton}
+        trailerButton={trailerButton}
+        posterMode={posterFading ? 'fading' : 'normal'}
+        startWatchingButton={startWatchingButton}
+        isLoading={isLoading}
+        accessModel={accessModel}
+        isLoggedIn={isLoggedIn}
+        hasSubscription={hasSubscription}
+        relatedContentProps={{
+          playlist: filteredPlaylist,
+          relatedTitle: seriesPlaylist.title,
+          onRelatedItemClick: onCardClick,
+          enableCardTitles: styling.shelfTitles,
+          setFilter: setSeasonFilter,
+          currentFilter: seasonFilter,
+          filterValuePrefix: t('season_prefix'),
+          defaultFilterLabel: t('all_seasons'),
+          activeLabel: t('current_episode'),
+          watchHistoryDictionary,
+          filterMetadata,
+          filters,
+        }}
         inlinePlayer={
           <InlinePlayer
             isLogged={isLoggedIn}
@@ -186,7 +210,7 @@ const Series = (): JSX.Element => {
             isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           />
         }
-        cinemaPlayer={
+        cinema={
           <Cinema
             open={play && isEntitled}
             onClose={goBack}
@@ -196,70 +220,6 @@ const Series = (): JSX.Element => {
             secondaryMetadata={secondaryMetadata}
             onComplete={handleComplete}
             feedId={feedId ?? undefined}
-          />
-        }
-        videoDetailsInline={
-          <VideoDetailsInline
-            title={secondaryMetadata}
-            description={item.description}
-            primaryMetadata={primaryMetadata}
-            shareButton={shareButton}
-            favoriteButton={favoriteButton}
-            trailerButton={trailerButton}
-          />
-        }
-        videoDetails={
-          <VideoDetails
-            title={seriesPlaylist.title}
-            description={item.description}
-            primaryMetadata={primaryMetadata}
-            secondaryMetadata={secondaryMetadata}
-            image={item.backgroundImage}
-            posterMode={posterFading ? 'fading' : 'normal'}
-            shareButton={shareButton}
-            startWatchingButton={startWatchingButton}
-            favoriteButton={favoriteButton}
-            trailerButton={trailerButton}
-          />
-        }
-        relatedVideosGrid={
-          <RelatedVideoGrid
-            playlist={filteredPlaylist}
-            onCardClick={onCardClick}
-            watchHistory={watchHistoryDictionary}
-            isLoading={isLoading}
-            currentCardItem={item}
-            activeLabel={t('current_episode')}
-            enableCardTitles={styling.shelfTitles}
-            accessModel={accessModel}
-            isLoggedIn={isLoggedIn}
-            hasSubscription={hasSubscription}
-            currentFilter={seasonFilter}
-            title={t('episodes')}
-            filterValuePrefix={t('season_prefix')}
-            defaultFilterLabel={t('all_seasons')}
-            filters={filters}
-            setFilter={setSeasonFilter}
-          />
-        }
-        relatedVideosList={
-          <RelatedVideoList
-            title={seriesPlaylist.title}
-            filterMetadata={filterMetadata}
-            playlist={filteredPlaylist.playlist}
-            activeMediaId={item.mediaid}
-            activeLabel={t('current_episode')}
-            onListItemClick={onCardClick}
-            isLoading={isLoading}
-            currentFilter={seasonFilter}
-            filterValuePrefix={t('season_prefix')}
-            defaultFilterLabel={t('all_seasons')}
-            filters={filters}
-            setFilter={setSeasonFilter}
-            accessModel={accessModel}
-            isLoggedIn={isLoggedIn}
-            hasSubscription={hasSubscription}
-            watchHistory={watchHistoryDictionary}
           />
         }
       />

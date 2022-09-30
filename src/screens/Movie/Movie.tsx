@@ -5,13 +5,10 @@ import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
 import VideoLayout from '#src/components/VideoLayout/VideoLayout';
-import VideoDetailsInline from '#src/components/VideoDetailsInline/VideoDetailsInline';
-import RelatedVideoList from '#src/components/RelatedVideoList/RelatedVideoList';
 import { isLocked } from '#src/utils/entitlements';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { cardUrl, formatVideoMetaString, movieURL, videoUrl } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
-import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
@@ -29,7 +26,6 @@ import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import PlayTrailer from '#src/icons/PlayTrailer';
 import Button from '#src/components/Button/Button';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
-import RelatedVideoGrid from '#src/components/RelatedVideoGrid/RelatedVideoGrid';
 
 const Movie = (): JSX.Element => {
   const { t } = useTranslation('video');
@@ -139,7 +135,27 @@ const Movie = (): JSX.Element => {
         {item ? <script type="application/ld+json">{generateMovieJSONLD(item)}</script> : null}
       </Helmet>
       <VideoLayout
+        item={item}
+        title={item.title}
+        description={item.description}
         inlineLayout={inlineLayout}
+        primaryMetadata={primaryMetadata}
+        shareButton={shareButton}
+        favoriteButton={favoriteButton}
+        trailerButton={trailerButton}
+        posterMode={posterFading ? 'fading' : 'normal'}
+        startWatchingButton={startWatchingButton}
+        isLoading={isLoading}
+        accessModel={accessModel}
+        isLoggedIn={isLoggedIn}
+        hasSubscription={hasSubscription}
+        relatedContentProps={{
+          relatedTitle: playlist?.title,
+          onRelatedItemClick: onCardClick,
+          activeLabel: t('current_video'),
+          enableCardTitles: styling.shelfTitles,
+          playlist: playlist,
+        }}
         inlinePlayer={
           <InlinePlayer
             isLogged={isLoggedIn}
@@ -151,7 +167,7 @@ const Movie = (): JSX.Element => {
             isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           />
         }
-        cinemaPlayer={
+        cinema={
           <Cinema
             open={play && isEntitled}
             onClose={goBack}
@@ -160,55 +176,6 @@ const Movie = (): JSX.Element => {
             primaryMetadata={primaryMetadata}
             onComplete={handleComplete}
             feedId={feedId ?? undefined}
-          />
-        }
-        videoDetailsInline={
-          <VideoDetailsInline
-            title={item.title}
-            live={item.duration === 0}
-            description={item.description}
-            primaryMetadata={primaryMetadata}
-            shareButton={shareButton}
-            favoriteButton={favoriteButton}
-            trailerButton={trailerButton}
-          />
-        }
-        videoDetails={
-          <VideoDetails
-            title={item.title}
-            description={item.description}
-            primaryMetadata={primaryMetadata}
-            image={item.backgroundImage}
-            posterMode={posterFading ? 'fading' : 'normal'}
-            shareButton={shareButton}
-            startWatchingButton={startWatchingButton}
-            favoriteButton={favoriteButton}
-            trailerButton={trailerButton}
-          />
-        }
-        relatedVideosGrid={
-          <RelatedVideoGrid
-            playlist={playlist}
-            onCardClick={onCardClick}
-            isLoading={isLoading}
-            enableCardTitles={styling.shelfTitles}
-            accessModel={accessModel}
-            isLoggedIn={isLoggedIn}
-            title={playlist?.title}
-            hasSubscription={hasSubscription}
-          />
-        }
-        relatedVideosList={
-          <RelatedVideoList
-            activeMediaId={item.mediaid}
-            activeLabel={t('current_video')}
-            title={playlist?.title}
-            playlist={playlist?.playlist}
-            onListItemClick={onCardClick}
-            isLoading={isLoading}
-            accessModel={accessModel}
-            isLoggedIn={isLoggedIn}
-            hasSubscription={hasSubscription}
           />
         }
       />
