@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './Card.module.scss';
 
-import { formatDurationTag } from '#src/utils/formatting';
+import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
 import Lock from '#src/icons/Lock';
 import Image from '#src/components/Image/Image';
 import type { ImageData } from '#types/playlist';
@@ -66,12 +66,8 @@ function Card({
 
     if (seriesId) {
       return <div className={styles.tag}>Series</div>;
-    } else if (seasonNumber && episodeNumber) {
-      return (
-        <div className={styles.tag}>
-          S{seasonNumber}:E{episodeNumber}
-        </div>
-      );
+    } else if (episodeNumber) {
+      return <div className={styles.tag}>{formatSeriesMetaString(seasonNumber, episodeNumber)}</div>;
     } else if (duration) {
       return <div className={styles.tag}>{formatDurationTag(duration)}</div>;
     } else if (duration === 0) {

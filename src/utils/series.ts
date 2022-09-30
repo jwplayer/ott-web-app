@@ -16,22 +16,24 @@ export const filterSeries = (playlist: Playlist, filter: string) => {
   };
 };
 
+export const getSeriesEpisodes = (series: Series) => {
+  if ('seasons' in series) {
+    return series.seasons.flatMap((season: Season) => season.episodes);
+  }
+
+  return series.episodes;
+};
+
 /** Next episode to show after video is complete */
 export const getNextEpisode = (series: Series, media: PlaylistItem): string => {
   // To handle array elements
-  const season = Number(media.seasonNumber) - 1;
-  const episodes = series.seasons[season]?.episodes;
+  const episodes = getSeriesEpisodes(series);
 
   const episodeIndex = episodes?.findIndex((el) => el.media_id === media.mediaid);
 
-  // If we have the last episode in the last season => we leave the same video
-  if (series.seasons.length === season + 1 && episodeIndex === episodes.length - 1) {
+  // If we have the last episode => we leave the same video
+  if (episodeIndex === episodes.length - 1) {
     return media.mediaid;
-  }
-
-  // If we have the last episode in the current season => we change the season
-  if (episodes.length - 1 === episodeIndex) {
-    return series.seasons[season + 1]?.episodes[0]?.media_id;
   }
 
   return episodes[episodeIndex + 1]?.media_id;
@@ -53,17 +55,28 @@ export const getNextItemId = (item: PlaylistItem | undefined, series: Series | u
  *  That will help with further data retrieval
  */
 export const enrichMediaItems = (series: Series | undefined, mediaItems: PlaylistItem[] | undefined): PlaylistItem[] => {
-  const episodes = (series?.seasons || []).flatMap((season: Season) =>
-    season.episodes.map((episode) => ({
-      ...episode,
-      season_number: season.season_number,
-    })),
-  );
+  let episodes: EpisodeWithSeason[] = [];
+
+  if (series) {
+    episodes =
+      'seasons' in series
+        ? series.seasons.flatMap((season: Season) =>
+            season.episodes.map((episode) => ({
+              ...episode,
+              season_number: season.season_number,
+            })),
+          )
+        : series.episodes.map((episode) => ({ ...episode, season_number: 0 }));
+  }
 
   const itemsWithEpisodes = (mediaItems || []).map((item) => {
-    const episode = episodes.find((episode) => episode.media_id === item?.mediaid) as EpisodeWithSeason;
+    const episode = episodes.find((episode) => episode.media_id === item?.mediaid);
 
-    return { ...item, seasonNumber: String(episode.season_number), episodeNumber: String(episode.episode_number) };
+    return {
+      ...item,
+      seasonNumber: String(episode?.season_number || '0'),
+      episodeNumber: String(episode?.episode_number || '0'),
+    };
   });
 
   return itemsWithEpisodes;

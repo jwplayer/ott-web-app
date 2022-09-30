@@ -1,0 +1,13 @@
+@use '../../../../styles/variables';
+@use '../../../../styles/mixins/responsive';
+
+.catchupButton {
+  @include responsive.mobile-and-tablet() {
+    flex: 2 !important;
+    white-space: nowrap;
+  }
+}
+
+.tag {
+  margin-right: calc(#{variables.$base-spacing} / 2);
+}

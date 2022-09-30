@@ -1,15 +1,14 @@
 import { useLocation } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function useQueryParam(key: string): string | undefined {
-  const [param, setParam] = useState<string | undefined>(undefined);
   const location = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const [param, setParam] = useState<string | undefined>(searchParams.get(key) || undefined);
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
-
-    setParam(urlSearchParams.get(key) || undefined);
-  }, [location]);
+    setParam(searchParams.get(key) || undefined);
+  }, [searchParams]);
 
   return param;
 }
