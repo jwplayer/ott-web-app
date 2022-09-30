@@ -39,6 +39,7 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
           onComplete={onClose}
           onUserActive={handleUserActive}
           onUserInActive={handleUserInactive}
+          autostart
         />
         <Fade open={!isPlaying || userActive}>
           <div className={styles.playerOverlay}>
