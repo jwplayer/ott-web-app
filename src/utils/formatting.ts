@@ -144,4 +144,4 @@ export const formatVideoMetaString = (item: PlaylistItem, episodesLabel?: string
   return metaData.join(' • ');
 };
 
-export const formatSeriesMetaString = (item: PlaylistItem) => `S${item.seasonNumber}:E${item.episodeNumber}`;
+export const formatSeriesMetaString = (seasonNumber: string, episodeNumber: string) => `S${seasonNumber}:E${episodeNumber}`;

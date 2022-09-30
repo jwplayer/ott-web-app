@@ -15,7 +15,6 @@ import { addQueryParam } from '#src/utils/location';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
-  open: boolean;
   item: PlaylistItem;
   onPlay?: () => void;
   onPause?: () => void;
@@ -26,11 +25,10 @@ type Props = {
   liveFromBeginning?: boolean;
   startWatchingButton: React.ReactNode;
   isLogged: boolean;
-  isLocked: boolean;
+  paywall: boolean;
 };
 
 const InlinePlayer: React.FC<Props> = ({
-  open,
   item,
   onPlay,
   onPause,
@@ -41,7 +39,7 @@ const InlinePlayer: React.FC<Props> = ({
   liveFromBeginning,
   startWatchingButton,
   isLogged,
-  isLocked,
+  paywall,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation();
@@ -54,8 +52,8 @@ const InlinePlayer: React.FC<Props> = ({
 
   return (
     <div className={styles.inlinePlayer}>
-      <Fade open={isLocked}>
-        <div className={styles.lockedOverlay}>
+      <Fade open={paywall}>
+        <div className={styles.paywall}>
           <Image className={styles.poster} image={item.shelfImage} alt={item.title} width={1280} />
           <Lock className={styles.lock} />
           <h2 className={styles.callToAction}>{t('video:sign_up_to_start_watching')}</h2>
@@ -64,9 +62,9 @@ const InlinePlayer: React.FC<Props> = ({
           {!isLogged && <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />}
         </div>
       </Fade>
-      {!isLocked && (
+      {!paywall && (
         <PlayerContainer
-          visible={open}
+          visible={true}
           item={item}
           feedId={feedId}
           onPlay={onPlay}

@@ -118,7 +118,7 @@ const Series = (): JSX.Element => {
   const primaryMetadata = formatVideoMetaString(item, t('video:total_episodes', { count: seriesPlaylist.playlist.length }));
   const secondaryMetadata = (
     <>
-      <strong>{formatSeriesMetaString(item)}</strong> - {item.title}
+      <strong>{formatSeriesMetaString(item.seasonNumber || '1', item.episodeNumber || '1')}</strong> - {item.title}
     </>
   );
   const episodesInSeason = seriesPlaylist.playlist.filter((i) => i.seasonNumber === item.seasonNumber).length;
@@ -202,12 +202,11 @@ const Series = (): JSX.Element => {
         inlinePlayer={
           <InlinePlayer
             isLogged={isLoggedIn}
-            open={play && isEntitled}
             item={item}
             onComplete={handleComplete}
             feedId={feedId ?? undefined}
             startWatchingButton={startWatchingButton}
-            isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+            paywall={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           />
         }
         cinema={

@@ -8,7 +8,7 @@ import type { ImageData } from '#types/playlist';
 import Image from '#src/components/Image/Image';
 import Lock from '#src/icons/Lock';
 import Tag from '#src/components/Tag/Tag';
-import { formatDurationTag } from '#src/utils/formatting';
+import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
 
 type VideoListItemProps = {
   onClick?: () => void;
@@ -53,7 +53,7 @@ function VideoListItem({
     if (seriesId) {
       return t('series');
     } else if (seasonNumber && episodeNumber) {
-      return `S${seasonNumber}:E${episodeNumber}`;
+      return formatSeriesMetaString(seasonNumber, episodeNumber);
     } else if (duration) {
       return formatDurationTag(duration);
     } else if (duration === 0) {

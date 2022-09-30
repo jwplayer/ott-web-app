@@ -159,12 +159,11 @@ const Movie = (): JSX.Element => {
         inlinePlayer={
           <InlinePlayer
             isLogged={isLoggedIn}
-            open={play && isEntitled}
             item={item}
             onComplete={handleComplete}
             feedId={feedId ?? undefined}
             startWatchingButton={startWatchingButton}
-            isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+            paywall={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           />
         }
         cinema={
