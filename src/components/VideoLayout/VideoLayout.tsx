@@ -132,7 +132,7 @@ const VideoLayout: React.FC<Props> = ({
         )}
         <div className={styles.videoDetailsInline}>
           <VideoDetailsInline
-            title={title}
+            title={secondaryMetadata || title}
             live={item?.duration === 0}
             description={description}
             primaryMetadata={primaryMetadata}
