@@ -1,5 +1,3 @@
-import * as assert from 'assert';
-
 import constants from '../utils/constants';
 import { LoginContext } from '../utils/password_utils';
 
@@ -81,14 +79,26 @@ Scenario('I switch to another season in the video list', async ({ I }) => {
   await I.openVideoCard(constants.minecraftAnimationWorkshopTitle);
   I.see('S1:E1 - Welcome');
 
-  I.see('Season 1');
+  I.see('Season 1/4 - Episode 1/6');
   I.selectOption({ css: 'select[name="categories"]' }, 'Season 2');
-  I.dontSee('Season 1');
 
-  I.see('Season 2');
-  I.click('S1:E2', locate({ css: 'div[aria-label="Play Choosing a skin (Cycles Render)"]' }).inside(videoListLocator));
+  I.click(locate({ css: 'div[aria-label="Play Choosing a skin (Cycles Render)"]' }).inside(videoListLocator));
+  I.dontSee('Season 1/4 - Episode 1/6');
+  I.see('Season 2/4 - Episode 1/4');
   I.see('S2:E1 - Choosing a skin (Cycles Render)');
   I.dontSee('S1:E2 - Basics Of Blender');
+});
+
+Scenario('I can see the video auto play when play=1 is set', async ({ I }) => {
+  I.seeCurrentUrlEquals(constants.baseUrl);
+  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}?play=1`);
+  await I.waitForPlayerPlaying(constants.bigBuckBunnyTitle);
+});
+
+Scenario("I don't see the video auto play when play=1 is not set", async ({ I }) => {
+  I.seeCurrentUrlEquals(constants.baseUrl);
+  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}`);
+  await I.waitForPlayerState('paused', ['idle']);
 });
 
 async function playInlineVideo(I: CodeceptJS.I, title: string) {
@@ -96,5 +106,5 @@ async function playInlineVideo(I: CodeceptJS.I, title: string) {
   await I.waitForPlayerPlaying(title);
 
   I.click('div[data-testid="player-container"]'); //pauses the player
-  I.waitForPlayerState('paused', ['idle']);
+  await I.waitForPlayerState('paused', ['idle']);
 }
