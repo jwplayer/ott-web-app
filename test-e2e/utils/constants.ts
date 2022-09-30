@@ -38,6 +38,8 @@ export default {
     'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',
   fantasyVehicleTitle: 'Fantasy Vehicle Creation',
   minecraftAnimationWorkshopTitle: 'Minecraft Animation Workshop',
+  minecraftAnimationWorkshopDescription:
+    'Dillon Gu explains a little bit about what you can expect to see in this workshop. Check out his showcase video for this workshop here on his YouTube channel!',
   startWatchingButton: 'Start watching',
   continueWatchingButton: 'Continue watching',
   signUpToWatch: 'Sign up to start watching!',

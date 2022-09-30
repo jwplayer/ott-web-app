@@ -39,7 +39,7 @@ function VideoList({
   hasSubscription,
 }: Props) {
   return (
-    <div className={classNames(styles.container, !!className && className)}>
+    <div className={classNames(styles.container, !!className && className)} data-testid="video-list">
       {!!header && header}
       {playlist &&
         playlist.playlist.map((playlistItem: PlaylistItem) => {
