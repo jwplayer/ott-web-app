@@ -24,13 +24,10 @@ import Button from '#src/components/Button/Button';
 import Play from '#src/icons/Play';
 import useLiveProgram from '#src/hooks/useLiveProgram';
 import Tag from '#src/components/Tag/Tag';
-import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 
 function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Playlist }) {
   const { t } = useTranslation('epg');
-  const breakpoint = useBreakpoint();
-  const isMobile = breakpoint === Breakpoint.xs;
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
@@ -211,7 +208,6 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
         image={videoDetails.image}
-        childrenPadding={!isMobile}
         startWatchingButton={startWatchingButton}
         shareButton={shareButton}
         trailerButton={null}
@@ -232,7 +228,16 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
           )
         }
       >
-        <Epg channels={channels} onChannelClick={handleChannelClick} onProgramClick={handleProgramClick} channel={channel} program={program} config={config} />
+        <div className={styles.epgContainer}>
+          <Epg
+            channels={channels}
+            onChannelClick={handleChannelClick}
+            onProgramClick={handleProgramClick}
+            channel={channel}
+            program={program}
+            config={config}
+          />
+        </div>
       </VideoLayout>
     </>
   );

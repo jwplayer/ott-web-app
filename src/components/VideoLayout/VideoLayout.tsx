@@ -52,7 +52,6 @@ type Props = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
-  childrenPadding?: boolean;
   item?: PlaylistItem;
   playlist?: Playlist;
 } & FilterProps &
@@ -68,7 +67,6 @@ const VideoLayout: React.FC<Props> = ({
   isLoggedIn,
   item,
   hasSubscription,
-  childrenPadding,
   // video details
   title,
   description,
@@ -152,6 +150,7 @@ const VideoLayout: React.FC<Props> = ({
             trailerButton={trailerButton}
           />
         </div>
+        {children}
       </div>
     );
   }
@@ -164,16 +163,13 @@ const VideoLayout: React.FC<Props> = ({
         description={description}
         image={image}
         startWatchingButton={startWatchingButton}
-        childrenPadding={childrenPadding}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
         shareButton={shareButton}
         posterMode={posterMode}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
-      >
-        {children}
-      </VideoDetails>
+      />
       {playlist && onItemClick && (
         <div className={styles.relatedVideos}>
           <div className={styles.relatedVideosGrid}>
@@ -194,6 +190,7 @@ const VideoLayout: React.FC<Props> = ({
           />
         </div>
       )}
+      {children}
     </div>
   );
 };
