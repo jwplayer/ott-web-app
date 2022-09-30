@@ -5,13 +5,14 @@ import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 
+import VideoLayout from '../../components/VideoLayout/VideoLayout';
+
 import styles from './PlaylistLiveChannels.module.scss';
 
 import Epg from '#src/components/Epg/Epg';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist } from '#types/playlist';
-import VideoDetails from '#src/components/VideoDetails/VideoDetails';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import useLiveChannels from '#src/hooks/useLiveChannels';
 import ShareButton from '#src/components/ShareButton/ShareButton';
@@ -32,7 +33,7 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
   const isMobile = breakpoint === Breakpoint.xs;
 
   // Config
-  const { config } = useConfigStore(({ config }) => ({ config }), shallow);
+  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName, styling, features } = config;
 
   const posterFading: boolean = styling?.posterFading === true;
@@ -138,6 +139,39 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
   const canonicalUrl = `${window.location.origin}${liveChannelsURL(feedid, channel.id)}`;
   const pageTitle = `${channel.title} - ${siteName}`;
 
+  const shareButton =
+    enableSharing && channelMediaItem ? (
+      <ShareButton title={channelMediaItem.title} description={channelMediaItem.description} url={window.location.href} />
+    ) : null;
+
+  const startWatchingButton = channelMediaItem ? (
+    <>
+      <StartWatchingButton
+        item={channelMediaItem}
+        playUrl={addQueryParams(liveChannelsURL(feedid, channelId, true), {
+          start: isVod ? program?.startTime : undefined,
+          end: isVod ? program?.endTime : undefined,
+        })}
+        disabled={!videoDetails.canWatch}
+      />
+      {videoDetails.canWatchFromBeginning && (
+        <Button
+          className={styles.catchupButton}
+          onClick={() =>
+            navigate(
+              addQueryParams(liveChannelsURL(feedid || '', channelId, true), {
+                start: program?.startTime,
+                beginning: 1,
+              }),
+            )
+          }
+          label={t('start_from_beginning')}
+          startIcon={<Play />}
+        />
+      )}
+    </>
+  ) : null;
+
   return (
     <>
       <Helmet>
@@ -164,65 +198,50 @@ function PlaylistLiveChannels({ playlist: { feedid, playlist } }: { playlist: Pl
         ))}
         {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem)}</script> : null}
       </Helmet>
-      {channelMediaItem && (
-        <Cinema
-          open={play && isEntitled}
-          onClose={goBack}
-          item={channelMediaItem}
-          title={videoDetails.title}
-          primaryMetadata={primaryMetadata}
-          feedId={feedid}
-          liveStartDateTime={liveStartDateTime}
-          liveEndDateTime={liveEndDateTime}
-          liveFromBeginning={liveFromBeginning}
-        />
-      )}
-      <VideoDetails
+      <VideoLayout
+        inlineLayout={false}
+        isLoading={false}
+        // live channels are public, so we don't need to check for entitlements
+        isLoggedIn={true}
+        hasSubscription={true}
+        accessModel={accessModel}
         title={videoDetails.title}
         description={videoDetails.description}
+        item={channelMediaItem}
         primaryMetadata={primaryMetadata}
         posterMode={posterFading ? 'fading' : 'normal'}
         image={videoDetails.image}
         childrenPadding={!isMobile}
-        startWatchingButton={
-          channelMediaItem ? (
-            <>
-              <StartWatchingButton
-                item={channelMediaItem}
-                playUrl={addQueryParams(liveChannelsURL(feedid, channelId, true), {
-                  start: isVod ? program?.startTime : undefined,
-                  end: isVod ? program?.endTime : undefined,
-                })}
-                disabled={!videoDetails.canWatch}
-              />
-              {videoDetails.canWatchFromBeginning && (
-                <Button
-                  className={styles.catchupButton}
-                  onClick={() =>
-                    navigate(
-                      addQueryParams(liveChannelsURL(feedid || '', channelId, true), {
-                        start: program?.startTime,
-                        beginning: 1,
-                      }),
-                    )
-                  }
-                  label={t('start_from_beginning')}
-                  startIcon={<Play />}
-                />
-              )}
-            </>
-          ) : null
-        }
-        shareButton={
-          enableSharing && channelMediaItem ? (
-            <ShareButton title={channelMediaItem.title} description={channelMediaItem.description} url={window.location.href} />
-          ) : null
-        }
+        startWatchingButton={startWatchingButton}
+        shareButton={shareButton}
         trailerButton={null}
         favoriteButton={null}
-      >
-        <Epg channels={channels} onChannelClick={handleChannelClick} onProgramClick={handleProgramClick} channel={channel} program={program} config={config} />
-      </VideoDetails>
+        cinema={
+          channelMediaItem && (
+            <Cinema
+              open={play && isEntitled}
+              onClose={goBack}
+              item={channelMediaItem}
+              title={videoDetails.title}
+              primaryMetadata={primaryMetadata}
+              feedId={feedid}
+              liveStartDateTime={liveStartDateTime}
+              liveEndDateTime={liveEndDateTime}
+              liveFromBeginning={liveFromBeginning}
+            />
+          )
+        }
+        epg={
+          <Epg
+            channels={channels}
+            onChannelClick={handleChannelClick}
+            onProgramClick={handleProgramClick}
+            channel={channel}
+            program={program}
+            config={config}
+          />
+        }
+      />
     </>
   );
 }
