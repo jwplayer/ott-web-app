@@ -24,7 +24,7 @@ type Props = {
   liveEndDateTime?: string | null;
   liveFromBeginning?: boolean;
   startWatchingButton: React.ReactNode;
-  isLogged: boolean;
+  isLoggedIn: boolean;
   paywall: boolean;
 };
 
@@ -38,7 +38,7 @@ const InlinePlayer: React.FC<Props> = ({
   liveEndDateTime,
   liveFromBeginning,
   startWatchingButton,
-  isLogged,
+  isLoggedIn,
   paywall,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
@@ -56,10 +56,10 @@ const InlinePlayer: React.FC<Props> = ({
         <div className={styles.paywall}>
           <Image className={styles.poster} image={item.shelfImage} alt={item.title} width={1280} />
           <Lock className={styles.lock} />
-          <h2 className={styles.callToAction}>{t('video:sign_up_to_start_watching')}</h2>
+          <h2 className={styles.title}>{t('video:sign_up_to_start_watching')}</h2>
           <span className={styles.text}>{t('account:choose_offer.watch_this_on_platform', { siteName })}</span>
           {startWatchingButton}
-          {!isLogged && <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />}
+          {!isLoggedIn && <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />}
         </div>
       </Fade>
       {!paywall && (

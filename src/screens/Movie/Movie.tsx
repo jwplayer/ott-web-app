@@ -158,7 +158,7 @@ const Movie = (): JSX.Element => {
         }}
         inlinePlayer={
           <InlinePlayer
-            isLogged={isLoggedIn}
+            isLoggedIn={isLoggedIn}
             item={item}
             onComplete={handleComplete}
             feedId={feedId ?? undefined}
