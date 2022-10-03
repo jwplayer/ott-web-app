@@ -11,6 +11,7 @@ import styles from './VideoLayout.module.scss';
 
 import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';
 import type { AccessModel } from '#types/Config';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
@@ -93,6 +94,8 @@ const VideoLayout: React.FC<Props> = ({
   defaultFilterLabel = '',
   children,
 }) => {
+  const breakpoint = useBreakpoint();
+  const isTablet = breakpoint === Breakpoint.sm || breakpoint === Breakpoint.md;
   // only show the filters when there are two or more filters
   const hasFilters = filters && filters.length > 1;
   const showFilters = hasFilters && setFilter;
@@ -114,32 +117,57 @@ const VideoLayout: React.FC<Props> = ({
     </div>
   );
 
+  const renderRelatedVideos = (grid = true) => {
+    if (!playlist || !onItemClick) return null;
+
+    return grid ? (
+      <>
+        <div className={classNames(styles.relatedVideosGrid, { [styles.inlineLayout]: inlineLayout })}>
+          {relatedTitle && <h3 className={styles.relatedVideosGridTitle}>{relatedTitle}</h3>}
+          {hasFilters && renderFilters(inlineLayout)}
+        </div>
+        <CardGrid
+          playlist={playlist}
+          onCardClick={onItemClick}
+          isLoading={isLoading}
+          enableCardTitles={enableCardTitles}
+          watchHistory={watchHistory}
+          accessModel={accessModel}
+          isLoggedIn={isLoggedIn}
+          currentCardItem={item}
+          currentCardLabel={activeLabel}
+          hasSubscription={hasSubscription}
+        />
+      </>
+    ) : (
+      <div className={styles.relatedVideosList}>
+        <VideoList
+          className={styles.videoList}
+          header={
+            <>
+              {title && <h3 className={styles.relatedVideosListTitle}>{relatedTitle}</h3>}
+              {hasFilters && renderFilters(true)}
+            </>
+          }
+          activeMediaId={item?.mediaid}
+          activeLabel={activeLabel}
+          playlist={playlist}
+          onListItemClick={onItemClick}
+          watchHistory={watchHistory}
+          isLoading={isLoading}
+          accessModel={accessModel}
+          isLoggedIn={isLoggedIn}
+          hasSubscription={hasSubscription}
+        />
+      </div>
+    );
+  };
+
   if (inlineLayout) {
     return (
       <div className={styles.videoInlineLayout}>
         <div className={styles.player}>{player}</div>
-        {playlist && onItemClick && (
-          <div className={styles.relatedVideosList}>
-            <VideoList
-              className={styles.videoList}
-              header={
-                <>
-                  {title && <h3 className={styles.relatedVideosListTitle}>{relatedTitle}</h3>}
-                  {hasFilters && renderFilters(true)}
-                </>
-              }
-              activeMediaId={item?.mediaid}
-              activeLabel={activeLabel}
-              playlist={playlist}
-              onListItemClick={onItemClick}
-              watchHistory={watchHistory}
-              isLoading={isLoading}
-              accessModel={accessModel}
-              isLoggedIn={isLoggedIn}
-              hasSubscription={hasSubscription}
-            />
-          </div>
-        )}
+        {renderRelatedVideos(isTablet)}
         <div className={styles.videoDetailsInline}>
           <VideoDetailsInline
             title={secondaryMetadata || title}
@@ -171,26 +199,7 @@ const VideoLayout: React.FC<Props> = ({
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
       />
-      {playlist && onItemClick && (
-        <div className={styles.relatedVideos}>
-          <div className={styles.relatedVideosGrid}>
-            {relatedTitle && <h3 className={styles.relatedVideosGridTitle}>{relatedTitle}</h3>}
-            {hasFilters && renderFilters(false)}
-          </div>
-          <CardGrid
-            playlist={playlist}
-            onCardClick={onItemClick}
-            isLoading={isLoading}
-            enableCardTitles={enableCardTitles}
-            watchHistory={watchHistory}
-            accessModel={accessModel}
-            isLoggedIn={isLoggedIn}
-            currentCardItem={item}
-            currentCardLabel={activeLabel}
-            hasSubscription={hasSubscription}
-          />
-        </div>
-      )}
+      {playlist && onItemClick && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
       {children}
     </div>
   );

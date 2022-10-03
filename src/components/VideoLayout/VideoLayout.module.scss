@@ -82,6 +82,18 @@
   height: 100%;
   padding-bottom: 16px;
 
+  &.inlineLayout {
+    flex-direction: column;
+    align-items: initial;
+    width: 100%;
+    grid-area: related;
+    padding-bottom: 0;
+
+    > h3 {
+      font-size: 20px;
+    }
+  }
+
   @include responsive.mobile-and-tablet() {
     justify-content: space-between;
   }

@@ -15,7 +15,7 @@
   }
 
   @include responsive.tablet-only() {
-    padding: 24px 0;
+    padding: 24px 0 0;
   }
 
   @include responsive.mobile-only() {
@@ -87,7 +87,7 @@ div.title {
     }
   }
 
-  @include responsive.mobile-only() {
+  @include responsive.mobile-and-small-tablet() {
     margin-bottom: variables.$base-spacing;
     font-size: 14px;
   }
