@@ -28,11 +28,6 @@
   line-height: 20px;
   letter-spacing: 0.5px;
 }
-ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
 
 .button {
   margin-bottom: variables.$base-spacing;
@@ -55,7 +50,6 @@ ul {
 .panel {
   margin-bottom: variables.$base-spacing * 1.5;
   padding: variables.$base-spacing;
-
   font-weight: normal;
   font-size: 16px;
   font-style: normal;
@@ -63,6 +57,12 @@ ul {
   letter-spacing: 0.15px;
   background: theme.$panel-bg;
   box-shadow: theme.$panel-box-shadow;
+
+  > ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
 }
 
 .panelHeader {

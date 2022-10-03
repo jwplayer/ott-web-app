@@ -31,7 +31,7 @@ export default function Router({ error }: Props) {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/p/:id" element={<PlaylistScreenRouter />} />
-        <Route path="/m/:id/:slug" element={<MediaScreenRouter />} />
+        <Route path="/m/:id/*" element={<MediaScreenRouter />} />
         <Route path="/s/:id/:slug" element={<Series />} />
         <Route path="/q/*" element={<Search />} />
         <Route path="/u/*" element={<User />} />

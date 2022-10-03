@@ -2,6 +2,8 @@ import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 
+import MediaStaticPage from './mediaScreens/MediaStaticPage/MediaStaticPage';
+
 import useMedia from '#src/hooks/useMedia';
 import Loading from '#src/pages/Loading/Loading';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
@@ -19,6 +21,7 @@ export const mediaScreenMap = new ScreenMap<PlaylistItem>();
 mediaScreenMap.registerByContentType(MediaSeries, 'series');
 mediaScreenMap.registerByContentType(MediaSeriesEpisode, 'episode');
 mediaScreenMap.registerByContentType(MediaLiveChannel, 'livechannel');
+mediaScreenMap.registerByContentType(MediaStaticPage, 'page');
 mediaScreenMap.registerDefault(MediaMovie);
 
 // register legacy series and episode screens when `contentType` is missing
