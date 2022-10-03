@@ -87,7 +87,6 @@
     align-items: initial;
     width: 100%;
     grid-area: related;
-    padding-bottom: 0;
 
     > h3 {
       font-size: 20px;
@@ -124,7 +123,6 @@
 }
 
 .filtersInline {
-  margin-bottom: variables.$base-spacing;
   padding-bottom: variables.$base-spacing;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
