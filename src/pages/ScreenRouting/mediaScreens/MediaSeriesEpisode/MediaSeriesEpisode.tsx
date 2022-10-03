@@ -14,7 +14,7 @@ import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
-import { enrichMediaItems, filterSeries, getFiltersFromSeries, getNextItemId } from '#src/utils/series';
+import { enrichMediaItems, filterSeries, getFiltersFromSeries, getNextItem } from '#src/utils/series';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -59,8 +59,8 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   } = useSeriesData(seriesId);
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(data.trailerId || '');
 
-  const episodeItem = series && data ? enrichMediaItems(series, [data])[0] : data;
-  const nextItemId = getNextItemId(episodeItem, series, seriesPlaylist);
+  const episodeItem = useMemo(() => (series && data ? enrichMediaItems(series, [data])[0] : data), [data, series]);
+  const nextItem = useMemo(() => getNextItem(episodeItem, series, seriesPlaylist), [episodeItem, series, seriesPlaylist]);
 
   const isLoading = seriesIdLoading || isPlaylistLoading;
 
@@ -82,10 +82,10 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   const onCardClick = (toEpisode: PlaylistItem) => seriesPlaylist && navigate(episodeURL(toEpisode, seriesId, false, feedId));
 
   const handleComplete = useCallback(() => {
-    if (nextItemId) {
-      navigate(episodeURL(data, nextItemId, true, feedId));
+    if (nextItem) {
+      navigate(episodeURL(nextItem, seriesId, true, feedId));
     }
-  }, [feedId, data, navigate, nextItemId]);
+  }, [nextItem, navigate, seriesId, feedId]);
 
   // Effects
   useEffect(() => {

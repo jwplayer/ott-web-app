@@ -39,16 +39,18 @@ export const getNextEpisode = (series: Series, media: PlaylistItem): string => {
   return episodes[episodeIndex + 1]?.media_id;
 };
 
-export const getNextItemId = (item: PlaylistItem | undefined, series: Series | undefined, seriesPlaylist: Playlist | undefined): string | undefined => {
+export const getNextItem = (item: PlaylistItem | undefined, series: Series | undefined, seriesPlaylist: Playlist | undefined): PlaylistItem | undefined => {
   if (!item || !seriesPlaylist) return;
 
   if (series) {
-    return getNextEpisode(series, item);
+    const nextEpisodeId = getNextEpisode(series, item);
+
+    return seriesPlaylist.playlist.find((episode) => episode.mediaid === nextEpisodeId);
   }
 
   const index = seriesPlaylist?.playlist?.findIndex(({ mediaid }) => mediaid === item.mediaid);
 
-  return seriesPlaylist?.playlist?.[index + 1]?.mediaid;
+  return seriesPlaylist?.playlist?.[index + 1];
 };
 
 /** We need to add episodeNumber and seasonNumber to each media item we got
