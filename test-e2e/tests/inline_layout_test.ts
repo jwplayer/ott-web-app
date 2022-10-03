@@ -91,14 +91,18 @@ Scenario('I switch to another season in the video list', async ({ I }) => {
 
 Scenario('I can see the video auto play when play=1 is set', async ({ I }) => {
   I.seeCurrentUrlEquals(constants.baseUrl);
-  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}?play=1`);
+  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}&play=1`);
+
+  I.waitForElement('video', 5);
   await I.waitForPlayerPlaying(constants.bigBuckBunnyTitle);
 });
 
 Scenario("I don't see the video auto play when play=1 is not set", async ({ I }) => {
   I.seeCurrentUrlEquals(constants.baseUrl);
   I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}`);
-  await I.waitForPlayerState('paused', ['idle']);
+
+  I.waitForElement('video', 5);
+  await I.waitForPlayerState('idle');
 });
 
 async function playInlineVideo(I: CodeceptJS.I, title: string) {
