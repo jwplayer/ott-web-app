@@ -54,6 +54,7 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.10.0",
+    "react-infinite-scroller": "^1.2.6",
     "react-markdown": "^8.0.3",
     "react-query": "^3.13.10",
     "react-router-dom": "^6.4.0",
@@ -77,7 +78,7 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-helmet": "^6.1.2",
     "@types/react-router-dom": "^5.3.3",
-    "@types/react-virtualized": "^9.21.12",
+    "@types/react-infinite-scroller": "^1.2.3",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "@vitejs/plugin-react": "^1.0.7",
@@ -129,7 +130,6 @@
     "lighthouse": "^9.6.7"
   },
   "resolutions": {
-    "react-virtualized": "git+https://git@github.com/remorses/react-virtualized-fixed-import.git#9.22.3",
     "glob-parent": "^5.1.2",
     "codeceptjs/**/ansi-regex": "^4.1.1"
   }
