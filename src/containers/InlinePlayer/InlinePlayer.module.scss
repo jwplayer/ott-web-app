@@ -34,7 +34,7 @@
       margin-right: 8px;
     }
 
-    @include responsive.mobile-only {
+    @include responsive.mobile-and-small-tablet {
       max-width: 65%;
       max-height: 35px;
     }

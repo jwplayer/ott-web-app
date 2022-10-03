@@ -38,23 +38,19 @@
   @include responsive.mobile-and-small-tablet() {
     flex-wrap: wrap;
 
-    > button:first-of-type {
+    > button:nth-last-child(3) {
       flex: 1 1 100%;
-      margin: 16px 0 8px;
-      background-color: var(--body-background-color);
+      margin: 0 0 8px 0;
     }
 
-    > button:not(:first-of-type) {
-      flex: 1;
-      margin: initial;
+    > button:nth-last-child(2) {
+      flex: 0 0 calc(50% - 4px);
+      margin: 0 4px 0 0;
     }
 
-    > button:not(:first-of-type):not(:last-of-type) {
-      margin-right: 4px;
-    }
-
-    > button:not(:first-of-type):not(:last-of-type) + button {
-      margin-left: 4px;
+    > button:nth-last-child(1) {
+      flex: 0 0 calc(50% - 4px);
+      margin: 0 0 0 4px;
     }
   }
 }
@@ -92,6 +88,7 @@ div.title {
   }
 
   @include responsive.mobile-only() {
+    margin-bottom: variables.$base-spacing;
     font-size: 14px;
   }
 }
