@@ -6,7 +6,8 @@ import styles from './About.module.scss';
 
 const About = () => {
   const markdownPage = `# About JW OTT Webapp
-    JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
+  
+JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
 
 To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify.app/](https://jw-ott-webapp.netlify.app/).
 
@@ -31,11 +32,7 @@ To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify
 - Security-related features (encrypted HLS, DRM, signed URLs)
 - Self-hosted JW Players`;
 
-  return (
-    <div className={styles.about}>
-      <MarkdownComponent markdownString={markdownPage} />
-    </div>
-  );
+  return <MarkdownComponent className={styles.about} markdownString={markdownPage} />;
 };
 
 export default About;

@@ -143,11 +143,7 @@ const Layout = () => {
         </Sidebar>
         <Outlet />
       </div>
-      {!!footerText && (
-        <div className={styles.footer}>
-          <MarkdownComponent markdownString={footerText} />
-        </div>
-      )}
+      {!!footerText && <MarkdownComponent className={styles.footer} markdownString={footerText} disallowedElements={['p']} />}
 
       {/* Config select control to improve testing experience */}
       {import.meta.env.APP_INCLUDE_TEST_CONFIGS && <ConfigSelect />}

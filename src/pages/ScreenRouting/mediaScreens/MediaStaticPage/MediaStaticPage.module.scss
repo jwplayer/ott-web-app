@@ -1,7 +1,7 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
+@use '../../../../styles/variables';
+@use '../../../../styles/theme';
 
-div.about {
+.mediaStaticPage {
   max-width: 960px;
   margin: 24px auto;
   padding: 16px;
