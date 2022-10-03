@@ -308,7 +308,21 @@ const stepsObj = {
     const locator = `//div[@aria-label="Play ${name}"]`;
     const shelfXpath = shelf ? makeShelfXpath(shelf) : undefined;
 
-    this.scrollTo(shelfXpath || locator);
+    if (shelfXpath) {
+      for (let n = 0; n < 5; n++) {
+        const visible = await this.grabNumberOfVisibleElements(shelfXpath);
+
+        if (visible > 0) {
+          this.scrollTo(shelfXpath);
+          break;
+        } else {
+          this.scrollPageToBottom();
+          this.wait(0.2);
+        }
+      }
+    } else {
+      this.scrollTo(locator);
+    }
 
     const isMobile = await this.isMobile();
     // Easy way to limit to 10 swipes
@@ -347,6 +361,13 @@ const stepsObj = {
     }
 
     this.click(locator, shelfXpath);
+  },
+  clickPlayerContainer: function (this: CodeceptJS.I) {
+    // sometimes Playwright throws an error when the click hits a different element than specified
+    // see {@link https://github.com/microsoft/playwright/issues/12298}
+    this.usePlaywrightTo('click the player container', async ({ page }) => {
+      await page.locator('div[data-testid="player-container"]').click({ force: true });
+    });
   },
 };
 declare global {

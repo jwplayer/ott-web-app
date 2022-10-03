@@ -9,6 +9,10 @@ import Lock from '#src/icons/Lock';
 import Image from '#src/components/Image/Image';
 import type { ImageData } from '#types/playlist';
 
+export const cardAspectRatios = ['2:1', '16:9', '5:3', '4:3', '1:1', '9:13', '2:3', '9:16'] as const;
+
+export type PosterAspectRatio = typeof cardAspectRatios[number];
+
 type CardProps = {
   onClick?: () => void;
   onHover?: () => void;
@@ -19,7 +23,7 @@ type CardProps = {
   seasonNumber?: string;
   episodeNumber?: string;
   progress?: number;
-  posterAspect?: '1:1' | '2:1' | '2:3' | '4:3' | '5:3' | '16:9' | '9:16';
+  posterAspect?: PosterAspectRatio;
   featured?: boolean;
   disabled?: boolean;
   loading?: boolean;

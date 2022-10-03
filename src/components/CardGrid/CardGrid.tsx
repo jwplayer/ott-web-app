@@ -1,15 +1,19 @@
-import React from 'react';
-import type { GridCellProps } from 'react-virtualized';
+import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import styles from './CardGrid.module.scss';
 
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
-import { chunk } from '#src/utils/collection';
 import { isLocked } from '#src/utils/entitlements';
 import Card from '#src/components/Card/Card';
-import VirtualizedGrid from '#src/components/VirtualizedGrid/VirtualizedGrid';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
+import InfiniteScrollLoader from '#src/components/InfiniteScrollLoader/InfiniteScrollLoader';
+
+const INITIAL_ROW_COUNT = 6;
+const LOAD_ROWS_COUNT = 4;
 
 const defaultCols: Breakpoints = {
   [Breakpoint.xs]: 2,
@@ -49,19 +53,22 @@ function CardGrid({
   hasSubscription,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
-  const rows = chunk<PlaylistItem>(playlist.playlist, cols[breakpoint]);
+  const posterAspect = parseAspectRatio(playlist.shelfImageAspectRatio);
+  const visibleTiles = cols[breakpoint] + parseTilesDelta(posterAspect);
+  const [rowCount, setRowCount] = useState(INITIAL_ROW_COUNT);
 
-  const cellRenderer = ({ columnIndex, rowIndex, style }: GridCellProps) => {
-    if (!rows[rowIndex][columnIndex]) return;
+  useEffect(() => {
+    // reset row count when the page changes
+    setRowCount(INITIAL_ROW_COUNT);
+  }, [playlist.feedid]);
 
-    const playlistItem: PlaylistItem = rows[rowIndex][columnIndex];
+  const renderTile = (playlistItem: PlaylistItem) => {
     const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage } = playlistItem;
 
     return (
-      <div className={styles.cell} style={style} key={mediaid} role="row">
+      <div className={styles.cell} key={mediaid} role="row">
         <div role="cell">
           <Card
-            key={mediaid}
             title={title}
             enableTitle={enableCardTitles}
             duration={duration}
@@ -76,6 +83,7 @@ function CardGrid({
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
             currentLabel={currentCardLabel}
             isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
+            posterAspect={posterAspect}
           />
         </div>
       </div>
@@ -83,9 +91,14 @@ function CardGrid({
   };
 
   return (
-    <div className={styles.container}>
-      <VirtualizedGrid rowCount={rows.length} cols={cols} cellRenderer={cellRenderer} spacing={enableCardTitles ? 50 : 4} />
-    </div>
+    <InfiniteScroll
+      pageStart={0}
+      loadMore={() => setRowCount((current) => current + LOAD_ROWS_COUNT)}
+      hasMore={rowCount * LOAD_ROWS_COUNT < playlist.playlist.length - 1}
+      loader={<InfiniteScrollLoader key="loader" />}
+    >
+      <div className={classNames(styles.container, styles[`cols-${visibleTiles}`])}>{playlist.playlist.slice(0, rowCount * visibleTiles).map(renderTile)}</div>
+    </InfiniteScroll>
   );
 }
 

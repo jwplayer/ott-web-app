@@ -127,7 +127,7 @@
   line-height: 20px;
 }
 
-$aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
+$aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
 @each $base, $modifier in $aspects {
   .aspect#{$base}#{$modifier} {
     padding-top: math.percentage(math.div($modifier, $base));

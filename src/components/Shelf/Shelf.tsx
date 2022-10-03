@@ -10,7 +10,7 @@ import ChevronRight from '#src/icons/ChevronRight';
 import type { AccessModel, ContentType } from '#types/Config';
 import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#src/components/TileDock/TileDock';
-import Card from '#src/components/Card/Card';
+import Card, { type PosterAspectRatio } from '#src/components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const tileBreakpoints: Breakpoints = {
@@ -44,6 +44,8 @@ export type ShelfProps = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  posterAspect?: PosterAspectRatio;
+  visibleTilesDelta?: number;
 };
 
 const Shelf = ({
@@ -61,15 +63,18 @@ const Shelf = ({
   accessModel,
   isLoggedIn,
   hasSubscription,
+  posterAspect,
+  visibleTilesDelta = 0,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
   const [didSlideBefore, setDidSlideBefore] = useState(false);
-  const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
+  const tilesToShow: number = (featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint]) + visibleTilesDelta;
 
   const renderTile = useCallback(
     (item: PlaylistItem, isInView: boolean) => (
       <Card
+        key={item.mediaid}
         title={item.title}
         enableTitle={enableCardTitles}
         duration={item.duration}
@@ -84,9 +89,23 @@ const Shelf = ({
         disabled={!isInView}
         loading={loading}
         isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+        posterAspect={posterAspect}
       />
     ),
-    [playlist, enableCardTitles, watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, onCardClick, type],
+    [
+      enableCardTitles,
+      watchHistory,
+      onCardHover,
+      featured,
+      loading,
+      accessModel,
+      isLoggedIn,
+      hasSubscription,
+      posterAspect,
+      onCardClick,
+      playlist.feedid,
+      type,
+    ],
   );
 
   const renderRightControl = useCallback(

@@ -14,7 +14,7 @@ export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, 
 
     window.jwplayer().seek(seekTo);
   }, seekTo);
-  I.click('div[data-testid="player-container"]'); //re-enable controls overlay
+  I.clickPlayerContainer();
   I.click('div[aria-label="Back"]');
 
   // We need to wait for the player to be removed before proceeding, otherwise race conditions occur when the player is reloaded

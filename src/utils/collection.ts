@@ -2,6 +2,8 @@ import type { Consent, CustomerConsent } from '#types/account';
 import type { Config } from '#types/Config';
 import type { GenericFormValues } from '#types/form';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import type { PosterAspectRatio } from '#src/components/Card/Card';
+import { cardAspectRatios } from '#src/components/Card/Card';
 
 const getFiltersFromConfig = (config: Config, playlistId: string | undefined): string[] => {
   const menuItem = config.menu.find((item) => item.contentId === playlistId);
@@ -136,6 +138,20 @@ const deepCopy = (obj: unknown) => {
   return obj;
 };
 
+const parseAspectRatio = (input: unknown) => {
+  if (typeof input === 'string' && (cardAspectRatios as readonly string[]).includes(input)) return input as PosterAspectRatio;
+};
+
+const parseTilesDelta = (posterAspect?: PosterAspectRatio) => {
+  if (!posterAspect) {
+    return 0;
+  }
+
+  const parts = posterAspect.split(':');
+
+  return parts.length === 2 ? Math.floor(parseInt(parts[1]) / parseInt(parts[0])) : 0;
+};
+
 export {
   getFiltersFromConfig,
   filterPlaylist,
@@ -147,4 +163,6 @@ export {
   extractConsentValues,
   checkConsentsFromValues,
   deepCopy,
+  parseAspectRatio,
+  parseTilesDelta,
 };
