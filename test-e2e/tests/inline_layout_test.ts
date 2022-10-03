@@ -1,4 +1,4 @@
-import constants from '../utils/constants';
+import constants, { ShelfId } from '../utils/constants';
 import { LoginContext } from '../utils/password_utils';
 
 const videoListLocator = locate({ css: 'div[data-testid="video-list"]' });
@@ -43,7 +43,7 @@ Scenario('I switch to another video in the movie screen', async ({ I }) => {
 });
 
 Scenario('I can see the series inline player layout', async ({ I }) => {
-  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle);
+  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses);
   I.seeElement(`[data-testid="inline-layout"]`);
   I.dontSeeElement(`[data-testid="cinema-layout"]`);
   I.seeElement('video');
@@ -64,19 +64,19 @@ Scenario('I can see the series inline player layout', async ({ I }) => {
 });
 
 Scenario('I can start the inline player', async ({ I }) => {
-  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle);
+  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses);
   await playInlineVideo(I, constants.minecraftAnimationWorkshopTitle);
 });
 
 Scenario('I switch to another episode in the video list', async ({ I }) => {
-  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle);
+  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses);
   I.see('S1:E1 - Welcome');
   I.click('S1:E2', locate({ css: 'div[aria-label="Play Basics Of Blender"]' }).inside(videoListLocator));
   I.see('S1:E2 - Basics Of Blender');
 });
 
 Scenario('I switch to another season in the video list', async ({ I }) => {
-  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle);
+  await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses);
   I.see('S1:E1 - Welcome');
 
   I.see('Season 1/4 - Episode 1/6');
