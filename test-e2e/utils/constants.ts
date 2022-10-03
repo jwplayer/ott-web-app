@@ -30,6 +30,7 @@ export default {
   agent327Title: 'Agent 327',
   agent327Description:
     'Hendrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.',
+  bigBuckBunnyPath: 'awWEFyPu/big-buck-bunny?r=dGSUzs9o',
   bigBuckBunnyTitle: 'Big Buck Bunny',
   bigBuckBunnyDescription:
     "Big Buck Bunny (code-named Project Peach) is a 2008 short computer-animated comedy film featuring animals of the forest, made by the Blender Institute, part of the Blender Foundation. Like the foundation's previous film, Elephants Dream, the film was made using Blender, a free and open-source software application for 3D computer modeling and animation developed by the same foundation.",
@@ -38,6 +39,8 @@ export default {
     'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',
   fantasyVehicleTitle: 'Fantasy Vehicle Creation',
   minecraftAnimationWorkshopTitle: 'Minecraft Animation Workshop',
+  minecraftAnimationWorkshopDescription:
+    'Dillon Gu explains a little bit about what you can expect to see in this workshop. Check out his showcase video for this workshop here on his YouTube channel!',
   startWatchingButton: 'Start watching',
   continueWatchingButton: 'Continue watching',
   signUpToWatch: 'Sign up to start watching!',

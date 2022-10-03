@@ -55,6 +55,7 @@ Scenario('I can see series with seasons', async ({ I }) => {
 
 Scenario('I can play other episodes from the series', async ({ I }) => {
   await I.openVideoCard(constants.fantasyVehicleTitle, ShelfId.allCourses);
+  I.see('Fantasy Vehicle Creation (Free)');
   I.scrollTo('text="Modeling Part 1"');
   I.click('div[aria-label="Play Modeling Part 1"]');
 
@@ -77,5 +78,6 @@ Scenario('I can play other episodes from the series', async ({ I }) => {
 
 Scenario('I can see an alternate background image for Fantasy Vehicle Creation', async ({ I }) => {
   await I.openVideoCard(constants.fantasyVehicleTitle, ShelfId.allCourses);
+  I.see('Fantasy Vehicle Creation (Free)');
   await I.seeVideoDetailsBackgroundImage('Fantasy Vehicle Creation (Free)', 'https://img.jwplayer.com/v1/media/0t21PUiy/images/background.jpg?width=1280');
 });

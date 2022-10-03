@@ -35,6 +35,7 @@ $container-width-desktop: 800px !default;
 // --------------------------------
 
 $mobile-max-width: 479px !default;
+$tablet-small-max-width: 767px !default;
 $tablet-max-width: 1023px !default;
 
 $tablet-min-width: $mobile-max-width + 1 !default;

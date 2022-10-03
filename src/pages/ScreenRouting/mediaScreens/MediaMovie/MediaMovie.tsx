@@ -4,13 +4,11 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import styles from './MediaMovie.module.scss';
-
+import VideoLayout from '#src/components/VideoLayout/VideoLayout';
+import { isLocked } from '#src/utils/entitlements';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { formatVideoMetaString, mediaURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
-import VideoDetails from '#src/components/VideoDetails/VideoDetails';
-import CardGrid from '#src/components/CardGrid/CardGrid';
 import useMedia from '#src/hooks/useMedia';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -27,6 +25,7 @@ import PlayTrailer from '#src/icons/PlayTrailer';
 import Button from '#src/components/Button/Button';
 import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
+import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 
 const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { t } = useTranslation('video');
@@ -44,11 +43,12 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, features } = config;
+  const { siteName, styling, features, custom } = config;
 
   const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = features?.enableSharing === true;
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
+  const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Media
   useBlurImageUpdater(data);
@@ -82,6 +82,24 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const canonicalUrl = data ? `${window.location.origin}${mediaURL(data)}` : window.location.href;
 
   const primaryMetadata = formatVideoMetaString(data);
+  const shareButton = enableSharing && <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
+  const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL(data, feedId, true)} />;
+
+  const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
+  const trailerButton = (!!trailerItem || isTrailerLoading) && (
+    <Button
+      label={t('video:trailer')}
+      aria-label={t('video:watch_trailer')}
+      startIcon={<PlayTrailer />}
+      onClick={() => setPlayTrailer(true)}
+      active={playTrailer}
+      fullWidth={breakpoint < Breakpoint.md}
+      disabled={!trailerItem}
+    />
+  );
+
+  const isLoggedIn = !!user;
+  const hasSubscription = !!subscription;
 
   return (
     <React.Fragment>
@@ -109,56 +127,51 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
         ))}
         {data ? <script type="application/ld+json">{generateMovieJSONLD(data)}</script> : null}
       </Helmet>
-      <Cinema
-        open={play && isEntitled}
-        onClose={goBack}
+      <VideoLayout
         item={data}
-        title={data.title}
-        primaryMetadata={primaryMetadata}
-        onComplete={handleComplete}
-        feedId={feedId ?? undefined}
-      />
-      <TrailerModal item={trailerItem} title={`${data.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
-      <VideoDetails
+        inlineLayout={inlineLayout}
+        isLoading={isLoading}
+        accessModel={accessModel}
+        isLoggedIn={isLoggedIn}
+        hasSubscription={hasSubscription}
         title={data.title}
         description={data.description}
-        primaryMetadata={primaryMetadata}
         image={data.backgroundImage}
+        primaryMetadata={primaryMetadata}
+        shareButton={shareButton}
+        favoriteButton={favoriteButton}
+        trailerButton={trailerButton}
         posterMode={posterFading ? 'fading' : 'normal'}
-        shareButton={enableSharing && <ShareButton title={data.title} description={data.description} url={canonicalUrl} />}
-        startWatchingButton={<StartWatchingButton item={data} playUrl={mediaURL(data, feedId, true)} />}
-        favoriteButton={isFavoritesEnabled && <FavoriteButton item={data} />}
-        trailerButton={
-          (!!trailerItem || isTrailerLoading) && (
-            <Button
-              label={t('video:trailer')}
-              aria-label={t('video:watch_trailer')}
-              startIcon={<PlayTrailer />}
-              onClick={() => setPlayTrailer(true)}
-              active={playTrailer}
-              fullWidth={breakpoint < Breakpoint.md}
-              disabled={!trailerItem}
+        startWatchingButton={startWatchingButton}
+        playlist={playlist}
+        relatedTitle={playlist?.title}
+        onItemClick={onCardClick}
+        activeLabel={t('current_video')}
+        enableCardTitles={styling.shelfTitles}
+        player={
+          inlineLayout ? (
+            <InlinePlayer
+              isLoggedIn={isLoggedIn}
+              item={data}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
+              startWatchingButton={startWatchingButton}
+              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, data)}
+            />
+          ) : (
+            <Cinema
+              open={play && isEntitled}
+              onClose={goBack}
+              item={data}
+              title={data.title}
+              primaryMetadata={primaryMetadata}
+              onComplete={handleComplete}
+              feedId={feedId ?? undefined}
             />
           )
         }
-      >
-        {playlist ? (
-          <>
-            <div className={styles.related}>
-              <h3>{playlist.title || '\u00A0'}</h3>
-            </div>
-            <CardGrid
-              playlist={playlist}
-              onCardClick={onCardClick}
-              isLoading={isLoading}
-              enableCardTitles={styling.shelfTitles}
-              accessModel={accessModel}
-              isLoggedIn={!!user}
-              hasSubscription={!!subscription}
-            />
-          </>
-        ) : undefined}
-      </VideoDetails>
+      />
+      <TrailerModal item={trailerItem} title={`${data.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
     </React.Fragment>
   );
 };
