@@ -90,13 +90,13 @@
   box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
 
   @supports not (aspect-ratio: 16 / 9) {
-    &::before {
+    ::before {
       float: left;
-      padding-top: 56.25;
+      padding-top: 56.25%;
       content: '';
     }
 
-    &::after {
+    ::after {
       display: block;
       content: '';
       clear: both;
