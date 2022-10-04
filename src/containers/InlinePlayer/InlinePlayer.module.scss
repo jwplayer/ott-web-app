@@ -2,6 +2,14 @@
 @use '../../styles/mixins/typography';
 @use '../../styles/mixins/responsive';
 
+.inlinePlayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .paywall {
   position: absolute;
   top: 0;
@@ -81,24 +89,5 @@
   @include responsive.mobile-only {
     font-size: 14px;
     line-height: 1em;
-  }
-}
-
-.inlinePlayer {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
-
-  @supports not (aspect-ratio: 16 / 9) {
-    > ::after {
-      display: block;
-      content: '';
-      clear: both;
-    }
-    > ::before {
-      float: left;
-      padding-top: 56.25%;
-      content: '';
-    }
   }
 }
