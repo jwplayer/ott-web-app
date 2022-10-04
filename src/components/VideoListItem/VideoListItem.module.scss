@@ -95,15 +95,11 @@
   right: 8px;
   bottom: 8px;
   display: flex;
-
-  @include responsive.mobile-only {
-    font-size: 14px;
-  }
 }
 
 svg.lock {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
   padding: 5px 5px;
   color: var(--card-color);
   background-color: rgba(variables.$black, 0.6);
@@ -111,8 +107,9 @@ svg.lock {
 }
 
 .tag {
-  margin-left: 8px;
+  margin-left: 4px;
   padding: 2px 6px;
+  font-size: 14px;
 }
 
 .live {

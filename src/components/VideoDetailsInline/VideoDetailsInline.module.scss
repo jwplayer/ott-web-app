@@ -37,7 +37,7 @@
 
   @include responsive.mobile-and-small-tablet() {
     flex-wrap: wrap;
-
+    border-bottom: 0;
     > button:nth-last-child(3) {
       flex: 1 1 100%;
       margin: 0 0 8px 0;
