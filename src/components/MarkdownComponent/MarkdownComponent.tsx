@@ -1,37 +1,39 @@
+import React, { useMemo } from 'react';
+import DOMPurify from 'dompurify';
+import { marked } from 'marked';
 import classNames from 'classnames';
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
 
 import styles from './MarkdownComponent.module.scss';
+
+const renderer = {
+  link(href: string, title: string, text: string) {
+    const externalLink = /^(https?|www\.|\/\/)/.test(href || '');
+    const targetAttr = externalLink ? 'target="_blank"' : undefined;
+    const relAttr = externalLink ? 'rel="noopener"' : undefined;
+    const titleAttr = title ? `title="${title}"` : undefined;
+    const attributes = [targetAttr, relAttr, titleAttr].filter(Boolean);
+
+    return `<a href="${href}" ${attributes.join(' ')}>${text}</a>`;
+  },
+};
+
+marked.use({ renderer });
 
 type Props = {
   markdownString: string;
   className?: string;
-  disallowedElements?: string[];
+  inline?: boolean;
 };
 
-const MarkdownComponent: React.FC<Props> = ({ markdownString, className, disallowedElements }: Props) => {
-  return (
-    <ReactMarkdown
-      className={classNames(styles.markdown, className)}
-      components={{
-        a: ({ node, href, children, ...props }) => {
-          const externalLink = /^(https?|www\.|\/\/)/.test(href || '');
-          const target = externalLink ? '_blank' : undefined;
-          const rel = externalLink ? 'noopener' : undefined;
-          return (
-            <a {...props} href={href} target={target} rel={rel}>
-              {children}
-            </a>
-          );
-        },
-      }}
-      disallowedElements={disallowedElements}
-      unwrapDisallowed
-    >
-      {markdownString}
-    </ReactMarkdown>
-  );
+const MarkdownComponent: React.FC<Props> = ({ markdownString, className, inline = false }) => {
+  const sanitizedHTMLString = useMemo(() => {
+    const parseDelegate = inline ? marked.parseInline : marked.parse;
+    const dirtyHTMLString = parseDelegate(markdownString);
+
+    return DOMPurify.sanitize(dirtyHTMLString, { ADD_ATTR: ['target'] });
+  }, [inline, markdownString]);
+
+  return <div className={classNames(styles.markdown, className)} dangerouslySetInnerHTML={{ __html: sanitizedHTMLString }} />;
 };
 
 export default MarkdownComponent;
