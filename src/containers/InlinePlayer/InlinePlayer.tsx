@@ -54,7 +54,7 @@ const InlinePlayer: React.FC<Props> = ({
     <div className={styles.inlinePlayer}>
       <Fade open={paywall}>
         <div className={styles.paywall}>
-          <Image className={styles.poster} image={item.shelfImage} alt={item.title} width={1280} />
+          <Image className={styles.poster} image={item.backgroundImage} alt={item.title} width={1280} />
           <Lock className={styles.lock} />
           <h2 className={styles.title}>{t('video:sign_up_to_start_watching')}</h2>
           <span className={styles.text}>{t('account:choose_offer.watch_this_on_platform', { siteName })}</span>
