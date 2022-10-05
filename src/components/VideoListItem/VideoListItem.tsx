@@ -64,7 +64,15 @@ function VideoListItem({
   const handleKeyDown = (event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && onClick && onClick();
 
   return (
-    <div className={styles.listItem} onClick={onClick} onMouseEnter={onHover} onKeyDown={handleKeyDown} role="button" aria-label={t('play_item', { title })}>
+    <div
+      className={styles.listItem}
+      onClick={onClick}
+      onMouseEnter={onHover}
+      onKeyDown={handleKeyDown}
+      role="button"
+      aria-label={t('play_item', { title })}
+      tabIndex={0}
+    >
       <div className={styles.poster}>
         <Image className={posterImageClassNames} image={image} alt={title} onLoad={() => setImageLoaded(true)} width={320} />
         {isActive && <div className={styles.activeLabel}>{activeLabel}</div>}
