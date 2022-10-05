@@ -17,7 +17,7 @@ const MediaHub: ScreenComponent<PlaylistItem> = ({ data }) => {
 
   // Effects
   useEffect(() => {
-    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+    (document.scrollingElement || document.body).scroll({ top: 0 });
   }, [data]);
 
   return (
