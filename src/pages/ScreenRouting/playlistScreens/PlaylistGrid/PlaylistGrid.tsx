@@ -48,7 +48,7 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
       </Helmet>
       <header className={styles.header}>
         <h2>{data.title}</h2>
-        {shouldShowFilter && <Filter name="categories" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
+        {shouldShowFilter && <Filter name="genre" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
       </header>
       <main className={styles.main}>
         <CardGrid
