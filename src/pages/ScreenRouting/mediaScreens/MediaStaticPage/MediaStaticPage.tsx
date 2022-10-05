@@ -24,7 +24,7 @@ const MediaStaticPage: ScreenComponent<PlaylistItem> = ({ data }) => {
         <meta property="og:title" content={pageTitle} />
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
-      <div className={styles.mediaStaticPage}>
+      <div className={styles.mediaStaticPage} data-testid="static-page">
         <MarkdownComponent markdownString={data.description} />
       </div>
     </>

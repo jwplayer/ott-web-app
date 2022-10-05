@@ -25,6 +25,7 @@ export default {
   loginUrl: `${baseUrl}?u=login`,
   paymentsUrl: `${baseUrl}u/payments`,
   offersUrl: `${baseUrl}u/payments?u=choose-offer`,
+  staticPageUrl: `${baseUrl}m/oGNEecGq`,
   primitiveAnimalsTitle: 'Primitive Animals',
   primitiveAnimalsDescription: "If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.",
   agent327Title: 'Agent 327',

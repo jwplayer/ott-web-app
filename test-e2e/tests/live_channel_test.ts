@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import constants, { ShelfId } from '../utils/constants';
 
 const programSelectedBackgroundColor = 'rgb(204, 204, 204)';
@@ -214,7 +212,7 @@ Scenario('I can see the default background image for Channel 4', async ({ I }) =
 });
 
 async function isSelectedProgram(I: CodeceptJS.I, programId: string, channel: string) {
-  await checkStyle(I, makeEpgProgramLocator(programId), {
+  await I.checkStyle(I, makeEpgProgramLocator(programId), {
     'background-color': programSelectedBackgroundColor,
     border: programLiveBorder,
   });
@@ -222,7 +220,7 @@ async function isSelectedProgram(I: CodeceptJS.I, programId: string, channel: st
 }
 
 async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string) {
-  await checkStyle(I, makeEpgProgramLocator(programId), {
+  await I.checkStyle(I, makeEpgProgramLocator(programId), {
     'background-color': programBackgroundColor,
     border: programLiveBorder,
   });
@@ -230,21 +228,11 @@ async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string
 }
 
 async function isProgram(I: CodeceptJS.I, programId: string, channel: string) {
-  await checkStyle(I, makeEpgProgramLocator(programId), {
+  await I.checkStyle(I, makeEpgProgramLocator(programId), {
     'background-color': programBackgroundColor,
     border: programBorder,
   });
   await I.say(`I see the program is not active nor selected on ${channel}`);
-}
-
-async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
-  for (const style in styles) {
-    const value = await I.grabCssPropertyFrom(locator, style);
-
-    assert.strictEqual(styles[style], value);
-  }
-
-  return true;
 }
 
 function waitForEpgAnimation(I: CodeceptJS.I, sec: number = 1) {
