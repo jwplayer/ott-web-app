@@ -80,7 +80,7 @@ Scenario('I switch to another season in the video list', async ({ I }) => {
   I.see('S1:E1 - Welcome');
 
   I.see('Season 1/4 - Episode 1/6');
-  I.selectOption({ css: 'select[name="categories"]' }, 'Season 2');
+  I.selectOption({ css: 'select[name="season"]' }, 'Season 2');
 
   I.click(locate({ css: 'div[aria-label="Play Choosing a skin (Cycles Render)"]' }).inside(videoListLocator));
   I.dontSee('Season 1/4 - Episode 1/6');

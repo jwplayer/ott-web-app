@@ -30,6 +30,7 @@ $large-button-height: 40px;
     &:not(.disabled) {
       &:hover,
       &:focus {
+        z-index: 1;
         transform: scale(1.1);
       }
 

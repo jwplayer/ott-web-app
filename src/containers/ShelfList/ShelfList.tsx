@@ -65,6 +65,7 @@ const ShelfList = ({ rows }: Props) => {
         style={{ overflow: 'hidden' }}
         loadMore={() => setRowCount((current) => current + LOAD_ROWS_COUNT)}
         hasMore={rowCount < rows.length - 1}
+        role="grid"
         loader={<InfiniteScrollLoader key="loader" />}
       >
         {rows.slice(0, rowCount).map((row, index) => (

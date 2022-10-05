@@ -19,8 +19,7 @@
       transform: scale(1.05);
 
       & .poster {
-        box-shadow: 0 0 0 3px var(--highlight-color, variables.$white), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
-        0 4px 5px rgb(0 0 0 / 20%);
+        box-shadow: 0 0 0 3px var(--highlight-color, variables.$white), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
       }
     }
   }
@@ -202,7 +201,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
   padding: 2px 6px;
 
   > svg {
-    width: 16px;
+    width: 14px;
     height: 21px;
   }
 }

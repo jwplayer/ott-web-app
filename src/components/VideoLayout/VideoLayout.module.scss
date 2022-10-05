@@ -37,7 +37,23 @@
 }
 
 .player {
+  position: relative;
   grid-area: player;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+
+  @supports not (aspect-ratio: 16 / 9) {
+    &::after {
+      display: block;
+      content: '';
+      clear: both;
+    }
+    &::before {
+      float: left;
+      padding-top: 56.25%;
+      content: '';
+    }
+  }
 
   @include responsive.mobile-only() {
     margin: -16px -16px 0;
@@ -87,6 +103,7 @@
     align-items: initial;
     width: 100%;
     grid-area: related;
+    padding-bottom: 0;
 
     > h3 {
       font-size: 20px;
@@ -123,6 +140,7 @@
 }
 
 .filtersInline {
+  margin-bottom: variables.$base-spacing;
   padding-bottom: variables.$base-spacing;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }

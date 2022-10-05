@@ -105,7 +105,7 @@ const VideoLayout: React.FC<Props> = ({
       {!!filterMetadata && inlineLayout && <span className={styles.filterMetadata}>{filterMetadata}</span>}
       {showFilters && (
         <Filter
-          name="categories"
+          name="season"
           value={currentFilter}
           valuePrefix={filterValuePrefix}
           defaultLabel={defaultFilterLabel}
