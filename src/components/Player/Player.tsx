@@ -137,6 +137,12 @@ const Player: React.FC<Props> = ({
         logDev('Calling loadPlaylist with the same item, check the dependencies');
         return;
       }
+
+      // update autostart parameter
+      if (typeof autostart !== 'undefined') {
+        playerRef.current?.setConfig({ autostart });
+      }
+
       // load new item
       playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current })]);
     };
