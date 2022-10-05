@@ -94,7 +94,7 @@ function CardGrid({
     <InfiniteScroll
       pageStart={0}
       loadMore={() => setRowCount((current) => current + LOAD_ROWS_COUNT)}
-      hasMore={rowCount * LOAD_ROWS_COUNT < playlist.playlist.length - 1}
+      hasMore={rowCount * visibleTiles < playlist.playlist.length}
       loader={<InfiniteScrollLoader key="loader" />}
     >
       <div className={classNames(styles.container, styles[`cols-${visibleTiles}`])} role="grid">
