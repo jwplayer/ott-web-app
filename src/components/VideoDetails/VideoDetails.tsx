@@ -43,6 +43,7 @@ const VideoDetails: React.VFC<Props> = ({
           [styles.posterNormal]: posterMode === 'normal',
         })}
       >
+        <Image className={classNames(styles.poster, styles[posterMode])} image={image} alt={title} width={1280} />
         <div className={styles.info}>
           <h2 className={styles.title}>{title}</h2>
           <div className={styles.metaContainer}>
@@ -58,7 +59,6 @@ const VideoDetails: React.VFC<Props> = ({
             {shareButton}
           </div>
         </div>
-        <Image className={classNames(styles.poster, styles[posterMode])} image={image} alt={title} width={1280} />
       </div>
     </div>
   );

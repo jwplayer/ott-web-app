@@ -53,7 +53,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   // Media
   useBlurImageUpdater(data);
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(data?.trailerId || '');
-  const { data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
+  const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
@@ -61,7 +61,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // Handlers
   const goBack = () => data && navigate(mediaURL(data, feedId, false));
-  const onCardClick = (item: PlaylistItem) => navigate(mediaURL(item));
+  const onCardClick = (item: PlaylistItem) => navigate(mediaURL(item, feedId));
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -74,7 +74,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // Effects
   useEffect(() => {
-    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+    (document.scrollingElement || document.body).scroll({ top: 0 });
   }, [id]);
 
   // UI
@@ -130,7 +130,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
       <VideoLayout
         item={data}
         inlineLayout={inlineLayout}
-        isLoading={isLoading}
+        isLoading={isLoading || isPlaylistLoading}
         accessModel={accessModel}
         isLoggedIn={isLoggedIn}
         hasSubscription={hasSubscription}

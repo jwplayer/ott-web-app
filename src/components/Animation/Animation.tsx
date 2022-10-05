@@ -1,6 +1,7 @@
 import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 
 type Props = {
+  className?: string;
   createStyle: (status: Status) => CSSProperties;
   open?: boolean;
   duration?: number;
@@ -13,6 +14,7 @@ type Props = {
 export type Status = 'opening' | 'open' | 'closing' | 'closed';
 
 const Animation: React.FC<Props> = ({
+  className,
   createStyle,
   open = true,
   duration = 250,
@@ -58,7 +60,11 @@ const Animation: React.FC<Props> = ({
     return null;
   }
 
-  return <div style={createStyle(status)}>{children}</div>;
+  return (
+    <div style={createStyle(status)} className={className}>
+      {children}
+    </div>
+  );
 };
 
 export default Animation;

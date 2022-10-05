@@ -109,7 +109,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     setActiveChannel(channelId, programId);
 
     // scroll to top when clicking a program
-    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
+    (document.scrollingElement || document.body).scroll({ top: 0 });
   };
 
   const handleChannelClick = (channelId: string) => {

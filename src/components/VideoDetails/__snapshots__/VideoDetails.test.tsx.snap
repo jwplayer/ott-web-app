@@ -9,6 +9,11 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
     <div
       class="_main_d0c133 _mainPadding_d0c133"
     >
+      <img
+        alt="Test video"
+        class="_poster_d0c133 _fading_d0c133 _image_4c41c3"
+        src="http://image.jpg?width=1280"
+      />
       <div
         class="_info_d0c133"
       >
@@ -60,11 +65,6 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           </button>
         </div>
       </div>
-      <img
-        alt="Test video"
-        class="_poster_d0c133 _fading_d0c133 _image_4c41c3"
-        src="http://image.jpg?width=1280"
-      />
     </div>
   </div>
 </div>
