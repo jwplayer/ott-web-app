@@ -32,7 +32,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
   return (
     <Fragment>
       {showFilterRow ? (
-        <div className={styles.filterRow} role="listbox" aria-label={t('filter_videos_by_genre')}>
+        <div className={styles.filterRow} role="listbox" aria-label={t('filter_videos_by', { type: name })}>
           {options.map((option) => (
             <Button label={`${valuePrefix}${option}`} onClick={() => setValue(option)} key={option} active={value === option} role="option" />
           ))}
@@ -49,7 +49,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
             name={name}
             value={value}
             onChange={handleChange}
-            aria-label={t('filter_videos_by_genre')}
+            aria-label={t('filter_videos_by', { type: name })}
           />
         </div>
       )}

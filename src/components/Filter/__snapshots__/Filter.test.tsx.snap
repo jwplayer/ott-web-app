@@ -3,7 +3,7 @@
 exports[`<Filter> > renders Filter 1`] = `
 <div>
   <div
-    aria-label="filter_videos_by_genre"
+    aria-label="filter_videos_by"
     class="_filterRow_2153bc"
     role="listbox"
   >

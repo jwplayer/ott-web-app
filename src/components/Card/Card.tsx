@@ -97,9 +97,9 @@ function Card({
             {featured && !disabled && enableTitle && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
             <div className={styles.tags}>
               {isLocked && (
-                <span className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="status">
+                <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="status">
                   <Lock />
-                </span>
+                </div>
               )}
               {renderTag()}
             </div>

@@ -12,6 +12,7 @@
   },
   "default_site_name": "My OTT Application",
   "filter_videos_by_genre": "Filter videos by genre",
+  "filter_videos_by": "Filter videos by {{ filter }}",
   "home": "Home",
   "live": "LIVE",
   "now": "Now",
