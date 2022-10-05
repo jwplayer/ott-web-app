@@ -106,6 +106,11 @@ const Player: React.FC<Props> = ({
   }, [scriptUrl]);
 
   useEffect(() => {
+    // update the startTimeRef each time the startTime changes
+    startTimeRef.current = startTime;
+  }, [startTime]);
+
+  useEffect(() => {
     if (!playerId) {
       return;
     }
