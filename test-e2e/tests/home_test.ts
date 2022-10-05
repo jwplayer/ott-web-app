@@ -95,8 +95,8 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
   const rightMedia = isDesktop
     ? { name: 'Cosmos Laundromat', duration: '13 min' }
     : {
-        name: 'Big Buck Bunny',
-        duration: '10 min',
+        name: 'Elephants Dream',
+        duration: '11 min',
       };
 
   I.see('All Films');
