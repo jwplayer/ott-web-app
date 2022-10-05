@@ -74,15 +74,12 @@ const Cinema: React.FC<Props> = ({
     return () => {
       document.body.style.overflowY = '';
     };
-    // This is needed since we only want this effect to run when the `open` property updates
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (
     <Fade open={open} className={styles.fade}>
       <div className={styles.cinema}>
         <PlayerContainer
-          visible={open}
           item={item}
           feedId={feedId}
           onPlay={handlePlay}

@@ -22,6 +22,8 @@ type Props = {
   onUserInActive?: () => void;
   onBeforePlay?: () => void;
   onFirstFrame?: () => void;
+  onRemove?: () => void;
+  onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
   startTime?: number;
   autostart?: boolean;
@@ -38,6 +40,8 @@ const Player: React.FC<Props> = ({
   onUserInActive,
   onBeforePlay,
   onFirstFrame,
+  onRemove,
+  onPlaylistItem,
   onPlaylistItemCallback,
   feedId,
   startTime = 0,
@@ -58,6 +62,8 @@ const Player: React.FC<Props> = ({
   const handleUserActive = useEventCallback(onUserActive);
   const handleUserInactive = useEventCallback(onUserInActive);
   const handleFirstFrame = useEventCallback(onFirstFrame);
+  const handleRemove = useEventCallback(onRemove);
+  const handlePlaylistItem = useEventCallback(onPlaylistItem);
   const handlePlaylistItemCallback = useEventCallback(onPlaylistItemCallback);
   const handleReady = useEventCallback(() => onReady && onReady(playerRef.current));
 
@@ -70,6 +76,8 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('userActive', handleUserActive);
     playerRef.current?.on('userInactive', handleUserInactive);
     playerRef.current?.on('firstFrame', handleFirstFrame);
+    playerRef.current?.on('remove', handleRemove);
+    playerRef.current?.on('playlistItem', handlePlaylistItem);
     playerRef.current?.setPlaylistItemCallback(handlePlaylistItemCallback);
   }, [
     handleReady,
@@ -80,6 +88,8 @@ const Player: React.FC<Props> = ({
     handleUserActive,
     handleUserInactive,
     handleFirstFrame,
+    handleRemove,
+    handlePlaylistItem,
     handlePlaylistItemCallback,
   ]);
 

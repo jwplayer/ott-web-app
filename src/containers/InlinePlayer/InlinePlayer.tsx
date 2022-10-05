@@ -64,7 +64,6 @@ const InlinePlayer: React.FC<Props> = ({
       </Fade>
       {!paywall && (
         <PlayerContainer
-          visible={true}
           item={item}
           feedId={feedId}
           onPlay={onPlay}

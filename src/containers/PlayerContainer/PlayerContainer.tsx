@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import type { PlaylistItem } from '#types/playlist';
@@ -10,6 +9,7 @@ import Player from '#src/components/Player/Player';
 import type { JWPlayer } from '#types/jwplayer';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '#src/config';
+import useQueryParam from '#src/hooks/useQueryParam';
 
 type Props = {
   item: PlaylistItem;
@@ -19,7 +19,6 @@ type Props = {
   onClose?: () => void;
   onUserActive?: () => void;
   onUserInActive?: () => void;
-  visible?: boolean;
   feedId?: string;
   liveStartDateTime?: string | null;
   liveEndDateTime?: string | null;
@@ -29,7 +28,6 @@ type Props = {
 const PlayerContainer: React.FC<Props> = ({
   item,
   feedId,
-  visible,
   onPlay,
   onPause,
   onComplete,
@@ -39,9 +37,7 @@ const PlayerContainer: React.FC<Props> = ({
   liveFromBeginning,
   liveStartDateTime,
 }: Props) => {
-  // useQueryParams is not used here because the useEffect in it causes play to be false on the first render
-  const [searchParams] = useSearchParams();
-  const autostart = searchParams.get('play') === '1';
+  const autostart = useQueryParam('play') === '1';
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;
@@ -103,16 +99,18 @@ const PlayerContainer: React.FC<Props> = ({
     onComplete && onComplete();
   }, [handleWatchHistory, onComplete]);
 
+  const handleRemove = useCallback(() => {
+    handleWatchHistory();
+  }, [handleWatchHistory]);
+
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
-  // effects
+  // Effects
   useEffect(() => {
-    if (visible === false) {
-      handleWatchHistory();
-    }
-    // This is needed since we only want this effect to run when the `visible` property updates
+    // save watch history when the item changes
+    return () => handleWatchHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+  }, [item]);
 
   return (
     <Player
@@ -124,6 +122,7 @@ const PlayerContainer: React.FC<Props> = ({
       onPlay={onPlay}
       onPause={handlePause}
       onComplete={handleComplete}
+      onRemove={handleRemove}
       onUserActive={onUserActive}
       onUserInActive={onUserInActive}
       onPlaylistItemCallback={handlePlaylistItemCallback}
