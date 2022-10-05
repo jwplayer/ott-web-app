@@ -3,6 +3,7 @@ import React, { CSSProperties } from 'react';
 import Animation, { Status } from '../Animation';
 
 type Props = {
+  className?: string;
   open?: boolean;
   duration?: number;
   delay?: number;
@@ -11,7 +12,7 @@ type Props = {
   onCloseAnimationEnd?: () => void;
 };
 
-const Fade: React.FC<Props> = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, keepMounted, children }) => {
+const Fade: React.FC<Props> = ({ className, open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, keepMounted, children }) => {
   const seconds = duration / 1000;
   const transition = `opacity ${seconds}s ease-in-out`;
 
@@ -22,6 +23,7 @@ const Fade: React.FC<Props> = ({ open = true, duration = 250, delay = 0, onOpenA
 
   return (
     <Animation
+      className={className}
       createStyle={(status: Status) => createStyle(status)}
       open={open}
       duration={duration}

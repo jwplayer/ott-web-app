@@ -79,7 +79,7 @@ const Cinema: React.FC<Props> = ({
   }, [open]);
 
   return (
-    <Fade open={open}>
+    <Fade open={open} className={styles.fade}>
       <div className={styles.cinema}>
         <PlayerContainer
           visible={open}

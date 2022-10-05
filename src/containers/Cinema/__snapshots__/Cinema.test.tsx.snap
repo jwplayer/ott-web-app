@@ -3,6 +3,7 @@
 exports[`<Cinema> > renders and matches snapshot 1`] = `
 <div>
   <div
+    class="_fade_555f3c"
     style="transition: opacity 0.25s ease-in-out; opacity: 0;"
   >
     <div

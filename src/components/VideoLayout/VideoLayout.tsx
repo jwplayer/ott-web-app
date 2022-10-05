@@ -186,7 +186,6 @@ const VideoLayout: React.FC<Props> = ({
 
   return (
     <div className={styles.videoCinemaLayout} data-testid="cinema-layout">
-      {player}
       <VideoDetails
         title={title}
         description={description}
@@ -201,6 +200,7 @@ const VideoLayout: React.FC<Props> = ({
       />
       {playlist && onItemClick && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
       {children}
+      {player}
     </div>
   );
 };
