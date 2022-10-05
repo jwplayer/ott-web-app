@@ -32,7 +32,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
   return (
     <Fragment>
       {showFilterRow ? (
-        <div className={styles.filterRow} role="listbox">
+        <div className={styles.filterRow} role="listbox" aria-label={t('filter_videos_by_genre')}>
           {options.map((option) => (
             <Button label={`${valuePrefix}${option}`} onClick={() => setValue(option)} key={option} active={value === option} role="option" />
           ))}

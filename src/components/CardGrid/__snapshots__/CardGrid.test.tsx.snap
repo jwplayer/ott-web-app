@@ -5,6 +5,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
   <div>
     <div
       class="_container_7175d1 _cols-5_7175d1"
+      role="grid"
     >
       <div
         class="_cell_7175d1"
