@@ -212,7 +212,7 @@ Scenario('I can see the default background image for Channel 4', async ({ I }) =
 });
 
 async function isSelectedProgram(I: CodeceptJS.I, programId: string, channel: string) {
-  await I.checkStyle(I, makeEpgProgramLocator(programId), {
+  await I.checkStyle(makeEpgProgramLocator(programId), {
     'background-color': programSelectedBackgroundColor,
     border: programLiveBorder,
   });
@@ -220,7 +220,7 @@ async function isSelectedProgram(I: CodeceptJS.I, programId: string, channel: st
 }
 
 async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string) {
-  await I.checkStyle(I, makeEpgProgramLocator(programId), {
+  await I.checkStyle(makeEpgProgramLocator(programId), {
     'background-color': programBackgroundColor,
     border: programLiveBorder,
   });
@@ -228,7 +228,7 @@ async function isLiveProgram(I: CodeceptJS.I, programId: string, channel: string
 }
 
 async function isProgram(I: CodeceptJS.I, programId: string, channel: string) {
-  await I.checkStyle(I, makeEpgProgramLocator(programId), {
+  await I.checkStyle(makeEpgProgramLocator(programId), {
     'background-color': programBackgroundColor,
     border: programBorder,
   });
