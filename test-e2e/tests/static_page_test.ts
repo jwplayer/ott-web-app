@@ -1,5 +1,3 @@
-import * as assert from 'assert';
-
 import constants from '../utils/constants';
 
 const staticPage = locate({ css: 'div[data-testid="static-page"]' });

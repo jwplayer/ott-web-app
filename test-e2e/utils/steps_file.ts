@@ -369,9 +369,9 @@ const stepsObj = {
       await page.locator('div[data-testid="player-container"]').click({ force: true });
     });
   },
-  checkStyle: async function (I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
+  checkStyle: async function (this: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
     for (const style in styles) {
-      const value = await I.grabCssPropertyFrom(locator, style);
+      const value = await this.grabCssPropertyFrom(locator, style);
 
       assert.strictEqual(styles[style], value, `Expected ${style} to be ${styles[style]} but got ${value}`);
     }
