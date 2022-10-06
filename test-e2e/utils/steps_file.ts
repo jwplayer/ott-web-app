@@ -373,8 +373,10 @@ const stepsObj = {
     for (const style in styles) {
       const value = await this.grabCssPropertyFrom(locator, style);
 
-      assert.strictEqual(styles[style], value, `Expected ${style} to be ${styles[style]} but got ${value}`);
+      assert.strictEqual(styles[style], value, `Expected ${style} from ${locator} to be ${styles[style]} but got ${value}`);
     }
+
+    return true;
   },
 };
 declare global {

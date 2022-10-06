@@ -232,6 +232,7 @@ async function isProgram(I: CodeceptJS.I, programId: string, channel: string) {
     'background-color': programBackgroundColor,
     border: programBorder,
   });
+
   await I.say(`I see the program is not active nor selected on ${channel}`);
 }
 

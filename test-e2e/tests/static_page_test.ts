@@ -28,7 +28,7 @@ Scenario('I can see the markdown correctly being rendered', async ({ I }) => {
     'font-weight': fontWeight,
     'padding-bottom': '7.2px',
     'font-size': '24px',
-    'line-height': '31.92',
+    'line-height': '31.92px',
     'border-bottom': borderBottom,
   });
 
@@ -42,7 +42,7 @@ Scenario('I can see the markdown correctly being rendered', async ({ I }) => {
   await I.checkStyle(locate('h4').inside(staticPage), {
     margin: '0px 0px 16px',
     'font-weight': fontWeight,
-    'line-height': '21.28',
+    'line-height': '21.28px',
     'font-size': '16px',
   });
 
@@ -63,34 +63,26 @@ Scenario('I can see the markdown correctly being rendered', async ({ I }) => {
   await I.checkStyle(locate('hr').inside(staticPage), {
     'box-sizing': 'content-box',
     height: '4px',
-    margin: '24px 0',
-    padding: '0',
+    margin: '24px 0px',
+    padding: '0px',
     overflow: 'hidden',
-    background: 'transparent',
-    'background-color': borderBottom,
-    border: '0',
+    'background-color': 'rgba(255, 255, 255, 0.12)',
   });
 
   await I.checkStyle(locate('a').inside(staticPage), {
-    'text-decoration': 'none',
-  });
-
-  await I.checkStyle(locate('h6').inside(staticPage), {
-    'box-sizing': 'content-box',
-    'max-width': '100%',
-    'background-color': 'theme.$secondary-color',
+    'text-decoration-line': 'none',
   });
 
   await I.checkStyle(locate('ul').inside(staticPage), {
     'font-size': '16px',
     'list-style-type': 'disc',
-    margin: '19.2px 0px 0px',
+    margin: '19.2px 0px',
   });
 
   await I.checkStyle(locate('ol').inside(staticPage), {
     'font-size': '16px',
     'list-style-type': 'decimal',
-    margin: '19.2px 0px 0px',
+    margin: '19.2px 0px',
   });
 
   await I.checkStyle(locate('li').inside(staticPage), {
@@ -99,17 +91,16 @@ Scenario('I can see the markdown correctly being rendered', async ({ I }) => {
 
   await I.checkStyle(locate('p').inside(staticPage), {
     'font-size': '16px',
-    margin: '19.2px 0px 0px',
+    margin: '19.2px 0px',
   });
 
   await I.checkStyle(locate('strong').inside(staticPage), {
     'font-size': '16px',
     'font-weight': fontWeight,
-    margin: '19.2px 0px 0px',
   });
 
   await I.checkStyle(locate('em').inside(staticPage), {
     'font-size': '16px',
-    margin: '19.2px 0px 0px',
+    'font-style': 'italic',
   });
 });
