@@ -140,9 +140,12 @@
   position: absolute;
   top: 0;
   right: 0;
+  z-index: -1;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  // fix for Safari (poster will render below the dynamic blur)
+  transform: translateZ(0);
 
   &.normal {
     width: 720px;
