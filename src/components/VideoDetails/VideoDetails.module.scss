@@ -29,7 +29,6 @@
 .main {
   display: flex;
   max-width: 100vw;
-  overflow: hidden;
 
   &.hidden {
     display: none;
@@ -44,11 +43,15 @@
   position: relative;
   width: 70%;
   max-width: 650px;
-  min-height: 300px;
+  min-height: 440px;
+
+  @include responsive.desktop-small-only() {
+    min-height: 335px;
+  }
 
   @include responsive.tablet-only() {
     width: 350px;
-    min-height: 380px;
+    min-height: 335px;
   }
 
   @include responsive.mobile-only() {
@@ -148,26 +151,34 @@
   transform: translateZ(0);
 
   &.normal {
-    width: 720px;
-    height: 405px;
-    margin: 37px 56px;
+    right: 56px;
+    width: auto;
+    height: 100%;
     border-radius: 4px;
     mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
     -webkit-mask-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%); /* stylelint-disable-line */
 
+    @include responsive.desktop-small-only() {
+      right: 34px;
+    }
+
     @include responsive.tablet-only() {
-      width: 600px;
-      height: 338px;
-      margin: 24px 34px;
+      right: 24px;
+      max-width: 80vw;
+      max-height: 350px;
     }
 
     @include responsive.mobile-only() {
+      top: -#{variables.$header-height-mobile + 16};
+      right: -16px;
+      left: -16px;
       width: 100vw;
-      margin: 0 16px;
+      height: 400px;
+      border-radius: 0;
 
-      mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
+      mask-image: radial-gradient(191% 141% at 100% 10%, rgb(0, 0, 0) 40%, rgba(0, 0, 0, 0) 60%);
       //noinspection CssInvalidPropertyValue
-      -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%); /* stylelint-disable-line */
+      -webkit-mask-image: radial-gradient(191% 141% at 100% 10%, rgb(0, 0, 0) 40%, rgba(0, 0, 0, 0) 60%); /* stylelint-disable-line */
     }
   }
 

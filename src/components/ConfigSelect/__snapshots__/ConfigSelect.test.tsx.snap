@@ -58,6 +58,12 @@ exports[`<ConfigSelect> > renders and matches snapshot 1`] = `
         </option>
         <option
           class="_option_bb73c6"
+          value="test--normal-poster"
+        >
+          test--normal-poster
+        </option>
+        <option
+          class="_option_bb73c6"
           value="test--subscription"
         >
           test--subscription
