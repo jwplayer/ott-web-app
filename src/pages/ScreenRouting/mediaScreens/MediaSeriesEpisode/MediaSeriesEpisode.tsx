@@ -198,6 +198,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
               feedId={feedId ?? undefined}
               startWatchingButton={startWatchingButton}
               paywall={isLocked(accessModel, isLoggedIn, hasSubscription, episodeItem)}
+              autostart={play || undefined}
             />
           ) : (
             <Cinema

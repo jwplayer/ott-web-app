@@ -9,7 +9,6 @@ import Player from '#src/components/Player/Player';
 import type { JWPlayer } from '#types/jwplayer';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '#src/config';
-import useQueryParam from '#src/hooks/useQueryParam';
 
 type Props = {
   item: PlaylistItem;
@@ -23,6 +22,7 @@ type Props = {
   liveStartDateTime?: string | null;
   liveEndDateTime?: string | null;
   liveFromBeginning?: boolean;
+  autostart?: boolean;
 };
 
 const PlayerContainer: React.FC<Props> = ({
@@ -36,8 +36,8 @@ const PlayerContainer: React.FC<Props> = ({
   liveEndDateTime,
   liveFromBeginning,
   liveStartDateTime,
+  autostart,
 }: Props) => {
-  const autostart = useQueryParam('play') === '1';
   const { player, features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;

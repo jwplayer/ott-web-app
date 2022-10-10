@@ -157,6 +157,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
               feedId={feedId ?? undefined}
               startWatchingButton={startWatchingButton}
               paywall={isLocked(accessModel, isLoggedIn, hasSubscription, data)}
+              autostart={play || undefined}
             />
           ) : (
             <Cinema

@@ -152,15 +152,22 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      playerRef.current.setup({
+      // player options are untyped
+      const playerOptions: { [key: string]: unknown } = {
         aspectratio: false,
         playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
         width: '100%',
         height: '100%',
         mute: false,
-        autostart,
         repeat: false,
-      });
+      };
+
+      // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
+      if (typeof autostart !== 'undefined') {
+        playerOptions.autostart = autostart;
+      }
+
+      playerRef.current.setup(playerOptions);
 
       setPlayer(playerRef.current);
       attachEvents();
