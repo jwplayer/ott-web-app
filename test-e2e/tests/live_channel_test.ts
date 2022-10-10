@@ -228,7 +228,7 @@ Scenario('I can see the default background image for Channel 4', async ({ I }) =
   await I.seeVideoDetailsBackgroundImage('Channel 4', 'https://cdn.jwplayer.com/v2/media/kH7LozaK/poster.jpg?width=1280');
 });
 
-async function isSelectedProgram (I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
+async function isSelectedProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
   await checkStyle(I, locator, {
     'background-color': programSelectedBackgroundColor,
     border: programLiveBorder,
@@ -236,7 +236,7 @@ async function isSelectedProgram (I: CodeceptJS.I, locator: CodeceptJS.Locator, 
   await I.say(`I see the program is selected on ${channel}`);
 }
 
-async function isLiveProgram (I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
+async function isLiveProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
   await checkStyle(I, locator, {
     'background-color': programBackgroundColor,
     border: programLiveBorder,
@@ -244,7 +244,7 @@ async function isLiveProgram (I: CodeceptJS.I, locator: CodeceptJS.Locator, chan
   await I.say(`I see the program is live on ${channel}`);
 }
 
-async function isProgram (I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
+async function isProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
   await checkStyle(I, locator, {
     'background-color': programBackgroundColor,
     border: programBorder,
@@ -252,7 +252,7 @@ async function isProgram (I: CodeceptJS.I, locator: CodeceptJS.Locator, channel:
   await I.say(`I see the program is not active nor selected on ${channel}`);
 }
 
-async function checkStyle (I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
+async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
   for (const style in styles) {
     const value = await I.grabCssPropertyFrom(locator, style);
 
@@ -262,6 +262,6 @@ async function checkStyle (I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString,
   return true;
 }
 
-function waitForEpgAnimation (I: CodeceptJS.I, sec: number = 1) {
+function waitForEpgAnimation(I: CodeceptJS.I, sec: number = 1) {
   return I.wait(sec);
 }
