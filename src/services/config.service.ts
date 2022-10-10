@@ -81,7 +81,7 @@ const configSchema: SchemaOf<Config> = object({
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
   assets: object({
-    banner: string().notRequired(),
+    banner: string().notRequired().nullable(),
   }).notRequired(),
   content: array().of(contentSchema),
   menu: array().of(menuSchema),

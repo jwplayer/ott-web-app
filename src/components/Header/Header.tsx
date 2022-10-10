@@ -22,7 +22,7 @@ type TypeHeader = 'static' | 'fixed';
 type Props = {
   headerType?: TypeHeader;
   onMenuButtonClick: () => void;
-  logoSrc?: string;
+  logoSrc?: string | null;
   searchBarProps: SearchBarProps;
   searchEnabled: boolean;
   searchActive: boolean;

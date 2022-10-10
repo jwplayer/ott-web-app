@@ -12,7 +12,7 @@ export type Config = {
   integrations: {
     cleeng?: Cleeng;
   };
-  assets: { banner?: string };
+  assets: { banner?: string | null };
   content: Content[];
   menu: Menu[];
   styling: Styling;

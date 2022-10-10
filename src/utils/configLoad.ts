@@ -13,7 +13,9 @@ const defaultConfig: Config = {
   siteName: '',
   description: '',
   player: '',
-  assets: {},
+  assets: {
+    banner: '/images/logo.png',
+  },
   content: [],
   menu: [],
   integrations: {
@@ -89,6 +91,11 @@ export const loadAndValidateConfig = async (
   await validateConfig(config)
     .then(async (configValidated) => {
       const configWithDefaults = merge({}, defaultConfig, configValidated);
+
+      // make sure the banner always defaults to the JWP banner when not defined in the config
+      if (!configWithDefaults.assets.banner) {
+        configWithDefaults.assets.banner = defaultConfig.assets.banner;
+      }
 
       const accessModel = calculateAccessModel(configWithDefaults);
 
