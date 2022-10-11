@@ -26,6 +26,7 @@ type Props = {
   startWatchingButton: React.ReactNode;
   isLoggedIn: boolean;
   paywall: boolean;
+  autostart?: boolean;
 };
 
 const InlinePlayer: React.FC<Props> = ({
@@ -40,6 +41,7 @@ const InlinePlayer: React.FC<Props> = ({
   startWatchingButton,
   isLoggedIn,
   paywall,
+  autostart,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation();
@@ -66,6 +68,7 @@ const InlinePlayer: React.FC<Props> = ({
         <PlayerContainer
           item={item}
           feedId={feedId}
+          autostart={autostart}
           onPlay={onPlay}
           onPause={onPause}
           onComplete={onComplete}

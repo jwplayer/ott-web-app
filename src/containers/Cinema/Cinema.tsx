@@ -82,6 +82,7 @@ const Cinema: React.FC<Props> = ({
         <PlayerContainer
           item={item}
           feedId={feedId}
+          autostart={true}
           onPlay={handlePlay}
           onPause={handlePause}
           onComplete={handleComplete}
