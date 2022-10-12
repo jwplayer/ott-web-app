@@ -1,3 +1,12 @@
+## [2.6.1](https://github.com/jwplayer/ott-web-app/compare/v2.6.0...v2.6.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* trivial doc change to test release action ([09062b6](https://github.com/jwplayer/ott-web-app/commit/09062b62e9144d11121c4eed9d6fb95ac5c8d2db))
+
+
+
 # [2.6.0](https://github.com/jwplayer/ott-web-app/compare/v2.5.0...v2.6.0) (2022-10-12)
 
 
