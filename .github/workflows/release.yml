@@ -30,8 +30,9 @@ jobs:
           RELEASE_VERSION: ${{ steps.changelog.outputs.tag }}
         run: |
           yarn build
-          tar czf ott-web-app-build-${RELEASE_VERSION}.tar.gz ./build
-          zip -r ott-web-app-build-${RELEASE_VERSION}.zip ./build
+          cd build
+          tar czf ott-web-app-build-${RELEASE_VERSION}.tar.gz public
+          zip -r ott-web-app-build-${RELEASE_VERSION}.zip public
 
       - name: Append Release Notes
         run: |
@@ -44,7 +45,7 @@ jobs:
         uses: ncipollo/release-action@v1
         if: ${{ steps.changelog.outputs.tag }}
         with:
-          artifacts: "ott-web-app-build-*.tar.gz, ott-web-app-build-*.zip"
+          artifacts: "build/ott-web-app-build-*.tar.gz, build/ott-web-app-build-*.zip"
           tag: ${{ steps.changelog.outputs.tag }}
           bodyFile: ".github/RELEASE_BODY_TEMPLATE.md"
           token: ${{ secrets.github_token }}

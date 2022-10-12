@@ -42,7 +42,7 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
       port: 8080,
     },
     build: {
-      outDir: './build',
+      outDir: './build/public',
     },
     css:
       mode === 'test'
