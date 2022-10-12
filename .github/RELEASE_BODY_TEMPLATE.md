@@ -1,6 +1,6 @@
 # Prebuilt artifacts
 
-`build.zip` and `build.tar.gz` contain the prebuilt JWP OTT-Webapp.
+`ott-web-app-build-<version>.zip` and `ott-web-app-build-<version>.tar.gz` contain the prebuilt JWP OTT-Webapp.
 Use these files if you want to get up and running as fast as possible with minimum customization work.
 
 # Source code
