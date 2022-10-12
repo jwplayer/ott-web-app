@@ -1,3 +1,12 @@
+## [2.6.2](https://github.com/jwplayer/ott-web-app/compare/v2.6.1...v2.6.2) (2022-10-12)
+
+
+### Bug Fixes
+
+* fix the changelog path in the release template ([229fa55](https://github.com/jwplayer/ott-web-app/commit/229fa553e4f3656e9fa8e8c424610c0675b24d29))
+
+
+
 ## [2.6.1](https://github.com/jwplayer/ott-web-app/compare/v2.6.0...v2.6.1) (2022-10-12)
 
 
