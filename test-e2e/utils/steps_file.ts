@@ -1,25 +1,30 @@
 import * as assert from 'assert';
 
+import { DateTime } from 'luxon';
+
+import { TestConfig } from '../../test/constants';
+
 import constants, { makeShelfXpath, ShelfId } from './constants';
 import passwordUtils, { LoginContext } from './password_utils';
 
-const configFileQueryKey = 'c';
+const configFileQueryKey = 'app-config';
 const loaderElement = '[class*=_loadingOverlay]';
 
 const stepsObj = {
-  useConfig: function (
-    this: CodeceptJS.I,
-    config: 'test--subscription' | 'test--accounts' | 'test--no-cleeng' | 'test--no-watchlists' | 'test--blender' | 'test--inline-player',
-    baseUrl: string = constants.baseUrl,
-  ) {
-    const url = new URL(baseUrl);
+  useConfig: function (this: CodeceptJS.I, config: TestConfig) {
+    const url = new URL(constants.baseUrl);
     url.searchParams.delete(configFileQueryKey);
-    url.searchParams.append(configFileQueryKey, config);
+    url.searchParams.append(configFileQueryKey, config.id);
 
     this.amOnPage(url.toString());
   },
-  login: function (this: CodeceptJS.I, { email, password }: { email: string; password: string } = { email: constants.username, password: constants.password }) {
-    this.amOnPage(constants.loginUrl);
+  login: async function (
+    this: CodeceptJS.I,
+    { email, password }: { email: string; password: string } = { email: constants.username, password: constants.password },
+  ) {
+    await this.openSignInMenu();
+    this.click('Sign in');
+
     this.waitForElement('input[name=email]', 10);
     this.fillField('email', email);
     this.waitForElement('input[name=password]', 10);
@@ -35,26 +40,23 @@ const stepsObj = {
     };
   },
   logout: async function (this: CodeceptJS.I) {
-    const isMobile = await this.isMobile();
-
-    if (isMobile) {
-      this.openMenuDrawer();
-    } else {
-      this.openUserMenu();
-    }
+    await this.openMainMenu();
 
     this.click('div[aria-label="Log out"]');
   },
   // This function will register the user on the first call and return the context
   // then assuming context is passed in the next time, will log that same user back in
   // Use it for tests where you want a new user for the suite, but not for each test
-  registerOrLogin: function (this: CodeceptJS.I, context?: LoginContext, onRegister?: () => void) {
+  registerOrLogin: async function (this: CodeceptJS.I, context?: LoginContext, onRegister?: () => void) {
     if (context) {
-      this.login({ email: context.email, password: context.password });
+      await this.login({ email: context.email, password: context.password });
     } else {
       context = { email: passwordUtils.createRandomEmail(), password: passwordUtils.createRandomPassword() };
 
-      this.amOnPage(`${constants.baseUrl}?u=create-account`);
+      await this.openSignInMenu();
+      this.click('Sign up');
+
+      await this.seeQueryParams({ u: 'create-account' });
       this.waitForElement(constants.registrationFormSelector, 10);
 
       // Sometimes wrong value is saved at the back-end side. We want to be sure that it is correct
@@ -91,11 +93,18 @@ const stepsObj = {
       this.waitForInvisible(loaderElement, timeout);
     }
   },
-  openMainMenu: async function (this: CodeceptJS.I) {
+  openSignInMenu: async function (this: CodeceptJS.I) {
     const isMobile = await this.isMobile();
     if (isMobile) {
       this.openMenuDrawer();
-    } else {
+    }
+
+    return { isMobile };
+  },
+  openMainMenu: async function (this: CodeceptJS.I) {
+    const { isMobile } = await this.openSignInMenu();
+
+    if (!isMobile) {
       this.openUserMenu();
     }
 
@@ -115,9 +124,6 @@ const stepsObj = {
   },
   dontSeeAny: function (this: CodeceptJS.I, allStrings: string[]) {
     allStrings.forEach((s) => this.dontSee(s));
-  },
-  seeValueEquals: async function (this: CodeceptJS.I, value: string, locator: CodeceptJS.LocatorOrString) {
-    assert.equal(await this.grabValueFrom(locator), value);
   },
   waitForAllInvisible: function (this: CodeceptJS.I, allStrings: string[], timeout: number | undefined = undefined) {
     allStrings.forEach((s) => this.waitForInvisible(s, timeout));
@@ -240,25 +246,45 @@ const stepsObj = {
     await this.executeScript((text) => navigator.clipboard.writeText(text), text);
   },
   scrollToShelf: async function (this: CodeceptJS.I, shelf: ShelfId) {
+    this.waitForLoaderDone();
+
     const targetSelector = makeShelfXpath(shelf);
 
     let tries = 5;
-    let visible = 0;
 
-    do {
-      visible = await this.grabNumberOfVisibleElements(targetSelector);
-
-      if (visible === 0) {
-        this.scrollTo('[role="row"]:last-child');
-        this.wait(0.2);
+    // Scroll down until the target shelf is visible
+    while ((await this.grabNumberOfVisibleElements(targetSelector)) <= 0) {
+      // If we've run out of tries, fail and return
+      if (tries-- <= 0) {
+        assert.fail(`Shelf row not found with id '${shelf}'`);
+        return;
       }
-    } while (visible === 0 && tries--);
 
-    assert.strictEqual(visible, 1, `Shelf row not found with id '${shelf}'`);
+      // Scroll to the bottom of the grid to trigger loading more virtualized rows
+      this.scrollTo('[role="row"]:last-child');
+      this.wait(0.2);
+    }
 
+    // Scroll directly to the shelf
     this.scrollTo(targetSelector);
+    return;
   },
   mockTimeAs: async function (this: CodeceptJS.I, hours: number, minutes: number, seconds: number) {
+    const today = DateTime.now();
+    const winterDay = DateTime.fromObject({ month: 12, day: 31 });
+
+    const isSummer = today.offset - winterDay.offset >= 1;
+    const isNewYorkSummer = today.setZone('America/New_York').offset - winterDay.setZone('America/New_York').offset >= 1;
+
+    // The EPG is hosted in NY, so if we've already sprung forward, but NY hasn't, subtract 1 hour
+    if (isSummer && !isNewYorkSummer) {
+      hours--;
+    }
+    // If NY is still on summer time, but we aren't, add 1 hour
+    else if (isNewYorkSummer && !isSummer) {
+      hours++;
+    }
+
     return this.usePlaywrightTo(`Mock current time as ${hours}:${minutes}:${seconds}`, async ({ page }) => {
       const today = new Date().setUTCHours(hours, minutes, seconds, 0);
       const mockedNow = today.valueOf();
@@ -368,6 +394,16 @@ const stepsObj = {
     this.usePlaywrightTo('click the player container', async ({ page }) => {
       await page.locator('div[data-testid="player-container"]').click({ force: true });
     });
+  },
+  seeQueryParams: async function (this: CodeceptJS.I, params: { [key: string]: string }) {
+    const searchParams = new URLSearchParams(await this.grabCurrentUrl());
+
+    Object.entries(params).forEach(([key, value]) => {
+      assert.equal(searchParams.get(key), value);
+    });
+  },
+  clickHome: function (this: CodeceptJS.I) {
+    this.click('img[alt="logo"]');
   },
 };
 declare global {

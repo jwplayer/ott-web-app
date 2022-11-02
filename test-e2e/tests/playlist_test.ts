@@ -1,9 +1,10 @@
 import constants from '../utils/constants';
+import { testConfigs } from '../../test/constants';
 
 Feature('playlist').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
 
   if (await I.isMobile()) {
     I.openMenuDrawer();
@@ -63,8 +64,10 @@ function canNavigateToBigBuckBunny(I: CodeceptJS.I) {
 
   I.see(constants.bigBuckBunnyDescription);
   I.see(constants.startWatchingButton);
+
+  // Check the URL structure, but not the playlist and video ID
   I.seeInCurrentUrl(`${constants.baseUrl}m/`);
-  I.seeInCurrentUrl('big-buck-bunny?r=');
+  I.seeInCurrentUrl('/big-buck-bunny?');
 }
 
 async function selectFilterAndCheck(I: CodeceptJS.I, option) {
@@ -89,7 +92,7 @@ async function checkSelectedFilterButton(I: CodeceptJS.I, expectedButton) {
     I.see(expectedButton, 'div[class*=filterRow] button[class*=active]');
 
     // Check that the 'All' button is visually active
-    I.seeCssPropertiesOnElements({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(255, 255, 255)' });
+    I.seeCssPropertiesOnElements({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(204, 204, 204)' });
     // Check that the other filter buttons are not visually active
     I.seeCssPropertiesOnElements(
       { xpath: `//div[contains(@class, "filterRow")]/button[not(contains(., "${expectedButton}"))]` },

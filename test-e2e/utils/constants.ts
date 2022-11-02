@@ -21,8 +21,6 @@ export default {
   duplicateUserError: 'There is already a user with this email address',
   baseUrl: baseUrl,
   accountsUrl: `${baseUrl}u/my-account`,
-  registerUrl: `${baseUrl}?u=create-account`,
-  loginUrl: `${baseUrl}?u=login`,
   paymentsUrl: `${baseUrl}u/payments`,
   offersUrl: `${baseUrl}u/payments?u=choose-offer`,
   primitiveAnimalsTitle: 'Primitive Animals',
@@ -44,5 +42,5 @@ export default {
   startWatchingButton: 'Start watching',
   continueWatchingButton: 'Continue watching',
   signUpToWatch: 'Sign up to start watching!',
-  continueWatchingShelfTitle: 'Continue watching',
+  continueWatchingShelfTitle: 'Continue Watching',
 };

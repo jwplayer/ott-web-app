@@ -37,13 +37,14 @@ class App extends Component {
       await initializeAccount();
     }
 
-    // We only request favorites and continue_watching data if there is a corresponding content item
+    // We only request favorites and continue_watching data if there is a corresponding item in the content section
+    // and a playlist in the features section.
     // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink
-    if (config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
+    if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await restoreWatchHistory();
     }
 
-    if (config.content.some((el) => el.type === PersonalShelf.Favorites)) {
+    if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
       await initializeFavorites();
     }
   }
@@ -57,7 +58,7 @@ class App extends Component {
     this.setState({ error });
     this.setState({ isLoading: false });
     clearStoredConfig();
-    logDev('Error while loading the config.json:', error);
+    logDev('Error while loading the config:', error);
   };
 
   configValidationCompletedHandler = async (config: Config) => {

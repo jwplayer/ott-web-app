@@ -1,15 +1,11 @@
 import constants from '../utils/constants';
 import passwordUtils from '../utils/password_utils';
+import { testConfigs } from '../../test/constants';
 
 Feature('register').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
-  I.useConfig('test--accounts', constants.registerUrl);
-});
-
-Scenario('I can open the register modal', async ({ I }) => {
-  I.amOnPage(constants.baseUrl);
-  I.seeCurrentUrlEquals(constants.baseUrl);
+  I.useConfig(testConfigs.authvod);
 
   if (await I.isMobile()) {
     I.openMenuDrawer();
@@ -17,8 +13,10 @@ Scenario('I can open the register modal', async ({ I }) => {
 
   I.click('Sign up');
   I.waitForElement(constants.registrationFormSelector, 10);
+});
 
-  I.seeCurrentUrlEquals(constants.registerUrl);
+Scenario('I can open the register modal', async ({ I }) => {
+  await I.seeQueryParams({ u: 'create-account' });
 
   I.see('Email');
   I.see('Password');
@@ -35,6 +33,8 @@ Scenario('I can open the register modal', async ({ I }) => {
 });
 
 Scenario('I can close the modal', async ({ I }) => {
+  I.waitForElement(constants.registrationFormSelector, 10);
+
   I.clickCloseButton();
   I.dontSeeElement(constants.registrationFormSelector);
   I.dontSee('Email');
@@ -141,5 +141,5 @@ Scenario('I can register', async ({ I }) => {
   I.click('Continue');
   I.waitForLoaderDone(10);
 
-  I.see('Welcome to Blender');
+  I.see('Welcome to JW OTT Web App (AuthVod)');
 });

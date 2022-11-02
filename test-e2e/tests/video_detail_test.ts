@@ -1,13 +1,12 @@
 import * as assert from 'assert';
 
 import constants from '../utils/constants';
+import { testConfigs } from '../../test/constants';
 
 Feature('video_detail').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-const config = 'test--accounts';
-
 Before(({ I }) => {
-  I.useConfig(config);
+  I.useConfig(testConfigs.authvod);
 });
 
 Scenario('Video detail screen loads', async ({ I }) => {
@@ -75,7 +74,7 @@ Scenario('I can return to the video detail screen', async ({ I }) => {
 });
 
 Scenario('I can play other media from the related shelf', async ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
   await I.openVideoCard('Agent 327');
   await I.openVideoCard(constants.elephantsDreamTitle);
   I.see(constants.elephantsDreamDescription);
@@ -137,8 +136,7 @@ Scenario('I can share the media', async ({ I }) => {
   await I.enableClipboard();
 
   await I.openVideoCard(constants.elephantsDreamTitle);
-  const url = new URL(await I.grabCurrentUrl());
-  url.searchParams.append('c', config);
+  const url = await I.grabCurrentUrl();
 
   // Empty the clipboard
   await I.executeScript(() => navigator.clipboard.writeText(''));
@@ -148,12 +146,12 @@ Scenario('I can share the media', async ({ I }) => {
   I.see('Copied url');
 
   // The url should be copied to the clipboard
-  assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), url.toString());
+  assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), url);
   I.waitForInvisible('text="Copied url"', 5);
 });
 
 async function playBigBuckBunny(I) {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
   await I.openVideoCard(constants.bigBuckBunnyTitle);
   I.waitForText(constants.startWatchingButton, 5);
   I.dontSeeInCurrentUrl('play=1');

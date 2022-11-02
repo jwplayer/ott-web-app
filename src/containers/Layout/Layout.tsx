@@ -17,8 +17,9 @@ import Sidebar from '#src/components/Sidebar/Sidebar';
 import DynamicBlur from '#src/components/DynamicBlur/DynamicBlur';
 import MenuButton from '#src/components/MenuButton/MenuButton';
 import UserMenu from '#src/components/UserMenu/UserMenu';
-import ConfigSelect from '#src/components/ConfigSelect';
+import DevConfigSelector from '#src/components/DevConfigSelector/DevConfigSelector';
 import { addQueryParam } from '#src/utils/location';
+import { IS_DEV_BUILD, IS_TEST_BUILD } from '#src/utils/common';
 
 const Layout = () => {
   const location = useLocation();
@@ -146,7 +147,7 @@ const Layout = () => {
       {!!footerText && <MarkdownComponent className={styles.footer} markdownString={footerText} inline />}
 
       {/* Config select control to improve testing experience */}
-      {import.meta.env.APP_INCLUDE_TEST_CONFIGS && <ConfigSelect />}
+      {IS_DEV_BUILD && !IS_TEST_BUILD && <DevConfigSelector />}
     </div>
   );
 };

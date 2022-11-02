@@ -2,34 +2,10 @@ import { array, boolean, mixed, object, SchemaOf, string, StringSchema } from 'y
 import i18next from 'i18next';
 
 import type { Cleeng, Config, Content, Features, Menu, Styling } from '#types/Config';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
-import { logDev } from '#src/utils/common';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
-
-/**
- * We check here that if we added a content item with favorites / continue_watching type,
- * then we also set up a corresponding playlistId (favoritesList / continueWatchingList)
- */
-const checkContentItems = (config: Config) => {
-  const { content, features } = config;
-
-  [PersonalShelf.ContinueWatching, PersonalShelf.Favorites].forEach((type) => {
-    const hasAdditionalRowInContent = content.some((el) => el.type === type);
-    const isFavoritesRow = type === PersonalShelf.Favorites;
-    const playlistId = isFavoritesRow ? features?.favoritesList : features?.continueWatchingList;
-
-    if (!playlistId && hasAdditionalRowInContent) {
-      logDev(
-        `If you want to use a ${isFavoritesRow ? 'favorites' : 'continue_watching'} row please add a corresponding playlistId ${
-          isFavoritesRow ? 'favoritesList' : 'continueWatchingList'
-        } in a features section`,
-      );
-    }
-  });
-};
 
 const contentSchema: SchemaOf<Content> = object({
   contentId: string().notRequired(),
@@ -119,8 +95,6 @@ const loadConfig = async (configLocation: string) => {
   if (!data) {
     throw new Error('No config found');
   }
-
-  checkContentItems(data);
 
   return enrichConfig(data);
 };

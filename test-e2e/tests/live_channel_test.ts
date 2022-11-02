@@ -1,6 +1,7 @@
 import assert from 'assert';
 
-import constants, { ShelfId } from '../utils/constants';
+import { ShelfId } from '../utils/constants';
+import { testConfigs } from '../../test/constants';
 
 const programSelectedBackgroundColor = 'rgb(204, 204, 204)';
 const programLiveBorder = '2px solid rgb(255, 255, 255)';
@@ -21,9 +22,8 @@ Feature('live channel')
   .tag('@desktop-only');
 
 Before(async ({ I }) => {
-  I.useConfig('test--blender');
   await I.mockTimeAs(8, 0, 0);
-  I.amOnPage(constants.baseUrl);
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 const videoDetailsLocator = locate({ css: 'div[data-testid="video-details"]' });
@@ -253,13 +253,7 @@ async function isProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: 
 }
 
 async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
-  for (const style in styles) {
-    const value = await I.grabCssPropertyFrom(locator, style);
-
-    assert.strictEqual(styles[style], value);
-  }
-
-  return true;
+  I.seeCssPropertiesOnElements(locator, styles);
 }
 
 function waitForEpgAnimation(I: CodeceptJS.I, sec: number = 1) {
