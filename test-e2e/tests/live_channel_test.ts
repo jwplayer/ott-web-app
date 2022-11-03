@@ -24,13 +24,15 @@ Feature('live channel')
 Before(async ({ I }) => {
   const today = DateTime.now();
   const winterDay = DateTime.fromObject({ month: 12, day: 31 });
+  const summerDay = DateTime.fromObject({ month: 7, day: 4 });
 
   const isSummer = today.offset !== winterDay.offset;
+  const isGMT = winterDay.offset === 0 && summerDay.offset === 0;
 
   // Time is mocked in GMT, so to maintan the same local time we need 1 hour later in GMT in winter
   // Example, during summer time in Amsterdam (GMT+2) 8:00 AM GMT = 10:00 AM CEST
   // In winter time in Amsterdam (GMT+1) 9:00 AM GMT = 10:00 AM CET
-  await I.mockTimeGMT(isSummer ? 8 : 9, 0, 0);
+  await I.mockTimeGMT(isSummer || isGMT ? 8 : 9, 0, 0);
   I.useConfig(testConfigs.basicNoAuth);
 });
 
