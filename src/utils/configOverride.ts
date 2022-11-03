@@ -18,21 +18,7 @@ export function getConfigLocation() {
     throw 'A default config is required';
   }
 
-  const selectedConfig = getConfigOverride() || DEFAULT_CONFIG_SOURCE;
-
-  // Make sure the config location is appended to the url,
-  // but only when dynamic (demo) mode is enabled or using multiple configs and not the default
-  if (selectedConfig && (UNSAFE_ALLOW_DYNAMIC_CONFIG || selectedConfig !== DEFAULT_CONFIG_SOURCE)) {
-    const url = new URL(window.location.href);
-
-    if (url.searchParams.get(configQueryKey) !== selectedConfig) {
-      url.searchParams.set(configQueryKey, selectedConfig);
-
-      window.location.replace(url);
-    }
-  }
-
-  return selectedConfig;
+  return getConfigOverride() || DEFAULT_CONFIG_SOURCE;
 }
 
 const getStoredConfig = () => {

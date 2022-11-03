@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 import { ShelfId } from '../utils/constants';
 import { testConfigs } from '../../test/constants';
 
@@ -20,7 +22,15 @@ Feature('live channel')
   .tag('@desktop-only');
 
 Before(async ({ I }) => {
-  await I.mockLocalTimeAs(10, 0, 0);
+  const today = DateTime.now();
+  const winterDay = DateTime.fromObject({ month: 12, day: 31 });
+
+  const isSummer = today.offset - winterDay.offset >= 1;
+
+  // Time is mocked in GMT, so to maintan the same local time we need 1 hour later in GMT in winter
+  // Example, during summer time in Amsterdam (GMT+2) 8:00 AM GMT = 10:00 AM CEST
+  // In winter time in Amsterdam (GMT+1) 9:00 AM GMT = 10:00 AM CET
+  await I.mockTimeGMT(isSummer ? 8 : 9, 0, 0);
   I.useConfig(testConfigs.basicNoAuth);
 });
 
