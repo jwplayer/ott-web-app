@@ -20,7 +20,7 @@ import UserMenu from '#src/components/UserMenu/UserMenu';
 import DevConfigSelector from '#src/components/DevConfigSelector/DevConfigSelector';
 import { addQueryParam } from '#src/utils/location';
 import { IS_DEV_BUILD, IS_TEST_BUILD } from '#src/utils/common';
-import { configQueryKey, DEFAULT_CONFIG_SOURCE, getConfigLocation } from '#src/utils/configOverride';
+import { maintainConfigQueryParam } from '#src/utils/configOverride';
 
 const Layout = () => {
   const location = useLocation();
@@ -32,19 +32,7 @@ const Layout = () => {
   const { searchPlaylist } = features || {};
   const { footerText, dynamicBlur } = styling || {};
 
-  const selectedConfig = getConfigLocation();
-
-  // Make sure the config location is appended to the url,
-  // but only when dynamic (demo) mode is enabled or using multiple configs and not the default
-  if (selectedConfig && (import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG || selectedConfig !== DEFAULT_CONFIG_SOURCE)) {
-    const url = new URL(window.location.href);
-
-    if (url.searchParams.get(configQueryKey) !== selectedConfig) {
-      url.searchParams.set(configQueryKey, selectedConfig);
-
-      window.location.replace(url);
-    }
-  }
+  maintainConfigQueryParam();
 
   const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
     ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({

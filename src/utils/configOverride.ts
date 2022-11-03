@@ -8,7 +8,7 @@ const configLegacyQueryKey = 'c';
 
 const configFileStorageKey = 'config-file-override';
 
-export const DEFAULT_CONFIG_SOURCE = import.meta.env.APP_CONFIG_DEFAULT_SOURCE;
+const DEFAULT_CONFIG_SOURCE = import.meta.env.APP_CONFIG_DEFAULT_SOURCE;
 const ALLOWED_SOURCES = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').filter((c) => c.toLowerCase() !== DEFAULT_CONFIG_SOURCE?.toLowerCase()) || [];
 const UNSAFE_ALLOW_DYNAMIC_CONFIG = ['1', 'true'].includes(import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG?.toLowerCase() || '');
 
@@ -19,6 +19,25 @@ export function getConfigLocation() {
   }
 
   return getConfigOverride() || DEFAULT_CONFIG_SOURCE;
+}
+
+export function maintainConfigQueryParam() {
+  const selectedConfig = getConfigLocation();
+
+  // Make sure the config location is appended to the url,
+  // but only when dynamic (demo) mode is enabled or using multiple configs and not the default
+  if (selectedConfig && (UNSAFE_ALLOW_DYNAMIC_CONFIG || selectedConfig !== DEFAULT_CONFIG_SOURCE)) {
+    console.info(UNSAFE_ALLOW_DYNAMIC_CONFIG);
+    console.info(selectedConfig !== DEFAULT_CONFIG_SOURCE);
+
+    const url = new URL(window.location.href);
+
+    if (url.searchParams.get(configQueryKey) !== selectedConfig) {
+      url.searchParams.set(configQueryKey, selectedConfig);
+
+      window.history.replaceState(null, '', url.toString());
+    }
+  }
 }
 
 const getStoredConfig = () => {
@@ -73,10 +92,6 @@ function getConfigOverride() {
 
   // Make sure the stored value is still valid before returning it
   if (storedSource && isValidConfigSource(storedSource)) {
-    // If there is a stored config, add it back to the URL
-    url.searchParams.set(configQueryKey, storedSource);
-    window.history.replaceState(null, '', url.toString());
-
     return storedSource;
   }
 

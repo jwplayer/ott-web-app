@@ -25,7 +25,7 @@ Before(async ({ I }) => {
   const today = DateTime.now();
   const winterDay = DateTime.fromObject({ month: 12, day: 31 });
 
-  const isSummer = today.offset - winterDay.offset >= 1;
+  const isSummer = today.offset !== winterDay.offset;
 
   // Time is mocked in GMT, so to maintan the same local time we need 1 hour later in GMT in winter
   // Example, during summer time in Amsterdam (GMT+2) 8:00 AM GMT = 10:00 AM CEST
