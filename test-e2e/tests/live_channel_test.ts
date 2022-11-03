@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import { ShelfId } from '../utils/constants';
 import { testConfigs } from '../../test/constants';
 
@@ -22,7 +20,7 @@ Feature('live channel')
   .tag('@desktop-only');
 
 Before(async ({ I }) => {
-  await I.mockTimeAs(8, 0, 0);
+  await I.mockLocalTimeAs(10, 0, 0);
   I.useConfig(testConfigs.basicNoAuth);
 });
 

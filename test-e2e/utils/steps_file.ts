@@ -1,7 +1,5 @@
 import * as assert from 'assert';
 
-import { DateTime } from 'luxon';
-
 import { TestConfig } from '../../test/constants';
 
 import constants, { makeShelfXpath, ShelfId } from './constants';
@@ -269,24 +267,9 @@ const stepsObj = {
     this.scrollTo(targetSelector);
     return;
   },
-  mockTimeAs: async function (this: CodeceptJS.I, hours: number, minutes: number, seconds: number) {
-    const today = DateTime.now();
-    const winterDay = DateTime.fromObject({ month: 12, day: 31 });
-
-    const isSummer = today.offset - winterDay.offset >= 1;
-    const isNewYorkSummer = today.setZone('America/New_York').offset - winterDay.setZone('America/New_York').offset >= 1;
-
-    // The EPG is hosted in NY, so if we've already sprung forward, but NY hasn't, subtract 1 hour
-    if (isSummer && !isNewYorkSummer) {
-      hours--;
-    }
-    // If NY is still on summer time, but we aren't, add 1 hour
-    else if (isNewYorkSummer && !isSummer) {
-      hours++;
-    }
-
+  mockLocalTimeAs: async function (this: CodeceptJS.I, hours: number, minutes: number, seconds: number) {
     return this.usePlaywrightTo(`Mock current time as ${hours}:${minutes}:${seconds}`, async ({ page }) => {
-      const today = new Date().setUTCHours(hours, minutes, seconds, 0);
+      const today = new Date().setHours(hours, minutes, seconds, 0);
       const mockedNow = today.valueOf();
 
       await page.addInitScript(`{
