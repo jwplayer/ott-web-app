@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: yarn && APP_UNSAFE_ALLOW_DYNAMIC_CONFIG=1 INCLUDE_EPG_DATA=1 yarn build
+        run: yarn && yarn build --mode demo
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

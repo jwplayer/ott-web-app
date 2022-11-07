@@ -10,8 +10,8 @@ type Props = {
   open: boolean;
   title: string;
   body: string;
-  onConfirm: () => void;
-  onClose: () => void;
+  onConfirm?: () => void;
+  onClose?: () => void;
 };
 
 const ConfirmationDialog: React.FC<Props> = ({ open, title, body, onConfirm, onClose }: Props) => {

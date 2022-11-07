@@ -13,7 +13,7 @@ type Props = {
   label?: string;
   placeholder?: string;
   name?: string;
-  value: string;
+  value?: string;
   type?: 'text' | 'email' | 'password' | 'search' | 'number' | 'date';
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;

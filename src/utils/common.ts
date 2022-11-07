@@ -50,6 +50,7 @@ export function calculateContrastColor(color: string) {
 }
 
 export const IS_DEV_BUILD = import.meta.env.DEV;
+export const IS_DEMO_BUILD = import.meta.env.MODE === 'demo';
 export const IS_TEST_BUILD = import.meta.env.MODE === 'test';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {

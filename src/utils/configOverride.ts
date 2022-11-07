@@ -21,8 +21,8 @@ export function getConfigLocation() {
   return getConfigOverride() || DEFAULT_CONFIG_SOURCE;
 }
 
-export function maintainConfigQueryParam() {
-  const selectedConfig = getConfigLocation();
+export function addConfigQueryParam(config?: string) {
+  const selectedConfig = config || getConfigLocation();
 
   // Make sure the config location is appended to the url,
   // but only when dynamic (demo) mode is enabled or using multiple configs and not the default
@@ -43,6 +43,11 @@ const getStoredConfig = () => {
 
 export const clearStoredConfig = () => {
   storage.removeItem(configFileStorageKey);
+
+  const url = new URL(window.location.href);
+
+  url.searchParams.delete(configQueryKey);
+  window.history.replaceState(null, '', url.toString());
 };
 
 function getConfigOverride() {
@@ -81,6 +86,10 @@ function getConfigOverride() {
     }
 
     logDev(`Invalid app-config: ${configQuery}`);
+
+    // Remove the query param if it's invalid
+    url.searchParams.delete(configQueryKey);
+    window.history.replaceState(null, '', url.toString());
 
     // Yes this falls through to look up the stored value if the query string is invalid and that's OK
   }

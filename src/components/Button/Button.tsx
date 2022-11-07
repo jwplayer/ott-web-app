@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ type Props = {
   fullWidth?: boolean;
   startIcon?: JSX.Element;
   variant?: Variant;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   tabIndex?: number;
   size?: 'small' | 'medium' | 'large';
   to?: string;

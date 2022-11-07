@@ -8,7 +8,7 @@ import styles from './Dialog.module.scss';
 
 type Props = {
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   children: React.ReactNode;
 };
 
