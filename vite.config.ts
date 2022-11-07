@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { createHtmlPlugin } from 'vite-plugin-html';
 
 // noinspection JSUnusedGlobalSymbols
@@ -19,20 +18,6 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
       minify: true,
     }),
   ];
-
-  // These files are only needed in dev / test, don't include in prod builds
-  if (process.env.APP_INCLUDE_TEST_CONFIGS) {
-    plugins.push(
-      viteStaticCopy({
-        targets: [
-          {
-            src: 'test-e2e/data/*',
-            dest: 'test-data',
-          },
-        ],
-      }),
-    );
-  }
 
   return defineConfig({
     plugins: plugins,

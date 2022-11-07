@@ -1,13 +1,14 @@
 import * as assert from 'assert';
 
 import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
+import { testConfigs } from '../../test/constants';
 
 const videoTitle = 'Tears of Steel';
 
 Feature('favorites').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig('test--blender');
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 const favoritesTitle = 'Favorites';
@@ -52,10 +53,10 @@ Scenario('I can see my favorited videos on the home page', async ({ I }) => {
 Scenario('I do not see favorited videos on the home page and video page if there is not such config setting', async ({ I }) => {
   await addVideoToFavorites(I);
 
-  I.useConfig('test--no-watchlists');
+  I.useConfig(testConfigs.authvodNoWatchlist);
 
   // No favorites section
-  I.amOnPage(constants.baseUrl);
+  I.seeInCurrentUrl(constants.baseUrl);
   I.dontSee(favoritesTitle);
 
   // No favorites button

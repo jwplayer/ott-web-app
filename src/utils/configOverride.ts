@@ -1,28 +1,44 @@
-import { IS_DEV_BUILD } from '#src/utils/common';
+// Use session storage so the override persists until the tab is closed and then resets
+import { logDev } from '#src/utils/common';
 
-// In production, use local storage so the override persists indefinitely without the query string
-// In dev mode, use session storage so the override persists until the tab is closed and then resets
-const storage = IS_DEV_BUILD ? window.sessionStorage : window.localStorage;
-const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
-const INCLUDE_TEST_CONFIGS = import.meta.env.APP_INCLUDE_TEST_CONFIGS;
+const storage = window.sessionStorage;
 
-const configFileQueryKey = 'c';
+export const configQueryKey = 'app-config';
+const configLegacyQueryKey = 'c';
+
 const configFileStorageKey = 'config-file-override';
 
-const DEFAULT_SOURCE = import.meta.env.APP_CONFIG_DEFAULT_SOURCE?.toLowerCase();
-const ALLOWED_SOURCES = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').map((source) => source.toLowerCase()) || [];
-const UNSAFE_ALLOW_DYNAMIC_CONFIG = import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG;
+const DEFAULT_CONFIG_SOURCE = import.meta.env.APP_CONFIG_DEFAULT_SOURCE;
+const ALLOWED_SOURCES = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').filter((c) => c.toLowerCase() !== DEFAULT_CONFIG_SOURCE?.toLowerCase()) || [];
+const UNSAFE_ALLOW_DYNAMIC_CONFIG = ['1', 'true'].includes(import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG?.toLowerCase() || '');
 
-export function getConfig() {
-  return formatSourceLocation(getConfigOverride() || DEFAULT_SOURCE);
+export function getConfigLocation() {
+  // Require a default source unless the dynamic (demo) mode is enabled
+  if (!DEFAULT_CONFIG_SOURCE && !UNSAFE_ALLOW_DYNAMIC_CONFIG) {
+    throw 'A default config is required';
+  }
+
+  return getConfigOverride() || DEFAULT_CONFIG_SOURCE;
 }
 
-export const setStoredConfig = (value: string) => {
-  storage.setItem(configFileStorageKey, value);
-};
+export function maintainConfigQueryParam() {
+  const selectedConfig = getConfigLocation();
 
-export const getStoredConfig = () => {
-  return storage.getItem(configFileStorageKey)?.toLowerCase();
+  // Make sure the config location is appended to the url,
+  // but only when dynamic (demo) mode is enabled or using multiple configs and not the default
+  if (selectedConfig && (UNSAFE_ALLOW_DYNAMIC_CONFIG || selectedConfig !== DEFAULT_CONFIG_SOURCE)) {
+    const url = new URL(window.location.href);
+
+    if (url.searchParams.get(configQueryKey) !== selectedConfig) {
+      url.searchParams.set(configQueryKey, selectedConfig);
+
+      window.history.replaceState(null, '', url.toString());
+    }
+  }
+}
+
+const getStoredConfig = () => {
+  return storage.getItem(configFileStorageKey);
 };
 
 export const clearStoredConfig = () => {
@@ -30,15 +46,27 @@ export const clearStoredConfig = () => {
 };
 
 function getConfigOverride() {
+  if (!UNSAFE_ALLOW_DYNAMIC_CONFIG && ALLOWED_SOURCES.length <= 0) {
+    return undefined;
+  }
+
   const url = new URL(window.location.href);
 
-  if (url.searchParams.has(configFileQueryKey)) {
-    const configQuery = url.searchParams.get(configFileQueryKey)?.toLowerCase();
+  // If the query string has the legacy key, remove it
+  if (url.searchParams.has(configLegacyQueryKey)) {
+    const legacyValue = url.searchParams.get(configLegacyQueryKey);
+    url.searchParams.delete(configLegacyQueryKey);
 
-    // Strip the config file query param from the URL and history since it's stored locally,
-    // and then the url stays clean and the user will be less likely to play with the param
-    url.searchParams.delete(configFileQueryKey);
+    // If the new query key is not set, set it from the old key, but do not replace it (the new key 'wins' if both are set)
+    if (legacyValue !== null && !url.searchParams.has(configQueryKey)) {
+      url.searchParams.set(configQueryKey, legacyValue);
+    }
+
     window.history.replaceState(null, '', url.toString());
+  }
+
+  if (url.searchParams.has(configQueryKey)) {
+    const configQuery = url.searchParams.get(configQueryKey);
 
     // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
     if (!configQuery) {
@@ -48,9 +76,11 @@ function getConfigOverride() {
 
     // If it's valid, store it and return it
     if (isValidConfigSource(configQuery)) {
-      setStoredConfig(configQuery);
+      storage.setItem(configFileStorageKey, configQuery);
       return configQuery;
     }
+
+    logDev(`Invalid app-config: ${configQuery}`);
 
     // Yes this falls through to look up the stored value if the query string is invalid and that's OK
   }
@@ -71,43 +101,5 @@ function isValidConfigSource(source: string) {
     return !!source;
   }
 
-  if (INCLUDE_TEST_CONFIGS && source.startsWith('test--')) {
-    return true;
-  }
-
-  return ALLOWED_SOURCES.indexOf(source) >= 0;
-}
-
-function formatSourceLocation(source?: string) {
-  if (!source) {
-    return undefined;
-  }
-
-  if (source.match(/^[a-z,\d]{8}$/)) {
-    return `${CONFIG_HOST}/apps/configs/${source}.json`;
-  }
-
-  if (INCLUDE_TEST_CONFIGS && source.startsWith('test--')) {
-    return `/test-data/config.${source}.json`;
-  }
-
-  return source;
-}
-
-/***
- * If present, re-add the config override key to the query string of the share url,
- * so the url copied will pull up the same site config
- * @param href The URL to append to as a string (i.e. window.location.href)
- */
-export function addConfigParamToUrl(href: string) {
-  const config = getConfigOverride();
-  const url = new URL(href);
-
-  url.searchParams.delete(configFileQueryKey);
-
-  if (config) {
-    url.searchParams.append(configFileQueryKey, config);
-  }
-
-  return url.toString();
+  return DEFAULT_CONFIG_SOURCE === source || ALLOWED_SOURCES.indexOf(source) >= 0;
 }

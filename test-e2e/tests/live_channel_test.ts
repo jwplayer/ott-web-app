@@ -1,6 +1,7 @@
-import assert from 'assert';
+import { DateTime } from 'luxon';
 
-import constants, { ShelfId } from '../utils/constants';
+import { ShelfId } from '../utils/constants';
+import { testConfigs } from '../../test/constants';
 
 const programSelectedBackgroundColor = 'rgb(204, 204, 204)';
 const programLiveBorder = '2px solid rgb(255, 255, 255)';
@@ -21,9 +22,18 @@ Feature('live channel')
   .tag('@desktop-only');
 
 Before(async ({ I }) => {
-  I.useConfig('test--blender');
-  await I.mockTimeAs(8, 0, 0);
-  I.amOnPage(constants.baseUrl);
+  const today = DateTime.now();
+  const winterDay = DateTime.fromObject({ month: 12, day: 31 });
+  const summerDay = DateTime.fromObject({ month: 7, day: 4 });
+
+  const isSummer = today.offset !== winterDay.offset;
+  const isGMT = winterDay.offset === 0 && summerDay.offset === 0;
+
+  // Time is mocked in GMT, so to maintan the same local time we need 1 hour later in GMT in winter
+  // Example, during summer time in Amsterdam (GMT+2) 8:00 AM GMT = 10:00 AM CEST
+  // In winter time in Amsterdam (GMT+1) 9:00 AM GMT = 10:00 AM CET
+  await I.mockTimeGMT(isSummer || isGMT ? 8 : 9, 0, 0);
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 const videoDetailsLocator = locate({ css: 'div[data-testid="video-details"]' });
@@ -253,13 +263,7 @@ async function isProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: 
 }
 
 async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
-  for (const style in styles) {
-    const value = await I.grabCssPropertyFrom(locator, style);
-
-    assert.strictEqual(styles[style], value);
-  }
-
-  return true;
+  I.seeCssPropertiesOnElements(locator, styles);
 }
 
 function waitForEpgAnimation(I: CodeceptJS.I, sec: number = 1) {

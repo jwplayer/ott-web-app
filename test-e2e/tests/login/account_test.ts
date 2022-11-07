@@ -1,6 +1,7 @@
 import constants from '../../utils/constants';
 import passwordUtils from '../../utils/password_utils';
 import { tryToSubmitForm, fillAndCheckField, checkField } from '../../utils/login';
+import { testConfigs } from '../../../test/constants';
 
 const fieldRequired = 'This field is required';
 const invalidEmail = 'Please re-enter your email details and try again.';
@@ -9,8 +10,15 @@ const formFeedback = 'div[class*=formFeedback]';
 
 Feature('login - account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Before(({ I }) => {
-  I.useConfig('test--accounts', constants.loginUrl);
+Before(async ({ I }) => {
+  I.useConfig(testConfigs.authvod);
+
+  if (await I.isMobile()) {
+    I.openMenuDrawer();
+  }
+
+  I.click('Sign in');
+
   I.waitForElement(constants.loginFormSelector, 10);
 });
 
@@ -110,35 +118,4 @@ Scenario('I see a login error message', async ({ I }) => {
   // Failed login maintains the email but clears the password field
   I.waitForValue('input[name=email]', 'danny@email.com', 0);
   I.waitForValue('input[name=password]', '', 0);
-});
-
-Scenario('I can login', async ({ I }) => {
-  I.login();
-
-  I.dontSee('Sign in');
-  I.dontSee('Sign up');
-
-  await I.openMainMenu();
-
-  I.dontSee('Sign in');
-  I.dontSee('Sign up');
-
-  I.see('Account');
-  I.see('Favorites');
-  I.see('Log out');
-});
-
-Scenario('I can log out', async ({ I }) => {
-  I.login();
-
-  const isMobile = await I.openMainMenu();
-
-  I.click('Log out');
-
-  if (isMobile) {
-    I.openMenuDrawer();
-  }
-
-  I.see('Sign in');
-  I.see('Sign up');
 });

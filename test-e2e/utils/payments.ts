@@ -33,8 +33,8 @@ export function formatDate(date: Date) {
 export function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date) {
   I.click('Continue');
   I.waitForLoaderDone(15);
-  I.see('Welcome to Blender');
-  I.see('Thank you for subscribing to Blender (svod/tvod). Please enjoy all our content.');
+  I.see('Welcome to JW OTT Web App');
+  I.see('Thank you for subscribing to JW OTT Web App (SVOD). Please enjoy all our content.');
 
   I.click('Start watching');
 

@@ -1,9 +1,10 @@
 import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
+import { testConfigs } from '../../test/constants';
 
 Feature('home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig('test--blender');
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 Scenario('Home screen loads', async ({ I }) => {
@@ -142,7 +143,9 @@ Scenario('I can see poster images for the `All courses` shelf', async ({ I }) =>
 
 Scenario('I can see the footer', ({ I }) => {
   I.scrollPageToBottom();
-  I.see('© Blender Foundation');
-  I.see('cloud.blender.org');
-  I.click('cloud.blender.org');
+  I.see('© JW Player');
+  I.see('jwplayer.com');
+  I.click('jwplayer.com');
+  I.switchToNextTab();
+  I.seeCurrentUrlEquals('https://www.jwplayer.com/');
 });

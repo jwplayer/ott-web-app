@@ -1,6 +1,7 @@
 import { LoginContext } from '../../utils/password_utils';
 import constants from '../../utils/constants';
 import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '../../utils/payments';
+import { testConfigs } from '../../../test/constants';
 
 let paidLoginContext: LoginContext;
 
@@ -19,7 +20,7 @@ Feature('payments').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 Before(async ({ I }) => {
   // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
   overrideIP(I);
-  I.useConfig('test--subscription');
+  I.useConfig(testConfigs.svod);
 });
 
 Scenario('I can see my payments data', async ({ I }) => {
@@ -46,7 +47,7 @@ Scenario('I can see offered subscriptions', async ({ I }) => {
 
   I.click('Complete subscription');
   I.see('Choose plan');
-  I.see('Watch this on Blender');
+  I.see('Watch this on JW OTT Web App');
 
   await within(monthlyLabel, () => {
     I.see('Monthly');

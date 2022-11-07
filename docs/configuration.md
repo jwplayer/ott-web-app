@@ -4,11 +4,11 @@ JW OTT Webapp uses a JSON configuration file to store all configuration paramete
 
 ## Dynamic Configuration File Sources
 
-Using environment variables for build parameters, you can adjust what config file the application loads at startup and which, if any, it will allow to be set using the `c=<config source>` query param. The location can be specified using either the 8-character ID of the config from the JW Player dashboard (i.e. `gnnuzabk`), in which case the file will be loaded from the JW Player App Config delivery endpoint, or a relative (i.e. `/config.json`) or absolute (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`) path, in which case the file will be loaded using fetch to make a 'get' request.  
+Using environment variables for build parameters, you can adjust what config file the application loads at startup and which, if any, it will allow to be set using the `app-config=<config source>` query param. The location can be specified using either the 8-character ID of the config from the JW Player dashboard (i.e. `gnnuzabk`), in which case the file will be loaded from the JW Player App Config delivery endpoint, or a relative (i.e. `/config.json`) or absolute (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`) path, in which case the file will be loaded using fetch to make a 'get' request.  
 
-As mentioned above, if you have 1 or more allowed sources (see [`APP_CONFIG_ALLOWED_SOURCES`](#configuration-file-source-build-params) below), you can switch between them using the `c` query parameter when you first navigate to the web app. The parameter is automatically evaluated, loaded, and stored in local storage so that the query string can be cleaned from the URL and remain somewhat hidden from end users.
+As mentioned above, if you have 1 or more allowed sources (see [`APP_CONFIG_ALLOWED_SOURCES`](#configuration-file-source-build-params) below), you can switch between them using the `app-config` (or `c`) query parameter when you first navigate to the web app. The parameter is automatically evaluated, loaded, and stored in session storage and should remain part of the url as the user navigates around the site.
 
-Note: to clear the value from local storage and return to the default, you can navigate to the site with the query parameter but leaving the value blank (i.e. `https://<your domain>?c=`) 
+Note: to clear the value from local storage and return to the default, you can navigate to the site with the query parameter but leaving the value blank (i.e. `https://<your domain>?app-config=`) 
 
 You can also tell the application to allow any config source location (see [`APP_UNSAFE_ALLOW_DYNAMIC_CONFIG`](#configuration-file-source-build-params) below), but this is a potential vulnerability, since any user could then pass in any valid config file, completely changing the content of the application on your domain. It is recommended to limit this 'unsafe' option to dev, testing, demo environments, etc.
 
@@ -22,11 +22,11 @@ The ID or url path for the config that the web app will initially load with. Be 
 
 **APP_CONFIG_ALLOWED_SOURCES**
 
-A space separated list of 8-character IDs and/or url paths for config files that can be set using the `c=<config source>` query param. You can mix ID's and paths as long as they are space separated. You do not need to add the value of `APP_CONFIG_DEFAULT_SOURCE` to this property.  
+A **space** separated list of 8-character IDs and/or url paths for config files that can be set using the `app-config=<config source>` query param. You can mix ID's and paths as long as they are space separated. You do not need to add the value of `APP_CONFIG_DEFAULT_SOURCE` to this property.  
 
 ---
 
-**APP_UNSAFE_ALLOW_DYNAMIC_CONFIG** - boolean flag which if true, enables any config ID or path to be specified with the `c=<config source>` query param
+**APP_UNSAFE_ALLOW_DYNAMIC_CONFIG** - boolean flag which if true, enables any config ID or path to be specified with the `app-config=<config source>` query param
 
   **Warning** - Generally the `APP_UNSAFE_ALLOW_DYNAMIC_CONFIG` option should only be used for dev and test, because it opens up your application so that anyone can specify their own config to run on your domain 
 

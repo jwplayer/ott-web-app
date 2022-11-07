@@ -4,8 +4,11 @@ import constants from './constants';
 
 import LocatorOrString = CodeceptJS.LocatorOrString;
 
-export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, startButton: string = constants.startWatchingButton) {
-  I.click(startButton);
+export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, startButton: string | null = constants.startWatchingButton) {
+  if (startButton) {
+    I.click(startButton);
+  }
+
   await I.waitForPlayerPlaying(title);
   await I.executeScript((seekTo) => {
     if (!window.jwplayer) {

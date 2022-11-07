@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { copyToClipboard } from '#src/utils/dom';
-import { addConfigParamToUrl } from '#src/utils/configOverride';
 import Check from '#src/icons/Check';
 import Share from '#src/icons/Share';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
@@ -25,7 +24,7 @@ const ShareButton = ({ title, description, url }: Props) => {
       return;
     }
 
-    copyToClipboard(addConfigParamToUrl(window.location.href));
+    copyToClipboard(window.location.href);
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };

@@ -1,11 +1,12 @@
 import * as assert from 'assert';
 
 import constants, { ShelfId } from '../utils/constants';
+import { testConfigs } from '../../test/constants';
 
 Feature('series').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 Scenario('I can see series without seasons', async ({ I }) => {
