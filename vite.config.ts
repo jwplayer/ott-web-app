@@ -12,7 +12,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 export default ({ mode }: { mode: string }) => {
   const plugins = [
     react(),
-    eslintPlugin({ emitError: mode === 'production' }), // Move linting to pre-build to match dashboard
+    eslintPlugin({ emitError: mode === 'production' || mode === 'demo' }), // Move linting to pre-build to match dashboard
     StylelintPlugin(),
     VitePWA(),
     createHtmlPlugin({
@@ -20,7 +20,7 @@ export default ({ mode }: { mode: string }) => {
     }),
   ];
 
-  // These files are only needed in dev / test, don't include in prod builds
+  // These files are only needed in dev / test / demo, so don't include in prod builds
   if (mode !== 'production') {
     plugins.push(
       viteStaticCopy({

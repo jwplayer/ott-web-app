@@ -12,6 +12,7 @@
     "prepare": "husky install",
     "start": "INCLUDE_EPG_DATA=1 vite",
     "start:jwdev": "yarn start --mode jwdev",
+    "start:demo": "NODE_ENV=production yarn start --mode demo",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",
