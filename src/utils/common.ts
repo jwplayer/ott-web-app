@@ -53,7 +53,7 @@ export const IS_DEV_BUILD = import.meta.env.DEV;
 export const IS_TEST_BUILD = import.meta.env.MODE === 'test';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
-  if (IS_DEV_BUILD) {
+  if (IS_DEV_BUILD && !IS_TEST_MODE) {
     if (optionalParams.length > 0) {
       console.info(message, optionalParams);
     } else {
