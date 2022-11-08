@@ -13,7 +13,7 @@ type Props = {
   onClick?: MouseEventHandler<HTMLElement>;
 };
 
-const Link: React.FC<Props> = ({ to, href, children, className, onClick, ...rest }: Props) => {
+const Link: React.FC<Props> = ({ to, href, children, className, onClick, target, ...rest }: Props) => {
   const linkClassName = classNames(styles.link, className);
 
   if (to) {
@@ -25,7 +25,18 @@ const Link: React.FC<Props> = ({ to, href, children, className, onClick, ...rest
   }
 
   return (
-    <a href={href} className={linkClassName} onClick={onClick} {...rest}>
+    <a
+      href={href}
+      className={linkClassName}
+      onClick={onClick}
+      target={target}
+      rel={
+        // Security thingy for old browsers.
+        // See https://mathiasbynens.github.io/rel-noopener/#recommendations
+        target === '_blank' ? 'noreferrer' : undefined
+      }
+      {...rest}
+    >
       {children}
     </a>
   );

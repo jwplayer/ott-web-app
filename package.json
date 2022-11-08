@@ -17,6 +17,7 @@
     "test-watch": "TZ=UTC vitest",
     "test-coverage": "TZ=UTC vitest run --coverage",
     "test-commit": "TZ=UTC vitest run --changed HEAD~1 --coverage",
+    "test-update": "TZ=UTC vitest run --update",
     "i18next": "i18next src/{components,containers,pages,services,stores}/**/{**/,/}*.{ts,tsx} && node ./scripts/i18next/generate.js",
     "format": "run-s -c format:*",
     "format:eslint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\" --fix",

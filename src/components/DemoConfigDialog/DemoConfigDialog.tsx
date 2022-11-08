@@ -12,7 +12,11 @@ import ConfirmationDialog from '#src/components/ConfirmationDialog/ConfirmationD
 
 const fallbackConfig = import.meta.env.APP_DEMO_DEFAULT_CONFIG_ID;
 
-const DemoConfigDialog = () => {
+interface Props {
+  configLocation?: string;
+}
+
+const DemoConfigDialog = ({ configLocation = getConfigLocation() }: Props) => {
   const { t } = useTranslation('demo');
   const [showDemoWarning, setShowWarning] = useState(false);
 
@@ -21,7 +25,6 @@ const DemoConfigDialog = () => {
     window.location.reload();
   };
 
-  const configLocation = getConfigLocation();
   if (configLocation) {
     return (
       <div className={styles.note}>
@@ -56,6 +59,13 @@ const DemoConfigDialog = () => {
             {fallbackConfig && <Button label={t('cancel_config_id')} onClick={cancelConfigClick} />}
           </div>
         </form>
+        <p>
+          {t('use_the_jwp_dashboard')}
+          <span> </span>
+          <Link href={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'} target={'_blank'}>
+            {t('learn_more')}
+          </Link>
+        </p>
       </ErrorPage>
       <ConfirmationDialog
         open={showDemoWarning}
