@@ -1,0 +1,386 @@
+// Vitest Snapshot v1
+
+exports[`Shelf Component tests > Featured shelf 1`] = `
+<div>
+  <div
+    class="_shelf_81910b undefined"
+  >
+    <div>
+      <div
+        class="_tileDock_22abb0"
+      >
+        <div
+          class="_leftControl_22abb0"
+        >
+          <div
+            aria-label="slide_left"
+            class="_chevron_81910b _disabled_81910b"
+            role="button"
+            tabindex="-1"
+          >
+            <svg
+              aria-hidden="true"
+              class="_icon_1e9999"
+              focusable="false"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g>
+                <path
+                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <ul
+          style="transform: translate3d(-200%, 0, 0); transition: transform 0.3s ease; margin-left: -4px; margin-right: -4px;"
+        >
+          <li
+            class="_notInView_22abb0"
+            style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              role="button"
+              tabindex="-1"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  />
+                </div>
+              </div>
+            </div>
+          </li>
+          <li
+            class="_notInView_22abb0"
+            style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              role="button"
+              tabindex="-1"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  />
+                </div>
+              </div>
+            </div>
+          </li>
+          <li
+            class=""
+            style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732 _featured_d75732"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_title_d75732"
+                  >
+                    Movie 1
+                  </div>
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li
+            class="_notInView_22abb0"
+            style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              role="button"
+              tabindex="-1"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  />
+                </div>
+              </div>
+            </div>
+          </li>
+          <li
+            class="_notInView_22abb0"
+            style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              role="button"
+              tabindex="-1"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  />
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div
+          class="_rightControl_22abb0"
+        >
+          <div
+            aria-label="slide_right"
+            class="_chevron_81910b"
+            role="button"
+            tabindex="0"
+          >
+            <svg
+              aria-hidden="true"
+              class="_icon_1e9999"
+              focusable="false"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g>
+                <path
+                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        class="_dots_22abb0"
+      >
+        <span
+          class="_dot_81910b _active_81910b"
+        />
+        <span
+          class="_dot_81910b"
+        />
+        <span
+          class="_dot_81910b"
+        />
+        <span
+          class="_dot_81910b"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Shelf Component tests > Regular shelf 1`] = `
+<div>
+  <div
+    class="_shelf_81910b"
+  >
+    <h2
+      class="_title_81910b"
+    >
+      Test Shelf
+    </h2>
+    <div>
+      <div
+        class="_tileDock_22abb0"
+      >
+        <ul
+          style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+        >
+          <li
+            class=""
+            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="_titleContainer_d75732"
+              >
+                <div
+                  class="_title_d75732"
+                >
+                  Movie 1
+                </div>
+              </div>
+            </div>
+          </li>
+          <li
+            class=""
+            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="_titleContainer_d75732"
+              >
+                <div
+                  class="_title_d75732"
+                >
+                  Movie 2
+                </div>
+              </div>
+            </div>
+          </li>
+          <li
+            class=""
+            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="_titleContainer_d75732"
+              >
+                <div
+                  class="_title_d75732"
+                >
+                  Third movie
+                </div>
+              </div>
+            </div>
+          </li>
+          <li
+            class=""
+            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <div
+              aria-label="play_item"
+              class="_card_d75732"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      21 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="_titleContainer_d75732"
+              >
+                <div
+                  class="_title_d75732"
+                >
+                  Last playlist item
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
