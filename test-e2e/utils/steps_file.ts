@@ -16,10 +16,7 @@ const stepsObj = {
 
     this.amOnPage(url.toString());
   },
-  login: async function (
-    this: CodeceptJS.I,
-    { email, password }: { email: string; password: string } = { email: constants.username, password: constants.password },
-  ) {
+  login: async function (this: CodeceptJS.I, { email, password }: { email: string; password: string }) {
     await this.openSignInMenu();
     this.click('Sign in');
 
@@ -45,7 +42,7 @@ const stepsObj = {
   // This function will register the user on the first call and return the context
   // then assuming context is passed in the next time, will log that same user back in
   // Use it for tests where you want a new user for the suite, but not for each test
-  registerOrLogin: async function (this: CodeceptJS.I, context?: LoginContext, onRegister?: () => void) {
+  registerOrLogin: async function (this: CodeceptJS.I, context: LoginContext | undefined, onRegister?: () => void) {
     if (context) {
       await this.login({ email: context.email, password: context.password });
     } else {
@@ -54,30 +51,31 @@ const stepsObj = {
       await this.openSignInMenu();
       this.click('Sign up');
 
-      await this.seeQueryParams({ u: 'create-account' });
-      this.waitForElement(constants.registrationFormSelector, 10);
-
-      // Sometimes wrong value is saved at the back-end side. We want to be sure that it is correct
-      this.clearField('Email');
-      this.fillField('Email', context.email);
-      this.wait(2);
-
-      this.clearField('Password');
-      this.fillField('Password', context.password);
-      this.wait(2);
-
-      this.checkOption('Terms and Conditions');
-      this.click('Continue');
-      this.waitForElement('form[data-testid="personal_details-form"]', 20);
-
-      if (onRegister) {
-        onRegister();
-      } else {
-        this.clickCloseButton();
-      }
+      await this.fillRegisterForm(context, onRegister);
     }
 
     return context;
+  },
+  fillRegisterForm: async function (this: CodeceptJS.I, context: LoginContext, onRegister?: () => void) {
+    await this.seeQueryParams({ u: 'create-account' });
+    this.waitForElement(constants.registrationFormSelector, 10);
+
+    this.fillField('Email', context.email);
+    this.wait(2);
+
+    this.clearField('Password');
+    this.fillField('Password', context.password);
+    this.wait(2);
+
+    this.checkOption('Terms and Conditions');
+    this.click('Continue');
+    this.waitForElement('form[data-testid="personal_details-form"]', 20);
+
+    if (onRegister) {
+      onRegister();
+    } else {
+      this.clickCloseButton();
+    }
   },
   submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = 5) {
     this.click('button[type="submit"]');
