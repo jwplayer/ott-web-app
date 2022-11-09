@@ -15,7 +15,6 @@ export const makeShelfXpath = (shelf: ShelfId) => {
 
 export default {
   username: 'ott-test-account@jwplayer.com',
-  password: '_KmjpSVedX2uTD3yTq&xA',
   loginFormSelector: 'form[data-testid="login-form"]',
   registrationFormSelector: 'form[data-testid="registration-form"]',
   duplicateUserError: 'There is already a user with this email address',

@@ -2,6 +2,12 @@ import * as assert from 'assert';
 
 import constants from '../utils/constants';
 import { testConfigs } from '../../test/constants';
+import passwordUtils, { LoginContext } from '../utils/password_utils';
+
+const loginContext: LoginContext = {
+  email: passwordUtils.createRandomEmail(),
+  password: passwordUtils.createRandomPassword(),
+};
 
 Feature('video_detail').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
@@ -108,6 +114,28 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
   await I.waitForPlayerPlaying(`${constants.elephantsDreamTitle} - Trailer`);
 });
 
+Scenario('I can play a video after signing up', async ({ I }) => {
+  await I.openVideoCard(constants.elephantsDreamTitle);
+
+  I.see(constants.signUpToWatch);
+  I.click(constants.signUpToWatch);
+  await I.checkPlayerClosed();
+  I.see('Email');
+  I.see('Password');
+
+  await I.fillRegisterForm(loginContext);
+
+  I.see(constants.startWatchingButton);
+  I.dontSee(constants.signUpToWatch);
+  I.click(constants.startWatchingButton);
+
+  await I.waitForPlayerPlaying(constants.elephantsDreamTitle);
+
+  I.click('div[aria-label="Back"]');
+
+  await I.checkPlayerClosed();
+});
+
 Scenario('I can play a video after signing in', async ({ I }) => {
   await I.openVideoCard(constants.elephantsDreamTitle);
 
@@ -117,8 +145,8 @@ Scenario('I can play a video after signing in', async ({ I }) => {
   I.see('Email');
   I.see('Password');
   I.click('Sign in', constants.registrationFormSelector);
-  I.fillField('Email', constants.username);
-  I.fillField('Password', constants.password);
+  I.fillField('Email', loginContext.email);
+  I.fillField('Password', loginContext.password);
   I.click('button[type=submit]');
 
   I.see(constants.startWatchingButton);
