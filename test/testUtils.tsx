@@ -12,7 +12,7 @@ interface WrapperProps {
 function Router({ children }: WrapperProps) {
   const routes = createRoutesFromElements(<Route path="*" element={<>{children}</>} />);
 
-  return <RouterProvider router={createBrowserRouter(routes)} />;
+  return <RouterProvider router={createBrowserRouter(routes, { window })} />;
 }
 
 export const createWrapper = () => {
