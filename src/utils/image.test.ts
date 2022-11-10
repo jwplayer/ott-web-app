@@ -1,7 +1,7 @@
 import { generateAlternateImageURL, generateImageData } from './image';
 
-import configFixture from '#src/fixtures/config.json';
-import playlistFixture from '#src/fixtures/playlist.json';
+import configFixture from '#test/fixtures/config.json';
+import playlistFixture from '#test/fixtures/playlist.json';
 import type { Config } from '#types/Config';
 import type { Playlist } from '#types/playlist';
 

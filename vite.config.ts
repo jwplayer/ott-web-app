@@ -6,6 +6,7 @@ import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // noinspection JSUnusedGlobalSymbols
 export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
@@ -18,6 +19,20 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
       minify: true,
     }),
   ];
+
+  // These files are only needed in dev / test, don't include in prod builds
+  if (['1', 'true'].includes(process.env.INCLUDE_EPG_DATA?.toLowerCase() || '')) {
+    plugins.push(
+      viteStaticCopy({
+        targets: [
+          {
+            src: 'test/epg/*',
+            dest: 'epg',
+          },
+        ],
+      }),
+    );
+  }
 
   return defineConfig({
     plugins: plugins,

@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import customer from '../../fixtures/customer.json';
-import transactions from '../../fixtures/transactions.json';
-import paymentDetail from '../../fixtures/paymentDetail.json';
-import subscription from '../../fixtures/subscription.json';
-import type { Customer } from '../../../types/account';
-import type { PaymentDetail, Subscription, Transaction } from '../../../types/subscription';
-
 import Payment from './Payment';
+
+import customer from '#test/fixtures/customer.json';
+import transactions from '#test/fixtures/transactions.json';
+import paymentDetail from '#test/fixtures/paymentDetail.json';
+import subscription from '#test/fixtures/subscription.json';
+import type { Customer } from '#types/account';
+import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 
 describe.skip('<Payment>', () => {
   test('renders and matches snapshot', () => {

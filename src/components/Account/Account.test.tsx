@@ -1,11 +1,10 @@
 import React from 'react';
 
-import customer from '../../fixtures/customer.json';
-import { useAccountStore } from '../../stores/AccountStore';
-import { renderWithRouter } from '../../../test/testUtils';
-
 import Account from './Account';
 
+import customer from '#test/fixtures/customer.json';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { renderWithRouter } from '#test/testUtils';
 import type { Consent } from '#types/account';
 
 describe('<Account>', () => {

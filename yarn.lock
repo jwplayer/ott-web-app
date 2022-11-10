@@ -4537,7 +4537,7 @@ fs-extra@^10.0.0:
     jsonfile "^6.0.1"
     universalify "^2.0.0"
 
-fs-extra@^10.0.1:
+fs-extra@^10.0.1, fs-extra@^10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.1.0.tgz#02873cfbc4084dde127eaa5f9905eef2325d1abf"
   integrity sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==
@@ -9170,6 +9170,16 @@ vite-plugin-pwa@^0.11.13:
     rollup "^2.60.2"
     workbox-build "^6.4.2"
     workbox-window "^6.4.2"
+
+vite-plugin-static-copy@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-static-copy/-/vite-plugin-static-copy-0.11.1.tgz#91e58d928f392b3ed53389f701c367bf8d802925"
+  integrity sha512-SPNxP/6Sj4rdPSZnuacIdJr1nHaF8YDnu2RWWVurQSv8I+tXrdoOU5r3Xsw/5mVrOtK84LhD4HsZ8tAG1epJ7Q==
+  dependencies:
+    chokidar "^3.5.3"
+    fast-glob "^3.2.11"
+    fs-extra "^10.1.0"
+    picocolors "^1.0.0"
 
 vite-plugin-stylelint@^2.1.0:
   version "2.2.0"
