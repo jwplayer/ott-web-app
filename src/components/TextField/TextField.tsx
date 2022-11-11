@@ -1,90 +1,80 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import useOpaqueId from '../../hooks/useOpaqueId';
 import HelperText from '../HelperText/HelperText';
-import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './TextField.module.scss';
+
+import { IS_DEV_BUILD } from '#src/utils/common';
+
+type InputProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'id' | 'ref' | 'className'>;
+type TextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'id' | 'ref' | 'className'>;
+
+type InputOrTextAreaProps =
+  | ({ multiline?: false; inputRef?: RefObject<HTMLInputElement>; textAreaRef?: never } & InputProps)
+  | ({ multiline: true; inputRef?: never; textAreaRef?: RefObject<HTMLTextAreaElement> } & TextAreaProps);
 
 type Props = {
   className?: string;
   label?: string;
-  placeholder?: string;
-  name?: string;
-  value?: string;
-  type?: 'text' | 'email' | 'password' | 'search' | 'number' | 'date';
-  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;
   leftControl?: React.ReactNode;
   rightControl?: React.ReactNode;
   error?: boolean;
-  disabled?: boolean;
-  required?: boolean;
-  readOnly?: boolean;
-  multiline?: boolean;
-  rows?: number;
   editing?: boolean;
   testId?: string;
-};
+} & InputOrTextAreaProps;
 
 const TextField: React.FC<Props> = ({
   className,
   label,
   error,
   helperText,
-  multiline,
   leftControl,
   rightControl,
-  type = 'text',
-  rows = 3,
   editing = true,
-  value,
   testId,
-  ...rest
+  inputRef,
+  textAreaRef,
+  ...inputProps
 }: Props) => {
-  const id = useOpaqueId('text-field', rest.name);
+  const id = useOpaqueId('text-field', inputProps.name);
   const { t } = useTranslation('common');
-  const InputComponent = multiline ? 'textarea' : 'input';
+
+  const isInputOrTextArea = (item: unknown): item is InputOrTextAreaProps => !!item && typeof item === 'object' && 'multiline' in item;
+  const isTextArea = (item: unknown): item is TextAreaProps => isInputOrTextArea(item) && !!item.multiline;
+
   const textFieldClassName = classNames(
     styles.textField,
     {
       [styles.error]: error,
-      [styles.disabled]: rest.disabled,
+      [styles.disabled]: inputProps.disabled,
       [styles.leftControl]: !!leftControl,
       [styles.rightControl]: !!rightControl,
     },
     className,
   );
 
-  const inputProps: Partial<Props & { id: string }> = {
-    id,
-    type,
-    value,
-    ...rest,
-  };
-
-  if (multiline) {
-    inputProps.rows = rows;
-  }
-
   return (
     <div className={textFieldClassName} data-testid={IS_DEV_BUILD ? testId : undefined}>
       <label htmlFor={id} className={styles.label}>
         {label}
-        {!rest.required && editing ? <span>{t('optional')}</span> : null}
+        {!inputProps.required && editing ? <span>{t('optional')}</span> : null}
       </label>
       {editing ? (
         <div className={styles.container}>
           {leftControl ? <div className={styles.control}>{leftControl}</div> : null}
-          <InputComponent className={styles.input} {...inputProps} />
+          {isTextArea(inputProps) ? (
+            <textarea id={id} className={styles.input} rows={3} ref={textAreaRef} {...inputProps} />
+          ) : (
+            <input id={id} className={styles.input} type={'text'} ref={inputRef} {...inputProps} />
+          )}
           {rightControl ? <div className={styles.control}>{rightControl}</div> : null}
         </div>
       ) : (
-        <p>{value}</p>
+        <p>{inputProps.value}</p>
       )}
       <HelperText error={error}>{helperText}</HelperText>
     </div>

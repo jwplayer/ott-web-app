@@ -6,7 +6,7 @@ import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { Target, viteStaticCopy } from 'vite-plugin-static-copy';
 
 // noinspection JSUnusedGlobalSymbols
 export default ({ mode }: { mode: string }) => {
@@ -20,19 +20,27 @@ export default ({ mode }: { mode: string }) => {
     }),
   ];
 
+  const fileCopyTargets: Target[] = [
+    {
+      src: `settings.${mode}.json`,
+      dest: '',
+      rename: 'settings.json',
+    },
+  ];
+
   // These files are only needed in dev / test / demo, so don't include in prod builds
   if (mode !== 'production') {
-    plugins.push(
-      viteStaticCopy({
-        targets: [
-          {
-            src: 'test/epg/*',
-            dest: 'epg',
-          },
-        ],
-      }),
-    );
+    fileCopyTargets.push({
+      src: 'test/epg/*',
+      dest: 'epg',
+    });
   }
+
+  plugins.push(
+    viteStaticCopy({
+      targets: fileCopyTargets,
+    }),
+  );
 
   return defineConfig({
     plugins: plugins,
@@ -41,8 +49,33 @@ export default ({ mode }: { mode: string }) => {
     server: {
       port: 8080,
     },
+    assetsInclude: ['**/settings.json'],
     build: {
       outDir: './build/public',
+      cssCodeSplit: false,
+      minify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            // I originally just wanted to separate react-dom as its own bundle,
+            // but you get an error at runtime without these dependencies
+            if (
+              id.includes('/node_modules/react-dom/') ||
+              id.includes('/node_modules/scheduler/') ||
+              id.includes('/node_modules/object-assign/') ||
+              id.includes('/node_modules/react/')
+            ) {
+              return 'react';
+            }
+
+            if (id.includes('/node_modules/')) {
+              return 'vendor';
+            }
+
+            return 'index';
+          },
+        },
+      },
     },
     css: {
       devSourcemap: true,

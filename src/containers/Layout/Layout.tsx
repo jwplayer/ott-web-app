@@ -17,10 +17,7 @@ import Sidebar from '#src/components/Sidebar/Sidebar';
 import DynamicBlur from '#src/components/DynamicBlur/DynamicBlur';
 import MenuButton from '#src/components/MenuButton/MenuButton';
 import UserMenu from '#src/components/UserMenu/UserMenu';
-import DevConfigSelector from '#src/components/DevConfigSelector/DevConfigSelector';
 import { addQueryParam } from '#src/utils/location';
-import { IS_DEV_BUILD, IS_TEST_MODE } from '#src/utils/common';
-import { addConfigQueryParam } from '#src/utils/configOverride';
 
 const Layout = () => {
   const location = useLocation();
@@ -31,9 +28,6 @@ const Layout = () => {
   const cleengId = integrations?.cleeng?.id;
   const { searchPlaylist } = features || {};
   const { footerText, dynamicBlur } = styling || {};
-
-  // This ensures that the app config ID query param is always re-added to the URL
-  addConfigQueryParam();
 
   const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
     ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({
@@ -149,9 +143,6 @@ const Layout = () => {
         <Outlet />
       </div>
       {!!footerText && <MarkdownComponent className={styles.footer} markdownString={footerText} inline />}
-
-      {/* Config select control to improve testing experience */}
-      {IS_DEV_BUILD && !IS_TEST_MODE && <DevConfigSelector />}
     </div>
   );
 };
