@@ -133,6 +133,6 @@
   "resolutions": {
     "glob-parent": "^5.1.2",
     "codeceptjs/**/ansi-regex": "^4.1.1",
-    "codeceptjs/minimatch": "^3.0.5"
+    "codeceptjs/**/minimatch": "^3.0.5"
   }
 }
