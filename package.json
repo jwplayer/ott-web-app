@@ -10,7 +10,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "start": "INCLUDE_EPG_DATA=1 vite",
+    "start": "vite",
+    "start:test": "NODE_ENV=production yarn start --mode test",
     "start:jwdev": "yarn start --mode jwdev",
     "start:demo": "NODE_ENV=production yarn start --mode demo",
     "build": "vite build",
