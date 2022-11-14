@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 
 import Payment from './Payment';
 
@@ -9,10 +8,11 @@ import paymentDetail from '#test/fixtures/paymentDetail.json';
 import subscription from '#test/fixtures/subscription.json';
 import type { Customer } from '#types/account';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
+import { renderWithRouter } from '#test/testUtils';
 
-describe.skip('<Payment>', () => {
+describe('<Payment>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(
+    const { container } = renderWithRouter(
       <Payment
         accessModel="AVOD"
         customer={customer as Customer}

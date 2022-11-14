@@ -1,0 +1,295 @@
+// Vitest Snapshot v1
+
+exports[`Home Component tests > Home test 1`] = `
+<div>
+  <div>
+    <div
+      role="grid"
+      style="overflow: hidden;"
+    >
+      <div
+        class="_shelfContainer_a0651b"
+        data-testid="shelf-this-is-a-playlist"
+        role="row"
+      >
+        <div
+          role="cell"
+        >
+          <div
+            class="_shelf_81910b"
+          >
+            <h2
+              class="_title_81910b"
+            >
+              This is a playlist
+            </h2>
+            <div>
+              <div
+                class="_tileDock_22abb0"
+              >
+                <ul
+                  style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+                >
+                  <li
+                    class=""
+                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                  >
+                    <div
+                      aria-label="play_item"
+                      class="_card_d75732"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <div
+                        class="_poster_d75732 _aspect169_d75732"
+                      >
+                        <div
+                          class="_meta_d75732"
+                        >
+                          <div
+                            class="_tags_d75732"
+                          >
+                            <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                              role="status"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
+                              class="_tag_d75732"
+                            >
+                              6 min
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <div
+                          class="_title_d75732"
+                        >
+                          My video
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li
+                    class=""
+                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                  >
+                    <div
+                      aria-label="play_item"
+                      class="_card_d75732"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <div
+                        class="_poster_d75732 _aspect169_d75732"
+                      >
+                        <div
+                          class="_meta_d75732"
+                        >
+                          <div
+                            class="_tags_d75732"
+                          >
+                            <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                              role="status"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
+                              class="_tag_d75732"
+                            >
+                              6 min
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <div
+                          class="_title_d75732"
+                        >
+                          Other Vids
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="_shelfContainer_a0651b"
+        data-testid="shelf-second-playlist"
+        role="row"
+      >
+        <div
+          role="cell"
+        >
+          <div
+            class="_shelf_81910b"
+          >
+            <h2
+              class="_title_81910b"
+            >
+              Second Playlist
+            </h2>
+            <div>
+              <div
+                class="_tileDock_22abb0"
+              >
+                <ul
+                  style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+                >
+                  <li
+                    class=""
+                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                  >
+                    <div
+                      aria-label="play_item"
+                      class="_card_d75732"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <div
+                        class="_poster_d75732 _aspect169_d75732"
+                      >
+                        <div
+                          class="_meta_d75732"
+                        >
+                          <div
+                            class="_tags_d75732"
+                          >
+                            <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                              role="status"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
+                              class="_tag_d75732"
+                            >
+                              6 min
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <div
+                          class="_title_d75732"
+                        >
+                          My video
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li
+                    class=""
+                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                  >
+                    <div
+                      aria-label="play_item"
+                      class="_card_d75732"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <div
+                        class="_poster_d75732 _aspect169_d75732"
+                      >
+                        <div
+                          class="_meta_d75732"
+                        >
+                          <div
+                            class="_tags_d75732"
+                          >
+                            <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                              role="status"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
+                              class="_tag_d75732"
+                            >
+                              6 min
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <div
+                          class="_title_d75732"
+                        >
+                          Other Vids
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

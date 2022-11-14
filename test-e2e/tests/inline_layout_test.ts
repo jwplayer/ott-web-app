@@ -7,7 +7,6 @@ Feature('inline layout').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
   I.useConfig(testConfigs.inlinePlayer);
-  await I.login();
 });
 
 Scenario('I can see the movie inline player layout', async ({ I }) => {
