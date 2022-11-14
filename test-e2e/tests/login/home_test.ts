@@ -1,5 +1,8 @@
 import constants from '../../utils/constants';
 import { testConfigs } from '../../../test/constants';
+import { LoginContext } from '../../utils/password_utils';
+
+let loginContext: LoginContext;
 
 Feature('login - home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
@@ -56,7 +59,7 @@ Scenario('I can open the log in modal', async ({ I }) => {
 });
 
 Scenario('I can login', async ({ I }) => {
-  await I.login();
+  loginContext = await I.registerOrLogin(loginContext);
 
   I.dontSee('Sign in');
   I.dontSee('Sign up');
@@ -72,7 +75,7 @@ Scenario('I can login', async ({ I }) => {
 });
 
 Scenario('I can log out', async ({ I }) => {
-  await I.login();
+  loginContext = await I.registerOrLogin(loginContext);
 
   const isMobile = await I.openMainMenu();
 

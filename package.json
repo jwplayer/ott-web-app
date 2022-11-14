@@ -10,7 +10,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "start": "INCLUDE_EPG_DATA=1 vite",
+    "start": "vite",
+    "start:test": "NODE_ENV=production yarn start --mode test",
     "start:jwdev": "yarn start --mode jwdev",
     "start:demo": "NODE_ENV=production yarn start --mode demo",
     "build": "vite build",
@@ -134,6 +135,7 @@
   },
   "resolutions": {
     "glob-parent": "^5.1.2",
-    "codeceptjs/**/ansi-regex": "^4.1.1"
+    "codeceptjs/**/ansi-regex": "^4.1.1",
+    "codeceptjs/**/minimatch": "^3.0.5"
   }
 }
