@@ -10,11 +10,17 @@ To see an example of JW OTT Webapp in action, see [https://app-preview.jwplayer.
   <tr>
     <td>
       <p>Symphony (<a href="https://symphony.live/">symphony.live</a>)</p>
-      <img src="./images/symphony.png" alt="hover text">
+      <img src="./images/symphony.png" alt="Symphony">
     </td>
     <td>
       <p>FansChoice.tv (<a href="https://www.fanschoice.tv/">fanschoice.tv</a>)</p>
-      <img src="./images/fanschoice.png" alt="accessibility text">
+      <img src="./images/fanschoice.png" alt="FansChoice">
+    </td>
+  </tr>  
+  <tr>
+    <td>
+      <p>Trinity Broadcasting Network (<a href="https://watch.tbn.org/">watch.tbn.org</a>)</p>
+      <img src="./images/tbn.png" alt="TBN">
     </td>
   </tr>
 </table>
