@@ -1,6 +1,6 @@
 # Search
 
-![Search](img/search.jpg)
+![Search](../.images/search.jpg)
 
 Search is essentially a [library](shelves-and-libraries.md) screen that reacts to a search term.  A search queries the media  `title` and `description` fields. 
 

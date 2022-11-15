@@ -1,6 +1,6 @@
 # Related Videos
 
-![Related Videos](img/related-videos.jpg)
+![Related Videos](../.images/related-videos.jpg)
 
 Related videos are a shelf in the [video detail screen](video-detail.md) showing content with similar metadata.
 

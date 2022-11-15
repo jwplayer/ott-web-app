@@ -2,7 +2,7 @@ import useContentProtection from '#src/hooks/useContentProtection';
 import { generatePlaylistPlaceholder } from '#src/utils/collection';
 import type { GetPlaylistParams } from '#types/playlist';
 import { getPlaylistById } from '#src/services/api.service';
-import { queryClient } from '#src/providers/QueryProvider';
+import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 

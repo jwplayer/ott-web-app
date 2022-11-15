@@ -3,7 +3,7 @@
 If you want to list one or more 24x7 livestream channels, it is possible to enable a custom page with an EPG view. Of
 course, you would need to have EPG data available for this to work.
 
-<img title="" src="img/live-channels-epg.png" alt="Series" width="580">
+<img title="" src="../.images/live-channels-epg.png" alt="Series" width="580">
 
 Below are the steps to enable the live channels page in your OTT Webapp.
 

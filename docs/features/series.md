@@ -2,11 +2,11 @@
 
 Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events.  By organizing content into a series, viewers are guided through the content. Series have a predefined sequence of episodes and can be split in seasons.
 
-<img title="" src="img/series.jpg" alt="Series" width="580">
+<img title="" src="../.images/series.jpg" alt="Series" width="580">
 
 Series are tagged with `Series` in [shelves and libraries](shelves-and-libraries.md):
 
-<img title="" src="img/series-in-library.jpg" alt="Series in library" width="581">
+<img title="" src="../.images/series-in-library.jpg" alt="Series in library" width="581">
 
 Series are defined through 'series playlist'. This is handled in the first piece of this article.
 

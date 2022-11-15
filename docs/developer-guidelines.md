@@ -97,19 +97,45 @@ The footer should contain any information about **Breaking Changes** and is also
 ## Project Structure
 
 ```
-/src
+/.github          - Templates and action workflows for Github
+/.husky           - Husy scripts for running checks on git triggers
+/build*           - Directory where the code is compiled by `yarn build`
+/coverage*        - Location of the C8 coverage report
+/docs             - Documentation
+  /.images        - Images used in the docs and README
+  /features       - Docs coverage specific product use cases
+/node_modules*    - Yarn generated dependencies
+/public           - Static files to be hosted with the application
+/scripts          - Dev helper scripts for i18n, deployment, etc.
+/src              - Source code for the application
   /assets         - Static assets (image, svg, etc.)
-  /components     - (Reusable) components
+  /components     - Reusable, side-effect free UI components
   /containers     - UI Containers
   /hooks          - Custom React hooks
+  /i18n           - Internationalization tools
+    /locales      - Languages specific folders with translation json files
   /icons          - SVG icons wrapped in React Components
-  /providers      - React context
-  /screens        - Screens (essentially containers, but only used directly in the router)
+  /pages          - Main application layout containers per route
+    /ScreenRouting- Mappings from media_type to layout container for medias
   /services       - Services which connects external data sources to the application
-  /stores         - Pullstate store files
+  /stores         - Zustand stores and controllers
   /styles         - Global SCSS rules, theming and variables
   /utils          - Utility functions
-
   /App.tsx        - The main React component which renders the app
-  /index.ts       - The entrypoint
+  /index.tsx      - The entrypoint
+  /registerSer... - Script or SPA functionality
+/test             - Data and scrips for unit and e2e testing
+/test-e2e         - End to end tests and scripts
+/types            - Global type definitions
+/.env<.mode>      - Environment variables for different Vite modes
+/CHANGELOG.md     - Auto-generated changelog
+/firebase.json    - Config for firebase static hosting
+/index.html       - Main html file entrypoint for the application
+/package.json     - Yarn file for dependencies and scripts
+/vite.config.ts   - Vite build and test configuration file
+
+* = Generated directories, not in source control
+
+Note: Some system and util files are not shown above for brevity.
+You probably won't need to mess with anything not shown here.
 ```

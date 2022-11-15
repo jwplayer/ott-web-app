@@ -1,4 +1,4 @@
-![JW OTT Webapp](./images/homepage-screenshot.png)
+![JW OTT Webapp](docs/.images/homepage-screenshot.png)
 
 The JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
 
@@ -10,11 +10,11 @@ To see an example of JW OTT Webapp in action, see [https://app-preview.jwplayer.
   <tr>
     <td>
       <p>Symphony (<a href="https://symphony.live/">symphony.live</a>)</p>
-      <img src="./images/symphony.png" alt="hover text">
+      <img src="docs/.images/symphony.png" alt="hover text">
     </td>
     <td>
       <p>FansChoice.tv (<a href="https://www.fanschoice.tv/">fanschoice.tv</a>)</p>
-      <img src="./images/fanschoice.png" alt="accessibility text">
+      <img src="docs/.images/fanschoice.png" alt="accessibility text">
     </td>
   </tr>
 </table>

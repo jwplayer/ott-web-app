@@ -1,6 +1,6 @@
 # Initialization (ini) File
 
-The JW OTT Web App loads a small initialization (.ini) file at startup.  This file provides a mechanism to set key parameters without modifying the source code.
+The JW OTT Web App loads a small initialization (.ini) file at startup.  This file provides a mechanism to set key startup parameters without modifying the source code.
 Template ini files are included in the repo and with the pre-compiled production release builds ([.webapp.prod.ini](/ini/templates/.webapp.prod.ini)).
 Make sure you include a copy of the ini file edited to include your account data at `/public/.webapp.ini` for the application to load correctly.
 

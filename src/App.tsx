@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getI18n, I18nextProvider } from 'react-i18next';
 
-import QueryProvider from '#src/providers/QueryProvider';
-import '#src/screenMapping';
+import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
 import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import Router from '#src/containers/Router/Router';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import registerCustomScreens from '#src/screenMapping';
 
 interface State {
   isLoading: boolean;
@@ -21,6 +21,8 @@ export default function App() {
     initI18n()
       .then(() => setState({ isLoading: false }))
       .catch((e) => setState({ isLoading: false, error: e as Error }));
+
+    registerCustomScreens();
   }, []);
 
   if (isLoading) {
