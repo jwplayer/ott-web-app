@@ -9,15 +9,15 @@ To see an example of JW OTT Webapp in action, see [https://app-preview.jwplayer.
 <table>
   <tr>
     <td>
-      <p>Symphony (<a href="https://symphony.live/">symphony.live</a>)</p>
+      <p>Symphony <br/> (<a href="https://symphony.live/">symphony.live</a>)</p>
       <img src="./images/symphony.png" alt="Symphony" height="200">
     </td>
     <td>
-      <p>FansChoice.tv (<a href="https://www.fanschoice.tv/">fanschoice.tv</a>)</p>
+      <p>FansChoice.tv  <br/> (<a href="https://www.fanschoice.tv/">fanschoice.tv</a>)</p>
       <img src="./images/fanschoice.png" alt="FansChoice" height="200">
     </td>
     <td>
-      <p>Trinity Broadcasting Network (<a href="https://watch.tbn.org/">watch.tbn.org</a>)</p>
+      <p>Trinity Broadcasting Network  <br/> (<a href="https://watch.tbn.org/">watch.tbn.org</a>)</p>
       <img src="./images/tbn.png" alt="TBN" height="200">
     </td>
   </tr>
