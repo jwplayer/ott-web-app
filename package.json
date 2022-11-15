@@ -11,9 +11,6 @@
   "scripts": {
     "prepare": "husky install",
     "start": "vite",
-    "start:test": "NODE_ENV=production yarn start --mode test",
-    "start:jwdev": "yarn start --mode jwdev",
-    "start:demo": "NODE_ENV=production yarn start --mode demo",
     "build": "vite build",
     "test": "TZ=UTC vitest run",
     "test-watch": "TZ=UTC vitest",
