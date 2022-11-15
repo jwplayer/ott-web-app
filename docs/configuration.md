@@ -5,15 +5,24 @@ The easiest way to maintain configuration files is to use the 'Apps' section in 
 
 ## Configuration File Source
 
-Which config file the application uses is determined by the [settings file](settings.md). You can specify the default that the application starts with and also which config, if any, it will allow to be set using the `app-config=<config source>` query param. The location is usually specified by the 8-character ID (i.e. `gnnuzabk`) of the App Config from your JWP account, in which case the file will be loaded from the JW Player App Config delivery endpoint (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`). You may also specify a relative or absolute URL.  
+Which app config file the application uses is determined by the [ini file](initialization-file.md).
 
-As mentioned above, if you have 1 or more allowed sources (see allowedConfigSources in [`settings`](settings.md)), you can switch between them using the `app-config=<config source>` (or `c=<config source>`) query parameter in the web app URL. The parameter is automatically evaluated, loaded, and stored in browser session storage and should remain part of the url as the user navigates around the site. Be aware that this mechanism only sets the config for the machine, browser, and session that you are accessing the site with and it does not effect the default hosted app as it is accessed by other users.
+You can specify the default that the application starts with and also which config, if any, it will allow to be set using the [`app-config=<config source>` query param](#switching-between-app-configs).
+The location is usually specified by the 8-character ID (i.e. `gnnuzabk`) of the App Config from your JWP account, in which case the file will be loaded from the JW Player App Config delivery endpoint (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`).
+You may also specify a relative or absolute URL.  
 
-Even sharing URL's should work as long as the query parameter of the desired config is part of the URL. However, once the query parameter is removed and the saved value in the session is released, the application will revert to loading the default config source.
+### Switching between app configs
 
-Note: to clear the value from session storage and return to the default, you can navigate to the site with the query parameter but leaving the value blank (i.e. `https://<your domain>?app-config=`)
+As mentioned above, if you have 1 or more additional allowed sources (see additionalAllowedConfigSources in [`initialization-file`](initialization-file.md)), you can switch between them by adding `app-config=<config source>` as a query parameter in the web app URL in your browser (i.e. `https://<your domain>/?app-config=gnnuzabk`.)
 
-### Configuration File Source Build Params
+The parameter is automatically evaluated, loaded, and stored in browser session storage and should remain part of the url as the user navigates around the site.
+
+>*Note: Be aware that this mechanism only sets the config for the local machine, browser, and session that you are accessing the site with and it does not change the default hosted app for other users.*
+
+Even sharing URL's should work as long as the query parameter of the desired config is part of the URL. However, once the query parameter is removed and the stored value in the session is released, the application will revert to loading the default config source.
+
+>*Note: to clear the value from session storage and return to the default, you can navigate to the site with a blank query parameter value (i.e. `?app-config=`)*
+
 
 ## Available Configuration Parameters
 

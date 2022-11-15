@@ -1,7 +1,12 @@
+import ini from 'ini';
+
 import { Settings, useSettingsStore } from '#src/stores/SettingsStore';
 
 export const initSettings = async () => {
-  const settings: Settings = await fetch('/settings.json').then((result) => result.json());
+  const settings = await fetch('/.webapp.ini')
+    .then((result) => result.text())
+    .then((iniString) => ini.parse(iniString) as Settings);
+  console.info(settings);
   useSettingsStore.setState(settings);
 
   return settings;

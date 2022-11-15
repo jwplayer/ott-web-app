@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import AccountModal from '../../containers/AccountModal/AccountModal';
 
-import { IS_DEMO_MODE, IS_DEV_BUILD, IS_TEST_MODE } from '#src/utils/common';
+import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
 import DemoConfigDialog from '#src/components/DemoConfigDialog/DemoConfigDialog';
 import { initSettings } from '#src/stores/SettingsController';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
@@ -58,7 +58,7 @@ const Root: FC = () => {
       {IS_DEMO_MODE && <DemoConfigDialog isConfigSuccess={config.isSuccess} settings={settings.data} />}
       <AccountModal />
       {/* Config select control to improve testing experience */}
-      {IS_DEV_BUILD && !IS_TEST_MODE && <DevConfigSelector settings={settings.data} />}
+      {IS_DEV_BUILD && <DevConfigSelector settings={settings.data} />}
     </>
   );
 };

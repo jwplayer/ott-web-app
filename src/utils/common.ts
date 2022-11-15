@@ -49,14 +49,13 @@ export function calculateContrastColor(color: string) {
   return rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114 > 186 ? '#000000' : '#FFFFFF';
 }
 
-// Build is either Dev or Production
-// Mode can be dev, jwdev, demo, test, production, etc.
+// Build is either Development or Production
+// Mode can be dev, jwdev, demo, test, prod, etc.
 export const IS_DEV_BUILD = import.meta.env.DEV;
 export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
-export const IS_TEST_MODE = import.meta.env.MODE === 'test';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
-  if (IS_DEV_BUILD && !IS_TEST_MODE) {
+  if (IS_DEV_BUILD) {
     if (optionalParams.length > 0) {
       console.info(message, optionalParams);
     } else {

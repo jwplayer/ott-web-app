@@ -32,7 +32,8 @@ export function useConfigNavigate() {
 
 function useConfigOverride(settings?: Settings) {
   const [searchParams, setSearchParams] = useSearchParams();
-  if (!settings?.unsafeAllowAnyConfigSource && (settings?.allowedConfigSources?.length || 0) <= 0) {
+
+  if (!settings?.UNSAFE_allowAnyConfigSource && (settings?.additionalAllowedConfigSources?.length || 0) <= 0) {
     return undefined;
   }
 
@@ -82,7 +83,7 @@ function useConfigOverride(settings?: Settings) {
   if (storedSource) {
     if (isValidConfigSource(storedSource, settings)) {
       // Make sure it's added to the query params if it's not the default
-      if (settings?.unsafeAllowAnyConfigSource || storedSource !== settings?.defaultConfigSource) {
+      if (settings?.UNSAFE_allowAnyConfigSource || storedSource !== settings?.defaultConfigSource) {
         searchParams.set(configQueryKey, storedSource);
         setSearchParams(searchParams, { replace: true });
       }
@@ -99,9 +100,11 @@ function useConfigOverride(settings?: Settings) {
 
 function isValidConfigSource(source: string, settings: Settings | undefined) {
   // Dynamic values are valid as long as they are defined
-  if (settings?.unsafeAllowAnyConfigSource) {
+  if (settings?.UNSAFE_allowAnyConfigSource) {
     return !!source;
   }
 
-  return settings?.defaultConfigSource === source || (settings?.allowedConfigSources && settings?.allowedConfigSources.indexOf(source) >= 0);
+  return (
+    settings?.defaultConfigSource === source || (settings?.additionalAllowedConfigSources && settings?.additionalAllowedConfigSources.indexOf(source) >= 0)
+  );
 }
