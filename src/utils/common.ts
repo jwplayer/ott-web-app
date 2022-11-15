@@ -52,6 +52,7 @@ export function calculateContrastColor(color: string) {
 // Build is either Development or Production
 // Mode can be dev, jwdev, demo, test, prod, etc.
 export const IS_DEV_BUILD = import.meta.env.DEV;
+export const IS_TEST_MODE = import.meta.env.MODE === 'test';
 export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
@@ -70,4 +71,8 @@ export function getOverrideIP() {
     .find((s) => s.trim().startsWith('overrideIP'))
     ?.split('=')[1]
     .trim();
+}
+
+export function testId(value: string | undefined) {
+  return IS_TEST_MODE ? value : undefined;
 }

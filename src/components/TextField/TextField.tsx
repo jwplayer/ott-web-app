@@ -7,7 +7,7 @@ import HelperText from '../HelperText/HelperText';
 
 import styles from './TextField.module.scss';
 
-import { IS_DEV_BUILD } from '#src/utils/common';
+import { testId as getTestId } from '#src/utils/common';
 
 type InputProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'id' | 'ref' | 'className'>;
 type TextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'id' | 'ref' | 'className'>;
@@ -58,7 +58,7 @@ const TextField: React.FC<Props> = ({
   );
 
   return (
-    <div className={textFieldClassName} data-testid={IS_DEV_BUILD ? testId : undefined}>
+    <div className={textFieldClassName} data-testid={getTestId(testId)}>
       <label htmlFor={id} className={styles.label}>
         {label}
         {!inputProps.required && editing ? <span>{t('optional')}</span> : null}

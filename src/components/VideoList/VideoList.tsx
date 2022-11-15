@@ -8,6 +8,7 @@ import styles from './VideoList.module.scss';
 import { isLocked } from '#src/utils/entitlements';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { testId } from '#src/utils/common';
 
 type Props = {
   playlist?: Playlist;
@@ -39,7 +40,7 @@ function VideoList({
   hasSubscription,
 }: Props) {
   return (
-    <div className={classNames(styles.container, !!className && className)} data-testid="video-list">
+    <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
       {!!header && header}
       {playlist &&
         playlist.playlist.map((playlistItem: PlaylistItem) => {
