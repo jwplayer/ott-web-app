@@ -10,7 +10,6 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { Target, viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default ({ mode, command }: { mode: string; command: string }) => {
-  console.info(mode);
   // Shorten default mode names to dev / prod
   // Also differentiates from build type (production / development)
   mode = mode === 'development' ? 'dev' : mode;

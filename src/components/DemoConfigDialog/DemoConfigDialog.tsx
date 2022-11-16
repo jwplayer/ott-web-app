@@ -16,7 +16,7 @@ const fallbackConfig = import.meta.env.APP_DEMO_FALLBACK_CONFIG_ID;
 
 interface Props {
   isConfigSuccess: boolean;
-  settings: Settings;
+  settings: Settings | undefined;
 }
 
 const DemoConfigDialog = ({ isConfigSuccess, settings }: Props) => {

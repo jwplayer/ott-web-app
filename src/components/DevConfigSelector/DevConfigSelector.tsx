@@ -7,7 +7,7 @@ import { jwDevEnvConfigs, testConfigs } from '#test/constants';
 import type { Settings } from '#src/stores/SettingsStore';
 
 interface Props {
-  settings: Settings;
+  settings: Settings | undefined;
 }
 
 const configs = import.meta.env.MODE === 'jwdev' ? jwDevEnvConfigs : testConfigs;

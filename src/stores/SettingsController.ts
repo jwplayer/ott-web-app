@@ -6,7 +6,6 @@ export const initSettings = async () => {
   const settings = await fetch('/.webapp.ini')
     .then((result) => result.text())
     .then((iniString) => ini.parse(iniString) as Settings);
-  console.info(settings);
   useSettingsStore.setState(settings);
 
   return settings;
