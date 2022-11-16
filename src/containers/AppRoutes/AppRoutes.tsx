@@ -13,7 +13,7 @@ import MediaScreenRouter from '#src/pages/ScreenRouting/MediaScreenRouter';
 import PlaylistScreenRouter from '#src/pages/ScreenRouting/PlaylistScreenRouter';
 import Layout from '#src/containers/Layout/Layout';
 
-export default function Router() {
+export default function AppRoutes() {
   const { t } = useTranslation('error');
 
   return (

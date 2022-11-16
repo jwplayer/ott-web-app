@@ -7,7 +7,7 @@ import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';
 import Root from '#src/components/Root/Root';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
-import Router from '#src/containers/Router/Router';
+import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 
 interface State {
@@ -40,15 +40,15 @@ export default function App() {
     );
   }
 
-  const RouterComponent = import.meta.env.APP_PUBLIC_GITHUB_PAGES ? HashRouter : BrowserRouter;
+  const Router = import.meta.env.APP_PUBLIC_GITHUB_PAGES ? HashRouter : BrowserRouter;
 
   return (
     <QueryProvider>
-      <RouterComponent>
+      <Router>
         <Root>
-          <Router />
+          <AppRoutes />
         </Root>
-      </RouterComponent>
+      </Router>
     </QueryProvider>
   );
 }
