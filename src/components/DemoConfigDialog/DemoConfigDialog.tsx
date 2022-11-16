@@ -7,25 +7,23 @@ import styles from './DemoConfigDialog.module.scss';
 import ErrorPage from '#src/components/ErrorPage/ErrorPage';
 import TextField from '#src/components/TextField/TextField';
 import Button from '#src/components/Button/Button';
-import { useConfigSource, useConfigNavigate } from '#src/utils/configOverride';
+import { getConfigNavigateCallback } from '#src/utils/configOverride';
 import Link from '#src/components/Link/Link';
 import ConfirmationDialog from '#src/components/ConfirmationDialog/ConfirmationDialog';
-import type { Settings } from '#src/stores/SettingsStore';
 
 const fallbackConfig = import.meta.env.APP_DEMO_FALLBACK_CONFIG_ID;
 
 interface Props {
   isConfigSuccess: boolean;
-  settings: Settings | undefined;
+  selectedConfig: string | undefined;
 }
 
-const DemoConfigDialog = ({ isConfigSuccess, settings }: Props) => {
+const DemoConfigDialog = ({ isConfigSuccess, selectedConfig }: Props) => {
   const { t } = useTranslation('demo');
   const [showDialog, setShowDialog] = useState(false);
-  const configNavigate = useConfigNavigate();
   const navigate = useNavigate();
+  const configNavigate = getConfigNavigateCallback(navigate);
 
-  const configLocation = useConfigSource(settings);
   const ref = useRef<HTMLInputElement>(null);
 
   const clearConfig = () => {
@@ -35,7 +33,7 @@ const DemoConfigDialog = ({ isConfigSuccess, settings }: Props) => {
   const submitClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
 
-    if (ref.current?.value === configLocation) {
+    if (ref.current?.value === selectedConfig) {
       navigate(0);
     } else if (ref.current?.value) {
       configNavigate(ref.current.value);
@@ -61,7 +59,7 @@ const DemoConfigDialog = ({ isConfigSuccess, settings }: Props) => {
     <>
       {isConfigSuccess && (
         <div className={styles.note}>
-          <div>{t('currently_previewing_config', { configLocation })}</div>
+          <div>{t('currently_previewing_config', { selectedConfig })}</div>
           <Link onClick={clearConfig}>{t('click_to_unselect_config')}</Link>
         </div>
       )}

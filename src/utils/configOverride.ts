@@ -1,5 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
-import { useNavigate } from 'react-router';
+import type { NavigateFunction } from 'react-router/dist/lib/hooks';
 
 import { logDev } from '#src/utils/common';
 import type { Settings } from '#src/stores/SettingsStore';
@@ -12,13 +11,7 @@ const configLegacyQueryKey = 'c';
 
 const configFileStorageKey = 'config-file-override';
 
-export function useConfigSource(settings: Settings | undefined) {
-  return useConfigOverride(settings) || settings?.defaultConfigSource;
-}
-
-export function useConfigNavigate() {
-  const navigate = useNavigate();
-
+export function getConfigNavigateCallback(navigate: NavigateFunction) {
   return (configSource: string) => {
     navigate(
       {
@@ -30,11 +23,9 @@ export function useConfigNavigate() {
   };
 }
 
-function useConfigOverride(settings?: Settings) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
+export function getConfigSource(searchParams: URLSearchParams, settings: Settings | undefined) {
   if (!settings?.UNSAFE_allowAnyConfigSource && (settings?.additionalAllowedConfigSources?.length || 0) <= 0) {
-    return undefined;
+    return settings?.defaultConfigSource;
   }
 
   // If the query string has the legacy key, remove it
@@ -46,8 +37,6 @@ function useConfigOverride(settings?: Settings) {
     if (legacyValue !== null && !searchParams.has(configQueryKey)) {
       searchParams.set(configQueryKey, legacyValue);
     }
-
-    setSearchParams(searchParams, { replace: true });
   }
 
   if (searchParams.has(configQueryKey)) {
@@ -58,9 +47,8 @@ function useConfigOverride(settings?: Settings) {
       storage.removeItem(configFileStorageKey);
 
       searchParams.delete(configQueryKey);
-      setSearchParams(searchParams, { replace: true });
 
-      return undefined;
+      return settings?.defaultConfigSource;
     }
 
     // If it's valid, store it and return it
@@ -73,7 +61,6 @@ function useConfigOverride(settings?: Settings) {
 
     // Remove the query param if it's invalid
     searchParams.delete(configQueryKey);
-    setSearchParams(searchParams, { replace: true });
   }
   // Yes this falls through from above to look up the stored value if the query string is invalid and that's OK
 
@@ -85,17 +72,13 @@ function useConfigOverride(settings?: Settings) {
       // Make sure it's added to the query params if it's not the default
       if (settings?.UNSAFE_allowAnyConfigSource || storedSource !== settings?.defaultConfigSource) {
         searchParams.set(configQueryKey, storedSource);
-        setSearchParams(searchParams, { replace: true });
       }
-
       return storedSource;
     }
 
     logDev('Invalid stored config: ' + storedSource);
     storage.removeItem(configFileStorageKey);
   }
-
-  return undefined;
 }
 
 function isValidConfigSource(source: string, settings: Settings | undefined) {

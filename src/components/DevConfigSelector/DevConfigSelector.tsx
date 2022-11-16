@@ -1,27 +1,31 @@
+import { ChangeEvent, useCallback } from 'react';
+import { useNavigate } from 'react-router';
+
 import Dropdown from '../Dropdown/Dropdown';
 
 import styles from './DevConfigSelector.module.scss';
 
-import { useConfigNavigate, useConfigSource } from '#src/utils/configOverride';
+import { getConfigNavigateCallback } from '#src/utils/configOverride';
 import { jwDevEnvConfigs, testConfigs } from '#test/constants';
-import type { Settings } from '#src/stores/SettingsStore';
 
 interface Props {
-  settings: Settings | undefined;
+  selectedConfig: string | undefined;
 }
 
 const configs = import.meta.env.MODE === 'jwdev' ? jwDevEnvConfigs : testConfigs;
 const configOptions: { value: string; label: string }[] = Object.values(configs).map(({ id, label }) => ({ value: id, label: `${id} - ${label}` }));
 
-const DevConfigSelector = ({ settings }: Props) => {
-  const selectedConfig = useConfigSource(settings) || '';
-  const configNavigate = useConfigNavigate();
+const DevConfigSelector = ({ selectedConfig }: Props) => {
+  const configNavigate = getConfigNavigateCallback(useNavigate());
 
-  const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    configNavigate(event.target.value);
-  };
+  const onChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      configNavigate(event.target.value);
+    },
+    [configNavigate],
+  );
 
-  return <Dropdown className={styles.dropdown} size="small" options={configOptions} name="config-select" value={selectedConfig} onChange={onChange} />;
+  return <Dropdown className={styles.dropdown} size="small" options={configOptions} name="config-select" value={selectedConfig || ''} onChange={onChange} />;
 };
 
 export default DevConfigSelector;
