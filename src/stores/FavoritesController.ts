@@ -1,4 +1,4 @@
-import { t } from 'i18next';
+import i18next from 'i18next';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
@@ -83,7 +83,7 @@ export const toggleFavorite = async (item: PlaylistItem | undefined) => {
 
   // If we exceed the max available number of favorites, we show a warning
   if (favorites?.length >= MAX_WATCHLIST_ITEMS_COUNT) {
-    setWarning(t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
+    setWarning(i18next.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
     return;
   }
 
