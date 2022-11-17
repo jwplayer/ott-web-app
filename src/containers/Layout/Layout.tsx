@@ -20,7 +20,7 @@ import UserMenu from '#src/components/UserMenu/UserMenu';
 import DevConfigSelector from '#src/components/DevConfigSelector/DevConfigSelector';
 import { addQueryParam } from '#src/utils/location';
 import { IS_DEV_BUILD, IS_TEST_MODE } from '#src/utils/common';
-import { maintainConfigQueryParam } from '#src/utils/configOverride';
+import { addConfigQueryParam } from '#src/utils/configOverride';
 
 const Layout = () => {
   const location = useLocation();
@@ -32,7 +32,8 @@ const Layout = () => {
   const { searchPlaylist } = features || {};
   const { footerText, dynamicBlur } = styling || {};
 
-  maintainConfigQueryParam();
+  // This ensures that the app config ID query param is always re-added to the URL
+  addConfigQueryParam();
 
   const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
     ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({

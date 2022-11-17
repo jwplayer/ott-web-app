@@ -3,6 +3,7 @@
 
 export { default as account } from './nl_NL/account.json';
 export { default as common } from './nl_NL/common.json';
+export { default as demo } from './nl_NL/demo.json';
 export { default as epg } from './nl_NL/epg.json';
 export { default as error } from './nl_NL/error.json';
 export { default as menu } from './nl_NL/menu.json';

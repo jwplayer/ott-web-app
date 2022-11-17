@@ -9,10 +9,10 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // noinspection JSUnusedGlobalSymbols
-export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
+export default ({ mode }: { mode: string }) => {
   const plugins = [
     react(),
-    eslintPlugin({ emitError: mode === 'production' }), // Move linting to pre-build to match dashboard
+    eslintPlugin({ emitError: mode === 'production' || mode === 'demo' }), // Move linting to pre-build to match dashboard
     StylelintPlugin(),
     VitePWA(),
     createHtmlPlugin({
@@ -20,8 +20,8 @@ export default ({ mode }: { mode: 'production' | 'development' | 'test' }) => {
     }),
   ];
 
-  // These files are only needed in dev / test, don't include in prod builds
-  if (['1', 'true'].includes(process.env.INCLUDE_EPG_DATA?.toLowerCase() || '')) {
+  // These files are only needed in dev / test / demo, so don't include in prod builds
+  if (mode !== 'production') {
     plugins.push(
       viteStaticCopy({
         targets: [

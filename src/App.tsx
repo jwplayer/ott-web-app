@@ -55,9 +55,10 @@ class App extends Component {
   };
 
   configErrorHandler = (error: Error) => {
+    clearStoredConfig();
+
     this.setState({ error });
     this.setState({ isLoading: false });
-    clearStoredConfig();
     logDev('Error while loading the config:', error);
   };
 
