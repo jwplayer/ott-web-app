@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import useOpaqueId from '../../hooks/useOpaqueId';
-import HelperText from '../HelperText/HelperText';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './TextField.module.scss';
+
+import useOpaqueId from '#src/hooks/useOpaqueId';
+import HelperText from '#src/components/HelperText/HelperText';
+import { testId } from '#src/utils/common';
 
 type Props = {
   className?: string;
@@ -28,7 +28,7 @@ type Props = {
   multiline?: boolean;
   rows?: number;
   editing?: boolean;
-  testId?: string;
+  testIdValue?: string;
 };
 
 const TextField: React.FC<Props> = ({
@@ -43,7 +43,7 @@ const TextField: React.FC<Props> = ({
   rows = 3,
   editing = true,
   value,
-  testId,
+  testIdValue,
   ...rest
 }: Props) => {
   const id = useOpaqueId('text-field', rest.name);
@@ -72,7 +72,7 @@ const TextField: React.FC<Props> = ({
   }
 
   return (
-    <div className={textFieldClassName} data-testid={IS_DEV_BUILD ? testId : undefined}>
+    <div className={textFieldClassName} data-testid={testId(testIdValue)}>
       <label htmlFor={id} className={styles.label}>
         {label}
         {!rest.required && editing ? <span>{t('optional')}</span> : null}

@@ -1,18 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import Dropdown from '../Dropdown/Dropdown';
-import Checkbox from '../Checkbox/Checkbox';
-import Radio from '../Radio/Radio';
-import DateField from '../DateField/DateField';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './PersonalDetailsForm.module.scss';
 
+import TextField from '#src/components/TextField/TextField';
+import Button from '#src/components/Button/Button';
+import Dropdown from '#src/components/Dropdown/Dropdown';
+import Checkbox from '#src/components/Checkbox/Checkbox';
+import Radio from '#src/components/Radio/Radio';
+import DateField from '#src/components/DateField/DateField';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import { testId } from '#src/utils/common';
 import type { FormErrors } from '#types/form';
 import type { PersonalDetailsFormData, CleengCaptureField, CleengCaptureQuestionField } from '#types/account';
 
@@ -68,7 +67,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'personal_details-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={testId('personal_details-form')} noValidate>
       <h2 className={styles.title}>{t('personal_details.title')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       {fields.firstNameLastName?.enabled ? (

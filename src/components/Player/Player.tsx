@@ -8,7 +8,7 @@ import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
-import { logDev } from '#src/utils/common';
+import { logDev, testId } from '#src/utils/common';
 
 type Props = {
   playerId: string;
@@ -193,7 +193,7 @@ const Player: React.FC<Props> = ({
   }, [detachEvents]);
 
   return (
-    <div className={styles.container} data-testid="player-container">
+    <div className={styles.container} data-testid={testId('player-container')}>
       <div ref={playerElementRef} />
     </div>
   );

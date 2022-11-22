@@ -1,17 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import CardGrid from '../CardGrid/CardGrid';
-import Filter from '../Filter/Filter';
-import VideoDetails from '../VideoDetails/VideoDetails';
-import VideoDetailsInline from '../VideoDetailsInline/VideoDetailsInline';
-import VideoList from '../VideoList/VideoList';
-
 import styles from './VideoLayout.module.scss';
 
+import CardGrid from '#src/components/CardGrid/CardGrid';
+import Filter from '#src/components/Filter/Filter';
+import VideoDetails from '#src/components/VideoDetails/VideoDetails';
+import VideoDetailsInline from '#src/components/VideoDetailsInline/VideoDetailsInline';
+import VideoList from '#src/components/VideoList/VideoList';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import { testId } from '#src/utils/common';
 import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';
 import type { AccessModel } from '#types/Config';
-import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
@@ -165,7 +165,7 @@ const VideoLayout: React.FC<Props> = ({
 
   if (inlineLayout) {
     return (
-      <div className={styles.videoInlineLayout} data-testid="inline-layout">
+      <div className={styles.videoInlineLayout} data-testid={testId('inline-layout')}>
         <div className={styles.player}>{player}</div>
         {renderRelatedVideos(isTablet)}
         <div className={styles.videoDetailsInline}>
@@ -185,7 +185,7 @@ const VideoLayout: React.FC<Props> = ({
   }
 
   return (
-    <div className={styles.videoCinemaLayout} data-testid="cinema-layout">
+    <div className={styles.videoCinemaLayout} data-testid={testId('cinema-layout')}>
       <VideoDetails
         title={title}
         description={description}

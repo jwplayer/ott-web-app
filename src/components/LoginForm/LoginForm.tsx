@@ -2,19 +2,18 @@ import React from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
-import useToggle from '../../hooks/useToggle';
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import Link from '../Link/Link';
-import IconButton from '../IconButton/IconButton';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './LoginForm.module.scss';
 
+import useToggle from '#src/hooks/useToggle';
+import TextField from '#src/components/TextField/TextField';
+import Button from '#src/components/Button/Button';
+import Link from '#src/components/Link/Link';
+import IconButton from '#src/components/IconButton/IconButton';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import { testId } from '#src/utils/common';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { LoginFormData } from '#types/account';
@@ -35,7 +34,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const location = useLocation();
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'login-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
@@ -48,7 +47,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         name="email"
         type="email"
         required
-        testId="login-email-input"
+        testIdValue="login-email-input"
       />
       <TextField
         value={values.password}
@@ -65,7 +64,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
           </IconButton>
         }
         required
-        testId="login-password-input"
+        testIdValue="login-password-input"
       />
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Link className={styles.link} to={addQueryParam(location, 'u', 'forgot-password')}>

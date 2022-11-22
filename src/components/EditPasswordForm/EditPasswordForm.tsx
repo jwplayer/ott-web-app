@@ -1,20 +1,20 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { FormErrors } from '../../../types/form';
-import type { EditPasswordFormData } from '../../../types/account';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import IconButton from '../IconButton/IconButton';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import useToggle from '../../hooks/useToggle';
-import PasswordStrength from '../PasswordStrength/PasswordStrength';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './EditPasswordForm.module.scss';
+
+import type { FormErrors } from '#types/form';
+import type { EditPasswordFormData } from '#types/account';
+import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import TextField from '#src/components/TextField/TextField';
+import Button from '#src/components/Button/Button';
+import IconButton from '#src/components/IconButton/IconButton';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import useToggle from '#src/hooks/useToggle';
+import PasswordStrength from '#src/components/PasswordStrength/PasswordStrength';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import { testId } from '#src/utils/common';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
@@ -31,7 +31,7 @@ const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, onBlur, value, 
   const [viewPassword, toggleViewPassword] = useToggle();
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'forgot-password-form' : undefined} noValidate className={styles.forgotPasswordForm}>
+    <form onSubmit={onSubmit} data-testid={testId('forgot-password-form')} noValidate className={styles.forgotPasswordForm}>
       <h2 className={styles.title}>{t('reset.password_reset')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField

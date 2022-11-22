@@ -72,3 +72,7 @@ export function getOverrideIP() {
     ?.split('=')[1]
     .trim();
 }
+
+export function testId(value: string | undefined) {
+  return IS_DEV_BUILD || IS_TEST_MODE ? value : undefined;
+}
