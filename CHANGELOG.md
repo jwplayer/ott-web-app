@@ -1,3 +1,12 @@
+# [2.7.0](https://github.com/jwplayer/ott-web-app/compare/v2.6.2...v2.7.0) (2022-11-17)
+
+
+### Features
+
+* add demo dialog when no config ID ([c6de430](https://github.com/jwplayer/ott-web-app/commit/c6de430412332bd722e8bab263cd755db4a8bfbc))
+
+
+
 ## [2.6.2](https://github.com/jwplayer/ott-web-app/compare/v2.6.1...v2.6.2) (2022-10-12)
 
 
