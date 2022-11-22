@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import useOpaqueId from '../../hooks/useOpaqueId';
-import HelperText from '../HelperText/HelperText';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './TextField.module.scss';
+
+import HelperText from '#components/HelperText/HelperText';
+import { IS_DEV_BUILD } from '#src/utils/common';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
   className?: string;

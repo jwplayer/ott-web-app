@@ -1,11 +1,10 @@
 import merge from 'lodash.merge';
 
-import { calculateContrastColor } from '../utils/common';
-import { getConfigLocation } from '../utils/configOverride';
-import loadConfig, { validateConfig } from '../services/config.service';
-import { addScript } from '../utils/dom';
-import { useConfigStore } from '../stores/ConfigStore';
-
+import { calculateContrastColor } from '#src/utils/common';
+import { getConfigLocation } from '#src/utils/configOverride';
+import loadConfig, { validateConfig } from '#src/services/config.service';
+import { addScript } from '#src/utils/dom';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import type { AccessModel, Config, Styling } from '#types/Config';
 
 const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;

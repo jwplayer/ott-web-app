@@ -39,7 +39,8 @@ export function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, t
   I.click('Start watching');
 
   I.waitForLoaderDone();
-  I.see('Annual subscription');
+  // It takes a few seconds for transactions to load
+  I.waitForText('Annual subscription', 10);
   I.see(yearlyPrice);
   I.see('/year');
   I.see('Next billing date is on ' + formatDate(billingDate));

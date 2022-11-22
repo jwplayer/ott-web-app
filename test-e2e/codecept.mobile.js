@@ -1,4 +1,5 @@
 require('ts-node/register');
+require('tsconfig-paths/register');
 
 const { devices } = require('playwright');
 const { setHeadlessWhen } = require('@codeceptjs/configure');

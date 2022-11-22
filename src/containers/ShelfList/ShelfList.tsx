@@ -11,14 +11,14 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { PersonalShelf } from '#src/enum/PersonalShelf';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
-import ShelfComponent from '#src/components/Shelf/Shelf';
+import ShelfComponent from '#components/Shelf/Shelf';
 import usePlaylist from '#src/hooks/usePlaylist';
 import { mediaURL, slugify } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
-import InfiniteScrollLoader from '#src/components/InfiniteScrollLoader/InfiniteScrollLoader';
+import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;

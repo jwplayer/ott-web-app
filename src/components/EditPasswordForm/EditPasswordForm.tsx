@@ -1,20 +1,20 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { FormErrors } from '../../../types/form';
-import type { EditPasswordFormData } from '../../../types/account';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import IconButton from '../IconButton/IconButton';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import useToggle from '../../hooks/useToggle';
-import PasswordStrength from '../PasswordStrength/PasswordStrength';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './EditPasswordForm.module.scss';
+
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
+import IconButton from '#components/IconButton/IconButton';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import { IS_DEV_BUILD } from '#src/utils/common';
+import useToggle from '#src/hooks/useToggle';
+import type { EditPasswordFormData } from '#types/account';
+import type { FormErrors } from '#types/form';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;

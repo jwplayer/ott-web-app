@@ -2,8 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createBrowserRouter, createHashRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
-import Root from '#src/components/Root/Root';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
+import Root from '#components/Root/Root';
 import Layout from '#src/containers/Layout/Layout';
 import About from '#src/pages/About/About';
 import Home from '#src/pages/Home/Home';

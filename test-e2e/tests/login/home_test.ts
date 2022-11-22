@@ -1,6 +1,6 @@
-import constants from '../../utils/constants';
-import { testConfigs } from '../../../test/constants';
-import { LoginContext } from '../../utils/password_utils';
+import constants from '#utils/constants';
+import { testConfigs } from '#test/constants';
+import { LoginContext } from '#utils/password_utils';
 
 let loginContext: LoginContext;
 

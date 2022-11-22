@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { PersonalShelf } from '../../enum/PersonalShelf';
-import PlaylistContainer from '../../containers/PlaylistContainer/PlaylistContainer';
-
 import Favorites from './Favorites';
 
+import { PersonalShelf } from '#src/enum/PersonalShelf';
+import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { renderWithRouter } from '#test/testUtils';
 
 describe('<Favorites>', () => {

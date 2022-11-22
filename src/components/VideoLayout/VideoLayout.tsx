@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import CardGrid from '../CardGrid/CardGrid';
-import Filter from '../Filter/Filter';
-import VideoDetails from '../VideoDetails/VideoDetails';
-import VideoDetailsInline from '../VideoDetailsInline/VideoDetailsInline';
-import VideoList from '../VideoList/VideoList';
-
 import styles from './VideoLayout.module.scss';
 
+import CardGrid from '#components/CardGrid/CardGrid';
+import Filter from '#components/Filter/Filter';
+import VideoDetails from '#components/VideoDetails/VideoDetails';
+import VideoDetailsInline from '#components/VideoDetailsInline/VideoDetailsInline';
+import VideoList from '#components/VideoList/VideoList';
 import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';
 import type { AccessModel } from '#types/Config';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';

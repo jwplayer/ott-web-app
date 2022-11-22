@@ -2,19 +2,18 @@ import React from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
-import useToggle from '../../hooks/useToggle';
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import Link from '../Link/Link';
-import IconButton from '../IconButton/IconButton';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './LoginForm.module.scss';
 
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
+import Link from '#components/Link/Link';
+import IconButton from '#components/IconButton/IconButton';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import { IS_DEV_BUILD } from '#src/utils/common';
+import useToggle from '#src/hooks/useToggle';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { LoginFormData } from '#types/account';

@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './DemoConfigDialog.module.scss';
 
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
-import TextField from '#src/components/TextField/TextField';
-import Button from '#src/components/Button/Button';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
 import { addConfigQueryParam, clearStoredConfig, getConfigLocation } from '#src/utils/configOverride';
-import Link from '#src/components/Link/Link';
-import ConfirmationDialog from '#src/components/ConfirmationDialog/ConfirmationDialog';
+import Link from '#components/Link/Link';
+import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
 
 const fallbackConfig = import.meta.env.APP_DEMO_DEFAULT_CONFIG_ID;
 

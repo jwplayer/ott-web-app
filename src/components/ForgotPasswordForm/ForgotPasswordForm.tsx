@@ -1,14 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../Button/Button';
-import TextField from '../TextField/TextField';
-import type { FormErrors } from '../../../types/form';
-import type { ForgotPasswordFormData } from '../../../types/account';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './ForgotPasswordForm.module.scss';
+
+import Button from '#components/Button/Button';
+import TextField from '#components/TextField/TextField';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import { IS_DEV_BUILD } from '#src/utils/common';
+import type { ForgotPasswordFormData } from '#types/account';
+import type { FormErrors } from '#types/form';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;

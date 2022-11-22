@@ -1,7 +1,7 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
-@use '../../styles/mixins/responsive';
-@use '../../styles/mixins/typography';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/mixins/typography';
 
 .video {
   color: var(--primary-color);

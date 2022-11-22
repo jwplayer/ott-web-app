@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../Button/Button';
-
 import styles from './PaymentFailed.module.scss';
+
+import Button from '#components/Button/Button';
 
 type Props = {
   type: 'error' | 'cancelled';

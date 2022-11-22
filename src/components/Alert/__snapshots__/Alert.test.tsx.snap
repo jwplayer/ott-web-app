@@ -1,27 +1,3 @@
 // Vitest Snapshot v1
 
-exports[`<Alert> > renders and matches snapshot 1`] = `
-<div>
-  <div
-    open=""
-  >
-    <h2
-      class="_title_fb2b94"
-    >
-      alert.title
-    </h2>
-    <p
-      class="_body_fb2b94"
-    >
-      Body
-    </p>
-    <button
-      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
-    >
-      <span>
-        alert.close
-      </span>
-    </button>
-  </div>
-</div>
-`;
+exports[`<Alert> > renders and matches snapshot 1`] = `<div />`;

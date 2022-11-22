@@ -1,8 +1,7 @@
-import { VideoProgressMinMax } from '../config';
-import { PersonalShelf } from '../enum/PersonalShelf';
-
 import { createStore } from './utils';
 
+import { VideoProgressMinMax } from '#src/config';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
 import type { WatchHistoryItem } from '#types/watchHistory';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 

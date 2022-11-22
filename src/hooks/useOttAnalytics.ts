@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { PlaylistItem } from '../../types/playlist';
-
+import type { PlaylistItem } from '#types/playlist';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {

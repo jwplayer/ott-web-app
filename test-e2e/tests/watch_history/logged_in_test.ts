@@ -1,7 +1,7 @@
-import constants, { makeShelfXpath, ShelfId } from '../../utils/constants';
-import { checkElapsed, checkProgress, playVideo } from '../../utils/watch_history';
-import { LoginContext } from '../../utils/password_utils';
-import { testConfigs } from '../../../test/constants';
+import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
+import { LoginContext } from '#utils/password_utils';
+import { testConfigs } from '#test/constants';
 
 const videoLength = 596;
 const videoTitle = constants.bigBuckBunnyTitle;

@@ -1,6 +1,6 @@
-import type { AccessModel } from '../../types/Config';
-import type { MediaOffer } from '../../types/media';
-import type { PlaylistItem } from '../../types/playlist';
+import type { AccessModel } from '#types/Config';
+import type { MediaOffer } from '#types/media';
+import type { PlaylistItem } from '#types/playlist';
 
 /**
  * The appearance of the lock icon, depending on the access model

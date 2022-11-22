@@ -1,11 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import IconButton from '../IconButton/IconButton';
-import SearchIcon from '../../icons/Search';
-import CancelIcon from '../../icons/Cancel';
-
 import styles from './SearchBar.module.scss';
+
+import IconButton from '#components/IconButton/IconButton';
+import SearchIcon from '#src/icons/Search';
+import CancelIcon from '#src/icons/Cancel';
 
 export type Props = {
   query?: string;

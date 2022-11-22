@@ -4,13 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
-import useOffers from '../../../hooks/useOffers';
-
+import useOffers from '#src/hooks/useOffers';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import ChooseOfferForm from '#src/components/ChooseOfferForm/ChooseOfferForm';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import ChooseOfferForm from '#components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import type { ChooseOfferFormData } from '#types/account';
 

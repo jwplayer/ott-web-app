@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 
-import constants, { ShelfId } from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import constants, { ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 Feature('series').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 

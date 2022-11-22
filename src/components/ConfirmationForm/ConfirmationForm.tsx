@@ -2,10 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 
-import Button from '../Button/Button';
-
 import styles from './ConfirmationForm.module.scss';
 
+import Button from '#components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
 
 type Props = {
