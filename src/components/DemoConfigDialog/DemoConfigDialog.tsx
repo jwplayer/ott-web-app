@@ -28,7 +28,7 @@ const DemoConfigDialog = ({ configLocation = getConfigLocation() }: Props) => {
   if (configLocation) {
     return (
       <div className={styles.note}>
-        <div>{t('currently_previewing_config', { configLocation })}</div>
+        <div>{t('currently_previewing_config', { configSource: configLocation })}</div>
         <Link onClick={clearConfig}>{t('click_to_unselect_config')}</Link>
       </div>
     );
