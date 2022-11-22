@@ -5,18 +5,18 @@ import DOMPurify from 'dompurify';
 
 import styles from './RegistrationForm.module.scss';
 
-import useToggle from '#src/hooks/useToggle';
-import TextField from '#src/components/TextField/TextField';
-import Button from '#src/components/Button/Button';
-import IconButton from '#src/components/IconButton/IconButton';
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
+import IconButton from '#components/IconButton/IconButton';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
-import PasswordStrength from '#src/components/PasswordStrength/PasswordStrength';
-import Checkbox from '#src/components/Checkbox/Checkbox';
-import FormFeedback from '#src/components/FormFeedback/FormFeedback';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import Link from '#src/components/Link/Link';
+import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
+import Checkbox from '#components/Checkbox/Checkbox';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Link from '#components/Link/Link';
 import { testId } from '#src/utils/common';
+import useToggle from '#src/hooks/useToggle';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { RegistrationFormData, Consent } from '#types/account';

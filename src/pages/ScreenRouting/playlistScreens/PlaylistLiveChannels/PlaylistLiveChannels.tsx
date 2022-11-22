@@ -7,20 +7,20 @@ import { differenceInSeconds, format } from 'date-fns';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
-import VideoLayout from '#src/components/VideoLayout/VideoLayout';
-import Epg from '#src/components/Epg/Epg';
+import VideoLayout from '#components/VideoLayout/VideoLayout';
+import Epg from '#components/Epg/Epg';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useLiveChannels from '#src/hooks/useLiveChannels';
-import ShareButton from '#src/components/ShareButton/ShareButton';
+import ShareButton from '#components/ShareButton/ShareButton';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { addQueryParams, formatDurationTag, liveChannelsURL } from '#src/utils/formatting';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import Play from '#src/icons/Play';
 import useLiveProgram from '#src/hooks/useLiveProgram';
-import Tag from '#src/components/Tag/Tag';
+import Tag from '#components/Tag/Tag';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 import type { ScreenComponent } from '#types/screens';
 import type { Playlist } from '#types/playlist';

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './TextField.module.scss';
 
-import useOpaqueId from '#src/hooks/useOpaqueId';
-import HelperText from '#src/components/HelperText/HelperText';
+import HelperText from '#components/HelperText/HelperText';
 import { testId } from '#src/utils/common';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
   className?: string;

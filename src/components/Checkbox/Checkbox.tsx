@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import useOpaqueId from '../../hooks/useOpaqueId';
-import HelperText from '../HelperText/HelperText';
-
 import styles from './Checkbox.module.scss';
+
+import HelperText from '#components/HelperText/HelperText';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
   label?: string | JSX.Element;

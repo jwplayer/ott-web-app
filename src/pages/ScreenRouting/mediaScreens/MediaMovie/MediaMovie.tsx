@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import VideoLayout from '#src/components/VideoLayout/VideoLayout';
+import VideoLayout from '#components/VideoLayout/VideoLayout';
 import { isLocked } from '#src/utils/entitlements';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { formatVideoMetaString, mediaURL } from '#src/utils/formatting';
@@ -19,10 +19,10 @@ import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchi
 import Cinema from '#src/containers/Cinema/Cinema';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
-import ShareButton from '#src/components/ShareButton/ShareButton';
+import ShareButton from '#components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import PlayTrailer from '#src/icons/PlayTrailer';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';

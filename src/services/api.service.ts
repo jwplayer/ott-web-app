@@ -1,6 +1,5 @@
-import { addQueryParams } from '../utils/formatting';
-import { getDataOrThrow } from '../utils/api';
-
+import { addQueryParams } from '#src/utils/formatting';
+import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 import type { GetSeriesParams, Series } from '#types/series';

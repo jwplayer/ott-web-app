@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 
-import Hero from '#src/components/Hero/Hero';
+import Hero from '#components/Hero/Hero';
 import type { Content } from '#types/Config';
 import ShelfList from '#src/containers/ShelfList/ShelfList';
 import type { ScreenComponent } from '#types/screens';

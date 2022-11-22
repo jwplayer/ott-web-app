@@ -7,8 +7,8 @@ import styles from './PlaylistGrid.module.scss';
 
 import { mediaURL } from '#src/utils/formatting';
 import { filterPlaylist, getFiltersFromConfig } from '#src/utils/collection';
-import CardGrid from '#src/components/CardGrid/CardGrid';
-import Filter from '#src/components/Filter/Filter';
+import CardGrid from '#components/CardGrid/CardGrid';
+import Filter from '#components/Filter/Filter';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';

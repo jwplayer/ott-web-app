@@ -3,11 +3,11 @@ import classNames from 'classnames';
 
 import styles from './VideoLayout.module.scss';
 
-import CardGrid from '#src/components/CardGrid/CardGrid';
-import Filter from '#src/components/Filter/Filter';
-import VideoDetails from '#src/components/VideoDetails/VideoDetails';
-import VideoDetailsInline from '#src/components/VideoDetailsInline/VideoDetailsInline';
-import VideoList from '#src/components/VideoList/VideoList';
+import CardGrid from '#components/CardGrid/CardGrid';
+import Filter from '#components/Filter/Filter';
+import VideoDetails from '#components/VideoDetails/VideoDetails';
+import VideoDetailsInline from '#components/VideoDetailsInline/VideoDetailsInline';
+import VideoList from '#components/VideoList/VideoList';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { testId } from '#src/utils/common';
 import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';

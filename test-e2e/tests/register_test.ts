@@ -1,6 +1,6 @@
-import constants from '../utils/constants';
-import passwordUtils from '../utils/password_utils';
-import { testConfigs } from '../../test/constants';
+import constants from '#utils/constants';
+import passwordUtils from '#utils/password_utils';
+import { testConfigs } from '#test/constants';
 
 Feature('register').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 

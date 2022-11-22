@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './PersonalDetailsForm.module.scss';
 
-import TextField from '#src/components/TextField/TextField';
-import Button from '#src/components/Button/Button';
-import Dropdown from '#src/components/Dropdown/Dropdown';
-import Checkbox from '#src/components/Checkbox/Checkbox';
-import Radio from '#src/components/Radio/Radio';
-import DateField from '#src/components/DateField/DateField';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
+import Dropdown from '#components/Dropdown/Dropdown';
+import Checkbox from '#components/Checkbox/Checkbox';
+import Radio from '#components/Radio/Radio';
+import DateField from '#components/DateField/DateField';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
 import { testId } from '#src/utils/common';
 import type { FormErrors } from '#types/form';
 import type { PersonalDetailsFormData, CleengCaptureField, CleengCaptureQuestionField } from '#types/account';

@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import Spinner from '../Spinner/Spinner';
-
 import styles from './LoadingOverlay.module.scss';
+
+import Spinner from '#components/Spinner/Spinner';
 
 type Props = {
   transparentBackground?: boolean;

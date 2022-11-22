@@ -1,5 +1,5 @@
-import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 Feature('home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 

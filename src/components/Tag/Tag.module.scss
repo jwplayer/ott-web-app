@@ -1,6 +1,6 @@
-@use '../../styles/mixins/responsive';
-@use '../../styles/theme';
-@use '../../styles/variables';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/theme';
+@use 'src/styles/variables';
 
 .tag {
   display: inline-flex;

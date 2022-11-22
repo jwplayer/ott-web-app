@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import styles from './VideoListItem.module.scss';
 
 import type { ImageData } from '#types/playlist';
-import Image from '#src/components/Image/Image';
+import Image from '#components/Image/Image';
 import Lock from '#src/icons/Lock';
-import Tag from '#src/components/Tag/Tag';
+import Tag from '#components/Tag/Tag';
 import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
 
 type VideoListItemProps = {

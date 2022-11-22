@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 
-import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const videoTitle = 'Tears of Steel';
 

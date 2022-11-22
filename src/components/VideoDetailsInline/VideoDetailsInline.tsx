@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './VideoDetailsInline.module.scss';
 
-import Tag from '#src/components/Tag/Tag';
-import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
+import Tag from '#components/Tag/Tag';
+import CollapsibleText from '#components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { testId } from '#src/utils/common';
 

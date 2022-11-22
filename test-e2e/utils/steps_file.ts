@@ -1,9 +1,8 @@
 import * as assert from 'assert';
 
-import { TestConfig } from '../../test/constants';
-
-import constants, { makeShelfXpath, ShelfId } from './constants';
-import passwordUtils, { LoginContext } from './password_utils';
+import { TestConfig } from '#test/constants';
+import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import passwordUtils, { LoginContext } from '#utils/password_utils';
 
 const configFileQueryKey = 'app-config';
 const loaderElement = '[class*=_loadingOverlay]';

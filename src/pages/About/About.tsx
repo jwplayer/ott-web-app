@@ -1,8 +1,8 @@
 import React from 'react';
 
-import MarkdownComponent from '../../components/MarkdownComponent/MarkdownComponent';
-
 import styles from './About.module.scss';
+
+import MarkdownComponent from '#components/MarkdownComponent/MarkdownComponent';
 
 const About = () => {
   const markdownPage = `# About JW OTT Webapp

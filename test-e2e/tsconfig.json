@@ -17,6 +17,15 @@
     "strictNullChecks": true,
     "types": ["codeceptjs", "node"],
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "../test-e2e",
+    "paths": {
+      "#test/*": [
+        "../test/*"
+      ],
+      "#utils/*": [
+        "./utils/*"
+      ],
+    }
   },
 }

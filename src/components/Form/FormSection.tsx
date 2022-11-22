@@ -1,12 +1,12 @@
 import React, { ReactElement, ReactNode, useCallback, useContext } from 'react';
 
-import Button from '../Button/Button';
-import type { GenericFormValues } from '../../../types/form';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import useOpaqueId from '../../hooks/useOpaqueId';
-
 import { FormContext } from './Form';
 import styles from './Form.module.scss';
+
+import Button from '#components/Button/Button';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import useOpaqueId from '#src/hooks/useOpaqueId';
+import type { GenericFormValues } from '#types/form';
 
 export interface FormSectionContentArgs<T extends GenericFormValues, TErrors> {
   values: T;

@@ -3,8 +3,8 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './DynamicBlur.module.scss';
 
 import { debounce } from '#src/utils/common';
-import Fade from '#src/components/Animation/Fade/Fade';
-import Image from '#src/components/Image/Image';
+import Fade from '#components/Animation/Fade/Fade';
+import Image from '#components/Image/Image';
 import type { ImageData } from '#types/playlist';
 
 type Props = {

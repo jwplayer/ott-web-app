@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Modal from '../Modal/Modal';
-import Slide from '../Animation/Slide/Slide';
-import ModalCloseButton from '../ModalCloseButton/ModalCloseButton';
-
 import styles from './Dialog.module.scss';
+
+import Modal from '#components/Modal/Modal';
+import Slide from '#components/Animation/Slide/Slide';
+import ModalCloseButton from '#components/ModalCloseButton/ModalCloseButton';
 
 type Props = {
   open: boolean;

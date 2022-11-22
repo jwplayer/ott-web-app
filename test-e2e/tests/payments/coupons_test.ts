@@ -1,6 +1,6 @@
-import { LoginContext } from '../../utils/password_utils';
-import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '../../utils/payments';
-import { testConfigs } from '../../../test/constants';
+import { LoginContext } from '#utils/password_utils';
+import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '#utils/payments';
+import { testConfigs } from '#test/constants';
 
 let couponLoginContext: LoginContext;
 

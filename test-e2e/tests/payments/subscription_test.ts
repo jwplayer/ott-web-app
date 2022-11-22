@@ -1,7 +1,7 @@
-import { LoginContext } from '../../utils/password_utils';
-import constants from '../../utils/constants';
-import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '../../utils/payments';
-import { testConfigs } from '../../../test/constants';
+import { LoginContext } from '#utils/password_utils';
+import constants from '#utils/constants';
+import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '#utils/payments';
+import { testConfigs } from '#test/constants';
 
 let paidLoginContext: LoginContext;
 

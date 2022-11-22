@@ -4,9 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 
-import RegistrationForm from '../../../components/RegistrationForm/RegistrationForm';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
 import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';

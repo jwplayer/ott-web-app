@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { addMediaQueryListChangeListener, removeMediaQueryListChangeListener } from '../utils/matchMedia';
+import { addMediaQueryListChangeListener, removeMediaQueryListChangeListener } from '#src/utils/matchMedia';
 
 const XS_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (max-width: 479px)'); // mobile
 const SM_MATCH_MEDIA: MediaQueryList = matchMedia('screen and (min-width: 480px) and (max-width: 767px)'); // tablet

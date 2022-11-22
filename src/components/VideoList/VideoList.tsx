@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import styles from './VideoList.module.scss';
 
-import VideoListItem from '#src/components/VideoListItem/VideoListItem';
+import VideoListItem from '#components/VideoListItem/VideoListItem';
 import { isLocked } from '#src/utils/entitlements';
 import { testId } from '#src/utils/common';
 import type { AccessModel } from '#types/Config';

@@ -1,7 +1,6 @@
-import Dropdown from '../Dropdown/Dropdown';
-
 import styles from './DevConfigSelector.module.scss';
 
+import Dropdown from '#components/Dropdown/Dropdown';
 import { configQueryKey, getConfigLocation } from '#src/utils/configOverride';
 import { jwDevEnvConfigs, testConfigs } from '#test/constants';
 

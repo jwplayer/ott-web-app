@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './Hero.module.scss';
 
-import Image from '#src/components/Image/Image';
+import Image from '#components/Image/Image';
 import type { ImageData } from '#types/playlist';
 
 type Props = {

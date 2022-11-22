@@ -2,14 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
-import Dialog from '../../components/Dialog/Dialog';
-import useQueryParam from '../../hooks/useQueryParam';
-import PaymentFailed from '../../components/PaymentFailed/PaymentFailed';
-import Welcome from '../../components/Welcome/Welcome';
-import { useAccountStore } from '../../stores/AccountStore';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import { useConfigStore } from '../../stores/ConfigStore';
-
 import styles from './AccountModal.module.scss';
 import Login from './forms/Login';
 import Registration from './forms/Registration';
@@ -21,6 +13,13 @@ import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
 
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
+import useQueryParam from '#src/hooks/useQueryParam';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Welcome from '#components/Welcome/Welcome';
+import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
+import Dialog from '#components/Dialog/Dialog';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];

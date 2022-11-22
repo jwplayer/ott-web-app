@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { renderWithRouter } from '../../../test/testUtils';
-
 import Cinema from './Cinema';
 
+import { renderWithRouter } from '#test/testUtils';
 import type { PlaylistItem } from '#types/playlist';
 
 describe('<Cinema>', () => {

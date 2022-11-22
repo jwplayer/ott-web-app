@@ -4,17 +4,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 import DOMPurify from 'dompurify';
 
-import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import useToggle from '../../hooks/useToggle';
-import Button from '../Button/Button';
-import Form from '../Form/Form';
-import IconButton from '../IconButton/IconButton';
-import TextField from '../TextField/TextField';
-import Checkbox from '../Checkbox/Checkbox';
-import HelperText from '../HelperText/HelperText';
-
+import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import Button from '#components/Button/Button';
+import Form from '#components/Form/Form';
+import IconButton from '#components/IconButton/IconButton';
+import TextField from '#components/TextField/TextField';
+import Checkbox from '#components/Checkbox/Checkbox';
+import HelperText from '#components/HelperText/HelperText';
+import useToggle from '#src/hooks/useToggle';
 import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';

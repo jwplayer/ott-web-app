@@ -1,6 +1,6 @@
 import React, { ReactNode, CSSProperties } from 'react';
 
-import Animation, { Status } from '../Animation';
+import Animation, { Status } from '#components/Animation/Animation';
 
 type Props = {
   open?: boolean;

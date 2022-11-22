@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useUIStore } from '../stores/UIStore';
-
+import { useUIStore } from '#src/stores/UIStore';
 import useDebounce from '#src/hooks/useDebounce';
 
 const useSearchQueryUpdater = () => {
