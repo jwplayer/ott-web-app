@@ -132,3 +132,15 @@ $large-button-height: 40px;
     }
   }
 }
+
+.hidden {
+  visibility: hidden;
+}
+
+.centerAbsolute {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform: translate(-5px, -5px);
+}

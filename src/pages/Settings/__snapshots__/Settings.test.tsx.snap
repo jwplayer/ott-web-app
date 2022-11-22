@@ -1,9 +1,0 @@
-// Vitest Snapshot v1
-
-exports[`<Settings> > renders and matches snapshot 1`] = `
-<div>
-  <div>
-    <p />
-  </div>
-</div>
-`;

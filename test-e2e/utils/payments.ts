@@ -4,6 +4,7 @@ const yearlyPrice = formatPrice(50);
 
 export function goToCheckout(I: CodeceptJS.I) {
   I.amOnPage(constants.offersUrl);
+  I.waitForLoaderDone();
 
   I.click('Continue');
   I.waitForLoaderDone();
@@ -53,6 +54,8 @@ export function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, t
 
 export function cancelPlan(I: CodeceptJS.I, expirationDate: Date) {
   I.amOnPage(constants.paymentsUrl);
+  I.waitForLoaderDone();
+
   I.click('Cancel subscription');
   I.see('We are sorry to see you go.');
   I.see('You will be unsubscribed from your current plan by clicking the unsubscribe button below.');
@@ -74,6 +77,8 @@ export function cancelPlan(I: CodeceptJS.I, expirationDate: Date) {
 
 export function renewPlan(I: CodeceptJS.I, billingDate: Date) {
   I.amOnPage(constants.paymentsUrl);
+  I.waitForLoaderDone();
+
   I.click('Renew subscription');
   I.see('Renew your subscription');
   I.see('By clicking the button below you can renew your plan.');
