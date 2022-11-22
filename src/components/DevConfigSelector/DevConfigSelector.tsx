@@ -13,7 +13,10 @@ interface Props {
 }
 
 const configs = import.meta.env.MODE === 'jwdev' ? jwDevEnvConfigs : testConfigs;
-const configOptions: { value: string; label: string }[] = Object.values(configs).map(({ id, label }) => ({ value: id, label: `${id} - ${label}` }));
+const configOptions: { value: string; label: string }[] = [
+  { label: 'Select an App Config', value: '' },
+  ...Object.values(configs).map(({ id, label }) => ({ value: id, label: `${id} - ${label}` })),
+];
 
 const DevConfigSelector = ({ selectedConfig }: Props) => {
   const configNavigate = getConfigNavigateCallback(useNavigate());

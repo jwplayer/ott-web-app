@@ -1,6 +1,7 @@
-import React, { MouseEventHandler, useRef, useState } from 'react';
+import React, { ChangeEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import type { UseQueryResult } from 'react-query';
 
 import styles from './DemoConfigDialog.module.scss';
 
@@ -10,67 +11,144 @@ import Button from '#src/components/Button/Button';
 import { getConfigNavigateCallback } from '#src/utils/configOverride';
 import Link from '#src/components/Link/Link';
 import ConfirmationDialog from '#src/components/ConfirmationDialog/ConfirmationDialog';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import type { Config } from '#types/Config';
 
 const fallbackConfig = import.meta.env.APP_DEMO_FALLBACK_CONFIG_ID;
 
 interface Props {
-  isConfigSuccess: boolean;
-  selectedConfig: string | undefined;
+  selectedConfigSource: string | undefined;
+  configQuery: UseQueryResult<Config>;
 }
 
-const DemoConfigDialog = ({ isConfigSuccess, selectedConfig }: Props) => {
+interface State {
+  configSource: string | undefined;
+  error: string | undefined;
+  showDialog: boolean;
+  loaded: boolean;
+}
+
+const initialState: State = {
+  configSource: undefined,
+  error: undefined,
+  showDialog: false,
+  loaded: false,
+};
+
+const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
   const { t } = useTranslation('demo');
-  const [showDialog, setShowDialog] = useState(false);
   const navigate = useNavigate();
-  const configNavigate = getConfigNavigateCallback(navigate);
+  const navigateCallback = getConfigNavigateCallback(navigate);
 
-  const ref = useRef<HTMLInputElement>(null);
+  const configNavigate = async (configSource: string | undefined) => {
+    setState((s) => ({ ...s, configSource: configSource, error: undefined }));
 
-  const clearConfig = () => {
-    configNavigate('');
+    if (!configSource) {
+      setState((s) => ({ ...s, error: t('enter_a_value') }));
+    }
+    // If trying to fetch the same config again, use refetch since a query param change won't work
+    else if (configSource === selectedConfigSource) {
+      await configQuery.refetch();
+    }
+    // Get a new config by triggering a query param change
+    else {
+      navigateCallback(configSource);
+    }
   };
 
-  const submitClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const [state, setState] = useState<State>(initialState);
+
+  useEffect(() => {
+    // Don't grab values from props when config source is unset or still loading
+    if (!selectedConfigSource || configQuery.isLoading) {
+      return;
+    }
+
+    // Initialize the config source if it's not yet set (this happens at first load)
+    setState((s) => ({ ...s, configSource: s.configSource ?? selectedConfigSource }));
+
+    // If there's an error after loading is done, grab it to display it to the user
+    if (configQuery.error) {
+      setState((s) => ({ ...s, showDialog: false, error: (configQuery.error as Error)?.message }));
+    }
+  }, [selectedConfigSource, configQuery.error, configQuery.isLoading]);
+
+  const clearConfig = () => {
+    setState(initialState);
+    navigateCallback('');
+  };
+
+  const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setState((s) => ({ ...s, configSource: event.target.value, error: undefined }));
+  };
+
+  const submitClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
 
-    if (ref.current?.value === selectedConfig) {
-      navigate(0);
-    } else if (ref.current?.value) {
-      configNavigate(ref.current.value);
-    }
+    await configNavigate(state.configSource);
   };
 
   const cancelConfigClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
 
     if (fallbackConfig) {
-      setShowDialog(true);
+      setState({ configSource: '', error: undefined, loaded: false, showDialog: true });
     }
   };
 
-  const confirmDemoClick = () => {
-    setShowDialog(false);
-    configNavigate(fallbackConfig);
+  const confirmDemoClick = async () => {
+    await configNavigate(fallbackConfig);
   };
 
-  const cancelDemoClick = () => setShowDialog(false);
+  const cancelDemoClick = () => setState((s) => ({ ...s, showDialog: false }));
+
+  // If the config loads, reset the demo ui state
+  useEffect(() => {
+    if (configQuery.isSuccess) {
+      setState(initialState);
+    }
+  }, [setState, configQuery.isSuccess]);
+
+  // If someone links to the app with a config query,
+  // we want to show the normal spinner instead of the dialog while trying to load the first time
+  // Config is only undefined when it's the first load attempt.
+  if (configQuery.isLoading && state.configSource === undefined) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <>
-      {isConfigSuccess && (
+      {configQuery.isSuccess && (
         <div className={styles.note}>
-          <div>{t('currently_previewing_config', { selectedConfig })}</div>
+          <div>{t('currently_previewing_config', { configSource: selectedConfigSource })}</div>
           <Link onClick={clearConfig}>{t('click_to_unselect_config')}</Link>
         </div>
       )}
-      {!isConfigSuccess && (
+      {!configQuery.isSuccess && (
         <div className={styles.configModal}>
           <ErrorPage title={t('app_config_not_found')} helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'}>
-            <form>
-              <TextField required placeholder={t('please_enter_config_id')} inputRef={ref} />
+            <form method={'GET'} target={'/'}>
+              <TextField
+                required
+                disabled={configQuery.isLoading}
+                className={styles.maxWidth}
+                value={state.configSource || ''}
+                placeholder={t('please_enter_config_id')}
+                name={'app-config'}
+                autoCapitalize={'none'}
+                error={!!state.error}
+                helperText={state.error}
+                onChange={onChange}
+              />
               <div className={styles.controls}>
-                <Button label={t('submit_config_id')} type={'submit'} onClick={submitClick} />
-                {fallbackConfig && <Button label={t('cancel_config_id')} onClick={cancelConfigClick} />}
+                <Button
+                  label={t('submit_config_id')}
+                  type={'submit'}
+                  onClick={submitClick}
+                  disabled={configQuery.isLoading}
+                  busy={configQuery.isLoading && !state.showDialog}
+                />
+                {fallbackConfig && <Button label={t('cancel_config_id')} onClick={cancelConfigClick} disabled={configQuery.isLoading} />}
               </div>
             </form>
             <p>{t('use_the_jwp_dashboard')}</p>
@@ -79,11 +157,12 @@ const DemoConfigDialog = ({ isConfigSuccess, selectedConfig }: Props) => {
         </div>
       )}
       <ConfirmationDialog
-        open={showDialog}
+        open={state.showDialog}
         title={t('view_generic_demo')}
         body={t('viewing_config_demo')}
         onConfirm={confirmDemoClick}
         onClose={cancelDemoClick}
+        busy={configQuery.isLoading}
       />
     </>
   );

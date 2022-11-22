@@ -2,11 +2,12 @@
   "app_config_not_found": "Invalid or Missing App Config",
   "cancel_config_id": "Cancel",
   "click_to_unselect_config": "(click here to unselect this config)",
-  "currently_previewing_config": "You are currently previewing config: '{{configLocation}}'",
+  "currently_previewing_config": "You are currently previewing config: '{{configSource}}'",
+  "demo_note": "Note: The chosen app config will be temporarily stored in this browser only. Close the tab or use the link at the bottom of the main page to clear the setting and return to this dialog.",
+  "enter_a_value": "Please enter an App Config ID",
   "please_enter_config_id": "Please enter an App Config ID from your JW Account",
   "submit_config_id": "Submit",
   "use_the_jwp_dashboard": "Don't have a config? Use the JWP Dashboard to create an App Config or click Cancel to view a generic demo.",
-  "demo_note": "Note: The chosen config setting will be temporarily stored in this browser only. Close the tab or use the link at the bottom of the content page to clear the setting and return to this dialog.",
   "view_generic_demo": "View Generic Demo?",
   "viewing_config_demo": "This will redirect you to a generic demo app. Are you sure you want to continue?"
 }

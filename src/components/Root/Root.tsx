@@ -10,7 +10,7 @@ import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
 import DemoConfigDialog from '#src/components/DemoConfigDialog/DemoConfigDialog';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import DevConfigSelector from '#src/components/DevConfigSelector/DevConfigSelector';
-import { getConfigSource } from '#src/utils/configOverride';
+import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
 
@@ -24,25 +24,28 @@ const Root: FC<Props> = ({ children }: Props) => {
   const settingsQuery = useQuery('settings-init', initSettings, {
     enabled: true,
     retry: 1,
+    refetchInterval: false,
   });
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialSearch = searchParams.toString();
+
   const configSource = useMemo(() => getConfigSource(searchParams, settingsQuery.data), [searchParams, settingsQuery.data]);
 
-  // If the search params change as a side effect of the above call, set them
+  // Update the query string to maintain the right params
   useEffect(() => {
-    if (initialSearch !== searchParams.toString()) {
+    if (settingsQuery.data && cleanupQueryParams(searchParams, settingsQuery.data, configSource)) {
       setSearchParams(searchParams, { replace: true });
     }
-  }, [initialSearch, searchParams, setSearchParams]);
+  }, [configSource, searchParams, setSearchParams, settingsQuery.data]);
 
   const configQuery = useQuery('config-init-' + configSource, async () => await loadAndValidateConfig(configSource), {
     enabled: settingsQuery.isSuccess,
-    retry: 1,
+    retry: configSource ? 1 : 0,
+    refetchInterval: false,
   });
 
-  if (settingsQuery.isLoading || configQuery.isLoading) {
+  // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
+  if (settingsQuery.isLoading || (!IS_DEMO_MODE && configQuery.isLoading)) {
     return <LoadingOverlay />;
   }
 
@@ -59,7 +62,8 @@ const Root: FC<Props> = ({ children }: Props) => {
 
   return (
     <>
-      {!configQuery.isError && children}
+      {!configQuery.isError && !configQuery.isLoading && children}
+      {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
       {configQuery.isError && !IS_DEMO_MODE && (
         <ErrorPage
           title={t('config_invalid')}
@@ -68,7 +72,7 @@ const Root: FC<Props> = ({ children }: Props) => {
           helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/configuration.md'}
         />
       )}
-      {IS_DEMO_MODE && <DemoConfigDialog isConfigSuccess={configQuery.isSuccess} selectedConfig={configSource} />}
+      {IS_DEMO_MODE && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
       <AccountModal />
       {/* Config select control to improve testing experience */}
       {IS_DEV_BUILD && <DevConfigSelector selectedConfig={configSource} />}
