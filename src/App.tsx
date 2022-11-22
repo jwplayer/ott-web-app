@@ -3,7 +3,7 @@ import { getI18n, I18nextProvider } from 'react-i18next';
 
 import type { Config } from '#types/Config';
 import Router from '#src/containers/Router/Router';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import QueryProvider from '#src/providers/QueryProvider';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeAccount } from '#src/stores/AccountController';

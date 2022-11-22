@@ -1,7 +1,6 @@
-import { addQueryParams } from '../utils/formatting';
-
 import { patch, get } from './cleeng.service';
 
+import { addQueryParams } from '#src/utils/formatting';
 import type { GetPaymentDetails, GetSubscriptions, GetTransactions, UpdateSubscription } from '#types/subscription';
 
 export const getSubscriptions: GetSubscriptions = async (payload, sandbox, jwt) => {

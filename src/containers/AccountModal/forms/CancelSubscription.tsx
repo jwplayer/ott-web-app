@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 
-import CancelSubscriptionForm from '../../../components/CancelSubscriptionForm/CancelSubscriptionForm';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { useAccountStore } from '../../../stores/AccountStore';
-import SubscriptionCancelled from '../../../components/SubscriptionCancelled/SubscriptionCancelled';
-
+import { useAccountStore } from '#src/stores/AccountStore';
+import CancelSubscriptionForm from '#components/CancelSubscriptionForm/CancelSubscriptionForm';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import SubscriptionCancelled from '#components/SubscriptionCancelled/SubscriptionCancelled';
 import { formatDate } from '#src/utils/formatting';
 import { removeQueryParam } from '#src/utils/location';
 import { updateSubscription } from '#src/stores/AccountController';

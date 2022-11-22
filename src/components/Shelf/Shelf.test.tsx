@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Shelf from '#src/components/Shelf/Shelf';
+import Shelf from '#components/Shelf/Shelf';
 
 const playlist = {
   playlist: [

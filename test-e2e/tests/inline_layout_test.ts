@@ -1,5 +1,5 @@
-import constants, { ShelfId } from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import constants, { ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const videoListLocator = locate({ css: 'div[data-testid="video-list"]' });
 

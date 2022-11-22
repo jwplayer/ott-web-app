@@ -1,11 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Tag from '../Tag/Tag';
-
 import styles from './VideoDetailsInline.module.scss';
 
-import CollapsibleText from '#src/components/CollapsibleText/CollapsibleText';
+import Tag from '#components/Tag/Tag';
+import CollapsibleText from '#components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type Props = {

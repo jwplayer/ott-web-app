@@ -2,11 +2,10 @@ import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import ErrorPage from '../ErrorPage/ErrorPage';
-import AccountModal from '../../containers/AccountModal/AccountModal';
-
+import ErrorPage from '#components/ErrorPage/ErrorPage';
+import AccountModal from '#src/containers/AccountModal/AccountModal';
 import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
-import DemoConfigDialog from '#src/components/DemoConfigDialog/DemoConfigDialog';
+import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
 
 type Props = {
   error?: Error | null;

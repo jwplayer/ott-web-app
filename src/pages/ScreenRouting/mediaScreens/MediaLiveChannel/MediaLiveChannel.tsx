@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 
 import type { ScreenComponent } from '#types/screens';
 import { isLiveChannel } from '#src/utils/media';
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { liveChannelsURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';

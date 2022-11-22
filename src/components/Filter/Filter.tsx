@@ -1,11 +1,10 @@
 import React, { Fragment, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Dropdown from '../Dropdown/Dropdown';
-import Button from '../Button/Button';
-
 import styles from './Filter.module.scss';
 
+import Dropdown from '#components/Dropdown/Dropdown';
+import Button from '#components/Button/Button';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type Props = {

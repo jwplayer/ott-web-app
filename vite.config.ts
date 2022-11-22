@@ -50,7 +50,9 @@ export default ({ mode }: { mode: string }) => {
     resolve: {
       alias: {
         '#src': path.join(__dirname, 'src'),
+        '#components': path.join(__dirname, 'src/components'),
         '#test': path.join(__dirname, 'test'),
+        '#test-e2e': path.join(__dirname, 'test-e2e'),
         '#types': path.join(__dirname, 'types'),
       },
     },

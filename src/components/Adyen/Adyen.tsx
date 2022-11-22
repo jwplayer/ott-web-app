@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { addScript, addStyleSheet } from '../../utils/dom';
-import useOpaqueId from '../../hooks/useOpaqueId';
-import Button from '../Button/Button';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '../../config';
-
 import styles from './Adyen.module.scss';
+
+import { addScript, addStyleSheet } from '#src/utils/dom';
+import Button from '#components/Button/Button';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '#src/config';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 import './AdyenForm.scss';
 
 type Props = {

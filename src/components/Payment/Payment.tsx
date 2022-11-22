@@ -2,13 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import TextField from '../TextField/TextField';
-import type { Customer } from '../../../types/account';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import Button from '../Button/Button';
-
 import styles from './Payment.module.scss';
 
+import TextField from '#components/TextField/TextField';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Button from '#components/Button/Button';
+import type { Customer } from '#types/account';
 import { formatDate, formatPrice } from '#src/utils/formatting';
 import { addQueryParam } from '#src/utils/location';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';

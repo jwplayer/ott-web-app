@@ -12,7 +12,7 @@ accounts / authentication, subscription management, and checkout flows.
 The available backend integrations serve 3 main roles, Accounts, Subscription, and Checkout. Below are the methods
 that any backend integration needs to support broken down by role:
 
-- [Account](../src/services/account.service.ts)
+- [Account](src/services/account.service.ts)
   - login
   - register
   - getPublisherConsents
@@ -26,12 +26,12 @@ that any backend integration needs to support broken down by role:
   - getLocales
   - getCaptureStatus
   - updateCaptureAnswers
-- [Subscription](../src/services/subscription.service.ts)
+- [Subscription](src/services/subscription.service.ts)
   - getSubscriptions
   - updateSubscription
   - getPaymentDetails
   - getTransactions
-- [Checkout](../src/services/checkout.service.ts)
+- [Checkout](src/services/checkout.service.ts)
   - getOffer
   - createOrder
   - updateOrder

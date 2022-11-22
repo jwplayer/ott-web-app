@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import Loading from '#src/pages/Loading/Loading';
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
 import usePlaylist from '#src/hooks/usePlaylist';
 import type { Playlist } from '#types/playlist';
 import PlaylistGrid from '#src/pages/ScreenRouting/playlistScreens/PlaylistGrid/PlaylistGrid';

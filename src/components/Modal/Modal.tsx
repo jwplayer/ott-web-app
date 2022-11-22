@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import scrollbarSize from '../../utils/dom';
-import Fade from '../Animation/Fade/Fade';
-import Grow from '../Animation/Grow/Grow';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './Modal.module.scss';
+
+import scrollbarSize from '#src/utils/dom';
+import Fade from '#components/Animation/Fade/Fade';
+import Grow from '#components/Animation/Grow/Grow';
+import { IS_DEV_BUILD } from '#src/utils/common';
 
 type Props = {
   children?: React.ReactNode;

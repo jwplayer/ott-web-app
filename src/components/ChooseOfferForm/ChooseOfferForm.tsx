@@ -4,10 +4,10 @@ import classNames from 'classnames';
 
 import styles from './ChooseOfferForm.module.scss';
 
-import Button from '#src/components/Button/Button';
-import FormFeedback from '#src/components/FormFeedback/FormFeedback';
-import DialogBackButton from '#src/components/DialogBackButton/DialogBackButton';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import Button from '#components/Button/Button';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import DialogBackButton from '#components/DialogBackButton/DialogBackButton';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import CheckCircle from '#src/icons/CheckCircle';
 import type { Offer } from '#types/checkout';
 import { getOfferPrice, isSVODOffer } from '#src/utils/subscription';

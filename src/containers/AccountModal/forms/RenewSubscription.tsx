@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { useAccountStore } from '../../../stores/AccountStore';
-import RenewSubscriptionForm from '../../../components/RenewSubscriptionForm/RenewSubscriptionForm';
-import SubscriptionRenewed from '../../../components/SubscriptionRenewed/SubscriptionRenewed';
-
+import { useAccountStore } from '#src/stores/AccountStore';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import RenewSubscriptionForm from '#components/RenewSubscriptionForm/RenewSubscriptionForm';
+import SubscriptionRenewed from '#components/SubscriptionRenewed/SubscriptionRenewed';
 import { removeQueryParam } from '#src/utils/location';
 import { updateSubscription } from '#src/stores/AccountController';
 

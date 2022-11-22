@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import PersonalDetailsForm from '#src/components/PersonalDetailsForm/PersonalDetailsForm';
+import PersonalDetailsForm from '#components/PersonalDetailsForm/PersonalDetailsForm';
 
 const noop = () => {
   /**/

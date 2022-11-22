@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import styles from './EpgChannelItem.module.scss';
 
-import Image from '#src/components/Image/Image';
+import Image from '#components/Image/Image';
 
 type Props = {
   channel: Channel;

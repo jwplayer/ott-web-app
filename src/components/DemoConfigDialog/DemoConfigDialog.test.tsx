@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { renderWithRouter } from '#test/testUtils';
-import DemoConfigDialog from '#src/components/DemoConfigDialog/DemoConfigDialog';
+import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
 
 describe('<DemoConfigDialog>', () => {
   test('renders and matches snapshot', () => {

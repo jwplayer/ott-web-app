@@ -1,5 +1,5 @@
-import constants from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import constants from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 Feature('playlist').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 

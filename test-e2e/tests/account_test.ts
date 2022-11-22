@@ -1,6 +1,6 @@
-import passwordUtils, { LoginContext } from '../utils/password_utils';
-import constants from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import passwordUtils, { LoginContext } from '#utils/password_utils';
+import constants from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const editAccount = 'Edit account';
 const editDetials = 'Edit information';
