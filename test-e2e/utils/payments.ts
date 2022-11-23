@@ -4,10 +4,10 @@ const yearlyPrice = formatPrice(50);
 
 export function goToCheckout(I: CodeceptJS.I) {
   I.amOnPage(constants.offersUrl);
-  I.waitForLoaderDone();
+  I.waitForLoaderDone(10);
 
   I.click('Continue');
-  I.waitForLoaderDone();
+  I.waitForLoaderDone(10);
 }
 
 export function formatPrice(price: number) {
