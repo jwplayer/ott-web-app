@@ -43,7 +43,7 @@ export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: D
 
   // It takes a few seconds for transactions to load, so try and refresh a few times
   for (let i = 0; i < 5; i++) {
-    I.waitForLoaderDone();
+    I.waitForLoaderDone(10);
 
     if ((await I.grabTextFrom('body')).indexOf(transactionText) >= 0) {
       break;
