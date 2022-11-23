@@ -2,8 +2,10 @@ import constants from './constants';
 
 const yearlyPrice = formatPrice(50);
 
-export function goToCheckout(I: CodeceptJS.I) {
-  I.amOnPage(constants.offersUrl);
+export async function goToCheckout(I: CodeceptJS.I) {
+  await I.openMainMenu();
+  I.click('Payments');
+  I.click('Complete subscription');
   I.waitForLoaderDone(10);
 
   I.click('Continue');

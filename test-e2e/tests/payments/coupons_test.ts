@@ -19,7 +19,7 @@ Before(async ({ I }) => {
 Scenario('I can redeem coupons', async ({ I }) => {
   couponLoginContext = await I.registerOrLogin(couponLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
   I.click('Redeem coupon');
   I.seeElement('input[name="couponCode"]');

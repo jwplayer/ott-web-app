@@ -100,7 +100,7 @@ Scenario('I can choose an offer', async ({ I }) => {
 Scenario('I can see payment types', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
   I.see('Credit Card');
   I.see('PayPal');
@@ -123,7 +123,7 @@ Scenario('I can see payment types', async ({ I }) => {
 Scenario('I can open the PayPal site', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
   I.click('PayPal');
   I.click('Continue');
@@ -136,7 +136,7 @@ Scenario('I can open the PayPal site', async ({ I }) => {
 Scenario('I can finish my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
   I.see('Credit Card');
 
