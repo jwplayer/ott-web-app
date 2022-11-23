@@ -159,7 +159,7 @@ Scenario('I can finish my subscription', async ({ I }) => {
   // @ts-expect-error
   I.switchTo(null); // Exit the iframe context back to the main document
 
-  finishAndCheckSubscription(I, addDays(today, 365), today);
+  await finishAndCheckSubscription(I, addDays(today, 365), today);
 
   I.seeAll(cardInfo);
 });

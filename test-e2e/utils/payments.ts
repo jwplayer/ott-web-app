@@ -31,7 +31,7 @@ export function formatDate(date: Date) {
   return date.toLocaleDateString('en-US');
 }
 
-export function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date) {
+export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date) {
   I.click('Continue');
   I.waitForLoaderDone(15);
   I.see('Welcome to JW OTT Web App');
@@ -39,9 +39,21 @@ export function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, t
 
   I.click('Start watching');
 
-  I.waitForLoaderDone();
-  // It takes a few seconds for transactions to load
-  I.waitForText('Annual subscription', 10);
+  const transactionText = 'Annual subscription';
+
+  // It takes a few seconds for transactions to load, so try and refresh a few times
+  for (let i = 0; i < 5; i++) {
+    I.waitForLoaderDone();
+
+    if ((await I.grabTextFrom('body')).indexOf(transactionText) >= 0) {
+      break;
+    }
+
+    I.refreshPage();
+  }
+
+  I.see(transactionText);
+
   I.see(yearlyPrice);
   I.see('/year');
   I.see('Next billing date is on ' + formatDate(billingDate));

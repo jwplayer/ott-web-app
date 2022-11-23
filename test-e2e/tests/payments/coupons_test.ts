@@ -42,7 +42,7 @@ Scenario('I can redeem coupons', async ({ I }) => {
   I.waitForLoaderDone();
   I.dontSee(formatPrice(12.5));
 
-  finishAndCheckSubscription(I, addYear(today), today);
+  await finishAndCheckSubscription(I, addYear(today), today);
 });
 
 Scenario('I can cancel a free subscription', async ({ I }) => {

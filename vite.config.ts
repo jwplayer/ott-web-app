@@ -9,11 +9,6 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default ({ mode, command }: { mode: string; command: string }) => {
-  // Shorten default mode names to dev / prod
-  // Also differentiates from build type (production / development)
-  mode = mode === 'development' ? 'dev' : mode;
-  mode = mode === 'production' ? 'prod' : mode;
-
   // Make sure to builds are always production type,
   // otherwise modes other than 'production' get built in dev
   if (command === 'build') {
@@ -31,7 +26,7 @@ export default ({ mode, command }: { mode: string; command: string }) => {
   ];
 
   // These files are only needed in dev / test / demo, so don't include in prod builds
-  if (mode !== 'prod') {
+  if (mode !== 'prod' && mode !== 'production') {
     plugins.push(
       viteStaticCopy({
         targets: [

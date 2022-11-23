@@ -49,7 +49,7 @@ export function calculateContrastColor(color: string) {
   return rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114 > 186 ? '#000000' : '#FFFFFF';
 }
 
-// Build is either Dev or Production
+// Build is either Development or Production
 // Mode can be dev, jwdev, demo, test, production, etc.
 export const IS_DEV_BUILD = import.meta.env.DEV;
 export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
