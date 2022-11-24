@@ -1,6 +1,6 @@
 import { post, put, patch, get } from './cleeng.service';
 
-import { getOverrideIP, IS_DEV_BUILD } from '#src/utils/common';
+import { getOverrideIP } from '#src/utils/common';
 import type {
   ChangePassword,
   GetCustomer,
@@ -18,18 +18,14 @@ import type {
 } from '#types/account';
 
 export const login: Login = async (payload, sandbox) => {
-  if (IS_DEV_BUILD) {
-    // @ts-ignore
-    payload.customerIP = window.overrideIP;
-  }
+  // @ts-ignore
+  payload.customerIP = getOverrideIP();
   return post(sandbox, '/auths', JSON.stringify(payload));
 };
 
 export const register: Register = async (payload, sandbox) => {
-  if (IS_DEV_BUILD) {
-    // @ts-ignore
-    payload.customerIP = getOverrideIP();
-  }
+  // @ts-ignore
+  payload.customerIP = getOverrideIP();
   return post(sandbox, '/customers', JSON.stringify(payload));
 };
 
@@ -66,7 +62,7 @@ export const refreshToken: RefreshToken = async (payload, sandbox) => {
 };
 
 export const getLocales: GetLocales = async (sandbox) => {
-  return get(sandbox, `/locales${IS_DEV_BUILD && getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
+  return get(sandbox, `/locales${getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
 };
 
 export const getCaptureStatus: GetCaptureStatus = async ({ customerId }, sandbox, jwt) => {

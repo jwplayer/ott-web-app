@@ -66,6 +66,10 @@ export function logDev(message: unknown, ...optionalParams: unknown[]) {
 }
 
 export function getOverrideIP() {
+  if (!IS_TEST_MODE && !IS_DEV_BUILD) {
+    return undefined;
+  }
+
   return document.cookie
     .split(';')
     .find((s) => s.trim().startsWith('overrideIP'))
