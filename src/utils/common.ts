@@ -56,7 +56,8 @@ export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
 export const IS_TEST_MODE = import.meta.env.MODE === 'test';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
-  if (IS_DEV_BUILD && !IS_TEST_MODE) {
+  // TODO: Remove IS_DEMO_MODE
+  if (IS_DEMO_MODE || (IS_DEV_BUILD && !IS_TEST_MODE)) {
     if (optionalParams.length > 0) {
       console.info(message, optionalParams);
     } else {
