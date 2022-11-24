@@ -14,6 +14,7 @@ const stepsObj = {
     url.searchParams.append(configFileQueryKey, config.id);
 
     this.amOnPage(url.toString());
+    this.waitForLoaderDone();
   },
   login: async function (this: CodeceptJS.I, { email, password }: { email: string; password: string }) {
     await this.openSignInMenu();

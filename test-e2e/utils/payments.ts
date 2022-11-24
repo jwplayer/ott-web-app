@@ -6,10 +6,10 @@ export async function goToCheckout(I: CodeceptJS.I) {
   await I.openMainMenu();
   I.click('Payments');
   I.click('Complete subscription');
-  I.waitForLoaderDone(60);
+  I.waitForLoaderDone(10);
 
   I.click('Continue');
-  I.waitForLoaderDone(60);
+  I.waitForLoaderDone(10);
 }
 
 export function formatPrice(price: number) {
@@ -36,7 +36,7 @@ export function formatDate(date: Date) {
 export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date) {
   I.click('Continue');
   I.waitForLoaderDone(15);
-  I.see('Welcome to JW OTT Web App');
+  I.waitForText('Welcome to JW OTT Web App (SVOD)');
   I.see('Thank you for subscribing to JW OTT Web App (SVOD). Please enjoy all our content.');
 
   I.click('Start watching');
@@ -119,5 +119,5 @@ export function renewPlan(I: CodeceptJS.I, billingDate: Date) {
 
 export function overrideIP(I: CodeceptJS.I) {
   // Set this as a cookie so it persists between page navigations (local storage would also work, but the permissions don't work)
-  I.setCookie({ name: 'overrideIP', value: '101.33.29.0', domain: 'web.app', path: '/' });
+  I.setCookie({ name: 'overrideIP', value: '101.33.29.0', domain: 'localhost', path: '/' });
 }
