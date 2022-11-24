@@ -74,6 +74,5 @@ export function getOverrideIP() {
 }
 
 export function testId(value: string | undefined) {
-  // TODO: Remove IS_DEMO_MODE
-  return IS_DEMO_MODE || IS_DEV_BUILD || IS_TEST_MODE ? value : undefined;
+  return IS_DEV_BUILD || IS_TEST_MODE ? value : undefined;
 }
