@@ -6,10 +6,10 @@ export async function goToCheckout(I: CodeceptJS.I) {
   await I.openMainMenu();
   I.click('Payments');
   I.click('Complete subscription');
-  I.waitForLoaderDone(20);
+  I.waitForLoaderDone(60);
 
   I.click('Continue');
-  I.waitForLoaderDone(20);
+  I.waitForLoaderDone(60);
 }
 
 export function formatPrice(price: number) {
