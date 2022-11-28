@@ -13,7 +13,11 @@ export type JwtDetails = {
   publisherId: number;
 };
 
-export type LoginPayload = {
+export type PayloadWithIPOverride = {
+  customerIP?: string;
+};
+
+export type LoginPayload = PayloadWithIPOverride & {
   email: string;
   password: string;
   offerId?: string;
@@ -44,7 +48,7 @@ export type ChooseOfferFormData = {
   offerId?: string;
 };
 
-export type RegisterPayload = {
+export type RegisterPayload = PayloadWithIPOverride & {
   email: string;
   password: string;
   offerId?: string;

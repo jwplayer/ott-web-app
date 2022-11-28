@@ -13,7 +13,6 @@ import type {
 import { getOverrideIP } from '#src/utils/common';
 
 export const getOffer: GetOffer = async (payload, sandbox) => {
-  // @ts-ignore
   return get(sandbox, `/offers/${payload.offerId}${getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
 };
 

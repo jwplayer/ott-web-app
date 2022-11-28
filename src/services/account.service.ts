@@ -18,13 +18,11 @@ import type {
 } from '#types/account';
 
 export const login: Login = async (payload, sandbox) => {
-  // @ts-ignore
   payload.customerIP = getOverrideIP();
   return post(sandbox, '/auths', JSON.stringify(payload));
 };
 
 export const register: Register = async (payload, sandbox) => {
-  // @ts-ignore
   payload.customerIP = getOverrideIP();
   return post(sandbox, '/customers', JSON.stringify(payload));
 };

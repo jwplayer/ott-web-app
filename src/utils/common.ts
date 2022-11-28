@@ -1,3 +1,5 @@
+import { overrideIPCookieKey } from '#test/constants';
+
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | null;
   return (...args: unknown[]) => {
@@ -72,7 +74,7 @@ export function getOverrideIP() {
 
   return document.cookie
     .split(';')
-    .find((s) => s.trim().startsWith('overrideIP'))
+    .find((s) => s.trim().startsWith(`${overrideIPCookieKey}=`))
     ?.split('=')[1]
     .trim();
 }
