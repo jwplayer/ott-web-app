@@ -6,6 +6,7 @@ import styles from './VideoDetailsInline.module.scss';
 import Tag from '#components/Tag/Tag';
 import CollapsibleText from '#components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import { testId } from '#src/utils/common';
 
 type Props = {
   title: string | React.ReactNode;
@@ -25,7 +26,7 @@ const VideoDetailsInline: React.FC<Props> = ({ title, description, primaryMetada
   const TitleComponent = typeof title === 'string' ? 'h2' : 'div';
 
   return (
-    <div className={styles.details} data-testid="video-details-inline">
+    <div className={styles.details} data-testid={testId('video-details-inline')}>
       <TitleComponent className={styles.title}>{title}</TitleComponent>
       <div className={styles.inlinePlayerMetadata}>
         <div className={styles.primaryMetadata}>

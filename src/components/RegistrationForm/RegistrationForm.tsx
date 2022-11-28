@@ -15,7 +15,7 @@ import Checkbox from '#components/Checkbox/Checkbox';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Link from '#components/Link/Link';
-import { IS_DEV_BUILD } from '#src/utils/common';
+import { testId } from '#src/utils/common';
 import useToggle from '#src/hooks/useToggle';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
@@ -76,7 +76,7 @@ const RegistrationForm: React.FC<Props> = ({
   }
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'registration-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField

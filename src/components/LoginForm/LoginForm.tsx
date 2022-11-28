@@ -12,7 +12,7 @@ import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '#src/utils/common';
+import { testId } from '#src/utils/common';
 import useToggle from '#src/hooks/useToggle';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
@@ -34,7 +34,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const location = useLocation();
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'login-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField

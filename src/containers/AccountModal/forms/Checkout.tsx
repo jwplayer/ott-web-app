@@ -161,7 +161,7 @@ const Checkout = () => {
         setUpdatingOrder(true);
         setPaymentError(undefined);
         await adyenPayment(data.data.paymentMethod);
-        await reloadActiveSubscription({ delay: 1000 });
+        await reloadActiveSubscription({ delay: 2000 });
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {
         if (error instanceof Error) {

@@ -1,6 +1,6 @@
 {
-  "generic_error_description": "There was an issue loading the application",
-  "generic_error_heading": "Try refreshing this page or come back later.",
+  "generic_error_description": "Try refreshing this page or come back later.",
+  "generic_error_heading": "There was an issue loading the application",
   "notfound_error_description": "This page doesn't exist.",
   "notfound_error_heading": "Not found",
   "playlist_not_found": "Playlist not found",

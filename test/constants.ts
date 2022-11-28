@@ -36,3 +36,5 @@ export const jwDevEnvConfigs = {
     label: 'JW-Dev Basic Demo',
   } as TestConfig,
 };
+
+export const overrideIPCookieKey = 'overrideIP';

@@ -7,6 +7,7 @@ import CollapsibleText from '#components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Image from '#components/Image/Image';
 import type { ImageData, PosterMode } from '#types/playlist';
+import { testId } from '#src/utils/common';
 
 type Props = {
   title: string;
@@ -37,7 +38,7 @@ const VideoDetails: React.VFC<Props> = ({
   const isMobile = breakpoint === Breakpoint.xs;
 
   return (
-    <div className={styles.video} data-testid="video-details">
+    <div className={styles.video} data-testid={testId('video-details')}>
       <div
         className={classNames(styles.main, styles.mainPadding, {
           [styles.posterNormal]: posterMode === 'normal',

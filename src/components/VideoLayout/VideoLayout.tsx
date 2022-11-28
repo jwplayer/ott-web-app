@@ -8,9 +8,10 @@ import Filter from '#components/Filter/Filter';
 import VideoDetails from '#components/VideoDetails/VideoDetails';
 import VideoDetailsInline from '#components/VideoDetailsInline/VideoDetailsInline';
 import VideoList from '#components/VideoList/VideoList';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import { testId } from '#src/utils/common';
 import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';
 import type { AccessModel } from '#types/Config';
-import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
@@ -164,7 +165,7 @@ const VideoLayout: React.FC<Props> = ({
 
   if (inlineLayout) {
     return (
-      <div className={styles.videoInlineLayout} data-testid="inline-layout">
+      <div className={styles.videoInlineLayout} data-testid={testId('inline-layout')}>
         <div className={styles.player}>{player}</div>
         {renderRelatedVideos(isTablet)}
         <div className={styles.videoDetailsInline}>
@@ -184,7 +185,7 @@ const VideoLayout: React.FC<Props> = ({
   }
 
   return (
-    <div className={styles.videoCinemaLayout} data-testid="cinema-layout">
+    <div className={styles.videoCinemaLayout} data-testid={testId('cinema-layout')}>
       <VideoDetails
         title={title}
         description={description}

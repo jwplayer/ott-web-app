@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 
 import { TestConfig } from '#test/constants';
-import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 
 const configFileQueryKey = 'app-config';
@@ -14,14 +14,15 @@ const stepsObj = {
     url.searchParams.append(configFileQueryKey, config.id);
 
     this.amOnPage(url.toString());
+    this.waitForLoaderDone();
   },
   login: async function (this: CodeceptJS.I, { email, password }: { email: string; password: string }) {
     await this.openSignInMenu();
     this.click('Sign in');
 
-    this.waitForElement('input[name=email]', 10);
+    this.waitForElement('input[name=email]', normalTimeout);
     this.fillField('email', email);
-    this.waitForElement('input[name=password]', 10);
+    this.waitForElement('input[name=password]', normalTimeout);
     this.fillField('password', password);
     this.submitForm(15);
 
@@ -57,7 +58,7 @@ const stepsObj = {
   },
   fillRegisterForm: async function (this: CodeceptJS.I, context: LoginContext, onRegister?: () => void) {
     await this.seeQueryParams({ u: 'create-account' });
-    this.waitForElement(constants.registrationFormSelector, 10);
+    this.waitForElement(constants.registrationFormSelector, normalTimeout);
 
     this.fillField('Email', context.email);
     this.wait(2);
@@ -76,11 +77,11 @@ const stepsObj = {
       this.clickCloseButton();
     }
   },
-  submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = 5) {
+  submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = normalTimeout) {
     this.click('button[type="submit"]');
     this.waitForLoaderDone(loaderTimeout);
   },
-  waitForLoaderDone: function (this: CodeceptJS.I, timeout: number | false = 5) {
+  waitForLoaderDone: function (this: CodeceptJS.I, timeout: number | false = normalTimeout) {
     // Specify false when the loader is NOT expected to be shown at all
     if (timeout === false) {
       this.dontSeeElement(loaderElement);
@@ -182,7 +183,7 @@ const stepsObj = {
       );
     }, args);
   },
-  waitForPlayerPlaying: async function (title, tries = 10) {
+  waitForPlayerPlaying: async function (title, tries = normalTimeout) {
     this.seeElement('div[class*="jwplayer"]');
     this.see(title);
     await this.waitForPlayerState('playing', ['buffering', 'idle', ''], tries);

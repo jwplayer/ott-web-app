@@ -11,7 +11,7 @@ import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
 import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '#src/utils/common';
+import { testId } from '#src/utils/common';
 import useToggle from '#src/hooks/useToggle';
 import type { EditPasswordFormData } from '#types/account';
 import type { FormErrors } from '#types/form';
@@ -31,7 +31,7 @@ const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, onBlur, value, 
   const [viewPassword, toggleViewPassword] = useToggle();
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'forgot-password-form' : undefined} noValidate className={styles.forgotPasswordForm}>
+    <form onSubmit={onSubmit} data-testid={testId('forgot-password-form')} noValidate className={styles.forgotPasswordForm}>
       <h2 className={styles.title}>{t('reset.password_reset')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField

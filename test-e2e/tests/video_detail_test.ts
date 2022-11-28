@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants from '#utils/constants';
+import constants, { longTimeout, normalTimeout } from '#utils/constants';
 import { testConfigs } from '#test/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 
@@ -106,7 +106,7 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
   I.see(constants.signUpToWatch);
   I.click(constants.signUpToWatch);
   await I.checkPlayerClosed();
-  I.waitForText('Email', 5);
+  I.waitForText('Email', normalTimeout);
   I.see('Password');
   I.click('div[aria-label=Close]');
 
@@ -175,20 +175,20 @@ Scenario('I can share the media', async ({ I }) => {
 
   // The url should be copied to the clipboard
   assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), url);
-  I.waitForInvisible('text="Copied url"', 5);
+  I.waitForInvisible('text="Copied url"', normalTimeout);
 });
 
 async function playBigBuckBunny(I) {
   I.useConfig(testConfigs.basicNoAuth);
   await I.openVideoCard(constants.bigBuckBunnyTitle);
-  I.waitForText(constants.startWatchingButton, 5);
+  I.waitForText(constants.startWatchingButton, normalTimeout);
   I.dontSeeInCurrentUrl('play=1');
   I.click(constants.startWatchingButton);
 
   I.seeInCurrentUrl('play=1');
 
-  I.waitForElement('div[class*="jwplayer"]', 10);
-  I.waitForElement('video', 5);
+  I.waitForElement('div[class*="jwplayer"]', longTimeout);
+  I.waitForElement('video', normalTimeout);
 
   await I.waitForPlayerPlaying(constants.bigBuckBunnyDescription);
 }

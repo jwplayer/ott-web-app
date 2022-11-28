@@ -2,7 +2,7 @@
   "app_config_not_found": "Invalid or Missing App Config",
   "cancel_config_id": "Cancel",
   "click_to_unselect_config": "(click here to unselect this config)",
-  "currently_previewing_config": "You are currently previewing config: '{{configLocation}}'",
+  "currently_previewing_config": "You are currently previewing config: '{{configSource}}'",
   "learn_more": "Learn more",
   "please_enter_config_id": "Please enter an App Config ID from your JW Account",
   "submit_config_id": "Submit",

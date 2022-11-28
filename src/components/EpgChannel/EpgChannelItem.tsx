@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import styles from './EpgChannelItem.module.scss';
 
 import Image from '#components/Image/Image';
+import { testId } from '#src/utils/common';
 
 type Props = {
   channel: Channel;
@@ -24,7 +25,7 @@ const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWi
         className={classNames(styles.epgChannel, { [styles.active]: isActive })}
         style={{ width: channelItemWidth }}
         onClick={() => onClick && onClick(channel)}
-        data-testid={uuid}
+        data-testid={testId(uuid)}
       >
         <Image className={styles.epgChannelLogo} image={channelLogoImage} alt="Logo" width={320} />
       </div>

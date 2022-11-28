@@ -42,7 +42,6 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
                   placeholder="please_enter_config_id"
                   required=""
                   type="text"
-                  value=""
                 />
               </div>
             </div>

@@ -10,11 +10,8 @@ This PR solves # .
 
 According to our definition of done, I have completed the following steps:
 
-- [ ] User stories met
-- [ ] Storybook stories
+- [ ] Acceptance criteria met
 - [ ] Unit tests added
-- [ ] Linting passing
-- [ ] Unit tests passing
 - [ ] Docs updated (including config and env variables)
 - [ ] Translations added
 - [ ] UX tested

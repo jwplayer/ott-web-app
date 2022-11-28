@@ -27,6 +27,7 @@ module.exports = {
         'inlineplayer',
         'config',
         'epg',
+        'tests',
       ],
     ],
   },

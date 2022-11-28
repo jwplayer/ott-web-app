@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
-import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD } from '#src/utils/common';
 import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
 
 type Props = {
@@ -17,8 +17,8 @@ const Root: FC<Props> = ({ error }) => {
   return (
     <>
       {error ? (
-        <ErrorPage title={IS_DEV_BUILD ? error.message : t('generic_error_heading', 'There was an issue loading the application')}>
-          <p>{IS_DEV_BUILD ? error.stack : t('generic_error_description', 'Try refreshing this page or come back later.')}</p>
+        <ErrorPage title={IS_DEVELOPMENT_BUILD ? error.message : t('generic_error_heading', 'There was an issue loading the application')}>
+          <p>{IS_DEVELOPMENT_BUILD ? error.stack : t('generic_error_description', 'Try refreshing this page or come back later.')}</p>
         </ErrorPage>
       ) : (
         <>

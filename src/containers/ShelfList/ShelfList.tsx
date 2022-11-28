@@ -19,6 +19,7 @@ import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
+import { testId } from '#src/utils/common';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -80,7 +81,7 @@ const ShelfList = ({ rows }: Props) => {
                   style={style}
                   role="row"
                   className={classNames(styles.shelfContainer, { [styles.featured]: row.featured })}
-                  data-testid={`shelf-${row.featured ? 'featured' : row.type !== 'playlist' ? row.type : slugify(title)}`}
+                  data-testid={testId(`shelf-${row.featured ? 'featured' : row.type !== 'playlist' ? row.type : slugify(title)}`)}
                 >
                   <div role="cell">
                     <ShelfComponent
