@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
 
-import ErrorPage from '../ErrorPage/ErrorPage';
-import AccountModal from '../../containers/AccountModal/AccountModal';
-
-import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
-import DemoConfigDialog from '#src/components/DemoConfigDialog/DemoConfigDialog';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import DevConfigSelector from '#src/components/DevConfigSelector/DevConfigSelector';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
+import AccountModal from '#src/containers/AccountModal/AccountModal';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD } from '#src/utils/common';
+import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
 import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
@@ -75,7 +74,7 @@ const Root: FC<Props> = ({ children }: Props) => {
       {IS_DEMO_MODE && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
       <AccountModal />
       {/* Config select control to improve testing experience */}
-      {IS_DEV_BUILD && <DevConfigSelector selectedConfig={configSource} />}
+      {IS_DEVELOPMENT_BUILD && <DevConfigSelector selectedConfig={configSource} />}
     </>
   );
 };

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import IconButton from '../IconButton/IconButton';
-import ArrowLeft from '../../icons/ArrowLeft';
-
 import styles from './DialogBackButton.module.scss';
+
+import IconButton from '#components/IconButton/IconButton';
+import ArrowLeft from '#src/icons/ArrowLeft';
 
 type Props = {
   onClick?: () => void;

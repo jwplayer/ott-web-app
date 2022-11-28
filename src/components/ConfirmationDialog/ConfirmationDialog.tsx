@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Dialog from '../Dialog/Dialog';
-import Button from '../Button/Button';
-
 import styles from './ConfirmationDialog.module.scss';
+
+import Dialog from '#components/Dialog/Dialog';
+import Button from '#components/Button/Button';
 
 type Props = {
   open: boolean;

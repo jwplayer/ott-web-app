@@ -1,10 +1,9 @@
 import { ChangeEvent, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
-import Dropdown from '../Dropdown/Dropdown';
-
 import styles from './DevConfigSelector.module.scss';
 
+import Dropdown from '#components/Dropdown/Dropdown';
 import { getConfigNavigateCallback } from '#src/utils/configOverride';
 import { jwDevEnvConfigs, testConfigs } from '#test/constants';
 

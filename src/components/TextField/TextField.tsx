@@ -2,12 +2,11 @@ import React, { RefObject } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import useOpaqueId from '../../hooks/useOpaqueId';
-import HelperText from '../HelperText/HelperText';
-
 import styles from './TextField.module.scss';
 
+import HelperText from '#components/HelperText/HelperText';
 import { testId as getTestId } from '#src/utils/common';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type InputProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'id' | 'ref' | 'className'>;
 type TextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'id' | 'ref' | 'className'>;

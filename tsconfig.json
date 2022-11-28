@@ -19,6 +19,9 @@
       "#src/*": [
         "./src/*"
       ],
+      "#components/*": [
+        "./src/components/*"
+      ],
       "#test/*": [
         "./test/*"
       ],

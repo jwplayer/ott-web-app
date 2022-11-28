@@ -3,7 +3,7 @@ import React, { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { render, RenderOptions } from '@testing-library/react';
 
-import QueryProvider from '../src/providers/QueryProvider';
+import QueryProvider from '#src/providers/QueryProvider';
 
 interface WrapperProps {
   children?: ReactNode;

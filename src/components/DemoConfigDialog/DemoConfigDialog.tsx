@@ -5,13 +5,13 @@ import type { UseQueryResult } from 'react-query';
 
 import styles from './DemoConfigDialog.module.scss';
 
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
-import TextField from '#src/components/TextField/TextField';
-import Button from '#src/components/Button/Button';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
 import { getConfigNavigateCallback } from '#src/utils/configOverride';
-import Link from '#src/components/Link/Link';
-import ConfirmationDialog from '#src/components/ConfirmationDialog/ConfirmationDialog';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import Link from '#components/Link/Link';
+import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import type { Config } from '#types/Config';
 
 const fallbackConfig = import.meta.env.APP_DEMO_FALLBACK_CONFIG_ID;

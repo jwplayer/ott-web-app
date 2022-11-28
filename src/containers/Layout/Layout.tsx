@@ -10,13 +10,13 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useUIStore } from '#src/stores/UIStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useSearchQueryUpdater from '#src/hooks/useSearchQueryUpdater';
-import Button from '#src/components/Button/Button';
-import MarkdownComponent from '#src/components/MarkdownComponent/MarkdownComponent';
-import Header from '#src/components/Header/Header';
-import Sidebar from '#src/components/Sidebar/Sidebar';
-import DynamicBlur from '#src/components/DynamicBlur/DynamicBlur';
-import MenuButton from '#src/components/MenuButton/MenuButton';
-import UserMenu from '#src/components/UserMenu/UserMenu';
+import Button from '#components/Button/Button';
+import MarkdownComponent from '#components/MarkdownComponent/MarkdownComponent';
+import Header from '#components/Header/Header';
+import Sidebar from '#components/Sidebar/Sidebar';
+import DynamicBlur from '#components/DynamicBlur/DynamicBlur';
+import MenuButton from '#components/MenuButton/MenuButton';
+import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 
 const Layout = () => {

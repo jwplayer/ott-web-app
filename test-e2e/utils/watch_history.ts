@@ -1,7 +1,6 @@
 import * as assert from 'assert';
 
-import constants from './constants';
-
+import constants from '#utils/constants';
 import LocatorOrString = CodeceptJS.LocatorOrString;
 
 export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, startButton: string | null = constants.startWatchingButton) {

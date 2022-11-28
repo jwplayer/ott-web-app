@@ -3,7 +3,7 @@ import React from 'react';
 import Sidebar from './Sidebar';
 
 import { renderWithRouter } from '#test/testUtils';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 
 describe('<SideBar />', () => {
   const playlistMenuItems = [<Button key="key" label="Home" to="/" />];

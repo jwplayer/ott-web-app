@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
 import { isSVODOffer } from '#src/utils/subscription';
-import CheckoutForm from '#src/components/CheckoutForm/CheckoutForm';
+import CheckoutForm from '#components/CheckoutForm/CheckoutForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import useForm from '#src/hooks/useForm';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import Adyen from '#src/components/Adyen/Adyen';
-import PayPal from '#src/components/PayPal/PayPal';
-import NoPaymentRequired from '#src/components/NoPaymentRequired/NoPaymentRequired';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Adyen from '#components/Adyen/Adyen';
+import PayPal from '#components/PayPal/PayPal';
+import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
@@ -161,7 +161,7 @@ const Checkout = () => {
         setUpdatingOrder(true);
         setPaymentError(undefined);
         await adyenPayment(data.data.paymentMethod);
-        await reloadActiveSubscription({ delay: 1000 });
+        await reloadActiveSubscription({ delay: 2000 });
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {
         if (error instanceof Error) {

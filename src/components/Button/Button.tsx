@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import styles from './Button.module.scss';
 
-import Spinner from '#src/components/Spinner/Spinner';
+import Spinner from '#components/Spinner/Spinner';
 
 type Color = 'default' | 'primary';
 

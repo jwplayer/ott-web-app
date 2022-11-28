@@ -3,7 +3,7 @@ import React from 'react';
 import Popover from './Popover';
 
 import { renderWithRouter } from '#test/testUtils';
-import MenuButton from '#src/components/MenuButton/MenuButton';
+import MenuButton from '#components/MenuButton/MenuButton';
 
 describe('<Popover>', () => {
   test('renders and matches snapshot', () => {

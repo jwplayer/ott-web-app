@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './ErrorPage.module.scss';
 
-import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
-import Link from '#src/components/Link/Link';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD } from '#src/utils/common';
+import Link from '#components/Link/Link';
 
 interface PropsWithChildren {
   disableFallbackTranslation?: boolean;
@@ -47,7 +47,7 @@ const ErrorPage = ({ disableFallbackTranslation, title, children, message, error
         <main className={styles.main}>
           <>
             {children || <p>{message}</p>}
-            {(IS_DEV_BUILD || IS_DEMO_MODE) && helpLink && (
+            {(IS_DEVELOPMENT_BUILD || IS_DEMO_MODE) && helpLink && (
               <p>
                 <Link href={helpLink} target={'_blank'}>
                   {learnMore}
@@ -56,7 +56,7 @@ const ErrorPage = ({ disableFallbackTranslation, title, children, message, error
             )}
           </>
         </main>
-        {IS_DEV_BUILD && error?.stack && (
+        {IS_DEVELOPMENT_BUILD && error?.stack && (
           <p>
             Developer Details:
             <br />

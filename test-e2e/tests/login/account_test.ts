@@ -1,7 +1,7 @@
-import constants from '../../utils/constants';
-import passwordUtils from '../../utils/password_utils';
-import { tryToSubmitForm, fillAndCheckField, checkField } from '../../utils/login';
-import { testConfigs } from '../../../test/constants';
+import constants, { normalTimeout } from '#utils/constants';
+import passwordUtils from '#utils/password_utils';
+import { tryToSubmitForm, fillAndCheckField, checkField } from '#utils/login';
+import { testConfigs } from '#test/constants';
 
 const fieldRequired = 'This field is required';
 const invalidEmail = 'Please re-enter your email details and try again.';
@@ -19,7 +19,7 @@ Before(async ({ I }) => {
 
   I.click('Sign in');
 
-  I.waitForElement(constants.loginFormSelector, 10);
+  I.waitForElement(constants.loginFormSelector, normalTimeout);
 });
 
 Scenario('I can close the modal', async ({ I }) => {

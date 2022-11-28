@@ -1,13 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Subscription } from '../../../types/subscription';
-import Button from '../Button/Button';
-import { formatDate, formatPrice } from '../../utils/formatting';
-import type { Customer } from '../../../types/account';
-import FormFeedback from '../FormFeedback/FormFeedback';
-
 import styles from './RenewSubscriptionForm.module.scss';
+
+import Button from '#components/Button/Button';
+import { formatDate, formatPrice } from '#src/utils/formatting';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import type { Customer } from '#types/account';
+import type { Subscription } from '#types/subscription';
 
 type Props = {
   subscription: Subscription;

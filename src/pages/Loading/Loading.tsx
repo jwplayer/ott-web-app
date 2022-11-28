@@ -1,6 +1,6 @@
 import styles from './Loading.module.scss';
 
-import Spinner from '#src/components/Spinner/Spinner';
+import Spinner from '#components/Spinner/Spinner';
 
 const Loading = () => {
   return (

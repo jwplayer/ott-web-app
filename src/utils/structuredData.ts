@@ -1,7 +1,7 @@
-import type { Playlist, PlaylistItem } from '../../types/playlist';
-
 import { episodeURL, mediaURL } from './formatting';
 import { secondsToISO8601 } from './datetime';
+
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
   // @todo this still used the series route

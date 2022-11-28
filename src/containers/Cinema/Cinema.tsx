@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import PlayerContainer from '../PlayerContainer/PlayerContainer';
-
 import styles from './Cinema.module.scss';
 
 import type { PlaylistItem } from '#types/playlist';
-import Fade from '#src/components/Animation/Fade/Fade';
-import IconButton from '#src/components/IconButton/IconButton';
+import Fade from '#components/Animation/Fade/Fade';
+import IconButton from '#components/IconButton/IconButton';
 import ArrowLeft from '#src/icons/ArrowLeft';
+import PlayerContainer from '#src/containers/PlayerContainer/PlayerContainer';
 
 type Props = {
   open: boolean;

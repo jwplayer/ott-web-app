@@ -2,7 +2,7 @@ import React from 'react';
 import type { UseQueryResult } from 'react-query';
 
 import { renderWithRouter } from '#test/testUtils';
-import DemoConfigDialog from '#src/components/DemoConfigDialog/DemoConfigDialog';
+import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
 import type { Config } from '#types/Config';
 
 describe('<DemoConfigDialog>', () => {

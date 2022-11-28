@@ -3,10 +3,10 @@ import React, { useCallback, useState } from 'react';
 import styles from './TrailerModal.module.scss';
 
 import type { PlaylistItem } from '#types/playlist';
-import Modal from '#src/components/Modal/Modal';
-import Player from '#src/components/Player/Player';
-import ModalCloseButton from '#src/components/ModalCloseButton/ModalCloseButton';
-import Fade from '#src/components/Animation/Fade/Fade';
+import Modal from '#components/Modal/Modal';
+import Player from '#components/Player/Player';
+import ModalCloseButton from '#components/ModalCloseButton/ModalCloseButton';
+import Fade from '#components/Animation/Fade/Fade';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {

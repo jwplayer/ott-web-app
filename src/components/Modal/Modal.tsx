@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import styles from './Modal.module.scss';
 
 import scrollbarSize from '#src/utils/dom';
-import Fade from '#src/components/Animation/Fade/Fade';
-import Grow from '#src/components/Animation/Grow/Grow';
+import Fade from '#components/Animation/Fade/Fade';
+import Grow from '#components/Animation/Grow/Grow';
 import { testId } from '#src/utils/common';
 
 type Props = {

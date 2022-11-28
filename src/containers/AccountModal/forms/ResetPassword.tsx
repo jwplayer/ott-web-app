@@ -3,14 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
-import { useAccountStore } from '../../../stores/AccountStore';
-import ResetPasswordForm from '../../../components/ResetPasswordForm/ResetPasswordForm';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import ForgotPasswordForm from '../../../components/ForgotPasswordForm/ForgotPasswordForm';
-import type { ForgotPasswordFormData } from '../../../../types/account';
-import ConfirmationForm from '../../../components/ConfirmationForm/ConfirmationForm';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-
+import { useAccountStore } from '#src/stores/AccountStore';
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import ResetPasswordForm from '#components/ResetPasswordForm/ResetPasswordForm';
+import ForgotPasswordForm from '#components/ForgotPasswordForm/ForgotPasswordForm';
+import type { ForgotPasswordFormData } from '#types/account';
+import ConfirmationForm from '#components/ConfirmationForm/ConfirmationForm';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { addQueryParams } from '#src/utils/formatting';
 import { logDev } from '#src/utils/common';

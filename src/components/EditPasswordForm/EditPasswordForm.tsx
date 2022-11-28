@@ -5,15 +5,15 @@ import styles from './EditPasswordForm.module.scss';
 
 import type { FormErrors } from '#types/form';
 import type { EditPasswordFormData } from '#types/account';
-import FormFeedback from '#src/components/FormFeedback/FormFeedback';
-import TextField from '#src/components/TextField/TextField';
-import Button from '#src/components/Button/Button';
-import IconButton from '#src/components/IconButton/IconButton';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
+import IconButton from '#components/IconButton/IconButton';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
 import useToggle from '#src/hooks/useToggle';
-import PasswordStrength from '#src/components/PasswordStrength/PasswordStrength';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { testId } from '#src/utils/common';
 
 type Props = {

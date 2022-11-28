@@ -5,10 +5,10 @@ import QueryProvider from '#src/providers/QueryProvider';
 import '#src/screenMapping';
 import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';
-import Root from '#src/components/Root/Root';
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import Root from '#components/Root/Root';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 
 interface State {
   isLoading: boolean;

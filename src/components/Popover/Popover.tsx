@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
-import DetectOutsideClick from '../DetectOutsideClick/DetectOutsideClick';
-import Slide from '../Animation/Slide/Slide';
-
 import styles from './Popover.module.scss';
+
+import DetectOutsideClick from '#components/DetectOutsideClick/DetectOutsideClick';
+import Slide from '#components/Animation/Slide/Slide';
 
 type Props = {
   children: ReactNode;
