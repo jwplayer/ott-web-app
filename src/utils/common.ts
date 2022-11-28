@@ -52,13 +52,13 @@ export function calculateContrastColor(color: string) {
 }
 
 // Build is either Development or Production
-// Mode can be dev, jwdev, demo, test, production, etc.
-export const IS_DEV_BUILD = import.meta.env.DEV;
+// Mode can be dev, jwdev, demo, test, prod, etc.
+export const IS_DEVELOPMENT_BUILD = import.meta.env.DEV;
 export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
 export const IS_TEST_MODE = import.meta.env.MODE === 'test';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
-  if (IS_DEV_BUILD && !IS_TEST_MODE) {
+  if (IS_DEVELOPMENT_BUILD && !IS_TEST_MODE) {
     if (optionalParams.length > 0) {
       console.info(message, optionalParams);
     } else {
@@ -68,7 +68,7 @@ export function logDev(message: unknown, ...optionalParams: unknown[]) {
 }
 
 export function getOverrideIP() {
-  if (!IS_TEST_MODE && !IS_DEV_BUILD) {
+  if (!IS_TEST_MODE && !IS_DEVELOPMENT_BUILD) {
     return undefined;
   }
 
@@ -80,5 +80,5 @@ export function getOverrideIP() {
 }
 
 export function testId(value: string | undefined) {
-  return IS_DEV_BUILD || IS_TEST_MODE ? value : undefined;
+  return IS_DEVELOPMENT_BUILD || IS_TEST_MODE ? value : undefined;
 }

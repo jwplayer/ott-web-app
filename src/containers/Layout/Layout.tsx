@@ -19,7 +19,7 @@ import MenuButton from '#components/MenuButton/MenuButton';
 import UserMenu from '#components/UserMenu/UserMenu';
 import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
 import { addQueryParam } from '#src/utils/location';
-import { IS_DEV_BUILD, IS_TEST_MODE } from '#src/utils/common';
+import { IS_DEVELOPMENT_BUILD, IS_TEST_MODE } from '#src/utils/common';
 import { addConfigQueryParam } from '#src/utils/configOverride';
 
 const Layout = () => {
@@ -151,7 +151,7 @@ const Layout = () => {
       {!!footerText && <MarkdownComponent className={styles.footer} markdownString={footerText} inline />}
 
       {/* Config select control to improve testing experience */}
-      {IS_DEV_BUILD && !IS_TEST_MODE && <DevConfigSelector />}
+      {IS_DEVELOPMENT_BUILD && !IS_TEST_MODE && <DevConfigSelector />}
     </div>
   );
 };
