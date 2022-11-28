@@ -12,7 +12,7 @@ type InputProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInp
 type TextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'id' | 'ref' | 'className'>;
 
 type InputOrTextAreaProps =
-  | ({ multiline?: false; inputRef?: RefObject<HTMLInputElement>; textAreaRef?: never } & InputProps)
+  | ({ multiline?: never; inputRef?: RefObject<HTMLInputElement>; textAreaRef?: never } & InputProps)
   | ({ multiline: true; inputRef?: never; textAreaRef?: RefObject<HTMLTextAreaElement> } & TextAreaProps);
 
 type Props = {
@@ -24,6 +24,7 @@ type Props = {
   error?: boolean;
   editing?: boolean;
   testId?: string;
+  multiline?: boolean;
 } & InputOrTextAreaProps;
 
 const TextField: React.FC<Props> = ({
@@ -37,13 +38,14 @@ const TextField: React.FC<Props> = ({
   testId,
   inputRef,
   textAreaRef,
+  multiline,
   ...inputProps
 }: Props) => {
   const id = useOpaqueId('text-field', inputProps.name);
   const { t } = useTranslation('common');
 
-  const isInputOrTextArea = (item: unknown): item is InputOrTextAreaProps => !!item && typeof item === 'object' && 'multiline' in item;
-  const isTextArea = (item: unknown): item is TextAreaProps => isInputOrTextArea(item) && !!item.multiline;
+  const isInputOrTextArea = (item: unknown): item is InputOrTextAreaProps => !!item && typeof item === 'object';
+  const isTextArea = (item: unknown): item is TextAreaProps => isInputOrTextArea(item) && !!multiline;
 
   const textFieldClassName = classNames(
     styles.textField,
