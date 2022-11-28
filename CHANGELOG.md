@@ -1,3 +1,12 @@
+## [2.7.1](https://github.com/jwplayer/ott-web-app/compare/v2.7.0...v2.7.1) (2022-11-28)
+
+
+### Bug Fixes
+
+* build improvements, code cleanup, small improvements, test fixes ([8891cee](https://github.com/jwplayer/ott-web-app/commit/8891cee95f425cba7a8e68fd3f1693a90eb65182))
+
+
+
 # [2.7.0](https://github.com/jwplayer/ott-web-app/compare/v2.6.2...v2.7.0) (2022-11-17)
 
 
