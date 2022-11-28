@@ -1,5 +1,5 @@
 import { LoginContext } from '#utils/password_utils';
-import constants from '#utils/constants';
+import constants, { longTimeout, normalTimeout } from '#utils/constants';
 import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '#utils/payments';
 import { testConfigs } from '#test/constants';
 
@@ -128,7 +128,7 @@ Scenario('I can open the PayPal site', async ({ I }) => {
   I.click('PayPal');
   I.click('Continue');
 
-  I.waitInUrl('paypal.com', 15);
+  I.waitInUrl('paypal.com', longTimeout);
   // I'm sorry, I don't know why, but this test ends in a way that causes the next test to fail
   I.amOnPage(constants.baseUrl);
 });
@@ -141,7 +141,7 @@ Scenario('I can finish my subscription', async ({ I }) => {
   I.see('Credit Card');
 
   // Adyen credit card form is loaded asynchronously, so wait for it
-  I.waitForElement('[class*=adyen-checkout__field--cardNumber]', 5);
+  I.waitForElement('[class*=adyen-checkout__field--cardNumber]', normalTimeout);
 
   // Each of the 3 credit card fields is a separate iframe
   I.switchTo('[class*="adyen-checkout__field--cardNumber"] iframe');

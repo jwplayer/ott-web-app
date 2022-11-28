@@ -24,7 +24,7 @@ Before(async ({ I }) => {
     I.fillField('lastName', lastName);
 
     I.click('Continue');
-    I.waitForLoaderDone(10);
+    I.waitForLoaderDone();
 
     I.clickCloseButton();
   });
@@ -255,7 +255,7 @@ Scenario('I can update my consents', async ({ I }) => {
   I.see('Cancel');
 
   I.click('Save');
-  I.waitForLoaderDone(5);
+  I.waitForLoaderDone();
 
   I.seeCheckboxIsChecked(consentCheckbox);
 });
@@ -303,7 +303,7 @@ function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string
   }
 
   I.click('Save');
-  I.waitForLoaderDone(10);
+  I.waitForLoaderDone();
 
   I.dontSee('Save');
   I.dontSee('Cancel');

@@ -1,4 +1,4 @@
-import constants from './constants';
+import constants, { longTimeout } from './constants';
 
 import { overrideIPCookieKey } from '#test/constants';
 
@@ -8,10 +8,10 @@ export async function goToCheckout(I: CodeceptJS.I) {
   await I.openMainMenu();
   I.click('Payments');
   I.click('Complete subscription');
-  I.waitForLoaderDone(10);
+  I.waitForLoaderDone();
 
   I.click('Continue');
-  I.waitForLoaderDone(10);
+  I.waitForLoaderDone();
 }
 
 export function formatPrice(price: number) {
@@ -37,7 +37,7 @@ export function formatDate(date: Date) {
 
 export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date) {
   I.click('Continue');
-  I.waitForLoaderDone(15);
+  I.waitForLoaderDone(longTimeout);
   I.waitForText('Welcome to JW OTT Web App (SVOD)');
   I.see('Thank you for subscribing to JW OTT Web App (SVOD). Please enjoy all our content.');
 
@@ -47,7 +47,7 @@ export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: D
 
   // It takes a few seconds for transactions to load, so try and refresh a few times
   for (let i = 0; i < 5; i++) {
-    I.waitForLoaderDone(10);
+    I.waitForLoaderDone();
 
     if ((await I.grabTextFrom('body')).indexOf(transactionText) >= 0) {
       break;
@@ -83,7 +83,7 @@ export function cancelPlan(I: CodeceptJS.I, expirationDate: Date) {
 
   I.click('Cancel subscription');
   I.click('Unsubscribe');
-  I.waitForLoaderDone(10);
+  I.waitForLoaderDone();
   I.see('Miss you already.');
   I.see('You have been successfully unsubscribed. Your current plan will expire on ' + formatDate(expirationDate));
   I.click('Return to profile');
@@ -109,7 +109,7 @@ export function renewPlan(I: CodeceptJS.I, billingDate: Date) {
   I.click('Renew subscription');
 
   I.click('Renew subscription', '[class*=_dialog]');
-  I.waitForLoaderDone(10);
+  I.waitForLoaderDone();
   I.see('Your subscription has been renewed');
   I.see(`You have been successfully resubscribed. Your fee will be ${yearlyPrice} starting from ${formatDate(billingDate)}`);
   I.click('Back to profile');

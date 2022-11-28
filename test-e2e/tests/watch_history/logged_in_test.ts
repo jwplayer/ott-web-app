@@ -1,4 +1,4 @@
-import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
 import { LoginContext } from '#utils/password_utils';
 import { testConfigs } from '#test/constants';
@@ -42,7 +42,7 @@ Scenario('I can get my watch history stored to my account after login', async ({
 
   await registerOrLogin(I);
   I.clickHome();
-  I.waitForText(constants.continueWatchingShelfTitle, 10);
+  I.waitForText(constants.continueWatchingShelfTitle, normalTimeout);
 
   await I.openVideoCard(videoTitle, ShelfId.allFilms);
   I.dontSee(constants.startWatchingButton);
