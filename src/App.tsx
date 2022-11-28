@@ -6,7 +6,7 @@ import '#src/screenMapping';
 import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';
 import Root from '#components/Root/Root';
-import ErrorPage from '#components/ErrorPage/ErrorPage';
+import { ErrorPageWithoutTranslation } from '#components/ErrorPage/ErrorPage';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 
@@ -31,8 +31,7 @@ export default function App() {
   if (i18nState.error) {
     // Don't be tempted to translate these strings. If i18n fails to load, translations won't work anyhow
     return (
-      <ErrorPage
-        disableFallbackTranslation={true}
+      <ErrorPageWithoutTranslation
         title={'Unable to load translations'}
         message={'Check your language settings and try again later. If the problem persists contact technical support.'}
         error={i18nState.error}

@@ -28,10 +28,11 @@
     line-height: 18px;
   }
 
-  a {
-    color: theme.$text-field-resting-color;
+  a, a:visited, a:hover, a:active {
+    color: inherit;
     font-weight: var(--body-font-weight-bold);
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 

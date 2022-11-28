@@ -13,6 +13,7 @@ import Link from '#components/Link/Link';
 import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import type { Config } from '#types/Config';
+import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
 
 const fallbackConfig = import.meta.env.APP_DEMO_FALLBACK_CONFIG_ID;
 
@@ -23,7 +24,7 @@ interface Props {
 
 interface State {
   configSource: string | undefined;
-  error: string | undefined;
+  error: Error | undefined;
   showDialog: boolean;
   loaded: boolean;
 }
@@ -69,7 +70,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
 
     // If there's an error after loading is done, grab it to display it to the user
     if (configQuery.error) {
-      setState((s) => ({ ...s, showDialog: false, error: (configQuery.error as Error)?.message }));
+      setState((s) => ({ ...s, showDialog: false, error: configQuery.error as Error }));
     }
   }, [selectedConfigSource, configQuery.error, configQuery.isLoading]);
 
@@ -126,7 +127,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
       )}
       {!configQuery.isSuccess && (
         <div className={styles.configModal}>
-          <ErrorPage title={t('app_config_not_found')} helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'}>
+          <ErrorPage title={t('app_config_not_found')} helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'} error={state.error}>
             <form method={'GET'} target={'/'}>
               <TextField
                 required
@@ -137,7 +138,13 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
                 name={'app-config'}
                 autoCapitalize={'none'}
                 error={!!state.error}
-                helperText={state.error}
+                helperText={
+                  <span>
+                    {state.error?.message}
+                    <br />
+                    <DevStackTrace error={state.error} />
+                  </span>
+                }
                 onChange={onChange}
               />
               <div className={styles.controls}>

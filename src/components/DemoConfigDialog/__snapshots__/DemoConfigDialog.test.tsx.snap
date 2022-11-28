@@ -28,6 +28,11 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
       <div
         class="_box_8c5621"
       >
+        <img
+          alt="JWP"
+          class="_logo_8c5621"
+          src="images/logo.png"
+        />
         <header>
           <h1
             class="_title_8c5621"
@@ -63,6 +68,13 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                   value="aaaaaaaa"
                 />
               </div>
+              <div
+                class="_helperText_da58e0"
+              >
+                <span>
+                  <br />
+                </span>
+              </div>
             </div>
             <div
               class="_controls_561a54"
@@ -85,7 +97,6 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           </p>
           <p>
             <a
-              class="_link_a14c64"
               href="https://docs.jwplayer.com/platform/docs/ott-create-an-app-config"
               rel="noreferrer"
               target="_blank"
