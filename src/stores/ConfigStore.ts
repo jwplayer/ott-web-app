@@ -9,10 +9,17 @@ type CleengData = {
   yearlyOfferId: string;
 };
 
+type InPlayerData = {
+  inplayerId: string | null | undefined;
+  inplayerSandbox: boolean;
+  inplayerAssetId: number | null | undefined;
+};
+
 type ConfigState = {
   config: Config;
   accessModel: AccessModel;
   getCleengData: () => CleengData;
+  getInPlayerData: () => InPlayerData;
 };
 
 export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) => ({
@@ -26,6 +33,11 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     menu: [],
     integrations: {
       cleeng: {
+        useSandbox: true,
+      },
+      inplayer: {
+        clientId: null,
+        assetId: null,
         useSandbox: true,
       },
     },
@@ -44,5 +56,14 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     const yearlyOfferId = cleeng?.yearlyOffer || '';
 
     return { cleengId, cleengSandbox, monthlyOfferId, yearlyOfferId };
+  },
+  getInPlayerData: (): InPlayerData => {
+    const inplayer = get().config?.integrations?.inplayer;
+
+    const inplayerId = inplayer?.clientId;
+    const inplayerSandbox = !!inplayer?.useSandbox;
+    const inplayerAssetId = inplayer?.assetId;
+
+    return { inplayerId, inplayerSandbox, inplayerAssetId };
   },
 }));

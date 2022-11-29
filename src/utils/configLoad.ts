@@ -24,6 +24,11 @@ const defaultConfig: Config = {
       id: null,
       useSandbox: true,
     },
+    inplayer: {
+      clientId: null,
+      assetId: null,
+      useSandbox: true,
+    },
   },
   styling: {
     footerText: '',
@@ -59,10 +64,19 @@ const maybeInjectAnalyticsLibrary = (config: Config) => {
 };
 
 const calculateAccessModel = (config: Config): AccessModel => {
-  const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
+  if (config?.integrations?.cleeng) {
+    const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
 
-  if (!id) return 'AVOD';
-  if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+    if (!id) return 'AVOD';
+    if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+  }
+
+  if (config?.integrations?.inplayer) {
+    const { clientId, assetId } = config?.integrations?.inplayer || {};
+
+    if (!clientId) return 'AVOD';
+    if (!assetId) return 'AUTHVOD';
+  }
   return 'SVOD';
 };
 
