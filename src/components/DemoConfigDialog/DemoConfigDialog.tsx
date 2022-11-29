@@ -142,6 +142,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
                   <span>
                     {state.error?.message}
                     <br />
+                    <br />
                     <DevStackTrace error={state.error} />
                   </span>
                 }

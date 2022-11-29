@@ -73,6 +73,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               >
                 <span>
                   <br />
+                  <br />
                 </span>
               </div>
             </div>
@@ -95,7 +96,9 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           <p>
             demo_note
           </p>
-          <p>
+          <p
+            class="_links_8c5621"
+          >
             <a
               href="https://docs.jwplayer.com/platform/docs/ott-create-an-app-config"
               rel="noreferrer"

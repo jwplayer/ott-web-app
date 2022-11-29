@@ -41,19 +41,19 @@ export const ErrorPageWithoutTranslation = ({ title, children, message, learnMor
           <>
             {children || <p>{message || 'Try refreshing this page or come back later.'}</p>}
             {(IS_DEVELOPMENT_BUILD || IS_DEMO_MODE) && helpLink && (
-              <p>
+              <p className={styles.links}>
                 <a href={helpLink} target={'_blank'} rel={'noreferrer'}>
                   {learnMoreLabel || 'Learn More'}
                 </a>
+                {IS_DEVELOPMENT_BUILD && error?.stack && (
+                  <span className={styles.stack}>
+                    <DevStackTrace error={error} />
+                  </span>
+                )}
               </p>
             )}
           </>
         </main>
-        {IS_DEVELOPMENT_BUILD && error?.stack && (
-          <p>
-            <DevStackTrace error={error} />
-          </p>
-        )}
       </div>
     </div>
   );

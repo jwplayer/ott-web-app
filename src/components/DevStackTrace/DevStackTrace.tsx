@@ -19,9 +19,11 @@ export default function DevStackTrace({ error }: { error: Error | undefined }) {
       {open && (
         <>
           <br />
-          <p className={styles.nowrap}>
+          <p>
             {error?.stack?.split('/n').map((line, index) => (
-              <div key={index}>{line}</div>
+              <div className={styles.stack} key={index}>
+                {line}
+              </div>
             ))}
           </p>
         </>
