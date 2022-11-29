@@ -7,7 +7,6 @@ import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';
 import Root from '#components/Root/Root';
 import { ErrorPageWithoutTranslation } from '#components/ErrorPage/ErrorPage';
-import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 
 interface State {
@@ -44,9 +43,7 @@ export default function App() {
   return (
     <QueryProvider>
       <Router>
-        <Root>
-          <AppRoutes />
-        </Root>
+        <Root />
       </Router>
     </QueryProvider>
   );

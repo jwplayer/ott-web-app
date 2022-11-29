@@ -12,12 +12,9 @@ import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
 import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
+import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 
-export interface Props {
-  children: React.ReactElement;
-}
-
-const Root: FC<Props> = ({ children }: Props) => {
+const Root: FC = () => {
   const { t } = useTranslation('error');
 
   const settingsQuery = useQuery('settings-init', initSettings, {
@@ -61,7 +58,7 @@ const Root: FC<Props> = ({ children }: Props) => {
 
   return (
     <>
-      {!configQuery.isError && !configQuery.isLoading && children}
+      {!configQuery.isError && !configQuery.isLoading && <AppRoutes />}
       {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
       {configQuery.isError && !IS_DEMO_MODE && (
         <ErrorPage
