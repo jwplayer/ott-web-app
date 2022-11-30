@@ -19,17 +19,7 @@ const defaultConfig: Config = {
   },
   content: [],
   menu: [],
-  integrations: {
-    cleeng: {
-      id: null,
-      useSandbox: true,
-    },
-    inplayer: {
-      clientId: null,
-      assetId: null,
-      useSandbox: true,
-    },
-  },
+  integrations: {},
   styling: {
     footerText: '',
     shelfTitles: true,

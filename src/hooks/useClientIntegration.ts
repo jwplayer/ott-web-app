@@ -11,13 +11,14 @@ const useClientIntegration = () => {
   } = useConfigStore.getState();
 
   const isInPlayer = !!integrations?.inplayer?.clientId;
-  const clientName = isInPlayer ? ClientIntegrations.INPLAYER : ClientIntegrations.CLEENG;
+  const client = isInPlayer ? ClientIntegrations.INPLAYER : ClientIntegrations.CLEENG;
   const clientId = isInPlayer ? integrations?.inplayer?.clientId : integrations?.cleeng?.id;
 
   // TODO: More data will follow. Example: access fees will be fetched and returned once user is auth.
   return {
-    clientName,
-    clientId,
+    integration: integrations,
+    client,
+    clientId: clientId,
   };
 };
 

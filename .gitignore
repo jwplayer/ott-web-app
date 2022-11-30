@@ -13,3 +13,6 @@ firebase-debug.log
 .idea
 .DS_Store
 .vscode/
+
+# env dev
+.env.dev

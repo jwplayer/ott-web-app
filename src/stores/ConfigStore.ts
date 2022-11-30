@@ -10,9 +10,9 @@ type CleengData = {
 };
 
 type InPlayerData = {
-  inplayerId: string | null | undefined;
-  inplayerSandbox: boolean;
-  inplayerAssetId: number | null | undefined;
+  clientId: string | null | undefined;
+  sandbox: boolean;
+  assetId: number | null | undefined;
 };
 
 type ConfigState = {
@@ -60,10 +60,10 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
   getInPlayerData: (): InPlayerData => {
     const inplayer = get().config?.integrations?.inplayer;
 
-    const inplayerId = inplayer?.clientId;
-    const inplayerSandbox = !!inplayer?.useSandbox;
-    const inplayerAssetId = inplayer?.assetId;
+    const clientId = inplayer?.clientId;
+    const sandbox = !!inplayer?.useSandbox;
+    const assetId = inplayer?.assetId;
 
-    return { inplayerId, inplayerSandbox, inplayerAssetId };
+    return { clientId, sandbox, assetId };
   },
 }));

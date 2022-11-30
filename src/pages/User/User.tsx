@@ -25,6 +25,8 @@ import Favorites from '#components/Favorites/Favorites';
 import type { PlaylistItem } from '#types/playlist';
 import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
+import useClientIntegration, { ClientIntegrations } from '#src/hooks/useClientIntegration';
+import { inPlayerLogout } from '#src/stores/inplayer/AccountController';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList, shelfTitles } = useConfigStore(
@@ -42,6 +44,8 @@ const User = (): JSX.Element => {
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
   const { user: customer, subscription, transactions, activePayment, loading } = useAccountStore();
+  const { client } = useClientIntegration();
+  const logoutUser = client === ClientIntegrations.INPLAYER ? inPlayerLogout : logout;
 
   const updateBlurImage = useBlurImageUpdater();
 
@@ -49,8 +53,8 @@ const User = (): JSX.Element => {
   const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
-    await logout();
-  }, []);
+    await logoutUser();
+  }, [logoutUser]);
 
   useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
