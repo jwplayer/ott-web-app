@@ -21,9 +21,9 @@ export default function DevStackTrace({ error }: { error: Error | undefined }) {
           <br />
           <p>
             {error?.stack?.split('/n').map((line, index) => (
-              <div className={styles.stack} key={index}>
+              <span className={styles.stack} key={index}>
                 {line}
-              </div>
+              </span>
             ))}
           </p>
         </>

@@ -29,9 +29,9 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
         class="_box_8c5621"
       >
         <img
-          alt="JWP"
-          class="_logo_8c5621"
-          src="images/logo.png"
+          alt="Logo"
+          class="_image_8c5621"
+          src="/images/logo.png"
         />
         <header>
           <h1

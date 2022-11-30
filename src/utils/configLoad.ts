@@ -77,14 +77,22 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
   }
 
   let config = await loadConfig(configSource);
-
-  config = await validateConfig(config);
-  config = merge({}, defaultConfig, config);
+  config.assets = config.assets || {};
 
   // make sure the banner always defaults to the JWP banner when not defined in the config
   if (!config.assets.banner) {
     config.assets.banner = defaultConfig.assets.banner;
   }
+
+  // Store the logo right away and set css variables so the error page will be branded
+  useConfigStore.setState((s) => {
+    s.config.assets.banner = config.assets.banner;
+  });
+
+  setCssVariables(config.styling || {});
+
+  config = await validateConfig(config);
+  config = merge({}, defaultConfig, config);
 
   const accessModel = calculateAccessModel(config);
 
@@ -93,7 +101,6 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
     accessModel,
   });
 
-  setCssVariables(config.styling);
   maybeInjectAnalyticsLibrary(config);
 
   if (config?.integrations?.cleeng?.id) {
