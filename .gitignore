@@ -14,5 +14,5 @@ firebase-debug.log
 .DS_Store
 .vscode/
 
-# env dev
+# env
 .env.dev

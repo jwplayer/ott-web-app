@@ -41,6 +41,7 @@ class App extends Component {
     }
 
     if (config?.integrations?.inplayer?.clientId) {
+      // this is temporary until the config is loaded from jw side
       InPlayer.setConfig(import.meta.env.APP_INPLAYER_SDK);
       await initializeInPlayerAccount();
     }
