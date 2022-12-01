@@ -15,6 +15,7 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import type { Config } from '#types/Config';
 import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
 
+const regex = /^[a-z,\d]{0,8}$/g;
 const fallbackConfig = import.meta.env.APP_DEMO_FALLBACK_CONFIG_ID;
 
 interface Props {
@@ -24,7 +25,7 @@ interface Props {
 
 interface State {
   configSource: string | undefined;
-  error: Error | undefined;
+  error: string | Error | undefined;
   showDialog: boolean;
   loaded: boolean;
 }
@@ -79,14 +80,32 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
     navigateCallback('');
   };
 
+  const isValidSource = (configSource: string) => configSource.match(regex)?.some((m) => m === configSource);
+
   const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setState((s) => ({ ...s, configSource: event.target.value, error: undefined }));
+    setState((s) => ({
+      ...s,
+      configSource: event.target.value,
+      error: isValidSource(event.target.value || '') ? undefined : t('invalid_config_id_format'),
+    }));
   };
 
   const submitClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
 
-    await configNavigate(state.configSource);
+    let error: string = '';
+
+    if (state.configSource?.length !== 8) {
+      error = t('enter_8_digits');
+    } else if (!isValidSource(state.configSource)) {
+      error = t('invalid_config_id_format');
+    }
+
+    if (error) {
+      setState((s) => ({ ...s, error: error }));
+    } else {
+      await configNavigate(state.configSource);
+    }
   };
 
   const cancelConfigClick: MouseEventHandler<HTMLButtonElement> = (event) => {
@@ -127,24 +146,31 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
       )}
       {!configQuery.isSuccess && (
         <div className={styles.configModal}>
-          <ErrorPage title={t('app_config_not_found')} helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'} error={state.error}>
+          <ErrorPage
+            title={t('app_config_not_found')}
+            helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'}
+            error={typeof state.error === 'string' ? undefined : state.error}
+          >
             <form method={'GET'} target={'/'}>
               <TextField
                 required
                 disabled={configQuery.isLoading}
                 className={styles.maxWidth}
+                maxLength={8}
                 value={state.configSource || ''}
                 placeholder={t('please_enter_config_id')}
                 name={'app-config'}
                 autoCapitalize={'none'}
                 error={!!state.error}
                 helperText={
-                  <span>
-                    {state.error?.message}
-                    <br />
-                    <br />
-                    <DevStackTrace error={state.error} />
-                  </span>
+                  state.error && (
+                    <span>
+                      {typeof state.error === 'string' ? state.error : state.error?.message}
+                      <br />
+                      <br />
+                      <DevStackTrace error={typeof state.error === 'string' ? undefined : state.error} />
+                    </span>
+                  )
                 }
                 onChange={onChange}
               />

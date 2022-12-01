@@ -61,20 +61,13 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                   autocapitalize="none"
                   class="_input_e16c1b"
                   id="text-field_1235_app-config"
+                  maxlength="8"
                   name="app-config"
                   placeholder="please_enter_config_id"
                   required=""
                   type="text"
                   value="aaaaaaaa"
                 />
-              </div>
-              <div
-                class="_helperText_da58e0"
-              >
-                <span>
-                  <br />
-                  <br />
-                </span>
               </div>
             </div>
             <div
