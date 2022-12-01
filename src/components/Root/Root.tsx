@@ -51,7 +51,7 @@ const Root: FC = () => {
         title={t('settings_invalid')}
         message={t('check_your_settings')}
         error={settingsQuery.error as Error}
-        helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/settings.md'}
+        helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/initialization-file.md'}
       />
     );
   }

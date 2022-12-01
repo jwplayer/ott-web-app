@@ -9,11 +9,12 @@ If a file doesn't exist in /ini/.webapp.<mode>.ini, then the template file will 
 All of the .ini files inside of /ini are ignored in git, so you can create your own files locally to run the application with your account parameters without creating conflicts with committed code or leaking your details into source control.
 
 ## Ini Parameters
->
+
 ### defaultConfigSource
 
 The 8 character ID of the app config from your JWP account (or the url path) that the web app will use to load its content. Be careful to ensure that this config is always available or your app will fail to load.
 
+> Note: you probably always want to include a default config source for any production deployment. If there are no valid config sources the application will throw an error at startup. 
 ### additionalAllowedConfigSources[]
 
 An array of of 8-character IDs (entered 1 per line) for app configs in your JWP account (or url paths) that can be used with the [`app-config=<config source>` query param](configuration.md#switching-between-app-configs).
