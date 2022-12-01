@@ -24,7 +24,7 @@ export interface FormSectionProps<TData extends GenericFormValues, TErrors> {
   saveButton?: string;
   cancelButton?: string;
   canSave?: (values: TData) => boolean;
-  onSubmit?: (values: TData) => Promise<{ errors?: string[] }> | void;
+  onSubmit?: (values: TData) => Promise<{ errors?: string[] }> | Promise<void> | void;
   content: (args: FormSectionContentArgs<TData, TErrors>) => ReactNode;
   children?: never;
 }

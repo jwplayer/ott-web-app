@@ -1,6 +1,6 @@
 import InPlayer, { Env } from '@inplayer-org/inplayer.js';
 
-import type { AuthData, Customer, Login } from '#types/account';
+import type { AuthData, Customer, Login, UpdateCustomer } from '#types/account';
 import { processInplayerAccount, processInPlayerAuth } from '#src/utils/common';
 import type { Config } from '#types/Config';
 
@@ -51,3 +51,24 @@ export const getUser = async (): Promise<Customer> => {
 };
 
 export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
+
+export const updateCustomer: UpdateCustomer = async (values) => {
+  try {
+    const response = await InPlayer.Account.updateAccount({
+      fullName: `${values.firstName} ${values.lastName}`,
+      metadata: {
+        first_name: values.firstName as string,
+        last_name: values.lastName as string,
+      },
+    });
+
+    return {
+      errors: [],
+      // @ts-ignore
+      // wrong data type from InPlayer SDK
+      responseData: processInplayerAccount(response.data),
+    };
+  } catch {
+    throw new Error('Failed to fetch user data.');
+  }
+};

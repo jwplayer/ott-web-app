@@ -99,23 +99,25 @@ export const initializeAccount = async () => {
 };
 
 export async function updateUser(values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string }) {
-  const { auth, user } = useAccountStore.getState();
+  await withAccountService(async ({ accountService, sandbox }) => {
+    useAccountStore.setState({ loading: true });
 
-  if (!auth || !user) throw new Error('no auth');
+    const { auth, user } = useAccountStore.getState();
 
-  const { cleengSandbox } = useConfigStore.getState().getCleengData();
+    if (!auth || !user) throw new Error('no auth');
 
-  const response = await cleengAccountService.updateCustomer({ ...values, id: user.id.toString() }, cleengSandbox, auth.jwt);
+    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
 
-  if (!response) {
-    return { errors: Array.of('Unknown error') };
-  }
+    if (!response) {
+      return { errors: Array.of('Unknown error') };
+    }
 
-  if (response.errors?.length === 0) {
-    useAccountStore.setState({ user: response.responseData });
-  }
+    if (response.errors?.length === 0) {
+      useAccountStore.setState({ user: response.responseData });
+    }
 
-  return response;
+    return response;
+  });
 }
 
 export const refreshJwtToken = async (auth: AuthData) => {
@@ -451,16 +453,21 @@ function useLoginContext<T>(callback: (args: { cleengId: string; cleengSandbox: 
 }
 
 function withAccountService<T>(
-  callback: (args: { accountService: typeof inplayerAccountService | typeof cleengAccountService; config: Config; accessModel: AccessModel }) => T,
+  callback: (args: {
+    accountService: typeof inplayerAccountService | typeof cleengAccountService;
+    config: Config;
+    accessModel: AccessModel;
+    sandbox: boolean;
+  }) => T,
 ): T {
   const { config, accessModel } = useConfigStore.getState();
 
   const { cleeng, inplayer } = config.integrations;
 
   if (inplayer?.clientId) {
-    return callback({ accountService: inplayerAccountService, config, accessModel });
+    return callback({ accountService: inplayerAccountService, config, accessModel, sandbox: !!inplayer.useSandbox });
   } else if (cleeng?.id) {
-    return callback({ accountService: cleengAccountService, config, accessModel });
+    return callback({ accountService: cleengAccountService, config, accessModel, sandbox: !!cleeng.useSandbox });
   }
 
   throw new Error('No account service available');
