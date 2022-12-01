@@ -5,24 +5,20 @@ import { useLocation, useNavigate } from 'react-router';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import useClientIntegration, { ClientIntegrations } from '#src/hooks/useClientIntegration';
 import LoginForm from '#components/LoginForm/LoginForm';
 import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
-import { inplayerLogin } from '#src/stores/inplayer/AccountController';
 
 const Login = () => {
   const { siteName } = useConfigStore((s) => s.config);
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
-  const { client } = useClientIntegration();
-  const loginUser = client === ClientIntegrations.INPLAYER ? inplayerLogin : login;
 
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
-      await loginUser(formData.email, formData.password);
+      await login(formData.email, formData.password);
 
       // close modal
       navigate(removeQueryParam(location, 'u'));

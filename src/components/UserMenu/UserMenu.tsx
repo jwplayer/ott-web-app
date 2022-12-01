@@ -11,8 +11,6 @@ import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
-import useClientIntegration, { ClientIntegrations } from '#src/hooks/useClientIntegration';
-import { inPlayerLogout } from '#src/stores/inplayer/AccountController';
 
 type Props = {
   inPopover?: boolean;
@@ -23,17 +21,15 @@ type Props = {
 const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
-  const { client } = useClientIntegration();
-  const logoutUser = client === ClientIntegrations.INPLAYER ? inPlayerLogout : logout;
 
   const onLogout = useCallback(async () => {
     if (onClick) {
       onClick();
     }
 
-    await logoutUser();
+    await logout();
     navigate('/', { replace: true });
-  }, [onClick, navigate, logoutUser]);
+  }, [onClick, navigate]);
 
   const menuItems = (
     <ul className={styles.menuItems}>

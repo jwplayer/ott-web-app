@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { getI18n, I18nextProvider } from 'react-i18next';
-import InPlayer from '@inplayer-org/inplayer.js';
-
-import { initializeInPlayerAccount } from './stores/inplayer/AccountController';
 
 import type { Config } from '#types/Config';
 import Router from '#src/containers/Router/Router';
@@ -36,14 +33,8 @@ class App extends Component {
   }
 
   async initializeServices(config: Config) {
-    if (config?.integrations?.cleeng?.id) {
+    if (config?.integrations) {
       await initializeAccount();
-    }
-
-    if (config?.integrations?.inplayer?.clientId) {
-      // this is temporary until the config is loaded from jw side
-      InPlayer.setConfig(import.meta.env.APP_INPLAYER_SDK);
-      await initializeInPlayerAccount();
     }
 
     // We only request favorites and continue_watching data if there is a corresponding item in the content section

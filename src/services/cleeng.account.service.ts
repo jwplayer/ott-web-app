@@ -23,6 +23,8 @@ import type {
 } from '#types/account';
 import type { Config } from '#types/Config';
 
+export const setEnvironment = () => true;
+
 export const login: Login = async ({ config, email, password }) => {
   const payload: LoginPayload = {
     email,
@@ -41,7 +43,9 @@ export const login: Login = async ({ config, email, password }) => {
   };
 };
 
-async function getUser({ config, auth }: { config: Config; auth: AuthData }) {
+export const logout = async () => true;
+
+export async function getUser({ config, auth }: { config: Config; auth: AuthData }) {
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
   const customerId = decodedToken.customerId;
   const { responseData: user, errors } = await getCustomer({ customerId }, !!config.integrations.cleeng?.useSandbox, auth.jwt);
@@ -50,6 +54,14 @@ async function getUser({ config, auth }: { config: Config; auth: AuthData }) {
 
   return user;
 }
+
+export const getFreshJwtToken = async ({ config, auth }: { config: Config; auth: AuthData }) => {
+  const result = await refreshToken({ refreshToken: auth.refreshToken }, !!config.integrations.cleeng?.useSandbox);
+
+  if (result.errors.length) throw new Error(result.errors[0]);
+
+  return result?.responseData;
+};
 
 export const register: Register = async (payload, sandbox) => {
   payload.customerIP = getOverrideIP();

@@ -31,12 +31,13 @@ export const authNeedsRefresh = (auth: AuthData): boolean => {
 
 export const setJwtRefreshTimeout = () => {
   const auth = useAccountStore.getState().auth;
-  const { cleengSandbox } = useConfigStore.getState().getCleengData();
+
+  if (!auth?.refreshToken) return;
 
   window.clearTimeout(refreshTimeout);
 
   if (auth && !document.hidden) {
-    refreshTimeout = window.setTimeout(() => refreshJwtToken(cleengSandbox, auth), 60 * 5 * 1000);
+    refreshTimeout = window.setTimeout(() => refreshJwtToken(auth), 60 * 5 * 1000);
   }
 };
 
@@ -45,60 +46,56 @@ export const handleVisibilityChange = () => {
 
   // document is visible again, test if we need to renew the token
   const auth = useAccountStore.getState().auth;
-  const { cleengSandbox } = useConfigStore.getState().getCleengData();
 
-  // user is not logged in
-  if (!auth) return;
+  // user is not logged in or refresh token is missing
+  if (!auth || !auth?.refreshToken) return;
 
   // refresh the jwt token if needed. This starts the timeout as well after receiving the refreshed tokens.
-  if (authNeedsRefresh(auth)) return refreshJwtToken(cleengSandbox, auth);
+  if (authNeedsRefresh(auth)) return refreshJwtToken(auth);
 
   // make sure to start the timeout again since we've cleared it when the document was hidden.
   setJwtRefreshTimeout();
 };
 
 export const initializeAccount = async () => {
-  const { cleengId, cleengSandbox } = useConfigStore.getState().getCleengData();
+  await withAccountService(async ({ accountService, config }) => {
+    useAccountStore.setState({ loading: true });
+    accountService.setEnvironment(config);
 
-  if (!cleengId) {
-    useAccountStore.getState().setLoading(false);
-    return;
-  }
+    const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
 
-  const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
-
-  // clear previous subscribe (for dev environment only)
-  if (subscription) {
-    subscription();
-  }
-
-  document.removeEventListener('visibilitychange', handleVisibilityChange);
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-
-  subscription = useAccountStore.subscribe(
-    (state) => state.auth,
-    (authData) => {
-      setJwtRefreshTimeout();
-      persist.setItem(PERSIST_KEY_ACCOUNT, authData);
-    },
-  );
-
-  // restore session from localStorage
-  try {
-    if (storedSession) {
-      const refreshedAuthData = await getFreshJwtToken(cleengSandbox, storedSession);
-
-      if (refreshedAuthData) {
-        await afterLogin(cleengSandbox, refreshedAuthData);
-        await restoreWatchHistory();
-        await restoreFavorites();
-      }
+    // clear previous subscribe (for dev environment only)
+    if (subscription) {
+      subscription();
     }
-  } catch (error: unknown) {
-    await logout();
-  }
 
-  useAccountStore.setState({ loading: false });
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    subscription = useAccountStore.subscribe(
+      (state) => state.auth,
+      (authData) => {
+        setJwtRefreshTimeout();
+        persist.setItem(PERSIST_KEY_ACCOUNT, authData);
+      },
+    );
+
+    // restore session from localStorage
+    try {
+      if (storedSession) {
+        const refreshedAuthData = await accountService.getFreshJwtToken({ config, auth: storedSession });
+        if (refreshedAuthData) {
+          await getAccount(refreshedAuthData);
+          await restoreWatchHistory();
+          await restoreFavorites();
+        }
+      }
+    } catch (error: unknown) {
+      await logout();
+    }
+
+    useAccountStore.setState({ loading: false });
+  });
 };
 
 export async function updateUser(values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string }) {
@@ -121,17 +118,10 @@ export async function updateUser(values: { firstName: string; lastName: string }
   return response;
 }
 
-const getFreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
-  const result = await cleengAccountService.refreshToken({ refreshToken: auth.refreshToken }, sandbox);
-
-  if (result.errors.length) throw new Error(result.errors[0]);
-
-  return result?.responseData;
-};
-
-const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
+export const refreshJwtToken = async (auth: AuthData) => {
   try {
-    const authData = await getFreshJwtToken(sandbox, auth);
+    const { config } = useConfigStore.getState();
+    const authData = await cleengAccountService.getFreshJwtToken({ config, auth });
 
     if (authData) {
       useAccountStore.setState((s) => ({ auth: { ...s.auth, ...authData } }));
@@ -142,22 +132,19 @@ const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
   }
 };
 
-export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
-  const { accessModel } = useConfigStore.getState();
-  const decodedToken: JwtDetails = jwtDecode(auth.jwt);
-  const customerId = decodedToken.customerId;
-  const response = await cleengAccountService.getCustomer({ customerId }, sandbox, auth.jwt);
+export const getAccount = async (auth: AuthData) => {
+  await withAccountService(async ({ accountService, config, accessModel }) => {
+    const response = await accountService.getUser({ config, auth });
 
-  if (response.errors.length) throw new Error(response.errors[0]);
+    useAccountStore.setState({
+      auth: auth,
+      user: response,
+    });
 
-  useAccountStore.setState({
-    auth: auth,
-    user: response.responseData,
+    await getAccountExtras(accessModel);
+
+    useAccountStore.setState({ loading: false });
   });
-
-  await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getCustomerConsents(), getPublisherConsents()]);
-
-  useAccountStore.setState({ loading: false });
 };
 
 export const login = async (email: string, password: string) => {
@@ -171,33 +158,35 @@ export const login = async (email: string, password: string) => {
       user: response.user,
     });
 
-    await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getCustomerConsents(), getPublisherConsents()]);
-
-    useAccountStore.setState({ loading: false });
+    await getAccountExtras(accessModel);
 
     await restoreFavorites();
     await restoreWatchHistory();
+    useAccountStore.setState({ loading: false });
   });
 };
 
 export const logout = async () => {
-  persist.removeItem(PERSIST_KEY_ACCOUNT);
+  await withAccountService(async ({ accountService }) => {
+    persist.removeItem(PERSIST_KEY_ACCOUNT);
 
-  // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-  await queryClient.invalidateQueries('entitlements');
+    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
+    await queryClient.invalidateQueries('entitlements');
 
-  useAccountStore.setState({
-    auth: null,
-    user: null,
-    subscription: null,
-    transactions: null,
-    activePayment: null,
-    customerConsents: null,
-    publisherConsents: null,
+    useAccountStore.setState({
+      auth: null,
+      user: null,
+      subscription: null,
+      transactions: null,
+      activePayment: null,
+      customerConsents: null,
+      publisherConsents: null,
+    });
+
+    await restoreFavorites();
+    await restoreWatchHistory();
+    await accountService.logout();
   });
-
-  await restoreFavorites();
-  await restoreWatchHistory();
 };
 
 export const register = async (email: string, password: string) => {
@@ -220,7 +209,7 @@ export const register = async (email: string, password: string) => {
 
     if (responseRegister.errors.length) throw new Error(responseRegister.errors[0]);
 
-    await afterLogin(cleengSandbox, responseRegister.responseData);
+    await getAccount(responseRegister.responseData);
 
     await updatePersonalShelves();
   });
@@ -307,7 +296,7 @@ export const updateCaptureAnswers = async (capture: Capture) => {
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
     // @todo why is this needed?
-    await afterLogin(cleengSandbox, auth);
+    await getAccount(auth);
 
     return response.responseData;
   });
@@ -415,6 +404,10 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
   }
 
   return getMediaByWatchlist(watchlistId, mediaIds);
+}
+
+async function getAccountExtras(accessModel: string) {
+  return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getCustomerConsents(), getPublisherConsents()]);
 }
 
 async function getActiveSubscription({ cleengSandbox, customerId, jwt }: { cleengSandbox: boolean; customerId: string; jwt: string }) {
