@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -6,13 +7,24 @@ import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { Target, viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default ({ mode, command }: { mode: string; command: string }) => {
   // Shorten default mode names to dev / prod
   // Also differentiates from build type (production / development)
   mode = mode === 'development' ? 'dev' : mode;
   mode = mode === 'production' ? 'prod' : mode;
+
+  const localFile = `ini/.webapp.${mode}.ini`;
+  const templateFile = `ini/templates/.webapp.${mode}.ini`;
+
+  // The build ONLY uses .ini files in /ini to include in the build output.
+  // All .ini files in the directory are git ignored to customer specific values out of source control.
+  // However, this script will automatically create a .ini file for the current mode if it doesn't exist
+  // by copying the corresponding mode file from the ini/templates directory.
+  if (!fs.existsSync(localFile) && fs.existsSync(templateFile)) {
+    fs.copyFileSync(templateFile, localFile);
+  }
 
   // Make sure to builds are always production type,
   // otherwise modes other than 'production' get built in dev
@@ -30,19 +42,27 @@ export default ({ mode, command }: { mode: string; command: string }) => {
     }),
   ];
 
+  const fileCopyTargets: Target[] = [
+    {
+      src: localFile,
+      dest: '',
+      rename: '.webapp.ini',
+    },
+  ];
+
   // These files are only needed in dev / test / demo, so don't include in prod builds
   if (mode !== 'prod') {
-    plugins.push(
-      viteStaticCopy({
-        targets: [
-          {
-            src: 'test/epg/*',
-            dest: 'epg',
-          },
-        ],
-      }),
-    );
+    fileCopyTargets.push({
+      src: 'test/epg/*',
+      dest: 'epg',
+    });
   }
+
+  plugins.push(
+    viteStaticCopy({
+      targets: fileCopyTargets,
+    }),
+  );
 
   return defineConfig({
     plugins: plugins,

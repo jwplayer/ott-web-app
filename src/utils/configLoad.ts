@@ -1,11 +1,14 @@
 import merge from 'lodash.merge';
 
 import { calculateContrastColor } from '#src/utils/common';
-import { getConfigLocation } from '#src/utils/configOverride';
 import loadConfig, { validateConfig } from '#src/services/config.service';
 import { addScript } from '#src/utils/dom';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { AccessModel, Config, Styling } from '#types/Config';
+import { initializeAccount } from '#src/stores/AccountController';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
+import { initializeFavorites } from '#src/stores/FavoritesController';
 
 const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
 
@@ -66,52 +69,56 @@ const calculateAccessModel = (config: Config): AccessModel => {
   return 'SVOD';
 };
 
-export const loadAndValidateConfig = async (
-  onLoading: (isLoading: boolean) => void,
-  onValidationError: (error: Error) => void,
-  onValidationCompleted: (config: Config) => Promise<void>,
-) => {
-  onLoading(true);
+export async function loadAndValidateConfig(configSource: string | undefined) {
+  configSource = formatSourceLocation(configSource);
 
-  try {
-    const configLocation = formatSourceLocation(getConfigLocation());
-
-    if (!configLocation) {
-      onValidationError(new Error('Config not defined'));
-      return;
-    }
-
-    let config = await loadConfig(configLocation);
-
-    if (!config) {
-      return;
-    }
-
-    config = await validateConfig(config);
-    config = merge({}, defaultConfig, config);
-
-    // make sure the banner always defaults to the JWP banner when not defined in the config
-    if (!config.assets.banner) {
-      config.assets.banner = defaultConfig.assets.banner;
-    }
-
-    const accessModel = calculateAccessModel(config);
-
-    useConfigStore.setState({
-      config: config,
-      accessModel,
-    });
-
-    setCssVariables(config.styling);
-    maybeInjectAnalyticsLibrary(config);
-    await onValidationCompleted(config);
-
-    return config;
-  } catch (ex: unknown) {
-    onValidationError(ex as Error);
-    return;
+  if (!configSource) {
+    throw new Error('Config not defined');
   }
-};
+
+  let config = await loadConfig(configSource);
+  config.assets = config.assets || {};
+
+  // make sure the banner always defaults to the JWP banner when not defined in the config
+  if (!config.assets.banner) {
+    config.assets.banner = defaultConfig.assets.banner;
+  }
+
+  // Store the logo right away and set css variables so the error page will be branded
+  useConfigStore.setState((s) => {
+    s.config.assets.banner = config.assets.banner;
+  });
+
+  setCssVariables(config.styling || {});
+
+  config = await validateConfig(config);
+  config = merge({}, defaultConfig, config);
+
+  const accessModel = calculateAccessModel(config);
+
+  useConfigStore.setState({
+    config: config,
+    accessModel,
+  });
+
+  maybeInjectAnalyticsLibrary(config);
+
+  if (config?.integrations?.cleeng?.id) {
+    await initializeAccount();
+  }
+
+  // We only request favorites and continue_watching data if there is a corresponding item in the content section
+  // and a playlist in the features section.
+  // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink
+  if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
+    await restoreWatchHistory();
+  }
+  if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
+    await initializeFavorites();
+  }
+
+  return config;
+}
 
 function formatSourceLocation(source?: string) {
   if (!source) {

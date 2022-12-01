@@ -87,7 +87,7 @@ const loadConfig = async (configLocation: string) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to load the config. Please check the config path and the file availability');
+    throw new Error('Failed to load the config. Please check the config path and the file availability.');
   }
 
   const data = await response.json();
