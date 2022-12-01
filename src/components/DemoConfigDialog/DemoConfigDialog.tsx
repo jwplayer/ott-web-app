@@ -41,6 +41,8 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
   const navigate = useNavigate();
   const navigateCallback = getConfigNavigateCallback(navigate);
 
+  const [state, setState] = useState<State>(initialState);
+
   const configNavigate = async (configSource: string | undefined) => {
     setState((s) => ({ ...s, configSource: configSource, error: undefined }));
 
@@ -56,8 +58,6 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
       navigateCallback(configSource);
     }
   };
-
-  const [state, setState] = useState<State>(initialState);
 
   useEffect(() => {
     // Don't grab values from props when config source is unset or still loading
