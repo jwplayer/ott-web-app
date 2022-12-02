@@ -3,18 +3,18 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './EditPasswordForm.module.scss';
 
+import type { FormErrors } from '#types/form';
+import type { EditPasswordFormData } from '#types/account';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import TextField from '#components/TextField/TextField';
 import Button from '#components/Button/Button';
 import IconButton from '#components/IconButton/IconButton';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
+import useToggle from '#src/hooks/useToggle';
 import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { testId } from '#src/utils/common';
-import useToggle from '#src/hooks/useToggle';
-import type { EditPasswordFormData } from '#types/account';
-import type { FormErrors } from '#types/form';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;

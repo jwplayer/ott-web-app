@@ -1,114 +1,103 @@
-// Use session storage so the override persists until the tab is closed and then resets
-import { logDev } from '#src/utils/common';
+import type { NavigateFunction } from 'react-router/dist/lib/hooks';
 
+import { logDev } from '#src/utils/common';
+import type { Settings } from '#src/stores/SettingsStore';
+
+// Use session storage so the override persists until the tab is closed and then resets
 const storage = window.sessionStorage;
 
-export const configQueryKey = 'app-config';
+const configQueryKey = 'app-config';
 const configLegacyQueryKey = 'c';
 
 const configFileStorageKey = 'config-file-override';
 
-const DEFAULT_CONFIG_SOURCE = import.meta.env.APP_CONFIG_DEFAULT_SOURCE;
-const ALLOWED_SOURCES = import.meta.env.APP_CONFIG_ALLOWED_SOURCES?.split(' ').filter((c) => c.toLowerCase() !== DEFAULT_CONFIG_SOURCE?.toLowerCase()) || [];
-const UNSAFE_ALLOW_DYNAMIC_CONFIG = ['1', 'true'].includes(import.meta.env.APP_UNSAFE_ALLOW_DYNAMIC_CONFIG?.toLowerCase() || '');
-
-export function getConfigLocation() {
-  // Require a default source unless the dynamic (demo) mode is enabled
-  if (!DEFAULT_CONFIG_SOURCE && !UNSAFE_ALLOW_DYNAMIC_CONFIG) {
-    throw 'A default config is required';
-  }
-
-  return getConfigOverride() || DEFAULT_CONFIG_SOURCE;
+export function getConfigNavigateCallback(navigate: NavigateFunction) {
+  return (configSource: string) => {
+    navigate(
+      {
+        pathname: '/',
+        search: new URLSearchParams([[configQueryKey, configSource]]).toString(),
+      },
+      { replace: true },
+    );
+  };
 }
 
-export function addConfigQueryParam(config?: string) {
-  const selectedConfig = config || getConfigLocation();
-
-  // Make sure the config location is appended to the url,
-  // but only when dynamic (demo) mode is enabled or using multiple configs and not the default
-  if (selectedConfig && (UNSAFE_ALLOW_DYNAMIC_CONFIG || selectedConfig !== DEFAULT_CONFIG_SOURCE)) {
-    const url = new URL(window.location.href);
-
-    if (url.searchParams.get(configQueryKey) !== selectedConfig) {
-      url.searchParams.set(configQueryKey, selectedConfig);
-
-      window.history.replaceState(null, '', url.toString());
-    }
-  }
-}
-
-const getStoredConfig = () => {
-  return storage.getItem(configFileStorageKey);
-};
-
-export const clearStoredConfig = () => {
-  storage.removeItem(configFileStorageKey);
-
-  const url = new URL(window.location.href);
-
-  url.searchParams.delete(configQueryKey);
-  window.history.replaceState(null, '', url.toString());
-};
-
-function getConfigOverride() {
-  if (!UNSAFE_ALLOW_DYNAMIC_CONFIG && ALLOWED_SOURCES.length <= 0) {
-    return undefined;
+export function getConfigSource(searchParams: URLSearchParams, settings: Settings | undefined) {
+  if (!settings) {
+    return '';
   }
 
-  const url = new URL(window.location.href);
-
-  // If the query string has the legacy key, remove it
-  if (url.searchParams.has(configLegacyQueryKey)) {
-    const legacyValue = url.searchParams.get(configLegacyQueryKey);
-    url.searchParams.delete(configLegacyQueryKey);
-
-    // If the new query key is not set, set it from the old key, but do not replace it (the new key 'wins' if both are set)
-    if (legacyValue !== null && !url.searchParams.has(configQueryKey)) {
-      url.searchParams.set(configQueryKey, legacyValue);
-    }
-
-    window.history.replaceState(null, '', url.toString());
+  // Skip all the fancy logic below if there aren't any other options besides the default anyhow
+  if (!settings.UNSAFE_allowAnyConfigSource && (settings.additionalAllowedConfigSources?.length || 0) <= 0) {
+    return settings.defaultConfigSource;
   }
 
-  if (url.searchParams.has(configQueryKey)) {
-    const configQuery = url.searchParams.get(configQueryKey);
+  const configQueryParam = searchParams.get(configQueryKey) ?? searchParams.get(configLegacyQueryKey);
 
+  if (configQueryParam !== null) {
     // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
-    if (!configQuery) {
-      clearStoredConfig();
-      return undefined;
+    if (!configQueryParam) {
+      storage.removeItem(configFileStorageKey);
+      return settings.defaultConfigSource;
     }
 
     // If it's valid, store it and return it
-    if (isValidConfigSource(configQuery)) {
-      storage.setItem(configFileStorageKey, configQuery);
-      return configQuery;
+    if (isValidConfigSource(configQueryParam, settings)) {
+      storage.setItem(configFileStorageKey, configQueryParam);
+      return configQueryParam;
     }
 
-    logDev(`Invalid app-config: ${configQuery}`);
-
-    // Remove the query param if it's invalid
-    url.searchParams.delete(configQueryKey);
-    window.history.replaceState(null, '', url.toString());
-
-    // Yes this falls through to look up the stored value if the query string is invalid and that's OK
+    logDev(`Invalid app-config query param: ${configQueryParam}`);
   }
+  // Yes this falls through from above to look up the stored value if the query string is invalid and that's OK
 
-  const storedSource = getStoredConfig();
+  const storedSource = storage.getItem(configFileStorageKey);
 
   // Make sure the stored value is still valid before returning it
-  if (storedSource && isValidConfigSource(storedSource)) {
-    return storedSource;
+  if (storedSource) {
+    if (isValidConfigSource(storedSource, settings)) {
+      return storedSource;
+    }
+
+    logDev('Invalid stored config: ' + storedSource);
+    storage.removeItem(configFileStorageKey);
   }
 
-  return undefined;
+  return settings.defaultConfigSource;
 }
 
-function isValidConfigSource(source: string) {
+export function cleanupQueryParams(searchParams: URLSearchParams, settings: Settings, configSource: string | undefined) {
+  let anyTouched = false;
+
+  // Remove the old ?c= param
+  if (searchParams.has(configLegacyQueryKey)) {
+    searchParams.delete(configLegacyQueryKey);
+    anyTouched = true;
+  }
+
+  // If there is no valid config source or the config source equals the default, remove the ?app-config= param
+  if (searchParams.has(configQueryKey) && (!configSource || configSource === settings?.defaultConfigSource)) {
+    searchParams.delete(configQueryKey);
+    anyTouched = true;
+  }
+
+  // If the config source is not the default and the query string isn't set right, set the ?app-config= param
+  if (configSource && configSource !== settings?.defaultConfigSource && searchParams.get(configQueryKey) !== configSource) {
+    searchParams.set(configQueryKey, configSource);
+    anyTouched = true;
+  }
+
+  return anyTouched;
+}
+
+function isValidConfigSource(source: string, settings: Settings) {
   // Dynamic values are valid as long as they are defined
-  if (UNSAFE_ALLOW_DYNAMIC_CONFIG) {
+  if (settings?.UNSAFE_allowAnyConfigSource) {
     return !!source;
   }
 
-  return DEFAULT_CONFIG_SOURCE === source || ALLOWED_SOURCES.indexOf(source) >= 0;
+  return (
+    settings?.defaultConfigSource === source || (settings?.additionalAllowedConfigSources && settings?.additionalAllowedConfigSources.indexOf(source) >= 0)
+  );
 }

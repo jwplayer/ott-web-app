@@ -3,6 +3,23 @@
 exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
 <div>
   <div
+    class="_note_561a54"
+  >
+    <div>
+      currently_previewing_config
+    </div>
+    <a
+      class="_link_a14c64"
+    >
+      click_to_unselect_config
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
+<div>
+  <div
     class="_configModal_561a54"
   >
     <div
@@ -11,6 +28,11 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
       <div
         class="_box_8c5621"
       >
+        <img
+          alt="Logo"
+          class="_image_8c5621"
+          src="/images/logo.png"
+        />
         <header>
           <h1
             class="_title_8c5621"
@@ -22,11 +44,11 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
           class="_main_8c5621"
         >
           <form
-            action="/"
             method="GET"
+            target="/"
           >
             <div
-              class="_textField_e16c1b"
+              class="_textField_e16c1b _maxWidth_561a54"
             >
               <label
                 class="_label_e16c1b"
@@ -36,12 +58,15 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
                 class="_container_e16c1b"
               >
                 <input
+                  autocapitalize="none"
                   class="_input_e16c1b"
                   id="text-field_1235_app-config"
+                  maxlength="8"
                   name="app-config"
                   placeholder="please_enter_config_id"
                   required=""
                   type="text"
+                  value="aaaaaaaa"
                 />
               </div>
             </div>
@@ -60,11 +85,14 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
           </form>
           <p>
             use_the_jwp_dashboard
-            <span>
-               
-            </span>
+          </p>
+          <p>
+            demo_note
+          </p>
+          <p
+            class="_links_8c5621"
+          >
             <a
-              class="_link_a14c64"
               href="https://docs.jwplayer.com/platform/docs/ott-create-an-app-config"
               rel="noreferrer"
               target="_blank"
@@ -75,23 +103,6 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
         </main>
       </div>
     </div>
-  </div>
-</div>
-`;
-
-exports[`<DemoConfigDialog> > renders and matches snapshot with ID 1`] = `
-<div>
-  <div
-    class="_note_561a54"
-  >
-    <div>
-      currently_previewing_config
-    </div>
-    <a
-      class="_link_a14c64"
-    >
-      click_to_unselect_config
-    </a>
   </div>
 </div>
 `;
