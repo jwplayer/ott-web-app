@@ -1,6 +1,6 @@
 import InPlayer, { Env } from '@inplayer-org/inplayer.js';
 
-import type { AuthData, Customer, Login, UpdateCustomer } from '#types/account';
+import type { AuthData, Customer, Login, Register, UpdateCustomer } from '#types/account';
 import { processInplayerAccount, processInPlayerAuth } from '#src/utils/common';
 import type { Config } from '#types/Config';
 
@@ -30,6 +30,27 @@ export const login: Login = async ({ config, email, password }) => {
     };
   } catch {
     throw new Error('Failed to authenticate user.');
+  }
+};
+
+export const register: Register = async ({ config, email, password }) => {
+  try {
+    const { data } = await InPlayer.Account.signUpV2({
+      email,
+      password,
+      passwordConfirmation: password,
+      fullName: '',
+      type: 'consumer',
+      clientId: config.integrations.inplayer?.clientId || '',
+      referrer: window.location.href,
+    });
+
+    return {
+      auth: processInPlayerAuth(data),
+      user: processInplayerAccount(data.account),
+    };
+  } catch {
+    throw new Error('Failed to create user.');
   }
 };
 

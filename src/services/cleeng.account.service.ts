@@ -20,6 +20,7 @@ import type {
   LoginPayload,
   AuthData,
   JwtDetails,
+  RegisterPayload,
 } from '#types/account';
 import type { Config } from '#types/Config';
 
@@ -36,6 +37,31 @@ export const login: Login = async ({ config, email, password }) => {
   const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/auths', JSON.stringify(payload));
 
   if (errors.length > 0) throw new Error(errors[0]);
+
+  return {
+    auth,
+    user: await getUser({ config, auth }),
+  };
+};
+
+export const register: Register = async ({ config, email, password }) => {
+  const localesResponse = await getLocales(!!config.integrations.cleeng?.useSandbox);
+
+  if (localesResponse.errors.length > 0) throw new Error(localesResponse.errors[0]);
+
+  const payload: RegisterPayload = {
+    email,
+    password,
+    locale: localesResponse.responseData.locale,
+    country: localesResponse.responseData.country,
+    currency: localesResponse.responseData.currency,
+    publisherId: config.integrations.cleeng?.id || '',
+    customerIP: getOverrideIP(),
+  };
+
+  const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/customers', JSON.stringify(payload));
+
+  if (errors.length) throw new Error(errors[0]);
 
   return {
     auth,
@@ -63,10 +89,10 @@ export const getFreshJwtToken = async ({ config, auth }: { config: Config; auth:
   return result?.responseData;
 };
 
-export const register: Register = async (payload, sandbox) => {
-  payload.customerIP = getOverrideIP();
-  return post(sandbox, '/customers', JSON.stringify(payload));
-};
+// export const register: Register = async (payload, sandbox) => {
+//   payload.customerIP = getOverrideIP();
+//   return post(sandbox, '/customers', JSON.stringify(payload));
+// };
 
 export const fetchPublisherConsents: GetPublisherConsents = async (payload, sandbox) => {
   return get(sandbox, `/publishers/${payload.publisherId}/consents`);

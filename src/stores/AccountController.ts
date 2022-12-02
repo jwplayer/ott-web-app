@@ -192,27 +192,8 @@ export const logout = async () => {
 };
 
 export const register = async (email: string, password: string) => {
-  await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const localesResponse = await cleengAccountService.getLocales(cleengSandbox);
-
-    if (localesResponse.errors.length > 0) throw new Error(localesResponse.errors[0]);
-
-    const responseRegister = await cleengAccountService.register(
-      {
-        email: email,
-        password: password,
-        locale: localesResponse.responseData.locale,
-        country: localesResponse.responseData.country,
-        currency: localesResponse.responseData.currency,
-        publisherId: cleengId,
-      },
-      cleengSandbox,
-    );
-
-    if (responseRegister.errors.length) throw new Error(responseRegister.errors[0]);
-
-    await getAccount(responseRegister.responseData);
-
+  await withAccountService(async ({ accountService, config }) => {
+    await accountService.register({ config, email, password });
     await updatePersonalShelves();
   });
 };

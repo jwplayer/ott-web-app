@@ -24,7 +24,7 @@ export type PayloadWithIPOverride = {
   customerIP?: string;
 };
 
-export type LoginArgs = {
+export type AuthArgs = {
   config: Config;
   email: string;
   password: string;
@@ -73,6 +73,11 @@ export type RegisterPayload = PayloadWithIPOverride & {
   lastName?: string;
   externalId?: string;
   externalData?: string;
+};
+
+export type RegisterArgs = {
+  config: Config;
+  user: RegisterPayload;
 };
 
 export type CaptureFirstNameLastName = {
@@ -252,8 +257,9 @@ export type UpdateCaptureAnswersPayload = {
 } & Capture;
 
 // TODO: Convert these all to generic non-cleeng calls
-type Login = (args: LoginArgs) => Promise<{ auth: AuthData; user: Customer }>;
-type Register = CleengRequest<RegisterPayload, AuthData>;
+// type Login = CleengRequest<LoginPayload, AuthData>;
+type Login = (args: AuthArgs) => Promise<{ auth: AuthData; user: Customer }>;
+type Register = (args: AuthArgs) => Promise<{ auth: AuthData; user: Customer }>;
 type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, GetPublisherConsentsResponse>;
 type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
