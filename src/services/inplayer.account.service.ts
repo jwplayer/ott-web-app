@@ -1,6 +1,6 @@
 import InPlayer, { Env } from '@inplayer-org/inplayer.js';
 
-import type { AuthData, Customer, Login, UpdateCustomer } from '#types/account';
+import type { AuthData, Customer, CustomerConsent, Login, UpdateCustomer } from '#types/account';
 import { processInplayerAccount, processInPlayerAuth } from '#src/utils/common';
 import type { Config } from '#types/Config';
 
@@ -54,11 +54,19 @@ export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
 export const updateCustomer: UpdateCustomer = async (values) => {
   try {
+    const consents: { [key: string]: string } = {};
+    values.consents?.map((consent: CustomerConsent) => {
+      if (consent.label) {
+        const { customerId, date, newestVersion, needsUpdate, ...rest } = consent;
+        consents[`consents_${consent.name}`] = JSON.stringify(rest);
+      }
+    });
     const response = await InPlayer.Account.updateAccount({
       fullName: `${values.firstName} ${values.lastName}`,
       metadata: {
         first_name: values.firstName as string,
         last_name: values.lastName as string,
+        ...consents,
       },
     });
 

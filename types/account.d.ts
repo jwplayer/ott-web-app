@@ -151,6 +151,7 @@ export type UpdateCustomerPayload = {
   firstName?: string;
   lastName?: string;
   externalData?: ExternalData;
+  consents?: CustomerConsent[];
 };
 
 export type ExternalData = {
