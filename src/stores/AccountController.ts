@@ -6,7 +6,7 @@ import * as cleengAccountService from '#src/services/cleeng.account.service';
 import * as inplayerAccountService from '#src/services/inplayer.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import type { AuthData, Capture, CustomerConsent, JwtDetails } from '#types/account';
+import type { AuthData, Capture, Customer, CustomerConsent, JwtDetails } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -32,6 +32,7 @@ export const authNeedsRefresh = (auth: AuthData): boolean => {
 export const setJwtRefreshTimeout = () => {
   const auth = useAccountStore.getState().auth;
 
+  // if inplayer integration, skip code below
   if (!auth?.refreshToken) return;
 
   window.clearTimeout(refreshTimeout);
@@ -47,7 +48,7 @@ export const handleVisibilityChange = () => {
   // document is visible again, test if we need to renew the token
   const auth = useAccountStore.getState().auth;
 
-  // user is not logged in or refresh token is missing
+  // user is not logged in / if inplayer integration, skip code below
   if (!auth || !auth?.refreshToken) return;
 
   // refresh the jwt token if needed. This starts the timeout as well after receiving the refreshed tokens.
@@ -138,12 +139,7 @@ export const getAccount = async (auth: AuthData) => {
   await withAccountService(async ({ accountService, config, accessModel }) => {
     const response = await accountService.getUser({ config, auth });
 
-    useAccountStore.setState({
-      auth: auth,
-      user: response,
-    });
-
-    await getAccountExtras(accessModel);
+    await afterLogin(auth, response, accessModel);
 
     useAccountStore.setState({ loading: false });
   });
@@ -155,12 +151,7 @@ export const login = async (email: string, password: string) => {
 
     const response = await accountService.login({ config, email, password });
 
-    useAccountStore.setState({
-      auth: response.auth,
-      user: response.user,
-    });
-
-    await getAccountExtras(accessModel);
+    await afterLogin(response.auth, response.user, accessModel);
 
     await restoreFavorites();
     await restoreWatchHistory();
@@ -410,6 +401,15 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
 
 async function getAccountExtras(accessModel: string) {
   return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getCustomerConsents(), getPublisherConsents()]);
+}
+
+async function afterLogin(auth: AuthData, response: Customer, accessModel: string) {
+  useAccountStore.setState({
+    auth: auth,
+    user: response,
+  });
+
+  return await getAccountExtras(accessModel);
 }
 
 async function getActiveSubscription({ cleengSandbox, customerId, jwt }: { cleengSandbox: boolean; customerId: string; jwt: string }) {
