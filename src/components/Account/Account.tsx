@@ -23,6 +23,7 @@ import { updateConsents, updateUser } from '#src/stores/AccountController';
 type Props = {
   panelClassName?: string;
   panelHeaderClassName?: string;
+  canUpdateEmail?: boolean;
 };
 
 interface FormErrors {
@@ -33,7 +34,7 @@ interface FormErrors {
   form?: string;
 }
 
-const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element => {
+const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const location = useLocation();
@@ -149,6 +150,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
             }),
           canSave: (values) => !!(values.email && values.confirmationPassword),
           editButton: t('account.edit_account'),
+          isDisabled: !canUpdateEmail,
           content: (section) => (
             <>
               <TextField

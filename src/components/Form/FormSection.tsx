@@ -27,6 +27,7 @@ export interface FormSectionProps<TData extends GenericFormValues, TErrors> {
   onSubmit?: (values: TData) => Promise<{ errors?: string[] }> | Promise<void> | void;
   content: (args: FormSectionContentArgs<TData, TErrors>) => ReactNode;
   children?: never;
+  isDisabled?: boolean;
 }
 
 export function FormSection<TData extends GenericFormValues>({
@@ -39,6 +40,7 @@ export function FormSection<TData extends GenericFormValues>({
   canSave,
   onSubmit,
   content,
+  isDisabled,
 }: FormSectionProps<TData, string[]>): ReactElement<FormSectionProps<TData, string[]>> | null {
   const sectionId = useOpaqueId(label);
   const {
@@ -171,7 +173,7 @@ export function FormSection<TData extends GenericFormValues>({
             (typeof editButton === 'object' ? (
               (editButton as ReactElement)
             ) : (
-              <Button label={editButton as string} type="button" onClick={onEdit} disabled={isLoading} />
+              <Button label={editButton as string} type="button" onClick={onEdit} disabled={isLoading || isDisabled} />
             ))
           )}
         </div>

@@ -5,10 +5,10 @@ import styles from './ForgotPasswordForm.module.scss';
 
 import Button from '#components/Button/Button';
 import TextField from '#components/TextField/TextField';
+import type { FormErrors } from '#types/form';
+import type { ForgotPasswordFormData } from '#types/account';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import { testId } from '#src/utils/common';
-import type { ForgotPasswordFormData } from '#types/account';
-import type { FormErrors } from '#types/form';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;

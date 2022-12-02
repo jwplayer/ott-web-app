@@ -11,7 +11,6 @@ import type { ForgotPasswordFormData } from '#types/account';
 import ConfirmationForm from '#components/ConfirmationForm/ConfirmationForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
-import { addQueryParams } from '#src/utils/formatting';
 import { logDev } from '#src/utils/common';
 import { logout, resetPassword } from '#src/stores/AccountController';
 
@@ -31,17 +30,27 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   };
 
   const backToLoginClickHandler = async () => {
+    navigate(
+      {
+        pathname: '/',
+        search: 'u=login',
+      },
+      { replace: true },
+    );
+
     if (user) {
       await logout();
     }
-    navigate(addQueryParams('/', { u: 'login' }));
   };
 
   const resetPasswordClickHandler = async () => {
     const resetUrl = `${window.location.origin}/?u=edit-password`;
 
     try {
-      if (!user?.email) throw new Error('invalid param email');
+      if (!user?.email) {
+        logDev('invalid param email');
+        return;
+      }
 
       setResetPasswordSubmitting(true);
       await resetPassword(user.email, resetUrl);

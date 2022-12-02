@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './LoginForm.module.scss';
 
+import useToggle from '#src/hooks/useToggle';
 import TextField from '#components/TextField/TextField';
 import Button from '#components/Button/Button';
 import Link from '#components/Link/Link';
@@ -13,7 +14,6 @@ import VisibilityOff from '#src/icons/VisibilityOff';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { testId } from '#src/utils/common';
-import useToggle from '#src/hooks/useToggle';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { LoginFormData } from '#types/account';

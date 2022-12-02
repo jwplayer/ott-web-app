@@ -9,11 +9,6 @@ export type AuthData = {
   refreshToken: string;
 };
 
-export type InPlayerAuthData = {
-  access_token: string;
-  expires?: number;
-};
-
 export type JwtDetails = {
   customerId: string;
   exp: number;
@@ -156,6 +151,7 @@ export type UpdateCustomerPayload = {
   firstName?: string;
   lastName?: string;
   externalData?: ExternalData;
+  consents?: CustomerConsent[];
 };
 
 export type ExternalData = {
@@ -184,13 +180,6 @@ export type Customer = {
   fullName?: string;
   externalId?: string;
   externalData?: ExternalData;
-};
-
-export type InPlayerAccount = {
-  created_at: number;
-  email: string;
-  full_name: string;
-  id: number;
 };
 
 export type Consent = {

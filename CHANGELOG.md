@@ -1,3 +1,12 @@
+# [2.8.0](https://github.com/jwplayer/ott-web-app/compare/v2.7.1...v2.8.0) (2022-12-01)
+
+
+### Features
+
+* replace compile constants with ini files ([158079d](https://github.com/jwplayer/ott-web-app/commit/158079d58283951e809a262f0f80b0a8adc630be))
+
+
+
 ## [2.7.1](https://github.com/jwplayer/ott-web-app/compare/v2.7.0...v2.7.1) (2022-11-28)
 
 
