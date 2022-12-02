@@ -1,8 +1,8 @@
-import InPlayer, { Env } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env } from '@inplayer-org/inplayer.js';
 
 import type { AuthData, Customer, Login } from '#types/account';
-import { processInplayerAccount, processInPlayerAuth } from '#src/utils/common';
 import type { Config } from '#types/Config';
+import type { InPlayerAuthData } from '#types/inplayer';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -51,3 +51,29 @@ export const getUser = async (): Promise<Customer> => {
 };
 
 export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
+
+// responsible to convert the InPlayer object to be compatible to the store
+function processInplayerAccount(account: AccountData): Customer {
+  const { id, email, full_name: fullName, metadata, created_at: createdAt } = account;
+  const regDate = new Date(createdAt * 1000).toLocaleString();
+
+  return {
+    id: id.toString(),
+    email,
+    fullName,
+    firstName: metadata?.first_name as string,
+    lastName: metadata?.last_name as string,
+    regDate,
+    country: '',
+    lastUserIp: '',
+  };
+}
+
+function processInPlayerAuth(auth: InPlayerAuthData): AuthData {
+  const { access_token: jwt } = auth;
+  return {
+    jwt,
+    customerToken: '',
+    refreshToken: '',
+  };
+}

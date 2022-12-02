@@ -108,6 +108,9 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
   maybeInjectAnalyticsLibrary(config);
 
   // TODO: refactor this once we have more input how integrations will be handled in dashboard
+  if (config?.integrations?.cleeng?.id && config?.integrations?.inplayer?.clientId) {
+    throw new Error('Invalid client integration.');
+  }
   if (config?.integrations?.cleeng?.id || config?.integrations?.inplayer?.clientId) {
     await initializeAccount();
   }

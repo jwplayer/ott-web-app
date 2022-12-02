@@ -1,7 +1,4 @@
-import type { AccountData } from '@inplayer-org/inplayer.js';
-
 import { overrideIPCookieKey } from '#test/constants';
-import type { AuthData, InPlayerAuthData, Customer } from '#types/account';
 
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | null;
@@ -84,30 +81,4 @@ export function getOverrideIP() {
 
 export function testId(value: string | undefined) {
   return IS_DEVELOPMENT_BUILD || IS_TEST_MODE ? value : undefined;
-}
-
-// responsible to convert the InPlayer object to be compatible to the store
-export function processInplayerAccount(account: AccountData): Customer {
-  const { id, email, full_name: fullName, metadata, created_at: createdAt } = account;
-  const regDate = new Date(createdAt * 1000).toLocaleString();
-
-  return {
-    id: id.toString(),
-    email,
-    fullName,
-    firstName: metadata?.first_name as string,
-    lastName: metadata?.last_name as string,
-    regDate,
-    country: '',
-    lastUserIp: '',
-  };
-}
-
-export function processInPlayerAuth(auth: InPlayerAuthData): AuthData {
-  const { access_token: jwt } = auth;
-  return {
-    jwt,
-    customerToken: '',
-    refreshToken: '',
-  };
 }
