@@ -1,7 +1,7 @@
-import { array, boolean, mixed, object, SchemaOf, string, StringSchema } from 'yup';
+import { array, boolean, mixed, number, object, SchemaOf, string, StringSchema } from 'yup';
 import i18next from 'i18next';
 
-import type { Cleeng, Config, Content, Features, Menu, Styling } from '#types/Config';
+import type { Cleeng, InPlayer, Config, Content, Features, Menu, Styling } from '#types/Config';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
@@ -39,6 +39,12 @@ const cleengSchema: SchemaOf<Cleeng> = object({
   useSandbox: boolean().default(true),
 });
 
+const inplayerSchema: SchemaOf<InPlayer> = object({
+  clientId: string().nullable(),
+  assetId: number().nullable(),
+  useSandbox: boolean().default(true),
+});
+
 const stylingSchema: SchemaOf<Styling> = object({
   backgroundColor: string().nullable(),
   highlightColor: string().nullable(),
@@ -65,6 +71,7 @@ const configSchema: SchemaOf<Config> = object({
   features: featuresSchema.notRequired(),
   integrations: object({
     cleeng: cleengSchema.notRequired(),
+    inplayer: inplayerSchema.notRequired(),
   }).notRequired(),
   custom: object().notRequired(),
   contentSigningService: object().shape({

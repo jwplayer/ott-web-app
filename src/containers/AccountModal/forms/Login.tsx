@@ -15,6 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
+
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await login(formData.email, formData.password);

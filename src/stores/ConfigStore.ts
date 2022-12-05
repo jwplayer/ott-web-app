@@ -28,6 +28,11 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
       cleeng: {
         useSandbox: true,
       },
+      inplayer: {
+        clientId: null,
+        assetId: null,
+        useSandbox: true,
+      },
     },
     styling: {
       shelfTitles: true,

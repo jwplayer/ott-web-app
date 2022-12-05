@@ -1,3 +1,5 @@
+import jwtDecode from 'jwt-decode';
+
 import { post, put, patch, get } from './cleeng.service';
 
 import { getOverrideIP } from '#src/utils/common';
@@ -15,11 +17,50 @@ import type {
   GetLocales,
   GetCaptureStatus,
   UpdateCaptureAnswers,
+  LoginPayload,
+  AuthData,
+  JwtDetails,
 } from '#types/account';
+import type { Config } from '#types/Config';
 
-export const login: Login = async (payload, sandbox) => {
-  payload.customerIP = getOverrideIP();
-  return post(sandbox, '/auths', JSON.stringify(payload));
+export const setEnvironment = () => true;
+
+export const login: Login = async ({ config, email, password }) => {
+  const payload: LoginPayload = {
+    email,
+    password,
+    publisherId: config.integrations.cleeng?.id || '',
+    customerIP: getOverrideIP(),
+  };
+
+  const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/auths', JSON.stringify(payload));
+
+  if (errors.length > 0) throw new Error(errors[0]);
+
+  return {
+    auth,
+    user: await getUser({ config, auth }),
+  };
+};
+
+export const logout = async () => true;
+
+export async function getUser({ config, auth }: { config: Config; auth: AuthData }) {
+  const decodedToken: JwtDetails = jwtDecode(auth.jwt);
+  const customerId = decodedToken.customerId;
+  const { responseData: user, errors } = await getCustomer({ customerId }, !!config.integrations.cleeng?.useSandbox, auth.jwt);
+
+  if (errors.length > 0) throw new Error(errors[0]);
+
+  return user;
+}
+
+export const getFreshJwtToken = async ({ config, auth }: { config: Config; auth: AuthData }) => {
+  const result = await refreshToken({ refreshToken: auth.refreshToken }, !!config.integrations.cleeng?.useSandbox);
+
+  if (result.errors.length) throw new Error(result.errors[0]);
+
+  return result?.responseData;
 };
 
 export const register: Register = async (payload, sandbox) => {

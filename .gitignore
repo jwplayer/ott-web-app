@@ -13,5 +13,9 @@ firebase-debug.log
 .idea
 .DS_Store
 .vscode/
+
+# ignore local files
+*.local
+
 # Exclude ini files because they have customer specific data
 ini/*.ini

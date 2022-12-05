@@ -22,12 +22,7 @@ const defaultConfig: Config = {
   },
   content: [],
   menu: [],
-  integrations: {
-    cleeng: {
-      id: null,
-      useSandbox: true,
-    },
-  },
+  integrations: {},
   styling: {
     footerText: '',
     shelfTitles: true,
@@ -62,10 +57,19 @@ const maybeInjectAnalyticsLibrary = (config: Config) => {
 };
 
 const calculateAccessModel = (config: Config): AccessModel => {
-  const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
+  if (config?.integrations?.cleeng) {
+    const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
 
-  if (!id) return 'AVOD';
-  if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+    if (!id) return 'AVOD';
+    if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+  }
+
+  if (config?.integrations?.inplayer) {
+    const { clientId, assetId } = config?.integrations?.inplayer || {};
+
+    if (!clientId) return 'AVOD';
+    if (!assetId) return 'AUTHVOD';
+  }
   return 'SVOD';
 };
 
@@ -103,7 +107,11 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
 
   maybeInjectAnalyticsLibrary(config);
 
-  if (config?.integrations?.cleeng?.id) {
+  // TODO: refactor this once we have more input how integrations will be handled in dashboard
+  if (config?.integrations?.cleeng?.id && config?.integrations?.inplayer?.clientId) {
+    throw new Error('Invalid client integration. You cannot have both Cleeng and Inplayer integrations enabled at the same time.');
+  }
+  if (config?.integrations?.cleeng?.id || config?.integrations?.inplayer?.clientId) {
     await initializeAccount();
   }
 
