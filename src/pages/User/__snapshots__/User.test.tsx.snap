@@ -130,18 +130,7 @@ exports[`User Component tests > Account Page 1`] = `
         </div>
         <div
           class="_controls_1c1c63"
-        >
-          <button
-            aria-disabled="true"
-            class="_button_f8f296 _default_f8f296 _outlined_f8f296 _disabled_f8f296"
-            disabled=""
-            type="button"
-          >
-            <span>
-              account.edit_account
-            </span>
-          </button>
-        </div>
+        />
       </div>
       <div
         class="_panel_e9c5ca"

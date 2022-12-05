@@ -150,7 +150,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             }),
           canSave: (values) => !!(values.email && values.confirmationPassword),
           editButton: t('account.edit_account'),
-          isDisabled: !canUpdateEmail,
+          readOnly: !canUpdateEmail,
           content: (section) => (
             <>
               <TextField

@@ -33,7 +33,6 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       class="_controls_1c1c63"
     >
       <button
-        aria-disabled="false"
         class="_button_f8f296 _default_f8f296 _outlined_f8f296"
         type="button"
       >
