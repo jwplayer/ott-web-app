@@ -19,6 +19,7 @@ import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { logDev } from '#src/utils/common';
 import { updateConsents, updateUser } from '#src/stores/AccountController';
+import useClientIntegration, { ClientIntegrations } from '#src/hooks/useClientIntegration';
 
 type Props = {
   panelClassName?: string;
@@ -34,6 +35,7 @@ interface FormErrors {
 }
 
 const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element => {
+  const { client } = useClientIntegration();
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const location = useLocation();
@@ -134,7 +136,8 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   }
 
   const editPasswordClickHandler = () => {
-    navigate(addQueryParam(location, 'u', 'reset-password'));
+    const container = client === ClientIntegrations.INPLAYER ? 'edit-password' : 'reset-password';
+    navigate(addQueryParam(location, 'u', container));
   };
 
   return (

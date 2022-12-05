@@ -157,7 +157,12 @@
     "view_password": "View password",
     "wrong_email": "Wrong email",
     "yes": "Yes, reset",
-    "password_reset_text": ""
+    "password_reset_text": "",
+    "old_password": "Old password",
+    "repeat_new_password": "Repeat new password",
+    "passwords_do_not_match": "Passwords do not match",
+    "failed_to_change": "Failed to change password",
+    "reset_password_token": "Token"
   },
   "subscription_cancelled": {
     "message": "You have been successfully unsubscribed. Your current plan will expire on {{date}}",

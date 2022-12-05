@@ -1,6 +1,6 @@
 import InPlayer, { AccountData, Env } from '@inplayer-org/inplayer.js';
 
-import type { AuthData, Customer, Login } from '#types/account';
+import type { AuthData, ChangePassword, Customer, Login, ResetPassword } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData } from '#types/inplayer';
 
@@ -52,6 +52,51 @@ export const getUser = async (): Promise<Customer> => {
 
 export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
+export const resetPassword: ResetPassword = async ({ customerEmail, publisherId }) => {
+  try {
+    await InPlayer.Account.requestNewPassword({
+      email: customerEmail,
+      merchantUuid: publisherId || '',
+      brandingId: 0,
+    });
+  } catch {
+    throw new Error('Failed to reset password.');
+  }
+};
+
+export const changePassword: ChangePassword = async ({
+  resetPasswordToken,
+  oldPassword = '',
+  newPassword: password,
+  newPasswordConfirmation: passwordConfirmation = '',
+}) => {
+  try {
+    if (resetPasswordToken) {
+      await changePasswordWithResetToken(resetPasswordToken, password, passwordConfirmation);
+    } else {
+      await changePasswordWithOldPassword(oldPassword, password, passwordConfirmation);
+    }
+  } catch {
+    throw new Error('Failed to change password.');
+  }
+};
+const changePasswordWithResetToken = async (token: string, password: string, passwordConfirmation: string) => {
+  await InPlayer.Account.setNewPassword(
+    {
+      password: password,
+      passwordConfirmation: passwordConfirmation,
+      brandingId: 0,
+    },
+    token,
+  );
+};
+const changePasswordWithOldPassword = async (oldPassword: string, password: string, passwordConfirmation: string) => {
+  await InPlayer.Account.changePassword({
+    oldPassword,
+    password,
+    passwordConfirmation,
+  });
+};
 // responsible to convert the InPlayer object to be compatible to the store
 function processInplayerAccount(account: AccountData): Customer {
   const { id, email, full_name: fullName, metadata, created_at: createdAt } = account;

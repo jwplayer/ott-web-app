@@ -6,7 +6,7 @@ import * as cleengAccountService from '#src/services/cleeng.account.service';
 import * as inplayerAccountService from '#src/services/inplayer.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import type { AuthData, Capture, Customer, CustomerConsent, JwtDetails } from '#types/account';
+import type { AuthData, Capture, ChangePasswordPayload, Customer, CustomerConsent, JwtDetails, ResetPasswordPayload } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -293,38 +293,27 @@ export const updateCaptureAnswers = async (capture: Capture) => {
   });
 };
 
-export const resetPassword = async (email: string, resetUrl: string) => {
-  return await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const response = await cleengAccountService.resetPassword(
-      {
-        customerEmail: email,
-        publisherId: cleengId,
-        resetUrl,
-      },
-      cleengSandbox,
-    );
+export const resetPassword = async (resetPasswordArgs: ResetPasswordPayload) => {
+  return await withAccountService(async ({ accountService, sandbox, authProviderId }) => {
+    const response = await accountService.resetPassword({ ...resetPasswordArgs, publisherId: authProviderId.toString() }, sandbox);
+    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
-
-    return response.responseData;
+    return response?.responseData;
   });
 };
 
-export const changePassword = async (customerEmail: string, newPassword: string, resetPasswordToken: string) => {
-  return await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const response = await cleengAccountService.changePassword(
+export const changePassword = async (changePasswordArgs: ChangePasswordPayload) => {
+  return await withAccountService(async ({ accountService, sandbox, authProviderId }) => {
+    const response = await accountService.changePassword(
       {
-        publisherId: cleengId,
-        customerEmail,
-        newPassword,
-        resetPasswordToken,
+        publisherId: authProviderId.toString(),
+        ...changePasswordArgs,
       },
-      cleengSandbox,
+      sandbox,
     );
+    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
-
-    return response.responseData;
+    return response?.responseData;
   });
 };
 
@@ -451,16 +440,22 @@ function useLoginContext<T>(callback: (args: { cleengId: string; cleengSandbox: 
 }
 
 function withAccountService<T>(
-  callback: (args: { accountService: typeof inplayerAccountService | typeof cleengAccountService; config: Config; accessModel: AccessModel }) => T,
+  callback: (args: {
+    accountService: typeof inplayerAccountService | typeof cleengAccountService;
+    config: Config;
+    accessModel: AccessModel;
+    sandbox: boolean;
+    authProviderId: string | number;
+  }) => T,
 ): T {
   const { config, accessModel } = useConfigStore.getState();
 
   const { cleeng, inplayer } = config.integrations;
 
   if (inplayer?.clientId) {
-    return callback({ accountService: inplayerAccountService, config, accessModel });
+    return callback({ accountService: inplayerAccountService, config, accessModel, sandbox: !!inplayer.useSandbox, authProviderId: inplayer?.clientId });
   } else if (cleeng?.id) {
-    return callback({ accountService: cleengAccountService, config, accessModel });
+    return callback({ accountService: cleengAccountService, config, accessModel, sandbox: !!cleeng.useSandbox, authProviderId: cleeng?.id });
   }
 
   throw new Error('No account service available');

@@ -13,6 +13,7 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { logDev } from '#src/utils/common';
 import { logout, resetPassword } from '#src/stores/AccountController';
+import useClientIntegration, { ClientIntegrations } from '#src/hooks/useClientIntegration';
 
 type Prop = {
   type: 'confirmation' | 'forgot' | 'reset' | 'edit';
@@ -20,6 +21,7 @@ type Prop = {
 
 const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const { t } = useTranslation('account');
+  const { client } = useClientIntegration();
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAccountStore((state) => state.user);
@@ -53,7 +55,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
       }
 
       setResetPasswordSubmitting(true);
-      await resetPassword(user.email, resetUrl);
+      await resetPassword({ customerEmail: user.email, resetUrl });
 
       setResetPasswordSubmitting(false);
       navigate(addQueryParam(location, 'u', 'send-confirmation'));
@@ -66,8 +68,9 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     const resetUrl = `${window.location.origin}/?u=edit-password`;
 
     try {
-      await resetPassword(formData.email, resetUrl);
-      navigate(addQueryParam(location, 'u', 'send-confirmation'));
+      await resetPassword({ customerEmail: formData.email, resetUrl });
+      const container = client === ClientIntegrations.INPLAYER ? 'edit-password' : 'send-confirmation';
+      navigate(addQueryParam(location, 'u', container));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {

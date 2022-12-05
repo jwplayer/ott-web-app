@@ -47,7 +47,10 @@ export type ForgotPasswordFormData = {
 };
 
 export type EditPasswordFormData = {
+  oldPassword?: string;
   password: string;
+  passwordConfirmation?: string;
+  resetPasswordToken?: string;
 };
 
 export type OfferType = 'svod' | 'tvod';
@@ -129,10 +132,12 @@ export type ResetPasswordPayload = {
 };
 
 export type ChangePasswordPayload = {
-  customerEmail: string;
-  publisherId: string;
+  customerEmail?: string;
+  publisherId?: string;
   resetPasswordToken: string;
+  oldPassword?: string;
   newPassword: string;
+  newPasswordConfirmation?: string;
 };
 
 export type GetCustomerPayload = {
@@ -241,11 +246,11 @@ export type UpdateCaptureAnswersPayload = {
 
 // TODO: Convert these all to generic non-cleeng calls
 type Login = (args: LoginArgs) => Promise<{ auth: AuthData; user: Customer }>;
+type ResetPassword = (args: ResetPasswordPayload, sandbox: boolean) => Promise<ServiceResponse | void>;
+type ChangePassword = (args: ChangePasswordPayload, sandbox: boolean) => Promise<ServiceResponse | void>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
 type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, GetPublisherConsentsResponse>;
 type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;
-type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
-type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
 type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, never>;
