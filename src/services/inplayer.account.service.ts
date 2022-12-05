@@ -5,7 +5,6 @@ import type {
   Capture,
   Consent,
   Customer,
-  CustomerConsent,
   GetCaptureStatus,
   GetCaptureStatusResponse,
   GetCustomerConsentsPayload,
@@ -92,14 +91,13 @@ export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 export const updateCustomer: UpdateCustomer = async (values) => {
   try {
     const fullName = `${values.firstName} ${values.lastName}`;
-    const consents = processCustomerConsents(values?.consents || []);
 
     const response = await InPlayer.Account.updateAccount({
       fullName,
       metadata: {
         firstName: values.firstName as string,
         lastName: values.lastName as string,
-        ...consents,
+        ...(values?.consents && { consents: JSON.stringify(values.consents) }),
       },
     });
 
@@ -149,9 +147,7 @@ export const getCustomerConsents = async (payload: GetCustomerConsentsPayload) =
       };
     }
 
-    const consents = Object.keys(customer.metadata)
-      .filter((key) => key.includes('consents_'))
-      .map((key) => JSON.parse(customer.metadata?.[key] as string));
+    const consents = JSON.parse((customer.metadata?.consents as string) || '');
 
     return {
       errors: [],
@@ -241,17 +237,6 @@ function processPublisherConsents(consent: Partial<GetRegisterField>) {
     value: '',
     version: '1',
   } as Consent;
-}
-
-function processCustomerConsents(consents: CustomerConsent[]) {
-  const result: { [key: string]: string } = {};
-  consents?.forEach((consent: CustomerConsent) => {
-    if (consent.name) {
-      const { name, version, state } = consent;
-      result[`consents_${consent.name}`] = JSON.stringify({ name, version, state });
-    }
-  });
-  return result;
 }
 
 function getTermsConsent(): Consent {

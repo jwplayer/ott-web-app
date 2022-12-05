@@ -201,7 +201,11 @@ export const register = async (email: string, password: string) => {
       auth,
       user,
     });
-    // await updatePersonalShelves();
+
+    // @todo statement will be removed once the fav and history are done on InPlayer side
+    if (auth.refreshToken) {
+      await updatePersonalShelves();
+    }
   });
   useAccountStore.setState({ loading: true });
 };
@@ -297,7 +301,7 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
       // if no refresh token present (InPlayer config), update account store
       // otherwise fetch account
       if (!auth.refreshToken) {
-        await afterLogin(auth, customer, accessModel);
+        await afterLogin(auth, response.responseData as Customer, accessModel);
       } else {
         await getAccount(auth);
       }
