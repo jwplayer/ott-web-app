@@ -54,10 +54,13 @@ const Registration = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         const errorMessage = error.message.toLowerCase();
-        if (errorMessage.includes('customer already exists.')) {
+        if (errorMessage.includes('already exists')) {
           setErrors({ form: t('registration.user_exists') });
         } else if (errorMessage.includes('invalid param password')) {
           setErrors({ password: t('registration.invalid_password') });
+        } else {
+          // in case the endpoint fails
+          setErrors({ password: t('registration.failed_to_create') });
         }
         setValue('password', '');
       }
