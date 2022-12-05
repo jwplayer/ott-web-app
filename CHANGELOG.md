@@ -1,3 +1,18 @@
+# [2.9.0](https://github.com/jwplayer/ott-web-app/compare/v2.8.0...v2.9.0) (2022-12-05)
+
+
+### Bug Fixes
+
+* inplayer in service ([57757e9](https://github.com/jwplayer/ott-web-app/commit/57757e9e0f0683455ceea515dbe3811699b0f992))
+* refactor inplayer approach ([4d327b6](https://github.com/jwplayer/ott-web-app/commit/4d327b6ee0ee7cf39cff2f8d518861de5ab907fc))
+
+
+### Features
+
+* inplayer authentication ([f1922e4](https://github.com/jwplayer/ott-web-app/commit/f1922e4f95f92e76b5dca9b5a95291029a605573))
+
+
+
 # [2.8.0](https://github.com/jwplayer/ott-web-app/compare/v2.7.1...v2.8.0) (2022-12-01)
 
 
