@@ -30,7 +30,6 @@ const PasswordField: React.FC<Props> = ({ value, showToggleView = true, showHelp
 
   return (
     <TextField
-      data-testid={'alb'}
       className={styles.textField}
       {...props}
       helperText={
