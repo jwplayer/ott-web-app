@@ -59,7 +59,7 @@ export const updateCustomer: UpdateCustomer = async (values) => {
       fullName,
       metadata: {
         ...(values?.consents && { consents: JSON.stringify(values.consents) }),
-        first_name: values.firstName?.replace(/\s\s+/g, ' ').trim() || '',
+        first_name: values.firstName?.replace(/\s\s+/g, ' ')?.trim() || '',
         surname: values.lastName?.replace(/\s\s+/g, ' ')?.trim() || '',
       },
     });
