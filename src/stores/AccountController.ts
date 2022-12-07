@@ -300,12 +300,6 @@ export const updateCaptureAnswers = async (capture: Capture) => {
   });
 };
 
-export const setCanUpdateEmail = async () => {
-  await withAccountService(async ({ accountService }) => {
-    useAccountStore.setState({ canUpdateEmail: accountService.canUpdateEmail() });
-  });
-};
-
 export const resetPassword = async (email: string, resetUrl: string) => {
   return await useConfig(async ({ cleengId, cleengSandbox }) => {
     const response = await cleengAccountService.resetPassword(
