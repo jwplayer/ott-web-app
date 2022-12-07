@@ -23,7 +23,7 @@ import AccountComponent from '#components/Account/Account';
 import Button from '#components/Button/Button';
 import Favorites from '#components/Favorites/Favorites';
 import type { PlaylistItem } from '#types/playlist';
-import { logout, canUpdateEmail } from '#src/stores/AccountController';
+import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 
 const User = (): JSX.Element => {
@@ -41,7 +41,7 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, transactions, activePayment, loading } = useAccountStore();
+  const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail } = useAccountStore();
 
   const updateBlurImage = useBlurImageUpdater();
 
@@ -98,7 +98,7 @@ const User = (): JSX.Element => {
         <Routes>
           <Route
             path="my-account"
-            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail()} />}
+            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
           />
           {favoritesList && (
             <Route

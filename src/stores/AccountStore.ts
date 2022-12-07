@@ -11,6 +11,7 @@ type AccountStore = {
   activePayment: PaymentDetail | null;
   customerConsents: CustomerConsent[] | null;
   publisherConsents: Consent[] | null;
+  canUpdateEmail: boolean;
   setLoading: (loading: boolean) => void;
 };
 
@@ -23,5 +24,6 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   activePayment: null,
   customerConsents: null,
   publisherConsents: null,
+  canUpdateEmail: false,
   setLoading: (loading: boolean) => set({ loading }),
 }));

@@ -62,6 +62,7 @@ export const initializeAccount = async () => {
   await withAccountService(async ({ accountService, config }) => {
     useAccountStore.setState({ loading: true });
     accountService.setEnvironment(config);
+    await setCanUpdateEmail();
 
     const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
 
@@ -295,9 +296,9 @@ export const updateCaptureAnswers = async (capture: Capture) => {
   });
 };
 
-export const canUpdateEmail = (): boolean => {
-  return withAccountService(({ accountService }) => {
-    return accountService.canUpdateEmail();
+export const setCanUpdateEmail = async () => {
+  await withAccountService(async ({ accountService }) => {
+    useAccountStore.setState({ canUpdateEmail: accountService.canUpdateEmail() });
   });
 };
 
