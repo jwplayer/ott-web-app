@@ -146,6 +146,9 @@ export type UpdateCustomerPayload = {
   firstName?: string;
   lastName?: string;
   externalData?: ExternalData;
+};
+
+export type ConsentsPayload = {
   consents?: CustomerConsent[];
 };
 
@@ -248,7 +251,7 @@ type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCust
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
-type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
+type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload & ConsentsPayload, Customer>;
 type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, never>;
 type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = CleengEmptyRequest<LocalesData>;
