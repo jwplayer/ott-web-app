@@ -59,8 +59,8 @@ export const updateCustomer: UpdateCustomer = async (values) => {
       fullName,
       metadata: {
         ...(values?.consents && { consents: JSON.stringify(values.consents) }),
-        first_name: values.firstName || '',
-        surname: values.lastName || '',
+        first_name: values.firstName?.replace(/\s\s+/g, ' ').trim() || '',
+        surname: values.lastName?.replace(/\s\s+/g, ' ')?.trim() || '',
       },
     });
 
@@ -84,8 +84,8 @@ function processAccount(account: AccountData): Customer {
   let lastName = metadata?.surname as string;
   if (!firstName && !lastName) {
     const nameParts = fullName.split(' ');
-    firstName = nameParts[0] || '';
-    lastName = nameParts.slice(1).join(' ');
+    firstName = nameParts[0]?.trim() || '';
+    lastName = nameParts.slice(1)?.join(' ');
   }
   return {
     id: id.toString(),
