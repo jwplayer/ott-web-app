@@ -295,6 +295,12 @@ export const updateCaptureAnswers = async (capture: Capture) => {
   });
 };
 
+export const canUpdateEmail = (): boolean => {
+  return withAccountService(({ accountService }) => {
+    return accountService.canUpdateEmail();
+  });
+};
+
 export const resetPassword = async (email: string, resetUrl: string) => {
   return await useConfig(async ({ cleengId, cleengSandbox }) => {
     const response = await cleengAccountService.resetPassword(

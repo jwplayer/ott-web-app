@@ -59,13 +59,13 @@ export const updateCustomer: UpdateCustomer = async (values) => {
       fullName,
       metadata: {
         ...(values?.consents && { consents: JSON.stringify(values.consents) }),
+        first_name: values.firstName || '',
+        surname: values.lastName || '',
       },
     });
 
     return {
       errors: [],
-      // @ts-ignore
-      // wrong data type from InPlayer SDK (will be updated in the SDK)
       responseData: processAccount(response.data),
     };
   } catch {
@@ -73,18 +73,26 @@ export const updateCustomer: UpdateCustomer = async (values) => {
   }
 };
 
+export const canUpdateEmail = () => false;
+
 // responsible to convert the InPlayer object to be compatible to the store
 function processAccount(account: AccountData): Customer {
-  const { id, email, full_name: fullName, created_at: createdAt } = account;
+  const { id, email, full_name: fullName, metadata, created_at: createdAt } = account;
   const regDate = new Date(createdAt * 1000).toLocaleString();
-  const nameParts = fullName.split(' ');
 
+  let firstName = metadata?.first_name as string;
+  let lastName = metadata?.surname as string;
+  if (!firstName && !lastName) {
+    const nameParts = fullName.split(' ');
+    firstName = nameParts[0] || '';
+    lastName = nameParts.slice(1).join(' ');
+  }
   return {
     id: id.toString(),
     email,
     fullName,
-    firstName: nameParts[0] || '',
-    lastName: nameParts.slice(1).join(' '),
+    firstName,
+    lastName,
     regDate,
     country: '',
     lastUserIp: '',

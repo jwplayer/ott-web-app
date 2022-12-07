@@ -111,3 +111,5 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customerId }, sandbox
 export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customerId, ...payload }, sandbox, jwt) => {
   return put(sandbox, `/customers/${customerId}/capture`, JSON.stringify(payload), jwt);
 };
+
+export const canUpdateEmail = () => true;

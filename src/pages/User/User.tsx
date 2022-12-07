@@ -23,16 +23,15 @@ import AccountComponent from '#components/Account/Account';
 import Button from '#components/Button/Button';
 import Favorites from '#components/Favorites/Favorites';
 import type { PlaylistItem } from '#types/playlist';
-import { logout } from '#src/stores/AccountController';
+import { logout, canUpdateEmail } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 
 const User = (): JSX.Element => {
-  const { accessModel, favoritesList, shelfTitles, integration } = useConfigStore(
+  const { accessModel, favoritesList, shelfTitles } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
       favoritesList: s.config.features?.favoritesList,
       shelfTitles: s.config.styling.shelfTitles,
-      integration: s.config.integrations,
     }),
     shallow,
   );
@@ -99,7 +98,7 @@ const User = (): JSX.Element => {
         <Routes>
           <Route
             path="my-account"
-            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={!integration?.inplayer} />}
+            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail()} />}
           />
           {favoritesList && (
             <Route
