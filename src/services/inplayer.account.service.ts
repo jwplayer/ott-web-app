@@ -54,13 +54,16 @@ export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
 export const updateCustomer: UpdateCustomer = async (values) => {
   try {
-    const fullName = `${values.firstName} ${values.lastName}`;
+    const firstName = values.firstName?.trim() || '';
+    const lastName = values.lastName?.trim() || '';
+    const fullName = `${firstName} ${lastName}`;
+
     const response = await InPlayer.Account.updateAccount({
       fullName,
       metadata: {
         ...(values?.consents && { consents: JSON.stringify(values.consents) }),
-        first_name: values.firstName?.replace(/\s\s+/g, ' ')?.trim() || '',
-        surname: values.lastName?.replace(/\s\s+/g, ' ')?.trim() || '',
+        first_name: firstName,
+        surname: lastName,
       },
     });
 
@@ -84,7 +87,7 @@ function processAccount(account: AccountData): Customer {
   let lastName = metadata?.surname as string;
   if (!firstName && !lastName) {
     const nameParts = fullName.split(' ');
-    firstName = nameParts[0]?.trim() || '';
+    firstName = nameParts[0] || '';
     lastName = nameParts.slice(1)?.join(' ');
   }
   return {
