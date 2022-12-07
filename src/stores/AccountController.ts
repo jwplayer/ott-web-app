@@ -104,7 +104,11 @@ export async function updateUser(values: { firstName: string; lastName: string }
   await withAccountService(async ({ accountService, sandbox }) => {
     useAccountStore.setState({ loading: true });
 
-    const { auth, user } = useAccountStore.getState();
+    const { auth, user, canUpdateEmail } = useAccountStore.getState();
+    
+    if (values.email && !canUpdateEmail) {
+      throw new Error('Email update not supported');
+    }
 
     if (!auth || !user) throw new Error('no auth');
 
