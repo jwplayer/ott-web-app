@@ -148,7 +148,13 @@ export type UpdateCustomerPayload = {
   externalData?: ExternalData;
 };
 
-export type ConsentsPayload = {
+export type UpdateCustomerArgs = {
+  id?: string;
+  email?: string;
+  confirmationPassword?: string;
+  firstName?: string;
+  lastName?: string;
+  externalData?: ExternalData;
   consents?: CustomerConsent[];
 };
 
@@ -245,13 +251,13 @@ export type UpdateCaptureAnswersPayload = {
 
 // TODO: Convert these all to generic non-cleeng calls
 type Login = (args: LoginArgs) => Promise<{ auth: AuthData; user: Customer }>;
+type UpdateCustomer = (args: UpdateCustomerArgs, sandbox: boolean, jwt: string) => Promise<CleengAuthRequest<Customer>>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
 type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, GetPublisherConsentsResponse>;
 type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
-type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload & ConsentsPayload, Customer>;
 type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, never>;
 type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = CleengEmptyRequest<LocalesData>;
