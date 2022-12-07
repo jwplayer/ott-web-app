@@ -74,10 +74,14 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
 
   function translateErrors(errors?: string[]): FormErrors {
     const formErrors: FormErrors = {};
-
     // Some errors are combined in a single CSV string instead of one string per error
     errors
-      ?.flatMap((e) => e.split(','))
+      ?.flatMap((e) => {
+        if (typeof e === 'object') {
+          return e?.['message'];
+        }
+        return e.split(',');
+      })
       .forEach((error) => {
         switch (error.trim()) {
           case 'Invalid param email':
@@ -99,6 +103,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           }
           case 'lastName can have max 50 characters.': {
             formErrors.lastName = t('account.errors.last_name_too_long');
+            break;
+          }
+          case 'Email update not supported': {
+            formErrors.form = t('account.errors.email_update_not_supported');
             break;
           }
           default: {
