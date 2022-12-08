@@ -11,7 +11,7 @@ const formFeedback = 'div[class*=formFeedback]';
 Feature('login - account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
-  I.useConfig(testConfigs.authvod);
+  I.useConfig(testConfigs.cleengAuthvod);
 
   if (await I.isMobile()) {
     I.openMenuDrawer();

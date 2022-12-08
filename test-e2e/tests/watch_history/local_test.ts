@@ -88,7 +88,7 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
 });
 
 Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig(testConfigs.authvodNoWatchlist);
+  I.useConfig(testConfigs.cleengAuthvodNoWatchlist);
 
   await I.openVideoCard(videoTitle);
   I.dontSee(constants.continueWatchingButton);
