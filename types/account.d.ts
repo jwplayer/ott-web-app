@@ -19,10 +19,16 @@ export type PayloadWithIPOverride = {
   customerIP?: string;
 };
 
-export type LoginArgs = {
+export type AuthArgs = {
   config: Config;
   email: string;
   password: string;
+};
+
+export type AuthResponse = {
+  auth: AuthData;
+  user: Customer;
+  customerConsents: CustomerConsent[];
 };
 
 export type LoginPayload = PayloadWithIPOverride & {
@@ -70,6 +76,10 @@ export type RegisterPayload = PayloadWithIPOverride & {
   externalData?: string;
 };
 
+export type RegisterArgs = {
+  config: Config;
+  user: RegisterPayload;
+};
 export type CaptureFirstNameLastName = {
   firstName: string;
   lastName: string;
@@ -148,16 +158,6 @@ export type UpdateCustomerPayload = {
   externalData?: ExternalData;
 };
 
-export type UpdateCustomerArgs = {
-  id?: string;
-  email?: string;
-  confirmationPassword?: string;
-  firstName?: string;
-  lastName?: string;
-  externalData?: ExternalData;
-  consents?: CustomerConsent[];
-};
-
 export type ExternalData = {
   history?: SerializedWatchHistoryItem[];
   favorites?: SerializedFavorite[];
@@ -168,10 +168,6 @@ export type UpdateCustomerConsentsPayload = {
   consents: CustomerConsent[];
 };
 
-export type RefreshTokenPayload = {
-  refreshToken: string;
-};
-
 export type Customer = {
   id: string;
   email: string;
@@ -180,10 +176,22 @@ export type Customer = {
   lastLoginDate?: string;
   lastUserIp: string;
   firstName?: string;
+  metadata?: Record<string, unknown>;
   lastName?: string;
   fullName?: string;
   externalId?: string;
   externalData?: ExternalData;
+};
+
+export type UpdateCustomerArgs = {
+  id?: string | undefined;
+  email?: string | undefined;
+  confirmationPassword?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  externalData?: ExternalData | undefined;
+  metadata?: Record<string>;
+  fullName?: string;
 };
 
 export type Consent = {
@@ -206,6 +214,20 @@ export type CustomerConsent = {
   state: 'accepted' | 'declined';
   value?: string;
   version: string;
+};
+
+export type CustomerConsentArgs = {
+  config: Config;
+  jwt: string;
+  customerId?: string;
+  customer?: Customer;
+};
+
+export type UpdateCustomerConsentsArgs = {
+  jwt: string;
+  config: Config;
+  customer: Customer;
+  consents: CustomerConsent[];
 };
 
 export type LocalesData = {
@@ -245,21 +267,40 @@ export type Capture = {
   customAnswers?: CaptureCustomAnswer[];
 };
 
+export type GetCaptureStatusArgs = {
+  customer: Customer;
+};
+
+export type UpdateCaptureStatusArgs = {
+  customer: Customer;
+} & Capture;
+
 export type UpdateCaptureAnswersPayload = {
   customerId: string;
 } & Capture;
 
-// TODO: Convert these all to generic non-cleeng calls
-type Login = (args: LoginArgs) => Promise<{ auth: AuthData; user: Customer }>;
-type UpdateCustomer = (args: UpdateCustomerArgs, sandbox: boolean, jwt: string) => Promise<CleengAuthRequest<Customer>>;
-type Register = CleengRequest<RegisterPayload, AuthData>;
-type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, GetPublisherConsentsResponse>;
-type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;
-type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
-type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
-type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
-type UpdateCustomerConsents = CleengAuthRequest<UpdateCustomerConsentsPayload, never>;
-type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
-type GetLocales = CleengEmptyRequest<LocalesData>;
-type GetCaptureStatus = CleengAuthRequest<GetCaptureStatusPayload, GetCaptureStatusResponse>;
-type UpdateCaptureAnswers = CleengAuthRequest<UpdateCaptureAnswersPayload, Capture>;
+interface ApiResponse {
+  errors: string[];
+}
+
+type ServiceResponse<R> = { responseData: R } & ApiResponse;
+type Request<P, R> = (payload: P) => Promise<R>;
+type EmptyServiceRequest<R> = (sandbox: boolean) => Promise<ServiceResponse<R>>;
+type ServiceRequest<P, R> = (payload: P) => Promise<ServiceResponse<R>>;
+type EnvironmentServiceRequest<P, R> = (payload: P, sandbox: boolean) => Promise<ServiceResponse<R>>;
+type AuthRequest<P, R> = (payload: P, sandbox: boolean, jwt: string) => Promise<R>;
+type AuthServiceRequest<P, R> = (payload: P, sandbox: boolean, jwt: string) => Promise<ServiceResponse<R>>;
+
+type Login = Request<AuthArgs, AuthResponse>;
+type Register = Request<AuthArgs, AuthResponse>;
+type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;
+type UpdateCustomer = AuthServiceRequest<UpdateCustomerArgs, Customer>;
+type GetPublisherConsents = Request<Config, GetPublisherConsentsResponse>;
+type GetCustomerConsents = Request<CustomerConsentArgs, GetCustomerConsentsResponse>;
+type UpdateCustomerConsents = Request<UpdateCustomerConsentsArgs, GetCustomerConsentsResponse>;
+type GetCaptureStatus = AuthServiceRequest<GetCaptureStatusArgs, GetCaptureStatusResponse>;
+type UpdateCaptureAnswers = AuthServiceRequest<UpdateCaptureStatusArgs, Capture>;
+type ResetPassword = EnvironmentServiceRequest<ResetPasswordPayload, Record<string, unknown>>;
+type ChangePassword = EnvironmentServiceRequest<ChangePasswordPayload, Record<string, unknown>>;
+type RefreshToken = EnvironmentServiceRequest<RefreshTokenPayload, AuthData>;
+type GetLocales = EmptyServiceRequest<LocalesData>;
