@@ -208,3 +208,5 @@ const handleErrors = (errors: ApiResponse['errors']) => {
     throw new Error(errors[0]);
   }
 };
+
+export const canUpdateEmail = () => true;

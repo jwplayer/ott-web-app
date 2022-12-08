@@ -27,12 +27,11 @@ import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 
 const User = (): JSX.Element => {
-  const { accessModel, favoritesList, shelfTitles, integration } = useConfigStore(
+  const { accessModel, favoritesList, shelfTitles } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
       favoritesList: s.config.features?.favoritesList,
       shelfTitles: s.config.styling.shelfTitles,
-      integration: s.config.integrations,
     }),
     shallow,
   );
@@ -42,7 +41,7 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, transactions, activePayment, loading } = useAccountStore();
+  const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail } = useAccountStore();
 
   const updateBlurImage = useBlurImageUpdater();
 
@@ -99,7 +98,7 @@ const User = (): JSX.Element => {
         <Routes>
           <Route
             path="my-account"
-            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={!integration?.inplayer} />}
+            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
           />
           {favoritesList && (
             <Route

@@ -264,3 +264,5 @@ function parseJson(value: string) {
     return {};
   }
 }
+
+export const canUpdateEmail = () => false;

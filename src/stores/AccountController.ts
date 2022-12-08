@@ -71,6 +71,7 @@ export const initializeAccount = async () => {
   await withAccountService(async ({ accountService, config }) => {
     useAccountStore.setState({ loading: true });
     accountService.setEnvironment(config);
+    useAccountStore.setState({ canUpdateEmail: accountService.canUpdateEmail() });
 
     const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
 
@@ -112,7 +113,11 @@ export async function updateUser(values: { firstName: string; lastName: string }
   await withAccountService(async ({ accountService, sandbox }) => {
     useAccountStore.setState({ loading: true });
 
-    const { auth, user } = useAccountStore.getState();
+    const { auth, user, canUpdateEmail } = useAccountStore.getState();
+
+    if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
+      throw new Error('Email update not supported');
+    }
 
     if (!auth || !user) throw new Error('no auth');
 
