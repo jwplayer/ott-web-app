@@ -2,6 +2,7 @@ import jwtDecode from 'jwt-decode';
 
 import { post, put, patch, get } from './cleeng.service';
 
+import type { Config } from '#types/Config';
 import { getOverrideIP } from '#src/utils/common';
 import type {
   ChangePassword,
@@ -13,22 +14,21 @@ import type {
   ResetPassword,
   UpdateCustomer,
   UpdateCustomerConsents,
-  RefreshToken,
-  GetLocales,
   GetCaptureStatus,
   UpdateCaptureAnswers,
-  LoginPayload,
   AuthData,
   JwtDetails,
-  RegisterPayload,
   GetCustomerConsentsResponse,
   GetCaptureStatusResponse,
   Capture,
+  GetLocales,
+  RefreshToken,
+  LoginPayload,
+  RegisterPayload,
+  UpdateCaptureAnswersPayload,
   UpdateCustomerConsentsPayload,
   UpdateCustomerPayload,
-  UpdateCaptureAnswersPayload,
 } from '#types/account';
-import type { Config } from '#types/Config';
 
 export const setEnvironment = () => true;
 
@@ -41,7 +41,7 @@ export const login: Login = async ({ config, email, password }) => {
   };
 
   const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/auths', JSON.stringify(payload));
-  if (errors.length > 0) throw new Error(errors[0]);
+  handleErrors(errors);
 
   const { user, customerConsents } = await getUser({ config, auth });
 
@@ -55,7 +55,7 @@ export const login: Login = async ({ config, email, password }) => {
 export const register: Register = async ({ config, email, password }) => {
   const localesResponse = await getLocales(!!config.integrations.cleeng?.useSandbox);
 
-  if (localesResponse.errors.length > 0) throw new Error(localesResponse.errors[0]);
+  handleErrors(localesResponse.errors);
 
   const payload: RegisterPayload = {
     email,
@@ -68,8 +68,7 @@ export const register: Register = async ({ config, email, password }) => {
   };
 
   const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/customers', JSON.stringify(payload));
-
-  if (errors.length) throw new Error(errors[0]);
+  handleErrors(errors);
 
   const { user, customerConsents } = await getUser({ config, auth });
 
@@ -86,8 +85,7 @@ export async function getUser({ config, auth }: { config: Config; auth: AuthData
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
   const customerId = decodedToken.customerId;
   const { responseData: user, errors } = await getCustomer({ customerId }, !!config.integrations.cleeng?.useSandbox, auth.jwt);
-
-  if (errors.length > 0) throw new Error(errors[0]);
+  handleErrors(errors);
 
   const consentsPayload = {
     config,
@@ -106,7 +104,7 @@ export async function getUser({ config, auth }: { config: Config; auth: AuthData
 export const getFreshJwtToken = async ({ config, auth }: { config: Config; auth: AuthData }) => {
   const response = await refreshToken({ refreshToken: auth.refreshToken }, !!config.integrations.cleeng?.useSandbox);
 
-  if (response.errors.length) throw new Error(response.errors[0]);
+  handleErrors(response.errors);
 
   return response?.responseData;
 };
@@ -115,7 +113,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
   const { cleeng } = config.integrations;
   const response = await get(!!cleeng?.useSandbox, `/publishers/${cleeng?.id}/consents`);
 
-  if (response.errors.length) throw new Error(response.errors[0]);
+  handleErrors(response.errors);
 
   return {
     consents: response?.responseData?.consents || [],
@@ -127,7 +125,7 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
   const { cleeng } = config.integrations;
 
   const response: ServiceResponse<GetCustomerConsentsResponse> = await get(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, jwt);
-  if (response.errors.length) throw new Error(response.errors[0]);
+  handleErrors(response.errors);
 
   return {
     consents: response?.responseData?.consents || [],
@@ -144,7 +142,7 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload) =>
   };
 
   const response: ServiceResponse<never> = await put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(params), jwt);
-  if (response.errors.length) throw new Error(response.errors[0]);
+  handleErrors(response.errors);
 
   return await getCustomerConsents(payload);
 };
@@ -152,7 +150,7 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload) =>
 export const getCaptureStatus: GetCaptureStatus = async ({ customer }, sandbox, jwt) => {
   const response: ServiceResponse<GetCaptureStatusResponse> = await get(sandbox, `/customers/${customer?.id}/capture/status`, jwt);
 
-  if (response.errors.length > 0) throw new Error(response.errors[0]);
+  handleErrors(response.errors);
 
   return response;
 };
@@ -164,10 +162,15 @@ export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...
   };
 
   const response: ServiceResponse<Capture> = await put(sandbox, `/customers/${customer.id}/capture`, JSON.stringify(params), jwt);
+  handleErrors(response.errors);
 
-  if (response.errors.length > 0) throw new Error(response.errors[0]);
+  const { responseData, errors } = await getCustomer({ customerId: customer.id }, sandbox, jwt);
+  handleErrors(errors);
 
-  return response;
+  return {
+    errors: [],
+    responseData,
+  };
 };
 
 export const resetPassword: ResetPassword = async (payload, sandbox) => {
@@ -197,4 +200,10 @@ export const refreshToken: RefreshToken = async (payload, sandbox) => {
 
 export const getLocales: GetLocales = async (sandbox) => {
   return get(sandbox, `/locales${getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
+};
+
+const handleErrors = (errors: ApiResponse['errors']) => {
+  if (errors.length > 0) {
+    throw new Error(errors[0]);
+  }
 };

@@ -293,13 +293,7 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-      // if no refresh token present (InPlayer config), update account store
-      // otherwise fetch account
-      if (!auth.refreshToken) {
-        await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel);
-      } else {
-        await getAccount(auth);
-      }
+      await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel);
 
       return response.responseData;
     });

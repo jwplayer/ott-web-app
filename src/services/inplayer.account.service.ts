@@ -102,14 +102,16 @@ export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
 export const updateCustomer: UpdateCustomer = async (values) => {
   try {
-    const fullName = `${values.firstName} ${values.lastName}`;
+    const firstName = values.firstName?.trim() || '';
+    const lastName = values.lastName?.trim() || '';
+    const fullName = `${firstName} ${lastName}`;
 
     const response: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount({
       fullName,
       metadata: {
-        firstName: values.firstName as string,
-        lastName: values.lastName as string,
-        ...(values?.metadata?.consents && { consents: JSON.stringify(values.metadata.consents) }),
+        ...(values?.metadata?.consents && { consents: JSON.stringify(values.metadata?.consents) }),
+        first_name: firstName,
+        surname: lastName,
       },
     });
 
@@ -161,15 +163,12 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
-
     const data = {
       metadata: { consents },
-      firstName: customer.metadata?.firstName as string,
-      lastName: customer.metadata?.lastName as string,
+      firstName: customer?.firstName as string,
+      lastName: customer?.lastName as string,
     };
-
     const { responseData } = await updateCustomer(data, true, '');
-
     return {
       consents: parseJson(responseData?.metadata?.consents as string),
     };
@@ -207,13 +206,20 @@ function processAccount(account: AccountData): Customer {
   const { id, email, full_name: fullName, metadata, created_at: createdAt } = account;
   const regDate = new Date(createdAt * 1000).toLocaleString();
 
+  let firstName = metadata?.first_name as string;
+  let lastName = metadata?.surname as string;
+  if (!firstName && !lastName) {
+    const nameParts = fullName.split(' ');
+    firstName = nameParts[0] || '';
+    lastName = nameParts.slice(1)?.join(' ');
+  }
   return {
     id: id.toString(),
     email,
     fullName,
+    firstName,
+    lastName,
     metadata,
-    firstName: metadata?.firstName as string,
-    lastName: metadata?.lastName as string,
     regDate,
     country: '',
     lastUserIp: '',
