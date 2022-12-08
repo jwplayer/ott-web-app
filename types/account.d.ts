@@ -24,7 +24,6 @@ export type AuthArgs = {
   email: string;
   password: string;
 };
-
 export type LoginPayload = PayloadWithIPOverride & {
   email: string;
   password: string;
@@ -74,7 +73,6 @@ export type RegisterArgs = {
   config: Config;
   user: RegisterPayload;
 };
-
 export type CaptureFirstNameLastName = {
   firstName: string;
   lastName: string;
@@ -119,9 +117,7 @@ export type GetPublisherConsentsResponse = {
 };
 
 export type GetCustomerConsentsPayload = {
-  config: Config;
-  customer: Customer;
-  jwt: string;
+  customerId: string;
 };
 
 export type GetCustomerConsentsResponse = {
@@ -153,7 +149,6 @@ export type UpdateCustomerPayload = {
   firstName?: string;
   lastName?: string;
   externalData?: ExternalData;
-  consents?: CustomerConsent[];
 };
 
 export type ExternalData = {
@@ -162,9 +157,7 @@ export type ExternalData = {
 };
 
 export type UpdateCustomerConsentsPayload = {
-  jwt: string;
-  config: Config;
-  customer: Customer;
+  id?: string;
   consents: CustomerConsent[];
 };
 
@@ -185,6 +178,17 @@ export type Customer = {
   fullName?: string;
   externalId?: string;
   externalData?: ExternalData;
+};
+
+export type UpdateCustomerArgs = {
+  id?: string | undefined;
+  email?: string | undefined;
+  confirmationPassword?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  externalData?: ExternalData | undefined;
+  metadata?: Record<string>;
+  fullName?: string;
 };
 
 export type Consent = {
@@ -209,6 +213,20 @@ export type CustomerConsent = {
   version: string;
 };
 
+export type CustomerConsentArgs = {
+  config: Config;
+  jwt: string;
+  customerId?: string;
+  customer?: Customer;
+};
+
+export type UpdateCustomerConsentsArgs = {
+  jwt: string;
+  config: Config;
+  customer: Customer;
+  consents: CustomerConsent[];
+};
+
 export type LocalesData = {
   country: string;
   currency: string;
@@ -217,7 +235,7 @@ export type LocalesData = {
 };
 
 export type GetCaptureStatusPayload = {
-  customer: Customer;
+  customerId: string;
 };
 
 export type GetCaptureStatusResponse = {
@@ -246,22 +264,30 @@ export type Capture = {
   customAnswers?: CaptureCustomAnswer[];
 };
 
-export type UpdateCaptureAnswersPayload = {
+export type GetCaptureStatusArgs = {
+  customer: Customer;
+};
+
+export type UpdateCaptureStatusArgs = {
   customer: Customer;
 } & Capture;
 
+export type UpdateCaptureAnswersPayload = {
+  customerId: string;
+} & Capture;
+
 // TODO: Convert these all to generic non-cleeng calls
-// type Login = CleengRequest<LoginPayload, AuthData>;
-type Login = (args: AuthArgs) => Promise<{ auth: AuthData; user: Customer }>;
-type Register = (args: AuthArgs) => Promise<{ auth: AuthData; user: Customer }>;
-type GetPublisherConsents = ServiceRequest<Config, GetPublisherConsentsResponse>;
-type GetCustomerConsents = ServiceRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;
-type UpdateCustomerConsents = ServiceRequest<UpdateCustomerConsentsPayload, never>;
+type Login = (args: AuthArgs) => Promise<{ auth: AuthData; user: Customer; customerConsents: CustomerConsent[] }>;
+type Register = (args: AuthArgs) => Promise<{ auth: AuthData; user: Customer; customerConsents: CustomerConsent[] }>;
+type UpdateCustomer = (args: UpdateCustomerArgs, sandbox: boolean, jwt: string) => Promise<ServiceResponse<Customer>>;
+type GetPublisherConsents = (args: Config) => Promise<GetPublisherConsentsResponse>;
+type GetCustomerConsents = (args: CustomerConsentArgs) => Promise<GetCustomerConsentsResponse>;
+type UpdateCustomerConsents = (args: UpdateCustomerConsentsArgs) => Promise<GetCustomerConsentsResponse>;
+type GetCaptureStatus = (args: GetCaptureStatusArgs, sandbox: boolean, jwt: string) => Promise<ServiceResponse<GetCaptureStatusResponse>>;
+type UpdateCaptureAnswers = (args: UpdateCaptureStatusArgs, sandbox: boolean, jwt: string) => Promise<ServiceResponse<Capture>>;
 type ResetPassword = CleengRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = CleengRequest<ChangePasswordPayload, Record<string, unknown>>;
 type GetCustomer = CleengAuthRequest<GetCustomerPayload, Customer>;
-type UpdateCustomer = CleengAuthRequest<UpdateCustomerPayload, Customer>;
 type RefreshToken = CleengRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = CleengEmptyRequest<LocalesData>;
-type GetCaptureStatus = CleengAuthRequest<GetCaptureStatusPayload, GetCaptureStatusResponse>;
-type UpdateCaptureAnswers = CleengAuthRequest<UpdateCaptureAnswersPayload, Capture>;
+// type UpdateCaptureAnswers = CleengAuthRequest<UpdateCaptureAnswersPayload, Capture>;

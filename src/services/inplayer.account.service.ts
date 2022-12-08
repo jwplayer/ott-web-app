@@ -5,9 +5,10 @@ import type {
   Capture,
   Consent,
   Customer,
+  CustomerConsent,
   GetCaptureStatus,
-  GetCaptureStatusResponse,
-  GetCustomerConsentsPayload,
+  GetCustomerConsents,
+  GetCustomerConsentsResponse,
   GetPublisherConsents,
   Login,
   Register,
@@ -16,7 +17,7 @@ import type {
   UpdateCustomerConsents,
 } from '#types/account';
 import type { Config } from '#types/Config';
-import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
+import type { InPlayerAuthData, InPlayerError, InPlayerResponse } from '#types/inplayer';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -38,9 +39,12 @@ export const login: Login = async ({ config, email, password }) => {
       referrer: window.location.href,
     });
 
+    const user = processAccount(data.account);
+
     return {
       auth: processAuth(data),
-      user: processAccount(data.account),
+      user,
+      customerConsents: parseJson(user?.metadata?.consents as string),
     };
   } catch {
     throw new Error('Failed to authenticate user.');
@@ -53,15 +57,18 @@ export const register: Register = async ({ config, email, password }) => {
       email,
       password,
       passwordConfirmation: password,
-      fullName: 'New User',
+      fullName: email,
       type: 'consumer',
       clientId: config.integrations.inplayer?.clientId || '',
       referrer: window.location.href,
     });
 
+    const user = processAccount(data.account);
+
     return {
       auth: processAuth(data),
-      user: processAccount(data.account),
+      user,
+      customerConsents: parseJson(user?.metadata?.consents as string),
     };
   } catch (error: unknown) {
     const { response } = error as InPlayerError;
@@ -77,10 +84,15 @@ export const logout = async () => {
   }
 };
 
-export const getUser = async (): Promise<Customer> => {
+export const getUser = async () => {
   try {
     const { data } = await InPlayer.Account.getAccountInfo();
-    return processAccount(data);
+
+    const user = processAccount(data);
+    return {
+      user,
+      customerConsents: parseJson(user?.metadata?.consents as string) as CustomerConsent[],
+    };
   } catch {
     throw new Error('Failed to fetch user data.');
   }
@@ -92,19 +104,17 @@ export const updateCustomer: UpdateCustomer = async (values) => {
   try {
     const fullName = `${values.firstName} ${values.lastName}`;
 
-    const response = await InPlayer.Account.updateAccount({
+    const response: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount({
       fullName,
       metadata: {
         firstName: values.firstName as string,
         lastName: values.lastName as string,
-        ...(values?.consents && { consents: JSON.stringify(values.consents) }),
+        ...(values?.metadata?.consents && { consents: JSON.stringify(values.metadata.consents) }),
       },
     });
 
     return {
       errors: [],
-      // @ts-ignore
-      // wrong data type from InPlayer SDK (will be updated in the SDK)
       responseData: processAccount(response.data),
     };
   } catch {
@@ -119,42 +129,30 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
 
     // @ts-ignore
     // wrong data type from InPlayer SDK (will be updated in the SDK)
-    const result: Array<Consent> = data?.collection
+    const result: Consent[] = data?.collection
       .filter((field: GetRegisterField) => field.type === 'checkbox')
       .map((consent: GetRegisterField) => processPublisherConsents(consent));
 
     return {
-      errors: [],
-      responseData: {
-        consents: [getTermsConsent(), ...result],
-      },
+      consents: [getTermsConsent(), ...result],
     };
   } catch {
     throw new Error('Failed to fetch publisher consents.');
   }
 };
 
-export const getCustomerConsents = async (payload: GetCustomerConsentsPayload) => {
+export const getCustomerConsents: GetCustomerConsents = async (payload) => {
   try {
-    const { customer } = payload;
-
-    if (!customer?.metadata) {
+    if (!payload?.customer) {
       return {
-        errors: [],
-        responseData: {
-          consents: [],
-        },
+        consents: [],
       };
     }
 
-    const consents = JSON.parse((customer.metadata?.consents as string) || '');
+    const { customer } = payload;
+    const consents: GetCustomerConsentsResponse = parseJson(customer.metadata?.consents as string);
 
-    return {
-      errors: [],
-      responseData: {
-        consents,
-      },
-    };
+    return consents;
   } catch {
     throw new Error('Unable to fetch Customer consents.');
   }
@@ -165,12 +163,16 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload) =>
     const { customer, consents } = payload;
 
     const data = {
-      consents,
+      metadata: { consents },
       firstName: customer.metadata?.firstName as string,
       lastName: customer.metadata?.lastName as string,
     };
 
-    return (await updateCustomer(data, true, '')) as ServiceResponse<never>;
+    const { responseData } = await updateCustomer(data, true, '');
+
+    return {
+      consents: parseJson(responseData?.metadata?.consents as string),
+    };
   } catch {
     throw new Error('Unable to update Customer`s consents');
   }
@@ -194,7 +196,7 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
         },
       ],
     },
-  } as ServiceResponse<GetCaptureStatusResponse>;
+  };
 };
 
 export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
@@ -246,4 +248,12 @@ function getTermsConsent(): Consent {
     name: 'terms',
     label,
   });
+}
+
+function parseJson(value: string) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return {};
+  }
 }

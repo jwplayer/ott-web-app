@@ -11,3 +11,10 @@ export type InPlayerError = {
     };
   };
 };
+
+export type InPlayerResponse<T> = {
+  data: Record<T>;
+  status: number;
+  statusText: string;
+  config: AxiosRequestConfig;
+};

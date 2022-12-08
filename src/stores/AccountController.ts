@@ -148,7 +148,7 @@ export const getAccount = async (auth: AuthData) => {
   await withAccountService(async ({ accountService, config, accessModel }) => {
     const response = await accountService.getUser({ config, auth });
 
-    await afterLogin(auth, response, accessModel);
+    await afterLogin(auth, response.user, response.customerConsents, accessModel);
 
     useAccountStore.setState({ loading: false });
   });
@@ -160,7 +160,7 @@ export const login = async (email: string, password: string) => {
 
     const response = await accountService.login({ config, email, password });
 
-    await afterLogin(response.auth, response.user, accessModel);
+    await afterLogin(response.auth, response.user, response.customerConsents, accessModel);
 
     await restoreFavorites();
     await restoreWatchHistory();
@@ -194,13 +194,11 @@ export const logout = async () => {
 };
 
 export const register = async (email: string, password: string) => {
-  await withAccountService(async ({ accountService, config }) => {
+  await withAccountService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
-    const { auth, user } = await accountService.register({ config, email, password });
-    useAccountStore.setState({
-      auth,
-      user,
-    });
+    const { auth, user, customerConsents } = await accountService.register({ config, email, password });
+
+    await afterLogin(auth, user, customerConsents, accessModel);
 
     // @todo statement will be removed once the fav and history are done on InPlayer side
     if (auth.refreshToken) {
@@ -233,8 +231,8 @@ export const updatePersonalShelves = async () => {
   });
 };
 
-export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<never>> => {
-  return await useAccountContext(async ({ customer, auth: { jwt, refreshToken } }) => {
+export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<GetCustomerConsentsResponse> => {
+  return await useAccountContext(async ({ customer, auth: { jwt } }) => {
     return await withAccountService(async ({ accountService, config }) => {
       useAccountStore.setState({ loading: true });
 
@@ -245,25 +243,22 @@ export const updateConsents = async (customerConsents: CustomerConsent[]): Promi
         consents: customerConsents,
       });
 
-      // if user does not have refresh token (InPlayer user) the response data is user object
-      if (response?.responseData && !refreshToken) {
-        useAccountStore.setState({ user: response.responseData, loading: false });
+      if (response?.consents) {
+        useAccountStore.setState({ customerConsents: response.consents });
       }
-
-      await getCustomerConsents();
 
       return response;
     });
   });
 };
 
-export async function getCustomerConsents(): Promise<ServiceResponse<GetCustomerConsentsResponse>> {
+export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse> {
   return await useAccountContext(async ({ customer, auth: { jwt } }) => {
     return await withAccountService(async ({ accountService, config }) => {
       const response = await accountService.getCustomerConsents({ config, customer, jwt });
 
-      if (response && !response.errors?.length) {
-        useAccountStore.setState({ customerConsents: response.responseData.consents });
+      if (response?.consents) {
+        useAccountStore.setState({ customerConsents: response.consents });
       }
 
       return response;
@@ -271,11 +266,11 @@ export async function getCustomerConsents(): Promise<ServiceResponse<GetCustomer
   });
 }
 
-export const getPublisherConsents = async (): Promise<ServiceResponse<GetPublisherConsentsResponse>> => {
+export const getPublisherConsents = async (): Promise<GetPublisherConsentsResponse> => {
   return await withAccountService(async ({ accountService, config }) => {
     const response = await accountService.getPublisherConsents(config);
 
-    useAccountStore.setState({ publisherConsents: response.responseData.consents });
+    useAccountStore.setState({ publisherConsents: response.consents });
 
     return response;
   });
@@ -292,7 +287,7 @@ export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
 };
 
 export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
-  return await useAccountContext(async ({ customer, auth }) => {
+  return await useAccountContext(async ({ customer, auth, customerConsents }) => {
     return await withAccountService(async ({ accountService, accessModel, sandbox }) => {
       const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox, auth.jwt);
 
@@ -301,7 +296,7 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
       // if no refresh token present (InPlayer config), update account store
       // otherwise fetch account
       if (!auth.refreshToken) {
-        await afterLogin(auth, response.responseData as Customer, accessModel);
+        await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel);
       } else {
         await getAccount(auth);
       }
@@ -415,13 +410,14 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
   return getMediaByWatchlist(watchlistId, mediaIds);
 }
 
-async function afterLogin(auth: AuthData, user: Customer, accessModel: string) {
+async function afterLogin(auth: AuthData, user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string) {
   useAccountStore.setState({
     auth,
     user,
+    customerConsents,
   });
 
-  return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getCustomerConsents(), getPublisherConsents()]);
+  return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getPublisherConsents()]);
 }
 
 async function getActiveSubscription({ cleengSandbox, customerId, jwt }: { cleengSandbox: boolean; customerId: string; jwt: string }) {
@@ -464,12 +460,14 @@ function useLoginContext<T>(callback: (args: { cleengId: string; cleengSandbox: 
   return useConfig((config) => callback({ ...config, customerId: user.id, auth }));
 }
 
-function useAccountContext<T>(callback: (args: { customerId: string; customer: Customer; auth: AuthData }) => T): T {
-  const { user, auth } = useAccountStore.getState();
+function useAccountContext<T>(
+  callback: (args: { customerId: string; customer: Customer; customerConsents: CustomerConsent[] | null; auth: AuthData }) => T,
+): T {
+  const { user, auth, customerConsents } = useAccountStore.getState();
 
   if (!user?.id || !auth?.jwt) throw new Error('user not logged in');
 
-  return callback({ customerId: user.id, customer: user, auth });
+  return callback({ customerId: user.id, customer: user, auth, customerConsents });
 }
 
 function withAccountService<T>(

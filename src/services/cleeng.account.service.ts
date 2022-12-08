@@ -21,10 +21,12 @@ import type {
   AuthData,
   JwtDetails,
   RegisterPayload,
-  GetPublisherConsentsResponse,
   GetCustomerConsentsResponse,
   GetCaptureStatusResponse,
   Capture,
+  UpdateCustomerConsentsPayload,
+  UpdateCustomerPayload,
+  UpdateCaptureAnswersPayload,
 } from '#types/account';
 import type { Config } from '#types/Config';
 
@@ -39,12 +41,14 @@ export const login: Login = async ({ config, email, password }) => {
   };
 
   const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/auths', JSON.stringify(payload));
-
   if (errors.length > 0) throw new Error(errors[0]);
+
+  const { user, customerConsents } = await getUser({ config, auth });
 
   return {
     auth,
-    user: await getUser({ config, auth }),
+    user,
+    customerConsents,
   };
 };
 
@@ -67,9 +71,12 @@ export const register: Register = async ({ config, email, password }) => {
 
   if (errors.length) throw new Error(errors[0]);
 
+  const { user, customerConsents } = await getUser({ config, auth });
+
   return {
     auth,
-    user: await getUser({ config, auth }),
+    user,
+    customerConsents,
   };
 };
 
@@ -82,7 +89,18 @@ export async function getUser({ config, auth }: { config: Config; auth: AuthData
 
   if (errors.length > 0) throw new Error(errors[0]);
 
-  return user;
+  const consentsPayload = {
+    config,
+    jwt: auth.jwt,
+    customer: user,
+  };
+
+  const { consents } = await getCustomerConsents(consentsPayload);
+
+  return {
+    user,
+    customerConsents: consents,
+  };
 }
 
 export const getFreshJwtToken = async ({ config, auth }: { config: Config; auth: AuthData }) => {
@@ -95,11 +113,13 @@ export const getFreshJwtToken = async ({ config, auth }: { config: Config; auth:
 
 export const getPublisherConsents: GetPublisherConsents = async (config) => {
   const { cleeng } = config.integrations;
-  const response: ServiceResponse<GetPublisherConsentsResponse> = await get(!!cleeng?.useSandbox, `/publishers/${cleeng?.id}/consents`);
+  const response = await get(!!cleeng?.useSandbox, `/publishers/${cleeng?.id}/consents`);
 
   if (response.errors.length) throw new Error(response.errors[0]);
 
-  return response;
+  return {
+    consents: response?.responseData?.consents || [],
+  };
 };
 
 export const getCustomerConsents: GetCustomerConsents = async (payload) => {
@@ -109,22 +129,24 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
   const response: ServiceResponse<GetCustomerConsentsResponse> = await get(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, jwt);
   if (response.errors.length) throw new Error(response.errors[0]);
 
-  return response;
+  return {
+    consents: response?.responseData?.consents || [],
+  };
 };
 
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   const { config, customer, jwt } = payload;
   const { cleeng } = config.integrations;
 
-  const _payload = {
+  const params: UpdateCustomerConsentsPayload = {
     id: customer.id,
     consents: payload.consents,
   };
 
-  const response: ServiceResponse<never> = await put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(_payload), jwt);
+  const response: ServiceResponse<never> = await put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(params), jwt);
   if (response.errors.length) throw new Error(response.errors[0]);
 
-  return response;
+  return await getCustomerConsents(payload);
 };
 
 export const getCaptureStatus: GetCaptureStatus = async ({ customer }, sandbox, jwt) => {
@@ -136,7 +158,12 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }, sandbox, 
 };
 
 export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...payload }, sandbox, jwt) => {
-  const response: ServiceResponse<Capture> = await put(sandbox, `/customers/${customer.id}/capture`, JSON.stringify(payload), jwt);
+  const params: UpdateCaptureAnswersPayload = {
+    customerId: customer.id,
+    ...payload,
+  };
+
+  const response: ServiceResponse<Capture> = await put(sandbox, `/customers/${customer.id}/capture`, JSON.stringify(params), jwt);
 
   if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -152,7 +179,12 @@ export const changePassword: ChangePassword = async (payload, sandbox) => {
 };
 
 export const updateCustomer: UpdateCustomer = async (payload, sandbox, jwt) => {
-  return patch(sandbox, `/customers/${payload.id}`, JSON.stringify(payload), jwt);
+  const { id, metadata, fullName, ...rest } = payload;
+  const params: UpdateCustomerPayload = {
+    id,
+    ...rest,
+  };
+  return patch(sandbox, `/customers/${id}`, JSON.stringify(params), jwt);
 };
 
 export const getCustomer: GetCustomer = async (payload, sandbox, jwt) => {
