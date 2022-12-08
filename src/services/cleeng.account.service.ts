@@ -28,6 +28,7 @@ import type {
   UpdateCaptureAnswersPayload,
   UpdateCustomerConsentsPayload,
   UpdateCustomerPayload,
+  ServiceResponse,
 } from '#types/account';
 
 export const setEnvironment = () => true;

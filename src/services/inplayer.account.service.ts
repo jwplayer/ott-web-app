@@ -12,6 +12,7 @@ import type {
   GetPublisherConsents,
   Login,
   Register,
+  ServiceResponse,
   UpdateCaptureAnswers,
   UpdateCustomer,
   UpdateCustomerConsents,
