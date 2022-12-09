@@ -54,11 +54,15 @@ export function calculateContrastColor(color: string) {
 // Build is either Development or Production
 // Mode can be dev, jwdev, demo, test, prod, etc.
 export const IS_DEVELOPMENT_BUILD = import.meta.env.DEV;
+// Demo mode is used to run our firebase demo instance
 export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
+// Test mode is used for e2e and unit tests
 export const IS_TEST_MODE = import.meta.env.MODE === 'test';
+// Preview mode is used for previewing Pull Requests on github
+export const IS_PREVIEW_MODE = import.meta.env.MODE === 'preview';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
-  if (IS_DEVELOPMENT_BUILD) {
+  if (IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) {
     if (optionalParams.length > 0) {
       console.info(message, optionalParams);
     } else {
@@ -68,7 +72,7 @@ export function logDev(message: unknown, ...optionalParams: unknown[]) {
 }
 
 export function getOverrideIP() {
-  if (!IS_TEST_MODE && !IS_DEVELOPMENT_BUILD) {
+  if (!IS_TEST_MODE && !IS_DEVELOPMENT_BUILD && !IS_PREVIEW_MODE) {
     return undefined;
   }
 
@@ -80,5 +84,5 @@ export function getOverrideIP() {
 }
 
 export function testId(value: string | undefined) {
-  return IS_DEVELOPMENT_BUILD || IS_TEST_MODE ? value : undefined;
+  return IS_DEVELOPMENT_BUILD || IS_TEST_MODE || IS_PREVIEW_MODE ? value : undefined;
 }

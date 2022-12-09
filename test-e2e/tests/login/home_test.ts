@@ -7,7 +7,7 @@ let loginContext: LoginContext;
 Feature('login - home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig(testConfigs.authvod);
+  I.useConfig(testConfigs.cleengAuthvod);
 });
 
 Scenario('Sign-in buttons show for accounts config', async ({ I }) => {
