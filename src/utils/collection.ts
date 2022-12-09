@@ -65,11 +65,10 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
   ),
 });
 
-const formatConsentValues = (publisherConsents: Consent[] | null, customerConsents: CustomerConsent[] | null) => {
+const formatConsentValues = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
-
   const values: Record<string, boolean> = {};
   publisherConsents?.forEach((publisherConsent) => {
     if (customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name && customerConsent.state === 'accepted')) {

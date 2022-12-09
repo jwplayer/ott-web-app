@@ -57,7 +57,11 @@ export type ForgotPasswordFormData = {
 };
 
 export type EditPasswordFormData = {
+  email?: string;
+  oldPassword?: string;
   password: string;
+  passwordConfirmation: string;
+  resetPasswordToken?: string;
 };
 
 export type OfferType = 'svod' | 'tvod';
@@ -147,6 +151,20 @@ export type ChangePasswordPayload = {
   publisherId: string;
   resetPasswordToken: string;
   newPassword: string;
+};
+
+export type ChangePasswordWithTokenPayload = {
+  customerEmail?: string;
+  publisherId?: string;
+  resetPasswordToken: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
+};
+
+export type changePasswordWithOldPasswordPayload = {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
 };
 
 export type GetCustomerPayload = {
@@ -305,6 +323,7 @@ type UpdateCustomerConsents = Request<UpdateCustomerConsentsArgs, GetCustomerCon
 type GetCaptureStatus = AuthServiceRequest<GetCaptureStatusArgs, GetCaptureStatusResponse>;
 type UpdateCaptureAnswers = AuthServiceRequest<UpdateCaptureStatusArgs, Capture>;
 type ResetPassword = EnvironmentServiceRequest<ResetPasswordPayload, Record<string, unknown>>;
-type ChangePassword = EnvironmentServiceRequest<ChangePasswordPayload, Record<string, unknown>>;
+type ChangePassword = EnvironmentServiceRequest<ChangePasswordWithTokenPayload, ApiResponse<unknown>>;
+type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWithOldPasswordPayload, ApiResponse<unknown>>;
 type RefreshToken = EnvironmentServiceRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = EmptyServiceRequest<LocalesData>;

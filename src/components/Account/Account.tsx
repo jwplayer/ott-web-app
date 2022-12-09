@@ -40,11 +40,12 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
 
-  const { customer, customerConsents, publisherConsents } = useAccountStore(
-    ({ user, customerConsents, publisherConsents }) => ({
+  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword } = useAccountStore(
+    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword }) => ({
       customer: user,
       customerConsents,
       publisherConsents,
+      canChangePasswordWithOldPassword,
     }),
     shallow,
   );
@@ -143,7 +144,8 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   }
 
   const editPasswordClickHandler = () => {
-    navigate(addQueryParam(location, 'u', 'reset-password'));
+    const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password';
+    navigate(addQueryParam(location, 'u', modal));
   };
 
   return (
