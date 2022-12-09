@@ -28,6 +28,7 @@ import type {
   UpdateCaptureAnswersPayload,
   UpdateCustomerConsentsPayload,
   UpdateCustomerPayload,
+  ChangePasswordWithOldPassword,
 } from '#types/account';
 
 export const setEnvironment = () => true;
@@ -177,8 +178,15 @@ export const resetPassword: ResetPassword = async (payload, sandbox) => {
   return put(sandbox, '/customers/passwords', JSON.stringify(payload));
 };
 
-export const changePassword: ChangePassword = async (payload, sandbox) => {
+export const changePasswordWithResetToken: ChangePassword = async (payload, sandbox) => {
   return patch(sandbox, '/customers/passwords', JSON.stringify(payload));
+};
+
+export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = async () => {
+  return {
+    errors: [],
+    responseData: {},
+  };
 };
 
 export const updateCustomer: UpdateCustomer = async (payload, sandbox, jwt) => {
@@ -208,4 +216,6 @@ const handleErrors = (errors: ApiResponse['errors']) => {
   }
 };
 
-export const canUpdateEmail = () => true;
+export const canUpdateEmail = true;
+
+export const canChangePasswordWithOldPassword = false;

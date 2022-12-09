@@ -153,7 +153,11 @@
     "view_password": "",
     "wrong_email": "",
     "yes": "",
-    "password_reset_text": ""
+    "password_reset_text": "",
+    "repeat_new_password": "",
+    "passwords_do_not_match": "",
+    "old_password": "",
+    "reset_password_token": ""
   },
   "subscription_cancelled": {
     "message": "",

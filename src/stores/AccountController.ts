@@ -69,9 +69,12 @@ export const handleVisibilityChange = () => {
 
 export const initializeAccount = async () => {
   await withAccountService(async ({ accountService, config }) => {
-    useAccountStore.setState({ loading: true });
+    useAccountStore.setState({
+      loading: true,
+      canUpdateEmail: accountService.canUpdateEmail,
+      canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
+    });
     accountService.setEnvironment(config);
-    useAccountStore.setState({ canUpdateEmail: accountService.canUpdateEmail() });
 
     const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
 
@@ -306,14 +309,14 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
 };
 
 export const resetPassword = async (email: string, resetUrl: string) => {
-  return await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const response = await cleengAccountService.resetPassword(
+  return await withAccountService(async ({ accountService, sandbox, authProviderId }) => {
+    const response = await accountService.resetPassword(
       {
         customerEmail: email,
-        publisherId: cleengId,
+        publisherId: authProviderId,
         resetUrl,
       },
-      cleengSandbox,
+      sandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -322,21 +325,24 @@ export const resetPassword = async (email: string, resetUrl: string) => {
   });
 };
 
-export const changePassword = async (customerEmail: string, newPassword: string, resetPasswordToken: string) => {
-  return await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const response = await cleengAccountService.changePassword(
-      {
-        publisherId: cleengId,
-        customerEmail,
-        newPassword,
-        resetPasswordToken,
-      },
-      cleengSandbox,
+export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
+  return await withAccountService(async ({ accountService, sandbox }) => {
+    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
+    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
+
+    return response?.responseData;
+  });
+};
+
+export const changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
+  return await withAccountService(async ({ accountService, sandbox, authProviderId }) => {
+    const response = await accountService.changePasswordWithResetToken(
+      { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
+      sandbox,
     );
+    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
-
-    return response.responseData;
+    return response?.responseData;
   });
 };
 
@@ -475,15 +481,22 @@ function withAccountService<T>(
     config: Config;
     accessModel: AccessModel;
     sandbox: boolean;
+    authProviderId: string;
   }) => T,
 ): T {
   const { config, accessModel } = useConfigStore.getState();
   const { cleeng, inplayer } = config.integrations;
 
   if (inplayer?.clientId) {
-    return callback({ accountService: inplayerAccountService, config, accessModel, sandbox: !!inplayer.useSandbox });
+    return callback({
+      accountService: inplayerAccountService,
+      config,
+      accessModel,
+      sandbox: !!inplayer.useSandbox,
+      authProviderId: inplayer?.clientId?.toString(),
+    });
   } else if (cleeng?.id) {
-    return callback({ accountService: cleengAccountService, config, accessModel, sandbox: !!cleeng.useSandbox });
+    return callback({ accountService: cleengAccountService, config, accessModel, sandbox: !!cleeng.useSandbox, authProviderId: cleeng?.id });
   }
 
   throw new Error('No account service available');

@@ -3,6 +3,8 @@ import InPlayer, { AccountData, Env, GetRegisterField } from '@inplayer-org/inpl
 import type {
   AuthData,
   Capture,
+  ChangePassword,
+  ChangePasswordWithOldPassword,
   Consent,
   Customer,
   CustomerConsent,
@@ -12,6 +14,7 @@ import type {
   GetPublisherConsents,
   Login,
   Register,
+  ResetPassword,
   UpdateCaptureAnswers,
   UpdateCustomer,
   UpdateCustomerConsents,
@@ -44,7 +47,7 @@ export const login: Login = async ({ config, email, password }) => {
     return {
       auth: processAuth(data),
       user,
-      customerConsents: parseJson(user?.metadata?.consents as string),
+      customerConsents: parseJson(user?.metadata?.consents as string, []),
     };
   } catch {
     throw new Error('Failed to authenticate user.');
@@ -68,7 +71,7 @@ export const register: Register = async ({ config, email, password }) => {
     return {
       auth: processAuth(data),
       user,
-      customerConsents: parseJson(user?.metadata?.consents as string),
+      customerConsents: parseJson(user?.metadata?.consents as string, []),
     };
   } catch (error: unknown) {
     const { response } = error as InPlayerError;
@@ -91,7 +94,7 @@ export const getUser = async () => {
     const user = processAccount(data);
     return {
       user,
-      customerConsents: parseJson(user?.metadata?.consents as string) as CustomerConsent[],
+      customerConsents: parseJson(user?.metadata?.consents as string, []) as CustomerConsent[],
     };
   } catch {
     throw new Error('Failed to fetch user data.');
@@ -152,7 +155,7 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
     }
 
     const { customer } = payload;
-    const consents: GetCustomerConsentsResponse = parseJson(customer.metadata?.consents as string);
+    const consents: GetCustomerConsentsResponse = parseJson(customer.metadata?.consents as string, []);
 
     return consents;
   } catch {
@@ -170,7 +173,7 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload) =>
     };
     const { responseData } = await updateCustomer(data, true, '');
     return {
-      consents: parseJson(responseData?.metadata?.consents as string),
+      consents: parseJson(responseData?.metadata?.consents as string, []),
     };
   } catch {
     throw new Error('Unable to update Customer`s consents');
@@ -200,6 +203,59 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
 
 export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
   return (await updateCustomer(metadata, true, '')) as ServiceResponse<Capture>;
+};
+
+export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
+  const { oldPassword, newPassword, newPasswordConfirmation } = payload;
+  try {
+    await InPlayer.Account.changePassword({
+      oldPassword,
+      password: newPassword,
+      passwordConfirmation: newPasswordConfirmation,
+    });
+    return {
+      errors: [],
+      responseData: {},
+    };
+  } catch {
+    throw new Error('Failed to change password.');
+  }
+};
+
+export const changePasswordWithResetToken: ChangePassword = async (payload) => {
+  const { resetPasswordToken = '', newPassword, newPasswordConfirmation = '' } = payload;
+  try {
+    await InPlayer.Account.setNewPassword(
+      {
+        password: newPassword,
+        passwordConfirmation: newPasswordConfirmation,
+        brandingId: 0,
+      },
+      resetPasswordToken,
+    );
+    return {
+      errors: [],
+      responseData: {},
+    };
+  } catch {
+    throw new Error('Failed to change password.');
+  }
+};
+
+export const resetPassword: ResetPassword = async ({ customerEmail, publisherId }) => {
+  try {
+    await InPlayer.Account.requestNewPassword({
+      email: customerEmail,
+      merchantUuid: publisherId || '',
+      brandingId: 0,
+    });
+    return {
+      errors: [],
+      responseData: {},
+    };
+  } catch {
+    throw new Error('Failed to reset password.');
+  }
 };
 
 function processAccount(account: AccountData): Customer {
@@ -256,12 +312,14 @@ function getTermsConsent(): Consent {
   });
 }
 
-function parseJson(value: string) {
+function parseJson(value: string, fallback = {}) {
   try {
     return JSON.parse(value);
   } catch {
-    return {};
+    return fallback;
   }
 }
 
-export const canUpdateEmail = () => false;
+export const canUpdateEmail = false;
+
+export const canChangePasswordWithOldPassword = true;
