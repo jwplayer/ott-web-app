@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, GetRegisterField } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData } from '@inplayer-org/inplayer.js';
 
 import type {
   AuthData,
@@ -15,8 +15,10 @@ import type {
   Login,
   Register,
   ResetPassword,
+  ServiceResponse,
   UpdateCaptureAnswers,
   UpdateCustomer,
+  UpdateCustomerArgs,
   UpdateCustomerConsents,
 } from '#types/account';
 import type { Config } from '#types/Config';
@@ -103,20 +105,9 @@ export const getUser = async () => {
 
 export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
-export const updateCustomer: UpdateCustomer = async (values) => {
+export const updateCustomer: UpdateCustomer = async (customer) => {
   try {
-    const firstName = values.firstName?.trim() || '';
-    const lastName = values.lastName?.trim() || '';
-    const fullName = `${firstName} ${lastName}`;
-
-    const response: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount({
-      fullName,
-      metadata: {
-        ...(values?.metadata?.consents && { consents: JSON.stringify(values.metadata?.consents) }),
-        first_name: firstName,
-        surname: lastName,
-      },
-    });
+    const response: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount(processUpdateAccount(customer));
 
     return {
       errors: [],
@@ -166,17 +157,15 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
-    const data = {
-      metadata: { consents },
-      firstName: customer?.firstName as string,
-      lastName: customer?.lastName as string,
-    };
-    const { responseData } = await updateCustomer(data, true, '');
+    const params = { ...processUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
+
+    const { data }: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount(params);
+
     return {
-      consents: parseJson(responseData?.metadata?.consents as string, []),
+      consents: parseJson(data?.metadata?.consents as string, []),
     };
   } catch {
-    throw new Error('Unable to update Customer`s consents');
+    throw new Error('Unable to update Customer consents');
   }
 };
 
@@ -280,6 +269,22 @@ function processAccount(account: AccountData): Customer {
     country: '',
     lastUserIp: '',
   };
+}
+
+function processUpdateAccount(customer: UpdateCustomerArgs) {
+  const firstName = customer.firstName?.trim() || '';
+  const lastName = customer.lastName?.trim() || '';
+  const fullName = `${firstName} ${lastName}`;
+
+  const data: UpdateAccountData = {
+    fullName,
+    metadata: {
+      first_name: firstName,
+      surname: lastName,
+    },
+  };
+
+  return data;
 }
 
 function processAuth(auth: InPlayerAuthData): AuthData {

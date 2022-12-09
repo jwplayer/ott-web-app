@@ -19,6 +19,10 @@ export type PayloadWithIPOverride = {
   customerIP?: string;
 };
 
+export type RefreshTokenPayload = {
+  refreshToken: string;
+};
+
 export type AuthArgs = {
   config: Config;
   email: string;

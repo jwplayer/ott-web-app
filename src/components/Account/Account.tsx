@@ -237,7 +237,9 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
         formSection({
           label: t('account.terms_and_tracking'),
           saveButton: t('account.update_consents'),
-          onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)) as Promise<never>,
+          onSubmit: async (values) => {
+            await updateConsents(formatConsentsFromValues(publisherConsents, values));
+          },
           content: (section) => (
             <>
               {publisherConsents?.map((consent, index) => (
