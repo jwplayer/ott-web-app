@@ -352,12 +352,13 @@ export const initCustomerExtras = async (): Promise<ExternalData> => {
 };
 
 export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
+  const { favorites, history } = payload.externalData;
   const user = useAccountStore.getState().user;
-  const favoriteIds = user?.externalData?.favorites?.flatMap((e) => e.mediaid);
-  const payloadFavoriteIds = payload.externalData.favorites?.flatMap((e) => e.mediaid);
+  const currentFavoriteIds = user?.externalData?.favorites?.flatMap((e) => e.mediaid);
+  const payloadFavoriteIds = favorites?.flatMap((e) => e.mediaid);
 
   try {
-    payload.externalData.history.forEach(async (history) => {
+    history.forEach(async (history) => {
       if (user?.externalData?.history?.length) {
         user?.externalData?.history?.forEach(async (historyStore) => {
           if (historyStore.mediaid === history.mediaid && historyStore.progress !== history.progress) {
@@ -369,14 +370,14 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
       }
     });
 
-    if (payloadFavoriteIds.length > (favoriteIds?.length || 0)) {
+    if (payloadFavoriteIds.length > (currentFavoriteIds?.length || 0)) {
       payloadFavoriteIds.forEach(async (mediaId) => {
-        if (!favoriteIds?.includes(mediaId)) {
+        if (!currentFavoriteIds?.includes(mediaId)) {
           await InPlayer.Account.addToFavorites(mediaId);
         }
       });
     } else {
-      favoriteIds?.forEach(async (mediaid) => {
+      currentFavoriteIds?.forEach(async (mediaid) => {
         if (!payloadFavoriteIds?.includes(mediaid)) {
           await InPlayer.Account.deleteFromFavorites(mediaid);
         }
