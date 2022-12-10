@@ -21,12 +21,13 @@ import type {
   UpdateCustomer,
   UpdateCustomerArgs,
   UpdateCustomerConsents,
+  UpdatePersonalShelves,
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError, InPlayerResponse } from '#types/inplayer';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type { Favorite, SerializedFavorite } from '#types/favorite';
-import type { WatchHistoryItem, SerializedWatchHistoryItem } from '#types/watchHistory';
+import type { Favorite } from '#types/favorite';
+import type { WatchHistoryItem } from '#types/watchHistory';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -350,14 +351,15 @@ export const initCustomerExtras = async (): Promise<ExternalData> => {
   };
 };
 
-export const updatePersonalShelves = async (payload: any) => {
+export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
   const user = useAccountStore.getState().user;
-  const favoriteIds = user?.externalData?.favorites?.flatMap((e: SerializedFavorite) => e.mediaid);
-  const payloadFavoriteIds = payload.externalData.favorites?.flatMap((e: SerializedWatchHistoryItem) => e.mediaid);
+  const favoriteIds = user?.externalData?.favorites?.flatMap((e) => e.mediaid);
+  const payloadFavoriteIds = payload.externalData.favorites?.flatMap((e) => e.mediaid);
+
   try {
-    payload.externalData.history.forEach(async (history: WatchHistoryItem) => {
+    payload.externalData.history.forEach(async (history) => {
       if (user?.externalData?.history?.length) {
-        await user?.externalData?.history?.forEach(async (historyStore: SerializedWatchHistoryItem) => {
+        user?.externalData?.history?.forEach(async (historyStore) => {
           if (historyStore.mediaid === history.mediaid && historyStore.progress !== history.progress) {
             await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
           }
@@ -366,19 +368,25 @@ export const updatePersonalShelves = async (payload: any) => {
         await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
       }
     });
+
     if (payloadFavoriteIds.length > (favoriteIds?.length || 0)) {
-      payloadFavoriteIds.forEach(async (mediaId: string) => {
+      payloadFavoriteIds.forEach(async (mediaId) => {
         if (!favoriteIds?.includes(mediaId)) {
           await InPlayer.Account.addToFavorites(mediaId);
         }
       });
     } else {
-      favoriteIds?.forEach(async (mediaid: string) => {
+      favoriteIds?.forEach(async (mediaid) => {
         if (!payloadFavoriteIds?.includes(mediaid)) {
           await InPlayer.Account.deleteFromFavorites(mediaid);
         }
       });
     }
+
+    return {
+      errors: [],
+      responseData: {},
+    };
   } catch {
     throw new Error('Failed to update external data');
   }

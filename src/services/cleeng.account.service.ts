@@ -30,6 +30,7 @@ import type {
   UpdateCustomerPayload,
   ChangePasswordWithOldPassword,
   ServiceResponse,
+  UpdatePersonalShelves,
 } from '#types/account';
 
 export const setEnvironment = () => true;
@@ -199,6 +200,10 @@ export const updateCustomer: UpdateCustomer = async (payload, sandbox, jwt) => {
   return patch(sandbox, `/customers/${id}`, JSON.stringify(params), jwt);
 };
 
+export const updatePersonalShelves: UpdatePersonalShelves = async (payload, sandbox, jwt) => {
+  return await updateCustomer(payload, sandbox, jwt);
+};
+
 export const getCustomer: GetCustomer = async (payload, sandbox, jwt) => {
   return get(sandbox, `/customers/${payload.customerId}`, jwt);
 };
@@ -222,7 +227,3 @@ export const canUpdateEmail = true;
 export const canChangePasswordWithOldPassword = false;
 
 export const initCustomerExtras = async () => null;
-
-export const updatePersonalShelves = async (payload: any, sandbox: boolean, jwt: string) => {
-  return await updateCustomer(payload, sandbox, jwt);
-};
