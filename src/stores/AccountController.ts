@@ -156,6 +156,11 @@ export const getAccount = async (auth: AuthData) => {
   await withAccountService(async ({ accountService, config, accessModel }) => {
     const response = await accountService.getUser({ config, auth });
 
+    const externalData = await accountService.initCustomerExtras();
+    if (externalData) {
+      response.user.externalData = externalData;
+    }
+
     await afterLogin(auth, response.user, response.customerConsents, accessModel);
 
     useAccountStore.setState({ loading: false });
@@ -208,34 +213,32 @@ export const register = async (email: string, password: string) => {
 
     await afterLogin(auth, user, customerConsents, accessModel);
 
-    // @todo statement will be removed once the fav and history are done on InPlayer side
-    if (auth.refreshToken) {
-      await updatePersonalShelves();
-    }
+    await updatePersonalShelves();
   });
   useAccountStore.setState({ loading: true });
 };
 
 export const updatePersonalShelves = async () => {
-  return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const { watchHistory } = useWatchHistoryStore.getState();
-    const { favorites } = useFavoritesStore.getState();
+  await useAccountContext(async ({ customer, auth: { jwt } }) => {
+    await withAccountService(async ({ accountService, sandbox }) => {
+      const { watchHistory } = useWatchHistoryStore.getState();
+      const { favorites } = useFavoritesStore.getState();
+      if (!watchHistory && !favorites) return;
 
-    if (!watchHistory && !favorites) return;
+      const personalShelfData = {
+        history: serializeWatchHistory(watchHistory),
+        favorites: serializeFavorites(favorites),
+      };
 
-    const personalShelfData = {
-      history: serializeWatchHistory(watchHistory),
-      favorites: serializeFavorites(favorites),
-    };
-
-    return await cleengAccountService.updateCustomer(
-      {
-        id: customerId,
-        externalData: personalShelfData,
-      },
-      cleengSandbox,
-      jwt,
-    );
+      return await accountService.updatePersonalShelves(
+        {
+          id: customer.id,
+          externalData: personalShelfData,
+        },
+        sandbox,
+        jwt,
+      );
+    });
   });
 };
 

@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, FavoritesData, GetRegisterField, UpdateAccountData, WatchlistHistory } from '@inplayer-org/inplayer.js';
 
 import type {
   AuthData,
@@ -8,6 +8,7 @@ import type {
   Consent,
   Customer,
   CustomerConsent,
+  ExternalData,
   GetCaptureStatus,
   GetCustomerConsents,
   GetCustomerConsentsResponse,
@@ -23,6 +24,9 @@ import type {
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError, InPlayerResponse } from '#types/inplayer';
+import { useAccountStore } from '#src/stores/AccountStore';
+import type { Favorite, SerializedFavorite } from '#types/favorite';
+import type { WatchHistoryItem, SerializedWatchHistoryItem } from '#types/watchHistory';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -328,3 +332,67 @@ function parseJson(value: string, fallback = {}) {
 export const canUpdateEmail = false;
 
 export const canChangePasswordWithOldPassword = true;
+
+export const initCustomerExtras = async (): Promise<ExternalData> => {
+  const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
+
+  const favorites = favoritesData.data?.collection?.map((favorite: FavoritesData) => {
+    return processFavorite(favorite);
+  });
+
+  const history = historyData.data?.collection?.map((history: WatchlistHistory) => {
+    return processHistoryItem(history);
+  });
+
+  return {
+    favorites,
+    history,
+  };
+};
+
+export const updatePersonalShelves = async (payload: any) => {
+  const user = useAccountStore.getState().user;
+  const favoriteIds = user?.externalData?.favorites?.flatMap((e: SerializedFavorite) => e.mediaid);
+  const payloadFavoriteIds = payload.externalData.favorites?.flatMap((e: SerializedWatchHistoryItem) => e.mediaid);
+  try {
+    payload.externalData.history.forEach(async (history: WatchHistoryItem) => {
+      if (user?.externalData?.history?.length) {
+        await user?.externalData?.history?.forEach(async (historyStore: SerializedWatchHistoryItem) => {
+          if (historyStore.mediaid === history.mediaid && historyStore.progress !== history.progress) {
+            await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
+          }
+        });
+      } else {
+        await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
+      }
+    });
+    if (payloadFavoriteIds.length > (favoriteIds?.length || 0)) {
+      payloadFavoriteIds.forEach(async (mediaId: string) => {
+        if (!favoriteIds?.includes(mediaId)) {
+          await InPlayer.Account.addToFavorites(mediaId);
+        }
+      });
+    } else {
+      favoriteIds?.forEach(async (mediaid: string) => {
+        if (!payloadFavoriteIds?.includes(mediaid)) {
+          await InPlayer.Account.deleteFromFavorites(mediaid);
+        }
+      });
+    }
+  } catch {
+    throw new Error('Failed to update external data');
+  }
+};
+
+const processFavorite = (favorite: FavoritesData): Favorite => {
+  return {
+    mediaid: favorite.media_id,
+  } as Favorite;
+};
+
+const processHistoryItem = (history: WatchlistHistory): WatchHistoryItem => {
+  return {
+    mediaid: history.media_id,
+    progress: history.progress,
+  } as WatchHistoryItem;
+};

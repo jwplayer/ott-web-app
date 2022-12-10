@@ -220,3 +220,9 @@ const handleErrors = (errors: ApiResponse['errors']) => {
 export const canUpdateEmail = true;
 
 export const canChangePasswordWithOldPassword = false;
+
+export const initCustomerExtras = async () => null;
+
+export const updatePersonalShelves = async (payload: any, sandbox: boolean, jwt: string) => {
+  return await updateCustomer(payload, sandbox, jwt);
+};
