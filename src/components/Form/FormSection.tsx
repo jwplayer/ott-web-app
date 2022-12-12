@@ -101,7 +101,7 @@ export function FormSection<TData extends GenericFormValues>({
           });
           response = await onSubmit(values);
         } catch (error: unknown) {
-          response = { errors: Array.of(error as string) };
+          response = { errors: Array.of(error instanceof Error ? error.message : (error as string)) };
         }
 
         // Don't leave edit mode if there are errors
