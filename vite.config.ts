@@ -90,6 +90,10 @@ export default ({ mode, command }: { mode: string; command: string }) => {
               return 'react';
             }
 
+            if (id.includes('/node_modules/@inplayer')) {
+              return 'inplayer';
+            }
+
             if (id.includes('/node_modules/')) {
               return 'vendor';
             }
