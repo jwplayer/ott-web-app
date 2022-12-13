@@ -213,7 +213,6 @@ export const register = async (email: string, password: string) => {
       await updatePersonalShelves();
     }
   });
-  useAccountStore.setState({ loading: false });
 };
 
 export const updatePersonalShelves = async () => {
@@ -244,18 +243,22 @@ export const updateConsents = async (customerConsents: CustomerConsent[]): Promi
     return await withAccountService(async ({ accountService, config }) => {
       useAccountStore.setState({ loading: true });
 
-      const response = await accountService.updateCustomerConsents({
-        jwt,
-        config,
-        customer,
-        consents: customerConsents,
-      });
+      try {
+        const response = await accountService.updateCustomerConsents({
+          jwt,
+          config,
+          customer,
+          consents: customerConsents,
+        });
 
-      if (response?.consents) {
-        useAccountStore.setState({ customerConsents: response.consents });
+        if (response?.consents) {
+          useAccountStore.setState({ customerConsents: response.consents });
+        }
+
+        return response;
+      } finally {
+        useAccountStore.setState({ loading: false });
       }
-
-      return response;
     });
   });
 };
