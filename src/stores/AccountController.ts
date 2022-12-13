@@ -213,7 +213,7 @@ export const register = async (email: string, password: string) => {
       await updatePersonalShelves();
     }
   });
-  useAccountStore.setState({ loading: true });
+  useAccountStore.setState({ loading: false });
 };
 
 export const updatePersonalShelves = async () => {
