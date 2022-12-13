@@ -201,6 +201,7 @@ export type Customer = {
   metadata?: Record<string, unknown>;
   lastName?: string;
   fullName?: string;
+  uuid?: string;
   externalId?: string;
   externalData?: ExternalData;
 };

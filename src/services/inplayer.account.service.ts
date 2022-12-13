@@ -1,5 +1,7 @@
 import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData } from '@inplayer-org/inplayer.js';
 
+import { subscribeToNotifications } from './inplayer.notifications.service';
+
 import type {
   AuthData,
   Capture,
@@ -45,6 +47,7 @@ export const login: Login = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
+    subscribeToNotifications(user.uuid);
 
     return {
       auth: processAuth(data),
@@ -69,6 +72,7 @@ export const register: Register = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
+    subscribeToNotifications(user.uuid);
 
     return {
       auth: processAuth(data),
@@ -94,6 +98,7 @@ export const getUser = async () => {
     const { data } = await InPlayer.Account.getAccountInfo();
 
     const user = processAccount(data);
+    subscribeToNotifications(user.uuid);
     return {
       user,
       customerConsents: parseJson(user?.metadata?.consents as string, []) as CustomerConsent[],
@@ -248,7 +253,7 @@ export const resetPassword: ResetPassword = async ({ customerEmail, publisherId 
 };
 
 function processAccount(account: AccountData): Customer {
-  const { id, email, full_name: fullName, metadata, created_at: createdAt } = account;
+  const { id, uuid, email, full_name: fullName, metadata, created_at: createdAt } = account;
   const regDate = new Date(createdAt * 1000).toLocaleString();
 
   let firstName = metadata?.first_name as string;
@@ -260,6 +265,7 @@ function processAccount(account: AccountData): Customer {
   }
   return {
     id: id.toString(),
+    uuid,
     email,
     fullName,
     firstName,
