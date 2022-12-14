@@ -23,6 +23,7 @@ import { updateConsents, updateUser } from '#src/stores/AccountController';
 type Props = {
   panelClassName?: string;
   panelHeaderClassName?: string;
+  canUpdateEmail?: boolean;
 };
 
 interface FormErrors {
@@ -33,17 +34,18 @@ interface FormErrors {
   form?: string;
 }
 
-const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element => {
+const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
 
-  const { customer, customerConsents, publisherConsents } = useAccountStore(
-    ({ user, customerConsents, publisherConsents }) => ({
+  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword } = useAccountStore(
+    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword }) => ({
       customer: user,
       customerConsents,
       publisherConsents,
+      canChangePasswordWithOldPassword,
     }),
     shallow,
   );
@@ -73,7 +75,6 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
 
   function translateErrors(errors?: string[]): FormErrors {
     const formErrors: FormErrors = {};
-
     // Some errors are combined in a single CSV string instead of one string per error
     errors
       ?.flatMap((e) => e.split(','))
@@ -98,6 +99,10 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
           }
           case 'lastName can have max 50 characters.': {
             formErrors.lastName = t('account.errors.last_name_too_long');
+            break;
+          }
+          case 'Email update not supported': {
+            formErrors.form = t('account.errors.email_update_not_supported');
             break;
           }
           default: {
@@ -134,7 +139,8 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   }
 
   const editPasswordClickHandler = () => {
-    navigate(addQueryParam(location, 'u', 'reset-password'));
+    const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password';
+    navigate(addQueryParam(location, 'u', modal));
   };
 
   return (
@@ -149,6 +155,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
             }),
           canSave: (values) => !!(values.email && values.confirmationPassword),
           editButton: t('account.edit_account'),
+          readOnly: !canUpdateEmail,
           content: (section) => (
             <>
               <TextField
