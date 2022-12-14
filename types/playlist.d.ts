@@ -2,11 +2,18 @@ import type { MediaOffer } from '#types/media';
 
 export type GetPlaylistParams = { page_limit?: string; related_media_id?: string; token?: string; search?: string };
 
+export type ImageData = {
+  image: string;
+  fallbackImage?: string;
+};
+
 export type Image = {
   src: string;
   type: string;
   width: number;
 };
+
+export type PosterMode = 'fading' | 'normal';
 
 export type Source = {
   file: string;
@@ -25,6 +32,9 @@ export type PlaylistItem = {
   feedid: string;
   image: string;
   images: Image[];
+  shelfImage?: ImageData;
+  backgroundImage?: ImageData;
+  channelLogoImage?: ImageData;
   link: string;
   genre?: string;
   mediaid: string;
@@ -50,6 +60,7 @@ export type PlaylistItem = {
   scheduleDataFormat?: string;
   scheduleDemo?: string;
   catchupHours?: string;
+  [key: string]: unknown;
 };
 
 export type Link = {
@@ -66,4 +77,5 @@ export type Playlist = {
   playlist: PlaylistItem[];
   title: string;
   contentType?: string;
+  [key: string]: unknown;
 };

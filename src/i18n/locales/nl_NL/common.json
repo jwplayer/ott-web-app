@@ -11,14 +11,16 @@
     "confirm": ""
   },
   "default_site_name": "",
-  "filter_videos_by_genre": "",
+  "filter_videos_by": "",
   "home": "",
   "live": "",
-  "now:": "",
+  "now": "",
   "optional": "",
   "play_item": "",
+  "series": "",
   "sign_in": "",
   "sign_up": "",
   "slide_left": "",
-  "slide_right": ""
+  "slide_right": "",
+  "filter_videos_by_genre": ""
 }

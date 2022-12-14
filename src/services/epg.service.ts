@@ -1,7 +1,7 @@
 import { array, object, string } from 'yup';
 import { addDays, differenceInDays, endOfDay, isValid, startOfDay, subDays } from 'date-fns';
 
-import type { PlaylistItem } from '#types/playlist';
+import type { ImageData, PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
 import { logDev } from '#src/utils/common';
 
@@ -20,7 +20,8 @@ export type EpgChannel = {
   id: string;
   title: string;
   description: string;
-  image: string;
+  channelLogoImage: ImageData;
+  backgroundImage: ImageData;
   programs: EpgProgram[];
   catchupHours: number;
 };
@@ -31,7 +32,8 @@ export type EpgProgram = {
   startTime: string;
   endTime: string;
   description?: string;
-  image?: string;
+  shelfImage?: ImageData;
+  backgroundImage?: ImageData;
 };
 
 const epgProgramSchema = object().shape({
@@ -62,7 +64,8 @@ class EpgService {
       description,
       startTime: subDays(startOfDay(new Date()), 1).toJSON(),
       endTime: addDays(endOfDay(new Date()), 1).toJSON(),
-      image: undefined,
+      shelfImage: undefined,
+      backgroundImage: undefined,
     };
   }
 
@@ -93,13 +96,16 @@ class EpgService {
    */
   async transformProgram(data: unknown): Promise<EpgProgram> {
     const program = await epgProgramSchema.validate(data);
+    const image = program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || '';
+    const imageData = image ? { image } : undefined;
 
     return {
       id: program.id,
       title: program.title,
       startTime: program.startTime,
       endTime: program.endTime,
-      image: program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || undefined,
+      shelfImage: imageData,
+      backgroundImage: imageData,
       description: program.chapterPointCustomProperties?.find((item) => item.key === 'description')?.value || undefined,
     };
   }
@@ -110,8 +116,21 @@ class EpgService {
   async parseSchedule(data: unknown, demo = false) {
     if (!Array.isArray(data)) return [];
 
-    const transformResults = await Promise.allSettled(data.map((program) => this.transformProgram(program)));
-    const programs = transformResults.filter(isFulfilled).map((result) => result.value);
+    const transformResults = await Promise.allSettled(
+      data.map((program) =>
+        this.transformProgram(program)
+          // This quiets promise resolution errors in the console
+          .catch((error) => {
+            logDev(error);
+            return undefined;
+          }),
+      ),
+    );
+
+    const programs = transformResults
+      .filter(isFulfilled)
+      .map((result) => result.value)
+      .filter((program): program is EpgProgram => !!program);
 
     return demo ? this.generateDemoPrograms(programs) : programs;
   }
@@ -158,9 +177,10 @@ class EpgService {
     return {
       id: item.mediaid,
       title: item.title,
-      image: item.image,
       description: item.description,
       catchupHours: catchupHours || 8,
+      channelLogoImage: item.channelLogoImage,
+      backgroundImage: item.backgroundImage,
       programs,
     } as EpgChannel;
   }

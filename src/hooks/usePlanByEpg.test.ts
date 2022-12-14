@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { describe, expect, test } from 'vitest';
 
 import usePlanByEpg, { makeTheme } from '#src/hooks/usePlanByEpg';
-import epgChannelsFixture from '#src/fixtures/epgChannels.json';
+import epgChannelsFixture from '#test/fixtures/epgChannels.json';
 import type { EpgChannel } from '#src/services/epg.service';
 
 const schedule: EpgChannel[] = epgChannelsFixture;

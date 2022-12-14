@@ -11,7 +11,7 @@ type Data = {
 };
 
 export const useSeriesData = (
-  entityId: string,
+  entityId?: string,
 ): {
   data: Data;
   // isItemError: boolean;

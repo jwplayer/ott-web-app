@@ -1,5 +1,5 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
 
 .buffer {
   position: relative;
@@ -19,8 +19,15 @@
   border-radius: 50%;
   animation: buffer 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }
+
 .small {
-  transform: scale(0.6);
+  width: 20px;
+  height: 20px;
+}
+
+.small div {
+  width: variables.$base-spacing;
+  height: variables.$base-spacing;
 }
 
 .buffer div:nth-child(1) {

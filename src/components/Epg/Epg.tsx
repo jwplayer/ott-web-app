@@ -6,12 +6,12 @@ import { isBefore, subHours } from 'date-fns';
 import styles from './Epg.module.scss';
 
 import type { Config } from '#types/Config';
-import IconButton from '#src/components/IconButton/IconButton';
-import Button from '#src/components/Button/Button';
-import EpgChannelItem from '#src/components/EpgChannel/EpgChannelItem';
-import EpgProgramItem from '#src/components/EpgProgramItem/EpgProgramItem';
-import EpgTimeline from '#src/components/EpgTimeline/EpgTimeline';
-import Spinner from '#src/components/Spinner/Spinner';
+import IconButton from '#components/IconButton/IconButton';
+import Button from '#components/Button/Button';
+import EpgChannelItem from '#components/EpgChannel/EpgChannelItem';
+import EpgProgramItem from '#components/EpgProgramItem/EpgProgramItem';
+import EpgTimeline from '#components/EpgTimeline/EpgTimeline';
+import Spinner from '#components/Spinner/Spinner';
 import type { EpgChannel, EpgProgram } from '#src/services/epg.service';
 import ChevronRight from '#src/icons/ChevronRight';
 import ChevronLeft from '#src/icons/ChevronLeft';

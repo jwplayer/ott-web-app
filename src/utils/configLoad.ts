@@ -1,26 +1,28 @@
 import merge from 'lodash.merge';
 
-import { calculateContrastColor } from '../utils/common';
-import { getConfig } from '../utils/configOverride';
-import loadConfig, { validateConfig } from '../services/config.service';
-import type { AccessModel, Config, Styling } from '../../types/Config';
-import { addScript } from '../utils/dom';
-import { useConfigStore } from '../stores/ConfigStore';
+import { calculateContrastColor } from '#src/utils/common';
+import loadConfig, { validateConfig } from '#src/services/config.service';
+import { addScript } from '#src/utils/dom';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import type { AccessModel, Config, Styling } from '#types/Config';
+import { initializeAccount } from '#src/stores/AccountController';
+import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
+import { initializeFavorites } from '#src/stores/FavoritesController';
+
+const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
 
 const defaultConfig: Config = {
   id: '',
   siteName: '',
   description: '',
   player: '',
-  assets: {},
+  assets: {
+    banner: '/images/logo.png',
+  },
   content: [],
   menu: [],
-  integrations: {
-    cleeng: {
-      id: null,
-      useSandbox: true,
-    },
-  },
+  integrations: {},
   styling: {
     footerText: '',
     shelfTitles: true,
@@ -55,52 +57,85 @@ const maybeInjectAnalyticsLibrary = (config: Config) => {
 };
 
 const calculateAccessModel = (config: Config): AccessModel => {
-  const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
+  if (config?.integrations?.cleeng) {
+    const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
 
-  if (!id) return 'AVOD';
-  if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+    if (!id) return 'AVOD';
+    if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+  }
+
+  if (config?.integrations?.inplayer) {
+    const { clientId, assetId } = config?.integrations?.inplayer || {};
+
+    if (!clientId) return 'AVOD';
+    if (!assetId) return 'AUTHVOD';
+  }
   return 'SVOD';
 };
 
-export const loadAndValidateConfig = async (
-  onLoading: (isLoading: boolean) => void,
-  onValidationError: (error: Error) => void,
-  onValidationCompleted: (config: Config) => void,
-) => {
-  onLoading(true);
+export async function loadAndValidateConfig(configSource: string | undefined) {
+  configSource = formatSourceLocation(configSource);
 
-  const configLocation = getConfig();
-
-  if (!configLocation) {
-    onValidationError(new Error('Config not defined'));
-    return;
+  if (!configSource) {
+    throw new Error('Config not defined');
   }
 
-  const config = await loadConfig(configLocation).catch((error) => {
-    onValidationError(error);
+  let config = await loadConfig(configSource);
+  config.assets = config.assets || {};
+
+  // make sure the banner always defaults to the JWP banner when not defined in the config
+  if (!config.assets.banner) {
+    config.assets.banner = defaultConfig.assets.banner;
+  }
+
+  // Store the logo right away and set css variables so the error page will be branded
+  useConfigStore.setState((s) => {
+    s.config.assets.banner = config.assets.banner;
   });
 
-  if (!config) {
-    onLoading(false);
-    return;
+  setCssVariables(config.styling || {});
+
+  config = await validateConfig(config);
+  config = merge({}, defaultConfig, config);
+
+  const accessModel = calculateAccessModel(config);
+
+  useConfigStore.setState({
+    config: config,
+    accessModel,
+  });
+
+  maybeInjectAnalyticsLibrary(config);
+
+  // TODO: refactor this once we have more input how integrations will be handled in dashboard
+  if (config?.integrations?.cleeng?.id && config?.integrations?.inplayer?.clientId) {
+    throw new Error('Invalid client integration. You cannot have both Cleeng and Inplayer integrations enabled at the same time.');
+  }
+  if (config?.integrations?.cleeng?.id || config?.integrations?.inplayer?.clientId) {
+    await initializeAccount();
   }
 
-  await validateConfig(config)
-    .then((configValidated) => {
-      const configWithDefaults = merge({}, defaultConfig, configValidated);
+  // We only request favorites and continue_watching data if there is a corresponding item in the content section
+  // and a playlist in the features section.
+  // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink
+  if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
+    await restoreWatchHistory();
+  }
+  if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
+    await initializeFavorites();
+  }
 
-      const accessModel = calculateAccessModel(configWithDefaults);
+  return config;
+}
 
-      useConfigStore.setState({
-        config: configWithDefaults,
-        accessModel,
-      });
+function formatSourceLocation(source?: string) {
+  if (!source) {
+    return undefined;
+  }
 
-      setCssVariables(configValidated.styling);
-      maybeInjectAnalyticsLibrary(config);
-      onValidationCompleted(config);
-    })
-    .catch((error: Error) => {
-      onValidationError(error);
-    });
-};
+  if (source.match(/^[a-z,\d]{8}$/)) {
+    return `${CONFIG_HOST}/apps/configs/${source}.json`;
+  }
+
+  return source;
+}

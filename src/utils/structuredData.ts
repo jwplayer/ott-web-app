@@ -1,10 +1,11 @@
-import type { Playlist, PlaylistItem } from '../../types/playlist';
-
-import { episodeURL, movieURL } from './formatting';
+import { episodeURL, mediaURL } from './formatting';
 import { secondsToISO8601 } from './datetime';
 
+import type { Playlist, PlaylistItem } from '#types/playlist';
+
 export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
-  const seriesCanonical = `${window.location.origin}${episodeURL(seriesPlaylist)}`;
+  // @todo this still used the series route
+  const seriesCanonical = `${window.location.origin}/s/${seriesPlaylist.feedid}`;
 
   return {
     '@type': 'TVSeries',
@@ -18,7 +19,7 @@ export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
 };
 
 export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: PlaylistItem) => {
-  const episodeCanonical = `${window.location.origin}${episodeURL(seriesPlaylist, episode.mediaid)}`;
+  const episodeCanonical = `${window.location.origin}${episodeURL(episode, seriesPlaylist.feedid)}`;
   const seriesMetadata = generateSeriesMetadata(seriesPlaylist);
 
   return JSON.stringify({
@@ -34,7 +35,7 @@ export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: Playlis
 };
 
 export const generateMovieJSONLD = (item: PlaylistItem) => {
-  const movieCanonical = `${window.location.origin}${movieURL(item)}`;
+  const movieCanonical = `${window.location.origin}${mediaURL(item)}`;
 
   return JSON.stringify({
     '@context': 'http://schema.org/',

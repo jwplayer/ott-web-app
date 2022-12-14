@@ -7,11 +7,10 @@ import styles from './Shelf.module.scss';
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
-import { findPlaylistImageForWidth } from '#src/utils/collection';
 import type { AccessModel, ContentType } from '#types/Config';
 import { isLocked } from '#src/utils/entitlements';
-import TileDock from '#src/components/TileDock/TileDock';
-import Card from '#src/components/Card/Card';
+import TileDock from '#components/TileDock/TileDock';
+import Card, { type PosterAspectRatio } from '#components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const tileBreakpoints: Breakpoints = {
@@ -45,9 +44,11 @@ export type ShelfProps = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  posterAspect?: PosterAspectRatio;
+  visibleTilesDelta?: number;
 };
 
-const Shelf: React.FC<ShelfProps> = ({
+const Shelf = ({
   playlist,
   type,
   onCardClick,
@@ -62,22 +63,23 @@ const Shelf: React.FC<ShelfProps> = ({
   accessModel,
   isLoggedIn,
   hasSubscription,
+  posterAspect,
+  visibleTilesDelta = 0,
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
   const [didSlideBefore, setDidSlideBefore] = useState(false);
-  const tilesToShow: number = featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint];
-  const isLargeScreen = breakpoint >= Breakpoint.md;
-  const imageSourceWidth = (featured ? 640 : 320) * (window.devicePixelRatio > 1 || isLargeScreen ? 2 : 1);
+  const tilesToShow: number = (featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint]) + visibleTilesDelta;
 
   const renderTile = useCallback(
-    (item, isInView) => (
+    (item: PlaylistItem, isInView: boolean) => (
       <Card
+        key={item.mediaid}
         title={item.title}
         enableTitle={enableCardTitles}
         duration={item.duration}
         progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-        posterSource={findPlaylistImageForWidth(item, imageSourceWidth)}
+        image={item.shelfImage}
         seriesId={item.seriesId}
         seasonNumber={item.seasonNumber}
         episodeNumber={item.episodeNumber}
@@ -87,20 +89,21 @@ const Shelf: React.FC<ShelfProps> = ({
         disabled={!isInView}
         loading={loading}
         isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+        posterAspect={posterAspect}
       />
     ),
     [
       enableCardTitles,
-      featured,
-      imageSourceWidth,
-      loading,
-      onCardClick,
-      onCardHover,
-      playlist.feedid,
       watchHistory,
+      onCardHover,
+      featured,
+      loading,
       accessModel,
       isLoggedIn,
       hasSubscription,
+      posterAspect,
+      onCardClick,
+      playlist.feedid,
       type,
     ],
   );
@@ -151,7 +154,7 @@ const Shelf: React.FC<ShelfProps> = ({
   if (error || !playlist?.playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
-    <div className={classNames(styles.shelf, { [styles.featured]: featured })} data-mediaid={playlist.feedid}>
+    <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
       {!featured && enableTitle ? <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2> : null}
       <TileDock<PlaylistItem>
         items={playlist.playlist}

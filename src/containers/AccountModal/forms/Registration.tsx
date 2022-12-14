@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { object, string, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 
-import RegistrationForm from '../../../components/RegistrationForm/RegistrationForm';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import { addQueryParam } from '../../../utils/history';
-import { extractConsentValues, checkConsentsFromValues } from '../../../utils/collection';
-
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
+import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
+import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
 import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
 
 const Registration = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation('account');
   const [consentValues, setConsentValues] = useState<Record<string, boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
@@ -50,7 +50,7 @@ const Registration = () => {
         // error caught while updating the consents, but continue the registration flow
       });
 
-      history.push(addQueryParam(history, 'u', 'personal-details'));
+      navigate(addQueryParam(location, 'u', 'personal-details'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         const errorMessage = error.message.toLowerCase();

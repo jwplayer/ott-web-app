@@ -1,0 +1,17 @@
+.dropdown {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+
+  width: auto;
+
+  margin-right: 8px;
+  margin-left: auto;
+  font-family: monospace;
+
+  > div {
+    width: 100%;
+    min-width: 150px;
+    margin-right: 20px;
+  }
+}

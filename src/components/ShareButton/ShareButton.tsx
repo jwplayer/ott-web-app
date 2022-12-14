@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { copyToClipboard } from '#src/utils/dom';
-import { addConfigParamToUrl } from '#src/utils/configOverride';
 import Check from '#src/icons/Check';
 import Share from '#src/icons/Share';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 
 type Props = {
   title: string;
@@ -19,13 +18,13 @@ const ShareButton = ({ title, description, url }: Props) => {
   const breakpoint = useBreakpoint();
   const [hasShared, setHasShared] = useState<boolean>(false);
 
-  const onShareClick = (): void => {
+  const onShareClick = async () => {
     if (typeof navigator.share === 'function') {
-      navigator.share({ title, text: description, url });
+      await navigator.share({ title, text: description, url });
       return;
     }
 
-    copyToClipboard(addConfigParamToUrl(window.location.href));
+    copyToClipboard(window.location.href);
     setHasShared(true);
     setTimeout(() => setHasShared(false), 2000);
   };

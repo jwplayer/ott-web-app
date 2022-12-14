@@ -1,0 +1,49 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/mixins/typography';
+
+.hero {
+  height: 40vh;
+}
+
+.content {
+  max-width: 60vw;
+  padding: 37px 56px 0;
+
+  @include responsive.tablet-only() {
+    padding: 32px;
+  }
+
+  @include responsive.mobile-only() {
+    max-width: none;
+    padding: 16px;
+  }
+}
+
+.title {
+  @include typography.video-title-base;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 80vw;
+  height: calc(85vw / 16 * 9);
+
+  mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 60%);
+  //noinspection CssInvalidPropertyValue
+  -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 60%); /* stylelint-disable-line */
+
+  @include responsive.tablet-only() {
+    width: 80vw;
+    height: calc(140vw / 16 * 9);
+  }
+
+  @include responsive.mobile-only() {
+    width: 110vw;
+    height: calc(180vw / 16 * 9);
+  }
+}

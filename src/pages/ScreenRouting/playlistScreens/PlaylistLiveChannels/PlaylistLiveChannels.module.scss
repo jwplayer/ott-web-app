@@ -1,0 +1,29 @@
+@use 'src/styles/variables';
+@use 'src/styles/mixins/responsive';
+
+.epgContainer {
+  padding: 37px 56px 0;
+
+  @include responsive.desktop-small-only() {
+    padding: 34px 36px 36px;
+  }
+
+  @include responsive.tablet-only() {
+    padding: 34px 24px 24px;
+  }
+
+  @include responsive.mobile-only() {
+    padding: 0;
+  }
+}
+
+.catchupButton {
+  @include responsive.mobile-and-tablet() {
+    flex: 2 !important;
+    white-space: nowrap;
+  }
+}
+
+.tag {
+  margin-right: calc(#{variables.$base-spacing} / 2);
+}

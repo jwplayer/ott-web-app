@@ -1,6 +1,17 @@
 .cell {
+  display: inline-block;
   padding: 4px;
 }
+
 .container {
   margin: 0 -4px;
+  text-align: left;
+
+  @for $i from 1 through 10 {
+    &.cols-#{$i} {
+      > .cell {
+        width: calc(100% / $i);
+      }
+    }
+  }
 }

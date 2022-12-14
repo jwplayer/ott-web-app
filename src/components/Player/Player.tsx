@@ -8,7 +8,7 @@ import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
-import { logDev } from '#src/utils/common';
+import { logDev, testId } from '#src/utils/common';
 
 type Props = {
   playerId: string;
@@ -22,8 +22,11 @@ type Props = {
   onUserInActive?: () => void;
   onBeforePlay?: () => void;
   onFirstFrame?: () => void;
+  onRemove?: () => void;
+  onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
   startTime?: number;
+  autostart?: boolean;
 };
 
 const Player: React.FC<Props> = ({
@@ -37,9 +40,12 @@ const Player: React.FC<Props> = ({
   onUserInActive,
   onBeforePlay,
   onFirstFrame,
+  onRemove,
+  onPlaylistItem,
   onPlaylistItemCallback,
   feedId,
   startTime = 0,
+  autostart,
 }: Props) => {
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
@@ -56,6 +62,8 @@ const Player: React.FC<Props> = ({
   const handleUserActive = useEventCallback(onUserActive);
   const handleUserInactive = useEventCallback(onUserInActive);
   const handleFirstFrame = useEventCallback(onFirstFrame);
+  const handleRemove = useEventCallback(onRemove);
+  const handlePlaylistItem = useEventCallback(onPlaylistItem);
   const handlePlaylistItemCallback = useEventCallback(onPlaylistItemCallback);
   const handleReady = useEventCallback(() => onReady && onReady(playerRef.current));
 
@@ -68,6 +76,8 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('userActive', handleUserActive);
     playerRef.current?.on('userInactive', handleUserInactive);
     playerRef.current?.on('firstFrame', handleFirstFrame);
+    playerRef.current?.on('remove', handleRemove);
+    playerRef.current?.on('playlistItem', handlePlaylistItem);
     playerRef.current?.setPlaylistItemCallback(handlePlaylistItemCallback);
   }, [
     handleReady,
@@ -78,6 +88,8 @@ const Player: React.FC<Props> = ({
     handleUserActive,
     handleUserInactive,
     handleFirstFrame,
+    handleRemove,
+    handlePlaylistItem,
     handlePlaylistItemCallback,
   ]);
 
@@ -104,6 +116,11 @@ const Player: React.FC<Props> = ({
   }, [scriptUrl]);
 
   useEffect(() => {
+    // update the startTimeRef each time the startTime changes
+    startTimeRef.current = startTime;
+  }, [startTime]);
+
+  useEffect(() => {
     if (!playerId) {
       return;
     }
@@ -120,6 +137,12 @@ const Player: React.FC<Props> = ({
         logDev('Calling loadPlaylist with the same item, check the dependencies');
         return;
       }
+
+      // update autostart parameter
+      if (typeof autostart !== 'undefined') {
+        playerRef.current?.setConfig({ autostart });
+      }
+
       // load new item
       playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current })]);
     };
@@ -129,15 +152,22 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      playerRef.current.setup({
+      // player options are untyped
+      const playerOptions: { [key: string]: unknown } = {
         aspectratio: false,
         playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
         width: '100%',
         height: '100%',
         mute: false,
-        autostart: true,
         repeat: false,
-      });
+      };
+
+      // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
+      if (typeof autostart !== 'undefined') {
+        playerOptions.autostart = autostart;
+      }
+
+      playerRef.current.setup(playerOptions);
 
       setPlayer(playerRef.current);
       attachEvents();
@@ -150,7 +180,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart]);
 
   useEffect(() => {
     return () => {
@@ -163,7 +193,7 @@ const Player: React.FC<Props> = ({
   }, [detachEvents]);
 
   return (
-    <div className={styles.container} data-testid="player-container">
+    <div className={styles.container} data-testid={testId('player-container')}>
       <div ref={playerElementRef} />
     </div>
   );

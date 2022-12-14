@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import styles from './Button.module.scss';
+
+import Spinner from '#components/Spinner/Spinner';
 
 type Color = 'default' | 'primary';
 
@@ -16,7 +18,7 @@ type Props = {
   fullWidth?: boolean;
   startIcon?: JSX.Element;
   variant?: Variant;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   tabIndex?: number;
   size?: 'small' | 'medium' | 'large';
   to?: string;
@@ -24,6 +26,7 @@ type Props = {
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  busy?: boolean;
   id?: string;
 } & React.AriaAttributes;
 
@@ -37,34 +40,42 @@ const Button: React.FC<Props> = ({
   variant = 'outlined',
   size = 'medium',
   disabled,
+  busy,
   type,
   to,
   onClick,
   className,
   ...rest
 }: Props) => {
-  const buttonClassName = classNames(styles.button, className, styles[color], styles[variant], {
-    [styles.active]: active,
-    [styles.fullWidth]: fullWidth,
-    [styles.large]: size === 'large',
-    [styles.small]: size === 'small',
-    [styles.disabled]: disabled,
-  });
+  const buttonClassName = (isActive: boolean) =>
+    classNames(styles.button, className, styles[color], styles[variant], {
+      [styles.active]: isActive,
+      [styles.fullWidth]: fullWidth,
+      [styles.large]: size === 'large',
+      [styles.small]: size === 'small',
+      [styles.disabled]: disabled,
+    });
 
-  const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
-  const span = <span className={styles.buttonLabel}>{label}</span>;
+  const content = (
+    <>
+      {startIcon && <div className={styles.startIcon}>{startIcon}</div>}
+      {<span className={classNames(styles.buttonLabel, { [styles.hidden]: busy }) || undefined}>{label}</span>}
+      {children}
+      {busy && <Spinner className={styles.centerAbsolute} size={'small'} />}
+    </>
+  );
 
-  return to ? (
-    <NavLink className={buttonClassName} to={to} activeClassName={styles.active} {...rest} exact>
-      {icon}
-      {span}
-      {children}
-    </NavLink>
-  ) : (
-    <button className={buttonClassName} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
-      {icon}
-      {span}
-      {children}
+  if (to) {
+    return (
+      <NavLink className={({ isActive }) => buttonClassName(isActive)} to={to} {...rest} end>
+        {content}
+      </NavLink>
+    );
+  }
+
+  return (
+    <button className={buttonClassName(active)} onClick={onClick} type={type} disabled={disabled} aria-disabled={disabled} {...rest}>
+      {content}
     </button>
   );
 };

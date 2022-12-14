@@ -1,28 +1,34 @@
-import { BrowserRouter as Router } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import React, { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { render, RenderOptions } from '@testing-library/react';
 
-import QueryProvider from '../src/providers/QueryProvider';
+import QueryProvider from '#src/providers/QueryProvider';
 
 interface WrapperProps {
   children?: ReactNode;
+}
+
+function Router({ children }: WrapperProps) {
+  const routes = createRoutesFromElements(<Route path="*" element={<>{children}</>} />);
+
+  return <RouterProvider router={createBrowserRouter(routes, { window })} />;
 }
 
 export const createWrapper = () => {
   const client = new QueryClient();
 
   return ({ children }: WrapperProps) => (
-    <Router>
-      <QueryClientProvider client={client}>{children as ReactElement}</QueryClientProvider>
-    </Router>
+    <QueryClientProvider client={client}>
+      <Router>{children as ReactElement}</Router>
+    </QueryClientProvider>
   );
 };
 
 export const wrapper = ({ children }: WrapperProps) => (
-  <Router>
-    <QueryProvider>{children as ReactElement}</QueryProvider>
-  </Router>
+  <QueryProvider>
+    <Router>{children as ReactElement}</Router>
+  </QueryProvider>
 );
 
 const customRender = (ui: ReactElement, options?: RenderOptions) => render(ui, { wrapper, ...options });

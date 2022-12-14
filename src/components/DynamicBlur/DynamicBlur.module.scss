@@ -1,15 +1,16 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
 
-.BlurBackground {
+.dynamicBlur {
   position: fixed;
   z-index: -1;
+}
+
+.image {
+  position: absolute;
+  top: 0;
   box-sizing: border-box;
   width: 100vw;
   height: 100vh;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 0;
   filter: blur(30px) brightness(60%);
 }

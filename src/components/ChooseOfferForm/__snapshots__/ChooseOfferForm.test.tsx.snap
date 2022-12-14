@@ -7,80 +7,80 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
     novalidate=""
   >
     <h2
-      class="title"
+      class="_title_f7961f"
     >
       choose_offer.title
     </h2>
     <h3
-      class="subtitle"
+      class="_subtitle_f7961f"
     >
       choose_offer.watch_this_on_platform
     </h3>
     <div
-      class="offerGroupSwitch"
+      class="_offerGroupSwitch_f7961f"
     >
       <input
         checked=""
-        class="radio"
+        class="_radio_f7961f"
         id="svod"
         name="offerType"
         type="radio"
         value="svod"
       />
       <label
-        class="label offerGroupLabel"
+        class="_label_f7961f _offerGroupLabel_f7961f"
         for="svod"
       >
         choose_offer.subscription
       </label>
       <input
-        class="radio"
+        class="_radio_f7961f"
         id="tvod"
         name="offerType"
         type="radio"
         value="tvod"
       />
       <label
-        class="label offerGroupLabel"
+        class="_label_f7961f _offerGroupLabel_f7961f"
         for="tvod"
       >
         choose_offer.one_time_only
       </label>
     </div>
     <div
-      class="offers"
+      class="_offers_f7961f"
     >
       <div
-        class="offer"
+        class="_offer_f7961f"
       >
         <input
           aria-label="choose_offer.monthly_subscription"
           checked=""
-          class="radio"
+          class="_radio_f7961f"
           id="S916977979_NL"
           name="offerId"
           type="radio"
           value="S916977979_NL"
         />
         <label
-          class="label"
+          class="_label_f7961f"
           for="S916977979_NL"
         >
           <h4
-            class="offerTitle"
+            class="_offerTitle_f7961f"
           >
             choose_offer.monthly
           </h4>
           <hr
-            class="offerDivider"
+            class="_offerDivider_f7961f"
           />
           <ul
-            class="offerBenefits"
+            class="_offerBenefits_f7961f"
           >
             <li>
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +114,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -130,10 +130,10 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             </li>
           </ul>
           <div
-            class="fill"
+            class="_fill_f7961f"
           />
           <div
-            class="offerPrice"
+            class="_offerPrice_f7961f"
           >
             € 6,99
              
@@ -145,35 +145,35 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
         </label>
       </div>
       <div
-        class="offer"
+        class="_offer_f7961f"
       >
         <input
           aria-label="choose_offer.yearly_subscription"
-          class="radio"
+          class="_radio_f7961f"
           id="S345569153_NL"
           name="offerId"
           type="radio"
           value="S345569153_NL"
         />
         <label
-          class="label"
+          class="_label_f7961f"
           for="S345569153_NL"
         >
           <h4
-            class="offerTitle"
+            class="_offerTitle_f7961f"
           >
             choose_offer.yearly
           </h4>
           <hr
-            class="offerDivider"
+            class="_offerDivider_f7961f"
           />
           <ul
-            class="offerBenefits"
+            class="_offerBenefits_f7961f"
           >
             <li>
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +190,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +207,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -223,10 +223,10 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             </li>
           </ul>
           <div
-            class="fill"
+            class="_fill_f7961f"
           />
           <div
-            class="offerPrice"
+            class="_offerPrice_f7961f"
           >
             € 50,00
              
@@ -240,7 +240,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
     </div>
     <button
       aria-disabled="false"
-      class="button primary fullWidth"
+      class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296"
       type="submit"
     >
       <span>
@@ -258,80 +258,80 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
     novalidate=""
   >
     <h2
-      class="title"
+      class="_title_f7961f"
     >
       choose_offer.title
     </h2>
     <h3
-      class="subtitle"
+      class="_subtitle_f7961f"
     >
       choose_offer.watch_this_on_platform
     </h3>
     <div
-      class="offerGroupSwitch"
+      class="_offerGroupSwitch_f7961f"
     >
       <input
-        class="radio"
+        class="_radio_f7961f"
         id="svod"
         name="offerType"
         type="radio"
         value="svod"
       />
       <label
-        class="label offerGroupLabel"
+        class="_label_f7961f _offerGroupLabel_f7961f"
         for="svod"
       >
         choose_offer.subscription
       </label>
       <input
         checked=""
-        class="radio"
+        class="_radio_f7961f"
         id="tvod"
         name="offerType"
         type="radio"
         value="tvod"
       />
       <label
-        class="label offerGroupLabel"
+        class="_label_f7961f _offerGroupLabel_f7961f"
         for="tvod"
       >
         choose_offer.one_time_only
       </label>
     </div>
     <div
-      class="offers"
+      class="_offers_f7961f"
     >
       <div
-        class="offer"
+        class="_offer_f7961f"
       >
         <input
           aria-label="One Time - TVOD offer"
           checked=""
-          class="radio"
+          class="_radio_f7961f"
           id="R892134629_NL"
           name="offerId"
           type="radio"
           value="R892134629_NL"
         />
         <label
-          class="label"
+          class="_label_f7961f"
           for="R892134629_NL"
         >
           <h4
-            class="offerTitle"
+            class="_offerTitle_f7961f"
           >
             One Time - TVOD offer
           </h4>
           <hr
-            class="offerDivider"
+            class="_offerDivider_f7961f"
           />
           <ul
-            class="offerBenefits"
+            class="_offerBenefits_f7961f"
           >
             <li>
               <svg
                 aria-hidden="true"
-                class="icon"
+                class="_icon_1e9999"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -347,10 +347,10 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
             </li>
           </ul>
           <div
-            class="fill"
+            class="_fill_f7961f"
           />
           <div
-            class="offerPrice"
+            class="_offerPrice_f7961f"
           >
             € 2,90
              
@@ -360,7 +360,7 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
     </div>
     <button
       aria-disabled="false"
-      class="button primary fullWidth"
+      class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296"
       type="submit"
     >
       <span>

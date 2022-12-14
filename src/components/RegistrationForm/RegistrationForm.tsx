@@ -1,24 +1,23 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 
-import useToggle from '../../hooks/useToggle';
-import { addQueryParam } from '../../utils/history';
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import IconButton from '../IconButton/IconButton';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import PasswordStrength from '../PasswordStrength/PasswordStrength';
-import Checkbox from '../Checkbox/Checkbox';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import Link from '../Link/Link';
-import { IS_DEV_BUILD } from '../../utils/common';
-
 import styles from './RegistrationForm.module.scss';
 
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
+import IconButton from '#components/IconButton/IconButton';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
+import Checkbox from '#components/Checkbox/Checkbox';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Link from '#components/Link/Link';
+import { testId } from '#src/utils/common';
+import useToggle from '#src/hooks/useToggle';
+import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { RegistrationFormData, Consent } from '#types/account';
 
@@ -54,7 +53,7 @@ const RegistrationForm: React.FC<Props> = ({
   const [viewPassword, toggleViewPassword] = useToggle();
 
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const location = useLocation();
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
     const sanitizedLabel = DOMPurify.sanitize(label);
@@ -77,7 +76,7 @@ const RegistrationForm: React.FC<Props> = ({
   }
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'registration-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
@@ -138,7 +137,7 @@ const RegistrationForm: React.FC<Props> = ({
         fullWidth
       />
       <p className={styles.bottom}>
-        {t('registration.already_account')} <Link to={addQueryParam(history, 'u', 'login')}>{t('login.sign_in')}</Link>
+        {t('registration.already_account')} <Link to={addQueryParam(location, 'u', 'login')}>{t('login.sign_in')}</Link>
       </p>
       {submitting && <LoadingOverlay transparentBackground inline />}
     </form>

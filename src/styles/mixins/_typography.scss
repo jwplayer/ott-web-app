@@ -1,4 +1,4 @@
-@use '../variables';
+@use 'src/styles/variables';
 @use './responsive';
 
 @mixin video-title-base($font-size: 34px) {

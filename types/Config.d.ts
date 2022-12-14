@@ -11,8 +11,9 @@ export type Config = {
   adSchedule?: string | null;
   integrations: {
     cleeng?: Cleeng;
+    inplayer?: InPlayer;
   };
-  assets: { banner?: string };
+  assets: { banner?: string | null };
   content: Content[];
   menu: Menu[];
   styling: Styling;
@@ -60,7 +61,11 @@ export type Cleeng = {
   yearlyOffer?: string | null;
   useSandbox?: boolean;
 };
-
+export type InPlayer = {
+  clientId?: string | null;
+  assetId?: number | null;
+  useSandbox?: boolean;
+};
 export type Features = {
   enableCasting?: boolean;
   enableSharing?: boolean;

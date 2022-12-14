@@ -1,0 +1,132 @@
+@use 'sass:math';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/mixins/typography';
+@use 'src/styles/theme';
+@use 'src/styles/variables';
+
+.listItem {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: variables.$base-spacing;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:focus,
+    &:hover {
+      position: relative;
+      z-index: 1;
+      outline: none;
+      transform: scale(1.05);
+    }
+  }
+}
+
+.poster {
+  position: relative;
+  width: 168px;
+  height: 94px;
+  margin-right: 8px;
+  overflow: hidden;
+  background-color: theme.$card-loading-bg-color;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 4px;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+  transition: box-shadow 0.1s ease;
+
+  .posterImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+
+    &.visible {
+      opacity: 1;
+    }
+  }
+
+  @include responsive.mobile-only {
+    width: 140px;
+    height: 78px;
+  }
+}
+
+.activeLabel {
+  @include typography.video-title-base;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0.54);
+
+  @include responsive.mobile-only {
+    font-size: 16px;
+  }
+}
+
+.title {
+  flex: 1;
+  max-height: 4.8em;
+  overflow: hidden;
+  color: var(--primary-color);
+  font-family: var(--body-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: 0.25px;
+  text-align: left;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tags {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+}
+
+svg.lock {
+  width: 24px;
+  height: 24px;
+  padding: 5px 5px;
+  color: var(--card-color);
+  background-color: rgba(variables.$black, 0.6);
+  border-radius: 4px;
+}
+
+.tag {
+  margin-left: 4px;
+  padding: 2px 6px;
+  font-size: 14px;
+}
+
+.live {
+  background-color: variables.$red;
+}
+
+.progressContainer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 5px;
+  background-color: rgba(variables.$black, 0.38);
+}
+
+.progressBar {
+  height: 5px;
+  background-color: var(--primary-color);
+}

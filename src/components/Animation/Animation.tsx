@@ -1,18 +1,29 @@
-import React, { useState, useEffect, ReactNode, useRef, CSSProperties } from 'react';
+import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 
 type Props = {
+  className?: string;
   createStyle: (status: Status) => CSSProperties;
   open?: boolean;
   duration?: number;
   delay?: number;
+  keepMounted?: boolean;
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
-  children: ReactNode;
 };
 
 export type Status = 'opening' | 'open' | 'closing' | 'closed';
 
-const Animation = ({ createStyle, open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
+const Animation: React.FC<Props> = ({
+  className,
+  createStyle,
+  open = true,
+  duration = 250,
+  delay = 0,
+  onOpenAnimationEnd,
+  onCloseAnimationEnd,
+  keepMounted = false,
+  children,
+}) => {
   const [status, setStatus] = useState<Status>('closed');
   const [hasOpenedBefore, setHasOpenedBefore] = useState<boolean>(false);
   const seconds = duration / 1000;
@@ -45,11 +56,15 @@ const Animation = ({ createStyle, open = true, duration = 250, delay = 0, onOpen
     };
   }, [duration, delay, transition, open, onOpenAnimationEnd, onCloseAnimationEnd, hasOpenedBefore, setHasOpenedBefore]);
 
-  if (!open && status === 'closed') {
+  if (!open && status === 'closed' && !keepMounted) {
     return null;
   }
 
-  return <div style={createStyle(status)}>{children}</div>;
+  return (
+    <div style={createStyle(status)} className={className}>
+      {children}
+    </div>
+  );
 };
 
 export default Animation;

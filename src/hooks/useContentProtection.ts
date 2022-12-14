@@ -35,8 +35,9 @@ const useContentProtection = <T>(
   const queryResult = useQuery<T | undefined>([type, id, params, token], async () => callback(token, drmPolicyId), {
     enabled: !!id && enabled && (!signingEnabled || !!token),
     placeholderData: placeholderData,
-    retry: type === 'media',
-    keepPreviousData: type === 'media',
+    retry: type === 'media' ? 2 : false,
+    retryDelay: 1000,
+    keepPreviousData: true,
   });
 
   return {

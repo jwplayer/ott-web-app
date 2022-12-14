@@ -23,12 +23,20 @@ type Season = {
   episodes: Episode[];
 };
 
-export type Series = {
+export type SeriesBase = {
   title: string;
   description: string;
   series_id: string;
   total_duration: string;
   episode_count: number;
-  episodes: Episode[];
-  seasons: Season[];
 };
+
+export type SeriesWithEpisodes = {
+  episodes: Episode[];
+} & SeriesBase;
+
+export type SeriesWithSeasons = {
+  seasons: Season[];
+} & SeriesBase;
+
+export type Series = SeriesWithEpisodes | SeriesWithSeasons;

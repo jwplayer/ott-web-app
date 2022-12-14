@@ -1,0 +1,164 @@
+// Vitest Snapshot v1
+
+exports[`<About> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_markdown_e219e2 _about_0b8fd5"
+  >
+    <h1
+      id="about-jw-ott-webapp"
+    >
+      About JW OTT Webapp
+    </h1>
+    
+
+    <p>
+      JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
+    </p>
+    
+
+    <p>
+      To see an example of JW OTT Webapp in action, see 
+      <a
+        href="https://app-preview.jwplayer.com/"
+        rel="noopener"
+        target="_blank"
+      >
+        https://app-preview.jwplayer.com/
+      </a>
+      .
+    </p>
+    
+
+    <h2
+      id="supported-features"
+    >
+      Supported Features
+    </h2>
+    
+
+    <ul>
+      
+
+      <li>
+        Works with any JW Player edition, from Free to Enterprise (note that usage will count against your monthly JW streaming limits). Only cloud-hosted JW Players are supported.
+      </li>
+      
+
+      <li>
+        It looks great on any device. The responsive UI automatically optimizes itself for desktop, tablet, and mobile screens.
+      </li>
+      
+
+      <li>
+        Populates your site's media content using JSON feeds. If you are using JW Platform, this happens auto-magically based on playlists that you specify. Using feeds from other sources will require you to hack the source code.
+      </li>
+      
+
+      <li>
+        Video titles, descriptions and hero images are populated from JW Platform JSON feed metadata.
+      </li>
+      
+
+      <li>
+        Playback of HLS video content from the JW Platform CDN. You can add external URLs (for example, URLS from your own server or CDN) to your playlists in the Content section of your JW Player account dashboard, but they must be HLS streams (
+        <code>
+          .m3u8
+        </code>
+         files).
+      </li>
+      
+
+      <li>
+        Support for live video streams (must be registered as external .m3u8 URLs in your JW Dashboard).
+      </li>
+      
+
+      <li>
+        Customize the user interface with your own branding. The default app is configured for JW Player branding and content, but you can easily change this to use your own assets by modifying the 
+        <code>
+          config.json
+        </code>
+         file. Advanced customization is possible (for example, editing the CSS files), but you will need to modify the source code and build from source.
+      </li>
+      
+
+      <li>
+        Site-wide video search and related video recommendations powered by 
+        <a
+          href="https://docs.jwplayer.com/platform/docs/vdh-learn-about-recommendations"
+          rel="noopener"
+          target="_blank"
+        >
+          JW Recommendations
+        </a>
+        .
+      </li>
+      
+
+      <li>
+        Basic playback analytics is reported to your JW Dashboard.
+      </li>
+      
+
+      <li>
+        Ad integrations (VAST, VPAID, GoogleIMA, etc.). These features require a JW Player Ads Edition license. For more information, see the 
+        <a
+          href="https://www.jwplayer.com/pricing/"
+          rel="noopener"
+          target="_blank"
+        >
+          JW Player pricing page
+        </a>
+        .
+      </li>
+      
+
+      <li>
+        A "Favorites" feature for users to save videos for watching later. A separate list for "Continue Watching" is also kept so users can resume watching videos from where they left off. The lists are per-browser at this time (i.e., lists do not sync across user's browsers or devices). The "Continue Watching" list can be disabled in your JW OTT Webapp's 
+        <code>
+          config.json
+        </code>
+         file.
+      </li>
+      
+
+      <li>
+        A grid view for a particular playlist of videos, with the ability to deep-link to the playlist through a static URL.
+      </li>
+      
+
+      <li>
+        Social sharing options using the device native sharing dialog.
+      </li>
+      
+
+    </ul>
+    
+
+    <h2
+      id="unsupported-features"
+    >
+      Unsupported Features
+    </h2>
+    
+
+    <ul>
+      
+
+      <li>
+        Security-related features (encrypted HLS, DRM, signed URLs)
+      </li>
+      
+
+      <li>
+        Self-hosted JW Players
+      </li>
+      
+
+    </ul>
+    
+
+  </div>
+</div>
+`;

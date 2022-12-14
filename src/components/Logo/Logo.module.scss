@@ -1,13 +1,13 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
-@use '../../styles/mixins/responsive';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
 
 //
 // Logo
 // --------------------------------
 
 .logo {
-  max-width: 100%;
+  width: auto;
   max-height: variables.$header-height - 10px;
   vertical-align: middle;
   cursor: pointer;

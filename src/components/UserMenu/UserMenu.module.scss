@@ -1,5 +1,5 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
 
 .panel {
   width: 100%;
@@ -14,9 +14,15 @@
   box-shadow: theme.$panel-box-shadow;
 }
 
-.menuItems > li > a {
-  padding: 0 18px;
-  font-size: 16px;
+.menuItems {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  > li > a {
+    padding: 0 18px;
+    font-size: 16px;
+  }
 }
 
 .button {

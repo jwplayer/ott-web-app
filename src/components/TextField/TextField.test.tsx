@@ -11,7 +11,7 @@ describe('<TextField>', () => {
   });
 
   test('renders and matches multiline snapshot', () => {
-    const { container } = render(<TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} multiline />);
+    const { container } = render(<TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} multiline={true} />);
 
     expect(container).toMatchSnapshot();
   });

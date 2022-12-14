@@ -1,20 +1,24 @@
 ![JW OTT Webapp](./images/homepage-screenshot.png)
 
-JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
+The JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
 
-To see an example of JW OTT Webapp in action, see [https://jw-ott-webapp.netlify.app/](https://jw-ott-webapp.netlify.app/).
+To see an example of JW OTT Webapp in action, see [https://app-preview.jwplayer.com/](https://app-preview.jwplayer.com/).
 
-**Look at amazing examples built on the basis of JW OTT Webapp!**
+**Examples built using the JW OTT Webapp**
 
 <table>
   <tr>
     <td>
-      <p>Symphony (<a href="https://symphony.live/">symphony.live</a>)</p>
-      <img src="./images/symphony.png" alt="hover text">
+      <p>Symphony <br/> (<a href="https://symphony.live/">symphony.live</a>)</p>
+      <img src="./images/symphony.png" alt="Symphony" height="200">
     </td>
     <td>
-      <p>FansChoice.tv (<a href="https://www.fanschoice.tv/">fanschoice.tv</a>)</p>
-      <img src="./images/fanschoice.png" alt="accessibility text">
+      <p>FansChoice.tv  <br/> (<a href="https://www.fanschoice.tv/">fanschoice.tv</a>)</p>
+      <img src="./images/fanschoice.png" alt="FansChoice" height="200">
+    </td>
+    <td>
+      <p>Trinity Broadcasting Network  <br/> (<a href="https://watch.tbn.org/">watch.tbn.org</a>)</p>
+      <img src="./images/tbn.png" alt="TBN" height="200">
     </td>
   </tr>
 </table>

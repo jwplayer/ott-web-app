@@ -1,19 +1,24 @@
 ignores: [
-    # These are dependencies for vite and vite plugins that depcheck doesn't recognize as being used
-    'postcss-scss',
-    'stylelint-order',
-    'stylelint-config-recommended-scss',
-    'stylelint-declaration-strict-value',
-    'stylelint-scss',
-    # This is used by commitlint in .commitlintrc.js
-    ' @commitlint/config-conventional',
-    # These are vite aliases / tsconfig paths that point to specific local directories
-    # Note the \\ is apparently necessary to escape the # or the ignore doesn't work
-    "\\#src",
-    "\\#test",
-    "\\#types",
-    # To support e2e-reports
-    'allure-commandline',
-    # To run linting checks
-    'npm-run-all',
-  ]
+  # These are dependencies for vite and vite plugins that depcheck doesn't recognize as being used
+  'postcss-scss',
+  'stylelint-order',
+  'stylelint-config-recommended-scss',
+  'stylelint-declaration-strict-value',
+  'stylelint-scss',
+  '@vitest/coverage-c8',
+  # This is used by commitlint in .commitlintrc.js
+  '@commitlint/config-conventional',
+  # These are vite aliases / tsconfig paths that point to specific local directories
+  # Note the \ is necessary to escape the # or the ignore doesn't work
+  '\#src',
+  '\#test',
+  '\#types',
+  '\#components',
+  '\#utils',
+  # This is used in src/styles, which recognizes absolute paths from the repo root
+  'src',
+  # To support e2e-reports
+  'allure-commandline',
+  # To run linting checks
+  'npm-run-all',
+]

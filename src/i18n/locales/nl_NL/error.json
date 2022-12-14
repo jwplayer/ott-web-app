@@ -1,6 +1,13 @@
 {
+  "check_your_config": "",
+  "check_your_settings": "",
+  "config_invalid": "",
   "generic_error_description": "",
   "generic_error_heading": "",
+  "learn_more": "",
   "notfound_error_description": "",
-  "notfound_error_heading": ""
+  "notfound_error_heading": "",
+  "playlist_not_found": "",
+  "settings_invalid": "",
+  "video_not_found": ""
 }

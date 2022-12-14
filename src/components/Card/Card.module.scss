@@ -1,7 +1,7 @@
 @use 'sass:math';
-@use '../../styles/mixins/responsive';
-@use '../../styles/theme';
-@use '../../styles/variables';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/theme';
+@use 'src/styles/variables';
 
 .card {
   display: flex;
@@ -19,8 +19,7 @@
       transform: scale(1.05);
 
       & .poster {
-        box-shadow: 0 0 0 3px var(--highlight-color, variables.$white), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%),
-          0 4px 5px rgb(0 0 0 / 20%);
+        box-shadow: 0 0 0 3px var(--highlight-color, variables.$white), 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
       }
     }
   }
@@ -94,6 +93,20 @@
     background-color: rgba(0, 0, 0, 0.54);
     content: '';
   }
+
+  .posterImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+
+    &.visible {
+      opacity: 1;
+    }
+  }
 }
 
 .currentLabel {
@@ -113,7 +126,7 @@
   line-height: 20px;
 }
 
-$aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
+$aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
 @each $base, $modifier in $aspects {
   .aspect#{$base}#{$modifier} {
     padding-top: math.percentage(math.div($modifier, $base));
@@ -186,8 +199,9 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16));
 .lock {
   margin-right: calc(#{variables.$base-spacing} / 2);
   padding: 2px 6px;
+
   > svg {
-    width: 16px;
+    width: 14px;
     height: 21px;
   }
 }

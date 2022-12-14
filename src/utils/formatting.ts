@@ -1,5 +1,4 @@
-import { getSeriesId, getSeriesIdFromEpisode, isEpisode, isLiveChannel, isSeriesPlaceholder } from '#src/utils/media';
-import type { Playlist, PlaylistItem } from '#types/playlist';
+import type { PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
   if (!seconds) return null;
@@ -64,17 +63,8 @@ export const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-+$/, '')
     .replace(/-/g, whitespaceChar);
 
-export const movieURL = (item: PlaylistItem, playlistId?: string | null, play = false) =>
+export const mediaURL = (item: PlaylistItem, playlistId?: string | null, play = false) =>
   addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
-
-export const seriesURL = (item: PlaylistItem, playlistId?: string | null, play = false) => {
-  const seriesId = getSeriesId(item);
-
-  return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, {
-    r: playlistId,
-    play: play ? '1' : null,
-  });
-};
 
 export const liveChannelsURL = (playlistId: string, channelId?: string, play = false) => {
   return addQueryParams(`/p/${playlistId}`, {
@@ -83,40 +73,9 @@ export const liveChannelsURL = (playlistId: string, channelId?: string, play = f
   });
 };
 
-export const episodeURL = (seriesPlaylist: Playlist, episodeId?: string, play: boolean = false, playlistId?: string | null) =>
-  addQueryParams(`/s/${seriesPlaylist.feedid}/${slugify(seriesPlaylist.title)}`, {
-    e: episodeId,
-    r: playlistId,
-    play: play ? '1' : null,
-  });
-
-export const episodeURLFromEpisode = (item: PlaylistItem, seriesId: string, playlistId?: string | null, play: boolean = false) => {
-  // generated URL does not match the canonical URL. We need the series playlist in order to generate the slug. For
-  // now the item title is used instead. The canonical link isn't affected by this though.
-  return addQueryParams(`/s/${seriesId}/${slugify(item.title)}`, {
-    e: item.mediaid,
-    r: playlistId,
-    play: play ? '1' : null,
-  });
-};
-
-export const cardUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) => {
-  if (isLiveChannel(item)) {
-    return liveChannelsURL(item.liveChannelsId, item.mediaid, play);
-  }
-
-  if (isEpisode(item)) {
-    const seriesId = getSeriesIdFromEpisode(item);
-
-    return seriesId ? episodeURLFromEpisode(item, seriesId, playlistId, play) : movieURL(item);
-  }
-
-  return isSeriesPlaceholder(item) ? seriesURL(item, playlistId, play) : movieURL(item, playlistId, play);
-};
-
-export const videoUrl = (item: PlaylistItem, playlistId?: string | null, play: boolean = false) =>
-  addQueryParams(item.seriesId ? seriesURL(item, playlistId) : movieURL(item, playlistId), {
-    play: play ? '1' : null,
+export const episodeURL = (episode: PlaylistItem, seriesId?: string, play: boolean = false, playlistId?: string | null) =>
+  addQueryParams(mediaURL(episode, playlistId, play), {
+    seriesId,
   });
 
 export const formatDate = (dateString: number) => {
@@ -144,4 +103,10 @@ export const formatVideoMetaString = (item: PlaylistItem, episodesLabel?: string
   return metaData.join(' • ');
 };
 
-export const formatSeriesMetaString = (item: PlaylistItem) => `S${item.seasonNumber}:E${item.episodeNumber}`;
+export const formatSeriesMetaString = (seasonNumber?: string, episodeNumber?: string) => {
+  if (!seasonNumber && !episodeNumber) {
+    return '';
+  }
+
+  return seasonNumber && seasonNumber !== '0' ? `S${seasonNumber}:E${episodeNumber}` : `E${episodeNumber}`;
+};

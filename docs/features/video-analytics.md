@@ -15,7 +15,7 @@ https://ihe.jwpltx.com/v1/jwplayer6/ping.gif?e=<eventid>&<event-metrics-as-param
 For advertisement events (ad impressions) the following endpoint needs to be called:
 
 ```
-https://ihe.jwpltx.com/v1/jwplayer6/ping.gif?e=<eventid>&<event-metrics-as-params->
+https://ihe.jwpltx.com/v1/clienta/ping.gif?e=<eventid>&<event-metrics-as-params->
 ```
 
 ## Reporting

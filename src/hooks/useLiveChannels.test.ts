@@ -5,9 +5,9 @@ import epgService, { EpgChannel } from '#src/services/epg.service';
 import useLiveChannels from '#src/hooks/useLiveChannels';
 import { createWrapper } from '#test/testUtils';
 import type { Playlist } from '#types/playlist';
-import livePlaylistFixture from '#src/fixtures/livePlaylist.json';
-import epgChannelsFixture from '#src/fixtures/epgChannels.json';
-import epgChannelsUpdateFixture from '#src/fixtures/epgChannelsUpdate.json';
+import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
+import epgChannelsFixture from '#test/fixtures/epgChannels.json';
+import epgChannelsUpdateFixture from '#test/fixtures/epgChannelsUpdate.json';
 
 const livePlaylist: Playlist = livePlaylistFixture;
 const schedule: EpgChannel[] = epgChannelsFixture;

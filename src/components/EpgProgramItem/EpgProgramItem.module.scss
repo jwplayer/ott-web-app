@@ -1,6 +1,6 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
-@use '../../styles/mixins/responsive';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
 
 .epgProgramBox {
   position: absolute;
@@ -52,7 +52,7 @@
   }
 
   @include responsive.mobile-only {
-    padding: calc(variables.$base-spacing / 2);
+    padding: calc(#{variables.$base-spacing} / 2);
   }
 }
 

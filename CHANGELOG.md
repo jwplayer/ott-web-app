@@ -1,3 +1,89 @@
+# [2.9.0](https://github.com/jwplayer/ott-web-app/compare/v2.8.0...v2.9.0) (2022-12-05)
+
+
+### Bug Fixes
+
+* inplayer in service ([57757e9](https://github.com/jwplayer/ott-web-app/commit/57757e9e0f0683455ceea515dbe3811699b0f992))
+* refactor inplayer approach ([4d327b6](https://github.com/jwplayer/ott-web-app/commit/4d327b6ee0ee7cf39cff2f8d518861de5ab907fc))
+
+
+### Features
+
+* inplayer authentication ([f1922e4](https://github.com/jwplayer/ott-web-app/commit/f1922e4f95f92e76b5dca9b5a95291029a605573))
+
+
+
+# [2.8.0](https://github.com/jwplayer/ott-web-app/compare/v2.7.1...v2.8.0) (2022-12-01)
+
+
+### Features
+
+* replace compile constants with ini files ([158079d](https://github.com/jwplayer/ott-web-app/commit/158079d58283951e809a262f0f80b0a8adc630be))
+
+
+
+## [2.7.1](https://github.com/jwplayer/ott-web-app/compare/v2.7.0...v2.7.1) (2022-11-28)
+
+
+### Bug Fixes
+
+* build improvements, code cleanup, small improvements, test fixes ([8891cee](https://github.com/jwplayer/ott-web-app/commit/8891cee95f425cba7a8e68fd3f1693a90eb65182))
+
+
+
+# [2.7.0](https://github.com/jwplayer/ott-web-app/compare/v2.6.2...v2.7.0) (2022-11-17)
+
+
+### Features
+
+* add demo dialog when no config ID ([c6de430](https://github.com/jwplayer/ott-web-app/commit/c6de430412332bd722e8bab263cd755db4a8bfbc))
+
+
+
+## [2.6.2](https://github.com/jwplayer/ott-web-app/compare/v2.6.1...v2.6.2) (2022-10-12)
+
+
+### Bug Fixes
+
+* fix the changelog path in the release template ([229fa55](https://github.com/jwplayer/ott-web-app/commit/229fa553e4f3656e9fa8e8c424610c0675b24d29))
+
+
+
+## [2.6.1](https://github.com/jwplayer/ott-web-app/compare/v2.6.0...v2.6.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* trivial doc change to test release action ([09062b6](https://github.com/jwplayer/ott-web-app/commit/09062b62e9144d11121c4eed9d6fb95ac5c8d2db))
+
+
+
+# [2.6.0](https://github.com/jwplayer/ott-web-app/compare/v2.5.0...v2.6.0) (2022-10-12)
+
+
+### Bug Fixes
+
+* **home:** shelf e2e test for mobile ([35ff1f1](https://github.com/jwplayer/ott-web-app/commit/35ff1f15295177e38192f81c8429c02c50a87692))
+* **inlineplayer:** inline layout UI and a11y fixes ([71c9666](https://github.com/jwplayer/ott-web-app/commit/71c966685461ef36e94823a85058dea83fc44ecd))
+* **project:** error when assets.banner is null ([#180](https://github.com/jwplayer/ott-web-app/issues/180)) ([cd80916](https://github.com/jwplayer/ott-web-app/commit/cd80916892b6351345fe7c05251097375272cdf7)), closes [#179](https://github.com/jwplayer/ott-web-app/issues/179)
+* **project:** fix missing shelves and cards ([e490487](https://github.com/jwplayer/ott-web-app/commit/e490487b61624f015bf1bbb79cc933a515acd9ac))
+* **project:** home button always in active state ([3141fe3](https://github.com/jwplayer/ott-web-app/commit/3141fe32cae3c4649357eed53c56fa7e5e0205c2))
+* **project:** player fixes and UI improvements ([5670fd8](https://github.com/jwplayer/ott-web-app/commit/5670fd84f59a6329e9079cb8acd1596d407990f2))
+* search route without path and stale debounce ([bebd490](https://github.com/jwplayer/ott-web-app/commit/bebd490157e1eed4d973e4e58fd83655625a9090))
+* styling bug fixes ([#176](https://github.com/jwplayer/ott-web-app/issues/176)) ([ef57976](https://github.com/jwplayer/ott-web-app/commit/ef5797687da3d24c158ae9454736d89b8df56333))
+
+
+### Features
+
+* **inlineplayer:** add inline player support ([159d135](https://github.com/jwplayer/ott-web-app/commit/159d1357033e3755008d7b137fd5f0e23521712a))
+* **project:** add static page ([84d21bf](https://github.com/jwplayer/ott-web-app/commit/84d21bfc47ace24e8f1fe0396336be4561a4bf3e))
+* **project:** add support for custom screens ([77b264c](https://github.com/jwplayer/ott-web-app/commit/77b264c4526b44d27d40ea62028d3f659ebd8529))
+* **project:** support alternate images ([e81f491](https://github.com/jwplayer/ott-web-app/commit/e81f491ace05c76eb0a3b432ad8d4edf0dfde417))
+* **project:** update react-router to 6.4.0 ([0631763](https://github.com/jwplayer/ott-web-app/commit/0631763362c3f184870f0375980c1e40367b3164))
+* remove virtualized and add aspect ratio support ([d42f9fc](https://github.com/jwplayer/ott-web-app/commit/d42f9fc3ffe660ff37b06b264b6f8a1e06be5270))
+
+
+
 # [2.5.0](https://github.com/jwplayer/ott-web-app/compare/v2.4.2...v2.5.0) (2022-08-05)
 
 

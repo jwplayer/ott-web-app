@@ -1,21 +1,20 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
-
-import useToggle from '../../hooks/useToggle';
-import { addQueryParam } from '../../utils/history';
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import Link from '../Link/Link';
-import IconButton from '../IconButton/IconButton';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import { IS_DEV_BUILD } from '../../utils/common';
 
 import styles from './LoginForm.module.scss';
 
+import useToggle from '#src/hooks/useToggle';
+import TextField from '#components/TextField/TextField';
+import Button from '#components/Button/Button';
+import Link from '#components/Link/Link';
+import IconButton from '#components/IconButton/IconButton';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import { testId } from '#src/utils/common';
+import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { LoginFormData } from '#types/account';
 
@@ -32,10 +31,10 @@ type Props = {
 const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const location = useLocation();
 
   return (
-    <form onSubmit={onSubmit} data-testid={IS_DEV_BUILD ? 'login-form' : undefined} noValidate>
+    <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
@@ -68,12 +67,12 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         testId="login-password-input"
       />
       {submitting && <LoadingOverlay transparentBackground inline />}
-      <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>
+      <Link className={styles.link} to={addQueryParam(location, 'u', 'forgot-password')}>
         {t('login.forgot_password')}
       </Link>
       <Button type="submit" label={t('login.sign_in')} variant="contained" color="primary" size="large" disabled={submitting} fullWidth />
       <p className={styles.bottom}>
-        {t('login.not_registered', { siteName })} <Link to={addQueryParam(history, 'u', 'create-account')}>{t('login.sign_up')}</Link>
+        {t('login.not_registered', { siteName })} <Link to={addQueryParam(location, 'u', 'create-account')}>{t('login.sign_up')}</Link>
       </p>
     </form>
   );

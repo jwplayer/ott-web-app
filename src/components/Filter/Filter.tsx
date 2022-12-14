@@ -1,11 +1,11 @@
 import React, { Fragment, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Dropdown from '../Dropdown/Dropdown';
-import Button from '../Button/Button';
-import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
-
 import styles from './Filter.module.scss';
+
+import Dropdown from '#components/Dropdown/Dropdown';
+import Button from '#components/Button/Button';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type Props = {
   name: string;
@@ -13,10 +13,11 @@ type Props = {
   valuePrefix?: string;
   defaultLabel: string;
   options: string[];
+  forceDropdown?: boolean;
   setValue: (value: string) => void;
 };
 
-const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '' }) => {
+const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '', forceDropdown = false }) => {
   const { t } = useTranslation('common');
   const breakpoint: Breakpoint = useBreakpoint();
 
@@ -25,12 +26,12 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
   }
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value);
 
-  const showFilterRow = breakpoint >= Breakpoint.md && options.length < 6;
+  const showFilterRow = !forceDropdown && breakpoint >= Breakpoint.md && options.length < 6;
 
   return (
     <Fragment>
       {showFilterRow ? (
-        <div className={styles.filterRow} role="listbox">
+        <div className={styles.filterRow} role="listbox" aria-label={t('filter_videos_by', { name })}>
           {options.map((option) => (
             <Button label={`${valuePrefix}${option}`} onClick={() => setValue(option)} key={option} active={value === option} role="option" />
           ))}
@@ -47,7 +48,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
             name={name}
             value={value}
             onChange={handleChange}
-            aria-label={t('filter_videos_by_genre')}
+            aria-label={t('filter_videos_by', { name })}
           />
         </div>
       )}

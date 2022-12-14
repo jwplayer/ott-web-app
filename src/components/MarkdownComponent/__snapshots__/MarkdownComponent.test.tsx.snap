@@ -2,15 +2,21 @@
 
 exports[`<MarkdownComponent> > renders and matches snapshot 1`] = `
 <div>
-  <div>
-    This is a test markdown string with a 
-    <a
-      href="https://www.example.com"
-      rel="noopener"
-      target="_blank"
-    >
-      testlink
-    </a>
+  <div
+    class="_markdown_e219e2"
+  >
+    <p>
+      This is a test markdown string with a 
+      <a
+        href="https://www.example.com"
+        rel="noopener"
+        target="_blank"
+      >
+        testlink
+      </a>
+    </p>
+    
+
   </div>
 </div>
 `;

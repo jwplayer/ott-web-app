@@ -3,23 +3,23 @@
 exports[`<Header /> > renders header 1`] = `
 <div>
   <header
-    class="header static"
+    class="_header_f4f7a7 _static_f4f7a7"
   >
     <div
-      class="container"
+      class="_container_f4f7a7"
     >
       <div
-        class="menu"
+        class="_menu_f4f7a7"
       >
         <div
           aria-label="open_menu"
-          class="iconButton iconButton"
+          class="_iconButton_0fef65 _iconButton_f4f7a7"
           role="button"
           tabindex="0"
         >
           <svg
             aria-hidden="true"
-            class="icon"
+            class="_icon_1e9999"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -38,19 +38,19 @@ exports[`<Header /> > renders header 1`] = `
       </div>
       <nav
         aria-label="menu"
-        class="nav"
+        class="_nav_f4f7a7"
       >
         a
       </nav>
       <div
-        class="search"
+        class="_search_f4f7a7"
       >
         <div
-          class="searchBar"
+          class="_searchBar_3bb1d7"
         >
           <svg
             aria-hidden="true"
-            class="icon icon"
+            class="_icon_1e9999 _icon_3bb1d7"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ exports[`<Header /> > renders header 1`] = `
           </svg>
           <input
             aria-label="search_bar.search_label"
-            class="input"
+            class="_input_3bb1d7"
             placeholder="search_bar.search_placeholder"
             type="text"
             value=""
@@ -71,17 +71,17 @@ exports[`<Header /> > renders header 1`] = `
         </div>
       </div>
       <div
-        class="buttonContainer"
+        class="_buttonContainer_f4f7a7"
       >
         <button
-          class="button default outlined"
+          class="_button_f8f296 _default_f8f296 _outlined_f8f296"
         >
           <span>
             sign_in
           </span>
         </button>
         <button
-          class="button primary"
+          class="_button_f8f296 _primary_f8f296"
         >
           <span>
             sign_up

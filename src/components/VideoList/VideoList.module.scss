@@ -1,0 +1,8 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/mixins/typography';
+
+.container {
+  height: 100%;
+}

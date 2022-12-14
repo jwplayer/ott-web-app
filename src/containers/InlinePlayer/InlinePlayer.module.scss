@@ -1,0 +1,93 @@
+@use 'src/styles/theme';
+@use 'src/styles/mixins/typography';
+@use 'src/styles/mixins/responsive';
+
+.inlinePlayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.paywall {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: theme.$card-loading-bg-color;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  .poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+  }
+
+  > button {
+    height: 40px;
+
+    &:first-of-type {
+      margin-right: 8px;
+    }
+
+    @include responsive.mobile-and-small-tablet {
+      max-width: 65%;
+      max-height: 35px;
+    }
+  }
+}
+
+.lock {
+  position: relative;
+  flex: 1 1 100%;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 16px;
+
+  @include responsive.mobile-only {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 8px;
+  }
+}
+
+.title {
+  @include typography.video-title-base(34px);
+  position: relative;
+  flex: 1 1 100%;
+  margin-bottom: 4px;
+  text-align: center;
+
+  @include responsive.mobile-only {
+    font-size: 16px;
+    line-height: 1em;
+  }
+}
+
+.text {
+  position: relative;
+  flex: 1 1 100%;
+  margin-bottom: 16px;
+  font-family: var(--body-alt-font-family);
+  font-size: 16px;
+  line-height: 1.2em;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+
+  @include responsive.mobile-only {
+    font-size: 14px;
+    line-height: 1em;
+  }
+}

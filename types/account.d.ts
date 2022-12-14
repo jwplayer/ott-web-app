@@ -1,6 +1,8 @@
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
 
+import type { Config } from '#types/Config';
+
 export type AuthData = {
   jwt: string;
   customerToken: string;
@@ -13,7 +15,17 @@ export type JwtDetails = {
   publisherId: number;
 };
 
-export type LoginPayload = {
+export type PayloadWithIPOverride = {
+  customerIP?: string;
+};
+
+export type LoginArgs = {
+  config: Config;
+  email: string;
+  password: string;
+};
+
+export type LoginPayload = PayloadWithIPOverride & {
   email: string;
   password: string;
   offerId?: string;
@@ -44,7 +56,7 @@ export type ChooseOfferFormData = {
   offerId?: string;
 };
 
-export type RegisterPayload = {
+export type RegisterPayload = PayloadWithIPOverride & {
   email: string;
   password: string;
   offerId?: string;
@@ -159,6 +171,7 @@ export type Customer = {
   lastUserIp: string;
   firstName?: string;
   lastName?: string;
+  fullName?: string;
   externalId?: string;
   externalData?: ExternalData;
 };
@@ -226,7 +239,8 @@ export type UpdateCaptureAnswersPayload = {
   customerId: string;
 } & Capture;
 
-type Login = CleengRequest<LoginPayload, AuthData>;
+// TODO: Convert these all to generic non-cleeng calls
+type Login = (args: LoginArgs) => Promise<{ auth: AuthData; user: Customer }>;
 type Register = CleengRequest<RegisterPayload, AuthData>;
 type GetPublisherConsents = CleengRequest<GetPublisherConsentsPayload, GetPublisherConsentsResponse>;
 type GetCustomerConsents = CleengAuthRequest<GetCustomerConsentsPayload, GetCustomerConsentsResponse>;

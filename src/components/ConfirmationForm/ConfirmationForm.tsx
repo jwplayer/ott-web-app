@@ -1,11 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory, Link } from 'react-router-dom';
-
-import Button from '../Button/Button';
-import { addQueryParam } from '../../utils/history';
+import { Link, useLocation } from 'react-router-dom';
 
 import styles from './ConfirmationForm.module.scss';
+
+import Button from '#components/Button/Button';
+import { addQueryParam } from '#src/utils/location';
 
 type Props = {
   email?: string;
@@ -15,7 +15,7 @@ type Props = {
 
 const ConfirmationForm: React.FC<Props> = ({ email, onBackToLogin, loggedIn }: Props) => {
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const location = useLocation();
 
   return (
     <div className={styles.forgotPasswordForm}>
@@ -25,7 +25,7 @@ const ConfirmationForm: React.FC<Props> = ({ email, onBackToLogin, loggedIn }: P
       {!loggedIn && (
         <React.Fragment>
           <span className={styles.notSure}>{t('reset.not_sure')}</span>
-          <Link className={styles.link} to={addQueryParam(history, 'u', 'forgot-password')}>
+          <Link className={styles.link} to={addQueryParam(location, 'u', 'forgot-password')}>
             {t('reset.try_again')}
           </Link>
         </React.Fragment>

@@ -1,0 +1,76 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+
+.markdown {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0 0 1em;
+    font-weight: bold;
+    line-height: 1.33;
+  }
+
+  h1 {
+    padding-bottom: 0.3em;
+    font-size: 2em;
+    border-bottom: 1px solid rgba(variables.$white, 0.12);
+  }
+
+  h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.5em;
+    border-bottom: 1px solid rgba(variables.$white, 0.12);
+  }
+
+  h3 {
+    font-size: 1.25em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  h5 {
+    font-size: 0.875em;
+  }
+
+  h6 {
+    font-size: 0.85em;
+  }
+
+  hr {
+    box-sizing: content-box;
+    height: 0.25em;
+    margin: 24px 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+    background-color: rgba(variables.$white, 0.12);
+    border: 0;
+  }
+
+  img {
+    box-sizing: content-box;
+    max-width: 100%;
+    background-color: theme.$secondary-color;
+  }
+
+  a,
+  a:visited {
+    color: theme.$link-color;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul,
+  ol,
+  p {
+    margin: 1.2em 0;
+  }
+}

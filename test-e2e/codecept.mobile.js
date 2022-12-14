@@ -1,4 +1,5 @@
 require('ts-node/register');
+require('tsconfig-paths/register');
 
 const { devices } = require('playwright');
 const { setHeadlessWhen } = require('@codeceptjs/configure');
@@ -15,7 +16,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',
-      show: false,
+      show: !!process.env.SHOW,
       channel: 'chrome',
       emulate: devices['Pixel 5'],
     },
@@ -29,15 +30,9 @@ exports.config = {
   plugins: {
     pauseOnFail: {},
     retryFailedStep: {
-      minTimeout: 3000,
+      minTimeout: 100,
       enabled: true,
-      retries: 3,
-    },
-    autoDelay: {
-      enabled: true,
-    },
-    tryTo: {
-      enabled: true,
+      retries: 5,
     },
     screenshotOnFail: {
       enabled: true,

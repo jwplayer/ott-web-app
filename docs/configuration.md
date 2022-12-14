@@ -1,34 +1,28 @@
 # Configuration
 
-JW OTT Webapp uses a JSON configuration file to store all configuration parameters. This file can be located at the following location: [`./public/config.json`](public/config.json).
+The JW OTT Webapp is designed to consume a json configuration file served by the [JWP Delivery API](https://docs.jwplayer.com/platform/reference/get_apps-configs-config-id-json).
+The easiest way to maintain configuration files is to use the 'Apps' section in your [JWP Dashboard account](https://dashboard.jwplayer.com/).
 
-## Dynamic Configuration File Sources
+## Configuration File Source
 
-Using environment variables for build parameters, you can adjust what config file the application loads at startup and which, if any, it will allow to be set using the `c=<config source>` query param. The location can be specified using either the 8-character ID of the config from the JW Player dashboard (i.e. `gnnuzabk`), in which case the file will be loaded from the JW Player App Config delivery endpoint, or a relative (i.e. `/config.json`) or absolute (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`) path, in which case the file will be loaded using fetch to make a 'get' request.  
+Which app config file the application uses is determined by the [ini file](initialization-file.md).
 
-As mentioned above, if you have 1 or more allowed sources (see [`APP_CONFIG_ALLOWED_SOURCES`](#configuration-file-source-build-params) below), you can switch between them using the `c` query parameter when you first navigate to the web app. The parameter is automatically evaluated, loaded, and stored in local storage so that the query string can be cleaned from the URL and remain somewhat hidden from end users.
+You can specify the default that the application starts with and also which config, if any, it will allow to be set using the [`app-config=<config source>` query param](#switching-between-app-configs).
+The location is usually specified by the 8-character ID (i.e. `gnnuzabk`) of the App Config from your JWP account, in which case the file will be loaded from the JW Player App Config delivery endpoint (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`).
+You may also specify a relative or absolute URL.  
 
-Note: to clear the value from local storage and return to the default, you can navigate to the site with the query parameter but leaving the value blank (i.e. `https://<your domain>?c=`) 
+### Switching between app configs
 
-You can also tell the application to allow any config source location (see [`APP_UNSAFE_ALLOW_DYNAMIC_CONFIG`](#configuration-file-source-build-params) below), but this is a potential vulnerability, since any user could then pass in any valid config file, completely changing the content of the application on your domain. It is recommended to limit this 'unsafe' option to dev, testing, demo environments, etc.
+As mentioned above, if you have 1 or more additional allowed sources (see additionalAllowedConfigSources in [`initialization-file`](initialization-file.md)), you can switch between them by adding `app-config=<config source>` as a query parameter in the web app URL in your browser (i.e. `https://<your domain>/?app-config=gnnuzabk`.)
 
-### Configuration File Source Build Params
+The parameter is automatically evaluated, loaded, and stored in browser session storage and should remain part of the url as the user navigates around the site.
 
-**APP_CONFIG_DEFAULT_SOURCE**
+>*Note: Be aware that this mechanism only sets the config for the local machine, browser, and session that you are accessing the site with and it does not change the default hosted app for other users.*
 
-The ID or url path for the config that the web app will initially load with. Be careful to ensure that this config is always available or your app will fail to load.   
+Even sharing URL's should work as long as the query parameter of the desired config is part of the URL. However, once the query parameter is removed and the stored value in the session is released, the application will revert to loading the default config source.
 
----
+>*Note: to clear the value from session storage and return to the default, you can navigate to the site with a blank query parameter value (i.e. `?app-config=`)*
 
-**APP_CONFIG_ALLOWED_SOURCES**
-
-A space separated list of 8-character IDs and/or url paths for config files that can be set using the `c=<config source>` query param. You can mix ID's and paths as long as they are space separated. You do not need to add the value of `APP_CONFIG_DEFAULT_SOURCE` to this property.  
-
----
-
-**APP_UNSAFE_ALLOW_DYNAMIC_CONFIG** - boolean flag which if true, enables any config ID or path to be specified with the `c=<config source>` query param
-
-  **Warning** - Generally the `APP_UNSAFE_ALLOW_DYNAMIC_CONFIG` option should only be used for dev and test, because it opens up your application so that anyone can specify their own config to run on your domain 
 
 ## Available Configuration Parameters
 

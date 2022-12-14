@@ -1,0 +1,87 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+
+.user {
+  display: flex;
+  justify-content: center;
+  margin: variables.$base-spacing * 3.5 variables.$base-spacing * 4;
+  color: var(--primary-color);
+  font-family: var(--body-alt-font-family);
+
+  @include responsive.mobile-only() {
+    margin: 0 variables.$base-spacing;
+  }
+
+  @include responsive.tablet-only() {
+    margin: 0 variables.$base-spacing * 1.5;
+  }
+}
+.leftColumn {
+  width: 250px;
+  margin-right: 24px;
+  padding-left: 19px;
+
+  font-weight: var(--body-font-weight-bold);
+  font-size: 18px;
+  font-style: normal;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+}
+
+.button {
+  margin-bottom: variables.$base-spacing;
+}
+
+.logoutLi {
+  margin-bottom: 0;
+  padding-top: variables.$base-spacing;
+  border-top: 1px solid rgba(255, 255, 255, 0.32);
+  > a {
+    margin-bottom: 0;
+  }
+}
+
+.mainColumn {
+  width: 100%;
+  max-width: 750px;
+}
+
+.panel {
+  margin-bottom: variables.$base-spacing * 1.5;
+  padding: variables.$base-spacing;
+  font-weight: normal;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 18px;
+  letter-spacing: 0.15px;
+  background: theme.$panel-bg;
+  box-shadow: theme.$panel-box-shadow;
+
+  > ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+}
+
+.panelHeader {
+  margin-bottom: variables.$base-spacing;
+  padding-bottom: variables.$base-spacing;
+  border-bottom: theme.$panel-header-border-bottom;
+
+  > h3 {
+    font-weight: var(--body-font-weight-bold);
+    font-size: 24px;
+    line-height: 26px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  > input {
+    margin-right: 10px;
+  }
+}

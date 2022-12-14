@@ -3,12 +3,7 @@
 exports[`<DynamicBlur> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="BlurBackground"
-    style="transition: opacity 1s ease-in-out;"
-  />
-  <div
-    class="BlurBackground"
-    style="transition: opacity 1s ease-in-out;"
+    class="_dynamicBlur_c7f5f4"
   />
 </div>
 `;

@@ -1,28 +1,47 @@
 import * as assert from 'assert';
 
-import constants from '../utils/constants';
+import constants, { longTimeout, normalTimeout } from '#utils/constants';
+import { testConfigs } from '#test/constants';
+import passwordUtils, { LoginContext } from '#utils/password_utils';
 
-Feature('video_detail').retry(3);
+const loginContext: LoginContext = {
+  email: passwordUtils.createRandomEmail(),
+  password: passwordUtils.createRandomPassword(),
+};
 
-Scenario('Video detail screen loads', ({ I }) => {
-  I.amOnPage(constants.baseUrl);
-  openVideo(I, 'Agent 327');
+Feature('video_detail').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+
+Before(({ I }) => {
+  I.useConfig(testConfigs.cleengAuthvod);
+});
+
+Scenario('Video detail screen loads', async ({ I }) => {
+  await I.openVideoCard('Agent 327');
   I.see('Agent 327');
   I.see('2021');
   I.see('4m');
   I.see('Action');
   I.see('CC-BY');
   I.see(constants.agent327Description);
-  I.see('Sign up to start watching!');
+  I.see(constants.signUpToWatch);
   I.see('Favorite');
   I.see('Share');
   I.see('Elephants Dream');
   I.see('11 min', { css: 'div[aria-label="Play Elephants Dream"]' });
 });
 
-Scenario('I can expand the description (@mobile-only)', ({ I }) => {
-  I.useConfig('test--no-cleeng');
-  openVideo(I, 'Agent 327');
+Scenario('I can see an alternate background image for Agent 327', async ({ I }) => {
+  await I.openVideoCard('Agent 327');
+  await I.seeVideoDetailsBackgroundImage('Agent 327', 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/background.jpg?width=1280');
+});
+
+Scenario('I can see the default background image for Elephants Dream', async ({ I }) => {
+  await I.openVideoCard('Elephants Dream');
+  await I.seeVideoDetailsBackgroundImage('Elephants Dream', 'https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=1280');
+});
+
+Scenario('I can expand the description (@mobile-only)', async ({ I }) => {
+  await I.openVideoCard('Agent 327');
 
   function checkHeight(height) {
     // Putting a wait here because the expand / collapse takes a non-zero amount of time
@@ -57,67 +76,84 @@ Scenario('I can return to the video detail screen', async ({ I }) => {
   I.click('div[aria-label="Back"]');
 
   await I.checkPlayerClosed();
-  I.see('Start watching');
+  I.see(constants.startWatchingButton);
 });
 
-Scenario('I can play other media from the related shelf', ({ I }) => {
-  I.useConfig('test--no-cleeng');
-  openVideo(I, 'Agent 327');
-  openVideo(I, 'Elephants Dream');
-  I.see(
-    'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',
-  );
-  openVideo(I, 'Coffee Run');
+Scenario('I can play other media from the related shelf', async ({ I }) => {
+  I.useConfig(testConfigs.basicNoAuth);
+  await I.openVideoCard('Agent 327');
+  await I.openVideoCard(constants.elephantsDreamTitle);
+  I.see(constants.elephantsDreamDescription);
+  await I.openVideoCard('Coffee Run');
   I.see('Coffee Run was directed by Hjalti Hjalmarsson and produced by the team at Blender Animation Studio.');
 });
 
 Scenario('I can play a trailer', async ({ I }) => {
-  I.useConfig('test--no-cleeng', constants.elephantsDreamDetailUrl);
+  await I.openVideoCard(constants.elephantsDreamTitle);
 
   I.click('Trailer');
-  await I.waitForPlayerPlaying('Elephants Dream - Trailer');
+  const trailerTitle = `${constants.elephantsDreamTitle} - Trailer`;
+  await I.waitForPlayerPlaying(trailerTitle);
 
   I.clickCloseButton();
   await I.checkPlayerClosed();
-  I.dontSee('Elephants Dream - Trailer');
+  I.dontSee(trailerTitle);
 });
 
 Scenario('I can play a trailer without signing in', async ({ I }) => {
-  I.useConfig('test--accounts', constants.elephantsDreamDetailUrl);
+  await I.openVideoCard(constants.elephantsDreamTitle);
 
-  I.see('Sign up to start watching!');
-  I.click('Sign up to start watching!');
+  I.see(constants.signUpToWatch);
+  I.click(constants.signUpToWatch);
   await I.checkPlayerClosed();
-  I.waitForText('Email', 5);
+  I.waitForText('Email', normalTimeout);
   I.see('Password');
   I.click('div[aria-label=Close]');
 
   I.click('Trailer');
-  await I.waitForPlayerPlaying('Elephants Dream - Trailer');
+  await I.waitForPlayerPlaying(`${constants.elephantsDreamTitle} - Trailer`);
+});
 
-  I.clickCloseButton();
+Scenario('I can play a video after signing up', async ({ I }) => {
+  await I.openVideoCard(constants.elephantsDreamTitle);
+
+  I.see(constants.signUpToWatch);
+  I.click(constants.signUpToWatch);
   await I.checkPlayerClosed();
-  I.dontSee('Elephants Dream - Trailer');
+  I.see('Email');
+  I.see('Password');
+
+  await I.fillRegisterForm(loginContext);
+
+  I.see(constants.startWatchingButton);
+  I.dontSee(constants.signUpToWatch);
+  I.click(constants.startWatchingButton);
+
+  await I.waitForPlayerPlaying(constants.elephantsDreamTitle);
+
+  I.click('div[aria-label="Back"]');
+
+  await I.checkPlayerClosed();
 });
 
 Scenario('I can play a video after signing in', async ({ I }) => {
-  I.useConfig('test--accounts', constants.elephantsDreamDetailUrl);
+  await I.openVideoCard(constants.elephantsDreamTitle);
 
-  I.see('Sign up to start watching!');
-  I.click('Sign up to start watching!');
+  I.see(constants.signUpToWatch);
+  I.click(constants.signUpToWatch);
   await I.checkPlayerClosed();
   I.see('Email');
   I.see('Password');
   I.click('Sign in', constants.registrationFormSelector);
-  I.fillField('Email', constants.username);
-  I.fillField('Password', constants.password);
+  I.fillField('Email', loginContext.email);
+  I.fillField('Password', loginContext.password);
   I.click('button[type=submit]');
 
-  I.see('Start watching');
-  I.dontSee('Sign up to start watching!');
-  I.click('Start watching');
+  I.see(constants.startWatchingButton);
+  I.dontSee(constants.signUpToWatch);
+  I.click(constants.startWatchingButton);
 
-  await I.waitForPlayerPlaying('Elephants Dream');
+  await I.waitForPlayerPlaying(constants.elephantsDreamTitle);
 
   I.click('div[aria-label="Back"]');
 
@@ -127,9 +163,8 @@ Scenario('I can play a video after signing in', async ({ I }) => {
 Scenario('I can share the media', async ({ I }) => {
   await I.enableClipboard();
 
-  const url = constants.elephantsDreamDetailUrl + '&c=test--no-cleeng';
-
-  I.amOnPage(url);
+  await I.openVideoCard(constants.elephantsDreamTitle);
+  const url = await I.grabCurrentUrl();
 
   // Empty the clipboard
   await I.executeScript(() => navigator.clipboard.writeText(''));
@@ -140,24 +175,20 @@ Scenario('I can share the media', async ({ I }) => {
 
   // The url should be copied to the clipboard
   assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), url);
-  I.waitForInvisible('text="Copied url"', 5);
+  I.waitForInvisible('text="Copied url"', normalTimeout);
 });
 
-function openVideo(I, name) {
-  I.scrollTo({ css: `div[aria-label="Play ${name}"]` });
-  I.click({ css: `div[aria-label="Play ${name}"]` });
-}
-
 async function playBigBuckBunny(I) {
-  I.useConfig('test--no-cleeng', constants.bigBuckBunnyDetailUrl);
-  I.waitForText('Start watching', 5);
+  I.useConfig(testConfigs.basicNoAuth);
+  await I.openVideoCard(constants.bigBuckBunnyTitle);
+  I.waitForText(constants.startWatchingButton, normalTimeout);
   I.dontSeeInCurrentUrl('play=1');
-  I.click('Start watching');
+  I.click(constants.startWatchingButton);
 
   I.seeInCurrentUrl('play=1');
 
-  I.waitForElement('div[class*="jwplayer"]', 10);
-  I.waitForElement('video', 5);
+  I.waitForElement('div[class*="jwplayer"]', longTimeout);
+  I.waitForElement('video', normalTimeout);
 
-  await I.waitForPlayerPlaying('Big Buck Bunny');
+  await I.waitForPlayerPlaying(constants.bigBuckBunnyDescription);
 }

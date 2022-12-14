@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
 import * as persist from '#src/utils/persist';
@@ -6,7 +8,6 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { PlaylistItem } from '#types/playlist';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
-import i18n from '#src/i18n/config';
 
 const PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}` : ''}`;
 
@@ -44,28 +45,28 @@ export const persistFavorites = () => {
 };
 
 export const initializeFavorites = async () => {
-  restoreFavorites();
+  await restoreFavorites();
 };
 
-export const saveItem = (item: PlaylistItem) => {
+export const saveItem = async (item: PlaylistItem) => {
   const { favorites } = useFavoritesStore.getState();
 
   if (!favorites.some(({ mediaid }) => mediaid === item.mediaid)) {
     useFavoritesStore.setState({ favorites: [createFavorite(item)].concat(favorites) });
   }
 
-  persistFavorites();
+  await persistFavorites();
 };
 
-export const removeItem = (item: PlaylistItem) => {
+export const removeItem = async (item: PlaylistItem) => {
   const { favorites } = useFavoritesStore.getState();
 
   useFavoritesStore.setState({ favorites: favorites.filter(({ mediaid }) => mediaid !== item.mediaid) });
 
-  persistFavorites();
+  await persistFavorites();
 };
 
-export const toggleFavorite = (item: PlaylistItem | undefined) => {
+export const toggleFavorite = async (item: PlaylistItem | undefined) => {
   const { favorites, hasItem, setWarning } = useFavoritesStore.getState();
 
   if (!item) {
@@ -75,24 +76,24 @@ export const toggleFavorite = (item: PlaylistItem | undefined) => {
   const isFavorited = hasItem(item);
 
   if (isFavorited) {
-    removeItem(item);
+    await removeItem(item);
 
     return;
   }
 
   // If we exceed the max available number of favorites, we show a warning
   if (favorites?.length >= MAX_WATCHLIST_ITEMS_COUNT) {
-    setWarning(i18n.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
+    setWarning(i18next.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
     return;
   }
 
-  saveItem(item);
+  await saveItem(item);
 };
 
-export const clear = () => {
+export const clear = async () => {
   useFavoritesStore.setState({ favorites: [] });
 
-  persistFavorites();
+  await persistFavorites();
 };
 
 const createFavorite = (item: PlaylistItem): Favorite =>

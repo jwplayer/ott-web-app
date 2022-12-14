@@ -1,28 +1,22 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
-@use '../../styles/mixins/responsive';
-@use '../../styles/mixins/typography';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/mixins/typography';
 
-.playerContainer {
+.fade {
+  position: relative;
+  // make sure the fade animation happens on top of page elements
+  z-index: variables.$player-z-index;
+}
+
+.cinema {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: variables.$player-z-index;
   width: 100vw;
   height: calc(100vh - calc(100vh - 100%));
   overflow: hidden;
   background-color: variables.$black;
-}
-
-.player {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
 }
 
 .playerOverlay {

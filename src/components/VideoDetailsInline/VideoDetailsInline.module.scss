@@ -1,0 +1,115 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/mixins/typography';
+
+.details {
+  padding: 24px 0;
+  color: var(--primary-color);
+  font-family: var(--body-font-family);
+  font-weight: 400;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+
+  @include responsive.desktop-small-only() {
+    padding: 24px 0;
+  }
+
+  @include responsive.tablet-only() {
+    padding: 24px 0 0;
+  }
+
+  @include responsive.mobile-only() {
+    padding: variables.$base-spacing 0 0;
+  }
+}
+
+.inlinePlayerMetadata {
+  display: flex;
+  align-items: center;
+  margin-bottom: variables.$base-spacing;
+  padding-bottom: variables.$base-spacing;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+  > button {
+    min-width: fit-content;
+    margin-left: 8px;
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    flex-wrap: wrap;
+    border-bottom: 0;
+    > button:nth-last-child(3) {
+      flex: 1 1 100%;
+      margin: 0 0 8px 0;
+    }
+
+    > button:nth-last-child(2) {
+      flex: 0 0 calc(50% - 4px);
+      margin: 0 4px 0 0;
+    }
+
+    > button:nth-last-child(1) {
+      flex: 0 0 calc(50% - 4px);
+      margin: 0 0 0 4px;
+    }
+  }
+}
+
+.title {
+  @include typography.video-title-base;
+  margin-bottom: variables.$base-spacing;
+
+  @include responsive.mobile-only() {
+    margin-bottom: 0;
+  }
+}
+
+div.title {
+  font-weight: initial;
+}
+
+.primaryMetadata {
+  flex: 1;
+  flex-basis: 100%;
+  margin-right: auto;
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0.15px;
+
+  > div.live {
+    display: inline-block;
+    margin-right: 8px;
+
+    @include responsive.mobile-only() {
+      margin: 2px 4px 0 0;
+      padding: 2px 4px;
+    }
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    margin-bottom: variables.$base-spacing;
+    font-size: 14px;
+  }
+}
+
+.secondaryMetadata {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+
+  @include responsive.mobile-only() {
+    margin: 4px 0;
+    font-size: 18px;
+  }
+}
+
+.description {
+  min-height: 21px;
+  margin-bottom: 24px;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+}

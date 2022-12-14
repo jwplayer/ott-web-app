@@ -4,18 +4,18 @@ exports[`<PaymentFailed> > renders and matches snapshot 1`] = `
 <div>
   <div>
     <h2
-      class="title"
+      class="_title_957731"
     >
       checkout.payment_error
     </h2>
     <p
-      class="message"
+      class="_message_957731"
     >
       Error message
     </p>
     <div>
       <button
-        class="button primary fullWidth large"
+        class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
       >
         <span>
           checkout.close

@@ -1,7 +1,6 @@
-import type { AccessModel } from '../../types/Config';
-import type { MediaOffer } from '../../types/media';
-import type { PlaylistItem } from '../../types/playlist';
-
+import type { AccessModel } from '#types/Config';
+import type { MediaOffer } from '#types/media';
+import type { PlaylistItem } from '#types/playlist';
 import { hasFalseValue, hasTrueValue } from '#src/utils/common';
 
 /**

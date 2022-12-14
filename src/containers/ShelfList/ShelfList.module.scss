@@ -1,0 +1,41 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+
+.shelfList {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.list {
+  overflow: visible !important;
+
+  > div {
+    overflow: visible !important;
+  }
+}
+
+.shelfContainer {
+  position: relative;
+  padding: 12px 56px;
+
+  &.featured {
+    padding: 12px 20%;
+  }
+
+  @include responsive.mobile-only() {
+    padding: 8px 60px 8px variables.$base-spacing;
+
+    &.featured {
+      padding: 24px variables.$base-spacing;
+    }
+  }
+
+  @include responsive.tablet-only() {
+    padding: 0 variables.$base-spacing * 2;
+
+    &.featured {
+      padding: 24px 10%;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 
-import constants from '../utils/constants';
+import constants from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const openSearchLocator = { css: 'div[aria-label="Open search"]' };
 const searchBarLocator = { css: 'input[aria-label="Search"]' };
@@ -8,10 +9,10 @@ const emptySearchPrompt = 'Type something in the search box to start searching';
 const clearSearchLocator = { css: 'div[aria-label="Clear search"]' };
 const closeSearchLocator = { css: 'div[aria-label="Close search"]' };
 
-Feature('search').retry(3);
+Feature('search').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.amOnPage('http://localhost:8080');
+  I.useConfig(testConfigs.basicNoAuth);
   verifyOnHomePage(I);
 });
 
@@ -29,11 +30,9 @@ Scenario('Opening / activating search bar stays on home page', async ({ I }) => 
 });
 
 Scenario('Closing search return to original page (@mobile-only)', async ({ I }) => {
-  const url = constants.elephantsDreamDetailUrl;
-  const title = 'Elephants Dream';
-
-  I.amOnPage(url);
-  I.see(title);
+  await I.openVideoCard(constants.elephantsDreamTitle);
+  I.see(constants.elephantsDreamTitle);
+  const url = await I.grabCurrentUrl();
 
   await openSearch(I);
 
@@ -41,16 +40,16 @@ Scenario('Closing search return to original page (@mobile-only)', async ({ I }) 
 
   I.seeElement(searchBarLocator);
   I.fillField(searchBarLocator, 'Test');
-  I.seeCurrentUrlEquals('http://localhost:8080/q/Test');
-  I.dontSee(title);
+  I.seeCurrentUrlEquals(`${constants.baseUrl}q/Test`);
+  I.dontSee(constants.elephantsDreamTitle);
 
   I.fillField(searchBarLocator, 'HelloWorld');
-  I.seeCurrentUrlEquals('http://localhost:8080/q/HelloWorld');
-  I.dontSee(title);
+  I.seeCurrentUrlEquals(`${constants.baseUrl}q/HelloWorld`);
+  I.dontSee(constants.elephantsDreamTitle);
 
   I.click(closeSearchLocator);
   I.seeCurrentUrlEquals(url);
-  I.see(title);
+  I.see(constants.elephantsDreamTitle);
 });
 
 Scenario('I can type a search phrase in the search bar', async ({ I }) => {
@@ -95,7 +94,7 @@ Scenario('The search URL is encoded', async ({ I }) => {
   await openSearch(I);
 
   I.fillField(searchBarLocator, 'Hello/World! How are you? 這是中國人');
-  I.seeCurrentUrlEquals('http://localhost:8080/q/Hello%2FWorld!%20How%20are%20you%3F%20%E9%80%99%E6%98%AF%E4%B8%AD%E5%9C%8B%E4%BA%BA');
+  I.seeInCurrentUrl(`${constants.baseUrl}q/Hello%2FWorld!%20How%20are%20you%3F%20%E9%80%99%E6%98%AF%E4%B8%AD%E5%9C%8B%E4%BA%BA`);
 });
 
 Scenario('I can clear the search phrase with the clear button', async ({ I }) => {

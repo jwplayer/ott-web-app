@@ -1,9 +1,16 @@
-import constants from '../utils/constants';
+import constants from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
-Feature('playlist').retry(3);
+Feature('playlist').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Before(({ I }) => {
-  I.amOnPage(constants.filmsPlaylistUrl);
+Before(async ({ I }) => {
+  I.useConfig(testConfigs.basicNoAuth);
+
+  if (await I.isMobile()) {
+    I.openMenuDrawer();
+  }
+
+  I.click('Films');
 
   I.seeAll(actionFilms);
   I.seeAll(comedyFilms);
@@ -44,16 +51,24 @@ Scenario('I can reset the filter by selection the "All" option', async ({ I }) =
 });
 
 Scenario('I can click on a card and navigate to the video screen', ({ I }) => {
-  I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeCurrentUrlEquals(constants.bigBuckBunnyDetailUrl);
+  canNavigateToBigBuckBunny(I);
 });
 
 Scenario('I can filter and click on a card and navigate to the video screen', async ({ I }) => {
   await selectFilterAndCheck(I, 'Comedy');
-
-  I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
-  I.seeInCurrentUrl(constants.bigBuckBunnyDetailUrl);
+  canNavigateToBigBuckBunny(I);
 });
+
+function canNavigateToBigBuckBunny(I: CodeceptJS.I) {
+  I.click({ css: 'div[aria-label="Play Big Buck Bunny"]' });
+
+  I.see(constants.bigBuckBunnyDescription);
+  I.see(constants.startWatchingButton);
+
+  // Check the URL structure, but not the playlist and video ID
+  I.seeInCurrentUrl(`${constants.baseUrl}m/`);
+  I.seeInCurrentUrl('/big-buck-bunny?');
+}
 
 async function selectFilterAndCheck(I: CodeceptJS.I, option) {
   if (await I.isMobile()) {
@@ -77,7 +92,7 @@ async function checkSelectedFilterButton(I: CodeceptJS.I, expectedButton) {
     I.see(expectedButton, 'div[class*=filterRow] button[class*=active]');
 
     // Check that the 'All' button is visually active
-    I.seeCssPropertiesOnElements({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(255, 255, 255)' });
+    I.seeCssPropertiesOnElements({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(204, 204, 204)' });
     // Check that the other filter buttons are not visually active
     I.seeCssPropertiesOnElements(
       { xpath: `//div[contains(@class, "filterRow")]/button[not(contains(., "${expectedButton}"))]` },

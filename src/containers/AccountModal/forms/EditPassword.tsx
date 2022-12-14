@@ -1,10 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
 import type { EditPasswordFormData } from '#types/account';
-import EditPasswordForm from '#src/components/EditPasswordForm/EditPasswordForm';
+import EditPasswordForm from '#components/EditPasswordForm/EditPasswordForm';
 import { changePassword } from '#src/stores/AccountController';
 import useQueryParam from '#src/hooks/useQueryParam';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -12,7 +12,7 @@ import { addQueryParams } from '#src/utils/formatting';
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
   const emailParam = useQueryParam('email');
 
@@ -25,7 +25,7 @@ const ResetPassword: React.FC = () => {
 
     try {
       await changePassword(emailParam, formData.password, resetPasswordTokenParam);
-      history.push(addQueryParams(window.location.origin, { u: 'login' }));
+      navigate(addQueryParams(window.location.origin, { u: 'login' }));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.includes('invalid param password')) {

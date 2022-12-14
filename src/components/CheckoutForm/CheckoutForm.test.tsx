@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import offer from '../../fixtures/monthlyOffer.json';
-import order from '../../fixtures/order.json';
-import type { Offer, Order } from '../../../types/checkout';
-
 import CheckoutForm from './CheckoutForm';
+
+import offer from '#test/fixtures/monthlyOffer.json';
+import order from '#test/fixtures/order.json';
+import type { Offer, Order } from '#types/checkout';
 
 describe('<CheckoutForm>', () => {
   test('renders and matches snapshot', () => {

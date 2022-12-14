@@ -1,0 +1,10 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+
+div.about {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 16px;
+  font-size: 16px;
+  background-color: rgba(variables.$white, 0.1);
+}

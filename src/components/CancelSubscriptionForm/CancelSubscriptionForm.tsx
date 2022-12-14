@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../Button/Button';
-import FormFeedback from '../FormFeedback/FormFeedback';
-
 import styles from './CancelSubscriptionForm.module.scss';
+
+import Button from '#components/Button/Button';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
 
 type Props = {
   onConfirm: () => void;

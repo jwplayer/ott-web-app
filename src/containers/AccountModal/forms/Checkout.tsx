@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import { isSVODOffer } from '../../../utils/subscription';
-
-import CheckoutForm from '#src/components/CheckoutForm/CheckoutForm';
-import { addQueryParam, removeQueryParam } from '#src/utils/history';
+import { isSVODOffer } from '#src/utils/subscription';
+import CheckoutForm from '#components/CheckoutForm/CheckoutForm';
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import useForm from '#src/hooks/useForm';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import Adyen from '#src/components/Adyen/Adyen';
-import PayPal from '#src/components/PayPal/PayPal';
-import NoPaymentRequired from '#src/components/NoPaymentRequired/NoPaymentRequired';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Adyen from '#components/Adyen/Adyen';
+import PayPal from '#components/PayPal/PayPal';
+import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
@@ -19,10 +18,11 @@ import { adyenPayment, createOrder, getPaymentMethods, paymentWithoutDetails, pa
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 const Checkout = () => {
+  const location = useLocation();
   const { cleengSandbox } = useConfigStore((state) => state.getCleengData());
 
   const { t } = useTranslation('account');
-  const history = useHistory();
+  const navigate = useNavigate();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
   const [updatingOrder, setUpdatingOrder] = useState(false);
   const [couponFormOpen, setCouponFormOpen] = useState(false);
@@ -41,8 +41,8 @@ const Checkout = () => {
   const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
 
   const paymentSuccessUrl = useMemo(() => {
-    return offerType === 'svod' ? addQueryParam(history, 'u', 'welcome') : removeQueryParam(history, 'u');
-  }, [history, offerType]);
+    return offerType === 'svod' ? addQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
+  }, [location, offerType]);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);
@@ -55,7 +55,7 @@ const Checkout = () => {
       } catch (error: unknown) {
         if (error instanceof Error) {
           if (error.message.includes(`Order with id ${order.id} not found`)) {
-            history.replace(addQueryParam(history, 'u', 'choose-offer'));
+            navigate(addQueryParam(location, 'u', 'choose-offer'), { replace: true });
           } else {
             setErrors({ couponCode: t('checkout.coupon_not_valid') });
           }
@@ -82,11 +82,12 @@ const Checkout = () => {
     }
 
     if (!offer) {
-      return history.replace(addQueryParam(history, 'u', 'choose-offer'));
+      return navigate(addQueryParam(location, 'u', 'choose-offer'), { replace: true });
     }
 
+    // noinspection JSIgnoredPromiseFromCall
     create();
-  }, [history, offer]);
+  }, [location, navigate, offer]);
 
   // clear the order after closing the checkout modal
   useEffect(() => {
@@ -94,7 +95,7 @@ const Checkout = () => {
   }, [setOrder]);
 
   const backButtonClickHandler = () => {
-    history.push(addQueryParam(history, 'u', 'choose-offer'));
+    navigate(addQueryParam(location, 'u', 'choose-offer'));
   };
 
   const handlePaymentMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +110,7 @@ const Checkout = () => {
       updateOrder(order.id, toPaymentMethodId, couponCodeForm.values.couponCode)
         .catch((error: Error) => {
           if (error.message.includes(`Order with id ${order.id}} not found`)) {
-            history.push(addQueryParam(history, 'u', 'choose-offer'));
+            navigate(addQueryParam(location, 'u', 'choose-offer'));
           }
         })
         .finally(() => setUpdatingOrder(false));
@@ -122,7 +123,7 @@ const Checkout = () => {
       setPaymentError(undefined);
       await paymentWithoutDetails();
       await reloadActiveSubscription({ delay: 1000 });
-      history.replace(paymentSuccessUrl);
+      navigate(paymentSuccessUrl, { replace: true });
     } catch (error: unknown) {
       if (error instanceof Error) {
         setPaymentError(error.message);
@@ -160,8 +161,8 @@ const Checkout = () => {
         setUpdatingOrder(true);
         setPaymentError(undefined);
         await adyenPayment(data.data.paymentMethod);
-        await reloadActiveSubscription({ delay: 1000 });
-        history.replace(paymentSuccessUrl);
+        await reloadActiveSubscription({ delay: 2000 });
+        navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {
         if (error instanceof Error) {
           setPaymentError(error.message);
@@ -170,7 +171,7 @@ const Checkout = () => {
 
       setUpdatingOrder(false);
     },
-    [history, paymentSuccessUrl],
+    [navigate, paymentSuccessUrl],
   );
 
   const renderPaymentMethod = () => {

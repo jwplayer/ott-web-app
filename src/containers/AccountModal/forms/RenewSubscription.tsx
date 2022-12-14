@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
-import { removeQueryParam } from '../../../utils/history';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { useAccountStore } from '../../../stores/AccountStore';
-import RenewSubscriptionForm from '../../../components/RenewSubscriptionForm/RenewSubscriptionForm';
-import SubscriptionRenewed from '../../../components/SubscriptionRenewed/SubscriptionRenewed';
-
+import { useAccountStore } from '#src/stores/AccountStore';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import RenewSubscriptionForm from '#components/RenewSubscriptionForm/RenewSubscriptionForm';
+import SubscriptionRenewed from '#components/SubscriptionRenewed/SubscriptionRenewed';
+import { removeQueryParam } from '#src/utils/location';
 import { updateSubscription } from '#src/stores/AccountController';
 
 const RenewSubscription = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation('account');
-  const history = useHistory();
   const { subscription, user } = useAccountStore(({ subscription, user }) => ({ subscription, user }), shallow);
   const [renewed, setRenewed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -34,7 +34,7 @@ const RenewSubscription = () => {
   };
 
   const closeHandler = () => {
-    history.replace(removeQueryParam(history, 'u'));
+    navigate(removeQueryParam(location, 'u'), { replace: true });
   };
 
   if (!subscription || !user) return null;

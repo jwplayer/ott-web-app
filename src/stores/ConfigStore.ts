@@ -10,16 +10,12 @@ type CleengData = {
 };
 
 type ConfigState = {
-  configLocation: string;
-  isLoading: boolean;
   config: Config;
   accessModel: AccessModel;
   getCleengData: () => CleengData;
 };
 
 export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) => ({
-  configLocation: '',
-  isLoading: false,
   config: {
     id: '',
     siteName: '',
@@ -30,6 +26,11 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     menu: [],
     integrations: {
       cleeng: {
+        useSandbox: true,
+      },
+      inplayer: {
+        clientId: null,
+        assetId: null,
         useSandbox: true,
       },
     },

@@ -1,0 +1,56 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+
+.playlist {
+  margin: 0 variables.$base-spacing * 4;
+  color: var(--primary-color);
+  font-family: var(--body-alt-font-family);
+  text-align: center;
+
+  > main {
+    margin-top: 6px;
+  }
+
+  @include responsive.mobile-only() {
+    margin: 0 variables.$base-spacing;
+  }
+
+  @include responsive.tablet-only() {
+    margin: 0 variables.$base-spacing * 2;
+  }
+
+  @include responsive.desktop-small-only() {
+    margin: 0 variables.$base-spacing * 3;
+  }
+}
+
+.main {
+  margin: -8px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  margin: 24px 0;
+
+  > h2 {
+    font-family: var(--body-alt-font-family);
+    font-weight: var(--body-font-weight-bold);
+    font-size: 24px;
+  }
+
+  @include responsive.mobile-and-tablet {
+    justify-content: space-between;
+  }
+}
+
+.cell {
+  padding: 8px;
+}
+
+.error {
+  margin: 20px;
+  color: var(--primary-color);
+}

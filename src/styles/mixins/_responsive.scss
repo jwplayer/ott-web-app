@@ -1,4 +1,4 @@
-@use '../variables';
+@use 'src/styles/variables';
 
 @mixin mobile-only {
   @media screen and (max-width: variables.$mobile-max-width) {
@@ -8,6 +8,18 @@
 
 @mixin mobile-only-landscape {
   @media screen and (max-width: variables.$mobile-max-width) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin tablet-small-only {
+  @media screen and (min-width: variables.$mobile-max-width) and (max-width: variables.$tablet-small-max-width) {
+    @content;
+  }
+}
+
+@mixin mobile-and-small-tablet {
+  @media screen and (max-width: variables.$tablet-small-max-width) {
     @content;
   }
 }

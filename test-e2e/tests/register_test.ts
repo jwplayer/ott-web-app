@@ -1,24 +1,22 @@
-import constants from '../utils/constants';
-import passwordUtils from '../utils/password_utils';
+import constants, { longTimeout, normalTimeout } from '#utils/constants';
+import passwordUtils from '#utils/password_utils';
+import { testConfigs } from '#test/constants';
 
-Feature('register').retry(3);
+Feature('register').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
-  I.useConfig('test--accounts', constants.registerUrl);
-});
-
-Scenario('I can open the register modal', async ({ I }) => {
-  I.amOnPage(constants.baseUrl);
-  I.seeCurrentUrlEquals(constants.baseUrl);
+  I.useConfig(testConfigs.cleengAuthvod);
 
   if (await I.isMobile()) {
     I.openMenuDrawer();
   }
 
   I.click('Sign up');
-  I.waitForElement(constants.registrationFormSelector, 10);
+  I.waitForElement(constants.registrationFormSelector, normalTimeout);
+});
 
-  I.seeCurrentUrlEquals(constants.registerUrl);
+Scenario('I can open the register modal', async ({ I }) => {
+  await I.seeQueryParams({ u: 'create-account' });
 
   I.see('Email');
   I.see('Password');
@@ -35,6 +33,8 @@ Scenario('I can open the register modal', async ({ I }) => {
 });
 
 Scenario('I can close the modal', async ({ I }) => {
+  I.waitForElement(constants.registrationFormSelector, normalTimeout);
+
   I.clickCloseButton();
   I.dontSeeElement(constants.registrationFormSelector);
   I.dontSee('Email');
@@ -121,7 +121,7 @@ Scenario('I get warned for duplicate users', ({ I }) => {
   I.fillField('Password', 'Password123!');
   I.checkOption('Terms and Conditions');
   I.click('Continue');
-  I.waitForLoaderDone(5);
+  I.waitForLoaderDone();
   I.see(constants.duplicateUserError);
 });
 
@@ -131,7 +131,7 @@ Scenario('I can register', async ({ I }) => {
 
   I.checkOption('Terms and Conditions');
   I.click('Continue');
-  I.waitForElement('form[data-testid="personal_details-form"]', 15);
+  I.waitForElement('form[data-testid="personal_details-form"]', longTimeout);
   I.dontSee(constants.duplicateUserError);
   I.dontSee(constants.registrationFormSelector);
 
@@ -139,7 +139,7 @@ Scenario('I can register', async ({ I }) => {
   I.fillField('lastName', 'Doe');
 
   I.click('Continue');
-  I.waitForLoaderDone(10);
+  I.waitForLoaderDone();
 
-  I.see('Welcome to Blender');
+  I.see('Welcome to JW OTT Web App (AuthVod)');
 });
