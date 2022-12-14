@@ -93,7 +93,7 @@ export function FormSection<TData extends GenericFormValues>({
       event && event.preventDefault();
 
       if (onSubmit) {
-        let response: { errors?: string[] } | void;
+        let response: { errors?: string[] };
 
         try {
           setFormState((s) => {
