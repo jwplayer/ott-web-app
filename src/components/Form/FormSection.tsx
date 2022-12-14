@@ -24,7 +24,7 @@ export interface FormSectionProps<TData extends GenericFormValues, TErrors> {
   saveButton?: string;
   cancelButton?: string;
   canSave?: (values: TData) => boolean;
-  onSubmit?: (values: TData) => Promise<{ errors?: string[] }> | Promise<void> | void;
+  onSubmit?: (values: TData) => Promise<{ errors?: string[] }>;
   content: (args: FormSectionContentArgs<TData, TErrors>) => ReactNode;
   children?: never;
   readOnly?: boolean;
@@ -101,7 +101,7 @@ export function FormSection<TData extends GenericFormValues>({
           });
           response = await onSubmit(values);
         } catch (error: unknown) {
-          response = { errors: Array.of(error as string) };
+          response = { errors: Array.of(error instanceof Error ? error.message : (error as string)) };
         }
 
         // Don't leave edit mode if there are errors

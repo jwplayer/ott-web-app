@@ -77,12 +77,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     const formErrors: FormErrors = {};
     // Some errors are combined in a single CSV string instead of one string per error
     errors
-      ?.flatMap((e) => {
-        if (typeof e === 'object') {
-          return e?.['message'];
-        }
-        return e.split(',');
-      })
+      ?.flatMap((e) => e.split(','))
       .forEach((error) => {
         switch (error.trim()) {
           case 'Invalid param email':
@@ -237,9 +232,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
         formSection({
           label: t('account.terms_and_tracking'),
           saveButton: t('account.update_consents'),
-          onSubmit: async (values) => {
-            await updateConsents(formatConsentsFromValues(publisherConsents, values));
-          },
+          onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
           content: (section) => (
             <>
               {publisherConsents?.map((consent, index) => (
