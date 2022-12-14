@@ -218,7 +218,6 @@ export const register = async (email: string, password: string) => {
       await updatePersonalShelves();
     }
   });
-  useAccountStore.setState({ loading: true });
 };
 
 export const updatePersonalShelves = async () => {
