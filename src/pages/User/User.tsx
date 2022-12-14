@@ -41,7 +41,7 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, transactions, activePayment, loading } = useAccountStore();
+  const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail } = useAccountStore();
 
   const updateBlurImage = useBlurImageUpdater();
 
@@ -96,7 +96,10 @@ const User = (): JSX.Element => {
       )}
       <div className={styles.mainColumn}>
         <Routes>
-          <Route path="my-account" element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />} />
+          <Route
+            path="my-account"
+            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
+          />
           {favoritesList && (
             <Route
               path="favorites"
