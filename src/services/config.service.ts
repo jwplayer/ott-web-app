@@ -110,6 +110,15 @@ const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
   const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
 
+  // TODO: Remove this once the inplayer integration structure is added to the dashboard
+  if (!config.integrations.inplayer?.clientId && config.custom?.['inplayer.clientId']) {
+    config.integrations.inplayer = {
+      clientId: config.custom?.['inplayer.clientId'] as string,
+      assetId: Number(config.custom?.['inplayer.assetId']),
+      useSandbox: ['true', '1', 'yes'].indexOf((config.custom?.['inplayer.useSandbox'] as string)?.toLowerCase()) >= 0,
+    };
+  }
+
   return { ...config, siteName: siteName || i18next.t('common:default_site_name'), content: updatedContent };
 };
 

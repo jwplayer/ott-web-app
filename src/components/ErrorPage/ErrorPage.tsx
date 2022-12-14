@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './ErrorPage.module.scss';
 
-import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD } from '#src/utils/common';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/common';
 import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { getPublicUrl } from '#src/utils/domHelpers';
@@ -44,12 +44,12 @@ export const ErrorPageWithoutTranslation = ({ title, children, message, learnMor
         <main className={styles.main}>
           <>
             {children || <p>{message || 'Try refreshing this page or come back later.'}</p>}
-            {(IS_DEVELOPMENT_BUILD || IS_DEMO_MODE) && helpLink && (
+            {(IS_DEVELOPMENT_BUILD || IS_DEMO_MODE || IS_PREVIEW_MODE) && helpLink && (
               <p className={styles.links}>
                 <a href={helpLink} target={'_blank'} rel={'noreferrer'}>
                   {learnMoreLabel || 'Learn More'}
                 </a>
-                {IS_DEVELOPMENT_BUILD && error?.stack && (
+                {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && error?.stack && (
                   <span className={styles.stack}>
                     <DevStackTrace error={error} />
                   </span>

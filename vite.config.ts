@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 
-import { defineConfig } from 'vite';
+import { ConfigEnv, defineConfig, UserConfigExport } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
@@ -9,7 +9,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { Target, viteStaticCopy } from 'vite-plugin-static-copy';
 
-export default ({ mode, command }: { mode: string; command: string }) => {
+export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   // Shorten default mode names to dev / prod
   // Also differentiates from build type (production / development)
   mode = mode === 'development' ? 'dev' : mode;
@@ -88,6 +88,10 @@ export default ({ mode, command }: { mode: string; command: string }) => {
               id.includes('/node_modules/react/')
             ) {
               return 'react';
+            }
+
+            if (id.includes('/node_modules/@inplayer')) {
+              return 'inplayer';
             }
 
             if (id.includes('/node_modules/')) {

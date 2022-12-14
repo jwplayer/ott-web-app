@@ -3,7 +3,7 @@
   "cancel_config_id": "Cancel",
   "click_to_unselect_config": "(click here to unselect this config)",
   "currently_previewing_config": "You are currently previewing config: '{{configSource}}'",
-  "demo_note": "Note: The chosen app config will be temporarily stored in this browser only. Close the tab or use the link at the bottom of the main page to clear the setting and return to this dialog.",
+  "demo_note": "Note: The chosen app config ID will be stored locally in this browser only. Use the link at the bottom of the main page to clear the setting and return to this dialog.",
   "enter_8_digits": "The App Config ID should be 8 digits long. Please correct your input and try again.",
   "enter_a_value": "Please enter an App Config ID",
   "invalid_config_id_format": "The App Config ID should consist of only numbers and lowercase letters. Please check your input and then try again.",

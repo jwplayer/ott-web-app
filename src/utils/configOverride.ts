@@ -3,8 +3,8 @@ import type { NavigateFunction } from 'react-router/dist/lib/hooks';
 import { logDev } from '#src/utils/common';
 import type { Settings } from '#src/stores/SettingsStore';
 
-// Use session storage so the override persists until the tab is closed and then resets
-const storage = window.sessionStorage;
+// Use local storage so the override persists until cleared
+const storage = window.localStorage;
 
 const configQueryKey = 'app-config';
 const configLegacyQueryKey = 'c';
