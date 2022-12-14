@@ -24,7 +24,7 @@ import type {
   UpdateCustomerConsents,
 } from '#types/account';
 import type { Config } from '#types/Config';
-import type { InPlayerAuthData, InPlayerError, InPlayerResponse } from '#types/inplayer';
+import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -112,7 +112,7 @@ export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
 export const updateCustomer: UpdateCustomer = async (customer) => {
   try {
-    const response: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount(processUpdateAccount(customer));
+    const response = await InPlayer.Account.updateAccount(processUpdateAccount(customer));
 
     return {
       errors: [],
@@ -164,7 +164,7 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload) =>
     const { customer, consents } = payload;
     const params = { ...processUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
 
-    const { data }: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount(params);
+    const { data } = await InPlayer.Account.updateAccount(params);
 
     return {
       consents: parseJson(data?.metadata?.consents as string, []),

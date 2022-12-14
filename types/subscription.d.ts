@@ -1,6 +1,6 @@
 // Subscription types
 export type Subscription = {
-  subscriptionId: number;
+  subscriptionId: number | string;
   offerId: string;
   status: 'active' | 'cancelled' | 'expired' | 'terminated';
   expiresAt: number;
