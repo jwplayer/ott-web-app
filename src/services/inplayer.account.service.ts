@@ -1,7 +1,5 @@
 import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData } from '@inplayer-org/inplayer.js';
 
-import { subscribeToNotifications } from './inplayer.notifications.service';
-
 import type {
   AuthData,
   Capture,
@@ -32,6 +30,20 @@ enum InPlayerEnv {
   Daily = 'daily',
 }
 
+export enum NotificationsTypes {
+  ACCESS_GRANTED = 'access.granted',
+  ACCESS_REVOKED = 'access.revoked',
+  SUBSCRIBE_SUCCESS = 'subscribe.success',
+  SUBSCRIBE_FAILED = 'subscribe.failed',
+  PAYMENT_CARD_SUCCESS = 'payment.card.success',
+  PAYMENT_CARD_FAILED = 'payment.card.failed',
+  PAYMENT_CARD_REQUIRES_ACTION = 'payment.card.requires.action',
+  ACCOUNT_LOGOUT = 'account.logout',
+}
+export interface Notification {
+  type: NotificationsTypes;
+}
+
 export const setEnvironment = (config: Config) => {
   const env: string = config.integrations?.inplayer?.useSandbox ? InPlayerEnv.Daily : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
@@ -47,7 +59,6 @@ export const login: Login = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
-    subscribeToNotifications(user.uuid);
 
     return {
       auth: processAuth(data),
@@ -72,7 +83,6 @@ export const register: Register = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
-    subscribeToNotifications(user.uuid);
 
     return {
       auth: processAuth(data),
@@ -98,7 +108,6 @@ export const getUser = async () => {
     const { data } = await InPlayer.Account.getAccountInfo();
 
     const user = processAccount(data);
-    subscribeToNotifications(user.uuid);
     return {
       user,
       customerConsents: parseJson(user?.metadata?.consents as string, []) as CustomerConsent[],
@@ -249,6 +258,20 @@ export const resetPassword: ResetPassword = async ({ customerEmail, publisherId 
     };
   } catch {
     throw new Error('Failed to reset password.');
+  }
+};
+
+export const subscribeToNotifications = async (uuid: string = '', notifications: Record<NotificationsTypes, Array<() => Promise<unknown>>>) => {
+  if (!InPlayer.Notifications.isSubscribed()) {
+    InPlayer.subscribe(uuid, {
+      onMessage: function (message) {
+        const notification = JSON.parse(message) as Notification;
+        notifications[notification.type]?.forEach((handler) => {
+          handler?.();
+        });
+      },
+      onOpen: () => true,
+    });
   }
 };
 

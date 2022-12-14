@@ -1,6 +1,5 @@
 import jwtDecode from 'jwt-decode';
 
-import * as subscriptionService from '#src/services/cleeng.subscription.service';
 import * as cleengAccountService from '#src/services/cleeng.account.service';
 import * as inplayerAccountService from '#src/services/inplayer.account.service';
 import * as cleengSubscriptionService from '#src/services/cleeng.subscription.service';
@@ -26,11 +25,24 @@ import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesContr
 import { getMediaByWatchlist } from '#src/services/api.service';
 import { queryClient } from '#src/providers/QueryProvider';
 import type { AccessModel, Config } from '#types/Config';
+import { NotificationsTypes } from '#src/services/inplayer.account.service';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
 let subscription: undefined | (() => void);
 let refreshTimeout: number;
+
+// actions needed when listening to InPlayer web socket notifications
+const notifications: Record<NotificationsTypes, Array<() => Promise<unknown>>> = {
+  [NotificationsTypes.ACCESS_GRANTED]: [reloadActiveSubscription],
+  [NotificationsTypes.ACCESS_REVOKED]: [reloadActiveSubscription],
+  [NotificationsTypes.SUBSCRIBE_SUCCESS]: [reloadActiveSubscription],
+  [NotificationsTypes.SUBSCRIBE_FAILED]: [],
+  [NotificationsTypes.PAYMENT_CARD_SUCCESS]: [reloadActiveSubscription],
+  [NotificationsTypes.PAYMENT_CARD_FAILED]: [],
+  [NotificationsTypes.PAYMENT_CARD_REQUIRES_ACTION]: [],
+  [NotificationsTypes.ACCOUNT_LOGOUT]: [logout],
+};
 
 export const authNeedsRefresh = (auth: AuthData): boolean => {
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
@@ -182,7 +194,7 @@ export const login = async (email: string, password: string) => {
   });
 };
 
-export const logout = async () => {
+export async function logout() {
   await useService(async ({ accountService }) => {
     persist.removeItem(PERSIST_KEY_ACCOUNT);
 
@@ -205,7 +217,7 @@ export const logout = async () => {
     // it's needed for the InPlayer SDK
     await accountService.logout();
   });
-};
+}
 
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
@@ -365,7 +377,7 @@ export const updateSubscription = async (status: 'active' | 'cancelled') => {
     const { subscription } = useAccountStore.getState();
     if (!subscription) throw new Error('user has no active subscription');
 
-    const response = await subscriptionService.updateSubscription(
+    const response = await cleengSubscriptionService.updateSubscription(
       {
         customerId,
         offerId: subscription.offerId,
@@ -432,13 +444,18 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
 }
 
 async function afterLogin(auth: AuthData, user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string) {
-  useAccountStore.setState({
-    auth,
-    user,
-    customerConsents,
-  });
+  await useService(async ({ accountService }) => {
+    useAccountStore.setState({
+      auth,
+      user,
+      customerConsents,
+    });
 
-  return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getPublisherConsents()]);
+    // subscribe to listen to web socket notifications
+    await accountService.subscribeToNotifications(user.uuid, notifications);
+
+    return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getPublisherConsents()]);
+  });
 }
 
 function useConfig<T>(callback: (config: { cleengId: string; cleengSandbox: boolean }) => T): T {
