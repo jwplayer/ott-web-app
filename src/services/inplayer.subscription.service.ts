@@ -76,7 +76,7 @@ export const getSubscriptions = async () => {
 
 const processCardDetails = (card: Card & { card_type: string; account_id: number }): PaymentDetail => {
   const { number, exp_month, exp_year, card_name, card_type, account_id } = card;
-  const zeroFillExpMonth = `0${exp_month}`.substring(-2);
+  const zeroFillExpMonth = `0${exp_month}`.slice(-2);
   return {
     customerId: account_id.toString(),
     paymentMethodSpecificParams: {
