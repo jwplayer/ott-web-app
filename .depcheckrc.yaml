@@ -21,4 +21,6 @@ ignores: [
   'allure-commandline',
   # To run linting checks
   'npm-run-all',
+  # SW code is injected at build time
+  'virtual:pwa-register'
 ]

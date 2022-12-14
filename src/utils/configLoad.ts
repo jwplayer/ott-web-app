@@ -12,26 +12,6 @@ import { initializeFavorites } from '#src/stores/FavoritesController';
 
 const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
 
-const defaultConfig: Config = {
-  id: '',
-  siteName: '',
-  description: '',
-  player: '',
-  assets: {
-    banner: '/images/logo.png',
-  },
-  content: [],
-  menu: [],
-  integrations: {},
-  styling: {
-    footerText: '',
-    shelfTitles: true,
-  },
-  features: {
-    enableSharing: true,
-  },
-};
-
 const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Styling) => {
   const root = document.querySelector(':root') as HTMLElement;
 
@@ -76,7 +56,30 @@ const calculateAccessModel = (config: Config): AccessModel => {
 export async function loadAndValidateConfig(configSource: string | undefined) {
   configSource = formatSourceLocation(configSource);
 
+  // Explicitly set default config here as a local variable,
+  // otherwise if it's a module level const, the merge below causes changes to nested properties
+  const defaultConfig: Config = {
+    id: '',
+    siteName: '',
+    description: '',
+    player: '',
+    assets: {
+      banner: '/images/logo.png',
+    },
+    content: [],
+    menu: [],
+    integrations: {},
+    styling: {
+      footerText: '',
+      shelfTitles: true,
+    },
+    features: {
+      enableSharing: true,
+    },
+  };
+
   if (!configSource) {
+    useConfigStore.setState({ config: defaultConfig });
     throw new Error('Config not defined');
   }
 

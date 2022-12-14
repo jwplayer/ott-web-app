@@ -1,3 +1,24 @@
+# [3.0.0](https://github.com/jwplayer/ott-web-app/compare/v2.9.1...v3.0.0) (2022-12-14)
+
+
+* feat!: InPlayer register and update user flows (#202) ([489d8e8](https://github.com/jwplayer/ott-web-app/commit/489d8e8a6fb358df8dbd4522aed69228ded1bf6e)), closes [#202](https://github.com/jwplayer/ott-web-app/issues/202)
+
+
+### BREAKING CHANGES
+
+* introduce InPlayer services
+
+
+
+## [2.9.1](https://github.com/jwplayer/ott-web-app/compare/v2.9.0...v2.9.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* replace custom sw with vite, fix caching ([#207](https://github.com/jwplayer/ott-web-app/issues/207)) ([ef6e9f9](https://github.com/jwplayer/ott-web-app/commit/ef6e9f99493205367d0468b7856c10ad3bf4bb0e))
+
+
+
 # [2.9.0](https://github.com/jwplayer/ott-web-app/compare/v2.8.0...v2.9.0) (2022-12-05)
 
 

@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
-import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD } from '#src/utils/common';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/common';
 import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
@@ -40,8 +40,10 @@ const Root: FC = () => {
     refetchInterval: false,
   });
 
+  const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
+
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
-  if (settingsQuery.isLoading || (!IS_DEMO_MODE && configQuery.isLoading)) {
+  if (settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
     return <LoadingOverlay />;
   }
 
@@ -60,7 +62,7 @@ const Root: FC = () => {
     <>
       {!configQuery.isError && !configQuery.isLoading && <AppRoutes />}
       {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
-      {configQuery.isError && !IS_DEMO_MODE && (
+      {configQuery.isError && !IS_DEMO_OR_PREVIEW && (
         <ErrorPage
           title={t('config_invalid')}
           message={t('check_your_config')}
@@ -68,10 +70,10 @@ const Root: FC = () => {
           helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/configuration.md'}
         />
       )}
-      {IS_DEMO_MODE && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
+      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
       <AccountModal />
       {/* Config select control to improve testing experience */}
-      {IS_DEVELOPMENT_BUILD && <DevConfigSelector selectedConfig={configSource} />}
+      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
     </>
   );
 };

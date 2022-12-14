@@ -15,6 +15,7 @@ import type {
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
   JwtDetails,
+  ServiceResponse,
 } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';
@@ -112,8 +113,10 @@ export const initializeAccount = async () => {
   });
 };
 
-export async function updateUser(values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string }) {
-  await withAccountService(async ({ accountService, sandbox }) => {
+export async function updateUser(
+  values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string },
+): Promise<ServiceResponse<Customer>> {
+  return await withAccountService(async ({ accountService, sandbox }) => {
     useAccountStore.setState({ loading: true });
 
     const { auth, user, canUpdateEmail } = useAccountStore.getState();
@@ -122,12 +125,14 @@ export async function updateUser(values: { firstName: string; lastName: string }
       throw new Error('Email update not supported');
     }
 
-    if (!auth || !user) throw new Error('no auth');
+    if (!auth || !user) {
+      throw new Error('no auth');
+    }
 
     const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
 
     if (!response) {
-      return { errors: Array.of('Unknown error') };
+      throw new Error('Unknown error');
     }
 
     if (response.errors?.length === 0) {
@@ -242,27 +247,36 @@ export const updatePersonalShelves = async () => {
   });
 };
 
-export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<GetCustomerConsentsResponse> => {
+export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
   return await useAccountContext(async ({ customer, auth: { jwt } }) => {
     return await withAccountService(async ({ accountService, config }) => {
       useAccountStore.setState({ loading: true });
 
-      const response = await accountService.updateCustomerConsents({
-        jwt,
-        config,
-        customer,
-        consents: customerConsents,
-      });
+      try {
+        const response = await accountService.updateCustomerConsents({
+          jwt,
+          config,
+          customer,
+          consents: customerConsents,
+        });
 
-      if (response?.consents) {
-        useAccountStore.setState({ customerConsents: response.consents });
+        if (response?.consents) {
+          useAccountStore.setState({ customerConsents: response.consents });
+        }
+
+        return {
+          responseData: response.consents,
+          errors: [],
+        };
+      } finally {
+        useAccountStore.setState({ loading: false });
       }
-
-      return response;
     });
   });
 };
 
+// TODO: Decide if it's worth keeping this or just leave combined with getUser
+// noinspection JSUnusedGlobalSymbols
 export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse> {
   return await useAccountContext(async ({ customer, auth: { jwt } }) => {
     return await withAccountService(async ({ accountService, config }) => {
