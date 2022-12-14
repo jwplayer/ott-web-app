@@ -1,3 +1,12 @@
+## [2.9.1](https://github.com/jwplayer/ott-web-app/compare/v2.9.0...v2.9.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* replace custom sw with vite, fix caching ([#207](https://github.com/jwplayer/ott-web-app/issues/207)) ([ef6e9f9](https://github.com/jwplayer/ott-web-app/commit/ef6e9f99493205367d0468b7856c10ad3bf4bb0e))
+
+
+
 # [2.9.0](https://github.com/jwplayer/ott-web-app/compare/v2.8.0...v2.9.0) (2022-12-05)
 
 
