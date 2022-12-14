@@ -1,7 +1,10 @@
+import type { AuthServiceRequest } from './account';
+import type { Cleeng, InPlayer } from './Config';
+
 // Subscription types
 export type Subscription = {
-  subscriptionId: number;
-  offerId: string;
+  subscriptionId: string | number;
+  offerId: string | number;
   status: 'active' | 'cancelled' | 'expired' | 'terminated';
   expiresAt: number;
   nextPaymentPrice: number;
@@ -80,7 +83,7 @@ export type GetSubscriptionsResponse = {
 
 export type UpdateSubscriptionPayload = {
   customerId: string;
-  offerId: string;
+  offerId: string | number;
   status: 'active' | 'cancelled';
   cancellationReason?: string;
 };
@@ -109,7 +112,7 @@ export type GetTransactionsResponse = {
   items: Transaction[];
 };
 
-type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
+type GetSubscriptions = AuthServiceRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
 type UpdateSubscription = CleengAuthRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
 type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
 type GetTransactions = CleengAuthRequest<GetTransactionsPayload, GetTransactionsResponse>;
