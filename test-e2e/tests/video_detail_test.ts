@@ -12,7 +12,7 @@ const loginContext: LoginContext = {
 Feature('video_detail').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig(testConfigs.authvod);
+  I.useConfig(testConfigs.cleengAuthvod);
 });
 
 Scenario('Video detail screen loads', async ({ I }) => {
