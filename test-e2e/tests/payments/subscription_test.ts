@@ -164,7 +164,8 @@ Scenario('I can finish my subscription', async ({ I }) => {
   I.seeAll(cardInfo);
 });
 
-Scenario('I can cancel my subscription', async ({ I }) => {
+// TODO: Re-enable this when the cleeng bug is fixed
+Scenario.todo('I can cancel my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
   cancelPlan(I, addDays(today, 365));
@@ -173,7 +174,8 @@ Scenario('I can cancel my subscription', async ({ I }) => {
   I.seeAll(cardInfo);
 });
 
-Scenario('I can renew my subscription', async ({ I }) => {
+// TODO: Re-enable this when the cleeng bug is fixed
+Scenario.todo('I can renew my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
   renewPlan(I, addDays(today, 365));
