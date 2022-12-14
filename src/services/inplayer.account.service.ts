@@ -261,14 +261,12 @@ export const resetPassword: ResetPassword = async ({ customerEmail, publisherId 
   }
 };
 
-export const subscribeToNotifications = async (uuid: string = '', notifications: Record<NotificationsTypes, Array<() => Promise<unknown>>>) => {
+export const subscribeToNotifications = async (uuid: string = '', notifications: Record<NotificationsTypes, () => Promise<unknown>>) => {
   if (!InPlayer.Notifications.isSubscribed()) {
     InPlayer.subscribe(uuid, {
       onMessage: function (message) {
         const notification = JSON.parse(message) as Notification;
-        notifications[notification.type]?.forEach((handler) => {
-          handler?.();
-        });
+        notifications[notification.type]?.();
       },
       onOpen: () => true,
     });

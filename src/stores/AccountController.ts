@@ -33,15 +33,15 @@ let subscription: undefined | (() => void);
 let refreshTimeout: number;
 
 // actions needed when listening to InPlayer web socket notifications
-const notifications: Record<NotificationsTypes, Array<() => Promise<unknown>>> = {
-  [NotificationsTypes.ACCESS_GRANTED]: [reloadActiveSubscription],
-  [NotificationsTypes.ACCESS_REVOKED]: [reloadActiveSubscription],
-  [NotificationsTypes.SUBSCRIBE_SUCCESS]: [reloadActiveSubscription],
-  [NotificationsTypes.SUBSCRIBE_FAILED]: [],
-  [NotificationsTypes.PAYMENT_CARD_SUCCESS]: [reloadActiveSubscription],
-  [NotificationsTypes.PAYMENT_CARD_FAILED]: [],
-  [NotificationsTypes.PAYMENT_CARD_REQUIRES_ACTION]: [],
-  [NotificationsTypes.ACCOUNT_LOGOUT]: [logout],
+const notifications: Record<NotificationsTypes, () => Promise<unknown>> = {
+  [NotificationsTypes.ACCESS_GRANTED]: reloadActiveSubscription,
+  [NotificationsTypes.ACCESS_REVOKED]: reloadActiveSubscription,
+  [NotificationsTypes.SUBSCRIBE_SUCCESS]: reloadActiveSubscription,
+  [NotificationsTypes.SUBSCRIBE_FAILED]: async () => true,
+  [NotificationsTypes.PAYMENT_CARD_SUCCESS]: reloadActiveSubscription,
+  [NotificationsTypes.PAYMENT_CARD_FAILED]: async () => true,
+  [NotificationsTypes.PAYMENT_CARD_REQUIRES_ACTION]: async () => true,
+  [NotificationsTypes.ACCOUNT_LOGOUT]: logout,
 };
 
 export const authNeedsRefresh = (auth: AuthData): boolean => {

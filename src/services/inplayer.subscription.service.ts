@@ -2,7 +2,7 @@ import InPlayer, { Card, SubscriptionDetails as InplayerSubscription } from '@in
 
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { Config } from '#types/Config';
-import type { InPlayerPurchaseDetails } from '#types/inplayer';
+import type { InPlayerError, InPlayerPurchaseDetails } from '#types/inplayer';
 
 interface SubscriptionDetails extends InplayerSubscription {
   item_id?: number;
@@ -21,7 +21,7 @@ interface SubscriptionDetails extends InplayerSubscription {
 export async function getActiveSubscription({ config }: { config: Config }) {
   try {
     const assetId = config.integrations.inplayer?.assetId || 0;
-    const { data: hasAccess } = await InPlayer.Asset.checkAccessForAsset(assetId);
+    const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);
 
     if (hasAccess) {
       const { data } = await InPlayer.Subscription.getSubscriptions();
@@ -31,7 +31,11 @@ export async function getActiveSubscription({ config }: { config: Config }) {
       }
     }
     return null;
-  } catch {
+  } catch (error: unknown) {
+    const { response } = error as InPlayerError;
+    if (response.data.code === 402) {
+      return null;
+    }
     throw new Error('Unable to fetch customer subscriptions.');
   }
 }
