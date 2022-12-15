@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, FavoritesData, GetRegisterField, UpdateAccountData, WatchlistHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, FavoritesData, GetRegisterField, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
 
 import type {
   AuthData,
@@ -342,7 +342,7 @@ const getCustomerExternalData = async (): Promise<ExternalData> => {
     return processFavorite(favorite);
   });
 
-  const history = historyData.data?.collection?.map((history: WatchlistHistory) => {
+  const history = historyData.data?.collection?.map((history: WatchHistory) => {
     return processHistoryItem(history);
   });
 
@@ -400,7 +400,7 @@ const processFavorite = (favorite: FavoritesData): Favorite => {
   } as Favorite;
 };
 
-const processHistoryItem = (history: WatchlistHistory): WatchHistoryItem => {
+const processHistoryItem = (history: WatchHistory): WatchHistoryItem => {
   return {
     mediaid: history.media_id,
     progress: history.progress,
