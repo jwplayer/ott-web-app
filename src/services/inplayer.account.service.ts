@@ -25,7 +25,6 @@ import type {
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError, InPlayerResponse } from '#types/inplayer';
-import { useAccountStore } from '#src/stores/AccountStore';
 import type { Favorite } from '#types/favorite';
 import type { WatchHistoryItem } from '#types/watchHistory';
 
@@ -50,7 +49,7 @@ export const login: Login = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
-
+    user.externalData = await getCustomerExternalData();
     return {
       auth: processAuth(data),
       user,
@@ -74,6 +73,7 @@ export const register: Register = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
+    user.externalData = await getCustomerExternalData();
 
     return {
       auth: processAuth(data),
@@ -99,6 +99,7 @@ export const getUser = async () => {
     const { data } = await InPlayer.Account.getAccountInfo();
 
     const user = processAccount(data);
+    user.externalData = await getCustomerExternalData();
     return {
       user,
       customerConsents: parseJson(user?.metadata?.consents as string, []) as CustomerConsent[],
@@ -334,7 +335,7 @@ export const canUpdateEmail = false;
 
 export const canChangePasswordWithOldPassword = true;
 
-export const initCustomerExtras = async (): Promise<ExternalData> => {
+const getCustomerExternalData = async (): Promise<ExternalData> => {
   const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
 
   const favorites = favoritesData.data?.collection?.map((favorite: FavoritesData) => {
@@ -353,14 +354,14 @@ export const initCustomerExtras = async (): Promise<ExternalData> => {
 
 export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
   const { favorites, history } = payload.externalData;
-  const user = useAccountStore.getState().user;
-  const currentFavoriteIds = user?.externalData?.favorites?.flatMap((e) => e.mediaid);
-  const payloadFavoriteIds = favorites?.flatMap((e) => e.mediaid);
+  const externalData = await getCustomerExternalData();
+  const currentFavoriteIds = externalData?.favorites?.map((e) => e.mediaid);
+  const payloadFavoriteIds = favorites?.map((e) => e.mediaid);
 
   try {
     history.forEach(async (history) => {
-      if (user?.externalData?.history?.length) {
-        user?.externalData?.history?.forEach(async (historyStore) => {
+      if (externalData?.history?.length) {
+        externalData?.history?.forEach(async (historyStore) => {
           if (historyStore.mediaid === history.mediaid && historyStore.progress !== history.progress) {
             await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
           }

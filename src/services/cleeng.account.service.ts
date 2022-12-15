@@ -225,5 +225,3 @@ const handleErrors = (errors: ApiResponse['errors']) => {
 export const canUpdateEmail = true;
 
 export const canChangePasswordWithOldPassword = false;
-
-export const initCustomerExtras = async () => null;

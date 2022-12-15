@@ -161,11 +161,6 @@ export const getAccount = async (auth: AuthData) => {
   await withAccountService(async ({ accountService, config, accessModel }) => {
     const response = await accountService.getUser({ config, auth });
 
-    const externalData = await accountService.initCustomerExtras();
-    if (externalData) {
-      response.user.externalData = externalData;
-    }
-
     await afterLogin(auth, response.user, response.customerConsents, accessModel);
 
     useAccountStore.setState({ loading: false });
@@ -220,7 +215,7 @@ export const register = async (email: string, password: string) => {
 
     await updatePersonalShelves();
   });
-  useAccountStore.setState({ loading: true });
+  useAccountStore.setState({ loading: false });
 };
 
 export const updatePersonalShelves = async () => {
