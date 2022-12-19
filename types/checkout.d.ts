@@ -1,6 +1,7 @@
 import type { PayloadWithIPOverride } from '#types/account';
 
 export type Offer = {
+  id: number | null;
   offerId: string;
   offerPrice: number;
   offerCurrency: string;
@@ -85,6 +86,7 @@ export type Order = {
 export type PaymentMethod = {
   id: number;
   methodName: 'card' | 'paypal';
+  provider?: 'stripe' | 'adyen';
   logoUrl: string;
 };
 
@@ -92,6 +94,21 @@ export type PaymentMethodResponse = {
   message: string;
   paymentMethods: PaymentMethod[];
   status: number;
+};
+
+export type PaymentStatus = {
+  status: 'successful' | 'failed';
+  message?: string;
+};
+
+export type CardPaymentData = {
+  couponCode?: string;
+  cardholderName: string;
+  cardNumber: string | number;
+  cardExpiry: string;
+  cardExpMonth?: string;
+  cardExpYear?: string;
+  cardCVC: string;
 };
 
 export type Payment = {
@@ -121,8 +138,12 @@ export type GetOfferPayload = {
   offerId: string;
 };
 
+export type GetOffersPayload = {
+  offerIds: string[] | number[];
+};
+
 export type CreateOrderPayload = {
-  offerId: string;
+  offer: Offer;
   customerId: string;
   country: string;
   currency: string;
@@ -138,7 +159,7 @@ export type CreateOrderResponse = {
 };
 
 export type UpdateOrderPayload = {
-  orderId: number;
+  order: Order;
   paymentMethodId?: number;
   couponCode?: string | null;
 };
@@ -159,7 +180,7 @@ export type PaymentWithAdyenPayload = PayloadWithIPOverride & {
 };
 
 export type PaymentWithPayPalPayload = {
-  orderId: number;
+  order: Order;
   successUrl: string;
   cancelUrl: string;
   errorUrl: string;
@@ -178,6 +199,7 @@ export type GetEntitlementsResponse = {
   expiresAt: number;
 };
 
+export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
 export type GetOffer = CleengRequest<GetOfferPayload, Offer>;
 export type CreateOrder = CleengAuthRequest<CreateOrderPayload, CreateOrderResponse>;
 export type UpdateOrder = CleengAuthRequest<UpdateOrderPayload, UpdateOrderResponse>;

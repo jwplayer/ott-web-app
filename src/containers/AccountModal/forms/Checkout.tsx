@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
+import Payment from 'payment';
+import { object, string } from 'yup';
 
 import { isSVODOffer } from '#src/utils/subscription';
 import CheckoutForm from '#components/CheckoutForm/CheckoutForm';
@@ -14,13 +16,15 @@ import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { adyenPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
+import { adyenPayment, cardPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
+import PaymentForm from '#src/components/PaymentForm/PaymentForm';
+import { useNotificationStore } from '#src/stores/NotificationStore';
 
 const Checkout = () => {
   const location = useLocation();
   const { cleengSandbox } = useConfigStore((state) => state.getCleengData());
-
+  const notification = useNotificationStore((state) => state);
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -44,28 +48,77 @@ const Checkout = () => {
     return offerType === 'svod' ? addQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
   }, [location, offerType]);
 
-  const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
+  const paymentDataForm = useForm(
+    { couponCode: '', cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
+    async () => {
+      setUpdatingOrder(true);
+      await cardPayment(paymentDataForm.values);
+    },
+    object().shape({
+      cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
+        return Payment.fns.validateCardNumber(value as string);
+      }),
+      cardExpiry: string().test('card expiry validation', t('checkout.invalid_card_expiry'), (value) => {
+        return Payment.fns.validateCardExpiry(value as string);
+      }),
+      cardCVC: string().matches(/\d{3,4}/, t('checkout.invalid_cvc_number')),
+    }),
+    true,
+  );
+
+  const handleCouponFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     setUpdatingOrder(true);
     setCouponCodeApplied(false);
-
-    if (values.couponCode && order) {
+    paymentDataForm.setErrors({ couponCode: undefined });
+    if (paymentDataForm.values.couponCode && order) {
       try {
-        await updateOrder(order.id, paymentMethodId, values.couponCode);
+        await updateOrder(order, paymentMethodId, paymentDataForm.values.couponCode);
         setCouponCodeApplied(true);
       } catch (error: unknown) {
         if (error instanceof Error) {
           if (error.message.includes(`Order with id ${order.id} not found`)) {
             navigate(addQueryParam(location, 'u', 'choose-offer'), { replace: true });
           } else {
-            setErrors({ couponCode: t('checkout.coupon_not_valid') });
+            paymentDataForm.setErrors({ couponCode: t('checkout.coupon_not_valid') });
           }
         }
       }
     }
 
     setUpdatingOrder(false);
-    setSubmitting(false);
-  });
+    paymentDataForm.setSubmitting(false);
+  };
+
+  useEffect(() => {
+    if (notification.type?.endsWith('.failed')) {
+      navigate(
+        addQueryParams(window.location.href, {
+          u: 'paypal-error',
+          message: (notification.resource as Error)?.message,
+        }),
+      );
+    } else if (notification.type === 'access.granted') {
+      navigate(addQueryParam(location, 'u', 'welcome'));
+    }
+
+    return () => {
+      useNotificationStore.setState({ type: null, resource: null });
+    };
+  }, [notification, navigate, location]);
+
+  useEffect(() => {
+    if (paymentDataForm.values.cardExpiry) {
+      const expiry = Payment.fns.cardExpiryVal(paymentDataForm.values.cardExpiry);
+      if (expiry.month) {
+        paymentDataForm.setValue('cardExpMonth', expiry.month.toString());
+      }
+      if (expiry.year) {
+        paymentDataForm.setValue('cardExpYear', expiry.year.toString());
+      }
+    }
+    //eslint-disable-next-line
+  }, [paymentDataForm.values.cardExpiry]);
 
   useEffect(() => {
     async function create() {
@@ -76,7 +129,7 @@ const Checkout = () => {
 
         setPaymentMethodId(methods[0]?.id);
 
-        await createOrder(offer.offerId, methods[0]?.id);
+        await createOrder(offer, methods[0]?.id);
         setUpdatingOrder(false);
       }
     }
@@ -107,7 +160,7 @@ const Checkout = () => {
     if (order && toPaymentMethodId) {
       setUpdatingOrder(true);
       setCouponCodeApplied(false);
-      updateOrder(order.id, toPaymentMethodId, couponCodeForm.values.couponCode)
+      updateOrder(order, toPaymentMethodId, paymentDataForm.values.couponCode)
         .catch((error: Error) => {
           if (error.message.includes(`Order with id ${order.id}} not found`)) {
             navigate(addQueryParam(location, 'u', 'choose-offer'));
@@ -184,6 +237,9 @@ const Checkout = () => {
     }
 
     if (paymentMethod?.methodName === 'card') {
+      if (paymentMethod?.provider === 'stripe') {
+        return <PaymentForm paymentDataForm={paymentDataForm} />;
+      }
       return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={cleengSandbox ? 'test' : 'live'} />;
     } else if (paymentMethod?.methodName === 'paypal') {
       return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
@@ -210,15 +266,15 @@ const Checkout = () => {
       paymentMethods={paymentMethods}
       paymentMethodId={paymentMethodId}
       onPaymentMethodChange={handlePaymentMethodChange}
-      onCouponFormSubmit={couponCodeForm.handleSubmit}
-      onCouponInputChange={couponCodeForm.handleChange}
+      onCouponFormSubmit={handleCouponFormSubmit}
+      onCouponInputChange={paymentDataForm.handleChange}
       onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
       onCloseCouponFormClick={() => setCouponFormOpen(false)}
-      couponInputValue={couponCodeForm.values.couponCode}
+      couponInputValue={paymentDataForm.values.couponCode}
       couponFormOpen={couponFormOpen}
       couponFormApplied={couponCodeApplied}
-      couponFormSubmitting={couponCodeForm.submitting}
-      couponFormError={couponCodeForm.errors.couponCode}
+      couponFormSubmitting={paymentDataForm.submitting}
+      couponFormError={paymentDataForm.errors.couponCode}
       renderPaymentMethod={renderPaymentMethod}
       submitting={updatingOrder}
     />

@@ -1,9 +1,9 @@
 import jwtDecode from 'jwt-decode';
 
-import * as cleengAccountService from '#src/services/cleeng.account.service';
-import * as inplayerAccountService from '#src/services/inplayer.account.service';
+import { useNotificationStore } from './NotificationStore';
+
 import * as cleengSubscriptionService from '#src/services/cleeng.subscription.service';
-import * as inplayerSubscriptionService from '#src/services/inplayer.subscription.service';
+import * as cleengAccountService from '#src/services/cleeng.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type {
@@ -24,8 +24,9 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
 import { queryClient } from '#src/providers/QueryProvider';
-import type { AccessModel, Config } from '#types/Config';
 import { NotificationsTypes } from '#src/services/inplayer.account.service';
+import useService from '#src/hooks/useService';
+import useAccount from '#src/hooks/useAccount';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -257,7 +258,7 @@ export const updatePersonalShelves = async () => {
 };
 
 export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
-  return await useAccountContext(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, config }) => {
       useAccountStore.setState({ loading: true });
 
@@ -287,7 +288,7 @@ export const updateConsents = async (customerConsents: CustomerConsent[]): Promi
 // TODO: Decide if it's worth keeping this or just leave combined with getUser
 // noinspection JSUnusedGlobalSymbols
 export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse> {
-  return await useAccountContext(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, config }) => {
       const response = await accountService.getCustomerConsents({ config, customer, jwt });
 
@@ -311,7 +312,7 @@ export const getPublisherConsents = async (): Promise<GetPublisherConsentsRespon
 };
 
 export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
-  return await useAccountContext(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, sandbox }) => {
       const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox, jwt);
 
@@ -321,7 +322,7 @@ export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
 };
 
 export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
-  return await useAccountContext(async ({ customer, auth, customerConsents }) => {
+  return await useAccount(async ({ customer, auth, customerConsents }) => {
     return await useService(async ({ accountService, accessModel, sandbox }) => {
       const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox, auth.jwt);
 
@@ -397,15 +398,13 @@ export const updateSubscription = async (status: 'active' | 'cancelled') => {
 
 export async function reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> {
   useAccountStore.setState({ loading: true });
-
-  return await useAccountContext(async ({ customerId, auth: { jwt } }) => {
+  return await useAccount(async ({ customerId, auth: { jwt } }) => {
     return await useService(async ({ subscriptionService, sandbox, config }) => {
       const [activeSubscription, transactions, activePayment] = await Promise.all([
         subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
         subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
         subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
       ]);
-
       // The subscription data takes a few seconds to load after it's purchased,
       // so here's a delay mechanism to give it time to process
       if (delay > 0) {
@@ -452,7 +451,15 @@ async function afterLogin(auth: AuthData, user: Customer, customerConsents: Cust
     });
 
     // subscribe to listen to web socket notifications
-    await accountService.subscribeToNotifications(user.uuid, notifications);
+    await accountService.subscribeToNotifications(user.uuid, (message) => {
+      const notification = JSON.parse(message);
+
+      notifications[notification.type as NotificationsTypes]?.();
+      useNotificationStore.setState({
+        type: notification.type,
+        resource: notification.resource,
+      });
+    });
 
     return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getPublisherConsents()]);
   });
@@ -472,50 +479,4 @@ function useLoginContext<T>(callback: (args: { cleengId: string; cleengSandbox: 
   if (!user?.id || !auth?.jwt) throw new Error('user not logged in');
 
   return useConfig((config) => callback({ ...config, customerId: user.id, auth }));
-}
-
-function useAccountContext<T>(
-  callback: (args: { customerId: string; customer: Customer; customerConsents: CustomerConsent[] | null; auth: AuthData }) => T,
-): T {
-  const { user, auth, customerConsents } = useAccountStore.getState();
-
-  if (!user?.id || !auth?.jwt) throw new Error('user not logged in');
-
-  return callback({ customerId: user.id, customer: user, auth, customerConsents });
-}
-
-function useService<T>(
-  callback: (args: {
-    accountService: typeof inplayerAccountService | typeof cleengAccountService;
-    subscriptionService: typeof inplayerSubscriptionService | typeof cleengSubscriptionService;
-    config: Config;
-    accessModel: AccessModel;
-    sandbox: boolean;
-    authProviderId: string;
-  }) => T,
-): T {
-  const { config, accessModel } = useConfigStore.getState();
-  const { cleeng, inplayer } = config.integrations;
-
-  if (inplayer?.clientId) {
-    return callback({
-      accountService: inplayerAccountService,
-      subscriptionService: inplayerSubscriptionService,
-      config,
-      accessModel,
-      sandbox: !!inplayer.useSandbox,
-      authProviderId: inplayer?.clientId?.toString(),
-    });
-  } else if (cleeng?.id) {
-    return callback({
-      accountService: cleengAccountService,
-      subscriptionService: cleengSubscriptionService,
-      config,
-      accessModel,
-      sandbox: !!cleeng.useSandbox,
-      authProviderId: cleeng?.id,
-    });
-  }
-
-  throw new Error('No account service available');
 }

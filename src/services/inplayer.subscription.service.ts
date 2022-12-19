@@ -63,7 +63,9 @@ export async function getActivePayment() {
 
     return cards.find((paymentDetails) => paymentDetails.active) || null;
   } catch {
-    throw new Error('Failed to get payment details');
+    //TODO Fix response code in the InPlayer API
+    //throw new Error('Failed to get payment details');
+    return null;
   }
 }
 

@@ -11,6 +11,7 @@ import type {
   GetCaptureStatus,
   GetCustomerConsents,
   GetCustomerConsentsResponse,
+  GetLocales,
   GetPublisherConsents,
   Login,
   Register,
@@ -261,13 +262,10 @@ export const resetPassword: ResetPassword = async ({ customerEmail, publisherId 
   }
 };
 
-export const subscribeToNotifications = async (uuid: string = '', notifications: Record<NotificationsTypes, () => Promise<unknown>>) => {
+export const subscribeToNotifications = async (uuid: string = '', onMessage: (payload: string) => void) => {
   if (!InPlayer.Notifications.isSubscribed()) {
     InPlayer.subscribe(uuid, {
-      onMessage: function (message) {
-        const notification = JSON.parse(message) as Notification;
-        notifications[notification.type]?.();
-      },
+      onMessage: onMessage,
       onOpen: () => true,
     });
   }
@@ -355,3 +353,15 @@ function parseJson(value: string, fallback = {}) {
 export const canUpdateEmail = false;
 
 export const canChangePasswordWithOldPassword = true;
+
+export const getLocales: GetLocales = async () => {
+  return {
+    errors: [],
+    responseData: {
+      country: '',
+      currency: '',
+      locale: navigator.language,
+      ipAddress: '',
+    },
+  };
+};

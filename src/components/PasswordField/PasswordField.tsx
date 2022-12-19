@@ -5,8 +5,6 @@ import TextField from '../TextField/TextField';
 import PasswordStrength from '../PasswordStrength/PasswordStrength';
 import IconButton from '../IconButton/IconButton';
 
-import styles from './PasswordField.module.scss';
-
 import useToggle from '#src/hooks/useToggle';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
@@ -30,7 +28,6 @@ const PasswordField: React.FC<Props> = ({ value, showToggleView = true, showHelp
 
   return (
     <TextField
-      className={styles.textField}
       {...props}
       helperText={
         showHelperText ? (

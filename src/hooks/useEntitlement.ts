@@ -7,7 +7,7 @@ import type { PlaylistItem } from '#types/playlist';
 import { isLocked } from '#src/utils/entitlements';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { getEntitlements } from '#src/services/checkout.service';
+import { getEntitlements } from '#src/services/cleeng.checkout.service';
 
 export type UseEntitlementResult = {
   isEntitled: boolean;

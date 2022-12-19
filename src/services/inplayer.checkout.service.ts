@@ -1,0 +1,209 @@
+import InPlayer, { GetAccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
+
+import type {
+  CardPaymentData,
+  CreateOrder,
+  CreateOrderPayload,
+  GetOffers,
+  GetPaymentMethods,
+  Offer,
+  Order,
+  Payment,
+  PaymentMethod,
+  PaymentWithAdyen,
+  PaymentWithoutDetails,
+  PaymentWithPayPal,
+  UpdateOrder,
+} from '#types/checkout';
+
+export const createOrder: CreateOrder = async (payload) => {
+  return {
+    errors: [],
+    responseData: {
+      message: '',
+      order: processOrder(payload),
+      success: true,
+    },
+  };
+};
+
+export const getOffers: GetOffers = async (payload) => {
+  try {
+    const assetId = parseInt(`${payload?.offerIds?.[0]}`);
+    const { data } = await InPlayer.Asset.getAssetAccessFees(assetId);
+
+    // @ts-ignore
+    //TODO fix this type in the InPlayer SDK
+    return data?.map((offer: GetAccessFee) => processOffer(offer)) as Offer[];
+  } catch {
+    throw new Error('Failed to get offers');
+  }
+};
+
+export const getPaymentMethods: GetPaymentMethods = async () => {
+  try {
+    const response = await InPlayer.Payment.getPaymentMethods();
+    const paymentMethods: PaymentMethod[] = [];
+    response.data.forEach((method: MerchantPaymentMethod) => {
+      if (['card', 'paypal'].includes(method.method_name.toLowerCase())) {
+        paymentMethods.push(processPaymentMethod(method));
+      }
+    });
+    return {
+      errors: [],
+      responseData: {
+        message: '',
+        paymentMethods,
+        status: 1,
+      },
+    };
+  } catch {
+    throw new Error('Failed to get payment methods');
+  }
+};
+
+const processPaymentMethod = (method: MerchantPaymentMethod): PaymentMethod => {
+  return {
+    id: method.id,
+    methodName: method.method_name.toLocaleLowerCase(),
+    provider: cardPaymentProvider,
+    logoUrl: '',
+  } as PaymentMethod;
+};
+
+export const paymentWithPayPal: PaymentWithPayPal = async (payload) => {
+  try {
+    const response = await InPlayer.Payment.getPayPalParams({
+      origin: payload.successUrl,
+      accessFeeId: payload.order.id,
+      paymentMethod: 2,
+    });
+    //@ts-ignore
+    //TODO fix this type in InPlayer SDK
+    if (response.data?.id) {
+      return {
+        errors: ['Already have an active access'],
+        responseData: {
+          redirectUrl: payload.errorUrl,
+        },
+      };
+    }
+    return {
+      errors: [],
+      responseData: {
+        redirectUrl: response.data.endpoint,
+      },
+    };
+  } catch {
+    throw new Error('Failed to generate PayPal payment url');
+  }
+};
+
+export const paymentWithAdyen: PaymentWithAdyen = async () => {
+  return {
+    errors: [],
+    responseData: {} as Payment,
+  };
+};
+
+export const paymentWithoutDetails: PaymentWithoutDetails = async () => {
+  return {
+    errors: [],
+    responseData: {} as Payment,
+  };
+};
+
+export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
+  try {
+    const response = await InPlayer.Voucher.getDiscount({
+      voucherCode: `${couponCode}`,
+      accessFeeId: order.id,
+    });
+    order.discount = {
+      applied: true,
+      type: 'coupon',
+      //@ts-ignore
+      // TODO fix this type in InPlayer SDK
+      periods: response.data.discount_duration,
+    };
+
+    const discountedAmount = order.totalPrice - response.data.amount;
+    order.totalPrice = response.data.amount;
+    order.priceBreakdown.discountAmount = discountedAmount;
+    order.priceBreakdown.discountedPrice = discountedAmount;
+    return {
+      errors: [],
+      responseData: {
+        message: 'successfully updated',
+        order: order,
+        success: true,
+      },
+    };
+  } catch {
+    throw new Error('Invalid coupon code');
+  }
+};
+
+export const cardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
+  const payload = {
+    number: cardPaymentPayload.cardNumber,
+    cardName: cardPaymentPayload.cardholderName,
+    expMonth: cardPaymentPayload.cardExpMonth || '',
+    expYear: cardPaymentPayload.cardExpYear || '',
+    cvv: parseInt(cardPaymentPayload.cardCVC),
+    accessFee: order.id,
+    paymentMethod: '1',
+    voucherCode: cardPaymentPayload.couponCode,
+    referrer: window.location.href,
+    returnUrl: window.location.href,
+  };
+
+  try {
+    if (order.offerId[0] === 'S') {
+      //@ts-ignore
+      //Fix this type in InPlayer SDK
+      await InPlayer.Subscription.createSubscription(payload);
+    } else {
+      await InPlayer.Payment.createPayment(payload);
+    }
+
+    return true;
+  } catch {
+    throw new Error('Failed to make payment');
+  }
+};
+
+const processOffer = (offer: GetAccessFee): Offer => {
+  return {
+    id: offer.id,
+    offerId: `S${offer.id}`,
+    offerCurrency: offer.currency,
+    customerPriceInclTax: offer.amount,
+    customerCurrency: offer.currency,
+    offerTitle: offer.description,
+    active: true,
+    period: offer.access_type.period,
+    freePeriods: offer.trial_period ? 1 : 0,
+  } as Offer;
+};
+
+const processOrder = (payload: CreateOrderPayload): Order => {
+  return {
+    id: payload.offer.id,
+    customerId: payload.customerId,
+    offerId: payload.offer.offerId,
+    totalPrice: payload.offer.customerPriceInclTax,
+    priceBreakdown: {
+      offerPrice: payload.offer.customerPriceInclTax,
+      discountAmount: payload.offer.customerPriceInclTax,
+      discountedPrice: payload.offer.customerPriceInclTax,
+      paymentMethodFee: 0,
+      taxValue: 0,
+    },
+    taxRate: 0,
+    currency: payload.currency,
+    requiredPaymentDetails: true,
+  } as Order;
+};
+
+export const cardPaymentProvider = 'stripe';
