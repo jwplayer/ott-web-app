@@ -35,9 +35,11 @@ let refreshTimeout: number;
 
 // actions needed when listening to InPlayer web socket notifications
 const notifications: Record<NotificationsTypes, () => Promise<unknown>> = {
-  [NotificationsTypes.ACCESS_GRANTED]: reloadActiveSubscription,
+  [NotificationsTypes.ACCESS_GRANTED]: async () => {
+    reloadActiveSubscription({ delay: 2000 });
+  },
   [NotificationsTypes.ACCESS_REVOKED]: reloadActiveSubscription,
-  [NotificationsTypes.SUBSCRIBE_SUCCESS]: reloadActiveSubscription,
+  [NotificationsTypes.SUBSCRIBE_SUCCESS]: async () => true,
   [NotificationsTypes.SUBSCRIBE_FAILED]: async () => true,
   [NotificationsTypes.PAYMENT_CARD_SUCCESS]: reloadActiveSubscription,
   [NotificationsTypes.PAYMENT_CARD_FAILED]: async () => true,
@@ -396,15 +398,19 @@ export const updateSubscription = async (status: 'active' | 'cancelled') => {
   });
 };
 
+export async function checkEntitlements(offerId: string): Promise<unknown> {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox }) => {
+      const response = await checkoutService.getEntitlements({ offerId }, sandbox, jwt);
+      return !!response;
+    });
+  });
+}
+
 export async function reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> {
   useAccountStore.setState({ loading: true });
   return await useAccount(async ({ customerId, auth: { jwt } }) => {
     return await useService(async ({ subscriptionService, sandbox, config }) => {
-      const [activeSubscription, transactions, activePayment] = await Promise.all([
-        subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
-        subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
-        subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
-      ]);
       // The subscription data takes a few seconds to load after it's purchased,
       // so here's a delay mechanism to give it time to process
       if (delay > 0) {
@@ -415,6 +421,11 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
         });
       }
 
+      const [activeSubscription, transactions, activePayment] = await Promise.all([
+        subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
+        subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
+        subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
+      ]);
       // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
       await queryClient.invalidateQueries('entitlements');
 

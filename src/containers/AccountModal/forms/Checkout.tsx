@@ -19,12 +19,11 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { adyenPayment, cardPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
-import { useNotificationStore } from '#src/stores/NotificationStore';
+import useCheckAccess from '#src/hooks/useCheckAccess';
 
 const Checkout = () => {
   const location = useLocation();
   const { cleengSandbox } = useConfigStore((state) => state.getCleengData());
-  const notification = useNotificationStore((state) => state);
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -32,6 +31,7 @@ const Checkout = () => {
   const [couponFormOpen, setCouponFormOpen] = useState(false);
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
+  const { intervalCheckAccess } = useCheckAccess();
 
   const { order, offer, paymentMethods, setOrder } = useCheckoutStore(
     ({ order, offer, paymentMethods, setOrder }) => ({
@@ -53,6 +53,7 @@ const Checkout = () => {
     async () => {
       setUpdatingOrder(true);
       await cardPayment(paymentDataForm.values);
+      intervalCheckAccess({ interval: 5000 });
     },
     object().shape({
       cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
@@ -89,23 +90,6 @@ const Checkout = () => {
     setUpdatingOrder(false);
     paymentDataForm.setSubmitting(false);
   };
-
-  useEffect(() => {
-    if (notification.type?.endsWith('.failed')) {
-      navigate(
-        addQueryParams(window.location.href, {
-          u: 'paypal-error',
-          message: (notification.resource as Error)?.message,
-        }),
-      );
-    } else if (notification.type === 'access.granted') {
-      navigate(addQueryParam(location, 'u', 'welcome'));
-    }
-
-    return () => {
-      useNotificationStore.setState({ type: null, resource: null });
-    };
-  }, [notification, navigate, location]);
 
   useEffect(() => {
     if (paymentDataForm.values.cardExpiry) {

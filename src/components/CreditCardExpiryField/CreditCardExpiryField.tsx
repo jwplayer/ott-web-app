@@ -42,6 +42,7 @@ const CreditCardExpiryField: React.FC<Props> = ({ value, onChange, error, ...pro
       helperText={error ? error : null}
       onChange={formatExpirationDate}
       type="text"
+      pattern="\d*"
       placeholder="dd/mm"
       required
     />

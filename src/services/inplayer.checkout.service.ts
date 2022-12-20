@@ -4,6 +4,7 @@ import type {
   CardPaymentData,
   CreateOrder,
   CreateOrderPayload,
+  GetEntitlements,
   GetOffers,
   GetPaymentMethods,
   Offer,
@@ -170,6 +171,21 @@ export const cardPayment = async (cardPaymentPayload: CardPaymentData, order: Or
     return true;
   } catch {
     throw new Error('Failed to make payment');
+  }
+};
+
+export const getEntitlements: GetEntitlements = async ({ offerId }) => {
+  try {
+    const response = await InPlayer.Asset.checkAccessForAsset(parseInt(offerId));
+    return {
+      errors: [],
+      responseData: {
+        accessGranted: true,
+        expiresAt: response.data.expires_at,
+      },
+    };
+  } catch {
+    throw new Error('no access for this resource');
   }
 };
 
