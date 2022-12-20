@@ -173,6 +173,8 @@ export const cardPayment = async (cardPaymentPayload: CardPaymentData, order: Or
   }
 };
 
+export const getEntitlements = async () => true;
+
 const processOffer = (offer: GetAccessFee): Offer => {
   return {
     id: offer.id,

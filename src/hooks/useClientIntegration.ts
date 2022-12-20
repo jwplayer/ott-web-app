@@ -1,6 +1,4 @@
 import { useConfigStore } from '#src/stores/ConfigStore';
-import * as InPlayerCheckoutService from '#src/services/inplayer.checkout.service';
-import * as CleengCheckoutService from '#src/services/cleeng.checkout.service';
 
 export enum ClientIntegrations {
   INPLAYER = 'inplayer',
@@ -12,16 +10,18 @@ const useClientIntegration = () => {
     config: { integrations },
   } = useConfigStore.getState();
 
-  const isInPlayer = !!integrations?.inplayer?.clientId;
+  const isInPlayer = !!integrations.inplayer?.clientId;
+  const sandbox = isInPlayer ? integrations.inplayer?.useSandbox : integrations.cleeng?.useSandbox;
   const client = isInPlayer ? ClientIntegrations.INPLAYER : ClientIntegrations.CLEENG;
-  const clientId = isInPlayer ? integrations?.inplayer?.clientId : integrations?.cleeng?.id;
-  const checkoutService = isInPlayer ? InPlayerCheckoutService : CleengCheckoutService;
+  const clientId = isInPlayer ? integrations.inplayer?.clientId : integrations.cleeng?.id;
+  const clientOffers = isInPlayer ? [`${integrations.inplayer?.assetId}`] : [`${integrations.cleeng?.monthlyOffer}`, `${integrations.cleeng?.yearlyOffer}`];
 
   return {
+    sandbox: sandbox ?? true,
     integration: integrations,
     client,
     clientId: clientId,
-    checkoutService,
+    clientOffers,
   };
 };
 

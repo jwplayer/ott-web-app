@@ -34,11 +34,6 @@ enum InPlayerEnv {
 export enum NotificationsTypes {
   ACCESS_GRANTED = 'access.granted',
   ACCESS_REVOKED = 'access.revoked',
-  SUBSCRIBE_SUCCESS = 'subscribe.success',
-  SUBSCRIBE_FAILED = 'subscribe.failed',
-  PAYMENT_CARD_SUCCESS = 'payment.card.success',
-  PAYMENT_CARD_FAILED = 'payment.card.failed',
-  PAYMENT_CARD_REQUIRES_ACTION = 'payment.card.requires.action',
   ACCOUNT_LOGOUT = 'account.logout',
 }
 export interface Notification {
@@ -98,7 +93,8 @@ export const register: Register = async ({ config, email, password }) => {
 
 export const logout = async () => {
   try {
-    InPlayer.Account.signOut();
+    await InPlayer.Account.signOut();
+    return InPlayer.Notifications.unsubscribe();
   } catch {
     throw new Error('Failed to sign out.');
   }

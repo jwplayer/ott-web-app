@@ -120,7 +120,8 @@ const processTransaction = (transaction: InPlayerPurchaseDetails): Transaction =
 const processActiveSubscription = (subscription: SubscriptionDetails) => {
   let status = '';
   switch (subscription.action_type) {
-    case 'free-trial' || 'recurrent':
+    case 'free-trial':
+    case 'recurrent':
       status = 'active';
       break;
     case 'canceled':

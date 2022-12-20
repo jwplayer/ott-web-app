@@ -33,15 +33,10 @@ const PERSIST_KEY_ACCOUNT = 'auth';
 let subscription: undefined | (() => void);
 let refreshTimeout: number;
 
-// actions needed when listening to InPlayer web socket notifications
+// actions needed when listening to InPlayer websocket notifications
 const notifications: Record<NotificationsTypes, () => Promise<unknown>> = {
-  [NotificationsTypes.ACCESS_GRANTED]: reloadActiveSubscription,
+  [NotificationsTypes.ACCESS_GRANTED]: () => reloadActiveSubscription({ delay: 2000 }),
   [NotificationsTypes.ACCESS_REVOKED]: reloadActiveSubscription,
-  [NotificationsTypes.SUBSCRIBE_SUCCESS]: reloadActiveSubscription,
-  [NotificationsTypes.SUBSCRIBE_FAILED]: async () => true,
-  [NotificationsTypes.PAYMENT_CARD_SUCCESS]: reloadActiveSubscription,
-  [NotificationsTypes.PAYMENT_CARD_FAILED]: async () => true,
-  [NotificationsTypes.PAYMENT_CARD_REQUIRES_ACTION]: async () => true,
   [NotificationsTypes.ACCOUNT_LOGOUT]: logout,
 };
 
@@ -196,6 +191,8 @@ export const login = async (email: string, password: string) => {
 };
 
 export async function logout() {
+  if (!useAccountStore.getState().auth) return;
+
   await useService(async ({ accountService }) => {
     persist.removeItem(PERSIST_KEY_ACCOUNT);
 
@@ -225,7 +222,7 @@ export const register = async (email: string, password: string) => {
     useAccountStore.setState({ loading: true });
     const { auth, user, customerConsents } = await accountService.register({ config, email, password });
 
-    await afterLogin(auth, user, customerConsents, accessModel);
+    await afterLogin(auth, user, customerConsents, accessModel, false);
 
     // @todo statement will be removed once the fav and history are done on InPlayer side
     if (auth.refreshToken) {
@@ -328,7 +325,7 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-      await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel);
+      await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel, false);
 
       return response.responseData;
     });
@@ -400,11 +397,6 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
   useAccountStore.setState({ loading: true });
   return await useAccount(async ({ customerId, auth: { jwt } }) => {
     return await useService(async ({ subscriptionService, sandbox, config }) => {
-      const [activeSubscription, transactions, activePayment] = await Promise.all([
-        subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
-        subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
-        subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
-      ]);
       // The subscription data takes a few seconds to load after it's purchased,
       // so here's a delay mechanism to give it time to process
       if (delay > 0) {
@@ -414,6 +406,12 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
           }, delay);
         });
       }
+
+      const [activeSubscription, transactions, activePayment] = await Promise.all([
+        subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
+        subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
+        subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
+      ]);
 
       // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
       await queryClient.invalidateQueries('entitlements');
@@ -442,7 +440,13 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
   return getMediaByWatchlist(watchlistId, mediaIds);
 }
 
-async function afterLogin(auth: AuthData, user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string) {
+async function afterLogin(
+  auth: AuthData,
+  user: Customer,
+  customerConsents: CustomerConsent[] | null,
+  accessModel: string,
+  shouldSubscriptionReload: boolean = true,
+) {
   await useService(async ({ accountService }) => {
     useAccountStore.setState({
       auth,
@@ -453,15 +457,20 @@ async function afterLogin(auth: AuthData, user: Customer, customerConsents: Cust
     // subscribe to listen to web socket notifications
     await accountService.subscribeToNotifications(user.uuid, (message) => {
       const notification = JSON.parse(message);
-
       notifications[notification.type as NotificationsTypes]?.();
-      useNotificationStore.setState({
-        type: notification.type,
-        resource: notification.resource,
-      });
+
+      if (notification) {
+        useNotificationStore.setState({
+          type: notification.type,
+          resource: notification.resource,
+        });
+      }
     });
 
-    return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getPublisherConsents()]);
+    return await Promise.allSettled([
+      accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
+      getPublisherConsents(),
+    ]);
   });
 }
 
