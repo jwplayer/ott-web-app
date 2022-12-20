@@ -16,10 +16,15 @@ import { getOverrideIP } from '#src/utils/common';
 
 export const getOffers: GetOffers = async (payload, sandbox) => {
   const offers: Offer[] = [];
-  for (const offerId in payload.offerIds) {
-    const response = await getOffer({ offerId }, sandbox);
+  payload.offerIds.forEach(async (offerId) => {
+    const response = await getOffer({ offerId: offerId as string }, sandbox);
+
+    if (response.errors.length > 0) {
+      throw new Error(response.errors[0]);
+    }
+
     offers.push(response.responseData);
-  }
+  });
 
   return offers;
 };

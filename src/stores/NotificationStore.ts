@@ -1,8 +1,9 @@
 import { createStore } from '#src/stores/utils';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type NotificationStore = {
   type: string | null;
-  resource: string | Error | null;
+  resource: any;
 };
 
 export const useNotificationStore = createStore<NotificationStore>('NotificationStore', () => ({

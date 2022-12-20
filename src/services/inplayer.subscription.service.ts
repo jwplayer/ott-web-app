@@ -1,6 +1,6 @@
 import InPlayer, { Card, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 
-import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
+import type { PaymentDetail, Subscription, Transaction, UpdateSubscription } from '#types/subscription';
 import type { Config } from '#types/Config';
 import type { InPlayerError, InPlayerPurchaseDetails } from '#types/inplayer';
 
@@ -76,6 +76,21 @@ export const getSubscriptions = async () => {
   };
 };
 
+export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscribeUrl }) => {
+  if (!unsubscribeUrl) {
+    throw new Error('Missing unsubscribe url');
+  }
+  try {
+    await InPlayer.Subscription.cancelSubscription(unsubscribeUrl);
+    return {
+      errors: [],
+      responseData: { offerId: offerId, status: 'cancelled', expiresAt: 0 },
+    };
+  } catch {
+    throw new Error('Failed to update subscription');
+  }
+};
+
 const processCardDetails = (card: Card & { card_type: string; account_id: number }): PaymentDetail => {
   const { number, exp_month, exp_year, card_name, card_type, account_id } = card;
   const zeroFillExpMonth = `0${exp_month}`.slice(-2);
@@ -120,7 +135,8 @@ const processTransaction = (transaction: InPlayerPurchaseDetails): Transaction =
 const processActiveSubscription = (subscription: SubscriptionDetails) => {
   let status = '';
   switch (subscription.action_type) {
-    case 'free-trial' || 'recurrent':
+    case 'free-trial':
+    case 'recurrent':
       status = 'active';
       break;
     case 'canceled':
@@ -146,5 +162,6 @@ const processActiveSubscription = (subscription: SubscriptionDetails) => {
     offerTitle: subscription.item_title,
     period: subscription.access_type?.period,
     totalPrice: subscription.charged_amount,
+    unsubscribeUrl: subscription.unsubscribe_url,
   } as Subscription;
 };

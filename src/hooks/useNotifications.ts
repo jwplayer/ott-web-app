@@ -11,15 +11,23 @@ const useNotifications = () => {
   const notification = useNotificationStore((state) => state);
 
   useEffect(() => {
-    if (notification.type?.endsWith('.failed')) {
-      navigate(
-        addQueryParams(window.location.href, {
-          u: 'paypal-error',
-          message: (notification.resource as Error)?.message,
-        }),
-      );
-    } else if (notification.type === 'access.granted') {
-      navigate(addQueryParam(location, 'u', 'welcome'));
+    switch (notification.type) {
+      case '.failed':
+        navigate(
+          addQueryParams(window.location.href, {
+            u: 'paypal-error',
+            message: notification.resource?.message,
+          }),
+        );
+        break;
+      case 'access.granted':
+        navigate(addQueryParam(location, 'u', 'welcome'));
+        break;
+      case 'payment.card.requires.action':
+        navigate(notification.resource?.redirect_to_url);
+        break;
+      default:
+        break;
     }
 
     //eslint-disable-next-line

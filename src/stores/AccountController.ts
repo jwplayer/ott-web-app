@@ -2,7 +2,6 @@ import jwtDecode from 'jwt-decode';
 
 import { useNotificationStore } from './NotificationStore';
 
-import * as cleengSubscriptionService from '#src/services/cleeng.subscription.service';
 import * as cleengAccountService from '#src/services/cleeng.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -33,17 +32,10 @@ const PERSIST_KEY_ACCOUNT = 'auth';
 let subscription: undefined | (() => void);
 let refreshTimeout: number;
 
-// actions needed when listening to InPlayer web socket notifications
+// actions needed when listening to InPlayer websocket notifications
 const notifications: Record<NotificationsTypes, () => Promise<unknown>> = {
-  [NotificationsTypes.ACCESS_GRANTED]: async () => {
-    reloadActiveSubscription({ delay: 2000 });
-  },
+  [NotificationsTypes.ACCESS_GRANTED]: () => reloadActiveSubscription({ delay: 2000 }),
   [NotificationsTypes.ACCESS_REVOKED]: reloadActiveSubscription,
-  [NotificationsTypes.SUBSCRIBE_SUCCESS]: async () => true,
-  [NotificationsTypes.SUBSCRIBE_FAILED]: async () => true,
-  [NotificationsTypes.PAYMENT_CARD_SUCCESS]: reloadActiveSubscription,
-  [NotificationsTypes.PAYMENT_CARD_FAILED]: async () => true,
-  [NotificationsTypes.PAYMENT_CARD_REQUIRES_ACTION]: async () => true,
   [NotificationsTypes.ACCOUNT_LOGOUT]: logout,
 };
 
@@ -198,6 +190,8 @@ export const login = async (email: string, password: string) => {
 };
 
 export async function logout() {
+  if (!useAccountStore.getState().auth) return;
+
   await useService(async ({ accountService }) => {
     persist.removeItem(PERSIST_KEY_ACCOUNT);
 
@@ -227,7 +221,7 @@ export const register = async (email: string, password: string) => {
     useAccountStore.setState({ loading: true });
     const { auth, user, customerConsents } = await accountService.register({ config, email, password });
 
-    await afterLogin(auth, user, customerConsents, accessModel);
+    await afterLogin(auth, user, customerConsents, accessModel, false);
 
     // @todo statement will be removed once the fav and history are done on InPlayer side
     if (auth.refreshToken) {
@@ -330,7 +324,7 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-      await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel);
+      await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel, false);
 
       return response.responseData;
     });
@@ -375,32 +369,38 @@ export const changePasswordWithToken = async (customerEmail: string, newPassword
   });
 };
 
-export const updateSubscription = async (status: 'active' | 'cancelled') => {
-  return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const { subscription } = useAccountStore.getState();
-    if (!subscription) throw new Error('user has no active subscription');
+export const updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
+  return await useAccount(async ({ customerId, auth: { jwt } }) => {
+    return await useService(async ({ subscriptionService, sandbox }) => {
+      const { subscription } = useAccountStore.getState();
+      if (!subscription) throw new Error('user has no active subscription');
 
-    const response = await cleengSubscriptionService.updateSubscription(
-      {
-        customerId,
-        offerId: subscription.offerId,
-        status,
-      },
-      cleengSandbox,
-      jwt,
-    );
+      const response = await subscriptionService.updateSubscription(
+        {
+          customerId,
+          offerId: subscription.offerId,
+          status,
+          unsubscribeUrl: subscription.unsubscribeUrl,
+        },
+        sandbox,
+        jwt,
+      );
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-    await reloadActiveSubscription();
+      await reloadActiveSubscription();
 
-    return response.responseData;
+      return response.responseData;
+    });
   });
 };
 
-export async function checkEntitlements(offerId: string): Promise<unknown> {
+export async function checkEntitlements(offerId?: string): Promise<unknown> {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox }) => {
+      if (!offerId) {
+        return false;
+      }
       const response = await checkoutService.getEntitlements({ offerId }, sandbox, jwt);
       return !!response;
     });
@@ -453,7 +453,13 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
   return getMediaByWatchlist(watchlistId, mediaIds);
 }
 
-async function afterLogin(auth: AuthData, user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string) {
+async function afterLogin(
+  auth: AuthData,
+  user: Customer,
+  customerConsents: CustomerConsent[] | null,
+  accessModel: string,
+  shouldSubscriptionReload: boolean = true,
+) {
   await useService(async ({ accountService }) => {
     useAccountStore.setState({
       auth,
@@ -464,15 +470,20 @@ async function afterLogin(auth: AuthData, user: Customer, customerConsents: Cust
     // subscribe to listen to web socket notifications
     await accountService.subscribeToNotifications(user.uuid, (message) => {
       const notification = JSON.parse(message);
-
       notifications[notification.type as NotificationsTypes]?.();
-      useNotificationStore.setState({
-        type: notification.type,
-        resource: notification.resource,
-      });
+
+      if (notification) {
+        useNotificationStore.setState({
+          type: notification.type,
+          resource: notification.resource,
+        });
+      }
     });
 
-    return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getPublisherConsents()]);
+    return await Promise.allSettled([
+      accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
+      getPublisherConsents(),
+    ]);
   });
 }
 

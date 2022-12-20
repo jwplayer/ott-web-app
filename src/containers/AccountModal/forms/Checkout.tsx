@@ -53,7 +53,7 @@ const Checkout = () => {
     async () => {
       setUpdatingOrder(true);
       await cardPayment(paymentDataForm.values);
-      intervalCheckAccess({ interval: 5000 });
+      intervalCheckAccess({ interval: 15000 });
     },
     object().shape({
       cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {

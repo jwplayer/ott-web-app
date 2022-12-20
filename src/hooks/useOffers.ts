@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import shallow from 'zustand/shallow';
 
 import useClientIntegration from './useClientIntegration';
+import useService from './useService';
 
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -11,24 +12,19 @@ import type { OfferType } from '#types/account';
 import { isSVODOffer } from '#src/utils/subscription';
 
 const useOffers = () => {
-  const {
-    cleeng: { cleengSandbox, monthlyOfferId, yearlyOfferId },
-    accessModel,
-  } = useConfigStore(({ getCleengData, accessModel }) => ({ cleeng: getCleengData(), accessModel }), shallow);
-  const { checkoutService, integration } = useClientIntegration();
+  const { accessModel } = useConfigStore();
+  const { clientOffers, sandbox } = useClientIntegration();
+  const { checkoutService } = useService((checkoutService) => checkoutService);
+
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
   const [offerType, setOfferType] = useState<OfferType>(accessModel === 'SVOD' ? 'svod' : 'tvod');
 
   const offerIds: string[] = useMemo(() => {
-    const ids = [monthlyOfferId, yearlyOfferId];
-    if (integration.inplayer?.assetId) {
-      ids.push(integration.inplayer?.assetId.toString());
-    }
-    return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...ids].filter(Boolean);
-  }, [requestedMediaOffers, monthlyOfferId, yearlyOfferId]);
+    return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...clientOffers].filter(Boolean);
+  }, [requestedMediaOffers, clientOffers]);
 
-  const { data: allOffers = [], isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutService.getOffers({ offerIds }, cleengSandbox));
+  const { data: allOffers = [], isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutService.getOffers({ offerIds }, sandbox));
 
   useEffect(() => {
     if (isLoading) return;

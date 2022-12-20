@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
+import useClientIntegration from './useClientIntegration';
+
 import { addQueryParam } from '#src/utils/location';
 import { checkEntitlements, reloadActiveSubscription } from '#src/stores/AccountController';
 
@@ -15,10 +17,11 @@ const useCheckAccess = () => {
   const location = useLocation();
 
   const intervalCheckAccess = ({ interval = 3000, iterations = 5, offerId }: intervalCheckAccessPayload) => {
+    const { clientOffers } = useClientIntegration();
+    if (!offerId && clientOffers?.[0]) {
+      offerId = clientOffers[0];
+    }
     intervalRef.current = window.setInterval(async () => {
-      if (!offerId) {
-        offerId = '115047';
-      }
       const hasAccess = await checkEntitlements(offerId);
 
       if (hasAccess) {
