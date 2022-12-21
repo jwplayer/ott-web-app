@@ -156,7 +156,7 @@ export const cardPayment = async (cardPaymentPayload: CardPaymentData, order: Or
     paymentMethod: '1',
     voucherCode: cardPaymentPayload.couponCode,
     referrer: window.location.href,
-    returnUrl: window.location.href,
+    returnUrl: `${window.location.href}&u=waiting-for-payment`,
   };
 
   try {
