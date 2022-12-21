@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 
 import useClientIntegration from './useClientIntegration';
 
-import { addQueryParam } from '#src/utils/location';
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { checkEntitlements, reloadActiveSubscription } from '#src/stores/AccountController';
 
 type intervalCheckAccessPayload = {
@@ -29,6 +29,7 @@ const useCheckAccess = () => {
         navigate(addQueryParam(location, 'u', 'welcome'));
       } else if (--iterations === 0) {
         window.clearInterval(intervalRef.current);
+        navigate(removeQueryParam(location, 'u'));
       }
     }, interval);
   };

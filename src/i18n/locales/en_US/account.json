@@ -37,6 +37,7 @@
     "redeem_coupon": "Redeem coupon",
     "start_watching": "Start watching ({{countdown}})",
     "total_price": "Total",
+    "waiting_for_payment": "Waiting for payment",
     "welcome_description": "Thank you for subscribing to {{siteName}}. Please enjoy all our content.",
     "welcome_title": "Welcome to {{siteName}}",
     "yearly": "Yearly subscription"

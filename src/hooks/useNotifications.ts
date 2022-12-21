@@ -24,7 +24,8 @@ const useNotifications = () => {
         navigate(addQueryParam(location, 'u', 'welcome'));
         break;
       case 'payment.card.requires.action':
-        navigate(notification.resource?.redirect_to_url);
+      case 'subscribe.requires.action':
+        window.location.href = notification.resource?.redirect_to_url;
         break;
       default:
         break;

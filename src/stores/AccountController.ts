@@ -470,6 +470,7 @@ async function afterLogin(
     // subscribe to listen to web socket notifications
     await accountService.subscribeToNotifications(user.uuid, (message) => {
       const notification = JSON.parse(message);
+
       notifications[notification.type as NotificationsTypes]?.();
 
       if (notification) {

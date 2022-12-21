@@ -1,0 +1,27 @@
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import Spinner from '../Spinner/Spinner';
+
+import styles from './WaitingForPayment.module.scss';
+
+import useCheckAccess from '#src/hooks/useCheckAccess';
+
+const WaitingForPayment = () => {
+  const { t } = useTranslation('account');
+  const { intervalCheckAccess } = useCheckAccess();
+  useEffect(() => {
+    intervalCheckAccess({
+      interval: 3000,
+      iterations: 5,
+    });
+  }, [intervalCheckAccess]);
+  return (
+    <div className={styles.center}>
+      <Spinner />
+      <h2>{t('checkout.waiting_for_payment')}</h2>
+    </div>
+  );
+};
+
+export default WaitingForPayment;
