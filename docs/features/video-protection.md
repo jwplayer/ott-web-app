@@ -93,7 +93,7 @@ Note that there are many variations of these access models.
 
 ### Free content
 
-It's possible to have free content. This is indicated with media parameter `free` (`requiresSubscription` param is deprecated). As a possible value for `free` param you can use 'true', 'yes' (lower- or uppercase) or any positive number.
+It's possible to have free content. This is indicated with media parameter `free` (`requiresSubscription` param is deprecated, accepted values are 'false', 'no' and '0'). As a possible value for `free` param you can use 'true', 'yes' (lower- or uppercase) or '1' number.
 
 ### Users and entitlements
 

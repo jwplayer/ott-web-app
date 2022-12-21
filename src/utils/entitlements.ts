@@ -1,7 +1,7 @@
 import type { AccessModel } from '#types/Config';
 import type { MediaOffer } from '#types/media';
 import type { PlaylistItem } from '#types/playlist';
-import { hasFalseValue, hasTrueValue } from '#src/utils/common';
+import { isTruthyCustomParamValue, isFalsyCustomParamValue } from '#src/utils/common';
 
 /**
  * The appearance of the lock icon, depending on the access model
@@ -13,7 +13,7 @@ import { hasFalseValue, hasTrueValue } from '#src/utils/common';
  * @returns
  */
 export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubscription: boolean, playlistItem: PlaylistItem): boolean => {
-  const isItemFree = hasFalseValue(playlistItem?.requiresSubscription) || hasTrueValue(playlistItem?.free);
+  const isItemFree = isFalsyCustomParamValue(playlistItem?.requiresSubscription) || isTruthyCustomParamValue(playlistItem?.free);
   const mediaOffers = playlistItem?.mediaOffers;
 
   if (isItemFree) return false;
