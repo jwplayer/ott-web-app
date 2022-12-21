@@ -15,7 +15,8 @@ const WaitingForPayment = () => {
       interval: 3000,
       iterations: 5,
     });
-  }, [intervalCheckAccess]);
+    //eslint-disable-next-line
+  }, []);
   return (
     <div className={styles.center}>
       <Spinner />
