@@ -9,8 +9,8 @@ import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
 import type { AccessModel, ContentType } from '#types/Config';
 import { isLocked } from '#src/utils/entitlements';
-import TileDock from '#src/components/TileDock/TileDock';
-import Card, { type PosterAspectRatio } from '#src/components/Card/Card';
+import TileDock from '#components/TileDock/TileDock';
+import Card, { type PosterAspectRatio } from '#components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const tileBreakpoints: Breakpoints = {

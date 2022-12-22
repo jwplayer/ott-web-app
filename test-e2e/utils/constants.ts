@@ -1,5 +1,8 @@
 const baseUrl = 'http://localhost:8080/';
 
+export const normalTimeout = 10;
+export const longTimeout = 20;
+
 export enum ShelfId {
   featured = 'featured',
   allFilms = 'all-films',

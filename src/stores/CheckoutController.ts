@@ -1,5 +1,5 @@
 import type { CreateOrderPayload, UpdateOrderPayload } from '#types/checkout';
-import { getLocales } from '#src/services/account.service';
+import { getLocales } from '#src/services/cleeng.account.service';
 import * as checkoutService from '#src/services/checkout.service';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';

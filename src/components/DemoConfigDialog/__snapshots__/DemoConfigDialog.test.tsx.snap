@@ -28,6 +28,11 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
       <div
         class="_box_8c5621"
       >
+        <img
+          alt="Logo"
+          class="_image_8c5621"
+          src="/images/logo.png"
+        />
         <header>
           <h1
             class="_title_8c5621"
@@ -38,23 +43,30 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
         <main
           class="_main_8c5621"
         >
-          <form>
+          <form
+            method="GET"
+            target="/"
+          >
             <div
-              class="_textField_e16c1b"
+              class="_textField_e16c1b _maxWidth_561a54"
             >
               <label
                 class="_label_e16c1b"
-                for="text-field_1235"
+                for="text-field_1235_app-config"
               />
               <div
                 class="_container_e16c1b"
               >
                 <input
+                  autocapitalize="none"
                   class="_input_e16c1b"
-                  id="text-field_1235"
+                  id="text-field_1235_app-config"
+                  maxlength="8"
+                  name="app-config"
                   placeholder="please_enter_config_id"
                   required=""
                   type="text"
+                  value="aaaaaaaa"
                 />
               </div>
             </div>
@@ -77,9 +89,10 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           <p>
             demo_note
           </p>
-          <p>
+          <p
+            class="_links_8c5621"
+          >
             <a
-              class="_link_a14c64"
               href="https://docs.jwplayer.com/platform/docs/ott-create-an-app-config"
               rel="noreferrer"
               target="_blank"

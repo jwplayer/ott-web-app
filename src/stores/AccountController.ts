@@ -2,11 +2,21 @@ import jwtDecode from 'jwt-decode';
 
 import * as subscriptionService from '#src/services/subscription.service';
 import { getPaymentDetails, getTransactions } from '#src/services/subscription.service';
-import * as accountService from '#src/services/account.service';
-import { fetchCustomerConsents, fetchPublisherConsents, updateCustomer } from '#src/services/account.service';
+import * as cleengAccountService from '#src/services/cleeng.account.service';
+import * as inplayerAccountService from '#src/services/inplayer.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import type { AuthData, Capture, CustomerConsent, JwtDetails } from '#types/account';
+import type {
+  AuthData,
+  Capture,
+  Customer,
+  CustomerConsent,
+  GetCaptureStatusResponse,
+  GetCustomerConsentsResponse,
+  GetPublisherConsentsResponse,
+  JwtDetails,
+  ServiceResponse,
+} from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -14,6 +24,7 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
+import type { AccessModel, Config } from '#types/Config';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -30,12 +41,14 @@ export const authNeedsRefresh = (auth: AuthData): boolean => {
 
 export const setJwtRefreshTimeout = () => {
   const auth = useAccountStore.getState().auth;
-  const { cleengSandbox } = useConfigStore.getState().getCleengData();
+
+  // if inplayer integration, skip code below
+  if (!auth?.refreshToken) return;
 
   window.clearTimeout(refreshTimeout);
 
   if (auth && !document.hidden) {
-    refreshTimeout = window.setTimeout(() => refreshJwtToken(cleengSandbox, auth), 60 * 5 * 1000);
+    refreshTimeout = window.setTimeout(() => refreshJwtToken(auth), 60 * 5 * 1000);
   }
 };
 
@@ -44,93 +57,96 @@ export const handleVisibilityChange = () => {
 
   // document is visible again, test if we need to renew the token
   const auth = useAccountStore.getState().auth;
-  const { cleengSandbox } = useConfigStore.getState().getCleengData();
 
-  // user is not logged in
-  if (!auth) return;
+  // user is not logged in / if inplayer integration, skip code below
+  if (!auth || !auth?.refreshToken) return;
 
   // refresh the jwt token if needed. This starts the timeout as well after receiving the refreshed tokens.
-  if (authNeedsRefresh(auth)) return refreshJwtToken(cleengSandbox, auth);
+  if (authNeedsRefresh(auth)) return refreshJwtToken(auth);
 
   // make sure to start the timeout again since we've cleared it when the document was hidden.
   setJwtRefreshTimeout();
 };
 
 export const initializeAccount = async () => {
-  const { cleengId, cleengSandbox } = useConfigStore.getState().getCleengData();
+  await withAccountService(async ({ accountService, config }) => {
+    useAccountStore.setState({
+      loading: true,
+      canUpdateEmail: accountService.canUpdateEmail,
+      canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
+    });
+    accountService.setEnvironment(config);
 
-  if (!cleengId) {
-    useAccountStore.getState().setLoading(false);
-    return;
-  }
+    const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
 
-  const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
-
-  // clear previous subscribe (for dev environment only)
-  if (subscription) {
-    subscription();
-  }
-
-  document.removeEventListener('visibilitychange', handleVisibilityChange);
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-
-  subscription = useAccountStore.subscribe(
-    (state) => state.auth,
-    (authData) => {
-      setJwtRefreshTimeout();
-      persist.setItem(PERSIST_KEY_ACCOUNT, authData);
-    },
-  );
-
-  // restore session from localStorage
-  try {
-    if (storedSession) {
-      const refreshedAuthData = await getFreshJwtToken(cleengSandbox, storedSession);
-
-      if (refreshedAuthData) {
-        await afterLogin(cleengSandbox, refreshedAuthData);
-        await restoreWatchHistory();
-        await restoreFavorites();
-      }
+    // clear previous subscribe (for dev environment only)
+    if (subscription) {
+      subscription();
     }
-  } catch (error: unknown) {
-    await logout();
-  }
 
-  useAccountStore.setState({ loading: false });
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    subscription = useAccountStore.subscribe(
+      (state) => state.auth,
+      (authData) => {
+        setJwtRefreshTimeout();
+        persist.setItem(PERSIST_KEY_ACCOUNT, authData);
+      },
+    );
+
+    // restore session from localStorage
+    try {
+      if (storedSession) {
+        const refreshedAuthData = await accountService.getFreshJwtToken({ config, auth: storedSession });
+        if (refreshedAuthData) {
+          await getAccount(refreshedAuthData);
+          await restoreWatchHistory();
+          await restoreFavorites();
+        }
+      }
+    } catch (error: unknown) {
+      await logout();
+    }
+
+    useAccountStore.setState({ loading: false });
+  });
 };
 
-export async function updateUser(values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string }) {
-  const { auth, user } = useAccountStore.getState();
+export async function updateUser(
+  values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string },
+): Promise<ServiceResponse<Customer>> {
+  return await withAccountService(async ({ accountService, sandbox }) => {
+    useAccountStore.setState({ loading: true });
 
-  if (!auth || !user) throw new Error('no auth');
+    const { auth, user, canUpdateEmail } = useAccountStore.getState();
 
-  const { cleengSandbox } = useConfigStore.getState().getCleengData();
+    if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
+      throw new Error('Email update not supported');
+    }
 
-  const response = await updateCustomer({ ...values, id: user.id.toString() }, cleengSandbox, auth.jwt);
+    if (!auth || !user) {
+      throw new Error('no auth');
+    }
 
-  if (!response) {
-    return { errors: Array.of('Unknown error') };
-  }
+    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
 
-  if (response.errors?.length === 0) {
-    useAccountStore.setState({ user: response.responseData });
-  }
+    if (!response) {
+      throw new Error('Unknown error');
+    }
 
-  return response;
+    if (response.errors?.length === 0) {
+      useAccountStore.setState({ user: response.responseData });
+    }
+
+    return response;
+  });
 }
 
-const getFreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
-  const result = await accountService.refreshToken({ refreshToken: auth.refreshToken }, sandbox);
-
-  if (result.errors.length) throw new Error(result.errors[0]);
-
-  return result?.responseData;
-};
-
-const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
+export const refreshJwtToken = async (auth: AuthData) => {
   try {
-    const authData = await getFreshJwtToken(sandbox, auth);
+    const { config } = useConfigStore.getState();
+    const authData = await cleengAccountService.getFreshJwtToken({ config, auth });
 
     if (authData) {
       useAccountStore.setState((s) => ({ auth: { ...s.auth, ...authData } }));
@@ -141,82 +157,66 @@ const refreshJwtToken = async (sandbox: boolean, auth: AuthData) => {
   }
 };
 
-export const afterLogin = async (sandbox: boolean, auth: AuthData) => {
-  const { accessModel } = useConfigStore.getState();
-  const decodedToken: JwtDetails = jwtDecode(auth.jwt);
-  const customerId = decodedToken.customerId;
-  const response = await accountService.getCustomer({ customerId }, sandbox, auth.jwt);
+export const getAccount = async (auth: AuthData) => {
+  await withAccountService(async ({ accountService, config, accessModel }) => {
+    const response = await accountService.getUser({ config, auth });
 
-  if (response.errors.length) throw new Error(response.errors[0]);
+    await afterLogin(auth, response.user, response.customerConsents, accessModel);
 
-  useAccountStore.setState({
-    auth: auth,
-    user: response.responseData,
+    useAccountStore.setState({ loading: false });
   });
-
-  await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getCustomerConsents(), getPublisherConsents()]);
-
-  useAccountStore.setState({ loading: false });
 };
 
 export const login = async (email: string, password: string) => {
-  await useConfig(async ({ cleengId, cleengSandbox }) => {
+  await withAccountService(async ({ accountService, config, accessModel }) => {
     useAccountStore.setState({ loading: true });
 
-    const response = await accountService.login({ email, password, publisherId: cleengId }, cleengSandbox);
+    const response = await accountService.login({ config, email, password });
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
-
-    await afterLogin(cleengSandbox, response.responseData);
+    await afterLogin(response.auth, response.user, response.customerConsents, accessModel);
 
     await restoreFavorites();
     await restoreWatchHistory();
+    useAccountStore.setState({ loading: false });
   });
 };
 
 export const logout = async () => {
-  persist.removeItem(PERSIST_KEY_ACCOUNT);
+  await withAccountService(async ({ accountService }) => {
+    persist.removeItem(PERSIST_KEY_ACCOUNT);
 
-  // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-  await queryClient.invalidateQueries('entitlements');
+    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
+    await queryClient.invalidateQueries('entitlements');
 
-  useAccountStore.setState({
-    auth: null,
-    user: null,
-    subscription: null,
-    transactions: null,
-    activePayment: null,
-    customerConsents: null,
-    publisherConsents: null,
+    useAccountStore.setState({
+      auth: null,
+      user: null,
+      subscription: null,
+      transactions: null,
+      activePayment: null,
+      customerConsents: null,
+      publisherConsents: null,
+    });
+
+    await restoreFavorites();
+    await restoreWatchHistory();
+
+    // it's needed for the InPlayer SDK
+    await accountService.logout();
   });
-
-  await restoreFavorites();
-  await restoreWatchHistory();
 };
 
 export const register = async (email: string, password: string) => {
-  await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const localesResponse = await accountService.getLocales(cleengSandbox);
+  await withAccountService(async ({ accountService, accessModel, config }) => {
+    useAccountStore.setState({ loading: true });
+    const { auth, user, customerConsents } = await accountService.register({ config, email, password });
 
-    if (localesResponse.errors.length > 0) throw new Error(localesResponse.errors[0]);
+    await afterLogin(auth, user, customerConsents, accessModel);
 
-    const responseRegister = await accountService.register(
-      {
-        email: email,
-        password: password,
-        locale: localesResponse.responseData.locale,
-        country: localesResponse.responseData.country,
-        currency: localesResponse.responseData.currency,
-        publisherId: cleengId,
-      },
-      cleengSandbox,
-    );
-
-    if (responseRegister.errors.length) throw new Error(responseRegister.errors[0]);
-
-    await afterLogin(cleengSandbox, responseRegister.responseData);
-
-    await updatePersonalShelves();
+    // @todo statement will be removed once the fav and history are done on InPlayer side
+    if (auth.refreshToken) {
+      await updatePersonalShelves();
+    }
   });
 };
 
@@ -232,7 +232,7 @@ export const updatePersonalShelves = async () => {
       favorites: serializeFavorites(favorites),
     };
 
-    return await accountService.updateCustomer(
+    return await cleengAccountService.updateCustomer(
       {
         id: customerId,
         externalData: personalShelfData,
@@ -243,79 +243,93 @@ export const updatePersonalShelves = async () => {
   });
 };
 
-export const updateConsents = async (customerConsents: CustomerConsent[]) => {
-  return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const response = await accountService.updateCustomerConsents(
-      {
-        id: customerId,
-        consents: customerConsents,
-      },
-      cleengSandbox,
-      jwt,
-    );
+export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
+  return await useAccountContext(async ({ customer, auth: { jwt } }) => {
+    return await withAccountService(async ({ accountService, config }) => {
+      useAccountStore.setState({ loading: true });
 
-    await getCustomerConsents();
+      try {
+        const response = await accountService.updateCustomerConsents({
+          jwt,
+          config,
+          customer,
+          consents: customerConsents,
+        });
+
+        if (response?.consents) {
+          useAccountStore.setState({ customerConsents: response.consents });
+        }
+
+        return {
+          responseData: response.consents,
+          errors: [],
+        };
+      } finally {
+        useAccountStore.setState({ loading: false });
+      }
+    });
+  });
+};
+
+// TODO: Decide if it's worth keeping this or just leave combined with getUser
+// noinspection JSUnusedGlobalSymbols
+export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse> {
+  return await useAccountContext(async ({ customer, auth: { jwt } }) => {
+    return await withAccountService(async ({ accountService, config }) => {
+      const response = await accountService.getCustomerConsents({ config, customer, jwt });
+
+      if (response?.consents) {
+        useAccountStore.setState({ customerConsents: response.consents });
+      }
+
+      return response;
+    });
+  });
+}
+
+export const getPublisherConsents = async (): Promise<GetPublisherConsentsResponse> => {
+  return await withAccountService(async ({ accountService, config }) => {
+    const response = await accountService.getPublisherConsents(config);
+
+    useAccountStore.setState({ publisherConsents: response.consents });
 
     return response;
   });
 };
 
-export async function getCustomerConsents() {
-  return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const response = await fetchCustomerConsents({ customerId }, cleengSandbox, jwt);
+export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
+  return await useAccountContext(async ({ customer, auth: { jwt } }) => {
+    return await withAccountService(async ({ accountService, sandbox }) => {
+      const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox, jwt);
 
-    if (response && !response.errors?.length) {
-      useAccountStore.setState({ customerConsents: response.responseData.consents });
-    }
-
-    return response;
-  });
-}
-
-export async function getPublisherConsents() {
-  return await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const response = await fetchPublisherConsents({ publisherId: cleengId }, cleengSandbox);
-
-    if (response && !response.errors?.length) {
-      useAccountStore.setState({ publisherConsents: response.responseData.consents });
-    }
-
-    return response;
-  });
-}
-
-export const getCaptureStatus = async () => {
-  return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const response = await accountService.getCaptureStatus({ customerId }, cleengSandbox, jwt);
-
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
-
-    return response.responseData;
+      return responseData;
+    });
   });
 };
 
-export const updateCaptureAnswers = async (capture: Capture) => {
-  return await useLoginContext(async ({ cleengSandbox, customerId, auth }) => {
-    const response = await accountService.updateCaptureAnswers({ customerId, ...capture }, cleengSandbox, auth.jwt);
+export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
+  return await useAccountContext(async ({ customer, auth, customerConsents }) => {
+    return await withAccountService(async ({ accountService, accessModel, sandbox }) => {
+      const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox, auth.jwt);
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-    // @todo why is this needed?
-    await afterLogin(cleengSandbox, auth);
+      await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel);
 
-    return response.responseData;
+      return response.responseData;
+    });
   });
 };
 
 export const resetPassword = async (email: string, resetUrl: string) => {
-  return await useConfig(async ({ cleengId, cleengSandbox }) => {
+  return await withAccountService(async ({ accountService, sandbox, authProviderId }) => {
     const response = await accountService.resetPassword(
       {
         customerEmail: email,
-        publisherId: cleengId,
+        publisherId: authProviderId,
         resetUrl,
       },
-      cleengSandbox,
+      sandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -324,21 +338,24 @@ export const resetPassword = async (email: string, resetUrl: string) => {
   });
 };
 
-export const changePassword = async (customerEmail: string, newPassword: string, resetPasswordToken: string) => {
-  return await useConfig(async ({ cleengId, cleengSandbox }) => {
-    const response = await accountService.changePassword(
-      {
-        publisherId: cleengId,
-        customerEmail,
-        newPassword,
-        resetPasswordToken,
-      },
-      cleengSandbox,
+export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
+  return await withAccountService(async ({ accountService, sandbox }) => {
+    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
+    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
+
+    return response?.responseData;
+  });
+};
+
+export const changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
+  return await withAccountService(async ({ accountService, sandbox, authProviderId }) => {
+    const response = await accountService.changePasswordWithResetToken(
+      { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
+      sandbox,
     );
+    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
-
-    return response.responseData;
+    return response?.responseData;
   });
 };
 
@@ -411,6 +428,16 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
   return getMediaByWatchlist(watchlistId, mediaIds);
 }
 
+async function afterLogin(auth: AuthData, user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string) {
+  useAccountStore.setState({
+    auth,
+    user,
+    customerConsents,
+  });
+
+  return await Promise.allSettled([accessModel === 'SVOD' ? reloadActiveSubscription() : Promise.resolve(), getPublisherConsents()]);
+}
+
 async function getActiveSubscription({ cleengSandbox, customerId, jwt }: { cleengSandbox: boolean; customerId: string; jwt: string }) {
   const response = await subscriptionService.getSubscriptions({ customerId }, cleengSandbox, jwt);
 
@@ -449,4 +476,41 @@ function useLoginContext<T>(callback: (args: { cleengId: string; cleengSandbox: 
   if (!user?.id || !auth?.jwt) throw new Error('user not logged in');
 
   return useConfig((config) => callback({ ...config, customerId: user.id, auth }));
+}
+
+function useAccountContext<T>(
+  callback: (args: { customerId: string; customer: Customer; customerConsents: CustomerConsent[] | null; auth: AuthData }) => T,
+): T {
+  const { user, auth, customerConsents } = useAccountStore.getState();
+
+  if (!user?.id || !auth?.jwt) throw new Error('user not logged in');
+
+  return callback({ customerId: user.id, customer: user, auth, customerConsents });
+}
+
+function withAccountService<T>(
+  callback: (args: {
+    accountService: typeof inplayerAccountService | typeof cleengAccountService;
+    config: Config;
+    accessModel: AccessModel;
+    sandbox: boolean;
+    authProviderId: string;
+  }) => T,
+): T {
+  const { config, accessModel } = useConfigStore.getState();
+  const { cleeng, inplayer } = config.integrations;
+
+  if (inplayer?.clientId) {
+    return callback({
+      accountService: inplayerAccountService,
+      config,
+      accessModel,
+      sandbox: !!inplayer.useSandbox,
+      authProviderId: inplayer?.clientId?.toString(),
+    });
+  } else if (cleeng?.id) {
+    return callback({ accountService: cleengAccountService, config, accessModel, sandbox: !!cleeng.useSandbox, authProviderId: cleeng?.id });
+  }
+
+  throw new Error('No account service available');
 }

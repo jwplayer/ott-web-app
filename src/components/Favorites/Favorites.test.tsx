@@ -2,9 +2,9 @@ import React from 'react';
 
 import Favorites from './Favorites';
 
+import { PersonalShelf } from '#src/stores/ConfigStore';
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { renderWithRouter } from '#test/testUtils';
-import { PersonalShelf } from '#src/stores/ConfigStore';
 
 describe('<Favorites>', () => {
   test('renders and matches snapshot', () => {

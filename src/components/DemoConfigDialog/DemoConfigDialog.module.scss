@@ -1,5 +1,5 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
 
 .controls {
   margin-top: variables.$base-spacing;
@@ -7,6 +7,10 @@
   > button {
     margin-right: 8px;
   }
+}
+
+.maxWidth {
+  max-width: 500px;
 }
 
 .configModal {
@@ -17,17 +21,18 @@
   background: var(--body-background-color);
 
   p {
-    max-width: 400px;
+    max-width: 500px;
     margin-bottom: 0;
     color: theme.$text-field-resting-color;
     font-size: 14px;
     line-height: 18px;
   }
 
-  a {
-    color: theme.$text-field-resting-color;
+  a, a:visited, a:hover, a:active {
+    color: inherit;
     font-weight: var(--body-font-weight-bold);
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 

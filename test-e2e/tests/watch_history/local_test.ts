@@ -1,6 +1,6 @@
-import { checkElapsed, checkProgress, playVideo } from '../../utils/watch_history';
-import constants, { makeShelfXpath, ShelfId } from '../../utils/constants';
-import { testConfigs } from '../../../test/constants';
+import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
+import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const videoTitle = constants.bigBuckBunnyTitle;
 const videoLength = 596;
@@ -88,7 +88,7 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
 });
 
 Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig(testConfigs.authvodNoWatchlist);
+  I.useConfig(testConfigs.cleengAuthvodNoWatchlist);
 
   await I.openVideoCard(videoTitle);
   I.dontSee(constants.continueWatchingButton);

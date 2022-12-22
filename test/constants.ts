@@ -4,30 +4,38 @@ export interface TestConfig {
 }
 
 export const testConfigs = {
+  inplayerAuth: {
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/demo.json',
+    label: 'InPlayer Authvod',
+  },
+  inplayerHosted: {
+    id: 'a2kbjdv0',
+    label: 'InPlayer Hosted',
+  },
   basicNoAuth: {
     id: 'gnnuzabk',
     label: 'Demo App (No Auth)',
-  } as TestConfig,
+  },
   noStyling: {
     id: 'kujzeu1b',
     label: 'No Styling (No Auth)',
-  } as TestConfig,
+  },
   inlinePlayer: {
     id: 'ata6ucb8',
     label: 'Inline Player',
-  } as TestConfig,
-  authvod: {
+  },
+  cleengAuthvod: {
     id: 'nvqkufhy',
-    label: 'Authvod',
-  } as TestConfig,
-  authvodNoWatchlist: {
+    label: 'Cleeng Authvod',
+  },
+  cleengAuthvodNoWatchlist: {
     id: '7weyqrua',
-    label: 'Authvod (No Watchlists)',
-  } as TestConfig,
+    label: 'Cleeng Authvod (No WL)',
+  },
   svod: {
     id: 'ozylzc5m',
     label: 'SVOD',
-  } as TestConfig,
+  },
 };
 
 export const jwDevEnvConfigs = {
@@ -36,3 +44,5 @@ export const jwDevEnvConfigs = {
     label: 'JW-Dev Basic Demo',
   } as TestConfig,
 };
+
+export const overrideIPCookieKey = 'overrideIP';

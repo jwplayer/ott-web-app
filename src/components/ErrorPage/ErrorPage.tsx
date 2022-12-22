@@ -3,66 +3,61 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './ErrorPage.module.scss';
 
-import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
-import Link from '#src/components/Link/Link';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/common';
+import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { getPublicUrl } from '#src/utils/domHelpers';
 
-interface PropsWithChildren {
-  disableFallbackTranslation?: boolean;
-  title: string | ReactNode;
-  message?: never;
-  children: React.ReactNode;
-  error?: never;
-  helpLink?: string;
-}
-
-interface PropsWithoutChildren {
+interface Props {
   disableFallbackTranslation?: boolean;
   title?: string | ReactNode;
   message?: string | ReactNode;
-  children?: never;
+  learnMoreLabel?: string;
+  children?: React.ReactNode;
   error?: Error;
   helpLink?: string;
 }
 
-const ErrorPage = ({ disableFallbackTranslation, title, children, message, error, helpLink }: PropsWithChildren | PropsWithoutChildren) => {
-  let learnMore = 'Learn more';
+const ErrorPage = ({ title, message, learnMoreLabel, ...rest }: Props) => {
+  const { t } = useTranslation('error');
 
-  // This is only used in 1 place, on the root component to show an error when i18n fails to load.
-  // Disabling it prevents a console error. Just make sure this property is always a const value
-  if (!disableFallbackTranslation) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { t } = useTranslation('error');
+  return (
+    <ErrorPageWithoutTranslation
+      title={title || t('generic_error_heading')}
+      message={message || t('generic_error_description')}
+      learnMoreLabel={learnMoreLabel || t('learn_more')}
+      {...rest}
+    />
+  );
+};
 
-    title = title || t('generic_error_heading', 'An error occurred');
-    message = message || t('generic_error_description', 'Try refreshing this page or come back later.');
-    learnMore = t('learn_more');
-  }
+export const ErrorPageWithoutTranslation = ({ title, children, message, learnMoreLabel, error, helpLink }: Props) => {
+  const logo = useConfigStore((s) => s.config?.assets?.banner);
 
   return (
     <div className={styles.errorPage}>
       <div className={styles.box}>
+        <img className={styles.image} src={getPublicUrl(logo || '/images/logo.png')} alt={'Logo'} />
         <header>
-          <h1 className={styles.title}>{title}</h1>
+          <h1 className={styles.title}>{title || 'An error occurred'}</h1>
         </header>
         <main className={styles.main}>
           <>
-            {children || <p>{message}</p>}
-            {(IS_DEV_BUILD || IS_DEMO_MODE) && helpLink && (
-              <p>
-                <Link href={helpLink} target={'_blank'}>
-                  {learnMore}
-                </Link>
+            {children || <p>{message || 'Try refreshing this page or come back later.'}</p>}
+            {(IS_DEVELOPMENT_BUILD || IS_DEMO_MODE || IS_PREVIEW_MODE) && helpLink && (
+              <p className={styles.links}>
+                <a href={helpLink} target={'_blank'} rel={'noreferrer'}>
+                  {learnMoreLabel || 'Learn More'}
+                </a>
+                {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && error?.stack && (
+                  <span className={styles.stack}>
+                    <DevStackTrace error={error} />
+                  </span>
+                )}
               </p>
             )}
           </>
         </main>
-        {IS_DEV_BUILD && error?.stack && (
-          <p>
-            Developer Details:
-            <br />
-            {error?.stack}
-          </p>
-        )}
       </div>
     </div>
   );

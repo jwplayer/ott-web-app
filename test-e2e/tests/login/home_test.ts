@@ -1,13 +1,13 @@
-import constants from '../../utils/constants';
-import { testConfigs } from '../../../test/constants';
-import { LoginContext } from '../../utils/password_utils';
+import constants, { longTimeout } from '#utils/constants';
+import { testConfigs } from '#test/constants';
+import { LoginContext } from '#utils/password_utils';
 
 let loginContext: LoginContext;
 
 Feature('login - home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig(testConfigs.authvod);
+  I.useConfig(testConfigs.cleengAuthvod);
 });
 
 Scenario('Sign-in buttons show for accounts config', async ({ I }) => {
@@ -46,7 +46,7 @@ Scenario('I can open the log in modal', async ({ I }) => {
   }
 
   I.click('Sign in');
-  I.waitForElement(constants.loginFormSelector, 15);
+  I.waitForElement(constants.loginFormSelector, longTimeout);
 
   await I.seeQueryParams({ u: 'login' });
 

@@ -4,17 +4,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 import DOMPurify from 'dompurify';
 
-import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
-import useToggle from '../../hooks/useToggle';
-import Button from '../Button/Button';
-import Form from '../Form/Form';
-import IconButton from '../IconButton/IconButton';
-import TextField from '../TextField/TextField';
-import Checkbox from '../Checkbox/Checkbox';
-import HelperText from '../HelperText/HelperText';
-
+import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
+import Visibility from '#src/icons/Visibility';
+import VisibilityOff from '#src/icons/VisibilityOff';
+import Button from '#components/Button/Button';
+import Form from '#components/Form/Form';
+import IconButton from '#components/IconButton/IconButton';
+import TextField from '#components/TextField/TextField';
+import Checkbox from '#components/Checkbox/Checkbox';
+import HelperText from '#components/HelperText/HelperText';
+import useToggle from '#src/hooks/useToggle';
 import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -24,6 +23,7 @@ import { updateConsents, updateUser } from '#src/stores/AccountController';
 type Props = {
   panelClassName?: string;
   panelHeaderClassName?: string;
+  canUpdateEmail?: boolean;
 };
 
 interface FormErrors {
@@ -34,17 +34,18 @@ interface FormErrors {
   form?: string;
 }
 
-const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element => {
+const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
 
-  const { customer, customerConsents, publisherConsents } = useAccountStore(
-    ({ user, customerConsents, publisherConsents }) => ({
+  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword } = useAccountStore(
+    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword }) => ({
       customer: user,
       customerConsents,
       publisherConsents,
+      canChangePasswordWithOldPassword,
     }),
     shallow,
   );
@@ -74,7 +75,6 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
 
   function translateErrors(errors?: string[]): FormErrors {
     const formErrors: FormErrors = {};
-
     // Some errors are combined in a single CSV string instead of one string per error
     errors
       ?.flatMap((e) => e.split(','))
@@ -99,6 +99,10 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
           }
           case 'lastName can have max 50 characters.': {
             formErrors.lastName = t('account.errors.last_name_too_long');
+            break;
+          }
+          case 'Email update not supported': {
+            formErrors.form = t('account.errors.email_update_not_supported');
             break;
           }
           default: {
@@ -135,7 +139,8 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
   }
 
   const editPasswordClickHandler = () => {
-    navigate(addQueryParam(location, 'u', 'reset-password'));
+    const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password';
+    navigate(addQueryParam(location, 'u', modal));
   };
 
   return (
@@ -150,6 +155,7 @@ const Account = ({ panelClassName, panelHeaderClassName }: Props): JSX.Element =
             }),
           canSave: (values) => !!(values.email && values.confirmationPassword),
           editButton: t('account.edit_account'),
+          readOnly: !canUpdateEmail,
           content: (section) => (
             <>
               <TextField

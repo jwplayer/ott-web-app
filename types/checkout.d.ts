@@ -1,3 +1,5 @@
+import type { PayloadWithIPOverride } from '#types/account';
+
 export type Offer = {
   offerId: string;
   offerPrice: number;
@@ -151,7 +153,7 @@ export type PaymentWithoutDetailsPayload = {
   orderId: number;
 };
 
-export type PaymentWithAdyenPayload = {
+export type PaymentWithAdyenPayload = PayloadWithIPOverride & {
   orderId: number;
   card: AdyenPaymentMethod;
 };

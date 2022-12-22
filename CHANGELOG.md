@@ -1,3 +1,77 @@
+## [3.0.1](https://github.com/jwplayer/ott-web-app/compare/v3.0.0...v3.0.1) (2022-12-22)
+
+
+### Bug Fixes
+
+* **auth:** check the free value ([e4b233c](https://github.com/jwplayer/ott-web-app/commit/e4b233c6a09900291a8313207ff5de0697408e51))
+* **auth:** check the requiresSubscription value ([a878ab6](https://github.com/jwplayer/ott-web-app/commit/a878ab6ca48e8652777da4fc31bb8a5adb5c25ac))
+* **auth:** check the requiresSubscription value ([5ad9f30](https://github.com/jwplayer/ott-web-app/commit/5ad9f3091f46478629ddf0b0ae526f5dc798e517))
+
+
+
+# [3.0.0](https://github.com/jwplayer/ott-web-app/compare/v2.9.1...v3.0.0) (2022-12-14)
+
+
+* feat!: InPlayer register and update user flows (#202) ([489d8e8](https://github.com/jwplayer/ott-web-app/commit/489d8e8a6fb358df8dbd4522aed69228ded1bf6e)), closes [#202](https://github.com/jwplayer/ott-web-app/issues/202)
+
+
+### BREAKING CHANGES
+
+* introduce InPlayer services
+
+
+
+## [2.9.1](https://github.com/jwplayer/ott-web-app/compare/v2.9.0...v2.9.1) (2022-12-14)
+
+
+### Bug Fixes
+
+* replace custom sw with vite, fix caching ([#207](https://github.com/jwplayer/ott-web-app/issues/207)) ([ef6e9f9](https://github.com/jwplayer/ott-web-app/commit/ef6e9f99493205367d0468b7856c10ad3bf4bb0e))
+
+
+
+# [2.9.0](https://github.com/jwplayer/ott-web-app/compare/v2.8.0...v2.9.0) (2022-12-05)
+
+
+### Bug Fixes
+
+* inplayer in service ([57757e9](https://github.com/jwplayer/ott-web-app/commit/57757e9e0f0683455ceea515dbe3811699b0f992))
+* refactor inplayer approach ([4d327b6](https://github.com/jwplayer/ott-web-app/commit/4d327b6ee0ee7cf39cff2f8d518861de5ab907fc))
+
+
+### Features
+
+* inplayer authentication ([f1922e4](https://github.com/jwplayer/ott-web-app/commit/f1922e4f95f92e76b5dca9b5a95291029a605573))
+
+
+
+# [2.8.0](https://github.com/jwplayer/ott-web-app/compare/v2.7.1...v2.8.0) (2022-12-01)
+
+
+### Features
+
+* replace compile constants with ini files ([158079d](https://github.com/jwplayer/ott-web-app/commit/158079d58283951e809a262f0f80b0a8adc630be))
+
+
+
+## [2.7.1](https://github.com/jwplayer/ott-web-app/compare/v2.7.0...v2.7.1) (2022-11-28)
+
+
+### Bug Fixes
+
+* build improvements, code cleanup, small improvements, test fixes ([8891cee](https://github.com/jwplayer/ott-web-app/commit/8891cee95f425cba7a8e68fd3f1693a90eb65182))
+
+
+
+# [2.7.0](https://github.com/jwplayer/ott-web-app/compare/v2.6.2...v2.7.0) (2022-11-17)
+
+
+### Features
+
+* add demo dialog when no config ID ([c6de430](https://github.com/jwplayer/ott-web-app/commit/c6de430412332bd722e8bab263cd755db4a8bfbc))
+
+
+
 ## [2.6.2](https://github.com/jwplayer/ott-web-app/compare/v2.6.1...v2.6.2) (2022-10-12)
 
 

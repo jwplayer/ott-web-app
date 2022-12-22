@@ -1,5 +1,5 @@
-import constants, { ShelfId } from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import constants, { normalTimeout, ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const videoListLocator = locate({ css: 'div[data-testid="video-list"]' });
 
@@ -87,7 +87,7 @@ Scenario('I can see the video auto play when play=1 is set', async ({ I }) => {
   I.seeInCurrentUrl(constants.baseUrl);
   I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}&play=1`);
 
-  I.waitForElement('video', 5);
+  I.waitForElement('video', normalTimeout);
   await I.waitForPlayerPlaying(constants.bigBuckBunnyTitle);
 });
 
@@ -95,7 +95,7 @@ Scenario("I don't see the video auto play when play=1 is not set", async ({ I })
   I.seeInCurrentUrl(constants.baseUrl);
   I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}`);
 
-  I.waitForElement('video', 5);
+  I.waitForElement('video', normalTimeout);
   await I.waitForPlayerState('idle');
 });
 

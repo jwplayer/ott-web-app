@@ -5,7 +5,7 @@ import { copyToClipboard } from '#src/utils/dom';
 import Check from '#src/icons/Check';
 import Share from '#src/icons/Share';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 
 type Props = {
   title: string;

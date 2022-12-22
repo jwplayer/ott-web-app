@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import VideoListItem from '../VideoListItem/VideoListItem';
-
 import styles from './VideoList.module.scss';
 
+import VideoListItem from '#components/VideoListItem/VideoListItem';
 import { isLocked } from '#src/utils/entitlements';
+import { testId } from '#src/utils/common';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import { testId } from '#src/utils/common';
 
 type Props = {
   playlist?: Playlist;

@@ -1,7 +1,8 @@
-import { array, boolean, mixed, object, SchemaOf, string, StringSchema } from 'yup';
+import { array, boolean, mixed, number, object, SchemaOf, string, StringSchema } from 'yup';
 import i18next from 'i18next';
 
-import type { Cleeng, Config, Content, Features, Menu, Styling } from '#types/Config';
+import type { Cleeng, InPlayer, Config, Content, Features, Menu, Styling } from '#types/Config';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
@@ -39,6 +40,12 @@ const cleengSchema: SchemaOf<Cleeng> = object({
   useSandbox: boolean().default(true),
 });
 
+const inplayerSchema: SchemaOf<InPlayer> = object({
+  clientId: string().nullable(),
+  assetId: number().nullable(),
+  useSandbox: boolean().default(true),
+});
+
 const stylingSchema: SchemaOf<Styling> = object({
   backgroundColor: string().nullable(),
   highlightColor: string().nullable(),
@@ -65,6 +72,7 @@ const configSchema: SchemaOf<Config> = object({
   features: featuresSchema.notRequired(),
   integrations: object({
     cleeng: cleengSchema.notRequired(),
+    inplayer: inplayerSchema.notRequired(),
   }).notRequired(),
   custom: object().notRequired(),
   contentSigningService: object().shape({
@@ -87,7 +95,7 @@ const loadConfig = async (configLocation: string) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to load the config. Please check the config path and the file availability');
+    throw new Error('Failed to load the config. Please check the config path and the file availability.');
   }
 
   const data = await response.json();
@@ -102,6 +110,15 @@ const loadConfig = async (configLocation: string) => {
 const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
   const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
+
+  // TODO: Remove this once the inplayer integration structure is added to the dashboard
+  if (!config.integrations.inplayer?.clientId && config.custom?.['inplayer.clientId']) {
+    config.integrations.inplayer = {
+      clientId: config.custom?.['inplayer.clientId'] as string,
+      assetId: Number(config.custom?.['inplayer.assetId']),
+      useSandbox: isTruthyCustomParamValue(config.custom?.['inplayer.useSandbox']),
+    };
+  }
 
   return { ...config, siteName: siteName || i18next.t('common:default_site_name'), content: updatedContent };
 };

@@ -4,11 +4,10 @@ import { useLocation, useNavigate } from 'react-router';
 import { mixed, object, string } from 'yup';
 import { useQuery } from 'react-query';
 
-import PersonalDetailsForm from '../../../components/PersonalDetailsForm/PersonalDetailsForm';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import { useConfigStore } from '../../../stores/ConfigStore';
-
+import { useConfigStore } from '#src/stores/ConfigStore';
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import PersonalDetailsForm from '#components/PersonalDetailsForm/PersonalDetailsForm';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam } from '#src/utils/location';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
 import { getCaptureStatus, updateCaptureAnswers } from '#src/stores/AccountController';

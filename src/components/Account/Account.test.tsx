@@ -14,7 +14,7 @@ describe('<Account>', () => {
       publisherConsents: Array.of({ name: 'marketing', label: 'Receive Marketing Emails' } as Consent),
     });
 
-    const { container } = renderWithRouter(<Account panelClassName={'panel-class'} panelHeaderClassName={'header-class'} />);
+    const { container } = renderWithRouter(<Account panelClassName={'panel-class'} panelHeaderClassName={'header-class'} canUpdateEmail={true} />);
 
     // todo
     expect(container).toMatchSnapshot();

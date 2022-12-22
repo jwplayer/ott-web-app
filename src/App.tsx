@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getI18n, I18nextProvider } from 'react-i18next';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 
 import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
+import '#src/screenMapping';
 import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
-import Router from '#src/containers/Router/Router';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import registerCustomScreens from '#src/screenMapping';
+import Root from '#components/Root/Root';
+import { ErrorPageWithoutTranslation } from '#components/ErrorPage/ErrorPage';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 
 interface State {
   isLoading: boolean;
@@ -15,37 +15,36 @@ interface State {
 }
 
 export default function App() {
-  const [{ isLoading, error }, setState] = useState<State>({ isLoading: true });
+  const [i18nState, seti18nState] = useState<State>({ isLoading: true });
 
   useEffect(() => {
     initI18n()
-      .then(() => setState({ isLoading: false }))
-      .catch((e) => setState({ isLoading: false, error: e as Error }));
-
-    registerCustomScreens();
+      .then(() => seti18nState({ isLoading: false }))
+      .catch((e) => seti18nState({ isLoading: false, error: e as Error }));
   }, []);
 
-  if (isLoading) {
+  if (i18nState.isLoading) {
     return <LoadingOverlay />;
   }
 
-  if (error) {
+  if (i18nState.error) {
     // Don't be tempted to translate these strings. If i18n fails to load, translations won't work anyhow
     return (
-      <ErrorPage
-        disableFallbackTranslation={true}
+      <ErrorPageWithoutTranslation
         title={'Unable to load translations'}
         message={'Check your language settings and try again later. If the problem persists contact technical support.'}
-        error={error}
+        error={i18nState.error}
       />
     );
   }
 
+  const Router = import.meta.env.APP_PUBLIC_GITHUB_PAGES ? HashRouter : BrowserRouter;
+
   return (
-    <I18nextProvider i18n={getI18n()}>
-      <QueryProvider>
-        <Router />
-      </QueryProvider>
-    </I18nextProvider>
+    <QueryProvider>
+      <Router>
+        <Root />
+      </Router>
+    </QueryProvider>
   );
 }

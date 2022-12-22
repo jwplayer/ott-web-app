@@ -1,3 +1,5 @@
+import { overrideIPCookieKey } from '#test/constants';
+
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | null;
   return (...args: unknown[]) => {
@@ -51,12 +53,16 @@ export function calculateContrastColor(color: string) {
 
 // Build is either Development or Production
 // Mode can be dev, jwdev, demo, test, prod, etc.
-export const IS_DEV_BUILD = import.meta.env.DEV;
-export const IS_TEST_MODE = import.meta.env.MODE === 'test';
+export const IS_DEVELOPMENT_BUILD = import.meta.env.DEV;
+// Demo mode is used to run our firebase demo instance
 export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
+// Test mode is used for e2e and unit tests
+export const IS_TEST_MODE = import.meta.env.MODE === 'test';
+// Preview mode is used for previewing Pull Requests on github
+export const IS_PREVIEW_MODE = import.meta.env.MODE === 'preview';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
-  if (IS_DEV_BUILD) {
+  if (IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) {
     if (optionalParams.length > 0) {
       console.info(message, optionalParams);
     } else {
@@ -66,13 +72,21 @@ export function logDev(message: unknown, ...optionalParams: unknown[]) {
 }
 
 export function getOverrideIP() {
+  if (!IS_TEST_MODE && !IS_DEVELOPMENT_BUILD && !IS_PREVIEW_MODE) {
+    return undefined;
+  }
+
   return document.cookie
     .split(';')
-    .find((s) => s.trim().startsWith('overrideIP'))
+    .find((s) => s.trim().startsWith(`${overrideIPCookieKey}=`))
     ?.split('=')[1]
     .trim();
 }
 
+export const isTruthyCustomParamValue = (value: unknown): boolean => ['true', '1', 'yes'].includes(String(value)?.toLowerCase());
+
+export const isFalsyCustomParamValue = (value: unknown): boolean => ['false', '0', 'no'].includes(String(value)?.toLowerCase());
+
 export function testId(value: string | undefined) {
-  return IS_TEST_MODE ? value : undefined;
+  return IS_DEVELOPMENT_BUILD || IS_TEST_MODE || IS_PREVIEW_MODE ? value : undefined;
 }

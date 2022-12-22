@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../Button/Button';
-import type { Subscription } from '../../../types/subscription';
-import { formatDate, formatPrice } from '../../utils/formatting';
-import type { Customer } from '../../../types/account';
-
 import styles from './SubscriptionRenewed.module.scss';
+
+import Button from '#components/Button/Button';
+import { formatDate, formatPrice } from '#src/utils/formatting';
+import type { Subscription } from '#types/subscription';
+import type { Customer } from '#types/account';
 
 type Props = {
   customer: Customer;

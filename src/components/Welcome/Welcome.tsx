@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../Button/Button';
-import useCountdown from '../../hooks/useCountdown';
-
 import styles from './Welcome.module.scss';
+
+import Button from '#components/Button/Button';
+import useCountdown from '#src/hooks/useCountdown';
 
 type Props = {
   onCloseButtonClick?: () => void;

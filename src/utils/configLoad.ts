@@ -3,38 +3,13 @@ import merge from 'lodash.merge';
 import { calculateContrastColor } from '#src/utils/common';
 import loadConfig, { validateConfig } from '#src/services/config.service';
 import { addScript } from '#src/utils/dom';
-import { useConfigStore, PersonalShelf } from '#src/stores/ConfigStore';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import type { AccessModel, Config, Styling } from '#types/Config';
 import { initializeAccount } from '#src/stores/AccountController';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
 
 const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
-
-const defaultConfig: Config = {
-  id: '',
-  siteName: '',
-  description: '',
-  player: '',
-  assets: {
-    banner: '/images/logo.png',
-  },
-  content: [],
-  menu: [],
-  integrations: {
-    cleeng: {
-      id: null,
-      useSandbox: true,
-    },
-  },
-  styling: {
-    footerText: '',
-    shelfTitles: true,
-  },
-  features: {
-    enableSharing: true,
-  },
-};
 
 const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Styling) => {
   const root = document.querySelector(':root') as HTMLElement;
@@ -61,29 +36,69 @@ const maybeInjectAnalyticsLibrary = (config: Config) => {
 };
 
 const calculateAccessModel = (config: Config): AccessModel => {
-  const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
+  if (config?.integrations?.cleeng) {
+    const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
 
-  if (!id) return 'AVOD';
-  if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+    if (!id) return 'AVOD';
+    if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+  }
+
+  if (config?.integrations?.inplayer) {
+    const { clientId, assetId } = config?.integrations?.inplayer || {};
+
+    if (!clientId) return 'AVOD';
+    if (!assetId) return 'AUTHVOD';
+  }
   return 'SVOD';
 };
 
 export async function loadAndValidateConfig(configSource: string | undefined) {
   configSource = formatSourceLocation(configSource);
 
+  // Explicitly set default config here as a local variable,
+  // otherwise if it's a module level const, the merge below causes changes to nested properties
+  const defaultConfig: Config = {
+    id: '',
+    siteName: '',
+    description: '',
+    player: '',
+    assets: {
+      banner: '/images/logo.png',
+    },
+    content: [],
+    menu: [],
+    integrations: {},
+    styling: {
+      footerText: '',
+      shelfTitles: true,
+    },
+    features: {
+      enableSharing: true,
+    },
+  };
+
   if (!configSource) {
+    useConfigStore.setState({ config: defaultConfig });
     throw new Error('Config not defined');
   }
 
   let config = await loadConfig(configSource);
-
-  config = await validateConfig(config);
-  config = merge({}, defaultConfig, config);
+  config.assets = config.assets || {};
 
   // make sure the banner always defaults to the JWP banner when not defined in the config
   if (!config.assets.banner) {
     config.assets.banner = defaultConfig.assets.banner;
   }
+
+  // Store the logo right away and set css variables so the error page will be branded
+  useConfigStore.setState((s) => {
+    s.config.assets.banner = config.assets.banner;
+  });
+
+  setCssVariables(config.styling || {});
+
+  config = await validateConfig(config);
+  config = merge({}, defaultConfig, config);
 
   const accessModel = calculateAccessModel(config);
 
@@ -92,10 +107,13 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
     accessModel,
   });
 
-  setCssVariables(config.styling);
   maybeInjectAnalyticsLibrary(config);
 
-  if (config?.integrations?.cleeng?.id) {
+  // TODO: refactor this once we have more input how integrations will be handled in dashboard
+  if (config?.integrations?.cleeng?.id && config?.integrations?.inplayer?.clientId) {
+    throw new Error('Invalid client integration. You cannot have both Cleeng and Inplayer integrations enabled at the same time.');
+  }
+  if (config?.integrations?.cleeng?.id || config?.integrations?.inplayer?.clientId) {
     await initializeAccount();
   }
 

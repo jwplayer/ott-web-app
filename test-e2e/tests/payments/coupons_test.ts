@@ -1,6 +1,7 @@
-import { LoginContext } from '../../utils/password_utils';
-import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '../../utils/payments';
-import { testConfigs } from '../../../test/constants';
+import { LoginContext } from '#utils/password_utils';
+import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '#utils/payments';
+import { testConfigs } from '#test/constants';
+import skipped = CodeceptJS.output.test.skipped;
 
 let couponLoginContext: LoginContext;
 
@@ -19,7 +20,7 @@ Before(async ({ I }) => {
 Scenario('I can redeem coupons', async ({ I }) => {
   couponLoginContext = await I.registerOrLogin(couponLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
   I.click('Redeem coupon');
   I.seeElement('input[name="couponCode"]');
@@ -42,16 +43,18 @@ Scenario('I can redeem coupons', async ({ I }) => {
   I.waitForLoaderDone();
   I.dontSee(formatPrice(12.5));
 
-  finishAndCheckSubscription(I, addYear(today), today);
+  await finishAndCheckSubscription(I, addYear(today), today);
 });
 
-Scenario('I can cancel a free subscription', async ({ I }) => {
+// TODO: Re-enable this when the cleeng bug is fixed
+Scenario.todo('I can cancel a free subscription', async ({ I }) => {
   couponLoginContext = await I.registerOrLogin(couponLoginContext);
 
   cancelPlan(I, addYear(today));
 });
 
-Scenario('I can renew a free subscription', async ({ I }) => {
+// TODO: Re-enable this when the cleeng bug is fixed
+Scenario.todo('I can renew a free subscription', async ({ I }) => {
   couponLoginContext = await I.registerOrLogin(couponLoginContext);
 
   renewPlan(I, addYear(today));

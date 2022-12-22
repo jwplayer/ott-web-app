@@ -1,64 +1,79 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
+import { useSearchParams } from 'react-router-dom';
 
-import ErrorPage from '../ErrorPage/ErrorPage';
-import AccountModal from '../../containers/AccountModal/AccountModal';
-
-import { IS_DEMO_MODE, IS_DEV_BUILD } from '#src/utils/common';
-import DemoConfigDialog from '#src/components/DemoConfigDialog/DemoConfigDialog';
-import { initSettings } from '#src/stores/SettingsController';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
+import AccountModal from '#src/containers/AccountModal/AccountModal';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/common';
+import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
+import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import DevConfigSelector from '#src/components/DevConfigSelector/DevConfigSelector';
-import Layout from '#src/containers/Layout/Layout';
-import { useConfigSource } from '#src/utils/configOverride';
+import { initSettings } from '#src/stores/SettingsController';
+import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
 
-  const settings = useQuery('settings-init', initSettings, {
+  const settingsQuery = useQuery('settings-init', initSettings, {
     enabled: true,
     retry: 1,
+    refetchInterval: false,
   });
 
-  const configSource = useConfigSource(settings.data);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const config = useQuery('config-init-' + configSource, async () => await loadAndValidateConfig(configSource), {
-    enabled: settings.isSuccess,
-    retry: 1,
+  const configSource = useMemo(() => getConfigSource(searchParams, settingsQuery.data), [searchParams, settingsQuery.data]);
+
+  // Update the query string to maintain the right params
+  useEffect(() => {
+    if (settingsQuery.data && cleanupQueryParams(searchParams, settingsQuery.data, configSource)) {
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [configSource, searchParams, setSearchParams, settingsQuery.data]);
+
+  const configQuery = useQuery('config-init-' + configSource, async () => await loadAndValidateConfig(configSource), {
+    enabled: settingsQuery.isSuccess,
+    retry: configSource ? 1 : 0,
+    refetchInterval: false,
   });
 
-  if (settings.isLoading || config.isLoading) {
+  const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
+
+  // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
+  if (settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
     return <LoadingOverlay />;
   }
 
-  if (settings.isError || !settings.data) {
+  if (settingsQuery.isError) {
     return (
       <ErrorPage
         title={t('settings_invalid')}
         message={t('check_your_settings')}
-        error={settings.error as Error}
-        helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/settings.md'}
+        error={settingsQuery.error as Error}
+        helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/initialization-file.md'}
       />
     );
   }
 
   return (
     <>
-      {!config.isError && <Layout />}
-      {config.isError && !IS_DEMO_MODE && (
+      {!configQuery.isError && !configQuery.isLoading && <AppRoutes />}
+      {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
+      {configQuery.isError && !IS_DEMO_OR_PREVIEW && (
         <ErrorPage
           title={t('config_invalid')}
           message={t('check_your_config')}
-          error={config.error as Error}
+          error={configQuery.error as Error}
           helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/configuration.md'}
         />
       )}
-      {IS_DEMO_MODE && <DemoConfigDialog isConfigSuccess={config.isSuccess} settings={settings.data} />}
+      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
       <AccountModal />
       {/* Config select control to improve testing experience */}
-      {IS_DEV_BUILD && <DevConfigSelector settings={settings.data} />}
+      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
     </>
   );
 };

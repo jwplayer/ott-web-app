@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 
-import constants, { makeShelfXpath, ShelfId } from '../utils/constants';
-import { testConfigs } from '../../test/constants';
+import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const videoTitle = 'Tears of Steel';
 
@@ -53,7 +53,7 @@ Scenario('I can see my favorited videos on the home page', async ({ I }) => {
 Scenario('I do not see favorited videos on the home page and video page if there is not such config setting', async ({ I }) => {
   await addVideoToFavorites(I);
 
-  I.useConfig(testConfigs.authvodNoWatchlist);
+  I.useConfig(testConfigs.cleengAuthvodNoWatchlist);
 
   // No favorites section
   I.seeInCurrentUrl(constants.baseUrl);

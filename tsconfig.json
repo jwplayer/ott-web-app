@@ -19,6 +19,9 @@
       "#src/*": [
         "./src/*"
       ],
+      "#components/*": [
+        "./src/components/*"
+      ],
       "#test/*": [
         "./test/*"
       ],
@@ -44,7 +47,8 @@
       "vi-fetch/matchers",
       "vitest/globals",
       "@testing-library/jest-dom",
-      "@types/jwplayer"
-    ]
+      "@types/jwplayer",
+      "vite-plugin-pwa/client"
+    ],
   }
 }

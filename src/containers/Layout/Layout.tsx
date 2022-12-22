@@ -10,13 +10,14 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useUIStore } from '#src/stores/UIStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useSearchQueryUpdater from '#src/hooks/useSearchQueryUpdater';
-import Button from '#src/components/Button/Button';
-import MarkdownComponent from '#src/components/MarkdownComponent/MarkdownComponent';
-import Header from '#src/components/Header/Header';
-import Sidebar from '#src/components/Sidebar/Sidebar';
-import DynamicBlur from '#src/components/DynamicBlur/DynamicBlur';
-import MenuButton from '#src/components/MenuButton/MenuButton';
-import UserMenu from '#src/components/UserMenu/UserMenu';
+import useClientIntegration from '#src/hooks/useClientIntegration';
+import Button from '#components/Button/Button';
+import MarkdownComponent from '#components/MarkdownComponent/MarkdownComponent';
+import Header from '#components/Header/Header';
+import Sidebar from '#components/Sidebar/Sidebar';
+import DynamicBlur from '#components/DynamicBlur/DynamicBlur';
+import MenuButton from '#components/MenuButton/MenuButton';
+import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 
 const Layout = () => {
@@ -24,8 +25,8 @@ const Layout = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { menu, assets, siteName, description, integrations, styling, features } = config;
-  const cleengId = integrations?.cleeng?.id;
+  const { menu, assets, siteName, description, styling, features } = config;
+  const { clientId } = useClientIntegration();
   const { searchPlaylist } = features || {};
   const { footerText, dynamicBlur } = styling || {};
 
@@ -82,7 +83,7 @@ const Layout = () => {
     });
 
   const renderUserActions = () => {
-    if (!cleengId) return null;
+    if (!clientId) return null;
 
     return isLoggedIn ? (
       <UserMenu showPaymentsItem={accessModel !== 'AVOD'} />
@@ -124,7 +125,7 @@ const Layout = () => {
           isLoggedIn={isLoggedIn}
           userMenuOpen={userMenuOpen}
           toggleUserMenu={toggleUserMenu}
-          canLogin={!!cleengId}
+          canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
         >
           <Button label={t('home')} to="/" variant="text" />

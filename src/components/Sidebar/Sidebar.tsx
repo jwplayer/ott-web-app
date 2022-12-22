@@ -2,10 +2,10 @@ import React, { Fragment, ReactFragment } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import IconButton from '../../components/IconButton/IconButton';
-import Close from '../../icons/Close';
-
 import styles from './Sidebar.module.scss';
+
+import Close from '#src/icons/Close';
+import IconButton from '#components/IconButton/IconButton';
 
 type SidebarProps = {
   isOpen: boolean;

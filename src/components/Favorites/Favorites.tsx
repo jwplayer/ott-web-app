@@ -1,13 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../Button/Button';
-import CardGrid from '../CardGrid/CardGrid';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import ErrorPage from '../ErrorPage/ErrorPage';
-
 import styles from './Favorites.module.scss';
 
+import Button from '#components/Button/Button';
+import CardGrid from '#components/CardGrid/CardGrid';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';

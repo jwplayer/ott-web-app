@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 
-import useBreakpoint from '../../hooks/useBreakpoint';
-import IconButton from '../IconButton/IconButton';
-import ChevronRight from '../../icons/ChevronRight';
-
 import styles from './CollapsibleText.module.scss';
+
+import IconButton from '#components/IconButton/IconButton';
+import ChevronRight from '#src/icons/ChevronRight';
+import useBreakpoint from '#src/hooks/useBreakpoint';
 
 type Props = {
   text: string;

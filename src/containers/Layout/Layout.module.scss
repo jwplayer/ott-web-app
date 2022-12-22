@@ -1,8 +1,9 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
 
 .layout {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
 }
 

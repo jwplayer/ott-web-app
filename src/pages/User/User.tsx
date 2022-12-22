@@ -5,22 +5,22 @@ import shallow from 'zustand/shallow';
 
 import styles from './User.module.scss';
 
-import Favorites from '#src/components/Favorites/Favorites';
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
-import { useConfigStore, PersonalShelf } from '#src/stores/ConfigStore';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { mediaURL } from '#src/utils/formatting';
-import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import Button from '#src/components/Button/Button';
-import AccountComponent from '#src/components/Account/Account';
-import Payment from '#src/components/Payment/Payment';
 import AccountCircle from '#src/icons/AccountCircle';
 import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import { useAccountStore } from '#src/stores/AccountStore';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import ConfirmationDialog from '#src/components/ConfirmationDialog/ConfirmationDialog';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
+import Payment from '#components/Payment/Payment';
+import AccountComponent from '#components/Account/Account';
+import Button from '#components/Button/Button';
+import Favorites from '#components/Favorites/Favorites';
 import type { PlaylistItem } from '#types/playlist';
 import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
@@ -40,7 +40,7 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, transactions, activePayment, loading } = useAccountStore();
+  const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail } = useAccountStore();
 
   const updateBlurImage = useBlurImageUpdater();
 
@@ -95,7 +95,10 @@ const User = (): JSX.Element => {
       )}
       <div className={styles.mainColumn}>
         <Routes>
-          <Route path="my-account" element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} />} />
+          <Route
+            path="my-account"
+            element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
+          />
           {favoritesList && (
             <Route
               path="favorites"

@@ -6,7 +6,7 @@ import styles from './Card.module.scss';
 
 import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
 import Lock from '#src/icons/Lock';
-import Image from '#src/components/Image/Image';
+import Image from '#components/Image/Image';
 import type { ImageData } from '#types/playlist';
 
 export const cardAspectRatios = ['2:1', '16:9', '5:3', '4:3', '1:1', '9:13', '2:3', '9:16'] as const;

@@ -1,7 +1,7 @@
-import constants, { makeShelfXpath, ShelfId } from '../../utils/constants';
-import { checkElapsed, checkProgress, playVideo } from '../../utils/watch_history';
-import { LoginContext } from '../../utils/password_utils';
-import { testConfigs } from '../../../test/constants';
+import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
+import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
+import { LoginContext } from '#utils/password_utils';
+import { testConfigs } from '#test/constants';
 
 const videoLength = 596;
 const videoTitle = constants.bigBuckBunnyTitle;
@@ -11,7 +11,7 @@ let loginContext: LoginContext;
 Feature('watch_history - logged in').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig(testConfigs.authvod);
+  I.useConfig(testConfigs.cleengAuthvod);
 });
 
 Scenario('I can get my watch history when logged in', async ({ I }) => {
@@ -42,7 +42,7 @@ Scenario('I can get my watch history stored to my account after login', async ({
 
   await registerOrLogin(I);
   I.clickHome();
-  I.waitForText(constants.continueWatchingShelfTitle, 10);
+  I.waitForText(constants.continueWatchingShelfTitle, normalTimeout);
 
   await I.openVideoCard(videoTitle, ShelfId.allFilms);
   I.dontSee(constants.startWatchingButton);
@@ -77,7 +77,7 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
 });
 
 Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig(testConfigs.authvodNoWatchlist);
+  I.useConfig(testConfigs.cleengAuthvodNoWatchlist);
 
   await registerOrLogin(I);
 

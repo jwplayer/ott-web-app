@@ -5,7 +5,7 @@ import type { PlaylistItem } from '#types/playlist';
 import { saveItem } from '#src/stores/WatchHistoryController';
 import { usePlaylistItemCallback } from '#src/hooks/usePlaylistItemCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import Player from '#src/components/Player/Player';
+import Player from '#components/Player/Player';
 import type { JWPlayer } from '#types/jwplayer';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { VideoProgressMinMax } from '#src/config';

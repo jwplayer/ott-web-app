@@ -9,6 +9,7 @@
     "email": "",
     "errors": {
       "email_exists": "",
+      "email_update_not_supported": "",
       "first_name_too_long": "",
       "invalid_param_email": "",
       "invalid_password": "",

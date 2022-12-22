@@ -4,9 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 
-import RegistrationForm from '../../../components/RegistrationForm/RegistrationForm';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
 import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
@@ -20,7 +19,7 @@ const Registration = () => {
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
   const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getPublisherConsents);
-  const publisherConsents = useMemo(() => data?.responseData?.consents || [], [data]);
+  const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
   const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConsentValues((current) => ({ ...current, [event.target.name]: event.target.checked }));
@@ -55,10 +54,13 @@ const Registration = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         const errorMessage = error.message.toLowerCase();
-        if (errorMessage.includes('customer already exists.')) {
+        if (errorMessage.includes('customer already exists') || errorMessage.includes('account already exists')) {
           setErrors({ form: t('registration.user_exists') });
         } else if (errorMessage.includes('invalid param password')) {
           setErrors({ password: t('registration.invalid_password') });
+        } else {
+          // in case the endpoint fails
+          setErrors({ password: t('registration.failed_to_create') });
         }
         setValue('password', '');
       }

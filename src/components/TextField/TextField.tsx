@@ -2,18 +2,17 @@ import React, { RefObject } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import useOpaqueId from '../../hooks/useOpaqueId';
-import HelperText from '../HelperText/HelperText';
-
 import styles from './TextField.module.scss';
 
+import HelperText from '#components/HelperText/HelperText';
 import { testId as getTestId } from '#src/utils/common';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type InputProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'id' | 'ref' | 'className'>;
 type TextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'id' | 'ref' | 'className'>;
 
 type InputOrTextAreaProps =
-  | ({ multiline?: false; inputRef?: RefObject<HTMLInputElement>; textAreaRef?: never } & InputProps)
+  | ({ multiline?: never; inputRef?: RefObject<HTMLInputElement>; textAreaRef?: never } & InputProps)
   | ({ multiline: true; inputRef?: never; textAreaRef?: RefObject<HTMLTextAreaElement> } & TextAreaProps);
 
 type Props = {
@@ -25,6 +24,7 @@ type Props = {
   error?: boolean;
   editing?: boolean;
   testId?: string;
+  multiline?: boolean;
 } & InputOrTextAreaProps;
 
 const TextField: React.FC<Props> = ({
@@ -38,13 +38,14 @@ const TextField: React.FC<Props> = ({
   testId,
   inputRef,
   textAreaRef,
+  multiline,
   ...inputProps
 }: Props) => {
   const id = useOpaqueId('text-field', inputProps.name);
   const { t } = useTranslation('common');
 
-  const isInputOrTextArea = (item: unknown): item is InputOrTextAreaProps => !!item && typeof item === 'object' && 'multiline' in item;
-  const isTextArea = (item: unknown): item is TextAreaProps => isInputOrTextArea(item) && !!item.multiline;
+  const isInputOrTextArea = (item: unknown): item is InputOrTextAreaProps => !!item && typeof item === 'object';
+  const isTextArea = (item: unknown): item is TextAreaProps => isInputOrTextArea(item) && !!multiline;
 
   const textFieldClassName = classNames(
     styles.textField,

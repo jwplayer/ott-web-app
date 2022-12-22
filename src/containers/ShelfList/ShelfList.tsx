@@ -8,16 +8,16 @@ import styles from './ShelfList.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useConfigStore, PersonalShelf } from '#src/stores/ConfigStore';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
-import ShelfComponent from '#src/components/Shelf/Shelf';
+import ShelfComponent from '#components/Shelf/Shelf';
 import usePlaylist from '#src/hooks/usePlaylist';
 import { mediaURL, slugify } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
-import InfiniteScrollLoader from '#src/components/InfiniteScrollLoader/InfiniteScrollLoader';
+import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 import { testId } from '#src/utils/common';
 
 const INITIAL_ROW_COUNT = 6;
