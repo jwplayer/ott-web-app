@@ -6,10 +6,10 @@ Make sure you include a copy of the ini file edited to include your account data
 
 For all manual builds (`yarn start` or `yarn build`), the ini file is copied from `/ini/.webapp.<mode>.ini` to `build/public/.webapp.ini`, which the application fetches and parses at startup.
 If a file doesn't exist in /ini/.webapp.<mode>.ini, then the template file will first be copied from [`/ini/templates`](/ini/templates).
-All of the .ini files inside of /ini are ignored in git, so you can create your own files locally to run the application with your account parameters without creating conflicts with committed code or leaking your details into source control.
+All of the .ini files directly inside of `/ini` are ignored in git, so you can create your own files locally to run the application with your account parameters without creating conflicts with committed code or leaking your details into source control.
 
 ## Ini Parameters
->
+
 ### defaultConfigSource
 
 The 8 character ID of the app config from your JWP account (or the url path) that the web app will use to load its content. Be careful to ensure that this config is always available or your app will fail to load.

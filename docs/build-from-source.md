@@ -70,4 +70,5 @@ Production builds optimize code and minimize debug information, while developmen
 * **test** - used when running unit and e2e tests. Should typically be run as a production build. Will only load a select list of test app configs
 * **prod** - default used when running `yarn build` to create compiled code for production hosting. You should make sure to update the prod ini file to only allow app configs from your account.
 * **demo** - used for the [JWP preview site](https://app-preview.jwplayer.com/) and includes a dialog to switch between app configs. Will allow any app-config to be loaded and does not have a default config.
+* **preview** - used for github PR previews. Behaves like a hybrid between dev and demo.
 * **jwdev** - this mode is for running code on JW's internal dev environment. It will only work for JW employees on the internal network.
