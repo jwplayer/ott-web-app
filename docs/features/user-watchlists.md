@@ -1,6 +1,6 @@
 # User watchlists
 
-<img title="" src="./../.images/watchlist.jpg" alt="continue-watchting" width="542">
+<img title="" src="./../_images/watchlist.jpg" alt="continue-watchting" width="542">
 
 ###### 
 

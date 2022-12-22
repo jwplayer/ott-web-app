@@ -8,7 +8,7 @@ import ModalCloseButton from '#components/ModalCloseButton/ModalCloseButton';
 
 type Props = {
   open: boolean;
-  onClose?: () => void;
+  onClose: () => void;
   children: React.ReactNode;
 };
 

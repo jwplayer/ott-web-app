@@ -102,7 +102,7 @@ The footer should contain any information about **Breaking Changes** and is also
 /build*           - Directory where the code is compiled by `yarn build`
 /coverage*        - Location of the C8 coverage report
 /docs             - Documentation
-  /.images        - Images used in the docs and README
+  /_images        - Images used in the docs and README
   /features       - Docs coverage specific product use cases
 /ini              - Directory to group different initialization files
   /templates      - Template ini files per mode

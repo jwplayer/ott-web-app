@@ -2,7 +2,7 @@
 
 A video detail page is where a viewer evaluates a published video, before deciding to play the video. 
 
-![Video detail](./../.images/video-detail.jpg)
+![Video detail](./../_images/video-detail.jpg)
 
 This page displays attributes that are common to all videos, such as:
 
