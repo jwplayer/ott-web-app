@@ -1,3 +1,14 @@
+## [3.0.1](https://github.com/jwplayer/ott-web-app/compare/v3.0.0...v3.0.1) (2022-12-22)
+
+
+### Bug Fixes
+
+* **auth:** check the free value ([e4b233c](https://github.com/jwplayer/ott-web-app/commit/e4b233c6a09900291a8313207ff5de0697408e51))
+* **auth:** check the requiresSubscription value ([a878ab6](https://github.com/jwplayer/ott-web-app/commit/a878ab6ca48e8652777da4fc31bb8a5adb5c25ac))
+* **auth:** check the requiresSubscription value ([5ad9f30](https://github.com/jwplayer/ott-web-app/commit/5ad9f3091f46478629ddf0b0ae526f5dc798e517))
+
+
+
 # [3.0.0](https://github.com/jwplayer/ott-web-app/compare/v2.9.1...v3.0.0) (2022-12-14)
 
 
