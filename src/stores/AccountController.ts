@@ -23,7 +23,7 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
 import { queryClient } from '#src/providers/QueryProvider';
-import { NotificationsTypes } from '#src/services/inplayer.account.service';
+import { NotificationsTypes } from '#src/hooks/useNotifications';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 
@@ -33,7 +33,7 @@ let subscription: undefined | (() => void);
 let refreshTimeout: number;
 
 // actions needed when listening to InPlayer websocket notifications
-const notifications: Record<NotificationsTypes, () => Promise<unknown>> = {
+const notifications: Partial<Record<NotificationsTypes, () => Promise<unknown>>> = {
   [NotificationsTypes.ACCESS_GRANTED]: () => reloadActiveSubscription({ delay: 2000 }),
   [NotificationsTypes.ACCESS_REVOKED]: reloadActiveSubscription,
   [NotificationsTypes.ACCOUNT_LOGOUT]: logout,

@@ -31,15 +31,6 @@ enum InPlayerEnv {
   Daily = 'daily',
 }
 
-export enum NotificationsTypes {
-  ACCESS_GRANTED = 'access.granted',
-  ACCESS_REVOKED = 'access.revoked',
-  ACCOUNT_LOGOUT = 'account.logout',
-}
-export interface Notification {
-  type: NotificationsTypes;
-}
-
 export const setEnvironment = (config: Config) => {
   const env: string = config.integrations?.inplayer?.useSandbox ? InPlayerEnv.Daily : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);

@@ -174,8 +174,8 @@ const Checkout = () => {
     try {
       setPaymentError(undefined);
       setUpdatingOrder(true);
-      const cancelUrl = addQueryParams(window.location.href, { u: 'paypal-cancelled' });
-      const errorUrl = addQueryParams(window.location.href, { u: 'paypal-error' });
+      const cancelUrl = addQueryParams(window.location.href, { u: 'payment-cancelled' });
+      const errorUrl = addQueryParams(window.location.href, { u: 'payment-error' });
       const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
       const response = await paypalPayment(successUrl, cancelUrl, errorUrl);
 

@@ -73,9 +73,9 @@ const AccountModal = () => {
         return <ChooseOffer />;
       case 'checkout':
         return <Checkout />;
-      case 'paypal-error':
+      case 'payment-error':
         return <PaymentFailed type="error" message={message} onCloseButtonClick={closeHandler} />;
-      case 'paypal-cancelled':
+      case 'payment-cancelled':
         return <PaymentFailed type="cancelled" onCloseButtonClick={closeHandler} />;
       case 'welcome':
         return <Welcome onCloseButtonClick={closeHandler} onCountdownCompleted={closeHandler} siteName={siteName} />;
