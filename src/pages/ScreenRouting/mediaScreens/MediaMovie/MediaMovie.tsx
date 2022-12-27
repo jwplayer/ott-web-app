@@ -168,6 +168,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
               primaryMetadata={primaryMetadata}
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
+              onNext={handleComplete}
             />
           )
         }

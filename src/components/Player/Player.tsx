@@ -23,6 +23,7 @@ type Props = {
   onBeforePlay?: () => void;
   onFirstFrame?: () => void;
   onRemove?: () => void;
+  onNext?: () => void;
   onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
   startTime?: number;
@@ -43,6 +44,7 @@ const Player: React.FC<Props> = ({
   onRemove,
   onPlaylistItem,
   onPlaylistItemCallback,
+  onNext,
   feedId,
   startTime = 0,
   autostart,
@@ -65,6 +67,7 @@ const Player: React.FC<Props> = ({
   const handleRemove = useEventCallback(onRemove);
   const handlePlaylistItem = useEventCallback(onPlaylistItem);
   const handlePlaylistItemCallback = useEventCallback(onPlaylistItemCallback);
+  const handleNextClick = useEventCallback(onNext);
   const handleReady = useEventCallback(() => onReady && onReady(playerRef.current));
 
   const attachEvents = useCallback(() => {
@@ -78,6 +81,7 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('firstFrame', handleFirstFrame);
     playerRef.current?.on('remove', handleRemove);
     playerRef.current?.on('playlistItem', handlePlaylistItem);
+    playerRef.current?.on('nextClick', handleNextClick);
     playerRef.current?.setPlaylistItemCallback(handlePlaylistItemCallback);
   }, [
     handleReady,
@@ -90,6 +94,7 @@ const Player: React.FC<Props> = ({
     handleFirstFrame,
     handleRemove,
     handlePlaylistItem,
+    handleNextClick,
     handlePlaylistItemCallback,
   ]);
 
