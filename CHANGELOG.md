@@ -1,3 +1,12 @@
+## [3.0.2](https://github.com/jwplayer/ott-web-app/compare/v3.0.1...v3.0.2) (2022-12-27)
+
+
+### Bug Fixes
+
+* **inlineplayer:** display correct video title after play next clicked BC-229 ([bffc1d9](https://github.com/jwplayer/ott-web-app/commit/bffc1d91d8b808f015f4208d1d7825259cac6b89))
+
+
+
 ## [3.0.1](https://github.com/jwplayer/ott-web-app/compare/v3.0.0...v3.0.1) (2022-12-22)
 
 
