@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Button from '../Button/Button';
 import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
 import CreditCardExpiryField from '../CreditCardExpiryField/CreditCardExpiryField';
@@ -14,6 +16,8 @@ type Props = {
 };
 
 const PaymentForm: React.FC<Props> = ({ paymentDataForm }) => {
+  const { t } = useTranslation('account');
+
   return (
     <div className={styles.paymentForm}>
       <div>
@@ -23,7 +27,7 @@ const PaymentForm: React.FC<Props> = ({ paymentDataForm }) => {
           value={paymentDataForm?.values?.cardholderName}
           onChange={paymentDataForm?.handleChange}
           onBlur={paymentDataForm?.handleBlur}
-          placeholder="Placeholder name"
+          placeholder={t('checkout.credit_card_name')}
           required
         />
       </div>

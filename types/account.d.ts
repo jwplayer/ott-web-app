@@ -302,25 +302,13 @@ export type UpdateCaptureAnswersPayload = {
   customerId: string;
 } & Capture;
 
-interface ApiResponse {
-  errors: string[];
-}
-
-type ServiceResponse<R> = { responseData: R } & ApiResponse;
-type Request<P, R> = (payload: P) => Promise<R>;
-type EmptyServiceRequest<R> = (sandbox: boolean) => Promise<ServiceResponse<R>>;
-type ServiceRequest<P, R> = (payload: P) => Promise<ServiceResponse<R>>;
-type EnvironmentServiceRequest<P, R> = (payload: P, sandbox: boolean) => Promise<ServiceResponse<R>>;
-type AuthRequest<P, R> = (payload: P, sandbox: boolean, jwt: string) => Promise<R>;
-type AuthServiceRequest<P, R> = (payload: P, sandbox: boolean, jwt: string) => Promise<ServiceResponse<R>>;
-
-type Login = Request<AuthArgs, AuthResponse>;
-type Register = Request<AuthArgs, AuthResponse>;
+type Login = PromiseRequest<AuthArgs, AuthResponse>;
+type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = AuthServiceRequest<UpdateCustomerArgs, Customer>;
-type GetPublisherConsents = Request<Config, GetPublisherConsentsResponse>;
-type GetCustomerConsents = Request<CustomerConsentArgs, GetCustomerConsentsResponse>;
-type UpdateCustomerConsents = Request<UpdateCustomerConsentsArgs, GetCustomerConsentsResponse>;
+type GetPublisherConsents = PromiseRequest<Config, GetPublisherConsentsResponse>;
+type GetCustomerConsents = PromiseRequest<CustomerConsentArgs, GetCustomerConsentsResponse>;
+type UpdateCustomerConsents = PromiseRequest<UpdateCustomerConsentsArgs, GetCustomerConsentsResponse>;
 type GetCaptureStatus = AuthServiceRequest<GetCaptureStatusArgs, GetCaptureStatusResponse>;
 type UpdateCaptureAnswers = AuthServiceRequest<UpdateCaptureStatusArgs, Capture>;
 type ResetPassword = EnvironmentServiceRequest<ResetPasswordPayload, Record<string, unknown>>;

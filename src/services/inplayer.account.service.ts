@@ -11,12 +11,10 @@ import type {
   GetCaptureStatus,
   GetCustomerConsents,
   GetCustomerConsentsResponse,
-  GetLocales,
   GetPublisherConsents,
   Login,
   Register,
   ResetPassword,
-  ServiceResponse,
   UpdateCaptureAnswers,
   UpdateCustomer,
   UpdateCustomerArgs,
@@ -340,15 +338,3 @@ function parseJson(value: string, fallback = {}) {
 export const canUpdateEmail = false;
 
 export const canChangePasswordWithOldPassword = true;
-
-export const getLocales: GetLocales = async () => {
-  return {
-    errors: [],
-    responseData: {
-      country: '',
-      currency: '',
-      locale: navigator.language,
-      ipAddress: '',
-    },
-  };
-};

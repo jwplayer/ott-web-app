@@ -143,10 +143,19 @@ export type GetOffersPayload = {
 };
 
 export type CreateOrderPayload = {
-  offer: Offer;
+  offerId: string;
   customerId: string;
   country: string;
   currency: string;
+  customerIP: string;
+  paymentMethodId?: number;
+  couponCode?: string;
+};
+
+export type CreateOrderArgs = {
+  offer: Offer;
+  customerId: string;
+  country: string;
   customerIP: string;
   paymentMethodId?: number;
   couponCode?: string;
@@ -200,11 +209,11 @@ export type GetEntitlementsResponse = {
 };
 
 export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
-export type GetOffer = CleengRequest<GetOfferPayload, Offer>;
-export type CreateOrder = CleengAuthRequest<CreateOrderPayload, CreateOrderResponse>;
-export type UpdateOrder = CleengAuthRequest<UpdateOrderPayload, UpdateOrderResponse>;
-export type GetPaymentMethods = CleengEmptyAuthRequest<PaymentMethodResponse>;
-export type PaymentWithoutDetails = CleengAuthRequest<PaymentWithoutDetailsPayload, Payment>;
-export type PaymentWithAdyen = CleengAuthRequest<PaymentWithAdyenPayload, Payment>;
-export type PaymentWithPayPal = CleengAuthRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
-export type GetEntitlements = CleengAuthRequest<GetEntitlementsPayload, GetEntitlementsResponse>;
+export type GetOffer = EnvironmentServiceRequest<GetOfferPayload, Offer>;
+export type CreateOrder = AuthServiceRequest<CreateOrderArgs, CreateOrderResponse>;
+export type UpdateOrder = AuthServiceRequest<UpdateOrderPayload, UpdateOrderResponse>;
+export type GetPaymentMethods = EmptyAuthServiceRequest<PaymentMethodResponse>;
+export type PaymentWithoutDetails = AuthServiceRequest<PaymentWithoutDetailsPayload, Payment>;
+export type PaymentWithAdyen = AuthServiceRequest<PaymentWithAdyenPayload, Payment>;
+export type PaymentWithPayPal = AuthServiceRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
+export type GetEntitlements = AuthServiceRequest<GetEntitlementsPayload, GetEntitlementsResponse>;

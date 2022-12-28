@@ -1,7 +1,9 @@
 import { get, post, patch } from './cleeng.service';
+import { getLocales } from './cleeng.account.service';
 
 import type {
   CreateOrder,
+  CreateOrderPayload,
   GetEntitlements,
   GetOffer,
   GetOffers,
@@ -34,11 +36,15 @@ export const getOffer: GetOffer = async (payload, sandbox) => {
 };
 
 export const createOrder: CreateOrder = async (payload, sandbox, jwt) => {
-  const createOrderPayload = {
+  const locales = await getLocales(sandbox);
+
+  if (locales.errors.length > 0) throw new Error(locales.errors[0]);
+
+  const createOrderPayload: CreateOrderPayload = {
     offerId: payload.offer.offerId,
     customerId: payload.customerId,
     country: payload.country,
-    currency: payload.currency,
+    currency: locales?.responseData?.currency || 'EUR',
     customerIP: payload.customerIP,
     paymentMethodId: payload.paymentMethodId,
   };

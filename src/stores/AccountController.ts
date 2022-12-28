@@ -14,7 +14,6 @@ import type {
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
   JwtDetails,
-  ServiceResponse,
 } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import * as persist from '#src/utils/persist';

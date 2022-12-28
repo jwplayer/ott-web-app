@@ -29,7 +29,6 @@ import type {
   UpdateCustomerConsentsPayload,
   UpdateCustomerPayload,
   ChangePasswordWithOldPassword,
-  ServiceResponse,
 } from '#types/account';
 
 export const setEnvironment = () => true;

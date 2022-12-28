@@ -3,7 +3,7 @@ import InPlayer, { GetAccessFee, MerchantPaymentMethod } from '@inplayer-org/inp
 import type {
   CardPaymentData,
   CreateOrder,
-  CreateOrderPayload,
+  CreateOrderArgs,
   GetEntitlements,
   GetOffers,
   GetPaymentMethods,
@@ -203,7 +203,7 @@ const processOffer = (offer: GetAccessFee): Offer => {
   } as Offer;
 };
 
-const processOrder = (payload: CreateOrderPayload): Order => {
+const processOrder = (payload: CreateOrderArgs): Order => {
   return {
     id: payload.offer.id,
     customerId: payload.customerId,
@@ -217,7 +217,7 @@ const processOrder = (payload: CreateOrderPayload): Order => {
       taxValue: 0,
     },
     taxRate: 0,
-    currency: payload.currency,
+    currency: payload.offer.offerCurrency || 'EUR',
     requiredPaymentDetails: true,
   } as Order;
 };

@@ -1,27 +1,22 @@
-import type { CardPaymentData, CreateOrderPayload, Offer, Order, PaymentMethod, PaymentWithPayPalResponse, UpdateOrderPayload } from '#types/checkout';
+import type { CardPaymentData, CreateOrderArgs, Offer, Order, PaymentMethod, PaymentWithPayPalResponse, UpdateOrderPayload } from '#types/checkout';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import useAccount from '#src/hooks/useAccount';
 import useService from '#src/hooks/useService';
 
 export const createOrder = async (offer: Offer, paymentMethodId?: number): Promise<unknown> => {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
-    return await useService(async ({ checkoutService, accountService, sandbox, authProviderId }) => {
+    return await useService(async ({ checkoutService, sandbox, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
 
-      const localesResponse = await accountService.getLocales(sandbox);
-
-      if (localesResponse.errors.length > 0) throw new Error(localesResponse.errors[0]);
-
-      const createOrderPayload: CreateOrderPayload = {
+      const createOrderArgs: CreateOrderArgs = {
         offer,
         customerId: customer.id,
         country: customer?.country || '',
-        currency: localesResponse?.responseData?.currency || 'EUR',
         customerIP: customer?.lastUserIp || '',
         paymentMethodId,
       };
 
-      const response = await checkoutService.createOrder(createOrderPayload, sandbox, jwt);
+      const response = await checkoutService.createOrder(createOrderArgs, sandbox, jwt);
 
       if (response.errors.length > 0) {
         useCheckoutStore.getState().setOrder(null);
