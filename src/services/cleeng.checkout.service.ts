@@ -63,7 +63,7 @@ export const paymentWithoutDetails: PaymentWithoutDetails = async (payload, sand
   return post(sandbox, '/payments', JSON.stringify(payload), jwt);
 };
 
-export const paymentWithAdyen: PaymentWithAdyen = async (payload, sandbox, jwt) => {
+export const iFrameCardPayment: PaymentWithAdyen = async (payload, sandbox, jwt) => {
   // @ts-ignore
   payload.customerIP = getOverrideIP();
   return post(sandbox, '/connectors/adyen/payments', JSON.stringify(payload), jwt);
@@ -86,4 +86,4 @@ export const getEntitlements: GetEntitlements = async (payload, sandbox, jwt = '
 
 export const cardPaymentProvider = 'adyen';
 
-export const cardPayment = async () => null;
+export const directPostCardPayment = async () => null;

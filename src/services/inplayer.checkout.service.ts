@@ -100,7 +100,7 @@ export const paymentWithPayPal: PaymentWithPayPal = async (payload) => {
   }
 };
 
-export const paymentWithAdyen: PaymentWithAdyen = async () => {
+export const iFrameCardPayment: PaymentWithAdyen = async () => {
   return {
     errors: [],
     responseData: {} as Payment,
@@ -145,7 +145,7 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
   }
 };
 
-export const cardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
+export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
   const payload = {
     number: cardPaymentPayload.cardNumber,
     cardName: cardPaymentPayload.cardholderName,

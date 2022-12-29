@@ -92,7 +92,7 @@ export const paymentWithoutDetails = async (): Promise<unknown> => {
   });
 };
 
-export const cardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
+export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
   return await useAccount(async () => {
     return await useService(async ({ checkoutService, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
@@ -100,14 +100,14 @@ export const cardPayment = async (cardPaymentPayload: CardPaymentData): Promise<
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
 
-      const response = await checkoutService.cardPayment(cardPaymentPayload, order);
+      const response = await checkoutService.directPostCardPayment(cardPaymentPayload, order);
 
       return response;
     });
   });
 };
 
-export const adyenPayment = async (paymentMethod: AdyenPaymentMethod): Promise<unknown> => {
+export const iFrameCardPayment = async (paymentMethod: AdyenPaymentMethod): Promise<unknown> => {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
@@ -115,7 +115,7 @@ export const adyenPayment = async (paymentMethod: AdyenPaymentMethod): Promise<u
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
 
-      const response = await checkoutService.paymentWithAdyen(
+      const response = await checkoutService.iFrameCardPayment(
         {
           orderId: order.id,
           card: paymentMethod,

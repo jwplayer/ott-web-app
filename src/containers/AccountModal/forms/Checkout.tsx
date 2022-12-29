@@ -14,16 +14,24 @@ import Adyen from '#components/Adyen/Adyen';
 import PayPal from '#components/PayPal/PayPal';
 import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { adyenPayment, cardPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
+import {
+  iFrameCardPayment,
+  directPostCardPayment,
+  createOrder,
+  getPaymentMethods,
+  paymentWithoutDetails,
+  paypalPayment,
+  updateOrder,
+} from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
 import useCheckAccess from '#src/hooks/useCheckAccess';
+import useClientIntegration from '#src/hooks/useClientIntegration';
 
 const Checkout = () => {
   const location = useLocation();
-  const { cleengSandbox } = useConfigStore((state) => state.getCleengData());
+  const { sandbox } = useClientIntegration();
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -52,7 +60,7 @@ const Checkout = () => {
     { couponCode: '', cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
     async () => {
       setUpdatingOrder(true);
-      await cardPayment(paymentDataForm.values);
+      await directPostCardPayment(paymentDataForm.values);
       intervalCheckAccess({ interval: 15000 });
     },
     object().shape({
@@ -197,7 +205,7 @@ const Checkout = () => {
       try {
         setUpdatingOrder(true);
         setPaymentError(undefined);
-        await adyenPayment(data.data.paymentMethod);
+        await iFrameCardPayment(data.data.paymentMethod);
         await reloadActiveSubscription({ delay: 2000 });
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {
@@ -224,7 +232,7 @@ const Checkout = () => {
       if (paymentMethod?.provider === 'stripe') {
         return <PaymentForm paymentDataForm={paymentDataForm} />;
       }
-      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={cleengSandbox ? 'test' : 'live'} />;
+      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={sandbox ? 'test' : 'live'} />;
     } else if (paymentMethod?.methodName === 'paypal') {
       return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
     }

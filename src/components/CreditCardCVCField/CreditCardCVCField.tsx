@@ -28,7 +28,7 @@ const CreditCardCVCField: React.FC<Props> = ({ value, onChange, error, ...props 
       value={value}
       onChange={formatCVC}
       pattern="\d*"
-      placeholder="123"
+      placeholder="###"
       required
     />
   );

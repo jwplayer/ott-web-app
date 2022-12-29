@@ -15,7 +15,6 @@
     "coupon_not_valid": "Coupon code is not valid",
     "credit_card": "Credit card",
     "credit_card_name": "Credit card name",
-    "credit_card_number": "1234 5678 9012 3456",
     "days_trial": "You will be charged tomorrow.",
     "days_trial_plural": "You will be charged after {{count}} days.",
     "discount_period": "For the first {{period}}",

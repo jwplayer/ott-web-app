@@ -15,7 +15,6 @@
     "coupon_not_valid": "",
     "credit_card": "",
     "credit_card_name": "",
-    "credit_card_number": "",
     "days_trial": "",
     "days_trial_plural": "",
     "discount_period": "",
@@ -41,7 +40,8 @@
     "waiting_for_payment": "",
     "welcome_description": "",
     "welcome_title": "",
-    "yearly": ""
+    "yearly": "",
+    "credit_card_number": ""
   },
   "choose_offer": {
     "benefits": {
