@@ -222,33 +222,31 @@ export const register = async (email: string, password: string) => {
 
     await afterLogin(auth, user, customerConsents, accessModel, false);
 
-    // @todo statement will be removed once the fav and history are done on InPlayer side
-    if (auth.refreshToken) {
-      await updatePersonalShelves();
-    }
+    await updatePersonalShelves();
   });
 };
 
 export const updatePersonalShelves = async () => {
-  return await useLoginContext(async ({ cleengSandbox, customerId, auth: { jwt } }) => {
-    const { watchHistory } = useWatchHistoryStore.getState();
-    const { favorites } = useFavoritesStore.getState();
+  await useAccount(async ({ customer, auth: { jwt } }) => {
+    await useService(async ({ accountService, sandbox }) => {
+      const { watchHistory } = useWatchHistoryStore.getState();
+      const { favorites } = useFavoritesStore.getState();
+      if (!watchHistory && !favorites) return;
 
-    if (!watchHistory && !favorites) return;
+      const personalShelfData = {
+        history: serializeWatchHistory(watchHistory),
+        favorites: serializeFavorites(favorites),
+      };
 
-    const personalShelfData = {
-      history: serializeWatchHistory(watchHistory),
-      favorites: serializeFavorites(favorites),
-    };
-
-    return await cleengAccountService.updateCustomer(
-      {
-        id: customerId,
-        externalData: personalShelfData,
-      },
-      cleengSandbox,
-      jwt,
-    );
+      return await accountService.updatePersonalShelves(
+        {
+          id: customer.id,
+          externalData: personalShelfData,
+        },
+        sandbox,
+        jwt,
+      );
+    });
   });
 };
 
@@ -485,20 +483,4 @@ async function afterLogin(
       getPublisherConsents(),
     ]);
   });
-}
-
-function useConfig<T>(callback: (config: { cleengId: string; cleengSandbox: boolean }) => T): T {
-  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
-
-  if (!cleengId) throw new Error('cleengId is not configured');
-
-  return callback({ cleengId, cleengSandbox });
-}
-
-function useLoginContext<T>(callback: (args: { cleengId: string; cleengSandbox: boolean; customerId: string; auth: AuthData }) => T): T {
-  const { user, auth } = useAccountStore.getState();
-
-  if (!user?.id || !auth?.jwt) throw new Error('user not logged in');
-
-  return useConfig((config) => callback({ ...config, customerId: user.id, auth }));
 }

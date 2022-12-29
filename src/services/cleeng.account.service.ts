@@ -29,6 +29,7 @@ import type {
   UpdateCustomerConsentsPayload,
   UpdateCustomerPayload,
   ChangePasswordWithOldPassword,
+  UpdatePersonalShelves,
 } from '#types/account';
 
 export const setEnvironment = () => true;
@@ -214,6 +215,10 @@ const handleErrors = (errors: ApiResponse['errors']) => {
   if (errors.length > 0) {
     throw new Error(errors[0]);
   }
+};
+
+export const updatePersonalShelves: UpdatePersonalShelves = async (payload, sandbox, jwt) => {
+  return await updateCustomer(payload, sandbox, jwt);
 };
 
 export const canUpdateEmail = true;

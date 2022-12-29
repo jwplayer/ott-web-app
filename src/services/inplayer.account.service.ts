@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 
 import type {
   AuthData,
@@ -8,6 +8,7 @@ import type {
   Consent,
   Customer,
   CustomerConsent,
+  ExternalData,
   GetCaptureStatus,
   GetCustomerConsents,
   GetCustomerConsentsResponse,
@@ -19,9 +20,12 @@ import type {
   UpdateCustomer,
   UpdateCustomerArgs,
   UpdateCustomerConsents,
+  UpdatePersonalShelves,
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
+import type { Favorite } from '#types/favorite';
+import type { WatchHistoryItem } from '#types/watchHistory';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -44,6 +48,7 @@ export const login: Login = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
+    user.externalData = await getCustomerExternalData();
 
     return {
       auth: processAuth(data),
@@ -68,6 +73,7 @@ export const register: Register = async ({ config, email, password }) => {
     });
 
     const user = processAccount(data.account);
+    user.externalData = await getCustomerExternalData();
 
     return {
       auth: processAuth(data),
@@ -94,6 +100,8 @@ export const getUser = async () => {
     const { data } = await InPlayer.Account.getAccountInfo();
 
     const user = processAccount(data);
+    user.externalData = await getCustomerExternalData();
+
     return {
       user,
       customerConsents: parseJson(user?.metadata?.consents as string, []) as CustomerConsent[],
@@ -254,6 +262,78 @@ export const subscribeToNotifications = async (uuid: string = '', onMessage: (pa
       onOpen: () => true,
     });
   }
+};
+
+export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
+  const { favorites, history } = payload.externalData;
+  const externalData = await getCustomerExternalData();
+  const currentFavoriteIds = externalData?.favorites?.map((e) => e.mediaid);
+  const payloadFavoriteIds = favorites?.map((e) => e.mediaid);
+
+  try {
+    history.forEach(async (history) => {
+      if (externalData?.history?.length) {
+        externalData?.history?.forEach(async (historyStore) => {
+          if (historyStore.mediaid === history.mediaid && historyStore.progress !== history.progress) {
+            await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
+          }
+        });
+      } else {
+        await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
+      }
+    });
+
+    if (payloadFavoriteIds.length > (currentFavoriteIds?.length || 0)) {
+      payloadFavoriteIds.forEach(async (mediaId) => {
+        if (!currentFavoriteIds?.includes(mediaId)) {
+          await InPlayer.Account.addToFavorites(mediaId);
+        }
+      });
+    } else {
+      currentFavoriteIds?.forEach(async (mediaid) => {
+        if (!payloadFavoriteIds?.includes(mediaid)) {
+          await InPlayer.Account.deleteFromFavorites(mediaid);
+        }
+      });
+    }
+
+    return {
+      errors: [],
+      responseData: {},
+    };
+  } catch {
+    throw new Error('Failed to update external data');
+  }
+};
+
+const getCustomerExternalData = async (): Promise<ExternalData> => {
+  const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
+
+  const favorites = favoritesData.data?.collection?.map((favorite: FavoritesData) => {
+    return processFavorite(favorite);
+  });
+
+  const history = historyData.data?.collection?.map((history: WatchHistory) => {
+    return processHistoryItem(history);
+  });
+
+  return {
+    favorites,
+    history,
+  };
+};
+
+const processFavorite = (favorite: FavoritesData): Favorite => {
+  return {
+    mediaid: favorite.media_id,
+  } as Favorite;
+};
+
+const processHistoryItem = (history: WatchHistory): WatchHistoryItem => {
+  return {
+    mediaid: history.media_id,
+    progress: history.progress,
+  } as WatchHistoryItem;
 };
 
 function processAccount(account: AccountData): Customer {

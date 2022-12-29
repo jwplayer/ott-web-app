@@ -302,6 +302,14 @@ export type UpdateCaptureAnswersPayload = {
   customerId: string;
 } & Capture;
 
+export type UpdatePersonalShelvesArgs = {
+  id: string;
+  externalData: {
+    history: SerializedWatchHistoryItem[];
+    favorites: SerializedFavorite[];
+  };
+};
+
 type Login = PromiseRequest<AuthArgs, AuthResponse>;
 type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;
@@ -314,5 +322,6 @@ type UpdateCaptureAnswers = AuthServiceRequest<UpdateCaptureStatusArgs, Capture>
 type ResetPassword = EnvironmentServiceRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = EnvironmentServiceRequest<ChangePasswordWithTokenPayload, ApiResponse<unknown>>;
 type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWithOldPasswordPayload, ApiResponse<unknown>>;
+type UpdatePersonalShelves = AuthServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type RefreshToken = EnvironmentServiceRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
