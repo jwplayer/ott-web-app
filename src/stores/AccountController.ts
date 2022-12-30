@@ -1,7 +1,5 @@
 import jwtDecode from 'jwt-decode';
 
-import { useNotificationStore } from './NotificationStore';
-
 import * as cleengAccountService from '#src/services/cleeng.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -22,7 +20,6 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
 import { queryClient } from '#src/providers/QueryProvider';
-import { NotificationsTypes } from '#src/hooks/useNotifications';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 
@@ -30,13 +27,6 @@ const PERSIST_KEY_ACCOUNT = 'auth';
 
 let subscription: undefined | (() => void);
 let refreshTimeout: number;
-
-// actions needed when listening to InPlayer websocket notifications
-const notifications: Partial<Record<NotificationsTypes, () => Promise<unknown>>> = {
-  [NotificationsTypes.ACCESS_GRANTED]: () => reloadActiveSubscription({ delay: 2000 }),
-  [NotificationsTypes.ACCESS_REVOKED]: reloadActiveSubscription,
-  [NotificationsTypes.ACCOUNT_LOGOUT]: logout,
-};
 
 export const authNeedsRefresh = (auth: AuthData): boolean => {
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
@@ -127,7 +117,7 @@ export const initializeAccount = async () => {
 export async function updateUser(
   values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string },
 ): Promise<ServiceResponse<Customer>> {
-  return await useService(async ({ accountService, sandbox }) => {
+  return await useService(async ({ accountService, sandbox = true }) => {
     if (!accountService) throw new Error('account service is not configured');
 
     useAccountStore.setState({ loading: true });
@@ -142,7 +132,7 @@ export async function updateUser(
       throw new Error('no auth');
     }
 
-    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox || true, auth.jwt);
+    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
 
     if (!response) {
       throw new Error('Unknown error');
@@ -244,7 +234,7 @@ export const register = async (email: string, password: string) => {
 
 export const updatePersonalShelves = async () => {
   await useAccount(async ({ customer, auth: { jwt } }) => {
-    await useService(async ({ accountService, sandbox }) => {
+    await useService(async ({ accountService, sandbox = true }) => {
       const { watchHistory } = useWatchHistoryStore.getState();
       const { favorites } = useFavoritesStore.getState();
       if (!watchHistory && !favorites) return;
@@ -259,7 +249,7 @@ export const updatePersonalShelves = async () => {
           id: customer.id,
           externalData: personalShelfData,
         },
-        sandbox || true,
+        sandbox,
         jwt,
       );
     });
@@ -331,10 +321,10 @@ export const getPublisherConsents = async (): Promise<GetPublisherConsentsRespon
 
 export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
-    return await useService(async ({ accountService, sandbox }) => {
+    return await useService(async ({ accountService, sandbox = true }) => {
       if (!accountService) throw new Error('account service is not configured');
 
-      const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox || true, jwt);
+      const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox, jwt);
 
       return responseData;
     });
@@ -343,10 +333,10 @@ export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
 
 export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
   return await useAccount(async ({ customer, auth, customerConsents }) => {
-    return await useService(async ({ accountService, accessModel, sandbox }) => {
+    return await useService(async ({ accountService, accessModel, sandbox = true }) => {
       if (!accountService) throw new Error('account service is not configured');
 
-      const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox || true, auth.jwt);
+      const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox, auth.jwt);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -358,7 +348,7 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
 };
 
 export const resetPassword = async (email: string, resetUrl: string) => {
-  return await useService(async ({ accountService, sandbox, authProviderId }) => {
+  return await useService(async ({ accountService, sandbox = true, authProviderId }) => {
     if (!accountService) throw new Error('account service is not configured');
 
     const response = await accountService.resetPassword(
@@ -367,7 +357,7 @@ export const resetPassword = async (email: string, resetUrl: string) => {
         publisherId: authProviderId,
         resetUrl,
       },
-      sandbox || true,
+      sandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -377,10 +367,10 @@ export const resetPassword = async (email: string, resetUrl: string) => {
 };
 
 export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
-  return await useService(async ({ accountService, sandbox }) => {
+  return await useService(async ({ accountService, sandbox = true }) => {
     if (!accountService) throw new Error('account service is not configured');
 
-    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox || true);
+    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
     return response?.responseData;
@@ -388,12 +378,12 @@ export const changePasswordWithOldPassword = async (oldPassword: string, newPass
 };
 
 export const changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
-  return await useService(async ({ accountService, sandbox, authProviderId }) => {
+  return await useService(async ({ accountService, sandbox = true, authProviderId }) => {
     if (!accountService) throw new Error('account service is not configured');
 
     const response = await accountService.changePasswordWithResetToken(
       { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
-      sandbox || true,
+      sandbox,
     );
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
@@ -403,7 +393,7 @@ export const changePasswordWithToken = async (customerEmail: string, newPassword
 
 export const updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
   return await useAccount(async ({ customerId, auth: { jwt } }) => {
-    return await useService(async ({ subscriptionService, sandbox }) => {
+    return await useService(async ({ subscriptionService, sandbox = true }) => {
       if (!subscriptionService) throw new Error('subscription service is not configured');
       const { subscription } = useAccountStore.getState();
       if (!subscription) throw new Error('user has no active subscription');
@@ -415,13 +405,13 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
           status,
           unsubscribeUrl: subscription.unsubscribeUrl,
         },
-        sandbox || true,
+        sandbox,
         jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-      await reloadActiveSubscription();
+      await reloadActiveSubscription({ delay: 2000 });
 
       return response?.responseData;
     });
@@ -430,13 +420,13 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
 
 export async function checkEntitlements(offerId?: string): Promise<unknown> {
   return await useAccount(async ({ auth: { jwt } }) => {
-    return await useService(async ({ checkoutService, sandbox }) => {
+    return await useService(async ({ checkoutService, sandbox = true }) => {
       if (!checkoutService) throw new Error('checkout service is not configured');
       if (!offerId) {
         return false;
       }
-      const response = await checkoutService.getEntitlements({ offerId }, sandbox || true, jwt);
-      return !!response;
+      const { responseData } = await checkoutService.getEntitlements({ offerId }, sandbox, jwt);
+      return !!responseData?.accessGranted;
     });
   });
 }
@@ -444,7 +434,7 @@ export async function checkEntitlements(offerId?: string): Promise<unknown> {
 export async function reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> {
   useAccountStore.setState({ loading: true });
   return await useAccount(async ({ customerId, auth: { jwt } }) => {
-    return await useService(async ({ subscriptionService, sandbox, config }) => {
+    return await useService(async ({ subscriptionService, sandbox = true, config }) => {
       if (!subscriptionService) throw new Error('subscription service is not configured');
       // The subscription data takes a few seconds to load after it's purchased,
       // so here's a delay mechanism to give it time to process
@@ -456,9 +446,9 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
         });
       }
       const [activeSubscription, transactions, activePayment] = await Promise.all([
-        subscriptionService.getActiveSubscription({ sandbox: sandbox || true, customerId, jwt, config }),
-        subscriptionService.getAllTransactions({ sandbox: sandbox || true, customerId, jwt }),
-        subscriptionService.getActivePayment({ sandbox: sandbox || true, customerId, jwt }),
+        subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
+        subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
+        subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
       ]);
       // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
       await queryClient.invalidateQueries('entitlements');
@@ -494,30 +484,14 @@ async function afterLogin(
   accessModel: string,
   shouldSubscriptionReload: boolean = true,
 ) {
-  await useService(async ({ accountService }) => {
-    useAccountStore.setState({
-      auth,
-      user,
-      customerConsents,
-    });
-
-    // subscribe to listen to web socket notifications
-    await accountService?.subscribeToNotifications(user.uuid, (message) => {
-      const notification = JSON.parse(message);
-
-      notifications[notification.type as NotificationsTypes]?.();
-
-      if (notification) {
-        useNotificationStore.setState({
-          type: notification.type,
-          resource: notification.resource,
-        });
-      }
-    });
-
-    return await Promise.allSettled([
-      accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
-      getPublisherConsents(),
-    ]);
+  useAccountStore.setState({
+    auth,
+    user,
+    customerConsents,
   });
+
+  return await Promise.allSettled([
+    accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
+    getPublisherConsents(),
+  ]);
 }

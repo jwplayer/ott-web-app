@@ -5,6 +5,7 @@ import type {
   CreateOrder,
   CreateOrderArgs,
   GetEntitlements,
+  GetEntitlementsResponse,
   GetOffers,
   GetPaymentMethods,
   Offer,
@@ -75,9 +76,11 @@ const processPaymentMethod = (method: MerchantPaymentMethod): PaymentMethod => {
 export const paymentWithPayPal: PaymentWithPayPal = async (payload) => {
   try {
     const response = await InPlayer.Payment.getPayPalParams({
-      origin: payload.successUrl,
+      origin: `${window.location.origin}?u=waiting-for-payment`,
       accessFeeId: payload.order.id,
       paymentMethod: 2,
+      //@ts-ignore
+      voucherCode: payload.couponCode,
     });
     //@ts-ignore
     //TODO fix this type in InPlayer SDK
@@ -177,16 +180,20 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData,
 export const getEntitlements: GetEntitlements = async ({ offerId }) => {
   try {
     const response = await InPlayer.Asset.checkAccessForAsset(parseInt(offerId));
-    return {
-      errors: [],
-      responseData: {
-        accessGranted: true,
-        expiresAt: response.data.expires_at,
-      },
-    };
+    return processEntitlements(response.data.expires_at, true);
   } catch {
-    throw new Error('no access for this resource');
+    return processEntitlements();
   }
+};
+
+const processEntitlements = (expiresAt: number = 0, accessGranted: boolean = false): ServiceResponse<GetEntitlementsResponse> => {
+  return {
+    errors: [],
+    responseData: {
+      accessGranted,
+      expiresAt,
+    },
+  };
 };
 
 const processOffer = (offer: GetAccessFee): Offer => {

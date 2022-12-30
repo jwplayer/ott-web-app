@@ -16,7 +16,7 @@ const useOffers = () => {
   const { clientOffers, sandbox } = useClientIntegration();
 
   const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
-  if (!checkoutService) throw new Error('checkout service not configured');
+  if (!checkoutService) throw new Error('checkout service is not available');
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
