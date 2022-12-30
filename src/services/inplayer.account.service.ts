@@ -256,11 +256,16 @@ export const resetPassword: ResetPassword = async ({ customerEmail, publisherId 
 };
 
 export const subscribeToNotifications = async (uuid: string = '', onMessage: (payload: string) => void) => {
-  if (!InPlayer.Notifications.isSubscribed()) {
-    InPlayer.subscribe(uuid, {
-      onMessage: onMessage,
-      onOpen: () => true,
-    });
+  try {
+    if (!InPlayer.Notifications.isSubscribed()) {
+      InPlayer.subscribe(uuid, {
+        onMessage: onMessage,
+        onOpen: () => true,
+      });
+    }
+    return true;
+  } catch {
+    return false;
   }
 };
 

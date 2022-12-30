@@ -1,7 +1,5 @@
 import jwtDecode from 'jwt-decode';
 
-import { useNotificationStore } from './NotificationStore';
-
 import * as cleengAccountService from '#src/services/cleeng.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -22,7 +20,6 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
 import { queryClient } from '#src/providers/QueryProvider';
-import { NotificationsTypes } from '#src/hooks/useNotifications';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 
@@ -30,13 +27,6 @@ const PERSIST_KEY_ACCOUNT = 'auth';
 
 let subscription: undefined | (() => void);
 let refreshTimeout: number;
-
-// actions needed when listening to InPlayer websocket notifications
-const notifications: Partial<Record<NotificationsTypes, () => Promise<unknown>>> = {
-  [NotificationsTypes.ACCESS_GRANTED]: () => reloadActiveSubscription({ delay: 2000 }),
-  [NotificationsTypes.ACCESS_REVOKED]: reloadActiveSubscription,
-  [NotificationsTypes.ACCOUNT_LOGOUT]: logout,
-};
 
 export const authNeedsRefresh = (auth: AuthData): boolean => {
   const decodedToken: JwtDetails = jwtDecode(auth.jwt);
@@ -398,8 +388,8 @@ export async function checkEntitlements(offerId?: string): Promise<unknown> {
       if (!offerId) {
         return false;
       }
-      const response = await checkoutService.getEntitlements({ offerId }, sandbox, jwt);
-      return !!response;
+      const { responseData } = await checkoutService.getEntitlements({ offerId }, sandbox, jwt);
+      return !!responseData?.accessGranted;
     });
   });
 }
@@ -457,30 +447,14 @@ async function afterLogin(
   accessModel: string,
   shouldSubscriptionReload: boolean = true,
 ) {
-  await useService(async ({ accountService }) => {
-    useAccountStore.setState({
-      auth,
-      user,
-      customerConsents,
-    });
-
-    // subscribe to listen to web socket notifications
-    await accountService.subscribeToNotifications(user.uuid, (message) => {
-      const notification = JSON.parse(message);
-
-      notifications[notification.type as NotificationsTypes]?.();
-
-      if (notification) {
-        useNotificationStore.setState({
-          type: notification.type,
-          resource: notification.resource,
-        });
-      }
-    });
-
-    return await Promise.allSettled([
-      accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
-      getPublisherConsents(),
-    ]);
+  useAccountStore.setState({
+    auth,
+    user,
+    customerConsents,
   });
+
+  return await Promise.allSettled([
+    accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
+    getPublisherConsents(),
+  ]);
 }

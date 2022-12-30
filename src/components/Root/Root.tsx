@@ -13,11 +13,9 @@ import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
-import useNotifications from '#src/hooks/useNotifications';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
-  useNotifications();
   const settingsQuery = useQuery('settings-init', initSettings, {
     enabled: true,
     retry: 1,

@@ -1,3 +1,5 @@
+import { subscribeToNotifications } from './NotificationsController';
+
 import type { CardPaymentData, CreateOrderArgs, Offer, Order, PaymentMethod, PaymentWithPayPalResponse, UpdateOrderPayload } from '#types/checkout';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import useAccount from '#src/hooks/useAccount';
@@ -93,12 +95,15 @@ export const paymentWithoutDetails = async (): Promise<unknown> => {
 };
 
 export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
-  return await useAccount(async () => {
+  return await useAccount(async ({ customer }) => {
     return await useService(async ({ checkoutService, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
 
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
+
+      // subscribe to listen to inplayer websocket notifications
+      await subscribeToNotifications(customer?.uuid);
 
       const response = await checkoutService.directPostCardPayment(cardPaymentPayload, order);
 
@@ -132,7 +137,7 @@ export const iFrameCardPayment = async (paymentMethod: AdyenPaymentMethod): Prom
   });
 };
 
-export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string): Promise<PaymentWithPayPalResponse> => {
+export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string, couponCode: string = ''): Promise<PaymentWithPayPalResponse> => {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
@@ -147,6 +152,7 @@ export const paypalPayment = async (successUrl: string, cancelUrl: string, error
           successUrl,
           cancelUrl,
           errorUrl,
+          couponCode,
         },
         sandbox,
         jwt,

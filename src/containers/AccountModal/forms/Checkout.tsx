@@ -185,7 +185,8 @@ const Checkout = () => {
       const cancelUrl = addQueryParams(window.location.href, { u: 'payment-cancelled' });
       const errorUrl = addQueryParams(window.location.href, { u: 'payment-error' });
       const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
-      const response = await paypalPayment(successUrl, cancelUrl, errorUrl);
+
+      const response = await paypalPayment(successUrl, cancelUrl, errorUrl, paymentDataForm.values.couponCode);
 
       if (response.redirectUrl) {
         window.location.href = response.redirectUrl;
