@@ -1,7 +1,7 @@
 import { useQueries } from 'react-query';
 import shallow from 'zustand/shallow';
 
-import useService from './useService';
+import useService, { CheckoutService } from './useService';
 import useClientIntegration from './useClientIntegration';
 
 import type { MediaOffer } from '#types/media';
@@ -33,7 +33,8 @@ type QueryResult = {
  *
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
-  const { checkoutService } = useService((checkoutService) => checkoutService);
+  const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
+
   const { sandbox } = useClientIntegration();
   const { accessModel } = useConfigStore();
   const { user, subscription, auth } = useAccountStore(
@@ -52,7 +53,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => checkoutService.getEntitlements({ offerId }, sandbox, auth?.jwt || ''),
+      queryFn: () => checkoutService?.getEntitlements({ offerId }, sandbox, auth?.jwt || ''),
       enabled: !!playlistItem && !!auth?.jwt && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
     })),

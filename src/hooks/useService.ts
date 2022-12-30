@@ -7,15 +7,19 @@ import * as cleengAccountService from '#src/services/cleeng.account.service';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { AccessModel, Config } from '#types/Config';
 
+export type CheckoutService = typeof inplayerCheckoutService | typeof cleengCheckoutService | undefined;
+export type SubscriptionService = typeof inplayerSubscriptionService | typeof cleengSubscriptionService | undefined;
+export type AccountService = typeof inplayerAccountService | typeof cleengAccountService | undefined;
+
 function useService<T>(
   callback: (args: {
-    accountService: typeof inplayerAccountService | typeof cleengAccountService;
-    subscriptionService: typeof inplayerSubscriptionService | typeof cleengSubscriptionService;
-    checkoutService: typeof inplayerCheckoutService | typeof cleengCheckoutService;
+    accountService?: AccountService;
+    subscriptionService?: SubscriptionService;
+    checkoutService?: CheckoutService;
     config: Config;
     accessModel: AccessModel;
-    sandbox: boolean;
-    authProviderId: string;
+    sandbox?: boolean;
+    authProviderId?: string;
   }) => T,
 ): T {
   const { config, accessModel } = useConfigStore.getState();
@@ -41,9 +45,13 @@ function useService<T>(
       sandbox: !!cleeng.useSandbox,
       authProviderId: cleeng?.id,
     });
+  } else {
+    //SVOD
+    return callback({
+      config,
+      accessModel,
+    });
   }
-
-  throw new Error('No account service available');
 }
 
 export default useService;

@@ -7,6 +7,7 @@ export const createOrder = async (offer: Offer, paymentMethodId?: number): Promi
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not configured');
 
       const createOrderArgs: CreateOrderArgs = {
         offer,
@@ -16,12 +17,12 @@ export const createOrder = async (offer: Offer, paymentMethodId?: number): Promi
         paymentMethodId,
       };
 
-      const response = await checkoutService.createOrder(createOrderArgs, sandbox, jwt);
+      const response = await checkoutService.createOrder(createOrderArgs, sandbox || true, jwt);
 
-      if (response.errors.length > 0) {
+      if (response?.errors?.length > 0) {
         useCheckoutStore.getState().setOrder(null);
 
-        throw new Error(response.errors[0]);
+        throw new Error(response?.errors[0]);
       }
 
       useCheckoutStore.getState().setOrder(response.responseData?.order);
@@ -33,6 +34,7 @@ export const updateOrder = async (order: Order, paymentMethodId?: number, coupon
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not configured');
 
       const updateOrderPayload: UpdateOrderPayload = {
         order,
@@ -40,7 +42,7 @@ export const updateOrder = async (order: Order, paymentMethodId?: number, coupon
         couponCode,
       };
 
-      const response = await checkoutService.updateOrder(updateOrderPayload, sandbox, jwt);
+      const response = await checkoutService?.updateOrder(updateOrderPayload, sandbox || true, jwt);
       if (response.errors.length > 0) {
         // clear the order when the order doesn't exist on the server
         if (response.errors[0].includes(`Order with ${order.id} not found`)) {
@@ -59,11 +61,13 @@ export const updateOrder = async (order: Order, paymentMethodId?: number, coupon
 export const getPaymentMethods = async (): Promise<PaymentMethod[]> => {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox }) => {
+      if (!checkoutService) throw new Error('checkout service is not configured');
+
       const { paymentMethods } = useCheckoutStore.getState();
 
       if (paymentMethods) return paymentMethods; // already fetched payment methods
 
-      const response = await checkoutService.getPaymentMethods(sandbox, jwt);
+      const response = await checkoutService?.getPaymentMethods(sandbox || true, jwt);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -77,12 +81,14 @@ export const getPaymentMethods = async (): Promise<PaymentMethod[]> => {
 export const paymentWithoutDetails = async (): Promise<unknown> => {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox, authProviderId }) => {
+      if (!checkoutService) throw new Error('checkout service is not configured');
+
       const { order } = useCheckoutStore.getState();
 
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
 
-      const response = await checkoutService.paymentWithoutDetails({ orderId: order.id }, sandbox, jwt);
+      const response = await checkoutService?.paymentWithoutDetails({ orderId: order.id }, sandbox || true, jwt);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
       if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
@@ -100,7 +106,7 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData)
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
 
-      const response = await checkoutService.directPostCardPayment(cardPaymentPayload, order);
+      const response = await checkoutService?.directPostCardPayment(cardPaymentPayload, order);
 
       return response;
     });
@@ -114,13 +120,14 @@ export const iFrameCardPayment = async (paymentMethod: AdyenPaymentMethod): Prom
 
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not configured');
 
-      const response = await checkoutService.iFrameCardPayment(
+      const response = await checkoutService?.iFrameCardPayment(
         {
           orderId: order.id,
           card: paymentMethod,
         },
-        sandbox,
+        sandbox || true,
         jwt,
       );
 
@@ -133,22 +140,22 @@ export const iFrameCardPayment = async (paymentMethod: AdyenPaymentMethod): Prom
 };
 
 export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string): Promise<PaymentWithPayPalResponse> => {
-  return await useAccount(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
 
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
-      if (!customer) throw new Error('user is not logged in');
+      if (!checkoutService) throw new Error('checkout service is not configured');
 
-      const response = await checkoutService.paymentWithPayPal(
+      const response = await checkoutService?.paymentWithPayPal(
         {
           order: order,
           successUrl,
           cancelUrl,
           errorUrl,
         },
-        sandbox,
+        sandbox || true,
         jwt,
       );
 

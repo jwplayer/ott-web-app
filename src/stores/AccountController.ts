@@ -77,6 +77,10 @@ export const handleVisibilityChange = () => {
 
 export const initializeAccount = async () => {
   await useService(async ({ accountService, config }) => {
+    if (!accountService) {
+      useAccountStore.setState({ loading: false });
+      return;
+    }
     useAccountStore.setState({
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
@@ -124,6 +128,8 @@ export async function updateUser(
   values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string },
 ): Promise<ServiceResponse<Customer>> {
   return await useService(async ({ accountService, sandbox }) => {
+    if (!accountService) throw new Error('account service is not configured');
+
     useAccountStore.setState({ loading: true });
 
     const { auth, user, canUpdateEmail } = useAccountStore.getState();
@@ -136,7 +142,7 @@ export async function updateUser(
       throw new Error('no auth');
     }
 
-    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
+    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox || true, auth.jwt);
 
     if (!response) {
       throw new Error('Unknown error');
@@ -166,9 +172,12 @@ export const refreshJwtToken = async (auth: AuthData) => {
 
 export const getAccount = async (auth: AuthData) => {
   await useService(async ({ accountService, config, accessModel }) => {
-    const response = await accountService.getUser({ config, auth });
+    if (!accountService) throw new Error('account service is not configured');
 
-    await afterLogin(auth, response.user, response.customerConsents, accessModel);
+    const response = await accountService.getUser({ config, auth });
+    if (response) {
+      await afterLogin(auth, response.user, response.customerConsents, accessModel);
+    }
 
     useAccountStore.setState({ loading: false });
   });
@@ -176,14 +185,17 @@ export const getAccount = async (auth: AuthData) => {
 
 export const login = async (email: string, password: string) => {
   await useService(async ({ accountService, config, accessModel }) => {
+    if (!accountService) throw new Error('account service is not configured');
     useAccountStore.setState({ loading: true });
 
     const response = await accountService.login({ config, email, password });
+    if (response) {
+      await afterLogin(response.auth, response.user, response.customerConsents, accessModel);
 
-    await afterLogin(response.auth, response.user, response.customerConsents, accessModel);
+      await restoreFavorites();
+      await restoreWatchHistory();
+    }
 
-    await restoreFavorites();
-    await restoreWatchHistory();
     useAccountStore.setState({ loading: false });
   });
 };
@@ -211,16 +223,20 @@ export async function logout() {
     await restoreWatchHistory();
 
     // it's needed for the InPlayer SDK
-    await accountService.logout();
+    await accountService?.logout();
   });
 }
 
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
-    useAccountStore.setState({ loading: true });
-    const { auth, user, customerConsents } = await accountService.register({ config, email, password });
+    if (!accountService) throw new Error('account service is not configured');
 
-    await afterLogin(auth, user, customerConsents, accessModel, false);
+    useAccountStore.setState({ loading: true });
+    const response = await accountService.register({ config, email, password });
+    if (response) {
+      const { auth, user, customerConsents } = response;
+      await afterLogin(auth, user, customerConsents, accessModel, false);
+    }
 
     await updatePersonalShelves();
   });
@@ -238,12 +254,12 @@ export const updatePersonalShelves = async () => {
         favorites: serializeFavorites(favorites),
       };
 
-      return await accountService.updatePersonalShelves(
+      return await accountService?.updatePersonalShelves(
         {
           id: customer.id,
           externalData: personalShelfData,
         },
-        sandbox,
+        sandbox || true,
         jwt,
       );
     });
@@ -253,10 +269,12 @@ export const updatePersonalShelves = async () => {
 export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, config }) => {
+      if (!accountService) throw new Error('account service is not configured');
+
       useAccountStore.setState({ loading: true });
 
       try {
-        const response = await accountService.updateCustomerConsents({
+        const response = await accountService?.updateCustomerConsents({
           jwt,
           config,
           customer,
@@ -265,10 +283,13 @@ export const updateConsents = async (customerConsents: CustomerConsent[]): Promi
 
         if (response?.consents) {
           useAccountStore.setState({ customerConsents: response.consents });
+          return {
+            responseData: response.consents,
+            errors: [],
+          };
         }
-
         return {
-          responseData: response.consents,
+          responseData: [],
           errors: [],
         };
       } finally {
@@ -283,6 +304,8 @@ export const updateConsents = async (customerConsents: CustomerConsent[]): Promi
 export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse> {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, config }) => {
+      if (!accountService) throw new Error('account service is not configured');
+
       const response = await accountService.getCustomerConsents({ config, customer, jwt });
 
       if (response?.consents) {
@@ -296,6 +319,8 @@ export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse
 
 export const getPublisherConsents = async (): Promise<GetPublisherConsentsResponse> => {
   return await useService(async ({ accountService, config }) => {
+    if (!accountService) throw new Error('account service is not configured');
+
     const response = await accountService.getPublisherConsents(config);
 
     useAccountStore.setState({ publisherConsents: response.consents });
@@ -307,7 +332,9 @@ export const getPublisherConsents = async (): Promise<GetPublisherConsentsRespon
 export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, sandbox }) => {
-      const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox, jwt);
+      if (!accountService) throw new Error('account service is not configured');
+
+      const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox || true, jwt);
 
       return responseData;
     });
@@ -317,7 +344,9 @@ export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
 export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
   return await useAccount(async ({ customer, auth, customerConsents }) => {
     return await useService(async ({ accountService, accessModel, sandbox }) => {
-      const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox, auth.jwt);
+      if (!accountService) throw new Error('account service is not configured');
+
+      const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox || true, auth.jwt);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -330,13 +359,15 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
 
 export const resetPassword = async (email: string, resetUrl: string) => {
   return await useService(async ({ accountService, sandbox, authProviderId }) => {
+    if (!accountService) throw new Error('account service is not configured');
+
     const response = await accountService.resetPassword(
       {
         customerEmail: email,
         publisherId: authProviderId,
         resetUrl,
       },
-      sandbox,
+      sandbox || true,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -347,7 +378,9 @@ export const resetPassword = async (email: string, resetUrl: string) => {
 
 export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
   return await useService(async ({ accountService, sandbox }) => {
-    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
+    if (!accountService) throw new Error('account service is not configured');
+
+    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox || true);
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
     return response?.responseData;
@@ -356,9 +389,11 @@ export const changePasswordWithOldPassword = async (oldPassword: string, newPass
 
 export const changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
   return await useService(async ({ accountService, sandbox, authProviderId }) => {
+    if (!accountService) throw new Error('account service is not configured');
+
     const response = await accountService.changePasswordWithResetToken(
       { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
-      sandbox,
+      sandbox || true,
     );
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
@@ -369,17 +404,18 @@ export const changePasswordWithToken = async (customerEmail: string, newPassword
 export const updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
   return await useAccount(async ({ customerId, auth: { jwt } }) => {
     return await useService(async ({ subscriptionService, sandbox }) => {
+      if (!subscriptionService) throw new Error('subscription service is not configured');
       const { subscription } = useAccountStore.getState();
       if (!subscription) throw new Error('user has no active subscription');
 
-      const response = await subscriptionService.updateSubscription(
+      const response = await subscriptionService?.updateSubscription(
         {
           customerId,
           offerId: subscription.offerId,
           status,
           unsubscribeUrl: subscription.unsubscribeUrl,
         },
-        sandbox,
+        sandbox || true,
         jwt,
       );
 
@@ -387,7 +423,7 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
 
       await reloadActiveSubscription();
 
-      return response.responseData;
+      return response?.responseData;
     });
   });
 };
@@ -395,10 +431,11 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
 export async function checkEntitlements(offerId?: string): Promise<unknown> {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox }) => {
+      if (!checkoutService) throw new Error('checkout service is not configured');
       if (!offerId) {
         return false;
       }
-      const response = await checkoutService.getEntitlements({ offerId }, sandbox, jwt);
+      const response = await checkoutService.getEntitlements({ offerId }, sandbox || true, jwt);
       return !!response;
     });
   });
@@ -408,6 +445,7 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
   useAccountStore.setState({ loading: true });
   return await useAccount(async ({ customerId, auth: { jwt } }) => {
     return await useService(async ({ subscriptionService, sandbox, config }) => {
+      if (!subscriptionService) throw new Error('subscription service is not configured');
       // The subscription data takes a few seconds to load after it's purchased,
       // so here's a delay mechanism to give it time to process
       if (delay > 0) {
@@ -417,11 +455,10 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
           }, delay);
         });
       }
-
       const [activeSubscription, transactions, activePayment] = await Promise.all([
-        subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
-        subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
-        subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
+        subscriptionService.getActiveSubscription({ sandbox: sandbox || true, customerId, jwt, config }),
+        subscriptionService.getAllTransactions({ sandbox: sandbox || true, customerId, jwt }),
+        subscriptionService.getActivePayment({ sandbox: sandbox || true, customerId, jwt }),
       ]);
       // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
       await queryClient.invalidateQueries('entitlements');
@@ -465,7 +502,7 @@ async function afterLogin(
     });
 
     // subscribe to listen to web socket notifications
-    await accountService.subscribeToNotifications(user.uuid, (message) => {
+    await accountService?.subscribeToNotifications(user.uuid, (message) => {
       const notification = JSON.parse(message);
 
       notifications[notification.type as NotificationsTypes]?.();

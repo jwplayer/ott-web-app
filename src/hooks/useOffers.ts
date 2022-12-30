@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import shallow from 'zustand/shallow';
 
 import useClientIntegration from './useClientIntegration';
-import useService from './useService';
+import useService, { CheckoutService } from './useService';
 
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -14,7 +14,9 @@ import { isSVODOffer } from '#src/utils/subscription';
 const useOffers = () => {
   const { accessModel } = useConfigStore();
   const { clientOffers, sandbox } = useClientIntegration();
-  const { checkoutService } = useService((checkoutService) => checkoutService);
+
+  const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
+  if (!checkoutService) throw new Error('checkout service not configured');
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
