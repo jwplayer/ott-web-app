@@ -5,8 +5,12 @@ export interface TestConfig {
 
 export const testConfigs = {
   inplayerAuth: {
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/daily-avod.json',
+    label: 'InPlayer AUTHVOD',
+  },
+  inplayerSvod: {
     id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/demo.json',
-    label: 'InPlayer Authvod',
+    label: 'InPlayer SVOD',
   },
   inplayerHosted: {
     id: 'a2kbjdv0',
