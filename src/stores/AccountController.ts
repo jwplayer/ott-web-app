@@ -74,6 +74,7 @@ export const initializeAccount = async () => {
     useAccountStore.setState({
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
+      canRenewSubscription: accountService.canRenewSubscription,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
     });
     accountService.setEnvironment(config);

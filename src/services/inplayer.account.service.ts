@@ -423,3 +423,5 @@ function parseJson(value: string, fallback = {}) {
 export const canUpdateEmail = false;
 
 export const canChangePasswordWithOldPassword = true;
+
+export const canRenewSubscription = false;
