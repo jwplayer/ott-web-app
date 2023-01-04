@@ -67,8 +67,6 @@ export type InPlayer = {
   useSandbox?: boolean;
 };
 export type Features = {
-  enableCasting?: boolean;
-  enableSharing?: boolean;
   recommendationsPlaylist?: string | null;
   searchPlaylist?: string | null;
   favoritesList?: string | null;

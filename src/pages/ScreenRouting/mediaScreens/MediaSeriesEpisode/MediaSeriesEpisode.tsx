@@ -31,6 +31,7 @@ import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import useGetSeriesId from '#src/hooks/useGetSeriesId';
 import Loading from '#src/pages/Loading/Loading';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   const breakpoint = useBreakpoint();
@@ -47,7 +48,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { styling, features, siteName, custom } = config;
   const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
+  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 

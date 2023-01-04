@@ -30,7 +30,7 @@ These are the available configuration parameters for the JW OTT Webapp's config.
 
 **player**
 
-Player key of your custom created player in the [JW Player dashboard](https://dashboard.jwplayer.com).
+Player key of the default player.
 
 ---
 
@@ -166,6 +166,12 @@ You can change the background color of the shelf with the help of this property 
 
 ---
 
+**custom.enableSharing** (optional)
+
+Set this parameter to `true` if you want to enable the "Share" button on the video and series detail screen.
+
+---
+
 **styling**
 
 Use the `styling` object to define extra styles for your application.
@@ -237,7 +243,6 @@ Use the `features` object to define extra properties for your app.
 ```
 {
   "features": {
-    "enableSharing": true,
     "recommendationsPlaylist": "IHBjjkSN",
     "searchPlaylist": "D4soEviP"
 }
@@ -245,11 +250,6 @@ Use the `features` object to define extra properties for your app.
 
 ---
 
-**features.enableSharing** (optional)
-
-Set this parameter to `false` if you want to disable the "Share" button on the video and series detail screen.
-
----
 
 **features.recommendationsPlaylist** (optional)
 
