@@ -84,9 +84,6 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
   let config = await loadConfig(configSource);
   config.assets = config.assets || {};
 
-  //set default value for the OTT shared player
-  config.player = 'M4qoGvUk';
-
   // make sure the banner always defaults to the JWP banner when not defined in the config
   if (!config.assets.banner) {
     config.assets.banner = defaultConfig.assets.banner;
