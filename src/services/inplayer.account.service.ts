@@ -34,7 +34,7 @@ enum InPlayerEnv {
 }
 
 export const setEnvironment = (config: Config) => {
-  const env: string = config.integrations?.inplayer?.useSandbox ? InPlayerEnv.Daily : InPlayerEnv.Production;
+  const env: string = config.integrations?.inplayer?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
 };
 

@@ -4,12 +4,20 @@ export interface TestConfig {
 }
 
 export const testConfigs = {
+  inplayerAuthStaging: {
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/authvod-staging.json',
+    label: 'InPlayer AUTHVOD (Staging)',
+  },
+  inplayerSvodStaging: {
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/svod-staging.json',
+    label: 'InPlayer SVOD (Staging)',
+  },
   inplayerAuth: {
-    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/daily-avod.json',
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/authvod-production.json',
     label: 'InPlayer AUTHVOD',
   },
   inplayerSvod: {
-    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/demo.json',
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/svod-production.json',
     label: 'InPlayer SVOD',
   },
   inplayerHosted: {
