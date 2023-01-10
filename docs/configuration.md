@@ -28,12 +28,6 @@ Even sharing URL's should work as long as the query parameter of the desired con
 
 These are the available configuration parameters for the JW OTT Webapp's config.json file.
 
-**player**
-
-Player key of the default player.
-
----
-
 **siteName**
 
 Title of your website. JW OTT Webapp will automatically update the `<title>` tag of your site to this value when the site loads. If **siteName** is not set, the default name `My OTT Application` will be used.
