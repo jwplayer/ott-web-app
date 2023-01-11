@@ -25,16 +25,17 @@ import { generateMovieJSONLD } from '#src/utils/structuredData';
 import type { ScreenComponent } from '#types/screens';
 import type { Playlist } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playlist } }) => {
   const { t } = useTranslation('epg');
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, features } = config;
+  const { siteName, styling, custom } = config;
 
   const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
+  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
 
   const updateBlurImage = useBlurImageUpdater(playlist);
 

@@ -26,6 +26,7 @@ import Button from '#components/Button/Button';
 import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { t } = useTranslation('video');
@@ -46,7 +47,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { siteName, styling, features, custom } = config;
 
   const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
+  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
