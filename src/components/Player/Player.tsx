@@ -156,7 +156,6 @@ const Player: React.FC<Props> = ({
       if (!window.jwplayer || !playerElementRef.current) return;
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
-
       // player options are untyped
       const playerOptions: { [key: string]: unknown } = {
         aspectratio: false,
@@ -165,19 +164,19 @@ const Player: React.FC<Props> = ({
         height: '100%',
         mute: false,
         repeat: false,
+        displaytitle: false,
+        displaydescription: false,
       };
 
       // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
       if (typeof autostart !== 'undefined') {
         playerOptions.autostart = autostart;
       }
-
       playerRef.current.setup(playerOptions);
 
       setPlayer(playerRef.current);
       attachEvents();
     };
-
     if (playerRef.current) {
       return loadPlaylist();
     }
