@@ -1,3 +1,12 @@
+## [3.1.1](https://github.com/jwplayer/ott-web-app/compare/v3.1.0...v3.1.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* **player:** hide inside player title and description ([84dae80](https://github.com/jwplayer/ott-web-app/commit/84dae80ece60324887a2e1fbbc20a2821f05d85e))
+
+
+
 # [3.1.0](https://github.com/jwplayer/ott-web-app/compare/v3.0.2...v3.1.0) (2023-01-11)
 
 
