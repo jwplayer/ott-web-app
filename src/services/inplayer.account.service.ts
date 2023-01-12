@@ -369,8 +369,10 @@ function processAccount(account: AccountData): Customer {
 function processUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
-  const fullName = `${firstName} ${lastName}`;
-
+  let fullName = `${firstName} ${lastName}`;
+  if (!firstName && !lastName) {
+    fullName = '[EMPTY FULL NAME]';
+  }
   const data: UpdateAccountData = {
     fullName,
     metadata: {

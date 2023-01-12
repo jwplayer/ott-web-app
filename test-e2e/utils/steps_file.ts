@@ -39,6 +39,36 @@ const stepsObj = {
 
     this.click('div[aria-label="Log out"]');
   },
+  beforeAccount: async function (this: CodeceptJS.I, config: TestConfig, loginContext: LoginContext, firstName: string, lastName: string) {
+    this.useConfig(config);
+
+    return (await this.registerOrLogin(loginContext, () => {
+      this.fillField('firstName', firstName);
+      this.fillField('lastName', lastName);
+
+      this.click('Continue');
+      this.waitForLoaderDone();
+
+      this.clickCloseButton();
+    })) as LoginContext;
+  },
+  beforeRegisterOrLogin: async function (this: CodeceptJS.I, config: TestConfig, mode: string) {
+    this.useConfig(config);
+    if (await this.isMobile()) {
+      this.openMenuDrawer();
+    }
+
+    let clickOnText = 'Sign in';
+    let waitForElement = constants.loginFormSelector;
+    if (mode === 'signup') {
+      clickOnText = 'Sign up';
+      waitForElement = constants.registrationFormSelector;
+    }
+
+    this.click(clickOnText);
+
+    this.waitForElement(waitForElement, normalTimeout);
+  },
   // This function will register the user on the first call and return the context
   // then assuming context is passed in the next time, will log that same user back in
   // Use it for tests where you want a new user for the suite, but not for each test

@@ -10,12 +10,12 @@ const loginContext: LoginContext = {
 };
 
 Feature('video_detail').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+const configs = new DataTable(['config']);
+configs.add([testConfigs.cleengAuthvod]);
+configs.xadd([testConfigs.inplayerAuth]);
 
-Before(({ I }) => {
-  I.useConfig(testConfigs.cleengAuthvod);
-});
-
-Scenario('Video detail screen loads', async ({ I }) => {
+Data(configs).Scenario('Video detail screen loads', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard('Agent 327');
   I.see('Agent 327');
   I.see('2021');
@@ -30,17 +30,20 @@ Scenario('Video detail screen loads', async ({ I }) => {
   I.see('11 min', { css: 'div[aria-label="Play Elephants Dream"]' });
 });
 
-Scenario('I can see an alternate background image for Agent 327', async ({ I }) => {
+Data(configs).Scenario('I can see an alternate background image for Agent 327', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard('Agent 327');
   await I.seeVideoDetailsBackgroundImage('Agent 327', 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/background.jpg?width=1280');
 });
 
-Scenario('I can see the default background image for Elephants Dream', async ({ I }) => {
+Data(configs).Scenario('I can see the default background image for Elephants Dream', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard('Elephants Dream');
   await I.seeVideoDetailsBackgroundImage('Elephants Dream', 'https://cdn.jwplayer.com/v2/media/eFPH2tVG/poster.jpg?width=1280');
 });
 
-Scenario('I can expand the description (@mobile-only)', async ({ I }) => {
+Data(configs).Scenario('I can expand the description (@mobile-only)', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard('Agent 327');
 
   function checkHeight(height) {
@@ -68,9 +71,9 @@ Scenario('I can expand the description (@mobile-only)', async ({ I }) => {
   checkHeight('60px');
 });
 
-Scenario('I can watch a video', async ({ I }) => await playBigBuckBunny(I));
+Data(configs).Scenario('I can watch a video', async ({ I }) => await playBigBuckBunny(I));
 
-Scenario('I can return to the video detail screen', async ({ I }) => {
+Data(configs).Scenario('I can return to the video detail screen', async ({ I }) => {
   await playBigBuckBunny(I);
 
   I.click('div[aria-label="Back"]');
@@ -79,7 +82,7 @@ Scenario('I can return to the video detail screen', async ({ I }) => {
   I.see(constants.startWatchingButton);
 });
 
-Scenario('I can play other media from the related shelf', async ({ I }) => {
+Data(configs).Scenario('I can play other media from the related shelf', async ({ I, current }) => {
   I.useConfig(testConfigs.basicNoAuth);
   await I.openVideoCard('Agent 327');
   await I.openVideoCard(constants.elephantsDreamTitle);
@@ -88,7 +91,8 @@ Scenario('I can play other media from the related shelf', async ({ I }) => {
   I.see('Coffee Run was directed by Hjalti Hjalmarsson and produced by the team at Blender Animation Studio.');
 });
 
-Scenario('I can play a trailer', async ({ I }) => {
+Data(configs).Scenario('I can play a trailer', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard(constants.elephantsDreamTitle);
 
   I.click('Trailer');
@@ -100,7 +104,8 @@ Scenario('I can play a trailer', async ({ I }) => {
   I.dontSee(trailerTitle);
 });
 
-Scenario('I can play a trailer without signing in', async ({ I }) => {
+Data(configs).Scenario('I can play a trailer without signing in', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard(constants.elephantsDreamTitle);
 
   I.see(constants.signUpToWatch);
@@ -114,7 +119,8 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
   await I.waitForPlayerPlaying(`${constants.elephantsDreamTitle} - Trailer`);
 });
 
-Scenario('I can play a video after signing up', async ({ I }) => {
+Data(configs).Scenario('I can play a video after signing up', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard(constants.elephantsDreamTitle);
 
   I.see(constants.signUpToWatch);
@@ -136,7 +142,8 @@ Scenario('I can play a video after signing up', async ({ I }) => {
   await I.checkPlayerClosed();
 });
 
-Scenario('I can play a video after signing in', async ({ I }) => {
+Data(configs).Scenario('I can play a video after signing in', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.openVideoCard(constants.elephantsDreamTitle);
 
   I.see(constants.signUpToWatch);
@@ -160,7 +167,8 @@ Scenario('I can play a video after signing in', async ({ I }) => {
   await I.checkPlayerClosed();
 });
 
-Scenario('I can share the media', async ({ I }) => {
+Data(configs).Scenario('I can share the media', async ({ I, current }) => {
+  I.useConfig(current.config);
   await I.enableClipboard();
 
   await I.openVideoCard(constants.elephantsDreamTitle);

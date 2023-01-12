@@ -10,35 +10,27 @@ const firstNameField = 'firstName';
 const lastNameField = 'lastName';
 const consentCheckbox = 'Yes, I want to receive Blender updates by email';
 
-let loginContext: LoginContext;
+const loginContexts: { [key: string]: LoginContext } = {};
 const firstName = 'John Q.';
 const lastName = 'Tester';
 
 Feature('account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+const configs = new DataTable(['config', 'resetPasswordType', 'canEditEmail']);
+configs.add([testConfigs.svod, 'resetlink', true]);
+configs.xadd([testConfigs.inplayerSvod, 'direct', false]);
 
-Before(async ({ I }) => {
-  I.useConfig(testConfigs.svod);
-
-  loginContext = await I.registerOrLogin(loginContext, () => {
-    I.fillField('firstName', firstName);
-    I.fillField('lastName', lastName);
-
-    I.click('Continue');
-    I.waitForLoaderDone();
-
-    I.clickCloseButton();
-  });
-});
-
-Scenario('I can see my account data', async ({ I }) => {
+Data(configs).Scenario('I can see my account data', async ({ I, current }) => {
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   I.seeInCurrentUrl(constants.baseUrl);
   await I.openMainMenu();
 
   I.click('Account');
 
   I.see('Email');
-  I.see(loginContext.email);
-  I.see(editAccount);
+  I.see(loginContexts[current.config.label].email);
+  if (current.canEditEmail) {
+    I.see(editAccount);
+  }
 
   I.see('Security');
   I.see('Password');
@@ -53,41 +45,53 @@ Scenario('I can see my account data', async ({ I }) => {
   I.see('Edit information');
 
   I.see('Terms & tracking');
-  I.see('I accept the Terms and Conditions of Cleeng.');
+  I.see(`I accept the Terms and Conditions of ${current.config.label}.`);
   I.see(consentCheckbox);
 
   I.seeInCurrentUrl(constants.accountsUrl);
 });
 
-Scenario('I can cancel Edit account', async ({ I }) => {
+Data(configs).Scenario('I can cancel Edit account', async ({ I, current }) => {
+  if (!current.canEditEmail) {
+    return;
+  }
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   editAndCancel(I, editAccount, [
-    { name: emailField, startingValue: loginContext.email, newValue: 'user@email.nl' },
+    { name: emailField, startingValue: loginContexts[current.config.label].email, newValue: 'user@email.nl' },
     { name: passwordField, startingValue: '', newValue: 'pass123!?' },
   ]);
 });
 
-Scenario('I get a duplicate email warning', async ({ I }) => {
+Data(configs).Scenario('I get a duplicate email warning', async ({ I, current }) => {
+  if (!current.canEditEmail) {
+    return;
+  }
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   editAndCancel(I, editAccount, [
     {
       name: emailField,
-      startingValue: loginContext.email,
+      startingValue: loginContexts[current.config.label].email,
       newValue: constants.username,
       expectedError: 'Email already exists!',
     },
     {
       name: passwordField,
       startingValue: '',
-      newValue: loginContext.password,
+      newValue: loginContexts[current.config.label].password,
     },
   ]);
 });
 
-Scenario('I get a wrong password warning', async ({ I }) => {
+Data(configs).Scenario('I get a wrong password warning', async ({ I, current }) => {
+  if (!current.canEditEmail) {
+    return;
+  }
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   editAndCancel(I, editAccount, [
     {
       name: emailField,
-      startingValue: loginContext.email,
-      newValue: loginContext.email,
+      startingValue: loginContexts[current.config.label].email,
+      newValue: loginContexts[current.config.label].email,
     },
     {
       name: passwordField,
@@ -98,13 +102,21 @@ Scenario('I get a wrong password warning', async ({ I }) => {
   ]);
 });
 
-Scenario('I can toggle to view/hide my password', async ({ I }) => {
+Data(configs).Scenario('I can toggle to view/hide my password', async ({ I, current }) => {
+  if (!current.canEditEmail) {
+    return;
+  }
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   I.amOnPage(constants.accountsUrl);
   I.click(editAccount);
   await passwordUtils.testPasswordToggling(I, 'confirmationPassword');
 });
 
-Scenario('I can reset my password', async ({ I }) => {
+Data(configs).Scenario('I can reset my password (ResetLink)', async ({ I, current }) => {
+  if (current.resetPasswordType !== 'resetlink') {
+    return;
+  }
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   I.amOnPage(constants.accountsUrl);
 
   I.click('Edit password');
@@ -122,17 +134,18 @@ Scenario('I can reset my password', async ({ I }) => {
 
   I.click('Yes, reset');
   I.see('Password link sent');
-  I.see(`Please check your inbox at ${loginContext.email}`);
+  I.see(`Please check your inbox at ${loginContexts[current.config.label].email}`);
   I.see('Back to login');
 
   I.click('Back to login');
   I.see('Sign in');
 
   I.clickCloseButton();
-  await I.login({ email: loginContext.email, password: loginContext.password });
+  await I.login({ email: loginContexts[current.config.label].email, password: loginContexts[current.config.label].password });
 });
 
-Scenario('I can update firstName', async ({ I }) => {
+Data(configs).Scenario('I can update firstName', async ({ I, current }) => {
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
@@ -155,7 +168,8 @@ Scenario('I can update firstName', async ({ I }) => {
   ]);
 });
 
-Scenario('I can update lastName', async ({ I }) => {
+Data(configs).Scenario('I can update lastName', async ({ I, current }) => {
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   editAndSave(I, editDetials, [
     {
       name: lastNameField,
@@ -178,7 +192,9 @@ Scenario('I can update lastName', async ({ I }) => {
   ]);
 });
 
-Scenario('I can update details', async ({ I }) => {
+Data(configs).Scenario('I can update details', async ({ I, current }) => {
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
+
   editAndSave(I, editDetials, [
     {
       name: firstNameField,
@@ -213,7 +229,8 @@ Scenario('I can update details', async ({ I }) => {
   ]);
 });
 
-Scenario('I see name limit errors', async ({ I }) => {
+Data(configs).Scenario('I see name limit errors', async ({ I, current }) => {
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   editAndCancel(I, editDetials, [
     {
       name: firstNameField,
@@ -230,7 +247,8 @@ Scenario('I see name limit errors', async ({ I }) => {
   ]);
 });
 
-Scenario('I can update my consents', async ({ I }) => {
+Data(configs).Scenario('I can update my consents', async ({ I, current }) => {
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   I.amOnPage(constants.accountsUrl);
 
   I.dontSeeCheckboxIsChecked(consentCheckbox);
@@ -260,21 +278,25 @@ Scenario('I can update my consents', async ({ I }) => {
   I.seeCheckboxIsChecked(consentCheckbox);
 });
 
-Scenario('I can change email', async ({ I }) => {
+Data(configs).Scenario('I can change email', async ({ I, current }) => {
+  if (!current.canEditEmail) {
+    return;
+  }
+  loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
   const newEmail = passwordUtils.createRandomEmail();
 
   editAndSave(I, editAccount, [
     { name: emailField, newValue: newEmail },
-    { name: passwordField, newValue: loginContext.password },
+    { name: passwordField, newValue: loginContexts[current.config.label].password },
   ]);
 
   await I.logout();
 
-  await I.login({ email: newEmail, password: loginContext.password });
+  await I.login({ email: newEmail, password: loginContexts[current.config.label].password });
 
   editAndSave(I, editAccount, [
-    { name: emailField, newValue: loginContext.email },
-    { name: passwordField, newValue: loginContext.password },
+    { name: emailField, newValue: loginContexts[current.config.label].email },
+    { name: passwordField, newValue: loginContexts[current.config.label].password },
   ]);
 });
 

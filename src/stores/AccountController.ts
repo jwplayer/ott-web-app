@@ -8,6 +8,8 @@ import type {
   Capture,
   Customer,
   CustomerConsent,
+  EmailConfirmPasswordInput,
+  FirstLastNameInput,
   GetCaptureStatusResponse,
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
@@ -115,9 +117,7 @@ export const initializeAccount = async () => {
   });
 };
 
-export async function updateUser(
-  values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string },
-): Promise<ServiceResponse<Customer>> {
+export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> {
   return await useService(async ({ accountService, sandbox = true }) => {
     if (!accountService) throw new Error('account service is not configured');
 
@@ -131,6 +131,14 @@ export async function updateUser(
 
     if (!auth || !user) {
       throw new Error('no auth');
+    }
+
+    const errors = validateInputLength(values as FirstLastNameInput);
+    if (errors.length) {
+      return {
+        errors,
+        responseData: {} as Customer,
+      };
     }
 
     const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
@@ -496,3 +504,15 @@ async function afterLogin(
     getPublisherConsents(),
   ]);
 }
+
+const validateInputLength = (values: { firstName: string; lastName: string }) => {
+  const errors: string[] = [];
+  if (Number(values?.firstName?.length) > 50) {
+    errors.push('firstName can have max 50 characters.');
+  }
+  if (Number(values?.lastName?.length) > 50) {
+    errors.push('lastName can have max 50 characters.');
+  }
+
+  return errors;
+};

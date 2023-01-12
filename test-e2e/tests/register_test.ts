@@ -4,18 +4,12 @@ import { testConfigs } from '#test/constants';
 
 Feature('register').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Before(async ({ I }) => {
-  I.useConfig(testConfigs.cleengAuthvod);
+const configs = new DataTable(['config', 'authProvider']);
+configs.add([testConfigs.cleengAuthvod, 'Cleeng']);
+configs.xadd([testConfigs.inplayerAuth, 'InPlayer']);
 
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
-
-  I.click('Sign up');
-  I.waitForElement(constants.registrationFormSelector, normalTimeout);
-});
-
-Scenario('I can open the register modal', async ({ I }) => {
+Data(configs).Scenario('I can open the register modal', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   await I.seeQueryParams({ u: 'create-account' });
 
   I.see('Email');
@@ -23,7 +17,7 @@ Scenario('I can open the register modal', async ({ I }) => {
   I.see('Use a minimum of 8 characters (case sensitive) with at least one number');
   I.see('I accept the');
   I.see('Terms and Conditions');
-  I.see('of Cleeng.');
+  I.see(`of ${current.authProvider}.`);
   I.see('Yes, I want to receive Blender updates by email.');
   I.see('Continue');
   I.see('Already have an account?');
@@ -32,7 +26,8 @@ Scenario('I can open the register modal', async ({ I }) => {
   I.seeElement(constants.registrationFormSelector);
 });
 
-Scenario('I can close the modal', async ({ I }) => {
+Data(configs).Scenario('I can close the modal', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   I.waitForElement(constants.registrationFormSelector, normalTimeout);
 
   I.clickCloseButton();
@@ -48,7 +43,9 @@ Scenario('I can close the modal', async ({ I }) => {
   I.see('Sign up');
 });
 
-Scenario('I can switch to the Sign In modal', ({ I }) => {
+Data(configs).Scenario('I can switch to the Sign In modal', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
+
   I.click('Sign in', constants.registrationFormSelector);
   I.seeElement(constants.loginFormSelector);
   I.see('Forgot password');
@@ -59,11 +56,13 @@ Scenario('I can switch to the Sign In modal', ({ I }) => {
   I.dontSeeElement(constants.loginFormSelector);
 });
 
-Scenario('The submit button is disabled when the form is incompletely filled in', async ({ I }) => {
+Data(configs).Scenario('The submit button is disabled when the form is incompletely filled in', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   I.seeAttributesOnElements('button[type="submit"]', { disabled: true });
 });
 
-Scenario('I get warned when filling in incorrect credentials', async ({ I }) => {
+Data(configs).Scenario('I get warned when filling in incorrect credentials', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   I.fillField('Email', 'test');
   I.pressKey('Tab');
   I.see('Please re-enter your email details');
@@ -84,7 +83,8 @@ Scenario('I get warned when filling in incorrect credentials', async ({ I }) => 
   checkColor('rgb(255, 255, 255)');
 });
 
-Scenario('I get strength feedback when typing in a password', async ({ I }) => {
+Data(configs).Scenario('I get strength feedback when typing in a password', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   const textOptions = ['Weak', 'Fair', 'Strong', 'Very strong'];
 
   function checkFeedback(password, expectedColor, expectedText) {
@@ -103,11 +103,13 @@ Scenario('I get strength feedback when typing in a password', async ({ I }) => {
   checkFeedback('Ax854bZ!$', 'green', 'Very strong');
 });
 
-Scenario('I can toggle to view password', async ({ I }) => {
+Data(configs).Scenario('I can toggle to view password', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   await passwordUtils.testPasswordToggling(I);
 });
 
-Scenario('I can`t submit without checking required consents', async ({ I }) => {
+Data(configs).Scenario('I can`t submit without checking required consents', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   I.fillField('Email', 'test@123.org');
   I.fillField('Password', 'pAssword123!');
 
@@ -116,7 +118,8 @@ Scenario('I can`t submit without checking required consents', async ({ I }) => {
   I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#ff0c3e' });
 });
 
-Scenario('I get warned for duplicate users', ({ I }) => {
+Data(configs).Scenario('I get warned for duplicate users', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   I.fillField('Email', constants.username);
   I.fillField('Password', 'Password123!');
   I.checkOption('Terms and Conditions');
@@ -125,7 +128,8 @@ Scenario('I get warned for duplicate users', ({ I }) => {
   I.see(constants.duplicateUserError);
 });
 
-Scenario('I can register', async ({ I }) => {
+Data(configs).Scenario('I can register', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signup');
   I.fillField('Email', passwordUtils.createRandomEmail());
   I.fillField('Password', passwordUtils.createRandomPassword());
 

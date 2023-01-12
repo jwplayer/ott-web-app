@@ -310,6 +310,16 @@ export type UpdatePersonalShelvesArgs = {
   };
 };
 
+export type FirstLastNameInput = {
+  firstName: string;
+  lastName: string;
+};
+
+export type EmailConfirmPasswordInput = {
+  email: string;
+  confirmationPassword: string;
+};
+
 type Login = PromiseRequest<AuthArgs, AuthResponse>;
 type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;

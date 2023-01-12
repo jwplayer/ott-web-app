@@ -9,27 +9,20 @@ const incorrectLogin = 'Incorrect email/password combination';
 const formFeedback = 'div[class*=formFeedback]';
 
 Feature('login - account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+const configs = new DataTable(['config']);
+configs.add([testConfigs.cleengAuthvod]);
+configs.xadd([testConfigs.inplayerAuth]);
 
-Before(async ({ I }) => {
-  I.useConfig(testConfigs.cleengAuthvod);
-
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
-
-  I.click('Sign in');
-
-  I.waitForElement(constants.loginFormSelector, normalTimeout);
-});
-
-Scenario('I can close the modal', async ({ I }) => {
+Data(configs).Scenario('I can close the modal', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signin');
   I.clickCloseButton();
   I.dontSee('Email');
   I.dontSee('Password');
   I.dontSeeElement(constants.loginFormSelector);
 });
 
-Scenario('I can close the modal by clicking outside', async ({ I }) => {
+Data(configs).Scenario('I can close the modal by clicking outside', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signin');
   I.forceClick('div[data-testid="backdrop"]');
 
   I.dontSee('Email');
@@ -37,18 +30,22 @@ Scenario('I can close the modal by clicking outside', async ({ I }) => {
   I.dontSeeElement(constants.loginFormSelector);
 });
 
-Scenario('I can toggle to view password', async ({ I }) => {
+Data(configs).Scenario('I can toggle to view password', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signin');
   await passwordUtils.testPasswordToggling(I);
 });
 
-Scenario('I get a warning when the form is incompletely filled in', async ({ I }) => {
+Data(configs).Scenario('I get a warning when the form is incompletely filled in', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signin');
   tryToSubmitForm(I);
 
   checkField(I, 'email', fieldRequired);
   checkField(I, 'password', fieldRequired);
 });
 
-Scenario('I see email warnings', async ({ I }) => {
+Data(configs).Scenario('I see email warnings', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signin');
+
   I.fillField('email', 'danny@email.com');
   I.fillField('password', 'Password');
 
@@ -79,7 +76,9 @@ Scenario('I see email warnings', async ({ I }) => {
   checkField(I, 'email', invalidEmail);
 });
 
-Scenario('I see empty password warnings', async ({ I }) => {
+Data(configs).Scenario('I see empty password warnings', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signin');
+
   I.fillField('email', 'danny@email.com');
   I.fillField('password', 'Password');
 
@@ -103,7 +102,9 @@ Scenario('I see empty password warnings', async ({ I }) => {
   checkField(I, 'password', fieldRequired);
 });
 
-Scenario('I see a login error message', async ({ I }) => {
+Data(configs).Scenario('I see a login error message', async ({ I, current }) => {
+  await I.beforeRegisterOrLogin(current.config, 'signin');
+
   I.fillField('email', 'danny@email.com');
   I.fillField('password', 'Password');
 

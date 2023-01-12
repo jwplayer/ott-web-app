@@ -9,12 +9,12 @@ const videoTitle = constants.bigBuckBunnyTitle;
 let loginContext: LoginContext;
 
 Feature('watch_history - logged in').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+const configs = new DataTable(['config']);
+configs.add([testConfigs.cleengAuthvod]);
+configs.xadd([testConfigs.inplayerAuth]);
 
-Before(({ I }) => {
-  I.useConfig(testConfigs.cleengAuthvod);
-});
-
-Scenario('I can get my watch history when logged in', async ({ I }) => {
+Data(configs).Scenario('I can get my watch history when logged in', async ({ I, current }) => {
+  I.useConfig(current.config);
   await registerOrLogin(I);
 
   // New user has no continue watching history shelf
@@ -33,7 +33,8 @@ Scenario('I can get my watch history when logged in', async ({ I }) => {
   await checkProgress(I, `//button[contains(., "${constants.continueWatchingButton}")]`, (80 / videoLength) * 100, 5, '_progressRail_', '_progress_');
 });
 
-Scenario('I can get my watch history stored to my account after login', async ({ I }) => {
+Data(configs).Scenario('I can get my watch history stored to my account after login', async ({ I, current }) => {
+  I.useConfig(current.config);
   I.dontSee(constants.continueWatchingShelfTitle);
 
   await I.openVideoCard(videoTitle);
@@ -55,7 +56,8 @@ Scenario('I can get my watch history stored to my account after login', async ({
   await checkElapsed(I, 1, 20);
 });
 
-Scenario('I can see my watch history on the Home screen when logged in', async ({ I }) => {
+Data(configs).Scenario('I can see my watch history on the Home screen when logged in', async ({ I, current }) => {
+  I.useConfig(current.config);
   I.dontSee(constants.continueWatchingShelfTitle);
 
   await registerOrLogin(I);
@@ -76,7 +78,8 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
   I.seeInCurrentUrl('play=1');
 });
 
-Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
+Data(configs).Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I, current }) => {
+  I.useConfig(current.config);
   I.useConfig(testConfigs.cleengAuthvodNoWatchlist);
 
   await registerOrLogin(I);
