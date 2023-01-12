@@ -15,9 +15,9 @@ const firstName = 'John Q.';
 const lastName = 'Tester';
 
 Feature('account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
-const configs = new DataTable(['config', 'resetPasswordType', 'canEditEmail']);
-configs.add([testConfigs.svod, 'resetlink', true]);
-configs.xadd([testConfigs.inplayerSvod, 'direct', false]);
+const configs = new DataTable(['config', 'authProvider', 'resetPasswordType', 'canEditEmail']);
+configs.add([testConfigs.svod, 'Cleeng', 'resetlink', true]);
+configs.xadd([testConfigs.inplayerSvod, 'InPlayer', 'direct', false]);
 
 Data(configs).Scenario('I can see my account data', async ({ I, current }) => {
   loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
@@ -45,7 +45,7 @@ Data(configs).Scenario('I can see my account data', async ({ I, current }) => {
   I.see('Edit information');
 
   I.see('Terms & tracking');
-  I.see(`I accept the Terms and Conditions of ${current.config.label}.`);
+  I.see(`I accept the Terms and Conditions of ${current.authProvider}.`);
   I.see(consentCheckbox);
 
   I.seeInCurrentUrl(constants.accountsUrl);
