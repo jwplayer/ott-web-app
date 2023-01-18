@@ -1,3 +1,12 @@
+# [3.2.0](https://github.com/jwplayer/ott-web-app/compare/v3.1.1...v3.2.0) (2023-01-18)
+
+
+### Features
+
+* **project:** remove posterFading, shelfTitles and dynamicBlur settings ([9b3a315](https://github.com/jwplayer/ott-web-app/commit/9b3a3153dd4eeac727a4c55cb57b3ab5d8ad78f1))
+
+
+
 ## [3.1.1](https://github.com/jwplayer/ott-web-app/compare/v3.1.0...v3.1.1) (2023-01-12)
 
 
