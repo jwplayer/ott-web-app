@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 
-import QueryProvider from '#src/providers/QueryProvider';
+import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
 import '#src/screenMapping';
 import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';

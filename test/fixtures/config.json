@@ -62,9 +62,6 @@
     "backgroundColor": null,
     "highlightColor": null,
     "headerBackground": null,
-    "dynamicBlur": true,
-    "posterFading": true,
-    "shelfTitles": true,
     "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)"
   },
   "description": "Blender demo site",

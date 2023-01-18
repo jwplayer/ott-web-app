@@ -1,6 +1,6 @@
 # Share URLs
 
-![Share video](img/share-video.jpg)
+![Share video](../_images/share-video.jpg)
 
 Viewers can share a video: 
 - On the desktop this will copy the URL to the clipboard  
@@ -14,7 +14,7 @@ Sharing can be enabled/disabled in the [app config](/docs/configuration.md)
 
 The player also has a share button. It is advised that customers disable this in the  [the JW Player Config](https://support.jwplayer.com/articles/how-to-implement-social-sharing) that is linked to the web-app config.
 
-![Disable sharing in player](img/share-player.jpg)
+![Disable sharing in player](../_images/share-player.jpg)
 
 ## Deeplink to devices
 

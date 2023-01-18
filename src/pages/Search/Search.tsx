@@ -13,7 +13,6 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import useFirstRender from '#src/hooks/useFirstRender';
 import type { PlaylistItem } from '#types/playlist';
 import useSearchQueryUpdater from '#src/hooks/useSearchQueryUpdater';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import CardGrid from '#components/CardGrid/CardGrid';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import usePlaylist from '#src/hooks/usePlaylist';
@@ -21,7 +20,7 @@ import usePlaylist from '#src/hooks/usePlaylist';
 const Search = () => {
   const { t } = useTranslation('search');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, features, styling } = config;
+  const { siteName, features } = config;
 
   const firstRender = useFirstRender();
   const searchQuery = useUIStore((state) => state.searchQuery);
@@ -30,8 +29,6 @@ const Search = () => {
   const params = useParams();
   const query = params['*'];
   const { isFetching, error, data: playlist } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
-
-  const updateBlurImage = useBlurImageUpdater(playlist?.playlist);
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
@@ -55,7 +52,6 @@ const Search = () => {
 
     navigate(mediaURL(playlistItem, features?.searchPlaylist));
   };
-  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
 
   if ((error || !playlist) && !isFetching) {
     return (
@@ -97,9 +93,7 @@ const Search = () => {
         <CardGrid
           playlist={playlist}
           onCardClick={onCardClick}
-          onCardHover={onCardHover}
           isLoading={firstRender}
-          enableCardTitles={styling.shelfTitles}
           accessModel={accessModel}
           isLoggedIn={!!user}
           hasSubscription={!!subscription}

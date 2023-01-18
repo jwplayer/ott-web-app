@@ -28,12 +28,6 @@ Even sharing URL's should work as long as the query parameter of the desired con
 
 These are the available configuration parameters for the JW OTT Webapp's config.json file.
 
-**player**
-
-Player key of your custom created player in the [JW Player dashboard](https://dashboard.jwplayer.com).
-
----
-
 **siteName**
 
 Title of your website. JW OTT Webapp will automatically update the `<title>` tag of your site to this value when the site loads. If **siteName** is not set, the default name `My OTT Application` will be used.
@@ -166,6 +160,12 @@ You can change the background color of the shelf with the help of this property 
 
 ---
 
+**custom.enableSharing** (optional)
+
+Set this parameter to `true` if you want to enable the "Share" button on the video and series detail screen.
+
+---
+
 **styling**
 
 Use the `styling` object to define extra styles for your application.
@@ -176,9 +176,6 @@ Use the `styling` object to define extra styles for your application.
     "backgroundColor": null,
     "highlightColor": null,
     "headerBackground": null,
-    "dynamicBlur": true,
-    "posterFading": true,
-    "shelfTitles": true,
     "footerText": "Blender Foundation"
 }
 ```
@@ -211,25 +208,6 @@ Text that will be placed in the footer of the site. Markdown links are supported
 
 ---
 
-**styling.dynamicBlur** (optional)
-
-Set this parameter to `true` if you want to enable the Dynamic Blur feature. The Dynamic Blur feature is a blurred image of the current item on the background of the screen. When a user hovers a card, the blurred image changes to the selected item.  
-
----
-
-**styling.posterFading** (optional)
-
-Set this parameter to `true` if you want to enable the Poster Fading feature. By default, a boxed preview is shown on the video and series detail page. With posterFading set to `true`, this image is placed on the background instead and fills a larger portion of the screen.
-
-
----
-
-**styling.shelfTitles** (optional)
-
-Set this parameter to `false` if you want to disable titles below the cards on the home, playlist and search screen.  
-
----
-
 **features**
 
 Use the `features` object to define extra properties for your app.
@@ -237,7 +215,6 @@ Use the `features` object to define extra properties for your app.
 ```
 {
   "features": {
-    "enableSharing": true,
     "recommendationsPlaylist": "IHBjjkSN",
     "searchPlaylist": "D4soEviP"
 }
@@ -245,11 +222,6 @@ Use the `features` object to define extra properties for your app.
 
 ---
 
-**features.enableSharing** (optional)
-
-Set this parameter to `false` if you want to disable the "Share" button on the video and series detail screen.
-
----
 
 **features.recommendationsPlaylist** (optional)
 

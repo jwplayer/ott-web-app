@@ -56,7 +56,6 @@ const Shelf = ({
   title,
   watchHistory,
   enableTitle = true,
-  enableCardTitles = true,
   featured = false,
   loading = false,
   error = null,
@@ -76,7 +75,6 @@ const Shelf = ({
       <Card
         key={item.mediaid}
         title={item.title}
-        enableTitle={enableCardTitles}
         duration={item.duration}
         progress={watchHistory ? watchHistory[item.mediaid] : undefined}
         image={item.shelfImage}
@@ -92,20 +90,7 @@ const Shelf = ({
         posterAspect={posterAspect}
       />
     ),
-    [
-      enableCardTitles,
-      watchHistory,
-      onCardHover,
-      featured,
-      loading,
-      accessModel,
-      isLoggedIn,
-      hasSubscription,
-      posterAspect,
-      onCardClick,
-      playlist.feedid,
-      type,
-    ],
+    [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, onCardClick, playlist.feedid, type],
   );
 
   const renderRightControl = useCallback(
