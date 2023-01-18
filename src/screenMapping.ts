@@ -34,8 +34,10 @@ import MediaHub from '#src/pages/ScreenRouting/mediaScreens/MediaHub/MediaHub';
  * mediaScreenMap.register(CustomMediaScreen, () => true);
  *
  * The same methods can be used for the `playlistScreenMap` that is exported from
- * {@link pages/ScreenRouting/PlaylistScreenRouter.tsx}
+ * {@link /src/pages/ScreenRouting/PlaylistScreenRouter.tsx}
  */
 
-// Hub is an example screen for the media router
-mediaScreenMap.registerByContentType(MediaHub, 'hub');
+export default function registerCustomScreens() {
+  // Hub is an example screen for the media router
+  mediaScreenMap.registerByContentType(MediaHub, 'hub');
+}

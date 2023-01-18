@@ -6,14 +6,13 @@ import shallow from 'zustand/shallow';
 import styles from './User.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
 import { mediaURL } from '#src/utils/formatting';
 import AccountCircle from '#src/icons/AccountCircle';
 import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useConfigStore } from '#src/stores/ConfigStore';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';

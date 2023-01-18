@@ -13,6 +13,7 @@ import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
+import registerCustomScreens from '#src/screenMapping';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -39,6 +40,11 @@ const Root: FC = () => {
     retry: configSource ? 1 : 0,
     refetchInterval: false,
   });
+
+  // Register custom screen mappings
+  useEffect(() => {
+    registerCustomScreens();
+  }, []);
 
   const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 

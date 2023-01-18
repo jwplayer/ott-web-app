@@ -8,8 +8,7 @@ import styles from './ShelfList.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useConfigStore } from '#src/stores/ConfigStore';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import ShelfComponent from '#components/Shelf/Shelf';
 import { mediaURL, slugify } from '#src/utils/formatting';
 import type { Content } from '#types/Config';

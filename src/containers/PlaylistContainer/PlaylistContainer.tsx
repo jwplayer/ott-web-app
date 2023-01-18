@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { PersonalShelf, PersonalShelves } from '#src/enum/PersonalShelf';
+import { PersonalShelf, PersonalShelves } from '#src/stores/ConfigStore';
 import usePlaylist from '#src/hooks/usePlaylist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';

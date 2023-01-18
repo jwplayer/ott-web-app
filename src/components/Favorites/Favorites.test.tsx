@@ -2,7 +2,7 @@ import React from 'react';
 
 import Favorites from './Favorites';
 
-import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { PersonalShelf } from '#src/stores/ConfigStore';
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { renderWithRouter } from '#test/testUtils';
 

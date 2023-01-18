@@ -3,10 +3,9 @@ import merge from 'lodash.merge';
 import { calculateContrastColor } from '#src/utils/common';
 import loadConfig, { validateConfig } from '#src/services/config.service';
 import { addScript } from '#src/utils/dom';
-import { useConfigStore } from '#src/stores/ConfigStore';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import type { AccessModel, Config, Styling } from '#types/Config';
 import { initializeAccount } from '#src/stores/AccountController';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
 
