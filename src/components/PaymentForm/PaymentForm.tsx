@@ -58,7 +58,7 @@ const PaymentForm: React.FC<Props> = ({ paymentDataForm }) => {
         </div>
       </div>
       <div>
-        <Button label="continue" variant="contained" color="primary" onClick={paymentDataForm.handleSubmit} size="large" fullWidth />
+        <Button label="Continue" variant="contained" color="primary" onClick={paymentDataForm.handleSubmit} size="large" fullWidth />
       </div>
     </div>
   );

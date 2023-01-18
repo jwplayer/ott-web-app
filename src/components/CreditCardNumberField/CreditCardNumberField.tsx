@@ -65,6 +65,7 @@ const CreditCardNumberField: React.FC<Props> = ({ value, error, onChange, onBlur
       value={value}
       name="cardNumber"
       label={`Card number`}
+      className="directPostCreditCardNumber"
       onChange={formatCreditCardNumber}
       onBlur={onBlur}
       error={!!error}

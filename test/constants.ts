@@ -12,6 +12,14 @@ export const testConfigs = {
     id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/demo.json',
     label: 'InPlayer SVOD',
   },
+  inplayerAuthStaging: {
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/authvod-staging.json',
+    label: 'InPlayer AUTHVOD (Staging)',
+  },
+  inplayerSvodStaging: {
+    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/svod-staging.json',
+    label: 'InPlayer SVOD (Staging)',
+  },
   inplayerHosted: {
     id: 'a2kbjdv0',
     label: 'InPlayer Hosted',

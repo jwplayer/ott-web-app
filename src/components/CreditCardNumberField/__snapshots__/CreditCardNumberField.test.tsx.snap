@@ -3,7 +3,7 @@
 exports[`<CreditCardNumberField> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_textField_e16c1b"
+    class="_textField_e16c1b directPostCreditCardNumber"
   >
     <label
       class="_label_e16c1b"

@@ -1,24 +1,61 @@
 import { LoginContext } from '#utils/password_utils';
-import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '#utils/payments';
+import constants from '#utils/constants';
+import { goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '#utils/payments';
 import { testConfigs } from '#test/constants';
-import skipped = CodeceptJS.output.test.skipped;
 
-let couponLoginContext: LoginContext;
+const loginContext: { [key: string]: LoginContext } = {};
 
 const today = new Date();
+
+const configs = new DataTable([
+  'config',
+  'monthlyOffer',
+  'yearlyOffer',
+  'paymentFields',
+  'creditCard',
+  'creditCardNamePresent',
+  'applicableTax',
+  'locale',
+  'shouldMakePayment',
+  'canRenewSubscription',
+]);
+
+// cleeng integration
+configs.add([
+  testConfigs.svod,
+  constants.offers.monthlyOffer.cleeng,
+  constants.offers.yearlyOffer.cleeng,
+  constants.paymentFields.cleeng,
+  constants.creditCard.cleeng,
+  false,
+  2.17,
+  'NL',
+  false,
+  true,
+]);
+
+// inplayer integration
+configs.xadd([
+  testConfigs.inplayerSvodStaging,
+  constants.offers.monthlyOffer.inplayer,
+  constants.offers.yearlyOffer.inplayer,
+  constants.paymentFields.inplayer,
+  constants.creditCard.inplayer,
+  true,
+  0,
+  undefined,
+  true,
+  false,
+]);
 
 // This is written as a second test suite so that the login context is a different user.
 // Otherwise there's no way to re-enter payment info and add a coupon code
 Feature('payments-coupon').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Before(async ({ I }) => {
-  // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
-  overrideIP(I);
-  I.useConfig(testConfigs.svod);
-});
+Data(configs).Scenario('I can redeem coupons', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
 
-Scenario('I can redeem coupons', async ({ I }) => {
-  couponLoginContext = await I.registerOrLogin(couponLoginContext);
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
   await goToCheckout(I);
 
@@ -34,28 +71,40 @@ Scenario('I can redeem coupons', async ({ I }) => {
   I.click('Apply');
   I.waitForLoaderDone();
   I.see('Your coupon code has been applied');
-  I.see(formatPrice(-37.5));
-  I.see(formatPrice(12.5));
-  I.see(formatPrice(2.17));
+
+  I.see(formatPrice(-37.5, 'EUR', current.locale));
+  I.see(formatPrice(12.5, 'EUR', current.locale));
+  I.see(formatPrice(current.applicableTax, 'EUR', current.locale));
 
   I.fillField('couponCode', 'test100');
   I.click('Apply');
   I.waitForLoaderDone();
-  I.dontSee(formatPrice(12.5));
+  I.see(formatPrice(0, 'EUR', current.locale));
 
-  await finishAndCheckSubscription(I, addYear(today), today);
+  if (current.shouldMakePayment) {
+    I.payWithCreditCard(
+      current.creditCardNamePresent,
+      current.creditCard,
+      current.paymentFields.cardNumber,
+      current.paymentFields.expiryDate,
+      current.paymentFields.securityCode,
+      '',
+    );
+  }
+
+  await finishAndCheckSubscription(I, addYear(today), today, current.yearlyOffer.price);
 });
 
-// TODO: Re-enable this when the cleeng bug is fixed
-Scenario.todo('I can cancel a free subscription', async ({ I }) => {
-  couponLoginContext = await I.registerOrLogin(couponLoginContext);
-
-  cancelPlan(I, addYear(today));
+Data(configs).Scenario('I can cancel a free subscription', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  cancelPlan(I, addYear(today), current.canRenewSubscription);
 });
 
-// TODO: Re-enable this when the cleeng bug is fixed
-Scenario.todo('I can renew a free subscription', async ({ I }) => {
-  couponLoginContext = await I.registerOrLogin(couponLoginContext);
-
-  renewPlan(I, addYear(today));
+Data(configs).Scenario('I can renew a free subscription', async ({ I, current }) => {
+  if (current.canRenewSubscription) {
+    await I.beforeSubscription(current.config);
+    loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+    renewPlan(I, addYear(today), current.yearlyOffer.price);
+  }
 });

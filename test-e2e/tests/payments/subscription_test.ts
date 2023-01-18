@@ -1,30 +1,58 @@
 import { LoginContext } from '#utils/password_utils';
 import constants, { longTimeout, normalTimeout } from '#utils/constants';
-import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '#utils/payments';
+import { goToCheckout, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '#utils/payments';
 import { testConfigs } from '#test/constants';
 
-let paidLoginContext: LoginContext;
+const loginContext: { [key: string]: LoginContext } = {};
 
 const today = new Date();
 
-const monthlyPrice = formatPrice(6.99);
-const yearlyPrice = formatPrice(50);
-
-const monthlyLabel = `label[for="S970187168_NL"]`;
-const yearlyLabel = `label[for="S467691538_NL"]`;
-
 const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'CVC / CVV', '******');
+
+const configs = new DataTable([
+  'config',
+  'monthlyOffer',
+  'yearlyOffer',
+  'paymentFields',
+  'creditCard',
+  'creditCardNamePresent',
+  'applicableTax',
+  'fieldWrapper',
+  'canRenewSubscription',
+]);
+
+// cleeng integration
+configs.add([
+  testConfigs.svod,
+  constants.offers.monthlyOffer.cleeng,
+  constants.offers.yearlyOffer.cleeng,
+  constants.paymentFields.cleeng,
+  constants.creditCard.cleeng,
+  false,
+  true,
+  'iframe',
+  true,
+]);
+
+// inplayer integration
+configs.xadd([
+  testConfigs.inplayerSvodStaging,
+  constants.offers.monthlyOffer.inplayer,
+  constants.offers.yearlyOffer.inplayer,
+  constants.paymentFields.inplayer,
+  constants.creditCard.inplayer,
+  true,
+  false,
+  '',
+  false,
+]);
 
 Feature('payments').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Before(async ({ I }) => {
-  // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
-  overrideIP(I);
-  I.useConfig(testConfigs.svod);
-});
+Data(configs).Scenario('I can see my payments data', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
 
-Scenario('I can see my payments data', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
   await I.openMainMenu();
 
@@ -40,8 +68,10 @@ Scenario('I can see my payments data', async ({ I }) => {
   I.see('No transactions');
 });
 
-Scenario('I can see offered subscriptions', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+Data(configs).Scenario('I can see offered subscriptions', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
+
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
   I.amOnPage(constants.paymentsUrl);
 
@@ -49,56 +79,61 @@ Scenario('I can see offered subscriptions', async ({ I }) => {
   I.see('Choose plan');
   I.see('Watch this on JW OTT Web App');
 
-  await within(monthlyLabel, () => {
+  await within(current.monthlyOffer.label, () => {
     I.see('Monthly');
     I.see('First month free');
     I.see('Cancel anytime');
     I.see('Watch on all devices');
-    I.see(monthlyPrice);
+    I.see(current.monthlyOffer.price);
     I.see('/month');
   });
 
-  await within(yearlyLabel, () => {
+  await within(current.yearlyOffer.label, () => {
     I.see('Cancel anytime');
     I.see('Watch on all devices');
-    I.see(yearlyPrice);
+    I.see(current.yearlyOffer.price);
     I.see('/year');
   });
 
   I.see('Continue');
 });
 
-Scenario('I can choose an offer', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+Data(configs).Scenario('I can choose an offer', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
+
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
   I.amOnPage(constants.offersUrl);
 
-  I.click(monthlyLabel);
-  I.seeCssPropertiesOnElements(monthlyLabel, { color: '#000000' });
-  I.seeCssPropertiesOnElements(yearlyLabel, { color: '#ffffff' });
+  I.click(current.monthlyOffer.label);
+  I.seeCssPropertiesOnElements(current.monthlyOffer.label, { color: '#000000' });
+  I.seeCssPropertiesOnElements(current.yearlyOffer.label, { color: '#ffffff' });
 
-  I.click(yearlyLabel);
-  I.seeCssPropertiesOnElements(monthlyLabel, { color: '#ffffff' });
-  I.seeCssPropertiesOnElements(yearlyLabel, { color: '#000000' });
+  I.click(current.yearlyOffer.label);
+  I.seeCssPropertiesOnElements(current.monthlyOffer.label, { color: '#ffffff' });
+  I.seeCssPropertiesOnElements(current.yearlyOffer.label, { color: '#000000' });
 
   I.click('Continue');
   I.waitForLoaderDone();
 
   I.see('Yearly subscription');
-  I.see(yearlyPrice);
+  I.see(current.yearlyOffer.price);
   I.see('/year');
 
   I.see('Redeem coupon');
-  I.see(formatPrice(50));
+  I.see(current.yearlyOffer.price);
   I.see('Payment method fee');
-  I.see(formatPrice(0));
+  I.see(current.yearlyOffer.paymentFee);
   I.see('Total');
-  I.see('Applicable tax (21%)');
+  if (current.applicableTax) {
+    I.see('Applicable tax (21%)');
+  }
   I.clickCloseButton();
 });
 
-Scenario('I can see payment types', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+Data(configs).Scenario('I can see payment types', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
   await goToCheckout(I);
 
@@ -120,8 +155,9 @@ Scenario('I can see payment types', async ({ I }) => {
   I.see('Continue');
 });
 
-Scenario('I can open the PayPal site', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+Data(configs).Scenario('I can open the PayPal site', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
   await goToCheckout(I);
 
@@ -133,50 +169,40 @@ Scenario('I can open the PayPal site', async ({ I }) => {
   I.amOnPage(constants.baseUrl);
 });
 
-Scenario('I can finish my subscription', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+Data(configs).Scenario('I can finish my subscription with credit card', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
   await goToCheckout(I);
 
-  I.see('Credit card');
+  I.payWithCreditCard(
+    current.creditCardNamePresent,
+    current.creditCard,
+    current.paymentFields.cardNumber,
+    current.paymentFields.expiryDate,
+    current.paymentFields.securityCode,
+    current.fieldWrapper,
+  );
 
-  // Adyen credit card form is loaded asynchronously, so wait for it
-  I.waitForElement('[class*=adyen-checkout__field--cardNumber]', normalTimeout);
-
-  // Each of the 3 credit card fields is a separate iframe
-  I.switchTo('[class*="adyen-checkout__field--cardNumber"] iframe');
-  I.fillField('Card number', '5555444433331111');
-  // @ts-expect-error
-  I.switchTo(null); // Exit the iframe context back to the main document
-
-  I.switchTo('[class*="adyen-checkout__field--expiryDate"] iframe');
-  I.fillField('Expiry date', '03/30');
-  // @ts-expect-error
-  I.switchTo(null); // Exit the iframe context back to the main document
-
-  I.switchTo('[class*="adyen-checkout__field--securityCode"] iframe');
-  I.fillField('Security code', '737');
-  // @ts-expect-error
-  I.switchTo(null); // Exit the iframe context back to the main document
-
-  await finishAndCheckSubscription(I, addDays(today, 365), today);
+  await finishAndCheckSubscription(I, addDays(today, 365), today, current.yearlyOffer.price);
 
   I.seeAll(cardInfo);
 });
 
-// TODO: Re-enable this when the cleeng bug is fixed
-Scenario.todo('I can cancel my subscription', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
+Data(configs).Scenario('I can cancel my subscription', async ({ I, current }) => {
+  await I.beforeSubscription(current.config);
+  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
 
-  cancelPlan(I, addDays(today, 365));
+  cancelPlan(I, addDays(today, 365), current.canRenewSubscription);
 
   // Still see payment info
   I.seeAll(cardInfo);
 });
 
-// TODO: Re-enable this when the cleeng bug is fixed
-Scenario.todo('I can renew my subscription', async ({ I }) => {
-  paidLoginContext = await I.registerOrLogin(paidLoginContext);
-
-  renewPlan(I, addDays(today, 365));
+Data(configs).Scenario('I can renew my subscription', async ({ I, current }) => {
+  if (current.canRenewSubscription) {
+    await I.beforeSubscription(current.config);
+    loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+    renewPlan(I, addDays(today, 365), current.yearlyOffer.price);
+  }
 });

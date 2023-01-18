@@ -11,6 +11,7 @@ interface SubscriptionDetails extends InplayerSubscription {
   subscription_price?: number;
   action_type?: 'recurrent' | 'canceled' | 'free-trial' | 'ended' | 'incomplete_expired';
   next_rebill_date?: number;
+  expiresAt?: number;
   charged_amount?: number;
   payment_method_name?: string;
   access_type?: {
@@ -21,13 +22,17 @@ interface SubscriptionDetails extends InplayerSubscription {
 export async function getActiveSubscription({ config }: { config: Config }) {
   try {
     const assetId = config.integrations.inplayer?.assetId || 0;
-    const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);
+    const accessData = await InPlayer.Asset.checkAccessForAsset(assetId);
 
-    if (hasAccess) {
+    if (accessData) {
       const { data } = await InPlayer.Subscription.getSubscriptions();
       const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
+
       if (activeSubscription) {
-        return processActiveSubscription(activeSubscription);
+        // add expiresAt to the subscription info since it's not present there
+        const { expires_at: expiresAt } = accessData.data;
+        const subscriptionData = processActiveSubscription(activeSubscription);
+        return { ...subscriptionData, expiresAt };
       }
     }
     return null;
@@ -153,7 +158,7 @@ const processActiveSubscription = (subscription: SubscriptionDetails) => {
     subscriptionId: subscription.subscription_id,
     offerId: subscription.item_id?.toString(),
     status,
-    expiresAt: subscription.next_rebill_date,
+    expiresAt: subscription.expiresAt,
     nextPaymentAt: subscription.next_rebill_date,
     nextPaymentPrice: subscription.subscription_price,
     nextPaymentCurrency: subscription.currency,

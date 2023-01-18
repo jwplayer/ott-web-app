@@ -118,6 +118,8 @@ export const paymentWithoutDetails: PaymentWithoutDetails = async () => {
 };
 
 export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
+  if (!couponCode) return processDiscount(order);
+
   try {
     const response = await InPlayer.Voucher.getDiscount({
       voucherCode: `${couponCode}`,
@@ -135,14 +137,8 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
     order.totalPrice = response.data.amount;
     order.priceBreakdown.discountAmount = discountedAmount;
     order.priceBreakdown.discountedPrice = discountedAmount;
-    return {
-      errors: [],
-      responseData: {
-        message: 'successfully updated',
-        order: order,
-        success: true,
-      },
-    };
+
+    return processDiscount(order);
   } catch {
     throw new Error('Invalid coupon code');
   }
@@ -227,6 +223,17 @@ const processOrder = (payload: CreateOrderArgs): Order => {
     currency: payload.offer.offerCurrency || 'EUR',
     requiredPaymentDetails: true,
   } as Order;
+};
+
+const processDiscount = (order: Order) => {
+  return {
+    errors: [],
+    responseData: {
+      message: 'successfully updated',
+      order: order,
+      success: true,
+    },
+  };
 };
 
 export const cardPaymentProvider = 'stripe';
