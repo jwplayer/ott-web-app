@@ -25,8 +25,6 @@ const menuSchema: SchemaOf<Menu> = object().shape({
 });
 
 const featuresSchema: SchemaOf<Features> = object({
-  enableCasting: boolean().notRequired(),
-  enableSharing: boolean().notRequired(),
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
   continueWatchingList: string().nullable(),
@@ -50,9 +48,6 @@ const stylingSchema: SchemaOf<Styling> = object({
   backgroundColor: string().nullable(),
   highlightColor: string().nullable(),
   headerBackground: string().nullable(),
-  dynamicBlur: boolean().notRequired(),
-  posterFading: boolean().notRequired(),
-  shelfTitles: boolean().notRequired(),
   footerText: string().nullable(),
 });
 

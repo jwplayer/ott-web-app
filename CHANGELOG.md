@@ -1,3 +1,43 @@
+# [3.2.0](https://github.com/jwplayer/ott-web-app/compare/v3.1.1...v3.2.0) (2023-01-18)
+
+
+### Features
+
+* **project:** remove posterFading, shelfTitles and dynamicBlur settings ([9b3a315](https://github.com/jwplayer/ott-web-app/commit/9b3a3153dd4eeac727a4c55cb57b3ab5d8ad78f1))
+
+
+
+## [3.1.1](https://github.com/jwplayer/ott-web-app/compare/v3.1.0...v3.1.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* **player:** hide inside player title and description ([84dae80](https://github.com/jwplayer/ott-web-app/commit/84dae80ece60324887a2e1fbbc20a2821f05d85e))
+
+
+
+# [3.1.0](https://github.com/jwplayer/ott-web-app/compare/v3.0.2...v3.1.0) (2023-01-11)
+
+
+### Features
+
+* **project:** add default player ID to the .env ([1c15875](https://github.com/jwplayer/ott-web-app/commit/1c158756d6c78598cada6af48a910b60e8a2cd06))
+* **project:** add default_player_id to config.ts ([fac3038](https://github.com/jwplayer/ott-web-app/commit/fac3038c8376c2a37879fcfd6e6303f9b89e7947))
+* **project:** remove deprecated app config props ([b6bb06f](https://github.com/jwplayer/ott-web-app/commit/b6bb06f17b32863f5406908d46429ed511bd6ff8))
+* **project:** remove player entry from the docs ([e53aa38](https://github.com/jwplayer/ott-web-app/commit/e53aa3867d14c8ac75ef58cf82d62b66ec2a92fe))
+* **project:** Update .env ([5dc107f](https://github.com/jwplayer/ott-web-app/commit/5dc107f70fde901c73d96427d735e78b1bd94986))
+
+
+
+## [3.0.2](https://github.com/jwplayer/ott-web-app/compare/v3.0.1...v3.0.2) (2022-12-27)
+
+
+### Bug Fixes
+
+* **inlineplayer:** display correct video title after play next clicked BC-229 ([bffc1d9](https://github.com/jwplayer/ott-web-app/commit/bffc1d91d8b808f015f4208d1d7825259cac6b89))
+
+
+
 ## [3.0.1](https://github.com/jwplayer/ott-web-app/compare/v3.0.0...v3.0.1) (2022-12-22)
 
 

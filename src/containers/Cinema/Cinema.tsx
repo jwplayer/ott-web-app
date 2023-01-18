@@ -16,6 +16,7 @@ type Props = {
   onPause?: () => void;
   onComplete?: () => void;
   onClose?: () => void;
+  onNext?: () => void;
   feedId?: string;
   title: string;
   primaryMetadata: React.ReactNode;
@@ -35,6 +36,7 @@ const Cinema: React.FC<Props> = ({
   onPause,
   onComplete,
   onClose,
+  onNext,
   feedId,
   liveStartDateTime,
   liveEndDateTime,
@@ -59,6 +61,10 @@ const Cinema: React.FC<Props> = ({
   const handleComplete = useCallback(() => {
     onComplete && onComplete();
   }, [onComplete]);
+
+  const handleNext = useCallback(() => {
+    onNext && onNext();
+  }, [onNext]);
 
   const handleUserActive = useCallback(() => setUserActive(true), []);
   const handleUserInactive = useCallback(() => setUserActive(false), []);
@@ -87,6 +93,7 @@ const Cinema: React.FC<Props> = ({
           onComplete={handleComplete}
           onUserActive={handleUserActive}
           onUserInActive={handleUserInactive}
+          onNext={handleNext}
           liveEndDateTime={liveEndDateTime}
           liveFromBeginning={liveFromBeginning}
           liveStartDateTime={liveStartDateTime}

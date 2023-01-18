@@ -49,9 +49,6 @@ export type Styling = {
   backgroundColor?: string | null;
   highlightColor?: string | null;
   headerBackground?: string | null;
-  dynamicBlur?: boolean;
-  posterFading?: boolean;
-  shelfTitles?: boolean;
   footerText?: string | null;
 };
 
@@ -67,8 +64,6 @@ export type InPlayer = {
   useSandbox?: boolean;
 };
 export type Features = {
-  enableCasting?: boolean;
-  enableSharing?: boolean;
   recommendationsPlaylist?: string | null;
   searchPlaylist?: string | null;
   favoritesList?: string | null;
