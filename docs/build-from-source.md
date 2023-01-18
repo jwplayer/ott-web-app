@@ -32,7 +32,7 @@ $ yarn --ignore-optional
 3. Create or update the .ini files in `/ini` for the modes you will be running in (probably dev and prod.)
     You can copy the ini file from `/ini/templates` into `/ini`.  The files in `/ini` are git-ignored, so you do not need to worry about account values in source control, but you will need to recreate the ini files each time you make a fresh checkout of the repository.
 
-    The ini files provide startup values to the application such as which app config to load by default.  See [initialization-file](initialization-file.md) for more details.
+    The .ini files provide startup values to the application such as which app config to load by default.  See [initialization-file](initialization-file.md) for more details.
 
 
 4. Start the local development server.
