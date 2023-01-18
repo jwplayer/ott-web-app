@@ -71,7 +71,6 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
     integrations: {},
     styling: {
       footerText: '',
-      shelfTitles: true,
     },
     features: {},
   };

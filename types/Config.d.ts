@@ -49,9 +49,6 @@ export type Styling = {
   backgroundColor?: string | null;
   highlightColor?: string | null;
   headerBackground?: string | null;
-  dynamicBlur?: boolean;
-  posterFading?: boolean;
-  shelfTitles?: boolean;
   footerText?: string | null;
 };
 

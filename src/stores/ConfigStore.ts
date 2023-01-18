@@ -35,7 +35,6 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
       },
     },
     styling: {
-      shelfTitles: true,
       footerText: '',
     },
   },

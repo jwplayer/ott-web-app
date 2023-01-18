@@ -88,9 +88,7 @@ describe('User Component tests', () => {
         features: {
           favoritesList: 'abcdefgh',
         },
-        styling: {
-          shelfTitles: true,
-        },
+        styling: {},
       } as unknown as Config,
     });
     useFavoritesStore.setState({
