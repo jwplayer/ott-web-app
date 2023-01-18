@@ -105,7 +105,7 @@ The footer should contain any information about **Breaking Changes** and is also
   /_images        - Images used in the docs and README
   /features       - Docs coverage specific product use cases
 /ini              - Directory to group different initialization files
-  /templates      - Template ini files per mode
+  /templates      - Template .ini files per mode
 /node_modules*    - Yarn generated dependencies
 /public           - Static files to be hosted with the application
 /scripts          - Dev helper scripts for i18n, deployment, etc.
