@@ -98,7 +98,7 @@ The footer should contain any information about **Breaking Changes** and is also
 
 ```
 /.github          - Templates and action workflows for Github
-/.husky           - Husy scripts for running checks on git triggers
+/.husky           - Husky scripts for running checks on git triggers
 /build*           - Directory where the code is compiled by `yarn build`
 /coverage*        - Location of the C8 coverage report
 /docs             - Documentation
