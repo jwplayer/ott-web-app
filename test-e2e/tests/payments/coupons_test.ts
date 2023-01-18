@@ -3,7 +3,7 @@ import constants from '#utils/constants';
 import { goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '#utils/payments';
 import { testConfigs } from '#test/constants';
 
-const loginContext: { [key: string]: LoginContext } = {};
+const context: { [key: string]: LoginContext } = {};
 
 const today = new Date();
 
@@ -55,7 +55,7 @@ Feature('payments-coupon').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 Data(configs).Scenario('I can redeem coupons', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
 
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   await goToCheckout(I);
 
@@ -97,14 +97,14 @@ Data(configs).Scenario('I can redeem coupons', async ({ I, current }) => {
 
 Data(configs).Scenario('I can cancel a free subscription', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
   cancelPlan(I, addYear(today), current.canRenewSubscription);
 });
 
 Data(configs).Scenario('I can renew a free subscription', async ({ I, current }) => {
   if (current.canRenewSubscription) {
     await I.beforeSubscription(current.config);
-    loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+    context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
     renewPlan(I, addYear(today), current.yearlyOffer.price);
   }
 });

@@ -1,9 +1,9 @@
 import { LoginContext } from '#utils/password_utils';
-import constants, { longTimeout, normalTimeout } from '#utils/constants';
+import constants, { longTimeout } from '#utils/constants';
 import { goToCheckout, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '#utils/payments';
 import { testConfigs } from '#test/constants';
 
-const loginContext: { [key: string]: LoginContext } = {};
+const context: { [key: string]: LoginContext } = {};
 
 const today = new Date();
 
@@ -52,7 +52,7 @@ Feature('payments').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 Data(configs).Scenario('I can see my payments data', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
 
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   await I.openMainMenu();
 
@@ -71,7 +71,7 @@ Data(configs).Scenario('I can see my payments data', async ({ I, current }) => {
 Data(configs).Scenario('I can see offered subscriptions', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
 
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   I.amOnPage(constants.paymentsUrl);
 
@@ -101,7 +101,7 @@ Data(configs).Scenario('I can see offered subscriptions', async ({ I, current })
 Data(configs).Scenario('I can choose an offer', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
 
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   I.amOnPage(constants.offersUrl);
 
@@ -133,7 +133,7 @@ Data(configs).Scenario('I can choose an offer', async ({ I, current }) => {
 
 Data(configs).Scenario('I can see payment types', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   await goToCheckout(I);
 
@@ -157,7 +157,7 @@ Data(configs).Scenario('I can see payment types', async ({ I, current }) => {
 
 Data(configs).Scenario('I can open the PayPal site', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   await goToCheckout(I);
 
@@ -171,7 +171,7 @@ Data(configs).Scenario('I can open the PayPal site', async ({ I, current }) => {
 
 Data(configs).Scenario('I can finish my subscription with credit card', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   await goToCheckout(I);
 
@@ -191,7 +191,7 @@ Data(configs).Scenario('I can finish my subscription with credit card', async ({
 
 Data(configs).Scenario('I can cancel my subscription', async ({ I, current }) => {
   await I.beforeSubscription(current.config);
-  loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
 
   cancelPlan(I, addDays(today, 365), current.canRenewSubscription);
 
@@ -202,7 +202,7 @@ Data(configs).Scenario('I can cancel my subscription', async ({ I, current }) =>
 Data(configs).Scenario('I can renew my subscription', async ({ I, current }) => {
   if (current.canRenewSubscription) {
     await I.beforeSubscription(current.config);
-    loginContext[current.config.label] = await I.registerOrLogin(loginContext[current.config.label]);
+    context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
     renewPlan(I, addDays(today, 365), current.yearlyOffer.price);
   }
 });
