@@ -9,7 +9,6 @@ import styles from './PlaylistLiveChannels.module.scss';
 
 import VideoLayout from '#components/VideoLayout/VideoLayout';
 import Epg from '#components/Epg/Epg';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useLiveChannels from '#src/hooks/useLiveChannels';
 import ShareButton from '#components/ShareButton/ShareButton';
@@ -32,12 +31,9 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, custom } = config;
+  const { siteName, custom } = config;
 
-  const posterFading: boolean = styling?.posterFading === true;
   const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
-
-  const updateBlurImage = useBlurImageUpdater(playlist);
 
   // Routing
   const location = useLocation();
@@ -118,11 +114,6 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
   };
 
   // Effects
-  useEffect(() => {
-    const toImage = program?.backgroundImage?.image || channelMediaItem;
-    if (toImage) updateBlurImage(toImage);
-  }, [channelMediaItem, program, updateBlurImage]);
-
   useEffect(() => {
     // update the channel id in URL
     if (channel && feedid && channelId !== channel.id) {
@@ -209,7 +200,6 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         description={videoDetails.description}
         item={channelMediaItem}
         primaryMetadata={primaryMetadata}
-        posterMode={posterFading ? 'fading' : 'normal'}
         image={videoDetails.image}
         startWatchingButton={startWatchingButton}
         shareButton={shareButton}

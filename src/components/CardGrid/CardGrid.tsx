@@ -29,7 +29,6 @@ type CardGridProps = {
   onCardClick: (item: PlaylistItem, playlistId?: string) => void;
   watchHistory?: { [key: string]: number };
   isLoading: boolean;
-  enableCardTitles?: boolean;
   cols?: Breakpoints;
   currentCardItem?: PlaylistItem;
   currentCardLabel?: string;
@@ -43,7 +42,6 @@ function CardGrid({
   onCardClick,
   onCardHover,
   watchHistory,
-  enableCardTitles = true,
   isLoading = false,
   cols = defaultCols,
   currentCardItem,
@@ -70,7 +68,6 @@ function CardGrid({
         <div role="cell">
           <Card
             title={title}
-            enableTitle={enableCardTitles}
             duration={duration}
             image={shelfImage}
             progress={watchHistory ? watchHistory[mediaid] : undefined}

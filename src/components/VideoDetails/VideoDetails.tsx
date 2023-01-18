@@ -6,7 +6,7 @@ import styles from './VideoDetails.module.scss';
 import CollapsibleText from '#components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Image from '#components/Image/Image';
-import type { ImageData, PosterMode } from '#types/playlist';
+import type { ImageData } from '#types/playlist';
 import { testId } from '#src/utils/common';
 
 type Props = {
@@ -15,7 +15,6 @@ type Props = {
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
   image?: ImageData;
-  posterMode: PosterMode;
   startWatchingButton: React.ReactNode;
   shareButton: React.ReactNode;
   favoriteButton: React.ReactNode;
@@ -28,7 +27,6 @@ const VideoDetails: React.VFC<Props> = ({
   primaryMetadata,
   secondaryMetadata,
   image,
-  posterMode,
   startWatchingButton,
   shareButton,
   favoriteButton,
@@ -39,12 +37,8 @@ const VideoDetails: React.VFC<Props> = ({
 
   return (
     <div className={styles.video} data-testid={testId('video-details')}>
-      <div
-        className={classNames(styles.main, styles.mainPadding, {
-          [styles.posterNormal]: posterMode === 'normal',
-        })}
-      >
-        <Image className={classNames(styles.poster, styles[posterMode])} image={image} alt={title} width={1280} />
+      <div className={classNames(styles.main, styles.mainPadding)}>
+        <Image className={styles.poster} image={image} alt={title} width={1280} />
         <div className={styles.info}>
           <h2 className={styles.title}>{title}</h2>
           <div className={styles.metaContainer}>

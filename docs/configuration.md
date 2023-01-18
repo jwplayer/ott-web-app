@@ -176,9 +176,6 @@ Use the `styling` object to define extra styles for your application.
     "backgroundColor": null,
     "highlightColor": null,
     "headerBackground": null,
-    "dynamicBlur": true,
-    "posterFading": true,
-    "shelfTitles": true,
     "footerText": "Blender Foundation"
 }
 ```
@@ -208,25 +205,6 @@ Use this parameter to change the background color of the header. By default, the
 **styling.footerText** (optional)
 
 Text that will be placed in the footer of the site. Markdown links are supported.
-
----
-
-**styling.dynamicBlur** (optional)
-
-Set this parameter to `true` if you want to enable the Dynamic Blur feature. The Dynamic Blur feature is a blurred image of the current item on the background of the screen. When a user hovers a card, the blurred image changes to the selected item.  
-
----
-
-**styling.posterFading** (optional)
-
-Set this parameter to `true` if you want to enable the Poster Fading feature. By default, a boxed preview is shown on the video and series detail page. With posterFading set to `true`, this image is placed on the background instead and fills a larger portion of the screen.
-
-
----
-
-**styling.shelfTitles** (optional)
-
-Set this parameter to `false` if you want to disable titles below the cards on the home, playlist and search screen.  
 
 ---
 
