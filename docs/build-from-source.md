@@ -61,7 +61,7 @@ We make use of [Vite's 'mode' concept](https://vitejs.dev/guide/env-and-mode.htm
 For most cases, you will want to use `dev`, `test`, or `prod` modes.  The supported modes are described below.
 
 Please keep in mind that there is a nuanced difference between vite `mode` and whether you are running a development or production build as determined by [`NODE_ENV`](https://nodejs.dev/en/learn/nodejs-the-difference-between-development-and-production/).
-Mode can be whatever different deployment environments that our application can be run in, while the the build type will always be either `development` or `production`.
+Mode can be whatever different deployment environments that our application can be run in, while the build type will always be either `development` or `production`.
 Typically when you run the development server using `yarn start`, it will be a `development` build and you build the code with `yarn build` and then host it from static hosting, you will be running a production build.
 
 Production builds optimize code and minimize debug information, while development builds are made for developers to dig into.
