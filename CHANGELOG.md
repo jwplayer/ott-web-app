@@ -1,3 +1,12 @@
+## [3.2.1](https://github.com/jwplayer/ott-web-app/compare/v3.2.0...v3.2.1) (2023-01-18)
+
+
+### Bug Fixes
+
+* doc updates for modes and minor file reorg ([d9c7e8f](https://github.com/jwplayer/ott-web-app/commit/d9c7e8f5f2739173dc23357aa78196178c944297))
+
+
+
 # [3.2.0](https://github.com/jwplayer/ott-web-app/compare/v3.1.1...v3.2.0) (2023-01-18)
 
 
