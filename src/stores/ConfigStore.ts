@@ -2,6 +2,13 @@ import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
 
+export enum PersonalShelf {
+  ContinueWatching = 'continue_watching',
+  Favorites = 'favorites',
+}
+
+export const PersonalShelves = [PersonalShelf.Favorites, PersonalShelf.ContinueWatching];
+
 type CleengData = {
   cleengId: string | null | undefined;
   cleengSandbox: boolean;
@@ -35,7 +42,6 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
       },
     },
     styling: {
-      shelfTitles: true,
       footerText: '',
     },
   },

@@ -8,7 +8,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import Player from '#components/Player/Player';
 import type { JWPlayer } from '#types/jwplayer';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { VideoProgressMinMax } from '#src/config';
+import { DEFAULT_PLAYER_ID, VideoProgressMinMax } from '#src/config';
 
 type Props = {
   item: PlaylistItem;
@@ -18,6 +18,7 @@ type Props = {
   onClose?: () => void;
   onUserActive?: () => void;
   onUserInActive?: () => void;
+  onNext?: () => void;
   feedId?: string;
   liveStartDateTime?: string | null;
   liveEndDateTime?: string | null;
@@ -33,12 +34,13 @@ const PlayerContainer: React.FC<Props> = ({
   onComplete,
   onUserActive,
   onUserInActive,
+  onNext,
   liveEndDateTime,
   liveFromBeginning,
   liveStartDateTime,
   autostart,
 }: Props) => {
-  const { player, features } = useConfigStore((s) => s.config);
+  const { features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;
 
@@ -114,7 +116,7 @@ const PlayerContainer: React.FC<Props> = ({
 
   return (
     <Player
-      playerId={player}
+      playerId={DEFAULT_PLAYER_ID}
       feedId={feedId}
       item={item}
       onReady={handleReady}
@@ -125,6 +127,7 @@ const PlayerContainer: React.FC<Props> = ({
       onRemove={handleRemove}
       onUserActive={onUserActive}
       onUserInActive={onUserInActive}
+      onNext={onNext}
       onPlaylistItemCallback={handlePlaylistItemCallback}
       startTime={startTime}
       autostart={autostart}

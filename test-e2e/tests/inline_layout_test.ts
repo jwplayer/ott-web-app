@@ -85,7 +85,10 @@ Scenario('I switch to another season in the video list', async ({ I }) => {
 
 Scenario('I can see the video auto play when play=1 is set', async ({ I }) => {
   I.seeInCurrentUrl(constants.baseUrl);
-  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}&play=1`);
+  await I.openVideoCard(constants.bigBuckBunnyTitle);
+  await I.executeScript(() => {
+    window.location.href += '&play=1';
+  });
 
   I.waitForElement('video', normalTimeout);
   await I.waitForPlayerPlaying(constants.bigBuckBunnyTitle);
@@ -93,7 +96,8 @@ Scenario('I can see the video auto play when play=1 is set', async ({ I }) => {
 
 Scenario("I don't see the video auto play when play=1 is not set", async ({ I }) => {
   I.seeInCurrentUrl(constants.baseUrl);
-  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}`);
+
+  await I.openVideoCard(constants.bigBuckBunnyTitle);
 
   I.waitForElement('video', normalTimeout);
   await I.waitForPlayerState('idle');

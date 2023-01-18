@@ -23,6 +23,7 @@ type Props = {
   onBeforePlay?: () => void;
   onFirstFrame?: () => void;
   onRemove?: () => void;
+  onNext?: () => void;
   onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
   startTime?: number;
@@ -43,6 +44,7 @@ const Player: React.FC<Props> = ({
   onRemove,
   onPlaylistItem,
   onPlaylistItemCallback,
+  onNext,
   feedId,
   startTime = 0,
   autostart,
@@ -65,6 +67,7 @@ const Player: React.FC<Props> = ({
   const handleRemove = useEventCallback(onRemove);
   const handlePlaylistItem = useEventCallback(onPlaylistItem);
   const handlePlaylistItemCallback = useEventCallback(onPlaylistItemCallback);
+  const handleNextClick = useEventCallback(onNext);
   const handleReady = useEventCallback(() => onReady && onReady(playerRef.current));
 
   const attachEvents = useCallback(() => {
@@ -78,6 +81,7 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('firstFrame', handleFirstFrame);
     playerRef.current?.on('remove', handleRemove);
     playerRef.current?.on('playlistItem', handlePlaylistItem);
+    playerRef.current?.on('nextClick', handleNextClick);
     playerRef.current?.setPlaylistItemCallback(handlePlaylistItemCallback);
   }, [
     handleReady,
@@ -90,6 +94,7 @@ const Player: React.FC<Props> = ({
     handleFirstFrame,
     handleRemove,
     handlePlaylistItem,
+    handleNextClick,
     handlePlaylistItemCallback,
   ]);
 
@@ -151,7 +156,6 @@ const Player: React.FC<Props> = ({
       if (!window.jwplayer || !playerElementRef.current) return;
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
-
       // player options are untyped
       const playerOptions: { [key: string]: unknown } = {
         aspectratio: false,
@@ -160,19 +164,19 @@ const Player: React.FC<Props> = ({
         height: '100%',
         mute: false,
         repeat: false,
+        displaytitle: false,
+        displaydescription: false,
       };
 
       // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
       if (typeof autostart !== 'undefined') {
         playerOptions.autostart = autostart;
       }
-
       playerRef.current.setup(playerOptions);
 
       setPlayer(playerRef.current);
       attachEvents();
     };
-
     if (playerRef.current) {
       return loadPlaylist();
     }

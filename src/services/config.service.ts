@@ -2,6 +2,7 @@ import { array, boolean, mixed, number, object, SchemaOf, string, StringSchema }
 import i18next from 'i18next';
 
 import type { Cleeng, InPlayer, Config, Content, Features, Menu, Styling } from '#types/Config';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
@@ -24,8 +25,6 @@ const menuSchema: SchemaOf<Menu> = object().shape({
 });
 
 const featuresSchema: SchemaOf<Features> = object({
-  enableCasting: boolean().notRequired(),
-  enableSharing: boolean().notRequired(),
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
   continueWatchingList: string().nullable(),
@@ -49,9 +48,6 @@ const stylingSchema: SchemaOf<Styling> = object({
   backgroundColor: string().nullable(),
   highlightColor: string().nullable(),
   headerBackground: string().nullable(),
-  dynamicBlur: boolean().notRequired(),
-  posterFading: boolean().notRequired(),
-  shelfTitles: boolean().notRequired(),
   footerText: string().nullable(),
 });
 
@@ -115,7 +111,7 @@ const enrichConfig = (config: Config): Config => {
     config.integrations.inplayer = {
       clientId: config.custom?.['inplayer.clientId'] as string,
       assetId: Number(config.custom?.['inplayer.assetId']),
-      useSandbox: ['true', '1', 'yes'].indexOf((config.custom?.['inplayer.useSandbox'] as string)?.toLowerCase()) >= 0,
+      useSandbox: isTruthyCustomParamValue(config.custom?.['inplayer.useSandbox']),
     };
   }
 

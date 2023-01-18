@@ -25,6 +25,7 @@ import { queryClient } from '#src/providers/QueryProvider';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 
+
 const PERSIST_KEY_ACCOUNT = 'auth';
 
 let subscription: undefined | (() => void);

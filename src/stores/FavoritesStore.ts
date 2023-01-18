@@ -1,7 +1,7 @@
 import { createStore } from './utils';
 
 import type { Favorite } from '#types/favorite';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
+import { PersonalShelf } from '#src/stores/ConfigStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type FavoritesState = {

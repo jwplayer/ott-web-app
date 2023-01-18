@@ -9,7 +9,6 @@ import styles from './PlaylistLiveChannels.module.scss';
 
 import VideoLayout from '#components/VideoLayout/VideoLayout';
 import Epg from '#components/Epg/Epg';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useLiveChannels from '#src/hooks/useLiveChannels';
 import ShareButton from '#components/ShareButton/ShareButton';
@@ -25,18 +24,16 @@ import { generateMovieJSONLD } from '#src/utils/structuredData';
 import type { ScreenComponent } from '#types/screens';
 import type { Playlist } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playlist } }) => {
   const { t } = useTranslation('epg');
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, features } = config;
+  const { siteName, custom } = config;
 
-  const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
-
-  const updateBlurImage = useBlurImageUpdater(playlist);
+  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
 
   // Routing
   const location = useLocation();
@@ -117,11 +114,6 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
   };
 
   // Effects
-  useEffect(() => {
-    const toImage = program?.backgroundImage?.image || channelMediaItem;
-    if (toImage) updateBlurImage(toImage);
-  }, [channelMediaItem, program, updateBlurImage]);
-
   useEffect(() => {
     // update the channel id in URL
     if (channel && feedid && channelId !== channel.id) {
@@ -208,7 +200,6 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         description={videoDetails.description}
         item={channelMediaItem}
         primaryMetadata={primaryMetadata}
-        posterMode={posterFading ? 'fading' : 'normal'}
         image={videoDetails.image}
         startWatchingButton={startWatchingButton}
         shareButton={shareButton}

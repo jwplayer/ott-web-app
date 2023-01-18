@@ -30,7 +30,6 @@ type CardProps = {
   isCurrent?: boolean;
   isLocked?: boolean;
   currentLabel?: string;
-  enableTitle?: boolean;
 };
 
 function Card({
@@ -44,7 +43,6 @@ function Card({
   episodeNumber,
   progress,
   posterAspect = '16:9',
-  enableTitle = true,
   featured = false,
   disabled = false,
   loading = false,
@@ -94,7 +92,7 @@ function Card({
         {isCurrent && <div className={styles.currentLabel}>{currentLabel}</div>}
         {!loading && (
           <div className={styles.meta}>
-            {featured && !disabled && enableTitle && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
+            {featured && !disabled && <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>}
             <div className={styles.tags}>
               {isLocked && (
                 <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="status">
@@ -111,7 +109,7 @@ function Card({
           </div>
         ) : null}
       </div>
-      {!featured && !disabled && enableTitle && (
+      {!featured && !disabled && (
         <div className={styles.titleContainer}>
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>

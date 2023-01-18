@@ -6,16 +6,14 @@ import shallow from 'zustand/shallow';
 import styles from './User.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
 import { mediaURL } from '#src/utils/formatting';
 import AccountCircle from '#src/icons/AccountCircle';
 import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useConfigStore } from '#src/stores/ConfigStore';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
 import Payment from '#components/Payment/Payment';
@@ -27,11 +25,10 @@ import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 
 const User = (): JSX.Element => {
-  const { accessModel, favoritesList, shelfTitles } = useConfigStore(
+  const { accessModel, favoritesList } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
       favoritesList: s.config.features?.favoritesList,
-      shelfTitles: s.config.styling.shelfTitles,
     }),
     shallow,
   );
@@ -43,16 +40,11 @@ const User = (): JSX.Element => {
   const isLargeScreen = breakpoint > Breakpoint.md;
   const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail, canRenewSubscription } = useAccountStore();
 
-  const updateBlurImage = useBlurImageUpdater();
-
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL(playlistItem));
-  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem.image);
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await logout();
   }, []);
-
-  useEffect(() => updateBlurImage(''), [updateBlurImage]);
 
   useEffect(() => {
     if (!loading && !customer) {
@@ -112,11 +104,9 @@ const User = (): JSX.Element => {
                         error={error}
                         isLoading={isLoading}
                         onCardClick={onCardClick}
-                        onCardHover={onCardHover}
                         onClearFavoritesClick={() => setClearFavoritesOpen(true)}
                         accessModel={accessModel}
                         hasSubscription={!!subscription}
-                        shelfTitles={shelfTitles}
                       />
                     )}
                   </PlaylistContainer>
