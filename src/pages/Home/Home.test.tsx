@@ -12,7 +12,6 @@ describe('Home Component tests', () => {
     useConfigStore.setState({
       config: {
         description: '',
-        player: 'abcdefgh',
         integrations: {},
         assets: {},
         menu: [],

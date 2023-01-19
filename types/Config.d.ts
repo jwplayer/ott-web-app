@@ -6,7 +6,6 @@ export type Config = {
   id?: string;
   siteName?: string;
   description: string;
-  player: string;
   analyticsToken?: string | null;
   adSchedule?: string | null;
   integrations: {

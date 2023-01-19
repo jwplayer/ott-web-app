@@ -7,7 +7,7 @@ import Modal from '#components/Modal/Modal';
 import Player from '#components/Player/Player';
 import ModalCloseButton from '#components/ModalCloseButton/ModalCloseButton';
 import Fade from '#components/Animation/Fade/Fade';
-import { useConfigStore } from '#src/stores/ConfigStore';
+import { DEFAULT_PLAYER_ID } from '#src/config';
 
 type Props = {
   item?: PlaylistItem | null;
@@ -17,7 +17,6 @@ type Props = {
 };
 
 const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
-  const { player } = useConfigStore((s) => s.config);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [userActive, setUserActive] = useState(true);
 
@@ -33,7 +32,7 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
       <div className={styles.container}>
         <Player
           item={item}
-          playerId={player}
+          playerId={DEFAULT_PLAYER_ID}
           onPlay={handlePlay}
           onPause={handlePause}
           onComplete={onClose}
