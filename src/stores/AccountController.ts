@@ -141,7 +141,7 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
       };
     }
 
-    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
+    const response = await accountService.updateCustomer({ ...{ ...values, email: user.email }, id: user.id.toString() }, sandbox, auth.jwt);
 
     if (!response) {
       throw new Error('Unknown error');
