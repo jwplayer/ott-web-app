@@ -35,7 +35,9 @@ function useService<T>(
       sandbox: !!inplayer.useSandbox,
       authProviderId: inplayer?.clientId?.toString(),
     });
-  } else if (cleeng?.id) {
+  }
+
+  if (cleeng?.id) {
     return callback({
       accountService: cleengAccountService,
       subscriptionService: cleengSubscriptionService,
@@ -45,13 +47,13 @@ function useService<T>(
       sandbox: !!cleeng.useSandbox,
       authProviderId: cleeng?.id,
     });
-  } else {
-    //SVOD
-    return callback({
-      config,
-      accessModel,
-    });
   }
+
+  //SVOD
+  return callback({
+    config,
+    accessModel,
+  });
 }
 
 export default useService;

@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import Payment from 'payment';
+import { object, string } from 'yup';
 
 import Button from '../Button/Button';
 import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
@@ -8,15 +11,53 @@ import TextField from '../TextField/TextField';
 
 import styles from './PaymentForm.module.scss';
 
-import type { GenericFormValues } from '#types/form';
-import type { CardPaymentData } from '#types/checkout';
+import useForm from '#src/hooks/useForm';
+import { directPostCardPayment } from '#src/stores/CheckoutController';
+import useCheckAccess from '#src/hooks/useCheckAccess';
 
 type Props = {
-  paymentDataForm?: CardPaymentData & GenericFormValues;
+  couponCode?: string;
+  setUpdatingOrder: (value: boolean) => void;
 };
 
-const PaymentForm: React.FC<Props> = ({ paymentDataForm }) => {
+const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
   const { t } = useTranslation('account');
+  const { intervalCheckAccess } = useCheckAccess();
+
+  const paymentData = useForm(
+    { couponCode, cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
+    async () => {
+      setUpdatingOrder(true);
+      await directPostCardPayment(paymentData.values);
+      intervalCheckAccess({ interval: 15000 });
+    },
+    object().shape({
+      cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
+        return Payment.fns.validateCardNumber(value as string);
+      }),
+      cardExpiry: string().test('card expiry validation', t('checkout.invalid_card_expiry'), (value) => {
+        return Payment.fns.validateCardExpiry(value as string);
+      }),
+      cardCVC: string().test('cvc validation', t('checkout.invalid_cvc_number'), (value) => {
+        const issuer = Payment.fns.cardType(paymentData?.values?.cardNumber);
+        return Payment.fns.validateCardCVC(value as string, issuer);
+      }),
+    }),
+    true,
+  );
+
+  useEffect(() => {
+    if (paymentData.values.cardExpiry) {
+      const expiry = Payment.fns.cardExpiryVal(paymentData.values.cardExpiry);
+      if (expiry.month) {
+        paymentData.setValue('cardExpMonth', expiry.month.toString());
+      }
+      if (expiry.year) {
+        paymentData.setValue('cardExpYear', expiry.year.toString());
+      }
+    }
+    //eslint-disable-next-line
+  }, [paymentData.values.cardExpiry]);
 
   return (
     <div className={styles.paymentForm}>
@@ -24,41 +65,41 @@ const PaymentForm: React.FC<Props> = ({ paymentDataForm }) => {
         <TextField
           label="Cardholder name"
           name="cardholderName"
-          value={paymentDataForm?.values?.cardholderName}
-          onChange={paymentDataForm?.handleChange}
-          onBlur={paymentDataForm?.handleBlur}
+          value={paymentData?.values?.cardholderName}
+          onChange={paymentData?.handleChange}
+          onBlur={paymentData?.handleBlur}
           placeholder={t('checkout.credit_card_name')}
           required
         />
       </div>
       <div>
         <CreditCardNumberField
-          value={paymentDataForm?.values?.cardNumber?.toString()}
-          error={paymentDataForm?.errors?.cardNumber}
-          onBlur={paymentDataForm?.handleBlur}
-          onChange={paymentDataForm?.handleChange}
+          value={paymentData?.values?.cardNumber?.toString()}
+          error={paymentData?.errors?.cardNumber}
+          onBlur={paymentData?.handleBlur}
+          onChange={paymentData?.handleChange}
         />
       </div>
       <div className={styles.columns}>
         <div>
           <CreditCardExpiryField
-            value={paymentDataForm?.values?.cardExpiry}
-            onBlur={paymentDataForm?.handleBlur}
-            onChange={paymentDataForm?.handleChange}
-            error={paymentDataForm?.errors?.cardExpiry}
+            value={paymentData?.values?.cardExpiry}
+            onBlur={paymentData?.handleBlur}
+            onChange={paymentData?.handleChange}
+            error={paymentData?.errors?.cardExpiry}
           />
         </div>
         <div>
           <CreditCardCVCField
-            value={paymentDataForm?.values?.cardCVC}
-            onBlur={paymentDataForm?.handleBlur}
-            onChange={paymentDataForm?.handleChange}
-            error={paymentDataForm?.errors?.cardCVC}
+            value={paymentData?.values?.cardCVC}
+            onBlur={paymentData?.handleBlur}
+            onChange={paymentData?.handleChange}
+            error={paymentData?.errors?.cardCVC}
           />
         </div>
       </div>
       <div>
-        <Button label="continue" variant="contained" color="primary" onClick={paymentDataForm.handleSubmit} size="large" fullWidth />
+        <Button label="continue" variant="contained" color="primary" onClick={paymentData.handleSubmit as () => void} size="large" fullWidth />
       </div>
     </div>
   );

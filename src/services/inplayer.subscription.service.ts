@@ -27,7 +27,7 @@ export async function getActiveSubscription({ config }: { config: Config }) {
       const { data } = await InPlayer.Subscription.getSubscriptions();
       const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
       if (activeSubscription) {
-        return processActiveSubscription(activeSubscription);
+        return formatActiveSubscription(activeSubscription);
       }
     }
     return null;
@@ -45,7 +45,7 @@ export async function getAllTransactions() {
     const { data } = await InPlayer.Payment.getPurchaseHistory('active', 0, 30);
     // @ts-ignore
     // TODO fix PurchaseHistoryCollection type in InPlayer SDK
-    return data?.collection?.map((transaction: InPlayerPurchaseDetails) => processTransaction(transaction));
+    return data?.collection?.map((transaction: InPlayerPurchaseDetails) => formatTransaction(transaction));
   } catch {
     throw new Error('Failed to get transactions');
   }
@@ -58,7 +58,7 @@ export async function getActivePayment() {
     for (const currency in data?.cards) {
       // @ts-ignore
       // TODO fix Card type in InPlayer SDK
-      cards.push(processCardDetails(data.cards?.[currency]));
+      cards.push(formatCardDetails(data.cards?.[currency]));
     }
 
     return cards.find((paymentDetails) => paymentDetails.active) || null;
@@ -91,7 +91,7 @@ export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscr
   }
 };
 
-const processCardDetails = (card: Card & { card_type: string; account_id: number }): PaymentDetail => {
+const formatCardDetails = (card: Card & { card_type: string; account_id: number }): PaymentDetail => {
   const { number, exp_month, exp_year, card_name, card_type, account_id } = card;
   const zeroFillExpMonth = `0${exp_month}`.slice(-2);
   return {
@@ -107,7 +107,7 @@ const processCardDetails = (card: Card & { card_type: string; account_id: number
 };
 
 // TODO: fix PurchaseDetails type in InPlayer SDK
-const processTransaction = (transaction: InPlayerPurchaseDetails): Transaction => {
+const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction => {
   return {
     transactionId: transaction.parent_resource_id,
     transactionDate: transaction.created_at,
@@ -132,7 +132,7 @@ const processTransaction = (transaction: InPlayerPurchaseDetails): Transaction =
   };
 };
 
-const processActiveSubscription = (subscription: SubscriptionDetails) => {
+const formatActiveSubscription = (subscription: SubscriptionDetails) => {
   let status = '';
   switch (subscription.action_type) {
     case 'free-trial':
