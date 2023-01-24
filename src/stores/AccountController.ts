@@ -141,7 +141,12 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
       };
     }
 
-    const response = await accountService.updateCustomer({ ...{ ...values, email: user.email }, id: user.id.toString() }, sandbox, auth.jwt);
+    let payload = values;
+    if (!canUpdateEmail) {
+      payload = { ...values, email: user.email };
+    }
+
+    const response = await accountService.updateCustomer({ ...payload, id: user.id.toString() }, sandbox, auth.jwt);
 
     if (!response) {
       throw new Error('Unknown error');
