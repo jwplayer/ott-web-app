@@ -9,9 +9,9 @@ import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev, testId } from '#src/utils/common';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
-  playerId: string;
   feedId?: string;
   item: PlaylistItem;
   onReady?: (player?: JWPlayer) => void;
@@ -31,7 +31,6 @@ type Props = {
 };
 
 const Player: React.FC<Props> = ({
-  playerId,
   item,
   onReady,
   onPlay,
@@ -54,7 +53,11 @@ const Player: React.FC<Props> = ({
   const loadingRef = useRef(false);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
-  const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
+
+  const { apiHost, getPlayer } = useConfigStore((s) => s);
+  const playerId = getPlayer();
+
+  const scriptUrl = `${apiHost}/libraries/${playerId}.js`;
   const setPlayer = useOttAnalytics(item, feedId);
 
   const handleBeforePlay = useEventCallback(onBeforePlay);

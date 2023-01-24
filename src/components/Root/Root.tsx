@@ -14,6 +14,7 @@ import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
+import { initializeHost } from '#src/stores/ConfigController';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -34,6 +35,10 @@ const Root: FC = () => {
       setSearchParams(searchParams, { replace: true });
     }
   }, [configSource, searchParams, setSearchParams, settingsQuery.data]);
+
+  useEffect(() => {
+    initializeHost(searchParams);
+  }, [configSource, searchParams]);
 
   const configQuery = useQuery('config-init-' + configSource, async () => await loadAndValidateConfig(configSource), {
     enabled: settingsQuery.isSuccess,

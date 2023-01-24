@@ -3,7 +3,7 @@ import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 import type { GetSeriesParams, Series } from '#types/series';
-import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
+import { useConfigStore as ConfigStore, useConfigStore } from '#src/stores/ConfigStore';
 import { generateImageData } from '#src/utils/image';
 
 // change the values below to change the property used to look up the alternate image
@@ -56,7 +56,7 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
   }
 
   const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
+  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 
@@ -74,7 +74,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
   }
 
   const pathname = `/apps/watchlists/${playlistId}`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
+  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, { token, media_ids: mediaIds });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
 
@@ -91,7 +91,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
  */
 export const getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
   const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { token });
+  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, { token });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
   const mediaItem = data.playlist[0];
@@ -129,7 +129,7 @@ export const getSeries = async (id: string, params: GetSeriesParams = {}): Promi
   }
 
   const pathname = `/apps/series/${id}`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
+  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 
@@ -142,7 +142,7 @@ export const getSeries = async (id: string, params: GetSeriesParams = {}): Promi
  */
 export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in typeof mediaIds[number]]: Series[] | undefined } | undefined> => {
   const pathname = `/apps/series`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
+  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, {
     media_ids: mediaIds.join(','),
   });
   const response = await fetch(url);

@@ -9,8 +9,6 @@ import { initializeAccount } from '#src/stores/AccountController';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
 
-const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
-
 const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Styling) => {
   const root = document.querySelector(':root') as HTMLElement;
 
@@ -23,6 +21,7 @@ const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: 
     root.style.setProperty('--highlight-color', highlightColor);
     root.style.setProperty('--highlight-contrast-color', calculateContrastColor(highlightColor));
   }
+
   if (root && headerBackground) {
     root.style.setProperty('--header-background', headerBackground);
     root.style.setProperty('--header-contrast-color', calculateContrastColor(headerBackground));
@@ -133,7 +132,7 @@ function formatSourceLocation(source?: string) {
   }
 
   if (source.match(/^[a-z,\d]{8}$/)) {
-    return `${CONFIG_HOST}/apps/configs/${source}.json`;
+    return `${useConfigStore.getState().apiHost}/apps/configs/${source}.json`;
   }
 
   return source;

@@ -54,6 +54,8 @@ export function calculateContrastColor(color: string) {
 // Build is either Development or Production
 // Mode can be dev, jwdev, demo, test, prod, etc.
 export const IS_DEVELOPMENT_BUILD = import.meta.env.DEV;
+// Mode can be dev, jwdev, demo, test, prod, etc.
+export const IS_PROD_MODE = import.meta.env.MODE === 'prod';
 // Demo mode is used to run our firebase demo instance
 export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
 // Test mode is used for e2e and unit tests

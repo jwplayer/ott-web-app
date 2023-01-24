@@ -1,6 +1,7 @@
 import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
+import { API_HOST, DEFAULT_PLAYER } from '#src/config';
 
 export enum PersonalShelf {
   ContinueWatching = 'continue_watching',
@@ -19,6 +20,8 @@ type CleengData = {
 type ConfigState = {
   config: Config;
   accessModel: AccessModel;
+  apiHost: string;
+  getPlayer: () => string;
   getCleengData: () => CleengData;
 };
 
@@ -46,6 +49,13 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     },
   },
   accessModel: 'SVOD',
+  apiHost: import.meta.env.APP_API_BASE_URL || API_HOST.prd,
+  getPlayer: (): string => {
+    const host = get().apiHost;
+
+    // For dev api host we use only one testing id, for prod it can be also set in .env file
+    return host === API_HOST.dev ? DEFAULT_PLAYER.dev : import.meta.env.APP_DEFAULT_PLAYER ?? DEFAULT_PLAYER.prd;
+  },
   getCleengData: (): CleengData => {
     const cleeng = get().config?.integrations?.cleeng;
 

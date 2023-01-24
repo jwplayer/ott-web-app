@@ -8,7 +8,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import Player from '#components/Player/Player';
 import type { JWPlayer } from '#types/jwplayer';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { DEFAULT_PLAYER_ID, VideoProgressMinMax } from '#src/config';
+import { VideoProgressMinMax } from '#src/config';
 
 type Props = {
   item: PlaylistItem;
@@ -40,8 +40,8 @@ const PlayerContainer: React.FC<Props> = ({
   liveStartDateTime,
   autostart,
 }: Props) => {
-  const { features } = useConfigStore((s) => s.config);
-  const continueWatchingList = features?.continueWatchingList;
+  const { config } = useConfigStore((s) => s);
+  const continueWatchingList = config?.features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;
 
   // state
@@ -116,7 +116,6 @@ const PlayerContainer: React.FC<Props> = ({
 
   return (
     <Player
-      playerId={DEFAULT_PLAYER_ID}
       feedId={feedId}
       item={item}
       onReady={handleReady}
