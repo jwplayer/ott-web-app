@@ -10,7 +10,7 @@ import VideoDetailsInline from '#components/VideoDetailsInline/VideoDetailsInlin
 import VideoList from '#components/VideoList/VideoList';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { testId } from '#src/utils/common';
-import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';
+import type { ImageData, Playlist, PlaylistItem } from '#types/playlist';
 import type { AccessModel } from '#types/Config';
 
 type FilterProps = {
@@ -25,7 +25,6 @@ type FilterProps = {
 type VideoDetailsProps = {
   title: string;
   description: string;
-  posterMode: PosterMode;
   image?: ImageData;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
@@ -43,7 +42,6 @@ type VideoListProps = {
   watchHistory?: { [key: string]: number };
   activeMediaId?: string;
   activeLabel?: string;
-  enableCardTitles?: boolean;
 };
 
 type Props = {
@@ -72,7 +70,6 @@ const VideoLayout: React.FC<Props> = ({
   title,
   description,
   image,
-  posterMode,
   primaryMetadata,
   secondaryMetadata,
   shareButton,
@@ -84,7 +81,6 @@ const VideoLayout: React.FC<Props> = ({
   relatedTitle,
   watchHistory,
   activeLabel,
-  enableCardTitles = true,
   // filters
   filters,
   setFilter,
@@ -130,7 +126,6 @@ const VideoLayout: React.FC<Props> = ({
           playlist={playlist}
           onCardClick={onItemClick}
           isLoading={isLoading}
-          enableCardTitles={enableCardTitles}
           watchHistory={watchHistory}
           accessModel={accessModel}
           isLoggedIn={isLoggedIn}
@@ -194,7 +189,6 @@ const VideoLayout: React.FC<Props> = ({
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
         shareButton={shareButton}
-        posterMode={posterMode}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
       />

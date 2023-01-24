@@ -19,7 +19,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
-import { queryClient } from '#src/providers/QueryProvider';
+import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 

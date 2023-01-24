@@ -1,9 +1,0 @@
-// Vitest Snapshot v1
-
-exports[`<DynamicBlur> > renders and matches snapshot 1`] = `
-<div>
-  <div
-    class="_dynamicBlur_c7f5f4"
-  />
-</div>
-`;

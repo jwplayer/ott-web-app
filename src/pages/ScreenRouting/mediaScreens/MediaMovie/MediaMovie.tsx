@@ -6,7 +6,6 @@ import shallow from 'zustand/shallow';
 
 import VideoLayout from '#components/VideoLayout/VideoLayout';
 import { isLocked } from '#src/utils/entitlements';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { formatVideoMetaString, mediaURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import useMedia from '#src/hooks/useMedia';
@@ -26,6 +25,7 @@ import Button from '#components/Button/Button';
 import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { t } = useTranslation('video');
@@ -43,15 +43,13 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, features, custom } = config;
+  const { siteName, features, custom } = config;
 
-  const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
+  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Media
-  useBlurImageUpdater(data);
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(data?.trailerId || '');
   const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
@@ -141,13 +139,11 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
         shareButton={shareButton}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
-        posterMode={posterFading ? 'fading' : 'normal'}
         startWatchingButton={startWatchingButton}
         playlist={playlist}
         relatedTitle={playlist?.title}
         onItemClick={onCardClick}
         activeLabel={t('current_video')}
-        enableCardTitles={styling.shelfTitles}
         player={
           inlineLayout ? (
             <InlinePlayer
@@ -168,6 +164,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
               primaryMetadata={primaryMetadata}
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
+              onNext={handleComplete}
             />
           )
         }

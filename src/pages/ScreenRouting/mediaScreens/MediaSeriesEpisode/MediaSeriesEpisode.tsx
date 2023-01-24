@@ -8,7 +8,6 @@ import VideoLayout from '#components/VideoLayout/VideoLayout';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import { isLocked } from '#src/utils/entitlements';
 import useEntitlement from '#src/hooks/useEntitlement';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
@@ -31,6 +30,7 @@ import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import useGetSeriesId from '#src/hooks/useGetSeriesId';
 import Loading from '#src/pages/Loading/Loading';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   const breakpoint = useBreakpoint();
@@ -45,9 +45,8 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { styling, features, siteName, custom } = config;
-  const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
+  const { features, siteName, custom } = config;
+  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
@@ -74,8 +73,6 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(episodeItem);
-
-  useBlurImageUpdater(episodeItem);
 
   // Handlers
   const goBack = () => episodeItem && seriesPlaylist && navigate(episodeURL(data, seriesId, false, feedId));
@@ -171,7 +168,6 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
         shareButton={shareButton}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
-        posterMode={posterFading ? 'fading' : 'normal'}
         startWatchingButton={startWatchingButton}
         isLoading={isLoading}
         accessModel={accessModel}
@@ -180,7 +176,6 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
         playlist={filteredPlaylist}
         relatedTitle={inlineLayout ? seriesPlaylist.title : t('episodes')}
         onItemClick={onCardClick}
-        enableCardTitles={styling.shelfTitles}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
         filterValuePrefix={t('season_prefix')}
