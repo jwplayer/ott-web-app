@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "JW Player",
