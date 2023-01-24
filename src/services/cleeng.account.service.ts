@@ -223,6 +223,8 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload, sand
 
 export const canUpdateEmail = true;
 
+export const canSupportEmptyFullName = true;
+
 export const canChangePasswordWithOldPassword = false;
 export const subscribeToNotifications = async () => true;
 export const canRenewSubscription = true;
