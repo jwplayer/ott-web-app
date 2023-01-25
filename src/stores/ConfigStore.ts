@@ -1,6 +1,7 @@
 import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
+import type { AdSchedule } from '#types/ad-schedule';
 
 export enum PersonalShelf {
   ContinueWatching = 'continue_watching',
@@ -19,6 +20,7 @@ type CleengData = {
 type ConfigState = {
   config: Config;
   accessModel: AccessModel;
+  adScheduleData: AdSchedule | null | undefined;
   getCleengData: () => CleengData;
 };
 
@@ -46,6 +48,7 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     },
   },
   accessModel: 'SVOD',
+  adScheduleData: null,
   getCleengData: (): CleengData => {
     const cleeng = get().config?.integrations?.cleeng;
 

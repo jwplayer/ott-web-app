@@ -8,6 +8,7 @@ import type { AccessModel, Config, Styling } from '#types/Config';
 import { initializeAccount } from '#src/stores/AccountController';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
+import { initializeAdSchedule } from '#src/stores/ConfigController';
 
 const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
 
@@ -61,7 +62,6 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
     id: '',
     siteName: '',
     description: '',
-    player: '',
     assets: {
       banner: '/images/logo.png',
     },
@@ -122,6 +122,10 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
   }
   if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
     await initializeFavorites();
+  }
+
+  if (config.adSchedule) {
+    await initializeAdSchedule();
   }
 
   return config;
