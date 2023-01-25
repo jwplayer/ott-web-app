@@ -14,6 +14,8 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 type Props = {
   feedId?: string;
   item: PlaylistItem;
+  startTime?: number;
+  autostart?: boolean;
   onReady?: (player?: JWPlayer) => void;
   onPlay?: () => void;
   onPause?: () => void;
@@ -26,8 +28,6 @@ type Props = {
   onNext?: () => void;
   onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
-  startTime?: number;
-  autostart?: boolean;
 };
 
 const Player: React.FC<Props> = ({
@@ -59,6 +59,8 @@ const Player: React.FC<Props> = ({
 
   const scriptUrl = `${apiHost}/libraries/${playerId}.js`;
   const setPlayer = useOttAnalytics(item, feedId);
+
+  const { adScheduleData } = useConfigStore((s) => s);
 
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
@@ -159,16 +161,27 @@ const Player: React.FC<Props> = ({
       if (!window.jwplayer || !playerElementRef.current) return;
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
+
       // player options are untyped
       const playerOptions: { [key: string]: unknown } = {
+        advertising: adScheduleData,
         aspectratio: false,
-        playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
-        width: '100%',
+        controls: true,
+        displaytitle: false,
+        displayHeading: false,
+        displaydescription: false,
+        floating: {
+          mode: 'never',
+        },
         height: '100%',
         mute: false,
+        playbackRateControls: true,
+        pipIcon: 'disabled',
+        playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
         repeat: false,
-        displaytitle: false,
-        displaydescription: false,
+        cast: {},
+        stretching: 'uniform',
+        width: '100%',
       };
 
       // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
@@ -187,7 +200,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData]);
 
   useEffect(() => {
     return () => {

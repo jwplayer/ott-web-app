@@ -2,6 +2,7 @@ import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
 import { API_HOST, DEFAULT_PLAYER } from '#src/config';
+import type { AdSchedule } from '#types/ad-schedule';
 
 export enum PersonalShelf {
   ContinueWatching = 'continue_watching',
@@ -21,6 +22,7 @@ type ConfigState = {
   config: Config;
   accessModel: AccessModel;
   apiHost: string;
+  adScheduleData: AdSchedule | null | undefined;
   getPlayer: () => string;
   getCleengData: () => CleengData;
 };
@@ -49,6 +51,7 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     },
   },
   accessModel: 'SVOD',
+  adScheduleData: null,
   apiHost: import.meta.env.APP_API_BASE_URL || API_HOST.prd,
   getPlayer: (): string => {
     const host = get().apiHost;
