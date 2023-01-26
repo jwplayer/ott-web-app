@@ -67,10 +67,6 @@ export const handleVisibilityChange = () => {
 
 export const initializeAccount = async () => {
   await useService(async ({ accountService, config }) => {
-    if (!accountService) {
-      useAccountStore.setState({ loading: false });
-      return;
-    }
     useAccountStore.setState({
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
@@ -119,8 +115,6 @@ export async function updateUser(
   values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string },
 ): Promise<ServiceResponse<Customer>> {
   return await useService(async ({ accountService, sandbox = true }) => {
-    if (!accountService) throw new Error('account service is not configured');
-
     useAccountStore.setState({ loading: true });
 
     const { auth, user, canUpdateEmail } = useAccountStore.getState();
@@ -163,8 +157,6 @@ export const refreshJwtToken = async (auth: AuthData) => {
 
 export const getAccount = async (auth: AuthData) => {
   await useService(async ({ accountService, config, accessModel }) => {
-    if (!accountService) throw new Error('account service is not configured');
-
     const response = await accountService.getUser({ config, auth });
     if (response) {
       await afterLogin(auth, response.user, response.customerConsents, accessModel);
@@ -176,7 +168,6 @@ export const getAccount = async (auth: AuthData) => {
 
 export const login = async (email: string, password: string) => {
   await useService(async ({ accountService, config, accessModel }) => {
-    if (!accountService) throw new Error('account service is not configured');
     useAccountStore.setState({ loading: true });
 
     const response = await accountService.login({ config, email, password });
@@ -220,8 +211,6 @@ export async function logout() {
 
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
-    if (!accountService) throw new Error('account service is not configured');
-
     useAccountStore.setState({ loading: true });
     const response = await accountService.register({ config, email, password });
     if (response) {
@@ -260,8 +249,6 @@ export const updatePersonalShelves = async () => {
 export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, config }) => {
-      if (!accountService) throw new Error('account service is not configured');
-
       useAccountStore.setState({ loading: true });
 
       try {
@@ -295,8 +282,6 @@ export const updateConsents = async (customerConsents: CustomerConsent[]): Promi
 export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse> {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, config }) => {
-      if (!accountService) throw new Error('account service is not configured');
-
       const response = await accountService.getCustomerConsents({ config, customer, jwt });
 
       if (response?.consents) {
@@ -310,8 +295,6 @@ export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse
 
 export const getPublisherConsents = async (): Promise<GetPublisherConsentsResponse> => {
   return await useService(async ({ accountService, config }) => {
-    if (!accountService) throw new Error('account service is not configured');
-
     const response = await accountService.getPublisherConsents(config);
 
     useAccountStore.setState({ publisherConsents: response.consents });
@@ -323,8 +306,6 @@ export const getPublisherConsents = async (): Promise<GetPublisherConsentsRespon
 export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
   return await useAccount(async ({ customer, auth: { jwt } }) => {
     return await useService(async ({ accountService, sandbox = true }) => {
-      if (!accountService) throw new Error('account service is not configured');
-
       const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox, jwt);
 
       return responseData;
@@ -335,8 +316,6 @@ export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
 export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
   return await useAccount(async ({ customer, auth, customerConsents }) => {
     return await useService(async ({ accountService, accessModel, sandbox = true }) => {
-      if (!accountService) throw new Error('account service is not configured');
-
       const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox, auth.jwt);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -350,8 +329,6 @@ export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> =
 
 export const resetPassword = async (email: string, resetUrl: string) => {
   return await useService(async ({ accountService, sandbox = true, authProviderId }) => {
-    if (!accountService) throw new Error('account service is not configured');
-
     const response = await accountService.resetPassword(
       {
         customerEmail: email,
@@ -369,8 +346,6 @@ export const resetPassword = async (email: string, resetUrl: string) => {
 
 export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
   return await useService(async ({ accountService, sandbox = true }) => {
-    if (!accountService) throw new Error('account service is not configured');
-
     const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
@@ -380,8 +355,6 @@ export const changePasswordWithOldPassword = async (oldPassword: string, newPass
 
 export const changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
   return await useService(async ({ accountService, sandbox = true, authProviderId }) => {
-    if (!accountService) throw new Error('account service is not configured');
-
     const response = await accountService.changePasswordWithResetToken(
       { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
       sandbox,

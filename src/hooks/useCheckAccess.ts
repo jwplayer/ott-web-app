@@ -37,7 +37,7 @@ const useCheckAccess = () => {
         }
       }, interval);
     },
-    [intervalRef.current, location, navigate],
+    [intervalRef.current, errorMessage],
   );
 
   useEffect(() => {
