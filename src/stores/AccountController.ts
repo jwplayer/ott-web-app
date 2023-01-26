@@ -1,6 +1,5 @@
 import jwtDecode from 'jwt-decode';
 
-import * as cleengAccountService from '#src/services/cleeng.account.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type {
@@ -142,17 +141,19 @@ export async function updateUser(
 }
 
 export const refreshJwtToken = async (auth: AuthData) => {
-  try {
-    const { config } = useConfigStore.getState();
-    const authData = await cleengAccountService.getFreshJwtToken({ config, auth });
+  await useService(async ({ accountService }) => {
+    try {
+      const { config } = useConfigStore.getState();
+      const authData = await accountService.getFreshJwtToken({ config, auth });
 
-    if (authData) {
-      useAccountStore.setState((s) => ({ auth: { ...s.auth, ...authData } }));
+      if (authData) {
+        useAccountStore.setState((s) => ({ auth: { ...s.auth, ...authData } }));
+      }
+    } catch (error: unknown) {
+      // failed to refresh, logout user
+      await logout();
     }
-  } catch (error: unknown) {
-    // failed to refresh, logout user
-    await logout();
-  }
+  });
 };
 
 export const getAccount = async (auth: AuthData) => {

@@ -27,8 +27,6 @@ function useService<T>(
 
   // AUTHVOD or SVOD for InPlayer integration
   if (inplayer?.clientId) {
-    if (!inplayerAccountService) throw new Error('account service is not available');
-
     return callback({
       accountService: inplayerAccountService,
       subscriptionService: inplayerSubscriptionService,
@@ -42,8 +40,6 @@ function useService<T>(
 
   // AUTHVOD or SVOD for Cleeng integration
   if (cleeng?.id) {
-    if (!cleengAccountService) throw new Error('account service is not available');
-
     return callback({
       accountService: cleengAccountService,
       subscriptionService: cleengSubscriptionService,
