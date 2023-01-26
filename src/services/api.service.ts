@@ -57,7 +57,7 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
   }
 
   const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
-  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, params);
+  const url = addQueryParams(useConfigStore.getState().environments.host + pathname, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 
@@ -75,7 +75,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
   }
 
   const pathname = `/apps/watchlists/${playlistId}`;
-  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, { token, media_ids: mediaIds });
+  const url = addQueryParams(useConfigStore.getState().environments.host + pathname, { token, media_ids: mediaIds });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
 
@@ -92,7 +92,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
  */
 export const getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
   const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
-  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, { token });
+  const url = addQueryParams(useConfigStore.getState().environments.host + pathname, { token });
   const response = await fetch(url);
   const data = (await getDataOrThrow(response)) as Playlist;
   const mediaItem = data.playlist[0];
@@ -130,7 +130,7 @@ export const getSeries = async (id: string, params: GetSeriesParams = {}): Promi
   }
 
   const pathname = `/apps/series/${id}`;
-  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, params);
+  const url = addQueryParams(useConfigStore.getState().environments.host + pathname, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
 
@@ -143,7 +143,7 @@ export const getSeries = async (id: string, params: GetSeriesParams = {}): Promi
  */
 export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in typeof mediaIds[number]]: Series[] | undefined } | undefined> => {
   const pathname = `/apps/series`;
-  const url = addQueryParams(useConfigStore.getState().apiHost + pathname, {
+  const url = addQueryParams(useConfigStore.getState().environments.host + pathname, {
     media_ids: mediaIds.join(','),
   });
   const response = await fetch(url);
@@ -160,8 +160,7 @@ export const getAdSchedule = async (id: string | undefined | null): Promise<AdSc
     throw new Error('Ad Schedule ID is required');
   }
 
-  const url = import.meta.env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
-  const response = await fetch(url);
+  const response = await fetch(useConfigStore.getState().environments.host + `/v2/advertising/schedules/${id}.json`);
   const data = await getDataOrThrow(response);
 
   return data;

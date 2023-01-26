@@ -1,6 +1,6 @@
 import type { NavigateFunction } from 'react-router/dist/lib/hooks';
 
-import { logDev } from '#src/utils/common';
+import { IS_PROD_MODE, logDev } from '#src/utils/common';
 import type { Settings } from '#src/stores/SettingsStore';
 
 // Use local storage so the override persists until cleared
@@ -8,8 +8,23 @@ const storage = window.localStorage;
 
 const configQueryKey = 'app-config';
 const configLegacyQueryKey = 'c';
+const envQueryKey = 'env';
 
 const configFileStorageKey = 'config-file-override';
+
+export const getApiEnv = (searchParams: URLSearchParams): 'dev' | 'prd' => {
+  const query = searchParams.get(envQueryKey);
+
+  if (IS_PROD_MODE) {
+    return 'prd';
+  }
+
+  if (query === 'dev' || query === 'prd') {
+    return query;
+  }
+
+  return 'prd';
+};
 
 export function getConfigNavigateCallback(navigate: NavigateFunction) {
   return (configSource: string) => {
@@ -24,13 +39,15 @@ export function getConfigNavigateCallback(navigate: NavigateFunction) {
 }
 
 export function getConfigSource(searchParams: URLSearchParams, settings: Settings | undefined) {
+  const env = getApiEnv(searchParams);
+
   if (!settings) {
-    return '';
+    return { configSource: '', env };
   }
 
   // Skip all the fancy logic below if there aren't any other options besides the default anyhow
   if (!settings.UNSAFE_allowAnyConfigSource && (settings.additionalAllowedConfigSources?.length || 0) <= 0) {
-    return settings.defaultConfigSource;
+    return { configSource: settings.defaultConfigSource, env };
   }
 
   const configQueryParam = searchParams.get(configQueryKey) ?? searchParams.get(configLegacyQueryKey);
@@ -39,13 +56,13 @@ export function getConfigSource(searchParams: URLSearchParams, settings: Setting
     // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
     if (!configQueryParam) {
       storage.removeItem(configFileStorageKey);
-      return settings.defaultConfigSource;
+      return { configSource: settings.defaultConfigSource, env };
     }
 
     // If it's valid, store it and return it
     if (isValidConfigSource(configQueryParam, settings)) {
       storage.setItem(configFileStorageKey, configQueryParam);
-      return configQueryParam;
+      return { configSource: configQueryParam, env };
     }
 
     logDev(`Invalid app-config query param: ${configQueryParam}`);
@@ -57,14 +74,14 @@ export function getConfigSource(searchParams: URLSearchParams, settings: Setting
   // Make sure the stored value is still valid before returning it
   if (storedSource) {
     if (isValidConfigSource(storedSource, settings)) {
-      return storedSource;
+      return { configSource: storedSource, env };
     }
 
     logDev('Invalid stored config: ' + storedSource);
     storage.removeItem(configFileStorageKey);
   }
 
-  return settings.defaultConfigSource;
+  return { configSource: settings.defaultConfigSource, env };
 }
 
 export function cleanupQueryParams(searchParams: URLSearchParams, settings: Settings, configSource: string | undefined) {

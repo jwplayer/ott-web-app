@@ -9,6 +9,7 @@ import { initializeAccount } from '#src/stores/AccountController';
 import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
 import { initializeFavorites } from '#src/stores/FavoritesController';
 import { initializeAdSchedule } from '#src/stores/ConfigController';
+import { ENVIRONMENT } from '#src/config';
 
 const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Styling) => {
   const root = document.querySelector(':root') as HTMLElement;
@@ -52,8 +53,18 @@ const calculateAccessModel = (config: Config): AccessModel => {
   return 'SVOD';
 };
 
-export async function loadAndValidateConfig(configSource: string | undefined) {
-  configSource = formatSourceLocation(configSource);
+export async function loadAndValidateConfig(configSource: string | undefined, env: 'dev' | 'prd') {
+  const environments = {
+    host: ENVIRONMENT[env].host,
+    player: env === 'dev' ? ENVIRONMENT[env].player : import.meta.env.APP_DEFAULT_PLAYER ?? ENVIRONMENT[env].player,
+  };
+
+  // Store local config variables
+  useConfigStore.setState((s) => {
+    s.environments = environments;
+  });
+
+  configSource = formatSourceLocation(configSource, environments.host);
 
   // Explicitly set default config here as a local variable,
   // otherwise if it's a module level const, the merge below causes changes to nested properties
@@ -99,7 +110,7 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
   const accessModel = calculateAccessModel(config);
 
   useConfigStore.setState({
-    config: config,
+    config,
     accessModel,
   });
 
@@ -130,13 +141,13 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
   return config;
 }
 
-function formatSourceLocation(source?: string) {
+function formatSourceLocation(source: string | undefined, host: string) {
   if (!source) {
     return undefined;
   }
 
   if (source.match(/^[a-z,\d]{8}$/)) {
-    return `${useConfigStore.getState().apiHost}/apps/configs/${source}.json`;
+    return `${host}/apps/configs/${source}.json`;
   }
 
   return source;

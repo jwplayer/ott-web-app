@@ -54,10 +54,11 @@ const Player: React.FC<Props> = ({
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
 
-  const { apiHost, getPlayer } = useConfigStore((s) => s);
-  const playerId = getPlayer();
+  const {
+    environments: { host, player },
+  } = useConfigStore((s) => s);
 
-  const scriptUrl = `${apiHost}/libraries/${playerId}.js`;
+  const scriptUrl = `${host}/libraries/${player}.js`;
   const setPlayer = useOttAnalytics(item, feedId);
 
   const { adScheduleData } = useConfigStore((s) => s);
@@ -131,7 +132,7 @@ const Player: React.FC<Props> = ({
   }, [startTime]);
 
   useEffect(() => {
-    if (!playerId) {
+    if (!player) {
       return;
     }
 
@@ -200,7 +201,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData]);
+  }, [libLoaded, item, detachEvents, attachEvents, player, setPlayer, autostart, adScheduleData]);
 
   useEffect(() => {
     return () => {

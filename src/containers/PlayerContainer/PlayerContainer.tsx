@@ -40,8 +40,7 @@ const PlayerContainer: React.FC<Props> = ({
   liveStartDateTime,
   autostart,
 }: Props) => {
-  const { config } = useConfigStore((s) => s);
-  const continueWatchingList = config?.features?.continueWatchingList;
+  const continueWatchingList = useConfigStore((s) => s.config?.features?.continueWatchingList);
   const watchHistoryEnabled = !!continueWatchingList;
 
   // state

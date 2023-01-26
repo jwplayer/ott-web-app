@@ -14,7 +14,6 @@ import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
-import { initializeHost } from '#src/stores/ConfigController';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -27,8 +26,7 @@ const Root: FC = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const configSource = useMemo(() => getConfigSource(searchParams, settingsQuery.data), [searchParams, settingsQuery.data]);
-
+  const { configSource, env } = useMemo(() => getConfigSource(searchParams, settingsQuery.data), [searchParams, settingsQuery.data]);
   // Update the query string to maintain the right params
   useEffect(() => {
     if (settingsQuery.data && cleanupQueryParams(searchParams, settingsQuery.data, configSource)) {
@@ -36,11 +34,7 @@ const Root: FC = () => {
     }
   }, [configSource, searchParams, setSearchParams, settingsQuery.data]);
 
-  useEffect(() => {
-    initializeHost(searchParams);
-  }, [configSource, searchParams]);
-
-  const configQuery = useQuery('config-init-' + configSource, async () => await loadAndValidateConfig(configSource), {
+  const configQuery = useQuery('config-init-' + configSource, async () => await loadAndValidateConfig(configSource, env), {
     enabled: settingsQuery.isSuccess,
     retry: configSource ? 1 : 0,
     refetchInterval: false,
