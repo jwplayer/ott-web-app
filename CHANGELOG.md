@@ -1,3 +1,12 @@
+# [3.4.0](https://github.com/jwplayer/ott-web-app/compare/v3.3.0...v3.4.0) (2023-01-27)
+
+
+### Features
+
+* **project:** enableSharing toggled on by default ([6367493](https://github.com/jwplayer/ott-web-app/commit/636749324869f524cc64649863d492e3f8c68a48))
+
+
+
 # [3.3.0](https://github.com/jwplayer/ott-web-app/compare/v3.2.2...v3.3.0) (2023-01-25)
 
 
