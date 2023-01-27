@@ -160,12 +160,6 @@ You can change the background color of the shelf with the help of this property 
 
 ---
 
-**custom.enableSharing** (optional)
-
-Set this parameter to `true` if you want to enable the "Share" button on the video and series detail screen.
-
----
-
 **styling**
 
 Use the `styling` object to define extra styles for your application.

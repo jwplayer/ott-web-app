@@ -30,7 +30,6 @@ import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import useGetSeriesId from '#src/hooks/useGetSeriesId';
 import Loading from '#src/pages/Loading/Loading';
-import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   const breakpoint = useBreakpoint();
@@ -46,7 +45,6 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { features, siteName, custom } = config;
-  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
@@ -112,7 +110,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
     episodeItem.episodeNumber
   }/${episodesInSeason}`;
 
-  const shareButton = enableSharing && <ShareButton title={episodeItem.title} description={episodeItem.description} url={canonicalUrl} />;
+  const shareButton = <ShareButton title={episodeItem.title} description={episodeItem.description} url={canonicalUrl} />;
   const startWatchingButton = <StartWatchingButton item={episodeItem} playUrl={episodeURL(episodeItem, seriesId, true, feedId)} />;
 
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={episodeItem} />;
