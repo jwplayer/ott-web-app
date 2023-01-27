@@ -25,7 +25,6 @@ import Button from '#components/Button/Button';
 import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
-import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { t } = useTranslation('video');
@@ -45,7 +44,6 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName, features, custom } = config;
 
-  const enableSharing: boolean = isTruthyCustomParamValue(custom?.enableSharing);
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
@@ -80,7 +78,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const canonicalUrl = data ? `${window.location.origin}${mediaURL(data)}` : window.location.href;
 
   const primaryMetadata = formatVideoMetaString(data);
-  const shareButton = enableSharing && <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
+  const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
   const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL(data, feedId, true)} />;
 
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
