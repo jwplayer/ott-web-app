@@ -3,7 +3,7 @@
 
 ### Features
 
-* **project:** enableSharing toggled on by default ([6367493](https://github.com/jwplayer/ott-web-app/commit/636749324869f524cc64649863d492e3f8c68a48))
+* **project:** enableSharing setting toggled on by default ([6367493](https://github.com/jwplayer/ott-web-app/commit/636749324869f524cc64649863d492e3f8c68a48))
 
 
 
