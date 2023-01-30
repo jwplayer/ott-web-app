@@ -97,7 +97,15 @@ CodeceptJS is a modern end-to-end testing framework that is designed to make tes
 
 [Read more.](https://codecept.io/basics/)
 
-## Cleeng (MediaStore SDK)
+## JWP Authentication, Payments, and Subscriptions
+
+The Web App is optimized to use authentication, payments, and subscription services from the JW Platform.
+
+- Identity management
+- Monthly and Yearly Subscriptions
+- Payments with Paypal or Credit Card with 3D secure
+
+## Cleeng MediaStore SDK (Optional)
 
 Cleeng is a subscription retention platform that provides a seamless integration for identity, entitlement, billing, and analytics functionality.
 
