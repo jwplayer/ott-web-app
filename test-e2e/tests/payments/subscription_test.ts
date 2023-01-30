@@ -102,7 +102,7 @@ Scenario('I can see payment types', async ({ I }) => {
 
   await goToCheckout(I);
 
-  I.see('Credit Card');
+  I.see('Credit card');
   I.see('PayPal');
 
   I.see('Card number');
@@ -138,7 +138,7 @@ Scenario('I can finish my subscription', async ({ I }) => {
 
   await goToCheckout(I);
 
-  I.see('Credit Card');
+  I.see('Credit card');
 
   // Adyen credit card form is loaded asynchronously, so wait for it
   I.waitForElement('[class*=adyen-checkout__field--cardNumber]', normalTimeout);

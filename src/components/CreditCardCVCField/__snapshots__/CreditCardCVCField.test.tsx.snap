@@ -1,0 +1,30 @@
+// Vitest Snapshot v1
+
+exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_textField_e16c1b"
+  >
+    <label
+      class="_label_e16c1b"
+      for="text-field_1235_cardCVC"
+    >
+      CVC/CVV
+    </label>
+    <div
+      class="_container_e16c1b"
+    >
+      <input
+        class="_input_e16c1b"
+        id="text-field_1235_cardCVC"
+        name="cardCVC"
+        pattern="\\\\d*"
+        placeholder="###"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;

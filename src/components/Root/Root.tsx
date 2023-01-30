@@ -17,7 +17,6 @@ import registerCustomScreens from '#src/screenMapping';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
-
   const settingsQuery = useQuery('settings-init', initSettings, {
     enabled: true,
     retry: 1,

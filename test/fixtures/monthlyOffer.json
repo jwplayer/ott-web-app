@@ -1,4 +1,5 @@
 {
+  "id": 1,
   "offerId": "S916977979_NL",
   "offerPrice": 6.99,
   "offerCurrency": "EUR",
@@ -29,9 +30,7 @@
   "freePeriods": 1,
   "freeDays": 0,
   "expiresAt": null,
-  "accessToTags": [
-    "(all)"
-  ],
+  "accessToTags": ["(all)"],
   "videoId": null,
   "contentExternalId": null,
   "contentExternalData": null,

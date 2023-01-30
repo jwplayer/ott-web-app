@@ -1,13 +1,15 @@
 import { useQueries } from 'react-query';
 import shallow from 'zustand/shallow';
 
+import useService, { CheckoutService } from './useService';
+import useClientIntegration from './useClientIntegration';
+
 import type { MediaOffer } from '#types/media';
 import type { GetEntitlementsResponse } from '#types/checkout';
 import type { PlaylistItem } from '#types/playlist';
 import { isLocked } from '#src/utils/entitlements';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { getEntitlements } from '#src/services/checkout.service';
 
 export type UseEntitlementResult = {
   isEntitled: boolean;
@@ -31,13 +33,10 @@ type QueryResult = {
  *
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
-  const { sandbox, accessModel } = useConfigStore(
-    ({ config, accessModel }) => ({
-      sandbox: Boolean(config?.integrations?.cleeng?.useSandbox),
-      accessModel,
-    }),
-    shallow,
-  );
+  const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
+
+  const { sandbox } = useClientIntegration();
+  const { accessModel } = useConfigStore();
   const { user, subscription, auth } = useAccountStore(
     ({ user, subscription, auth }) => ({
       user,
@@ -54,7 +53,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => getEntitlements({ offerId }, sandbox, auth?.jwt || ''),
+      queryFn: () => checkoutService?.getEntitlements({ offerId }, sandbox, auth?.jwt || ''),
       enabled: !!playlistItem && !!auth?.jwt && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
     })),
