@@ -1,3 +1,5 @@
+import type { PurchaseDetails, PurchaseHistoryCollection } from '@inplayer-org/inplayer.js';
+
 export type InPlayerAuthData = {
   access_token: string;
   expires?: number;
@@ -17,4 +19,8 @@ export type InPlayerResponse<T> = {
   status: number;
   statusText: string;
   config: AxiosRequestConfig;
+};
+
+export type InPlayerPurchaseDetails = PurchaseDetails & {
+  purchased_access_fee_description: Record<string>;
 };

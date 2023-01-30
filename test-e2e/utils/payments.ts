@@ -9,7 +9,7 @@ export async function goToCheckout(I: CodeceptJS.I) {
   I.click('Payments');
   I.click('Complete subscription');
   I.waitForLoaderDone();
-
+  I.click('Yearly');
   I.click('Continue');
   I.waitForLoaderDone();
 }

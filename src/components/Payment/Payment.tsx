@@ -26,6 +26,7 @@ type Props = {
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
   showAllTransactions: boolean;
+  canRenewSubscription?: boolean;
 };
 
 const Payment = ({
@@ -39,6 +40,7 @@ const Payment = ({
   panelHeaderClassName,
   onShowAllTransactionsClick,
   showAllTransactions,
+  canRenewSubscription = false,
 }: Props): JSX.Element => {
   const { t } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -96,9 +98,9 @@ const Payment = ({
               </div>
               {activeSubscription.status === 'active' ? (
                 <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
-              ) : (
+              ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
-              )}
+              ) : null}
             </React.Fragment>
           ) : isLoading ? null : (
             <React.Fragment>

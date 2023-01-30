@@ -1557,10 +1557,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@inplayer-org/inplayer.js@^3.13.3":
-  version "3.13.3"
-  resolved "https://registry.yarnpkg.com/@inplayer-org/inplayer.js/-/inplayer.js-3.13.3.tgz#7f0dd352885f7c057fdf2c12f427e7ee5d89b297"
-  integrity sha512-a/Rtq3oVe1AgUnvOpxbTrNZITNNNmSBHfXkO8iUWQDeolPdYAxmuvWM2Iu00hqbvQfV4Vuc01cpDtAKvi+c6cw==
+"@inplayer-org/inplayer.js@^3.13.4":
+  version "3.13.4"
+  resolved "https://registry.yarnpkg.com/@inplayer-org/inplayer.js/-/inplayer.js-3.13.4.tgz#3ec294a8dd9f93cfc7762ce6fa0641a86a4086b9"
+  integrity sha512-iq8oN0ISHe1yPbrcUMYQmPxOINni6pdnSczzaSPWsmaS/Ch6k2EnXxu5tUY7QBjXErWFQNl1CKe3srzzy8mIlg==
   dependencies:
     aws-iot-device-sdk "^2.2.6"
     axios "^0.19.2"
@@ -2062,6 +2062,11 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@types/payment@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@types/payment/-/payment-2.1.4.tgz#f406fc0b8e1f2a40c65b5aaa5e21bf80e5e33754"
+  integrity sha512-FR9njCfl788PfIhjULwuyb0tpwh57g6uIWCZu+Mg69tQ/GyWoVL39+ugXn0LyqLhhUj/2qWKTRHX/Dqbhw6v7g==
 
 "@types/prop-types@*":
   version "15.7.4"
@@ -3427,9 +3432,9 @@ core-js@^3.19.2:
   integrity sha512-1t+2a/d2lppW1gkLXx3pKPVGbBdxXAkqztvWb1EJ8oF8O2gIGiytzflNiFEehYwVK/t2ryUsGBoOFFvNx95mbg==
 
 core-js@^3.8.2:
-  version "3.26.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.26.1.tgz#7a9816dabd9ee846c1c0fe0e8fcad68f3709134e"
-  integrity sha512-21491RRQVzUn0GGM9Z1Jrpr6PNPxPi+Za8OM9q4tksTSnlbXXGKK1nXNg/QvwFYettXvSX6zWKCtHHfjN4puyA==
+  version "3.27.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.27.1.tgz#23cc909b315a6bb4e418bf40a52758af2103ba46"
+  integrity sha512-GutwJLBChfGCpwwhbYoqfv03LAfmiz7e7D/BNxzeMxwQf10GRSzqiOjx7AmtEk+heiD/JWmBuyBPgFtx0Sg1ww==
 
 core-util-is@~1.0.0:
   version "1.0.3"
@@ -4935,6 +4940,13 @@ globals@^13.6.0, globals@^13.9.0:
   integrity sha512-317dFlgY2pdJZ9rspXDks7073GpDmXdfbM3vYYp0HAMKGDh1FfWPleI2ljVNLQX5M5lXcAslTcPTrOrMEFOjyw==
   dependencies:
     type-fest "^0.20.2"
+
+globalthis@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/globalthis/-/globalthis-1.0.3.tgz#5852882a52b80dc301b0660273e1ed082f0b6ccf"
+  integrity sha512-sFdI5LyBiNTHjRd7cGPWapiHWMOXKyuBNX/cWJ3NfzrZQVa8GI/8cofCl74AOVqq9W5kNmguTIzJ/1s2gyI9wA==
+  dependencies:
+    define-properties "^1.1.3"
 
 globby@^11.0.3, globby@^11.0.4:
   version "11.1.0"
@@ -7098,6 +7110,14 @@ pathval@^1.1.1:
   resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.1.tgz#8534e77a77ce7ac5a2512ea21e0fdb8fcf6c3d8d"
   integrity sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==
 
+payment@^2.4.6:
+  version "2.4.6"
+  resolved "https://registry.yarnpkg.com/payment/-/payment-2.4.6.tgz#a69bfae5ee6edb2210d8c9f7720ee702359a40f5"
+  integrity sha512-QSCAa1yQSkqbe4Ghac3sSA5SQ+Cxc3e4xwCxxun5NT6hUSWsNXXlN8KCCY0kAFFXBP9C7DrfyXP4REB7nPJa8g==
+  dependencies:
+    globalthis "^1.0.2"
+    qj "~2.0.0"
+
 pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
@@ -7496,6 +7516,11 @@ q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qj@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/qj/-/qj-2.0.0.tgz#054dd3b75ce018728d23a0605f030dfda0bd158a"
+  integrity sha512-8466vlnAF/piI42tzMBUfhaAWn2yBNPOLSSbA2YBlEh+S8CxBXbAO1AwuDReGKYX6LlsK19wBL9cpXZGlgsXxA==
 
 qs@^6.9.4:
   version "6.11.0"

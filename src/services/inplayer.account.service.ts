@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 
 import type {
   AuthData,
@@ -8,6 +8,7 @@ import type {
   Consent,
   Customer,
   CustomerConsent,
+  ExternalData,
   GetCaptureStatus,
   GetCustomerConsents,
   GetCustomerConsentsResponse,
@@ -15,14 +16,16 @@ import type {
   Login,
   Register,
   ResetPassword,
-  ServiceResponse,
   UpdateCaptureAnswers,
   UpdateCustomer,
   UpdateCustomerArgs,
   UpdateCustomerConsents,
+  UpdatePersonalShelves,
 } from '#types/account';
 import type { Config } from '#types/Config';
-import type { InPlayerAuthData, InPlayerError, InPlayerResponse } from '#types/inplayer';
+import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
+import type { Favorite } from '#types/favorite';
+import type { WatchHistoryItem } from '#types/watchHistory';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -44,10 +47,11 @@ export const login: Login = async ({ config, email, password }) => {
       referrer: window.location.href,
     });
 
-    const user = processAccount(data.account);
+    const user = formatAccount(data.account);
+    user.externalData = await getCustomerExternalData();
 
     return {
-      auth: processAuth(data),
+      auth: formatAuth(data),
       user,
       customerConsents: parseJson(user?.metadata?.consents as string, []),
     };
@@ -68,10 +72,11 @@ export const register: Register = async ({ config, email, password }) => {
       referrer: window.location.href,
     });
 
-    const user = processAccount(data.account);
+    const user = formatAccount(data.account);
+    user.externalData = await getCustomerExternalData();
 
     return {
-      auth: processAuth(data),
+      auth: formatAuth(data),
       user,
       customerConsents: parseJson(user?.metadata?.consents as string, []),
     };
@@ -83,7 +88,8 @@ export const register: Register = async ({ config, email, password }) => {
 
 export const logout = async () => {
   try {
-    InPlayer.Account.signOut();
+    await InPlayer.Account.signOut();
+    return InPlayer.Notifications.unsubscribe();
   } catch {
     throw new Error('Failed to sign out.');
   }
@@ -93,7 +99,9 @@ export const getUser = async () => {
   try {
     const { data } = await InPlayer.Account.getAccountInfo();
 
-    const user = processAccount(data);
+    const user = formatAccount(data);
+    user.externalData = await getCustomerExternalData();
+
     return {
       user,
       customerConsents: parseJson(user?.metadata?.consents as string, []) as CustomerConsent[],
@@ -107,11 +115,11 @@ export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
 export const updateCustomer: UpdateCustomer = async (customer) => {
   try {
-    const response: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount(processUpdateAccount(customer));
+    const response = await InPlayer.Account.updateAccount(formatUpdateAccount(customer));
 
     return {
       errors: [],
-      responseData: processAccount(response.data),
+      responseData: formatAccount(response.data),
     };
   } catch {
     throw new Error('Failed to update user data.');
@@ -127,7 +135,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     // wrong data type from InPlayer SDK (will be updated in the SDK)
     const result: Consent[] = data?.collection
       .filter((field: GetRegisterField) => field.type === 'checkbox')
-      .map((consent: GetRegisterField) => processPublisherConsents(consent));
+      .map((consent: GetRegisterField) => formatPublisherConsents(consent));
 
     return {
       consents: [getTermsConsent(), ...result],
@@ -157,9 +165,9 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
-    const params = { ...processUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
+    const params = { ...formatUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
 
-    const { data }: InPlayerResponse<AccountData> = await InPlayer.Account.updateAccount(params);
+    const { data } = await InPlayer.Account.updateAccount(params);
 
     return {
       consents: parseJson(data?.metadata?.consents as string, []),
@@ -247,8 +255,94 @@ export const resetPassword: ResetPassword = async ({ customerEmail, publisherId 
   }
 };
 
-function processAccount(account: AccountData): Customer {
-  const { id, email, full_name: fullName, metadata, created_at: createdAt } = account;
+export const subscribeToNotifications = async (uuid: string = '', onMessage: (payload: string) => void) => {
+  try {
+    if (!InPlayer.Notifications.isSubscribed()) {
+      InPlayer.subscribe(uuid, {
+        onMessage: onMessage,
+        onOpen: () => true,
+      });
+    }
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
+  const { favorites, history } = payload.externalData;
+  const externalData = await getCustomerExternalData();
+  const currentFavoriteIds = externalData?.favorites?.map((e) => e.mediaid);
+  const payloadFavoriteIds = favorites?.map((e) => e.mediaid);
+
+  try {
+    history.forEach(async (history) => {
+      if (externalData?.history?.length) {
+        externalData?.history?.forEach(async (historyStore) => {
+          if (historyStore.mediaid === history.mediaid && historyStore.progress !== history.progress) {
+            await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
+          }
+        });
+      } else {
+        await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
+      }
+    });
+
+    if (payloadFavoriteIds.length > (currentFavoriteIds?.length || 0)) {
+      payloadFavoriteIds.forEach(async (mediaId) => {
+        if (!currentFavoriteIds?.includes(mediaId)) {
+          await InPlayer.Account.addToFavorites(mediaId);
+        }
+      });
+    } else {
+      currentFavoriteIds?.forEach(async (mediaid) => {
+        if (!payloadFavoriteIds?.includes(mediaid)) {
+          await InPlayer.Account.deleteFromFavorites(mediaid);
+        }
+      });
+    }
+
+    return {
+      errors: [],
+      responseData: {},
+    };
+  } catch {
+    throw new Error('Failed to update external data');
+  }
+};
+
+const getCustomerExternalData = async (): Promise<ExternalData> => {
+  const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
+
+  const favorites = favoritesData.data?.collection?.map((favorite: FavoritesData) => {
+    return formatFavorite(favorite);
+  });
+
+  const history = historyData.data?.collection?.map((history: WatchHistory) => {
+    return formatHistoryItem(history);
+  });
+
+  return {
+    favorites,
+    history,
+  };
+};
+
+const formatFavorite = (favorite: FavoritesData): Favorite => {
+  return {
+    mediaid: favorite.media_id,
+  } as Favorite;
+};
+
+const formatHistoryItem = (history: WatchHistory): WatchHistoryItem => {
+  return {
+    mediaid: history.media_id,
+    progress: history.progress,
+  } as WatchHistoryItem;
+};
+
+function formatAccount(account: AccountData): Customer {
+  const { id, uuid, email, full_name: fullName, metadata, created_at: createdAt } = account;
   const regDate = new Date(createdAt * 1000).toLocaleString();
 
   let firstName = metadata?.first_name as string;
@@ -260,6 +354,7 @@ function processAccount(account: AccountData): Customer {
   }
   return {
     id: id.toString(),
+    uuid,
     email,
     fullName,
     firstName,
@@ -271,7 +366,7 @@ function processAccount(account: AccountData): Customer {
   };
 }
 
-function processUpdateAccount(customer: UpdateCustomerArgs) {
+function formatUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
   const fullName = `${firstName} ${lastName}`;
@@ -287,7 +382,7 @@ function processUpdateAccount(customer: UpdateCustomerArgs) {
   return data;
 }
 
-function processAuth(auth: InPlayerAuthData): AuthData {
+function formatAuth(auth: InPlayerAuthData): AuthData {
   const { access_token: jwt } = auth;
   return {
     jwt,
@@ -296,7 +391,7 @@ function processAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-function processPublisherConsents(consent: Partial<GetRegisterField>) {
+function formatPublisherConsents(consent: Partial<GetRegisterField>) {
   return {
     broadcasterId: 0,
     enabledByDefault: false,
@@ -310,7 +405,7 @@ function processPublisherConsents(consent: Partial<GetRegisterField>) {
 
 function getTermsConsent(): Consent {
   const label = 'I accept the <a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a> of InPlayer.';
-  return processPublisherConsents({
+  return formatPublisherConsents({
     required: true,
     name: 'terms',
     label,
@@ -328,3 +423,5 @@ function parseJson(value: string, fallback = {}) {
 export const canUpdateEmail = false;
 
 export const canChangePasswordWithOldPassword = true;
+
+export const canRenewSubscription = false;

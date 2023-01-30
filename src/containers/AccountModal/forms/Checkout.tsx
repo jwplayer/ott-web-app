@@ -12,15 +12,15 @@ import Adyen from '#components/Adyen/Adyen';
 import PayPal from '#components/PayPal/PayPal';
 import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { adyenPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
+import { iFrameCardPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
+import PaymentForm from '#src/components/PaymentForm/PaymentForm';
+import useClientIntegration from '#src/hooks/useClientIntegration';
 
 const Checkout = () => {
   const location = useLocation();
-  const { cleengSandbox } = useConfigStore((state) => state.getCleengData());
-
+  const { sandbox } = useClientIntegration();
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -50,7 +50,7 @@ const Checkout = () => {
 
     if (values.couponCode && order) {
       try {
-        await updateOrder(order.id, paymentMethodId, values.couponCode);
+        await updateOrder(order, paymentMethodId, values.couponCode);
         setCouponCodeApplied(true);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -67,6 +67,30 @@ const Checkout = () => {
     setSubmitting(false);
   });
 
+  const handleCouponFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    setUpdatingOrder(true);
+    setCouponCodeApplied(false);
+    couponCodeForm.setErrors({ couponCode: undefined });
+    if (couponCodeForm.values.couponCode && order) {
+      try {
+        await updateOrder(order, paymentMethodId, couponCodeForm.values.couponCode);
+        setCouponCodeApplied(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          if (error.message.includes(`Order with id ${order.id} not found`)) {
+            navigate(addQueryParam(location, 'u', 'choose-offer'), { replace: true });
+          } else {
+            couponCodeForm.setErrors({ couponCode: t('checkout.coupon_not_valid') });
+          }
+        }
+      }
+    }
+
+    setUpdatingOrder(false);
+    couponCodeForm.setSubmitting(false);
+  };
+
   useEffect(() => {
     async function create() {
       if (offer) {
@@ -76,7 +100,7 @@ const Checkout = () => {
 
         setPaymentMethodId(methods[0]?.id);
 
-        await createOrder(offer.offerId, methods[0]?.id);
+        await createOrder(offer, methods[0]?.id);
         setUpdatingOrder(false);
       }
     }
@@ -107,7 +131,7 @@ const Checkout = () => {
     if (order && toPaymentMethodId) {
       setUpdatingOrder(true);
       setCouponCodeApplied(false);
-      updateOrder(order.id, toPaymentMethodId, couponCodeForm.values.couponCode)
+      updateOrder(order, toPaymentMethodId, couponCodeForm.values.couponCode)
         .catch((error: Error) => {
           if (error.message.includes(`Order with id ${order.id}} not found`)) {
             navigate(addQueryParam(location, 'u', 'choose-offer'));
@@ -137,10 +161,11 @@ const Checkout = () => {
     try {
       setPaymentError(undefined);
       setUpdatingOrder(true);
-      const cancelUrl = addQueryParams(window.location.href, { u: 'paypal-cancelled' });
-      const errorUrl = addQueryParams(window.location.href, { u: 'paypal-error' });
+      const cancelUrl = addQueryParams(window.location.href, { u: 'payment-cancelled' });
+      const errorUrl = addQueryParams(window.location.href, { u: 'payment-error' });
       const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
-      const response = await paypalPayment(successUrl, cancelUrl, errorUrl);
+
+      const response = await paypalPayment(successUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
 
       if (response.redirectUrl) {
         window.location.href = response.redirectUrl;
@@ -160,7 +185,7 @@ const Checkout = () => {
       try {
         setUpdatingOrder(true);
         setPaymentError(undefined);
-        await adyenPayment(data.data.paymentMethod);
+        await iFrameCardPayment(data.data.paymentMethod);
         await reloadActiveSubscription({ delay: 2000 });
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {
@@ -184,7 +209,10 @@ const Checkout = () => {
     }
 
     if (paymentMethod?.methodName === 'card') {
-      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={cleengSandbox ? 'test' : 'live'} />;
+      if (paymentMethod?.provider === 'stripe') {
+        return <PaymentForm couponCode={couponCodeForm.values.couponCode} setUpdatingOrder={setUpdatingOrder} />;
+      }
+      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={sandbox ? 'test' : 'live'} />;
     } else if (paymentMethod?.methodName === 'paypal') {
       return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
     }
@@ -210,7 +238,7 @@ const Checkout = () => {
       paymentMethods={paymentMethods}
       paymentMethodId={paymentMethodId}
       onPaymentMethodChange={handlePaymentMethodChange}
-      onCouponFormSubmit={couponCodeForm.handleSubmit}
+      onCouponFormSubmit={handleCouponFormSubmit}
       onCouponInputChange={couponCodeForm.handleChange}
       onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
       onCloseCouponFormClick={() => setCouponFormOpen(false)}
