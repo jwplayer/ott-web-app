@@ -1,3 +1,12 @@
+## [4.0.1](https://github.com/jwplayer/ott-web-app/compare/v4.0.0...v4.0.1) (2023-01-31)
+
+
+### Bug Fixes
+
+* **playlist:** fix empty recommendations ([0d31f4e](https://github.com/jwplayer/ott-web-app/commit/0d31f4eb7a5dbf57b86fbfeaf76d49156fcd0859))
+
+
+
 # [4.0.0](https://github.com/jwplayer/ott-web-app/compare/v3.4.0...v4.0.0) (2023-01-30)
 
 
