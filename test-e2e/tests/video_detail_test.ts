@@ -32,7 +32,7 @@ Scenario('Video detail screen loads', async ({ I }) => {
 
 Scenario('I can see an alternate background image for Agent 327', async ({ I }) => {
   await I.openVideoCard('Agent 327');
-  await I.seeVideoDetailsBackgroundImage('Agent 327', 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/background.jpg?width=1280');
+  await I.seeVideoDetailsBackgroundImage('Agent 327', 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/background.webp?width=1280');
 });
 
 Scenario('I can see the default background image for Elephants Dream', async ({ I }) => {

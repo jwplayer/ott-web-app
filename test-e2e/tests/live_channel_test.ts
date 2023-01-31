@@ -220,7 +220,7 @@ Scenario('I can navigate through the epg', async ({ I }) => {
 
 Scenario('I can see an alternate channel logo for Channel 1', async ({ I }) => {
   await I.openVideoCard('Channel 1');
-  await I.seeEpgChannelLogoImage('Uh7zcqVm', 'https://img.jwplayer.com/v1/media/Uh7zcqVm/images/channel_logo.jpg?width=320');
+  await I.seeEpgChannelLogoImage('Uh7zcqVm', 'https://img.jwplayer.com/v1/media/Uh7zcqVm/images/channel_logo.webp?width=320');
 });
 
 Scenario('I can see the default channel logo for Channel 2', async ({ I }) => {
@@ -230,7 +230,7 @@ Scenario('I can see the default channel logo for Channel 2', async ({ I }) => {
 
 Scenario('I can see an alternate background image for Channel 3', async ({ I }) => {
   await I.openVideoCard('Channel 3');
-  await I.seeVideoDetailsBackgroundImage('Channel 3', 'https://img.jwplayer.com/v1/media/wewsVyR7/images/background.jpg?width=1280');
+  await I.seeVideoDetailsBackgroundImage('Channel 3', 'https://img.jwplayer.com/v1/media/wewsVyR7/images/background.webp?width=1280');
 });
 
 Scenario('I can see the default background image for Channel 4', async ({ I }) => {

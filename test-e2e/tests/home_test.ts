@@ -130,8 +130,8 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 Scenario('I can see alternate shelf images for the `All Films` shelf', async ({ I }) => {
   // scroll to shelf to make it visible and for screenshot
   await I.scrollToShelf(ShelfId.allFilms);
-  await I.seeCardImageSrc('Agent 327', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/shelf.jpg?width=320');
-  await I.seeCardImageSrc('Big Buck Bunny', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/awWEFyPu/images/shelf.jpg?width=320');
+  await I.seeCardImageSrc('Agent 327', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/shelf.webp?width=320');
+  await I.seeCardImageSrc('Big Buck Bunny', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/awWEFyPu/images/shelf.webp?width=320');
 });
 
 Scenario('I can see poster images for the `All courses` shelf', async ({ I }) => {
@@ -147,5 +147,5 @@ Scenario('I can see the footer', ({ I }) => {
   I.see('jwplayer.com');
   I.click('jwplayer.com');
   I.switchToNextTab();
-  I.seeCurrentUrlEquals('https://www.jwplayer.com/');
+  I.seeCurrentUrlEquals('https://jwplayer.com/');
 });
