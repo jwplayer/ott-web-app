@@ -160,12 +160,6 @@ You can change the background color of the shelf with the help of this property 
 
 ---
 
-**custom.enableSharing** (optional)
-
-Set this parameter to `true` if you want to enable the "Share" button on the video and series detail screen.
-
----
-
 **styling**
 
 Use the `styling` object to define extra styles for your application.
@@ -247,9 +241,45 @@ The eight-character Playlist ID of the Watchlist playlist that you want to use t
 
 ---
 
+**integrations.jwp**
+
+Use the `integrations.jwp` object to activate the JWP integrations for authentication and/or payments and subscriptions.
+
+```
+{
+  "integrations": {
+    "jwp": {
+      "clientId": "c6f4002f-7415-4eb6-ab03-72b0f7aaa0e8",
+      "assetId": 115022,
+      "useSandbox": true
+    }
+  }
+}
+```
+
+---
+
+**integrations.jwp.clientId** (optional)
+
+The ID of your JWP Authentication and Subscription environment if you would like to activate JWP account, subscription, and payment functionality. Omit this key in your config to disable this functionality. See [docs/backend-services](backend-services.md) for more details.
+
+---
+
+**integrations.jwp.assetId** (optional)
+
+If JWP authentication is enabled, and you want to show the Payments and Subscription functionality as well, you need to include the asset ID. The application uses this ID to map to a subscription offer that you've configured in your JWP environment that represent your subscription options.
+
+---
+
+**integrations.jwp.useSandbox** (optional)
+
+This setting determines which JWP environment is used. If false or not defined, the production environment is used. If true, the test (sandbox) environment is used. Note, this setting is ignored if JWP integrations are not enabled (i.e. there is not clientId defined)
+
+---
+
 **integrations.cleeng**
 
-Use the `integrations.cleeng` object to to integrate with Cleeng.
+Use the `integrations.cleeng` object to integrate with Cleeng.
 
 ```
 {

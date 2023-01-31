@@ -9,11 +9,11 @@ import type { AccessModel, Config } from '#types/Config';
 
 export type CheckoutService = typeof inplayerCheckoutService | typeof cleengCheckoutService | undefined;
 export type SubscriptionService = typeof inplayerSubscriptionService | typeof cleengSubscriptionService | undefined;
-export type AccountService = typeof inplayerAccountService | typeof cleengAccountService | undefined;
+export type AccountService = typeof inplayerAccountService | typeof cleengAccountService;
 
 function useService<T>(
   callback: (args: {
-    accountService?: AccountService;
+    accountService: AccountService;
     subscriptionService?: SubscriptionService;
     checkoutService?: CheckoutService;
     config: Config;
@@ -25,6 +25,7 @@ function useService<T>(
   const { config, accessModel } = useConfigStore.getState();
   const { cleeng, inplayer } = config.integrations;
 
+  // AUTHVOD or SVOD for InPlayer integration
   if (inplayer?.clientId) {
     return callback({
       accountService: inplayerAccountService,
@@ -35,7 +36,10 @@ function useService<T>(
       sandbox: !!inplayer.useSandbox,
       authProviderId: inplayer?.clientId?.toString(),
     });
-  } else if (cleeng?.id) {
+  }
+
+  // AUTHVOD or SVOD for Cleeng integration
+  if (cleeng?.id) {
     return callback({
       accountService: cleengAccountService,
       subscriptionService: cleengSubscriptionService,
@@ -45,13 +49,14 @@ function useService<T>(
       sandbox: !!cleeng.useSandbox,
       authProviderId: cleeng?.id,
     });
-  } else {
-    //SVOD
-    return callback({
-      config,
-      accessModel,
-    });
   }
+
+  // AVOD
+  return callback({
+    config,
+    accessModel,
+    accountService: {} as AccountService,
+  });
 }
 
 export default useService;

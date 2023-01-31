@@ -18,13 +18,19 @@ import { getOverrideIP } from '#src/utils/common';
 
 export const getOffers: GetOffers = async (payload, sandbox) => {
   const offers: Offer[] = [];
-  for (let i = 0; i < payload.offerIds.length; i++) {
-    const response = await getOffer({ offerId: payload.offerIds[i] as string }, sandbox);
-    if (response.errors.length > 0) {
-      throw new Error(response.errors[0]);
-    }
-    offers.push(response.responseData);
-  }
+
+  await Promise.all(
+    payload.offerIds.map(async (offerId) => {
+      const response = await getOffer({ offerId: offerId as string }, sandbox);
+
+      if (response.errors.length > 0) {
+        throw new Error(response.errors[0]);
+      }
+
+      offers.push(response.responseData);
+    }),
+  );
+
   return offers;
 };
 

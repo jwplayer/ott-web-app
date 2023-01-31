@@ -15,7 +15,6 @@ export enum NotificationsTypes {
 
 export const subscribeToNotifications = async (uuid: string = '') => {
   return await useService(async ({ accountService }) => {
-    if (!accountService) throw new Error('account service is not available');
     return await accountService.subscribeToNotifications(uuid, async (message) => {
       if (message) {
         const notification = JSON.parse(message);
@@ -26,7 +25,7 @@ export const subscribeToNotifications = async (uuid: string = '') => {
             break;
           case NotificationsTypes.ACCESS_GRANTED:
             await reloadActiveSubscription();
-            window.location.href = addQueryParams(window.location.href, { u: 'welcome' });
+            window.location.href = addQueryParams(window.location.origin, { u: 'welcome' });
             break;
           case NotificationsTypes.ACCESS_REVOKED:
             await reloadActiveSubscription();

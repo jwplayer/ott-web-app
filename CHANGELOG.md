@@ -1,3 +1,42 @@
+# [4.0.0](https://github.com/jwplayer/ott-web-app/compare/v3.4.0...v4.0.0) (2023-01-30)
+
+
+* feat!: add JWP authentication, payments, and subscriptions with docs (bump version) ([a3e2a08](https://github.com/jwplayer/ott-web-app/commit/a3e2a080df10a911c0518629924612ad2655e047))
+
+
+### BREAKING CHANGES
+
+* add JWP authentication, payments, and subscriptions with docs (bump version)
+
+
+
+# [3.4.0](https://github.com/jwplayer/ott-web-app/compare/v3.3.0...v3.4.0) (2023-01-27)
+
+
+### Features
+
+* **project:** enableSharing toggled on by default ([6367493](https://github.com/jwplayer/ott-web-app/commit/636749324869f524cc64649863d492e3f8c68a48))
+
+
+
+# [3.3.0](https://github.com/jwplayer/ott-web-app/compare/v3.2.2...v3.3.0) (2023-01-25)
+
+
+### Features
+
+* **player:** update player settings ([1733977](https://github.com/jwplayer/ott-web-app/commit/1733977a06cbfeef97a4cbd54d46235bf3339079))
+
+
+
+## [3.2.2](https://github.com/jwplayer/ott-web-app/compare/v3.2.1...v3.2.2) (2023-01-24)
+
+
+### Bug Fixes
+
+* **deps:** bump json5 from 1.0.1 to 1.0.2 ([#228](https://github.com/jwplayer/ott-web-app/issues/228)) ([ee25be3](https://github.com/jwplayer/ott-web-app/commit/ee25be32266c36e460cb67a7549d8786aa783b91))
+
+
+
 ## [3.2.1](https://github.com/jwplayer/ott-web-app/compare/v3.2.0...v3.2.1) (2023-01-18)
 
 

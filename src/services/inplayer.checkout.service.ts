@@ -17,13 +17,14 @@ import type {
   PaymentWithPayPal,
   UpdateOrder,
 } from '#types/checkout';
+import { isSVODOffer } from '#src/utils/subscription';
 
 export const createOrder: CreateOrder = async (payload) => {
   return {
     errors: [],
     responseData: {
       message: '',
-      order: processOrder(payload),
+      order: formatOrder(payload),
       success: true,
     },
   };
@@ -36,7 +37,7 @@ export const getOffers: GetOffers = async (payload) => {
 
     // @ts-ignore
     //TODO fix this type in the InPlayer SDK
-    return data?.map((offer: GetAccessFee) => processOffer(offer)) as Offer[];
+    return data?.map((offer: GetAccessFee) => formatOffer(offer)) as Offer[];
   } catch {
     throw new Error('Failed to get offers');
   }
@@ -48,7 +49,7 @@ export const getPaymentMethods: GetPaymentMethods = async () => {
     const paymentMethods: PaymentMethod[] = [];
     response.data.forEach((method: MerchantPaymentMethod) => {
       if (['card', 'paypal'].includes(method.method_name.toLowerCase())) {
-        paymentMethods.push(processPaymentMethod(method));
+        paymentMethods.push(formatPaymentMethod(method));
       }
     });
     return {
@@ -64,7 +65,7 @@ export const getPaymentMethods: GetPaymentMethods = async () => {
   }
 };
 
-const processPaymentMethod = (method: MerchantPaymentMethod): PaymentMethod => {
+const formatPaymentMethod = (method: MerchantPaymentMethod): PaymentMethod => {
   return {
     id: method.id,
     methodName: method.method_name.toLocaleLowerCase(),
@@ -118,8 +119,6 @@ export const paymentWithoutDetails: PaymentWithoutDetails = async () => {
 };
 
 export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
-  if (!couponCode) return processDiscount(order);
-
   try {
     const response = await InPlayer.Voucher.getDiscount({
       voucherCode: `${couponCode}`,
@@ -137,8 +136,14 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
     order.totalPrice = response.data.amount;
     order.priceBreakdown.discountAmount = discountedAmount;
     order.priceBreakdown.discountedPrice = discountedAmount;
-
-    return processDiscount(order);
+    return {
+      errors: [],
+      responseData: {
+        message: 'successfully updated',
+        order: order,
+        success: true,
+      },
+    };
   } catch {
     throw new Error('Invalid coupon code');
   }
@@ -159,7 +164,7 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData,
   };
 
   try {
-    if (order.offerId[0] === 'S') {
+    if (isSVODOffer(order)) {
       //@ts-ignore
       //Fix this type in InPlayer SDK
       await InPlayer.Subscription.createSubscription(payload);
@@ -176,13 +181,13 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData,
 export const getEntitlements: GetEntitlements = async ({ offerId }) => {
   try {
     const response = await InPlayer.Asset.checkAccessForAsset(parseInt(offerId));
-    return processEntitlements(response.data.expires_at, true);
+    return formatEntitlements(response.data.expires_at, true);
   } catch {
-    return processEntitlements();
+    return formatEntitlements();
   }
 };
 
-const processEntitlements = (expiresAt: number = 0, accessGranted: boolean = false): ServiceResponse<GetEntitlementsResponse> => {
+const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = false): ServiceResponse<GetEntitlementsResponse> => {
   return {
     errors: [],
     responseData: {
@@ -192,7 +197,7 @@ const processEntitlements = (expiresAt: number = 0, accessGranted: boolean = fal
   };
 };
 
-const processOffer = (offer: GetAccessFee): Offer => {
+const formatOffer = (offer: GetAccessFee): Offer => {
   return {
     id: offer.id,
     offerId: `S${offer.id}`,
@@ -206,7 +211,7 @@ const processOffer = (offer: GetAccessFee): Offer => {
   } as Offer;
 };
 
-const processOrder = (payload: CreateOrderArgs): Order => {
+const formatOrder = (payload: CreateOrderArgs): Order => {
   return {
     id: payload.offer.id,
     customerId: payload.customerId,
@@ -223,17 +228,6 @@ const processOrder = (payload: CreateOrderArgs): Order => {
     currency: payload.offer.offerCurrency || 'EUR',
     requiredPaymentDetails: true,
   } as Order;
-};
-
-const processDiscount = (order: Order) => {
-  return {
-    errors: [],
-    responseData: {
-      message: 'successfully updated',
-      order: order,
-      success: true,
-    },
-  };
 };
 
 export const cardPaymentProvider = 'stripe';

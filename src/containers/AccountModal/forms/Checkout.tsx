@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
-import Payment from 'payment';
-import { object, string } from 'yup';
 
 import { isSVODOffer } from '#src/utils/subscription';
 import CheckoutForm from '#components/CheckoutForm/CheckoutForm';
@@ -15,18 +13,9 @@ import PayPal from '#components/PayPal/PayPal';
 import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import {
-  iFrameCardPayment,
-  directPostCardPayment,
-  createOrder,
-  getPaymentMethods,
-  paymentWithoutDetails,
-  paypalPayment,
-  updateOrder,
-} from '#src/stores/CheckoutController';
+import { iFrameCardPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
-import useCheckAccess from '#src/hooks/useCheckAccess';
 import useClientIntegration from '#src/hooks/useClientIntegration';
 
 const Checkout = () => {
@@ -39,7 +28,6 @@ const Checkout = () => {
   const [couponFormOpen, setCouponFormOpen] = useState(false);
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
-  const { intervalCheckAccess } = useCheckAccess();
 
   const { order, offer, paymentMethods, setOrder } = useCheckoutStore(
     ({ order, offer, paymentMethods, setOrder }) => ({
@@ -56,61 +44,52 @@ const Checkout = () => {
     return offerType === 'svod' ? addQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
   }, [location, offerType]);
 
-  const paymentDataForm = useForm(
-    { couponCode: '', cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
-    async () => {
-      setUpdatingOrder(true);
-      await directPostCardPayment(paymentDataForm.values);
-      intervalCheckAccess({ interval: 15000 });
-    },
-    object().shape({
-      cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
-        return Payment.fns.validateCardNumber(value as string);
-      }),
-      cardExpiry: string().test('card expiry validation', t('checkout.invalid_card_expiry'), (value) => {
-        return Payment.fns.validateCardExpiry(value as string);
-      }),
-      cardCVC: string().matches(/\d{3,4}/, t('checkout.invalid_cvc_number')),
-    }),
-    true,
-  );
-
-  const handleCouponFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
+  const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);
     setCouponCodeApplied(false);
-    paymentDataForm.setErrors({ couponCode: undefined });
-    if (paymentDataForm.values.couponCode && order) {
+
+    if (values.couponCode && order) {
       try {
-        await updateOrder(order, paymentMethodId, paymentDataForm.values.couponCode);
+        await updateOrder(order, paymentMethodId, values.couponCode);
         setCouponCodeApplied(true);
       } catch (error: unknown) {
         if (error instanceof Error) {
           if (error.message.includes(`Order with id ${order.id} not found`)) {
             navigate(addQueryParam(location, 'u', 'choose-offer'), { replace: true });
           } else {
-            paymentDataForm.setErrors({ couponCode: t('checkout.coupon_not_valid') });
+            setErrors({ couponCode: t('checkout.coupon_not_valid') });
           }
         }
       }
     }
 
     setUpdatingOrder(false);
-    paymentDataForm.setSubmitting(false);
-  };
+    setSubmitting(false);
+  });
 
-  useEffect(() => {
-    if (paymentDataForm.values.cardExpiry) {
-      const expiry = Payment.fns.cardExpiryVal(paymentDataForm.values.cardExpiry);
-      if (expiry.month) {
-        paymentDataForm.setValue('cardExpMonth', expiry.month.toString());
-      }
-      if (expiry.year) {
-        paymentDataForm.setValue('cardExpYear', expiry.year.toString());
+  const handleCouponFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    setUpdatingOrder(true);
+    setCouponCodeApplied(false);
+    couponCodeForm.setErrors({ couponCode: undefined });
+    if (couponCodeForm.values.couponCode && order) {
+      try {
+        await updateOrder(order, paymentMethodId, couponCodeForm.values.couponCode);
+        setCouponCodeApplied(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          if (error.message.includes(`Order with id ${order.id} not found`)) {
+            navigate(addQueryParam(location, 'u', 'choose-offer'), { replace: true });
+          } else {
+            couponCodeForm.setErrors({ couponCode: t('checkout.coupon_not_valid') });
+          }
+        }
       }
     }
-    //eslint-disable-next-line
-  }, [paymentDataForm.values.cardExpiry]);
+
+    setUpdatingOrder(false);
+    couponCodeForm.setSubmitting(false);
+  };
 
   useEffect(() => {
     async function create() {
@@ -152,7 +131,7 @@ const Checkout = () => {
     if (order && toPaymentMethodId) {
       setUpdatingOrder(true);
       setCouponCodeApplied(false);
-      updateOrder(order, toPaymentMethodId, paymentDataForm.values.couponCode)
+      updateOrder(order, toPaymentMethodId, couponCodeForm.values.couponCode)
         .catch((error: Error) => {
           if (error.message.includes(`Order with id ${order.id}} not found`)) {
             navigate(addQueryParam(location, 'u', 'choose-offer'));
@@ -186,7 +165,7 @@ const Checkout = () => {
       const errorUrl = addQueryParams(window.location.href, { u: 'payment-error' });
       const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
 
-      const response = await paypalPayment(successUrl, cancelUrl, errorUrl, paymentDataForm.values.couponCode);
+      const response = await paypalPayment(successUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
 
       if (response.redirectUrl) {
         window.location.href = response.redirectUrl;
@@ -231,7 +210,7 @@ const Checkout = () => {
 
     if (paymentMethod?.methodName === 'card') {
       if (paymentMethod?.provider === 'stripe') {
-        return <PaymentForm paymentDataForm={paymentDataForm} />;
+        return <PaymentForm couponCode={couponCodeForm.values.couponCode} setUpdatingOrder={setUpdatingOrder} />;
       }
       return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={sandbox ? 'test' : 'live'} />;
     } else if (paymentMethod?.methodName === 'paypal') {
@@ -260,14 +239,14 @@ const Checkout = () => {
       paymentMethodId={paymentMethodId}
       onPaymentMethodChange={handlePaymentMethodChange}
       onCouponFormSubmit={handleCouponFormSubmit}
-      onCouponInputChange={paymentDataForm.handleChange}
+      onCouponInputChange={couponCodeForm.handleChange}
       onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
       onCloseCouponFormClick={() => setCouponFormOpen(false)}
-      couponInputValue={paymentDataForm.values.couponCode}
+      couponInputValue={couponCodeForm.values.couponCode}
       couponFormOpen={couponFormOpen}
       couponFormApplied={couponCodeApplied}
-      couponFormSubmitting={paymentDataForm.submitting}
-      couponFormError={paymentDataForm.errors.couponCode}
+      couponFormSubmitting={couponCodeForm.submitting}
+      couponFormError={couponCodeForm.errors.couponCode}
       renderPaymentMethod={renderPaymentMethod}
       submitting={updatingOrder}
     />

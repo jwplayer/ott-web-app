@@ -9,7 +9,7 @@ import useCheckAccess from '#src/hooks/useCheckAccess';
 
 const WaitingForPayment = () => {
   const { t } = useTranslation('account');
-  const { intervalCheckAccess } = useCheckAccess();
+  const { intervalCheckAccess, errorMessage } = useCheckAccess();
   useEffect(() => {
     intervalCheckAccess({
       interval: 3000,
@@ -19,8 +19,14 @@ const WaitingForPayment = () => {
   }, []);
   return (
     <div className={styles.center}>
-      <Spinner />
-      <h2>{t('checkout.waiting_for_payment')}</h2>
+      {errorMessage ? (
+        <h2>{errorMessage}</h2>
+      ) : (
+        <>
+          <Spinner />
+          <h2>{t('checkout.waiting_for_payment')}</h2>
+        </>
+      )}
     </div>
   );
 };

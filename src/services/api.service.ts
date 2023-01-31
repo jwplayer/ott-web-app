@@ -2,6 +2,7 @@ import { addQueryParams } from '#src/utils/formatting';
 import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
+import type { AdSchedule } from '#types/ad-schedule';
 import type { GetSeriesParams, Series } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
 import { generateImageData } from '#src/utils/image';
@@ -147,4 +148,21 @@ export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in
   });
   const response = await fetch(url);
   return await getDataOrThrow(response);
+};
+
+/**
+ * Get series by id
+ * @param {string} id
+ * @param params
+ */
+export const getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {
+  if (!id) {
+    throw new Error('Ad Schedule ID is required');
+  }
+
+  const url = import.meta.env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
+  const response = await fetch(url);
+  const data = await getDataOrThrow(response);
+
+  return data;
 };
