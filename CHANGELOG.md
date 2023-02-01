@@ -1,3 +1,12 @@
+# [4.1.0](https://github.com/jwplayer/ott-web-app/compare/v4.0.1...v4.1.0) (2023-02-01)
+
+
+### Features
+
+* **playlist:** add additional images webp format support ([579cd0c](https://github.com/jwplayer/ott-web-app/commit/579cd0cde5d8c48933867ef3371e542252bdbbb7))
+
+
+
 ## [4.0.1](https://github.com/jwplayer/ott-web-app/compare/v4.0.0...v4.0.1) (2023-01-31)
 
 
