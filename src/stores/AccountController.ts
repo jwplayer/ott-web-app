@@ -75,7 +75,6 @@ export const initializeAccount = async () => {
     useAccountStore.setState({
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
-      canSupportEmptyFullName: accountService.canSupportEmptyFullName,
       canRenewSubscription: accountService.canRenewSubscription,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
     });
@@ -121,7 +120,7 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
   return await useService(async ({ accountService, sandbox = true }) => {
     useAccountStore.setState({ loading: true });
 
-    const { auth, user, canUpdateEmail, canSupportEmptyFullName } = useAccountStore.getState();
+    const { auth, user, canUpdateEmail } = useAccountStore.getState();
 
     if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
       throw new Error('Email update not supported');
@@ -140,7 +139,7 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
     }
 
     let payload = values;
-    if (!canSupportEmptyFullName) {
+    if (!accountService.canSupportEmptyFullName) {
       payload = { ...values, email: user.email };
     }
 
