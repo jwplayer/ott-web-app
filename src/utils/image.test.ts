@@ -21,7 +21,7 @@ describe('image utils', () => {
       const images = generateImageData(config, 'shelfImage', playlist.playlist[0], playlistWithProperty);
 
       expect(images).toEqual({
-        image: 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/playlist_label.jpg?width=640',
+        image: 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/playlist_label.webp?width=640',
         fallbackImage: 'https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=640',
       });
     });
@@ -31,7 +31,7 @@ describe('image utils', () => {
       const images = generateImageData(config, 'shelfImage', playlist.playlist[0], playlistWithProperty, 1280);
 
       expect(images).toEqual({
-        image: 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/playlist_label.jpg?width=1280',
+        image: 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/playlist_label.webp?width=1280',
         fallbackImage: 'https://cdn.jwplayer.com/v2/media/uB8aRnu6/poster.jpg?width=1280',
       });
     });
@@ -39,8 +39,8 @@ describe('image utils', () => {
 
   describe('generateAlternateImageURL', () => {
     test('generates a correct image URL', () => {
-      expect(generateAlternateImageURL('123456', 'label', 640)).toEqual('https://img.jwplayer.com/v1/media/123456/images/label.jpg?width=640');
-      expect(generateAlternateImageURL('654321', 'shelf', 1280)).toEqual('https://img.jwplayer.com/v1/media/654321/images/shelf.jpg?width=1280');
+      expect(generateAlternateImageURL('123456', 'label', 640)).toEqual('https://img.jwplayer.com/v1/media/123456/images/label.webp?width=640');
+      expect(generateAlternateImageURL('654321', 'shelf', 1280)).toEqual('https://img.jwplayer.com/v1/media/654321/images/shelf.webp?width=1280');
     });
   });
 });
