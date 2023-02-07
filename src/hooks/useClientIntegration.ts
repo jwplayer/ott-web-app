@@ -2,7 +2,6 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 
 export enum ClientIntegrations {
   JWP = 'jwplayer',
-  INPLAYER = 'inplayer',
   CLEENG = 'cleeng',
 }
 
