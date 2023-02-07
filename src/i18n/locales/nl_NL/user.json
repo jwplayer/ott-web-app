@@ -49,6 +49,7 @@
     "cvc_cvv": "",
     "daily_subscription": "",
     "expiry_date": "",
+    "granted_subscription": "",
     "hidden_transactions": "",
     "hidden_transactions_plural": "",
     "monthly_subscription": "",
@@ -64,7 +65,6 @@
     "subscription_expires_on": "",
     "transactions": "",
     "weekly_subscription": "",
-    "price_payed_with_card": "",
-    "longer_than_usual": ""
+    "price_payed_with_card": ""
   }
 }

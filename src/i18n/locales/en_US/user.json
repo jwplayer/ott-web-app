@@ -49,6 +49,7 @@
     "cvc_cvv": "CVC / CVV",
     "daily_subscription": "Daily subscription",
     "expiry_date": "Expiry date",
+    "granted_subscription": "Granted subscription",
     "hidden_transactions": "One more transaction",
     "hidden_transactions_plural": "{{count}} more transactions",
     "monthly_subscription": "Monthly subscription",
@@ -64,8 +65,6 @@
     "subscription_expires_on": "This plan will expire on {{date}}",
     "transactions": "Transactions",
     "weekly_subscription": "Weekly subscription",
-    "price_payed_with_card": "Price payed with card",
-    "longer_than_usual": "Something is taking longer than usual. Please refresh the page in a few minutes...",
-    "granted_subscription": "Granted subscription"
+    "price_payed_with_card": "Price payed with card"
   }
 }
