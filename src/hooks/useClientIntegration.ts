@@ -1,7 +1,7 @@
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 export enum ClientIntegrations {
-  INPLAYER = 'inplayer',
+  JWP = 'jwplayer',
   CLEENG = 'cleeng',
 }
 
@@ -10,11 +10,12 @@ const useClientIntegration = () => {
     config: { integrations },
   } = useConfigStore.getState();
 
-  const isInPlayer = !!integrations.inplayer?.clientId;
-  const sandbox = isInPlayer ? integrations.inplayer?.useSandbox : integrations.cleeng?.useSandbox;
-  const client = isInPlayer ? ClientIntegrations.INPLAYER : ClientIntegrations.CLEENG;
-  const clientId = isInPlayer ? integrations.inplayer?.clientId : integrations.cleeng?.id;
-  const clientOffers = isInPlayer ? [`${integrations.inplayer?.assetId}`] : [`${integrations.cleeng?.monthlyOffer}`, `${integrations.cleeng?.yearlyOffer}`];
+  const isJWP = !!integrations.jwp?.clientId || !!integrations.inplayer?.clientId;
+  const jwpIntegration = integrations.jwp?.clientId ? integrations.jwp : integrations.inplayer;
+  const sandbox = isJWP ? jwpIntegration?.useSandbox : integrations.cleeng?.useSandbox;
+  const client = isJWP ? ClientIntegrations.JWP : ClientIntegrations.CLEENG;
+  const clientId = isJWP ? jwpIntegration?.clientId : integrations.cleeng?.id;
+  const clientOffers = isJWP ? [`${jwpIntegration?.assetId}`] : [`${integrations.cleeng?.monthlyOffer}`, `${integrations.cleeng?.yearlyOffer}`];
 
   return {
     sandbox: sandbox ?? true,
