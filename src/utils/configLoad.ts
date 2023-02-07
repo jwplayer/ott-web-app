@@ -44,8 +44,9 @@ const calculateAccessModel = (config: Config): AccessModel => {
     if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
   }
 
-  if (config?.integrations?.inplayer) {
-    const { clientId, assetId } = config?.integrations?.inplayer || {};
+  if (config?.integrations?.jwp || config?.integrations?.inplayer) {
+    const integration = config?.integrations?.jwp ? config?.integrations?.jwp : config?.integrations?.inplayer;
+    const { clientId, assetId } = integration || {};
 
     if (!clientId) return 'AVOD';
     if (!assetId) return 'AUTHVOD';
@@ -107,10 +108,10 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
   maybeInjectAnalyticsLibrary(config);
 
   // TODO: refactor this once we have more input how integrations will be handled in dashboard
-  if (config?.integrations?.cleeng?.id && config?.integrations?.inplayer?.clientId) {
+  if (config?.integrations?.cleeng?.id && (config?.integrations?.jwp?.clientId || config?.integrations?.inplayer?.clientId)) {
     throw new Error('Invalid client integration. You cannot have both Cleeng and Inplayer integrations enabled at the same time.');
   }
-  if (config?.integrations?.cleeng?.id || config?.integrations?.inplayer?.clientId) {
+  if (config?.integrations?.cleeng?.id || config?.integrations?.jwp?.clientId || config?.integrations?.inplayer?.clientId) {
     await initializeAccount();
   }
 

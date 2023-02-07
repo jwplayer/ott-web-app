@@ -1,7 +1,7 @@
 import { array, boolean, mixed, number, object, SchemaOf, string, StringSchema } from 'yup';
 import i18next from 'i18next';
 
-import type { Cleeng, InPlayer, Config, Content, Features, Menu, Styling } from '#types/Config';
+import type { Cleeng, JWP, Config, Content, Features, Menu, Styling } from '#types/Config';
 import { isTruthyCustomParamValue } from '#src/utils/common';
 
 /**
@@ -38,7 +38,7 @@ const cleengSchema: SchemaOf<Cleeng> = object({
   useSandbox: boolean().default(true),
 });
 
-const inplayerSchema: SchemaOf<InPlayer> = object({
+const jwpSchema: SchemaOf<JWP> = object({
   clientId: string().nullable(),
   assetId: number().nullable(),
   useSandbox: boolean().default(true),
@@ -66,7 +66,8 @@ const configSchema: SchemaOf<Config> = object({
   features: featuresSchema.notRequired(),
   integrations: object({
     cleeng: cleengSchema.notRequired(),
-    inplayer: inplayerSchema.notRequired(),
+    inplayer: jwpSchema.notRequired(),
+    jwp: jwpSchema.notRequired(),
   }).notRequired(),
   custom: object().notRequired(),
   contentSigningService: object().shape({
