@@ -11,7 +11,7 @@ const useClientIntegration = () => {
     config: { integrations },
   } = useConfigStore.getState();
 
-  const isJWP = !!integrations.inplayer?.clientId;
+  const isJWP = !!integrations.jwp?.clientId || !!integrations.inplayer?.clientId;
   const jwpIntegration = integrations.jwp ? integrations.jwp : integrations.inplayer;
   const sandbox = isJWP ? jwpIntegration?.useSandbox : integrations.cleeng?.useSandbox;
   const client = isJWP ? ClientIntegrations.JWP : ClientIntegrations.CLEENG;
