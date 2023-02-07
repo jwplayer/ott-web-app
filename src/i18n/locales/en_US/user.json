@@ -65,6 +65,7 @@
     "transactions": "Transactions",
     "weekly_subscription": "Weekly subscription",
     "price_payed_with_card": "Price payed with card",
-    "longer_than_usual": "Something is taking longer than usual. Please refresh the page in a few minutes..."
+    "longer_than_usual": "Something is taking longer than usual. Please refresh the page in a few minutes...",
+    "granted_subscription": "Granted subscription"
   }
 }

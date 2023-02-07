@@ -1,4 +1,4 @@
-import InPlayer, { Card, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import InPlayer, { Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 
 import type { PaymentDetail, Subscription, Transaction, UpdateSubscription } from '#types/subscription';
 import type { Config } from '#types/Config';
@@ -26,9 +26,12 @@ export async function getActiveSubscription({ config }: { config: Config }) {
     if (hasAccess) {
       const { data } = await InPlayer.Subscription.getSubscriptions();
       const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
+
       if (activeSubscription) {
         return formatActiveSubscription(activeSubscription);
       }
+
+      return formatGrantedSubscription(hasAccess.data);
     }
     return null;
   } catch (error: unknown) {
@@ -108,27 +111,29 @@ const formatCardDetails = (card: Card & { card_type: string; account_id: number 
 
 // TODO: fix PurchaseDetails type in InPlayer SDK
 const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction => {
+  const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
+
   return {
-    transactionId: transaction.parent_resource_id,
+    transactionId: transaction.parent_resource_id || 'access granted',
     transactionDate: transaction.created_at,
-    offerId: transaction.purchased_access_fee_id?.toString(),
+    offerId: transaction.purchased_access_fee_id?.toString() || '/',
     offerType: transaction.type || '',
     offerTitle: transaction?.purchased_access_fee_description || '',
     offerPeriod: '',
-    transactionPriceExclTax: transaction.purchased_amount?.toString(),
-    transactionCurrency: transaction.purchased_currency,
-    discountedOfferPrice: transaction.purchased_amount?.toString(),
-    offerCurrency: transaction.purchased_currency,
-    offerPriceExclTax: transaction.purchased_amount?.toString(),
+    transactionPriceExclTax: purchasedAmount,
+    transactionCurrency: transaction.purchased_currency || 'EUR',
+    discountedOfferPrice: purchasedAmount,
+    offerCurrency: transaction.purchased_currency || 'EUR',
+    offerPriceExclTax: purchasedAmount,
     applicableTax: '0',
-    transactionPriceInclTax: transaction.purchased_amount?.toString(),
+    transactionPriceInclTax: purchasedAmount,
     customerId: transaction.customer_id?.toString(),
     customerEmail: transaction.consumer_email,
     customerLocale: '',
     customerCountry: 'en',
     customerIpCountry: '',
     customerCurrency: '',
-    paymentMethod: transaction.payment_method,
+    paymentMethod: transaction.payment_method || 'grant access',
   };
 };
 
@@ -163,5 +168,22 @@ const formatActiveSubscription = (subscription: SubscriptionDetails) => {
     period: subscription.access_type?.period,
     totalPrice: subscription.charged_amount,
     unsubscribeUrl: subscription.unsubscribe_url,
+  } as Subscription;
+};
+
+const formatGrantedSubscription = (subscription: GetItemAccessV1) => {
+  return {
+    subscriptionId: 0,
+    offerId: subscription.item.id.toString(),
+    status: 'active',
+    expiresAt: subscription.expires_at,
+    nextPaymentAt: subscription.expires_at,
+    nextPaymentPrice: 0,
+    nextPaymentCurrency: 'EUR',
+    paymentGateway: 'none',
+    paymentMethod: 'access granted',
+    offerTitle: subscription.item.title,
+    period: 'granted',
+    totalPrice: 0,
   } as Subscription;
 };
