@@ -42,6 +42,7 @@
     "payments": "Payments"
   },
   "payment": {
+    "access_granted": "access granted",
     "annual_subscription": "Annual subscription",
     "cancel_subscription": "Cancel subscription",
     "card_number": "Card number",
@@ -56,7 +57,9 @@
     "next_billing_date_on": "Next billing date is on {{date}}",
     "no_payment_methods": "No payment methods",
     "no_subscription": "You have no subscription. Complete your subscription to start watching all movies and series.",
+    "no_transaction": "No transaction",
     "no_transactions": "No transactions",
+    "other": "other",
     "payment_method": "Payment method",
     "price_payed_with": "{{price}} payed with {{method}}",
     "renew_subscription": "Renew subscription",

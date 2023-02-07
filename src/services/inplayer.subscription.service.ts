@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import InPlayer, { Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 
 import type { PaymentDetail, Subscription, Transaction, UpdateSubscription } from '#types/subscription';
@@ -114,9 +115,9 @@ const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction =>
   const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
 
   return {
-    transactionId: transaction.parent_resource_id || 'access granted',
+    transactionId: transaction.parent_resource_id || i18next.t('user:payment.access_granted'),
     transactionDate: transaction.created_at,
-    offerId: transaction.purchased_access_fee_id?.toString() || '/',
+    offerId: transaction.purchased_access_fee_id?.toString() || i18next.t('user:payment.no_transaction'),
     offerType: transaction.type || '',
     offerTitle: transaction?.purchased_access_fee_description || '',
     offerPeriod: '',
@@ -133,7 +134,7 @@ const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction =>
     customerCountry: 'en',
     customerIpCountry: '',
     customerCurrency: '',
-    paymentMethod: transaction.payment_method || 'grant access',
+    paymentMethod: transaction.payment_method || i18next.t('user:payment.access_granted'),
   };
 };
 
@@ -173,7 +174,7 @@ const formatActiveSubscription = (subscription: SubscriptionDetails) => {
 
 const formatGrantedSubscription = (subscription: GetItemAccessV1) => {
   return {
-    subscriptionId: 0,
+    subscriptionId: '',
     offerId: subscription.item.id.toString(),
     status: 'active',
     expiresAt: subscription.expires_at,
@@ -181,9 +182,10 @@ const formatGrantedSubscription = (subscription: GetItemAccessV1) => {
     nextPaymentPrice: 0,
     nextPaymentCurrency: 'EUR',
     paymentGateway: 'none',
-    paymentMethod: 'access granted',
+    paymentMethod: i18next.t('user:payment.access_granted'),
     offerTitle: subscription.item.title,
     period: 'granted',
     totalPrice: 0,
+    unsubscribeUrl: '',
   } as Subscription;
 };

@@ -42,6 +42,7 @@
     "payments": ""
   },
   "payment": {
+    "access_granted": "",
     "annual_subscription": "",
     "cancel_subscription": "",
     "card_number": "",
@@ -56,7 +57,9 @@
     "next_billing_date_on": "",
     "no_payment_methods": "",
     "no_subscription": "",
+    "no_transaction": "",
     "no_transactions": "",
+    "other": "",
     "payment_method": "",
     "price_payed_with": "",
     "renew_subscription": "",

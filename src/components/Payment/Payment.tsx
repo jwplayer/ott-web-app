@@ -73,7 +73,7 @@ const Payment = ({
       case 'granted':
         return t('user:payment.granted_subscription');
       default:
-        throw 'Unknown period';
+        return t('user:payment.other');
     }
   }
 
