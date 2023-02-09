@@ -1,3 +1,12 @@
+## [4.1.1](https://github.com/jwplayer/ott-web-app/compare/v4.1.0...v4.1.1) (2023-02-09)
+
+
+### Bug Fixes
+
+* broken screens when access is granted from dashboard ([db8f413](https://github.com/jwplayer/ott-web-app/commit/db8f41361f61846c4d48c9f3f19d3c12dfb83b0d))
+
+
+
 # [4.1.0](https://github.com/jwplayer/ott-web-app/compare/v4.0.1...v4.1.0) (2023-02-01)
 
 
