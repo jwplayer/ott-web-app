@@ -55,7 +55,6 @@ const Shelf = ({
   onCardHover,
   title,
   watchHistory,
-  enableTitle = true,
   featured = false,
   loading = false,
   error = null,
@@ -140,7 +139,7 @@ const Shelf = ({
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
-      {!featured && enableTitle ? <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2> : null}
+      {!featured ? <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2> : null}
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}

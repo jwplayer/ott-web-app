@@ -104,7 +104,6 @@ Use the `content` array to define which and how content playlists should be disp
   }, {
     "type": "favorites",
     "title": "Best videos",
-    "enableText": false
   }, {
     "contentId": "WXu7kuaW"
     "type": "playlist"
@@ -130,15 +129,8 @@ If you want to include `favorites` / `continue_watching` shelf, you should also 
 ```
 {
   "type": "continue_watching",
-  "enableText": false
 }
 ```
-
----
-
-**content[].enableText** (optional)
-
-Controls whether or not title and description text overlays appear on the poster images. It is "true" by default. If your poster images contain a lot of text, we recommend setting this to "false."
 
 ---
 

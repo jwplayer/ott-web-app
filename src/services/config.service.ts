@@ -12,7 +12,6 @@ const contentSchema: SchemaOf<Content> = object({
   contentId: string().notRequired(),
   title: string().notRequired(),
   featured: boolean().notRequired(),
-  enableText: boolean().notRequired(),
   backgroundColor: string().nullable().notRequired(),
   type: mixed().oneOf(['playlist', 'continue_watching', 'favorites']),
 }).defined();
@@ -104,7 +103,7 @@ const loadConfig = async (configLocation: string) => {
 
 const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
-  const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
+  const updatedContent = content.map((content) => Object.assign({ featured: false }, content));
 
   // TODO: Remove this once the inplayer integration structure is added to the dashboard
   if (!config.integrations.inplayer?.clientId && config.custom?.['inplayer.clientId']) {
