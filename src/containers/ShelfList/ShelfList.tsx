@@ -78,7 +78,6 @@ const ShelfList = ({ rows }: Props) => {
                       playlist={playlist}
                       watchHistory={row.type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
                       onCardClick={onCardClick}
-                      enableTitle={row.enableText}
                       title={title}
                       featured={row.featured === true}
                       accessModel={accessModel}

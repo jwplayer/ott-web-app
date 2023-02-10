@@ -34,7 +34,6 @@ export type Content = {
   title?: string;
   type: ContentType;
   featured?: boolean;
-  enableText?: boolean;
   backgroundColor?: string | null;
 };
 

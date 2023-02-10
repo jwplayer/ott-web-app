@@ -58,12 +58,10 @@ Shelves and libraries can be defined in the [app config](/docs/configuration.md)
 {
   "content": [
     {
-      "enableText": true,
       "featured": true,
       "playlistId": "JSKF03bk"
     },
     {
-      "enableText": true,
       "playlistId": "dGSUzs9o"
     }
   ],

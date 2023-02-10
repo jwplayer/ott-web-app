@@ -4,31 +4,25 @@
   },
   "content": [
     {
-      "enableText": true,
       "featured": true,
       "type": "playlist",
       "contentId": "JSKF03bk"
     },
     {
-      "enableText": true,
       "type": "favorites"
     },
     {
-      "enableText": true,
       "type": "continue_watching"
     },
     {
-      "enableText": true,
       "type": "playlist",
       "contentId": "dGSUzs9o"
     },
     {
-      "enableText": true,
       "type": "playlist",
       "contentId": "xQaFzykq"
     },
     {
-      "enableText": true,
       "type": "playlist",
       "contentId": "fWpLtzVh"
     }
