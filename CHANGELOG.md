@@ -1,3 +1,12 @@
+# [4.2.0](https://github.com/jwplayer/ott-web-app/compare/v4.1.1...v4.2.0) (2023-02-10)
+
+
+### Features
+
+* **project:** remove enable_text setting ([345a118](https://github.com/jwplayer/ott-web-app/commit/345a11858f19c98951e68173743122962b962e89))
+
+
+
 ## [4.1.1](https://github.com/jwplayer/ott-web-app/compare/v4.1.0...v4.1.1) (2023-02-09)
 
 
