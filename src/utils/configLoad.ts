@@ -42,6 +42,8 @@ const calculateAccessModel = (config: Config): AccessModel => {
 
     if (!id) return 'AVOD';
     if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
+
+    return 'SVOD';
   }
 
   if (config?.integrations?.jwp || config?.integrations?.inplayer) {
@@ -50,8 +52,11 @@ const calculateAccessModel = (config: Config): AccessModel => {
 
     if (!clientId) return 'AVOD';
     if (!assetId) return 'AUTHVOD';
+
+    return 'SVOD';
   }
-  return 'SVOD';
+
+  return 'AVOD';
 };
 
 export async function loadAndValidateConfig(configSource: string | undefined) {
