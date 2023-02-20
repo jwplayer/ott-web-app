@@ -1,3 +1,12 @@
+## [4.2.1](https://github.com/jwplayer/ott-web-app/compare/v4.2.0...v4.2.1) (2023-02-20)
+
+
+### Bug Fixes
+
+* **project:** avod as a default model ([f3096ed](https://github.com/jwplayer/ott-web-app/commit/f3096ed4e43bf552bf11bf758c484b19f777bec0))
+
+
+
 # [4.2.0](https://github.com/jwplayer/ott-web-app/compare/v4.1.1...v4.2.0) (2023-02-10)
 
 
