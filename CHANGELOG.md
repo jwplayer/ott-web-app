@@ -1,3 +1,12 @@
+## [4.2.2](https://github.com/jwplayer/ott-web-app/compare/v4.2.1...v4.2.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* fully replace inplayer integration key with jwp ([#250](https://github.com/jwplayer/ott-web-app/issues/250)) ([e1005f3](https://github.com/jwplayer/ott-web-app/commit/e1005f31b1ef2a5026fe1f2422caef8f95cd2e98))
+
+
+
 ## [4.2.1](https://github.com/jwplayer/ott-web-app/compare/v4.2.0...v4.2.1) (2023-02-20)
 
 
