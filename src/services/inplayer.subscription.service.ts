@@ -21,7 +21,7 @@ interface SubscriptionDetails extends InplayerSubscription {
 
 export async function getActiveSubscription({ config }: { config: Config }) {
   try {
-    const assetId = config.integrations.inplayer?.assetId || 0;
+    const assetId = config.integrations.jwp?.assetId || 0;
     const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);
 
     if (hasAccess) {

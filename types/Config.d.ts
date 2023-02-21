@@ -10,7 +10,6 @@ export type Config = {
   adSchedule?: string | null;
   integrations: {
     cleeng?: Cleeng;
-    inplayer?: JWP;
     jwp?: JWP;
   };
   assets: { banner?: string | null };

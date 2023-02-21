@@ -37,23 +37,20 @@ const maybeInjectAnalyticsLibrary = (config: Config) => {
 };
 
 const calculateAccessModel = (config: Config): AccessModel => {
-  if (config?.integrations?.cleeng) {
-    const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
+  if (config?.integrations?.cleeng?.id) {
+    if (config?.integrations?.cleeng?.monthlyOffer || config?.integrations?.cleeng?.yearlyOffer) {
+      return 'SVOD';
+    }
 
-    if (!id) return 'AVOD';
-    if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
-
-    return 'SVOD';
+    return 'AUTHVOD';
   }
 
-  if (config?.integrations?.jwp || config?.integrations?.inplayer) {
-    const integration = config?.integrations?.jwp ? config?.integrations?.jwp : config?.integrations?.inplayer;
-    const { clientId, assetId } = integration || {};
+  if (config?.integrations?.jwp?.clientId) {
+    if (config?.integrations?.jwp?.assetId) {
+      return 'SVOD';
+    }
 
-    if (!clientId) return 'AVOD';
-    if (!assetId) return 'AUTHVOD';
-
-    return 'SVOD';
+    return 'AUTHVOD';
   }
 
   return 'AVOD';
@@ -112,11 +109,11 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
 
   maybeInjectAnalyticsLibrary(config);
 
-  // TODO: refactor this once we have more input how integrations will be handled in dashboard
-  if (config?.integrations?.cleeng?.id && (config?.integrations?.jwp?.clientId || config?.integrations?.inplayer?.clientId)) {
+  if (config?.integrations?.cleeng?.id && config?.integrations?.jwp?.clientId) {
     throw new Error('Invalid client integration. You cannot have both Cleeng and JWP integrations enabled at the same time.');
   }
-  if (config?.integrations?.cleeng?.id || config?.integrations?.jwp?.clientId || config?.integrations?.inplayer?.clientId) {
+
+  if (config?.integrations?.cleeng?.id || config?.integrations?.jwp?.clientId) {
     await initializeAccount();
   }
 
