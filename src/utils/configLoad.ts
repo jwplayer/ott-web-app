@@ -38,19 +38,11 @@ const maybeInjectAnalyticsLibrary = (config: Config) => {
 
 const calculateAccessModel = (config: Config): AccessModel => {
   if (config?.integrations?.cleeng?.id) {
-    if (config?.integrations?.cleeng?.monthlyOffer || config?.integrations?.cleeng?.yearlyOffer) {
-      return 'SVOD';
-    }
-
-    return 'AUTHVOD';
+    return config?.integrations?.cleeng?.monthlyOffer || config?.integrations?.cleeng?.yearlyOffer ? 'SVOD' : 'AUTHVOD';
   }
 
   if (config?.integrations?.jwp?.clientId) {
-    if (config?.integrations?.jwp?.assetId) {
-      return 'SVOD';
-    }
-
-    return 'AUTHVOD';
+    return config?.integrations?.jwp?.assetId ? 'SVOD' : 'AUTHVOD';
   }
 
   return 'AVOD';
