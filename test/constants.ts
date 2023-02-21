@@ -4,17 +4,13 @@ export interface TestConfig {
 }
 
 export const testConfigs = {
-  inplayerAuth: {
-    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/daily-avod.json',
-    label: 'InPlayer AUTHVOD',
+  jwpAuth: {
+    id: '9qqwmnbx',
+    label: 'JWP AUTHVOD',
   },
-  inplayerSvod: {
-    id: 'https://web-ott.s3.eu-west-1.amazonaws.com/apps/configs/demo.json',
-    label: 'InPlayer SVOD',
-  },
-  inplayerHosted: {
+  jwpSvod: {
     id: 'a2kbjdv0',
-    label: 'InPlayer Hosted',
+    label: 'JWP SVOD',
   },
   basicNoAuth: {
     id: 'gnnuzabk',
@@ -38,7 +34,7 @@ export const testConfigs = {
   },
   svod: {
     id: 'ozylzc5m',
-    label: 'SVOD',
+    label: 'Cleeng SVOD',
   },
 };
 

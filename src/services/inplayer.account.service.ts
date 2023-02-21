@@ -34,7 +34,7 @@ enum InPlayerEnv {
 }
 
 export const setEnvironment = (config: Config) => {
-  const env: string = config.integrations?.inplayer?.useSandbox ? InPlayerEnv.Daily : InPlayerEnv.Production;
+  const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Daily : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
 };
 
@@ -43,7 +43,7 @@ export const login: Login = async ({ config, email, password }) => {
     const { data } = await InPlayer.Account.signInV2({
       email,
       password,
-      clientId: config.integrations.inplayer?.clientId || '',
+      clientId: config.integrations.jwp?.clientId || '',
       referrer: window.location.href,
     });
 
@@ -68,7 +68,7 @@ export const register: Register = async ({ config, email, password }) => {
       passwordConfirmation: password,
       fullName: email,
       type: 'consumer',
-      clientId: config.integrations.inplayer?.clientId || '',
+      clientId: config.integrations.jwp?.clientId || '',
       referrer: window.location.href,
     });
 
@@ -128,8 +128,8 @@ export const updateCustomer: UpdateCustomer = async (customer) => {
 
 export const getPublisherConsents: GetPublisherConsents = async (config) => {
   try {
-    const { inplayer } = config.integrations;
-    const { data } = await InPlayer.Account.getRegisterFields(inplayer?.clientId || '');
+    const { jwp } = config.integrations;
+    const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
     // @ts-ignore
     // wrong data type from InPlayer SDK (will be updated in the SDK)

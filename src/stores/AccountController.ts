@@ -38,7 +38,7 @@ export const authNeedsRefresh = (auth: AuthData): boolean => {
 export const setJwtRefreshTimeout = () => {
   const auth = useAccountStore.getState().auth;
 
-  // if inplayer integration, skip code below
+  // if jwp integration, skip code below
   if (!auth?.refreshToken) return;
 
   window.clearTimeout(refreshTimeout);
@@ -54,7 +54,7 @@ export const handleVisibilityChange = () => {
   // document is visible again, test if we need to renew the token
   const auth = useAccountStore.getState().auth;
 
-  // user is not logged in / if inplayer integration, skip code below
+  // user is not logged in / if jwp integration, skip code below
   if (!auth || !auth?.refreshToken) return;
 
   // refresh the jwt token if needed. This starts the timeout as well after receiving the refreshed tokens.

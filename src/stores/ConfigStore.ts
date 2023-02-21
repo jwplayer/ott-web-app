@@ -37,7 +37,7 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
       cleeng: {
         useSandbox: true,
       },
-      inplayer: {
+      jwp: {
         clientId: null,
         assetId: null,
         useSandbox: true,

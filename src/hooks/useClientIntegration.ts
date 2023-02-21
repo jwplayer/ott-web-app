@@ -10,12 +10,11 @@ const useClientIntegration = () => {
     config: { integrations },
   } = useConfigStore.getState();
 
-  const isJWP = !!integrations.jwp?.clientId || !!integrations.inplayer?.clientId;
-  const jwpIntegration = integrations.jwp?.clientId ? integrations.jwp : integrations.inplayer;
-  const sandbox = isJWP ? jwpIntegration?.useSandbox : integrations.cleeng?.useSandbox;
+  const isJWP = !!integrations.jwp?.clientId;
+  const sandbox = isJWP ? integrations.jwp?.useSandbox : integrations.cleeng?.useSandbox;
   const client = isJWP ? ClientIntegrations.JWP : ClientIntegrations.CLEENG;
-  const clientId = isJWP ? jwpIntegration?.clientId : integrations.cleeng?.id;
-  const clientOffers = isJWP ? [`${jwpIntegration?.assetId}`] : [`${integrations.cleeng?.monthlyOffer}`, `${integrations.cleeng?.yearlyOffer}`];
+  const clientId = isJWP ? integrations.jwp?.clientId : integrations.cleeng?.id;
+  const clientOffers = isJWP ? [`${integrations.jwp?.assetId}`] : [`${integrations.cleeng?.monthlyOffer}`, `${integrations.cleeng?.yearlyOffer}`];
 
   return {
     sandbox: sandbox ?? true,
