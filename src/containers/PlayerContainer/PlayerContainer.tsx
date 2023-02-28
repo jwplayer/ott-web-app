@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import ChatRoom from '../../components/ChatRoom/client/index.jsx';
+
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import type { PlaylistItem } from '#types/playlist';
 import { saveItem } from '#src/stores/WatchHistoryController';
@@ -115,6 +117,7 @@ const PlayerContainer: React.FC<Props> = ({
   }, [item]);
 
   return (
+    <>
     <Player
       playerId={DEFAULT_PLAYER_ID}
       feedId={feedId}
@@ -132,6 +135,8 @@ const PlayerContainer: React.FC<Props> = ({
       startTime={startTime}
       autostart={autostart}
     />
+    <ChatRoom />
+    </>
   );
 };
 

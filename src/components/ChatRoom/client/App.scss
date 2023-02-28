@@ -1,0 +1,57 @@
+@use 'src/styles/variables';
+
+.App {
+    position: absolute;
+    right: 50px;
+    bottom: 100px;
+    // display: flex;
+    // justify-content: center;
+    // width: 100vw;
+    // height: 100vh;
+    // margin-top: 5vh;
+    // color: rgba(0, 0, 0, 0.54);
+    // font-family: "Open Sans", sans-serif;
+    // background: variables.$white;
+  }
+  body {
+    margin: 0%;
+    padding: 0%;
+  }
+  @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700");
+  
+  .joinChatContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    h3 {
+      font-weight: 700;
+    }
+  }
+  
+  .joinChatContainer input {
+    width: 210px;
+    height: 40px;
+    margin: 7px;
+    padding: 5px;
+    font-size: 16px;
+    border: 2px solid variables.$green;
+    border-radius: 5px;
+  }
+  
+  .joinChatContainer button {
+    width: 210px;
+    height: 50px;
+    margin: 7px;
+    padding: 5px;
+    color: variables.$white;
+    font-size: 16px;
+    background: variables.$green;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .joinChatContainer button:hover {
+    background: variables.$green;
+  }
+  
