@@ -1,10 +1,11 @@
 import React, { ReactFragment, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-
+import { useNavigate } from 'react-router';
 import styles from './Header.module.scss';
 
 import AccountCircle from '#src/icons/AccountCircle';
+import Notification from '#src/icons/Notification';
 import SearchBar, { Props as SearchBarProps } from '#components/SearchBar/SearchBar';
 import Logo from '#components/Logo/Logo';
 import Menu from '#src/icons/Menu';
@@ -58,12 +59,14 @@ const Header: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(1);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const navigate = useNavigate();
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
     [styles.brandCentered]: breakpoint <= Breakpoint.sm,
     [styles.mobileSearchActive]: searchActive && breakpoint <= Breakpoint.sm,
   });
-
   const search =
     breakpoint <= Breakpoint.sm ? (
       searchActive ? (
@@ -103,6 +106,28 @@ const Header: React.FC<Props> = ({
 
     return isLoggedIn ? (
       <React.Fragment>
+        <IconButton
+          className={classNames(styles.iconButton, styles.userMenuButton)}
+          aria-label={t('open_notifications')}
+          onClick={() => {
+            setNotificationOpen(true);
+            setNotificationCount(0);
+          }}
+        >
+          <Notification />
+        </IconButton>
+        <Popover isOpen={notificationOpen} onClose={() => setNotificationOpen(false)}>
+          <div className={styles.notification} onClick={() => {
+            navigate('/p/fWpLtzVh?channel=Uh7zcqVm&play=1&app-config=9qqwmnbx');
+            setNotificationOpen(false);
+          }}>
+            <p>Anastasiia is inviting you to watching a tennis match with her.
+            It starts at <a>Blender Channel</a> at 7pm. Do not miss it!
+            </p>
+          </div>
+        </Popover>
+
+        {notificationCount > 0 && <div className={styles.notificationCount}>{notificationCount}</div>}
         <IconButton
           className={classNames(styles.iconButton, styles.userMenuButton)}
           aria-label={t('open_user_menu')}

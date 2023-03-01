@@ -127,6 +127,34 @@
   margin-left: 8px;
 }
 
+.notification {
+  padding: 10px;
+  background-color: variables.$gray-darker;
+  p {
+    margin: 0;
+    padding: 5px;
+    background-color: variables.$gray-dark;
+    border-radius: 4px;
+    
+  }
+  a {
+    color: variables.$orange;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.notificationCount {
+  position: relative;
+  display: inline-block;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 16px;
+  text-decoration: none;
+  background-color: variables.$red;
+  border-radius: 25px;
+}
+
 .brandCentered {
   .brand {
     text-align: center;
