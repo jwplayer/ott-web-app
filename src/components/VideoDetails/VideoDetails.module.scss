@@ -38,7 +38,7 @@
 .info {
   position: relative;
   width: 70%;
-  max-width: 650px;
+  max-width: 750px;
   min-height: 440px;
 
   @include responsive.desktop-small-only() {

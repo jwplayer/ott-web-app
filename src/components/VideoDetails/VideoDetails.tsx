@@ -8,6 +8,7 @@ import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Image from '#components/Image/Image';
 import type { ImageData } from '#types/playlist';
 import { testId } from '#src/utils/common';
+import  WatchTogether from '#components/WatchTogether/index';
 
 type Props = {
   title: string;
@@ -52,6 +53,7 @@ const VideoDetails: React.VFC<Props> = ({
             {trailerButton}
             {favoriteButton}
             {shareButton}
+            <WatchTogether />
           </div>
         </div>
       </div>

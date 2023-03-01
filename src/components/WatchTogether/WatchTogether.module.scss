@@ -1,0 +1,17 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+
+
+.watchTogetherButton {
+    background-color: variables.$red !important;
+}
+
+.formTitle {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.alertTitle {
+    font-size: 20px;
+}
