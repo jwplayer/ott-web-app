@@ -73,6 +73,7 @@
   
   #you .message-content {
     justify-content: flex-start;
+    border-radius: 5px 5px 5px 0;
   }
   
   #you .message-meta {
@@ -87,6 +88,7 @@
   #other .message-content {
     justify-content: flex-end;
     background-color: variables.$blue;
+    border-radius: 5px 5px 0 5px;
   }
   
   #other .message-meta {
@@ -95,7 +97,7 @@
   }
   
   .message-meta #author {
-    margin-left: 10px;
+    margin-right: 10px;
     font-weight: bold;
   }
   

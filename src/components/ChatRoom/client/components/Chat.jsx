@@ -11,7 +11,7 @@ function Chat({ socket, username, room }) {
                 room: room,
                 author: username,
                 message: currentMessage,
-                time: new Date(Date.now()).getHours() + ':' + new Date(Date.now()).getMinutes()
+                time: (new Date(Date.now()).getHours() + ':' + new Date(Date.now()).getMinutes()).padStart(2, '0')
             };
 
             await socket.emit('send_message', messageData);
@@ -19,7 +19,6 @@ function Chat({ socket, username, room }) {
             setCurrentMessage('');
         }
     }
-    console.log(messageList)
     useEffect(() => {
         socket.on('receive_message', data => {
             setMessageList((list) => [...list, data]);
@@ -41,8 +40,8 @@ function Chat({ socket, username, room }) {
                                 <p>{messageContent.message}</p>
                             </div>
                             <div className='message-meta'>
-                                <p id="time">{messageContent.time}</p>
                                 <p id="author">{messageContent.author}</p>
+                                <p id="time">{messageContent.time}</p>
                             </div>
                         </div>
                     </div>

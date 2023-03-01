@@ -60,7 +60,9 @@
     "react-router-dom": "^6.4.0",
     "wicg-inert": "^3.1.1",
     "yup": "^0.32.9",
-    "zustand": "^3.6.9"
+    "zustand": "^3.6.9",
+    "react-scroll-to-bottom": "^4.2.0",
+    "socket.io-client": "^4.5.4"
   },
   "devDependencies": {
     "@codeceptjs/configure": "^0.8.0",

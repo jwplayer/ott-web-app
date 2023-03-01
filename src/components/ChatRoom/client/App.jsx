@@ -4,7 +4,7 @@ import * as io from 'socket.io-client';
 import Chat from './components/Chat';
 import './App.scss';
 
-const socket = io.connect("http://localhost:8080");
+const socket = io.connect("http://localhost:3000");
 
 function App() {
   const [username, setUsername] = useState('');
