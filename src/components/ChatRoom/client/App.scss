@@ -3,15 +3,7 @@
 .App {
     position: absolute;
     right: 50px;
-    bottom: 100px;
-    // display: flex;
-    // justify-content: center;
-    // width: 100vw;
-    // height: 100vh;
-    // margin-top: 5vh;
-    // color: rgba(0, 0, 0, 0.54);
-    // font-family: "Open Sans", sans-serif;
-    // background: variables.$white;
+    bottom: 110px;
   }
   body {
     margin: 0%;
@@ -55,3 +47,18 @@
     background: variables.$green;
   }
   
+  .chat-window {
+    width: 300px;
+    height: 420px;
+    margin-left: 5vw;
+  }
+
+  .chat-icon {
+    width: 10px;
+    height: 20px;
+  }
+
+  .chat-window-hidden {
+    width: 10px;
+    height: 20px;
+  }

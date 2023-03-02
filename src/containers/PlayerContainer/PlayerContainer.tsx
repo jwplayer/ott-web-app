@@ -135,7 +135,8 @@ const PlayerContainer: React.FC<Props> = ({
       startTime={startTime}
       autostart={autostart}
     />
-    <ChatRoom />
+    {/* <ChatRoom user={'Olga'} room={'123'}/> */}
+    <ChatRoom/>
     </>
   );
 };

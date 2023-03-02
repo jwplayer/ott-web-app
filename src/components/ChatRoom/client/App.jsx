@@ -6,10 +6,11 @@ import './App.scss';
 
 const socket = io.connect("http://localhost:3000");
 
-function App() {
+function App({user}) {
   const [username, setUsername] = useState('');
   const [room, setRoom] = useState('');
   const [showChat, setShowChat] = useState(false);
+  const [hideChat, setHideChat] = useState(false);
 
   const joinRoom = () => {
     if (username !== "" && room !== "") {
@@ -24,7 +25,9 @@ function App() {
         <Chat socket={socket} username={username} room={room}/>
         : 
         <div className="joinChatContainer">
-          <h3>Join a Chat</h3>
+          <h3 onClick={() => setHideChat(!hideChat)} >Join a Chat</h3>
+          {hideChat ?        
+          <>
           <input 
             type="text" 
             placeholder='Your Name' 
@@ -38,6 +41,7 @@ function App() {
             }}
           />
           <button onClick={joinRoom}>Join A Room</button>
+          </> : null}
       </div>}
     </div>
   );

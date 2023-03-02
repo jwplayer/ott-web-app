@@ -6,7 +6,7 @@ import React from 'react';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
 
-const ChatRoom = () => {
+const ChatRoom = ({user, room}) => {
   // const ChatRoot = ReactDOM.createRoot(document.getElementById('root'));
   // ChatRoot.render(
   //   <React.StrictMode>
@@ -16,7 +16,8 @@ const ChatRoom = () => {
   
   return (
     <React.StrictMode>
-       <App />
+       <App/>
+       {/* <App user={user} room={room}/> */}
     </React.StrictMode>
   )
 }

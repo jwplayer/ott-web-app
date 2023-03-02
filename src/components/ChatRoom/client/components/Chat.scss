@@ -10,11 +10,21 @@
     margin: 0;
   }
   .chat-window .chat-header {
-    position: relative;
+    // position: relative;
     height: 45px;
-    background: rgba(0, 0, 0, 0.54);
+    // background: rgba(0, 0, 0, 0.54);
     border-radius: 6px;
     cursor: pointer;
+  }
+
+  .chat-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hide-chat-window {
+    height: 30px;
   }
   .chat-window .chat-header h3 {
     display: block;
@@ -25,10 +35,8 @@
   }
   
   .chat-window .chat-body {
-    position: relative;
     height: calc(450px - (45px + 70px));
-    // background: variables.$white;
-    border: 1px solid rgba(0, 0, 0, 0.54);
+    // border: 1px solid rgba(0, 0, 0, 0.54);
     border-radius: 6px;
   }
   .chat-window .chat-body .message-container {
@@ -36,8 +44,8 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
-    background: rgba(0, 0, 0, 0.54);
-    border: 1px solid rgba(0, 0, 0, 0.54);
+    // background: rgba(0, 0, 0, 0.54);
+    // border: 1px solid rgba(0, 0, 0, 0.54);
   }
   
   .chat-window .chat-body .message-container::-webkit-scrollbar {
@@ -46,7 +54,7 @@
   .chat-window .chat-body .message {
     display: flex;
     height: auto;
-    padding: 10px;
+    padding: 10px 0;
   }
   
   .chat-window .chat-body .message .message-content {
@@ -67,6 +75,9 @@
     border-radius: 5px;
   }
   
+  .message-content {
+    opacity: 0.8;
+  }
   #you {
     justify-content: flex-start;
   }
@@ -109,7 +120,7 @@
   .chat-window .chat-footer {
     display: flex;
     height: 40px;
-    background: variables.$white;
+    background: variables.$gray-darker;
     border: 1px solid #263238;
     border-top: none;
     border-radius: 6px;
@@ -119,18 +130,21 @@
     flex: 85%;
     height: 100%;
     padding: 0 0.7em;
+    color: variables.$white;
     font-family: "Open Sans", sans-serif;
     font-size: 1em;
+    background-color: variables.$gray-darker;
     border: 0;
-    border-right: 1px dotted rgba(0, 0, 0, 0.54);
-    outline: none;
+    border-radius: 4px;
+    outline: none;  
+    opacity: 0.8 !important;
   }
   
   .chat-window .chat-footer button {
     display: grid;
     flex: 15%;
     height: 100%;
-    color: rgba(0, 0, 0, 0.8);
+    color: variables.$white;
     font-size: 25px;
     background: transparent;
     border: 0;
@@ -144,4 +158,20 @@
   }
   .hide {
     opacity: 0 !important;
+  }
+
+  .live-chat-window {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .chat-footer {
+    margin-bottom: 20px;
+  }
+
+  .start-conversation {
+    margin-bottom: 20px;
+    padding-top: 250px;
+    text-align: center;
+    
   }

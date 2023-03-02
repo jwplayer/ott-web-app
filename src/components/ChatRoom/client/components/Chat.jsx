@@ -5,6 +5,7 @@ import './Chat.scss';
 function Chat({ socket, username, room }) {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
+    const [hideChat, setHideChat] = useState(true);
     const sendMessage = async () => {
         if (currentMessage !== '') {
             const messageData = {
@@ -26,28 +27,30 @@ function Chat({ socket, username, room }) {
         return () => socket.removeListener('receive_message')
     }, [socket]);
   return (
-    <div className='chat-window'>
-        <div className='chat-header'>
-            <h3>Live Chat</h3>
-        </div>
+    <div className={hideChat ? 'chat-window' : 'hide-chat-window' }>
+
+        {hideChat ?
+        <>
         <div className='chat-body'>
             <ScrollToBottom className='message-container'>
-            {messageList?.map((messageContent) => {
-                return (
-                    <div key={messageContent.time} className='message' id={username === messageContent.author ? 'other' : 'you'}>
-                        <div>
-                            <div className='message-content'>
-                                <p>{messageContent.message}</p>
-                            </div>
-                            <div className='message-meta'>
-                                <p id="author">{messageContent.author}</p>
-                                <p id="time">{messageContent.time}</p>
+                {messageList?.map((messageContent) => {
+                    return (
+                        <div key={messageContent.time} className='message' id={username === messageContent.author ? 'other' : 'you'}>
+                            <div>
+                                <div className='message-content'>
+                                    <div><p>{messageContent.message}</p></div>
+                                </div>
+                                <div className='message-meta'>
+                                    <p id="author">{messageContent.author}</p>
+                                    <p id="time">{messageContent.time}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    )
-            })}
+                        )
+                })}       
+                {!messageList.length && <div className='start-conversation'>Start conversation</div>}
             </ScrollToBottom>
+            
         </div>
         <div className='chat-footer'>
             <input 
@@ -60,6 +63,11 @@ function Chat({ socket, username, room }) {
                 }}
             />
             <button onClick={sendMessage}>&#9658;</button>
+        </div>
+        </>
+        : null }
+        <div className='live-chat-window' onClick={() => setHideChat(!hideChat)}>
+            <h3>{hideChat ? 'Hide' : 'Show'} Live Chat</h3>
         </div>
     </div>
   )
