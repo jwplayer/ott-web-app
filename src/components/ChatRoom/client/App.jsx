@@ -20,31 +20,23 @@ function App({user}) {
   }
 
   return (
-    <div className="App" id="chatRoom">
-      {showChat ? 
-        <Chat socket={socket} username={username} room={room}/>
-        : 
-        <div className="joinChatContainer">
-          <h3 onClick={() => setHideChat(!hideChat)} >Join a Chat</h3>
-          {hideChat ?        
-          <>
-          <input 
-            type="text" 
-            placeholder='Your Name' 
-            onChange={(e) => {setUsername(e.target.value)
-            }}
-          />
-          <input 
-            type="text" 
-            placeholder='Room ID'
-            onChange={(e) => {setRoom(e.target.value)
-            }}
-          />
-          <button onClick={joinRoom}>Join A Room</button>
-          </> : null}
-      </div>}
+    <div className="joinChat" id="chatRoom">
+    {showChat 
+      ? <Chat socket={socket} username={username} room={room} />
+      : (
+          <div className="joinChatContainer">
+            {hideChat ? (
+              <>
+                <input type="text" placeholder='Your Name' onChange={(e) => setUsername(e.target.value)} />
+                <input type="text" placeholder='Room ID' onChange={(e) => setRoom(e.target.value)} />
+                <button className='joinRoomButton' onClick={joinRoom}>Join A Room</button>
+              </>
+            ) : <div className="joinChatButton" onClick={() => setHideChat(!hideChat)}>Join a Chat</div>}
+          </div>
+        )
+    }
     </div>
-  );
+    )
 }
 
 export default App;

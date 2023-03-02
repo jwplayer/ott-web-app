@@ -1,6 +1,6 @@
 @use 'src/styles/variables';
 
-.App {
+.joinChat {
     position: absolute;
     right: 50px;
     bottom: 110px;
@@ -24,9 +24,9 @@
     width: 210px;
     height: 40px;
     margin: 7px;
-    padding: 5px;
-    font-size: 16px;
-    border: 2px solid variables.$green;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid variables.$black;
     border-radius: 5px;
   }
   
@@ -47,6 +47,25 @@
     background: variables.$green;
   }
   
+  .joinChatButton, .joinRoomButton  {
+    padding: 10px;
+    font-family: var(--body-alt-font-family);
+    font-weight: var(--body-font-weight-bold);
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.1s ease, transform 0.1s ease;
+  }
+
+  .joinChatButton:hover {
+    z-index: 1;
+    background-color: variables.$green;
+    transform: scale(1.1);
+  }
+
   .chat-window {
     width: 300px;
     height: 420px;

@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
+import Confetti from "react-confetti";
 
 import styles from './WatchTogether.module.scss';
 
@@ -92,7 +93,7 @@ const WatchTogether: React.VFC<Props> = ({ item, playUrl, disabled = false }) =>
         </Button>
 
         <Dialog open={formIsOpen} onClose={closeForm}>
-            <h2 className={styles.formTitle}>{t('Invite friends and watch together')}</h2>
+            <h2 className={styles.formTitle}>{t('Invite friends and Watch together')}</h2>
             <Dropdown
                 className={styles.dropDown}
                 size='small'
@@ -109,9 +110,10 @@ const WatchTogether: React.VFC<Props> = ({ item, playUrl, disabled = false }) =>
 
         <Dialog open={alertOpen} onClose={closeAlert}>
             <h2 className={styles.alertTitle}>Success! 🎊 </h2>
-            <p>{`Your friend ${selectedUser} was invited!
+            <p className={styles.alertBody}>{`Your friend ${selectedUser} was invited!
                  Tune in and meet them in the Chat`} 🤠 </p>
         </Dialog>
+        {alertOpen && <Confetti width={1600} height={1019} />}
     </div>
   );
 };

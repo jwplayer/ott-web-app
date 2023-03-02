@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import './Chat.scss';
+import EmojiPicker from 'emoji-picker-react';
 
 function Chat({ socket, username, room }) {
     const [currentMessage, setCurrentMessage] = useState('');
+    const [displayedMessage, setDisplayedMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
     const [hideChat, setHideChat] = useState(true);
+    const [showEmojiPicker, setEmojiPicker] = useState(false); 
+    const toggleEmojiPicker = () => {
+        setEmojiPicker(!showEmojiPicker);
+    }
     const sendMessage = async () => {
         if (currentMessage !== '') {
             const messageData = {
@@ -20,6 +26,12 @@ function Chat({ socket, username, room }) {
             setCurrentMessage('');
         }
     }
+    const addEmoji = (emoji) => {
+        setCurrentMessage(currentMessage + emoji.unified);
+        setDisplayedMessage(displayedMessage + emoji.emoji);
+        toggleEmojiPicker();
+    };
+
     useEffect(() => {
         socket.on('receive_message', data => {
             setMessageList((list) => [...list, data]);
@@ -48,18 +60,26 @@ function Chat({ socket, username, room }) {
                         </div>
                         )
                 })}       
-                {!messageList.length && <div className='start-conversation'>Start conversation</div>}
+                {/* {!messageList.length && <div className='start-conversation'>Start conversation</div>} */}
             </ScrollToBottom>
             
         </div>
         <div className='chat-footer'>
+            <div className='emojiPickerToggle' onClick={toggleEmojiPicker}>
+                😀🙃🤭😹👀
+            </div>
+            {showEmojiPicker &&
+            <div className='emojiPickerContainer'>
+                <EmojiPicker theme="dark" width={300} onEmojiClick={addEmoji}/>
+            </div>}
             <input 
                 type='text'
-                value={currentMessage}
-                placeholder='Hey...'
+                value={displayedMessage}
+                placeholder='Say hello...'
                 onKeyPress={(e) => {e.key === 'Enter' && sendMessage()}}
                 onChange={(e) => {
-                    setCurrentMessage(e.target.value)
+                    setCurrentMessage(e.target.value);
+                    setDisplayedMessage(e.target.value);
                 }}
             />
             <button onClick={sendMessage}>&#9658;</button>
@@ -67,7 +87,7 @@ function Chat({ socket, username, room }) {
         </>
         : null }
         <div className='live-chat-window' onClick={() => setHideChat(!hideChat)}>
-            <h3>{hideChat ? 'Hide' : 'Show'} Live Chat</h3>
+            <div className='liveChatButton'>{hideChat ? 'Hide' : 'Show'} Live Chat</div>
         </div>
     </div>
   )
