@@ -69,7 +69,7 @@ const Form = ({ initialValues, formHandler, setFullName }: Props) => {
         </div>
         <>
           <Button type="submit" label="Save" variant="outlined" disabled={submitting} />
-          <Button onClick={() => navigate('/u/profiles/edit')} label="Cancel" variant="text" />
+          <Button onClick={() => navigate('/u/profiles')} label="Cancel" variant="text" />
         </>
       </div>
     </form>
