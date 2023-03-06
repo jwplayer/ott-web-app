@@ -11,6 +11,9 @@ import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
+import ArrowLeftRight from '#src/icons/ArrowLeftRight';
 
 type Props = {
   inPopover?: boolean;
@@ -21,6 +24,8 @@ type Props = {
 const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
+  const { accessModel } = useConfigStore();
+  const { canManageProfiles } = useAccountStore();
 
   const onLogout = useCallback(async () => {
     if (onClick) {
@@ -36,6 +41,11 @@ const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
       <li>
         <MenuButton small={inPopover} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>
+      {accessModel === 'SVOD' && canManageProfiles && (
+        <li>
+          <MenuButton small={inPopover} onClick={onClick} to="/u/profiles" label="Switch profile" startIcon={<ArrowLeftRight />} />
+        </li>
+      )}
       <li>
         <MenuButton small={inPopover} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
       </li>

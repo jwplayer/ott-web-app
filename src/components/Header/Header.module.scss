@@ -132,6 +132,13 @@
     text-align: center;
   }
 }
+.profile {
+  display:flex;
+  align-items: center;
+  h2 {
+    cursor: pointer;
+  }
+}
 //
 // mediaQueries
 // --------------------------------

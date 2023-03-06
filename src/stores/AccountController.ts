@@ -23,6 +23,7 @@ import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
+const PERSIST_PROFILE = 'profile';
 
 let subscription: undefined | (() => void);
 let refreshTimeout: number;
@@ -70,6 +71,7 @@ export const initializeAccount = async () => {
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
+      profile: persist.getItem(PERSIST_PROFILE) || '',
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
     });
     accountService.setEnvironment(config);
@@ -167,6 +169,13 @@ export const getAccount = async (auth: AuthData) => {
   });
 };
 
+export const listProfiles = async (auth: AuthData | null) => {
+  return await useService(async ({ accountService }) => {
+    const response = await accountService.listProfiles(auth);
+    return response;
+  });
+};
+
 export const login = async (email: string, password: string) => {
   await useService(async ({ accountService, config, accessModel }) => {
     useAccountStore.setState({ loading: true });
@@ -188,6 +197,7 @@ export async function logout() {
 
   await useService(async ({ accountService }) => {
     persist.removeItem(PERSIST_KEY_ACCOUNT);
+    persist.removeItem(PERSIST_PROFILE);
 
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
@@ -195,6 +205,8 @@ export async function logout() {
     useAccountStore.setState({
       auth: null,
       user: null,
+      profile: '',
+      canManageProfiles: false,
       subscription: null,
       transactions: null,
       activePayment: null,
@@ -459,9 +471,11 @@ async function afterLogin(
   accessModel: string,
   shouldSubscriptionReload: boolean = true,
 ) {
+  const { canManageProfiles } = await listProfiles(auth);
   useAccountStore.setState({
     auth,
     user,
+    canManageProfiles,
     customerConsents,
   });
 

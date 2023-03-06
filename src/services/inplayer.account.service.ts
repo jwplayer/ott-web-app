@@ -1,19 +1,25 @@
 import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 
+import { get, performDelete, post, put } from './inplayer.service';
+
 import type {
   AuthData,
   Capture,
   ChangePassword,
   ChangePasswordWithOldPassword,
   Consent,
+  ProfilePayload,
   Customer,
   CustomerConsent,
+  EnterProfile,
+  EnterProfilePayload,
   ExternalData,
   GetCaptureStatus,
   GetCustomerConsents,
   GetCustomerConsentsResponse,
   GetPublisherConsents,
   Login,
+  Profile,
   Register,
   ResetPassword,
   UpdateCaptureAnswers,
@@ -308,6 +314,66 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
     };
   } catch {
     throw new Error('Failed to update external data');
+  }
+};
+
+export const listProfiles = async (auth: AuthData | null) => {
+  try {
+    const response = await get(true, `/v2/accounts/profiles`, auth?.jwt);
+    return {
+      canManageProfiles: true,
+      collection: response as Profile[],
+    };
+  } catch {
+    return {
+      canManageProfiles: false,
+      collection: [],
+    };
+  }
+};
+
+export const createProfile = async (auth: AuthData | null, sandbox: boolean, payload: ProfilePayload) => {
+  try {
+    const response = await post(sandbox, `/v2/accounts/profiles`, JSON.stringify(payload), auth?.jwt);
+    return response;
+  } catch {
+    throw new Error('Unable to create profile.');
+  }
+};
+
+export const updateProfile = async (auth: AuthData | null, sandbox: boolean, payload: ProfilePayload) => {
+  try {
+    const response = await put(sandbox, `/v2/accounts/profiles/${payload.id}`, JSON.stringify(payload), auth?.jwt);
+    return response;
+  } catch {
+    throw new Error('Unable to update profile.');
+  }
+};
+
+export const enterProfile = async (auth: AuthData | null, sandbox: boolean, payload: EnterProfilePayload): Promise<EnterProfile> => {
+  try {
+    const response = await post(sandbox, `/v2/accounts/profiles/${payload.id}/token`, JSON.stringify(payload), auth?.jwt);
+    return response;
+  } catch {
+    throw new Error('Unable to enter profile.');
+  }
+};
+
+export const getProfileDetails = async (auth: AuthData | null, sandbox: boolean, id: string = ''): Promise<Profile> => {
+  try {
+    const response = await get(sandbox, `/v2/accounts/profiles/${id}`, auth?.jwt);
+    return response;
+  } catch {
+    throw new Error('Unable to get profile details.');
+  }
+};
+
+export const deleteProfile = async (auth: AuthData | null, sandbox: boolean, id: string = '') => {
+  try {
+    const response = await performDelete(sandbox, `/v2/accounts/profiles/${id}`, auth?.jwt);
+    return response;
+  } catch {
+    throw new Error('Unable to delete profile.');
   }
 };
 

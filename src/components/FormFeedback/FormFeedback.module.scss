@@ -11,6 +11,11 @@
   border-radius: 4px;
 }
 
+.info {
+  color: variables.$white;
+  background-color: theme.$body-bg-color;
+}
+
 .error {
   color: theme.$form-feedback-error-color;
   background-color: theme.$form-feedback-error-bg-color;

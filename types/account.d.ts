@@ -310,6 +310,49 @@ export type UpdatePersonalShelvesArgs = {
   };
 };
 
+export type Profile = {
+  id: string;
+  name: string;
+  avatar_url: string;
+  adult: boolean;
+  account_id?: number;
+  default?: boolean;
+  pin_required?: boolean;
+  created_at?: number;
+  updated_at?: number;
+};
+
+export type ListProfiles = {
+  canManageProfiles: boolean;
+  collection: Profile[];
+};
+
+export type ProfilePayload = {
+  id?: string;
+  name: string;
+  adult: boolean;
+  avatar_url?: string;
+  pin?: number | null;
+};
+
+export type EnterProfilePayload = {
+  id: string;
+  pin?: number;
+};
+
+export type EnterProfile = {
+  id: string;
+  name: string;
+  account_id: number;
+  adult: boolean;
+  avatar_url: string;
+  pin_required: boolean;
+  credentials: {
+    access_token: string;
+    expires: number;
+  };
+};
+
 type Login = PromiseRequest<AuthArgs, AuthResponse>;
 type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;

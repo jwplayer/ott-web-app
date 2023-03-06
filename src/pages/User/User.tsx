@@ -23,6 +23,7 @@ import Favorites from '#components/Favorites/Favorites';
 import type { PlaylistItem } from '#types/playlist';
 import { logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
+import ArrowLeftRight from '#src/icons/ArrowLeftRight';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -38,7 +39,7 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail, canRenewSubscription } = useAccountStore();
+  const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail, canRenewSubscription, canManageProfiles } = useAccountStore();
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL(playlistItem));
   const onLogout = useCallback(async () => {
@@ -69,16 +70,23 @@ const User = (): JSX.Element => {
               <li>
                 <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
               </li>
+              {accessModel === 'SVOD' && canManageProfiles && (
+                <li>
+                  <Button to="profiles" label="Switch profiles" variant="text" startIcon={<ArrowLeftRight />} className={styles.button} />
+                </li>
+              )}
               {favoritesList && (
                 <li>
                   <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
                 </li>
               )}
+
               {accessModel !== 'AVOD' && (
                 <li>
                   <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
                 </li>
               )}
+
               <li className={styles.logoutLi}>
                 <Button onClick={onLogout} label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
               </li>

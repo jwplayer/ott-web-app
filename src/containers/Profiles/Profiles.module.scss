@@ -1,0 +1,65 @@
+.headings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+.heading {
+    font-weight: bold;
+    font-size: 40px;
+}
+.paragarph {
+    margin: 0;
+    font-size: 36px;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 50px;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.formFields {
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    img {
+        position: relative;
+        width: 100%;
+    }
+}
+
+.overlayBox {
+    position: relative;
+}
+
+.deleteModal {
+    .deleteButtons {
+        display: flex;
+        justify-content: flex-end;
+    }
+    h2 {
+        font-weight: 400;
+        font-size: 20px;
+    }
+    p {
+        font-size: 16px;
+    }
+}

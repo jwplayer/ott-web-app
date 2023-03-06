@@ -16,6 +16,8 @@ import UserMenu from '#components/UserMenu/UserMenu';
 import { getPublicUrl } from '#src/utils/domHelpers';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import IconButton from '#components/IconButton/IconButton';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -57,6 +59,8 @@ const Header: React.FC<Props> = ({
   showPaymentsMenuItem,
 }) => {
   const { t } = useTranslation('menu');
+  const { accessModel } = useConfigStore();
+  const { canManageProfiles, profile } = useAccountStore();
   const [logoLoaded, setLogoLoaded] = useState(false);
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
@@ -103,16 +107,19 @@ const Header: React.FC<Props> = ({
 
     return isLoggedIn ? (
       <React.Fragment>
-        <IconButton
-          className={classNames(styles.iconButton, styles.userMenuButton)}
-          aria-label={t('open_user_menu')}
-          onClick={() => toggleUserMenu(!userMenuOpen)}
-        >
-          <AccountCircle />
-        </IconButton>
-        <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
-          <UserMenu onClick={() => toggleUserMenu(false)} showPaymentsItem={showPaymentsMenuItem} inPopover />
-        </Popover>
+        <div className={styles.profile}>
+          <IconButton
+            className={classNames(styles.iconButton, styles.userMenuButton)}
+            aria-label={t('open_user_menu')}
+            onClick={() => toggleUserMenu(!userMenuOpen)}
+          >
+            <AccountCircle />
+          </IconButton>
+          <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
+            <UserMenu onClick={() => toggleUserMenu(false)} showPaymentsItem={showPaymentsMenuItem} inPopover />
+          </Popover>
+          {canManageProfiles && accessModel === 'SVOD' && <h2 onClick={() => toggleUserMenu(!userMenuOpen)}>Hi, {profile}</h2>}
+        </div>
       </React.Fragment>
     ) : (
       <div className={styles.buttonContainer}>

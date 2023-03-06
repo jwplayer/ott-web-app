@@ -6,6 +6,8 @@ type AccountStore = {
   loading: boolean;
   auth: AuthData | null;
   user: Customer | null;
+  profile: string;
+  canManageProfiles: boolean;
   subscription: Subscription | null;
   transactions: Transaction[] | null;
   activePayment: PaymentDetail | null;
@@ -21,6 +23,8 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   loading: true,
   auth: null,
   user: null,
+  canManageProfiles: false,
+  profile: '',
   subscription: null,
   transactions: null,
   activePayment: null,

@@ -226,3 +226,9 @@ export const canUpdateEmail = true;
 export const canChangePasswordWithOldPassword = false;
 export const subscribeToNotifications = async () => true;
 export const canRenewSubscription = true;
+export const listProfiles = async () => {
+  return {
+    canManageProfiles: false,
+    collection: [],
+  };
+};
