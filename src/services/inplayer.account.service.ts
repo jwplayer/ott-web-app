@@ -278,14 +278,10 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
 
   try {
     history.forEach(async (history) => {
-      if (externalData?.history?.length) {
-        externalData?.history?.forEach(async (historyStore) => {
-          if (historyStore.mediaid === history.mediaid && historyStore.progress !== history.progress) {
-            await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
-          }
-        });
-      }
-      if (!currentWatchHistoryIds?.includes(history.mediaid)) {
+      if (
+        !currentWatchHistoryIds?.includes(history.mediaid) ||
+        externalData?.history?.some((e) => e.mediaid == history.mediaid && e.progress != history.progress)
+      ) {
         await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
       }
     });
