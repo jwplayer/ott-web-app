@@ -272,6 +272,7 @@ export const subscribeToNotifications = async (uuid: string = '', onMessage: (pa
 export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
   const { favorites, history } = payload.externalData;
   const externalData = await getCustomerExternalData();
+  const currentWatchHistoryIds = externalData?.history?.map((e) => e.mediaid);
   const currentFavoriteIds = externalData?.favorites?.map((e) => e.mediaid);
   const payloadFavoriteIds = favorites?.map((e) => e.mediaid);
 
@@ -283,7 +284,8 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
             await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
           }
         });
-      } else {
+      }
+      if (!currentWatchHistoryIds?.includes(history.mediaid)) {
         await InPlayer.Account.updateWatchHistory(history.mediaid, history.progress);
       }
     });
