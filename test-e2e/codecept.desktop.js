@@ -9,13 +9,13 @@ setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
   grep: '(?=.*)^(?!.*@mobile-only)',
-  tests: ['./tests/**/*.js', './tests/payments/subscription_test.ts'],
+  tests: ['./tests/**/*.js', './tests/**/*.ts'],
   output: './output/desktop',
   timeout: 60,
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',
-      show: true,
+      show: !!process.env.SHOW,
       channel: 'chrome',
       locale: 'en-US',
     },
