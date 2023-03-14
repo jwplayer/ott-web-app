@@ -1,3 +1,14 @@
+## [4.2.3](https://github.com/jwplayer/ott-web-app/compare/v4.2.2...v4.2.3) (2023-03-14)
+
+
+### Bug Fixes
+
+* e2e date locale problem ([08dff6a](https://github.com/jwplayer/ott-web-app/commit/08dff6a14099b869d8ef082271767b1a8c405daa))
+* refactor the condition ([d69bfed](https://github.com/jwplayer/ott-web-app/commit/d69bfed8d84b040acad9d12d053786c199252a49))
+* single watch history item bug ([88946a4](https://github.com/jwplayer/ott-web-app/commit/88946a4ee4aa91d0469e818e0c4fb2e3d22de40b))
+
+
+
 ## [4.2.2](https://github.com/jwplayer/ott-web-app/compare/v4.2.1...v4.2.2) (2023-02-21)
 
 
