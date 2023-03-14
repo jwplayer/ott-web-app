@@ -1,6 +1,6 @@
 import { LoginContext } from '#utils/password_utils';
 import constants, { longTimeout, normalTimeout } from '#utils/constants';
-import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '#utils/payments';
+import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays, addYear } from '#utils/payments';
 import { testConfigs } from '#test/constants';
 
 let paidLoginContext: LoginContext;
@@ -159,7 +159,7 @@ Scenario('I can finish my subscription', async ({ I }) => {
   // @ts-expect-error
   I.switchTo(null); // Exit the iframe context back to the main document
 
-  await finishAndCheckSubscription(I, addDays(today, 365), today);
+  await finishAndCheckSubscription(I, addYear(today), today);
 
   I.seeAll(cardInfo);
 });
@@ -167,7 +167,7 @@ Scenario('I can finish my subscription', async ({ I }) => {
 Scenario('I can cancel my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  cancelPlan(I, addDays(today, 365));
+  cancelPlan(I, addYear(today));
 
   // Still see payment info
   I.seeAll(cardInfo);
@@ -176,5 +176,5 @@ Scenario('I can cancel my subscription', async ({ I }) => {
 Scenario('I can renew my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  renewPlan(I, addDays(today, 365));
+  renewPlan(I, addYear(today));
 });
