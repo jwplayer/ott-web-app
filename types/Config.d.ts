@@ -19,11 +19,21 @@ export type Config = {
   features?: Features;
   custom?: Record<string, unknown>;
   contentSigningService?: ContentSigningConfig;
+  contentProtection?: ContentProtection;
 };
 
 export type ContentSigningConfig = {
   host: string;
   drmPolicyId?: string;
+};
+
+export type ContentProtection = {
+  accessModel: 'free' | 'authfree' | 'authvod' | 'svod';
+  drm?: Drm;
+};
+
+export type Drm = {
+  defaultPolicyId: string;
 };
 
 export type ContentType = 'playlist' | 'continue_watching' | 'favorites';

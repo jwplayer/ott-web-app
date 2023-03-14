@@ -1,3 +1,5 @@
+import InPlayer from '@inplayer-org/inplayer.js';
+
 import type { GetMediaParams } from '#types/media';
 import type { GetPlaylistParams } from '#types/playlist';
 
@@ -19,6 +21,15 @@ export const getMediaToken = async (host: string, id: string, jwt?: string, para
   if (!data.entitled) throw new Error('Unauthorized');
 
   return data.token;
+};
+
+export const getMediaSignedToken = async (configId: string = '', mediaId: string) => {
+  try {
+    const { data } = await InPlayer.Asset.getSignedMediaToken(configId, mediaId);
+    return data.token;
+  } catch {
+    throw new Error('Unauthorized');
+  }
 };
 
 export const getPublicToken = async (
