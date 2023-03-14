@@ -17,6 +17,7 @@ exports.config = {
       url: 'http://localhost:8080',
       show: !!process.env.SHOW,
       channel: 'chrome',
+      locale: 'en-US',
     },
   },
   include: {
