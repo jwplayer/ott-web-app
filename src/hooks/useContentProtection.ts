@@ -30,10 +30,11 @@ const useContentProtection = <T>(
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
     () => {
+      // if provider is JWP
       if (jwp && configId && !!id && signingEnabled) {
         return getJWPMediaToken(configId, id);
       }
-
+      // if provider is not JWP
       if (!!id && !!host && drmEnabled && signingEnabled) {
         const { host, drmPolicyId } = signingConfig;
         return getMediaToken(host, id, jwt, params, drmPolicyId);
