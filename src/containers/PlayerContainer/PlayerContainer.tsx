@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 
 import { useWatchHistoryListener } from '#src/hooks/useWatchHistoryListener';
 import type { PlaylistItem } from '#types/playlist';
@@ -9,6 +9,9 @@ import Player from '#components/Player/Player';
 import type { JWPlayer } from '#types/jwplayer';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { DEFAULT_PLAYER_ID, VideoProgressMinMax } from '#src/config';
+import useContentProtection from '#src/hooks/useContentProtection';
+import { getMediaById } from '#src/services/api.service';
+import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 
 type Props = {
   item: PlaylistItem;
@@ -43,6 +46,7 @@ const PlayerContainer: React.FC<Props> = ({
   const { features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;
+  const { data, isLoading } = useContentProtection('media', item.mediaid, (token, drmPolicyId) => getMediaById(item.mediaid, token, drmPolicyId));
 
   // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
@@ -107,18 +111,21 @@ const PlayerContainer: React.FC<Props> = ({
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
-  // Effects
-  useEffect(() => {
+  // use layout effect to prevent a JWPlayer error when the instance has been removed while loading the entitlement
+  useLayoutEffect(() => {
     // save watch history when the item changes
     return () => handleWatchHistory();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
+  }, [handleWatchHistory, item]);
+
+  if (!data || isLoading) {
+    return <LoadingOverlay inline />;
+  }
 
   return (
     <Player
       playerId={DEFAULT_PLAYER_ID}
       feedId={feedId}
-      item={item}
+      item={data}
       onReady={handleReady}
       onFirstFrame={handleFirstFrame}
       onPlay={onPlay}

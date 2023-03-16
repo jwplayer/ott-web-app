@@ -10,10 +10,16 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
       class="_cinema_555f3c"
     >
       <div
-        class="_container_20cd38"
-        data-testid="player-container"
+        class="_loadingOverlay_eb61cb _inline_eb61cb"
       >
-        <div />
+        <div
+          class="_buffer_d122df"
+        >
+          <div />
+          <div />
+          <div />
+          <div />
+        </div>
       </div>
       <div
         style="transition: opacity 0.25s ease-in-out; opacity: 0;"

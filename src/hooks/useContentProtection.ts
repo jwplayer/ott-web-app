@@ -1,9 +1,10 @@
 import { useQuery } from 'react-query';
 
-import { getPublicToken } from '#src/services/entitlement.service';
+import { getJWPMediaToken, getMediaToken } from '#src/services/entitlement.service';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -13,20 +14,29 @@ const useContentProtection = <T>(
   enabled: boolean = true,
   placeholderData?: T,
 ) => {
-  const signingConfig = useConfigStore((store) => store.config.contentSigningService);
+  const jwt = useAccountStore((store) => store.auth?.jwt);
+  const { configId, signingConfig, contentProtection, jwp, urlSigning } = useConfigStore(({ config }) => ({
+    configId: config.id,
+    signingConfig: config.contentSigningService,
+    contentProtection: config.contentProtection,
+    jwp: config.integrations.jwp,
+    urlSigning: config?.custom?.urlSigning,
+  }));
   const host = signingConfig?.host;
-  const drmPolicyId = signingConfig?.drmPolicyId;
+  const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? signingConfig?.drmPolicyId;
   const drmEnabled = !!drmPolicyId;
-  const signingEnabled = !!host && drmEnabled;
+  const signingEnabled = !!host || !!urlSigning;
 
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
     () => {
-      // we only want to sign public media/playlist URLs when DRM is enabled
-      if (!!id && !!host && drmEnabled) {
-        const { host, drmPolicyId } = signingConfig;
+      if (jwp && configId && !!id && signingEnabled) {
+        return getJWPMediaToken(configId, id);
+      }
 
-        return getPublicToken(host, type, id, undefined, params, drmPolicyId);
+      if (!!id && !!host && drmEnabled && signingEnabled) {
+        const { host, drmPolicyId } = signingConfig;
+        return getMediaToken(host, id, jwt, params, drmPolicyId);
       }
     },
     { enabled: signingEnabled && enabled && !!id, keepPreviousData: false, staleTime: 15 * 60 * 1000 },
@@ -35,9 +45,9 @@ const useContentProtection = <T>(
   const queryResult = useQuery<T | undefined>([type, id, params, token], async () => callback(token, drmPolicyId), {
     enabled: !!id && enabled && (!signingEnabled || !!token),
     placeholderData: id ? placeholderData : undefined,
-    retry: type === 'media' ? 2 : false,
+    retry: 2,
     retryDelay: 1000,
-    keepPreviousData: true,
+    keepPreviousData: false,
   });
 
   return {

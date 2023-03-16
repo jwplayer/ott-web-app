@@ -1,7 +1,6 @@
 import InPlayer from '@inplayer-org/inplayer.js';
 
 import type { GetMediaParams } from '#types/media';
-import type { GetPlaylistParams } from '#types/playlist';
 
 const getToken = async <T>(url: string, body: unknown = {}, jwt?: string): Promise<T> => {
   const response = await fetch(url, {
@@ -23,26 +22,11 @@ export const getMediaToken = async (host: string, id: string, jwt?: string, para
   return data.token;
 };
 
-export const getMediaSignedToken = async (configId: string = '', mediaId: string) => {
+export const getJWPMediaToken = async (configId: string = '', mediaId: string) => {
   try {
     const { data } = await InPlayer.Asset.getSignedMediaToken(configId, mediaId);
     return data.token;
   } catch {
     throw new Error('Unauthorized');
   }
-};
-
-export const getPublicToken = async (
-  host: string,
-  type: EntitlementType,
-  id: string,
-  jwt?: string,
-  params?: GetMediaParams | GetPlaylistParams,
-  drmPolicyId?: string,
-) => {
-  const data = await getToken<GetTokenResponse>(`${host}/${type}/${id}/sign_public${drmPolicyId ? `/drm/${drmPolicyId}` : ''}`, params, jwt);
-
-  if (!data.entitled) throw new Error('Unauthorized');
-
-  return data.token;
 };
