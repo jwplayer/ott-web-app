@@ -13,7 +13,7 @@ export default function usePlaylist(playlistId?: string, params: GetPlaylistPara
 
     // This pre-caches all playlist items and makes navigating a lot faster.
     playlist?.playlist?.forEach((playlistItem) => {
-      queryClient.setQueryData(['media', playlistItem.mediaid, {}, undefined], playlistItem);
+      queryClient.setQueryData(['media', playlistItem.mediaid], playlistItem);
     });
 
     return playlist;
