@@ -11,7 +11,9 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { DEFAULT_PLAYER_ID, VideoProgressMinMax } from '#src/config';
 import useContentProtection from '#src/hooks/useContentProtection';
 import { getMediaById } from '#src/services/api.service';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import useEventCallback from '#src/hooks/useEventCallback';
+import { logDev } from '#src/utils/common';
 
 type Props = {
   item: PlaylistItem;
@@ -70,7 +72,13 @@ const PlayerContainer: React.FC<Props> = ({
       return null;
     }
 
-    return playerInstance.getPosition() / item.duration;
+    // this call may fail when the player is being removed due to a race condition
+    try {
+      return playerInstance.getPosition() / item.duration;
+    } catch (error: unknown) {
+      logDev('Error caught while calling `getPosition`');
+      return null;
+    }
   }, [playerInstance, item.duration]);
 
   useWatchHistoryListener(() => (watchHistoryEnabled ? saveItem(item, getProgress()) : null));
@@ -89,11 +97,11 @@ const PlayerContainer: React.FC<Props> = ({
     }
   }, [liveFromBeginning, playerInstance]);
 
-  const handleWatchHistory = useCallback(() => {
+  const handleWatchHistory = useEventCallback(() => {
     if (watchHistoryEnabled) {
       saveItem(item, getProgress());
     }
-  }, [watchHistoryEnabled, getProgress, item]);
+  });
 
   const handlePause = useCallback(() => {
     handleWatchHistory();
@@ -107,9 +115,12 @@ const PlayerContainer: React.FC<Props> = ({
 
   const handleRemove = useCallback(() => {
     handleWatchHistory();
+    setPlayerInstance(undefined);
   }, [handleWatchHistory]);
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
+
+  // Effects
 
   // use layout effect to prevent a JWPlayer error when the instance has been removed while loading the entitlement
   useLayoutEffect(() => {
