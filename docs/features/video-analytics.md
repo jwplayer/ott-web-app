@@ -1,6 +1,6 @@
 # Video Analytics
 
-By understanding how viewers consume content across OTT Apps, customers can create informed monetization and engagement strategies. 
+By understanding how viewers consume content across OTT Apps, customers can create informed monetization and engagement strategies.
 
 Video analytics also allows JW Player to calculate recommendations and trending videos, which are critical in monetizing videos.
 
@@ -22,7 +22,7 @@ https://ihe.jwpltx.com/v1/clienta/ping.gif?e=<eventid>&<event-metrics-as-params-
 
 The data is available to customers in three ways:
 
-- [Dashboard](https://support.jwplayer.com/articles/jw-player-analytics-reference) 
+- [Dashboard](https://support.jwplayer.com/articles/jw-player-analytics-reference)
 - [Reporting API](https://developer.jwplayer.com/jwplayer/docs/analytics-getting-started)
 - Play Sessions Data Export which provides aggregated play session data and more detailed metrics in s3 buckets
 
@@ -36,6 +36,7 @@ The app sends the following events (param `e`) to JW platform:
 | Impression | i     | clienta   | Yes | Fired after the first frame of an ad creative has been rendered.     |
 | Play       | s     | jwplayer6 | Yes | Fired after the first frame of a video has been rendered.            |
 | Quantile   | t     | jwplayer6 | Yes | Fired after the video plays past the threshold of a quantile.        |
+| Seeked     | vs    | jwplayer6 | Yes | Fired after the video is seeked                                      |
 
 ## Event JS Script
 
@@ -53,13 +54,13 @@ For the OTT Web App the Analytics ID is stored in [`config.json`](/public/config
 
 Each event comes with a set of data sent through the query parameters of the JWPlayer OTT Analytics endpoints:
 
-- Session - Timestamp and unique keys  
-- App - The app of the viewer 
+- Session - Timestamp and unique keys
+- App - The app of the viewer
 - Device - The device of the viewer
 - Media - The media that is being watched
 - Quantile - How much the user watched a particular movie
 
-Theee metrics are described below. 
+Theee metrics are described below.
 
 ### Session Metrics
 
@@ -106,8 +107,8 @@ Theee metrics are described below.
 | Ping Spec Version       | psv  | No  | SemVer                                  | 1.0.0   | Version of the JW Ping Specification referenced.                 |
 | External Player Version | epv  | No  | \-                                      | 1.2.3   | Version number of external video player (not a JW player or SDK) |
 
-<sup>1</sup>  Allowed values are: `0` = web, `1` = Android, `2`= iOS, `3` = Roku, `4` = tvOS, `5` = Chromecast Receiver, `6` = FireOS. </br>
-<sup>2</sup>  This field was intended to identify the JW Player SDK. However, OTT reports use it to determine the device platform. We, therefore, keep using this field to indicate the OS platform for pragmatic reasons. As a result, it overlaps with field `oos` 
+<sup>1</sup> Allowed values are: `0` = web, `1` = Android, `2`= iOS, `3` = Roku, `4` = tvOS, `5` = Chromecast Receiver, `6` = FireOS. </br>
+<sup>2</sup> This field was intended to identify the JW Player SDK. However, OTT reports use it to determine the device platform. We, therefore, keep using this field to indicate the OS platform for pragmatic reasons. As a result, it overlaps with field `oos`
 
 ### Media Metrics
 
@@ -121,9 +122,9 @@ Theee metrics are described below.
 
 ### Quantile Metrics
 
-Quantiles are to track how much of a video is watched. It's fired after the video plays past the threshold of a quantile. The number of quantiles in a video depends on video length. 
+Quantiles are to track how much of a video is watched. It's fired after the video plays past the threshold of a quantile. The number of quantiles in a video depends on video length.
 
-There are 3 related parameters: 
+There are 3 related parameters:
 
 - Video Duration `vd`
 - Video Quantiles `q`
@@ -131,12 +132,12 @@ There are 3 related parameters:
 
 The table belows defines the relations and when the Quantile (`t`) event ping should be fired.
 
-Any decimal values are truncated to an integer. 
+Any decimal values are truncated to an integer.
 
 #### Example
 
-- a video is 72 seconds long (`vd=72`) 
-- hence it will be split into 8 quantiles (`q=8`). Each quantile will be 72/8=9 seconds. 
+- a video is 72 seconds long (`vd=72`)
+- hence it will be split into 8 quantiles (`q=8`). Each quantile will be 72/8=9 seconds.
 - the first quantile event should fire when the 9th second of the video has been crossed. Quantile watched would have value 16 (`pw=16`).
 - the second time this event should fire when the 18th second is crossed. Quantile watched its value would be 32 (`pw=32`)
 

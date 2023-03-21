@@ -1999,10 +1999,10 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
-"@types/jwplayer@^8.2.7":
-  version "8.2.10"
-  resolved "https://registry.yarnpkg.com/@types/jwplayer/-/jwplayer-8.2.10.tgz#a04c26fc31723cc87d19deb7bfb13f9850b82f7b"
-  integrity sha512-xJ1H3eMStWpr76NhWlbvu/nvHqflJ1F/nndhVHHT+vYa9o/wAGikg4LedFKDKn5tt8gKjC36r5iwMRoW3QaFCA==
+"@types/jwplayer@^8.2.13":
+  version "8.2.13"
+  resolved "https://registry.yarnpkg.com/@types/jwplayer/-/jwplayer-8.2.13.tgz#9d2fbd08771381ce96513410118ff88619c8baae"
+  integrity sha512-b3EM5cY9jEFunkGJVtAS7Mh3CWcyqIK8CygW1ssVp2nyWn6Nd2xJYtgO3TWskR2xhCHIysKsze7cuENHx776zw==
 
 "@types/lodash.merge@^4.6.6":
   version "4.6.6"

@@ -1,30 +1,3 @@
-/***
- Javascript library for sending OTT analytics to JW Player.
- Include in your head and include the following listeners:
-
- jwplayer().on("ready",function(evt) {
-	jwpltx.ready(
-		CONFIG.analyticsToken, // Analytics token
-		window.location.hostname, // Domain name
-		getParam("fed"), // ID of referring feed
-		item.mediaid, // ID of media playing
-		item.title // Title of media playing
-	);
-});
-
- jwplayer().on("time",function(evt) {
-	jwpltx.time(evt.currentTime,evt.duration);
-});
-
- jwplayer().on("complete",function(evt) {
-	jwpltx.complete();
-});
-
- jwplayer().on("adImpression",function(evt) {
-	jwpltx.adImpression();
-});
- ***/
-
 window.jwpltx = window.jwpltx || {};
 
 (function (o) {
@@ -37,10 +10,44 @@ window.jwpltx = window.jwpltx || {};
     oosv: '5',
     sdk: '0',
   };
+
+  // There are anywhere between 1 to 128 quantiles in any given video, 128 is max for every video
+  const MAX_DURATION_IN_QUANTILES = 128;
   // query params instance.
   let uri;
-  // Current time for live streams.
-  let current;
+  // Time watched after last t event was sent
+  let timeWatched = 0;
+  // Last progress of the video stored
+  let lastVp = 0;
+  // Last quantile reached
+  let lastQ;
+  // Seeking state, gets reset after 1 sec of the latest seeked event
+  let isSeeking = null;
+  // Timeout for seeking state
+  let liveInterval = null;
+
+  // How many quantiles have we passed (whether we need to send new t event or not)
+  function getLastVODQuantile(progress, duration, numberOfQuantiles) {
+    return Math.floor(progress / (duration / numberOfQuantiles));
+  }
+
+  // Here we convert seconds watched to the unites accepted by analytics service (res is 0 - 128)
+  function getProgressWatched(progress, duration) {
+    return Math.floor(MAX_DURATION_IN_QUANTILES * (progress / duration));
+  }
+
+  // We set interval for sending t events for live streams where we can't get progress info
+  function setLiveInterval() {
+    liveInterval = setInterval(() => {
+      timeWatched += 1;
+    }, 1000);
+  }
+
+  // We clear interval after complete or when seeking
+  function clearLiveInterval() {
+    clearInterval(liveInterval);
+    liveInterval = null;
+  }
 
   // Process a player ready event
   o.ready = function (aid, bun, fed, id, t) {
@@ -61,8 +68,53 @@ window.jwpltx = window.jwpltx || {};
     sendData('i');
   };
 
+  // Process seek event
+  o.seek = function (offset, duration) {
+    isSeeking = true;
+    // Clear interval in case of a live stream not to update time watched while seeking
+    if (uri.pw === -1) {
+      clearLiveInterval();
+    } else {
+      // We need to rewrite progress of the video when seeking to have a valid ti param
+      lastVp = offset;
+      lastQ = getLastVODQuantile(offset, duration, uri.q);
+    }
+  };
+
+  // Process seeked event
+  o.seeked = function () {
+    // There is currently a 1 sec debounce surrounding this event in order to logically group multiple `seeked` events
+    window.setTimeout(() => {
+      isSeeking = false;
+      // Set new timeout when seeked event reached for live events
+      if (uri.pw === -1 && !liveInterval) {
+        setLiveInterval();
+      }
+      sendData('vs');
+    }, 1000);
+  };
+
+  // When player is disconnected from the page -> we send remove event and update analytics with recent playback changes
+  o.remove = function () {
+    if (uri.pw === -1) {
+      clearLiveInterval();
+    } else {
+      const pw = getProgressWatched(lastVp, uri.vd);
+      uri.pw = pw;
+    }
+
+    uri.ti = Math.floor(timeWatched);
+    timeWatched = 0;
+
+    sendData('t');
+  };
+
   // Process a time tick event
   o.time = function (vp, vd) {
+    if (isSeeking) {
+      return;
+    }
+
     // 0 or negative vd means live stream
     if (vd < 1) {
       // Initial tick means play() event
@@ -70,14 +122,14 @@ window.jwpltx = window.jwpltx || {};
         uri.vd = 0;
         uri.q = 0;
         uri.pw = -1;
-        uri.ti = 20;
-        current = vp;
-        sendData('s');
 
+        sendData('s');
+        setLiveInterval();
         // monitor ticks for 20s elapsed
       } else {
-        if (vp - current > 20) {
-          current = vp;
+        if (timeWatched > 19) {
+          uri.ti = timeWatched;
+          timeWatched = 0;
           sendData('t');
         }
       }
@@ -98,16 +150,33 @@ window.jwpltx = window.jwpltx || {};
         } else {
           uri.q = 32;
         }
-        uri.ti = Math.round(uri.vd / uri.q);
-        uri.pw = 0;
-        sendData('s');
 
+        uri.ti = 0;
+        uri.pw = 0;
+
+        // Initialize latest quantile to compare further quantiles with
+        lastQ = getLastVODQuantile(vp, vd, uri.q);
+        // Initial values to compare watched progress
+        lastVp = vp;
+
+        sendData('s');
         // monitor ticks for entering new quantile
       } else {
-        let pw = (Math.floor(vp / uri.ti) * 128) / uri.q;
-        if (pw != uri.pw) {
+        const pw = getProgressWatched(vp, vd);
+        const passedQ = getLastVODQuantile(vp, vd, uri.q);
+
+        // Total time watched since last t event.
+        timeWatched = timeWatched + (vp - lastVp);
+        lastVp = vp;
+
+        if (passedQ > lastQ) {
+          uri.ti = Math.floor(timeWatched);
           uri.pw = pw;
+
           sendData('t');
+
+          lastQ = passedQ;
+          timeWatched = 0;
         }
       }
     }
@@ -115,10 +184,17 @@ window.jwpltx = window.jwpltx || {};
 
   // Process a video complete events
   o.complete = function () {
-    if (uri.pw != 128) {
-      uri.pw = 128;
-      sendData('t');
+    // Clear intervals for live streams
+    if (uri.pw === -1) {
+      clearLiveInterval();
+    } else {
+      uri.pw = MAX_DURATION_IN_QUANTILES;
     }
+
+    uri.ti = Math.floor(timeWatched);
+    timeWatched = 0;
+
+    sendData('t');
   };
 
   // Helper function to generate IDs
@@ -157,4 +233,13 @@ window.jwpltx = window.jwpltx || {};
       console.log(url + str);
     }
   }
+
+  // Send the rest of the data and cancel possible intervals in case a web page is closed while watching
+  window.addEventListener('beforeunload', () => {
+    clearLiveInterval();
+    if (timeWatched) {
+      uri.ti = Math.floor(timeWatched);
+      sendData('t');
+    }
+  });
 })(window.jwpltx);
