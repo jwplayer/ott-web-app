@@ -35,8 +35,8 @@ configs.add([
 ]);
 
 // inplayer integration
-configs.xadd([
-  testConfigs.inplayerSvodStaging,
+configs.add([
+  testConfigs.jwpSvod,
   constants.offers.monthlyOffer.inplayer,
   constants.offers.yearlyOffer.inplayer,
   constants.paymentFields.inplayer,

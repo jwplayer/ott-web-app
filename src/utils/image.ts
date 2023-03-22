@@ -3,7 +3,7 @@ import type { Playlist, PlaylistItem } from '#types/playlist';
 import { findPlaylistImageForWidth } from '#src/utils/collection';
 
 export const generateAlternateImageURL = (mediaid: string, imageLabel: string, width: number) =>
-  `https://img.jwplayer.com/v1/media/${mediaid}/images/${imageLabel}.jpg?width=${width}`;
+  `https://img.jwplayer.com/v1/media/${mediaid}/images/${imageLabel}.webp?width=${width}`;
 
 export const generateImageData = (config: Config, propertyName: string, item: PlaylistItem, playlist?: Playlist, width = 640) => {
   const posterImage = findPlaylistImageForWidth(item, width);

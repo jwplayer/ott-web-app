@@ -11,7 +11,7 @@ const formFeedback = 'div[class*=formFeedback]';
 Feature('login - account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 const configs = new DataTable(['config']);
 configs.add([testConfigs.cleengAuthvod]);
-configs.xadd([testConfigs.inplayerAuth]);
+configs.add([testConfigs.jwpAuth]);
 
 Data(configs).Scenario('I can close the modal', async ({ I, current }) => {
   await I.beforeRegisterOrLogin(current.config, 'signin');

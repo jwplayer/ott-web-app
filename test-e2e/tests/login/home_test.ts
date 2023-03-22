@@ -7,7 +7,7 @@ const loginContexts: { [key: string]: LoginContext } = {};
 Feature('login - home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 const configs = new DataTable(['config']);
 configs.add([testConfigs.cleengAuthvod]);
-configs.xadd([testConfigs.inplayerAuth]);
+configs.add([testConfigs.jwpAuth]);
 
 Data(configs).Scenario('Sign-in buttons show for accounts config', async ({ I, current }) => {
   I.useConfig(current.config);

@@ -11,7 +11,7 @@ let loginContext: LoginContext;
 Feature('watch_history - logged in').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 const configs = new DataTable(['config']);
 configs.add([testConfigs.cleengAuthvod]);
-configs.xadd([testConfigs.inplayerAuth]);
+configs.xadd([testConfigs.jwpAuth]);
 
 Data(configs).Scenario('I can get my watch history when logged in', async ({ I, current }) => {
   I.useConfig(current.config);

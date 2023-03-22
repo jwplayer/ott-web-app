@@ -32,7 +32,7 @@ export function addYear(date: Date) {
 }
 
 export function formatDate(date: Date) {
-  return date.toLocaleDateString('en-US');
+  return date.toLocaleDateString();
 }
 
 export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date, yearlyPrice: string) {

@@ -10,7 +10,7 @@ export type Config = {
   adSchedule?: string | null;
   integrations: {
     cleeng?: Cleeng;
-    inplayer?: InPlayer;
+    jwp?: JWP;
   };
   assets: { banner?: string | null };
   content: Content[];
@@ -33,7 +33,6 @@ export type Content = {
   title?: string;
   type: ContentType;
   featured?: boolean;
-  enableText?: boolean;
   backgroundColor?: string | null;
 };
 
@@ -57,7 +56,7 @@ export type Cleeng = {
   yearlyOffer?: string | null;
   useSandbox?: boolean;
 };
-export type InPlayer = {
+export type JWP = {
   clientId?: string | null;
   assetId?: number | null;
   useSandbox?: boolean;

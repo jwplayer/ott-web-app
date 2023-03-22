@@ -6,7 +6,7 @@ Feature('register').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 const configs = new DataTable(['config', 'authProvider']);
 configs.add([testConfigs.cleengAuthvod, 'Cleeng']);
-configs.xadd([testConfigs.inplayerAuth, 'InPlayer']);
+configs.add([testConfigs.jwpAuth, 'InPlayer']);
 
 Data(configs).Scenario('I can open the register modal', async ({ I, current }) => {
   await I.beforeRegisterOrLogin(current.config, 'signup');

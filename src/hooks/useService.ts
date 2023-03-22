@@ -23,18 +23,18 @@ function useService<T>(
   }) => T,
 ): T {
   const { config, accessModel } = useConfigStore.getState();
-  const { cleeng, inplayer } = config.integrations;
+  const { cleeng, jwp } = config.integrations;
 
   // AUTHVOD or SVOD for InPlayer integration
-  if (inplayer?.clientId) {
+  if (jwp?.clientId) {
     return callback({
       accountService: inplayerAccountService,
       subscriptionService: inplayerSubscriptionService,
       checkoutService: inplayerCheckoutService,
       config,
       accessModel,
-      sandbox: !!inplayer.useSandbox,
-      authProviderId: inplayer?.clientId?.toString(),
+      sandbox: !!jwp?.useSandbox,
+      authProviderId: jwp?.clientId?.toString(),
     });
   }
 

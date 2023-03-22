@@ -1,3 +1,68 @@
+## [4.2.3](https://github.com/jwplayer/ott-web-app/compare/v4.2.2...v4.2.3) (2023-03-14)
+
+
+### Bug Fixes
+
+* e2e date locale problem ([08dff6a](https://github.com/jwplayer/ott-web-app/commit/08dff6a14099b869d8ef082271767b1a8c405daa))
+* refactor the condition ([d69bfed](https://github.com/jwplayer/ott-web-app/commit/d69bfed8d84b040acad9d12d053786c199252a49))
+* single watch history item bug ([88946a4](https://github.com/jwplayer/ott-web-app/commit/88946a4ee4aa91d0469e818e0c4fb2e3d22de40b))
+
+
+
+## [4.2.2](https://github.com/jwplayer/ott-web-app/compare/v4.2.1...v4.2.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* fully replace inplayer integration key with jwp ([#250](https://github.com/jwplayer/ott-web-app/issues/250)) ([e1005f3](https://github.com/jwplayer/ott-web-app/commit/e1005f31b1ef2a5026fe1f2422caef8f95cd2e98))
+
+
+
+## [4.2.1](https://github.com/jwplayer/ott-web-app/compare/v4.2.0...v4.2.1) (2023-02-20)
+
+
+### Bug Fixes
+
+* **project:** avod as a default model ([f3096ed](https://github.com/jwplayer/ott-web-app/commit/f3096ed4e43bf552bf11bf758c484b19f777bec0))
+
+
+
+# [4.2.0](https://github.com/jwplayer/ott-web-app/compare/v4.1.1...v4.2.0) (2023-02-10)
+
+
+### Features
+
+* **project:** remove enable_text setting ([345a118](https://github.com/jwplayer/ott-web-app/commit/345a11858f19c98951e68173743122962b962e89))
+
+
+
+## [4.1.1](https://github.com/jwplayer/ott-web-app/compare/v4.1.0...v4.1.1) (2023-02-09)
+
+
+### Bug Fixes
+
+* broken screens when access is granted from dashboard ([db8f413](https://github.com/jwplayer/ott-web-app/commit/db8f41361f61846c4d48c9f3f19d3c12dfb83b0d))
+
+
+
+# [4.1.0](https://github.com/jwplayer/ott-web-app/compare/v4.0.1...v4.1.0) (2023-02-01)
+
+
+### Features
+
+* **playlist:** add additional images webp format support ([579cd0c](https://github.com/jwplayer/ott-web-app/commit/579cd0cde5d8c48933867ef3371e542252bdbbb7))
+
+
+
+## [4.0.1](https://github.com/jwplayer/ott-web-app/compare/v4.0.0...v4.0.1) (2023-01-31)
+
+
+### Bug Fixes
+
+* **playlist:** fix empty recommendations ([0d31f4e](https://github.com/jwplayer/ott-web-app/commit/0d31f4eb7a5dbf57b86fbfeaf76d49156fcd0859))
+
+
+
 # [4.0.0](https://github.com/jwplayer/ott-web-app/compare/v3.4.0...v4.0.0) (2023-01-30)
 
 

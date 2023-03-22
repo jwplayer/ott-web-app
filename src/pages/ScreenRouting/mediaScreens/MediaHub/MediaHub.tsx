@@ -9,7 +9,7 @@ import type { PlaylistItem } from '#types/playlist';
 const parsePlaylistIds = (input: unknown): Content[] => {
   const playlistIds = typeof input === 'string' ? input.replace(/\s+/g, '').split(',') : [];
 
-  return playlistIds.map((id) => ({ type: 'playlist', contentId: id, enableText: true }));
+  return playlistIds.map((id) => ({ type: 'playlist', contentId: id }));
 };
 
 const MediaHub: ScreenComponent<PlaylistItem> = ({ data }) => {

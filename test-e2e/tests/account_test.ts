@@ -10,14 +10,15 @@ const firstNameField = 'firstName';
 const lastNameField = 'lastName';
 const consentCheckbox = 'Yes, I want to receive Blender updates by email';
 
-const loginContexts: { [key: string]: LoginContext } = {};
 const firstName = 'John Q.';
 const lastName = 'Tester';
+
+const loginContexts: { [key: string]: LoginContext } = {};
 
 Feature('account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 const configs = new DataTable(['config', 'authProvider', 'resetPasswordType', 'canEditEmail']);
 configs.add([testConfigs.svod, 'Cleeng', 'resetlink', true]);
-configs.xadd([testConfigs.inplayerSvod, 'InPlayer', 'direct', false]);
+configs.add([testConfigs.jwpSvod, 'InPlayer', 'direct', false]);
 
 Data(configs).Scenario('I can see my account data', async ({ I, current }) => {
   loginContexts[current.config.label] = await I.beforeAccount(current.config, loginContexts[current.config.label], firstName, lastName);
