@@ -28,7 +28,7 @@ export type ContentSigningConfig = {
 };
 
 export type ContentProtection = {
-  accessModel: 'free' | 'authfree' | 'authvod' | 'svod';
+  accessModel: 'free' | 'freeauth' | 'authvod' | 'svod';
   drm?: Drm;
 };
 
