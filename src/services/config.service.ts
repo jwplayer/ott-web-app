@@ -74,7 +74,7 @@ const configSchema: SchemaOf<Config> = object({
   }),
   contentProtection: object()
     .shape({
-      accessModel: string().oneOf(['free', 'authfree', 'authvod', 'svod']).notRequired(),
+      accessModel: string().oneOf(['free', 'freeauth', 'authvod', 'svod']).notRequired(),
       drm: object({
         defaultPolicyId: string(),
       }).notRequired(),
