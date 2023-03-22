@@ -48,7 +48,7 @@ const PlayerContainer: React.FC<Props> = ({
   const { features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;
-  const { data, isLoading } = useContentProtection('media', item.mediaid, (token, drmPolicyId) => getMediaById(item.mediaid, token, drmPolicyId));
+  const { data: playableItem, isLoading } = useContentProtection('media', item.mediaid, (token, drmPolicyId) => getMediaById(item.mediaid, token, drmPolicyId));
 
   // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
@@ -128,7 +128,7 @@ const PlayerContainer: React.FC<Props> = ({
     return () => handleWatchHistory();
   }, [handleWatchHistory, item]);
 
-  if (!data || isLoading) {
+  if (!playableItem || isLoading) {
     return <LoadingOverlay inline />;
   }
 
@@ -136,7 +136,7 @@ const PlayerContainer: React.FC<Props> = ({
     <Player
       playerId={DEFAULT_PLAYER_ID}
       feedId={feedId}
-      item={data}
+      item={playableItem}
       onReady={handleReady}
       onFirstFrame={handleFirstFrame}
       onPlay={onPlay}
