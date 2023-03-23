@@ -2,93 +2,94 @@ import constants, { longTimeout } from '#utils/constants';
 import { testConfigs } from '#test/constants';
 import { LoginContext } from '#utils/password_utils';
 
-const loginContexts: { [key: string]: LoginContext } = {};
+runTestSuite(testConfigs.jwpAuth, 'JW Player');
+runTestSuite(testConfigs.cleengAuthvod, 'Cleeng');
 
-Feature('login - home').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
-const configs = new DataTable(['config']);
-configs.add([testConfigs.cleengAuthvod]);
-configs.add([testConfigs.jwpAuth]);
+function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
+  let loginContext: LoginContext;
 
-Data(configs).Scenario('Sign-in buttons show for accounts config', async ({ I, current }) => {
-  I.useConfig(current.config);
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
+  Feature(`login - home - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-  I.see('Sign in');
-  I.see('Sign up');
-});
+  Before(({ I }) => {
+    I.useConfig(config);
+  });
 
-Data(configs).Scenario('Sign-in buttons don`t show for config without accounts', async ({ I, current }) => {
-  I.useConfig(current.config);
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
+  Scenario(`Sign-in buttons show for accounts config - ${providerName}`, async ({ I }) => {
+    if (await I.isMobile()) {
+      I.openMenuDrawer();
+    }
 
-  I.see('Sign in');
-  I.see('Sign up');
+    I.see('Sign in');
+    I.see('Sign up');
+  });
 
-  I.useConfig(testConfigs.basicNoAuth);
+  Scenario(`Sign-in buttons don't show for config without accounts - ${providerName}`, async ({ I }) => {
+    if (await I.isMobile()) {
+      I.openMenuDrawer();
+    }
 
-  I.dontSee('Sign in');
-  I.dontSee('Sign up');
+    I.see('Sign in');
+    I.see('Sign up');
 
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
+    I.useConfig(testConfigs.basicNoAuth);
 
     I.dontSee('Sign in');
     I.dontSee('Sign up');
-  }
-});
 
-Data(configs).Scenario('I can open the log in modal', async ({ I, current }) => {
-  I.useConfig(current.config);
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
+    if (await I.isMobile()) {
+      I.openMenuDrawer();
 
-  I.click('Sign in');
-  I.waitForElement(constants.loginFormSelector, longTimeout);
+      I.dontSee('Sign in');
+      I.dontSee('Sign up');
+    }
+  });
 
-  await I.seeQueryParams({ u: 'login' });
+  Scenario(`I can open the log in modal - ${providerName}`, async ({ I }) => {
+    if (await I.isMobile()) {
+      I.openMenuDrawer();
+    }
 
-  I.see('Sign in');
-  I.see('Email');
-  I.see('Password');
-  I.see('Forgot password');
-  I.see('New to JW OTT Web App (AuthVod)?');
-  I.see('Sign up');
-});
+    I.click('Sign in');
+    I.waitForElement(constants.loginFormSelector, longTimeout);
 
-Data(configs).Scenario('I can login', async ({ I, current }) => {
-  I.useConfig(current.config);
-  loginContexts[current.config.label] = await I.registerOrLogin(loginContexts[current.config.label]);
+    await I.seeQueryParams({ u: 'login' });
 
-  I.dontSee('Sign in');
-  I.dontSee('Sign up');
+    I.see('Sign in');
+    I.see('Email');
+    I.see('Password');
+    I.see('Forgot password');
+    I.see('New to JW OTT Web App (AuthVod)?');
+    I.see('Sign up');
+  });
 
-  await I.openMainMenu();
+  Scenario(`I can login - ${providerName}`, async ({ I }) => {
+    loginContext = await I.registerOrLogin(loginContext);
 
-  I.dontSee('Sign in');
-  I.dontSee('Sign up');
+    I.dontSee('Sign in');
+    I.dontSee('Sign up');
 
-  I.see('Account');
-  I.see('Favorites');
-  I.see('Log out');
-});
+    await I.openMainMenu();
 
-Data(configs).Scenario('I can log out', async ({ I, current }) => {
-  I.useConfig(current.config);
-  loginContexts[current.authProvider] = await I.registerOrLogin(loginContexts[current.authProvider]);
+    I.dontSee('Sign in');
+    I.dontSee('Sign up');
 
-  const isMobile = await I.openMainMenu();
+    I.see('Account');
+    I.see('Favorites');
+    I.see('Log out');
+  });
 
-  I.click('Log out');
+  Scenario(`I can log out - ${providerName}`, async ({ I }) => {
+    loginContext = await I.registerOrLogin(loginContext);
 
-  if (isMobile) {
-    I.openMenuDrawer();
-  }
+    const isMobile = await I.openMainMenu();
 
-  I.see('Sign in');
-  I.see('Sign up');
-});
+    I.click('Log out');
+
+    if (isMobile) {
+      I.openMenuDrawer();
+    }
+
+    I.see('Sign in');
+    I.see('Sign up');
+  });
+}

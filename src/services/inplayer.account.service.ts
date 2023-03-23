@@ -400,7 +400,7 @@ function formatPublisherConsents(consent: Partial<GetRegisterField>) {
 }
 
 function getTermsConsent(): Consent {
-  const label = 'I accept the <a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a> of InPlayer.';
+  const label = 'I accept the <a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a> of JW Player.';
   return formatPublisherConsents({
     required: true,
     name: 'terms',

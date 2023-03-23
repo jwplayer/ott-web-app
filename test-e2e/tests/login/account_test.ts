@@ -8,115 +8,119 @@ const invalidEmail = 'Please re-enter your email details and try again.';
 const incorrectLogin = 'Incorrect email/password combination';
 const formFeedback = 'div[class*=formFeedback]';
 
-Feature('login - account').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
-const configs = new DataTable(['config']);
-configs.add([testConfigs.cleengAuthvod]);
-configs.add([testConfigs.jwpAuth]);
+runTestSuite(testConfigs.jwpAuth, 'JW Player');
+runTestSuite(testConfigs.cleengAuthvod, 'Cleeng');
 
-Data(configs).Scenario('I can close the modal', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signin');
-  I.clickCloseButton();
-  I.dontSee('Email');
-  I.dontSee('Password');
-  I.dontSeeElement(constants.loginFormSelector);
-});
+function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
+  Feature(`login - account - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Data(configs).Scenario('I can close the modal by clicking outside', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signin');
-  I.forceClick('div[data-testid="backdrop"]');
+  Before(async ({ I }) => {
+    I.useConfig(config);
 
-  I.dontSee('Email');
-  I.dontSee('Password');
-  I.dontSeeElement(constants.loginFormSelector);
-});
+    if (await I.isMobile()) {
+      I.openMenuDrawer();
+    }
 
-Data(configs).Scenario('I can toggle to view password', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signin');
-  await passwordUtils.testPasswordToggling(I);
-});
+    I.click('Sign in');
 
-Data(configs).Scenario('I get a warning when the form is incompletely filled in', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signin');
-  tryToSubmitForm(I);
+    I.waitForElement(constants.loginFormSelector, normalTimeout);
+  });
 
-  checkField(I, 'email', fieldRequired);
-  checkField(I, 'password', fieldRequired);
-});
+  Scenario(`I can close the modal - ${providerName}`, async ({ I }) => {
+    I.clickCloseButton();
+    I.dontSee('Email');
+    I.dontSee('Password');
+    I.dontSeeElement(constants.loginFormSelector);
+  });
 
-Data(configs).Scenario('I see email warnings', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signin');
+  Scenario(`I can close the modal by clicking outside - ${providerName}`, async ({ I }) => {
+    I.forceClick('div[data-testid="backdrop"]');
 
-  I.fillField('email', 'danny@email.com');
-  I.fillField('password', 'Password');
+    I.dontSee('Email');
+    I.dontSee('Password');
+    I.dontSeeElement(constants.loginFormSelector);
+  });
 
-  // No errors before form is submitted
-  fillAndCheckField(I, 'email', 'danny');
-  fillAndCheckField(I, 'email', '');
+  Scenario(`I can toggle to view password - ${providerName}`, async ({ I }) => {
+    await passwordUtils.testPasswordToggling(I);
+  });
 
-  // Submit form and expect no loader (the form shouldn't actually post to the backend with invalid data)
-  tryToSubmitForm(I);
+  Scenario(`I get a warning when the form is incompletely filled in - ${providerName}`, async ({ I }) => {
+    tryToSubmitForm(I);
 
-  // Empty email warning is shown on submit
-  checkField(I, 'email', fieldRequired);
+    checkField(I, 'email', fieldRequired);
+    checkField(I, 'password', fieldRequired);
+  });
 
-  // Continue to see errors until a valid value is filled
-  fillAndCheckField(I, 'email', 'danny', invalidEmail);
-  fillAndCheckField(I, 'email', '', fieldRequired);
+  Scenario(`I see email warnings - ${providerName}`, async ({ I }) => {
+    I.fillField('email', 'danny@email.com');
+    I.fillField('password', 'Password');
 
-  // No error after valid value
-  fillAndCheckField(I, 'email', 'danny@email.com');
+    // No errors before form is submitted
+    fillAndCheckField(I, 'email', 'danny');
+    fillAndCheckField(I, 'email', '');
 
-  // No errors shown after a valid value
-  fillAndCheckField(I, 'email', '');
-  fillAndCheckField(I, 'email', 'danny');
+    // Submit form and expect no loader (the form shouldn't actually post to the backend with invalid data)
+    tryToSubmitForm(I);
 
-  tryToSubmitForm(I);
+    // Empty email warning is shown on submit
+    checkField(I, 'email', fieldRequired);
 
-  // Last check to see the invalid email warning on submit
-  checkField(I, 'email', invalidEmail);
-});
+    // Continue to see errors until a valid value is filled
+    fillAndCheckField(I, 'email', 'danny', invalidEmail);
+    fillAndCheckField(I, 'email', '', fieldRequired);
 
-Data(configs).Scenario('I see empty password warnings', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signin');
+    // No error after valid value
+    fillAndCheckField(I, 'email', 'danny@email.com');
 
-  I.fillField('email', 'danny@email.com');
-  I.fillField('password', 'Password');
+    // No errors shown after a valid value
+    fillAndCheckField(I, 'email', '');
+    fillAndCheckField(I, 'email', 'danny');
 
-  // No errors before form is submitted
-  fillAndCheckField(I, 'password', '');
+    tryToSubmitForm(I);
 
-  tryToSubmitForm(I);
+    // Last check to see the invalid email warning on submit
+    checkField(I, 'email', invalidEmail);
+  });
 
-  // Empty password warning shown after submit
-  checkField(I, 'password', fieldRequired);
+  Scenario(`I see empty password warnings - ${providerName}`, async ({ I }) => {
+    I.fillField('email', 'danny@email.com');
+    I.fillField('password', 'Password');
 
-  // Error cleared if a valid value is filled
-  fillAndCheckField(I, 'password', 'a');
+    // No errors before form is submitted
+    fillAndCheckField(I, 'password', '');
 
-  // No errors after valid value re-entered
-  fillAndCheckField(I, 'password', '');
+    tryToSubmitForm(I);
 
-  tryToSubmitForm(I);
+    // Empty password warning shown after submit
+    checkField(I, 'password', fieldRequired);
 
-  // Error back after submitting again
-  checkField(I, 'password', fieldRequired);
-});
+    // Error cleared if a valid value is filled
+    fillAndCheckField(I, 'password', 'a');
 
-Data(configs).Scenario('I see a login error message', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signin');
+    // No errors after valid value re-entered
+    fillAndCheckField(I, 'password', '');
 
-  I.fillField('email', 'danny@email.com');
-  I.fillField('password', 'Password');
+    tryToSubmitForm(I);
 
-  I.submitForm();
+    // Error back after submitting again
+    checkField(I, 'password', fieldRequired);
+  });
 
-  I.see(incorrectLogin);
-  I.seeCssPropertiesOnElements(formFeedback, { 'background-color': 'rgb(255, 12, 62)' });
+  Scenario(`I see a login error message - ${providerName}`, async ({ I }) => {
+    I.fillField('email', 'danny@email.com');
+    I.fillField('password', 'Password');
 
-  checkField(I, 'email', true);
-  checkField(I, 'password', true);
+    I.submitForm();
 
-  // Failed login maintains the email but clears the password field
-  I.waitForValue('input[name=email]', 'danny@email.com', 0);
-  I.waitForValue('input[name=password]', '', 0);
-});
+    I.see(incorrectLogin);
+    I.seeCssPropertiesOnElements(formFeedback, { 'background-color': 'rgb(255, 12, 62)' });
+
+    checkField(I, 'email', true);
+    checkField(I, 'password', true);
+
+    // Failed login maintains the email but clears the password field
+    I.waitForValue('input[name=email]', 'danny@email.com', 0);
+    I.waitForValue('input[name=password]', '', 0);
+  });
+}

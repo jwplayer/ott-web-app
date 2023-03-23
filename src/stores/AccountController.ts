@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode';
+import i18next from 'i18next';
 
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -139,6 +140,7 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
     }
 
     let payload = values;
+    // this is needed as a fallback when the name is empty (cannot be empty on JWP integration)
     if (!accountService.canSupportEmptyFullName) {
       payload = { ...values, email: user.email };
     }
@@ -491,10 +493,10 @@ async function afterLogin(
 const validateInputLength = (values: { firstName: string; lastName: string }) => {
   const errors: string[] = [];
   if (Number(values?.firstName?.length) > 50) {
-    errors.push('firstName can have max 50 characters.');
+    errors.push(i18next.t('account:validation.first_name'));
   }
   if (Number(values?.lastName?.length) > 50) {
-    errors.push('lastName can have max 50 characters.');
+    errors.push(i18next.t('account:validation.last_name'));
   }
 
   return errors;

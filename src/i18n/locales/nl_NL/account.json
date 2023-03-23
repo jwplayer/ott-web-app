@@ -175,5 +175,9 @@
     "back_to_profile": "",
     "message": "",
     "title": ""
+  },
+  "validation": {
+    "first_name": "",
+    "last_name": ""
   }
 }

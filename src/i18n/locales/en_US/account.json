@@ -178,5 +178,9 @@
     "back_to_profile": "Back to profile",
     "message": "You have been successfully resubscribed. Your fee will be {{price}} starting from {{date}}",
     "title": "Your subscription has been renewed"
+  },
+  "validation": {
+    "first_name": "firstName can have max 50 characters.",
+    "last_name": "lastName can have max 50 characters."
   }
 }

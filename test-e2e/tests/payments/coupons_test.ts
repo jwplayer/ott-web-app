@@ -1,110 +1,103 @@
 import { LoginContext } from '#utils/password_utils';
 import constants from '#utils/constants';
-import { goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan } from '#utils/payments';
+import { goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan, overrideIP } from '#utils/payments';
 import { testConfigs } from '#test/constants';
+import { ProviderProps } from '#test/types';
 
-const context: { [key: string]: LoginContext } = {};
+const jwProps: ProviderProps = {
+  config: testConfigs.jwpSvod,
+  monthlyOffer: constants.offers.monthlyOffer.inplayer,
+  yearlyOffer: constants.offers.yearlyOffer.inplayer,
+  paymentFields: constants.paymentFields.inplayer,
+  creditCard: constants.creditCard.inplayer,
+  creditCardNamePresent: true,
+  applicableTax: 0,
+  locale: undefined,
+  shouldMakePayment: true,
+  canRenewSubscription: false,
+};
 
-const today = new Date();
+const cleengProps: ProviderProps = {
+  config: testConfigs.svod,
+  monthlyOffer: constants.offers.monthlyOffer.cleeng,
+  yearlyOffer: constants.offers.yearlyOffer.cleeng,
+  paymentFields: constants.paymentFields.cleeng,
+  creditCard: constants.creditCard.cleeng,
+  creditCardNamePresent: false,
+  applicableTax: 2.17,
+  locale: 'NL',
+  shouldMakePayment: false,
+  canRenewSubscription: true,
+};
 
-const configs = new DataTable([
-  'config',
-  'monthlyOffer',
-  'yearlyOffer',
-  'paymentFields',
-  'creditCard',
-  'creditCardNamePresent',
-  'applicableTax',
-  'locale',
-  'shouldMakePayment',
-  'canRenewSubscription',
-]);
+runTestSuite(jwProps, 'JW Player');
+runTestSuite(cleengProps, 'Cleeng');
 
-// cleeng integration
-configs.add([
-  testConfigs.svod,
-  constants.offers.monthlyOffer.cleeng,
-  constants.offers.yearlyOffer.cleeng,
-  constants.paymentFields.cleeng,
-  constants.creditCard.cleeng,
-  false,
-  2.17,
-  'NL',
-  false,
-  true,
-]);
+function runTestSuite(props: ProviderProps, providerName: string) {
+  let couponLoginContext: LoginContext;
 
-// inplayer integration
-configs.add([
-  testConfigs.jwpSvod,
-  constants.offers.monthlyOffer.inplayer,
-  constants.offers.yearlyOffer.inplayer,
-  constants.paymentFields.inplayer,
-  constants.creditCard.inplayer,
-  true,
-  0,
-  undefined,
-  true,
-  false,
-]);
+  const today = new Date();
 
-// This is written as a second test suite so that the login context is a different user.
-// Otherwise there's no way to re-enter payment info and add a coupon code
-Feature('payments-coupon').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+  // This is written as a second test suite so that the login context is a different user.
+  // Otherwise there's no way to re-enter payment info and add a coupon code
+  Feature(`payments-coupon - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Data(configs).Scenario('I can redeem coupons', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
+  Before(async ({ I }) => {
+    // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
+    overrideIP(I);
+    I.useConfig(props.config);
+  });
 
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
+  Scenario(`I can redeem coupons - ${providerName}`, async ({ I }) => {
+    couponLoginContext = await I.registerOrLogin(couponLoginContext);
 
-  await goToCheckout(I);
+    await goToCheckout(I);
 
-  I.click('Redeem coupon');
-  I.seeElement('input[name="couponCode"]');
-  I.see('Apply');
+    I.click('Redeem coupon');
+    I.seeElement('input[name="couponCode"]');
+    I.see('Apply');
 
-  I.click('div[aria-label="Close coupon form"]');
-  I.dontSee('Coupon code');
+    I.click('div[aria-label="Close coupon form"]');
+    I.dontSee('Coupon code');
 
-  I.click('Redeem coupon');
-  I.fillField('couponCode', 'test75');
-  I.click('Apply');
-  I.waitForLoaderDone();
-  I.see('Your coupon code has been applied');
+    I.click('Redeem coupon');
+    I.fillField('couponCode', 'test75');
+    I.click('Apply');
+    I.waitForLoaderDone();
+    I.see('Your coupon code has been applied');
 
-  I.see(formatPrice(-37.5, 'EUR', current.locale));
-  I.see(formatPrice(12.5, 'EUR', current.locale));
-  I.see(formatPrice(current.applicableTax, 'EUR', current.locale));
+    I.see(formatPrice(-37.5, 'EUR', props.locale));
+    I.see(formatPrice(12.5, 'EUR', props.locale));
+    I.see(formatPrice(props.applicableTax, 'EUR', props.locale));
 
-  I.fillField('couponCode', 'test100');
-  I.click('Apply');
-  I.waitForLoaderDone();
-  I.see(formatPrice(0, 'EUR', current.locale));
+    I.fillField('couponCode', 'test100');
+    I.click('Apply');
+    I.waitForLoaderDone();
+    I.see(formatPrice(0, 'EUR', props.locale));
 
-  if (current.shouldMakePayment) {
-    I.payWithCreditCard(
-      current.creditCardNamePresent,
-      current.creditCard,
-      current.paymentFields.cardNumber,
-      current.paymentFields.expiryDate,
-      current.paymentFields.securityCode,
-      '',
-    );
-  }
+    if (props.shouldMakePayment) {
+      I.payWithCreditCard(
+        props.creditCardNamePresent,
+        props.creditCard,
+        props.paymentFields.cardNumber,
+        props.paymentFields.expiryDate,
+        props.paymentFields.securityCode,
+        '',
+      );
+    }
 
-  await finishAndCheckSubscription(I, addYear(today), today, current.yearlyOffer.price);
-});
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
+  });
 
-Data(configs).Scenario('I can cancel a free subscription', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
-  cancelPlan(I, addYear(today), current.canRenewSubscription);
-});
+  Scenario(`I can cancel a free subscription - ${providerName}`, async ({ I }) => {
+    couponLoginContext = await I.registerOrLogin(couponLoginContext);
+    cancelPlan(I, addYear(today), props.canRenewSubscription);
+  });
 
-Data(configs).Scenario('I can renew a free subscription', async ({ I, current }) => {
-  if (current.canRenewSubscription) {
-    await I.beforeSubscription(current.config);
-    context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
-    renewPlan(I, addYear(today), current.yearlyOffer.price);
-  }
-});
+  Scenario(`I can renew a free subscription - ${providerName}`, async ({ I }) => {
+    if (props.canRenewSubscription) {
+      couponLoginContext = await I.registerOrLogin(couponLoginContext);
+      renewPlan(I, addYear(today), props.yearlyOffer.price);
+    }
+  });
+}

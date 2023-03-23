@@ -1,208 +1,195 @@
 import { LoginContext } from '#utils/password_utils';
 import constants, { longTimeout } from '#utils/constants';
-import { goToCheckout, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '#utils/payments';
+import { goToCheckout, finishAndCheckSubscription, cancelPlan, renewPlan, overrideIP, addYear } from '#utils/payments';
 import { testConfigs } from '#test/constants';
+import { ProviderProps } from '#test/types';
 
-const context: { [key: string]: LoginContext } = {};
+const jwProps: ProviderProps = {
+  config: testConfigs.jwpSvod,
+  monthlyOffer: constants.offers.monthlyOffer.inplayer,
+  yearlyOffer: constants.offers.yearlyOffer.inplayer,
+  paymentFields: constants.paymentFields.inplayer,
+  creditCard: constants.creditCard.inplayer,
+  creditCardNamePresent: true,
+  applicableTax: 0,
+  canRenewSubscription: false,
+  fieldWrapper: '',
+};
 
-const today = new Date();
+const cleengProps: ProviderProps = {
+  config: testConfigs.svod,
+  monthlyOffer: constants.offers.monthlyOffer.cleeng,
+  yearlyOffer: constants.offers.yearlyOffer.cleeng,
+  paymentFields: constants.paymentFields.cleeng,
+  creditCard: constants.creditCard.cleeng,
+  creditCardNamePresent: false,
+  applicableTax: 21,
+  canRenewSubscription: true,
+  fieldWrapper: 'iframe',
+};
 
-const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'CVC / CVV', '******');
+runTestSuite(jwProps, 'JW Player');
+runTestSuite(cleengProps, 'Cleeng');
 
-const configs = new DataTable([
-  'config',
-  'monthlyOffer',
-  'yearlyOffer',
-  'paymentFields',
-  'creditCard',
-  'creditCardNamePresent',
-  'applicableTax',
-  'fieldWrapper',
-  'canRenewSubscription',
-]);
+function runTestSuite(props: ProviderProps, providerName: string) {
+  let paidLoginContext: LoginContext;
 
-// cleeng integration
-configs.add([
-  testConfigs.svod,
-  constants.offers.monthlyOffer.cleeng,
-  constants.offers.yearlyOffer.cleeng,
-  constants.paymentFields.cleeng,
-  constants.creditCard.cleeng,
-  false,
-  true,
-  'iframe',
-  true,
-]);
+  const today = new Date();
 
-// inplayer integration
-configs.add([
-  testConfigs.jwpSvod,
-  constants.offers.monthlyOffer.inplayer,
-  constants.offers.yearlyOffer.inplayer,
-  constants.paymentFields.inplayer,
-  constants.creditCard.inplayer,
-  true,
-  false,
-  '',
-  false,
-]);
+  const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'CVC / CVV', '******');
 
-Feature('payments').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+  Feature(`payments - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Data(configs).Scenario('I can see my payments data', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
-
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
-
-  await I.openMainMenu();
-
-  I.click('Payments');
-  I.see('Subscription details');
-  I.see('You have no subscription. Complete your subscription to start watching all movies and series.');
-  I.see('Complete subscription');
-
-  I.see('Payment method');
-  I.see('No payment methods');
-
-  I.see('Transactions');
-  I.see('No transactions');
-});
-
-Data(configs).Scenario('I can see offered subscriptions', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
-
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
-
-  I.amOnPage(constants.paymentsUrl);
-
-  I.click('Complete subscription');
-  I.see('Choose plan');
-  I.see('Watch this on JW OTT Web App');
-
-  await within(current.monthlyOffer.label, () => {
-    I.see('Monthly');
-    I.see('First month free');
-    I.see('Cancel anytime');
-    I.see('Watch on all devices');
-    I.see(current.monthlyOffer.price);
-    I.see('/month');
+  Before(async ({ I }) => {
+    // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
+    overrideIP(I);
+    I.useConfig(props.config);
   });
 
-  await within(current.yearlyOffer.label, () => {
-    I.see('Cancel anytime');
-    I.see('Watch on all devices');
-    I.see(current.yearlyOffer.price);
+  Scenario(`I can see my payments data - ${providerName}`, async ({ I }) => {
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
+
+    await I.openMainMenu();
+
+    I.click('Payments');
+    I.see('Subscription details');
+    I.see('You have no subscription. Complete your subscription to start watching all movies and series.');
+    I.see('Complete subscription');
+
+    I.see('Payment method');
+    I.see('No payment methods');
+
+    I.see('Transactions');
+    I.see('No transactions');
+  });
+
+  Scenario(`I can see offered subscriptions - ${providerName}`, async ({ I }) => {
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
+
+    I.amOnPage(constants.paymentsUrl);
+
+    I.click('Complete subscription');
+    I.see('Choose plan');
+    I.see('Watch this on JW OTT Web App');
+
+    await within(props.monthlyOffer.label, () => {
+      I.see('Monthly');
+      I.see('First month free');
+      I.see('Cancel anytime');
+      I.see('Watch on all devices');
+      I.see(props.monthlyOffer.price);
+      I.see('/month');
+    });
+
+    await within(props.yearlyOffer.label, () => {
+      I.see('Cancel anytime');
+      I.see('Watch on all devices');
+      I.see(props.yearlyOffer.price);
+      I.see('/year');
+    });
+
+    I.see('Continue');
+  });
+
+  Scenario(`I can choose an offer - ${providerName}`, async ({ I }) => {
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
+
+    I.amOnPage(constants.offersUrl);
+
+    I.click(props.monthlyOffer.label);
+    I.seeCssPropertiesOnElements(props.monthlyOffer.label, { color: '#000000' });
+    I.seeCssPropertiesOnElements(props.yearlyOffer.label, { color: '#ffffff' });
+
+    I.click(props.yearlyOffer.label);
+    I.seeCssPropertiesOnElements(props.monthlyOffer.label, { color: '#ffffff' });
+    I.seeCssPropertiesOnElements(props.yearlyOffer.label, { color: '#000000' });
+
+    I.click('Continue');
+    I.waitForLoaderDone();
+
+    I.see('Yearly subscription');
+    I.see(props.yearlyOffer.price);
     I.see('/year');
+
+    I.see('Redeem coupon');
+    I.see(props.yearlyOffer.price);
+    I.see('Payment method fee');
+    I.see(props.yearlyOffer.paymentFee);
+    I.see('Total');
+    if (props.applicableTax !== 0) {
+      I.see('Applicable tax (21%)');
+    }
+    I.clickCloseButton();
   });
 
-  I.see('Continue');
-});
+  Scenario(`I can see payment types - ${providerName}`, async ({ I }) => {
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-Data(configs).Scenario('I can choose an offer', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
+    await goToCheckout(I);
 
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
+    I.see('Credit card');
+    I.see('PayPal');
 
-  I.amOnPage(constants.offersUrl);
+    I.see('Card number');
+    I.see('Expiry date');
+    I.see('CVC / CVV');
+    I.see('Continue');
+    I.dontSee("Clicking 'continue' will bring you to the PayPal site.");
 
-  I.click(current.monthlyOffer.label);
-  I.seeCssPropertiesOnElements(current.monthlyOffer.label, { color: '#000000' });
-  I.seeCssPropertiesOnElements(current.yearlyOffer.label, { color: '#ffffff' });
+    I.click('PayPal');
 
-  I.click(current.yearlyOffer.label);
-  I.seeCssPropertiesOnElements(current.monthlyOffer.label, { color: '#ffffff' });
-  I.seeCssPropertiesOnElements(current.yearlyOffer.label, { color: '#000000' });
+    I.see("Clicking 'continue' will bring you to the PayPal site.");
+    I.dontSee('Card number');
+    I.dontSee('Expiry date');
+    I.dontSee('CVC / CVV');
+    I.see('Continue');
+  });
 
-  I.click('Continue');
-  I.waitForLoaderDone();
+  Scenario(`I can open the PayPal site - ${providerName}`, async ({ I }) => {
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  I.see('Yearly subscription');
-  I.see(current.yearlyOffer.price);
-  I.see('/year');
+    await goToCheckout(I);
 
-  I.see('Redeem coupon');
-  I.see(current.yearlyOffer.price);
-  I.see('Payment method fee');
-  I.see(current.yearlyOffer.paymentFee);
-  I.see('Total');
-  if (current.applicableTax) {
-    I.see('Applicable tax (21%)');
-  }
-  I.clickCloseButton();
-});
+    I.click('PayPal');
+    I.click('Continue');
 
-Data(configs).Scenario('I can see payment types', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
+    I.waitInUrl('paypal.com', longTimeout);
+    // I'm sorry, I don't know why, but this test ends in a way that causes the next test to fail
+    I.amOnPage(constants.baseUrl);
+  });
 
-  await goToCheckout(I);
+  Scenario(`I can finish my subscription with credit card - ${providerName}`, async ({ I }) => {
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  I.see('Credit card');
-  I.see('PayPal');
+    await goToCheckout(I);
 
-  I.see('Card number');
-  I.see('Expiry date');
-  I.see('CVC / CVV');
-  I.see('Continue');
-  I.dontSee("Clicking 'continue' will bring you to the PayPal site.");
+    I.payWithCreditCard(
+      props.creditCardNamePresent,
+      props.creditCard,
+      props.paymentFields.cardNumber,
+      props.paymentFields.expiryDate,
+      props.paymentFields.securityCode,
+      props.fieldWrapper,
+    );
 
-  I.click('PayPal');
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
 
-  I.see("Clicking 'continue' will bring you to the PayPal site.");
-  I.dontSee('Card number');
-  I.dontSee('Expiry date');
-  I.dontSee('CVC / CVV');
-  I.see('Continue');
-});
+    I.seeAll(cardInfo);
+  });
 
-Data(configs).Scenario('I can open the PayPal site', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
+  Scenario(`I can cancel my subscription - ${providerName}`, async ({ I }) => {
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  await goToCheckout(I);
+    cancelPlan(I, addYear(today), props.canRenewSubscription);
 
-  I.click('PayPal');
-  I.click('Continue');
+    // Still see payment info
+    I.seeAll(cardInfo);
+  });
 
-  I.waitInUrl('paypal.com', longTimeout);
-  // I'm sorry, I don't know why, but this test ends in a way that causes the next test to fail
-  I.amOnPage(constants.baseUrl);
-});
-
-Data(configs).Scenario('I can finish my subscription with credit card', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
-
-  await goToCheckout(I);
-
-  I.payWithCreditCard(
-    current.creditCardNamePresent,
-    current.creditCard,
-    current.paymentFields.cardNumber,
-    current.paymentFields.expiryDate,
-    current.paymentFields.securityCode,
-    current.fieldWrapper,
-  );
-
-  await finishAndCheckSubscription(I, addDays(today, 365), today, current.yearlyOffer.price);
-
-  I.seeAll(cardInfo);
-});
-
-Data(configs).Scenario('I can cancel my subscription', async ({ I, current }) => {
-  await I.beforeSubscription(current.config);
-  context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
-
-  cancelPlan(I, addDays(today, 365), current.canRenewSubscription);
-
-  // Still see payment info
-  I.seeAll(cardInfo);
-});
-
-Data(configs).Scenario('I can renew my subscription', async ({ I, current }) => {
-  if (current.canRenewSubscription) {
-    await I.beforeSubscription(current.config);
-    context[current.config.label] = await I.registerOrLogin(context[current.config.label]);
-    renewPlan(I, addDays(today, 365), current.yearlyOffer.price);
-  }
-});
+  Scenario(`I can renew my subscription - ${providerName}`, async ({ I }) => {
+    if (props.canRenewSubscription) {
+      paidLoginContext = await I.registerOrLogin(paidLoginContext);
+      renewPlan(I, addYear(today), props.yearlyOffer.price);
+    }
+  });
+}

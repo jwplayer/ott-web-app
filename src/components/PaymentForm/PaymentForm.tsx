@@ -99,7 +99,7 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
         </div>
       </div>
       <div>
-        <Button label="continue" variant="contained" color="primary" onClick={paymentData.handleSubmit as () => void} size="large" fullWidth />
+        <Button label="Continue" variant="contained" color="primary" onClick={paymentData.handleSubmit as () => void} size="large" fullWidth />
       </div>
     </div>
   );

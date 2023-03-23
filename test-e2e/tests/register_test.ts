@@ -2,148 +2,149 @@ import constants, { longTimeout, normalTimeout } from '#utils/constants';
 import passwordUtils from '#utils/password_utils';
 import { testConfigs } from '#test/constants';
 
-Feature('register').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
+runTestSuite(testConfigs.jwpAuth, 'JW Player');
+runTestSuite(testConfigs.cleengAuthvod, 'Cleeng');
 
-const configs = new DataTable(['config', 'authProvider']);
-configs.add([testConfigs.cleengAuthvod, 'Cleeng']);
-configs.add([testConfigs.jwpAuth, 'InPlayer']);
+function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
+  Feature(`register - ${providerName}'`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Data(configs).Scenario('I can open the register modal', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  await I.seeQueryParams({ u: 'create-account' });
+  Before(async ({ I }) => {
+    I.useConfig(config);
 
-  I.see('Email');
-  I.see('Password');
-  I.see('Use a minimum of 8 characters (case sensitive) with at least one number');
-  I.see('I accept the');
-  I.see('Terms and Conditions');
-  I.see(`of ${current.authProvider}.`);
-  I.see('Yes, I want to receive Blender updates by email.');
-  I.see('Continue');
-  I.see('Already have an account?');
-  I.see('Sign in');
+    if (await I.isMobile()) {
+      I.openMenuDrawer();
+    }
 
-  I.seeElement(constants.registrationFormSelector);
-});
+    I.click('Sign up');
+    I.waitForElement(constants.registrationFormSelector, normalTimeout);
+  });
 
-Data(configs).Scenario('I can close the modal', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  I.waitForElement(constants.registrationFormSelector, normalTimeout);
+  Scenario(`I can open the register modal - ${providerName}`, async ({ I }) => {
+    await I.seeQueryParams({ u: 'create-account' });
 
-  I.clickCloseButton();
-  I.dontSeeElement(constants.registrationFormSelector);
-  I.dontSee('Email');
-  I.dontSee('Password');
+    I.see('Email');
+    I.see('Password');
+    I.see('Use a minimum of 8 characters (case sensitive) with at least one number');
+    I.see('I accept the');
+    I.see('Terms and Conditions');
+    I.see(`I accept the Terms and Conditions of ${providerName}.`);
+    I.see('Yes, I want to receive Blender updates by email');
+    I.see('Continue');
+    I.see('Already have an account?');
+    I.see('Sign in');
 
-  if (await I.isMobile()) {
-    I.openMenuDrawer();
-  }
+    I.seeElement(constants.registrationFormSelector);
+  });
 
-  I.see('Sign in');
-  I.see('Sign up');
-});
+  Scenario(`I can close the modal - ${providerName}`, async ({ I }) => {
+    I.waitForElement(constants.registrationFormSelector, normalTimeout);
 
-Data(configs).Scenario('I can switch to the Sign In modal', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
+    I.clickCloseButton();
+    I.dontSeeElement(constants.registrationFormSelector);
+    I.dontSee('Email');
+    I.dontSee('Password');
 
-  I.click('Sign in', constants.registrationFormSelector);
-  I.seeElement(constants.loginFormSelector);
-  I.see('Forgot password');
-  I.dontSee(constants.registrationFormSelector);
-  I.click('Sign up', constants.loginFormSelector);
-  I.seeElement(constants.registrationFormSelector);
-  I.see('Already have an account?');
-  I.dontSeeElement(constants.loginFormSelector);
-});
+    if (await I.isMobile()) {
+      I.openMenuDrawer();
+    }
 
-Data(configs).Scenario('The submit button is disabled when the form is incompletely filled in', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  I.seeAttributesOnElements('button[type="submit"]', { disabled: true });
-});
+    I.see('Sign in');
+    I.see('Sign up');
+  });
 
-Data(configs).Scenario('I get warned when filling in incorrect credentials', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  I.fillField('Email', 'test');
-  I.pressKey('Tab');
-  I.see('Please re-enter your email details');
-  I.fillField('Email', '12345@test.org');
-  I.dontSee('Please re-enter your email details');
+  Scenario(`I can switch to the Sign In modal - ${providerName}`, ({ I }) => {
+    I.click('Sign in', constants.registrationFormSelector);
+    I.seeElement(constants.loginFormSelector);
+    I.see('Forgot password');
+    I.dontSee(constants.registrationFormSelector);
+    I.click('Sign up', constants.loginFormSelector);
+    I.seeElement(constants.registrationFormSelector);
+    I.see('Already have an account?');
+    I.dontSeeElement(constants.loginFormSelector);
+  });
 
-  function checkColor(expectedColor) {
-    I.seeCssPropertiesOnElements('text="Use a minimum of 8 characters (case sensitive) with at least one number"', { color: expectedColor });
-  }
+  Scenario(`The submit button is disabled when the form is incompletely filled in - ${providerName}`, async ({ I }) => {
+    I.seeAttributesOnElements('button[type="submit"]', { disabled: true });
+  });
 
-  checkColor('rgb(255, 255, 255)');
+  Scenario(`I get warned when filling in incorrect credentials - ${providerName}`, async ({ I }) => {
+    I.fillField('Email', 'test');
+    I.pressKey('Tab');
+    I.see('Please re-enter your email details');
+    I.fillField('Email', '12345@test.org');
+    I.dontSee('Please re-enter your email details');
 
-  I.fillField('password', '1234');
-  I.pressKey('Tab');
-  checkColor('rgb(255, 12, 62)');
+    function checkColor(expectedColor) {
+      I.seeCssPropertiesOnElements('text="Use a minimum of 8 characters (case sensitive) with at least one number"', { color: expectedColor });
+    }
 
-  I.fillField('password', 'Test1234');
-  checkColor('rgb(255, 255, 255)');
-});
+    checkColor('rgb(255, 255, 255)');
 
-Data(configs).Scenario('I get strength feedback when typing in a password', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  const textOptions = ['Weak', 'Fair', 'Strong', 'Very strong'];
+    I.fillField('password', '1234');
+    I.pressKey('Tab');
+    checkColor('rgb(255, 12, 62)');
 
-  function checkFeedback(password, expectedColor, expectedText) {
-    I.fillField('password', password);
-    I.seeCssPropertiesOnElements('div[class*="passwordStrengthFill"]', { 'background-color': expectedColor });
-    I.see(expectedText);
+    I.fillField('password', 'Test1234');
+    checkColor('rgb(255, 255, 255)');
+  });
 
-    I.seeCssPropertiesOnElements(`text="${expectedText}"`, { color: expectedColor });
+  Scenario(`I get strength feedback when typing in a password - ${providerName}`, async ({ I }) => {
+    const textOptions = ['Weak', 'Fair', 'Strong', 'Very strong'];
 
-    textOptions.filter((opt) => opt !== expectedText).forEach((opt) => I.dontSee(opt));
-  }
+    function checkFeedback(password, expectedColor, expectedText) {
+      I.fillField('password', password);
+      I.seeCssPropertiesOnElements('div[class*="passwordStrengthFill"]', { 'background-color': expectedColor });
+      I.see(expectedText);
 
-  checkFeedback('1111aaaa', 'orangered', 'Weak');
-  checkFeedback('1111aaaA', 'orange', 'Fair');
-  checkFeedback('1111aaaA!', 'yellowgreen', 'Strong');
-  checkFeedback('Ax854bZ!$', 'green', 'Very strong');
-});
+      I.seeCssPropertiesOnElements(`text="${expectedText}"`, { color: expectedColor });
 
-Data(configs).Scenario('I can toggle to view password', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  await passwordUtils.testPasswordToggling(I);
-});
+      textOptions.filter((opt) => opt !== expectedText).forEach((opt) => I.dontSee(opt));
+    }
 
-Data(configs).Scenario('I can`t submit without checking required consents', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  I.fillField('Email', 'test@123.org');
-  I.fillField('Password', 'pAssword123!');
+    checkFeedback('1111aaaa', 'orangered', 'Weak');
+    checkFeedback('1111aaaA', 'orange', 'Fair');
+    checkFeedback('1111aaaA!', 'yellowgreen', 'Strong');
+    checkFeedback('Ax854bZ!$', 'green', 'Very strong');
+  });
 
-  I.click('Continue');
+  Scenario(`I can toggle to view password - ${providerName}`, async ({ I }) => {
+    await passwordUtils.testPasswordToggling(I);
+  });
 
-  I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#ff0c3e' });
-});
+  Scenario(`I can't submit without checking required consents - ${providerName}`, async ({ I }) => {
+    I.fillField('Email', 'test@123.org');
+    I.fillField('Password', 'pAssword123!');
 
-Data(configs).Scenario('I get warned for duplicate users', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  I.fillField('Email', constants.username);
-  I.fillField('Password', 'Password123!');
-  I.checkOption('Terms and Conditions');
-  I.click('Continue');
-  I.waitForLoaderDone();
-  I.see(constants.duplicateUserError);
-});
+    I.click('Continue');
 
-Data(configs).Scenario('I can register', async ({ I, current }) => {
-  await I.beforeRegisterOrLogin(current.config, 'signup');
-  I.fillField('Email', passwordUtils.createRandomEmail());
-  I.fillField('Password', passwordUtils.createRandomPassword());
+    I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#ff0c3e' });
+  });
 
-  I.checkOption('Terms and Conditions');
-  I.click('Continue');
-  I.waitForElement('form[data-testid="personal_details-form"]', longTimeout);
-  I.dontSee(constants.duplicateUserError);
-  I.dontSee(constants.registrationFormSelector);
+  Scenario(`I get warned for duplicate users - ${providerName}`, ({ I }) => {
+    I.fillField('Email', constants.username);
+    I.fillField('Password', 'Password123!');
+    I.checkOption('Terms and Conditions');
+    I.click('Continue');
+    I.waitForLoaderDone();
+    I.see(constants.duplicateUserError);
+  });
 
-  I.fillField('firstName', 'John');
-  I.fillField('lastName', 'Doe');
+  Scenario(`I can register - ${providerName}`, async ({ I }) => {
+    I.fillField('Email', passwordUtils.createRandomEmail());
+    I.fillField('Password', passwordUtils.createRandomPassword());
 
-  I.click('Continue');
-  I.waitForLoaderDone();
+    I.checkOption('Terms and Conditions');
+    I.click('Continue');
+    I.waitForElement('form[data-testid="personal_details-form"]', longTimeout);
+    I.dontSee(constants.duplicateUserError);
+    I.dontSee(constants.registrationFormSelector);
 
-  I.see('Welcome to JW OTT Web App (AuthVod)');
-});
+    I.fillField('firstName', 'John');
+    I.fillField('lastName', 'Doe');
+
+    I.click('Continue');
+    I.waitForLoaderDone();
+
+    I.see('Welcome to JW OTT Web App (AuthVod)');
+  });
+}
