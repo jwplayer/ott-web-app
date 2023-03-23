@@ -12,7 +12,7 @@ jobs:
       - name: Build
         env:
           APP_PLAYER_KEY: ${{ secrets.APP_PLAYER_KEY }}
-        run: yarn &&  yarn build --mode demo
+        run: yarn &&  MODE=demo yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
