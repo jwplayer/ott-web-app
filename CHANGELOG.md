@@ -1,3 +1,17 @@
+# [4.3.0](https://github.com/jwplayer/ott-web-app/compare/v4.2.3...v4.3.0) (2023-03-23)
+
+
+### Bug Fixes
+
+* player container error ([d44493c](https://github.com/jwplayer/ott-web-app/commit/d44493c48526ae02485a1a9e289b9347392a3687))
+
+
+### Features
+
+* **project:** jwp signging service ([9b1030d](https://github.com/jwplayer/ott-web-app/commit/9b1030d9e999cf9852485eff252958fc8bfd91f5))
+
+
+
 ## [4.2.3](https://github.com/jwplayer/ott-web-app/compare/v4.2.2...v4.2.3) (2023-03-14)
 
 
