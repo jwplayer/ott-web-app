@@ -1,3 +1,28 @@
+# [4.3.0](https://github.com/jwplayer/ott-web-app/compare/v4.2.3...v4.3.0) (2023-03-23)
+
+
+### Bug Fixes
+
+* player container error ([d44493c](https://github.com/jwplayer/ott-web-app/commit/d44493c48526ae02485a1a9e289b9347392a3687))
+
+
+### Features
+
+* **project:** jwp signging service ([9b1030d](https://github.com/jwplayer/ott-web-app/commit/9b1030d9e999cf9852485eff252958fc8bfd91f5))
+
+
+
+## [4.2.3](https://github.com/jwplayer/ott-web-app/compare/v4.2.2...v4.2.3) (2023-03-14)
+
+
+### Bug Fixes
+
+* e2e date locale problem ([08dff6a](https://github.com/jwplayer/ott-web-app/commit/08dff6a14099b869d8ef082271767b1a8c405daa))
+* refactor the condition ([d69bfed](https://github.com/jwplayer/ott-web-app/commit/d69bfed8d84b040acad9d12d053786c199252a49))
+* single watch history item bug ([88946a4](https://github.com/jwplayer/ott-web-app/commit/88946a4ee4aa91d0469e818e0c4fb2e3d22de40b))
+
+
+
 ## [4.2.2](https://github.com/jwplayer/ott-web-app/compare/v4.2.1...v4.2.2) (2023-02-21)
 
 
