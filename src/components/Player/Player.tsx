@@ -12,7 +12,7 @@ import { logDev, testId } from '#src/utils/common';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
-  playerId: string | undefined;
+  playerId: string;
   playerKey: string | undefined;
   feedId?: string;
   item: PlaylistItem;
@@ -114,10 +114,6 @@ const Player: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
-    if (!playerId) {
-      return;
-    }
-
     if (!window.jwplayer && !loadingRef.current) {
       loadingRef.current = true;
 
@@ -136,10 +132,6 @@ const Player: React.FC<Props> = ({
   }, [startTime]);
 
   useEffect(() => {
-    if (!playerId) {
-      return;
-    }
-
     const loadPlaylist = () => {
       if (!item || !playerRef.current) {
         return;
