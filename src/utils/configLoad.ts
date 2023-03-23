@@ -49,7 +49,7 @@ const calculateAccessModel = (config: Config): AccessModel => {
 };
 
 export async function loadAndValidateConfig(configSource: string | undefined) {
-  configSource = formatSourceLocation(configSource);
+  const configLocation = formatSourceLocation(configSource);
 
   // Explicitly set default config here as a local variable,
   // otherwise if it's a module level const, the merge below causes changes to nested properties
@@ -69,12 +69,13 @@ export async function loadAndValidateConfig(configSource: string | undefined) {
     features: {},
   };
 
-  if (!configSource) {
+  if (!configLocation) {
     useConfigStore.setState({ config: defaultConfig });
     throw new Error('Config not defined');
   }
 
-  let config = await loadConfig(configSource);
+  let config = await loadConfig(configLocation);
+  config.id = configSource;
   config.assets = config.assets || {};
 
   // make sure the banner always defaults to the JWP banner when not defined in the config
