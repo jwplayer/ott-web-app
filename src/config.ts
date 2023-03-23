@@ -16,4 +16,4 @@ export const ADYEN_LIVE_CLIENT_KEY = 'live_BQDOFBYTGZB3XKF62GBYSLPUJ4YW2TPL';
 export const LIVE_CHANNELS_REFETCH_INTERVAL = 15 * 60_000;
 
 // OTT shared player
-export const DEFAULT_PLAYER_ID: string = import.meta.env.APP_DEFAULT_PLAYER ?? 'M4qoGvUk';
+export const OTT_GLOBAL_PLAYER_ID = 'M4qoGvUk';

@@ -12,7 +12,7 @@
     "prepare": "husky install",
     "start": "vite",
     "start:test": "vite build --mode test && vite preview --port 8080",
-    "build": "vite build",
+    "build": "vite build && sh scripts/compressIni.sh build/public/.webapp.ini",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
     "test-coverage": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --coverage",

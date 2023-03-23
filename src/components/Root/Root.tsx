@@ -65,7 +65,7 @@ const Root: FC = () => {
 
   return (
     <>
-      {!configQuery.isError && !configQuery.isLoading && <AppRoutes />}
+      {!configQuery.isError && !configQuery.isLoading && configQuery.data && <AppRoutes />}
       {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
       {configQuery.isError && !IS_DEMO_OR_PREVIEW && (
         <ErrorPage

@@ -72,3 +72,53 @@ Production builds optimize code and minimize debug information, while developmen
 * **demo** - used for the [JWP preview site](https://app-preview.jwplayer.com/) and includes a dialog to switch between app configs. Will allow any app-config to be loaded and does not have a default config.
 * **preview** - used for github PR previews. Behaves like a hybrid between dev and demo.
 * **jwdev** - this mode is for running code on JW's internal dev environment. It will only work for JW employees on the internal network.
+
+## Env Variables
+
+To allow for adjustments to be made at compile time, there are several env variables that get replaced during [vite compile](https://vitejs.dev/guide/env-and-mode.html#env-variables).
+These values are then defacto constants, which means code optimizations can remove unused code such as if/else checks using them.
+
+For non-sensitive values, you can add them directly to the appropriate .env file for each mode.
+For sensitive values, if building with github actions we recommend using [github secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and setting them in the [build action environment](https://docs.github.com/en/actions/learn-github-actions/variables).
+If building manually, you can create an .env.[mode].local file and add the values there. These files are git ignored which will prevent leaking your secrets to version control. 
+
+> Note: env variables must begin with the 'APP_' prefix or they are ignored by our vite configuration.
+
+### APP_DEFAULT_CONFIG_SOURCE
+
+The 8 character ID (or the url path) of the app config from your JWP account that the web app will use to load its content. Be careful to ensure that this config is always available or your app will fail to load.
+
+If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [defaultConfigSource ini setting](initialization-file.md#defaultconfigsource).
+Keep in mind, if the [defaultConfigSource ini setting](initialization-file.md#defaultconfigsource) is provided, it will be used even if the `APP_DEFAULT_CONFIG_SOURCE` environment variable is set.
+
+### APP_PLAYER_ID
+
+This value determines which player the OTT Web App loads from the JW Platform.
+By default, the OTT Web App uses a global JWP OTT player that has its setting optimized to work properly with the app, but you can change it if you want to use a player directly from your own account.
+
+If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [playerId ini setting](initialization-file.md#playerid).
+Keep in mind, if the [playerId ini setting](initialization-file.md#playerid) is provided, it will be used even if the `APP_PLAYER_ID` environment variable is set.
+
+> Note: Be careful if using your own player, since some settings in the player can conflict with the way the player is used in the OTT Web App, causing unexpected behavior or UX experiences.
+
+> Note: If you opt to use the default global player, remember to provide your player key via the [APP_PLAYER_KEY](#APP_PLAYER_KEY) env variable or the [playerKey setting](initialization-file.md#playerkey) in the ini file.
+
+### APP_PLAYER_KEY
+
+This value is used to set the player key when using the global player from the JW Platform.
+The player relies on this key for certain features, such as analytics to work properly.
+
+The value to use can be found labeled 'License Key' in the 'Self-Hosted Web Player' section in the ['Players' page on the JWP dashboard](https://dashboard.jwplayer.com/p/players).
+
+If you link directly to your JWP cloud player using the [APP_PLAYER_ID](#app_player_id) environment variable or the [playerId ini setting](initialization-file.md#playerid), you do not need to provide a value for `APP_PLAYER_KEY`.
+
+It is recommended that this value be provided via a .env.local file or a github secret to avoid saving it in version control.
+
+If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [playerKey ini setting](initialization-file.md#playerkey).
+Keep in mind, if the [playerKey ini setting](initialization-file.md#playerkey) is provided, it will be used even if the `APP_PLAYER_KEY` environment variable is set.  
+
+### APP_GITHUB_PUBLIC_BASE_URL
+
+This value is used to set the URL of links in the app correctly when running on [github pages](easy-deployments.md#github-pages).
+By default, if `APP_GITHUB_PUBLIC_BASE_URL` is empty, the value will be based on the `git remote get-url origin` command.
+You can also pass your own `APP_GITHUB_PUBLIC_BASE_URL` envvar by running `APP_GITHUB_PUBLIC_BASE_URL=/my-base/ yarn deploy:github`.

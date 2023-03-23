@@ -10,7 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: yarn && yarn build --mode demo
+        env:
+          APP_PLAYER_KEY: ${{ secrets.APP_PLAYER_KEY }}
+        run: yarn &&  yarn build --mode demo
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

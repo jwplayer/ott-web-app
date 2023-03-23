@@ -24,7 +24,7 @@ describe('<Player>', () => {
       title: 'Test item title',
       tracks: [],
     } as PlaylistItem;
-    const { container } = render(<Player playerId="123456" item={item} onPlay={() => null} onPause={() => null} />);
+    const { container } = render(<Player playerId="123456" playerKey="testkey" item={item} onPlay={() => null} onPause={() => null} />);
 
     expect(container).toMatchSnapshot();
   });

@@ -12,7 +12,8 @@ import { logDev, testId } from '#src/utils/common';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
-  playerId: string;
+  playerId: string | undefined;
+  playerKey: string | undefined;
   feedId?: string;
   item: PlaylistItem;
   startTime?: number;
@@ -33,6 +34,7 @@ type Props = {
 
 const Player: React.FC<Props> = ({
   playerId,
+  playerKey,
   item,
   onReady,
   onPlay,
@@ -55,7 +57,6 @@ const Player: React.FC<Props> = ({
   const loadingRef = useRef(false);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
-  const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
   const setPlayer = useOttAnalytics(item, feedId);
 
   const { adScheduleData } = useConfigStore((s) => s);
@@ -113,15 +114,21 @@ const Player: React.FC<Props> = ({
   }, []);
 
   useEffect(() => {
+    if (!playerId) {
+      return;
+    }
+
     if (!window.jwplayer && !loadingRef.current) {
       loadingRef.current = true;
+
+      const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
 
       addScript(scriptUrl).then(() => {
         setLibLoaded(true);
         loadingRef.current = false;
       });
     }
-  }, [scriptUrl]);
+  }, [playerId]);
 
   useEffect(() => {
     // update the startTimeRef each time the startTime changes
@@ -186,6 +193,12 @@ const Player: React.FC<Props> = ({
       if (typeof autostart !== 'undefined') {
         playerOptions.autostart = autostart;
       }
+
+      // Set the license key if provided
+      if (playerKey) {
+        playerOptions.key = playerKey;
+      }
+
       playerRef.current.setup(playerOptions);
 
       setPlayer(playerRef.current);
@@ -198,7 +211,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerKey]);
 
   useEffect(() => {
     return () => {

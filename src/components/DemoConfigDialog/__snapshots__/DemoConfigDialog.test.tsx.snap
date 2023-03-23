@@ -81,6 +81,13 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                   submit_config_id
                 </span>
               </button>
+              <button
+                class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+              >
+                <span>
+                  cancel_config_id
+                </span>
+              </button>
             </div>
           </form>
           <p>
