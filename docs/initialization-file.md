@@ -29,19 +29,19 @@ Keep in mind, if the `playerId` ini setting is provided, it will be used even if
 
 > Note: Be careful if using your own player, since some settings in the player can conflict with the way the player is used in the OTT Web App, causing unexpected behavior or UX experiences.
 
-> Note: If you opt to use the default global player, remember to provide your player key via the [APP_PLAYER_KEY](build-from-source.md#app_player_key) env variable or the [playerKey setting](initialization-file.md#playerkey) in the ini file.
+> Note: If you opt to use the default global player, remember to provide your player key via the [APP_PLAYER_LICENSE_KEY](build-from-source.md#app_player_license_key) env variable or the [playerLicenseKey setting](initialization-file.md#playerLicenseKey) in the ini file.
 
-### playerKey
+### playerLicenseKey
 
 This value is used to set the player key for the player loaded from the JW Platform.
 The player relies on this key for certain features, such as analytics to work properly.
 
 The value to use can be found labeled 'License Key' in the 'Self-Hosted Web Player' section in the ['Players' page on the JWP dashboard](https://dashboard.jwplayer.com/p/players).
 
-If you link directly to your JWP cloud player using the [APP_PLAYER_ID](build-from-source.md#app_player_id) environment variable or the [playerId ini setting](initialization-file.md#playerid), you do not need to provide a value for `playerKey`.
+If you link directly to your JWP cloud player using the [APP_PLAYER_ID](build-from-source.md#app_player_id) environment variable or the [playerId ini setting](initialization-file.md#playerid), you do not need to provide a value for `playerLicenseKey`.
 
-This value can alternatively be provided at compile time via the [APP_PLAYER_KEY](build-from-source.md#APP_PLAYER_KEY) environment variable if you are doing your own builds and want to further obfuscate the key.
-Keep in mind, if the playerKey ini setting is provided, it will be used even if the [APP_PLAYER_KEY](build-from-source.md#APP_PLAYER_KEY) environment variable is set.
+This value can alternatively be provided at compile time via the [APP_PLAYER_LICENSE_KEY](build-from-source.md#APP_PLAYER_LICENSE_KEY) environment variable if you are doing your own builds and want to further obfuscate the key.
+Keep in mind, if the playerLicenseKey ini setting is provided, it will be used even if the [APP_PLAYER_LICENSE_KEY](build-from-source.md#app_player_license_key) environment variable is set.
 
 ### additionalAllowedConfigSources[]
 

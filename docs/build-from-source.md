@@ -79,7 +79,10 @@ To allow for adjustments to be made at compile time, there are several env varia
 These values are then defacto constants, which means code optimizations can remove unused code such as if/else checks using them.
 
 For non-sensitive values, you can add them directly to the appropriate .env file for each mode.
+
 For sensitive values, if building with github actions we recommend using [github secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and setting them in the [build action environment](https://docs.github.com/en/actions/learn-github-actions/variables).
+You can see an example of how these are used in our [Firebase Live / Preview actions.](https://github.com/jwplayer/ott-web-app/blob/develop/.github/workflows/firebase-live.yml#L14) 
+
 If building manually, you can create an .env.[mode].local file and add the values there. These files are git ignored which will prevent leaking your secrets to version control. 
 
 > Note: env variables must begin with the 'APP_' prefix or they are ignored by our vite configuration.
@@ -101,21 +104,21 @@ Keep in mind, if the [playerId ini setting](initialization-file.md#playerid) is 
 
 > Note: Be careful if using your own player, since some settings in the player can conflict with the way the player is used in the OTT Web App, causing unexpected behavior or UX experiences.
 
-> Note: If you opt to use the default global player, remember to provide your player key via the [APP_PLAYER_KEY](#APP_PLAYER_KEY) env variable or the [playerKey setting](initialization-file.md#playerkey) in the ini file.
+> Note: If you opt to use the default global player, remember to provide your player key via the [APP_PLAYER_LICENSE_KEY](#APP_PLAYER_LICENSE_KEY) env variable or the [playerLicenseKey setting](initialization-file.md#playerLicenseKey) in the ini file.
 
-### APP_PLAYER_KEY
+### APP_PLAYER_LICENSE_KEY
 
 This value is used to set the player key when using the global player from the JW Platform.
 The player relies on this key for certain features, such as analytics to work properly.
 
 The value to use can be found labeled 'License Key' in the 'Self-Hosted Web Player' section in the ['Players' page on the JWP dashboard](https://dashboard.jwplayer.com/p/players).
 
-If you link directly to your JWP cloud player using the [APP_PLAYER_ID](#app_player_id) environment variable or the [playerId ini setting](initialization-file.md#playerid), you do not need to provide a value for `APP_PLAYER_KEY`.
+If you link directly to your JWP cloud player using the [APP_PLAYER_ID](#app_player_id) environment variable or the [playerId ini setting](initialization-file.md#playerid), you do not need to provide a value for `APP_PLAYER_LICENSE_KEY`.
 
 It is recommended that this value be provided via a .env.local file or a github secret to avoid saving it in version control.
 
-If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [playerKey ini setting](initialization-file.md#playerkey).
-Keep in mind, if the [playerKey ini setting](initialization-file.md#playerkey) is provided, it will be used even if the `APP_PLAYER_KEY` environment variable is set.  
+If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey).
+Keep in mind, if the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey) is provided, it will be used even if the `APP_PLAYER_LICENSE_KEY` environment variable is set.  
 
 ### APP_GITHUB_PUBLIC_BASE_URL
 

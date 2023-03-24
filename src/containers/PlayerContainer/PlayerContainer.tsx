@@ -57,7 +57,7 @@ const PlayerContainer: React.FC<Props> = ({
   // watch history
   const watchHistoryItem = useWatchHistoryStore((state) => (!!item && watchHistoryEnabled ? state.getItem(item) : undefined));
 
-  const { playerId, playerKey } = useSettingsStore((s) => s);
+  const { playerId, playerLicenseKey } = useSettingsStore((s) => s);
 
   const startTime = useMemo(() => {
     const videoProgress = watchHistoryItem?.progress;
@@ -138,7 +138,7 @@ const PlayerContainer: React.FC<Props> = ({
   return (
     <Player
       playerId={playerId}
-      playerKey={playerKey}
+      playerLicenseKey={playerLicenseKey}
       feedId={feedId}
       item={playableItem}
       onReady={handleReady}

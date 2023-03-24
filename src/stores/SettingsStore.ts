@@ -4,7 +4,7 @@ import { OTT_GLOBAL_PLAYER_ID } from '#src/config';
 export interface Settings {
   defaultConfigSource?: string;
   playerId: string;
-  playerKey?: string;
+  playerLicenseKey?: string;
   additionalAllowedConfigSources?: string[];
   UNSAFE_allowAnyConfigSource?: boolean;
 }

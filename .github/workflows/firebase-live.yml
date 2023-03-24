@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build
         env:
-          APP_PLAYER_KEY: ${{ secrets.APP_PLAYER_KEY }}
+          APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
         run: yarn &&  MODE=demo yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

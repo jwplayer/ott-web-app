@@ -25,7 +25,7 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
   const handleUserActive = useCallback(() => setUserActive(true), []);
   const handleUserInactive = useCallback(() => setUserActive(false), []);
 
-  const { playerId, playerKey } = useSettingsStore((s) => s);
+  const { playerId, playerLicenseKey } = useSettingsStore((s) => s);
 
   if (!item) return null;
 
@@ -35,7 +35,7 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
         <Player
           item={item}
           playerId={playerId}
-          playerKey={playerKey}
+          playerLicenseKey={playerLicenseKey}
           onPlay={handlePlay}
           onPause={handlePause}
           onComplete={onClose}

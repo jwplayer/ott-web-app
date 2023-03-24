@@ -13,7 +13,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   playerId: string;
-  playerKey: string | undefined;
+  playerLicenseKey: string | undefined;
   feedId?: string;
   item: PlaylistItem;
   startTime?: number;
@@ -34,7 +34,7 @@ type Props = {
 
 const Player: React.FC<Props> = ({
   playerId,
-  playerKey,
+  playerLicenseKey,
   item,
   onReady,
   onPlay,
@@ -187,8 +187,8 @@ const Player: React.FC<Props> = ({
       }
 
       // Set the license key if provided
-      if (playerKey) {
-        playerOptions.key = playerKey;
+      if (playerLicenseKey) {
+        playerOptions.key = playerLicenseKey;
       }
 
       playerRef.current.setup(playerOptions);
@@ -203,7 +203,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerKey]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey]);
 
   useEffect(() => {
     return () => {

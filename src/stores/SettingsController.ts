@@ -21,10 +21,10 @@ export const initSettings = async () => {
   // The ini file values will be used if provided, even if compile-time values are set
   settings.defaultConfigSource ||= import.meta.env.APP_DEFAULT_CONFIG_SOURCE;
   settings.playerId ||= import.meta.env.APP_PLAYER_ID || OTT_GLOBAL_PLAYER_ID;
-  settings.playerKey ||= import.meta.env.APP_PLAYER_KEY;
+  settings.playerLicenseKey ||= import.meta.env.APP_PLAYER_LICENSE_KEY;
 
   // The player key should be set if using the global ott player
-  if (settings.playerId === OTT_GLOBAL_PLAYER_ID && !settings.playerKey) {
+  if (settings.playerId === OTT_GLOBAL_PLAYER_ID && !settings.playerLicenseKey) {
     console.warn('Using Global OTT Player without setting player key. Some features, such as analytics, may not work correctly.');
   }
 
