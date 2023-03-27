@@ -363,10 +363,7 @@ function formatAccount(account: AccountData): Customer {
 function formatUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
-  let fullName = `${firstName} ${lastName}`;
-  if (!firstName && !lastName) {
-    fullName = customer.email as string;
-  }
+  const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
   const data: UpdateAccountData = {
     fullName,
     metadata: {
