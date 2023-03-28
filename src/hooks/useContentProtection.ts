@@ -24,14 +24,13 @@ const useContentProtection = <T>(
   }));
   const host = signingConfig?.host;
   const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? signingConfig?.drmPolicyId;
-  const drmEnabled = !!drmPolicyId;
   const signingEnabled = !!urlSigning;
 
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
     () => {
       // if provider is not JWP
-      if (!!id && !!host && drmEnabled) {
+      if (!!id && !!host && !!drmPolicyId) {
         const { host, drmPolicyId } = signingConfig;
         return getMediaToken(host, id, jwt, params, drmPolicyId);
       }
