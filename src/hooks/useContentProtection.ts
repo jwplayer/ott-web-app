@@ -30,7 +30,7 @@ const useContentProtection = <T>(
     ['token', type, id, params],
     () => {
       // if provider is not JWP
-      if (!!id && !!host && !!drmPolicyId) {
+      if (!!id && !!host) {
         const { host, drmPolicyId } = signingConfig;
         return getMediaToken(host, id, jwt, params, drmPolicyId);
       }
