@@ -198,9 +198,10 @@ const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = fals
 };
 
 const formatOffer = (offer: GetAccessFee): Offer => {
+  const offerId = offer.access_type.name === 'ppv' ? `C${offer.id}` : `S${offer.id}`;
   return {
     id: offer.id,
-    offerId: `S${offer.id}`,
+    offerId,
     offerCurrency: offer.currency,
     customerPriceInclTax: offer.amount,
     customerCurrency: offer.currency,
