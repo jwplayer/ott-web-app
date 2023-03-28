@@ -1,3 +1,12 @@
+# [4.4.0](https://github.com/jwplayer/ott-web-app/compare/v4.3.0...v4.4.0) (2023-03-28)
+
+
+### Features
+
+* add player license key param / setting ([d7f5567](https://github.com/jwplayer/ott-web-app/commit/d7f5567d33696e663312e9710913d2997f79525c))
+
+
+
 # [4.3.0](https://github.com/jwplayer/ott-web-app/compare/v4.2.3...v4.3.0) (2023-03-23)
 
 
