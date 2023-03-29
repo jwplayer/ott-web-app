@@ -1,3 +1,12 @@
+## [4.4.2](https://github.com/jwplayer/ott-web-app/compare/v4.4.1...v4.4.2) (2023-03-29)
+
+
+### Bug Fixes
+
+* missing voucher in the payload ([ba8cf5b](https://github.com/jwplayer/ott-web-app/commit/ba8cf5b5a69b495d469d52c3936690d450818d6a))
+
+
+
 ## [4.4.1](https://github.com/jwplayer/ott-web-app/compare/v4.4.0...v4.4.1) (2023-03-29)
 
 
