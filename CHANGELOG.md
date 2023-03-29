@@ -1,3 +1,15 @@
+## [4.4.1](https://github.com/jwplayer/ott-web-app/compare/v4.4.0...v4.4.1) (2023-03-29)
+
+
+### Bug Fixes
+
+* content protection multiple configs issue ([d6fffd2](https://github.com/jwplayer/ott-web-app/commit/d6fffd2089fcf4c4459757fb80be7914ab39b73d))
+* not needed check ([6ea6574](https://github.com/jwplayer/ott-web-app/commit/6ea65747604539580852c1e870595fd0387c5ed4))
+* signing enabled condition ([7bbfa96](https://github.com/jwplayer/ott-web-app/commit/7bbfa96bda48adba56c18e1984741db0959fd88d))
+* use content protection tweaks ([4e03197](https://github.com/jwplayer/ott-web-app/commit/4e03197ac5e5410405a432c54df6153cfd697bdc))
+
+
+
 # [4.4.0](https://github.com/jwplayer/ott-web-app/compare/v4.3.0...v4.4.0) (2023-03-28)
 
 
