@@ -24,7 +24,7 @@ const useContentProtection = <T>(
   }));
   const host = signingConfig?.host;
   const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? signingConfig?.drmPolicyId;
-  const signingEnabled = !!urlSigning;
+  const signingEnabled = !!urlSigning || !!host || (!!drmPolicyId && !host);
 
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
