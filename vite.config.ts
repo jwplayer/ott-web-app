@@ -34,7 +34,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
 
   const plugins = [
     react(),
-    eslintPlugin({ emitError: mode === 'production' || mode === 'demo' }), // Move linting to pre-build to match dashboard
+    eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
     StylelintPlugin(),
     VitePWA(),
     createHtmlPlugin({

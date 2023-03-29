@@ -8,12 +8,13 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import Player from '#components/Player/Player';
 import type { JWPlayer } from '#types/jwplayer';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { DEFAULT_PLAYER_ID, VideoProgressMinMax } from '#src/config';
+import { VideoProgressMinMax } from '#src/config';
 import useContentProtection from '#src/hooks/useContentProtection';
 import { getMediaById } from '#src/services/api.service';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
+import { useSettingsStore } from '#src/stores/SettingsStore';
 
 type Props = {
   item: PlaylistItem;
@@ -55,6 +56,8 @@ const PlayerContainer: React.FC<Props> = ({
 
   // watch history
   const watchHistoryItem = useWatchHistoryStore((state) => (!!item && watchHistoryEnabled ? state.getItem(item) : undefined));
+
+  const { playerId, playerLicenseKey } = useSettingsStore((s) => s);
 
   const startTime = useMemo(() => {
     const videoProgress = watchHistoryItem?.progress;
@@ -134,7 +137,8 @@ const PlayerContainer: React.FC<Props> = ({
 
   return (
     <Player
-      playerId={DEFAULT_PLAYER_ID}
+      playerId={playerId}
+      playerLicenseKey={playerLicenseKey}
       feedId={feedId}
       item={playableItem}
       onReady={handleReady}

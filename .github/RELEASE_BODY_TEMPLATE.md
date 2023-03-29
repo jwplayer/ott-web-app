@@ -11,4 +11,4 @@ We are looking forward to see what you create!
 
 # Changes
 
-Check the [`CHANGELOG`](CHANGELOG.md) for detailed notes about the changes in each version.
+Check the [`CHANGELOG`](https://github.com/jwplayer/ott-web-app/blob/develop/CHANGELOG.md) for detailed notes about the changes in each version.
