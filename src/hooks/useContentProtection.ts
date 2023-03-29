@@ -24,20 +24,19 @@ const useContentProtection = <T>(
   }));
   const host = signingConfig?.host;
   const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? signingConfig?.drmPolicyId;
-  const drmEnabled = !!drmPolicyId;
-  const signingEnabled = !!host || !!urlSigning;
+  const signingEnabled = !!urlSigning || !!host || (!!drmPolicyId && !host);
 
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
     () => {
+      // if provider is not JWP
+      if (!!id && !!host) {
+        const { host, drmPolicyId } = signingConfig;
+        return getMediaToken(host, id, jwt, params, drmPolicyId);
+      }
       // if provider is JWP
       if (jwp && configId && !!id && signingEnabled) {
         return getJWPMediaToken(configId, id);
-      }
-      // if provider is not JWP
-      if (!!id && !!host && drmEnabled && signingEnabled) {
-        const { host, drmPolicyId } = signingConfig;
-        return getMediaToken(host, id, jwt, params, drmPolicyId);
       }
     },
     { enabled: signingEnabled && enabled && !!id, keepPreviousData: false, staleTime: 15 * 60 * 1000 },
