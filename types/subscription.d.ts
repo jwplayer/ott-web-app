@@ -1,6 +1,6 @@
 // Subscription types
 export type Subscription = {
-  subscriptionId: number;
+  subscriptionId: number | string;
   offerId: string;
   status: 'active' | 'cancelled' | 'expired' | 'terminated';
   expiresAt: number;
@@ -9,8 +9,9 @@ export type Subscription = {
   paymentGateway: string;
   paymentMethod: string;
   offerTitle: string;
-  period: 'day' | 'week' | 'month' | 'year';
+  period: 'day' | 'week' | 'month' | 'year' | 'granted';
   totalPrice: number;
+  unsubscribeUrl?: string;
 };
 
 export type PaymentDetail = {
@@ -83,6 +84,7 @@ export type UpdateSubscriptionPayload = {
   offerId: string;
   status: 'active' | 'cancelled';
   cancellationReason?: string;
+  unsubscribeUrl?: string;
 };
 
 export type UpdateSubscriptionResponse = {

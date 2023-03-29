@@ -1,6 +1,6 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
-@use '../../styles/mixins/responsive';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
 
 $small-button-height: 28px;
 $medium-button-height: 36px;
@@ -131,4 +131,16 @@ $large-button-height: 40px;
       height: 18px;
     }
   }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.centerAbsolute {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform: translate(-5px, -5px);
 }

@@ -1,6 +1,7 @@
-import { LoginContext } from '../../utils/password_utils';
-import constants from '../../utils/constants';
-import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays } from '../../utils/payments';
+import { LoginContext } from '#utils/password_utils';
+import constants, { longTimeout, normalTimeout } from '#utils/constants';
+import { overrideIP, goToCheckout, formatPrice, finishAndCheckSubscription, cancelPlan, renewPlan, addDays, addYear } from '#utils/payments';
+import { testConfigs } from '#test/constants';
 
 let paidLoginContext: LoginContext;
 
@@ -19,7 +20,7 @@ Feature('payments').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 Before(async ({ I }) => {
   // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
   overrideIP(I);
-  I.useConfig('test--subscription');
+  I.useConfig(testConfigs.svod);
 });
 
 Scenario('I can see my payments data', async ({ I }) => {
@@ -46,7 +47,7 @@ Scenario('I can see offered subscriptions', async ({ I }) => {
 
   I.click('Complete subscription');
   I.see('Choose plan');
-  I.see('Watch this on Blender');
+  I.see('Watch this on JW OTT Web App');
 
   await within(monthlyLabel, () => {
     I.see('Monthly');
@@ -99,9 +100,9 @@ Scenario('I can choose an offer', async ({ I }) => {
 Scenario('I can see payment types', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
-  I.see('Credit Card');
+  I.see('Credit card');
   I.see('PayPal');
 
   I.see('Card number');
@@ -122,12 +123,12 @@ Scenario('I can see payment types', async ({ I }) => {
 Scenario('I can open the PayPal site', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
   I.click('PayPal');
   I.click('Continue');
 
-  I.waitInUrl('paypal.com', 15);
+  I.waitInUrl('paypal.com', longTimeout);
   // I'm sorry, I don't know why, but this test ends in a way that causes the next test to fail
   I.amOnPage(constants.baseUrl);
 });
@@ -135,12 +136,12 @@ Scenario('I can open the PayPal site', async ({ I }) => {
 Scenario('I can finish my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  goToCheckout(I);
+  await goToCheckout(I);
 
-  I.see('Credit Card');
+  I.see('Credit card');
 
   // Adyen credit card form is loaded asynchronously, so wait for it
-  I.waitForElement('[class*=adyen-checkout__field--cardNumber]', 5);
+  I.waitForElement('[class*=adyen-checkout__field--cardNumber]', normalTimeout);
 
   // Each of the 3 credit card fields is a separate iframe
   I.switchTo('[class*="adyen-checkout__field--cardNumber"] iframe');
@@ -158,7 +159,7 @@ Scenario('I can finish my subscription', async ({ I }) => {
   // @ts-expect-error
   I.switchTo(null); // Exit the iframe context back to the main document
 
-  finishAndCheckSubscription(I, addDays(today, 365), today);
+  await finishAndCheckSubscription(I, addYear(today), today);
 
   I.seeAll(cardInfo);
 });
@@ -166,7 +167,7 @@ Scenario('I can finish my subscription', async ({ I }) => {
 Scenario('I can cancel my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  cancelPlan(I, addDays(today, 365));
+  cancelPlan(I, addYear(today));
 
   // Still see payment info
   I.seeAll(cardInfo);
@@ -175,5 +176,5 @@ Scenario('I can cancel my subscription', async ({ I }) => {
 Scenario('I can renew my subscription', async ({ I }) => {
   paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-  renewPlan(I, addDays(today, 365));
+  renewPlan(I, addYear(today));
 });

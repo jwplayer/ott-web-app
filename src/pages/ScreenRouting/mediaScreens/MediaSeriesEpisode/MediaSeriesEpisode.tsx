@@ -4,15 +4,14 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import VideoLayout from '#src/components/VideoLayout/VideoLayout';
+import VideoLayout from '#components/VideoLayout/VideoLayout';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import { isLocked } from '#src/utils/entitlements';
 import useEntitlement from '#src/hooks/useEntitlement';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { episodeURL, formatSeriesMetaString, formatVideoMetaString } from '#src/utils/formatting';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/useSeriesData';
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
 import { enrichMediaItems, filterSeries, getFiltersFromSeries, getNextItem } from '#src/utils/series';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -22,9 +21,9 @@ import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchi
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Cinema from '#src/containers/Cinema/Cinema';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
-import ShareButton from '#src/components/ShareButton/ShareButton';
+import ShareButton from '#components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
 import type { PlaylistItem } from '#types/playlist';
 import type { ScreenComponent } from '#types/screens';
@@ -45,9 +44,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { styling, features, siteName, custom } = config;
-  const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
+  const { features, siteName, custom } = config;
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
@@ -74,8 +71,6 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(episodeItem);
-
-  useBlurImageUpdater(episodeItem);
 
   // Handlers
   const goBack = () => episodeItem && seriesPlaylist && navigate(episodeURL(data, seriesId, false, feedId));
@@ -115,7 +110,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
     episodeItem.episodeNumber
   }/${episodesInSeason}`;
 
-  const shareButton = enableSharing && <ShareButton title={episodeItem.title} description={episodeItem.description} url={canonicalUrl} />;
+  const shareButton = <ShareButton title={episodeItem.title} description={episodeItem.description} url={canonicalUrl} />;
   const startWatchingButton = <StartWatchingButton item={episodeItem} playUrl={episodeURL(episodeItem, seriesId, true, feedId)} />;
 
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={episodeItem} />;
@@ -171,7 +166,6 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
         shareButton={shareButton}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
-        posterMode={posterFading ? 'fading' : 'normal'}
         startWatchingButton={startWatchingButton}
         isLoading={isLoading}
         accessModel={accessModel}
@@ -180,7 +174,6 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
         playlist={filteredPlaylist}
         relatedTitle={inlineLayout ? seriesPlaylist.title : t('episodes')}
         onItemClick={onCardClick}
-        enableCardTitles={styling.shelfTitles}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
         filterValuePrefix={t('season_prefix')}
@@ -198,6 +191,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
               feedId={feedId ?? undefined}
               startWatchingButton={startWatchingButton}
               paywall={isLocked(accessModel, isLoggedIn, hasSubscription, episodeItem)}
+              autostart={play || undefined}
             />
           ) : (
             <Cinema

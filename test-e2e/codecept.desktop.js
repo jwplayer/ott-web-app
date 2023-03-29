@@ -1,4 +1,5 @@
 require('ts-node/register');
+require('tsconfig-paths/register');
 
 const { setHeadlessWhen } = require('@codeceptjs/configure');
 
@@ -16,6 +17,7 @@ exports.config = {
       url: 'http://localhost:8080',
       show: !!process.env.SHOW,
       channel: 'chrome',
+      locale: 'en-US',
     },
   },
   include: {

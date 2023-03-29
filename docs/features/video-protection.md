@@ -93,19 +93,19 @@ Note that there are many variations of these access models.
 
 ### Free content
 
-It's possible to have free content. This is indicated with media parameter `requiresSubscription`. 
+It's possible to have free content. This is indicated with media parameter `free` (`requiresSubscription` param is deprecated, accepted values are 'false', 'no' and '0'). As a possible value for `free` param you can use 'true', 'yes' (lower- or uppercase) or '1' number.
 
 ### Users and entitlements
 
-The users and their entitlements are typically stored in a subscription management service like Cleeng. 
+The users and their entitlements are typically stored in a subscription management service like JWP or Cleeng. 
 
 Users and their entitlements might also be split: 
 
 - Users at identity providers like Okta or Amazon Cognito
-- Entitlements at a subscription provider like Cleeng
+- Entitlements at a subscription provider like JWP or Cleeng
 
 ### SVOD Optimization
 
-Notice that each time a user accesses a video, the service would have to check against the subscription provider (e.g., Cleeng) to validate if there is a subscription. This request can be slow and might have consumption limits. 
+Notice that each time a user accesses a video, the service would have to check against the subscription provider (e.g., JWP or Cleeng) to validate if there is a subscription. This request can be slow and might have consumption limits. 
 
 To ensure a fast user experience this subscription status can be stored in ``UserSubscriptionToken``: a signed time-bound claim that the user has valid subscription. This claim would be exchanged when signing URLs. 

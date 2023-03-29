@@ -1,41 +1,16 @@
-import { array, boolean, mixed, object, SchemaOf, string, StringSchema } from 'yup';
+import { array, boolean, mixed, number, object, SchemaOf, string, StringSchema } from 'yup';
 import i18next from 'i18next';
 
-import type { Cleeng, Config, Content, Features, Menu, Styling } from '#types/Config';
-import { PersonalShelf } from '#src/enum/PersonalShelf';
-import { logDev } from '#src/utils/common';
+import type { Cleeng, JWP, Config, Content, Features, Menu, Styling } from '#types/Config';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
 
-/**
- * We check here that if we added a content item with favorites / continue_watching type,
- * then we also set up a corresponding playlistId (favoritesList / continueWatchingList)
- */
-const checkContentItems = (config: Config) => {
-  const { content, features } = config;
-
-  [PersonalShelf.ContinueWatching, PersonalShelf.Favorites].forEach((type) => {
-    const hasAdditionalRowInContent = content.some((el) => el.type === type);
-    const isFavoritesRow = type === PersonalShelf.Favorites;
-    const playlistId = isFavoritesRow ? features?.favoritesList : features?.continueWatchingList;
-
-    if (!playlistId && hasAdditionalRowInContent) {
-      logDev(
-        `If you want to use a ${isFavoritesRow ? 'favorites' : 'continue_watching'} row please add a corresponding playlistId ${
-          isFavoritesRow ? 'favoritesList' : 'continueWatchingList'
-        } in a features section`,
-      );
-    }
-  });
-};
-
 const contentSchema: SchemaOf<Content> = object({
   contentId: string().notRequired(),
   title: string().notRequired(),
   featured: boolean().notRequired(),
-  enableText: boolean().notRequired(),
   backgroundColor: string().nullable().notRequired(),
   type: mixed().oneOf(['playlist', 'continue_watching', 'favorites']),
 }).defined();
@@ -48,8 +23,6 @@ const menuSchema: SchemaOf<Menu> = object().shape({
 });
 
 const featuresSchema: SchemaOf<Features> = object({
-  enableCasting: boolean().notRequired(),
-  enableSharing: boolean().notRequired(),
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
   continueWatchingList: string().nullable(),
@@ -63,13 +36,16 @@ const cleengSchema: SchemaOf<Cleeng> = object({
   useSandbox: boolean().default(true),
 });
 
+const jwpSchema: SchemaOf<JWP> = object({
+  clientId: string().nullable(),
+  assetId: number().nullable(),
+  useSandbox: boolean().default(true),
+});
+
 const stylingSchema: SchemaOf<Styling> = object({
   backgroundColor: string().nullable(),
   highlightColor: string().nullable(),
   headerBackground: string().nullable(),
-  dynamicBlur: boolean().notRequired(),
-  posterFading: boolean().notRequired(),
-  shelfTitles: boolean().notRequired(),
   footerText: string().nullable(),
 });
 
@@ -77,11 +53,10 @@ const configSchema: SchemaOf<Config> = object({
   id: string().notRequired(),
   siteName: string().notRequired(),
   description: string().defined(),
-  player: string().defined(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
   assets: object({
-    banner: string().notRequired(),
+    banner: string().notRequired().nullable(),
   }).notRequired(),
   content: array().of(contentSchema),
   menu: array().of(menuSchema),
@@ -89,6 +64,7 @@ const configSchema: SchemaOf<Config> = object({
   features: featuresSchema.notRequired(),
   integrations: object({
     cleeng: cleengSchema.notRequired(),
+    jwp: jwpSchema.notRequired(),
   }).notRequired(),
   custom: object().notRequired(),
   contentSigningService: object().shape({
@@ -96,6 +72,14 @@ const configSchema: SchemaOf<Config> = object({
     host: string().required() as StringSchema<string>,
     drmPolicyId: string().notRequired(),
   }),
+  contentProtection: object()
+    .shape({
+      accessModel: string().oneOf(['free', 'freeauth', 'authvod', 'svod']).notRequired(),
+      drm: object({
+        defaultPolicyId: string(),
+      }).notRequired(),
+    })
+    .notRequired(),
 }).defined();
 
 const loadConfig = async (configLocation: string) => {
@@ -111,7 +95,7 @@ const loadConfig = async (configLocation: string) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to load the config. Please check the config path and the file availability');
+    throw new Error('Failed to load the config. Please check the config path and the file availability.');
   }
 
   const data = await response.json();
@@ -120,14 +104,12 @@ const loadConfig = async (configLocation: string) => {
     throw new Error('No config found');
   }
 
-  checkContentItems(data);
-
   return enrichConfig(data);
 };
 
 const enrichConfig = (config: Config): Config => {
   const { content, siteName } = config;
-  const updatedContent = content.map((content) => Object.assign({ enableText: true, featured: false }, content));
+  const updatedContent = content.map((content) => Object.assign({ featured: false }, content));
 
   return { ...config, siteName: siteName || i18next.t('common:default_site_name'), content: updatedContent };
 };

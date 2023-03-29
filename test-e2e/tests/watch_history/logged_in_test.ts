@@ -1,6 +1,7 @@
-import constants, { makeShelfXpath, ShelfId } from '../../utils/constants';
-import { checkElapsed, checkProgress, playVideo } from '../../utils/watch_history';
-import { LoginContext } from '../../utils/password_utils';
+import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
+import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
+import { LoginContext } from '#utils/password_utils';
+import { testConfigs } from '#test/constants';
 
 const videoLength = 596;
 const videoTitle = constants.bigBuckBunnyTitle;
@@ -10,11 +11,11 @@ let loginContext: LoginContext;
 Feature('watch_history - logged in').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig('test--accounts');
+  I.useConfig(testConfigs.cleengAuthvod);
 });
 
 Scenario('I can get my watch history when logged in', async ({ I }) => {
-  registerOrLogin(I);
+  await registerOrLogin(I);
 
   // New user has no continue watching history shelf
   I.dontSee(constants.continueWatchingShelfTitle);
@@ -39,8 +40,9 @@ Scenario('I can get my watch history stored to my account after login', async ({
   I.dontSee(constants.continueWatchingButton);
   I.see(constants.startWatchingButton);
 
-  registerOrLogin(I);
-  I.waitForText(constants.continueWatchingShelfTitle, 10);
+  await registerOrLogin(I);
+  I.clickHome();
+  I.waitForText(constants.continueWatchingShelfTitle, normalTimeout);
 
   await I.openVideoCard(videoTitle, ShelfId.allFilms);
   I.dontSee(constants.startWatchingButton);
@@ -54,11 +56,10 @@ Scenario('I can get my watch history stored to my account after login', async ({
 });
 
 Scenario('I can see my watch history on the Home screen when logged in', async ({ I }) => {
-  I.seeCurrentUrlEquals(constants.baseUrl);
-  I.dontSee(constants.continueWatchingButton);
+  I.dontSee(constants.continueWatchingShelfTitle);
 
-  registerOrLogin(I);
-  I.see(constants.continueWatchingButton);
+  await registerOrLogin(I);
+  I.see(constants.continueWatchingShelfTitle);
 
   const continueWatchingShelfXPath = makeShelfXpath(ShelfId.continueWatching);
 
@@ -76,9 +77,9 @@ Scenario('I can see my watch history on the Home screen when logged in', async (
 });
 
 Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig('test--no-watchlists');
+  I.useConfig(testConfigs.cleengAuthvodNoWatchlist);
 
-  registerOrLogin(I);
+  await registerOrLogin(I);
 
   I.dontSee(constants.continueWatchingShelfTitle);
 
@@ -93,6 +94,6 @@ Scenario('I do not see continue_watching videos on the home page and video page 
   I.dontSee(constants.continueWatchingShelfTitle);
 });
 
-function registerOrLogin(I: CodeceptJS.I) {
-  loginContext = I.registerOrLogin(loginContext);
+async function registerOrLogin(I: CodeceptJS.I) {
+  loginContext = await I.registerOrLogin(loginContext);
 }

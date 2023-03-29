@@ -9,8 +9,8 @@ import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
 import type { AccessModel, ContentType } from '#types/Config';
 import { isLocked } from '#src/utils/entitlements';
-import TileDock from '#src/components/TileDock/TileDock';
-import Card, { type PosterAspectRatio } from '#src/components/Card/Card';
+import TileDock from '#components/TileDock/TileDock';
+import Card, { type PosterAspectRatio } from '#components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const tileBreakpoints: Breakpoints = {
@@ -55,8 +55,6 @@ const Shelf = ({
   onCardHover,
   title,
   watchHistory,
-  enableTitle = true,
-  enableCardTitles = true,
   featured = false,
   loading = false,
   error = null,
@@ -76,7 +74,6 @@ const Shelf = ({
       <Card
         key={item.mediaid}
         title={item.title}
-        enableTitle={enableCardTitles}
         duration={item.duration}
         progress={watchHistory ? watchHistory[item.mediaid] : undefined}
         image={item.shelfImage}
@@ -92,20 +89,7 @@ const Shelf = ({
         posterAspect={posterAspect}
       />
     ),
-    [
-      enableCardTitles,
-      watchHistory,
-      onCardHover,
-      featured,
-      loading,
-      accessModel,
-      isLoggedIn,
-      hasSubscription,
-      posterAspect,
-      onCardClick,
-      playlist.feedid,
-      type,
-    ],
+    [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, onCardClick, playlist.feedid, type],
   );
 
   const renderRightControl = useCallback(
@@ -155,7 +139,7 @@ const Shelf = ({
 
   return (
     <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
-      {!featured && enableTitle ? <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2> : null}
+      {!featured ? <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2> : null}
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}

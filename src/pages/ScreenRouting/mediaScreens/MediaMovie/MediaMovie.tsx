@@ -4,9 +4,8 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import VideoLayout from '#src/components/VideoLayout/VideoLayout';
+import VideoLayout from '#components/VideoLayout/VideoLayout';
 import { isLocked } from '#src/utils/entitlements';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
 import { formatVideoMetaString, mediaURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
 import useMedia from '#src/hooks/useMedia';
@@ -19,10 +18,10 @@ import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchi
 import Cinema from '#src/containers/Cinema/Cinema';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import TrailerModal from '#src/containers/TrailerModal/TrailerModal';
-import ShareButton from '#src/components/ShareButton/ShareButton';
+import ShareButton from '#components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import PlayTrailer from '#src/icons/PlayTrailer';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
@@ -43,15 +42,12 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, features, custom } = config;
+  const { siteName, features, custom } = config;
 
-  const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Media
-  useBlurImageUpdater(data);
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(data?.trailerId || '');
   const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
@@ -82,7 +78,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const canonicalUrl = data ? `${window.location.origin}${mediaURL(data)}` : window.location.href;
 
   const primaryMetadata = formatVideoMetaString(data);
-  const shareButton = enableSharing && <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
+  const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
   const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL(data, feedId, true)} />;
 
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
@@ -141,13 +137,11 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
         shareButton={shareButton}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
-        posterMode={posterFading ? 'fading' : 'normal'}
         startWatchingButton={startWatchingButton}
         playlist={playlist}
         relatedTitle={playlist?.title}
         onItemClick={onCardClick}
         activeLabel={t('current_video')}
-        enableCardTitles={styling.shelfTitles}
         player={
           inlineLayout ? (
             <InlinePlayer
@@ -157,6 +151,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
               feedId={feedId ?? undefined}
               startWatchingButton={startWatchingButton}
               paywall={isLocked(accessModel, isLoggedIn, hasSubscription, data)}
+              autostart={play || undefined}
             />
           ) : (
             <Cinema
@@ -167,6 +162,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
               primaryMetadata={primaryMetadata}
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
+              onNext={handleComplete}
             />
           )
         }

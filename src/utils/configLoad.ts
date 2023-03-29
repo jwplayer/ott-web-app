@@ -1,35 +1,16 @@
 import merge from 'lodash.merge';
 
-import { calculateContrastColor } from '../utils/common';
-import { getConfig } from '../utils/configOverride';
-import loadConfig, { validateConfig } from '../services/config.service';
-import { addScript } from '../utils/dom';
-import { useConfigStore } from '../stores/ConfigStore';
-
+import { calculateContrastColor } from '#src/utils/common';
+import loadConfig, { validateConfig } from '#src/services/config.service';
+import { addScript } from '#src/utils/dom';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import type { AccessModel, Config, Styling } from '#types/Config';
+import { initializeAccount } from '#src/stores/AccountController';
+import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
+import { initializeFavorites } from '#src/stores/FavoritesController';
+import { initializeAdSchedule } from '#src/stores/ConfigController';
 
-const defaultConfig: Config = {
-  id: '',
-  siteName: '',
-  description: '',
-  player: '',
-  assets: {},
-  content: [],
-  menu: [],
-  integrations: {
-    cleeng: {
-      id: null,
-      useSandbox: true,
-    },
-  },
-  styling: {
-    footerText: '',
-    shelfTitles: true,
-  },
-  features: {
-    enableSharing: true,
-  },
-};
+const CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
 
 const setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Styling) => {
   const root = document.querySelector(':root') as HTMLElement;
@@ -56,52 +37,104 @@ const maybeInjectAnalyticsLibrary = (config: Config) => {
 };
 
 const calculateAccessModel = (config: Config): AccessModel => {
-  const { id, monthlyOffer, yearlyOffer } = config?.integrations?.cleeng || {};
+  if (config?.integrations?.cleeng?.id) {
+    return config?.integrations?.cleeng?.monthlyOffer || config?.integrations?.cleeng?.yearlyOffer ? 'SVOD' : 'AUTHVOD';
+  }
 
-  if (!id) return 'AVOD';
-  if (!monthlyOffer && !yearlyOffer) return 'AUTHVOD';
-  return 'SVOD';
+  if (config?.integrations?.jwp?.clientId) {
+    return config?.integrations?.jwp?.assetId ? 'SVOD' : 'AUTHVOD';
+  }
+
+  return 'AVOD';
 };
 
-export const loadAndValidateConfig = async (
-  onLoading: (isLoading: boolean) => void,
-  onValidationError: (error: Error) => void,
-  onValidationCompleted: (config: Config) => Promise<void>,
-) => {
-  onLoading(true);
+export async function loadAndValidateConfig(configSource: string | undefined) {
+  const configLocation = formatSourceLocation(configSource);
 
-  const configLocation = getConfig();
+  // Explicitly set default config here as a local variable,
+  // otherwise if it's a module level const, the merge below causes changes to nested properties
+  const defaultConfig: Config = {
+    id: '',
+    siteName: '',
+    description: '',
+    assets: {
+      banner: '/images/logo.png',
+    },
+    content: [],
+    menu: [],
+    integrations: {},
+    styling: {
+      footerText: '',
+    },
+    features: {},
+  };
 
   if (!configLocation) {
-    onValidationError(new Error('Config not defined'));
-    return;
+    useConfigStore.setState({ config: defaultConfig });
+    throw new Error('Config not defined');
   }
 
-  const config = await loadConfig(configLocation).catch((error) => {
-    onValidationError(error);
+  let config = await loadConfig(configLocation);
+  config.id = configSource;
+  config.assets = config.assets || {};
+
+  // make sure the banner always defaults to the JWP banner when not defined in the config
+  if (!config.assets.banner) {
+    config.assets.banner = defaultConfig.assets.banner;
+  }
+
+  // Store the logo right away and set css variables so the error page will be branded
+  useConfigStore.setState((s) => {
+    s.config.assets.banner = config.assets.banner;
   });
 
-  if (!config) {
-    onLoading(false);
-    return;
+  setCssVariables(config.styling || {});
+
+  config = await validateConfig(config);
+  config = merge({}, defaultConfig, config);
+
+  const accessModel = calculateAccessModel(config);
+
+  useConfigStore.setState({
+    config: config,
+    accessModel,
+  });
+
+  maybeInjectAnalyticsLibrary(config);
+
+  if (config?.integrations?.cleeng?.id && config?.integrations?.jwp?.clientId) {
+    throw new Error('Invalid client integration. You cannot have both Cleeng and JWP integrations enabled at the same time.');
   }
 
-  await validateConfig(config)
-    .then(async (configValidated) => {
-      const configWithDefaults = merge({}, defaultConfig, configValidated);
+  if (config?.integrations?.cleeng?.id || config?.integrations?.jwp?.clientId) {
+    await initializeAccount();
+  }
 
-      const accessModel = calculateAccessModel(configWithDefaults);
+  // We only request favorites and continue_watching data if there is a corresponding item in the content section
+  // and a playlist in the features section.
+  // We first initialize the account otherwise if we have favorites saved as externalData and in a local storage the sections may blink
+  if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
+    await restoreWatchHistory();
+  }
+  if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
+    await initializeFavorites();
+  }
 
-      useConfigStore.setState({
-        config: configWithDefaults,
-        accessModel,
-      });
+  if (config.adSchedule) {
+    await initializeAdSchedule();
+  }
 
-      setCssVariables(configValidated.styling);
-      maybeInjectAnalyticsLibrary(config);
-      await onValidationCompleted(config);
-    })
-    .catch((error: Error) => {
-      onValidationError(error);
-    });
-};
+  return config;
+}
+
+function formatSourceLocation(source?: string) {
+  if (!source) {
+    return undefined;
+  }
+
+  if (source.match(/^[a-z,\d]{8}$/)) {
+    return `${CONFIG_HOST}/apps/configs/${source}.json`;
+  }
+
+  return source;
+}

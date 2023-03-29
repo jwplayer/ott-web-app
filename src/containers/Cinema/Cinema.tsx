@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import PlayerContainer from '../PlayerContainer/PlayerContainer';
-
 import styles from './Cinema.module.scss';
 
 import type { PlaylistItem } from '#types/playlist';
-import Fade from '#src/components/Animation/Fade/Fade';
-import IconButton from '#src/components/IconButton/IconButton';
+import Fade from '#components/Animation/Fade/Fade';
+import IconButton from '#components/IconButton/IconButton';
 import ArrowLeft from '#src/icons/ArrowLeft';
+import PlayerContainer from '#src/containers/PlayerContainer/PlayerContainer';
 
 type Props = {
   open: boolean;
@@ -17,6 +16,7 @@ type Props = {
   onPause?: () => void;
   onComplete?: () => void;
   onClose?: () => void;
+  onNext?: () => void;
   feedId?: string;
   title: string;
   primaryMetadata: React.ReactNode;
@@ -36,6 +36,7 @@ const Cinema: React.FC<Props> = ({
   onPause,
   onComplete,
   onClose,
+  onNext,
   feedId,
   liveStartDateTime,
   liveEndDateTime,
@@ -61,6 +62,10 @@ const Cinema: React.FC<Props> = ({
     onComplete && onComplete();
   }, [onComplete]);
 
+  const handleNext = useCallback(() => {
+    onNext && onNext();
+  }, [onNext]);
+
   const handleUserActive = useCallback(() => setUserActive(true), []);
   const handleUserInactive = useCallback(() => setUserActive(false), []);
 
@@ -82,11 +87,13 @@ const Cinema: React.FC<Props> = ({
         <PlayerContainer
           item={item}
           feedId={feedId}
+          autostart={true}
           onPlay={handlePlay}
           onPause={handlePause}
           onComplete={handleComplete}
           onUserActive={handleUserActive}
           onUserInActive={handleUserInactive}
+          onNext={handleNext}
           liveEndDateTime={liveEndDateTime}
           liveFromBeginning={liveFromBeginning}
           liveStartDateTime={liveStartDateTime}

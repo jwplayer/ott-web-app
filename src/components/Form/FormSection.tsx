@@ -1,12 +1,12 @@
 import React, { ReactElement, ReactNode, useCallback, useContext } from 'react';
 
-import Button from '../Button/Button';
-import type { GenericFormValues } from '../../../types/form';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import useOpaqueId from '../../hooks/useOpaqueId';
-
 import { FormContext } from './Form';
 import styles from './Form.module.scss';
+
+import Button from '#components/Button/Button';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import useOpaqueId from '#src/hooks/useOpaqueId';
+import type { GenericFormValues } from '#types/form';
 
 export interface FormSectionContentArgs<T extends GenericFormValues, TErrors> {
   values: T;
@@ -24,9 +24,10 @@ export interface FormSectionProps<TData extends GenericFormValues, TErrors> {
   saveButton?: string;
   cancelButton?: string;
   canSave?: (values: TData) => boolean;
-  onSubmit?: (values: TData) => Promise<{ errors?: string[] }> | void;
+  onSubmit?: (values: TData) => Promise<{ errors?: string[] }>;
   content: (args: FormSectionContentArgs<TData, TErrors>) => ReactNode;
   children?: never;
+  readOnly?: boolean;
 }
 
 export function FormSection<TData extends GenericFormValues>({
@@ -39,6 +40,7 @@ export function FormSection<TData extends GenericFormValues>({
   canSave,
   onSubmit,
   content,
+  readOnly = false,
 }: FormSectionProps<TData, string[]>): ReactElement<FormSectionProps<TData, string[]>> | null {
   const sectionId = useOpaqueId(label);
   const {
@@ -91,7 +93,7 @@ export function FormSection<TData extends GenericFormValues>({
       event && event.preventDefault();
 
       if (onSubmit) {
-        let response: { errors?: string[] } | void;
+        let response: { errors?: string[] };
 
         try {
           setFormState((s) => {
@@ -99,7 +101,7 @@ export function FormSection<TData extends GenericFormValues>({
           });
           response = await onSubmit(values);
         } catch (error: unknown) {
-          response = { errors: Array.of(error as string) };
+          response = { errors: Array.of(error instanceof Error ? error.message : (error as string)) };
         }
 
         // Don't leave edit mode if there are errors
@@ -167,6 +169,7 @@ export function FormSection<TData extends GenericFormValues>({
               {cancelButton && <Button label={cancelButton} type="reset" variant="text" onClick={onCancel} />}
             </>
           ) : (
+            !readOnly &&
             editButton &&
             (typeof editButton === 'object' ? (
               (editButton as ReactElement)

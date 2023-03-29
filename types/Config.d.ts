@@ -6,24 +6,34 @@ export type Config = {
   id?: string;
   siteName?: string;
   description: string;
-  player: string;
   analyticsToken?: string | null;
   adSchedule?: string | null;
   integrations: {
     cleeng?: Cleeng;
+    jwp?: JWP;
   };
-  assets: { banner?: string };
+  assets: { banner?: string | null };
   content: Content[];
   menu: Menu[];
   styling: Styling;
   features?: Features;
   custom?: Record<string, unknown>;
   contentSigningService?: ContentSigningConfig;
+  contentProtection?: ContentProtection;
 };
 
 export type ContentSigningConfig = {
   host: string;
   drmPolicyId?: string;
+};
+
+export type ContentProtection = {
+  accessModel: 'free' | 'freeauth' | 'authvod' | 'svod';
+  drm?: Drm;
+};
+
+export type Drm = {
+  defaultPolicyId: string;
 };
 
 export type ContentType = 'playlist' | 'continue_watching' | 'favorites';
@@ -33,7 +43,6 @@ export type Content = {
   title?: string;
   type: ContentType;
   featured?: boolean;
-  enableText?: boolean;
   backgroundColor?: string | null;
 };
 
@@ -48,9 +57,6 @@ export type Styling = {
   backgroundColor?: string | null;
   highlightColor?: string | null;
   headerBackground?: string | null;
-  dynamicBlur?: boolean;
-  posterFading?: boolean;
-  shelfTitles?: boolean;
   footerText?: string | null;
 };
 
@@ -60,10 +66,12 @@ export type Cleeng = {
   yearlyOffer?: string | null;
   useSandbox?: boolean;
 };
-
+export type JWP = {
+  clientId?: string | null;
+  assetId?: number | null;
+  useSandbox?: boolean;
+};
 export type Features = {
-  enableCasting?: boolean;
-  enableSharing?: boolean;
   recommendationsPlaylist?: string | null;
   searchPlaylist?: string | null;
   favoritesList?: string | null;

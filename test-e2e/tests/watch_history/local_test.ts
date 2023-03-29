@@ -1,5 +1,6 @@
-import { checkElapsed, checkProgress, playVideo } from '../../utils/watch_history';
-import constants, { makeShelfXpath, ShelfId } from '../../utils/constants';
+import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
+import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const videoTitle = constants.bigBuckBunnyTitle;
 const videoLength = 596;
@@ -7,7 +8,7 @@ const videoLength = 596;
 Feature('watch_history - local').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 Scenario('I can get my watch progress stored (locally)', async ({ I }) => {
@@ -29,15 +30,14 @@ Scenario('I can continue watching', async ({ I }) => {
 });
 
 Scenario('I can see my watch history on the Home screen', async ({ I }) => {
-  I.seeCurrentUrlEquals(constants.baseUrl);
-  I.dontSee(constants.continueWatchingButton);
+  I.dontSee(constants.continueWatchingShelfTitle);
 
   await I.openVideoCard(videoTitle);
   await playVideo(I, 200, videoTitle);
 
   I.amOnPage(constants.baseUrl);
 
-  I.see(constants.continueWatchingButton);
+  I.see(constants.continueWatchingShelfTitle);
 
   await within(makeShelfXpath(ShelfId.continueWatching), async () => {
     I.see(videoTitle);
@@ -52,7 +52,7 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
   I.click('video');
 
   await checkElapsed(I, 3, 20);
-  I.seeInCurrentUrl('play=1');
+  await I.seeQueryParams({ play: '1' });
 });
 
 Scenario('Video removed from continue watching when finished', async ({ I }) => {
@@ -67,7 +67,7 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
   I.see(constants.continueWatchingShelfTitle);
 
   await I.openVideoCard(videoTitle, ShelfId.continueWatching);
-  await playVideo(I, videoLength, videoTitle, constants.continueWatchingButton);
+  await playVideo(I, videoLength, videoTitle, null);
 
   I.see(constants.startWatchingButton);
   I.dontSee(constants.continueWatchingButton);
@@ -80,13 +80,15 @@ Scenario('Video removed from continue watching when finished', async ({ I }) => 
   await I.openVideoCard(constants.agent327Title);
   await playVideo(I, 50, constants.agent327Title);
 
-  I.amOnPage(constants.baseUrl);
+  I.clickHome();
+  I.waitForLoaderDone();
+
   I.see(constants.continueWatchingShelfTitle);
   I.dontSee(videoTitle, makeShelfXpath(ShelfId.continueWatching));
 });
 
 Scenario('I do not see continue_watching videos on the home page and video page if there is not such config setting', async ({ I }) => {
-  I.useConfig('test--no-watchlists');
+  I.useConfig(testConfigs.cleengAuthvodNoWatchlist);
 
   await I.openVideoCard(videoTitle);
   I.dontSee(constants.continueWatchingButton);

@@ -2,17 +2,16 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
-import PlayerContainer from '../PlayerContainer/PlayerContainer';
-
 import styles from './InlinePlayer.module.scss';
 
-import Image from '#src/components/Image/Image';
+import Image from '#components/Image/Image';
 import type { PlaylistItem } from '#types/playlist';
-import Fade from '#src/components/Animation/Fade/Fade';
+import Fade from '#components/Animation/Fade/Fade';
 import Lock from '#src/icons/Lock';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import PlayerContainer from '#src/containers/PlayerContainer/PlayerContainer';
 
 type Props = {
   item: PlaylistItem;
@@ -26,6 +25,7 @@ type Props = {
   startWatchingButton: React.ReactNode;
   isLoggedIn: boolean;
   paywall: boolean;
+  autostart?: boolean;
 };
 
 const InlinePlayer: React.FC<Props> = ({
@@ -40,6 +40,7 @@ const InlinePlayer: React.FC<Props> = ({
   startWatchingButton,
   isLoggedIn,
   paywall,
+  autostart,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation();
@@ -66,6 +67,7 @@ const InlinePlayer: React.FC<Props> = ({
         <PlayerContainer
           item={item}
           feedId={feedId}
+          autostart={autostart}
           onPlay={onPlay}
           onPause={onPause}
           onComplete={onComplete}

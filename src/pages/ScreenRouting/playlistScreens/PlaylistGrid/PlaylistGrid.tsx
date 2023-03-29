@@ -7,9 +7,8 @@ import styles from './PlaylistGrid.module.scss';
 
 import { mediaURL } from '#src/utils/formatting';
 import { filterPlaylist, getFiltersFromConfig } from '#src/utils/collection';
-import CardGrid from '#src/components/CardGrid/CardGrid';
-import Filter from '#src/components/Filter/Filter';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
+import CardGrid from '#components/CardGrid/CardGrid';
+import Filter from '#components/Filter/Filter';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
@@ -24,7 +23,6 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
   const categories = getFiltersFromConfig(config, data.feedid);
   const filteredPlaylist = useMemo(() => filterPlaylist(data, filter), [data, filter]);
   const shouldShowFilter = Boolean(categories.length);
-  const updateBlurImage = useBlurImageUpdater(filteredPlaylist.playlist);
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
@@ -35,7 +33,6 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
   }, [data.feedid]);
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL(playlistItem, data.feedid));
-  const onCardHover = (playlistItem: PlaylistItem) => updateBlurImage(playlistItem);
 
   const pageTitle = `${data.title} - ${config.siteName}`;
 
@@ -54,8 +51,6 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
         <CardGrid
           playlist={filteredPlaylist}
           onCardClick={onCardClick}
-          onCardHover={onCardHover}
-          enableCardTitles={config.styling.shelfTitles}
           accessModel={accessModel}
           isLoggedIn={!!user}
           hasSubscription={!!subscription}

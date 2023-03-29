@@ -13,8 +13,6 @@ export type Image = {
   width: number;
 };
 
-export type PosterMode = 'fading' | 'normal';
-
 export type Source = {
   file: string;
   type: string;

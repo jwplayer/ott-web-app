@@ -1,0 +1,73 @@
+{
+  "assets": {
+    "banner": "/images/logo.png"
+  },
+  "content": [
+    {
+      "featured": true,
+      "type": "playlist",
+      "contentId": "JSKF03bk"
+    },
+    {
+      "type": "favorites"
+    },
+    {
+      "type": "continue_watching"
+    },
+    {
+      "type": "playlist",
+      "contentId": "dGSUzs9o"
+    },
+    {
+      "type": "playlist",
+      "contentId": "xQaFzykq"
+    },
+    {
+      "type": "playlist",
+      "contentId": "fWpLtzVh"
+    }
+  ],
+  "menu": [
+    {
+      "label": "Films",
+      "contentId": "dGSUzs9o",
+      "type": "playlist",
+      "filterTags": "Action,Comedy,Fantasy,Drama"
+    },
+    {
+      "label": "Courses",
+      "contentId": "xQaFzykq",
+      "type": "playlist",
+      "filterTags": "Beginner,Advanced"
+    },
+    {
+      "label": "Live",
+      "contentId": "fWpLtzVh",
+      "type": "playlist"
+    }
+  ],
+  "features": {
+    "recommendationsPlaylist": "IHBjjkSN",
+    "searchPlaylist": "D4soEviP",
+    "favoritesList": "34CFUkws",
+    "continueWatchingList": "IJvotI4w"
+  },
+  "styling": {
+    "backgroundColor": null,
+    "highlightColor": null,
+    "headerBackground": null,
+    "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)"
+  },
+  "description": "Blender demo site",
+  "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",
+  "integrations": {
+    "cleeng": {
+      "id": "440058292",
+      "useSandbox": true,
+      "monthlyOffer": "S970187168_NL",
+      "yearlyOffer": "S467691538_NL"
+    }
+  },
+  "player": "ou7L8htR",
+  "siteName": "Blender"
+}

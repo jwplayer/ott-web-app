@@ -6,11 +6,11 @@ import styles from './CardGrid.module.scss';
 
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import { isLocked } from '#src/utils/entitlements';
-import Card from '#src/components/Card/Card';
+import Card from '#components/Card/Card';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
-import InfiniteScrollLoader from '#src/components/InfiniteScrollLoader/InfiniteScrollLoader';
+import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -29,7 +29,6 @@ type CardGridProps = {
   onCardClick: (item: PlaylistItem, playlistId?: string) => void;
   watchHistory?: { [key: string]: number };
   isLoading: boolean;
-  enableCardTitles?: boolean;
   cols?: Breakpoints;
   currentCardItem?: PlaylistItem;
   currentCardLabel?: string;
@@ -43,7 +42,6 @@ function CardGrid({
   onCardClick,
   onCardHover,
   watchHistory,
-  enableCardTitles = true,
   isLoading = false,
   cols = defaultCols,
   currentCardItem,
@@ -70,7 +68,6 @@ function CardGrid({
         <div role="cell">
           <Card
             title={title}
-            enableTitle={enableCardTitles}
             duration={duration}
             image={shelfImage}
             progress={watchHistory ? watchHistory[mediaid] : undefined}

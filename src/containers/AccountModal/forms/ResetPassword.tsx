@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
+import shallow from 'zustand/shallow';
 
-import { useAccountStore } from '../../../stores/AccountStore';
-import ResetPasswordForm from '../../../components/ResetPasswordForm/ResetPasswordForm';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import ForgotPasswordForm from '../../../components/ForgotPasswordForm/ForgotPasswordForm';
-import type { ForgotPasswordFormData } from '../../../../types/account';
-import ConfirmationForm from '../../../components/ConfirmationForm/ConfirmationForm';
-import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-
+import { useAccountStore } from '#src/stores/AccountStore';
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import ResetPasswordForm from '#components/ResetPasswordForm/ResetPasswordForm';
+import ForgotPasswordForm from '#components/ForgotPasswordForm/ForgotPasswordForm';
+import type { ForgotPasswordFormData } from '#types/account';
+import ConfirmationForm from '#components/ConfirmationForm/ConfirmationForm';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
-import { addQueryParams } from '#src/utils/formatting';
 import { logDev } from '#src/utils/common';
 import { logout, resetPassword } from '#src/stores/AccountController';
 
@@ -24,27 +23,42 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useAccountStore((state) => state.user);
   const [resetPasswordSubmitting, setResetPasswordSubmitting] = useState<boolean>(false);
-
+  const { customer: user, canChangePasswordWithOldPassword } = useAccountStore(
+    ({ user, canChangePasswordWithOldPassword }) => ({
+      customer: user,
+      canChangePasswordWithOldPassword,
+    }),
+    shallow,
+  );
   const cancelClickHandler = () => {
     navigate(removeQueryParam(location, 'u'));
   };
 
   const backToLoginClickHandler = async () => {
+    navigate(
+      {
+        pathname: '/',
+        search: 'u=login',
+      },
+      { replace: true },
+    );
+
     if (user) {
       await logout();
     }
-    navigate(addQueryParams('/', { u: 'login' }));
   };
 
   const resetPasswordClickHandler = async () => {
     const resetUrl = `${window.location.origin}/?u=edit-password`;
-
     try {
-      if (!user?.email) throw new Error('invalid param email');
+      if (!user?.email) {
+        logDev('invalid param email');
+        return;
+      }
 
       setResetPasswordSubmitting(true);
+
       await resetPassword(user.email, resetUrl);
 
       setResetPasswordSubmitting(false);
@@ -59,11 +73,14 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
 
     try {
       await resetPassword(formData.email, resetUrl);
-      navigate(addQueryParam(location, 'u', 'send-confirmation'));
+      const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'send-confirmation';
+      navigate(addQueryParam(location, 'u', modal));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {
           setErrors({ email: t('reset.wrong_email') });
+        } else {
+          setErrors({ form: error.message });
         }
       }
     }

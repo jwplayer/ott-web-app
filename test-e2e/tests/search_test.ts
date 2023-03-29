@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 
-import constants from '../utils/constants';
+import constants from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const openSearchLocator = { css: 'div[aria-label="Open search"]' };
 const searchBarLocator = { css: 'input[aria-label="Search"]' };
@@ -11,7 +12,7 @@ const closeSearchLocator = { css: 'div[aria-label="Close search"]' };
 Feature('search').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
   verifyOnHomePage(I);
 });
 
@@ -93,7 +94,7 @@ Scenario('The search URL is encoded', async ({ I }) => {
   await openSearch(I);
 
   I.fillField(searchBarLocator, 'Hello/World! How are you? 這是中國人');
-  I.seeCurrentUrlEquals(`${constants.baseUrl}q/Hello%2FWorld!%20How%20are%20you%3F%20%E9%80%99%E6%98%AF%E4%B8%AD%E5%9C%8B%E4%BA%BA`);
+  I.seeInCurrentUrl(`${constants.baseUrl}q/Hello%2FWorld!%20How%20are%20you%3F%20%E9%80%99%E6%98%AF%E4%B8%AD%E5%9C%8B%E4%BA%BA`);
 });
 
 Scenario('I can clear the search phrase with the clear button', async ({ I }) => {

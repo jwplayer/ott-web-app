@@ -6,7 +6,7 @@ import MediaStaticPage from './mediaScreens/MediaStaticPage/MediaStaticPage';
 
 import useMedia from '#src/hooks/useMedia';
 import Loading from '#src/pages/Loading/Loading';
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
 import type { PlaylistItem } from '#types/playlist';
 import { isEpisode, isSeriesPlaceholder } from '#src/utils/media';
 import MediaMovie from '#src/pages/ScreenRouting/mediaScreens/MediaMovie/MediaMovie';

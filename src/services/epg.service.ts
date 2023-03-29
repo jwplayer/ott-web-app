@@ -116,8 +116,21 @@ class EpgService {
   async parseSchedule(data: unknown, demo = false) {
     if (!Array.isArray(data)) return [];
 
-    const transformResults = await Promise.allSettled(data.map((program) => this.transformProgram(program)));
-    const programs = transformResults.filter(isFulfilled).map((result) => result.value);
+    const transformResults = await Promise.allSettled(
+      data.map((program) =>
+        this.transformProgram(program)
+          // This quiets promise resolution errors in the console
+          .catch((error) => {
+            logDev(error);
+            return undefined;
+          }),
+      ),
+    );
+
+    const programs = transformResults
+      .filter(isFulfilled)
+      .map((result) => result.value)
+      .filter((program): program is EpgProgram => !!program);
 
     return demo ? this.generateDemoPrograms(programs) : programs;
   }

@@ -1,18 +1,18 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
-@use '../../styles/mixins/responsive';
-@use '../../styles/mixins/typography';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
+@use 'src/styles/mixins/typography';
 
 .fade {
   position: relative;
-  z-index: 1;
+  // make sure the fade animation happens on top of page elements
+  z-index: variables.$player-z-index;
 }
 
 .cinema {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: variables.$player-z-index;
   width: 100vw;
   height: calc(100vh - calc(100vh - 100%));
   overflow: hidden;

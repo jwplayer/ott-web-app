@@ -1,11 +1,12 @@
 import * as assert from 'assert';
 
-import constants, { ShelfId } from '../utils/constants';
+import constants, { ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 Feature('series').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(async ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 Scenario('I can see series without seasons', async ({ I }) => {
@@ -79,5 +80,5 @@ Scenario('I can play other episodes from the series', async ({ I }) => {
 Scenario('I can see an alternate background image for Fantasy Vehicle Creation', async ({ I }) => {
   await I.openVideoCard(constants.fantasyVehicleTitle, ShelfId.allCourses);
   I.see('Fantasy Vehicle Creation (Free)');
-  await I.seeVideoDetailsBackgroundImage('Fantasy Vehicle Creation (Free)', 'https://img.jwplayer.com/v1/media/0t21PUiy/images/background.jpg?width=1280');
+  await I.seeVideoDetailsBackgroundImage('Fantasy Vehicle Creation (Free)', 'https://img.jwplayer.com/v1/media/0t21PUiy/images/background.webp?width=1280');
 });

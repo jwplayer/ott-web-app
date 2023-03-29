@@ -4,16 +4,16 @@ import classNames from 'classnames';
 
 import styles from './CheckoutForm.module.scss';
 
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import type { Offer, Order, PaymentMethod } from '#types/checkout';
-import IconButton from '#src/components/IconButton/IconButton';
-import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import IconButton from '#components/IconButton/IconButton';
+import FormFeedback from '#components/FormFeedback/FormFeedback';
 import { formatPrice } from '#src/utils/formatting';
 import Close from '#src/icons/Close';
-import DialogBackButton from '#src/components/DialogBackButton/DialogBackButton';
+import DialogBackButton from '#components/DialogBackButton/DialogBackButton';
 import PayPal from '#src/icons/PayPal';
 import CreditCard from '#src/icons/CreditCard';
-import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import type { OfferType } from '#types/account';
 
 type Props = {
@@ -87,7 +87,6 @@ const CheckoutForm: React.FC<Props> = ({
   const paypalPaymentMethod = paymentMethods?.find((method) => method.methodName === 'paypal');
 
   const orderTitle = offerType === 'svod' ? (offer.period === 'month' ? t('checkout.monthly') : t('checkout.yearly')) : offer.offerTitle;
-
   return (
     <div>
       <DialogBackButton onClick={onBackButtonClick} />
@@ -95,7 +94,7 @@ const CheckoutForm: React.FC<Props> = ({
       <div className={styles.order}>
         <div className={styles.orderInfo}>
           <p className={classNames(styles.orderTitle, { [styles.orderTitleMargin]: offerType === 'svod' })}>{orderTitle}</p>
-          {order.discount.type === 'trial' ? <p className={styles.orderBillingDate}>{getFreeTrialText(offer)}</p> : null}
+          {order.discount?.type === 'trial' ? <p className={styles.orderBillingDate}>{getFreeTrialText(offer)}</p> : null}
         </div>
         <div className={styles.orderPrice}>
           <span>{formatPrice(offer.customerPriceInclTax, order.currency, offer.customerCountry)}</span>
@@ -129,7 +128,7 @@ const CheckoutForm: React.FC<Props> = ({
       <div>
         <table className={styles.orderTotals}>
           <tbody>
-            {order.discount.applied && order.discount.type === 'coupon' ? (
+            {order.discount?.applied && order.discount?.type === 'coupon' ? (
               <tr>
                 <td className={styles.couponCell}>
                   {t('checkout.coupon_discount')}
@@ -137,8 +136,8 @@ const CheckoutForm: React.FC<Props> = ({
                   {!!offer.period && offerType === 'svod' && (
                     <small>
                       {t('checkout.discount_period', {
-                        count: order.discount.periods,
-                        period: t(`periods.${offer.period}`, { count: order.discount.periods }),
+                        count: order.discount?.periods,
+                        period: t(`periods.${offer.period}`, { count: order.discount?.periods }),
                       })}
                     </small>
                   )}
@@ -146,7 +145,7 @@ const CheckoutForm: React.FC<Props> = ({
                 <td>{formatPrice(-order.priceBreakdown.discountAmount * (1 + order.taxRate), order.currency, offer.customerCountry)}</td>
               </tr>
             ) : null}
-            {order.discount.applied && order.discount.type === 'trial' ? (
+            {order.discount?.applied && order.discount?.type === 'trial' ? (
               <tr>
                 <td className={styles.couponCell}>{t('checkout.free_trial_discount')}</td>
                 <td>{formatPrice(-offer.customerPriceInclTax, order.currency, offer.customerCountry)}</td>

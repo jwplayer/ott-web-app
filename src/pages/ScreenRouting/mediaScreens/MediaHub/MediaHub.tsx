@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 
-import Hero from '#src/components/Hero/Hero';
+import Hero from '#components/Hero/Hero';
 import type { Content } from '#types/Config';
 import ShelfList from '#src/containers/ShelfList/ShelfList';
 import type { ScreenComponent } from '#types/screens';
@@ -9,7 +9,7 @@ import type { PlaylistItem } from '#types/playlist';
 const parsePlaylistIds = (input: unknown): Content[] => {
   const playlistIds = typeof input === 'string' ? input.replace(/\s+/g, '').split(',') : [];
 
-  return playlistIds.map((id) => ({ type: 'playlist', contentId: id, enableText: true }));
+  return playlistIds.map((id) => ({ type: 'playlist', contentId: id }));
 };
 
 const MediaHub: ScreenComponent<PlaylistItem> = ({ data }) => {

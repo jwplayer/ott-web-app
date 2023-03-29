@@ -1,6 +1,14 @@
 import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
+import type { AdSchedule } from '#types/ad-schedule';
+
+export enum PersonalShelf {
+  ContinueWatching = 'continue_watching',
+  Favorites = 'favorites',
+}
+
+export const PersonalShelves = [PersonalShelf.Favorites, PersonalShelf.ContinueWatching];
 
 type CleengData = {
   cleengId: string | null | undefined;
@@ -10,16 +18,13 @@ type CleengData = {
 };
 
 type ConfigState = {
-  configLocation: string;
-  isLoading: boolean;
   config: Config;
   accessModel: AccessModel;
+  adScheduleData: AdSchedule | null | undefined;
   getCleengData: () => CleengData;
 };
 
 export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) => ({
-  configLocation: '',
-  isLoading: false,
   config: {
     id: '',
     siteName: '',
@@ -32,13 +37,18 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
       cleeng: {
         useSandbox: true,
       },
+      jwp: {
+        clientId: null,
+        assetId: null,
+        useSandbox: true,
+      },
     },
     styling: {
-      shelfTitles: true,
       footerText: '',
     },
   },
   accessModel: 'SVOD',
+  adScheduleData: null,
   getCleengData: (): CleengData => {
     const cleeng = get().config?.integrations?.cleeng;
 

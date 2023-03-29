@@ -8,12 +8,16 @@ import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
-import { logDev } from '#src/utils/common';
+import { logDev, testId } from '#src/utils/common';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   playerId: string;
+  playerLicenseKey: string | undefined;
   feedId?: string;
   item: PlaylistItem;
+  startTime?: number;
+  autostart?: boolean;
   onReady?: (player?: JWPlayer) => void;
   onPlay?: () => void;
   onPause?: () => void;
@@ -23,14 +27,14 @@ type Props = {
   onBeforePlay?: () => void;
   onFirstFrame?: () => void;
   onRemove?: () => void;
+  onNext?: () => void;
   onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
-  startTime?: number;
-  autostart?: boolean;
 };
 
 const Player: React.FC<Props> = ({
   playerId,
+  playerLicenseKey,
   item,
   onReady,
   onPlay,
@@ -43,6 +47,7 @@ const Player: React.FC<Props> = ({
   onRemove,
   onPlaylistItem,
   onPlaylistItemCallback,
+  onNext,
   feedId,
   startTime = 0,
   autostart,
@@ -52,8 +57,9 @@ const Player: React.FC<Props> = ({
   const loadingRef = useRef(false);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
-  const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
   const setPlayer = useOttAnalytics(item, feedId);
+
+  const { adScheduleData } = useConfigStore((s) => s);
 
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
@@ -65,6 +71,7 @@ const Player: React.FC<Props> = ({
   const handleRemove = useEventCallback(onRemove);
   const handlePlaylistItem = useEventCallback(onPlaylistItem);
   const handlePlaylistItemCallback = useEventCallback(onPlaylistItemCallback);
+  const handleNextClick = useEventCallback(onNext);
   const handleReady = useEventCallback(() => onReady && onReady(playerRef.current));
 
   const attachEvents = useCallback(() => {
@@ -78,6 +85,7 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('firstFrame', handleFirstFrame);
     playerRef.current?.on('remove', handleRemove);
     playerRef.current?.on('playlistItem', handlePlaylistItem);
+    playerRef.current?.on('nextClick', handleNextClick);
     playerRef.current?.setPlaylistItemCallback(handlePlaylistItemCallback);
   }, [
     handleReady,
@@ -90,6 +98,7 @@ const Player: React.FC<Props> = ({
     handleFirstFrame,
     handleRemove,
     handlePlaylistItem,
+    handleNextClick,
     handlePlaylistItemCallback,
   ]);
 
@@ -108,12 +117,14 @@ const Player: React.FC<Props> = ({
     if (!window.jwplayer && !loadingRef.current) {
       loadingRef.current = true;
 
+      const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
+
       addScript(scriptUrl).then(() => {
         setLibLoaded(true);
         loadingRef.current = false;
       });
     }
-  }, [scriptUrl]);
+  }, [playerId]);
 
   useEffect(() => {
     // update the startTimeRef each time the startTime changes
@@ -121,10 +132,6 @@ const Player: React.FC<Props> = ({
   }, [startTime]);
 
   useEffect(() => {
-    if (!playerId) {
-      return;
-    }
-
     const loadPlaylist = () => {
       if (!item || !playerRef.current) {
         return;
@@ -152,20 +159,43 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      playerRef.current.setup({
+      // player options are untyped
+      const playerOptions: { [key: string]: unknown } = {
+        advertising: adScheduleData,
         aspectratio: false,
-        playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
-        width: '100%',
+        controls: true,
+        displaytitle: false,
+        displayHeading: false,
+        displaydescription: false,
+        floating: {
+          mode: 'never',
+        },
         height: '100%',
         mute: false,
-        autostart,
+        playbackRateControls: true,
+        pipIcon: 'disabled',
+        playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
         repeat: false,
-      });
+        cast: {},
+        stretching: 'uniform',
+        width: '100%',
+      };
+
+      // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
+      if (typeof autostart !== 'undefined') {
+        playerOptions.autostart = autostart;
+      }
+
+      // Set the license key if provided
+      if (playerLicenseKey) {
+        playerOptions.key = playerLicenseKey;
+      }
+
+      playerRef.current.setup(playerOptions);
 
       setPlayer(playerRef.current);
       attachEvents();
     };
-
     if (playerRef.current) {
       return loadPlaylist();
     }
@@ -173,7 +203,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey]);
 
   useEffect(() => {
     return () => {
@@ -186,7 +216,7 @@ const Player: React.FC<Props> = ({
   }, [detachEvents]);
 
   return (
-    <div className={styles.container} data-testid="player-container">
+    <div className={styles.container} data-testid={testId('player-container')}>
       <div ref={playerElementRef} />
     </div>
   );

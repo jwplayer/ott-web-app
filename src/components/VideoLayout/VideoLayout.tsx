@@ -1,17 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import CardGrid from '../CardGrid/CardGrid';
-import Filter from '../Filter/Filter';
-import VideoDetails from '../VideoDetails/VideoDetails';
-import VideoDetailsInline from '../VideoDetailsInline/VideoDetailsInline';
-import VideoList from '../VideoList/VideoList';
-
 import styles from './VideoLayout.module.scss';
 
-import type { ImageData, Playlist, PlaylistItem, PosterMode } from '#types/playlist';
-import type { AccessModel } from '#types/Config';
+import CardGrid from '#components/CardGrid/CardGrid';
+import Filter from '#components/Filter/Filter';
+import VideoDetails from '#components/VideoDetails/VideoDetails';
+import VideoDetailsInline from '#components/VideoDetailsInline/VideoDetailsInline';
+import VideoList from '#components/VideoList/VideoList';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import { testId } from '#src/utils/common';
+import type { ImageData, Playlist, PlaylistItem } from '#types/playlist';
+import type { AccessModel } from '#types/Config';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
@@ -25,7 +25,6 @@ type FilterProps = {
 type VideoDetailsProps = {
   title: string;
   description: string;
-  posterMode: PosterMode;
   image?: ImageData;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
@@ -43,7 +42,6 @@ type VideoListProps = {
   watchHistory?: { [key: string]: number };
   activeMediaId?: string;
   activeLabel?: string;
-  enableCardTitles?: boolean;
 };
 
 type Props = {
@@ -72,7 +70,6 @@ const VideoLayout: React.FC<Props> = ({
   title,
   description,
   image,
-  posterMode,
   primaryMetadata,
   secondaryMetadata,
   shareButton,
@@ -84,7 +81,6 @@ const VideoLayout: React.FC<Props> = ({
   relatedTitle,
   watchHistory,
   activeLabel,
-  enableCardTitles = true,
   // filters
   filters,
   setFilter,
@@ -130,7 +126,6 @@ const VideoLayout: React.FC<Props> = ({
           playlist={playlist}
           onCardClick={onItemClick}
           isLoading={isLoading}
-          enableCardTitles={enableCardTitles}
           watchHistory={watchHistory}
           accessModel={accessModel}
           isLoggedIn={isLoggedIn}
@@ -165,7 +160,7 @@ const VideoLayout: React.FC<Props> = ({
 
   if (inlineLayout) {
     return (
-      <div className={styles.videoInlineLayout} data-testid="inline-layout">
+      <div className={styles.videoInlineLayout} data-testid={testId('inline-layout')}>
         <div className={styles.player}>{player}</div>
         {renderRelatedVideos(isTablet)}
         <div className={styles.videoDetailsInline}>
@@ -185,7 +180,7 @@ const VideoLayout: React.FC<Props> = ({
   }
 
   return (
-    <div className={styles.videoCinemaLayout} data-testid="cinema-layout">
+    <div className={styles.videoCinemaLayout} data-testid={testId('cinema-layout')}>
       <VideoDetails
         title={title}
         description={description}
@@ -194,7 +189,6 @@ const VideoLayout: React.FC<Props> = ({
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
         shareButton={shareButton}
-        posterMode={posterMode}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
       />

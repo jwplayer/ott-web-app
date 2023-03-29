@@ -1,13 +1,18 @@
 import * as assert from 'assert';
 
-import constants from '../utils/constants';
+import constants, { longTimeout, normalTimeout } from '#utils/constants';
+import { testConfigs } from '#test/constants';
+import passwordUtils, { LoginContext } from '#utils/password_utils';
+
+const loginContext: LoginContext = {
+  email: passwordUtils.createRandomEmail(),
+  password: passwordUtils.createRandomPassword(),
+};
 
 Feature('video_detail').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-const config = 'test--accounts';
-
 Before(({ I }) => {
-  I.useConfig(config);
+  I.useConfig(testConfigs.cleengAuthvod);
 });
 
 Scenario('Video detail screen loads', async ({ I }) => {
@@ -27,7 +32,7 @@ Scenario('Video detail screen loads', async ({ I }) => {
 
 Scenario('I can see an alternate background image for Agent 327', async ({ I }) => {
   await I.openVideoCard('Agent 327');
-  await I.seeVideoDetailsBackgroundImage('Agent 327', 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/background.jpg?width=1280');
+  await I.seeVideoDetailsBackgroundImage('Agent 327', 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/background.webp?width=1280');
 });
 
 Scenario('I can see the default background image for Elephants Dream', async ({ I }) => {
@@ -75,7 +80,7 @@ Scenario('I can return to the video detail screen', async ({ I }) => {
 });
 
 Scenario('I can play other media from the related shelf', async ({ I }) => {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
   await I.openVideoCard('Agent 327');
   await I.openVideoCard(constants.elephantsDreamTitle);
   I.see(constants.elephantsDreamDescription);
@@ -101,12 +106,34 @@ Scenario('I can play a trailer without signing in', async ({ I }) => {
   I.see(constants.signUpToWatch);
   I.click(constants.signUpToWatch);
   await I.checkPlayerClosed();
-  I.waitForText('Email', 5);
+  I.waitForText('Email', normalTimeout);
   I.see('Password');
   I.click('div[aria-label=Close]');
 
   I.click('Trailer');
   await I.waitForPlayerPlaying(`${constants.elephantsDreamTitle} - Trailer`);
+});
+
+Scenario('I can play a video after signing up', async ({ I }) => {
+  await I.openVideoCard(constants.elephantsDreamTitle);
+
+  I.see(constants.signUpToWatch);
+  I.click(constants.signUpToWatch);
+  await I.checkPlayerClosed();
+  I.see('Email');
+  I.see('Password');
+
+  await I.fillRegisterForm(loginContext);
+
+  I.see(constants.startWatchingButton);
+  I.dontSee(constants.signUpToWatch);
+  I.click(constants.startWatchingButton);
+
+  await I.waitForPlayerPlaying(constants.elephantsDreamTitle);
+
+  I.click('div[aria-label="Back"]');
+
+  await I.checkPlayerClosed();
 });
 
 Scenario('I can play a video after signing in', async ({ I }) => {
@@ -118,8 +145,8 @@ Scenario('I can play a video after signing in', async ({ I }) => {
   I.see('Email');
   I.see('Password');
   I.click('Sign in', constants.registrationFormSelector);
-  I.fillField('Email', constants.username);
-  I.fillField('Password', constants.password);
+  I.fillField('Email', loginContext.email);
+  I.fillField('Password', loginContext.password);
   I.click('button[type=submit]');
 
   I.see(constants.startWatchingButton);
@@ -137,8 +164,7 @@ Scenario('I can share the media', async ({ I }) => {
   await I.enableClipboard();
 
   await I.openVideoCard(constants.elephantsDreamTitle);
-  const url = new URL(await I.grabCurrentUrl());
-  url.searchParams.append('c', config);
+  const url = await I.grabCurrentUrl();
 
   // Empty the clipboard
   await I.executeScript(() => navigator.clipboard.writeText(''));
@@ -148,21 +174,21 @@ Scenario('I can share the media', async ({ I }) => {
   I.see('Copied url');
 
   // The url should be copied to the clipboard
-  assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), url.toString());
-  I.waitForInvisible('text="Copied url"', 5);
+  assert.strictEqual(await I.executeScript(() => navigator.clipboard.readText()), url);
+  I.waitForInvisible('text="Copied url"', normalTimeout);
 });
 
 async function playBigBuckBunny(I) {
-  I.useConfig('test--no-cleeng');
+  I.useConfig(testConfigs.basicNoAuth);
   await I.openVideoCard(constants.bigBuckBunnyTitle);
-  I.waitForText(constants.startWatchingButton, 5);
+  I.waitForText(constants.startWatchingButton, normalTimeout);
   I.dontSeeInCurrentUrl('play=1');
   I.click(constants.startWatchingButton);
 
   I.seeInCurrentUrl('play=1');
 
-  I.waitForElement('div[class*="jwplayer"]', 10);
-  I.waitForElement('video', 5);
+  I.waitForElement('div[class*="jwplayer"]', longTimeout);
+  I.waitForElement('video', normalTimeout);
 
   await I.waitForPlayerPlaying(constants.bigBuckBunnyDescription);
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import useOpaqueId from '../../hooks/useOpaqueId';
-import HelperText from '../HelperText/HelperText';
-
 import styles from './Radio.module.scss';
+
+import HelperText from '#components/HelperText/HelperText';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
   name: string;

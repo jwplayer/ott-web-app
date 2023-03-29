@@ -3,10 +3,9 @@ import { object, SchemaOf, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 
-import LoginForm from '../../../components/LoginForm/LoginForm';
-import useForm, { UseFormOnSubmitHandler } from '../../../hooks/useForm';
-import { useConfigStore } from '../../../stores/ConfigStore';
-
+import { useConfigStore } from '#src/stores/ConfigStore';
+import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import LoginForm from '#components/LoginForm/LoginForm';
 import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
@@ -16,6 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
+
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await login(formData.email, formData.password);

@@ -1,21 +1,22 @@
-import constants from '../utils/constants';
+import constants from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 Feature('seo').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Before(({ I }) => {
-  I.useConfig('test--blender');
+  I.useConfig(testConfigs.basicNoAuth);
 });
 
 Scenario('It renders the correct meta tags for the home screen', ({ I }) => {
-  I.seeTitleEquals('Blender');
+  I.seeTitleEquals('JW OTT Web App');
 
-  I.seeAttributesOnElements('meta[name="description"]', { content: 'Blender demo site' });
+  I.seeAttributesOnElements('meta[name="description"]', { content: 'JW Player OTT Web App demo' });
 
-  I.seeAttributesOnElements('meta[property="og:title"]', { content: 'Blender' });
-  I.seeAttributesOnElements('meta[property="og:description"]', { content: 'Blender demo site' });
+  I.seeAttributesOnElements('meta[property="og:title"]', { content: 'JW OTT Web App' });
+  I.seeAttributesOnElements('meta[property="og:description"]', { content: 'JW Player OTT Web App demo' });
 
-  I.seeAttributesOnElements('meta[name="twitter:title"]', { content: 'Blender' });
-  I.seeAttributesOnElements('meta[name="twitter:description"]', { content: 'Blender demo site' });
+  I.seeAttributesOnElements('meta[name="twitter:title"]', { content: 'JW OTT Web App' });
+  I.seeAttributesOnElements('meta[name="twitter:description"]', { content: 'JW Player OTT Web App demo' });
 });
 
 Scenario('It renders the correct meta tags for the playlist screen', async ({ I }) => {
@@ -24,15 +25,15 @@ Scenario('It renders the correct meta tags for the playlist screen', async ({ I 
   }
 
   I.click('Films');
-  I.seeTitleEquals('All Films - Blender');
+  I.seeTitleEquals('All Films - JW OTT Web App');
 
-  I.seeAttributesOnElements('meta[name="description"]', { content: 'Blender demo site' });
+  I.seeAttributesOnElements('meta[name="description"]', { content: 'JW Player OTT Web App demo' });
 
-  I.seeAttributesOnElements('meta[property="og:title"]', { content: 'All Films - Blender' });
-  I.seeAttributesOnElements('meta[property="og:description"]', { content: 'Blender demo site' });
+  I.seeAttributesOnElements('meta[property="og:title"]', { content: 'All Films - JW OTT Web App' });
+  I.seeAttributesOnElements('meta[property="og:description"]', { content: 'JW Player OTT Web App demo' });
 
-  I.seeAttributesOnElements('meta[name="twitter:title"]', { content: 'All Films - Blender' });
-  I.seeAttributesOnElements('meta[name="twitter:description"]', { content: 'Blender demo site' });
+  I.seeAttributesOnElements('meta[name="twitter:title"]', { content: 'All Films - JW OTT Web App' });
+  I.seeAttributesOnElements('meta[name="twitter:description"]', { content: 'JW Player OTT Web App demo' });
 });
 
 Scenario('It renders the correct meta tags for the movie screen', async ({ I }) => {
@@ -96,13 +97,13 @@ Scenario('It renders the correct structured metadata for the series screen', asy
 });
 
 async function checkMetaTags(I: CodeceptJS.I, title: string, description, isSeries: boolean) {
-  I.seeTitleEquals(`${title} - Blender`);
+  I.seeTitleEquals(`${title} - JW OTT Web App`);
 
   I.seeAttributesOnElements('meta[name="description"]', { content: description });
 
   const url = removeQueryParam(await I.grabCurrentUrl(), 'r');
   const posterUrl = getPosterUrl(url);
-  I.seeAttributesOnElements('meta[property="og:title"]', { content: `${title} - Blender` });
+  I.seeAttributesOnElements('meta[property="og:title"]', { content: `${title} - JW OTT Web App` });
   I.seeAttributesOnElements('meta[property="og:description"]', { content: description });
   I.seeAttributesOnElements('meta[property="og:type"]', { content: isSeries ? 'video.episode' : 'video.other' });
   I.seeAttributesOnElements('meta[property="og:image"]', { content: posterUrl });
@@ -116,7 +117,7 @@ async function checkMetaTags(I: CodeceptJS.I, title: string, description, isSeri
   I.seeAttributesOnElements('meta[property="og:video:width"]', { content: '1280' });
   I.seeAttributesOnElements('meta[property="og:video:height"]', { content: '720' });
 
-  I.seeAttributesOnElements('meta[name="twitter:title"]', { content: `${title} - Blender` });
+  I.seeAttributesOnElements('meta[name="twitter:title"]', { content: `${title} - JW OTT Web App` });
   I.seeAttributesOnElements('meta[name="twitter:description"]', { content: description });
   I.seeAttributesOnElements('meta[name="twitter:image"]', { content: makeHttps(posterUrl) });
 }

@@ -3,7 +3,7 @@ import React, { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { render, RenderOptions } from '@testing-library/react';
 
-import QueryProvider from '../src/providers/QueryProvider';
+import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
 
 interface WrapperProps {
   children?: ReactNode;
@@ -12,7 +12,7 @@ interface WrapperProps {
 function Router({ children }: WrapperProps) {
   const routes = createRoutesFromElements(<Route path="*" element={<>{children}</>} />);
 
-  return <RouterProvider router={createBrowserRouter(routes)} />;
+  return <RouterProvider router={createBrowserRouter(routes, { window })} />;
 }
 
 export const createWrapper = () => {

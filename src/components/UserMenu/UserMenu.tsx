@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
-import AccountCircle from '../../icons/AccountCircle';
-import Favorite from '../../icons/Favorite';
-import BalanceWallet from '../../icons/BalanceWallet';
-import Exit from '../../icons/Exit';
-import MenuButton from '../MenuButton/MenuButton';
-
 import styles from './UserMenu.module.scss';
 
+import AccountCircle from '#src/icons/AccountCircle';
+import Favorite from '#src/icons/Favorite';
+import BalanceWallet from '#src/icons/BalanceWallet';
+import Exit from '#src/icons/Exit';
+import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
 
 type Props = {

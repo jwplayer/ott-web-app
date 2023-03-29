@@ -1,5 +1,8 @@
 const baseUrl = 'http://localhost:8080/';
 
+export const normalTimeout = 10;
+export const longTimeout = 20;
+
 export enum ShelfId {
   featured = 'featured',
   allFilms = 'all-films',
@@ -15,14 +18,11 @@ export const makeShelfXpath = (shelf: ShelfId) => {
 
 export default {
   username: 'ott-test-account@jwplayer.com',
-  password: '_KmjpSVedX2uTD3yTq&xA',
   loginFormSelector: 'form[data-testid="login-form"]',
   registrationFormSelector: 'form[data-testid="registration-form"]',
   duplicateUserError: 'There is already a user with this email address',
   baseUrl: baseUrl,
   accountsUrl: `${baseUrl}u/my-account`,
-  registerUrl: `${baseUrl}?u=create-account`,
-  loginUrl: `${baseUrl}?u=login`,
   paymentsUrl: `${baseUrl}u/payments`,
   offersUrl: `${baseUrl}u/payments?u=choose-offer`,
   staticPageUrl: `${baseUrl}m/oGNEecGq`,
@@ -31,7 +31,6 @@ export default {
   agent327Title: 'Agent 327',
   agent327Description:
     'Hendrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.',
-  bigBuckBunnyPath: 'awWEFyPu/big-buck-bunny?r=dGSUzs9o',
   bigBuckBunnyTitle: 'Big Buck Bunny',
   bigBuckBunnyDescription:
     "Big Buck Bunny (code-named Project Peach) is a 2008 short computer-animated comedy film featuring animals of the forest, made by the Blender Institute, part of the Blender Foundation. Like the foundation's previous film, Elephants Dream, the film was made using Blender, a free and open-source software application for 3D computer modeling and animation developed by the same foundation.",
@@ -45,5 +44,5 @@ export default {
   startWatchingButton: 'Start watching',
   continueWatchingButton: 'Continue watching',
   signUpToWatch: 'Sign up to start watching!',
-  continueWatchingShelfTitle: 'Continue watching',
+  continueWatchingShelfTitle: 'Continue Watching',
 };

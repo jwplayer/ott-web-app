@@ -1,8 +1,8 @@
-import { addQueryParams } from '../utils/formatting';
-import { getDataOrThrow } from '../utils/api';
-
+import { addQueryParams } from '#src/utils/formatting';
+import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
+import type { AdSchedule } from '#types/ad-schedule';
 import type { GetSeriesParams, Series } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
 import { generateImageData } from '#src/utils/image';
@@ -51,12 +51,12 @@ export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) =
  * @param params
  * @param {string} [drmPolicyId]
  */
-export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {}, drmPolicyId?: string): Promise<Playlist | undefined> => {
+export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {}): Promise<Playlist | undefined> => {
   if (!id) {
     return undefined;
   }
 
-  const pathname = drmPolicyId ? `/v2/playlists/${id}/drm/${drmPolicyId}` : `/v2/playlists/${id}`;
+  const pathname = `/v2/playlists/${id}`;
   const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
   const response = await fetch(url);
   const data = await getDataOrThrow(response);
@@ -148,4 +148,21 @@ export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in
   });
   const response = await fetch(url);
   return await getDataOrThrow(response);
+};
+
+/**
+ * Get series by id
+ * @param {string} id
+ * @param params
+ */
+export const getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {
+  if (!id) {
+    throw new Error('Ad Schedule ID is required');
+  }
+
+  const url = import.meta.env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
+  const response = await fetch(url);
+  const data = await getDataOrThrow(response);
+
+  return data;
 };

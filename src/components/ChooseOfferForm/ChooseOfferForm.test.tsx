@@ -1,12 +1,11 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import monthlyOffer from '../../fixtures/monthlyOffer.json';
-import yearlyOffer from '../../fixtures/yearlyOffer.json';
-import tvodOffer from '../../fixtures/tvodOffer.json';
-
 import ChooseOfferForm from './ChooseOfferForm';
 
+import monthlyOffer from '#test/fixtures/monthlyOffer.json';
+import yearlyOffer from '#test/fixtures/yearlyOffer.json';
+import tvodOffer from '#test/fixtures/tvodOffer.json';
 import type { Offer } from '#types/checkout';
 
 const svodOffers = [monthlyOffer, yearlyOffer] as Offer[];

@@ -12,7 +12,7 @@ accounts / authentication, subscription management, and checkout flows.
 The available backend integrations serve 3 main roles, Accounts, Subscription, and Checkout. Below are the methods
 that any backend integration needs to support broken down by role:
 
-- [Account](../src/services/account.service.ts)
+- [Account](src/services/account.service.ts)
   - login
   - register
   - getPublisherConsents
@@ -26,12 +26,12 @@ that any backend integration needs to support broken down by role:
   - getLocales
   - getCaptureStatus
   - updateCaptureAnswers
-- [Subscription](../src/services/subscription.service.ts)
+- [Subscription](src/services/subscription.service.ts)
   - getSubscriptions
   - updateSubscription
   - getPaymentDetails
   - getTransactions
-- [Checkout](../src/services/checkout.service.ts)
+- [Checkout](src/services/checkout.service.ts)
   - getOffer
   - createOrder
   - updateOrder
@@ -42,7 +42,10 @@ that any backend integration needs to support broken down by role:
 
 ## Existing Configurations
 
+### JWP
+
+The OTT Web App is optimized to work with JWP authentication, subscriptions, and payments. For configuration options see [configuration.md](configuration.md)
+
 ### Cleeng (https://developers.cleeng.com/docs)
 
-The OTT Web App was initially built around Cleeng, and Cleeng is an all-in-one platform that provides support for all of the 3 functional roles above. For configuration options see [configuration.md](configuration.md)
-
+The Web App was also developed with support for Cleeng.  Cleeng is a 3rd party platform that also provides support for the 3 functional roles above. 

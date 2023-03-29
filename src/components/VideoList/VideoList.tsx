@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import VideoListItem from '../VideoListItem/VideoListItem';
-
 import styles from './VideoList.module.scss';
 
+import VideoListItem from '#components/VideoListItem/VideoListItem';
 import { isLocked } from '#src/utils/entitlements';
+import { testId } from '#src/utils/common';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
@@ -39,7 +39,7 @@ function VideoList({
   hasSubscription,
 }: Props) {
   return (
-    <div className={classNames(styles.container, !!className && className)} data-testid="video-list">
+    <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
       {!!header && header}
       {playlist &&
         playlist.playlist.map((playlistItem: PlaylistItem) => {

@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 
 import styles from './MediaStaticPage.module.scss';
 
-import MarkdownComponent from '#src/components/MarkdownComponent/MarkdownComponent';
+import MarkdownComponent from '#components/MarkdownComponent/MarkdownComponent';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { mediaURL } from '#src/utils/formatting';
 import type { ScreenComponent } from '#types/screens';

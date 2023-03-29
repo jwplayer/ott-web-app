@@ -6,7 +6,7 @@ import styles from './StartWatchingButton.module.scss';
 
 import Play from '#src/icons/Play';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';

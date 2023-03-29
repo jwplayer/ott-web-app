@@ -1,152 +1,174 @@
-import type { CreateOrderPayload, UpdateOrderPayload } from '#types/checkout';
-import { getLocales } from '#src/services/account.service';
-import * as checkoutService from '#src/services/checkout.service';
-import { useConfigStore } from '#src/stores/ConfigStore';
-import { useAccountStore } from '#src/stores/AccountStore';
+import { subscribeToNotifications } from './NotificationsController';
+
+import type { CardPaymentData, CreateOrderArgs, Offer, Order, PaymentMethod, PaymentWithPayPalResponse, UpdateOrderPayload } from '#types/checkout';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import useAccount from '#src/hooks/useAccount';
+import useService from '#src/hooks/useService';
 
-export const createOrder = async (offerId: string, paymentMethodId?: number) => {
-  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
+export const createOrder = async (offer: Offer, paymentMethodId?: number): Promise<unknown> => {
+  return await useAccount(async ({ customer, auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
 
-  const { user, auth } = useAccountStore.getState();
+      const createOrderArgs: CreateOrderArgs = {
+        offer,
+        customerId: customer.id,
+        country: customer?.country || '',
+        customerIP: customer?.lastUserIp || '',
+        paymentMethodId,
+      };
 
-  if (!cleengId) throw new Error('cleengId is not configured');
-  if (!user || !auth) throw new Error('user is not logged in');
+      const response = await checkoutService.createOrder(createOrderArgs, sandbox, jwt);
 
-  const localesResponse = await getLocales(cleengSandbox);
+      if (response?.errors?.length > 0) {
+        useCheckoutStore.getState().setOrder(null);
 
-  if (localesResponse.errors.length > 0) throw new Error(localesResponse.errors[0]);
+        throw new Error(response?.errors[0]);
+      }
 
-  const createOrderPayload: CreateOrderPayload = {
-    offerId,
-    customerId: user.id,
-    country: user.country,
-    currency: localesResponse.responseData.currency,
-    customerIP: user.lastUserIp,
-    paymentMethodId,
-  };
-
-  const response = await checkoutService.createOrder(createOrderPayload, cleengSandbox, auth.jwt);
-
-  if (response.errors.length > 0) {
-    useCheckoutStore.getState().setOrder(null);
-
-    throw new Error(response.errors[0]);
-  }
-
-  useCheckoutStore.getState().setOrder(response.responseData?.order);
+      useCheckoutStore.getState().setOrder(response.responseData?.order);
+    });
+  });
 };
 
-export const updateOrder = async (orderId: number, paymentMethodId?: number, couponCode?: string | null) => {
-  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
+export const updateOrder = async (order: Order, paymentMethodId?: number, couponCode?: string | null): Promise<unknown> => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
 
-  const { user, auth } = useAccountStore.getState();
+      const updateOrderPayload: UpdateOrderPayload = {
+        order,
+        paymentMethodId,
+        couponCode,
+      };
 
-  if (!cleengId) throw new Error('cleengId is not configured');
-  if (!user || !auth) throw new Error('user is not logged in');
+      const response = await checkoutService.updateOrder(updateOrderPayload, sandbox, jwt);
+      if (response.errors.length > 0) {
+        // clear the order when the order doesn't exist on the server
+        if (response.errors[0].includes(`Order with ${order.id} not found`)) {
+          useCheckoutStore.getState().setOrder(null);
+        }
 
-  const updateOrderPayload: UpdateOrderPayload = {
-    orderId,
-    paymentMethodId,
-    couponCode,
-  };
-
-  const response = await checkoutService.updateOrder(updateOrderPayload, cleengSandbox, auth.jwt);
-
-  if (response.errors.length > 0) {
-    // clear the order when the order doesn't exist on the server
-    if (response.errors[0].includes(`Order with ${orderId} not found`)) {
-      useCheckoutStore.getState().setOrder(null);
-    }
-
-    throw new Error(response.errors[0]);
-  }
-
-  useCheckoutStore.getState().setOrder(response.responseData?.order);
+        throw new Error(response.errors[0]);
+      }
+      if (response.responseData?.order) {
+        useCheckoutStore.getState().setOrder(response.responseData?.order);
+      }
+    });
+  });
 };
 
-export const getPaymentMethods = async () => {
-  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
+export const getPaymentMethods = async (): Promise<PaymentMethod[]> => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true }) => {
+      if (!checkoutService) throw new Error('checkout service is not available');
 
-  const { user, auth } = useAccountStore.getState();
-  const { paymentMethods } = useCheckoutStore.getState();
+      const { paymentMethods } = useCheckoutStore.getState();
 
-  if (paymentMethods) return paymentMethods; // already fetched payment methods
-  if (!cleengId) throw new Error('cleengId is not configured');
-  if (!user || !auth) throw new Error('user is not logged in');
+      if (paymentMethods) return paymentMethods; // already fetched payment methods
 
-  const response = await checkoutService.getPaymentMethods(cleengSandbox, auth.jwt);
+      const response = await checkoutService.getPaymentMethods(sandbox, jwt);
 
-  if (response.errors.length > 0) throw new Error(response.errors[0]);
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-  useCheckoutStore.getState().setPaymentMethods(response.responseData?.paymentMethods);
+      useCheckoutStore.getState().setPaymentMethods(response.responseData?.paymentMethods);
 
-  return response.responseData?.paymentMethods;
+      return response.responseData?.paymentMethods;
+    });
+  });
 };
 
-export const paymentWithoutDetails = async () => {
-  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
+export const paymentWithoutDetails = async (): Promise<unknown> => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      if (!checkoutService) throw new Error('checkout service is not available');
 
-  const { user, auth } = useAccountStore.getState();
-  const { order } = useCheckoutStore.getState();
+      const { order } = useCheckoutStore.getState();
 
-  if (!order) throw new Error('No order created');
-  if (!cleengId) throw new Error('cleengId is not configured');
-  if (!user || !auth) throw new Error('user is not logged in');
+      if (!order) throw new Error('No order created');
+      if (!authProviderId) throw new Error('auth provider is not configured');
 
-  const response = await checkoutService.paymentWithoutDetails({ orderId: order.id }, cleengSandbox, auth.jwt);
+      const response = await checkoutService.paymentWithoutDetails({ orderId: order.id }, sandbox, jwt);
 
-  if (response.errors.length > 0) throw new Error(response.errors[0]);
-  if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
+      if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
 
-  return response.responseData;
+      return response.responseData;
+    });
+  });
 };
 
-export const adyenPayment = async (paymentMethod: AdyenPaymentMethod) => {
-  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
-  const { user, auth } = useAccountStore.getState();
-  const { order } = useCheckoutStore.getState();
+export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
+  return await useAccount(async ({ customer }) => {
+    return await useService(async ({ checkoutService, authProviderId }) => {
+      const { order } = useCheckoutStore.getState();
 
-  if (!order) throw new Error('No order created');
-  if (!cleengId) throw new Error('cleengId is not configured');
-  if (!user || !auth) throw new Error('user is not logged in');
+      if (!order) throw new Error('No order created');
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
 
-  const response = await checkoutService.paymentWithAdyen(
-    {
-      orderId: order.id,
-      card: paymentMethod,
-    },
-    cleengSandbox,
-    auth.jwt,
-  );
+      // subscribe to listen to inplayer websocket notifications
+      await subscribeToNotifications(customer?.uuid);
 
-  if (response.errors.length > 0) throw new Error(response.errors[0]);
-  if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
+      const response = await checkoutService.directPostCardPayment(cardPaymentPayload, order);
 
-  return response.responseData;
+      return response;
+    });
+  });
 };
 
-export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string) => {
-  const { cleengSandbox, cleengId } = useConfigStore.getState().getCleengData();
-  const { user, auth } = useAccountStore.getState();
-  const { order } = useCheckoutStore.getState();
+export const iFrameCardPayment = async (paymentMethod: AdyenPaymentMethod): Promise<unknown> => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      const { order } = useCheckoutStore.getState();
 
-  if (!order) throw new Error('No order created');
-  if (!cleengId) throw new Error('cleengId is not configured');
-  if (!user || !auth) throw new Error('user is not logged in');
+      if (!order) throw new Error('No order created');
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
 
-  const response = await checkoutService.paymentWithPayPal(
-    {
-      orderId: order.id,
-      successUrl,
-      cancelUrl,
-      errorUrl,
-    },
-    cleengSandbox,
-    auth.jwt,
-  );
+      const response = await checkoutService.iFrameCardPayment(
+        {
+          orderId: order.id,
+          card: paymentMethod,
+        },
+        sandbox,
+        jwt,
+      );
 
-  if (response.errors.length > 0) throw new Error(response.errors[0]);
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
+      if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
 
-  return response.responseData;
+      return response.responseData;
+    });
+  });
+};
+
+export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string, couponCode: string = ''): Promise<PaymentWithPayPalResponse> => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      const { order } = useCheckoutStore.getState();
+
+      if (!order) throw new Error('No order created');
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
+
+      const response = await checkoutService.paymentWithPayPal(
+        {
+          order: order,
+          successUrl,
+          cancelUrl,
+          errorUrl,
+          couponCode,
+        },
+        sandbox,
+        jwt,
+      );
+
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+      return response.responseData;
+    });
+  });
 };

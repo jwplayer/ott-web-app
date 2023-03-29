@@ -2,13 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import TextField from '../TextField/TextField';
-import type { Customer } from '../../../types/account';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import Button from '../Button/Button';
-
 import styles from './Payment.module.scss';
 
+import TextField from '#components/TextField/TextField';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Button from '#components/Button/Button';
+import type { Customer } from '#types/account';
 import { formatDate, formatPrice } from '#src/utils/formatting';
 import { addQueryParam } from '#src/utils/location';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
@@ -27,6 +26,7 @@ type Props = {
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
   showAllTransactions: boolean;
+  canRenewSubscription?: boolean;
 };
 
 const Payment = ({
@@ -40,6 +40,7 @@ const Payment = ({
   panelHeaderClassName,
   onShowAllTransactionsClick,
   showAllTransactions,
+  canRenewSubscription = false,
 }: Props): JSX.Element => {
   const { t } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -69,8 +70,10 @@ const Payment = ({
         return t('user:payment.daily_subscription');
       case 'week':
         return t('user:payment.weekly_subscription');
+      case 'granted':
+        return t('user:payment.granted_subscription');
       default:
-        throw 'Unknown period';
+        return t('user:payment.other');
     }
   }
 
@@ -86,7 +89,7 @@ const Payment = ({
               <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
                 <p>
                   <strong>{getTitle(activeSubscription.period)}</strong> <br />
-                  {activeSubscription.status === 'active'
+                  {activeSubscription.status === 'active' && activeSubscription.period !== 'granted'
                     ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
                     : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
                 </p>
@@ -95,11 +98,11 @@ const Payment = ({
                   <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
                 </p>
               </div>
-              {activeSubscription.status === 'active' ? (
+              {activeSubscription.status === 'active' && activeSubscription.period !== 'granted' ? (
                 <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
-              ) : (
+              ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
-              )}
+              ) : null}
             </React.Fragment>
           ) : isLoading ? null : (
             <React.Fragment>

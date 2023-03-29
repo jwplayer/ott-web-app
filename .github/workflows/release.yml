@@ -1,0 +1,51 @@
+name: Release
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "develop" branch
+  push:
+    branches: ['develop']
+
+jobs:
+  create-new-release-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Generate changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.ACTION_TOKEN }}
+          release-count: '0'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build App
+        env:
+          RELEASE_VERSION: ${{ steps.changelog.outputs.tag }}
+        run: |
+          yarn build
+          cd build
+          tar czf ott-web-app-build-${RELEASE_VERSION}.tar.gz public
+          zip -r ott-web-app-build-${RELEASE_VERSION}.zip public
+
+      - name: Append Release Notes
+        run: |
+          cat <<EOT >> .github/RELEASE_BODY_TEMPLATE.md
+          ${{ steps.changelog.outputs.clean_changelog }}
+          EOT
+          echo "Appended release notes"
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: ${{ steps.changelog.outputs.tag }}
+        with:
+          artifacts: "build/ott-web-app-build-*.tar.gz, build/ott-web-app-build-*.zip"
+          tag: ${{ steps.changelog.outputs.tag }}
+          bodyFile: ".github/RELEASE_BODY_TEMPLATE.md"
+          token: ${{ secrets.github_token }}

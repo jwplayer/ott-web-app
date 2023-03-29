@@ -20,11 +20,11 @@ exports[`<About> > renders and matches snapshot 1`] = `
     <p>
       To see an example of JW OTT Webapp in action, see 
       <a
-        href="https://jw-ott-webapp.netlify.app/"
+        href="https://app-preview.jwplayer.com/"
         rel="noopener"
         target="_blank"
       >
-        https://jw-ott-webapp.netlify.app/
+        https://app-preview.jwplayer.com/
       </a>
       .
     </p>
@@ -86,7 +86,7 @@ exports[`<About> > renders and matches snapshot 1`] = `
       <li>
         Site-wide video search and related video recommendations powered by 
         <a
-          href="https://support.jwplayer.com/customer/portal/articles/2191721-jw-recommendations"
+          href="https://docs.jwplayer.com/platform/docs/vdh-learn-about-recommendations"
           rel="noopener"
           target="_blank"
         >

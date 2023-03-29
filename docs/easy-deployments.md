@@ -20,7 +20,7 @@ Firebase has both [free and paid plans](https://firebase.google.com/pricing). Th
 
 #### Usage Instructions
 
-First, in your fork, you will need to update the project ID in [.firebaserc](../.firebaserc).
+First, in your fork, you will need to update the project ID in [.firebaserc](.firebaserc).
 
 The easiest way to deploy is to use the [Firebase-Github integration](https://firebase.google.com/docs/hosting/github-integration). You can find the action [.yml specifications here](https://github.com/marketplace/actions/deploy-to-firebase-hosting) to deploy to a preview channel for each PR and to the live channel for each merge to your main branch.  If you want to manually setup the work, you can find those instructions [here](https://github.com/FirebaseExtended/action-hosting-deploy/blob/main/docs/service-account.md).
 
@@ -45,7 +45,7 @@ Github pages also has some [usage limits](https://docs.github.com/en/pages/getti
 
 The `yarn deploy:github` command executes a simple nodejs script located in `scripts/deploy-github.js`. The script executes the following commands:
 
-1. Runs `yarn build` with `APP_GITHUB_PUBLIC_BASE_URL` envvar.<br/><br />That envvar is used to set the URL location of the project. By default if `APP_GITHUB_PUBLIC_BASE_URL` is empty, the value will be based on the `git remote get-url origin` command. You can also pass your own `APP_GITHUB_PUBLIC_BASE_URL` envvar by running `APP_GITHUB_PUBLIC_BASE_URL=/my-base/ yarn deploy:github`.
+1. Runs `yarn build` with [`APP_GITHUB_PUBLIC_BASE_URL`](build-from-source.md#APP_GITHUB_PUBLIC_BASE_URL) envvar.
 2. Runs `yarn gh-pages -o origin -d build`.<br /><br />You can change the remote from *origin* to *myremote* by running `yarn deploy:github --github-remote=myremote`.  The `yarn deploy:github` command uses the GitHub remote to compute the default value for `APP_GITHUB_PUBLIC_BASE_URL`.
 
 

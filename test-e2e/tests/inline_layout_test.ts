@@ -1,18 +1,12 @@
-import constants, { ShelfId } from '../utils/constants';
-import { LoginContext } from '../utils/password_utils';
+import constants, { normalTimeout, ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const videoListLocator = locate({ css: 'div[data-testid="video-list"]' });
 
 Feature('inline layout').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-const loginContext: LoginContext = {
-  email: constants.username,
-  password: constants.password,
-};
-
 Before(async ({ I }) => {
-  I.useConfig('test--inline-player');
-  I.login(loginContext);
+  I.useConfig(testConfigs.inlinePlayer);
 });
 
 Scenario('I can see the movie inline player layout', async ({ I }) => {
@@ -90,18 +84,22 @@ Scenario('I switch to another season in the video list', async ({ I }) => {
 });
 
 Scenario('I can see the video auto play when play=1 is set', async ({ I }) => {
-  I.seeCurrentUrlEquals(constants.baseUrl);
-  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}&play=1`);
+  I.seeInCurrentUrl(constants.baseUrl);
+  await I.openVideoCard(constants.bigBuckBunnyTitle);
+  await I.executeScript(() => {
+    window.location.href += '&play=1';
+  });
 
-  I.waitForElement('video', 5);
+  I.waitForElement('video', normalTimeout);
   await I.waitForPlayerPlaying(constants.bigBuckBunnyTitle);
 });
 
 Scenario("I don't see the video auto play when play=1 is not set", async ({ I }) => {
-  I.seeCurrentUrlEquals(constants.baseUrl);
-  I.amOnPage(`${constants.baseUrl}m/${constants.bigBuckBunnyPath}`);
+  I.seeInCurrentUrl(constants.baseUrl);
 
-  I.waitForElement('video', 5);
+  await I.openVideoCard(constants.bigBuckBunnyTitle);
+
+  I.waitForElement('video', normalTimeout);
   await I.waitForPlayerState('idle');
 });
 

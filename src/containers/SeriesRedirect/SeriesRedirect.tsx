@@ -5,7 +5,7 @@ import { useSeriesData } from '#src/hooks/useSeriesData';
 import useQueryParam from '#src/hooks/useQueryParam';
 import { episodeURL } from '#src/utils/formatting';
 import Loading from '#src/pages/Loading/Loading';
-import ErrorPage from '#src/components/ErrorPage/ErrorPage';
+import ErrorPage from '#components/ErrorPage/ErrorPage';
 
 type Props = {
   seriesId: string;

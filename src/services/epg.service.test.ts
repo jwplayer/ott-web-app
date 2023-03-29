@@ -3,8 +3,8 @@ import { mockFetch, mockGet } from 'vi-fetch';
 import { register, unregister } from 'timezone-mock';
 
 import epgService, { EpgProgram } from '#src/services/epg.service';
-import scheduleFixture from '#src/fixtures/schedule.json';
-import livePlaylistFixture from '#src/fixtures/livePlaylist.json';
+import scheduleFixture from '#test/fixtures/schedule.json';
+import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
 import type { Playlist } from '#types/playlist';
 
 const livePlaylist = livePlaylistFixture as Playlist;

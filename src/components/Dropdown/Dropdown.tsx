@@ -2,17 +2,17 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import useOpaqueId from '../../hooks/useOpaqueId';
-import HelperText from '../HelperText/HelperText';
-
 import styles from './Dropdown.module.scss';
+
+import HelperText from '#components/HelperText/HelperText';
+import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
   name: string;
   value: string;
   className?: string;
   defaultLabel?: string;
-  options?: string[];
+  options?: (string | { value: string; label: string })[];
   optionsStyle?: string;
   valuePrefix?: string;
   label?: string;
@@ -61,9 +61,13 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
           )}
           {options &&
             options.map((option) => (
-              <option className={classNames(styles.option, optionsStyle)} key={option} value={option}>
+              <option
+                className={classNames(styles.option, optionsStyle)}
+                key={typeof option === 'string' ? option : option.value}
+                value={typeof option === 'string' ? option : option.value}
+              >
                 {valuePrefix}
-                {option}
+                {typeof option === 'string' ? option : option.label}
               </option>
             ))}
         </select>

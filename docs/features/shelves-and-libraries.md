@@ -1,6 +1,6 @@
 # Video Shelves and Libraries
 
-<img title="" src="./img/shelves.jpg" alt="Shelves" width="316">  <img src="./img/library.jpg" title="" alt="Libraries" width="317">
+<img title="" src="./../_images/shelves.jpg" alt="Shelves" width="316">  <img src="./../_images/library.jpg" title="" alt="Libraries" width="317">
 
 ## Shelves
 
@@ -34,7 +34,7 @@ Videos are published to shelves and libraries using playlists:
 - For dynamic playlist items are added based on tags and sorted on most viewed, most recently published or alphabetically
 - Playlists apply geoblocking: only the video available in the viewer's country are returned. It uses the IP address to determine the country.
 
-<img src="./img/playlist-shelf-lib.jpg" title="" alt="Shelves" width="600">
+<img src="./../_images/playlist-shelf-lib.jpg" title="" alt="Shelves" width="600">
 
 ## Images
 
@@ -58,12 +58,10 @@ Shelves and libraries can be defined in the [app config](/docs/configuration.md)
 {
   "content": [
     {
-      "enableText": true,
       "featured": true,
       "playlistId": "JSKF03bk"
     },
     {
-      "enableText": true,
       "playlistId": "dGSUzs9o"
     }
   ],

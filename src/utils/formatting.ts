@@ -85,7 +85,7 @@ export const formatDate = (dateString: number) => {
 };
 
 export const formatPrice = (price: number, currency: string, country: string) => {
-  return new Intl.NumberFormat(country, {
+  return new Intl.NumberFormat(country || undefined, {
     style: 'currency',
     currency: currency,
   }).format(price);

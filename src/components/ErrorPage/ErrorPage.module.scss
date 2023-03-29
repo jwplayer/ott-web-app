@@ -1,16 +1,23 @@
-@use '../../styles/variables';
-@use '../../styles/theme';
-@use '../../styles/mixins/responsive';
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+@use 'src/styles/mixins/responsive';
 
 .errorPage {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  min-height: 70vh;
+
+  a, a:visited, a:hover, a:active {
+    color: inherit;
+    font-weight: var(--body-font-weight-bold);
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 .box {
-  max-width: 500px;
+  max-width: 600px;
   padding: 12px;
 }
 
@@ -35,4 +42,26 @@
   .title {
     font-size: 24px;
   }
+}
+
+.logo {
+  margin-bottom: 24px;
+}
+
+.links {
+  position: relative;
+
+}
+
+.stack {
+  a {
+    position: absolute;
+    right: 0;
+  }
+}
+
+.image {
+  max-width: 200px;
+  max-height: 80px;
+  margin-bottom: 24px;
 }

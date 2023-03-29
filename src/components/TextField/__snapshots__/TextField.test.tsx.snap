@@ -23,7 +23,6 @@ exports[`<TextField> > renders and matches multiline snapshot 1`] = `
         name="name"
         placeholder="Placeholder"
         rows="3"
-        type="text"
       />
     </div>
   </div>

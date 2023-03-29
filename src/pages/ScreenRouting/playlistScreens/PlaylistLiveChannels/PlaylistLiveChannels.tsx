@@ -7,20 +7,19 @@ import { differenceInSeconds, format } from 'date-fns';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
-import VideoLayout from '#src/components/VideoLayout/VideoLayout';
-import Epg from '#src/components/Epg/Epg';
-import useBlurImageUpdater from '#src/hooks/useBlurImageUpdater';
+import VideoLayout from '#components/VideoLayout/VideoLayout';
+import Epg from '#components/Epg/Epg';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useLiveChannels from '#src/hooks/useLiveChannels';
-import ShareButton from '#src/components/ShareButton/ShareButton';
+import ShareButton from '#components/ShareButton/ShareButton';
 import StartWatchingButton from '#src/containers/StartWatchingButton/StartWatchingButton';
 import Cinema from '#src/containers/Cinema/Cinema';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { addQueryParams, formatDurationTag, liveChannelsURL } from '#src/utils/formatting';
-import Button from '#src/components/Button/Button';
+import Button from '#components/Button/Button';
 import Play from '#src/icons/Play';
 import useLiveProgram from '#src/hooks/useLiveProgram';
-import Tag from '#src/components/Tag/Tag';
+import Tag from '#components/Tag/Tag';
 import { generateMovieJSONLD } from '#src/utils/structuredData';
 import type { ScreenComponent } from '#types/screens';
 import type { Playlist } from '#types/playlist';
@@ -31,12 +30,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { siteName, styling, features } = config;
-
-  const posterFading: boolean = styling?.posterFading === true;
-  const enableSharing: boolean = features?.enableSharing === true;
-
-  const updateBlurImage = useBlurImageUpdater(playlist);
+  const { siteName } = config;
 
   // Routing
   const location = useLocation();
@@ -109,7 +103,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     setActiveChannel(channelId, programId);
 
     // scroll to top when clicking a program
-    (document.scrollingElement || document.body).scroll({ top: 0 });
+    (document.scrollingElement || document.body).scroll({ top: 0, behavior: 'smooth' });
   };
 
   const handleChannelClick = (channelId: string) => {
@@ -117,11 +111,6 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
   };
 
   // Effects
-  useEffect(() => {
-    const toImage = program?.backgroundImage?.image || channelMediaItem;
-    if (toImage) updateBlurImage(toImage);
-  }, [channelMediaItem, program, updateBlurImage]);
-
   useEffect(() => {
     // update the channel id in URL
     if (channel && feedid && channelId !== channel.id) {
@@ -138,10 +127,9 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
   const canonicalUrl = `${window.location.origin}${liveChannelsURL(feedid, channel.id)}`;
   const pageTitle = `${channel.title} - ${siteName}`;
 
-  const shareButton =
-    enableSharing && channelMediaItem ? (
-      <ShareButton title={channelMediaItem.title} description={channelMediaItem.description} url={window.location.href} />
-    ) : null;
+  const shareButton = channelMediaItem ? (
+    <ShareButton title={channelMediaItem.title} description={channelMediaItem.description} url={window.location.href} />
+  ) : null;
 
   const startWatchingButton = channelMediaItem ? (
     <>
@@ -208,7 +196,6 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         description={videoDetails.description}
         item={channelMediaItem}
         primaryMetadata={primaryMetadata}
-        posterMode={posterFading ? 'fading' : 'normal'}
         image={videoDetails.image}
         startWatchingButton={startWatchingButton}
         shareButton={shareButton}

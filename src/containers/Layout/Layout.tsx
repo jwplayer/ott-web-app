@@ -10,14 +10,13 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useUIStore } from '#src/stores/UIStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useSearchQueryUpdater from '#src/hooks/useSearchQueryUpdater';
-import Button from '#src/components/Button/Button';
-import MarkdownComponent from '#src/components/MarkdownComponent/MarkdownComponent';
-import Header from '#src/components/Header/Header';
-import Sidebar from '#src/components/Sidebar/Sidebar';
-import DynamicBlur from '#src/components/DynamicBlur/DynamicBlur';
-import MenuButton from '#src/components/MenuButton/MenuButton';
-import UserMenu from '#src/components/UserMenu/UserMenu';
-import ConfigSelect from '#src/components/ConfigSelect';
+import useClientIntegration from '#src/hooks/useClientIntegration';
+import Button from '#components/Button/Button';
+import MarkdownComponent from '#components/MarkdownComponent/MarkdownComponent';
+import Header from '#components/Header/Header';
+import Sidebar from '#components/Sidebar/Sidebar';
+import MenuButton from '#components/MenuButton/MenuButton';
+import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 
 const Layout = () => {
@@ -25,14 +24,13 @@ const Layout = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { menu, assets, siteName, description, integrations, styling, features } = config;
-  const cleengId = integrations?.cleeng?.id;
+  const { menu, assets, siteName, description, styling, features } = config;
+  const { clientId } = useClientIntegration();
   const { searchPlaylist } = features || {};
-  const { footerText, dynamicBlur } = styling || {};
+  const { footerText } = styling || {};
 
-  const { blurImage, searchQuery, searchActive, userMenuOpen } = useUIStore(
-    ({ blurImage, searchQuery, searchActive, userMenuOpen }) => ({
-      blurImage,
+  const { searchQuery, searchActive, userMenuOpen } = useUIStore(
+    ({ searchQuery, searchActive, userMenuOpen }) => ({
       searchQuery,
       searchActive,
       userMenuOpen,
@@ -45,7 +43,6 @@ const Layout = () => {
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
   const [sideBarOpen, setSideBarOpen] = useState(false);
-  const hasDynamicBlur = dynamicBlur === true;
   const banner = assets.banner;
 
   useEffect(() => {
@@ -83,7 +80,7 @@ const Layout = () => {
     });
 
   const renderUserActions = () => {
-    if (!cleengId) return null;
+    if (!clientId) return null;
 
     return isLoggedIn ? (
       <UserMenu showPaymentsItem={accessModel !== 'AVOD'} />
@@ -106,7 +103,6 @@ const Layout = () => {
         <meta name="twitter:description" content={description} />
       </Helmet>
       <div className={styles.main}>
-        {hasDynamicBlur && blurImage && <DynamicBlur image={blurImage} transitionTime={1} debounceTime={350} />}
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
           logoSrc={banner}
@@ -125,7 +121,7 @@ const Layout = () => {
           isLoggedIn={isLoggedIn}
           userMenuOpen={userMenuOpen}
           toggleUserMenu={toggleUserMenu}
-          canLogin={!!cleengId}
+          canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
         >
           <Button label={t('home')} to="/" variant="text" />
@@ -144,9 +140,6 @@ const Layout = () => {
         <Outlet />
       </div>
       {!!footerText && <MarkdownComponent className={styles.footer} markdownString={footerText} inline />}
-
-      {/* Config select control to improve testing experience */}
-      {import.meta.env.APP_INCLUDE_TEST_CONFIGS && <ConfigSelect />}
     </div>
   );
 };

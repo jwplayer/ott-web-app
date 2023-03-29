@@ -21,12 +21,18 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   color: var(--body-color);
   font-family: var(--body-font-family);
   font-size: variables.$body-font-size;
   background-color: var(--body-background-color);
   -webkit-font-smoothing: antialiased;
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
 }
 
 button {
