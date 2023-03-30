@@ -145,7 +145,7 @@ const Payment = ({
                 <p>
                   <strong>{transaction.offerTitle}</strong> <br />
                   {t('user:payment.price_payed_with', {
-                    price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                    price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
                     method: transaction.paymentMethod,
                   })}
                 </p>

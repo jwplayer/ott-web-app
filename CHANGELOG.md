@@ -1,3 +1,47 @@
+## [4.4.2](https://github.com/jwplayer/ott-web-app/compare/v4.4.1...v4.4.2) (2023-03-29)
+
+
+### Bug Fixes
+
+* missing voucher in the payload ([ba8cf5b](https://github.com/jwplayer/ott-web-app/commit/ba8cf5b5a69b495d469d52c3936690d450818d6a))
+
+
+
+## [4.4.1](https://github.com/jwplayer/ott-web-app/compare/v4.4.0...v4.4.1) (2023-03-29)
+
+
+### Bug Fixes
+
+* content protection multiple configs issue ([d6fffd2](https://github.com/jwplayer/ott-web-app/commit/d6fffd2089fcf4c4459757fb80be7914ab39b73d))
+* not needed check ([6ea6574](https://github.com/jwplayer/ott-web-app/commit/6ea65747604539580852c1e870595fd0387c5ed4))
+* signing enabled condition ([7bbfa96](https://github.com/jwplayer/ott-web-app/commit/7bbfa96bda48adba56c18e1984741db0959fd88d))
+* use content protection tweaks ([4e03197](https://github.com/jwplayer/ott-web-app/commit/4e03197ac5e5410405a432c54df6153cfd697bdc))
+
+
+
+# [4.4.0](https://github.com/jwplayer/ott-web-app/compare/v4.3.0...v4.4.0) (2023-03-28)
+
+
+### Features
+
+* add player license key param / setting ([d7f5567](https://github.com/jwplayer/ott-web-app/commit/d7f5567d33696e663312e9710913d2997f79525c))
+
+
+
+# [4.3.0](https://github.com/jwplayer/ott-web-app/compare/v4.2.3...v4.3.0) (2023-03-23)
+
+
+### Bug Fixes
+
+* player container error ([d44493c](https://github.com/jwplayer/ott-web-app/commit/d44493c48526ae02485a1a9e289b9347392a3687))
+
+
+### Features
+
+* **project:** jwp signging service ([9b1030d](https://github.com/jwplayer/ott-web-app/commit/9b1030d9e999cf9852485eff252958fc8bfd91f5))
+
+
+
 ## [4.2.3](https://github.com/jwplayer/ott-web-app/compare/v4.2.2...v4.2.3) (2023-03-14)
 
 

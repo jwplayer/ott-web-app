@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "4.2.3",
+  "version": "4.4.2",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "JW Player",
@@ -12,7 +12,7 @@
     "prepare": "husky install",
     "start": "vite",
     "start:test": "vite build --mode test && vite preview --port 8080",
-    "build": "vite build",
+    "build": "vite build --mode ${MODE:=prod} && sh scripts/compressIni.sh build/public/.webapp.ini",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
     "test-coverage": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --coverage",
@@ -39,7 +39,7 @@
     "deploy:github": "node ./scripts/deploy-github.js"
   },
   "dependencies": {
-    "@inplayer-org/inplayer.js": "^3.13.5",
+    "@inplayer-org/inplayer.js": "^3.13.7",
     "classnames": "^2.3.1",
     "date-fns": "^2.28.0",
     "dompurify": "^2.3.8",
