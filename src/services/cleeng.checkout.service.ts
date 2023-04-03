@@ -8,7 +8,6 @@ import type {
   GetOffer,
   GetOffers,
   GetPaymentMethods,
-  Offer,
   PaymentWithAdyen,
   PaymentWithoutDetails,
   PaymentWithPayPal,
@@ -17,9 +16,7 @@ import type {
 import { getOverrideIP } from '#src/utils/common';
 
 export const getOffers: GetOffers = async (payload, sandbox) => {
-  const offers: Offer[] = [];
-
-  await Promise.all(
+  const offers = await Promise.all(
     payload.offerIds.map(async (offerId) => {
       const response = await getOffer({ offerId: offerId as string }, sandbox);
 
@@ -27,7 +24,7 @@ export const getOffers: GetOffers = async (payload, sandbox) => {
         throw new Error(response.errors[0]);
       }
 
-      offers.push(response.responseData);
+      return response.responseData;
     }),
   );
 

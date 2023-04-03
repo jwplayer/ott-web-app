@@ -7,7 +7,6 @@ import shallow from 'zustand/shallow';
 import useOffers from '#src/hooks/useOffers';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -18,8 +17,7 @@ const ChooseOffer = () => {
   const location = useLocation();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
-  const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
-  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasTVODOffers, hasPremierOffer } = useOffers();
+  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer } = useOffers();
 
   const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
     offerId: mixed<string>().required(t('choose_offer.field_required')),
@@ -68,7 +66,7 @@ const ChooseOffer = () => {
       submitting={submitting}
       offers={offers}
       offerType={offerType}
-      setOfferType={accessModel === 'SVOD' && hasTVODOffers && !hasPremierOffer ? setOfferType : undefined}
+      setOfferType={hasMultipleOfferTypes && !hasPremierOffer ? setOfferType : undefined}
     />
   );
 };

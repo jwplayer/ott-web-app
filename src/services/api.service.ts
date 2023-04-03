@@ -16,7 +16,7 @@ enum ImageProperty {
 
 /**
  * Transform incoming media items
- * - Parses productId into MediaOffer[] for all cleexng offers
+ * - Parses productId into MediaOffer[] for all cleeng offers
  */
 export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
   const config = ConfigStore.getState().config;

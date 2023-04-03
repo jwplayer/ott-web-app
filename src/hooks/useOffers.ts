@@ -34,6 +34,8 @@ const useOffers = () => {
   return useMemo(() => {
     const offers = allOffers.filter((offer: Offer) => (offerType === 'tvod' ? !isSVODOffer(offer) : isSVODOffer(offer)));
 
+    const hasMultipleOfferTypes = allOffers.some((offer: Offer) => (offerType === 'tvod' ? isSVODOffer(offer) : !isSVODOffer(offer)));
+
     const offersDict = (!isLoading && Object.fromEntries(offers.map((offer: Offer) => [offer.offerId, offer]))) || {};
     // we need to get the offerIds from the offer responses since it contains different offerIds based on the customers
     // location. E.g. if an offer is configured as `S12345678` it becomes `S12345678_US` in the US.
@@ -41,6 +43,7 @@ const useOffers = () => {
 
     return {
       hasTVODOffers: offers.some((offer: Offer) => !isSVODOffer(offer)),
+      hasMultipleOfferTypes,
       isLoading,
       hasPremierOffer,
       defaultOfferId,
