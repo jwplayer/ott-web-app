@@ -19,21 +19,40 @@ window.jwpltx = window.jwpltx || {};
   let timeWatched = 0;
   // Last progress of the video stored
   let lastVp = 0;
-  // Last quantile reached
-  let lastQ;
+  // Next quantile to send t event
+  let nextQuantile;
   // Seeking state, gets reset after 1 sec of the latest seeked event
-  let isSeeking = null;
-  // Timeout for seeking state
+  let isSeeking = false;
+  // Interval for Live Streams seeking state
   let liveInterval = null;
+  // Timeout for seeking state
+  let seekingTimeout = null;
 
-  // How many quantiles have we passed (whether we need to send new t event or not)
-  function getLastVODQuantile(progress, duration, numberOfQuantiles) {
-    return Math.floor(progress / (duration / numberOfQuantiles));
+  // Here we convert seconds watched to quantiles, the units accepted by the analytics service (res is 0 - 128)
+  function getCurrentProgressQuantile(progress, duration) {
+    return Math.floor(MAX_DURATION_IN_QUANTILES * (progress / duration));
   }
 
-  // Here we convert seconds watched to the unites accepted by analytics service (res is 0 - 128)
-  function getProgressWatched(progress, duration) {
-    return Math.floor(MAX_DURATION_IN_QUANTILES * (progress / duration));
+  // We convert `q` metric to quantiles (0 - 128) to define next breakpoint for `t` event
+  function getNextTriggerQuantile(progress, duration) {
+    return (Math.ceil((progress / duration) * uri.q) * MAX_DURATION_IN_QUANTILES) / uri.q;
+  }
+
+  // Here we convert seconds watched to quantiles, the units accepted by the analytics service (res is 0 - 128)
+  function sendRemainingData() {
+    if (uri.pw === -1) {
+      clearLiveInterval();
+    } else {
+      const pw = getCurrentProgressQuantile(lastVp, uri.vd);
+      uri.pw = pw;
+    }
+
+    if (timeWatched) {
+      uri.ti = Math.floor(timeWatched);
+      timeWatched = 0;
+
+      sendData('t');
+    }
   }
 
   // We set interval for sending t events for live streams where we can't get progress info
@@ -71,20 +90,21 @@ window.jwpltx = window.jwpltx || {};
   // Process seek event
   o.seek = function (offset, duration) {
     isSeeking = true;
+    clearTimeout(seekingTimeout);
     // Clear interval in case of a live stream not to update time watched while seeking
     if (uri.pw === -1) {
       clearLiveInterval();
     } else {
       // We need to rewrite progress of the video when seeking to have a valid ti param
       lastVp = offset;
-      lastQ = getLastVODQuantile(offset, duration, uri.q);
+      nextQuantile = getNextTriggerQuantile(offset, duration);
     }
   };
 
   // Process seeked event
   o.seeked = function () {
     // There is currently a 1 sec debounce surrounding this event in order to logically group multiple `seeked` events
-    window.setTimeout(() => {
+    seekingTimeout = setTimeout(() => {
       isSeeking = false;
       // Set new timeout when seeked event reached for live events
       if (uri.pw === -1 && !liveInterval) {
@@ -94,20 +114,15 @@ window.jwpltx = window.jwpltx || {};
     }, 1000);
   };
 
-  // When player is disconnected from the page -> we send remove event and update analytics with recent playback changes
+  // When player is disconnected from the page -> send the rest of the data and cancel possible intervals
   o.remove = function () {
-    if (uri.pw === -1) {
-      clearLiveInterval();
-    } else {
-      const pw = getProgressWatched(lastVp, uri.vd);
-      uri.pw = pw;
-    }
-
-    uri.ti = Math.floor(timeWatched);
-    timeWatched = 0;
-
-    sendData('t');
+    sendRemainingData();
   };
+
+  // Send the rest of the data and cancel possible intervals in case a web page is closed while watching
+  window.addEventListener('beforeunload', () => {
+    sendRemainingData();
+  });
 
   // Process a time tick event
   o.time = function (vp, vd) {
@@ -155,27 +170,27 @@ window.jwpltx = window.jwpltx || {};
         uri.pw = 0;
 
         // Initialize latest quantile to compare further quantiles with
-        lastQ = getLastVODQuantile(vp, vd, uri.q);
+        nextQuantile = getNextTriggerQuantile(vp, vd);
         // Initial values to compare watched progress
         lastVp = vp;
 
         sendData('s');
         // monitor ticks for entering new quantile
       } else {
-        const pw = getProgressWatched(vp, vd);
-        const passedQ = getLastVODQuantile(vp, vd, uri.q);
+        const pw = getCurrentProgressQuantile(vp, vd);
+        const quantile = getNextTriggerQuantile(vp, vd);
 
         // Total time watched since last t event.
         timeWatched = timeWatched + (vp - lastVp);
         lastVp = vp;
 
-        if (passedQ > lastQ) {
-          uri.ti = Math.floor(timeWatched);
+        if (pw >= nextQuantile) {
+          uri.ti = Math.round(timeWatched);
           uri.pw = pw;
 
           sendData('t');
 
-          lastQ = passedQ;
+          nextQuantile = quantile;
           timeWatched = 0;
         }
       }
@@ -233,13 +248,4 @@ window.jwpltx = window.jwpltx || {};
       console.log(url + str);
     }
   }
-
-  // Send the rest of the data and cancel possible intervals in case a web page is closed while watching
-  window.addEventListener('beforeunload', () => {
-    clearLiveInterval();
-    if (timeWatched) {
-      uri.ti = Math.floor(timeWatched);
-      sendData('t');
-    }
-  });
 })(window.jwpltx);

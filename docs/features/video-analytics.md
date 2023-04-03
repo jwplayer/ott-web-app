@@ -44,6 +44,8 @@ The event trigger implementation for the ott web app can be found at [jwpltx.js]
 
 Note that `navigator.sendBeacon()` is used to call the endpoints. The browser will not do CORS checks on this operation. It furthermore minimizes performance impact as the browser doesn't wait for the response of the server.
 
+It also lets us to use `beforeunload` event in order to send remaining data to analytics server when closing the window during watching in progress.
+
 ## Analytics ID
 
 A special data parameter is the Analytics ID (`aid`). It determines to which JW Player account & property the events belong. Each property has its unique analytics ID and is provided by a JW PLayer Solution Engineer or Account manager.
@@ -181,7 +183,7 @@ Any decimal values are truncated to an integer.
 
 ### Live Streams
 
-For live streams, this quantile distribution is ignored and time ticks are sent at pre-set intervals. We recommend 20 seconds. The following values are sent:
+For live streams, this quantile distribution is ignored and time ticks are sent at pre-set intervals of 20 seconds. The following values are sent:
 
 - pw (Quantile watched): -1
 - q (Quantiles): 0
