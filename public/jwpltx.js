@@ -38,7 +38,7 @@ window.jwpltx = window.jwpltx || {};
     return (Math.ceil((progress / duration) * uri.q) * MAX_DURATION_IN_QUANTILES) / uri.q;
   }
 
-  // Here we convert seconds watched to quantiles, the units accepted by the analytics service (res is 0 - 128)
+  // Sends the last ping when closing the player or window
   function sendRemainingData() {
     if (uri.pw === -1) {
       clearLiveInterval();
@@ -47,11 +47,13 @@ window.jwpltx = window.jwpltx || {};
       uri.pw = pw;
     }
 
+    clearSeekingTimeout();
+
     if (timeWatched) {
       uri.ti = Math.floor(timeWatched);
       timeWatched = 0;
 
-      sendData('t');
+      sendData('gab');
     }
   }
 
@@ -66,6 +68,24 @@ window.jwpltx = window.jwpltx || {};
   function clearLiveInterval() {
     clearInterval(liveInterval);
     liveInterval = null;
+  }
+
+  // There is currently a 1 sec debounce surrounding seeking event in order to logically group multiple `seeked` events
+  function setSeekingTimeout() {
+    seekingTimeout = setTimeout(() => {
+      isSeeking = false;
+      // Set new timeout when seeked event reached for live events
+      if (uri.pw === -1 && !liveInterval) {
+        setLiveInterval();
+      }
+      sendData('vs');
+    }, 1000);
+  }
+
+  // We clear timeout after complete event or when new seeking events are received
+  function clearSeekingTimeout() {
+    clearTimeout(seekingTimeout);
+    seekingTimeout = null;
   }
 
   // Process a player ready event
@@ -90,7 +110,7 @@ window.jwpltx = window.jwpltx || {};
   // Process seek event
   o.seek = function (offset, duration) {
     isSeeking = true;
-    clearTimeout(seekingTimeout);
+    clearSeekingTimeout();
     // Clear interval in case of a live stream not to update time watched while seeking
     if (uri.pw === -1) {
       clearLiveInterval();
@@ -103,15 +123,7 @@ window.jwpltx = window.jwpltx || {};
 
   // Process seeked event
   o.seeked = function () {
-    // There is currently a 1 sec debounce surrounding this event in order to logically group multiple `seeked` events
-    seekingTimeout = setTimeout(() => {
-      isSeeking = false;
-      // Set new timeout when seeked event reached for live events
-      if (uri.pw === -1 && !liveInterval) {
-        setLiveInterval();
-      }
-      sendData('vs');
-    }, 1000);
+    setSeekingTimeout();
   };
 
   // When player is disconnected from the page -> send the rest of the data and cancel possible intervals
@@ -206,10 +218,12 @@ window.jwpltx = window.jwpltx || {};
       uri.pw = MAX_DURATION_IN_QUANTILES;
     }
 
+    clearSeekingTimeout();
+
     uri.ti = Math.floor(timeWatched);
     timeWatched = 0;
 
-    sendData('t');
+    sendData('gab');
   };
 
   // Helper function to generate IDs

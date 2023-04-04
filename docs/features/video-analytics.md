@@ -30,13 +30,14 @@ The data is available to customers in three ways:
 
 The app sends the following events (param `e`) to JW platform:
 
-| Name       | Value | Endpoint  | Rqd | Description                                                          |
-| ---------- | ----- | --------- | --- | -------------------------------------------------------------------- |
-| Setup      | e     | jwplayer6 | Yes | Fired after the landing screen embedding this video has been loaded. |
-| Impression | i     | clienta   | Yes | Fired after the first frame of an ad creative has been rendered.     |
-| Play       | s     | jwplayer6 | Yes | Fired after the first frame of a video has been rendered.            |
-| Quantile   | t     | jwplayer6 | Yes | Fired after the video plays past the threshold of a quantile.        |
-| Seeked     | vs    | jwplayer6 | Yes | Fired after the video is seeked                                      |
+| Name           | Value | Endpoint  | Rqd | Description                                                          |
+| -------------- | ----- | --------- | --- | -------------------------------------------------------------------- |
+| Setup          | e     | jwplayer6 | Yes | Fired after the landing screen embedding this video has been loaded. |
+| Impression     | i     | clienta   | Yes | Fired after the first frame of an ad creative has been rendered.     |
+| Play           | s     | jwplayer6 | Yes | Fired after the first frame of a video has been rendered.            |
+| Quantile       | t     | jwplayer6 | Yes | Fired after the video plays past the threshold of a quantile.        |
+| Seeked         | vs    | jwplayer6 | Yes | Fired after the video is seeked                                      |
+| Generic Aband. | gab   | jwplayer6 | Yes | Fired to try and track a user before they exit the page              |
 
 ## Event JS Script
 

@@ -59,7 +59,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       player.off('seeked', seekedHandler);
       player.off('adImpression', adImpressionHandler);
     };
-  }, [player]);
+  }, [player, item]);
 
   return setPlayer;
 };
