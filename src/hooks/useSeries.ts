@@ -1,25 +1,26 @@
 import { useQuery, UseQueryResult } from 'react-query';
 
-import { getMediaByIds, getSeries } from '#src/services/api.service';
-import { enrichMediaItems, getSeriesEpisodes } from '#src/utils/series';
+import { getMediaById, getSeries, getEpisodes } from '#src/services/api.service';
+import { enrichMediaItems } from '#src/utils/series';
 import type { Series } from '#types/series';
 import type { Playlist } from '#types/playlist';
 import type { ApiError } from '#src/utils/api';
 
-export default (seriesId?: string): UseQueryResult<{ series: Series; playlist: Playlist }, ApiError> => {
+// Series and media items have the same id when creating via dashboard using new flow
+export default (seriesId: string | undefined): UseQueryResult<{ series: Series; playlist: Playlist }, ApiError> => {
   return useQuery(
     ['series', seriesId],
     async () => {
       const series = await getSeries(seriesId || '');
-      const mediaIds = series ? getSeriesEpisodes(series).map((episode) => episode.media_id) : [];
-      const mediaItems = await getMediaByIds(mediaIds);
+      const media = await getMediaById(seriesId || '');
+      const mediaItems = await getEpisodes(seriesId);
 
       return {
         series,
         playlist: {
-          title: series?.title,
-          description: series?.description,
-          feedid: series?.series_id,
+          title: media?.title,
+          description: media?.description,
+          feedid: media?.series_id,
           playlist: enrichMediaItems(series, mediaItems),
         },
       };

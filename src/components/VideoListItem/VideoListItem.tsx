@@ -16,7 +16,7 @@ type VideoListItemProps = {
   title: string;
   duration: number;
   image?: ImageData;
-  seriesId?: string;
+  isSeries?: boolean;
   seasonNumber?: string;
   episodeNumber?: string;
   progress?: number;
@@ -31,15 +31,15 @@ function VideoListItem({
   onHover,
   title,
   duration,
-  seriesId,
   seasonNumber,
   episodeNumber,
   progress,
+  activeLabel,
+  image,
+  isSeries = false,
   loading = false,
   isActive = false,
-  activeLabel,
   isLocked = true,
-  image,
 }: VideoListItemProps): JSX.Element {
   const { t } = useTranslation('common');
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -50,7 +50,7 @@ function VideoListItem({
   const renderTagLabel = () => {
     if (loading || !title) return null;
 
-    if (seriesId) {
+    if (isSeries) {
       return t('series');
     } else if (seasonNumber && episodeNumber) {
       return formatSeriesMetaString(seasonNumber, episodeNumber);

@@ -9,11 +9,12 @@ import type { Playlist } from '#types/playlist';
 import PlaylistGrid from '#src/pages/ScreenRouting/playlistScreens/PlaylistGrid/PlaylistGrid';
 import PlaylistLiveChannels from '#src/pages/ScreenRouting/playlistScreens/PlaylistLiveChannels/PlaylistLiveChannels';
 import { ScreenMap } from '#src/pages/ScreenRouting/ScreenMap';
+import { CONTENT_TYPE } from '#src/config';
 
 export const playlistScreenMap = new ScreenMap<Playlist>();
 
 // register playlist screens
-playlistScreenMap.registerByContentType(PlaylistLiveChannels, 'live');
+playlistScreenMap.registerByContentType(PlaylistLiveChannels, CONTENT_TYPE.live);
 playlistScreenMap.registerDefault(PlaylistGrid);
 
 const PlaylistScreenRouter = () => {

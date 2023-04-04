@@ -3,9 +3,9 @@ import { secondsToISO8601 } from './datetime';
 
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
-export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
-  // @todo this still used the series route
-  const seriesCanonical = `${window.location.origin}/s/${seriesPlaylist.feedid}`;
+export const generateSeriesMetadata = (seriesPlaylist: Playlist, mediaId: string | undefined) => {
+  // Use playlist for old flow and media id for a new flow
+  const seriesCanonical = `${window.location.origin}/m/${seriesPlaylist.feedid || mediaId}`;
 
   return {
     '@type': 'TVSeries',
@@ -18,9 +18,9 @@ export const generateSeriesMetadata = (seriesPlaylist: Playlist) => {
   };
 };
 
-export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: PlaylistItem) => {
-  const episodeCanonical = `${window.location.origin}${episodeURL(episode, seriesPlaylist.feedid)}`;
-  const seriesMetadata = generateSeriesMetadata(seriesPlaylist);
+export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: PlaylistItem, seriesId: string | undefined, mediaId: string | undefined) => {
+  const episodeCanonical = `${window.location.origin}${episodeURL({ episode, playlistId: seriesPlaylist.feedid, mediaId, seriesId })}`;
+  const seriesMetadata = generateSeriesMetadata(seriesPlaylist, mediaId);
 
   return JSON.stringify({
     '@context': 'http://schema.org/',

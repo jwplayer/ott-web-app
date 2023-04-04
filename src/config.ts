@@ -17,3 +17,25 @@ export const LIVE_CHANNELS_REFETCH_INTERVAL = 15 * 60_000;
 
 // OTT shared player
 export const OTT_GLOBAL_PLAYER_ID = 'M4qoGvUk';
+
+// Some predefined types of JW
+export const CONTENT_TYPE = {
+  // Series page with seasons / episodes
+  series: 'series',
+  // Separate episode page
+  episode: 'episode',
+  // Page with a list of channels
+  live: 'live',
+  // Separate channel page
+  livechannel: 'livechannel',
+  // Static page with markdown
+  page: 'page',
+  // Page with shelves list
+  hub: 'hub',
+} as const;
+
+// Content types which should have series support
+export const SERIES_CONTENT_TYPE = {
+  series: 'series',
+  // additional types can be added here
+} as const;

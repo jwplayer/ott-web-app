@@ -1,11 +1,11 @@
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { EpisodeWithSeason, Season, Series } from '#types/series';
+import type { Season, Series } from '#types/series';
 
 export const getFiltersFromSeries = (playlist: Playlist): string[] =>
-  playlist.playlist.reduce(
-    (filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')),
-    [],
-  );
+  playlist.playlist
+    .reduce((filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')), [])
+    .slice()
+    .sort();
 
 export const filterSeries = (playlist: Playlist, filter: string) => {
   if (!filter) return playlist;
@@ -56,30 +56,20 @@ export const getNextItem = (item: PlaylistItem | undefined, series: Series | und
 /** We need to add episodeNumber and seasonNumber to each media item we got
  *  That will help with further data retrieval
  */
-export const enrichMediaItems = (series: Series | undefined, mediaItems: PlaylistItem[] | undefined): PlaylistItem[] => {
-  let episodes: EpisodeWithSeason[] = [];
-
+export const enrichMediaItems = (series: Series | undefined, mediaItems: { [key: string]: PlaylistItem }): PlaylistItem[] => {
   if (series) {
-    episodes =
-      'seasons' in series
-        ? series.seasons.flatMap((season: Season) =>
-            season.episodes.map((episode) => ({
-              ...episode,
-              season_number: season.season_number,
-            })),
-          )
-        : series.episodes.map((episode) => ({ ...episode, season_number: 0 }));
+    if ('seasons' in series) {
+      return series.seasons.flatMap((season: Season) =>
+        season.episodes.map((episode) => ({
+          ...mediaItems[episode.media_id],
+          seasonNumber: String(season.season_number),
+          episodeNumber: String(episode.episode_number),
+        })),
+      );
+    }
+
+    return series.episodes.map((episode) => ({ ...mediaItems[episode.media_id], seasonNumber: '1', episodeNumber: String(episode.episode_number) }));
   }
 
-  const itemsWithEpisodes = (mediaItems || []).map((item) => {
-    const episode = episodes.find((episode) => episode.media_id === item?.mediaid);
-
-    return {
-      ...item,
-      seasonNumber: String(episode?.season_number || '0'),
-      episodeNumber: String(episode?.episode_number || '0'),
-    };
-  });
-
-  return itemsWithEpisodes;
+  return [];
 };

@@ -24,8 +24,6 @@ type Season = {
 };
 
 export type SeriesBase = {
-  title: string;
-  description: string;
   series_id: string;
   total_duration: string;
   episode_count: number;

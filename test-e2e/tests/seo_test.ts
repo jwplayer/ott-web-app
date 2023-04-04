@@ -73,7 +73,6 @@ Scenario('It renders the correct structured metadata for the series screen', asy
   I.see('Primitive Animals');
 
   const url = await I.grabCurrentUrl();
-  const seriesId = getQueryParam(url, 'seriesId');
 
   I.seeTextEquals(
     JSON.stringify({
@@ -86,7 +85,7 @@ Scenario('It renders the correct structured metadata for the series screen', asy
       uploadDate: '2021-03-10T10:00:00.000Z',
       partOfSeries: {
         '@type': 'TVSeries',
-        '@id': `${constants.baseUrl}s/${seriesId}`,
+        '@id': `${constants.baseUrl}m/oXGyKQ97`,
         name: 'Primitive Animals',
         numberOfEpisodes: 4,
         numberOfSeasons: 1,
@@ -119,18 +118,13 @@ async function checkMetaTags(I: CodeceptJS.I, title: string, description, isSeri
 
   I.seeAttributesOnElements('meta[name="twitter:title"]', { content: `${title} - JW OTT Web App` });
   I.seeAttributesOnElements('meta[name="twitter:description"]', { content: description });
-  I.seeAttributesOnElements('meta[name="twitter:image"]', { content: makeHttps(posterUrl) });
+  I.seeAttributesOnElements('meta[name="twitter:image"]', { content: isSeries ? posterUrl : makeHttps(posterUrl) });
 }
 
 function removeQueryParam(href: string, param: string) {
   const url = new URL(href);
   url.searchParams.delete(param);
   return url.toString();
-}
-
-function getQueryParam(href: string, param: string) {
-  const url = new URL(href);
-  return url.searchParams.get(param);
 }
 
 function makeHttps(href: string) {

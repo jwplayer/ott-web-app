@@ -11,6 +11,7 @@ import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
+import { isSeries } from '#src/utils/media';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -61,7 +62,9 @@ function CardGrid({
   }, [playlist.feedid]);
 
   const renderTile = (playlistItem: PlaylistItem) => {
-    const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage } = playlistItem;
+    const { mediaid, title, duration, episodeNumber, seasonNumber, shelfImage } = playlistItem;
+
+    const isSeriesItem = isSeries(playlistItem);
 
     return (
       <div className={styles.cell} key={mediaid} role="row">
@@ -71,7 +74,7 @@ function CardGrid({
             duration={duration}
             image={shelfImage}
             progress={watchHistory ? watchHistory[mediaid] : undefined}
-            seriesId={seriesId}
+            isSeries={isSeriesItem}
             episodeNumber={episodeNumber}
             seasonNumber={seasonNumber}
             onClick={() => onCardClick(playlistItem, playlistItem.feedid)}

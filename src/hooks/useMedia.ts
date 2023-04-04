@@ -8,5 +8,6 @@ export type UseMediaResult<TData = PlaylistItem, TError = unknown> = UseBaseQuer
 export default function useMedia(mediaId: string, enabled: boolean = true): UseMediaResult {
   return useQuery(['media', mediaId], () => getMediaById(mediaId), {
     enabled: !!mediaId && enabled,
+    staleTime: 5 * 1000,
   });
 }

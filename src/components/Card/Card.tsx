@@ -19,7 +19,7 @@ type CardProps = {
   title: string;
   duration: number;
   image?: ImageData;
-  seriesId?: string;
+  isSeries?: boolean;
   seasonNumber?: string;
   episodeNumber?: string;
   progress?: number;
@@ -38,11 +38,11 @@ function Card({
   title,
   duration,
   image,
-  seriesId,
   seasonNumber,
   episodeNumber,
   progress,
   posterAspect = '16:9',
+  isSeries = false,
   featured = false,
   disabled = false,
   loading = false,
@@ -66,7 +66,7 @@ function Card({
   const renderTag = () => {
     if (loading || disabled || !title) return null;
 
-    if (seriesId) {
+    if (isSeries) {
       return <div className={styles.tag}>Series</div>;
     } else if (episodeNumber) {
       return <div className={styles.tag}>{formatSeriesMetaString(seasonNumber, episodeNumber)}</div>;

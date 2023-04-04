@@ -103,23 +103,6 @@ export const getMediaById = async (id: string, token?: string, drmPolicyId?: str
 };
 
 /**
- * Gets multiple media items by the given ids. Filters out items that don't exist.
- * @param {string[]} ids
- * @param {Object} tokens
- * @param {string} drmPolicyId
- */
-export const getMediaByIds = async (ids: string[], tokens?: Record<string, string>, drmPolicyId?: string): Promise<PlaylistItem[]> => {
-  // @todo this should be updated when it will become possible to request multiple media items in a single request
-  const responses = await Promise.allSettled(ids.map((id) => getMediaById(id, tokens?.[id], drmPolicyId)));
-
-  function notEmpty<Value>(value: Value | null | undefined): value is Value {
-    return value !== null && value !== undefined;
-  }
-
-  return responses.map((result) => (result.status === 'fulfilled' ? result.value : null)).filter(notEmpty);
-};
-
-/**
  * Get series by id
  * @param {string} id
  * @param params
@@ -148,6 +131,45 @@ export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in
   });
   const response = await fetch(url);
   return await getDataOrThrow(response);
+};
+
+// Max count per request
+const MAX_EPISODES_COUNT = 50;
+
+/**
+ * Get all episodes of the selected series
+ * @param {string} seriesId
+ */
+export const getEpisodes = async (seriesId: string | undefined): Promise<{ [id: string]: PlaylistItem }> => {
+  if (!seriesId) {
+    throw new Error('Series ID is required');
+  }
+
+  const pathname = `/apps/series/${seriesId}/episodes`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {});
+
+  const response = await fetch(url);
+  const data = await getDataOrThrow(response);
+
+  let media = data.media;
+
+  // We will send additional requests in case there are more than 50 items
+  if (data.total > MAX_EPISODES_COUNT) {
+    // How many requests do we need to make (excluding one initially done)
+    const chunks = Math.ceil(data.total / MAX_EPISODES_COUNT) - 1;
+    const fetchedData = await Promise.all(
+      // Starting from the second page
+      Array.from({ length: chunks }, (_, i) => i + 2).map((page) => {
+        return fetch(`${url}?page=${page}`).then((r) => getDataOrThrow(r));
+      }),
+    );
+    const processedData = fetchedData.reduce((acc, el) => ({ ...acc, ...el.data }), {});
+
+    media = { processedData };
+  }
+
+  // Adding images and keys for media items
+  return Object.keys(media).reduce((acc, key) => ({ ...acc, [key]: transformMediaItem({ ...media[key], mediaid: key }) }), {});
 };
 
 /**
