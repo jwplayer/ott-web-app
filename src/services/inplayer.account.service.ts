@@ -1,4 +1,5 @@
 import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import i18next from 'i18next';
 
 import type {
   AuthData,
@@ -397,11 +398,11 @@ function formatPublisherConsents(consent: Partial<GetRegisterField>) {
 }
 
 function getTermsConsent(): Consent {
-  const label = 'I accept the <a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a> of JW Player.';
+  const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
   return formatPublisherConsents({
     required: true,
     name: 'terms',
-    label,
+    label: i18next.t('account:registration.terms_consent', { termsUrl }),
   });
 }
 
