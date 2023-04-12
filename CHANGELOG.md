@@ -1,3 +1,12 @@
+## [4.6.1](https://github.com/jwplayer/ott-web-app/compare/v4.6.0...v4.6.1) (2023-04-12)
+
+
+### Bug Fixes
+
+* handle split full name ([261cb51](https://github.com/jwplayer/ott-web-app/commit/261cb510763c849497e9902c80bc83573ffb9ddb))
+
+
+
 # [4.6.0](https://github.com/jwplayer/ott-web-app/compare/v4.5.0...v4.6.0) (2023-04-12)
 
 
