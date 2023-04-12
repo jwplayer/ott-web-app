@@ -68,6 +68,10 @@ export const register: Register = async ({ config, email, password }) => {
       password,
       passwordConfirmation: password,
       fullName: email,
+      metadata: {
+        first_name: ' ',
+        surname: ' ',
+      },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
       referrer: window.location.href,
