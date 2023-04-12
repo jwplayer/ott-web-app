@@ -1,3 +1,18 @@
+# [4.6.0](https://github.com/jwplayer/ott-web-app/compare/v4.5.0...v4.6.0) (2023-04-12)
+
+
+### Bug Fixes
+
+* **project:** fix tabs in ChooseOffers form ([8841940](https://github.com/jwplayer/ott-web-app/commit/88419401aac549bea5672287ba5bb1f16ef26205))
+* use location.href instaed of location.origin because of wrong refresh page on payment ([446420d](https://github.com/jwplayer/ott-web-app/commit/446420de6645b90769e3e892eceb4735c4512a26))
+
+
+### Features
+
+* **project:** jwp tvod implementation ([ed1e69d](https://github.com/jwplayer/ott-web-app/commit/ed1e69dea7cfbdbfeee6449060b4ef53e319dee1))
+
+
+
 # [4.5.0](https://github.com/jwplayer/ott-web-app/compare/v4.4.2...v4.5.0) (2023-04-12)
 
 
