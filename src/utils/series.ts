@@ -1,11 +1,21 @@
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { Season, Series } from '#types/series';
 
-export const getFiltersFromSeries = (playlist: Playlist): string[] =>
-  playlist.playlist
+/**
+ * Get an array of options for a season filter
+ */
+export const getFiltersFromSeries = (playlist: Playlist, series: Series | undefined): string[] => {
+  // For new series flow we should keep sorting set for series seasons, the order in the array of seasons can be different
+  if (series && 'seasons' in series) {
+    return (series?.seasons || []).map((el) => String(el.season_number));
+  }
+
+  // Old series doesn't have sorting supported and needs to be sorted manually
+  return playlist.playlist
     .reduce((filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')), [])
     .slice()
     .sort();
+};
 
 export const filterSeries = (playlist: Playlist, filter: string) => {
   if (!filter) return playlist;
@@ -60,15 +70,24 @@ export const enrichMediaItems = (series: Series | undefined, mediaItems: { [key:
   if (series) {
     if ('seasons' in series) {
       return series.seasons.flatMap((season: Season) =>
-        season.episodes.map((episode) => ({
-          ...mediaItems[episode.media_id],
-          seasonNumber: String(season.season_number),
-          episodeNumber: String(episode.episode_number),
-        })),
+        season.episodes.map((episode) => {
+          const item = mediaItems[episode.media_id];
+
+          item.seasonNumber = String(season.season_number);
+          item.episodeNumber = String(episode.episode_number);
+
+          return item;
+        }),
       );
     }
 
-    return series.episodes.map((episode) => ({ ...mediaItems[episode.media_id], seasonNumber: '1', episodeNumber: String(episode.episode_number) }));
+    return series.episodes.map((episode) => {
+      const item = mediaItems[episode.media_id];
+      item.seasonNumber = '0';
+      item.episodeNumber = String(episode.episode_number);
+
+      return item;
+    });
   }
 
   return [];

@@ -67,7 +67,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data }) => {
   const isLoading = seriesIdLoading || isPlaylistLoading;
 
   const [seasonFilter, setSeasonFilter] = useState<string>(episodeItem?.seasonNumber || '1');
-  const filters = getFiltersFromSeries(seriesPlaylist);
+  const filters = getFiltersFromSeries(seriesPlaylist, series);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist, seasonFilter), [seriesPlaylist, seasonFilter]);
 
   // Watch history
