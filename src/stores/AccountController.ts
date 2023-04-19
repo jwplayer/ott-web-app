@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode';
+import i18next from 'i18next';
 
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -7,6 +8,8 @@ import type {
   Capture,
   Customer,
   CustomerConsent,
+  EmailConfirmPasswordInput,
+  FirstLastNameInput,
   GetCaptureStatusResponse,
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
@@ -18,9 +21,9 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
-import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
+import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 
@@ -66,6 +69,10 @@ export const handleVisibilityChange = () => {
 
 export const initializeAccount = async () => {
   await useService(async ({ accountService, config }) => {
+    if (!accountService) {
+      useAccountStore.setState({ loading: false });
+      return;
+    }
     useAccountStore.setState({
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
@@ -110,9 +117,7 @@ export const initializeAccount = async () => {
   });
 };
 
-export async function updateUser(
-  values: { firstName: string; lastName: string } | { email: string; confirmationPassword: string },
-): Promise<ServiceResponse<Customer>> {
+export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> {
   return await useService(async ({ accountService, sandbox = true }) => {
     useAccountStore.setState({ loading: true });
 
@@ -126,7 +131,21 @@ export async function updateUser(
       throw new Error('no auth');
     }
 
-    const response = await accountService.updateCustomer({ ...values, id: user.id.toString() }, sandbox, auth.jwt);
+    const errors = validateInputLength(values as FirstLastNameInput);
+    if (errors.length) {
+      return {
+        errors,
+        responseData: {} as Customer,
+      };
+    }
+
+    let payload = values;
+    // this is needed as a fallback when the name is empty (cannot be empty on JWP integration)
+    if (!accountService.canSupportEmptyFullName) {
+      payload = { ...values, email: user.email };
+    }
+
+    const response = await accountService.updateCustomer({ ...payload, id: user.id.toString() }, sandbox, auth.jwt);
 
     if (!response) {
       throw new Error('Unknown error');
@@ -470,3 +489,15 @@ async function afterLogin(
     getPublisherConsents(),
   ]);
 }
+
+const validateInputLength = (values: { firstName: string; lastName: string }) => {
+  const errors: string[] = [];
+  if (Number(values?.firstName?.length) > 50) {
+    errors.push(i18next.t('account:validation.first_name'));
+  }
+  if (Number(values?.lastName?.length) > 50) {
+    errors.push(i18next.t('account:validation.last_name'));
+  }
+
+  return errors;
+};

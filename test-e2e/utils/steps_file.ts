@@ -1,8 +1,10 @@
 import * as assert from 'assert';
 
-import { TestConfig } from '#test/constants';
+import { overrideIP } from './payments';
+
 import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
+import { TestConfig } from '#test/types';
 
 const configFileQueryKey = 'app-config';
 const loaderElement = '[class*=_loadingOverlay]';
@@ -39,10 +41,27 @@ const stepsObj = {
 
     this.click('div[aria-label="Log out"]');
   },
+  beforeRegisterOrLogin: async function (this: CodeceptJS.I, config: TestConfig, mode: string) {
+    this.useConfig(config);
+    if (await this.isMobile()) {
+      this.openMenuDrawer();
+    }
+
+    let clickOnText = 'Sign in';
+    let waitForElement = constants.loginFormSelector;
+    if (mode === 'signup') {
+      clickOnText = 'Sign up';
+      waitForElement = constants.registrationFormSelector;
+    }
+
+    this.click(clickOnText);
+
+    this.waitForElement(waitForElement, normalTimeout);
+  },
   // This function will register the user on the first call and return the context
   // then assuming context is passed in the next time, will log that same user back in
   // Use it for tests where you want a new user for the suite, but not for each test
-  registerOrLogin: async function (this: CodeceptJS.I, context: LoginContext | undefined, onRegister?: () => void) {
+  registerOrLogin: async function (this: CodeceptJS.I, context?: LoginContext, onRegister?: () => void) {
     if (context) {
       await this.login({ email: context.email, password: context.password });
     } else {
@@ -80,6 +99,42 @@ const stepsObj = {
   submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = normalTimeout) {
     this.click('button[type="submit"]');
     this.waitForLoaderDone(loaderTimeout);
+  },
+  payWithCreditCard: async function (
+    this: CodeceptJS.I,
+    creditCardNamePresent: boolean,
+    creditCard: string,
+    cardNumber: string,
+    expiryDate: string,
+    securityCode: string,
+    fieldWrapper: string = '',
+  ) {
+    this.see('Credit card');
+
+    if (creditCardNamePresent) {
+      this.see('Cardholder name');
+      this.fillField('Cardholder name', 'John Doe');
+    }
+
+    // Adyen credit card form is loaded asynchronously, so wait for it
+    this.waitForElement(`[class*="${cardNumber}"]`, normalTimeout);
+
+    // Each of the 3 credit card fields is a separate iframe
+    this.switchTo(`[class*="${cardNumber}"] ${fieldWrapper}`);
+
+    this.fillField('Card number', creditCard);
+    // @ts-expect-error
+    this.switchTo(null); // Exit the iframe context back to the main document
+
+    this.switchTo(`[class*="${expiryDate}"] ${fieldWrapper}`);
+    this.fillField('Expiry date', '03/30');
+    // @ts-expect-error
+    this.switchTo(null); // Exit the iframe context back to the main document
+
+    this.switchTo(`[class*="${securityCode}"] ${fieldWrapper}`);
+    this.fillField('Security code', '737');
+    // @ts-expect-error
+    this.switchTo(null); // Exit the iframe context back to the main document
   },
   waitForLoaderDone: function (this: CodeceptJS.I, timeout: number | false = normalTimeout) {
     // Specify false when the loader is NOT expected to be shown at all

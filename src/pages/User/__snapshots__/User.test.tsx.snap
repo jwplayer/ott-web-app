@@ -733,7 +733,9 @@ exports[`User Component tests > Payments Page 1`] = `
         <div
           class="_infoBox_c57ff5"
         >
-          <p>
+          <p
+            class="transactionItem"
+          >
             <strong>
               Your Cool Subscription
             </strong>
@@ -750,7 +752,9 @@ exports[`User Component tests > Payments Page 1`] = `
         <div
           class="_infoBox_c57ff5"
         >
-          <p>
+          <p
+            class="transactionItem"
+          >
             <strong>
               Your Cool Subscription
             </strong>

@@ -25,10 +25,10 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
   const { intervalCheckAccess } = useCheckAccess();
 
   const paymentData = useForm(
-    { couponCode, cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
+    { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
     async () => {
       setUpdatingOrder(true);
-      await directPostCardPayment(paymentData.values);
+      await directPostCardPayment({ couponCode, ...paymentData.values });
       intervalCheckAccess({ interval: 15000 });
     },
     object().shape({
@@ -99,7 +99,7 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
         </div>
       </div>
       <div>
-        <Button label="continue" variant="contained" color="primary" onClick={paymentData.handleSubmit as () => void} size="large" fullWidth />
+        <Button label={t('checkout.continue')} variant="contained" color="primary" onClick={paymentData.handleSubmit as () => void} size="large" fullWidth />
       </div>
     </div>
   );

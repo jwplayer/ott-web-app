@@ -21,12 +21,14 @@ enum ImageProperty {
 export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
   const config = ConfigStore.getState().config;
 
+  const offerKeys = Object.keys(config?.integrations)[0];
+
   return {
     ...item,
     shelfImage: generateImageData(config, ImageProperty.SHELF, item, playlist),
     backgroundImage: generateImageData(config, ImageProperty.BACKGROUND, item),
     channelLogoImage: generateImageData(config, ImageProperty.CHANNEL_LOGO, item),
-    mediaOffers: item.productIds ? filterMediaOffers('cleeng', item.productIds) : undefined,
+    mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
   };
 };
 
@@ -98,7 +100,6 @@ export const getMediaById = async (id: string, token?: string, drmPolicyId?: str
   const mediaItem = data.playlist[0];
 
   if (!mediaItem) throw new Error('MediaItem not found');
-
   return transformMediaItem(mediaItem);
 };
 

@@ -123,6 +123,7 @@
       "weak": ""
     },
     "sign_up": "",
+    "terms_consent": "",
     "user_exists": "",
     "view_password": "",
     "email_updates": ""
@@ -175,5 +176,9 @@
     "back_to_profile": "",
     "message": "",
     "title": ""
+  },
+  "validation": {
+    "first_name": "",
+    "last_name": ""
   }
 }

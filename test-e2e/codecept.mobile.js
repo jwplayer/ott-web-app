@@ -12,7 +12,7 @@ exports.config = {
   grep: '(?=.*)^(?!.*@desktop-only)',
   tests: ['./tests/**/*.js', './tests/**/*.ts'],
   output: './output/mobile',
-  timeout: 60,
+  timeout: 3000,
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',

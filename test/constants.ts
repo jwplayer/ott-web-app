@@ -1,7 +1,4 @@
-export interface TestConfig {
-  id: string;
-  label: string;
-}
+import type { TestConfig } from './types';
 
 export const testConfigs = {
   jwpAuth: {
@@ -11,6 +8,10 @@ export const testConfigs = {
   jwpSvod: {
     id: 'a2kbjdv0',
     label: 'JWP SVOD',
+  },
+  jwpAuthNoWatchlist: {
+    id: 'oqrsyxin',
+    label: 'JWP Authvod (No WL)',
   },
   basicNoAuth: {
     id: 'gnnuzabk',

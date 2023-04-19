@@ -142,10 +142,10 @@ const Payment = ({
           <React.Fragment>
             {transactions?.slice(0, showAllTransactions ? 9999 : VISIBLE_TRANSACTIONS).map((transaction) => (
               <div className={styles.infoBox} key={transaction.transactionId}>
-                <p>
+                <p className="transactionItem">
                   <strong>{transaction.offerTitle}</strong> <br />
                   {t('user:payment.price_payed_with', {
-                    price: formatPrice(parseInt(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                    price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
                     method: transaction.paymentMethod,
                   })}
                 </p>

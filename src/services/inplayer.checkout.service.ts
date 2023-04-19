@@ -31,16 +31,20 @@ export const createOrder: CreateOrder = async (payload) => {
 };
 
 export const getOffers: GetOffers = async (payload) => {
-  try {
-    const assetId = parseInt(`${payload?.offerIds?.[0]}`);
-    const { data } = await InPlayer.Asset.getAssetAccessFees(assetId);
+  const offers = await Promise.all(
+    payload.offerIds.map(async (assetId) => {
+      try {
+        const { data } = await InPlayer.Asset.getAssetAccessFees(parseInt(`${assetId}`));
 
-    // @ts-ignore
-    //TODO fix this type in the InPlayer SDK
-    return data?.map((offer: GetAccessFee) => formatOffer(offer)) as Offer[];
-  } catch {
-    throw new Error('Failed to get offers');
-  }
+        // TODO fix this type in the InPlayer SDK, because the actual type of `data` is GetAccessFee[], not GetAccessFee
+        return (data as unknown as GetAccessFee[])?.map((offer) => formatOffer(offer));
+      } catch {
+        throw new Error('Failed to get offers');
+      }
+    }),
+  );
+
+  return offers.flat();
 };
 
 export const getPaymentMethods: GetPaymentMethods = async () => {
@@ -198,9 +202,10 @@ const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = fals
 };
 
 const formatOffer = (offer: GetAccessFee): Offer => {
+  const offerId = offer.access_type.name === 'ppv' ? `C${offer.id}` : `S${offer.id}`;
   return {
     id: offer.id,
-    offerId: `S${offer.id}`,
+    offerId,
     offerCurrency: offer.currency,
     customerPriceInclTax: offer.amount,
     customerCurrency: offer.currency,
