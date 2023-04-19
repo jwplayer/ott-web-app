@@ -12,6 +12,7 @@ export enum ShelfId {
   continueWatching = 'continue_watching',
   favorites = 'favorites',
   liveChannels = 'live-channels',
+  mixedContent = 'mixed-content',
 }
 
 export const makeShelfXpath = (shelf: ShelfId) => {
@@ -27,7 +28,6 @@ export default {
   accountsUrl: `${baseUrl}u/my-account`,
   paymentsUrl: `${baseUrl}u/payments`,
   offersUrl: `${baseUrl}u/payments?u=choose-offer`,
-  staticPageUrl: `${baseUrl}m/oGNEecGq`,
   primitiveAnimalsTitle: 'Primitive Animals',
   primitiveAnimalsDescription: "If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.",
   agent327Title: 'Agent 327',

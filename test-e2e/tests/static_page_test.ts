@@ -1,4 +1,5 @@
-import constants from '../utils/constants';
+import { ShelfId } from '#utils/constants';
+import { testConfigs } from '#test/constants';
 
 const staticPage = locate({ css: 'div[data-testid="static-page"]' });
 
@@ -7,13 +8,12 @@ const fontWeight = '700';
 
 Feature('static page').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Before(({ I }) => {
-  I.useConfig('test--no-cleeng');
+Before(async ({ I }) => {
+  I.useConfig(testConfigs.basicNoAuth);
+  await I.openVideoCard('Static page', ShelfId.mixedContent);
 });
 
 Scenario('I can see the markdown correctly being rendered', async ({ I }) => {
-  I.amOnPage(constants.staticPageUrl);
-
   await I.checkStyle(locate('h1').inside(staticPage), {
     margin: '0px 0px 32px',
     'font-weight': fontWeight,
