@@ -1,3 +1,80 @@
+## [4.6.2](https://github.com/jwplayer/ott-web-app/compare/v4.6.1...v4.6.2) (2023-04-21)
+
+
+### Bug Fixes
+
+* **analytics:** fix watch duration by filtering seek events ([22cfa26](https://github.com/jwplayer/ott-web-app/commit/22cfa26dae67204dfe10c69d8370034313cb5b7f))
+* **analytics:** fix watch duration by filtering seek events ([048c497](https://github.com/jwplayer/ott-web-app/commit/048c49744d2453df4b5f8d37de96824916314295))
+* **analytics:** refactor existing timeouts ([9138a81](https://github.com/jwplayer/ott-web-app/commit/9138a818e1ab7771faaa93bebc4786fd0c72feaa))
+
+
+
+## [4.6.1](https://github.com/jwplayer/ott-web-app/compare/v4.6.0...v4.6.1) (2023-04-12)
+
+
+### Bug Fixes
+
+* handle split full name ([261cb51](https://github.com/jwplayer/ott-web-app/commit/261cb510763c849497e9902c80bc83573ffb9ddb))
+
+
+
+# [4.6.0](https://github.com/jwplayer/ott-web-app/compare/v4.5.0...v4.6.0) (2023-04-12)
+
+
+### Bug Fixes
+
+* **project:** fix tabs in ChooseOffers form ([8841940](https://github.com/jwplayer/ott-web-app/commit/88419401aac549bea5672287ba5bb1f16ef26205))
+* use location.href instaed of location.origin because of wrong refresh page on payment ([446420d](https://github.com/jwplayer/ott-web-app/commit/446420de6645b90769e3e892eceb4735c4512a26))
+
+
+### Features
+
+* **project:** jwp tvod implementation ([ed1e69d](https://github.com/jwplayer/ott-web-app/commit/ed1e69dea7cfbdbfeee6449060b4ef53e319dee1))
+
+
+
+# [4.5.0](https://github.com/jwplayer/ott-web-app/compare/v4.4.2...v4.5.0) (2023-04-12)
+
+
+### Bug Fixes
+
+* account uninfied types ([9bb9a68](https://github.com/jwplayer/ott-web-app/commit/9bb9a6861a982ee9092d7202865f6ca9874f5898))
+* added authProvider ([6047d31](https://github.com/jwplayer/ott-web-app/commit/6047d315c868965874450a7bc161c94f379fcf65))
+* added missing ? ([af7b72d](https://github.com/jwplayer/ott-web-app/commit/af7b72de1ca8b8b9a7878c7257f5ec5d34ab77a0))
+* delete duplicates in cleeng type ([5111e48](https://github.com/jwplayer/ott-web-app/commit/5111e4806abc14a01032f9b79334dbb330db928b))
+* email in the payload ([852f531](https://github.com/jwplayer/ott-web-app/commit/852f5318df1c5b2ba2cf073ba9ba035eaee48c68))
+* executed i18next ([7ac80fd](https://github.com/jwplayer/ott-web-app/commit/7ac80fd1e0acafdc056337422194fa5f9f90f099))
+* extend type for update account ([f67de6d](https://github.com/jwplayer/ott-web-app/commit/f67de6d02bf31ce5e110d1559fecfb6d1f3ea0b4))
+* handle firstname and surname metadata parameters ([18c3c64](https://github.com/jwplayer/ott-web-app/commit/18c3c648f8b09efd79dccbd326ffd37d257e8ee4))
+* improved error response format ([dfc1586](https://github.com/jwplayer/ott-web-app/commit/dfc15863ddc7858f7536cb1ad47c0f0fb0244fd5))
+* improved types ([d866033](https://github.com/jwplayer/ott-web-app/commit/d8660332f91a6b5143b0a07891aea4f28c4e081a))
+* prevent infinite loop ([fbea493](https://github.com/jwplayer/ott-web-app/commit/fbea493e086d0ea92f186b21288951e8cdb9442a))
+* removed webapp dev ini ([a65dba3](https://github.com/jwplayer/ott-web-app/commit/a65dba302b24c979f41e31a580474389d34ae7e1))
+* set default email as fullname for InPlayer integration if first and last names are empty ([22f6640](https://github.com/jwplayer/ott-web-app/commit/22f6640f90fa778f0725f03e521b1a3f421f9ada))
+* trim first and last names ([cfb5b0b](https://github.com/jwplayer/ott-web-app/commit/cfb5b0ba9cff9f1191426412f0fca29bf3280179))
+* trim name and handle multiple whitespaces ([67ccf6a](https://github.com/jwplayer/ott-web-app/commit/67ccf6aaa60bbf9734c36d73b0fe63eceeffe522))
+* update flow for update email feature ([6bd308d](https://github.com/jwplayer/ott-web-app/commit/6bd308d025aa705ebc607a2b92becc828d4db8c7))
+* update InPlayer SDK version ([36e03bc](https://github.com/jwplayer/ott-web-app/commit/36e03bc1280e60c907404da0f6c397d7ea09b53e))
+* updated all tests ([5077dad](https://github.com/jwplayer/ott-web-app/commit/5077dadbcdaf8f3dfc163f8fd64a9f9b4ea99570))
+* updated CreditCardCVCField snapshot ([dc7a1f6](https://github.com/jwplayer/ott-web-app/commit/dc7a1f6a134f1dc3381bb3d640ca3ccb94127bdf))
+* updated translations ([905f6b9](https://github.com/jwplayer/ott-web-app/commit/905f6b917d390a8e4f528b655021b3458cbe712c))
+* using fullName insted of first and last name for the users ([e740cdc](https://github.com/jwplayer/ott-web-app/commit/e740cdc4ef5099d78d89e7724aa67e6ea8ae0168))
+* using readOnly to hide the edit button for the email instead of disabling edit button ([96f6da3](https://github.com/jwplayer/ott-web-app/commit/96f6da3bae24a7ebe5f45ff9ec958d0e470c7a90))
+* zerofill value for exp_month ([36b71b5](https://github.com/jwplayer/ott-web-app/commit/36b71b5424a96303faf35cd9e2a4e524e933c4ad))
+
+
+### Features
+
+* improved methods before merge with the other parts ([3c750c1](https://github.com/jwplayer/ott-web-app/commit/3c750c170496a005d298345ead5d0b56412c00c9))
+* init DataTable for running tests in a loop with different configs ([5c4f5a8](https://github.com/jwplayer/ott-web-app/commit/5c4f5a84013be6afaa35b15b085ed6e5ed50720e))
+* init subscriptions ([e15bc15](https://github.com/jwplayer/ott-web-app/commit/e15bc15a3d57c74b5d123b29af4b9b8d3ae26893))
+* inplayer notifications setup ([a768436](https://github.com/jwplayer/ott-web-app/commit/a7684368bf2ffb709dba9b3b9e6729ce9dced3e5))
+* inplayer update account details ([9d5af70](https://github.com/jwplayer/ott-web-app/commit/9d5af7087229066dc39f1024661e49b0c93d2f7c))
+* list transactions and show payment method ([b053923](https://github.com/jwplayer/ott-web-app/commit/b053923a45224d9a6a26ae14eda29dc4bd9d823b))
+* registration flow ([435029a](https://github.com/jwplayer/ott-web-app/commit/435029aac4f06434b622c45044a51a2494db9c48))
+
+
+
 ## [4.4.2](https://github.com/jwplayer/ott-web-app/compare/v4.4.1...v4.4.2) (2023-03-29)
 
 

@@ -29,7 +29,7 @@ export async function getActiveSubscription({ config }: { config: Config }) {
       const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
 
       if (activeSubscription) {
-        return formatActiveSubscription(activeSubscription);
+        return formatActiveSubscription(activeSubscription, hasAccess?.data?.expires_at);
       }
 
       return formatGrantedSubscription(hasAccess.data);
@@ -138,7 +138,7 @@ const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction =>
   };
 };
 
-const formatActiveSubscription = (subscription: SubscriptionDetails) => {
+const formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: number) => {
   let status = '';
   switch (subscription.action_type) {
     case 'free-trial':
@@ -159,7 +159,7 @@ const formatActiveSubscription = (subscription: SubscriptionDetails) => {
     subscriptionId: subscription.subscription_id,
     offerId: subscription.item_id?.toString(),
     status,
-    expiresAt: subscription.next_rebill_date,
+    expiresAt,
     nextPaymentAt: subscription.next_rebill_date,
     nextPaymentPrice: subscription.subscription_price,
     nextPaymentCurrency: subscription.currency,

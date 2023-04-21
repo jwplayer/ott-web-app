@@ -1,3 +1,5 @@
+import { formatPrice } from './payments';
+
 const baseUrl = 'http://localhost:8080/';
 
 export const normalTimeout = 10;
@@ -44,4 +46,46 @@ export default {
   continueWatchingButton: 'Continue watching',
   signUpToWatch: 'Sign up to start watching!',
   continueWatchingShelfTitle: 'Continue Watching',
+  paymentFields: {
+    inplayer: {
+      cardNumber: 'directPostCreditCardNumber',
+      expiryDate: 'directPostExpiryDate',
+      securityCode: 'directPostSecurityCode',
+    },
+    cleeng: {
+      cardNumber: 'adyen-checkout__field--cardNumber',
+      expiryDate: 'adyen-checkout__field--expiryDate',
+      securityCode: 'adyen-checkout__field--securityCode',
+    },
+  },
+  offers: {
+    monthlyOffer: {
+      cleeng: {
+        label: `label[for="S970187168_NL"]`,
+        price: formatPrice(6.99, 'EUR', 'NL'),
+        paymentFee: formatPrice(0, 'EUR', 'NL'),
+      },
+      inplayer: {
+        label: `label[for="S38279"]`,
+        price: formatPrice(6.99, 'EUR'),
+        paymentFee: formatPrice(0, 'EUR'),
+      },
+    },
+    yearlyOffer: {
+      cleeng: {
+        label: `label[for="S467691538_NL"]`,
+        price: formatPrice(50, 'EUR', 'NL'),
+        paymentFee: formatPrice(0, 'EUR', 'NL'),
+      },
+      inplayer: {
+        label: `label[for="S38280"]`,
+        price: formatPrice(50, 'EUR'),
+        paymentFee: formatPrice(0, 'EUR'),
+      },
+    },
+  },
+  creditCard: {
+    inplayer: '4111111111111111',
+    cleeng: '5555444433331111',
+  },
 };

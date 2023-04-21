@@ -63,7 +63,9 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
     <div
       class="_infoBox_c57ff5"
     >
-      <p>
+      <p
+        class="transactionItem"
+      >
         <strong>
           Monthly subscription (recurring)
         </strong>
@@ -80,7 +82,9 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
     <div
       class="_infoBox_c57ff5"
     >
-      <p>
+      <p
+        class="transactionItem"
+      >
         <strong>
           Monthly subscription (recurring)
         </strong>
@@ -97,7 +101,9 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
     <div
       class="_infoBox_c57ff5"
     >
-      <p>
+      <p
+        class="transactionItem"
+      >
         <strong>
           Monthly subscription (recurring)
         </strong>

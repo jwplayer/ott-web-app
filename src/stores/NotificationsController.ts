@@ -25,7 +25,7 @@ export const subscribeToNotifications = async (uuid: string = '') => {
             break;
           case NotificationsTypes.ACCESS_GRANTED:
             await reloadActiveSubscription();
-            window.location.href = addQueryParams(window.location.origin, { u: 'welcome' });
+            window.location.href = addQueryParams(window.location.href, { u: 'welcome' });
             break;
           case NotificationsTypes.ACCESS_REVOKED:
             await reloadActiveSubscription();

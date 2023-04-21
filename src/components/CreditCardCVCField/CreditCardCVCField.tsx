@@ -19,11 +19,13 @@ const CreditCardCVCField: React.FC<Props> = ({ value, onChange, error, ...props 
   };
   return (
     <TextField
-      label={`CVC/CVV`}
+      label={`CVC / CVV`}
+      aria-label="Security code"
       {...props}
       error={!!error}
       helperText={error ? error : null}
       name="cardCVC"
+      className="directPostSecurityCode"
       type="text"
       value={value}
       onChange={formatCVC}

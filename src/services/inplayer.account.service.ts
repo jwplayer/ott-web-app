@@ -1,4 +1,5 @@
 import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import i18next from 'i18next';
 
 import type {
   AuthData,
@@ -67,6 +68,10 @@ export const register: Register = async ({ config, email, password }) => {
       password,
       passwordConfirmation: password,
       fullName: email,
+      metadata: {
+        first_name: ' ',
+        surname: ' ',
+      },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
       referrer: window.location.href,
@@ -343,13 +348,9 @@ function formatAccount(account: AccountData): Customer {
   const { id, uuid, email, full_name: fullName, metadata, created_at: createdAt } = account;
   const regDate = new Date(createdAt * 1000).toLocaleString();
 
-  let firstName = metadata?.first_name as string;
-  let lastName = metadata?.surname as string;
-  if (!firstName && !lastName) {
-    const nameParts = fullName.split(' ');
-    firstName = nameParts[0] || '';
-    lastName = nameParts.slice(1)?.join(' ');
-  }
+  const firstName = metadata?.first_name as string;
+  const lastName = metadata?.surname as string;
+
   return {
     id: id.toString(),
     uuid,
@@ -367,8 +368,7 @@ function formatAccount(account: AccountData): Customer {
 function formatUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
-  const fullName = `${firstName} ${lastName}`;
-
+  const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
   const data: UpdateAccountData = {
     fullName,
     metadata: {
@@ -402,11 +402,11 @@ function formatPublisherConsents(consent: Partial<GetRegisterField>) {
 }
 
 function getTermsConsent(): Consent {
-  const label = 'I accept the <a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a> of InPlayer.';
+  const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
   return formatPublisherConsents({
     required: true,
     name: 'terms',
-    label,
+    label: i18next.t('account:registration.terms_consent', { termsUrl }),
   });
 }
 
@@ -419,6 +419,8 @@ function parseJson(value: string, fallback = {}) {
 }
 
 export const canUpdateEmail = false;
+
+export const canSupportEmptyFullName = false;
 
 export const canChangePasswordWithOldPassword = true;
 
