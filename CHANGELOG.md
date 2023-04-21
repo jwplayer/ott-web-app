@@ -1,3 +1,14 @@
+## [4.6.2](https://github.com/jwplayer/ott-web-app/compare/v4.6.1...v4.6.2) (2023-04-21)
+
+
+### Bug Fixes
+
+* **analytics:** fix watch duration by filtering seek events ([22cfa26](https://github.com/jwplayer/ott-web-app/commit/22cfa26dae67204dfe10c69d8370034313cb5b7f))
+* **analytics:** fix watch duration by filtering seek events ([048c497](https://github.com/jwplayer/ott-web-app/commit/048c49744d2453df4b5f8d37de96824916314295))
+* **analytics:** refactor existing timeouts ([9138a81](https://github.com/jwplayer/ott-web-app/commit/9138a818e1ab7771faaa93bebc4786fd0c72feaa))
+
+
+
 ## [4.6.1](https://github.com/jwplayer/ott-web-app/compare/v4.6.0...v4.6.1) (2023-04-12)
 
 
