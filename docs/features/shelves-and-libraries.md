@@ -1,6 +1,6 @@
 # Video Shelves and Libraries
 
-<img title="" src="./../_images/shelves.jpg" alt="Shelves" width="316">  <img src="./../_images/library.jpg" title="" alt="Libraries" width="317">
+<img title="" src="./../_images/shelves.jpg" alt="Shelves" width="316"> <img src="./../_images/library.jpg" title="" alt="Libraries" width="317">
 
 ## Shelves
 
@@ -15,13 +15,13 @@ There are some special shelves:
 
 - featured shelf: highlight special videos, manually curated and visualized in the top of the homepage
 - favorite shelf: a list of videos a user likes to watch in the future. See [Watchlist](user-watchlists.md)
-- continue watching shelf:  a list of videos a user has not completed yet. See [Watchlist](user-watchlists.md)
+- continue watching shelf: a list of videos a user has not completed yet. See [Watchlist](user-watchlists.md)
 
 ## Libraries
 
-A library allows viewers to browse all videos. The standard usage is: 
+A library allows viewers to browse all videos. The standard usage is:
 
-- Different libraries per format e.g  ‘movies’, ‘shorts’, ‘shows’
+- Different libraries per format e.g ‘movies’, ‘shorts’, ‘shows’
 - About 50-500 items per library
 - 5-20 genre filters e.g ‘action’, ‘drama’, ‘comedy’
 
@@ -41,18 +41,18 @@ Videos are published to shelves and libraries using playlists:
 Each media item has poster images:
 
 - The static thumbnail is automatically taken from a frame of the video
-- The motion thumbnail (mp4/no audio) that is automatically derived from the first 5 seconds of the video   
+- The motion thumbnail (mp4/no audio) that is automatically derived from the first 5 seconds of the video
 - It’s possible to choose a custom thumbnail. The static thumbnail can be selected from the stills of the media item.
 - It’s not possible to have no thumbnails.
 - The static thumbnails are automatically resized to 320px-1920px widths, keeping the image ratio stable.
 
-The motion image is not used in the web app. 
+The motion image is not used in the web app.
 
 The JW Player dashboard, nor the web app support alternate video images at this moment. E.g. an hero image for the video detail page.
 
 ## Shelf and library configuration
 
-Shelves and libraries can be defined in the [app config](/docs/configuration.md), rather than hardcoded. This allows customer to change the content from the JW Dashboard. The `filterTags` are used to define the filterbox in the library screen. 
+Shelves and libraries can be defined in the [app config](/docs/configuration.md), rather than hardcoded. This allows customer to change the content from the JW Dashboard. The `filterTags` are used to define the filterbox in the library screen.
 
 ```
 {
@@ -82,15 +82,15 @@ Shelves and libraries can be defined in the [app config](/docs/configuration.md)
 
 ## Retrieving shelf and library contents
 
-Shelf and library contents are retrieved as a playlist. They can be retrieved with the Playlist API 
+Shelf and library contents are retrieved as a playlist. They can be retrieved with the Playlist API.
 
 ```
 GET Playlist\<playlistid>
 [{
  "title":"Video Title",
- "description":"Lorem ipsum dolor sit amet",  “ 
+ "description":"Lorem ipsum dolor sit amet",  “
  "images":[
-  {"src":"./media/dwEE1oBP/poster.jpg?width=640" }, 
+  {"src":"./media/dwEE1oBP/poster.jpg?width=640" },
   {"src":"./media/dwEE1oBP/poster.jpg?width=1280" }
   {"src":"./media/dwEE1oBP/poster.mp4?width=1280" }]
 },
@@ -98,6 +98,6 @@ GET Playlist\<playlistid>
 ]
 ```
 
-For large libraries, (>500) it is possible to paginate. 
+For large libraries, (>500) it is possible to paginate.
 
-It is possible to query based on tags and custom parameters
+It is possible to query based on tags and custom parameters.
