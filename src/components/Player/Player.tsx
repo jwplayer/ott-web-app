@@ -127,7 +127,7 @@ const Player: React.FC<Props> = ({
   }, [playerId]);
 
   useEffect(() => {
-    // update the startTimeRef each time the startTime changes
+    // Update the startTimeRef each time the startTime changes
     startTimeRef.current = startTime;
   }, [startTime]);
 
@@ -139,19 +139,19 @@ const Player: React.FC<Props> = ({
 
       const currentItem = playerRef.current?.getPlaylistItem() as PlaylistItem | null;
 
-      // we already loaded this item
+      // We already loaded this item
       if (currentItem && currentItem.mediaid === item.mediaid) {
         logDev('Calling loadPlaylist with the same item, check the dependencies');
         return;
       }
 
-      // update autostart parameter
+      // Update autostart parameter
       if (typeof autostart !== 'undefined') {
         playerRef.current?.setConfig({ autostart });
       }
 
-      // load new item
-      playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current })]);
+      // Load new item
+      playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId, feed_instance_id: feedId })]);
     };
 
     const initializePlayer = () => {
@@ -159,7 +159,7 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      // player options are untyped
+      // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
         advertising: adScheduleData,
         aspectratio: false,
@@ -174,14 +174,14 @@ const Player: React.FC<Props> = ({
         mute: false,
         playbackRateControls: true,
         pipIcon: 'disabled',
-        playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
+        playlist: [deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId, feed_instance_id: feedId })],
         repeat: false,
         cast: {},
         stretching: 'uniform',
         width: '100%',
       };
 
-      // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
+      // Only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
       if (typeof autostart !== 'undefined') {
         playerOptions.autostart = autostart;
       }
@@ -196,6 +196,7 @@ const Player: React.FC<Props> = ({
       setPlayer(playerRef.current);
       attachEvents();
     };
+
     if (playerRef.current) {
       return loadPlaylist();
     }
@@ -203,7 +204,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey, feedId]);
 
   useEffect(() => {
     return () => {
