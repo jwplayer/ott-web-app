@@ -53,4 +53,4 @@ See [.webapp.test.ini](/ini/templates/.webapp.test.ini) for an example.
 
 Boolean flag which if true, enables **ANY** 8-character app config ID (or path) to be specified with the [`app-config=<config source>` query param](configuration.md#switching-between-app-configs).
 
-> **Warning:** Generally the `UNSAFE_allowAnyConfigSource` option should only be used for dev, test, or demo deployments, because it will allow anyone to create URL's that specify any config to be displayed on your domain.
+> _**Warning:** Generally the `UNSAFE_allowAnyConfigSource` option should only be used for dev, test, or demo deployments, because it will allow anyone to create URL's that specify any config to be displayed on your domain._
