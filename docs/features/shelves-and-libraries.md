@@ -88,7 +88,7 @@ Shelf and library contents are retrieved as a playlist. They can be retrieved wi
 GET Playlist\<playlistid>
 [{
  "title":"Video Title",
- "description":"Lorem ipsum dolor sit amet",  “
+ "description":"Lorem ipsum dolor sit amet",
  "images":[
   {"src":"./media/dwEE1oBP/poster.jpg?width=640" },
   {"src":"./media/dwEE1oBP/poster.jpg?width=1280" }
