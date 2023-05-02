@@ -138,7 +138,7 @@ window.jwpltx = window.jwpltx || {};
   });
 
   // Process a time tick event
-  o.time = function (vp, vd) {
+  o.time = function (vp, vd, fed) {
     if (isSeeking) {
       return;
     }
@@ -153,7 +153,7 @@ window.jwpltx = window.jwpltx || {};
 
         sendData('s');
         setLiveInterval();
-        // monitor ticks for 20s elapsed
+        // Monitor ticks for 20s elapsed
       } else {
         if (timeWatched > 19) {
           uri.ti = timeWatched;
@@ -162,7 +162,7 @@ window.jwpltx = window.jwpltx || {};
         }
       }
 
-      // positive vd means  VOD stream
+      // Positive vd means VOD stream
     } else {
       // Initial tick means play() event
       if (!uri.vd) {
@@ -181,6 +181,7 @@ window.jwpltx = window.jwpltx || {};
 
         uri.ti = 0;
         uri.pw = 0;
+        uri.fed = fed;
 
         // Initialize latest quantile to compare further quantiles with
         nextQuantile = getNextTriggerQuantile(vp, vd);
@@ -188,7 +189,7 @@ window.jwpltx = window.jwpltx || {};
         lastVp = vp;
 
         sendData('s');
-        // monitor ticks for entering new quantile
+        // Monitor ticks for entering new quantile
       } else {
         const pw = getCurrentProgressQuantile(vp, vd);
         const quantile = getNextTriggerQuantile(vp, vd);
