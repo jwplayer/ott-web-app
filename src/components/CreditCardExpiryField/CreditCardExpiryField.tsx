@@ -37,12 +37,13 @@ const CreditCardExpiryField: React.FC<Props> = ({ value, onChange, error, ...pro
       label={`Expiry date`}
       {...props}
       name="cardExpiry"
+      className="directPostExpiryDate"
       value={value}
       error={!!error}
       helperText={error ? error : null}
       onChange={formatExpirationDate}
       type="text"
-      pattern="[0-1][0-9]/[0-9]{2}"
+      pattern="\d*"
       placeholder="MM/YY"
       required
     />

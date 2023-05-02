@@ -2,8 +2,6 @@ import constants, { longTimeout } from './constants';
 
 import { overrideIPCookieKey } from '#test/constants';
 
-const yearlyPrice = formatPrice(50);
-
 export async function goToCheckout(I: CodeceptJS.I) {
   await I.openMainMenu();
   I.click('Payments');
@@ -14,9 +12,11 @@ export async function goToCheckout(I: CodeceptJS.I) {
   I.waitForLoaderDone();
 }
 
-export function formatPrice(price: number) {
-  // eslint-disable-next-line no-irregular-whitespace
-  return `€ ${price.toFixed(2).replace('.', ',')}`;
+export function formatPrice(price: number, currency = 'EUR', country?: string) {
+  return new Intl.NumberFormat(country || undefined, {
+    style: 'currency',
+    currency: currency,
+  }).format(price);
 }
 
 export function addDays(date: Date, days: number) {
@@ -35,11 +35,13 @@ export function formatDate(date: Date) {
   return date.toLocaleDateString();
 }
 
-export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date) {
+export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date, yearlyPrice: string) {
   I.click('Continue');
   I.waitForLoaderDone(longTimeout);
-  I.waitForText('Welcome to JW OTT Web App (SVOD)');
-  I.see('Thank you for subscribing to JW OTT Web App (SVOD). Please enjoy all our content.');
+  I.wait(2);
+  I.waitForText(`Welcome to JW OTT Web App (SVOD)`);
+  I.see;
+  I.see(`Thank you for subscribing to JW OTT Web App (SVOD). Please enjoy all our content.`);
 
   I.click('Start watching');
 
@@ -63,12 +65,12 @@ export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: D
   I.see('Next billing date is on ' + formatDate(billingDate));
   I.see('Cancel subscription');
 
-  I.see('Annual subscription (recurring) to JW Player');
+  I.waitForElement('[class*="transactionItem"]');
 
   I.see(formatDate(today));
 }
 
-export function cancelPlan(I: CodeceptJS.I, expirationDate: Date) {
+export function cancelPlan(I: CodeceptJS.I, expirationDate: Date, canRenewSubscription: boolean) {
   I.amOnPage(constants.paymentsUrl);
   I.waitForLoaderDone();
 
@@ -87,11 +89,15 @@ export function cancelPlan(I: CodeceptJS.I, expirationDate: Date) {
   I.see('Miss you already.');
   I.see('You have been successfully unsubscribed. Your current plan will expire on ' + formatDate(expirationDate));
   I.click('Return to profile');
-  I.see('Renew subscription');
+
+  if (canRenewSubscription) {
+    I.see('Renew subscription');
+  }
+
   I.see('This plan will expire on ' + formatDate(expirationDate));
 }
 
-export function renewPlan(I: CodeceptJS.I, billingDate: Date) {
+export function renewPlan(I: CodeceptJS.I, billingDate: Date, yearlyPrice: string) {
   I.amOnPage(constants.paymentsUrl);
   I.waitForLoaderDone();
 

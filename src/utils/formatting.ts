@@ -94,7 +94,7 @@ export const episodeURL = ({
 export const formatDate = (dateString: number) => {
   if (!dateString) return '';
 
-  return new Date(dateString * 1000).toLocaleDateString();
+  return new Date(dateString * 1000).toLocaleDateString('en-US');
 };
 
 export const formatPrice = (price: number, currency: string, country: string) => {
