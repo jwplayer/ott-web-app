@@ -3,7 +3,7 @@ interface Jwpltx {
   adImpression: () => void;
   seek: (offset: number, duration: number) => void;
   seeked: () => void;
-  time: (position: number, duration: number, feedid?: string | null | undefined) => void;
+  time: (position: number, duration: number) => void;
   complete: () => void;
   remove: () => void;
 }

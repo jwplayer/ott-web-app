@@ -8,7 +8,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
   const timeHandler = useCallback(({ position, duration }: jwplayer.TimeParam) => {
-    window.jwpltx.time(position, duration, feedId);
+    window.jwpltx.time(position, duration);
   }, []);
 
   const seekHandler = useCallback(({ offset, duration }) => {

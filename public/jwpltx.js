@@ -138,7 +138,7 @@ window.jwpltx = window.jwpltx || {};
   });
 
   // Process a time tick event
-  o.time = function (vp, vd, fed) {
+  o.time = function (vp, vd) {
     if (isSeeking) {
       return;
     }
@@ -181,7 +181,6 @@ window.jwpltx = window.jwpltx || {};
 
         uri.ti = 0;
         uri.pw = 0;
-        uri.fed = fed;
 
         // Initialize latest quantile to compare further quantiles with
         nextQuantile = getNextTriggerQuantile(vp, vd);
