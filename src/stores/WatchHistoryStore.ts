@@ -1,7 +1,7 @@
 import { createStore } from './utils';
 
 import { VideoProgressMinMax } from '#src/config';
-import { PersonalShelf } from '#src/stores/ConfigStore';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import type { WatchHistoryItem } from '#types/watchHistory';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
@@ -20,14 +20,16 @@ export const useWatchHistoryStore = createStore<WatchHistoryState>('WatchHistory
     get().watchHistory.find(({ mediaid, progress }) => {
       return mediaid === item.mediaid && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max;
     }),
-  getPlaylist: () =>
-    ({
-      feedid: PersonalShelf.ContinueWatching,
+  getPlaylist: () => {
+    const features = useConfigStore((s) => s.config.features);
+    return {
+      feedid: features?.continueWatchingList || PersonalShelf.ContinueWatching,
       title: 'Continue watching',
       playlist: get()
         .watchHistory.filter(({ playlistItem, progress }) => !!playlistItem && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max)
         .map(({ playlistItem }) => playlistItem),
-    } as Playlist),
+    } as Playlist;
+  },
   getDictionary: () =>
     get().watchHistory.reduce((dict: { [key: string]: number }, item) => {
       dict[item.mediaid] = item.progress;

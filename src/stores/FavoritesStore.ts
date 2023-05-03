@@ -1,7 +1,7 @@
 import { createStore } from './utils';
 
 import type { Favorite } from '#types/favorite';
-import { PersonalShelf } from '#src/stores/ConfigStore';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type FavoritesState = {
@@ -19,10 +19,12 @@ export const useFavoritesStore = createStore<FavoritesState>('FavoritesState', (
   setWarning: (message: string | null) => set({ warning: message }),
   clearWarning: () => set({ warning: null }),
   hasItem: (item: PlaylistItem) => get().favorites.some((favoriteItem) => favoriteItem.mediaid === item.mediaid),
-  getPlaylist: () =>
-    ({
-      feedid: PersonalShelf.Favorites,
+  getPlaylist: () => {
+    const features = useConfigStore((s) => s.config.features);
+    return {
+      feedid: features?.favoritesList || PersonalShelf.Favorites,
       title: 'Favorites',
       playlist: get().favorites.map(({ playlistItem }) => playlistItem),
-    } as Playlist),
+    } as Playlist;
+  },
 }));
