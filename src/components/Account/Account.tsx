@@ -1,8 +1,11 @@
-import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 import DOMPurify from 'dompurify';
+import { useMutation } from 'react-query';
+
+import Alert from '../Alert/Alert';
 
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
 import Visibility from '#src/icons/Visibility';
@@ -18,7 +21,7 @@ import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collec
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { logDev } from '#src/utils/common';
-import { updateConsents, updateUser } from '#src/stores/AccountController';
+import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
 
 type Props = {
   panelClassName?: string;
@@ -39,13 +42,23 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const navigate = useNavigate();
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
+  const exportData = useMutation(exportAccountData);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const exportDataMessage = exportData.isSuccess ? t('account.export_data_success') : t('account.export_data_error');
 
-  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword } = useAccountStore(
-    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword }) => ({
+  useEffect(() => {
+    if (exportData.isSuccess || exportData.isError) {
+      setIsAlertVisible(true);
+    }
+  }, [exportData.isSuccess, exportData.isError]);
+
+  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData } = useAccountStore(
+    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData }) => ({
       customer: user,
       customerConsents,
       publisherConsents,
       canChangePasswordWithOldPassword,
+      canExportAccountData,
     }),
     shallow,
   );
@@ -144,113 +157,152 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   };
 
   return (
-    <Form initialValues={initialValues}>
-      {[
-        formSection({
-          label: t('account.email'),
-          onSubmit: (values) =>
-            updateUser({
-              email: values.email || '',
-              confirmationPassword: values.confirmationPassword,
-            }),
-          canSave: (values) => !!(values.email && values.confirmationPassword),
-          editButton: t('account.edit_account'),
-          readOnly: !canUpdateEmail,
-          content: (section) => (
-            <>
-              <TextField
-                name="email"
-                label={t('account.email')}
-                value={section.values.email || ''}
-                onChange={section.onChange}
-                error={!!section.errors?.email}
-                helperText={section.errors?.email}
-                disabled={section.isBusy}
-                editing={section.isEditing}
-                required
-              />
-              {section.isEditing && (
+    <>
+      <Form initialValues={initialValues}>
+        {[
+          formSection({
+            label: t('account.email'),
+            onSubmit: (values) =>
+              updateUser({
+                email: values.email || '',
+                confirmationPassword: values.confirmationPassword,
+              }),
+            canSave: (values) => !!(values.email && values.confirmationPassword),
+            editButton: t('account.edit_account'),
+            readOnly: !canUpdateEmail,
+            content: (section) => (
+              <>
                 <TextField
-                  name="confirmationPassword"
-                  label={t('account.confirm_password')}
-                  value={section.values.confirmationPassword}
+                  name="email"
+                  label={t('account.email')}
+                  value={section.values.email || ''}
                   onChange={section.onChange}
-                  error={!!section.errors?.confirmationPassword}
-                  helperText={section.errors?.confirmationPassword}
-                  type={viewPassword ? 'text' : 'password'}
+                  error={!!section.errors?.email}
+                  helperText={section.errors?.email}
                   disabled={section.isBusy}
-                  rightControl={
-                    <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
-                      {viewPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  }
+                  editing={section.isEditing}
                   required
                 />
-              )}
-            </>
-          ),
-        }),
-        formSection({
-          label: t('account.security'),
-          editButton: <Button label={t('account.edit_password')} type="button" onClick={() => (customer ? editPasswordClickHandler() : null)} />,
-          content: () => (
-            <>
-              <strong>{t('account.password')}</strong>
-              <p>****************</p>
-            </>
-          ),
-        }),
-        formSection({
-          label: t('account.about_you'),
-          editButton: t('account.edit_information'),
-          onSubmit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
-          content: (section) => (
-            <>
-              <TextField
-                name="firstName"
-                label={t('account.firstname')}
-                value={section.values.firstName || ''}
-                onChange={section.onChange}
-                error={!!section.errors?.firstName}
-                helperText={section.errors?.firstName}
-                disabled={section.isBusy}
-                editing={section.isEditing}
-              />
-              <TextField
-                name="lastName"
-                label={t('account.lastname')}
-                value={section.values.lastName || ''}
-                onChange={section.onChange}
-                error={!!section.errors?.lastName}
-                helperText={section.errors?.lastName}
-                disabled={section.isBusy}
-                editing={section.isEditing}
-              />
-            </>
-          ),
-        }),
-        formSection({
-          label: t('account.terms_and_tracking'),
-          saveButton: t('account.update_consents'),
-          onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
-          content: (section) => (
-            <>
-              {publisherConsents?.map((consent, index) => (
-                <Checkbox
-                  key={index}
-                  name={`consents.${consent.name}`}
-                  value={consent.value || ''}
-                  checked={(section.values.consents?.[consent.name] as boolean) || false}
+                {section.isEditing && (
+                  <TextField
+                    name="confirmationPassword"
+                    label={t('account.confirm_password')}
+                    value={section.values.confirmationPassword}
+                    onChange={section.onChange}
+                    error={!!section.errors?.confirmationPassword}
+                    helperText={section.errors?.confirmationPassword}
+                    type={viewPassword ? 'text' : 'password'}
+                    disabled={section.isBusy}
+                    rightControl={
+                      <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
+                        {viewPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    }
+                    required
+                  />
+                )}
+              </>
+            ),
+          }),
+          formSection({
+            label: t('account.security'),
+            editButton: <Button label={t('account.edit_password')} type="button" onClick={() => (customer ? editPasswordClickHandler() : null)} />,
+            content: () => (
+              <>
+                <strong>{t('account.password')}</strong>
+                <p>****************</p>
+              </>
+            ),
+          }),
+          formSection({
+            label: t('account.about_you'),
+            editButton: t('account.edit_information'),
+            onSubmit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
+            content: (section) => (
+              <>
+                <TextField
+                  name="firstName"
+                  label={t('account.firstname')}
+                  value={section.values.firstName || ''}
                   onChange={section.onChange}
-                  label={formatConsentLabel(consent.label)}
-                  disabled={consent.required || section.isBusy}
+                  error={!!section.errors?.firstName}
+                  helperText={section.errors?.firstName}
+                  disabled={section.isBusy}
+                  editing={section.isEditing}
                 />
-              ))}
-            </>
-          ),
-        }),
-      ]}
-    </Form>
+                <TextField
+                  name="lastName"
+                  label={t('account.lastname')}
+                  value={section.values.lastName || ''}
+                  onChange={section.onChange}
+                  error={!!section.errors?.lastName}
+                  helperText={section.errors?.lastName}
+                  disabled={section.isBusy}
+                  editing={section.isEditing}
+                />
+              </>
+            ),
+          }),
+          formSection({
+            label: t('account.terms_and_tracking'),
+            saveButton: t('account.update_consents'),
+            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
+            content: (section) => (
+              <>
+                {publisherConsents?.map((consent, index) => (
+                  <Checkbox
+                    key={index}
+                    name={`consents.${consent.name}`}
+                    value={consent.value || ''}
+                    checked={(section.values.consents?.[consent.name] as boolean) || false}
+                    onChange={section.onChange}
+                    label={formatConsentLabel(consent.label)}
+                    disabled={consent.required || section.isBusy}
+                  />
+                ))}
+              </>
+            ),
+          }),
+          ...(canExportAccountData
+            ? [
+                formSection({
+                  label: t('account.export_data_title'),
+                  content: (section) => (
+                    // TODO: pull css out into a module
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem',
+                      }}
+                    >
+                      <div>
+                        <Trans t={t} i18nKey="account.export_data_body" values={{ email: section.values.email }} />
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexGrow: 1,
+                        }}
+                      >
+                        <Button
+                          label={t('account.export_data_title')}
+                          type="button"
+                          disabled={exportData.isLoading}
+                          onClick={async () => {
+                            exportData.mutate(''); // TODO: remove password once backend is updated
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ),
+                }),
+              ]
+            : []),
+        ]}
+      </Form>
+      <Alert open={isAlertVisible} message={exportDataMessage} onClose={() => setIsAlertVisible(false)} isSuccess={exportData.isSuccess} />
+    </>
   );
 };
 

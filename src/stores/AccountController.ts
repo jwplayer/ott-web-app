@@ -78,6 +78,7 @@ export const initializeAccount = async () => {
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
+      canExportAccountData: accountService.canExportAccountData,
     });
     accountService.setEnvironment(config);
 
@@ -453,6 +454,15 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
         transactions,
         activePayment,
       });
+    });
+  });
+}
+
+export async function exportAccountData(password: string) {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ accountService }) => {
+      const reponse = await accountService.exportAccountData({ password }, true, jwt);
+      return reponse;
     });
   });
 }

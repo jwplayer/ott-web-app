@@ -25,7 +25,11 @@
     "security": "Security",
     "terms_and_tracking": "Terms & tracking",
     "update_consents": "Update consents",
-    "view_password": "View password"
+    "view_password": "View password",
+    "export_data_title": "Export account data",
+    "export_data_body": "Export all of your personal account data to <strong>{{email}}</strong> as an attachment.",
+    "export_data_success": "Please check your email.",
+    "export_data_error": "An error occurred while exporting your account data."
   },
   "favorites": {
     "clear": "Clear favorites",
