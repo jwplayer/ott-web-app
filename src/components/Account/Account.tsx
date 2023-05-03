@@ -7,6 +7,8 @@ import { useMutation } from 'react-query';
 
 import Alert from '../Alert/Alert';
 
+import styles from './Account.module.scss';
+
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
@@ -268,23 +270,11 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                 formSection({
                   label: t('account.export_data_title'),
                   content: (section) => (
-                    // TODO: pull css out into a module
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1rem',
-                      }}
-                    >
+                    <div className={styles.exportDataContainer}>
                       <div>
                         <Trans t={t} i18nKey="account.export_data_body" values={{ email: section.values.email }} />
                       </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexGrow: 1,
-                        }}
-                      >
+                      <div>
                         <Button
                           label={t('account.export_data_title')}
                           type="button"
@@ -301,7 +291,9 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             : []),
         ]}
       </Form>
-      <Alert open={isAlertVisible} message={exportDataMessage} onClose={() => setIsAlertVisible(false)} isSuccess={exportData.isSuccess} />
+      {canExportAccountData && (
+        <Alert open={isAlertVisible} message={exportDataMessage} onClose={() => setIsAlertVisible(false)} isSuccess={exportData.isSuccess} />
+      )}
     </>
   );
 };
