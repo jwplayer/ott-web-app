@@ -151,7 +151,7 @@ const Player: React.FC<Props> = ({
       }
 
       // Load new item
-      playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId, feed_instance_id: feedId })]);
+      playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId })]);
     };
 
     const initializePlayer = () => {
@@ -174,7 +174,7 @@ const Player: React.FC<Props> = ({
         mute: false,
         playbackRateControls: true,
         pipIcon: 'disabled',
-        playlist: [deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId, feed_instance_id: feedId })],
+        playlist: [deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId })],
         repeat: false,
         cast: {},
         stretching: 'uniform',
