@@ -55,12 +55,9 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
   const { isEntitled } = useEntitlement(data);
 
-  // Determine which feed id to send to analytics service
-  const playlistId = features?.recommendationsPlaylist ? features?.recommendationsPlaylist : feedId;
-
   // Handlers
   const goBack = () => data && navigate(mediaURL(data, feedId, false));
-  const onCardClick = (item: PlaylistItem) => navigate(mediaURL(item, playlistId));
+  const onCardClick = (item: PlaylistItem) => navigate(mediaURL(item, features?.recommendationsPlaylist));
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -68,8 +65,8 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
     const index = playlist.playlist.findIndex(({ mediaid }) => mediaid === id);
     const nextItem = playlist.playlist[index + 1];
 
-    return nextItem && navigate(mediaURL(nextItem, playlistId, true));
-  }, [id, playlist, navigate, playlistId]);
+    return nextItem && navigate(mediaURL(nextItem, features?.recommendationsPlaylist, true));
+  }, [id, playlist, navigate, features?.recommendationsPlaylist]);
 
   // Effects
   useEffect(() => {
