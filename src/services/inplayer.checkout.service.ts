@@ -83,12 +83,9 @@ export const paymentWithPayPal: PaymentWithPayPal = async (payload) => {
       origin: `${window.location.origin}?u=waiting-for-payment`,
       accessFeeId: payload.order.id,
       paymentMethod: 2,
-      // TODO: add voucherCode in sdk types
-      // @ts-ignore
       voucherCode: payload.couponCode,
     });
 
-    // @ts-ignore
     if (response.data?.id) {
       return {
         errors: ['Already have an active access'],
