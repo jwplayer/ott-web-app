@@ -20,4 +20,3 @@ export type InPlayerResponse<T> = {
   statusText: string;
   config: AxiosRequestConfig;
 };
-

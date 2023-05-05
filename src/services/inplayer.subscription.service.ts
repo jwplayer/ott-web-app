@@ -64,8 +64,6 @@ export async function getActivePayment() {
 
     return cards.find((paymentDetails) => paymentDetails.active) || null;
   } catch {
-    //TODO Fix response code in the InPlayer API
-    //throw new Error('Failed to get payment details');
     return null;
   }
 }
@@ -107,7 +105,6 @@ const formatCardDetails = (card: Card): PaymentDetail => {
   } as PaymentDetail;
 };
 
-// TODO: fix PurchaseDetails type in InPlayer SDK
 const formatTransaction = (transaction: PurchaseDetails): Transaction => {
   const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
 
