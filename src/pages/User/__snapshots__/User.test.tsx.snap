@@ -641,7 +641,7 @@ exports[`User Component tests > Payments Page 1`] = `
             class="_price_c57ff5"
           >
             <strong>
-              199,99 US$
+              $199.99
             </strong>
             <small>
               /
