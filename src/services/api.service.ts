@@ -3,7 +3,7 @@ import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 import type { AdSchedule } from '#types/ad-schedule';
-import type { GetSeriesParams, Series } from '#types/series';
+import type { EpisodesRes, EpisodesWithPagination, GetSeriesParams, SeasonsRes, SeasonWithPagination, Series, EpisodeInSeries } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
 import { generateImageData } from '#src/utils/image';
 
@@ -13,6 +13,8 @@ enum ImageProperty {
   BACKGROUND = 'backgroundImage',
   CHANNEL_LOGO = 'channelLogoImage',
 }
+
+const PAGE_LIMIT = 20;
 
 /**
  * Transform incoming media items
@@ -125,7 +127,7 @@ export const getSeries = async (id: string, params: GetSeriesParams = {}): Promi
  * Get all series for the given media_ids
  * @param {string[]} mediaIds
  */
-export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in typeof mediaIds[number]]: Series[] | undefined } | undefined> => {
+export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [mediaId: string]: EpisodeInSeries[] | undefined } | undefined> => {
   const pathname = `/apps/series`;
   const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
     media_ids: mediaIds.join(','),
@@ -134,43 +136,63 @@ export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in
   return await getDataOrThrow(response);
 };
 
-// Max count per request
-const MAX_EPISODES_COUNT = 50;
-
 /**
- * Get all episodes of the selected series
+ * Get all episodes of the selected series (when no particular season is selected or when episodes are attached to series)
  * @param {string} seriesId
  */
-export const getEpisodes = async (seriesId: string | undefined): Promise<{ [id: string]: PlaylistItem }> => {
+export const getEpisodes = async (seriesId: string | undefined, pageOffset: number, pageLimit?: number): Promise<EpisodesWithPagination> => {
   if (!seriesId) {
     throw new Error('Series ID is required');
   }
 
   const pathname = `/apps/series/${seriesId}/episodes`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {});
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit || PAGE_LIMIT });
 
   const response = await fetch(url);
-  const data = await getDataOrThrow(response);
-
-  let media = data.media;
-
-  // We will send additional requests in case there are more than 50 items
-  if (data.total > MAX_EPISODES_COUNT) {
-    // How many requests do we need to make (excluding one initially done)
-    const chunks = Math.ceil(data.total / MAX_EPISODES_COUNT) - 1;
-    const fetchedData = await Promise.all(
-      // Starting from the second page
-      Array.from({ length: chunks }, (_, i) => i + 2).map((page) => {
-        return fetch(`${url}?page=${page}`).then((r) => getDataOrThrow(r));
-      }),
-    );
-    const processedData = fetchedData.reduce((acc, el) => ({ ...acc, ...el.data }), {});
-
-    media = { processedData };
-  }
+  const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
 
   // Adding images and keys for media items
-  return Object.keys(media).reduce((acc, key) => ({ ...acc, [key]: transformMediaItem({ ...media[key], mediaid: key }) }), {});
+  return {
+    episodes: episodes.map((el) => ({
+      ...transformMediaItem(el.media_item),
+      seasonNumber: el.season_number ? String(el.season_number) : '',
+      episodeNumber: String(el.episode_number),
+    })),
+    pagination: { page, page_limit, total },
+  };
+};
+
+/**
+ * Get season of the selected series
+ * @param {string} seriesId
+ */
+export const getSeasonWithEpisodes = async (
+  seriesId: string | undefined,
+  season_number: number,
+  pageOffset: number,
+  pageLimit?: number,
+): Promise<SeasonWithPagination> => {
+  if (!seriesId) {
+    throw new Error('Series ID is required');
+  }
+
+  const pathname = `/apps/series/${seriesId}/seasons/${season_number}`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit || PAGE_LIMIT });
+
+  const response = await fetch(url);
+  const { seasons, page, page_limit, total }: SeasonsRes = await getDataOrThrow(response);
+  const season = seasons[0];
+
+  // Adding images and keys for media items
+  return {
+    ...season,
+    episodes: season.episodes.map((el) => ({
+      ...transformMediaItem(el.media_item),
+      seasonNumber: el.season_number ? String(el.season_number) : '',
+      episodeNumber: String(el.episode_number),
+    })),
+    pagination: { page, page_limit, total },
+  };
 };
 
 /**

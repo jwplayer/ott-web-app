@@ -1,4 +1,4 @@
-import { CONTENT_TYPE, SERIES_CONTENT_TYPE } from '#src/config';
+import { CONTENT_TYPE } from '#src/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 type RequiredProperties<T, P extends keyof T> = T & Required<Pick<T, P>>;
@@ -21,7 +21,7 @@ export const isDeprecatedSeriesFlow = (item: PlaylistItem) => {
 
 // For the new series flow we use contentType custom param to define media item to be series
 // In this case media item and series item have the same id
-export const isNewSeriesFlow = (item: PlaylistItem) => Object.keys(SERIES_CONTENT_TYPE).includes(item.contentType || '');
+export const isNewSeriesFlow = (item: PlaylistItem) => item.contentType === CONTENT_TYPE.series;
 
 export const isSeries = (item: PlaylistItem) => isDeprecatedSeriesFlow(item) || isNewSeriesFlow(item);
 
@@ -31,7 +31,7 @@ export const isEpisode = (item: PlaylistItem) => {
 
 export const getSeriesIdFromEpisode = (item: PlaylistItem | undefined) => {
   if (!item || !isEpisode(item)) {
-    return null;
+    return;
   }
 
   const tags = item.tags ? item.tags.split(',') : [];
@@ -47,7 +47,7 @@ export const getSeriesIdFromEpisode = (item: PlaylistItem | undefined) => {
     return item.seriesId;
   }
 
-  return null;
+  return;
 };
 
 export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType' | 'liveChannelsId'> =>

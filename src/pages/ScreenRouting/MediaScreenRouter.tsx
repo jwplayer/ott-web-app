@@ -14,16 +14,12 @@ import MediaSeries from '#src/pages/ScreenRouting/mediaScreens/MediaSeries/Media
 import MediaSeriesEpisode from '#src/pages/ScreenRouting/mediaScreens/MediaSeriesEpisode/MediaSeriesEpisode';
 import MediaLiveChannel from '#src/pages/ScreenRouting/mediaScreens/MediaLiveChannel/MediaLiveChannel';
 import { ScreenMap } from '#src/pages/ScreenRouting/ScreenMap';
-import { CONTENT_TYPE, SERIES_CONTENT_TYPE } from '#src/config';
+import { CONTENT_TYPE } from '#src/config';
 
 export const mediaScreenMap = new ScreenMap<PlaylistItem>();
 
 // Register media screens
-
-// Register all series screens
-Object.keys(SERIES_CONTENT_TYPE).forEach((type) => {
-  mediaScreenMap.registerByContentType(MediaSeries, type);
-});
+mediaScreenMap.registerByContentType(MediaSeries, CONTENT_TYPE.series);
 mediaScreenMap.registerByContentType(MediaSeriesEpisode, CONTENT_TYPE.episode);
 mediaScreenMap.registerByContentType(MediaLiveChannel, CONTENT_TYPE.livechannel);
 mediaScreenMap.registerByContentType(MediaStaticPage, CONTENT_TYPE.page);

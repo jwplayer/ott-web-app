@@ -10,6 +10,8 @@
   "episode": "episode",
   "episode_not_found": "Episode not found",
   "episodes": "Episodes",
+  "other_episodes": "Other episodes",
+  "other_season_episodes": "Other episodes of the season",
   "favorite": "Favorite",
   "favorites_warning": "Maximum amount of favorite videos exceeded. You can only add up to {{maxCount}} favorite videos. Please delete one and repeat the operation.",
   "remove_from_favorites": "Remove from favorites",

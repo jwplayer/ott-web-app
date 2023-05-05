@@ -72,23 +72,24 @@ Scenario('It renders the correct structured metadata for the series screen', asy
   await I.openVideoCard(constants.primitiveAnimalsTitle);
   I.see('Primitive Animals');
 
-  const url = await I.grabCurrentUrl();
+  const url = removeQueryParam(await I.grabCurrentUrl(), 'r');
+  const seriesId = getQueryParam(url, 'seriesId');
 
   I.seeTextEquals(
     JSON.stringify({
       '@context': 'http://schema.org/',
       '@type': 'TVEpisode',
-      '@id': removeQueryParam(url, 'r'),
+      '@id': url,
       episodeNumber: '1',
-      seasonNumber: '1',
+      seasonNumber: '0',
       name: 'Blocking',
       uploadDate: '2021-03-10T10:00:00.000Z',
       partOfSeries: {
         '@type': 'TVSeries',
-        '@id': `${constants.baseUrl}m/oXGyKQ97`,
+        '@id': `${constants.baseUrl}m/${seriesId}`,
         name: 'Primitive Animals',
-        numberOfEpisodes: 4,
-        numberOfSeasons: 1,
+        numberOfEpisodes: '4',
+        numberOfSeasons: '0',
       },
     }),
     { css: 'script[type="application/ld+json"]' },
@@ -118,13 +119,18 @@ async function checkMetaTags(I: CodeceptJS.I, title: string, description, isSeri
 
   I.seeAttributesOnElements('meta[name="twitter:title"]', { content: `${title} - JW OTT Web App` });
   I.seeAttributesOnElements('meta[name="twitter:description"]', { content: description });
-  I.seeAttributesOnElements('meta[name="twitter:image"]', { content: isSeries ? posterUrl : makeHttps(posterUrl) });
+  I.seeAttributesOnElements('meta[name="twitter:image"]', { content: makeHttps(posterUrl) });
 }
 
 function removeQueryParam(href: string, param: string) {
   const url = new URL(href);
   url.searchParams.delete(param);
   return url.toString();
+}
+
+function getQueryParam(href: string, param: string) {
+  const url = new URL(href);
+  return url.searchParams.get(param);
 }
 
 function makeHttps(href: string) {

@@ -26,7 +26,7 @@ const useGetSeriesId = (item: PlaylistItem) => {
 
   return {
     isLoading,
-    seriesId: staticSeriesId || data,
+    seriesId: data || staticSeriesId,
   };
 };
 

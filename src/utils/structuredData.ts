@@ -2,25 +2,35 @@ import { episodeURL, mediaURL } from './formatting';
 import { secondsToISO8601 } from './datetime';
 
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import type { Series } from '#types/series';
 
-export const generateSeriesMetadata = (seriesPlaylist: Playlist, mediaId: string | undefined) => {
+export const generateSeriesMetadata = (series: Series | undefined, seriesPlaylist: Playlist, seriesId: string | undefined) => {
   // Use playlist for old flow and media id for a new flow
-  const seriesCanonical = `${window.location.origin}/m/${seriesPlaylist.feedid || mediaId}`;
+  const seriesCanonical = `${window.location.origin}/m/${seriesId}`;
 
   return {
     '@type': 'TVSeries',
     '@id': seriesCanonical,
     name: seriesPlaylist.title,
-    numberOfEpisodes: seriesPlaylist.playlist.length,
-    numberOfSeasons: seriesPlaylist.playlist.reduce(function (list, playlistItem) {
-      return !playlistItem.seasonNumber || list.includes(playlistItem.seasonNumber) ? list : list.concat(playlistItem.seasonNumber);
-    }, [] as string[]).length,
+    numberOfEpisodes: String(series?.episode_count || seriesPlaylist.playlist.length),
+    numberOfSeasons: String(
+      series?.season_count ||
+        seriesPlaylist.playlist.reduce(function (list, playlistItem) {
+          return !playlistItem.seasonNumber || list.includes(playlistItem.seasonNumber) ? list : list.concat(playlistItem.seasonNumber);
+        }, [] as string[]).length,
+    ),
   };
 };
 
-export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, episode: PlaylistItem, seriesId: string | undefined, mediaId: string | undefined) => {
-  const episodeCanonical = `${window.location.origin}${episodeURL({ episode, playlistId: seriesPlaylist.feedid, mediaId, seriesId })}`;
-  const seriesMetadata = generateSeriesMetadata(seriesPlaylist, mediaId);
+export const generateEpisodeJSONLD = (
+  seriesPlaylist: Playlist,
+  series: Series | undefined,
+  episode: PlaylistItem,
+  seriesId: string | undefined,
+  feedId: string | undefined,
+) => {
+  const episodeCanonical = `${window.location.origin}${episodeURL({ episode, playlistId: feedId, seriesId })}`;
+  const seriesMetadata = generateSeriesMetadata(series, seriesPlaylist, seriesId);
 
   return JSON.stringify({
     '@context': 'http://schema.org/',

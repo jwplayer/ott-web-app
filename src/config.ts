@@ -33,9 +33,3 @@ export const CONTENT_TYPE = {
   // Page with shelves list
   hub: 'hub',
 } as const;
-
-// Content types which should have series support
-export const SERIES_CONTENT_TYPE = {
-  series: 'series',
-  // additional types can be added here
-} as const;

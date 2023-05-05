@@ -27,6 +27,7 @@ export default {
   accountsUrl: `${baseUrl}u/my-account`,
   paymentsUrl: `${baseUrl}u/payments`,
   offersUrl: `${baseUrl}u/payments?u=choose-offer`,
+  primitiveAnimalsId: 'oXGyKQ97',
   primitiveAnimalsTitle: 'Primitive Animals',
   primitiveAnimalsDescription: "If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.",
   agent327Title: 'Agent 327',
@@ -39,6 +40,7 @@ export default {
   elephantsDreamDescription:
     'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',
   fantasyVehicleTitle: 'Fantasy Vehicle Creation',
+  fantasyVehicleId: 'lsFXY5xn',
   minecraftAnimationWorkshopTitle: 'Minecraft Animation Workshop',
   minecraftAnimationWorkshopDescription:
     'Dillon Gu explains a little bit about what you can expect to see in this workshop. Check out his showcase video for this workshop here on his YouTube channel!',

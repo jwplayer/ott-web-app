@@ -1,5 +1,5 @@
 import usePlaylist from '#src/hooks/usePlaylist';
-import useSeries from '#src/hooks/useSeries';
+import useSeries from '#src/hooks/series/useSeries';
 import type { Playlist } from '#types/playlist';
 import type { Series } from '#types/series';
 
@@ -12,13 +12,13 @@ type Data = {
 
 export const useSeriesData = (
   seriesId: string | undefined,
-  mediaId: string | undefined,
+  mediaid: string | undefined,
 ): {
   data: Data;
   isPlaylistError: boolean;
   isLoading: boolean;
 } => {
-  const { data: seriesData, isLoading: isSeriesLoading, error: seriesError, isError: isSeriesError } = useSeries(mediaId);
+  const { data: seriesData, isLoading: isSeriesLoading, error: seriesError, isError: isSeriesError } = useSeries(mediaid);
 
   const usePlaylistFallback = isSeriesError && seriesError?.code === 404;
   // We enable it only after new series api unsuccessful load (404 error showing that such the series with the following id doesn't exist)

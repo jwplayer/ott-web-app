@@ -101,9 +101,9 @@ This section describes how this will work.
 
 ### Creating native series in the dashboard
 
-1. Customers create media items from the Media Library page with "Series" content type.
-2. Customers add episodes to the media item. Media item / series item is the same entity now. They both have the same id.
-3. Customers publish their series by putting media items into a playlist
+[//]: # 'TODO: Add link'
+
+See the series documentation for the JW dashboard.
 
 ### Native series in shelves and libraries
 
@@ -124,7 +124,7 @@ GET playlist\<playlistid>
 ]
 ```
 
-We can also show episode number and season number for separate series episodes in case they have `seasonNumber` and `episodeNumber` custom params.
+> Note: it is also possible to use another `contentType` param after modifying screen mapping (TODO: add screen mapping docs).
 
 ### Native series detail window
 
@@ -215,7 +215,7 @@ GET /apps/series/${seriesId}/episodes
       genre: 'Advanced',
       rating: 'CC-BY',
       backgroundImage: 'background',
-      contentType: 'Episode',
+      contentType: 'episode',
     },
   },
   siteId: 'siteId',
@@ -232,7 +232,3 @@ Customer are advised to exclude series episodes from the search playlists by usi
 ## Coming soon
 
 We will add full Favorites and Continue Watching support
-
-```
-
-```

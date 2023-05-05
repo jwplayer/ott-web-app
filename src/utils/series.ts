@@ -1,94 +1,110 @@
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { Season, Series } from '#types/series';
+import type { EpisodesWithPagination, Series } from '#types/series';
 
 /**
  * Get an array of options for a season filter
  */
 export const getFiltersFromSeries = (playlist: Playlist, series: Series | undefined): string[] => {
-  // For new series flow we should keep sorting set for series seasons, the order in the array of seasons can be different
-  if (series && 'seasons' in series) {
-    return (series?.seasons || []).map((el) => String(el.season_number));
+  const isNewFlow = !!series;
+
+  // For the new series flow we already have episodes sorted correctly on the back-end side
+  if (isNewFlow) {
+    return 'seasons' in series ? series.seasons.map((season) => String(season.season_number)) : [];
   }
 
-  // Old series doesn't have sorting supported and needs to be sorted manually
+  // Old series doesn't have sorting supported and just aggregates all episodes in one playlist
+  // So we need to sort the playlist manually based on the selected filter (season).
   return playlist.playlist
     .reduce((filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')), [])
     .slice()
     .sort();
 };
 
-export const filterSeries = (playlist: Playlist, filter: string) => {
+/**
+ * Get a playlist with episodes based on the selected filter
+ */
+export const filterSeries = (playlist: Playlist, episodes: EpisodesWithPagination[] | undefined, filter: string): Playlist => {
+  const isNewFlow = !!episodes?.length;
+
+  if (isNewFlow) {
+    // Get a flattened list of episodes and return it as part of the playlist
+    return { ...playlist, playlist: episodes.flatMap((e) => e.episodes) };
+  }
+
   if (!filter) return playlist;
 
   return {
     ...playlist,
+    // Filter episodes manually for the old flow where our playlists includes all episodes with all seasons
     playlist: playlist.playlist.filter(({ seasonNumber }) => seasonNumber === filter),
   };
 };
 
-export const getSeriesEpisodes = (series: Series) => {
-  if ('seasons' in series) {
-    return series.seasons.flatMap((season: Season) => season.episodes);
-  }
+export const getNextEpisode = (data: EpisodesWithPagination[], currentEpisode: PlaylistItem, hasMoreEpisodes: boolean, fetchNextEpisodes: () => void) => {
+  const episodes = data.flatMap((el) => el.episodes);
+  const episodeIndex = episodes.findIndex((el) => el.mediaid === currentEpisode.mediaid);
 
-  return series.episodes;
+  // If there are more episodes in the selected season / episodes list
+  if (episodeIndex !== episodes.length - 1) {
+    return episodes[episodeIndex + 1];
+    // Episode is the last one in the data we have, but we have more to fetch, let's do it
+  } else if (hasMoreEpisodes) {
+    fetchNextEpisodes();
+    return currentEpisode;
+    // No more data to fetch -> return null
+  } else {
+    return;
+  }
 };
 
-/** Next episode to show after video is complete */
-export const getNextEpisode = (series: Series, media: PlaylistItem): string => {
-  // To handle array elements
-  const episodes = getSeriesEpisodes(series);
+export const getNextItem = (
+  episode: PlaylistItem | undefined,
+  seriesPlaylist: Playlist,
+  episodes: EpisodesWithPagination[] | undefined,
+  hasMoreEpisodes: boolean,
+  fetchNextEpisodes: () => void,
+): PlaylistItem | undefined => {
+  const isNewFlow = !!episodes?.length;
 
-  const episodeIndex = episodes?.findIndex((el) => el.media_id === media.mediaid);
+  if (!episode || !seriesPlaylist) return;
 
-  // If we have the last episode => we leave the same video
-  if (episodeIndex === episodes.length - 1) {
-    return media.mediaid;
+  // Using new flow when episodes are available
+  if (isNewFlow) {
+    const nextEpisode = getNextEpisode(episodes, episode, hasMoreEpisodes, fetchNextEpisodes);
+
+    return nextEpisode;
   }
 
-  return episodes[episodeIndex + 1]?.media_id;
-};
-
-export const getNextItem = (item: PlaylistItem | undefined, series: Series | undefined, seriesPlaylist: Playlist | undefined): PlaylistItem | undefined => {
-  if (!item || !seriesPlaylist) return;
-
-  if (series) {
-    const nextEpisodeId = getNextEpisode(series, item);
-
-    return seriesPlaylist.playlist.find((episode) => episode.mediaid === nextEpisodeId);
-  }
-
-  const index = seriesPlaylist?.playlist?.findIndex(({ mediaid }) => mediaid === item.mediaid);
+  // For the old flow we already have all the episodes and seasons so we just need to find them in the array
+  const index = seriesPlaylist?.playlist?.findIndex(({ mediaid }) => mediaid === episode.mediaid);
 
   return seriesPlaylist?.playlist?.[index + 1];
 };
 
-/** We need to add episodeNumber and seasonNumber to each media item we got
- *  That will help with further data retrieval
- */
-export const enrichMediaItems = (series: Series | undefined, mediaItems: { [key: string]: PlaylistItem }): PlaylistItem[] => {
-  if (series) {
-    if ('seasons' in series) {
-      return series.seasons.flatMap((season: Season) =>
-        season.episodes.map((episode) => {
-          const item = mediaItems[episode.media_id];
+/** Get a total amount of episodes in a season */
+export const getEpisodesInSeason = (episode: PlaylistItem | undefined, seriesPlaylist: Playlist, series: Series | undefined) => {
+  const isNewFlow = !!series;
 
-          item.seasonNumber = String(season.season_number);
-          item.episodeNumber = String(episode.episode_number);
-
-          return item;
-        }),
-      );
-    }
-
-    return series.episodes.map((episode) => {
-      const item = mediaItems[episode.media_id];
-      item.seasonNumber = '0';
-      item.episodeNumber = String(episode.episode_number);
-
-      return item;
-    });
+  if (isNewFlow) {
+    return (series?.seasons || []).find((el) => el.season_number === Number(episode?.seasonNumber))?.episode_count;
   }
 
-  return [];
+  return seriesPlaylist.playlist.filter((i) => i.seasonNumber === episode?.seasonNumber)?.length;
+};
+
+/**  */
+export const getEpisodeToRedirect = (
+  episodeId: string | undefined,
+  seriesPlaylist: Playlist,
+  isNewSeriesFlow: boolean,
+  episodesData: EpisodesWithPagination[] | undefined,
+) => {
+  if (isNewSeriesFlow) {
+    return episodesData?.[0]?.episodes?.[0];
+  }
+
+  const firstEpisode = seriesPlaylist.playlist[0];
+  const toEpisode = episodeId ? seriesPlaylist.playlist.find(({ mediaid }) => mediaid === episodeId) : firstEpisode;
+
+  return toEpisode;
 };

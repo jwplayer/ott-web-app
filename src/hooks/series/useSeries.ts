@@ -1,7 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 
-import { getMediaById, getSeries, getEpisodes } from '#src/services/api.service';
-import { enrichMediaItems } from '#src/utils/series';
+import { getEpisodes, getMediaById, getSeries } from '#src/services/api.service';
 import type { Series } from '#types/series';
 import type { Playlist } from '#types/playlist';
 import type { ApiError } from '#src/utils/api';
@@ -11,17 +10,15 @@ export default (seriesId: string | undefined): UseQueryResult<{ series: Series; 
   return useQuery(
     ['series', seriesId],
     async () => {
-      const series = await getSeries(seriesId || '');
-      const media = await getMediaById(seriesId || '');
-      const mediaItems = await getEpisodes(seriesId);
+      const [series, media, episodesData] = await Promise.all([getSeries(seriesId || ''), getMediaById(seriesId || ''), getEpisodes(seriesId || '', 0)]);
 
       return {
         series,
         playlist: {
+          playlist: episodesData.episodes,
           title: media?.title,
           description: media?.description,
           feedid: media?.series_id,
-          playlist: enrichMediaItems(series, mediaItems),
         },
       };
     },

@@ -4,19 +4,17 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './VideoListItem.module.scss';
 
-import type { ImageData } from '#types/playlist';
+import type { PlaylistItem } from '#types/playlist';
 import Image from '#components/Image/Image';
 import Lock from '#src/icons/Lock';
 import Tag from '#components/Tag/Tag';
 import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
+import { isSeries } from '#src/utils/media';
 
 type VideoListItemProps = {
   onClick?: () => void;
   onHover?: () => void;
-  title: string;
-  duration: number;
-  image?: ImageData;
-  isSeries?: boolean;
+  item: PlaylistItem;
   seasonNumber?: string;
   episodeNumber?: string;
   progress?: number;
@@ -26,31 +24,21 @@ type VideoListItemProps = {
   isLocked?: boolean;
 };
 
-function VideoListItem({
-  onClick,
-  onHover,
-  title,
-  duration,
-  seasonNumber,
-  episodeNumber,
-  progress,
-  activeLabel,
-  image,
-  isSeries = false,
-  loading = false,
-  isActive = false,
-  isLocked = true,
-}: VideoListItemProps): JSX.Element {
+function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading = false, isActive = false, isLocked = true }: VideoListItemProps): JSX.Element {
+  const { title, duration, seasonNumber, episodeNumber, shelfImage: image } = item;
+
   const { t } = useTranslation('common');
   const [imageLoaded, setImageLoaded] = useState(false);
   const posterImageClassNames = classNames(styles.posterImage, {
     [styles.visible]: imageLoaded,
   });
 
+  const isSeriesItem = isSeries(item);
+
   const renderTagLabel = () => {
     if (loading || !title) return null;
 
-    if (isSeries) {
+    if (isSeriesItem) {
       return t('series');
     } else if (seasonNumber && episodeNumber) {
       return formatSeriesMetaString(seasonNumber, episodeNumber);

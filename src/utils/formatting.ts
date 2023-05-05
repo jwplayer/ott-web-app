@@ -73,23 +73,24 @@ export const liveChannelsURL = (playlistId: string, channelId?: string, play = f
   });
 };
 
-export const episodeURL = ({
-  episode,
-  seriesId,
-  play,
-  playlistId,
-  mediaId,
-}: {
-  episode: PlaylistItem;
-  seriesId?: string;
-  play?: boolean;
-  playlistId?: string | null;
-  mediaId?: string | null;
-}) =>
+export const episodeURL = ({ episode, seriesId, play, playlistId }: { episode: PlaylistItem; seriesId?: string; play?: boolean; playlistId?: string | null }) =>
   addQueryParams(mediaURL(episode, playlistId, play || false), {
     seriesId,
-    mediaId,
   });
+
+export const seriesURL = ({
+  seriesId,
+  title,
+  episodeId,
+  play,
+  playlistId,
+}: {
+  title: string;
+  seriesId: string;
+  episodeId?: string;
+  play?: boolean;
+  playlistId?: string | null;
+}) => addQueryParams(`/m/${seriesId}/${slugify(title)}`, { r: playlistId, e: episodeId, play: play ? '1' : null });
 
 export const formatDate = (dateString: number) => {
   if (!dateString) return '';

@@ -12,7 +12,6 @@ import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#components/TileDock/TileDock';
 import Card, { type PosterAspectRatio } from '#components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import { isSeries } from '#src/utils/media';
 
 export const tileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
@@ -72,18 +71,10 @@ const Shelf = ({
 
   const renderTile = useCallback(
     (item: PlaylistItem, isInView: boolean) => {
-      const isSeriesItem = isSeries(item);
-
       return (
         <Card
           key={item.mediaid}
-          title={item.title}
-          duration={item.duration}
           progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-          image={item.shelfImage}
-          isSeries={isSeriesItem}
-          seasonNumber={item.seasonNumber}
-          episodeNumber={item.episodeNumber}
           onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
           onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
           featured={featured}
@@ -91,6 +82,7 @@ const Shelf = ({
           loading={loading}
           isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           posterAspect={posterAspect}
+          item={item}
         />
       );
     },

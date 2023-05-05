@@ -7,21 +7,17 @@ import styles from './Card.module.scss';
 import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
 import Lock from '#src/icons/Lock';
 import Image from '#components/Image/Image';
-import type { ImageData } from '#types/playlist';
+import type { PlaylistItem } from '#types/playlist';
+import { isSeries } from '#src/utils/media';
 
 export const cardAspectRatios = ['2:1', '16:9', '5:3', '4:3', '1:1', '9:13', '2:3', '9:16'] as const;
 
 export type PosterAspectRatio = typeof cardAspectRatios[number];
 
 type CardProps = {
+  item: PlaylistItem;
   onClick?: () => void;
   onHover?: () => void;
-  title: string;
-  duration: number;
-  image?: ImageData;
-  isSeries?: boolean;
-  seasonNumber?: string;
-  episodeNumber?: string;
   progress?: number;
   posterAspect?: PosterAspectRatio;
   featured?: boolean;
@@ -35,14 +31,9 @@ type CardProps = {
 function Card({
   onClick,
   onHover,
-  title,
-  duration,
-  image,
-  seasonNumber,
-  episodeNumber,
   progress,
+  item,
   posterAspect = '16:9',
-  isSeries = false,
   featured = false,
   disabled = false,
   loading = false,
@@ -50,6 +41,8 @@ function Card({
   isLocked = true,
   currentLabel,
 }: CardProps): JSX.Element {
+  const { title, duration, episodeNumber, seasonNumber, shelfImage: image } = item;
+
   const { t } = useTranslation('common');
   const [imageLoaded, setImageLoaded] = useState(false);
   const cardClassName = classNames(styles.card, {
@@ -63,10 +56,12 @@ function Card({
     [styles.visible]: imageLoaded,
   });
 
+  const isSeriesItem = isSeries(item);
+
   const renderTag = () => {
     if (loading || disabled || !title) return null;
 
-    if (isSeries) {
+    if (isSeriesItem) {
       return <div className={styles.tag}>Series</div>;
     } else if (episodeNumber) {
       return <div className={styles.tag}>{formatSeriesMetaString(seasonNumber, episodeNumber)}</div>;

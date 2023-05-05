@@ -6,7 +6,6 @@ import styles from './VideoList.module.scss';
 import VideoListItem from '#components/VideoListItem/VideoListItem';
 import { isLocked } from '#src/utils/entitlements';
 import { testId } from '#src/utils/common';
-import { isSeries } from '#src/utils/media';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
@@ -44,26 +43,19 @@ function VideoList({
       {!!header && header}
       {playlist &&
         playlist.playlist.map((playlistItem: PlaylistItem) => {
-          const { mediaid, title, duration, episodeNumber, seasonNumber, shelfImage } = playlistItem;
-
-          const isSeriesItem = isSeries(playlistItem);
+          const { mediaid } = playlistItem;
 
           return (
             <VideoListItem
               key={mediaid}
-              title={title}
-              duration={duration}
-              image={shelfImage}
               progress={watchHistory ? watchHistory[mediaid] : undefined}
-              isSeries={isSeriesItem}
-              episodeNumber={episodeNumber}
-              seasonNumber={seasonNumber}
               onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
               onHover={() => onListItemHover && onListItemHover(playlistItem)}
               loading={isLoading}
               isActive={activeMediaId === mediaid}
               activeLabel={activeLabel}
               isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
+              item={playlistItem}
             />
           );
         })}
