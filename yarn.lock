@@ -1557,10 +1557,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@inplayer-org/inplayer.js@^3.13.9":
-  version "3.13.9"
-  resolved "https://registry.yarnpkg.com/@inplayer-org/inplayer.js/-/inplayer.js-3.13.9.tgz#05b3ef6338ff48d0a7f97f0bae98aaa356034dec"
-  integrity sha512-V5CrjpGYysH1CHUgtfcXv5usIZG4HC/eo77rWjzX2/IGDpFHxpHHzbtdiy+n3qEIIybv0BPU3LWHfYRxQETZzQ==
+"@inplayer-org/inplayer.js@^3.13.10":
+  version "3.13.10"
+  resolved "https://registry.yarnpkg.com/@inplayer-org/inplayer.js/-/inplayer.js-3.13.10.tgz#4c8d0873f43577229ca6ed76dad8ed60e9301093"
+  integrity sha512-9Ws4VvKBkfBeOZQZNlv0XdyzI2FLTbg1UfeGdJsnWmWwnjOwEqXPEReF5ZV5jwjStXk8y5LWeb4siLltP/RCUg==
   dependencies:
     aws-iot-device-sdk "^2.2.6"
     axios "^0.21.2"
