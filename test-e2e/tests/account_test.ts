@@ -48,19 +48,18 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
       I.see(editAccount);
     }
 
-    I.see('Security');
     I.see('Password');
     I.see('****************');
     I.see('Edit password');
 
-    I.see('About you');
+    I.see('Profile info');
     I.see('First name');
     I.see(firstName);
     I.see('Last name');
     I.see(lastName);
     I.see('Edit information');
 
-    I.see('Terms & tracking');
+    I.see('Legal & Marketing');
     I.see(`I accept the Terms and Conditions of ${providerName}.`);
     I.see(consentCheckbox);
 
