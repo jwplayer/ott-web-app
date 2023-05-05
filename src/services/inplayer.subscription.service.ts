@@ -1,9 +1,9 @@
 import i18next from 'i18next';
-import InPlayer, { Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 
 import type { PaymentDetail, Subscription, Transaction, UpdateSubscription } from '#types/subscription';
 import type { Config } from '#types/Config';
-import type { InPlayerError, InPlayerPurchaseDetails } from '#types/inplayer';
+import type { InPlayerError } from '#types/inplayer';
 
 interface SubscriptionDetails extends InplayerSubscription {
   item_id?: number;
@@ -47,9 +47,8 @@ export async function getActiveSubscription({ config }: { config: Config }) {
 export async function getAllTransactions() {
   try {
     const { data } = await InPlayer.Payment.getPurchaseHistory('active', 0, 30);
-    // @ts-ignore
-    // TODO fix PurchaseHistoryCollection type in InPlayer SDK
-    return data?.collection?.map((transaction: InPlayerPurchaseDetails) => formatTransaction(transaction));
+
+    return data?.collection?.map((transaction) => formatTransaction(transaction));
   } catch {
     throw new Error('Failed to get transactions');
   }
@@ -60,8 +59,6 @@ export async function getActivePayment() {
     const { data } = await InPlayer.Payment.getDefaultCreditCard();
     const cards: PaymentDetail[] = [];
     for (const currency in data?.cards) {
-      // @ts-ignore
-      // TODO fix Card type in InPlayer SDK
       cards.push(formatCardDetails(data.cards?.[currency]));
     }
 
@@ -95,7 +92,7 @@ export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscr
   }
 };
 
-const formatCardDetails = (card: Card & { card_type: string; account_id: number }): PaymentDetail => {
+const formatCardDetails = (card: Card): PaymentDetail => {
   const { number, exp_month, exp_year, card_name, card_type, account_id } = card;
   const zeroFillExpMonth = `0${exp_month}`.slice(-2);
   return {
@@ -111,7 +108,7 @@ const formatCardDetails = (card: Card & { card_type: string; account_id: number 
 };
 
 // TODO: fix PurchaseDetails type in InPlayer SDK
-const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction => {
+const formatTransaction = (transaction: PurchaseDetails): Transaction => {
   const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
 
   return {

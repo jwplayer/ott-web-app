@@ -1,4 +1,11 @@
-import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, {
+  AccountData,
+  Env,
+  RegisterField,
+  UpdateAccountData,
+  FavoritesData,
+  WatchHistory,
+} from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
 import type {
@@ -136,11 +143,9 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    // @ts-ignore
-    // wrong data type from InPlayer SDK (will be updated in the SDK)
     const result: Consent[] = data?.collection
-      .filter((field: GetRegisterField) => field.type === 'checkbox')
-      .map((consent: GetRegisterField) => formatPublisherConsents(consent));
+      .filter((field) => field.type === 'checkbox')
+      .map((consent) => formatPublisherConsents(consent));
 
     return {
       consents: [getTermsConsent(), ...result],
@@ -389,7 +394,7 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-function formatPublisherConsents(consent: Partial<GetRegisterField>) {
+function formatPublisherConsents(consent: Partial<RegisterField>) {
   return {
     broadcasterId: 0,
     enabledByDefault: false,
