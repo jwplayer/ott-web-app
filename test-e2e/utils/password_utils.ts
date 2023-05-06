@@ -39,6 +39,8 @@ async function tryToCopyPassword(I: CodeceptJS.I, name, expectedResult) {
 
   await I.pressKey(['CommandOrControl', 'A']);
   await I.pressKey(['CommandOrControl', 'C']);
+  // For some reason keyboard copy doesn't work when running via yarn
+  await I.executeScript(() => document.execCommand('copy'));
 
   const clipboard = await I.readClipboard();
 

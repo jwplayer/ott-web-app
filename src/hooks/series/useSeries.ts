@@ -2,11 +2,11 @@ import { useQuery, UseQueryResult } from 'react-query';
 
 import { getEpisodes, getMediaById, getSeries } from '#src/services/api.service';
 import type { Series } from '#types/series';
-import type { Playlist } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { ApiError } from '#src/utils/api';
 
 // Series and media items have the same id when creating via dashboard using new flow
-export default (seriesId: string | undefined): UseQueryResult<{ series: Series; playlist: Playlist }, ApiError> => {
+export default (seriesId: string | undefined): UseQueryResult<{ series: Series; media: PlaylistItem; playlist: Playlist }, ApiError> => {
   return useQuery(
     ['series', seriesId],
     async () => {
@@ -14,6 +14,7 @@ export default (seriesId: string | undefined): UseQueryResult<{ series: Series; 
 
       return {
         series,
+        media,
         playlist: {
           playlist: episodesData.episodes,
           title: media?.title,

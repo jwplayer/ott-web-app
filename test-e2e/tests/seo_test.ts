@@ -44,7 +44,7 @@ Scenario('It renders the correct meta tags for the movie screen', async ({ I }) 
 Scenario('It renders the correct structured metadata for the movie screen', async ({ I }) => {
   await I.openVideoCard(constants.agent327Title);
 
-  const url = removeQueryParam(await I.grabCurrentUrl(), 'r');
+  const url = await I.grabCurrentUrl();
 
   I.seeTextEquals(
     JSON.stringify({

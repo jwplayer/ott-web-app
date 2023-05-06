@@ -92,19 +92,23 @@ export const getEpisodesInSeason = (episode: PlaylistItem | undefined, seriesPla
   return seriesPlaylist.playlist.filter((i) => i.seasonNumber === episode?.seasonNumber)?.length;
 };
 
-/**  */
+/** Get episode to redirect to MediaSeriesEpisodePage */
 export const getEpisodeToRedirect = (
   episodeId: string | undefined,
   seriesPlaylist: Playlist,
-  isNewSeriesFlow: boolean,
+  episodeData: PlaylistItem | undefined,
   episodesData: EpisodesWithPagination[] | undefined,
+  isNewSeriesFlow: boolean,
 ) => {
   if (isNewSeriesFlow) {
-    return episodesData?.[0]?.episodes?.[0];
+    // For the new flow we return either a selected episode (Continue Watching) or just first available one
+    return episodeData || episodesData?.[0]?.episodes?.[0];
   }
 
-  const firstEpisode = seriesPlaylist.playlist[0];
-  const toEpisode = episodeId ? seriesPlaylist.playlist.find(({ mediaid }) => mediaid === episodeId) : firstEpisode;
+  // For the old approach we do the same thing, the only thing here that our playlist already have all the episodes inside
+  if (!episodeId) {
+    return seriesPlaylist.playlist[0];
+  }
 
-  return toEpisode;
+  return seriesPlaylist.playlist.find(({ mediaid }) => mediaid === episodeId);
 };

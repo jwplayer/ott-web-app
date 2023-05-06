@@ -18,12 +18,11 @@ export const useEpisode = (episodeId: string | undefined, series: Series | undef
       if (!episodeId) {
         throw Error('No episode id provided');
       }
-      // Get all series for the given media id
       const seriesDictionary = await getSeriesByMediaIds([episodeId]);
       // Get an item details of the associated series (we need its episode and season)
       const { season_number, episode_number } = (seriesDictionary?.[episodeId] || []).find((el) => el.series_id === series?.series_id) || {};
-
-      return { ...media, episodeNumber: String(episode_number || 0), seasonNumber: String(season_number || 0) };
+      // Add seriesId to work with watch history
+      return { ...media, episodeNumber: String(episode_number || 0), seasonNumber: String(season_number || 0), seriesId: series?.series_id };
     },
     {
       // Only enable this query when having new series flow

@@ -1,13 +1,13 @@
 import usePlaylist from '#src/hooks/usePlaylist';
 import useSeries from '#src/hooks/series/useSeries';
-import type { Playlist } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { Series } from '#types/series';
 
 const DEFAULT_DATA = { title: '', playlist: [] };
 
 type Data = {
-  seriesPlaylist: Playlist;
-  series: Series | undefined;
+  playlist: Playlist;
+  newSeries: { series: Series | undefined; media: PlaylistItem | undefined };
 };
 
 export const useSeriesData = (
@@ -27,7 +27,7 @@ export const useSeriesData = (
   const seriesPlaylist = seriesData?.playlist || playlistData || DEFAULT_DATA;
 
   return {
-    data: { seriesPlaylist, series: seriesData?.series },
+    data: { playlist: seriesPlaylist, newSeries: { series: seriesData?.series, media: seriesData?.media } },
     isPlaylistError: Boolean(seriesError && playlistError),
     isLoading: isSeriesLoading || isPlaylistLoading,
   };

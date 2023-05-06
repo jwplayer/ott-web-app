@@ -8,6 +8,7 @@ import { getEpisodeToRedirect } from '#src/utils/series';
 import Loading from '#src/pages/Loading/Loading';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { useSeriesEpisodes } from '#src/hooks/series/useEpisodes';
+import { useEpisode } from '#src/hooks/series/useEpisode';
 
 type Props = {
   seriesId: string;
@@ -28,20 +29,23 @@ const SeriesRedirect = ({ seriesId, episodeId, mediaId }: Props) => {
   const { t } = useTranslation('video');
 
   const { isLoading, isPlaylistError, data } = useSeriesData(seriesId, mediaId);
-  const { series, seriesPlaylist } = data || {};
+  const { newSeries, playlist } = data || {};
+  const { series } = newSeries || {};
 
-  const { data: episodesData, isLoading: isEpisodesLoading } = useSeriesEpisodes(mediaId, !!series);
+  const { data: episodeData, isLoading: isEpisodeLoading } = useEpisode(episodeId, series);
+  // Only request list of episodes if we have no episode provided for the new flow
+  const { data: episodesData, isLoading: isEpisodesLoading } = useSeriesEpisodes(mediaId, !!series && !episodeId);
 
   const play = useQueryParam('play') === '1';
   const feedId = useQueryParam('r');
 
-  if (isLoading || isEpisodesLoading) {
+  if (isLoading || isEpisodesLoading || isEpisodeLoading) {
     return <Loading />;
   }
 
-  const toEpisode = getEpisodeToRedirect(episodeId, seriesPlaylist, !!data.series, episodesData?.pages);
+  const toEpisode = getEpisodeToRedirect(episodeId, playlist, episodeData, episodesData?.pages, !!series);
 
-  if (isPlaylistError || !seriesPlaylist || !toEpisode) {
+  if (isPlaylistError || !playlist || !toEpisode) {
     return <ErrorPage title={t('series_error')} />;
   }
 

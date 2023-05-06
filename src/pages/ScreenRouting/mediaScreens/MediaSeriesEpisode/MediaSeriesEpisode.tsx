@@ -12,6 +12,8 @@ import { episodeURL, formatSeriesMetaString, formatVideoMetaString } from '#src/
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/series/useSeriesData';
 import { useEpisodes } from '#src/hooks/series/useEpisodes';
+import { useEpisode } from '#src/hooks/series/useEpisode';
+import useSeriesId from '#src/hooks/series/useSeriesId';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
 import { filterSeries, getEpisodesInSeason, getFiltersFromSeries, getNextItem } from '#src/utils/series';
@@ -30,10 +32,8 @@ import type { PlaylistItem } from '#types/playlist';
 import type { ScreenComponent } from '#types/screens';
 import useQueryParam from '#src/hooks/useQueryParam';
 import Loading from '#src/pages/Loading/Loading';
-import { useEpisode } from '#src/hooks/series/useEpisode';
-import useSeriesId from '#src/hooks/series/useSeriesId';
 
-const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: isMediaLoading }) => {
+const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data: episode, isLoading: isMediaLoading }) => {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('video');
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
@@ -42,16 +42,15 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: is
   const navigate = useNavigate();
   const play = useQueryParam('play') === '1';
   const feedId = useQueryParam('r');
-  const { seriesId, isLoading: isLoadingSeriesId } = useSeriesId(data);
+  const { seriesId, isLoading: isLoadingSeriesId } = useSeriesId(episode);
 
   // Main data
-  const {
-    isLoading: isPlaylistLoading,
-    isPlaylistError,
-    data: { series, seriesPlaylist },
-  } = useSeriesData(seriesId, seriesId);
-  const { data: episode, isLoading: isEpisodeLoading } = useEpisode(data.mediaid, series);
-  const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(data.trailerId || '');
+  const { isLoading: isPlaylistLoading, isPlaylistError, data } = useSeriesData(seriesId, seriesId);
+  const { newSeries, playlist: seriesPlaylist } = data || {};
+  const { series, media: seriesMedia } = newSeries || {};
+
+  const { data: enrichedEpisode, isLoading: isEpisodeLoading } = useEpisode(episode.mediaid, series);
+  const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(episode.trailerId || '');
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
@@ -59,15 +58,15 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: is
   const isFavoritesEnabled: boolean = Boolean(features?.favoritesList);
   const inlineLayout = Boolean(custom?.inlinePlayer);
   const filters = getFiltersFromSeries(seriesPlaylist, series);
-  const [seasonFilter, setSeasonFilter] = useState<string>(episode?.seasonNumber || filters[0]);
+  const [seasonFilter, setSeasonFilter] = useState<string>(enrichedEpisode?.seasonNumber || filters[0]);
 
   // Season / episodes data
   const { data: episodes, fetchNextPage: fetchNextEpisodes, hasNextPage: hasNextEpisodesPage } = useEpisodes(seriesId, !!series, seasonFilter);
   const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist, episodes, seasonFilter), [seriesPlaylist, episodes, seasonFilter]);
-  const episodesInSeason = getEpisodesInSeason(episode, seriesPlaylist, series);
+  const episodesInSeason = getEpisodesInSeason(enrichedEpisode, seriesPlaylist, series);
   const nextItem = useMemo(
-    () => getNextItem(episode, seriesPlaylist, episodes, hasNextEpisodesPage, fetchNextEpisodes),
-    [episode, seriesPlaylist, episodes, hasNextEpisodesPage, fetchNextEpisodes],
+    () => getNextItem(enrichedEpisode, seriesPlaylist, episodes, hasNextEpisodesPage, fetchNextEpisodes),
+    [enrichedEpisode, seriesPlaylist, episodes, hasNextEpisodesPage, fetchNextEpisodes],
   );
 
   // Watch history
@@ -75,12 +74,12 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: is
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled } = useEntitlement(episode);
+  const { isEntitled } = useEntitlement(enrichedEpisode);
   const isLoggedIn = !!user;
   const hasSubscription = !!subscription;
 
   // Handlers
-  const goBack = () => seriesId && episode && navigate(episodeURL({ episode, seriesId, play: false, playlistId: feedId }));
+  const goBack = () => seriesId && enrichedEpisode && navigate(episodeURL({ episode: enrichedEpisode, seriesId, play: false, playlistId: feedId }));
   const onCardClick = (toEpisode: PlaylistItem) => seriesPlaylist && navigate(episodeURL({ episode: toEpisode, seriesId, play: false, playlistId: feedId }));
   const handleComplete = useCallback(() => {
     if (nextItem) {
@@ -94,29 +93,37 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: is
   }, [data]);
 
   useEffect(() => {
-    const filter = episode?.seasonNumber && Number(episode?.seasonNumber) ? episode?.seasonNumber : '';
+    const filter = enrichedEpisode?.seasonNumber && Number(enrichedEpisode?.seasonNumber) ? enrichedEpisode?.seasonNumber : '';
     setSeasonFilter(filter);
-  }, [episode?.seasonNumber, setSeasonFilter]);
+  }, [enrichedEpisode?.seasonNumber, setSeasonFilter]);
 
   // UI
   const isLoading = isPlaylistLoading || isMediaLoading || isEpisodeLoading || isLoadingSeriesId;
   if (isLoading) return <Loading />;
-  if (isPlaylistError || !episode || !seriesId) return <ErrorPage title={t('series_error')} />;
+  if (isPlaylistError || !enrichedEpisode || !seriesId) return <ErrorPage title={t('series_error')} />;
 
-  const pageTitle = `${episode.title} - ${siteName}`;
-  const canonicalUrl = `${window.location.origin}${episodeURL({ episode, seriesId })}`;
+  const pageTitle = `${enrichedEpisode.title} - ${siteName}`;
+  const canonicalUrl = `${window.location.origin}${episodeURL({ episode: enrichedEpisode, seriesId })}`;
 
-  const primaryMetadata = formatVideoMetaString(episode, t('video:total_episodes', { count: series ? series.episode_count : seriesPlaylist.playlist.length }));
+  const primaryMetadata = formatVideoMetaString(
+    enrichedEpisode,
+    t('video:total_episodes', { count: series ? series.episode_count : seriesPlaylist.playlist.length }),
+  );
   const secondaryMetadata = (
     <>
-      <strong>{formatSeriesMetaString(episode.seasonNumber, episode.episodeNumber)}</strong> - {episode.title}
+      <strong>{formatSeriesMetaString(enrichedEpisode.seasonNumber, enrichedEpisode.episodeNumber)}</strong> - {enrichedEpisode.title}
     </>
   );
-  const filterMetadata = ` ${t('video:season')} ${episode.seasonNumber}/${filters.length} - ${t('video:episode')} ${episode.episodeNumber}/${episodesInSeason}`;
-  const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
-  const startWatchingButton = <StartWatchingButton item={episode} playUrl={episodeURL({ episode, seriesId, play: true, playlistId: feedId })} />;
+  const filterMetadata = ` ${t('video:season')} ${enrichedEpisode.seasonNumber}/${filters.length} - ${t('video:episode')} ${
+    enrichedEpisode.episodeNumber
+  }/${episodesInSeason}`;
+  const shareButton = <ShareButton title={enrichedEpisode.title} description={enrichedEpisode.description} url={canonicalUrl} />;
+  const startWatchingButton = (
+    <StartWatchingButton item={enrichedEpisode} playUrl={episodeURL({ episode: enrichedEpisode, seriesId, play: true, playlistId: feedId })} />
+  );
 
-  const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
+  // For the old series approach we mark episodes as favorite items. New approach is applied to the series
+  const favoriteButton = isFavoritesEnabled && <FavoriteButton item={seriesMedia || enrichedEpisode} />;
   const trailerButton = (!!trailerItem || isTrailerLoading) && (
     <Button
       label={t('video:trailer')}
@@ -134,37 +141,37 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: is
       <Helmet>
         <title>{pageTitle}</title>
         <link rel="canonical" href={canonicalUrl} />
-        <meta name="description" content={data.description} />
-        <meta property="og:description" content={data.description} />
+        <meta name="description" content={enrichedEpisode.description} />
+        <meta property="og:description" content={enrichedEpisode.description} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:type" content="video.episode" />
-        {data.image && <meta property="og:image" content={data.image?.replace(/^https:/, 'http:')} />}
-        {data.image && <meta property="og:image:secure_url" content={data.image?.replace(/^http:/, 'https:')} />}
-        <meta property="og:image:width" content={data.image ? '720' : ''} />
-        <meta property="og:image:height" content={data.image ? '406' : ''} />
+        {enrichedEpisode.image && <meta property="og:image" content={enrichedEpisode.image?.replace(/^https:/, 'http:')} />}
+        {enrichedEpisode.image && <meta property="og:image:secure_url" content={enrichedEpisode.image?.replace(/^http:/, 'https:')} />}
+        <meta property="og:image:width" content={enrichedEpisode.image ? '720' : ''} />
+        <meta property="og:image:height" content={enrichedEpisode.image ? '406' : ''} />
         <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={data.description} />
-        <meta name="twitter:image" content={data.image} />
+        <meta name="twitter:description" content={enrichedEpisode.description} />
+        <meta name="twitter:image" content={enrichedEpisode.image} />
         <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
         <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {data.tags?.split(',').map((tag) => (
+        {enrichedEpisode.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {seriesPlaylist && episode ? (
-          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, series, episode, seriesId, feedId)}</script>
+        {seriesPlaylist && enrichedEpisode ? (
+          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, series, enrichedEpisode, seriesId, feedId)}</script>
         ) : null}
       </Helmet>
       <VideoLayout
-        item={episode}
-        title={inlineLayout ? episode.title : seriesPlaylist.title}
-        description={data.description}
+        item={enrichedEpisode}
+        title={inlineLayout ? enrichedEpisode.title : seriesPlaylist.title}
+        description={enrichedEpisode.description}
         inlineLayout={inlineLayout}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
-        image={data.backgroundImage}
+        image={enrichedEpisode.backgroundImage}
         shareButton={shareButton}
         favoriteButton={favoriteButton}
         trailerButton={trailerButton}
@@ -190,18 +197,18 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: is
           inlineLayout ? (
             <InlinePlayer
               isLoggedIn={isLoggedIn}
-              item={episode}
+              item={enrichedEpisode}
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
               startWatchingButton={startWatchingButton}
-              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, episode)}
+              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, enrichedEpisode)}
               autostart={play || undefined}
             />
           ) : (
             <Cinema
               open={play && isEntitled}
               onClose={goBack}
-              item={episode}
+              item={enrichedEpisode}
               title={seriesPlaylist.title}
               primaryMetadata={primaryMetadata}
               secondaryMetadata={secondaryMetadata}
@@ -211,7 +218,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data, isLoading: is
           )
         }
       />
-      <TrailerModal item={trailerItem} title={`${episode.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <TrailerModal item={trailerItem} title={`${enrichedEpisode.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
     </React.Fragment>
   );
 };
