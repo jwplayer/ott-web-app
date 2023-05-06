@@ -96,6 +96,7 @@ JW Player has native series management from the JW Dashboard:
 - simplifies the series creation workflow
 - automatically calculate the number of episodes and duration of series
 - contains trailers and bonus content
+- uses dynamic load of episodes and seasons
 
 This section describes how this will work.
 
@@ -126,109 +127,134 @@ GET playlist\<playlistid>
 
 > Note: it is also possible to use another `contentType` param after modifying screen mapping (TODO: add screen mapping docs).
 
-### Native series detail window
+### Native series page
 
-The series detail window loads the series playlist using a GET Series endpoint:
+The series page loads the series playlist using a GET Series endpoint which provides only basic information about series:
 
 ```
   GET /apps/series/{series_id}
-  {
-  "title": "A Series of Unfortunate Events",
-  "description": "The series follow’
-  "series_id": "12345678",
-  "total_duration": 12,
-  "episode_count": 2,
-  "episodes": [],
-  "seasons": [
-   {
-     "season_id": "abcdefgh",
-     "season_number": 1,
-     "episodes": [
-       {
-         "episode_number": 1,
-         "media_id": "zxcvbnma"
-       },
-     ]
-   },
-   {
-     "season_id": "ertyuiop",
-     "season_number": 2,
-     "episodes": [
-       {
-         "episode_number": 1,
-         "media_id": "lkjhgfds"
-       },
-     ]
-   }
+  [{
+    "series_id": "12345678",
+    "total_duration": 12,
+    "episode_count": 2,
+    "seasons": [
+     {
+       "season_id": "abcdefgh",
+       "season_number": 1,
+     },
+     {
+       "season_id": "ertyuiop",
+       "season_number": 2,
+     }
   ]}]
 ```
 
-Notice that the episodes don't include metadata (title, description, image, etc. ). That needs be retrieved seperately. This can be done one-by-one using [GET Media](https://developer.jwplayer.com/jwplayer/reference/get_v2-media-media-id), but to do this more efficiently episodes endpoint can be used (`/apps/series/${seriesId}/episodes`).
+`seriesId` and `mediaid` (id used in the playlist) are the same, so it is also possible to easily retrieve series metadata (title, description, images and so on) using GET `/v2/media` endpoint.
+
+To get episodes information the following endpoint should be used:
 
 ```
-GET /apps/series/${seriesId}/episodes
-{
-  media: {
-    '0t21PUiy': {
-      description:
-        "Let's get started with the Art of Blocking! The purpose of blocking is to play around with ideas and quickly iterate over several versions of a model, in order to find the right direction. During blocking it's essential to keep things simple, both in terms of shapes and materials - and do not be afraid to throw things away!",
-      duration: 3408,
-      image: 'http://cdn.jwplayer.com/v2/media/0t21PUiy/poster.jpg?width=720',
-      images: [
-        {
-          src: 'http://cdn.jwplayer.com/v2/media/0t21PUiy/poster.jpg?width=320',
-          type: 'image/jpeg',
-          width: 320,
-        },
-        {
-          src: 'http://cdn.jwplayer.com/v2/media/0t21PUiy/poster.jpg?width=480',
-          type: 'image/jpeg',
-          width: 480,
-        },
-        {
-          src: 'http://cdn.jwplayer.com/v2/media/0t21PUiy/poster.jpg?width=640',
-          type: 'image/jpeg',
-          width: 640,
-        },
-        {
-          src: 'http://cdn.jwplayer.com/v2/media/0t21PUiy/poster.jpg?width=720',
-          type: 'image/jpeg',
-          width: 720,
-        },
-        {
-          src: 'http://cdn.jwplayer.com/v2/media/0t21PUiy/poster.jpg?width=1280',
-          type: 'image/jpeg',
-          width: 1280,
-        },
-        {
-          src: 'http://cdn.jwplayer.com/v2/media/0t21PUiy/poster.jpg?width=1920',
-          type: 'image/jpeg',
-          width: 1920,
-        },
-      ],
-      link: 'http://cdn.jwplayer.com/previews/0t21PUiy',
-      mediaid: '0t21PUiy',
-      pubdate: 1555599600,
-      tags: 'lesson',
-      title: 'Blocking',
-      original_mediaid: 'I3k8wgIs',
-      genre: 'Advanced',
-      rating: 'CC-BY',
-      backgroundImage: 'background',
-      contentType: 'episode',
-    },
-  },
-  siteId: 'siteId',
-  page: 1,
-  page_length: 50,
-  total: 5,
-};
+  GET /apps/series/${series_id}/episodes?page_offset=1&page_limit=20
+ {
+   "page":1,
+   "page_limit":20,
+   "total":13,
+   "episodes":[
+      {
+         "episode_number":1,
+         "season_number":2,
+         "media_item":{
+            "description":"If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.",
+            "duration":328,
+            "image":"http://cdn.jwplayer.com/v2/media/mhgRidqO/poster.jpg?width=720",
+            "images":[
+               {
+                  "src":"http://cdn.jwplayer.com/v2/media/mhgRidqO/poster.jpg?width=320",
+                  "type":"image/jpeg",
+                  "width":320
+               }
+            ],
+            "link":"http://cdn.jwplayer.com/previews/mhgRidqO",
+            "mediaid":"mhgRidqO",
+            "pubdate":1615377600,
+            "tags":"lesson,seriesId_sGt93CK6",
+            "title":"Shading",
+            "original_mediaid":"4GtFaR0V",
+            "episodeNumber":"3",
+            "genre":"Beginner",
+            "rating":"CC-BY",
+            "seasonNumber":"1"
+         }
+      }
+   ]
+}
 ```
+
+The endpoint supports pagination which can help to dynamically load the data when scrolling the list of episodes (infinite scroll support).
+
+To get season's information the following endpoint should be used:
+
+```
+  GET /apps/series/${series_id}/seasons/{season_number}?page_offset=1&page_limit=20
+ {
+   "page":1,
+   "page_limit":20,
+   "total":13,
+   "episodes":[
+      {
+         "episode_number":1,
+         "season_number":2,
+         "media_item":{
+            "description":"If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.",
+            "duration":328,
+            "image":"http://cdn.jwplayer.com/v2/media/mhgRidqO/poster.jpg?width=720",
+            "images":[
+               {
+                  "src":"http://cdn.jwplayer.com/v2/media/mhgRidqO/poster.jpg?width=320",
+                  "type":"image/jpeg",
+                  "width":320
+               }
+            ],
+            "link":"http://cdn.jwplayer.com/previews/mhgRidqO",
+            "mediaid":"mhgRidqO",
+            "pubdate":1615377600,
+            "tags":"lesson,seriesId_sGt93CK6",
+            "title":"Shading",
+            "original_mediaid":"4GtFaR0V",
+            "episodeNumber":"3",
+            "genre":"Beginner",
+            "rating":"CC-BY",
+            "seasonNumber":"1"
+         }
+      }
+   ]
+}
+```
+
+The endpoint supports pagination which can help to dynamically load seasons's episodes when scrolling the list of episodes (infinite scroll support).
+
+It is also possible to get series information based on the episode. In order to do this a series endpoint should be used with `media_ids` quey param.
+
+```
+GET /apps/series/${seriesId}?media_ids=oXW1ahCi
+{
+   "oXW1ahCi":[
+      {
+         "series_id":"DYyHUK02",
+         "episode_number":10,
+         "season_number":1
+      },
+      {
+         "series_id":"mErAKldu",
+         "episode_number":10,
+         "season_number":1
+      }
+   ]
+}
+```
+
+This endpoint returns objects with series which include requested episodes. Each object also has information about episode and season number of episodes in series.
 
 ## Native series and search
 
 Customer are advised to exclude series episodes from the search playlists by using tags. Likewise customers should ensure the series title and description are part of the first episode.
-
-## Coming soon
-
-We will add full Favorites and Continue Watching support
