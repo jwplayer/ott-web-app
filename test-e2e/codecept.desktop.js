@@ -16,7 +16,7 @@ exports.config = {
     Playwright: {
       url: 'http://localhost:8080',
       show: !!process.env.SHOW,
-      channel: 'chrome',
+      browser: 'chromium',
       locale: 'en-US',
     },
   },

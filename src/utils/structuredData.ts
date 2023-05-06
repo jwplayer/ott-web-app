@@ -22,14 +22,8 @@ export const generateSeriesMetadata = (series: Series | undefined, seriesPlaylis
   };
 };
 
-export const generateEpisodeJSONLD = (
-  seriesPlaylist: Playlist,
-  series: Series | undefined,
-  episode: PlaylistItem,
-  seriesId: string | undefined,
-  feedId: string | undefined,
-) => {
-  const episodeCanonical = `${window.location.origin}${episodeURL({ episode, playlistId: feedId, seriesId })}`;
+export const generateEpisodeJSONLD = (seriesPlaylist: Playlist, series: Series | undefined, episode: PlaylistItem, seriesId: string | undefined) => {
+  const episodeCanonical = `${window.location.origin}${episodeURL({ episode, seriesId })}`;
   const seriesMetadata = generateSeriesMetadata(series, seriesPlaylist, seriesId);
 
   return JSON.stringify({

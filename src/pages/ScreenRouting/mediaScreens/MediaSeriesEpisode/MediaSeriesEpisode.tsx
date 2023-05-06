@@ -161,7 +161,7 @@ const MediaSeriesEpisode: ScreenComponent<PlaylistItem> = ({ data: episode, isLo
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
         {seriesPlaylist && enrichedEpisode ? (
-          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, series, enrichedEpisode, seriesId, feedId)}</script>
+          <script type="application/ld+json">{generateEpisodeJSONLD(seriesPlaylist, series, enrichedEpisode, seriesId)}</script>
         ) : null}
       </Helmet>
       <VideoLayout
