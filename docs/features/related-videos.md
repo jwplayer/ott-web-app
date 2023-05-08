@@ -4,11 +4,11 @@
 
 Related videos are a shelf in the [video detail screen](video-detail.md) showing content with similar metadata.
 
-Related videos are powered through [recommendation playlist](https://support.jwplayer.com/topics/recommendations) is used. 
+Related videos are powered through the [recommendation playlist](https://docs.jwplayer.com/platform/docs/vdh-create-a-recommendations-playlist) being used.
 
 ## Retrieve related videos
 
-A [recommendations playlist](https://support.jwplayer.com/topics/recommendations) is used for the related videos shelf. The playlist id is retrieved from the [app config](/docs/configuration.md): `recommendationsPlaylist`
+A [recommendations playlist](https://docs.jwplayer.com/platform/docs/vdh-create-a-recommendations-playlist) is used for the related videos shelf. The playlist id is retrieved from the [app config](/docs/configuration.md): `recommendationsPlaylist`
 
 Queries are done using the [playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id):
 
@@ -41,4 +41,4 @@ GET playlists/fuD6TWcf?related_media_id=dwEE1oBP
 
 ## Configuration
 
-The feature can be enabled in the [app config](/docs/configuration.md) by setting `recommendationsPlaylist`  to the ID of the recommendations playlist you want to use.
+The feature can be enabled in the [app config](/docs/configuration.md) by setting `recommendationsPlaylist` to the ID of the recommendations playlist you want to use.
