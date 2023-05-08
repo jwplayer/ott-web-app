@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         config: [desktop, mobile]
 
     steps:
@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn
-          npm install wait-on -g
+          yarn global add wait-on
       - name: Start preview server
         run: yarn start:test &
       - name: Run tests
