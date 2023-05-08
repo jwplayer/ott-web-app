@@ -2,12 +2,12 @@
 
 Videos can be protected in JW platform in two ways:
 
-- **Signed URLs:** A player can only **access** video URLs from JW Player backend using a time-bound JWT token
-- **DRM:** A player can only **play** videos using a time-bound decryption key. 
+- **Signed URLs:** A player can only **access** video URLs from JW Player backend using a time-bound JWT token.
+- **DRM:** A player can only **play** videos using a time-bound decryption key.
 
-The  JW Web Player, as well as the other SDKs, supports these mechanismns out-the-box. However this requires a server side authorization service which is **NOT** part of the web app and needs to be **custom developed**.
+The JW Web Player, as well as the other SDKs, supports these mechanismns out-of-the-box. However this requires a server side authorization service which is **NOT** part of the web app and needs to be **custom developed**.
 
-This article outlines such authorization service should work. 
+This article outlines how such an authorization service should work.
 
 ## Signed URLs
 
@@ -17,7 +17,7 @@ With [URL signing](https://support.jwplayer.com/articles/how-to-enable-url-token
 GET media/PEEzDfdA?token=<tokenA>
 {
  "title":"Video Title",
- "description":"Lorem ipsum dolor sit amet", 
+ "description":"Lorem ipsum dolor sit amet",
  "sources":[https://content.jwplatform.com/manifests/PEEzDfdA.m3u8?token=<tokenB>]
 }
 ```
@@ -45,11 +45,11 @@ The tokens are generated using the property API key. See [the documenation](http
 
 JW [supports](https://developer.jwplayer.com/jwplayer/docs/enable-drm-with-jw-stream) three DRM systems
 
-* Widevine (Google ecosystem)
-* PlayReady (Microsoft ecosystem)
-* Fairplay (Apple ecosystem)
+- Widevine (Google ecosystem)
+- PlayReady (Microsoft ecosystem)
+- Fairplay (Apple ecosystem)
 
-These systems require a time-bound decryption key, which can be fetched from the license URL. 
+These systems require a time-bound decryption key, which can be fetched from the license URL.
 
 Also all DRM URLs require to be signed with a token.
 
@@ -57,7 +57,7 @@ Also all DRM URLs require to be signed with a token.
 GET media/PEEzDfdA/drm/:drm_policy_id?token=<tokenA>
 {
  "title":"Video Title",
- "description":"Lorem ipsum dolor sit amet", 
+ "description":"Lorem ipsum dolor sit amet",
  "sources":[{
    "drm":{
       "file":":https://content.jwplatform.com/manifests/PEEzDfdA.m3u8?token=<tokenB>",
@@ -77,19 +77,19 @@ The authorization service should generate the `SignedMediaURLs` based on:
 - the users authentication (who is the user)
 - the users entitlements (what did he buy)
 
-The service interface could look like this: 
+The service interface could look like this:
 
 `GET /authorization/<siteid>/video-signature/<mediaid>`
 
 ### Video access models
 
-The authorization service provides signed URLs based on the access model. Common access models are:  
+The authorization service provides signed URLs based on the access model. Common access models are:
 
 - Advertising-based (AVOD): all videos can be accessed, as they are served with advertisements
 - Authentication-based (AUTHVOD): videos can be accessed if the user is logged in
 - Subscription-based (SVOD): videos can be accessed if the user has a valid subscription
 
-Note that there are many variations of these access models. 
+Note that there are many variations of these access models.
 
 ### Free content
 
@@ -97,15 +97,15 @@ It's possible to have free content. This is indicated with media parameter `free
 
 ### Users and entitlements
 
-The users and their entitlements are typically stored in a subscription management service like JWP or Cleeng. 
+The users and their entitlements are typically stored in a subscription management service like JWP or Cleeng.
 
-Users and their entitlements might also be split: 
+Users and their entitlements might also be split:
 
 - Users at identity providers like Okta or Amazon Cognito
 - Entitlements at a subscription provider like JWP or Cleeng
 
 ### SVOD Optimization
 
-Notice that each time a user accesses a video, the service would have to check against the subscription provider (e.g., JWP or Cleeng) to validate if there is a subscription. This request can be slow and might have consumption limits. 
+Notice that each time a user accesses a video, the service would have to check against the subscription provider (e.g., JWP or Cleeng) to validate if there is a subscription. This request can be slow and might have consumption limits.
 
-To ensure a fast user experience this subscription status can be stored in ``UserSubscriptionToken``: a signed time-bound claim that the user has valid subscription. This claim would be exchanged when signing URLs. 
+To ensure a fast user experience this subscription status can be stored in `UserSubscriptionToken`: a signed time-bound claim that the user has valid subscription. This claim would be exchanged when signing URLs.

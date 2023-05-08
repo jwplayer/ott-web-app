@@ -1,6 +1,6 @@
 # Series
 
-Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events.  By organizing content into a series, viewers are guided through the content. Series have a predefined sequence of episodes and can be split in seasons.
+Series enables customers to bundle episodic content such as TV shows and learning courses or non-episodic content like sports leagues events. By organizing content into a series, viewers are guided through the content. Series have a predefined sequence of episodes and can be split in seasons.
 
 <img title="" src="../_images/series.jpg" alt="Series" width="580">
 
@@ -10,7 +10,7 @@ Series are tagged with `Series` in [shelves and libraries](shelves-and-libraries
 
 Series are defined through 'series playlist'. This is handled in the first piece of this article.
 
-In the near future JW player will native series construct. This is handled in the second part of this article.
+In the near future JW player will construct native series. This is handled in the second part of this article.
 
 ## Series through playlist
 
@@ -18,11 +18,11 @@ Series are not a native construct in the JW Dashboard at this moment. So custome
 
 ### Creating series playlists in the dashboard
 
-The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to create a serie playlist.
+The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to create a series playlist.
 
 ### Series in libraries and shelves
 
-[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this  playlis refer to series. These are identified using the `seriesId` , which links to the  playlist that contains the episodes. 
+[Shelves and libraries](shelves-and-libraries.md) load their data using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). Some items in this playlist refer to series. These are identified using the `seriesId` , which links to the playlist that contains the episodes.
 
 ```
 GET playlist/o45EkQBf
@@ -50,7 +50,7 @@ GET playlist/o45EkQBf
 
 ### Series detail window
 
-The series detail window loads the series playlist using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). The episodelabel(e.g. `S1:E1`)  is coming from `seasonNumber` and `episodeNumber` 
+The series detail window loads the series playlist using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id). The episode label (e.g. `S1:E1`) is coming from `seasonNumber` and `episodeNumber`
 
 ```
 GET playlist/xdAqW8ya
@@ -99,11 +99,11 @@ JW Player has native series management from the JW Dashboard:
 - automatically calculate the number of episodes and duration of series
 - contains trailers and bonus content
 
-This section describes how this will work. 
+This section describes how this will work.
 
 ### Creating native series in the dashboard
 
-1. Customers define series 
+1. Customers define series
 2. Customers create media items each of which represents a series
 3. Customers add a `seriesId` custom param to created media items
 4. Customers publish their series by putting media items into a playlist
@@ -135,7 +135,7 @@ The series detail window loads the series playlist using a GET Series endpoint:
 
 ```
   GET /apps/series/{series_id}
-  { 
+  {
   "title": "A Series of Unfortunate Events",
   "description": "The series follow’
   "series_id": "12345678",
@@ -185,7 +185,7 @@ Notice that the episodes don't include metadata (title, description, image, etc.
    }
 ```
 
-This playlist type is developed for [user watchlists](user-watchlist.md) but will also work here. Make sure the  watchlist is created.
+This playlist type is developed for [user watchlists](user-watchlists.md) but will also work here. Make sure the watchlist is created.
 
 ## Native series and search
 

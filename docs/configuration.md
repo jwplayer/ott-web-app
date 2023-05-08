@@ -9,20 +9,19 @@ Which app config file the application uses is determined by the [ini file](initi
 
 You can specify the default that the application starts with and also which config, if any, it will allow to be set using the [`app-config=<config source>` query param](#switching-between-app-configs).
 The location is usually specified by the 8-character ID (i.e. `gnnuzabk`) of the App Config from your JWP account, in which case the file will be loaded from the JW Player App Config delivery endpoint (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`).
-You may also specify a relative or absolute URL.  
+You may also specify a relative or absolute URL.
 
 ### Switching between app configs
 
-As mentioned above, if you have 1 or more additional allowed sources (see additionalAllowedConfigSources in [`initialization-file`](initialization-file.md)), you can switch between them by adding `app-config=<config source>` as a query parameter in the web app URL in your browser (i.e. `https://<your domain>/?app-config=gnnuzabk`.)
+As mentioned above, if you have 1 or more additional allowed sources (see additionalAllowedConfigSources in [`initialization-file`](initialization-file.md)), you can switch between them by adding `app-config=<config source>` as a query parameter in the web app URL in your browser (i.e. `https://<your domain>/?app-config=gnnuzabk`).
 
 The parameter is automatically evaluated, loaded, and stored in browser session storage and should remain part of the url as the user navigates around the site.
 
->*Note: Be aware that this mechanism only sets the config for the local machine, browser, and session that you are accessing the site with and it does not change the default hosted app for other users.*
+> _Note: Be aware that this mechanism only sets the config for the local machine, browser, and session that you are accessing the site with and it does not change the default hosted app for other users._
 
 Even sharing URL's should work as long as the query parameter of the desired config is part of the URL. However, once the query parameter is removed and the stored value in the session is released, the application will revert to loading the default config source.
 
->*Note: to clear the value from session storage and return to the default, you can navigate to the site with a blank query parameter value (i.e. `?app-config=`)*
-
+> _Note: to clear the value from session storage and return to the default, you can navigate to the site with a blank query parameter value (i.e. `?app-config=`)_
 
 ## Available Configuration Parameters
 
@@ -107,10 +106,10 @@ Use the `content` array to define which and how content playlists should be disp
   }, {
     "contentId": "WXu7kuaW"
     "type": "playlist"
-  }]  
+  }]
 }
 
-```    
+```
 
 ---
 
@@ -122,7 +121,7 @@ The eight-character Playlists IDs from the JW Player dashboard. These IDs popula
 
 **content[].type**
 
-It is  possible to use 'playlist', 'continue_watching' or 'favorites' as a type. With this, you can change the position of the shelves and turn on/off extra `continue_watching` and `favorites` shelves. 
+It is possible to use 'playlist', 'continue_watching' or 'favorites' as a type. With this, you can change the position of the shelves and turn on/off extra `continue_watching` and `favorites` shelves.
 
 If you want to include `favorites` / `continue_watching` shelf, you should also add a corresponding playlist with `watchlist` type to features section (`features.favoritesList` and `features.continueWatchingList`). To exclude the shelves, remove a corresponding array item and a playlist in `features`.
 
@@ -184,7 +183,7 @@ Specify the color in hexadecimal format. For example, if you want bright yellow,
 
 **styling.headerBackground** (optional)
 
-Use this parameter to change the background color of the header. By default, the header is transparent. Recommended is to use a HEX color (e.g. `#1a1a1a`) so that the contrast color of the buttons and links can be calculated. 
+Use this parameter to change the background color of the header. By default, the header is transparent. Recommended is to use a HEX color (e.g. `#1a1a1a`) so that the contrast color of the buttons and links can be calculated.
 
 ---
 
@@ -208,7 +207,6 @@ Use the `features` object to define extra properties for your app.
 
 ---
 
-
 **features.recommendationsPlaylist** (optional)
 
 The eight-character Playlist ID of the Recommendations playlist that you want to use to populate the "Related Videos" shelf in your site. Note that Recommendations requires a JW Player Enterprise license. For more information about Recommendations playlists, see [this JW Player Support article](https://support.jwplayer.com/customer/portal/articles/2191721-jw-recommendations).
@@ -229,7 +227,7 @@ The eight-character Playlist ID of the Watchlist playlist that you want to use t
 
 **features.continueWatchingList** (optional)
 
-The eight-character Playlist ID of the Watchlist playlist that you want to use to populate the "Continue Watching" shelf in your site. 
+The eight-character Playlist ID of the Watchlist playlist that you want to use to populate the "Continue Watching" shelf in your site.
 
 ---
 
@@ -301,14 +299,14 @@ This setting determines which Cleeng mediastore URL is used. If false or not def
 
 **integrations.cleeng.monthlyOffer** (optional)
 
-If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least 1 offer ID (either this or the yearly offer property.)  The application uses this ID to map to an offer that you've configured in your Cleeng environment under Offers to represent your monthly subscription. Note that the only the data used from the Cleeng offer is the price, the free days, and the free period and the app does not verify if the offer length is actually monthly.  If no monthly or yearly offer is configured, the Payments section will not be shown.
+If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least 1 offer ID (either this or the yearly offer property.) The application uses this ID to map to an offer that you've configured in your Cleeng environment under Offers to represent your monthly subscription. Note that the only the data used from the Cleeng offer is the price, the free days, and the free period and the app does not verify if the offer length is actually monthly. If no monthly or yearly offer is configured, the Payments section will not be shown.
 
 ---
 
 **integrations.cleeng.yearlyOffer** (optional)
 
 If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least 1
-offer ID (either this or the monthly offer property.)  The application uses this ID to map to an offer that you've
+offer ID (either this or the monthly offer property.) The application uses this ID to map to an offer that you've
 configured in your Cleeng environment under Offers to represent your yearly subscription. Note that the only the data
 used from the Cleeng offer is the price, the free days, and the free period and the app does not verify if the offer
 length is actually yearly. If no monthly or yearly offer is configured, the Payments section will not be shown.
