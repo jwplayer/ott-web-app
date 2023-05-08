@@ -20,7 +20,7 @@ This watchlist contains movies a user has not entirely watched. It has the follo
 
 **Across the app**
 
-- A progress bar shows how much of the content a viewer has watched.
+- A progress bar shows how much of the content a viewer has watched
 - When a partially watched video is completed, it is removed from the shelf and the progress bar disappears
 - Just started (<5%) and almost completed (>95%) plays are ignored for the best experience.
 - For series
@@ -45,7 +45,7 @@ This watchlist contains movies a user has not entirely watched. It has the follo
 
 For non-logged in users, the watch history is stored clientside in local storage.
 
-For logged in users, the favorites and watch history are stored server side at the subscription or authentication provider to enable **cross-device watch history**
+For logged in users, the favorites and watch history are stored server side at the subscription or authentication provider to enable **cross-device watch history**.
 
 To ensure a **cross-device experience**, we standardize on the following dataformat:
 
@@ -73,7 +73,12 @@ To ensure a **cross-device experience**, we standardize on the following datafor
 
 ## Watchlist playlist
 
+<<<<<<< HEAD
 The media metadata for the stored media ids an be retrieved through a [watchlist playlist](https://developer.jwplayer.com/jwplayer/docs/creating-and-using-a-watchlist-playlist):
+=======
+The media metadata for the stored media ids can be retrieved through a [watchlist playlist](https://developer.jwplayer.com/jwplayer/docs/creating-and-using-a-watchlist-playlist):
+
+> > > > > > > develop
 
 ```
 curl 'https://cdn.jwplayer.com/apps/watchlists/<watchlist-id>?media_ids=<media-ids-comma-seperated>'
@@ -96,7 +101,7 @@ The continue watching and favorites features can be enabled and disabled in the 
 
 https://cleeng.com is a subscription management system, which pre-integrated in the web-app.
 
-For Cleeng we store the watch history in the `customer externalData` attribute. See [here](https://developers.cleeng.com/reference/fetch-customers-data)
+For Cleeng we store the watch history in the `customer externalData` attribute. See [here](https://developers.cleeng.com/reference/fetch-customers-data).
 
 ### Example Request
 

@@ -16,7 +16,7 @@ Customers can create a 'Series playlist' and set the sequences and episodes usin
 
 ### Creating series playlists in the dashboard
 
-The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to create a serie playlist.
+The [JW manual](https://support.jwplayer.com/articles/build-an-ott-apps-series-playlist) describes the following process to create a series playlist.
 
 ### Series in libraries and shelves
 

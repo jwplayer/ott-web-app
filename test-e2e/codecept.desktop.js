@@ -16,8 +16,9 @@ exports.config = {
     Playwright: {
       url: 'http://localhost:8080',
       show: !!process.env.SHOW,
-      browser: 'chromium',
+      channel: 'chrome',
       locale: 'en-US',
+      keepCookies: false,
     },
   },
   include: {
@@ -38,6 +39,7 @@ exports.config = {
     },
     allure: {
       enabled: true,
+      require: '@codeceptjs/allure-legacy',
     },
   },
 };

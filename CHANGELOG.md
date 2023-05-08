@@ -1,3 +1,12 @@
+## [4.6.3](https://github.com/jwplayer/ott-web-app/compare/v4.6.2...v4.6.3) (2023-05-08)
+
+
+### Bug Fixes
+
+* **e2e:** fix tests ([4fdfa79](https://github.com/jwplayer/ott-web-app/commit/4fdfa796c2e5797a496f4abd714b2786eada47a8))
+
+
+
 ## [4.6.2](https://github.com/jwplayer/ott-web-app/compare/v4.6.1...v4.6.2) (2023-04-21)
 
 
