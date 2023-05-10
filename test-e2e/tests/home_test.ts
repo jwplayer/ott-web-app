@@ -1,3 +1,5 @@
+import assert from 'assert';
+
 import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
 import { testConfigs } from '#test/constants';
 
@@ -130,15 +132,15 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 Scenario('I can see alternate shelf images for the `All Films` shelf', async ({ I }) => {
   // scroll to shelf to make it visible and for screenshot
   await I.scrollToShelf(ShelfId.allFilms);
-  await I.seeCardImageSrc('Agent 327', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/uB8aRnu6/images/shelf.webp?width=320');
-  await I.seeCardImageSrc('Big Buck Bunny', ShelfId.allFilms, 'https://img.jwplayer.com/v1/media/awWEFyPu/images/shelf.webp?width=320');
+  await seeCardImageSrc(I, 'Agent 327', ShelfId.allFilms, 'shelf');
+  await seeCardImageSrc(I, 'Big Buck Bunny', ShelfId.allFilms, 'shelf');
 });
 
 Scenario('I can see poster images for the `All courses` shelf', async ({ I }) => {
   // scroll to shelf to make it visible and for screenshot
   await I.scrollToShelf(ShelfId.allCourses);
-  await I.seeCardImageSrc('Primitive Animals', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/9NZgbtMV/poster.jpg?width=320');
-  await I.seeCardImageSrc('Fantasy Vehicle Creation', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/b43Lsibs/poster.jpg?width=320');
+  await seeCardImageSrc(I, 'Primitive Animals', ShelfId.allCourses, undefined);
+  await seeCardImageSrc(I, 'Fantasy Vehicle Creation', ShelfId.allCourses, undefined);
 });
 
 Scenario('I can see the footer', ({ I }) => {
@@ -149,3 +151,20 @@ Scenario('I can see the footer', ({ I }) => {
   I.switchToNextTab();
   I.seeCurrentUrlEquals('https://jwplayer.com/');
 });
+
+const seeCardImageSrc = async (I: CodeceptJS.I, name: string, shelf: ShelfId, alternateImageLabel: string | undefined) => {
+  const locator = `//img[@alt="${name}"]`;
+
+  await within(makeShelfXpath(shelf), async () => {
+    const cardSrc = await I.grabAttributeFrom(locator, 'src');
+
+    const expectedHost = alternateImageLabel ? 'https://img.jwplayer.com/v1/media/' : 'https://cdn.jwplayer.com/v2/media/';
+
+    const expectedPath = alternateImageLabel ? `/images/${alternateImageLabel}.webp?width=320` : '/poster.jpg?width=320';
+
+    // The URL has the media ID in it, but we prefer not to hard code IDs in tests
+    // so just check the start and end of the URL
+    assert.equal(cardSrc.substring(0, expectedHost.length), expectedHost);
+    assert.equal(cardSrc.substring(expectedHost.length + 8), expectedPath);
+  });
+};

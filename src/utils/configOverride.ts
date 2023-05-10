@@ -1,6 +1,6 @@
 import type { NavigateFunction } from 'react-router/dist/lib/hooks';
 
-import { logDev } from '#src/utils/common';
+import { IS_DEVELOPMENT_BUILD, IS_TEST_MODE, logDev } from '#src/utils/common';
 import type { Settings } from '#src/stores/SettingsStore';
 
 // Use local storage so the override persists until cleared
@@ -93,7 +93,8 @@ export function cleanupQueryParams(searchParams: URLSearchParams, settings: Sett
 
 function isValidConfigSource(source: string, settings: Settings) {
   // Dynamic values are valid as long as they are defined
-  if (settings?.UNSAFE_allowAnyConfigSource) {
+  // Always allow configs in test and dev to avoid test / debug headaches with configs not loading
+  if (settings?.UNSAFE_allowAnyConfigSource || IS_TEST_MODE || IS_DEVELOPMENT_BUILD) {
     return !!source;
   }
 

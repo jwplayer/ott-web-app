@@ -1,7 +1,5 @@
 import * as assert from 'assert';
 
-import { overrideIP } from './payments';
-
 import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 import { TestConfig } from '#test/types';
@@ -40,23 +38,6 @@ const stepsObj = {
     await this.openMainMenu();
 
     this.click('div[aria-label="Log out"]');
-  },
-  beforeRegisterOrLogin: async function (this: CodeceptJS.I, config: TestConfig, mode: string) {
-    this.useConfig(config);
-    if (await this.isMobile()) {
-      this.openMenuDrawer();
-    }
-
-    let clickOnText = 'Sign in';
-    let waitForElement = constants.loginFormSelector;
-    if (mode === 'signup') {
-      clickOnText = 'Sign up';
-      waitForElement = constants.registrationFormSelector;
-    }
-
-    this.click(clickOnText);
-
-    this.waitForElement(waitForElement, normalTimeout);
   },
   // This function will register the user on the first call and return the context
   // then assuming context is passed in the next time, will log that same user back in
@@ -341,13 +322,6 @@ const stepsObj = {
         const __DateNow = Date.now;
         Date.now = () => __DateNow() + __DateNowOffset;
       }`);
-    });
-  },
-  seeCardImageSrc: async function (this: CodeceptJS.I, name: string, shelf: ShelfId, src: string) {
-    const locator = `//img[@alt="${name}"]`;
-    await within(makeShelfXpath(shelf), async () => {
-      const cardSrc = await this.grabAttributeFrom(locator, 'src');
-      assert.equal(cardSrc, src, "img element src attribute doesn't match");
     });
   },
   seeVideoDetailsBackgroundImage: async function (this: CodeceptJS.I, name: string, src: string) {
