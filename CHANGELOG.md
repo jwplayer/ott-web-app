@@ -1,3 +1,13 @@
+# [4.8.0](https://github.com/jwplayer/ott-web-app/compare/v4.7.0...v4.8.0) (2023-05-10)
+
+
+### Features
+
+* **e2e:** add maunal tests for adv + small fixes ([0b44891](https://github.com/jwplayer/ott-web-app/commit/0b448917657ed8de9fb480bde316fd23eab33c98))
+* **e2e:** add maunal tests for ott analytics pipline ([b418e3b](https://github.com/jwplayer/ott-web-app/commit/b418e3b0e18784fbf74098e6b9316be7a58376cf))
+
+
+
 # [4.7.0](https://github.com/jwplayer/ott-web-app/compare/v4.6.3...v4.7.0) (2023-05-08)
 
 
