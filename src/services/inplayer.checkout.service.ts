@@ -150,7 +150,7 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
 
 export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
   const payload = {
-    number: parseInt(`${cardPaymentPayload.cardNumber}`),
+    number: cardPaymentPayload.cardNumber,
     cardName: cardPaymentPayload.cardholderName,
     expMonth: cardPaymentPayload.cardExpMonth || '',
     expYear: cardPaymentPayload.cardExpYear || '',
@@ -164,6 +164,7 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData,
 
   try {
     if (isSVODOffer(order)) {
+      // @ts-ignore
       await InPlayer.Subscription.createSubscription(payload);
     } else {
       await InPlayer.Payment.createPayment(payload);
