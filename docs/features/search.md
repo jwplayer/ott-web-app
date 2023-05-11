@@ -2,13 +2,13 @@
 
 ![Search](../_images/search.jpg)
 
-Search is essentially a [library](shelves-and-libraries.md) screen that reacts to a search term.  A search queries the media  `title` and `description` fields. 
+Search is essentially a [library](shelves-and-libraries.md) screen that reacts to a search term. A search queries the media `title` and `description` fields.
 
 ## Retrieve search results
 
-Like libraries, search results are coming from playlist: [a search playlist](https://support.jwplayer.com/articles/create-a-playlist). The playlist id is retrieved from the [app config](/docs/configuration.md): `searchPlaylist`
+Like libraries, search results are coming from playlist: [a search playlist](https://docs.jwplayer.com/platform/docs/vdh-create-a-search-playlist). The playlist id is retrieved from the [app config](/docs/configuration.md): `searchPlaylist`
 
-Search queries are done using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id): 
+Search queries are done using the [GET playlist endpoint](https://developer.jwplayer.com/jwplayer/reference/get_v2-playlists-playlist-id):
 
 ```
 GET playlists/tQ832H1H?search=bunny
@@ -35,4 +35,5 @@ GET playlists/tQ832H1H?search=bunny
 ```
 
 ## Configuration
-The feature can be enabled in the [app config](/docs/configuration.md) by setting `searchPlaylist`  to the ID of the recommendations playlist you want to use.
+
+The feature can be enabled in the [app config](/docs/configuration.md) by setting `searchPlaylist` to the ID of the recommendations playlist you want to use.

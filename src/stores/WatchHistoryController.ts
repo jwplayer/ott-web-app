@@ -32,6 +32,7 @@ export const restoreWatchHistory = async () => {
     useWatchHistoryStore.setState({
       watchHistory: watchHistory.filter((item): item is WatchHistoryItem => !!item?.mediaid),
       playlistItemsLoaded: true,
+      continueWatchingPlaylistId: continueWatchingList,
     });
   }
 };

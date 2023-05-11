@@ -3,6 +3,7 @@ window.jwpltx = window.jwpltx || {};
 (function (o) {
   // Hostname for sending analytics
   const URL = 'https://ihe.jwpltx.com/v1/jwplayer6/ping.gif?';
+
   // Query parameters for sending analytics
   const URI = {
     pss: '1',
@@ -13,7 +14,7 @@ window.jwpltx = window.jwpltx || {};
 
   // There are anywhere between 1 to 128 quantiles in any given video, 128 is max for every video
   const MAX_DURATION_IN_QUANTILES = 128;
-  // query params instance.
+  // Query params instance
   let uri;
   // Time watched after last t event was sent
   let timeWatched = 0;
@@ -152,7 +153,7 @@ window.jwpltx = window.jwpltx || {};
 
         sendData('s');
         setLiveInterval();
-        // monitor ticks for 20s elapsed
+        // Monitor ticks for 20s elapsed
       } else {
         if (timeWatched > 19) {
           uri.ti = timeWatched;
@@ -161,7 +162,7 @@ window.jwpltx = window.jwpltx || {};
         }
       }
 
-      // positive vd means  VOD stream
+      // Positive vd means VOD stream
     } else {
       // Initial tick means play() event
       if (!uri.vd) {
@@ -187,7 +188,7 @@ window.jwpltx = window.jwpltx || {};
         lastVp = vp;
 
         sendData('s');
-        // monitor ticks for entering new quantile
+        // Monitor ticks for entering new quantile
       } else {
         const pw = getCurrentProgressQuantile(vp, vd);
         const quantile = getNextTriggerQuantile(vp, vd);
@@ -241,6 +242,7 @@ window.jwpltx = window.jwpltx || {};
   function sendData(type) {
     uri.e = type;
     uri.sa = Date.now();
+
     // Serialize data
     let str = '';
     for (let key in uri) {
@@ -249,11 +251,13 @@ window.jwpltx = window.jwpltx || {};
         str += key + '=' + encodeURIComponent(uri[key]);
       }
     }
+
     // Ads are sent to special bucket
     let url = URL;
     if (uri.e == 'i') {
       url = URL.replace('jwplayer6', 'clienta');
     }
+
     // Send data if analytics token is set
     if (uri.aid) {
       navigator.sendBeacon(url + str);
