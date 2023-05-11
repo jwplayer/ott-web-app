@@ -1,95 +1,64 @@
-import { UseInfiniteQueryResult, useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 
 import { getEpisodes, getSeasonWithEpisodes } from '#src/services/api.service';
 import type { EpisodesWithPagination } from '#types/series';
-import type { ApiError } from '#src/utils/api';
+import type { Pagination } from '#types/pagination';
 
+// 1 hour
 const CACHE_TIME = 60 * 1000 * 60;
 
-// Get episodes from a selected series using pagination
-export const useSeriesEpisodes = (seriesId: string | undefined, isNewSeriesFlow: boolean): UseInfiniteQueryResult<EpisodesWithPagination, ApiError | null> => {
-  return useInfiniteQuery(
-    [seriesId, 'episodes'],
-    async ({ pageParam = 0 }) => {
-      const episodes = await getEpisodes(seriesId || '', pageParam);
+const getNextPageParam = (pagination: Pagination) => {
+  const { page, page_limit, total } = pagination;
 
-      return episodes;
-    },
-    {
-      getNextPageParam: (lastPage) => {
-        const { page, page_limit, total } = lastPage.pagination;
+  // In case there are no more episodes in a season to fetch
+  if (page_limit * page >= total) {
+    return undefined;
+  }
 
-        // In case there are no more episodes in a season to fetch
-        if (page_limit * page >= total) {
-          return undefined;
-        }
-
-        return page;
-      },
-      enabled: isNewSeriesFlow,
-      // 1 hour
-      staleTime: CACHE_TIME,
-      cacheTime: CACHE_TIME,
-    },
-  );
-};
-
-// Get episodes from a selected season using pagination
-const useSeasonEpisodes = (
-  isNewSeriesFlow: boolean,
-  seriesId: string | undefined,
-  seasonNumber: number,
-): UseInfiniteQueryResult<EpisodesWithPagination, ApiError | null> => {
-  return useInfiniteQuery(
-    [seriesId, 'season', seasonNumber],
-    async ({ pageParam = 0 }) => {
-      const season = await getSeasonWithEpisodes(seriesId || '', seasonNumber, pageParam);
-
-      return { pagination: season.pagination, episodes: season.episodes };
-    },
-    {
-      getNextPageParam: (lastPage) => {
-        const { page, page_limit, total } = lastPage.pagination;
-
-        // In case there are no more episodes in a season to fetch
-        if (page_limit * page >= total) {
-          return undefined;
-        }
-
-        return page;
-      },
-      enabled: isNewSeriesFlow,
-      // 1 hour
-      staleTime: CACHE_TIME,
-      cacheTime: CACHE_TIME,
-    },
-  );
+  return page;
 };
 
 export const useEpisodes = (
   seriesId: string | undefined,
-  isNewSeriesFlow: boolean,
-  filter: string | undefined,
-): { data: EpisodesWithPagination[]; hasNextPage: boolean; fetchNextPage: () => void } => {
+  seasonNumber: string | undefined,
+  options: { enabled: boolean },
+): {
+  data: EpisodesWithPagination[];
+  hasNextPage: boolean;
+  fetchNextPage: (params?: { pageParam?: number }) => void;
+  isLoading: boolean;
+} => {
   const {
-    data: episodesData,
-    fetchNextPage: fetchNextSeriesEpisodes,
-    hasNextPage: hasNextEpisodesPage = false,
-  } = useSeriesEpisodes(seriesId, isNewSeriesFlow && !filter);
+    data,
+    fetchNextPage,
+    isLoading,
+    hasNextPage = false,
+  } = useInfiniteQuery(
+    [seriesId, seasonNumber],
+    async ({ pageParam = 0 }) => {
+      if (Number(seasonNumber)) {
+        // Get episodes from a selected season using pagination
+        const season = await getSeasonWithEpisodes(seriesId || '', Number(seasonNumber), pageParam);
 
-  const {
-    data: seasonEpisodesData,
-    fetchNextPage: fetchNextSeasonEpisodes,
-    hasNextPage: hasNextSeasonEpisodesPage = false,
-  } = useSeasonEpisodes(isNewSeriesFlow && !!filter, seriesId, Number(filter));
-
-  if (!filter) {
-    return { data: episodesData?.pages || [], fetchNextPage: fetchNextSeriesEpisodes, hasNextPage: hasNextEpisodesPage };
-  }
+        return { pagination: season.pagination, episodes: season.episodes };
+      } else {
+        // Get episodes from a selected series using pagination
+        const data = await getEpisodes(seriesId || '', pageParam);
+        return data;
+      }
+    },
+    {
+      getNextPageParam: (lastPage) => getNextPageParam(lastPage?.pagination),
+      enabled: options.enabled,
+      staleTime: CACHE_TIME,
+      cacheTime: CACHE_TIME,
+    },
+  );
 
   return {
-    data: seasonEpisodesData?.pages || [],
-    fetchNextPage: fetchNextSeasonEpisodes,
-    hasNextPage: hasNextSeasonEpisodesPage,
+    data: data?.pages || [],
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
   };
 };

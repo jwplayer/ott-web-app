@@ -13,5 +13,4 @@ export type WatchHistoryItem = {
 export type SerializedWatchHistoryItem = {
   mediaid: string;
   progress: number;
-  seriesId?: string;
 };

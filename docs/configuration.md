@@ -8,12 +8,12 @@ The easiest way to maintain configuration files is to use the 'Apps' section in 
 Which app config file the application uses is determined by the [ini file](initialization-file.md).
 
 You can specify the default that the application starts with and also which config, if any, it will allow to be set using the [`app-config=<config source>` query param](#switching-between-app-configs).
-The location is usually specified by the 8-character ID (i.e. `gnnuzabk`) of the App Config from your JWP account, in which case the file will be loaded from the JW Player App Config delivery endpoint (i.e. `https://cdn.jwplayer.com/apps/configs/gnnuzabk.json`).
+The location is usually specified by the 8-character ID (i.e. `ehon8mco`) of the App Config from your JWP account, in which case the file will be loaded from the JW Player App Config delivery endpoint (i.e. `https://cdn.jwplayer.com/apps/configs/ehon8mco.json`).
 You may also specify a relative or absolute URL.
 
 ### Switching between app configs
 
-As mentioned above, if you have 1 or more additional allowed sources (see additionalAllowedConfigSources in [`initialization-file`](initialization-file.md)), you can switch between them by adding `app-config=<config source>` as a query parameter in the web app URL in your browser (i.e. `https://<your domain>/?app-config=gnnuzabk`).
+As mentioned above, if you have 1 or more additional allowed sources (see additionalAllowedConfigSources in [`initialization-file`](initialization-file.md)), you can switch between them by adding `app-config=<config source>` as a query parameter in the web app URL in your browser (i.e. `https://<your domain>/?app-config=ehon8mco`).
 
 The parameter is automatically evaluated, loaded, and stored in browser session storage and should remain part of the url as the user navigates around the site.
 

@@ -1,5 +1,6 @@
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { EpisodesWithPagination, Series } from '#types/series';
+import type { EpisodeMetadata, EpisodesWithPagination, Series } from '#types/series';
+import { getEpisodes, getSeasonWithEpisodes } from '#src/services/api.service';
 
 /**
  * Get an array of options for a season filter
@@ -23,7 +24,7 @@ export const getFiltersFromSeries = (playlist: Playlist, series: Series | undefi
 /**
  * Get a playlist with episodes based on the selected filter
  */
-export const filterSeries = (playlist: Playlist, episodes: EpisodesWithPagination[] | undefined, filter: string): Playlist => {
+export const filterSeries = (playlist: Playlist, episodes: EpisodesWithPagination[] | undefined, filter: string | undefined): Playlist => {
   const isNewFlow = !!episodes?.length;
 
   if (isNewFlow) {
@@ -40,37 +41,87 @@ export const filterSeries = (playlist: Playlist, episodes: EpisodesWithPaginatio
   };
 };
 
-export const getNextEpisode = (data: EpisodesWithPagination[], currentEpisode: PlaylistItem, hasMoreEpisodes: boolean, fetchNextEpisodes: () => void) => {
-  const episodes = data.flatMap((el) => el.episodes);
-  const episodeIndex = episodes.findIndex((el) => el.mediaid === currentEpisode.mediaid);
+/**
+ * Retrieve a first episode of the next season
+ */
+const getNextSeasonEpisode = async (seasonNumber: number, seriesId: string, series: Series | undefined) => {
+  const seasons = series?.seasons;
 
-  // If there are more episodes in the selected season / episodes list
-  if (episodeIndex !== episodes.length - 1) {
-    return episodes[episodeIndex + 1];
-    // Episode is the last one in the data we have, but we have more to fetch, let's do it
-  } else if (hasMoreEpisodes) {
-    fetchNextEpisodes();
-    return currentEpisode;
-    // No more data to fetch -> return null
-  } else {
+  // The seasons is the last one in case there is only one season available or it is the same as the last season in the seasons array
+  const isLastSeason = seasons?.length === 1 || seasons?.[seasons?.length - 1]?.season_number === seasonNumber;
+
+  if (isLastSeason) {
     return;
+  } else {
+    // Need to know the order of seasons to choose the next season number
+    const hasAscendingOrder = (Number(seasons?.[1]?.season_number) || 0) > (Number(seasons?.[0]?.season_number) || 0);
+    const nextSeasonNumber = hasAscendingOrder ? seasonNumber + 1 : seasonNumber - 1;
+
+    return (await getSeasonWithEpisodes(seriesId, nextSeasonNumber, 0, 1))?.episodes?.[0];
   }
 };
 
-export const getNextItem = (
+/**
+ * Get a next episode of the selected season / episodes list
+ */
+const getNextEpisode = async (seasonNumber: number, seriesId: string, pageWithEpisode: number) => {
+  if (seasonNumber) {
+    return (await getSeasonWithEpisodes(seriesId, seasonNumber, pageWithEpisode, 1))?.episodes?.[0];
+  } else {
+    return (await getEpisodes(seriesId, pageWithEpisode, 1))?.episodes?.[0];
+  }
+};
+
+const getNewFlowNextEpisode = async (series: Series | undefined, episodeMetadata: EpisodeMetadata | undefined) => {
+  if (!episodeMetadata || !series) {
+    return;
+  }
+
+  const seasonNumber = Number(episodeMetadata.seasonNumber);
+  const episodeNumber = Number(episodeMetadata.episodeNumber);
+
+  // Get initial data to collect information about total number of elements
+  const { episodes, pagination } =
+    seasonNumber !== 0 ? await getSeasonWithEpisodes(series?.series_id, seasonNumber, 0) : await getEpisodes(series?.series_id, 0);
+
+  if (episodes.length === 1 && seasonNumber) {
+    return getNextSeasonEpisode(seasonNumber, series?.series_id, series);
+  }
+
+  // Both episodes and seasons can be sorted by asc / desc
+  const hasAscendingOrder = (Number(episodes[1].episodeNumber) || 0) > (Number(episodes[0].episodeNumber) || 0);
+  const nextEpisodeNumber = hasAscendingOrder ? episodeNumber + 1 : episodeNumber - 1;
+  // First page has 0 number, that is why we use Math.floor here
+  const pageWithEpisode = Math.floor(hasAscendingOrder ? nextEpisodeNumber : pagination.total - nextEpisodeNumber);
+  // Consider the case when we have a next episode in the retrieved list
+  const nextElementIndex = episodes.findIndex((el) => Number(el.episodeNumber) === nextEpisodeNumber);
+
+  if (nextElementIndex !== -1) {
+    return episodes[nextElementIndex];
+  }
+
+  // Fetch the next episodes of the season when there is more to fetch
+  if (pageWithEpisode <= pagination.total) {
+    return getNextEpisode(seasonNumber, series?.series_id, pageWithEpisode);
+    // Switch selected season in case the current one has nor more episodes inside
+  } else if (seasonNumber) {
+    return getNextSeasonEpisode(seasonNumber, series?.series_id, series);
+  }
+};
+
+export const getNextItem = async (
   episode: PlaylistItem | undefined,
   seriesPlaylist: Playlist,
-  episodes: EpisodesWithPagination[] | undefined,
-  hasMoreEpisodes: boolean,
-  fetchNextEpisodes: () => void,
-): PlaylistItem | undefined => {
-  const isNewFlow = !!episodes?.length;
+  series: Series | undefined,
+  episodeMetadata: EpisodeMetadata | undefined,
+): Promise<PlaylistItem | undefined> => {
+  const isNewFlow = !!series;
 
   if (!episode || !seriesPlaylist) return;
 
   // Using new flow when episodes are available
   if (isNewFlow) {
-    const nextEpisode = getNextEpisode(episodes, episode, hasMoreEpisodes, fetchNextEpisodes);
+    const nextEpisode = await getNewFlowNextEpisode(series, episodeMetadata);
 
     return nextEpisode;
   }
@@ -90,25 +141,4 @@ export const getEpisodesInSeason = (episode: PlaylistItem | undefined, seriesPla
   }
 
   return seriesPlaylist.playlist.filter((i) => i.seasonNumber === episode?.seasonNumber)?.length;
-};
-
-/** Get episode to redirect to MediaSeriesEpisodePage */
-export const getEpisodeToRedirect = (
-  episodeId: string | undefined,
-  seriesPlaylist: Playlist,
-  episodeData: PlaylistItem | undefined,
-  episodesData: EpisodesWithPagination[] | undefined,
-  isNewSeriesFlow: boolean,
-) => {
-  if (isNewSeriesFlow) {
-    // For the new flow we return either a selected episode (Continue Watching) or just first available one
-    return episodeData || episodesData?.[0]?.episodes?.[0];
-  }
-
-  // For the old approach we do the same thing, the only thing here that our playlist already have all the episodes inside
-  if (!episodeId) {
-    return seriesPlaylist.playlist[0];
-  }
-
-  return seriesPlaylist.playlist.find(({ mediaid }) => mediaid === episodeId);
 };

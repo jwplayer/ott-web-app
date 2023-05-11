@@ -5,8 +5,6 @@ export type GetSeriesParams = {
   season?: number;
 };
 
-type Sort = 'asc' | 'dsc';
-
 export type Episode = {
   episode_number: number;
   season_number: number;
@@ -25,15 +23,10 @@ export type Season<T> = {
 
 export type EpisodesRes = Pagination & { episodes: Episode[] };
 
-export type SeasonsRes = Pagination & { seasons: Season<Episode>[] };
-
-export type SeasonWithPagination = Season<PlaylistItem> & { pagination: Pagination };
-
 export type EpisodesWithPagination = { episodes: PlaylistItem[]; pagination: Pagination };
 
 export type Series = {
   series_id: string;
-  total_duration: string;
   episode_count: number;
   season_count: number;
   total_duration: number;
@@ -44,4 +37,9 @@ export type EpisodeInSeries = {
   series_id: string;
   episode_number: number;
   season_number: number;
+};
+
+export type EpisodeMetadata = {
+  episodeNumber: string;
+  seasonNumber: string;
 };
