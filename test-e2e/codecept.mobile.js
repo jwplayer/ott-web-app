@@ -19,6 +19,7 @@ exports.config = {
       show: !!process.env.SHOW,
       channel: 'chrome',
       emulate: devices['Pixel 5'],
+      keepCookies: false,
     },
   },
   include: {
@@ -39,6 +40,7 @@ exports.config = {
     },
     allure: {
       enabled: true,
+      require: '@codeceptjs/allure-legacy',
     },
   },
 };

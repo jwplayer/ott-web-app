@@ -18,6 +18,7 @@ exports.config = {
       show: !!process.env.SHOW,
       channel: 'chrome',
       locale: 'en-US',
+      keepCookies: false,
     },
   },
   include: {
@@ -38,6 +39,7 @@ exports.config = {
     },
     allure: {
       enabled: true,
+      require: '@codeceptjs/allure-legacy',
     },
   },
 };
