@@ -149,10 +149,8 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
 };
 
 export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
-  const number = parseInt(String(cardPaymentPayload.cardNumber).replace(/\s/g, ''), 10);
-
   const payload = {
-    number,
+    number: parseInt(String(cardPaymentPayload.cardNumber).replace(/\s/g, ''), 10),
     cardName: cardPaymentPayload.cardholderName,
     expMonth: cardPaymentPayload.cardExpMonth || '',
     expYear: cardPaymentPayload.cardExpYear || '',
