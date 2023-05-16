@@ -11,8 +11,8 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
     window.jwpltx.time(position, duration);
   }, []);
 
-  const seekHandler = useCallback(({ offset, duration }) => {
-    window.jwpltx.seek(offset, duration);
+  const seekHandler = useCallback(({ offset, position }: jwplayer.SeekParam) => {
+    window.jwpltx.seek(offset, position);
   }, []);
 
   const seekedHandler = useCallback(() => {

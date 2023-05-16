@@ -4,6 +4,8 @@ import shallow from 'zustand/shallow';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useNavigate } from 'react-router';
 
+import type { PlaylistItem } from '../../../types/playlist';
+
 import styles from './ShelfList.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
@@ -11,7 +13,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import ShelfComponent from '#components/Shelf/Shelf';
 import { mediaURL, slugify } from '#src/utils/formatting';
-import type { Content } from '#types/Config';
+import type { Content, ContentType } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
@@ -35,7 +37,7 @@ const ShelfList = ({ rows }: Props) => {
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
-    (playlistItem, playlistId, type) => {
+    (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => {
       navigate(mediaURL(playlistItem, playlistId, type === PersonalShelf.ContinueWatching));
     },
     [navigate],

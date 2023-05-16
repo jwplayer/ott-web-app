@@ -156,7 +156,6 @@ exports[`<Account> > renders and matches snapshot 1`] = `
           <label
             for="check-box_1235_consents.marketing"
           >
-            
             Receive Marketing Emails
           </label>
         </div>

@@ -15,6 +15,7 @@ import type { AccessModel } from '#types/Config';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
+  children?: React.ReactNode;
   filters?: string[];
   currentFilter?: string;
   defaultFilterLabel?: string;
@@ -47,6 +48,7 @@ type VideoListProps = {
 type Props = {
   inlineLayout: boolean;
   player: React.ReactNode;
+  // children?: React.ReactNode;
   isLoading: boolean;
   accessModel: AccessModel;
   isLoggedIn: boolean;
