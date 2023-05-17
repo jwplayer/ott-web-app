@@ -3,10 +3,31 @@ import type { SerializedFavorite } from './favorite';
 
 import type { Config } from '#types/Config';
 
+type UserRole = 'inplayer' | 'merchant' | 'consumer' | 'master' | 'follower' | 'admin' | undefined;
+
+type Scope = 'inheritance' | 'email_inheritance' | undefined;
+
 export type AuthData = {
   jwt: string;
   customerToken: string;
   refreshToken: string;
+};
+
+export type DecodedJwtToken = {
+  aid: number;
+  aud: string;
+  ctx: UserRole[];
+  exp: number;
+  iat: number;
+  jti: string;
+  mid: number;
+  mui: string;
+  nbf: number;
+  oid: number;
+  scopes: Scope[];
+  sub: string;
+  tid: number;
+  tuuid: string;
 };
 
 export type JwtDetails = {

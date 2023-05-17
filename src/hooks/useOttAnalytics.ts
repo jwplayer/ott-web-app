@@ -1,11 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
+import jwtDecode from 'jwt-decode';
 
 import type { PlaylistItem } from '#types/playlist';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
+import type { DecodedJwtToken } from '#types/account';
 
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
+  const auth = useAccountStore((state) => state.auth);
+  const isLoggedIn = !!auth;
+
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
+
+  const decodedToken: DecodedJwtToken | undefined = isLoggedIn ? jwtDecode(auth?.jwt) : undefined;
 
   const timeHandler = useCallback(({ position, duration }: jwplayer.TimeParam) => {
     window.jwpltx.time(position, duration);
@@ -26,7 +34,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       return;
     }
 
-    window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title);
+    window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, decodedToken?.tid);
   }, [item]);
 
   const completeHandler = useCallback(() => {
