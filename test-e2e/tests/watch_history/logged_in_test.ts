@@ -63,17 +63,18 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
     I.dontSee(constants.continueWatchingShelfTitle);
 
     await registerOrLogin(I);
-    I.see(constants.continueWatchingShelfTitle);
+    I.clickHome();
+    I.waitForText(constants.continueWatchingShelfTitle, normalTimeout);
 
-    const continueWatchingShelfXPath = makeShelfXpath(ShelfId.continueWatching);
-
-    await within(continueWatchingShelfXPath, async () => {
+    await within(makeShelfXpath(ShelfId.continueWatching), async () => {
       I.see(videoTitle);
       I.see('10 min');
     });
 
-    await I.openVideoCard(videoTitle, ShelfId.continueWatching, false, async (locator) => await checkProgress(I, locator, (80 / videoLength) * 100));
+    const selector = `${makeShelfXpath(ShelfId.continueWatching)}//div[@aria-label="Play ${videoTitle}"]`;
+    await checkProgress(I, selector, (80 / videoLength) * 100);
 
+    I.click(selector);
     await I.waitForPlayerPlaying(videoTitle);
 
     await checkElapsed(I, 1, 20);

@@ -63,7 +63,7 @@ Each event comes with a set of data sent through the query parameters of the JWP
 - Media - The media that is being watched
 - Quantile - How much the user watched a particular movie
 
-Theee metrics are described below.
+These metrics are described below.
 
 ### Session Metrics
 
@@ -119,7 +119,7 @@ Theee metrics are described below.
 | -------------------- | --- | ------------ | ---------------- | -------------------------- | ------------------------------------------------- |
 | Media ID             | id  | Yes          | \[0-9a-zA-Z\]{8} | 9u6OHIO4                   | A unique identifier for a JW Player media item.   |
 | Media Title          | t   | Yes          | \-               | The Perfect Holiday Turkey | The provided title for the current playlist item. |
-| Video Duration (sec) | vd  | <sup>1</sup> | \-               | 141                        | Duration of the vide                              |
+| Video Duration (sec) | vd  | <sup>1</sup> | \-               | 141                        | Duration of the video                             |
 
 <sup>1</sup>Only requied for the play event `s`
 
