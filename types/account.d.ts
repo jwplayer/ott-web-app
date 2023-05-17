@@ -320,11 +320,6 @@ export type EmailConfirmPasswordInput = {
   confirmationPassword: string;
 };
 
-export type ExportAccountDataPayload = {
-  // TODO: remove password once backend is updated
-  password: string;
-};
-
 export type ExportAccountDataResponse = {
   message: string;
   code: number;
@@ -346,4 +341,4 @@ type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWit
 type UpdatePersonalShelves = AuthServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type RefreshToken = EnvironmentServiceRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
-type ExportAccountData = AuthServiceRequest<ExportAccountDataPayload, ExportAccountDataResponse>;
+type ExportAccountData = AuthServiceRequest<undefined, ExportAccountDataResponse>;

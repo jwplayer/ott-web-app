@@ -280,7 +280,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                           type="button"
                           disabled={exportData.isLoading}
                           onClick={async () => {
-                            exportData.mutate(''); // TODO: remove password once backend is updated
+                            exportData.mutate();
                           }}
                         />
                       </div>
