@@ -12,8 +12,8 @@ export const isPlaylist = (item: unknown): item is Playlist => !!item && typeof 
 export const isPlaylistItem = (item: unknown): item is PlaylistItem => !!item && typeof item === 'object' && 'mediaid' in item;
 
 // For the deprecated series flow we store seriesId in custom params
-export const getSeriesPlaylistIdFromCustomParams = (item: PlaylistItem & DeprecatedPlaylistItem) =>
-  item.seriesPlayListId || item.seriesPlaylistId || item.seriesId;
+export const getSeriesPlaylistIdFromCustomParams = (item: (PlaylistItem & DeprecatedPlaylistItem) | undefined) =>
+  item ? item.seriesPlayListId || item.seriesPlaylistId || item.seriesId : undefined;
 
 // For the deprecated flow we store seriesId in the media custom params
 export const isDeprecatedSeriesFlow = (item: PlaylistItem) => {

@@ -43,3 +43,10 @@ export type EpisodeMetadata = {
   episodeNumber: string;
   seasonNumber: string;
 };
+
+export type SeriesData = {
+  playlist: Playlist;
+  series: Series | undefined;
+  media: PlaylistItem | undefined;
+  contentType: string | undefined;
+};

@@ -35,7 +35,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
           {options.map((option) => (
             <Button label={`${valuePrefix}${option}`} onClick={() => setValue(option)} key={option} active={value === option} role="option" />
           ))}
-          <Button label={defaultLabel} onClick={() => setValue('all')} active={value === 'all'} key={defaultLabel} role="option" />
+          <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} role="option" />
         </div>
       ) : (
         <div className={styles.filterDropDown}>

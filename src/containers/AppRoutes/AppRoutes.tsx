@@ -22,7 +22,7 @@ export default function AppRoutes() {
         <Route index element={<Home />} />
         <Route path="/p/:id" element={<PlaylistScreenRouter />} />
         <Route path="/m/:id/*" element={<MediaScreenRouter />} />
-        <Route path="/s/:id/:slug" element={<Series />} />
+        <Route path="/s/:id/*" element={<Series />} />
         <Route path="/q/*" element={<Search />} />
         <Route path="/u/*" element={<User />} />
         <Route path="/o/about" element={<About />} />

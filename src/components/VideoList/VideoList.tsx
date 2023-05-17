@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import styles from './VideoList.module.scss';
 
@@ -8,6 +9,7 @@ import { isLocked } from '#src/utils/entitlements';
 import { testId } from '#src/utils/common';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 
 type Props = {
   playlist?: Playlist;
@@ -22,6 +24,8 @@ type Props = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  hasLoadMore?: boolean;
+  loadMore?: () => void;
 };
 
 function VideoList({
@@ -37,12 +41,13 @@ function VideoList({
   accessModel,
   isLoggedIn,
   hasSubscription,
+  hasLoadMore,
+  loadMore,
 }: Props) {
-  return (
-    <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
-      {!!header && header}
-      {playlist &&
-        playlist.playlist.map((playlistItem: PlaylistItem) => {
+  const List = () => {
+    return (
+      <>
+        {playlist?.playlist?.map((playlistItem: PlaylistItem) => {
           const { mediaid } = playlistItem;
 
           return (
@@ -59,6 +64,20 @@ function VideoList({
             />
           );
         })}
+      </>
+    );
+  };
+
+  return (
+    <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
+      {!!header && header}
+      {loadMore ? (
+        <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasLoadMore} loader={<InfiniteScrollLoader key="loader" />}>
+          <List />
+        </InfiniteScroll>
+      ) : (
+        <List />
+      )}
     </div>
   );
 }

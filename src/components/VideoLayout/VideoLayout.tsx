@@ -164,6 +164,8 @@ const VideoLayout: React.FC<Props> = ({
           accessModel={accessModel}
           isLoggedIn={isLoggedIn}
           hasSubscription={hasSubscription}
+          hasLoadMore={hasLoadMore}
+          loadMore={loadMore}
         />
       </div>
     );

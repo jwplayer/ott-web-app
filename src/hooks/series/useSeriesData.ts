@@ -2,23 +2,17 @@ import { useQuery, UseQueryResult } from 'react-query';
 
 import usePlaylist from '#src/hooks/usePlaylist';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { Series } from '#types/series';
+import type { Series, SeriesData } from '#types/series';
 import { getMediaById, getSeries } from '#src/services/api.service';
 import type { ApiError } from '#src/utils/api';
 
 const DEFAULT_DATA = { title: '', playlist: [] };
 
-type Data = {
-  playlist: Playlist;
-  series: Series | undefined;
-  media: PlaylistItem | undefined;
-};
-
 export const useSeriesData = (
   legacySeriesPlaylistId: string | undefined,
   seriesId: string | undefined,
 ): {
-  data: Data;
+  data: SeriesData;
   isPlaylistError: boolean;
   isLoading: boolean;
 } => {
@@ -52,13 +46,18 @@ export const useSeriesData = (
   const usePlaylistFallback = isSeriesError && seriesError?.code === 404;
 
   // We enable it only after new series api unsuccessful load (404 error showing that such the series with the following id doesn't exist)
-  const { data: playlistData, isLoading: isPlaylistLoading, error: playlistError } = usePlaylist(legacySeriesPlaylistId, {}, usePlaylistFallback, false);
+  const { data: playlistData, isLoading: isPlaylistLoading, isError: isPlaylistError } = usePlaylist(legacySeriesPlaylistId, {}, usePlaylistFallback, false);
 
   const seriesPlaylist = seriesData?.playlist || playlistData || DEFAULT_DATA;
 
   return {
-    data: { playlist: seriesPlaylist, series: seriesData?.series, media: seriesData?.media },
-    isPlaylistError: Boolean(seriesError && playlistError),
+    data: {
+      playlist: seriesPlaylist,
+      series: seriesData?.series,
+      media: seriesData?.media,
+      contentType: seriesData?.media?.contentType || playlistData?.contentType,
+    },
+    isPlaylistError,
     isLoading: isSeriesLoading || isPlaylistLoading,
   };
 };

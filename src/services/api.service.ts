@@ -14,7 +14,7 @@ enum ImageProperty {
   CHANNEL_LOGO = 'channelLogoImage',
 }
 
-const PAGE_LIMIT = 2;
+const PAGE_LIMIT = 5;
 
 /**
  * Transform incoming media items

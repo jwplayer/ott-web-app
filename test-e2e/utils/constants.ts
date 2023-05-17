@@ -43,7 +43,7 @@ export default {
   fantasyVehicleId: 'lsFXY5xn',
   minecraftAnimationWorkshopTitle: 'Minecraft Animation Workshop',
   minecraftAnimationWorkshopDescription:
-    'Dillon Gu explains a little bit about what you can expect to see in this workshop. Check out his showcase video for this workshop here on his YouTube channel!',
+    'Ever wanted to learn how to make Minecraft Animation? Dillon walks you through the step by step process he used to create this Trident Animation. This includes everything from importing your Minecraft world to rendering and posting on YouTube. Enjoy!',
   startWatchingButton: 'Start watching',
   continueWatchingButton: 'Continue watching',
   signUpToWatch: 'Sign up to start watching!',
