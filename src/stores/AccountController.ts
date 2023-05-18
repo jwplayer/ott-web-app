@@ -461,8 +461,7 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
 export async function exportAccountData() {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ accountService }) => {
-      const reponse = await accountService.exportAccountData(undefined, true, jwt);
-      return reponse;
+      return await accountService.exportAccountData(undefined, true, jwt);
     });
   });
 }

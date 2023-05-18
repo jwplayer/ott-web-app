@@ -5,11 +5,10 @@ import shallow from 'zustand/shallow';
 import DOMPurify from 'dompurify';
 import { useMutation } from 'react-query';
 
-import Alert from '../Alert/Alert';
-
 import styles from './Account.module.scss';
 
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
+import Alert from '#components/Alert/Alert';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
 import Button from '#components/Button/Button';

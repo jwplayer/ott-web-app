@@ -316,6 +316,7 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
 };
 
 export const exportAccountData: ExportAccountData = async () => {
+  // password is sent as undefined because it is now optional on BE
   const response = await InPlayer.Account.exportData({ password: undefined, brandingId: 0 });
   const { code, message } = response.data;
   if (code !== 200) {
