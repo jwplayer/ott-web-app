@@ -1,6 +1,17 @@
 import { subscribeToNotifications } from './NotificationsController';
 
-import type { CardPaymentData, CreateOrderArgs, Offer, Order, PaymentMethod, PaymentWithPayPalResponse, UpdateOrderPayload } from '#types/checkout';
+import type {
+  AdyenPaymentSession,
+  CardPaymentData,
+  CreateOrderArgs,
+  FinalizeAdyenPayment,
+  InitialAdyenPayment,
+  Offer,
+  Order,
+  PaymentMethod,
+  PaymentWithPayPalResponse,
+  UpdateOrderPayload,
+} from '#types/checkout';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import useAccount from '#src/hooks/useAccount';
 import useService from '#src/hooks/useService';
@@ -45,6 +56,7 @@ export const updateOrder = async (order: Order, paymentMethodId?: number, coupon
       };
 
       const response = await checkoutService.updateOrder(updateOrderPayload, sandbox, jwt);
+
       if (response.errors.length > 0) {
         // clear the order when the order doesn't exist on the server
         if (response.errors[0].includes(`Order with ${order.id} not found`)) {
@@ -53,6 +65,7 @@ export const updateOrder = async (order: Order, paymentMethodId?: number, coupon
 
         throw new Error(response.errors[0]);
       }
+
       if (response.responseData?.order) {
         useCheckoutStore.getState().setOrder(response.responseData?.order);
       }
@@ -119,7 +132,7 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData)
   });
 };
 
-export const iFrameCardPayment = async (paymentMethod: AdyenPaymentMethod): Promise<unknown> => {
+export const createAdyenPaymentSession = async (returnUrl: string): Promise<AdyenPaymentSession> => {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
@@ -127,18 +140,75 @@ export const iFrameCardPayment = async (paymentMethod: AdyenPaymentMethod): Prom
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
+      if (!('createAdyenPaymentSession' in checkoutService)) throw new Error('createAdyenPaymentSession is not available in checkout service');
 
-      const response = await checkoutService.iFrameCardPayment(
+      const response = await checkoutService.createAdyenPaymentSession(
         {
           orderId: order.id,
-          card: paymentMethod,
+          returnUrl: returnUrl,
         },
         sandbox,
         jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
-      if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
+
+      return response.responseData;
+    });
+  });
+};
+
+export const initialAdyenPayment = async (
+  paymentMethod: AdyenPaymentMethod,
+  returnUrl: string,
+  // billingAddress?: InitialAdyenPaymentPayload['billingAddress'],
+): Promise<InitialAdyenPayment> => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      const { order } = useCheckoutStore.getState();
+
+      if (!order) throw new Error('No order created');
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
+      if (!('initialAdyenPayment' in checkoutService)) throw new Error('initialAdyenPayment is not available in checkout service');
+
+      const response = await checkoutService.initialAdyenPayment(
+        {
+          orderId: order.id,
+          returnUrl: returnUrl,
+          paymentMethod,
+          attemptAuthentication: sandbox ? 'always' : undefined,
+        },
+        sandbox,
+        jwt,
+      );
+
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
+
+      return response.responseData;
+    });
+  });
+};
+
+export const finalizeAdyenPayment = async (details: unknown, orderId?: number, paymentData?: string): Promise<FinalizeAdyenPayment> => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      if (!orderId) throw new Error('No order created');
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
+      if (!('initialAdyenPayment' in checkoutService)) throw new Error('finalizeAdyenPayment is not available in checkout service');
+
+      const response = await checkoutService.finalizeAdyenPayment(
+        {
+          orderId,
+          details,
+          paymentData,
+        },
+        sandbox,
+        jwt,
+      );
+
+      if (response.errors.length > 0) throw new Error(response.errors[0]);
 
       return response.responseData;
     });
