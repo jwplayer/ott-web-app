@@ -38,15 +38,17 @@ export default function AdyenContainer({ setUpdatingOrder, type, setPaymentError
     const createSession = async () => {
       setUpdatingOrder(true);
 
-      const session = await createAdyenPaymentSession(window.origin);
+      try {
+        const session = await createAdyenPaymentSession(window.origin);
 
-      setUpdatingOrder(false);
-
-      if (!session) {
-        setPaymentError('Failed to create Adyen payment session');
+        setSession(session);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setPaymentError(error.message);
+        }
       }
 
-      setSession(session);
+      setUpdatingOrder(false);
     };
 
     createSession();
