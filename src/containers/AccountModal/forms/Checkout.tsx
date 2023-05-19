@@ -1,26 +1,25 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
+
+import AdyenContainer from '../../AdyenContainer/AdyenContainer';
 
 import { isSVODOffer } from '#src/utils/subscription';
 import CheckoutForm from '#components/CheckoutForm/CheckoutForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import useForm from '#src/hooks/useForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-import Adyen from '#components/Adyen/Adyen';
 import PayPal from '#components/PayPal/PayPal';
 import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { iFrameCardPayment, createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
+import { createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
-import useClientIntegration from '#src/hooks/useClientIntegration';
 
 const Checkout = () => {
   const location = useLocation();
-  const { sandbox } = useClientIntegration();
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -38,6 +37,7 @@ const Checkout = () => {
     }),
     shallow,
   );
+
   const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
 
   const paymentSuccessUrl = useMemo(() => {
@@ -92,7 +92,7 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    async function create() {
+    async function createNewOrder() {
       if (offer) {
         setUpdatingOrder(true);
         setCouponCodeApplied(false);
@@ -101,6 +101,7 @@ const Checkout = () => {
         setPaymentMethodId(methods[0]?.id);
 
         await createOrder(offer, methods[0]?.id);
+
         setUpdatingOrder(false);
       }
     }
@@ -110,7 +111,7 @@ const Checkout = () => {
     }
 
     // noinspection JSIgnoredPromiseFromCall
-    create();
+    createNewOrder();
   }, [location, navigate, offer]);
 
   // clear the order after closing the checkout modal
@@ -178,27 +179,6 @@ const Checkout = () => {
     setUpdatingOrder(false);
   };
 
-  const handleAdyenSubmit = useCallback(
-    async (data: AdyenEventData) => {
-      if (!data.isValid) return;
-
-      try {
-        setUpdatingOrder(true);
-        setPaymentError(undefined);
-        await iFrameCardPayment(data.data.paymentMethod);
-        await reloadActiveSubscription({ delay: 2000 });
-        navigate(paymentSuccessUrl, { replace: true });
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setPaymentError(error.message);
-        }
-      }
-
-      setUpdatingOrder(false);
-    },
-    [navigate, paymentSuccessUrl],
-  );
-
   const renderPaymentMethod = () => {
     const paymentMethod = paymentMethods?.find((method) => method.id === paymentMethodId);
 
@@ -212,7 +192,16 @@ const Checkout = () => {
       if (paymentMethod?.provider === 'stripe') {
         return <PaymentForm couponCode={couponCodeForm.values.couponCode} setUpdatingOrder={setUpdatingOrder} />;
       }
-      return <Adyen onSubmit={handleAdyenSubmit} error={paymentError} environment={sandbox ? 'test' : 'live'} />;
+
+      return (
+        <AdyenContainer
+          paymentSuccessUrl={paymentSuccessUrl}
+          setUpdatingOrder={setUpdatingOrder}
+          setPaymentError={setPaymentError}
+          orderId={order.id}
+          type="card"
+        />
+      );
     } else if (paymentMethod?.methodName === 'paypal') {
       return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
     }
