@@ -1,11 +1,11 @@
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
-import type { AuthData, Consent, Customer, CustomerConsent } from '#types/account';
+import type { Consent, CustomerConsent } from '#types/account';
 import { createStore } from '#src/stores/utils';
+import type { AccountDetails } from '#types/app';
 
 type AccountStore = {
   loading: boolean;
-  auth: AuthData | null;
-  user: Customer | null;
+  user: AccountDetails | null;
   subscription: Subscription | null;
   transactions: Transaction[] | null;
   activePayment: PaymentDetail | null;

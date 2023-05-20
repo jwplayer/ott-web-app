@@ -1,5 +1,7 @@
 import { overrideIPCookieKey } from '#test/constants';
 
+export const isString = (input: unknown) : input is string => typeof input === 'string';
+
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | null;
   return (...args: unknown[]) => {

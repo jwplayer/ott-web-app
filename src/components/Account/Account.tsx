@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { getI18n, useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 import DOMPurify from 'dompurify';
@@ -34,6 +34,62 @@ interface FormErrors {
   form?: string;
 }
 
+function translateErrors(errors?: string[]): FormErrors {
+  const i18n = getI18n();
+  const formErrors: FormErrors = {};
+  // Some errors are combined in a single CSV string instead of one string per error
+  errors
+    ?.flatMap((e) => e.split(','))
+    .forEach((error) => {
+      switch (error.trim()) {
+        case 'Invalid param email':
+          formErrors.email = i18n.t('account.errors.invalid_param_email');
+          break;
+        case 'Customer email already exists':
+          formErrors.email = i18n.t('account.errors.email_exists');
+          break;
+        case 'Please enter a valid e-mail address.':
+          formErrors.email = i18n.t('account.errors.please_enter_valid_email');
+          break;
+        case 'Invalid confirmationPassword': {
+          formErrors.confirmationPassword = i18n.t('account.errors.invalid_password');
+          break;
+        }
+        case 'firstName can have max 50 characters.': {
+          formErrors.firstName = i18n.t('account.errors.first_name_too_long');
+          break;
+        }
+        case 'lastName can have max 50 characters.': {
+          formErrors.lastName = i18n.t('account.errors.last_name_too_long');
+          break;
+        }
+        case 'Email update not supported': {
+          formErrors.form = i18n.t('account.errors.email_update_not_supported');
+          break;
+        }
+        default: {
+          formErrors.form = i18n.t('account.errors.unknown_error');
+          logDev('Unknown error', error);
+          break;
+        }
+      }
+    });
+
+  return formErrors;
+}
+
+const formatConsentLabel = (label: string): string | JSX.Element => {
+  const sanitizedLabel = DOMPurify.sanitize(label);
+  const hasHrefOpenTag = /<a(.|\n)*?>/.test(sanitizedLabel);
+  const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(sanitizedLabel);
+
+  if (hasHrefOpenTag && hasHrefCloseTag) {
+    return <span dangerouslySetInnerHTML={{ __html: label }} />;
+  }
+
+  return label;
+};
+
 const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
@@ -60,61 +116,6 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }),
     [customer, consentValues],
   );
-
-  const formatConsentLabel = (label: string): string | JSX.Element => {
-    const sanitizedLabel = DOMPurify.sanitize(label);
-    const hasHrefOpenTag = /<a(.|\n)*?>/.test(sanitizedLabel);
-    const hasHrefCloseTag = /<\/a(.|\n)*?>/.test(sanitizedLabel);
-
-    if (hasHrefOpenTag && hasHrefCloseTag) {
-      return <span dangerouslySetInnerHTML={{ __html: label }} />;
-    }
-
-    return label;
-  };
-
-  function translateErrors(errors?: string[]): FormErrors {
-    const formErrors: FormErrors = {};
-    // Some errors are combined in a single CSV string instead of one string per error
-    errors
-      ?.flatMap((e) => e.split(','))
-      .forEach((error) => {
-        switch (error.trim()) {
-          case 'Invalid param email':
-            formErrors.email = t('account.errors.invalid_param_email');
-            break;
-          case 'Customer email already exists':
-            formErrors.email = t('account.errors.email_exists');
-            break;
-          case 'Please enter a valid e-mail address.':
-            formErrors.email = t('account.errors.please_enter_valid_email');
-            break;
-          case 'Invalid confirmationPassword': {
-            formErrors.confirmationPassword = t('account.errors.invalid_password');
-            break;
-          }
-          case 'firstName can have max 50 characters.': {
-            formErrors.firstName = t('account.errors.first_name_too_long');
-            break;
-          }
-          case 'lastName can have max 50 characters.': {
-            formErrors.lastName = t('account.errors.last_name_too_long');
-            break;
-          }
-          case 'Email update not supported': {
-            formErrors.form = t('account.errors.email_update_not_supported');
-            break;
-          }
-          default: {
-            formErrors.form = t('account.errors.unknown_error');
-            logDev('Unknown error', error);
-            break;
-          }
-        }
-      });
-
-    return formErrors;
-  }
 
   function formSection(props: FormSectionProps<typeof initialValues, FormErrors>) {
     return {
@@ -148,11 +149,12 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
       {[
         formSection({
           label: t('account.email'),
-          onSubmit: (values) =>
-            updateUser({
+          onSubmit: async (values) => {
+            await updateUser({
               email: values.email || '',
               confirmationPassword: values.confirmationPassword,
-            }),
+            });
+          },
           canSave: (values) => !!(values.email && values.confirmationPassword),
           editButton: t('account.edit_account'),
           readOnly: !canUpdateEmail,
@@ -203,13 +205,15 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
         formSection({
           label: t('account.about_you'),
           editButton: t('account.edit_information'),
-          onSubmit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
+          onSubmit: async (values) => {
+            await updateUser({ firstName: values.profile?.firstName || '', lastName: values.profile?.lastName || '' })
+          },
           content: (section) => (
             <>
               <TextField
                 name="firstName"
                 label={t('account.firstname')}
-                value={section.values.firstName || ''}
+                value={section.values.profile?.firstName || ''}
                 onChange={section.onChange}
                 error={!!section.errors?.firstName}
                 helperText={section.errors?.firstName}
@@ -219,7 +223,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               <TextField
                 name="lastName"
                 label={t('account.lastname')}
-                value={section.values.lastName || ''}
+                value={section.values.profile?.lastName || ''}
                 onChange={section.onChange}
                 error={!!section.errors?.lastName}
                 helperText={section.errors?.lastName}
@@ -232,7 +236,9 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
         formSection({
           label: t('account.terms_and_tracking'),
           saveButton: t('account.update_consents'),
-          onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
+          onSubmit: async (values) => {
+            await updateConsents(formatConsentsFromValues(publisherConsents, values));
+          },
           content: (section) => (
             <>
               {publisherConsents?.map((consent, index) => (

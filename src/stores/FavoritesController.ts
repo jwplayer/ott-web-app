@@ -1,21 +1,19 @@
 import i18next from 'i18next';
 
-import { useAccountStore } from '#src/stores/AccountStore';
-import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
-import * as persist from '#src/utils/persist';
+import { getMediaItems } from '#src/stores/AccountController';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { PlaylistItem } from '#types/playlist';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
-
-const PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}` : ''}`;
+import { getIntegration } from '#src/integration';
+import * as favoritesService from '#src/services/favorites.service';
 
 export const restoreFavorites = async () => {
-  const { user } = useAccountStore.getState();
   const favoritesList = useConfigStore.getState().config.features?.favoritesList;
+  const integration = getIntegration();
 
-  const savedItems = user ? user.externalData?.favorites : persist.getItem<Favorite[]>(PERSIST_KEY_FAVORITES);
+  const savedItems = integration ? await integration.getFavorites() : await favoritesService.getFavorites();
 
   if (savedItems?.length && favoritesList) {
     const playlistItems = await getMediaItems(
@@ -33,37 +31,30 @@ export const serializeFavorites = (favorites: Favorite[]): SerializedFavorite[] 
   return favorites.map(({ mediaid }) => ({ mediaid }));
 };
 
-export const persistFavorites = () => {
-  const { favorites } = useFavoritesStore.getState();
-  const { user } = useAccountStore.getState();
-
-  if (user) {
-    return updatePersonalShelves();
-  }
-
-  persist.setItem(PERSIST_KEY_FAVORITES, serializeFavorites(favorites));
-};
-
 export const initializeFavorites = async () => {
   await restoreFavorites();
 };
 
 export const saveItem = async (item: PlaylistItem) => {
-  const { favorites } = useFavoritesStore.getState();
+  const integration = getIntegration();
+  const { favorites, hasItem } = useFavoritesStore.getState();
 
-  if (!favorites.some(({ mediaid }) => mediaid === item.mediaid)) {
+  if (!hasItem(item)) {
+    integration ? await integration.saveFavorite(item) : await favoritesService.saveFavorite(item);
+
     useFavoritesStore.setState({ favorites: [createFavorite(item)].concat(favorites) });
   }
-
-  await persistFavorites();
 };
 
 export const removeItem = async (item: PlaylistItem) => {
-  const { favorites } = useFavoritesStore.getState();
+  const integration = getIntegration();
+  const { favorites, hasItem } = useFavoritesStore.getState();
 
-  useFavoritesStore.setState({ favorites: favorites.filter(({ mediaid }) => mediaid !== item.mediaid) });
+  if (hasItem(item)) {
+    integration ? await integration.removeFavorite(item) : await favoritesService.removeFavorite(item);
 
-  await persistFavorites();
+    useFavoritesStore.setState({ favorites: favorites.filter(({ mediaid }) => mediaid !== item.mediaid) });
+  }
 };
 
 export const toggleFavorite = async (item: PlaylistItem | undefined) => {
@@ -91,9 +82,10 @@ export const toggleFavorite = async (item: PlaylistItem | undefined) => {
 };
 
 export const clear = async () => {
-  useFavoritesStore.setState({ favorites: [] });
+  const integration = getIntegration();
 
-  await persistFavorites();
+  integration ? await integration.clearFavorites() : await favoritesService.clearFavorites();
+  useFavoritesStore.setState({ favorites: [] });
 };
 
 const createFavorite = (item: PlaylistItem): Favorite =>

@@ -1,8 +1,4 @@
-import jwtDecode from 'jwt-decode';
 import i18next from 'i18next';
-
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type {
   AuthData,
   Capture,
@@ -13,167 +9,85 @@ import type {
   GetCaptureStatusResponse,
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
-  JwtDetails,
 } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import * as persist from '#src/utils/persist';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
-import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
+import { restoreWatchHistory } from '#src/stores/WatchHistoryController';
+import { restoreFavorites } from '#src/stores/FavoritesController';
 import { getMediaByWatchlist } from '#src/services/api.service';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
-
-const PERSIST_KEY_ACCOUNT = 'auth';
-
-let subscription: undefined | (() => void);
-let refreshTimeout: number;
-
-export const authNeedsRefresh = (auth: AuthData): boolean => {
-  const decodedToken: JwtDetails = jwtDecode(auth.jwt);
-  const expiresIn = decodedToken.exp * 1000 - Date.now();
-
-  // returns true if token expires in 5 minutes or less
-  return expiresIn < 5 * 60 * 1000;
-};
-
-export const setJwtRefreshTimeout = () => {
-  const auth = useAccountStore.getState().auth;
-
-  // if jwp integration, skip code below
-  if (!auth?.refreshToken) return;
-
-  window.clearTimeout(refreshTimeout);
-
-  if (auth && !document.hidden) {
-    refreshTimeout = window.setTimeout(() => refreshJwtToken(auth), 60 * 5 * 1000);
-  }
-};
-
-export const handleVisibilityChange = () => {
-  if (document.hidden) return window.clearTimeout(refreshTimeout);
-
-  // document is visible again, test if we need to renew the token
-  const auth = useAccountStore.getState().auth;
-
-  // user is not logged in / if jwp integration, skip code below
-  if (!auth || !auth?.refreshToken) return;
-
-  // refresh the jwt token if needed. This starts the timeout as well after receiving the refreshed tokens.
-  if (authNeedsRefresh(auth)) return refreshJwtToken(auth);
-
-  // make sure to start the timeout again since we've cleared it when the document was hidden.
-  setJwtRefreshTimeout();
-};
+import { createIntegration, withIntegration, withOptionalIntegration } from '#src/integration';
+import type { AccountDetails } from '#types/app';
+import { FormErrors } from '#src/errors/FormErrors';
 
 export const initializeAccount = async () => {
-  await useService(async ({ accountService, config }) => {
-    if (!accountService) {
-      useAccountStore.setState({ loading: false });
-      return;
-    }
+  const { config } = useConfigStore.getState();
+
+  // set the loading state
+  useAccountStore.setState({ loading: true });
+
+  const integration = await createIntegration(config);
+
+  if (integration) {
+    const features = await integration.getFeatures();
+    const account = await integration.initialize();
+
+    console.log(account)
+
     useAccountStore.setState({
-      loading: true,
-      canUpdateEmail: accountService.canUpdateEmail,
-      canRenewSubscription: accountService.canRenewSubscription,
-      canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
+      user: account,
+      canUpdateEmail: features.canUpdateEmail,
+      canRenewSubscription: features.canRenewSubscription,
+      canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
     });
-    accountService.setEnvironment(config);
+  }
 
-    const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
+  await restoreFavorites();
+  await restoreWatchHistory();
 
-    // clear previous subscribe (for dev environment only)
-    if (subscription) {
-      subscription();
-    }
-
-    document.removeEventListener('visibilitychange', handleVisibilityChange);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    subscription = useAccountStore.subscribe(
-      (state) => state.auth,
-      (authData) => {
-        setJwtRefreshTimeout();
-        persist.setItem(PERSIST_KEY_ACCOUNT, authData);
-      },
-    );
-
-    // restore session from localStorage
-    try {
-      if (storedSession) {
-        const refreshedAuthData = await accountService.getFreshJwtToken({ config, auth: storedSession });
-        if (refreshedAuthData) {
-          await getAccount(refreshedAuthData);
-          await restoreWatchHistory();
-          await restoreFavorites();
-        }
-      }
-    } catch (error: unknown) {
-      await logout();
-    }
-
-    useAccountStore.setState({ loading: false });
-  });
+  useAccountStore.setState({ loading: false });
 };
 
-export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> {
-  return await useService(async ({ accountService, sandbox = true }) => {
+export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<AccountDetails> {
+  return await withIntegration(async (integration) => {
     useAccountStore.setState({ loading: true });
 
-    const { auth, user, canUpdateEmail } = useAccountStore.getState();
+    const { user } = useAccountStore.getState();
 
-    if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
-      throw new Error('Email update not supported');
-    }
-
-    if (!auth || !user) {
+    if (!user) {
       throw new Error('no auth');
     }
 
-    const errors = validateInputLength(values as FirstLastNameInput);
+    // only update the email
+    // TODO: split into separate controller method?
+    if ('email' in values) {
+      const updatedUser = await integration.updateUserEmail(values);
+      useAccountStore.setState({ user: updatedUser, loading: false });
+
+      return updatedUser;
+    }
+
+    // TODO: move to integration?
+    const errors = validateInputLength(values);
     if (errors.length) {
-      return {
-        errors,
-        responseData: {} as Customer,
-      };
+      throw new FormErrors(errors);
     }
 
-    let payload = values;
-    // this is needed as a fallback when the name is empty (cannot be empty on JWP integration)
-    if (!accountService.canSupportEmptyFullName) {
-      payload = { ...values, email: user.email };
-    }
+    // TODO: do this in the JWP integration
+    // let payload = values;
+    //   // this is needed as a fallback when the name is empty (cannot be empty on JWP integration)
+    //   if (!accountService.canSupportEmptyFullName) {
+    //     payload = { ...values, email: user.email };
+    //   }
 
-    const response = await accountService.updateCustomer({ ...payload, id: user.id.toString() }, sandbox, auth.jwt);
+    const updatedUser = await integration.updateUserProfile(values);
+    useAccountStore.setState({ user: updatedUser, loading: false });
 
-    if (!response) {
-      throw new Error('Unknown error');
-    }
-
-    if (response.errors?.length === 0) {
-      useAccountStore.setState({ user: response.responseData });
-    }
-
-    return response;
+    return updatedUser;
   });
 }
-
-export const refreshJwtToken = async (auth: AuthData) => {
-  await useService(async ({ accountService }) => {
-    try {
-      const { config } = useConfigStore.getState();
-      const authData = await accountService.getFreshJwtToken({ config, auth });
-
-      if (authData) {
-        useAccountStore.setState((s) => ({ auth: { ...s.auth, ...authData } }));
-      }
-    } catch (error: unknown) {
-      // failed to refresh, logout user
-      await logout();
-    }
-  });
-};
 
 export const getAccount = async (auth: AuthData) => {
   await useService(async ({ accountService, config, accessModel }) => {
@@ -187,32 +101,26 @@ export const getAccount = async (auth: AuthData) => {
 };
 
 export const login = async (email: string, password: string) => {
-  await useService(async ({ accountService, config, accessModel }) => {
-    useAccountStore.setState({ loading: true });
+  useAccountStore.setState({ loading: true });
 
-    const response = await accountService.login({ config, email, password });
-    if (response) {
-      await afterLogin(response.auth, response.user, response.customerConsents, accessModel);
+  await withIntegration(async (integration) => {
+    const user = await integration.login(email, password);
 
-      await restoreFavorites();
-      await restoreWatchHistory();
-    }
-
-    useAccountStore.setState({ loading: false });
+    useAccountStore.setState({ user });
   });
+
+  await restoreFavorites();
+  await restoreWatchHistory();
+
+  useAccountStore.setState({ loading: false });
 };
 
 export async function logout() {
-  if (!useAccountStore.getState().auth) return;
-
-  await useService(async ({ accountService }) => {
-    persist.removeItem(PERSIST_KEY_ACCOUNT);
-
+  await withOptionalIntegration(async (integration) => {
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
 
     useAccountStore.setState({
-      auth: null,
       user: null,
       subscription: null,
       transactions: null,
@@ -224,45 +132,17 @@ export async function logout() {
     await restoreFavorites();
     await restoreWatchHistory();
 
-    // it's needed for the InPlayer SDK
-    await accountService?.logout();
+    await integration.logout();
   });
 }
 
 export const register = async (email: string, password: string) => {
-  await useService(async ({ accountService, accessModel, config }) => {
+  await withIntegration(async (integration) => {
     useAccountStore.setState({ loading: true });
-    const response = await accountService.register({ config, email, password });
-    if (response) {
-      const { auth, user, customerConsents } = response;
-      await afterLogin(auth, user, customerConsents, accessModel, false);
-    }
 
-    await updatePersonalShelves();
-  });
-};
+    const user = await integration.register(email, password);
 
-export const updatePersonalShelves = async () => {
-  await useAccount(async ({ customer, auth: { jwt } }) => {
-    await useService(async ({ accountService, sandbox = true }) => {
-      const { watchHistory } = useWatchHistoryStore.getState();
-      const { favorites } = useFavoritesStore.getState();
-      if (!watchHistory && !favorites) return;
-
-      const personalShelfData = {
-        history: serializeWatchHistory(watchHistory),
-        favorites: serializeFavorites(favorites),
-      };
-
-      return await accountService?.updatePersonalShelves(
-        {
-          id: customer.id,
-          externalData: personalShelfData,
-        },
-        sandbox,
-        jwt,
-      );
-    });
+    useAccountStore.setState({ loading: false, user });
   });
 };
 
@@ -366,7 +246,14 @@ export const resetPassword = async (email: string, resetUrl: string) => {
 
 export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
   return await useService(async ({ accountService, sandbox = true }) => {
-    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
+    const response = await accountService.changePasswordWithOldPassword(
+      {
+        oldPassword,
+        newPassword,
+        newPasswordConfirmation,
+      },
+      sandbox,
+    );
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
     return response?.responseData;

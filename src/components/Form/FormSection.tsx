@@ -7,6 +7,7 @@ import Button from '#components/Button/Button';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import useOpaqueId from '#src/hooks/useOpaqueId';
 import type { GenericFormValues } from '#types/form';
+import { FormErrors } from '#src/errors/FormErrors';
 
 export interface FormSectionContentArgs<T extends GenericFormValues, TErrors> {
   values: T;
@@ -24,7 +25,7 @@ export interface FormSectionProps<TData extends GenericFormValues, TErrors> {
   saveButton?: string;
   cancelButton?: string;
   canSave?: (values: TData) => boolean;
-  onSubmit?: (values: TData) => Promise<{ errors?: string[] }>;
+  onSubmit?: (values: TData) => Promise<void>;
   content: (args: FormSectionContentArgs<TData, TErrors>) => ReactNode;
   children?: never;
   readOnly?: boolean;
@@ -91,25 +92,28 @@ export function FormSection<TData extends GenericFormValues>({
   const handleSubmit = useCallback(
     async function handleSubmit(event?: React.FormEvent) {
       event && event.preventDefault();
+      let errors: string[] = [];
 
       if (onSubmit) {
-        let response: { errors?: string[] };
-
         try {
           setFormState((s) => {
             return { ...s, isBusy: true };
           });
-          response = await onSubmit(values);
+          await onSubmit(values);
         } catch (error: unknown) {
-          response = { errors: Array.of(error instanceof Error ? error.message : (error as string)) };
+          if (error instanceof FormErrors) {
+            errors = error.errors;
+          } else if (error instanceof Error) {
+            errors = [error.message];
+          }
         }
 
         // Don't leave edit mode if there are errors
-        if (response?.errors?.length) {
+        if (errors.length) {
           setFormState((s) => {
             return {
               ...s,
-              errors: response?.errors,
+              errors,
               isBusy: false,
             };
           });

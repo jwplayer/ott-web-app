@@ -1,19 +1,17 @@
-import { useAccountStore } from '#src/stores/AccountStore';
-import * as persist from '#src/utils/persist';
-import { getMediaItems, updatePersonalShelves } from '#src/stores/AccountController';
+import { getMediaItems } from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
-
-const PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
+import { getIntegration } from '#src/integration';
+import * as watchHistoryService from '#src/services/watchHistory.service';
 
 export const restoreWatchHistory = async () => {
-  const { user } = useAccountStore.getState();
   const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;
+  const integration = getIntegration();
 
-  const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(PERSIST_KEY_WATCH_HISTORY);
+  const savedItems = integration ? await integration.getWatchHistory() : await watchHistoryService.getWatchHistory();
 
   if (savedItems?.length && continueWatchingList) {
     const watchHistoryItems = await getMediaItems(
@@ -44,17 +42,6 @@ export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]): Seriali
   }));
 };
 
-export const persistWatchHistory = () => {
-  const { watchHistory } = useWatchHistoryStore.getState();
-  const { user } = useAccountStore.getState();
-
-  if (user) {
-    return updatePersonalShelves();
-  }
-
-  persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
-};
-
 export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number): WatchHistoryItem => {
   return {
     mediaid: item.mediaid,
@@ -75,6 +62,7 @@ export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number
  *    2. If there are many elements in continue watching state we remove the oldest one
  */
 export const saveItem = async (item: PlaylistItem, videoProgress: number | null) => {
+  const integration = getIntegration();
   const { watchHistory } = useWatchHistoryStore.getState();
 
   if (!videoProgress) return;
@@ -83,9 +71,18 @@ export const saveItem = async (item: PlaylistItem, videoProgress: number | null)
 
   const updatedHistory = watchHistory.filter(({ mediaid }) => mediaid !== watchHistoryItem.mediaid);
   updatedHistory.unshift(watchHistoryItem);
-  updatedHistory.splice(MAX_WATCHLIST_ITEMS_COUNT);
+
+  integration ? await integration.saveWatchHistory(item, videoProgress) : await watchHistoryService.saveWatchHistory(item, videoProgress);
+
+  // limit watch history items
+  const deletedItems = updatedHistory.splice(MAX_WATCHLIST_ITEMS_COUNT);
+
+  // persist deleted items
+  deletedItems.forEach((item) => {
+    if (item.playlistItem) {
+      integration ? integration.removeWatchHistory(item.playlistItem) : watchHistoryService.removeWatchHistory(item.playlistItem);
+    }
+  });
 
   useWatchHistoryStore.setState({ watchHistory: updatedHistory });
-
-  await persistWatchHistory();
 };
