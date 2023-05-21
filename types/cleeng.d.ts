@@ -1,10 +1,10 @@
 import type { ExternalData } from '#types/account';
 
-type CleengResponse<R> = { responseData: R, errors: [] };
+type CleengResponse<R> = { responseData: R, errors: string[] };
 
 type CleengDirectResponse<R> = R;
 
-type CleengParams = { publisherId?: string; sandbox: boolean; jwt?: string; };
+type CleengParams = { publisherId?: string; };
 type WithCleengParams<R> = R & CleengParams;
 
 export type AuthData = {

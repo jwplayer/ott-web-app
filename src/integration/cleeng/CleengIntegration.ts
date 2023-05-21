@@ -16,7 +16,6 @@ import { logDev } from '#src/utils/common';
 const PERSIST_KEY_ACCOUNT = 'auth';
 
 export class CleengIntegration extends Integration {
-
   sandbox: boolean = false;
   publisherId: string = '';
 
@@ -44,13 +43,16 @@ export class CleengIntegration extends Integration {
     this.sandbox = !!this.config.integrations.cleeng?.useSandbox;
     this.publisherId = this.config.integrations.cleeng?.id || '';
 
-    this.locales = await client.getLocales({ sandbox: this.sandbox });
+    client.setSandbox(this.sandbox);
+
+    this.locales = await client.getLocales();
 
     const storedAuthData: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
 
     try {
       if (storedAuthData) {
-        this.authData = storedAuthData;
+        // save auth data
+        this.setAuthData(storedAuthData);
 
         // try getting a new access token
         await this.refreshAccessToken();
@@ -66,15 +68,25 @@ export class CleengIntegration extends Integration {
     return this.customer ? formatAccountDetails(this.customer) : null;
   }
 
+  setAuthData(authData: AuthData | null) {
+    if (authData) {
+      persist.setItem(PERSIST_KEY_ACCOUNT, this.authData);
+    } else {
+      persist.removeItem(PERSIST_KEY_ACCOUNT);
+    }
+
+    this.authData = authData;
+    client.setAccessToken(authData?.jwt);
+  }
+
   async login(email: string, password: string, _stayLoggedIn?: boolean): Promise<AccountDetails> {
-    this.authData = await client.login({
+    const authData = await client.login({
       publisherId: this.publisherId,
-      sandbox: this.sandbox,
       email,
       password,
     });
 
-    persist.setItem(PERSIST_KEY_ACCOUNT, this.authData);
+    this.setAuthData(authData);
 
     return this.getCustomer();
   }
@@ -82,9 +94,8 @@ export class CleengIntegration extends Integration {
   async register(email: string, password: string): Promise<AccountDetails> {
     if (!this.locales) throw new Error('Locale data is missing');
 
-    this.authData = await client.register({
+    const authData = await client.register({
       publisherId: this.publisherId,
-      sandbox: this.sandbox,
       locale: this.locales.locale,
       currency: this.locales.currency,
       country: this.locales.country,
@@ -92,7 +103,7 @@ export class CleengIntegration extends Integration {
       password,
     });
 
-    persist.setItem(PERSIST_KEY_ACCOUNT, this.authData);
+    this.setAuthData(authData);
 
     return this.getCustomer();
   }
@@ -100,11 +111,10 @@ export class CleengIntegration extends Integration {
   async refreshAccessToken() {
     if (!this.authData) throw new Error('User not logged in');
 
-    const { data: { responseData } } = await client.refreshToken({ sandbox: this.sandbox, refreshToken: this.authData.refreshToken })
+    const { refreshToken } = this.authData;
+    const authData = await client.refreshToken({ refreshToken });
 
-    this.authData = responseData;
-
-    persist.setItem(PERSIST_KEY_ACCOUNT, this.authData);
+    this.setAuthData(authData);
   }
 
   async getCustomer() {
@@ -115,8 +125,6 @@ export class CleengIntegration extends Integration {
 
     this.customer = await client.getCustomer({
       publisherId: this.publisherId,
-      sandbox: this.sandbox,
-      jwt: this.authData.jwt,
       customerId,
     });
 
@@ -124,17 +132,15 @@ export class CleengIntegration extends Integration {
   }
 
   async logout() {
-    this.authData = null;
+    this.setAuthData(null);
     this.customer = null;
   }
 
-  async updateUserEmail (formData: EmailConfirmPasswordInput): Promise<AccountDetails> {
+  async updateUserEmail(formData: EmailConfirmPasswordInput): Promise<AccountDetails> {
     if (!this.customer || !this.authData) throw new Error('Not logged in');
 
     const updatedCustomer = await client.updateCustomer({
-      sandbox: this.sandbox,
       publisherId: this.publisherId,
-      jwt: this.authData.jwt,
       customerId: this.customer.id,
       payload: {
         id: this.customer.id, // JWP specific??
@@ -145,13 +151,11 @@ export class CleengIntegration extends Integration {
     return formatAccountDetails(updatedCustomer);
   }
 
-  async updateUserProfile (formData: FirstLastNameInput): Promise<AccountDetails> {
+  async updateUserProfile(formData: FirstLastNameInput): Promise<AccountDetails> {
     if (!this.customer || !this.authData) throw new Error('Not logged in');
 
     const updatedCustomer = await client.updateCustomer({
-      sandbox: this.sandbox,
       publisherId: this.publisherId,
-      jwt: this.authData.jwt,
       customerId: this.customer.id,
       payload: {
         id: this.customer.id, // JWP specific??
@@ -243,5 +247,4 @@ export class CleengIntegration extends Integration {
 
     await watchHistoryService.clearWatchHistory();
   }
-
 }

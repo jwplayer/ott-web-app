@@ -1,37 +1,60 @@
 import axios from 'axios';
+import joi from 'joi';
 
-import type { CleengResponse, AuthData, LoginPayload, RegisterPayload, Customer, WithCleengParams, CleengParams, LocalesData } from '#types/cleeng';
+import type { CleengResponse, AuthData, LoginPayload, RegisterPayload, Customer, WithCleengParams, LocalesData } from '#types/cleeng';
 import type { UpdateCustomerPayload } from '#types/account';
 import { getOverrideIP } from '#src/utils/common';
 
+const responseSchema = joi.object<CleengResponse<unknown>>({
+  responseData: joi.object(),
+  errors: joi.array().items(joi.string()),
+});
+
 // config
+
+let accessToken: string | undefined;
 
 export const getBaseUrl = (sandbox: boolean) => (sandbox ? 'https://mediastore-sandbox.cleeng.com' : 'https://mediastore.cleeng.com');
 
-const api = axios.create({
-  baseURL: getBaseUrl(false),
-});
+const transformResponse = (data: string) => {
+  const parsed = JSON.parse(data);
+  const { value, error } = responseSchema.validate(parsed, { abortEarly: true });
 
-const handleErrors = (errors: string[]) => {
-  if (errors.length > 0) {
-    throw new Error(errors[0]);
-  }
+  if (error || !value) throw new Error('Response validation failed: ' + error?.message);
+  if (value.errors.length) throw new Error(value.errors[0]);
+
+  return value.responseData;
 };
 
-const withAuth = (jwt?: string) => {
-  return {
-    headers: { Authorization: jwt ? `Bearer ${jwt}` : undefined },
-  };
+const api = axios.create({
+  baseURL: getBaseUrl(false),
+  transformResponse,
+});
+
+const apiAuth = axios.create({
+  baseURL: getBaseUrl(false),
+  transformRequest: function () {
+    if (!accessToken) throw new Error('Access token missing from authenticated request');
+    this.headers.set('Authorization', `Bearer ${accessToken}`);
+  },
+  transformResponse,
+});
+
+export const setAccessToken = (token: string | undefined) => {
+  accessToken = token;
+};
+
+export const setSandbox = (sandbox: boolean) => {
+  api.defaults.baseURL = getBaseUrl(sandbox);
+  apiAuth.defaults.baseURL = getBaseUrl(sandbox);
 };
 
 // global
 
-export const getLocales = async ({ sandbox }: CleengParams) => {
-  const {
-    data: { responseData },
-  } = await api.get<CleengResponse<LocalesData>>(getBaseUrl(sandbox) + `/locales${getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
+export const getLocales = async () => {
+  const { data } = await api.get<LocalesData>(`/locales${getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
 
-  return responseData;
+  return data;
 };
 
 // account
@@ -39,7 +62,7 @@ export const getLocales = async ({ sandbox }: CleengParams) => {
 /**
  * Log in to an existing account
  */
-export const login = async ({ sandbox, publisherId, email, password }: WithCleengParams<{ email: string; password: string }>) => {
+export const login = async ({ publisherId, email, password }: WithCleengParams<{ email: string; password: string }>) => {
   const payload: LoginPayload = {
     email,
     password,
@@ -47,20 +70,15 @@ export const login = async ({ sandbox, publisherId, email, password }: WithCleen
     customerIP: getOverrideIP(),
   };
 
-  const {
-    data: { responseData, errors },
-  } = await api.post<CleengResponse<AuthData>>(getBaseUrl(sandbox) + '/auths', payload);
+  const { data } = await api.post<AuthData>('/auths', payload);
 
-  handleErrors(errors);
-
-  return responseData;
+  return data;
 };
 
 /**
  * Register a new account
  */
 export const register = async ({
-  sandbox,
   publisherId,
   email,
   password,
@@ -78,41 +96,31 @@ export const register = async ({
     customerIP: getOverrideIP(),
   };
 
-  const {
-    data: { responseData, errors },
-  } = await api.post<CleengResponse<AuthData>>(getBaseUrl(sandbox) + '/customers', payload);
+  const { data } = await api.post<AuthData>('/customers', payload);
 
-  handleErrors(errors);
-
-  return responseData;
+  return data;
 };
 
-export const refreshToken = async ({ refreshToken, sandbox }: WithCleengParams<{ refreshToken: string }>) => {
-  return api.post<CleengResponse<AuthData>>(getBaseUrl(sandbox) + '/auths/refresh_token', { refreshToken });
+export const refreshToken = async ({ refreshToken }: WithCleengParams<{ refreshToken: string }>) => {
+  const { data } = await api.post<AuthData>('/auths/refresh_token', { refreshToken });
+
+  return data;
 };
 
 /**
  * Get the customer data
  */
-export const getCustomer = async ({ sandbox, customerId, jwt }: WithCleengParams<{ customerId: string }>) => {
-  const {
-    data: { responseData, errors },
-  } = await api.get<CleengResponse<Customer>>(getBaseUrl(sandbox) + `/customers/${customerId}`, withAuth(jwt));
+export const getCustomer = async ({ customerId }: WithCleengParams<{ customerId: string }>) => {
+  const { data } = await apiAuth.get<Customer>(`/customers/${customerId}`);
 
-  handleErrors(errors);
-
-  return responseData;
+  return data;
 };
 
 /**
  * Update customer data
  */
-export const updateCustomer = async ({ sandbox, customerId, jwt, payload }: WithCleengParams<{ customerId: string, payload: UpdateCustomerPayload }>) => {
-  const {
-    data: { responseData, errors },
-  } = await api.patch<CleengResponse<Customer>>(getBaseUrl(sandbox) + `/customers/${customerId}`, payload, withAuth(jwt));
+export const updateCustomer = async ({ customerId, payload }: WithCleengParams<{ customerId: string; payload: UpdateCustomerPayload }>) => {
+  const { data } = await apiAuth.patch<Customer>(`/customers/${customerId}`, payload);
 
-  handleErrors(errors);
-
-  return responseData;
+  return data;
 };

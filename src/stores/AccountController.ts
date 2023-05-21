@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+
 import type {
   AuthData,
   Capture,
@@ -33,8 +34,6 @@ export const initializeAccount = async () => {
   if (integration) {
     const features = await integration.getFeatures();
     const account = await integration.initialize();
-
-    console.log(account)
 
     useAccountStore.setState({
       user: account,
