@@ -79,6 +79,7 @@ export const initializeAccount = async () => {
       canRenewSubscription: accountService.canRenewSubscription,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
+      canDeleteAccount: accountService.canExportAccountData,
     });
     accountService.setEnvironment(config);
 
@@ -462,6 +463,14 @@ export async function exportAccountData() {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ accountService }) => {
       return await accountService.exportAccountData(undefined, true, jwt);
+    });
+  });
+}
+
+export async function deleteAccountData(password: string) {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ accountService }) => {
+      return await accountService.deleteAccount({ password }, true, jwt);
     });
   });
 }

@@ -220,7 +220,10 @@ const handleErrors = (errors: ApiResponse['errors']) => {
 export const updatePersonalShelves: UpdatePersonalShelves = async (payload, sandbox, jwt) => {
   return await updateCustomer(payload, sandbox, jwt);
 };
+
 export const exportAccountData = () => null;
+
+export const deleteAccount = () => null;
 
 export const canUpdateEmail = true;
 
@@ -230,3 +233,4 @@ export const canChangePasswordWithOldPassword = false;
 export const subscribeToNotifications = async () => true;
 export const canRenewSubscription = true;
 export const canExportAccountData = false;
+export const canDeleteAccount = false;

@@ -22,6 +22,7 @@ import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
 import Dialog from '#components/Dialog/Dialog';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import WaitingForPayment from '#src/components/WaitingForPayment/WaitingForPayment';
+import DeleteAccountModal from '#src/components/DeleteAccountModal/DeleteAccountModal';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -29,6 +30,7 @@ const AccountModal = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const viewParam = useQueryParam('u');
+  const isConfirmation = useQueryParam('confirmation');
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
   const { loading, auth } = useAccountStore(({ loading, auth }) => ({ loading, auth }), shallow);
@@ -51,7 +53,8 @@ const AccountModal = () => {
   }, [viewParam, navigate, location, loading, auth, isPublicView]);
 
   const closeHandler = () => {
-    navigate(removeQueryParam(location, 'u'));
+    const removedU = removeQueryParam(location, 'u');
+    navigate(isConfirmation ? removedU.split('&confirmation')[0] : removedU);
   };
 
   const renderForm = () => {
@@ -83,6 +86,8 @@ const AccountModal = () => {
         return <ResetPassword type="reset" />;
       case 'forgot-password':
         return <ResetPassword type="forgot" />;
+      case 'delete-account':
+        return <DeleteAccountModal />;
       case 'send-confirmation':
         return <ResetPassword type="confirmation" />;
       case 'edit-password':
@@ -96,9 +101,12 @@ const AccountModal = () => {
     }
   };
 
+  const shouldHideBanner = ['delete-account'].includes(view ?? '');
+  const dialogSize = isConfirmation ? 'large' : 'small';
+
   return (
-    <Dialog open={!!viewParam} onClose={closeHandler}>
-      <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>
+    <Dialog size={dialogSize} open={!!viewParam} onClose={closeHandler}>
+      {!shouldHideBanner && banner && <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>}
       {renderForm()}
     </Dialog>
   );

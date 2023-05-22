@@ -1,6 +1,7 @@
 {
   "account": {
     "about_you": "About you",
+    "continue": "Continue",
     "cancel": "Cancel",
     "confirm_password": "Confirm password",
     "edit_account": "Edit account",
@@ -29,7 +30,19 @@
     "export_data_title": "Export account data",
     "export_data_body": "Export all of your personal account data to <strong>{{email}}</strong> as an attachment.",
     "export_data_success": "Please check your email.",
-    "export_data_error": "An error occurred while exporting your account data."
+    "export_data_error": "An error occurred while exporting your account data.",
+    "delete_account_title": "Delete account",
+    "delete_account_body": "Permanently delete your account and all of your content.",
+    "delete_account_modal_title": "Enter password to continue",
+    "delete_account_modal_placeholder": "Enter your password",
+    "delete_account_modal_text_1": "Please note that if you choose to proceed with this process, all of your personal data will be erased from our system. This includes any personal information you provided during the registration process, as well as any location and device information that we gathered during the authentication process. Additionally, all other personal information stored in various parts of our database will be deleted as well. However, please be aware that due to some legislations we are required to keep certain personal data as part of transaction and subscription records.",
+    "delete_account_modal_text_2": "Once the erasure is complete, all of your active accesses will be revoked, and any active login sessions, including this one, will be terminated. Your account information will no longer be accessible to our staff in any capacity.",
+    "delete_account_modal_text_warning_1": "All of your active subscriptions purchased through a web browser will be automatically canceled, in addition to the data erasure.",
+    "delete_account_modal_text_warning_2": "However, all active subscriptions that were purchased through a web browser will be automatically canceled upon erasure of personal data. However, if you purchased a subscription through iOS, Android, Roku, or Amazon apps, please be aware that it will not be canceled automatically. In this case, you will need to follow the usual subscription cancelation steps for each respective platform to manually cancel the subscription.",
+    "delete_account_modal_text_3": "Please be aware that this process cannot be undone, so proceed with caution.",
+    "delete_account_modal_text_4": "If you have any further questions or concerns, please do not hesitate to contact our support team.",
+    "delete_account_modal_warning_1": "All of your active subscriptions purchased through a web browser will be automatically canceled, in addition to the data erasure.",
+    "delete_account_modal_warning_2": "However, all active subscriptions that were purchased through a web browser will be automatically canceled upon erasure of personal data. However, if you purchased a subscription through iOS, Android, Roku, or Amazon apps, please be aware that it will not be canceled automatically. In this case, you will need to follow the usual subscription cancelation steps for each respective platform to manually cancel the subscription."
   },
   "favorites": {
     "clear": "Clear favorites",
