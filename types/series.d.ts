@@ -11,14 +11,13 @@ export type Episode = {
   media_item: PlaylistItem;
 };
 
-export type Season<T> = {
+export type Season = {
   season_id: string;
   season_number: number;
   season_title: string;
   season_description: string;
   episode_count: number;
   total_duration: number;
-  episodes: T[];
 };
 
 export type EpisodesRes = Pagination & { episodes: Episode[] };

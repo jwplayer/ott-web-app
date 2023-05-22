@@ -46,9 +46,7 @@ Scenario('I can see series with seasons', async ({ I }) => {
   I.see('17 episodes');
   I.see('Beginner');
   I.see('CC-BY');
-  I.see(
-    'Ever wanted to learn how to make Minecraft Animation? Dillon walks you through the step by step process he used to create this Trident Animation. This includes everything from importing your Minecraft world to rendering and posting on YouTube. Enjoy!',
-  );
+  I.see(constants.minecraftAnimationWorkshopDescription);
   I.see(constants.startWatchingButton);
   I.see('Favorite');
   I.see('Share');

@@ -81,10 +81,14 @@ Scenario('It renders the correct structured metadata for the series screen', asy
   await I.openVideoCard(constants.primitiveAnimalsTitle);
   I.see('Primitive Animals');
 
+  const rawURL = await I.grabCurrentUrl();
+  const url = removeQueryParams(rawURL, ['r', 'app-config']);
+  const mediaId = url.split('/')[2];
+
   I.seeTextEquals(
     JSON.stringify({
       '@type': 'TVSeries',
-      '@id': `${constants.baseUrl}s/${constants.primitiveAnimalsId}`,
+      '@id': `${constants.baseUrl}s/${mediaId}`,
       name: 'Primitive Animals',
       numberOfEpisodes: '4',
       numberOfSeasons: '0',
@@ -101,6 +105,7 @@ Scenario('It renders the correct structured metadata for the episode screen', as
 
   const rawURL = await I.grabCurrentUrl();
   const url = removeQueryParams(rawURL, ['r', 'app-config']);
+  const mediaId = url.split('/')[2];
 
   I.seeTextEquals(
     JSON.stringify({
@@ -113,7 +118,7 @@ Scenario('It renders the correct structured metadata for the episode screen', as
       uploadDate: '2021-03-10T10:00:00.000Z',
       partOfSeries: {
         '@type': 'TVSeries',
-        '@id': `${constants.baseUrl}s/${constants.primitiveAnimalsId}`,
+        '@id': `${constants.baseUrl}s/${mediaId}`,
         name: 'Primitive Animals',
         numberOfEpisodes: '4',
         numberOfSeasons: '0',

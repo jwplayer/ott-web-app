@@ -78,7 +78,7 @@ const Series = () => {
   const nextItem = useNextEpisode({ episode, seriesPlaylist, series, episodeMetadata });
 
   // Watch history
-  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
+  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionaryWithEpisodes());
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
