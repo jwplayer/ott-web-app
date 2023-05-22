@@ -9,7 +9,6 @@ import useQueryParam from '../../hooks/useQueryParam';
 import { createAdyenPaymentSession, finalizeAdyenPayment, initialAdyenPayment } from '../../stores/CheckoutController';
 import type { AdyenPaymentSession } from '../../../types/checkout';
 import { reloadActiveSubscription } from '../../stores/AccountController';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import { addQueryParams } from '../../utils/formatting';
 
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '#src/config';
@@ -23,7 +22,6 @@ type Props = {
 };
 
 export default function AdyenContainer({ setUpdatingOrder, type, setPaymentError, paymentSuccessUrl, orderId }: Props) {
-  const [processing, setProcessing] = useState(false);
   const [session, setSession] = useState<AdyenPaymentSession>();
 
   const { sandbox } = useClientIntegration();
@@ -62,7 +60,10 @@ export default function AdyenContainer({ setUpdatingOrder, type, setPaymentError
         setUpdatingOrder(true);
         setPaymentError(undefined);
 
-        if (orderId === undefined) throw new Error('Order is unknown');
+        if (orderId === undefined) {
+          setPaymentError('Order is unknown');
+          return;
+        }
 
         const returnUrl = addQueryParams(window.origin, { u: 'finalize-payment', orderId: orderId });
         const result = await initialAdyenPayment(state.data.paymentMethod, returnUrl);
@@ -99,7 +100,7 @@ export default function AdyenContainer({ setUpdatingOrder, type, setPaymentError
     },
     onAdditionalDetails: async (state: CoreOptions['additionalData']) => {
       try {
-        setProcessing(true);
+        setUpdatingOrder(true);
 
         await finalizeAdyenPayment(orderId, state.data.details);
 
@@ -107,21 +108,13 @@ export default function AdyenContainer({ setUpdatingOrder, type, setPaymentError
       } catch (error: unknown) {
         if (error instanceof Error) {
           setPaymentError(error.message);
-          setProcessing(false);
+          setUpdatingOrder(false);
         }
       }
     },
     onSubmit: (state: AdyenEventData, component: DropinElement) => onSubmit(state, component.handleAction),
     onError: (error: Error) => setPaymentError(error.message),
   };
-
-  if (processing) {
-    return (
-      <div style={{ height: 300 }}>
-        <LoadingOverlay inline />
-      </div>
-    );
-  }
 
   return <Adyen configuration={adyenConfiguration} type={type} />;
 }

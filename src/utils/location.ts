@@ -10,6 +10,16 @@ export function addQueryParam(location: Location, key: string, value: string): s
   return `${location.pathname}${searchParams ? `?${searchParams}` : ''}`;
 }
 
+export function replaceQueryParam(location: Location, key: string, value: string): string {
+  const urlSearchParams = new URLSearchParams();
+
+  urlSearchParams.set(key, value);
+
+  const searchParams = urlSearchParams.toString();
+
+  return `${location.pathname}?${searchParams}`;
+}
+
 export function removeQueryParam(location: Location, key: string): string {
   const urlSearchParams = new URLSearchParams(location.search);
 

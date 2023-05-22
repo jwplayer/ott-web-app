@@ -1,3 +1,5 @@
+import { getOverrideIP } from '../utils/common';
+
 import { subscribeToNotifications } from './NotificationsController';
 
 import type {
@@ -178,6 +180,7 @@ export const initialAdyenPayment = async (
           returnUrl: returnUrl,
           paymentMethod,
           attemptAuthentication: sandbox ? 'always' : undefined,
+          customerIP: getOverrideIP(),
         },
         sandbox,
         jwt,

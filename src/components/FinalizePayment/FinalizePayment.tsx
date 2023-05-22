@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 
 import useQueryParam from '../../hooks/useQueryParam';
-import { removeQueryParam } from '../../utils/location';
+import { removeQueryParam, replaceQueryParam } from '../../utils/location';
 import { finalizeAdyenPayment } from '../../stores/CheckoutController';
 import { useConfigStore } from '../../stores/ConfigStore';
 import Button from '../Button/Button';
@@ -24,15 +24,12 @@ const FinalizePayment = () => {
   const orderIdQueryParam = useQueryParam('orderId');
 
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [processing, setProcessing] = useState(false);
 
   const paymentSuccessUrl = useMemo(() => {
-    return accessModel === 'SVOD' ? addQueryParams(window.origin, { u: 'welcome' }) : removeQueryParam(location, 'u');
+    return accessModel === 'SVOD' ? replaceQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
   }, [accessModel, location]);
 
   const checkPaymentResult = useEventCallback(async (redirectResult: string) => {
-    setProcessing(true);
-
     const orderId = orderIdQueryParam ? parseInt(orderIdQueryParam, 10) : undefined;
 
     try {
@@ -45,8 +42,6 @@ const FinalizePayment = () => {
         setErrorMessage(error.message);
       }
     }
-
-    setProcessing(false);
   });
 
   useEffect(() => {
@@ -57,11 +52,7 @@ const FinalizePayment = () => {
 
   return (
     <div className={styles.container}>
-      {processing ? (
-        <div className={styles.loading}>
-          <Spinner />
-        </div>
-      ) : (
+      {errorMessage ? (
         <>
           <h2 className={styles.title}>{errorMessage}</h2>
           <Button
@@ -73,6 +64,10 @@ const FinalizePayment = () => {
             fullWidth
           />
         </>
+      ) : (
+        <div className={styles.loading}>
+          <Spinner />
+        </div>
       )}
     </div>
   );
