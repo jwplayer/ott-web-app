@@ -1,17 +1,16 @@
 import type { CoreOptions } from '@adyen/adyen-web/dist/types/core/types';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type DropinElement from '@adyen/adyen-web/dist/types/components/Dropin/Dropin';
 import { useNavigate } from 'react-router';
 
-import useClientIntegration from '../../hooks/useClientIntegration';
-import Adyen from '../../components/Adyen/Adyen';
-import useQueryParam from '../../hooks/useQueryParam';
-import { createAdyenPaymentSession, finalizeAdyenPayment, initialAdyenPayment } from '../../stores/CheckoutController';
-import type { AdyenPaymentSession } from '../../../types/checkout';
-import { reloadActiveSubscription } from '../../stores/AccountController';
-import { addQueryParams } from '../../utils/formatting';
-
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '#src/config';
+import Adyen from '#components/Adyen/Adyen';
+import useClientIntegration from '#src/hooks/useClientIntegration';
+import useQueryParam from '#src/hooks/useQueryParam';
+import { reloadActiveSubscription } from '#src/stores/AccountController';
+import { addQueryParams } from '#src/utils/formatting';
+import type { AdyenPaymentSession } from '#types/checkout';
+import { createAdyenPaymentSession, finalizeAdyenPayment, initialAdyenPayment } from '#src/stores/CheckoutController';
 
 type Props = {
   setUpdatingOrder: (loading: boolean) => void;
@@ -87,34 +86,37 @@ export default function AdyenContainer({ setUpdatingOrder, type, setPaymentError
     [navigate, orderId, paymentSuccessUrl, setPaymentError, setUpdatingOrder],
   );
 
-  const adyenConfiguration: CoreOptions = {
-    session: session,
-    showPayButton: false,
-    environment: sandbox ? 'test' : 'live',
-    clientKey: sandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
-    paymentMethodsConfiguration: {
-      card: {
-        hasHolderName: true,
-        holderNameRequired: true,
+  const adyenConfiguration: CoreOptions = useMemo(
+    () => ({
+      session: session,
+      showPayButton: false,
+      environment: sandbox ? 'test' : 'live',
+      clientKey: sandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
+      paymentMethodsConfiguration: {
+        card: {
+          hasHolderName: true,
+          holderNameRequired: true,
+        },
       },
-    },
-    onAdditionalDetails: async (state: CoreOptions['additionalData']) => {
-      try {
-        setUpdatingOrder(true);
+      onAdditionalDetails: async (state: CoreOptions['additionalData']) => {
+        try {
+          setUpdatingOrder(true);
 
-        await finalizeAdyenPayment(orderId, state.data.details);
+          await finalizeAdyenPayment(orderId, state.data.details);
 
-        navigate(paymentSuccessUrl, { replace: true });
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setPaymentError(error.message);
-          setUpdatingOrder(false);
+          navigate(paymentSuccessUrl, { replace: true });
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setPaymentError(error.message);
+            setUpdatingOrder(false);
+          }
         }
-      }
-    },
-    onSubmit: (state: AdyenEventData, component: DropinElement) => onSubmit(state, component.handleAction),
-    onError: (error: Error) => setPaymentError(error.message),
-  };
+      },
+      onSubmit: (state: AdyenEventData, component: DropinElement) => onSubmit(state, component.handleAction),
+      onError: (error: Error) => setPaymentError(error.message),
+    }),
+    [onSubmit, paymentSuccessUrl, sandbox, session, orderId, navigate, setPaymentError, setUpdatingOrder],
+  );
 
   return <Adyen configuration={adyenConfiguration} type={type} />;
 }

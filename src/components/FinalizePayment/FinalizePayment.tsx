@@ -2,17 +2,16 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 
-import useQueryParam from '../../hooks/useQueryParam';
-import { removeQueryParam, replaceQueryParam } from '../../utils/location';
-import { finalizeAdyenPayment } from '../../stores/CheckoutController';
-import { useConfigStore } from '../../stores/ConfigStore';
-import Button from '../Button/Button';
-import { reloadActiveSubscription } from '../../stores/AccountController';
-import useEventCallback from '../../hooks/useEventCallback';
-import Spinner from '../Spinner/Spinner';
-import { addQueryParams } from '../../utils/formatting';
-
 import styles from './FinalizePayment.module.scss';
+
+import Button from '#components/Button/Button';
+import Spinner from '#components/Spinner/Spinner';
+import useEventCallback from '#src/hooks/useEventCallback';
+import useQueryParam from '#src/hooks/useQueryParam';
+import { reloadActiveSubscription } from '#src/stores/AccountController';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { replaceQueryParam, removeQueryParam, addQueryParam } from '#src/utils/location';
+import { finalizeAdyenPayment } from '#src/stores/CheckoutController';
 
 const FinalizePayment = () => {
   const { t } = useTranslation('account');
@@ -60,7 +59,7 @@ const FinalizePayment = () => {
             variant="contained"
             color="primary"
             size="large"
-            onClick={() => navigate(addQueryParams(window.origin, { u: 'checkout' }))}
+            onClick={() => navigate(addQueryParam(location, 'u', 'checkout'))}
             fullWidth
           />
         </>

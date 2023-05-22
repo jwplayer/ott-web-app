@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import AdyenContainer from '../../AdyenContainer/AdyenContainer';
-
 import { isSVODOffer } from '#src/utils/subscription';
 import CheckoutForm from '#components/CheckoutForm/CheckoutForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
@@ -17,6 +15,7 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
+import AdyenContainer from '#src/containers/AdyenContainer/AdyenContainer';
 
 const Checkout = () => {
   const location = useLocation();
