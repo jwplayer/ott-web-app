@@ -9,7 +9,7 @@ exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
       class="_label_e16c1b"
       for="text-field_1235_cardCVC"
     >
-      CVC / CVV
+      Security code
     </label>
     <div
       class="_container_e16c1b"

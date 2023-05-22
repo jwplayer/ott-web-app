@@ -21,7 +21,7 @@ export type ProviderProps = {
   yearlyOffer: PaymentOffer;
   paymentFields: PaymentFields;
   creditCard: string;
-  creditCardNamePresent: boolean;
+  creditCardFolderFieldName: string;
   applicableTax: number;
   canRenewSubscription: boolean;
   shouldMakePayment?: boolean;

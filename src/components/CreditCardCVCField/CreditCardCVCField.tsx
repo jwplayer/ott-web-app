@@ -19,7 +19,7 @@ const CreditCardCVCField: React.FC<Props> = ({ value, onChange, error, ...props 
   };
   return (
     <TextField
-      label={`CVC / CVV`}
+      label="Security code"
       aria-label="Security code"
       {...props}
       error={!!error}

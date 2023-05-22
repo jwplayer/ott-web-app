@@ -10,7 +10,7 @@ const jwProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.inplayer,
   paymentFields: constants.paymentFields.inplayer,
   creditCard: constants.creditCard.inplayer,
-  creditCardNamePresent: true,
+  creditCardFolderFieldName: constants.paymentFields.inplayer.creditCardFieldName,
   applicableTax: 0,
   canRenewSubscription: false,
   fieldWrapper: '',
@@ -22,7 +22,7 @@ const cleengProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.cleeng,
   paymentFields: constants.paymentFields.cleeng,
   creditCard: constants.creditCard.cleeng,
-  creditCardNamePresent: false,
+  creditCardFolderFieldName: constants.paymentFields.cleeng.creditCardFieldName,
   applicableTax: 21,
   canRenewSubscription: true,
   fieldWrapper: 'iframe',
@@ -36,7 +36,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
   const today = new Date();
 
-  const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'CVC / CVV', '******');
+  const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'Security code', '******');
 
   Feature(`payments - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
@@ -132,7 +132,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     I.see('Card number');
     I.see('Expiry date');
-    I.see('CVC / CVV');
+    I.see('Security code');
     I.see('Continue');
     I.dontSee("Clicking 'continue' will bring you to the PayPal site.");
 
@@ -141,7 +141,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     I.see("Clicking 'continue' will bring you to the PayPal site.");
     I.dontSee('Card number');
     I.dontSee('Expiry date');
-    I.dontSee('CVC / CVV');
+    I.dontSee('Security code');
     I.see('Continue');
   });
 
@@ -164,7 +164,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     await goToCheckout(I);
 
     I.payWithCreditCard(
-      props.creditCardNamePresent,
+      props.creditCardFolderFieldName,
       props.creditCard,
       props.paymentFields.cardNumber,
       props.paymentFields.expiryDate,

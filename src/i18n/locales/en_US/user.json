@@ -47,7 +47,7 @@
     "cancel_subscription": "Cancel subscription",
     "card_number": "Card number",
     "complete_subscription": "Complete subscription",
-    "cvc_cvv": "CVC / CVV",
+    "security_code": "Security code",
     "daily_subscription": "Daily subscription",
     "expiry_date": "Expiry date",
     "granted_subscription": "Granted subscription",
