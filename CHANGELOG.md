@@ -1,3 +1,30 @@
+# [4.8.0](https://github.com/jwplayer/ott-web-app/compare/v4.7.0...v4.8.0) (2023-05-10)
+
+
+### Features
+
+* **e2e:** add maunal tests for adv + small fixes ([0b44891](https://github.com/jwplayer/ott-web-app/commit/0b448917657ed8de9fb480bde316fd23eab33c98))
+* **e2e:** add maunal tests for ott analytics pipline ([b418e3b](https://github.com/jwplayer/ott-web-app/commit/b418e3b0e18784fbf74098e6b9316be7a58376cf))
+
+
+
+# [4.7.0](https://github.com/jwplayer/ott-web-app/compare/v4.6.3...v4.7.0) (2023-05-08)
+
+
+### Features
+
+* add feedid in player configuration ([9d1d4d9](https://github.com/jwplayer/ott-web-app/commit/9d1d4d970054954252724d3a64652efdabac17c6))
+* adjust logic for sending favorites and continue watching playlist id ([fbda6dc](https://github.com/jwplayer/ott-web-app/commit/fbda6dcc4e4e75047f90a9d09084c107c958f74f))
+* change feedid for favorites and continue watching to match the playlist id from config file ([a63329a](https://github.com/jwplayer/ott-web-app/commit/a63329a286915414a2d1090ca698726f12226b2c))
+* code cleanup ([1e4bb25](https://github.com/jwplayer/ott-web-app/commit/1e4bb25ead3584b4541a5dc2e29e1e1d51f09534))
+* correct feed id for recommandations playlist ([089c291](https://github.com/jwplayer/ott-web-app/commit/089c2911d6c7ee44cd7404a8ab87cc0990d0c78f))
+* pass feedid to ott analytics for play event ([7a2bf23](https://github.com/jwplayer/ott-web-app/commit/7a2bf23e7f14bd8953543106f753efb2c7645eda))
+* remove feed_instance_id ([1b2223b](https://github.com/jwplayer/ott-web-app/commit/1b2223b6b5704715d2e2dc2e51df6258f44d3e74))
+* remove feedis setting in store ([b8200ad](https://github.com/jwplayer/ott-web-app/commit/b8200ad6d18293bcd1913c391003c83ffd423430))
+* remove unnecessary fed param from play event ([ce3abff](https://github.com/jwplayer/ott-web-app/commit/ce3abff47b03e388f69185da7686ea17e2989604))
+
+
+
 ## [4.6.3](https://github.com/jwplayer/ott-web-app/compare/v4.6.2...v4.6.3) (2023-05-08)
 
 
