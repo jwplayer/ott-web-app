@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
-import jwtDecode from 'jwt-decode';
 
 import type { PlaylistItem } from '#types/playlist';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type { DecodedJwtToken } from '#types/account';
 
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
-  const auth = useAccountStore((state) => state.auth);
-  const isLoggedIn = !!auth;
+  const user = useAccountStore((state) => state.user);
+
+  const userId = Number(user?.id);
+  const isLoggedIn = !!userId;
 
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
-  const decodedToken: DecodedJwtToken | undefined = isLoggedIn ? jwtDecode(auth?.jwt) : undefined;
+  const oaid: number | undefined = isLoggedIn ? userId : undefined;
 
   const timeHandler = useCallback(({ position, duration }: jwplayer.TimeParam) => {
     window.jwpltx.time(position, duration);
@@ -34,7 +34,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       return;
     }
 
-    window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, decodedToken?.tid);
+    window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid);
   }, [item]);
 
   const completeHandler = useCallback(() => {
