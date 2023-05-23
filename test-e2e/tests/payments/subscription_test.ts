@@ -10,7 +10,6 @@ const jwProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.inplayer,
   paymentFields: constants.paymentFields.inplayer,
   creditCard: constants.creditCard.inplayer,
-  creditCardFolderFieldName: constants.paymentFields.inplayer.creditCardFieldName,
   applicableTax: 0,
   canRenewSubscription: false,
   fieldWrapper: '',
@@ -22,7 +21,6 @@ const cleengProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.cleeng,
   paymentFields: constants.paymentFields.cleeng,
   creditCard: constants.creditCard.cleeng,
-  creditCardFolderFieldName: constants.paymentFields.cleeng.creditCardFieldName,
   applicableTax: 21,
   canRenewSubscription: true,
   fieldWrapper: 'iframe',
@@ -164,7 +162,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     await goToCheckout(I);
 
     I.payWithCreditCard(
-      props.creditCardFolderFieldName,
+      props.paymentFields.creditCardholder,
       props.creditCard,
       props.paymentFields.cardNumber,
       props.paymentFields.expiryDate,

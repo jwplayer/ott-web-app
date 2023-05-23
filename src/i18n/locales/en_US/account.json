@@ -20,6 +20,7 @@
     "discount_period": "For the first {{period}}",
     "discount_period_plural": "For the first {{count}} {{period}}",
     "free_trial_discount": "Free trial",
+    "go_back_to_checkout": "Go back to checkout",
     "invalid_card_expiry": "Invalid card expiry",
     "invalid_card_number": "Invalid card number",
     "invalid_cvc_number": "Invalid CVC number",
@@ -38,7 +39,6 @@
     "start_watching": "Start watching ({{countdown}})",
     "total_price": "Total",
     "waiting_for_payment": "Waiting for payment",
-    "go_back_to_checkout": "Go back to checkout",
     "welcome_description": "Thank you for subscribing to {{siteName}}. Please enjoy all our content.",
     "welcome_title": "Welcome to {{siteName}}",
     "yearly": "Yearly subscription"
@@ -79,6 +79,9 @@
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
+  },
+  "payment": {
+    "securityCode": ""
   },
   "periods": {
     "day": "day",

@@ -10,7 +10,6 @@ const jwProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.inplayer,
   paymentFields: constants.paymentFields.inplayer,
   creditCard: constants.creditCard.inplayer,
-  creditCardFolderFieldName: constants.paymentFields.inplayer.creditCardFieldName,
   applicableTax: 0,
   locale: undefined,
   shouldMakePayment: true,
@@ -23,7 +22,6 @@ const cleengProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.cleeng,
   paymentFields: constants.paymentFields.cleeng,
   creditCard: constants.creditCard.cleeng,
-  creditCardFolderFieldName: constants.paymentFields.cleeng.creditCardFieldName,
   applicableTax: 2.17,
   locale: 'NL',
   shouldMakePayment: false,
@@ -77,7 +75,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     if (props.shouldMakePayment) {
       I.payWithCreditCard(
-        props.creditCardFolderFieldName,
+        props.paymentFields.creditCardholder,
         props.creditCard,
         props.paymentFields.cardNumber,
         props.paymentFields.expiryDate,
