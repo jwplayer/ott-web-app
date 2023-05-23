@@ -144,7 +144,7 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
   if (!series || !seriesMedia) return <ErrorPage title={t('series_error')} />;
 
   const pageTitle = `${selectedItem.title} - ${siteName}`;
-  const canonicalUrl = `${window.location.origin}${mediaURL({ media: selectedItem, episodeId: episode?.mediaid })}`;
+  const canonicalUrl = `${window.location.origin}${mediaURL({ media: seriesMedia, episodeId: episode?.mediaid })}`;
 
   const primaryMetadata = formatVideoMetaString(
     selectedItem,
@@ -207,7 +207,7 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
         {seriesPlaylist && selectedItem ? (
-          <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, episode, episodeMetadata, seriesId)}</script>
+          <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, episode, episodeMetadata)}</script>
         ) : null}
       </Helmet>
       <VideoLayout

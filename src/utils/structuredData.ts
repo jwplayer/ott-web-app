@@ -69,20 +69,14 @@ export const generateSeriesMetadata = (series: Series, media: PlaylistItem, seri
     '@type': 'TVSeries',
     '@id': seriesCanonical,
     name: media.title,
-    numberOfEpisodes: String(series?.episode_count),
+    numberOfEpisodes: String(series?.episode_count || 0),
     numberOfSeasons: String(series?.season_count || 0),
   };
 };
 
-export const generateEpisodeJSONLD = (
-  series: Series,
-  media: PlaylistItem,
-  episode: PlaylistItem | undefined,
-  episodeMetadata: EpisodeMetadata | undefined,
-  seriesId: string,
-) => {
-  const episodeCanonical = `${window.location.origin}${mediaURL({ media, episodeId: episode?.mediaid })}`;
-  const seriesMetadata = generateSeriesMetadata(series, media, seriesId);
+export const generateEpisodeJSONLD = (series: Series, media: PlaylistItem, episode: PlaylistItem | undefined, episodeMetadata: EpisodeMetadata | undefined) => {
+  const episodeCanonical = `${window.location.origin}/m/${series.series_id}?e=${episode?.mediaid}`;
+  const seriesMetadata = generateSeriesMetadata(series, media, series.series_id);
 
   if (!episode) {
     return JSON.stringify(seriesMetadata);
@@ -92,8 +86,8 @@ export const generateEpisodeJSONLD = (
     '@context': 'http://schema.org/',
     '@type': 'TVEpisode',
     '@id': episodeCanonical,
-    episodeNumber: episodeMetadata?.episodeNumber,
-    seasonNumber: episodeMetadata?.seasonNumber,
+    episodeNumber: episodeMetadata?.episodeNumber || '0',
+    seasonNumber: episodeMetadata?.seasonNumber || '0',
     name: episode.title,
     uploadDate: secondsToISO8601(episode.pubdate),
     partOfSeries: seriesMetadata,

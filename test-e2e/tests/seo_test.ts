@@ -106,12 +106,13 @@ Scenario('It renders the correct structured metadata for the episode screen', as
   const rawURL = await I.grabCurrentUrl();
   const url = removeQueryParams(rawURL, ['r', 'app-config']);
   const seriesURL = getSeriesURL(url);
+  const episodeURL = getEpisodeURL(url);
 
   I.seeTextEquals(
     JSON.stringify({
       '@context': 'http://schema.org/',
       '@type': 'TVEpisode',
-      '@id': url,
+      '@id': episodeURL,
       episodeNumber: '1',
       seasonNumber: '0',
       name: 'Blocking',
@@ -184,8 +185,16 @@ function getPosterUrl(href: string, type: 'series' | 'episode' | 'other' = 'othe
 }
 
 function getSeriesURL(url: string) {
-  const parsedURL = new URL(url);
+  const parsedURL = new URL(removeQueryParams(url, ['e']));
   const mediaId = parsedURL.pathname.split('/')[2];
 
-  return mediaId;
+  return `${parsedURL.origin}/m/${mediaId}`;
+}
+
+function getEpisodeURL(url: string) {
+  const episodeId = getQueryParam(url, 'e');
+  const parsedURL = new URL(removeQueryParams(url, ['e']));
+  const mediaId = parsedURL.pathname.split('/')[2];
+
+  return `${parsedURL.origin}/m/${mediaId}?e=${episodeId}`;
 }
