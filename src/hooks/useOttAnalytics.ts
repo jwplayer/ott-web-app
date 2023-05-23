@@ -9,7 +9,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const user = useAccountStore((state) => state.user);
 
   // ott app user id (oaid)
-  const oaid: number | undefined = Number(user?.id);
+  const oaid: number | undefined = user?.id ? Number(user?.id) : undefined;
 
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
