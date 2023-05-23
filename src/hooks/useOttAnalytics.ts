@@ -9,9 +9,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const user = useAccountStore((state) => state.user);
 
   // oaid (Ott App User ID) for analytics
-  const userId = Number(user?.id);
-  const isLoggedIn = !!userId;
-  const oaid: number | undefined = isLoggedIn ? userId : undefined;
+  const oaid: number | undefined = Number(user?.id);
 
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
