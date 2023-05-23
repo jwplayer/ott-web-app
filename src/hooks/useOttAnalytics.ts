@@ -8,12 +8,12 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
   const user = useAccountStore((state) => state.user);
 
+  // oaid (Ott App User ID) for analytics
   const userId = Number(user?.id);
   const isLoggedIn = !!userId;
+  const oaid: number | undefined = isLoggedIn ? userId : undefined;
 
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
-
-  const oaid: number | undefined = isLoggedIn ? userId : undefined;
 
   const timeHandler = useCallback(({ position, duration }: jwplayer.TimeParam) => {
     window.jwpltx.time(position, duration);
