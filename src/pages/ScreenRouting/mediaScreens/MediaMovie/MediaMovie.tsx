@@ -56,8 +56,8 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { isEntitled } = useEntitlement(data);
 
   // Handlers
-  const goBack = () => data && navigate(mediaURL(data, feedId, false));
-  const onCardClick = (item: PlaylistItem) => navigate(mediaURL(item, feedId));
+  const goBack = () => data && navigate(mediaURL({ media: data, playlistId: feedId, play: false }));
+  const onCardClick = (item: PlaylistItem) => navigate(mediaURL({ media: item, playlistId: feedId }));
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -65,7 +65,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
     const index = playlist.playlist.findIndex(({ mediaid }) => mediaid === id);
     const nextItem = playlist.playlist[index + 1];
 
-    return nextItem && navigate(mediaURL(nextItem, feedId, true));
+    return nextItem && navigate(mediaURL({ media: nextItem, playlistId: feedId, play: true }));
   }, [id, playlist, navigate, feedId]);
 
   // Effects
@@ -75,11 +75,11 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // UI
   const pageTitle = `${data.title} - ${siteName}`;
-  const canonicalUrl = data ? `${window.location.origin}${mediaURL(data)}` : window.location.href;
+  const canonicalUrl = data ? `${window.location.origin}${mediaURL({ media: data })}` : window.location.href;
 
   const primaryMetadata = formatVideoMetaString(data);
   const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
-  const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL(data, feedId, true)} />;
+  const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL({ media: data, playlistId: feedId, play: true })} />;
 
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
   const trailerButton = (!!trailerItem || isTrailerLoading) && (

@@ -11,8 +11,6 @@ export const useEpisodeMetadata = (
   series: Series | undefined,
   options: { enabled: boolean },
 ): { isLoading: boolean; data: EpisodeMetadata | undefined } => {
-  const oldFlowMetadata = { episodeNumber: episode?.episodeNumber || '0', seasonNumber: episode?.seasonNumber || '0' };
-
   const { isLoading, data }: UseQueryResult<EpisodeMetadata | undefined, ApiError | null> = useQuery(
     ['episodeId', series?.series_id, episode?.mediaid],
     async () => {
@@ -24,7 +22,7 @@ export const useEpisodeMetadata = (
       // Get an item details of the associated series (we need its episode and season)
       const { season_number, episode_number } = (seriesDictionary?.[episode.mediaid] || []).find((el) => el.series_id === series?.series_id) || {};
 
-      return { episodeNumber: String(episode_number || 0), seasonNumber: String(season_number || 0) };
+      return { episodeNumber: episode_number && String(episode_number), seasonNumber: season_number && String(season_number) };
     },
     {
       // Only enable this query when having new series flow
@@ -34,6 +32,6 @@ export const useEpisodeMetadata = (
 
   return {
     isLoading,
-    data: isLoading || !options.enabled ? data : series ? data : oldFlowMetadata,
+    data,
   };
 };

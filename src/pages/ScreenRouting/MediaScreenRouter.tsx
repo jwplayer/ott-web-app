@@ -11,8 +11,8 @@ import type { PlaylistItem } from '#types/playlist';
 import { isEpisode, isDeprecatedSeriesFlow } from '#src/utils/media';
 import MediaMovie from '#src/pages/ScreenRouting/mediaScreens/MediaMovie/MediaMovie';
 import MediaSeries from '#src/pages/ScreenRouting/mediaScreens/MediaSeries/MediaSeries';
-import MediaSeriesEpisode from '#src/pages/ScreenRouting/mediaScreens/MediaSeriesEpisode/MediaSeriesEpisode';
 import MediaLiveChannel from '#src/pages/ScreenRouting/mediaScreens/MediaLiveChannel/MediaLiveChannel';
+import MediaEpisode from '#src/pages/ScreenRouting/mediaScreens/MediaEpisode/MediaEpisode';
 import { ScreenMap } from '#src/pages/ScreenRouting/ScreenMap';
 import { CONTENT_TYPE } from '#src/config';
 
@@ -20,13 +20,13 @@ export const mediaScreenMap = new ScreenMap<PlaylistItem>();
 
 // Register media screens
 mediaScreenMap.registerByContentType(MediaSeries, CONTENT_TYPE.series);
-mediaScreenMap.registerByContentType(MediaSeriesEpisode, CONTENT_TYPE.episode);
+mediaScreenMap.registerByContentType(MediaEpisode, CONTENT_TYPE.episode);
 mediaScreenMap.registerByContentType(MediaLiveChannel, CONTENT_TYPE.livechannel);
 mediaScreenMap.registerByContentType(MediaStaticPage, CONTENT_TYPE.page);
 mediaScreenMap.registerDefault(MediaMovie);
 
 // Register legacy series and episode screens when `contentType` is missing
-mediaScreenMap.register(MediaSeriesEpisode, (item) => !!item && isEpisode(item));
+mediaScreenMap.register(MediaEpisode, (item) => !!item && isEpisode(item));
 mediaScreenMap.register(MediaSeries, (item) => !!item && isDeprecatedSeriesFlow(item));
 
 const MediaScreenRouter = () => {

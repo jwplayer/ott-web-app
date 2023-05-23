@@ -2,11 +2,10 @@ import { useQuery } from 'react-query';
 
 import type { PlaylistItem } from '#types/playlist';
 import { getSeriesByMediaIds } from '#src/services/api.service';
-import useQueryParam from '#src/hooks/useQueryParam';
 import { getSeriesIdFromEpisode } from '#src/utils/media';
 
 const useGetSeriesId = (item: PlaylistItem) => {
-  const staticSeriesId = useQueryParam('seriesId') || getSeriesIdFromEpisode(item);
+  const staticSeriesId = getSeriesIdFromEpisode(item);
 
   const { isLoading, data } = useQuery(['seriesId', item.mediaid], async () => {
     // get all series for the given media id
@@ -19,7 +18,8 @@ const useGetSeriesId = (item: PlaylistItem) => {
 
   return {
     isLoading,
-    seriesId: data || staticSeriesId,
+    deprecatedPlaylistId: staticSeriesId,
+    seriesId: data,
   };
 };
 

@@ -50,7 +50,7 @@ const Search = () => {
       searchActive: false,
     });
 
-    navigate(mediaURL(playlistItem, features?.searchPlaylist));
+    navigate(mediaURL({ media: playlistItem, playlistId: features?.searchPlaylist }));
   };
 
   if ((error || !playlist) && !isFetching) {

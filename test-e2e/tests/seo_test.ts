@@ -83,12 +83,12 @@ Scenario('It renders the correct structured metadata for the series screen', asy
 
   const rawURL = await I.grabCurrentUrl();
   const url = removeQueryParams(rawURL, ['r', 'app-config']);
-  const mediaId = url.split('/')[2];
+  const seriesURL = getSeriesURL(url);
 
   I.seeTextEquals(
     JSON.stringify({
       '@type': 'TVSeries',
-      '@id': `${constants.baseUrl}s/${mediaId}`,
+      '@id': seriesURL,
       name: 'Primitive Animals',
       numberOfEpisodes: '4',
       numberOfSeasons: '0',
@@ -105,7 +105,7 @@ Scenario('It renders the correct structured metadata for the episode screen', as
 
   const rawURL = await I.grabCurrentUrl();
   const url = removeQueryParams(rawURL, ['r', 'app-config']);
-  const mediaId = url.split('/')[2];
+  const seriesURL = getSeriesURL(url);
 
   I.seeTextEquals(
     JSON.stringify({
@@ -118,7 +118,7 @@ Scenario('It renders the correct structured metadata for the episode screen', as
       uploadDate: '2021-03-10T10:00:00.000Z',
       partOfSeries: {
         '@type': 'TVSeries',
-        '@id': `${constants.baseUrl}s/${mediaId}`,
+        '@id': seriesURL,
         name: 'Primitive Animals',
         numberOfEpisodes: '4',
         numberOfSeasons: '0',
@@ -181,4 +181,11 @@ function getPosterUrl(href: string, type: 'series' | 'episode' | 'other' = 'othe
   const mediaId = type === 'episode' ? getQueryParam(href, 'e') : url.pathname.split('/')[2];
 
   return `http://cdn.jwplayer.com/v2/media/${mediaId}/poster.jpg?width=720`;
+}
+
+function getSeriesURL(url: string) {
+  const parsedURL = new URL(url);
+  const mediaId = parsedURL.pathname.split('/')[2];
+
+  return mediaId;
 }

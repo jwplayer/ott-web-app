@@ -1,4 +1,4 @@
-import type { PlaylistItem } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
   if (!seconds) return null;
@@ -63,8 +63,17 @@ export const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-+$/, '')
     .replace(/-/g, whitespaceChar);
 
-export const mediaURL = (item: PlaylistItem, playlistId?: string | null, play = false) =>
-  addQueryParams(`/m/${item.mediaid}/${slugify(item.title)}`, { r: playlistId, play: play ? '1' : null });
+export const mediaURL = ({
+  media,
+  playlistId,
+  play = false,
+  episodeId,
+}: {
+  media: PlaylistItem;
+  playlistId?: string | null;
+  play?: boolean;
+  episodeId?: string;
+}) => addQueryParams(`/m/${media.mediaid}/${slugify(media.title)}`, { r: playlistId, play: play ? '1' : null, e: episodeId });
 
 export const liveChannelsURL = (playlistId: string, channelId?: string, play = false) => {
   return addQueryParams(`/p/${playlistId}`, {
@@ -73,8 +82,17 @@ export const liveChannelsURL = (playlistId: string, channelId?: string, play = f
   });
 };
 
-export const seriesURL = ({ seriesId, episodeId, play, playlistId }: { seriesId: string; episodeId?: string; play?: boolean; playlistId?: string | null }) =>
-  addQueryParams(`/s/${seriesId}`, { r: playlistId, e: episodeId, play: play ? '1' : null });
+export const deprecatedSeriesURL = ({
+  seriesId,
+  episodeId,
+  play,
+  playlistId,
+}: {
+  seriesId: string;
+  episodeId?: string;
+  play?: boolean;
+  playlistId?: string | null;
+}) => addQueryParams(`/s/${seriesId}`, { r: playlistId, e: episodeId, play: play ? '1' : null });
 
 export const formatDate = (dateString: number) => {
   if (!dateString) return '';
@@ -94,6 +112,16 @@ export const formatVideoMetaString = (item: PlaylistItem, episodesLabel?: string
 
   if (item.pubdate) metaData.push(new Date(item.pubdate * 1000).getFullYear());
   if (!episodesLabel && item.duration) metaData.push(formatDuration(item.duration));
+  if (episodesLabel) metaData.push(episodesLabel);
+  if (item.genre) metaData.push(item.genre);
+  if (item.rating) metaData.push(item.rating);
+
+  return metaData.join(' • ');
+};
+
+export const formatPlaylistMetaString = (item: Playlist, episodesLabel?: string) => {
+  const metaData = [];
+
   if (episodesLabel) metaData.push(episodesLabel);
   if (item.genre) metaData.push(item.genre);
   if (item.rating) metaData.push(item.rating);

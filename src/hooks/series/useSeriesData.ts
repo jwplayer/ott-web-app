@@ -43,7 +43,7 @@ export const useSeriesData = (
     },
   );
 
-  const usePlaylistFallback = isSeriesError && seriesError?.code === 404;
+  const usePlaylistFallback = isSeriesError && seriesError?.code === 404 && !isSeriesLoading;
 
   // We enable it only after new series api unsuccessful load (404 error showing that such the series with the following id doesn't exist)
   const { data: playlistData, isLoading: isPlaylistLoading, isError: isPlaylistError } = usePlaylist(legacySeriesPlaylistId, {}, usePlaylistFallback, false);

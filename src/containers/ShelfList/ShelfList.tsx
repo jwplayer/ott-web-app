@@ -36,7 +36,7 @@ const ShelfList = ({ rows }: Props) => {
 
   const onCardClick = useCallback(
     (playlistItem, playlistId, type) => {
-      navigate(mediaURL(playlistItem, playlistId, type === PersonalShelf.ContinueWatching));
+      navigate(mediaURL({ media: playlistItem, playlistId, play: type === PersonalShelf.ContinueWatching }));
     },
     [navigate],
   );
