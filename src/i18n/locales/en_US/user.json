@@ -67,6 +67,7 @@
     "subscription_details": "Subscription details",
     "subscription_expires_on": "This plan will expire on {{date}}",
     "transactions": "Transactions",
+    "update_payment_details": "Update payment details",
     "weekly_subscription": "Weekly subscription",
     "price_payed_with_card": "Price payed with card"
   }
