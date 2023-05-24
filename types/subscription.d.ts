@@ -111,7 +111,14 @@ export type GetTransactionsResponse = {
   items: Transaction[];
 };
 
+export type FetchReceiptPayload = {
+  transactionId: string;
+};
+
+export type FetchReceiptResponse = string;
+
 type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
 type UpdateSubscription = CleengAuthRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
 type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
 type GetTransactions = CleengAuthRequest<GetTransactionsPayload, GetTransactionsResponse>;
+type FetchReceipt = CleengAuthRequest<FetchReceiptPayload, FetchReceiptResponse>;

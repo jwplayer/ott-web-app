@@ -1,7 +1,7 @@
 import { patch, get } from './cleeng.service';
 
 import { addQueryParams } from '#src/utils/formatting';
-import type { GetPaymentDetails, GetSubscriptions, GetTransactions, UpdateSubscription } from '#types/subscription';
+import type { FetchReceipt, GetPaymentDetails, GetSubscriptions, GetTransactions, UpdateSubscription } from '#types/subscription';
 
 export async function getActiveSubscription({ sandbox, customerId, jwt }: { sandbox: boolean; customerId: string; jwt: string }) {
   const response = await getSubscriptions({ customerId }, sandbox, jwt);
@@ -41,4 +41,8 @@ export const getPaymentDetails: GetPaymentDetails = async (payload, sandbox, jwt
 
 export const getTransactions: GetTransactions = async ({ customerId, limit, offset }, sandbox, jwt) => {
   return get(sandbox, addQueryParams(`/customers/${customerId}/transactions`, { limit, offset }), jwt);
+};
+
+export const fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox, jwt) => {
+  return get(sandbox, `/receipt/${transactionId}`, jwt);
 };

@@ -20,6 +20,15 @@
   }
 }
 
+.transactionDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > div {
+    margin-left: variables.$base-spacing;
+  }
+}
+
 .price {
   font-size: 14px;
   line-height: 18px;
