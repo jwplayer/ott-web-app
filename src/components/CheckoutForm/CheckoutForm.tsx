@@ -151,20 +151,24 @@ const CheckoutForm: React.FC<Props> = ({
                 <td>{formatPrice(-offer.customerPriceInclTax, order.currency, offer.customerCountry)}</td>
               </tr>
             ) : null}
-            <tr>
-              <td>{t('checkout.payment_method_fee')}</td>
-              <td>{formatPrice(order.priceBreakdown.paymentMethodFee, order.currency, offer.customerCountry)}</td>
-            </tr>
+            {order.priceBreakdown.paymentMethodFee > 0 && (
+              <tr>
+                <td>{t('checkout.payment_method_fee')}</td>
+                <td>{formatPrice(order.priceBreakdown.paymentMethodFee, order.currency, offer.customerCountry)}</td>
+              </tr>
+            )}
           </tbody>
           <tfoot>
             <tr>
               <td>{t('checkout.total_price')}</td>
               <td>{formatPrice(order.totalPrice, order.currency, offer.customerCountry)}</td>
             </tr>
-            <tr>
-              <td>{t('checkout.applicable_tax', { taxRate: Math.round(order.taxRate * 100) })}</td>
-              <td>{formatPrice(order.priceBreakdown.taxValue, order.currency, offer.customerCountry)}</td>
-            </tr>
+            {order.priceBreakdown.taxValue > 0 && (
+              <tr>
+                <td>{t('checkout.applicable_tax', { taxRate: Math.round(order.taxRate * 100) })}</td>
+                <td>{formatPrice(order.priceBreakdown.taxValue, order.currency, offer.customerCountry)}</td>
+              </tr>
+            )}
           </tfoot>
         </table>
       </div>
