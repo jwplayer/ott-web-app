@@ -50,6 +50,7 @@ const Payment = ({
   const hasMoreTransactions = hiddenTransactionsCount > 0;
   const navigate = useNavigate();
   const location = useLocation();
+  const isGrantedSubscription = activeSubscription?.period === 'granted';
 
   function onCompleteSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'choose-offer'));
@@ -92,16 +93,18 @@ const Payment = ({
               <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
                 <p>
                   <strong>{getTitle(activeSubscription.period)}</strong> <br />
-                  {activeSubscription.status === 'active' && activeSubscription.period !== 'granted'
+                  {activeSubscription.status === 'active' && !isGrantedSubscription
                     ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
                     : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
                 </p>
-                <p className={styles.price}>
-                  <strong>{formatPrice(activeSubscription.nextPaymentPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
-                  <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
-                </p>
+                {!isGrantedSubscription && (
+                  <p className={styles.price}>
+                    <strong>{formatPrice(activeSubscription.nextPaymentPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
+                    <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
+                  </p>
+                )}
               </div>
-              {activeSubscription.status === 'active' && activeSubscription.period !== 'granted' ? (
+              {activeSubscription.status === 'active' && !isGrantedSubscription ? (
                 <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
               ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
@@ -156,10 +159,11 @@ const Payment = ({
               <div className={styles.infoBox} key={transaction.transactionId}>
                 <p className="transactionItem">
                   <strong>{transaction.offerTitle}</strong> <br />
-                  {t('user:payment.price_payed_with', {
-                    price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
-                    method: transaction.paymentMethod,
-                  })}
+                  {!isGrantedSubscription &&
+                    t('user:payment.price_payed_with', {
+                      price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                      method: transaction.paymentMethod,
+                    })}
                 </p>
                 <p>
                   {transaction.transactionId}
