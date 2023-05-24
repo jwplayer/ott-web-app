@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
-import { getSubscriptionSwitches } from '../../stores/CheckoutController';
+import IconButton from '../IconButton/IconButton';
+import ExternalLink from '../../icons/ExternalLink';
 
 import styles from './Payment.module.scss';
 
@@ -27,6 +28,7 @@ type Props = {
   customer: Customer;
   isLoading: boolean;
   offerSwitchesAvailable: boolean;
+  onShowReceiptClick: (transactionId: string) => void;
   panelClassName?: string;
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
@@ -34,6 +36,7 @@ type Props = {
   showAllTransactions: boolean;
   canUpdatePaymentMethod: boolean;
   canRenewSubscription?: boolean;
+  canShowReceipts?: boolean;
 };
 
 const Payment = ({
@@ -47,7 +50,9 @@ const Payment = ({
   panelHeaderClassName,
   onShowAllTransactionsClick,
   showAllTransactions,
+  onShowReceiptClick,
   canRenewSubscription = false,
+  canShowReceipts = false,
   canUpdatePaymentMethod,
   onUpgradeSubscriptionClick,
   offerSwitchesAvailable,
@@ -89,10 +94,6 @@ const Payment = ({
         return t('user:payment.other');
     }
   }
-
-  useEffect(() => {
-    getSubscriptionSwitches();
-  }, []);
 
   return (
     <>
@@ -188,11 +189,18 @@ const Payment = ({
                       method: transaction.paymentMethod,
                     })}
                 </p>
-                <p>
-                  {transaction.transactionId}
-                  <br />
-                  {formatDate(transaction.transactionDate)}
-                </p>
+                <div className={styles.transactionDetails}>
+                  <p>
+                    {transaction.transactionId}
+                    <br />
+                    {formatDate(transaction.transactionDate)}
+                  </p>
+                  {canShowReceipts && (
+                    <IconButton aria-label={t('user:payment.show_receipt')} onClick={() => !isLoading && onShowReceiptClick(transaction.transactionId)}>
+                      <ExternalLink />
+                    </IconButton>
+                  )}
+                </div>
               </div>
             ))}
             {!showAllTransactions && hasMoreTransactions ? (

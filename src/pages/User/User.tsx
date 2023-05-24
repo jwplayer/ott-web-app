@@ -3,9 +3,6 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import { useCheckoutStore } from '../../stores/CheckoutStore';
-import { addQueryParam } from '../../utils/location';
-
 import styles from './User.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
@@ -24,8 +21,11 @@ import AccountComponent from '#components/Account/Account';
 import Button from '#components/Button/Button';
 import Favorites from '#components/Favorites/Favorites';
 import type { PlaylistItem } from '#types/playlist';
-import { logout } from '#src/stores/AccountController';
+import { getReceipt, logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
+import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
+import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import { addQueryParam } from '#src/utils/location';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -40,6 +40,8 @@ const User = (): JSX.Element => {
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
+  const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);
+
   const isLargeScreen = breakpoint > Breakpoint.md;
   const {
     user: customer,
@@ -50,6 +52,7 @@ const User = (): JSX.Element => {
     canUpdateEmail,
     canRenewSubscription,
     canUpdatePaymentMethod,
+    canShowReceipts,
   } = useAccountStore();
   const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
   const location = useLocation();
@@ -63,6 +66,35 @@ const User = (): JSX.Element => {
   const handleUpgradeSubscriptionClick = async () => {
     navigate(addQueryParam(location, 'u', 'upgrade-subscription'));
   };
+
+  const handleShowReceiptClick = async (transactionId: string) => {
+    setIsLoadingReceipt(true);
+
+    try {
+      const receipt = await getReceipt(transactionId);
+
+      if (receipt) {
+        const newWindow = window.open('', `Receipt ${transactionId}`, '');
+        const htmlString = window.atob(receipt);
+
+        if (newWindow) {
+          newWindow.opener = null;
+          newWindow.document.write(htmlString);
+          newWindow.document.close();
+        }
+      }
+    } catch (error: unknown) {
+      throw new Error("Couldn't parse receipt. " + (error instanceof Error ? error.message : ''));
+    }
+
+    setIsLoadingReceipt(false);
+  };
+
+  useEffect(() => {
+    if (accessModel !== 'AVOD') {
+      getSubscriptionSwitches();
+    }
+  }, [accessModel]);
 
   useEffect(() => {
     if (!loading && !customer) {
@@ -152,7 +184,7 @@ const User = (): JSX.Element => {
                   activePaymentDetail={activePayment}
                   transactions={transactions}
                   customer={customer}
-                  isLoading={loading}
+                  isLoading={loading || isLoadingReceipt}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}
                   onShowAllTransactionsClick={() => setShowAllTransactions(true)}
@@ -161,6 +193,8 @@ const User = (): JSX.Element => {
                   canRenewSubscription={canRenewSubscription}
                   onUpgradeSubscriptionClick={handleUpgradeSubscriptionClick}
                   offerSwitchesAvailable={!!offerSwitches.length}
+                  canShowReceipts={canShowReceipts}
+                  onShowReceiptClick={handleShowReceiptClick}
                 />
               ) : (
                 <Navigate to="my-account" />

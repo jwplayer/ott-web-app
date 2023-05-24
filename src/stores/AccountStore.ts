@@ -16,6 +16,7 @@ type AccountStore = {
   canUpdatePaymentMethod: boolean;
   canChangePasswordWithOldPassword: boolean;
   canExportAccountData: boolean;
+  canShowReceipts: boolean;
   setLoading: (loading: boolean) => void;
 };
 
@@ -33,5 +34,6 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   canChangePasswordWithOldPassword: false,
   canExportAccountData: false,
   canUpdatePaymentMethod: false,
+  canShowReceipts: false,
   setLoading: (loading: boolean) => set({ loading }),
 }));

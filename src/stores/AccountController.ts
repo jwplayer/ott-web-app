@@ -80,6 +80,7 @@ export const initializeAccount = async () => {
       canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
+      canShowReceipts: accountService.canShowReceipts,
     });
     accountService.setEnvironment(config);
 
@@ -368,7 +369,14 @@ export const resetPassword = async (email: string, resetUrl: string) => {
 
 export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
   return await useService(async ({ accountService, sandbox = true }) => {
-    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
+    const response = await accountService.changePasswordWithOldPassword(
+      {
+        oldPassword,
+        newPassword,
+        newPasswordConfirmation,
+      },
+      sandbox,
+    );
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
     return response?.responseData;
@@ -469,6 +477,18 @@ export async function exportAccountData() {
     });
   });
 }
+
+export const getReceipt = async (transactionId: string) => {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ subscriptionService, sandbox = true }) => {
+      if (!subscriptionService || !('fetchReceipt' in subscriptionService)) return null;
+
+      const { responseData } = await subscriptionService.fetchReceipt({ transactionId }, sandbox, jwt);
+
+      return responseData;
+    });
+  });
+};
 
 /**
  * Get multiple media items for the given IDs. This function uses watchlists to get several medias via just one request.

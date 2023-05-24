@@ -442,3 +442,5 @@ export const canRenewSubscription = false;
 export const canExportAccountData = true;
 
 export const canUpdatePaymentMethod = false;
+
+export const canShowReceipts = false;

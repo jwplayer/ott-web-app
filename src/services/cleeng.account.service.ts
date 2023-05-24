@@ -232,3 +232,5 @@ export const canRenewSubscription = true;
 export const canExportAccountData = false;
 
 export const canUpdatePaymentMethod = true;
+
+export const canShowReceipts = true;
