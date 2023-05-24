@@ -427,3 +427,5 @@ export const canChangePasswordWithOldPassword = true;
 export const canRenewSubscription = false;
 
 export const canUpdatePaymentMethod = false;
+
+export const canShowReceipts = false;

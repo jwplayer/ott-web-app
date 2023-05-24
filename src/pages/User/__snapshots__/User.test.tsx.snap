@@ -743,11 +743,15 @@ exports[`User Component tests > Payments Page 1`] = `
             <br />
             user:payment.price_payed_with
           </p>
-          <p>
-            11232
-            <br />
-            7/16/2022
-          </p>
+          <div
+            class="_transactionDetails_c57ff5"
+          >
+            <p>
+              11232
+              <br />
+              7/16/2022
+            </p>
+          </div>
         </div>
         <div
           class="_infoBox_c57ff5"
@@ -762,11 +766,15 @@ exports[`User Component tests > Payments Page 1`] = `
             <br />
             user:payment.price_payed_with
           </p>
-          <p>
-            11234
-            <br />
-            11/9/2022
-          </p>
+          <div
+            class="_transactionDetails_c57ff5"
+          >
+            <p>
+              11234
+              <br />
+              11/9/2022
+            </p>
+          </div>
         </div>
       </div>
     </div>
