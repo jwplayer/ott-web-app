@@ -15,7 +15,7 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
-import AdyenContainer from '#src/containers/AdyenContainer/AdyenContainer';
+import AdyenInitialPayment from '#src/containers/AdyenInitialPayment/AdyenInitialPayment';
 
 const Checkout = () => {
   const location = useLocation();
@@ -193,7 +193,7 @@ const Checkout = () => {
       }
 
       return (
-        <AdyenContainer
+        <AdyenInitialPayment
           paymentSuccessUrl={paymentSuccessUrl}
           setUpdatingOrder={setUpdatingOrder}
           setPaymentError={setPaymentError}
