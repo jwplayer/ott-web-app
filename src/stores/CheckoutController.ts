@@ -1,6 +1,13 @@
+import { queryClient } from '../containers/QueryProvider/QueryProvider';
+import * as checkoutService from '../services/cleeng.checkout.service';
+
 import { getOverrideIP } from '../utils/common';
 
 import { subscribeToNotifications } from './NotificationsController';
+import type { SwitchOffer } from './../../types/checkout.d';
+import { useConfigStore } from './ConfigStore';
+import { useAccountStore } from './AccountStore';
+import { reloadActiveSubscription } from './AccountController';
 
 import type {
   AddAdyenPaymentDetailsResponse,
@@ -244,6 +251,46 @@ export const paypalPayment = async (successUrl: string, cancelUrl: string, error
       return response.responseData;
     });
   });
+};
+
+export const getSubscriptionSwitches = async (): Promise<unknown> => {
+  const { cleengSandbox } = useConfigStore.getState().getCleengData();
+  const { user, subscription, auth } = useAccountStore.getState();
+
+  if (!user || !subscription || !auth) return;
+  const response = await checkoutService.getSubscriptionSwitches(
+    {
+      customerId: user.id,
+      offerId: subscription.offerId,
+    },
+    cleengSandbox,
+    auth.jwt,
+  );
+
+  if (!response.responseData.available.length) return;
+
+  const switchOffers = response.responseData.available.map((offer: SwitchOffer) => checkoutService.getOffer({ offerId: offer.toOfferId }, cleengSandbox));
+  const offers = await Promise.all(switchOffers);
+
+  // Sort offers for proper ordering in "Choose Offer" modal when applicable
+  const offerSwitches = offers.sort((a, b) => a?.responseData.offerPrice - b?.responseData.offerPrice).map((item) => item.responseData);
+  useCheckoutStore.setState({ offerSwitches });
+};
+
+export const switchSubscription = async (toOfferId: string, switchDirection: 'upgrade' | 'downgrade') => {
+  const { cleengSandbox } = useConfigStore.getState().getCleengData();
+  const { user, subscription, auth } = useAccountStore.getState();
+  if (!user || !subscription || !auth) return;
+
+  const payload = { toOfferId, customerId: user.id, offerId: subscription.offerId, switchDirection: switchDirection, jwt: auth.jwt };
+
+  await checkoutService.switchSubscription(payload, cleengSandbox, auth.jwt);
+
+  reloadActiveSubscription();
+  queryClient.invalidateQueries(['subscriptions']);
+
+  // clear current offers
+  useCheckoutStore.setState({ offerSwitches: [] });
 };
 
 export const updatePayPalPaymentMethod = async (
