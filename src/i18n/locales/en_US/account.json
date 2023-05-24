@@ -80,9 +80,6 @@
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
   },
-  "payment": {
-    "securityCode": ""
-  },
   "periods": {
     "day": "day",
     "month": "month",

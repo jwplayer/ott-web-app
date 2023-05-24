@@ -81,9 +81,6 @@
     "wrong_combination": "",
     "wrong_email": ""
   },
-  "payment": {
-    "securityCode": ""
-  },
   "periods": {
     "day": "",
     "month": "",

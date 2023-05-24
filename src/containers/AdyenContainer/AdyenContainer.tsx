@@ -2,11 +2,11 @@ import type { CoreOptions } from '@adyen/adyen-web/dist/types/core/types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type DropinElement from '@adyen/adyen-web/dist/types/components/Dropin/Dropin';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '#src/config';
 import Adyen from '#components/Adyen/Adyen';
 import useClientIntegration from '#src/hooks/useClientIntegration';
-import useQueryParam from '#src/hooks/useQueryParam';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import { addQueryParams } from '#src/utils/formatting';
 import type { AdyenPaymentSession } from '#types/checkout';
@@ -26,7 +26,8 @@ export default function AdyenContainer({ setUpdatingOrder, type, setPaymentError
   const { sandbox } = useClientIntegration();
   const navigate = useNavigate();
 
-  const redirectResult = useQueryParam('redirectResult');
+  const [searchParams] = useSearchParams();
+  const redirectResult = searchParams.get('redirectResult');
   const checkPayment = !!redirectResult;
 
   useEffect(() => {

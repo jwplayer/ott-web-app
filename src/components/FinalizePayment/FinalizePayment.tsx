@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 import styles from './FinalizePayment.module.scss';
 
 import Button from '#components/Button/Button';
 import Spinner from '#components/Spinner/Spinner';
 import useEventCallback from '#src/hooks/useEventCallback';
-import useQueryParam from '#src/hooks/useQueryParam';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { replaceQueryParam, removeQueryParam, addQueryParam } from '#src/utils/location';
@@ -19,8 +19,9 @@ const FinalizePayment = () => {
   const location = useLocation();
 
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }));
-  const redirectResult = useQueryParam('redirectResult');
-  const orderIdQueryParam = useQueryParam('orderId');
+  const [searchParams] = useSearchParams();
+  const redirectResult = searchParams.get('redirectResult');
+  const orderIdQueryParam = searchParams.get('orderId');
 
   const [errorMessage, setErrorMessage] = useState<string>();
 
