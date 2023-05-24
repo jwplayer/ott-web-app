@@ -73,6 +73,8 @@ const AccountModal = () => {
         return <PersonalDetails />;
       case 'choose-offer':
         return <ChooseOffer />;
+      case 'upgrade-subscription':
+        return <ChooseOffer />;
       case 'checkout':
         return <Checkout />;
       case 'payment-error':
