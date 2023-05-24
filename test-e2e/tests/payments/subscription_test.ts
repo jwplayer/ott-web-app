@@ -111,8 +111,8 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     I.see('Redeem coupon');
     I.see(props.yearlyOffer.price);
-    I.see('Payment method fee');
-    I.see(props.yearlyOffer.paymentFee);
+    I.dontSee('Payment method fee');
+    I.dontSee(props.yearlyOffer.paymentFee);
     I.see('Total');
     if (props.applicableTax !== 0) {
       I.see('Applicable tax (21%)');
