@@ -47,3 +47,9 @@
     margin-right: 4px;
   }
 }
+
+.upgradeSubscription {
+  @include responsive.mobile-only() {
+    margin-bottom: 8px;
+  }
+}
