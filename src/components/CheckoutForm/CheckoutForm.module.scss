@@ -115,7 +115,7 @@
   }
 
   tfoot {
-    tr:first-child {
+    tr:first-of-type {
       td {
         padding-top: 8px;
         font-weight: var(--body-font-weight-bold);
@@ -123,14 +123,13 @@
       }
     }
 
-    tr:last-child {
+    tr:not(:first-of-type) {
       td {
         font-size: 14px;
       }
     }
   }
-}
-
+  }
 .divider {
   border: none;
   border-top: 1px solid rgba(variables.$white, 0.34);

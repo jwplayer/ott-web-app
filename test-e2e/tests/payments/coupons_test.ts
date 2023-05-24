@@ -66,7 +66,9 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     I.see(formatPrice(-37.5, 'EUR', props.locale));
     I.see(formatPrice(12.5, 'EUR', props.locale));
-    I.see(formatPrice(props.applicableTax, 'EUR', props.locale));
+    if (props.applicableTax !== 0) {
+      I.see(formatPrice(props.applicableTax, 'EUR', props.locale));
+    }
 
     I.fillField('couponCode', 'test100');
     I.click('Apply');
