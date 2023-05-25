@@ -67,6 +67,7 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('#src/i18n/config', () => ({
+  getSupportedLanguages: () => [{ code: 'en', displayName: 'English' }],
   default: {
     t: (str: string) => str,
   },

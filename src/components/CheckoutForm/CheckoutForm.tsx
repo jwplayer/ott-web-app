@@ -60,10 +60,10 @@ const CheckoutForm: React.FC<Props> = ({
   const { t } = useTranslation('account');
 
   const getOfferPeriod = () => {
-    // t('periods.day')
-    // t('periods.week')
-    // t('periods.month')
-    // t('periods.year')
+    // t('periods.day', { count })
+    // t('periods.week', { count })
+    // t('periods.month', { count })
+    // t('periods.year', { count })
     return offer ? t(`periods.${offer.period}`) : '';
   };
 
@@ -71,10 +71,10 @@ const CheckoutForm: React.FC<Props> = ({
     if (offer.freeDays) {
       return t('checkout.days_trial', { count: offer.freeDays });
     } else if (offer.freePeriods) {
-      // t('periods.day')
-      // t('periods.week')
-      // t('periods.month')
-      // t('periods.year')
+      // t('periods.day', { count })
+      // t('periods.week', { count })
+      // t('periods.month', { count })
+      // t('periods.year', { count })
       const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
 
       return t('checkout.periods_trial', { count: offer.freePeriods, period });

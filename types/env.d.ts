@@ -5,6 +5,8 @@ interface ImportMetaEnv {
   readonly APP_PLAYER_ID: string | undefined;
   readonly APP_PLAYER_LICENSE_KEY: string | undefined;
   readonly APP_GITHUB_PUBLIC_BASE_URL: string | undefined;
+  readonly APP_DEFAULT_LANGUAGE: string | undefined;
+  readonly APP_ENABLED_LANGUAGES: string | undefined;
 }
 
 interface ImportMeta {

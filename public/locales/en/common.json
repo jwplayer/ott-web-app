@@ -12,16 +12,16 @@
     "confirm": "Yes"
   },
   "default_site_name": "My OTT Application",
-  "filter_videos_by": "Filter videos by {{ name }}",
+  "filter_videos_by": "Filter videos by {{name}}",
+  "filter_videos_by_genre": "Filter videos by genre",
   "home": "Home",
   "live": "LIVE",
   "now": "Now",
   "optional": "(Optional)",
-  "play_item": "Play {{ title }}",
+  "play_item": "Play {{title}}",
   "series": "series",
   "sign_in": "Sign in",
   "sign_up": "Sign up",
   "slide_left": "Slide left",
-  "slide_right": "Slide right",
-  "filter_videos_by_genre": "Filter videos by genre"
+  "slide_right": "Slide right"
 }

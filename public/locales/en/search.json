@@ -12,8 +12,8 @@
   "start_typing": "Type something in the search box to start searching",
   "suggestions": "Suggestions:",
   "tip_one": "Make sure all words are spelled correctly",
-  "tip_three": "Try different search terms",
   "tip_two": "Make search terms more general",
-  "title": "{{results}} result for \"{{query}}\"",
-  "title_plural": "{{results}} results for \"{{query}}\""
+  "tip_three": "Try different search terms",
+  "title_one": "{{count}} result for \"{{query}}\"",
+  "title_other": "{{count}} results for \"{{query}}\""
 }

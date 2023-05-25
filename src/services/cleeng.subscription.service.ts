@@ -43,6 +43,6 @@ export const getTransactions: GetTransactions = async ({ customerId, limit, offs
   return get(sandbox, addQueryParams(`/customers/${customerId}/transactions`, { limit, offset }), { authenticate: true });
 };
 
-export const fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox, jwt) => {
-  return get(sandbox, `/receipt/${transactionId}`, jwt);
+export const fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox) => {
+  return get(sandbox, `/receipt/${transactionId}`, { authenticate: true });
 };

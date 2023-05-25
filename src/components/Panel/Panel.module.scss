@@ -1,0 +1,15 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+
+.panel {
+  width: 100%;
+  height: 100%;
+  padding: variables.$base-spacing 0;
+  font-weight: normal;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 18px;
+  letter-spacing: 0.15px;
+  background: theme.$modal-bg;
+  box-shadow: theme.$panel-box-shadow;
+}
