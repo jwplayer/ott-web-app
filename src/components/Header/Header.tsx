@@ -16,6 +16,10 @@ import UserMenu from '#components/UserMenu/UserMenu';
 import { getPublicUrl } from '#src/utils/domHelpers';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import IconButton from '#components/IconButton/IconButton';
+import Language from '#src/icons/Language';
+import LanguageMenu from '#components/LanguageMenu/LanguageMenu';
+import type { LanguageDefinition } from '#src/i18n/config';
+import Panel from '#components/Panel/Panel';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -31,11 +35,16 @@ type Props = {
   onLoginButtonClick?: () => void;
   onSignUpButtonClick?: () => void;
   toggleUserMenu: (value: boolean) => void;
+  toggleLanguageMenu: (value: boolean) => void;
   children?: ReactFragment;
   isLoggedIn: boolean;
   userMenuOpen: boolean;
+  languageMenuOpen: boolean;
   canLogin: boolean;
   showPaymentsMenuItem: boolean;
+  supportedLanguages: LanguageDefinition[];
+  currentLanguage: LanguageDefinition | undefined;
+  onLanguageClick: (code: string) => void;
 };
 
 const Header: React.FC<Props> = ({
@@ -48,55 +57,59 @@ const Header: React.FC<Props> = ({
   onSearchButtonClick,
   searchEnabled,
   onCloseSearchButtonClick,
-  onLoginButtonClick,
   onSignUpButtonClick,
   isLoggedIn,
   userMenuOpen,
+  languageMenuOpen,
   toggleUserMenu,
+  toggleLanguageMenu,
   canLogin = false,
   showPaymentsMenuItem,
+  supportedLanguages,
+  currentLanguage,
+  onLanguageClick,
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
-    [styles.brandCentered]: breakpoint <= Breakpoint.sm,
-    [styles.mobileSearchActive]: searchActive && breakpoint <= Breakpoint.sm,
+    [styles.searchActive]: searchActive,
   });
+  // only show the language dropdown when there are other languages to choose from
+  const showLanguageSwitcher = supportedLanguages.length > 1;
 
-  const search =
-    breakpoint <= Breakpoint.sm ? (
-      searchActive ? (
-        <div className={styles.mobileSearch}>
-          <SearchBar {...searchBarProps} />
-          <IconButton
-            className={styles.iconButton}
-            aria-label="Close search"
-            onClick={() => {
-              if (onCloseSearchButtonClick) {
-                onCloseSearchButtonClick();
-              }
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-      ) : (
+  const renderSearch = () => {
+    if (!searchEnabled) return null;
+
+    return searchActive ? (
+      <div className={styles.searchContainer}>
+        <SearchBar {...searchBarProps} />
         <IconButton
           className={styles.iconButton}
-          aria-label="Open search"
+          aria-label="Close search"
           onClick={() => {
-            if (onSearchButtonClick) {
-              onSearchButtonClick();
+            if (onCloseSearchButtonClick) {
+              onCloseSearchButtonClick();
             }
           }}
         >
-          <SearchIcon />
+          <CloseIcon />
         </IconButton>
-      )
+      </div>
     ) : (
-      <SearchBar {...searchBarProps} />
+      <IconButton
+        className={classNames(styles.iconButton, styles.actionButton)}
+        aria-label="Open search"
+        onClick={() => {
+          if (onSearchButtonClick) {
+            onSearchButtonClick();
+          }
+        }}
+      >
+        <SearchIcon />
+      </IconButton>
     );
+  };
 
   const renderUserActions = () => {
     if (!canLogin || breakpoint <= Breakpoint.sm) return null;
@@ -104,21 +117,50 @@ const Header: React.FC<Props> = ({
     return isLoggedIn ? (
       <React.Fragment>
         <IconButton
-          className={classNames(styles.iconButton, styles.userMenuButton)}
+          className={classNames(styles.iconButton, styles.actionButton)}
           aria-label={t('open_user_menu')}
           onClick={() => toggleUserMenu(!userMenuOpen)}
         >
           <AccountCircle />
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
-          <UserMenu onClick={() => toggleUserMenu(false)} showPaymentsItem={showPaymentsMenuItem} inPopover />
+          <Panel>
+            <UserMenu onClick={() => toggleUserMenu(false)} showPaymentsItem={showPaymentsMenuItem} small />
+          </Panel>
         </Popover>
       </React.Fragment>
     ) : (
       <div className={styles.buttonContainer}>
-        <Button onClick={onLoginButtonClick} label={t('sign_in')} />
         <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
       </div>
+    );
+  };
+
+  const renderLanguageDropdown = () => {
+    if (!showLanguageSwitcher) return null;
+
+    return (
+      <React.Fragment>
+        <IconButton
+          className={classNames(styles.iconButton, styles.actionButton)}
+          aria-label={t('select_language')}
+          onClick={() => toggleLanguageMenu(!languageMenuOpen)}
+        >
+          <Language />
+        </IconButton>
+        <Popover isOpen={languageMenuOpen} onClose={() => toggleLanguageMenu(false)}>
+          <Panel>
+            <LanguageMenu
+              onClick={(code) => {
+                onLanguageClick(code);
+                toggleLanguageMenu(false);
+              }}
+              languages={supportedLanguages}
+              currentLanguage={currentLanguage}
+            />
+          </Panel>
+        </Popover>
+      </React.Fragment>
     );
   };
 
@@ -138,8 +180,11 @@ const Header: React.FC<Props> = ({
         <nav className={styles.nav} aria-label="menu">
           {logoLoaded || !logoSrc ? children : null}
         </nav>
-        <div className={styles.search}>{searchEnabled ? search : null}</div>
-        {renderUserActions()}
+        <div className={styles.actions}>
+          {renderSearch()}
+          {renderLanguageDropdown()}
+          {renderUserActions()}
+        </div>
       </div>
     </header>
   );

@@ -6,7 +6,7 @@
   top: 55px;
   right: 5px;
   z-index: variables.$header-z-index;
-  width: 250px;
+  min-width: 180px;
   overflow: hidden;
   border-radius: 5px 5px;
   > div {

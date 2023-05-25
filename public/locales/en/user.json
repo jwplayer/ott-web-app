@@ -51,8 +51,8 @@
     "daily_subscription": "Daily subscription",
     "expiry_date": "Expiry date",
     "granted_subscription": "Granted subscription",
-    "hidden_transactions": "One more transaction",
-    "hidden_transactions_plural": "{{count}} more transactions",
+    "hidden_transactions_one": "One more transaction",
+    "hidden_transactions_other": "{{count}} more transactions",
     "monthly_subscription": "Monthly subscription",
     "next_billing_date_on": "Next billing date is on {{date}}",
     "no_payment_methods": "No payment methods",
@@ -62,14 +62,15 @@
     "other": "other",
     "payment_method": "Payment method",
     "price_payed_with": "{{price}} payed with {{method}}",
+    "price_payed_with_card": "Price payed with card",
     "renew_subscription": "Renew subscription",
     "security_code": "Security code",
     "show_all": "Show all",
+    "show_receipt": "Show receipt",
     "subscription_details": "Subscription details",
     "subscription_expires_on": "This plan will expire on {{date}}",
     "transactions": "Transactions",
     "update_payment_details": "Update payment details",
-    "weekly_subscription": "Weekly subscription",
-    "price_payed_with_card": "Price payed with card"
+    "weekly_subscription": "Weekly subscription"
   }
 }

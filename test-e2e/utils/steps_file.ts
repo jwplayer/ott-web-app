@@ -19,8 +19,7 @@ const stepsObj = {
     this.waitForLoaderDone();
   },
   login: async function (this: CodeceptJS.I, { email, password }: { email: string; password: string }) {
-    await this.openSignInMenu();
-    this.click('Sign in');
+    await this.openSignInModal();
 
     this.waitForElement('input[name=email]', normalTimeout);
     this.fillField('email', email);
@@ -67,9 +66,7 @@ const stepsObj = {
     } else {
       context = { email: passwordUtils.createRandomEmail(), password: passwordUtils.createRandomPassword() };
 
-      await this.openSignInMenu();
-      this.click('Sign up');
-
+      await this.openSignUpModal();
       await this.fillRegisterForm(context, onRegister);
     }
 
@@ -143,6 +140,29 @@ const stepsObj = {
     } else {
       this.waitForInvisible(loaderElement, timeout);
     }
+  },
+  openSignUpModal: async function (this: CodeceptJS.I) {
+    const { isMobile } = await this.openSignInMenu();
+
+    // the sign up button is visible in header and in the mobile menu
+    this.click('Sign up');
+
+    return { isMobile };
+  },
+  openSignInModal: async function (this: CodeceptJS.I) {
+    const { isMobile } = await this.openSignInMenu();
+
+    if (isMobile) {
+      // sign in via the Sign-in button in the main menu
+      this.click('Sign in');
+    } else {
+      // sign in via the Sign-up modal bottom link
+      this.click('Sign up');
+      this.waitForElement('input[name=email]', normalTimeout);
+      this.click('Sign in');
+    }
+
+    return { isMobile };
   },
   openSignInMenu: async function (this: CodeceptJS.I) {
     const isMobile = await this.isMobile();
