@@ -117,8 +117,8 @@ export type FetchReceiptPayload = {
 
 export type FetchReceiptResponse = string;
 
-type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
-type UpdateSubscription = CleengAuthRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
-type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
-type GetTransactions = CleengAuthRequest<GetTransactionsPayload, GetTransactionsResponse>;
-type FetchReceipt = CleengAuthRequest<FetchReceiptPayload, FetchReceiptResponse>;
+type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
+type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
+type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
+type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
+type FetchReceipt = CleengRequest<FetchReceiptPayload, FetchReceiptResponse>;

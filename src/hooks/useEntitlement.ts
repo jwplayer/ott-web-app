@@ -37,11 +37,10 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
 
   const { sandbox } = useClientIntegration();
   const { accessModel } = useConfigStore();
-  const { user, subscription, auth } = useAccountStore(
-    ({ user, subscription, auth }) => ({
+  const { user, subscription } = useAccountStore(
+    ({ user, subscription }) => ({
       user,
       subscription,
-      auth,
     }),
     shallow,
   );
@@ -53,14 +52,14 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => checkoutService?.getEntitlements({ offerId }, sandbox, auth?.jwt || ''),
-      enabled: !!playlistItem && !!auth?.jwt && !!offerId && !isPreEntitled,
+      queryFn: () => checkoutService?.getEntitlements({ offerId }, sandbox),
+      enabled: !!playlistItem && !!user && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
     })),
   );
 
   // when the user is logged out the useQueries will be disabled but could potentially return its cached data
-  const isMediaEntitled = !!auth?.jwt && mediaEntitlementQueries.some((item) => item.isSuccess && (item.data as QueryResult)?.responseData?.accessGranted);
+  const isMediaEntitled = !!user && mediaEntitlementQueries.some((item) => item.isSuccess && (item.data as QueryResult)?.responseData?.accessGranted);
   const isMediaEntitlementLoading = !isMediaEntitled && mediaEntitlementQueries.some((item) => item.isLoading);
 
   const isEntitled = !!playlistItem && (isPreEntitled || isMediaEntitled);

@@ -33,7 +33,7 @@ const AccountModal = () => {
   const viewParam = useQueryParam('u');
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
-  const { loading, auth } = useAccountStore(({ loading, auth }) => ({ loading, auth }), shallow);
+  const { loading, user } = useAccountStore(({ loading, user }) => ({ loading, user }), shallow);
   const config = useConfigStore((s) => s.config);
   const {
     assets: { banner },
@@ -47,17 +47,17 @@ const AccountModal = () => {
   }, [viewParam]);
 
   useEffect(() => {
-    if (!!viewParam && !loading && !auth && !isPublicView) {
+    if (!!viewParam && !loading && !user && !isPublicView) {
       navigate(addQueryParam(location, 'u', 'login'));
     }
-  }, [viewParam, navigate, location, loading, auth, isPublicView]);
+  }, [viewParam, navigate, location, loading, user, isPublicView]);
 
   const closeHandler = () => {
     navigate(removeQueryParam(location, 'u'));
   };
 
   const renderForm = () => {
-    if (!auth && loading && !isPublicView) {
+    if (!user && loading && !isPublicView) {
       return (
         <div style={{ height: 300 }}>
           <LoadingOverlay inline />

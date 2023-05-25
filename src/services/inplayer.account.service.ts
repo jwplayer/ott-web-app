@@ -34,9 +34,22 @@ enum InPlayerEnv {
   Daily = 'daily',
 }
 
-export const setEnvironment = (config: Config) => {
+export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
+};
+
+export const getAuthData = async () => {
+  if (InPlayer.Account.isAuthenticated()) {
+    const credentials = InPlayer.Account.getToken().toObject();
+
+    return {
+      jwt: credentials.token,
+      refreshToken: credentials.refreshToken,
+    } as AuthData;
+  }
+
+  return null;
 };
 
 export const login: Login = async ({ config, email, password }) => {
@@ -115,8 +128,6 @@ export const getUser = async () => {
     throw new Error('Failed to fetch user data.');
   }
 };
-
-export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
 
 export const updateCustomer: UpdateCustomer = async (customer) => {
   try {
@@ -204,7 +215,7 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
 };
 
 export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
-  return (await updateCustomer(metadata, true, '')) as ServiceResponse<Capture>;
+  return (await updateCustomer(metadata, true)) as ServiceResponse<Capture>;
 };
 
 export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
@@ -384,7 +395,6 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   const { access_token: jwt } = auth;
   return {
     jwt,
-    customerToken: '',
     refreshToken: '',
   };
 }

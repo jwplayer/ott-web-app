@@ -1,7 +1,6 @@
 import { getOverrideIP } from '../utils/common';
 
 import { subscribeToNotifications } from './NotificationsController';
-import type { SwitchOffer } from './../../types/checkout.d';
 import { useAccountStore } from './AccountStore';
 import { reloadActiveSubscription } from './AccountController';
 
@@ -22,9 +21,10 @@ import type {
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import useAccount from '#src/hooks/useAccount';
 import useService from '#src/hooks/useService';
+import type { SwitchOffer } from '#types/checkout.d';
 
 export const createOrder = async (offer: Offer, paymentMethodId?: number): Promise<unknown> => {
-  return await useAccount(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ customer }) => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
@@ -37,7 +37,7 @@ export const createOrder = async (offer: Offer, paymentMethodId?: number): Promi
         paymentMethodId,
       };
 
-      const response = await checkoutService.createOrder(createOrderArgs, sandbox, jwt);
+      const response = await checkoutService.createOrder(createOrderArgs, sandbox);
 
       if (response?.errors?.length > 0) {
         useCheckoutStore.getState().setOrder(null);
@@ -51,7 +51,7 @@ export const createOrder = async (offer: Offer, paymentMethodId?: number): Promi
 };
 
 export const updateOrder = async (order: Order, paymentMethodId?: number, couponCode?: string | null): Promise<unknown> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
@@ -62,8 +62,7 @@ export const updateOrder = async (order: Order, paymentMethodId?: number, coupon
         couponCode,
       };
 
-      const response = await checkoutService.updateOrder(updateOrderPayload, sandbox, jwt);
-
+      const response = await checkoutService.updateOrder(updateOrderPayload, sandbox);
       if (response.errors.length > 0) {
         // clear the order when the order doesn't exist on the server
         if (response.errors[0].includes(`Order with ${order.id} not found`)) {
@@ -81,7 +80,7 @@ export const updateOrder = async (order: Order, paymentMethodId?: number, coupon
 };
 
 export const getPaymentMethods = async (): Promise<PaymentMethod[]> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true }) => {
       if (!checkoutService) throw new Error('checkout service is not available');
 
@@ -89,7 +88,7 @@ export const getPaymentMethods = async (): Promise<PaymentMethod[]> => {
 
       if (paymentMethods) return paymentMethods; // already fetched payment methods
 
-      const response = await checkoutService.getPaymentMethods(sandbox, jwt);
+      const response = await checkoutService.getPaymentMethods(sandbox);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -101,7 +100,7 @@ export const getPaymentMethods = async (): Promise<PaymentMethod[]> => {
 };
 
 export const paymentWithoutDetails = async (): Promise<unknown> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!checkoutService) throw new Error('checkout service is not available');
 
@@ -110,7 +109,7 @@ export const paymentWithoutDetails = async (): Promise<unknown> => {
       if (!order) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
 
-      const response = await checkoutService.paymentWithoutDetails({ orderId: order.id }, sandbox, jwt);
+      const response = await checkoutService.paymentWithoutDetails({ orderId: order.id }, sandbox);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
       if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
@@ -132,15 +131,13 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData)
       // subscribe to listen to inplayer websocket notifications
       await subscribeToNotifications(customer?.uuid);
 
-      const response = await checkoutService.directPostCardPayment(cardPaymentPayload, order);
-
-      return response;
+      return await checkoutService.directPostCardPayment(cardPaymentPayload, order);
     });
   });
 };
 
 export const createAdyenPaymentSession = async (returnUrl: string, isInitialPayment: boolean = true): Promise<AdyenPaymentSession> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
 
@@ -157,7 +154,6 @@ export const createAdyenPaymentSession = async (returnUrl: string, isInitialPaym
           returnUrl: returnUrl,
         },
         sandbox,
-        jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -168,7 +164,7 @@ export const createAdyenPaymentSession = async (returnUrl: string, isInitialPaym
 };
 
 export const initialAdyenPayment = async (paymentMethod: AdyenPaymentMethod, returnUrl: string): Promise<InitialAdyenPayment> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
 
@@ -186,7 +182,6 @@ export const initialAdyenPayment = async (paymentMethod: AdyenPaymentMethod, ret
           customerIP: getOverrideIP(),
         },
         sandbox,
-        jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -197,7 +192,7 @@ export const initialAdyenPayment = async (paymentMethod: AdyenPaymentMethod, ret
 };
 
 export const finalizeAdyenPayment = async (details: unknown, orderId?: number, paymentData?: string): Promise<FinalizeAdyenPayment> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!orderId) throw new Error('No order created');
       if (!authProviderId) throw new Error('auth provider is not configured');
@@ -211,7 +206,6 @@ export const finalizeAdyenPayment = async (details: unknown, orderId?: number, p
           paymentData,
         },
         sandbox,
-        jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -222,7 +216,7 @@ export const finalizeAdyenPayment = async (details: unknown, orderId?: number, p
 };
 
 export const paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string, couponCode: string = ''): Promise<PaymentWithPayPalResponse> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
 
@@ -239,7 +233,6 @@ export const paypalPayment = async (successUrl: string, cancelUrl: string, error
           couponCode,
         },
         sandbox,
-        jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -250,7 +243,7 @@ export const paypalPayment = async (successUrl: string, cancelUrl: string, error
 };
 
 export const getSubscriptionSwitches = async (): Promise<unknown> => {
-  return await useAccount(async ({ customerId, auth: { jwt } }) => {
+  return await useAccount(async ({ customerId }) => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
@@ -265,7 +258,6 @@ export const getSubscriptionSwitches = async (): Promise<unknown> => {
           offerId: subscription.offerId,
         },
         sandbox,
-        jwt,
       );
 
       if (!response.responseData.available.length) return;
@@ -281,7 +273,7 @@ export const getSubscriptionSwitches = async (): Promise<unknown> => {
 };
 
 export const switchSubscription = async (toOfferId: string, switchDirection: 'upgrade' | 'downgrade'): Promise<unknown> => {
-  return await useAccount(async ({ customerId, auth: { jwt } }) => {
+  return await useAccount(async ({ customerId }) => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
@@ -292,7 +284,7 @@ export const switchSubscription = async (toOfferId: string, switchDirection: 'up
 
       const SwitchSubscriptionPayload = { toOfferId, customerId: customerId, offerId: subscription.offerId, switchDirection: switchDirection };
 
-      await checkoutService.switchSubscription(SwitchSubscriptionPayload, sandbox, jwt);
+      await checkoutService.switchSubscription(SwitchSubscriptionPayload, sandbox);
 
       reloadActiveSubscription();
       // clear current offers
@@ -308,7 +300,7 @@ export const updatePayPalPaymentMethod = async (
   paymentMethodId: number,
   currentPaymentId?: number,
 ) => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
@@ -322,13 +314,12 @@ export const updatePayPalPaymentMethod = async (
           errorUrl,
         },
         sandbox,
-        jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
       if (currentPaymentId) {
-        await checkoutService.deletePaymentMethod({ paymentDetailsId: currentPaymentId }, sandbox, jwt);
+        await checkoutService.deletePaymentMethod({ paymentDetailsId: currentPaymentId }, sandbox);
       }
 
       return response.responseData;
@@ -341,7 +332,7 @@ export const addAdyenPaymentDetails = async (
   paymentMethodId: number,
   returnUrl: string,
 ): Promise<AddAdyenPaymentDetailsResponse> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
@@ -356,7 +347,6 @@ export const addAdyenPaymentDetails = async (
           customerIP: getOverrideIP(),
         },
         sandbox,
-        jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -367,13 +357,13 @@ export const addAdyenPaymentDetails = async (
 };
 
 export const finalizeAdyenPaymentDetails = async (details: unknown, paymentMethodId: number, paymentData?: string): Promise<FinalizeAdyenPaymentDetails> => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
       if (!('initialAdyenPayment' in checkoutService)) throw new Error('finalizeAddedAdyenPaymentDetails is not available in checkout service');
 
-      const response = await checkoutService.finalizeAdyenPaymentDetails({ paymentMethodId, details, paymentData }, sandbox, jwt);
+      const response = await checkoutService.finalizeAdyenPaymentDetails({ paymentMethodId, details, paymentData }, sandbox);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
