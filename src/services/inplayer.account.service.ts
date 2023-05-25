@@ -440,3 +440,5 @@ export const canChangePasswordWithOldPassword = true;
 export const canRenewSubscription = false;
 
 export const canExportAccountData = true;
+
+export const canUpdatePaymentMethod = false;

@@ -13,6 +13,7 @@ type AccountStore = {
   publisherConsents: Consent[] | null;
   canUpdateEmail: boolean;
   canRenewSubscription: boolean;
+  canUpdatePaymentMethod: boolean;
   canChangePasswordWithOldPassword: boolean;
   canExportAccountData: boolean;
   setLoading: (loading: boolean) => void;
@@ -31,5 +32,6 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   canRenewSubscription: false,
   canChangePasswordWithOldPassword: false,
   canExportAccountData: false,
+  canUpdatePaymentMethod: false,
   setLoading: (loading: boolean) => set({ loading }),
 }));

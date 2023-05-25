@@ -230,3 +230,5 @@ export const canChangePasswordWithOldPassword = false;
 export const subscribeToNotifications = async () => true;
 export const canRenewSubscription = true;
 export const canExportAccountData = false;
+
+export const canUpdatePaymentMethod = true;

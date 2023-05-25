@@ -12,6 +12,7 @@ import { formatDate, formatPrice } from '#src/utils/formatting';
 import { addQueryParam } from '#src/utils/location';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { AccessModel } from '#types/Config';
+import PayPal from '#src/icons/PayPal';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -26,6 +27,7 @@ type Props = {
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
   showAllTransactions: boolean;
+  canUpdatePaymentMethod: boolean;
   canRenewSubscription?: boolean;
 };
 
@@ -41,6 +43,7 @@ const Payment = ({
   onShowAllTransactionsClick,
   showAllTransactions,
   canRenewSubscription = false,
+  canUpdatePaymentMethod,
 }: Props): JSX.Element => {
   const { t } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -117,21 +120,30 @@ const Payment = ({
           <h3>{t('user:payment.payment_method')}</h3>
         </div>
         {activePaymentDetail ? (
-          <div key={activePaymentDetail.id}>
-            <TextField
-              label={t('user:payment.card_number')}
-              value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
-              editing={false}
-            />
-            <div className={styles.cardDetails}>
-              <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
-              <TextField label={t('user:payment.security_code')} value={'******'} editing={false} />
+          activePaymentDetail.paymentMethod === 'paypal' ? (
+            <div className={styles.paypal}>
+              <PayPal /> {t('account:payment.paypal')}
             </div>
-          </div>
+          ) : (
+            <div key={activePaymentDetail.id}>
+              <TextField
+                label={t('user:payment.card_number')}
+                value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
+                editing={false}
+              />
+              <div className={styles.cardDetails}>
+                <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
+                <TextField label={t('user:payment.security_code')} value={'******'} editing={false} />
+              </div>
+            </div>
+          )
         ) : (
           <div>
             <p>{!isLoading && t('user:payment.no_payment_methods')}</p>
           </div>
+        )}
+        {canUpdatePaymentMethod && (
+          <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(addQueryParam(location, 'u', 'payment-method'))} />
         )}
       </div>
       <div className={panelClassName}>

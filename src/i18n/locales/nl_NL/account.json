@@ -81,6 +81,14 @@
     "wrong_combination": "",
     "wrong_email": ""
   },
+  "payment": {
+    "securityCode": "",
+    "back_to_profile": "",
+    "credit_card": "",
+    "paypal": "",
+    "update_payment_details": "",
+    "update_payment_success": ""
+  },
   "periods": {
     "day": "",
     "month": "",

@@ -1,9 +1,12 @@
-import { get, post, patch } from './cleeng.service';
+import { get, post, patch, remove } from './cleeng.service';
 import { getLocales } from './cleeng.account.service';
 
 import type {
+  AddAdyenPaymentDetails,
   CreateOrder,
   CreateOrderPayload,
+  DeletePaymentMethod,
+  FinalizeAdyenPaymentDetails,
   GetAdyenPaymentSession,
   GetEntitlements,
   GetFinalizeAdyenPayment,
@@ -15,6 +18,7 @@ import type {
   PaymentWithoutDetails,
   PaymentWithPayPal,
   UpdateOrder,
+  UpdatePaymentWithPayPal,
 } from '#types/checkout';
 import { getOverrideIP } from '#src/utils/common';
 
@@ -97,6 +101,20 @@ export const initialAdyenPayment: GetInitialAdyenPayment = async (payload, sandb
 
 export const finalizeAdyenPayment: GetFinalizeAdyenPayment = async (payload, sandbox, jwt) =>
   post(sandbox, '/connectors/adyen/initial-payment/finalize', JSON.stringify(payload), jwt);
+
+export const updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal = async (payload, sandbox, jwt) => {
+  return post(sandbox, '/connectors/paypal/v1/payment_details/tokens', JSON.stringify(payload), jwt);
+};
+
+export const deletePaymentMethod: DeletePaymentMethod = async (payload, sandbox, jwt) => {
+  return remove(sandbox, `/payment_details/${payload.paymentDetailsId}`, jwt);
+};
+
+export const addAdyenPaymentDetails: AddAdyenPaymentDetails = async (payload, sandbox, jwt) =>
+  post(sandbox, '/connectors/adyen/payment-details', JSON.stringify(payload), jwt);
+
+export const finalizeAdyenPaymentDetails: FinalizeAdyenPaymentDetails = async (payload, sandbox, jwt) =>
+  post(sandbox, '/connectors/adyen/payment-details/finalize', JSON.stringify(payload), jwt);
 
 export const cardPaymentProvider = 'adyen';
 

@@ -77,6 +77,7 @@ export const initializeAccount = async () => {
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
+      canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
     });
@@ -428,6 +429,7 @@ export async function checkEntitlements(offerId?: string): Promise<unknown> {
 
 export async function reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> {
   useAccountStore.setState({ loading: true });
+
   return await useAccount(async ({ customerId, auth: { jwt } }) => {
     return await useService(async ({ subscriptionService, sandbox = true, config }) => {
       if (!subscriptionService) throw new Error('subscription service is not configured');
