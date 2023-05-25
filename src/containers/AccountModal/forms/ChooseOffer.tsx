@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { mixed, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
-
-import useQueryParam from '../../../hooks/useQueryParam';
-import { switchSubscription } from '../../../stores/CheckoutController';
-import { useAccountStore } from '../../../stores/AccountStore';
 
 import useOffers from '#src/hooks/useOffers';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
@@ -14,7 +10,24 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import useQueryParam from '#src/hooks/useQueryParam';
+import { switchSubscription } from '#src/stores/CheckoutController';
+import { useAccountStore } from '#src/stores/AccountStore';
 import type { ChooseOfferFormData } from '#types/account';
+import type { Subscription } from '#types/subscription';
+import useEventCallback from '#src/hooks/useEventCallback';
+
+const determineSwitchDirection = (subscription: Subscription | null) => {
+  const currentPeriod = subscription?.period;
+
+  if (currentPeriod === 'month') {
+    return 'upgrade';
+  } else if (currentPeriod === 'year') {
+    return 'downgrade';
+  } else {
+    return 'upgrade'; // Default to 'upgrade' if the period is not 'month' or 'year'
+  }
+};
 
 const ChooseOffer = () => {
   const navigate = useNavigate();
@@ -36,45 +49,46 @@ const ChooseOffer = () => {
     offerId: defaultOfferId,
   };
 
-  const determineSwitchDirection = () => {
-    const currentPeriod = subscription?.period;
+  const closeModal = useEventCallback((replace = false) => {
+    navigate(removeQueryParam(location, 'u'), { replace });
+  });
 
-    if (currentPeriod === 'month') {
-      return 'upgrade';
-    } else if (currentPeriod === 'year') {
-      return 'downgrade';
-    } else {
-      return 'upgrade'; // Default to 'upgrade' if the period is not 'month' or 'year'
-    }
-  };
+  const toCheckout = useEventCallback(() => {
+    navigate(addQueryParam(location, 'u', 'checkout'));
+  });
 
-  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = async ({ offerId }, { setSubmitting, setErrors }) => {
-    const offer = offerId && offersDict[offerId];
+  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = useCallback(
+    async ({ offerId }, { setSubmitting, setErrors }) => {
+      const offer = offerId && offersDict[offerId];
 
-    if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
+      if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
 
-    if (isOfferSwitch) {
-      const targetOffer = offerSwitches.find((offer) => offer.offerId === offerId);
-      const targetOfferId = targetOffer?.offerId || '';
+      if (isOfferSwitch) {
+        const targetOffer = offerSwitches.find((offer) => offer.offerId === offerId);
+        const targetOfferId = targetOffer?.offerId || '';
 
-      await switchSubscription(targetOfferId, determineSwitchDirection());
-      navigate(removeQueryParam(location, 'u'));
-    } else {
-      const selectedOffer = availableOffers.find((offer) => offer.offerId === offerId) || null;
+        await switchSubscription(targetOfferId, determineSwitchDirection(subscription));
+        closeModal();
+      } else {
+        const selectedOffer = availableOffers.find((offer) => offer.offerId === offerId) || null;
 
-      setOffer(selectedOffer);
-      updateOffer(selectedOffer);
-      setSubmitting(false);
-      navigate(addQueryParam(location, 'u', 'checkout'));
-    }
-  };
+        setOffer(selectedOffer);
+        updateOffer(selectedOffer);
+        setSubmitting(false);
+        toCheckout();
+      }
+    },
+    [availableOffers, closeModal, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, toCheckout, updateOffer],
+  );
 
   const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
 
   useEffect(() => {
     // close auth modal when there are no offers defined in the config
-    if (!isLoading && !offers.length) navigate(removeQueryParam(location, 'u'), { replace: true });
-  }, [isLoading, offers, location, navigate]);
+    if (!isLoading && !offers.length) {
+      closeModal(true);
+    }
+  }, [isLoading, offers, closeModal]);
 
   useEffect(() => {
     if (!isOfferSwitch) setValue('offerId', defaultOfferId);
