@@ -1,3 +1,12 @@
+# [4.10.0](https://github.com/jwplayer/ott-web-app/compare/v4.9.0...v4.10.0) (2023-05-25)
+
+
+### Features
+
+* export account data initial implementation ([84628b2](https://github.com/jwplayer/ott-web-app/commit/84628b2b272e6ac2e48466a93b1a53c7f798ee88))
+
+
+
 # [4.9.0](https://github.com/jwplayer/ott-web-app/compare/v4.8.0...v4.9.0) (2023-05-24)
 
 
