@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
+
+import { useCheckoutStore } from '../../stores/CheckoutStore';
+import { addQueryParam } from '../../utils/location';
 
 import styles from './User.module.scss';
 
@@ -48,12 +51,18 @@ const User = (): JSX.Element => {
     canRenewSubscription,
     canUpdatePaymentMethod,
   } = useAccountStore();
+  const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
+  const location = useLocation();
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL(playlistItem));
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await logout();
   }, []);
+
+  const handleUpgradeSubscriptionClick = async () => {
+    navigate(addQueryParam(location, 'u', 'upgrade-subscription'));
+  };
 
   useEffect(() => {
     if (!loading && !customer) {
@@ -150,6 +159,8 @@ const User = (): JSX.Element => {
                   showAllTransactions={showAllTransactions}
                   canUpdatePaymentMethod={canUpdatePaymentMethod}
                   canRenewSubscription={canRenewSubscription}
+                  onUpgradeSubscriptionClick={handleUpgradeSubscriptionClick}
+                  offerSwitchesAvailable={!!offerSwitches.length}
                 />
               ) : (
                 <Navigate to="my-account" />

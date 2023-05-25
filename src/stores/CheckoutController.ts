@@ -1,6 +1,9 @@
 import { getOverrideIP } from '../utils/common';
 
 import { subscribeToNotifications } from './NotificationsController';
+import type { SwitchOffer } from './../../types/checkout.d';
+import { useAccountStore } from './AccountStore';
+import { reloadActiveSubscription } from './AccountController';
 
 import type {
   AddAdyenPaymentDetailsResponse,
@@ -242,6 +245,58 @@ export const paypalPayment = async (successUrl: string, cancelUrl: string, error
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
       return response.responseData;
+    });
+  });
+};
+
+export const getSubscriptionSwitches = async (): Promise<unknown> => {
+  return await useAccount(async ({ customerId, auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
+      if (!('getSubscriptionSwitches' in checkoutService)) return;
+      const { subscription } = useAccountStore.getState();
+
+      if (!subscription) return;
+
+      const response = await checkoutService.getSubscriptionSwitches(
+        {
+          customerId: customerId,
+          offerId: subscription.offerId,
+        },
+        sandbox,
+        jwt,
+      );
+
+      if (!response.responseData.available.length) return;
+
+      const switchOffers = response.responseData.available.map((offer: SwitchOffer) => checkoutService.getOffer({ offerId: offer.toOfferId }, sandbox));
+      const offers = await Promise.all(switchOffers);
+
+      // Sort offers for proper ordering in "Choose Offer" modal when applicable
+      const offerSwitches = offers.sort((a, b) => a?.responseData.offerPrice - b?.responseData.offerPrice).map((item) => item.responseData);
+      useCheckoutStore.setState({ offerSwitches });
+    });
+  });
+};
+
+export const switchSubscription = async (toOfferId: string, switchDirection: 'upgrade' | 'downgrade'): Promise<unknown> => {
+  return await useAccount(async ({ customerId, auth: { jwt } }) => {
+    return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
+      if (!authProviderId) throw new Error('auth provider is not configured');
+      if (!checkoutService) throw new Error('checkout service is not available');
+      if (!('switchSubscription' in checkoutService)) throw new Error('SwitchSubscription not supported');
+      const { subscription } = useAccountStore.getState();
+
+      if (!subscription) return;
+
+      const SwitchSubscriptionPayload = { toOfferId, customerId: customerId, offerId: subscription.offerId, switchDirection: switchDirection };
+
+      await checkoutService.switchSubscription(SwitchSubscriptionPayload, sandbox, jwt);
+
+      reloadActiveSubscription();
+      // clear current offers
+      useCheckoutStore.setState({ offerSwitches: [] });
     });
   });
 };

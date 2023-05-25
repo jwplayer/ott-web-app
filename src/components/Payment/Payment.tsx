@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import { getSubscriptionSwitches } from '../../stores/CheckoutController';
 
 import styles from './Payment.module.scss';
 
@@ -23,9 +26,11 @@ type Props = {
   transactions: Transaction[] | null;
   customer: Customer;
   isLoading: boolean;
+  offerSwitchesAvailable: boolean;
   panelClassName?: string;
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
+  onUpgradeSubscriptionClick?: () => void;
   showAllTransactions: boolean;
   canUpdatePaymentMethod: boolean;
   canRenewSubscription?: boolean;
@@ -44,6 +49,8 @@ const Payment = ({
   showAllTransactions,
   canRenewSubscription = false,
   canUpdatePaymentMethod,
+  onUpgradeSubscriptionClick,
+  offerSwitchesAvailable,
 }: Props): JSX.Element => {
   const { t } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -51,6 +58,8 @@ const Payment = ({
   const navigate = useNavigate();
   const location = useLocation();
   const isGrantedSubscription = activeSubscription?.period === 'granted';
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === Breakpoint.xs;
 
   function onCompleteSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'choose-offer'));
@@ -81,6 +90,10 @@ const Payment = ({
     }
   }
 
+  useEffect(() => {
+    getSubscriptionSwitches();
+  }, []);
+
   return (
     <>
       {accessModel === 'SVOD' && (
@@ -104,8 +117,18 @@ const Payment = ({
                   </p>
                 )}
               </div>
+              {offerSwitchesAvailable && (
+                <Button
+                  className={styles.upgradeSubscription}
+                  label={t('user:payment.change_subscription')}
+                  onClick={onUpgradeSubscriptionClick}
+                  fullWidth={isMobile}
+                  color="primary"
+                  data-testid="change-subscription-button"
+                />
+              )}
               {activeSubscription.status === 'active' && !isGrantedSubscription ? (
-                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
+                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} fullWidth={isMobile} />
               ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
               ) : null}
