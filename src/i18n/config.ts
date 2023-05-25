@@ -63,6 +63,7 @@ const initI18n = async () => {
       detection: {
         order: ['localStorage', 'navigator'],
         caches: ['localStorage'],
+        lookupLocalStorage: 'jwapp.language',
       },
       react: {
         // disabled suspense to prevent re-loading the app while loading the resources
