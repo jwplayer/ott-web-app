@@ -439,11 +439,13 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
           }, delay);
         });
       }
+
       const [activeSubscription, transactions, activePayment] = await Promise.all([
         subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
         subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
         subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
       ]);
+
       // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
       await queryClient.invalidateQueries('entitlements');
 

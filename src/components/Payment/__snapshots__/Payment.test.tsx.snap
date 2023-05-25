@@ -45,7 +45,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
             class="_label_e16c1b"
             for="text-field_1235"
           >
-            user:payment.cvc_cvv
+            user:payment.security_code
           </label>
           <p>
             ******

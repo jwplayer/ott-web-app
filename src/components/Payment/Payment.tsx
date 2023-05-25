@@ -125,7 +125,7 @@ const Payment = ({
             />
             <div className={styles.cardDetails}>
               <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
-              <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
+              <TextField label={t('user:payment.security_code')} value={'******'} editing={false} />
             </div>
           </div>
         ) : (

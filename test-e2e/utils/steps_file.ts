@@ -102,7 +102,7 @@ const stepsObj = {
   },
   payWithCreditCard: async function (
     this: CodeceptJS.I,
-    creditCardNamePresent: boolean,
+    creditCardFieldName: string,
     creditCard: string,
     cardNumber: string,
     expiryDate: string,
@@ -111,9 +111,9 @@ const stepsObj = {
   ) {
     this.see('Credit card');
 
-    if (creditCardNamePresent) {
-      this.see('Cardholder name');
-      this.fillField('Cardholder name', 'John Doe');
+    if (creditCardFieldName) {
+      this.see(creditCardFieldName);
+      this.fillField(creditCardFieldName, 'John Doe');
     }
 
     // Adyen credit card form is loaded asynchronously, so wait for it
@@ -308,7 +308,6 @@ const stepsObj = {
       // If we've run out of tries, fail and return
       if (tries-- <= 0) {
         assert.fail(`Shelf row not found with id '${shelf}'`);
-        return;
       }
 
       // Scroll to the bottom of the grid to trigger loading more virtualized rows

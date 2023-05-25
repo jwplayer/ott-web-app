@@ -20,6 +20,7 @@
     "discount_period": "For the first {{period}}",
     "discount_period_plural": "For the first {{count}} {{period}}",
     "free_trial_discount": "Free trial",
+    "go_back_to_checkout": "Go back to checkout",
     "invalid_card_expiry": "Invalid card expiry",
     "invalid_card_number": "Invalid card number",
     "invalid_cvc_number": "Invalid CVC number",
