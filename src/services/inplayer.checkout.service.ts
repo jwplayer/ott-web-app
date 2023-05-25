@@ -1,4 +1,4 @@
-import InPlayer, { GetAccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 
 import type {
   CardPaymentData,
@@ -36,8 +36,8 @@ export const getOffers: GetOffers = async (payload) => {
       try {
         const { data } = await InPlayer.Asset.getAssetAccessFees(parseInt(`${assetId}`));
 
-        // TODO fix this type in the InPlayer SDK, because the actual type of `data` is GetAccessFee[], not GetAccessFee
-        return (data as unknown as GetAccessFee[])?.map((offer) => formatOffer(offer));
+        // TODO fix this type in the InPlayer SDK, because the actual type of `data` is AccessFee[], not AccessFee
+        return (data as unknown as AccessFee[])?.map((offer) => formatOffer(offer));
       } catch {
         throw new Error('Failed to get offers');
       }
@@ -161,7 +161,7 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData,
     expYear: cardPaymentPayload.cardExpYear || '',
     cvv: parseInt(cardPaymentPayload.cardCVC),
     accessFee: order.id,
-    paymentMethod: '1',
+    paymentMethod: 1,
     voucherCode: cardPaymentPayload.couponCode,
     referrer: window.location.href,
     returnUrl: `${window.location.href}&u=waiting-for-payment`,
@@ -201,7 +201,7 @@ const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = fals
   };
 };
 
-const formatOffer = (offer: GetAccessFee): Offer => {
+const formatOffer = (offer: AccessFee): Offer => {
   const ppvOffers = ['ppv', 'ppv_custom'];
   const offerId = ppvOffers.includes(offer.access_type.name) ? `C${offer.id}` : `S${offer.id}`;
   return {

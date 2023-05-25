@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
 import type {
@@ -9,6 +9,7 @@ import type {
   Consent,
   Customer,
   CustomerConsent,
+  ExportAccountData,
   ExternalData,
   GetCaptureStatus,
   GetCustomerConsents,
@@ -139,8 +140,8 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     // @ts-ignore
     // wrong data type from InPlayer SDK (will be updated in the SDK)
     const result: Consent[] = data?.collection
-      .filter((field: GetRegisterField) => field.type === 'checkbox')
-      .map((consent: GetRegisterField) => formatPublisherConsents(consent));
+      .filter((field: RegisterField) => field.type === 'checkbox')
+      .map((consent: RegisterField) => formatPublisherConsents(consent));
 
     return {
       consents: [getTermsConsent(), ...result],
@@ -314,6 +315,22 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
   }
 };
 
+export const exportAccountData: ExportAccountData = async () => {
+  // password is sent as undefined because it is now optional on BE
+  const response = await InPlayer.Account.exportData({ password: undefined, brandingId: 0 });
+  const { code, message } = response.data;
+  if (code !== 200) {
+    throw new Error(message);
+  }
+  return {
+    errors: [],
+    responseData: {
+      message,
+      code,
+    },
+  };
+};
+
 const getCustomerExternalData = async (): Promise<ExternalData> => {
   const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
 
@@ -389,7 +406,7 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-function formatPublisherConsents(consent: Partial<GetRegisterField>) {
+function formatPublisherConsents(consent: Partial<RegisterField>) {
   return {
     broadcasterId: 0,
     enabledByDefault: false,
@@ -425,3 +442,5 @@ export const canSupportEmptyFullName = false;
 export const canChangePasswordWithOldPassword = true;
 
 export const canRenewSubscription = false;
+
+export const canExportAccountData = true;
