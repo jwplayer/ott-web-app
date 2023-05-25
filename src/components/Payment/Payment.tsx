@@ -124,12 +124,11 @@ const Payment = ({
                   onClick={onUpgradeSubscriptionClick}
                   fullWidth={isMobile}
                   color="primary"
-                  disabled={!offersAvailable}
                   data-testid="change-subscription-button"
                 />
               )}
               {activeSubscription.status === 'active' && !isGrantedSubscription ? (
-                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
+                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} fullWidth={isMobile} />
               ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
               ) : null}

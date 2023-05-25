@@ -657,16 +657,6 @@ exports[`User Component tests > Payments Page 1`] = `
           </p>
         </div>
         <button
-          aria-disabled="true"
-          class="_button_f8f296 _upgradeSubscription_c57ff5 _primary_f8f296 _outlined_f8f296 _disabled_f8f296"
-          data-testid="change-subscription-button"
-          disabled=""
-        >
-          <span>
-            user:payment.change_subscription
-          </span>
-        </button>
-        <button
           class="_button_f8f296 _default_f8f296 _outlined_f8f296"
         >
           <span>
