@@ -1,10 +1,9 @@
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
-import type { AuthData, Consent, Customer, CustomerConsent } from '#types/account';
+import type { Consent, Customer, CustomerConsent } from '#types/account';
 import { createStore } from '#src/stores/utils';
 
 type AccountStore = {
   loading: boolean;
-  auth: AuthData | null;
   user: Customer | null;
   subscription: Subscription | null;
   transactions: Transaction[] | null;
@@ -22,7 +21,6 @@ type AccountStore = {
 
 export const useAccountStore = createStore<AccountStore>('AccountStore', (set) => ({
   loading: true,
-  auth: null,
   user: null,
   subscription: null,
   transactions: null,
