@@ -69,6 +69,13 @@ exports[`<Header /> > renders header 1`] = `
           class="_buttonContainer_f4f7a7"
         >
           <button
+            class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+          >
+            <span>
+              sign_in
+            </span>
+          </button>
+          <button
             class="_button_f8f296 _primary_f8f296"
           >
             <span>

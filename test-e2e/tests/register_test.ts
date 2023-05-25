@@ -46,10 +46,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
 
     const { isMobile } = await I.openSignInMenu();
 
-    if (isMobile) {
-      I.see('Sign in');
-    }
-
+    I.see('Sign in');
     I.see('Sign up');
   });
 

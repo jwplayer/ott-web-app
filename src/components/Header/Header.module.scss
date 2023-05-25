@@ -136,6 +136,10 @@
 .buttonContainer {
   // this is a visual fix for putting a button with background besides a transparent button
   margin-left: variables.$base-spacing;
+
+  > button:first-child {
+    margin-right: calc(#{variables.$base-spacing} / 2);
+  }
 }
 
 //

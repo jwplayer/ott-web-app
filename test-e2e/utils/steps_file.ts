@@ -152,15 +152,7 @@ const stepsObj = {
   openSignInModal: async function (this: CodeceptJS.I) {
     const { isMobile } = await this.openSignInMenu();
 
-    if (isMobile) {
-      // sign in via the Sign-in button in the main menu
-      this.click('Sign in');
-    } else {
-      // sign in via the Sign-up modal bottom link
-      this.click('Sign up');
-      this.waitForElement('input[name=email]', normalTimeout);
-      this.click('Sign in');
-    }
+    this.click('Sign in');
 
     return { isMobile };
   },
