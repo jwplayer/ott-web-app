@@ -56,6 +56,7 @@ const Header: React.FC<Props> = ({
   searchActive,
   onSearchButtonClick,
   searchEnabled,
+  onLoginButtonClick,
   onCloseSearchButtonClick,
   onSignUpButtonClick,
   isLoggedIn,
@@ -131,6 +132,7 @@ const Header: React.FC<Props> = ({
       </React.Fragment>
     ) : (
       <div className={styles.buttonContainer}>
+        <Button onClick={onLoginButtonClick} label={t('sign_in')} />
         <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
       </div>
     );
