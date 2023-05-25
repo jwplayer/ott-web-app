@@ -1,15 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { PaymentMethod } from '../../../types/checkout';
-import PayPal from '../../icons/PayPal';
-import CreditCard from '../../icons/CreditCard';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import Button from '../Button/Button';
-
 import styles from './PaymentMethodForm.module.scss';
 
+import CreditCard from '#src/icons/CreditCard';
+import PayPal from '#src/icons/PayPal';
 import BackButton from '#components/BackButton/BackButton';
+import Button from '#components/Button/Button';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import type { PaymentMethod } from '#types/checkout';
 
 type Props = {
   paymentMethodId?: number;

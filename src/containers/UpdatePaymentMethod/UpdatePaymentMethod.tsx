@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useCheckoutStore } from '../../stores/CheckoutStore';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import PayPal from '../../components/PayPal/PayPal';
-import { useAccountStore } from '../../stores/AccountStore';
-import PaymentMethodForm from '../../components/PaymentMethodForm/PaymentMethodForm';
-import useQueryParam from '../../hooks/useQueryParam';
-import { getPaymentMethods, updatePayPalPaymentMethod } from '../../stores/CheckoutController';
-
+import { useCheckoutStore } from '#src/stores/CheckoutStore';
+import { getPaymentMethods, updatePayPalPaymentMethod } from '#src/stores/CheckoutController';
 import { addQueryParams } from '#src/utils/formatting';
 import AdyenPaymentDetails from '#src/containers/AdyenPaymentDetails/AdyenPaymentDetails';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import PaymentMethodForm from '#components/PaymentMethodForm/PaymentMethodForm';
+import useQueryParam from '#src/hooks/useQueryParam';
+import { useAccountStore } from '#src/stores/AccountStore';
+import PayPal from '#components/PayPal/PayPal';
 
 type Props = {
   onCloseButtonClick: () => void;
