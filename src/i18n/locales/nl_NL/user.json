@@ -67,6 +67,7 @@
     "subscription_details": "",
     "subscription_expires_on": "",
     "transactions": "",
+    "update_payment_details": "",
     "weekly_subscription": "",
     "price_payed_with_card": ""
   }

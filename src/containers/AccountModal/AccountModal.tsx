@@ -23,6 +23,7 @@ import Dialog from '#components/Dialog/Dialog';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
 import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
+import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -92,6 +93,9 @@ const AccountModal = () => {
         return <CancelSubscription />;
       case 'renew-subscription':
         return <RenewSubscription />;
+      case 'payment-method':
+      case 'payment-method-success':
+        return <UpdatePaymentMethod onCloseButtonClick={closeHandler} />;
       case 'waiting-for-payment':
         return <WaitingForPayment />;
       case 'finalize-payment':

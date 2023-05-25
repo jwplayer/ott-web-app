@@ -80,6 +80,14 @@
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
   },
+  "payment": {
+    "securityCode": "Security code",
+    "back_to_profile": "Back to profile",
+    "credit_card": "Credit card",
+    "paypal": "PayPal",
+    "update_payment_details": "Update payment details",
+    "update_payment_success": "Your payment details have been updated"
+  },
   "periods": {
     "day": "day",
     "month": "month",

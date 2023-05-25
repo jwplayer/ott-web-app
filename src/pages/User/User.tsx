@@ -38,7 +38,16 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, transactions, activePayment, loading, canUpdateEmail, canRenewSubscription } = useAccountStore();
+  const {
+    user: customer,
+    subscription,
+    transactions,
+    activePayment,
+    loading,
+    canUpdateEmail,
+    canRenewSubscription,
+    canUpdatePaymentMethod,
+  } = useAccountStore();
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL(playlistItem));
   const onLogout = useCallback(async () => {
@@ -139,6 +148,7 @@ const User = (): JSX.Element => {
                   panelHeaderClassName={styles.panelHeader}
                   onShowAllTransactionsClick={() => setShowAllTransactions(true)}
                   showAllTransactions={showAllTransactions}
+                  canUpdatePaymentMethod={canUpdatePaymentMethod}
                   canRenewSubscription={canRenewSubscription}
                 />
               ) : (

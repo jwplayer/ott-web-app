@@ -1,3 +1,5 @@
+import type { e } from 'vitest/dist/index-fde81ec3';
+
 import type { PayloadWithIPOverride } from '#types/account';
 
 export type Offer = {
@@ -221,7 +223,7 @@ export type GetEntitlementsResponse = {
 };
 
 export type AdyenPaymentMethodPayload = {
-  orderId: number;
+  orderId?: number;
   returnUrl: string;
   filteredPaymentMethods?: string[];
   filterPaymentMethodsByType?: string[];
@@ -243,7 +245,7 @@ export type InitialAdyenPaymentPayload = {
   customerIP?: string;
   browserInfo?: unknown;
   attemptAuthentication?: 'always' | 'never' | 'preferNo';
-  enable3DS2RedirectFlow?: boolean;
+  enable3DSRedirectFlow?: boolean;
 };
 
 export type AdyenAction = {
@@ -286,6 +288,24 @@ export type AdyenPaymentSession = {
   sessionData: string;
 };
 
+export type UpdatePaymentWithPayPalPayload = Omit<PaymentWithPaypalPayload, 'orderId'> & { paymentMethodId: number };
+
+export type DeletePaymentMethodPayload = {
+  paymentDetailsId: number;
+};
+
+export type DeletePaymentMethodResponse = {
+  paymentDetailsId: string;
+};
+
+export type AddAdyenPaymentDetailsPayload = Omit<InitialAdyenPaymentPayload, 'orderId'> & { paymentMethodId: number };
+
+export type AddAdyenPaymentDetailsResponse = Omit<PaymentDetail, 'customerId'>;
+
+export type FinalizeAdyenPaymentDetailsPayload = Omit<FinalizeAdyenPaymentPayload, 'orderId'> & { paymentMethodId: number };
+
+export type FinalizeAdyenPaymentDetailsResponse = PaymentDetail;
+
 export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
 export type GetOffer = EnvironmentServiceRequest<GetOfferPayload, Offer>;
 export type CreateOrder = AuthServiceRequest<CreateOrderArgs, CreateOrderResponse>;
@@ -299,3 +319,7 @@ export type GetEntitlements = AuthServiceRequest<GetEntitlementsPayload, GetEnti
 export type GetAdyenPaymentSession = AuthServiceRequest<AdyenPaymentMethodPayload, AdyenPaymentSession>;
 export type GetInitialAdyenPayment = AuthServiceRequest<InitialAdyenPaymentPayload, InitialAdyenPayment>;
 export type GetFinalizeAdyenPayment = AuthServiceRequest<FinalizeAdyenPaymentPayload, FinalizeAdyenPayment>;
+export type UpdatePaymentWithPayPal = AuthServiceRequest<UpdatePaymentWithPayPalPayload, PaymentWithPayPalResponse>;
+export type DeletePaymentMethod = AuthServiceRequest<DeletePaymentMethodPayload, DeletePaymentMethodResponse>;
+export type AddAdyenPaymentDetails = AuthServiceRequest<AddAdyenPaymentDetailsPayload, AddAdyenPaymentDetailsResponse>;
+export type FinalizeAdyenPaymentDetails = AuthServiceRequest<FinalizeAdyenPaymentDetailsPayload, FinalizeAdyenPaymentDetailsResponse>;

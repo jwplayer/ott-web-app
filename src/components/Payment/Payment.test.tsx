@@ -19,6 +19,7 @@ describe('<Payment>', () => {
         transactions={transactions as Transaction[]}
         activeSubscription={subscription as Subscription}
         activePaymentDetail={paymentDetail as PaymentDetail}
+        canUpdatePaymentMethod={false}
         showAllTransactions={false}
         isLoading={false}
       />,
