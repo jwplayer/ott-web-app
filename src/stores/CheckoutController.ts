@@ -290,7 +290,7 @@ export const switchSubscription = async (toOfferId: string, switchDirection: 'up
 
       if (!subscription) return;
 
-      const SwitchSubscriptionPayload = { toOfferId, customerId: customerId, offerId: subscription.offerId, switchDirection: switchDirection, jwt };
+      const SwitchSubscriptionPayload = { toOfferId, customerId: customerId, offerId: subscription.offerId, switchDirection: switchDirection };
 
       await checkoutService.switchSubscription(SwitchSubscriptionPayload, sandbox, jwt);
 

@@ -16,7 +16,6 @@ import type {
   GetOrder,
   GetPaymentMethods,
   GetSubscriptionSwitches,
-  PaymentWithAdyen,
   PaymentWithoutDetails,
   PaymentWithPayPal,
   SwitchSubscription,
