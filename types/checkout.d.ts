@@ -132,6 +132,7 @@ export type Payment = {
   refundedReason: string | null;
   paymentDetailsId: number | null;
   paymentOperation: string;
+  gatewaySpecificParams?: string;
 };
 
 export type GetOfferPayload = {
@@ -179,6 +180,16 @@ export type UpdateOrderResponse = {
   success: boolean;
 };
 
+export type GetOrderPayload = {
+  orderId: number;
+};
+
+export type GetOrderResponse = {
+  message: string;
+  order: Order;
+  success: boolean;
+};
+
 export type PaymentWithoutDetailsPayload = {
   orderId: number;
 };
@@ -209,12 +220,82 @@ export type GetEntitlementsResponse = {
   expiresAt: number;
 };
 
+export type AdyenPaymentMethodPayload = {
+  orderId: number;
+  returnUrl: string;
+  filteredPaymentMethods?: string[];
+  filterPaymentMethodsByType?: string[];
+};
+
+export type InitialAdyenPaymentPayload = {
+  orderId: number;
+  returnUrl: string;
+  paymentMethod: AdyenPaymentMethod;
+  billingAddress?: {
+    street: string;
+    houseNumberOrName: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    stateOrProvince: string;
+  };
+  origin?: string;
+  customerIP?: string;
+  browserInfo?: unknown;
+  attemptAuthentication?: 'always' | 'never' | 'preferNo';
+  enable3DS2RedirectFlow?: boolean;
+};
+
+export type AdyenAction = {
+  action: {
+    paymentMethodType: string;
+    url: string;
+    data: unknown;
+    method: string;
+    type: string;
+  };
+};
+
+export type InitialAdyenPayment = Payment | AdyenAction;
+
+export type FinalizeAdyenPaymentPayload = {
+  orderId: number;
+  details: unknown;
+  paymentData?: string;
+};
+
+export type FinalizeAdyenPayment = {
+  payment: Payment;
+};
+
+export type AdyenPaymentSession = {
+  allowedPaymentMethods: string[];
+  blockedPaymentMethods: string[];
+  shopperStatement: string;
+  amount: {
+    currency: string;
+    value: number;
+  };
+  countryCode: string;
+  expiresAt: string;
+  id: string;
+  returnUrl: string;
+  merchantAccount: string;
+  reference: string;
+  paymentMethod: AdyenPaymentMethod[];
+  sessionData: string;
+};
+
 export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
 export type GetOffer = EnvironmentServiceRequest<GetOfferPayload, Offer>;
 export type CreateOrder = AuthServiceRequest<CreateOrderArgs, CreateOrderResponse>;
+export type GetOrder = AuthServiceRequest<GetOrderPayload, GetOrderResponse>;
 export type UpdateOrder = AuthServiceRequest<UpdateOrderPayload, UpdateOrderResponse>;
 export type GetPaymentMethods = EmptyAuthServiceRequest<PaymentMethodResponse>;
 export type PaymentWithoutDetails = AuthServiceRequest<PaymentWithoutDetailsPayload, Payment>;
 export type PaymentWithAdyen = AuthServiceRequest<PaymentWithAdyenPayload, Payment>;
 export type PaymentWithPayPal = AuthServiceRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
 export type GetEntitlements = AuthServiceRequest<GetEntitlementsPayload, GetEntitlementsResponse>;
+export type GetAdyenPaymentSession = AuthServiceRequest<AdyenPaymentMethodPayload, AdyenPaymentSession>;
+export type GetInitialAdyenPayment = AuthServiceRequest<InitialAdyenPaymentPayload, InitialAdyenPayment>;
+export type GetFinalizeAdyenPayment = AuthServiceRequest<FinalizeAdyenPaymentPayload, FinalizeAdyenPayment>;

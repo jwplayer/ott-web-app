@@ -21,7 +21,8 @@ import Welcome from '#components/Welcome/Welcome';
 import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
 import Dialog from '#components/Dialog/Dialog';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
-import WaitingForPayment from '#src/components/WaitingForPayment/WaitingForPayment';
+import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
+import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -93,6 +94,8 @@ const AccountModal = () => {
         return <RenewSubscription />;
       case 'waiting-for-payment':
         return <WaitingForPayment />;
+      case 'finalize-payment':
+        return <FinalizePayment />;
     }
   };
 

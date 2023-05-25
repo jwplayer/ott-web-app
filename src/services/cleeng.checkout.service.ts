@@ -4,11 +4,14 @@ import { getLocales } from './cleeng.account.service';
 import type {
   CreateOrder,
   CreateOrderPayload,
+  GetAdyenPaymentSession,
   GetEntitlements,
+  GetFinalizeAdyenPayment,
+  GetInitialAdyenPayment,
   GetOffer,
   GetOffers,
+  GetOrder,
   GetPaymentMethods,
-  PaymentWithAdyen,
   PaymentWithoutDetails,
   PaymentWithPayPal,
   UpdateOrder,
@@ -48,7 +51,12 @@ export const createOrder: CreateOrder = async (payload, sandbox, jwt) => {
     customerIP: payload.customerIP,
     paymentMethodId: payload.paymentMethodId,
   };
+
   return post(sandbox, '/orders', JSON.stringify(createOrderPayload), jwt);
+};
+
+export const getOrder: GetOrder = async ({ orderId }, sandbox, jwt) => {
+  return get(sandbox, `/orders/${orderId}`, jwt);
 };
 
 export const updateOrder: UpdateOrder = async ({ order, ...payload }, sandbox, jwt) => {
@@ -63,26 +71,32 @@ export const paymentWithoutDetails: PaymentWithoutDetails = async (payload, sand
   return post(sandbox, '/payments', JSON.stringify(payload), jwt);
 };
 
-export const iFrameCardPayment: PaymentWithAdyen = async (payload, sandbox, jwt) => {
-  // @ts-ignore
-  payload.customerIP = getOverrideIP();
-  return post(sandbox, '/connectors/adyen/payments', JSON.stringify(payload), jwt);
-};
-
 export const paymentWithPayPal: PaymentWithPayPal = async (payload, sandbox, jwt) => {
   const { order, successUrl, cancelUrl, errorUrl } = payload;
+
   const paypalPayload = {
     orderId: order.id,
     successUrl,
     cancelUrl,
     errorUrl,
   };
+
   return post(sandbox, '/connectors/paypal/v1/tokens', JSON.stringify(paypalPayload), jwt);
 };
 
 export const getEntitlements: GetEntitlements = async (payload, sandbox, jwt = '') => {
   return get(sandbox, `/entitlements/${payload.offerId}`, jwt);
 };
+
+export const createAdyenPaymentSession: GetAdyenPaymentSession = async (payload, sandbox, jwt) => {
+  return await post(sandbox, '/connectors/adyen/sessions', JSON.stringify(payload), jwt);
+};
+
+export const initialAdyenPayment: GetInitialAdyenPayment = async (payload, sandbox, jwt) =>
+  post(sandbox, '/connectors/adyen/initial-payment', JSON.stringify(payload), jwt);
+
+export const finalizeAdyenPayment: GetFinalizeAdyenPayment = async (payload, sandbox, jwt) =>
+  post(sandbox, '/connectors/adyen/initial-payment/finalize', JSON.stringify(payload), jwt);
 
 export const cardPaymentProvider = 'adyen';
 

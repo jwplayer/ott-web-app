@@ -48,11 +48,13 @@ export default {
   continueWatchingShelfTitle: 'Continue Watching',
   paymentFields: {
     inplayer: {
+      creditCardholder: 'Cardholder name',
       cardNumber: 'directPostCreditCardNumber',
       expiryDate: 'directPostExpiryDate',
       securityCode: 'directPostSecurityCode',
     },
     cleeng: {
+      creditCardholder: 'Name on card',
       cardNumber: 'adyen-checkout__field--cardNumber',
       expiryDate: 'adyen-checkout__field--expiryDate',
       securityCode: 'adyen-checkout__field--securityCode',
