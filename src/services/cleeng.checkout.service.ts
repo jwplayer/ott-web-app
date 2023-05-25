@@ -102,7 +102,7 @@ export const initialAdyenPayment: GetInitialAdyenPayment = async (payload, sandb
 export const finalizeAdyenPayment: GetFinalizeAdyenPayment = async (payload, sandbox, jwt) =>
   post(sandbox, '/connectors/adyen/initial-payment/finalize', JSON.stringify(payload), jwt);
 
-export const updatePaymentMethodWithPaypal: UpdatePaymentWithPayPal = async (payload, sandbox, jwt) => {
+export const updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal = async (payload, sandbox, jwt) => {
   return post(sandbox, '/connectors/paypal/v1/payment_details/tokens', JSON.stringify(payload), jwt);
 };
 

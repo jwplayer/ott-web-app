@@ -719,14 +719,6 @@ exports[`User Component tests > Payments Page 1`] = `
             </div>
           </div>
         </div>
-        <button
-          class="_button_f8f296 _default_f8f296 _outlined_f8f296"
-          type="button"
-        >
-          <span>
-            user:payment.update_payment_details
-          </span>
-        </button>
       </div>
       <div
         class="_panel_e9c5ca"

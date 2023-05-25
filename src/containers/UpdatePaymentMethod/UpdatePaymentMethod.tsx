@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useCheckoutStore } from '../../stores/CheckoutStore';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import PayPal from '../PayPal/PayPal';
+import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
+import PayPal from '../../components/PayPal/PayPal';
 import { useAccountStore } from '../../stores/AccountStore';
 import PaymentMethodForm from '../../components/PaymentMethodForm/PaymentMethodForm';
 import useQueryParam from '../../hooks/useQueryParam';
-import { getPaymentMethods, updatePaypalPaymentMethod } from '../../stores/CheckoutController';
+import { getPaymentMethods, updatePayPalPaymentMethod } from '../../stores/CheckoutController';
 
 import { addQueryParams } from '#src/utils/formatting';
 import AdyenPaymentDetails from '#src/containers/AdyenPaymentDetails/AdyenPaymentDetails';
@@ -16,7 +16,7 @@ type Props = {
   onCloseButtonClick: () => void;
 };
 
-const PaymentMethod = ({ onCloseButtonClick }: Props) => {
+const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
   const updateSuccess = useQueryParam('u') === 'payment-method-success';
   const paymentMethodIdQueryParam = useQueryParam('paymentMethodId');
   const parsedPaymentMethodId = paymentMethodIdQueryParam ? parseInt(paymentMethodIdQueryParam) : undefined;
@@ -56,7 +56,7 @@ const PaymentMethod = ({ onCloseButtonClick }: Props) => {
       const cancelUrl = addQueryParams(window.location.href, { u: 'paypal-cancelled' });
       const errorUrl = addQueryParams(window.location.href, { u: 'paypal-error' });
 
-      const response = await updatePaypalPaymentMethod(successUrl, cancelUrl, errorUrl, paymentMethodId as number, currentPaymentId);
+      const response = await updatePayPalPaymentMethod(successUrl, cancelUrl, errorUrl, paymentMethodId as number, currentPaymentId);
 
       if (response) {
         window.location.href = response.redirectUrl;
@@ -113,4 +113,4 @@ const PaymentMethod = ({ onCloseButtonClick }: Props) => {
   );
 };
 
-export default PaymentMethod;
+export default UpdatePaymentMethod;

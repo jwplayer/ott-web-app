@@ -141,23 +141,16 @@ export const createAdyenPaymentSession = async (returnUrl: string, isInitialPaym
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
 
-      const getOrderIdIfInitialPayment = () => {
-        if (!isInitialPayment) return undefined;
-
-        if (!order) {
-          throw new Error('No order created');
-        }
-
-        return order.id;
-      };
+      const orderId = order?.id;
 
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
+      if (isInitialPayment && !orderId) throw new Error('There is no order to pay for');
       if (!('createAdyenPaymentSession' in checkoutService)) throw new Error('createAdyenPaymentSession is not available in checkout service');
 
       const response = await checkoutService.createAdyenPaymentSession(
         {
-          orderId: getOrderIdIfInitialPayment(),
+          orderId: orderId,
           returnUrl: returnUrl,
         },
         sandbox,
@@ -171,11 +164,7 @@ export const createAdyenPaymentSession = async (returnUrl: string, isInitialPaym
   });
 };
 
-export const initialAdyenPayment = async (
-  paymentMethod: AdyenPaymentMethod,
-  returnUrl: string,
-  // billingAddress?: InitialAdyenPaymentPayload['billingAddress'],
-): Promise<InitialAdyenPayment> => {
+export const initialAdyenPayment = async (paymentMethod: AdyenPaymentMethod, returnUrl: string): Promise<InitialAdyenPayment> => {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       const { order } = useCheckoutStore.getState();
@@ -257,7 +246,7 @@ export const paypalPayment = async (successUrl: string, cancelUrl: string, error
   });
 };
 
-export const updatePaypalPaymentMethod = async (
+export const updatePayPalPaymentMethod = async (
   successUrl: string,
   cancelUrl: string,
   errorUrl: string,
@@ -268,9 +257,9 @@ export const updatePaypalPaymentMethod = async (
     return await useService(async ({ checkoutService, sandbox = true, authProviderId }) => {
       if (!authProviderId) throw new Error('auth provider is not configured');
       if (!checkoutService) throw new Error('checkout service is not available');
-      if (!('updatePaymentMethodWithPaypal' in checkoutService)) throw new Error('updatePaymentMethodWithPaypal is not available in checkout service');
+      if (!('updatePaymentMethodWithPayPal' in checkoutService)) throw new Error('updatePaymentMethodWithPayPal is not available in checkout service');
 
-      const response = await checkoutService.updatePaymentMethodWithPaypal(
+      const response = await checkoutService.updatePaymentMethodWithPayPal(
         {
           paymentMethodId,
           successUrl,

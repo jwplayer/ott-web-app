@@ -27,6 +27,7 @@ type Props = {
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
   showAllTransactions: boolean;
+  canUpdatePaymentMethod: boolean;
   canRenewSubscription?: boolean;
 };
 
@@ -42,6 +43,7 @@ const Payment = ({
   onShowAllTransactionsClick,
   showAllTransactions,
   canRenewSubscription = false,
+  canUpdatePaymentMethod,
 }: Props): JSX.Element => {
   const { t } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -140,7 +142,9 @@ const Payment = ({
             <p>{!isLoading && t('user:payment.no_payment_methods')}</p>
           </div>
         )}
-        <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(addQueryParam(location, 'u', 'payment-method'))} />
+        {canUpdatePaymentMethod && (
+          <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(addQueryParam(location, 'u', 'payment-method'))} />
+        )}
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>

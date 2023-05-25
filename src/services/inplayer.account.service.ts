@@ -425,3 +425,5 @@ export const canSupportEmptyFullName = false;
 export const canChangePasswordWithOldPassword = true;
 
 export const canRenewSubscription = false;
+
+export const canUpdatePaymentMethod = false;
