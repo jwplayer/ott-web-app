@@ -160,7 +160,7 @@ const User = (): JSX.Element => {
                   canUpdatePaymentMethod={canUpdatePaymentMethod}
                   canRenewSubscription={canRenewSubscription}
                   onUpgradeSubscriptionClick={handleUpgradeSubscriptionClick}
-                  offersAvailable={!!offerSwitches.length}
+                  offerSwitchesAvailable={!!offerSwitches.length}
                 />
               ) : (
                 <Navigate to="my-account" />

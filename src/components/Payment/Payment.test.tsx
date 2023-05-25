@@ -30,7 +30,7 @@ describe('<Payment>', () => {
         canUpdatePaymentMethod={false}
         showAllTransactions={false}
         isLoading={false}
-        offersAvailable={false}
+        offerSwitchesAvailable={false}
       />,
     );
 

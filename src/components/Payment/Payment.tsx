@@ -26,7 +26,7 @@ type Props = {
   transactions: Transaction[] | null;
   customer: Customer;
   isLoading: boolean;
-  offersAvailable: boolean;
+  offerSwitchesAvailable: boolean;
   panelClassName?: string;
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
@@ -50,7 +50,7 @@ const Payment = ({
   canRenewSubscription = false,
   canUpdatePaymentMethod,
   onUpgradeSubscriptionClick,
-  offersAvailable,
+  offerSwitchesAvailable,
 }: Props): JSX.Element => {
   const { t } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -117,7 +117,7 @@ const Payment = ({
                   </p>
                 )}
               </div>
-              {offersAvailable && (
+              {offerSwitchesAvailable && (
                 <Button
                   className={styles.upgradeSubscription}
                   label={t('user:payment.change_subscription')}
