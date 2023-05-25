@@ -83,7 +83,7 @@ const Search = () => {
     <div className={styles.search}>
       <Helmet>
         <title>
-          {t('title', { results: playlist.playlist.length, query })} - {siteName}
+          {t('title', { count: playlist.playlist.length, query })} - {siteName}
         </title>
       </Helmet>
       <header className={styles.header}>

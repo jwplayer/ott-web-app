@@ -11,7 +11,7 @@ import type { ImageData } from '#types/playlist';
 
 export const cardAspectRatios = ['2:1', '16:9', '5:3', '4:3', '1:1', '9:13', '2:3', '9:16'] as const;
 
-export type PosterAspectRatio = typeof cardAspectRatios[number];
+export type PosterAspectRatio = (typeof cardAspectRatios)[number];
 
 type CardProps = {
   onClick?: () => void;

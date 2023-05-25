@@ -44,11 +44,12 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.dontSee('Email');
     I.dontSee('Password');
 
-    if (await I.isMobile()) {
-      I.openMenuDrawer();
+    const { isMobile } = await I.openSignInMenu();
+
+    if (isMobile) {
+      I.see('Sign in');
     }
 
-    I.see('Sign in');
     I.see('Sign up');
   });
 

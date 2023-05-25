@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router';
@@ -18,19 +18,23 @@ import Sidebar from '#components/Sidebar/Sidebar';
 import MenuButton from '#components/MenuButton/MenuButton';
 import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
+import { getSupportedLanguages } from '#src/i18n/config';
 
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { menu, assets, siteName, description, styling, features } = config;
   const { clientId } = useClientIntegration();
   const { searchPlaylist } = features || {};
   const { footerText } = styling || {};
+  const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
+  const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
-  const { searchQuery, searchActive, userMenuOpen } = useUIStore(
-    ({ searchQuery, searchActive, userMenuOpen }) => ({
+  const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
+    ({ searchQuery, searchActive, userMenuOpen, languageMenuOpen }) => ({
+      languageMenuOpen,
       searchQuery,
       searchActive,
       userMenuOpen,
@@ -74,9 +78,18 @@ const Layout = () => {
     navigate(addQueryParam(location, 'u', 'create-account'));
   };
 
+  const languageClickHandler = async (code: string) => {
+    await i18n.changeLanguage(code);
+  };
+
   const toggleUserMenu = (value: boolean) =>
     useUIStore.setState({
       userMenuOpen: value,
+    });
+
+  const toggleLanguageMenu = (value: boolean) =>
+    useUIStore.setState({
+      languageMenuOpen: value,
     });
 
   const renderUserActions = () => {
@@ -118,9 +131,14 @@ const Layout = () => {
           onCloseSearchButtonClick={closeSearchButtonClickHandler}
           onLoginButtonClick={loginButtonClickHandler}
           onSignUpButtonClick={signUpButtonClickHandler}
+          onLanguageClick={languageClickHandler}
+          supportedLanguages={supportedLanguages}
+          currentLanguage={currentLanguage}
           isLoggedIn={isLoggedIn}
           userMenuOpen={userMenuOpen}
+          languageMenuOpen={languageMenuOpen}
           toggleUserMenu={toggleUserMenu}
+          toggleLanguageMenu={toggleLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
         >

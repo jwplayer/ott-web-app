@@ -53,4 +53,4 @@ interface AdyenCheckoutStatic {
 // currently only card payments with Adyen are supported
 const adyenPaymentMethods = ['card'] as const;
 
-type AdyenPaymentMethodType = typeof adyenPaymentMethods[number];
+type AdyenPaymentMethodType = (typeof adyenPaymentMethods)[number];

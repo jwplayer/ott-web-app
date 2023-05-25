@@ -15,10 +15,10 @@
     "coupon_not_valid": "Coupon code is not valid",
     "credit_card": "Credit card",
     "credit_card_name": "Credit card name",
-    "days_trial": "You will be charged tomorrow.",
-    "days_trial_plural": "You will be charged after {{count}} days.",
-    "discount_period": "For the first {{period}}",
-    "discount_period_plural": "For the first {{count}} {{period}}",
+    "days_trial_one": "You will be charged tomorrow.",
+    "days_trial_other": "You will be charged after {{count}} days.",
+    "discount_period_one": "For the first {{period}}",
+    "discount_period_other": "For the first {{count}} {{period}}",
     "free_trial_discount": "Free trial",
     "go_back_to_checkout": "Go back to checkout",
     "invalid_card_expiry": "Invalid card expiry",
@@ -33,8 +33,8 @@
     "payment_method_fee": "Payment method fee",
     "paypal": "PayPal",
     "paypal_instructions": "Clicking 'continue' will bring you to the PayPal site.",
-    "periods_trial": "You will be charged after one {{period}}.",
-    "periods_trial_plural": "You will be charged after {{count}} {{period}}.",
+    "periods_trial_one": "You will be charged after one {{period}}.",
+    "periods_trial_other": "You will be charged after {{count}} {{period}}.",
     "redeem_coupon": "Redeem coupon",
     "start_watching": "Start watching ({{countdown}})",
     "total_price": "Total",
@@ -46,10 +46,10 @@
   "choose_offer": {
     "benefits": {
       "cancel_anytime": "Cancel anytime",
-      "first_days_free": "First day free",
-      "first_days_free_plural": "First {{count}} days free",
-      "first_periods_free": "First {{period}} free",
-      "first_periods_free_plural": "First {{count}} {{period}} free",
+      "first_days_free_one": "First day free",
+      "first_days_free_other": "First {{count}} days free",
+      "first_periods_free_one": "First {{period}} free",
+      "first_periods_free_other": "First {{count}} {{period}} free",
       "watch_on_all_devices": "Watch on all devices"
     },
     "continue": "Continue",
@@ -60,8 +60,8 @@
     "one_time_only": "This video",
     "subscription": "Subscription",
     "title": "Choose plan",
-    "tvod_access": "{{count}} {{period}} access",
-    "tvod_access_plural": "{{count}} {{period}} access",
+    "tvod_access_one": "{{count}} {{period}} access",
+    "tvod_access_other": "{{count}} {{period}} access",
     "watch_this_on_platform": "Watch this on {{siteName}}",
     "yearly": "Yearly",
     "yearly_subscription": "Yearly subscription"
@@ -81,7 +81,6 @@
     "wrong_email": "Please check your email and try again."
   },
   "payment": {
-    "securityCode": "Security code",
     "back_to_profile": "Back to profile",
     "credit_card": "Credit card",
     "paypal": "PayPal",
@@ -89,14 +88,16 @@
     "update_payment_success": "Your payment details have been updated"
   },
   "periods": {
-    "day": "day",
-    "month": "month",
-    "week": "week",
-    "year": "year",
-    "day_plural": "days",
-    "week_plural": "weeks",
-    "month_plural": "months",
-    "year_plural": "years"
+    "day_one": "day",
+    "day_other": "days",
+    "month": "monthly",
+    "month_one": "month",
+    "month_other": "months",
+    "week_one": "week",
+    "week_other": "weeks",
+    "year": "yearly",
+    "year_one": "year",
+    "year_other": "years"
   },
   "personal_details": {
     "address": "Address line 1",
@@ -120,6 +121,7 @@
     "consent_required": "This field is required",
     "continue": "Continue",
     "email": "Email",
+    "email_updates": "Yes, I want to receive {{siteName}} updates by email.",
     "failed_to_create": "An error occurred. Please try again later.",
     "field_is_not_valid_email": "Please re-enter your email details",
     "field_required": "This field is required",
@@ -137,8 +139,7 @@
     "sign_up": "Sign up",
     "terms_consent": "I accept the {{termsUrl}} of JW Player.",
     "user_exists": "There is already a user with this email address",
-    "view_password": "View password",
-    "email_updates": "Yes, I want to receive {{siteName}} updates by email."
+    "view_password": "View password"
   },
   "renew_subscription": {
     "explanation": "By clicking the button below you can renew your plan.",
@@ -168,6 +169,7 @@
     "password": "Password",
     "password_helper_text": "Use a minimum of 8 characters (case sensitive) with at least one number",
     "password_reset": "Password reset",
+    "password_reset_text": "",
     "passwords_do_not_match": "Passwords do not match",
     "repeat_new_password": "Repeat new password",
     "reset_password": "Edit Password",
@@ -176,8 +178,7 @@
     "try_again": "Try again",
     "view_password": "View password",
     "wrong_email": "Wrong email",
-    "yes": "Yes, reset",
-    "password_reset_text": ""
+    "yes": "Yes, reset"
   },
   "subscription_cancelled": {
     "message": "You have been successfully unsubscribed. Your current plan will expire on {{date}}",
