@@ -5,7 +5,6 @@ import type { Config } from '#types/Config';
 
 export type AuthData = {
   jwt: string;
-  customerToken: string;
   refreshToken: string;
 };
 
@@ -17,10 +16,6 @@ export type JwtDetails = {
 
 export type PayloadWithIPOverride = {
   customerIP?: string;
-};
-
-export type RefreshTokenPayload = {
-  refreshToken: string;
 };
 
 export type AuthArgs = {
@@ -241,13 +236,11 @@ export type CustomerConsent = {
 
 export type CustomerConsentArgs = {
   config: Config;
-  jwt: string;
   customerId?: string;
   customer?: Customer;
 };
 
 export type UpdateCustomerConsentsArgs = {
-  jwt: string;
   config: Config;
   customer: Customer;
   consents: CustomerConsent[];
@@ -322,16 +315,15 @@ export type EmailConfirmPasswordInput = {
 
 type Login = PromiseRequest<AuthArgs, AuthResponse>;
 type Register = PromiseRequest<AuthArgs, AuthResponse>;
-type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;
-type UpdateCustomer = AuthServiceRequest<UpdateCustomerArgs, Customer>;
+type GetCustomer = EnvironmentServiceRequest<GetCustomerPayload, Customer>;
+type UpdateCustomer = EnvironmentServiceRequest<UpdateCustomerArgs, Customer>;
 type GetPublisherConsents = PromiseRequest<Config, GetPublisherConsentsResponse>;
 type GetCustomerConsents = PromiseRequest<CustomerConsentArgs, GetCustomerConsentsResponse>;
 type UpdateCustomerConsents = PromiseRequest<UpdateCustomerConsentsArgs, GetCustomerConsentsResponse>;
-type GetCaptureStatus = AuthServiceRequest<GetCaptureStatusArgs, GetCaptureStatusResponse>;
-type UpdateCaptureAnswers = AuthServiceRequest<UpdateCaptureStatusArgs, Capture>;
+type GetCaptureStatus = EnvironmentServiceRequest<GetCaptureStatusArgs, GetCaptureStatusResponse>;
+type UpdateCaptureAnswers = EnvironmentServiceRequest<UpdateCaptureStatusArgs, Capture>;
 type ResetPassword = EnvironmentServiceRequest<ResetPasswordPayload, Record<string, unknown>>;
 type ChangePassword = EnvironmentServiceRequest<ChangePasswordWithTokenPayload, ApiResponse<unknown>>;
 type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWithOldPasswordPayload, ApiResponse<unknown>>;
-type UpdatePersonalShelves = AuthServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
-type RefreshToken = EnvironmentServiceRequest<RefreshTokenPayload, AuthData>;
+type UpdatePersonalShelves = EnvironmentServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
