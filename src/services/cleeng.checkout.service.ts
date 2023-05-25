@@ -15,8 +15,10 @@ import type {
   GetOffers,
   GetOrder,
   GetPaymentMethods,
+  GetSubscriptionSwitches,
   PaymentWithoutDetails,
   PaymentWithPayPal,
+  SwitchSubscription,
   UpdateOrder,
   UpdatePaymentWithPayPal,
 } from '#types/checkout';
@@ -86,6 +88,19 @@ export const paymentWithPayPal: PaymentWithPayPal = async (payload, sandbox, jwt
   };
 
   return post(sandbox, '/connectors/paypal/v1/tokens', JSON.stringify(paypalPayload), jwt);
+};
+
+export const getSubscriptionSwitches: GetSubscriptionSwitches = async (payload, sandbox, jwt) => {
+  return get(sandbox, `/customers/${payload.customerId}/subscription_switches/${payload.offerId}/availability`, jwt);
+};
+
+export const switchSubscription: SwitchSubscription = async (payload, sandbox, jwt) => {
+  return post(
+    sandbox,
+    `/customers/${payload.customerId}/subscription_switches/${payload.offerId}`,
+    JSON.stringify({ toOfferId: payload.toOfferId, switchDirection: payload.switchDirection }),
+    jwt,
+  );
 };
 
 export const getEntitlements: GetEntitlements = async (payload, sandbox, jwt = '') => {

@@ -155,6 +155,38 @@ export type CreateOrderPayload = {
   couponCode?: string;
 };
 
+export type SwitchOffer = {
+  currency: string;
+  currencySymbol: string;
+  nextPaymentPrice: number;
+  nextPaymentPriceCurrency: string;
+  nextPaymentPriceCurrencySymbol: string;
+  period: string;
+  price: number;
+  switchDirection: string;
+  title: string;
+  toOfferId: string;
+};
+
+export type GetSubscriptionSwitchesPayload = {
+  customerId: string;
+  offerId: string;
+};
+
+export type GetSubscriptionSwitchesReponse = {
+  available: SwitchOffer[];
+  unavailable: SwitchOffer[];
+};
+
+export type SwitchSubscriptionPayload = {
+  customerId: string;
+  offerId: string;
+  toOfferId: string;
+  switchDirection: string;
+};
+
+export type SwitchSubscriptionResponse = string;
+
 export type CreateOrderArgs = {
   offer: Offer;
   customerId: string;
@@ -315,6 +347,8 @@ export type GetPaymentMethods = EmptyAuthServiceRequest<PaymentMethodResponse>;
 export type PaymentWithoutDetails = AuthServiceRequest<PaymentWithoutDetailsPayload, Payment>;
 export type PaymentWithAdyen = AuthServiceRequest<PaymentWithAdyenPayload, Payment>;
 export type PaymentWithPayPal = AuthServiceRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
+export type GetSubscriptionSwitches = AuthServiceRequest<GetSubscriptionSwitchesPayload, GetSubscriptionSwitchesReponse>;
+export type SwitchSubscription = AuthServiceRequest<SwitchSubscriptionPayload, SwitchSubscriptionResponse>;
 export type GetEntitlements = AuthServiceRequest<GetEntitlementsPayload, GetEntitlementsResponse>;
 export type GetAdyenPaymentSession = AuthServiceRequest<AdyenPaymentMethodPayload, AdyenPaymentSession>;
 export type GetInitialAdyenPayment = AuthServiceRequest<InitialAdyenPaymentPayload, InitialAdyenPayment>;
