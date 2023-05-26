@@ -12,6 +12,8 @@ import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#components/TileDock/TileDock';
 import Card, { type PosterAspectRatio } from '#components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { isLiveChannel } from '#src/utils/media';
+import { MediaStatus } from '#src/utils/liveEvent';
 
 export const tileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
@@ -87,6 +89,8 @@ const Shelf = ({
         loading={loading}
         isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
         posterAspect={posterAspect}
+        isLive={item.mediaStatus === MediaStatus.LIVE || isLiveChannel(item)}
+        isScheduled={item.mediaStatus === MediaStatus.SCHEDULED}
       />
     ),
     [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, onCardClick, playlist.feedid, type],

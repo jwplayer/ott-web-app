@@ -1,3 +1,7 @@
+import { parseISO } from 'date-fns';
+
+import { getMediaStatusFromEventState } from '../utils/liveEvent';
+
 import { addQueryParams } from '#src/utils/formatting';
 import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
@@ -29,6 +33,9 @@ export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
     backgroundImage: generateImageData(config, ImageProperty.BACKGROUND, item),
     channelLogoImage: generateImageData(config, ImageProperty.CHANNEL_LOGO, item),
     mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
+    scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
+    scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
+    mediaStatus: getMediaStatusFromEventState(item),
   };
 };
 

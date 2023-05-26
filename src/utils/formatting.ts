@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import type { PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
@@ -109,4 +111,28 @@ export const formatSeriesMetaString = (seasonNumber?: string, episodeNumber?: st
   }
 
   return seasonNumber && seasonNumber !== '0' ? `S${seasonNumber}:E${episodeNumber}` : `E${episodeNumber}`;
+};
+
+export const formatLiveEventMetaString = (media: PlaylistItem) => {
+  const metaData = [];
+  const scheduled = formatVideoSchedule(media.scheduledStart, media.scheduledEnd);
+
+  if (scheduled) metaData.push(scheduled);
+  if (media.duration) metaData.push(formatDuration(media.duration));
+  if (media.genre) metaData.push(media.genre);
+  if (media.rating) metaData.push(media.rating);
+
+  return metaData.join(' • ');
+};
+
+export const formatVideoSchedule = (scheduledStart?: Date, scheduledEnd?: Date) => {
+  if (!scheduledStart) {
+    return '';
+  }
+
+  if (!scheduledEnd) {
+    return format(scheduledStart, 'PPP • p');
+  }
+
+  return `${format(scheduledStart, 'PPP • p')} - ${format(scheduledEnd, 'p')}`;
 };

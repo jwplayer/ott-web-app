@@ -25,6 +25,7 @@ type Props = {
   startWatchingButton: React.ReactNode;
   isLoggedIn: boolean;
   paywall: boolean;
+  playable?: boolean;
   autostart?: boolean;
 };
 
@@ -41,6 +42,7 @@ const InlinePlayer: React.FC<Props> = ({
   isLoggedIn,
   paywall,
   autostart,
+  playable = true,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation();
@@ -53,17 +55,21 @@ const InlinePlayer: React.FC<Props> = ({
 
   return (
     <div className={styles.inlinePlayer}>
-      <Fade open={paywall}>
+      <Fade open={!playable || paywall}>
         <div className={styles.paywall}>
           <Image className={styles.poster} image={item.backgroundImage} alt={item.title} width={1280} />
-          <Lock className={styles.lock} />
-          <h2 className={styles.title}>{t('video:sign_up_to_start_watching')}</h2>
-          <span className={styles.text}>{t('account:choose_offer.watch_this_on_platform', { siteName })}</span>
-          {startWatchingButton}
-          {!isLoggedIn && <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />}
+          {paywall && (
+            <>
+              <Lock className={styles.lock} />
+              <h2 className={styles.title}>{t('video:sign_up_to_start_watching')}</h2>
+              <span className={styles.text}>{t('account:choose_offer.watch_this_on_platform', { siteName })}</span>
+              {startWatchingButton}
+              {!isLoggedIn && <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />}
+            </>
+          )}
         </div>
       </Fade>
-      {!paywall && (
+      {!paywall && playable && (
         <PlayerContainer
           item={item}
           feedId={feedId}

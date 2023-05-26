@@ -8,6 +8,8 @@ import { isLocked } from '#src/utils/entitlements';
 import { testId } from '#src/utils/common';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { isLiveChannel } from '#src/utils/media';
+import { MediaStatus } from '#src/utils/liveEvent';
 
 type Props = {
   playlist?: Playlist;
@@ -43,7 +45,7 @@ function VideoList({
       {!!header && header}
       {playlist &&
         playlist.playlist.map((playlistItem: PlaylistItem) => {
-          const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage } = playlistItem;
+          const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage, mediaStatus } = playlistItem;
 
           return (
             <VideoListItem
@@ -61,6 +63,8 @@ function VideoList({
               isActive={activeMediaId === mediaid}
               activeLabel={activeLabel}
               isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
+              isLive={mediaStatus === MediaStatus.LIVE || isLiveChannel(playlistItem)}
+              isScheduled={mediaStatus === MediaStatus.SCHEDULED}
             />
           );
         })}
