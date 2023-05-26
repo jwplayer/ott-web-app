@@ -1598,14 +1598,14 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@inplayer-org/inplayer.js@^3.13.10":
-  version "3.13.10"
-  resolved "https://registry.yarnpkg.com/@inplayer-org/inplayer.js/-/inplayer.js-3.13.10.tgz#4c8d0873f43577229ca6ed76dad8ed60e9301093"
-  integrity sha512-9Ws4VvKBkfBeOZQZNlv0XdyzI2FLTbg1UfeGdJsnWmWwnjOwEqXPEReF5ZV5jwjStXk8y5LWeb4siLltP/RCUg==
+"@inplayer-org/inplayer.js@^3.13.12":
+  version "3.13.12"
+  resolved "https://registry.yarnpkg.com/@inplayer-org/inplayer.js/-/inplayer.js-3.13.12.tgz#6a8ff6516ff92fd1a38ef4e2854de512c29ad44b"
+  integrity sha512-NYmpZINBxu/vR4eTFtT84NfN0TcHH1Tplf+j36lQeiSa6Xj0mN6BlTUpZYXVseuOb9SePvGUbPyjXBCIAhALrg==
   dependencies:
     aws-iot-device-sdk "^2.2.6"
     axios "^0.21.2"
-    core-js "^3.8.2"
+    core-js "^3.19.2"
     fingerprintjs2 "^2.1.2"
     lodash "^4.17.20"
     qs "^6.9.4"
@@ -3447,11 +3447,6 @@ core-js@^3.19.2:
   version "3.22.3"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.22.3.tgz#498c41d997654cb00e81c7a54b44f0ab21ab01d5"
   integrity sha512-1t+2a/d2lppW1gkLXx3pKPVGbBdxXAkqztvWb1EJ8oF8O2gIGiytzflNiFEehYwVK/t2ryUsGBoOFFvNx95mbg==
-
-core-js@^3.8.2:
-  version "3.30.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.2.tgz#6528abfda65e5ad728143ea23f7a14f0dcf503fc"
-  integrity sha512-uBJiDmwqsbJCWHAwjrx3cvjbMXP7xD72Dmsn5LOJpiRmE3WbBbN5rCqQ2Qh6Ek6/eOrjlWngEynBWo4VxerQhg==
 
 core-util-is@~1.0.0:
   version "1.0.3"
