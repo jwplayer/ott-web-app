@@ -2,9 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 
 import type { PlaylistItem } from '#types/playlist';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
+  const user = useAccountStore((state) => state.user);
+
+  // ott app user id (oaid)
+  const oaid: number | undefined = user?.id ? Number(user?.id) : undefined;
+
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
   const timeHandler = useCallback(({ position, duration }: jwplayer.TimeParam) => {
@@ -26,7 +32,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       return;
     }
 
-    window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title);
+    window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid);
   }, [item]);
 
   const completeHandler = useCallback(() => {
