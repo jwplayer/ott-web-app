@@ -1,3 +1,4 @@
+import type { DefaultCreditCardData, SetDefaultCard } from '@inplayer-org/inplayer.js';
 // Subscription types
 export type Subscription = {
   subscriptionId: number | string;
@@ -22,6 +23,7 @@ export type PaymentDetail = {
   paymentMethodSpecificParams: Record<PaymentMethodSpecificParam>;
   paymentMethodId: number;
   active: boolean;
+  currency?: string;
 };
 
 export type PaymentMethodSpecificParam = {
@@ -110,8 +112,10 @@ export type GetTransactionsPayload = {
 export type GetTransactionsResponse = {
   items: Transaction[];
 };
+export type UpdateCardDetailsPayload = DefaultCreditCardData;
 
 type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
 type UpdateSubscription = CleengAuthRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
 type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
 type GetTransactions = CleengAuthRequest<GetTransactionsPayload, GetTransactionsResponse>;
+type UpdateCardDetails = AuthServiceRequest<DefaultCreditCardData, SetDefaultCard>;

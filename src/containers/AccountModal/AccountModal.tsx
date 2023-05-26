@@ -12,6 +12,7 @@ import ResetPassword from './forms/ResetPassword';
 import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
+import EditCardDetails from './forms/EditCardDetails';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -71,6 +72,8 @@ const AccountModal = () => {
         return <PersonalDetails />;
       case 'choose-offer':
         return <ChooseOffer />;
+      case 'edit-card':
+        return <EditCardDetails />;
       case 'checkout':
         return <Checkout />;
       case 'payment-error':
@@ -96,9 +99,10 @@ const AccountModal = () => {
     }
   };
 
+  const shouldHideBanner = ['edit-card'].includes(view ?? '');
   return (
     <Dialog open={!!viewParam} onClose={closeHandler}>
-      <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>
+      {!shouldHideBanner && banner && <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>}
       {renderForm()}
     </Dialog>
   );

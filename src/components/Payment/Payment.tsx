@@ -51,6 +51,9 @@ const Payment = ({
   function onCompleteSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'choose-offer'));
   }
+  function onEditCardDetailsClick() {
+    navigate(addQueryParam(location, 'u', 'edit-card'));
+  }
 
   function onCancelSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'unsubscribe'));
@@ -127,6 +130,8 @@ const Payment = ({
               <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
               <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
             </div>
+            <Button label={t('Edit card')} variant="outlined" onClick={onEditCardDetailsClick} />
+            {activePaymentDetail.currency}
           </div>
         ) : (
           <div>

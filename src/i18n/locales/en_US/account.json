@@ -9,6 +9,7 @@
   "checkout": {
     "applicable_tax": "Applicable tax ({{taxRate}}%)",
     "close": "Close",
+    "save": "Save",
     "continue": "Continue",
     "coupon_applied": "Your coupon code has been applied",
     "coupon_discount": "Coupon discount",
