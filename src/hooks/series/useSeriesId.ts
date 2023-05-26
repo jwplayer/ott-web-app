@@ -2,10 +2,10 @@ import { useQuery } from 'react-query';
 
 import type { PlaylistItem } from '#types/playlist';
 import { getSeriesByMediaIds } from '#src/services/api.service';
-import { getSeriesIdFromEpisode } from '#src/utils/media';
+import { getLegacySeriesPlaylistIdFromEpisodeTags } from '#src/utils/media';
 
 const useGetSeriesId = (item: PlaylistItem) => {
-  const staticSeriesId = getSeriesIdFromEpisode(item);
+  const staticSeriesId = getLegacySeriesPlaylistIdFromEpisodeTags(item);
 
   const { isLoading, data } = useQuery(['seriesId', item.mediaid], async () => {
     // get all series for the given media id

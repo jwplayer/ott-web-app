@@ -16,21 +16,21 @@ export const getSeriesPlaylistIdFromCustomParams = (item: (PlaylistItem & Deprec
   item ? item.seriesPlayListId || item.seriesPlaylistId || item.seriesId : undefined;
 
 // For the deprecated flow we store seriesId in the media custom params
-export const isDeprecatedSeriesFlow = (item: PlaylistItem) => {
+export const isLegacySeriesFlow = (item: PlaylistItem) => {
   return typeof getSeriesPlaylistIdFromCustomParams(item) !== 'undefined';
 };
 
 // For the new series flow we use contentType custom param to define media item to be series
 // In this case media item and series item have the same id
-export const isNewSeriesFlow = (item: PlaylistItem) => item.contentType === CONTENT_TYPE.series;
+export const isSeriesContentType = (item: PlaylistItem) => item.contentType === CONTENT_TYPE.series;
 
-export const isSeries = (item: PlaylistItem) => isDeprecatedSeriesFlow(item) || isNewSeriesFlow(item);
+export const isSeries = (item: PlaylistItem) => isLegacySeriesFlow(item) || isSeriesContentType(item);
 
 export const isEpisode = (item: PlaylistItem) => {
   return typeof item?.episodeNumber !== 'undefined' || item?.contentType === CONTENT_TYPE.episode;
 };
 
-export const getSeriesIdFromEpisode = (item: PlaylistItem | undefined) => {
+export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | undefined) => {
   if (!item || !isEpisode(item)) {
     return;
   }
@@ -42,10 +42,6 @@ export const getSeriesIdFromEpisode = (item: PlaylistItem | undefined) => {
 
   if (seriesIdTag) {
     return seriesIdTag.split('_')[1];
-  }
-
-  if (item.seriesId) {
-    return item.seriesId;
   }
 
   return;

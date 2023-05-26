@@ -8,7 +8,7 @@ import About from '#src/pages/About/About';
 import Home from '#src/pages/Home/Home';
 import Search from '#src/pages/Search/Search';
 import User from '#src/pages/User/User';
-import DeprecatedSeries from '#src/pages/DeprecatedSeries/DeprecatedSeries';
+import LegacySeries from '#src/pages/LegacySeries/LegacySeries';
 import MediaScreenRouter from '#src/pages/ScreenRouting/MediaScreenRouter';
 import PlaylistScreenRouter from '#src/pages/ScreenRouting/PlaylistScreenRouter';
 import Layout from '#src/containers/Layout/Layout';
@@ -22,7 +22,7 @@ export default function AppRoutes() {
         <Route index element={<Home />} />
         <Route path="/p/:id" element={<PlaylistScreenRouter />} />
         <Route path="/m/:id/*" element={<MediaScreenRouter />} />
-        <Route path="/s/:id/*" element={<DeprecatedSeries />} />
+        <Route path="/s/:id/*" element={<LegacySeries />} />
         <Route path="/q/*" element={<Search />} />
         <Route path="/u/*" element={<User />} />
         <Route path="/o/about" element={<About />} />

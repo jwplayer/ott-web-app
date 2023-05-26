@@ -28,6 +28,9 @@ type Props = {
   loadMore?: () => void;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const defaultLoadMore = () => {};
+
 function VideoList({
   playlist,
   header,
@@ -42,46 +45,26 @@ function VideoList({
   isLoggedIn,
   hasSubscription,
   hasLoadMore,
-  loadMore,
+  loadMore = defaultLoadMore,
 }: Props) {
   return (
     <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
       {!!header && header}
-      {loadMore ? (
-        <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasLoadMore} loader={<InfiniteScrollLoader key="loader" />}>
-          <>
-            {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
-              <VideoListItem
-                key={playlistItem.mediaid}
-                progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
-                onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
-                onHover={() => onListItemHover && onListItemHover(playlistItem)}
-                loading={isLoading}
-                isActive={activeMediaId === playlistItem.mediaid}
-                activeLabel={activeLabel}
-                isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
-                item={playlistItem}
-              />
-            ))}
-          </>
-        </InfiniteScroll>
-      ) : (
-        <>
-          {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
-            <VideoListItem
-              key={playlistItem.mediaid}
-              progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
-              onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
-              onHover={() => onListItemHover && onListItemHover(playlistItem)}
-              loading={isLoading}
-              isActive={activeMediaId === playlistItem.mediaid}
-              activeLabel={activeLabel}
-              isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
-              item={playlistItem}
-            />
-          ))}
-        </>
-      )}
+      <InfiniteScroll pageStart={0} loadMore={loadMore || defaultLoadMore} hasMore={hasLoadMore} loader={<InfiniteScrollLoader key="loader" />}>
+        {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
+          <VideoListItem
+            key={playlistItem.mediaid}
+            progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
+            onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
+            onHover={() => onListItemHover && onListItemHover(playlistItem)}
+            loading={isLoading}
+            isActive={activeMediaId === playlistItem.mediaid}
+            activeLabel={activeLabel}
+            isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
+            item={playlistItem}
+          />
+        ))}
+      </InfiniteScroll>
     </div>
   );
 }

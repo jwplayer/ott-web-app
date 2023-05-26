@@ -1,44 +1,11 @@
-import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { EpisodeMetadata, EpisodesWithPagination, Series } from '#types/series';
+import type { EpisodeMetadata, Series } from '#types/series';
 import { getEpisodes, getSeasonWithEpisodes } from '#src/services/api.service';
 
 /**
  * Get an array of options for a season filter
  */
-export const getFiltersFromSeries = (playlist: Playlist, series: Series | undefined): string[] => {
-  const isNewFlow = !!series;
-
-  // For the new series flow we already have episodes sorted correctly on the back-end side
-  if (isNewFlow) {
-    return 'seasons' in series ? series.seasons.map((season) => String(season.season_number)) : [];
-  }
-
-  // Old series doesn't have sorting supported and just aggregates all episodes in one playlist
-  // So we need to sort the playlist manually based on the selected filter (season).
-  return playlist.playlist
-    .reduce((filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')), [])
-    .slice()
-    .sort();
-};
-
-/**
- * Get a playlist with episodes based on the selected filter
- */
-export const filterSeries = (playlist: Playlist, episodes: EpisodesWithPagination[] | undefined, filter: string | undefined): Playlist => {
-  const isNewFlow = !!episodes?.length;
-
-  if (isNewFlow) {
-    // Get a flattened list of episodes and return it as part of the playlist
-    return { ...playlist, playlist: episodes.flatMap((e) => e.episodes) };
-  }
-
-  if (filter === '') return playlist;
-
-  return {
-    ...playlist,
-    // Filter episodes manually for the old flow where our playlists includes all episodes with all seasons
-    playlist: playlist.playlist.filter(({ seasonNumber }) => seasonNumber === filter),
-  };
+export const getFiltersFromSeries = (series: Series | undefined): string[] => {
+  return series && 'seasons' in series ? series.seasons.map((season) => String(season.season_number)) : [];
 };
 
 /**
@@ -72,7 +39,7 @@ const getNextEpisode = async (seasonNumber: number, seriesId: string, pageWithEp
   }
 };
 
-const getNewFlowNextEpisode = async (series: Series | undefined, episodeMetadata: EpisodeMetadata | undefined) => {
+export const getNextItem = async (series: Series | undefined, episodeMetadata: EpisodeMetadata | undefined) => {
   if (!episodeMetadata || !series) {
     return;
   }
@@ -109,49 +76,7 @@ const getNewFlowNextEpisode = async (series: Series | undefined, episodeMetadata
   }
 };
 
-export const getNextItem = async (
-  episode: PlaylistItem | undefined,
-  seriesPlaylist: Playlist,
-  series: Series | undefined,
-  episodeMetadata: EpisodeMetadata | undefined,
-): Promise<PlaylistItem | undefined> => {
-  const isNewFlow = !!series;
-
-  if (!episode || !seriesPlaylist) return;
-
-  // Using new flow when episodes are available
-  if (isNewFlow) {
-    const nextEpisode = await getNewFlowNextEpisode(series, episodeMetadata);
-
-    return nextEpisode;
-  }
-
-  // For the old flow we already have all the episodes and seasons so we just need to find them in the array
-  const index = seriesPlaylist?.playlist?.findIndex(({ mediaid }) => mediaid === episode.mediaid);
-
-  return seriesPlaylist?.playlist?.[index + 1];
-};
-
 /** Get a total amount of episodes in a season */
-export const getEpisodesInSeason = (
-  episode: PlaylistItem | undefined,
-  episodeMetadata: EpisodeMetadata | undefined,
-  seriesPlaylist: Playlist,
-  series: Series | undefined,
-) => {
-  const isNewFlow = !!series;
-
-  if (isNewFlow) {
-    return (series?.seasons || []).find((el) => el.season_number === Number(episodeMetadata?.seasonNumber))?.episode_count;
-  }
-
-  return seriesPlaylist.playlist.filter((i) => i.seasonNumber === episode?.seasonNumber)?.length;
-};
-
-export const getFirstEpisode = (seriesPlaylist: Playlist, episodesData: EpisodesWithPagination[] | undefined) => {
-  if (episodesData) {
-    return episodesData?.[0]?.episodes?.[0];
-  }
-
-  return seriesPlaylist?.playlist?.[0];
+export const getEpisodesInSeason = (episodeMetadata: EpisodeMetadata | undefined, series: Series | undefined) => {
+  return (series?.seasons || []).find((el) => el.season_number === Number(episodeMetadata?.seasonNumber))?.episode_count;
 };

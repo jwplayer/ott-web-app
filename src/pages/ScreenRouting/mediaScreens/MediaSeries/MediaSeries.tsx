@@ -5,13 +5,12 @@ import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 import { useSearchParams } from 'react-router-dom';
 
-import { filterSeries, getEpisodesInSeason, getFiltersFromSeries } from './utils';
-
 import { generateEpisodeJSONLD } from '#src/utils/structuredData';
 import VideoLayout from '#components/VideoLayout/VideoLayout';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import { isLocked } from '#src/utils/entitlements';
 import useEntitlement from '#src/hooks/useEntitlement';
+import { getEpisodesInSeason, getFiltersFromSeries } from '#src/utils/series';
 import { deprecatedSeriesURL, formatSeriesMetaString, formatVideoMetaString, mediaURL } from '#src/utils/formatting';
 import useMedia from '#src/hooks/useMedia';
 import { useSeriesData } from '#src/hooks/series/useSeriesData';
@@ -77,9 +76,9 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
   } = useEpisodes(seriesId, seasonFilter, { enabled: seasonFilter !== undefined && !!series });
 
   const firstEpisode = useMemo(() => episodes?.[0]?.episodes?.[0], [episodes]);
-  const filteredPlaylist = useMemo(() => filterSeries(seriesPlaylist, episodes), [seriesPlaylist, episodes]);
+  const playlist = useMemo(() => ({ ...seriesPlaylist, playlist: episodes?.flatMap((e) => e.episodes) || [] }), [seriesPlaylist, episodes]);
   const episodesInSeason = getEpisodesInSeason(episodeMetadata, series);
-  const nextItem = useNextEpisode({ episode, seriesPlaylist, series, episodeMetadata });
+  const nextItem = useNextEpisode({ series, episodeMetadata });
 
   // Watch history
   const watchHistoryArray = useWatchHistoryStore((state) => state.watchHistory);
@@ -226,7 +225,7 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
         accessModel={accessModel}
         isLoggedIn={isLoggedIn}
         hasSubscription={hasSubscription}
-        playlist={filteredPlaylist}
+        playlist={playlist}
         relatedTitle={inlineLayout ? seriesPlaylist.title : t('episodes')}
         onItemClick={onCardClick}
         setFilter={setSeasonFilter}

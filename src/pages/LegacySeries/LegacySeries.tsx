@@ -4,9 +4,8 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 
-import { filterSeries, getEpisodesInSeason, getFiltersFromSeries, getNextItem } from './utils';
+import { filterSeries, getEpisodesInSeason, getFiltersFromSeries, getNextItem, generateLegacyEpisodeJSONLD } from './utils';
 
-import { generateLegacyEpisodeJSONLD } from '#src/utils/structuredData';
 import VideoLayout from '#components/VideoLayout/VideoLayout';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import { isLocked } from '#src/utils/entitlements';
@@ -30,7 +29,7 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import Loading from '#src/pages/Loading/Loading';
 import usePlaylist from '#src/hooks/usePlaylist';
 
-const DeprecatedSeries = () => {
+const LegacySeries = () => {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('video');
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
@@ -229,4 +228,4 @@ const DeprecatedSeries = () => {
   );
 };
 
-export default DeprecatedSeries;
+export default LegacySeries;

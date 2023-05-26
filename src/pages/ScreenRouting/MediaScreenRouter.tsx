@@ -8,7 +8,7 @@ import useMedia from '#src/hooks/useMedia';
 import Loading from '#src/pages/Loading/Loading';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import type { PlaylistItem } from '#types/playlist';
-import { isEpisode, isDeprecatedSeriesFlow } from '#src/utils/media';
+import { isEpisode, isLegacySeriesFlow } from '#src/utils/media';
 import MediaMovie from '#src/pages/ScreenRouting/mediaScreens/MediaMovie/MediaMovie';
 import MediaSeries from '#src/pages/ScreenRouting/mediaScreens/MediaSeries/MediaSeries';
 import MediaLiveChannel from '#src/pages/ScreenRouting/mediaScreens/MediaLiveChannel/MediaLiveChannel';
@@ -27,7 +27,7 @@ mediaScreenMap.registerDefault(MediaMovie);
 
 // Register legacy series and episode screens when `contentType` is missing
 mediaScreenMap.register(MediaEpisode, (item) => !!item && isEpisode(item));
-mediaScreenMap.register(MediaSeries, (item) => !!item && isDeprecatedSeriesFlow(item));
+mediaScreenMap.register(MediaSeries, (item) => !!item && isLegacySeriesFlow(item));
 
 const MediaScreenRouter = () => {
   const params = useParams();
