@@ -27,7 +27,7 @@ export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
 
   const offerKeys = Object.keys(config?.integrations)[0];
 
-  return {
+  const transformedMediaItem = {
     ...item,
     shelfImage: generateImageData(config, ImageProperty.SHELF, item, playlist),
     backgroundImage: generateImageData(config, ImageProperty.BACKGROUND, item),
@@ -35,8 +35,12 @@ export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
     mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
     scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
     scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
-    mediaStatus: getMediaStatusFromEventState(item),
   };
+
+  // add the media status to the media item after the transformation because the live media status depends on the scheduledStart and scheduledEnd
+  transformedMediaItem.mediaStatus = getMediaStatusFromEventState(transformedMediaItem);
+
+  return transformedMediaItem;
 };
 
 /**

@@ -30,7 +30,7 @@ import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import StatusIcon from '#components/StatusIcon/StatusIcon';
 
 const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
-  const { t } = useTranslation('video');
+  const { t, i18n } = useTranslation('video');
 
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const breakpoint = useBreakpoint();
@@ -89,8 +89,8 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   const primaryMetadata = (
     <>
-      <StatusIcon mediaStatus={liveEvent.mediaStatus} />
-      {formatLiveEventMetaString(data)}
+      <StatusIcon mediaStatus={data.mediaStatus} />
+      {formatLiveEventMetaString(data, i18n.language)}
     </>
   );
 

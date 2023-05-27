@@ -1,5 +1,3 @@
-import { format } from 'date-fns';
-
 import type { PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
@@ -113,9 +111,9 @@ export const formatSeriesMetaString = (seasonNumber?: string, episodeNumber?: st
   return seasonNumber && seasonNumber !== '0' ? `S${seasonNumber}:E${episodeNumber}` : `E${episodeNumber}`;
 };
 
-export const formatLiveEventMetaString = (media: PlaylistItem) => {
+export const formatLiveEventMetaString = (media: PlaylistItem, locale: string) => {
   const metaData = [];
-  const scheduled = formatVideoSchedule(media.scheduledStart, media.scheduledEnd);
+  const scheduled = formatVideoSchedule(locale, media.scheduledStart, media.scheduledEnd);
 
   if (scheduled) metaData.push(scheduled);
   if (media.duration) metaData.push(formatDuration(media.duration));
@@ -125,14 +123,21 @@ export const formatLiveEventMetaString = (media: PlaylistItem) => {
   return metaData.join(' • ');
 };
 
-export const formatVideoSchedule = (scheduledStart?: Date, scheduledEnd?: Date) => {
+export const formatVideoSchedule = (locale: string, scheduledStart?: Date, scheduledEnd?: Date) => {
   if (!scheduledStart) {
     return '';
   }
 
   if (!scheduledEnd) {
-    return format(scheduledStart, 'PPP • p');
+    return formatLocalizedDateTime(scheduledStart, locale, '•');
   }
 
-  return `${format(scheduledStart, 'PPP • p')} - ${format(scheduledEnd, 'p')}`;
+  return `${formatLocalizedDateTime(scheduledStart, locale, '•')} - ${formatLocalizedTime(scheduledEnd, 'locale')}`;
 };
+
+const formatLocalizedDate = (date: Date, locale: string) => new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+
+const formatLocalizedTime = (date: Date, locale: string) => new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+
+const formatLocalizedDateTime = (date: Date, locale: string, separator = ' ') =>
+  `${formatLocalizedDate(date, locale)} ${separator} ${formatLocalizedTime(date, locale)}`;
