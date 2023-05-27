@@ -42,5 +42,4 @@ export const getPaymentDetails: GetPaymentDetails = async (payload, sandbox, jwt
 export const getTransactions: GetTransactions = async ({ customerId, limit, offset }, sandbox, jwt) => {
   return get(sandbox, addQueryParams(`/customers/${customerId}/transactions`, { limit, offset }), jwt);
 };
-
 export const updateCardDetails = () => null;
