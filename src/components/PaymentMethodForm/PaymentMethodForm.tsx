@@ -5,14 +5,12 @@ import styles from './PaymentMethodForm.module.scss';
 
 import CreditCard from '#src/icons/CreditCard';
 import PayPal from '#src/icons/PayPal';
-import BackButton from '#components/BackButton/BackButton';
 import Button from '#components/Button/Button';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import type { PaymentMethod } from '#types/checkout';
 
 type Props = {
   paymentMethodId?: number;
-  onBackButtonClick: () => void;
   onCloseButtonClick: () => void;
   paymentMethods?: PaymentMethod[];
   onPaymentMethodChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -24,7 +22,6 @@ type Props = {
 const PaymentMethodForm: React.FC<Props> = ({
   paymentMethodId,
   paymentMethods,
-  onBackButtonClick,
   onCloseButtonClick,
   onPaymentMethodChange,
   renderPaymentMethod,
@@ -83,8 +80,6 @@ const PaymentMethodForm: React.FC<Props> = ({
           </div>
           <div>{renderPaymentMethod ? renderPaymentMethod() : null}</div>
           {submitting && <LoadingOverlay transparentBackground inline />}
-
-          <BackButton className={styles.backButton} onClick={onBackButtonClick} />
         </>
       )}
     </>

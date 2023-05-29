@@ -12,6 +12,7 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { replaceQueryParam } from '#src/utils/location';
 import { addQueryParams } from '#src/utils/formatting';
+import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 type Props = {
   setProcessing: (loading: boolean) => void;
@@ -86,13 +87,14 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
         setPaymentError(undefined);
 
         const returnUrl = addQueryParams(window.origin, { u: 'payment-method', paymentMethodId: `${paymentMethodId}` });
-
         const result = await addAdyenPaymentDetails(state.data.paymentMethod, paymentMethodId, returnUrl);
 
         if ('action' in result) {
           handleAction(result.action);
           return;
         }
+
+        await reloadActiveSubscription({ delay: 2000 });
 
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {

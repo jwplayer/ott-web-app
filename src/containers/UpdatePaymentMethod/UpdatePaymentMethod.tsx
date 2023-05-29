@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { getPaymentMethods, updatePayPalPaymentMethod } from '#src/stores/CheckoutController';
@@ -10,6 +10,7 @@ import PaymentMethodForm from '#components/PaymentMethodForm/PaymentMethodForm';
 import useQueryParam from '#src/hooks/useQueryParam';
 import { useAccountStore } from '#src/stores/AccountStore';
 import PayPal from '#components/PayPal/PayPal';
+import { addQueryParam } from '#src/utils/location';
 
 type Props = {
   onCloseButtonClick: () => void;
@@ -20,7 +21,7 @@ const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
   const paymentMethodIdQueryParam = useQueryParam('paymentMethodId');
   const parsedPaymentMethodId = paymentMethodIdQueryParam ? parseInt(paymentMethodIdQueryParam) : undefined;
 
-  const navigate = useNavigate();
+  const location = useLocation();
   const activePayment = useAccountStore((state) => state.activePayment);
   const currentPaymentId = activePayment?.id;
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
@@ -29,10 +30,6 @@ const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
   const paymentMethods = useCheckoutStore((state) => state.paymentMethods);
 
   const [processing, setProcessing] = useState<boolean>(false);
-
-  const backButtonClickHandler = () => {
-    navigate(-1);
-  };
 
   useEffect(() => {
     getPaymentMethods();
@@ -72,10 +69,12 @@ const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
     const paymentMethod = paymentMethods?.find((method) => method.id === paymentMethodId);
 
     if (paymentMethod?.methodName === 'card') {
+      const paymentSuccessUrl = addQueryParam(location, 'u', 'payment-method-success');
+
       return (
         <AdyenPaymentDetails
           paymentMethodId={paymentMethod.id}
-          paymentSuccessUrl={addQueryParams(window.origin, { u: 'payment-method-success' })}
+          paymentSuccessUrl={paymentSuccessUrl}
           setPaymentError={setPaymentError}
           setProcessing={setProcessing}
           error={paymentError}
@@ -100,7 +99,6 @@ const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
 
   return (
     <PaymentMethodForm
-      onBackButtonClick={backButtonClickHandler}
       onCloseButtonClick={onCloseButtonClick}
       paymentMethods={paymentMethods}
       paymentMethodId={paymentMethodId}
