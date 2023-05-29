@@ -67,7 +67,6 @@ export async function getActivePayment() {
         }),
       );
     }
-
     return cards.find((paymentDetails) => paymentDetails.active) || null;
   } catch {
     return null;
@@ -94,7 +93,6 @@ export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscr
     throw new Error('Failed to update subscription');
   }
 };
-
 
 export const updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
   try {
