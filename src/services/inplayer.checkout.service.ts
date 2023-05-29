@@ -195,7 +195,9 @@ const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = fals
 };
 
 const formatOffer = (offer: AccessFee): Offer => {
-  const offerId = offer.access_type.name === 'ppv' ? `C${offer.id}` : `S${offer.id}`;
+  const ppvOffers = ['ppv', 'ppv_custom'];
+  const offerId = ppvOffers.includes(offer.access_type.name) ? `C${offer.id}` : `S${offer.id}`;
+
   return {
     id: offer.id,
     offerId,

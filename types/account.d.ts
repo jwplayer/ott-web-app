@@ -320,6 +320,12 @@ export type EmailConfirmPasswordInput = {
   confirmationPassword: string;
 };
 
+export type ExportAccountDataResponse = {
+  message: string;
+  code: number;
+  errors?: Record<string, string>;
+};
+
 type Login = PromiseRequest<AuthArgs, AuthResponse>;
 type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;
@@ -335,3 +341,4 @@ type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWit
 type UpdatePersonalShelves = AuthServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type RefreshToken = EnvironmentServiceRequest<RefreshTokenPayload, AuthData>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
+type ExportAccountData = AuthServiceRequest<undefined, ExportAccountDataResponse>;
