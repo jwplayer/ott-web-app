@@ -1,9 +1,9 @@
 import i18next from 'i18next';
-import InPlayer, { Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 
 import type { PaymentDetail, Subscription, Transaction, UpdateCardDetails, UpdateSubscription } from '#types/subscription';
 import type { Config } from '#types/Config';
-import type { InPlayerError, InPlayerPurchaseDetails } from '#types/inplayer';
+import type { InPlayerError } from '#types/inplayer';
 
 interface SubscriptionDetails extends InplayerSubscription {
   item_id?: number;
@@ -47,9 +47,8 @@ export async function getActiveSubscription({ config }: { config: Config }) {
 export async function getAllTransactions() {
   try {
     const { data } = await InPlayer.Payment.getPurchaseHistory('active', 0, 30);
-    // @ts-ignore
-    // TODO fix PurchaseHistoryCollection type in InPlayer SDK
-    return data?.collection?.map((transaction: InPlayerPurchaseDetails) => formatTransaction(transaction));
+
+    return data?.collection?.map((transaction) => formatTransaction(transaction));
   } catch {
     throw new Error('Failed to get transactions');
   }
@@ -71,8 +70,6 @@ export async function getActivePayment() {
 
     return cards.find((paymentDetails) => paymentDetails.active) || null;
   } catch {
-    //TODO Fix response code in the InPlayer API
-    //throw new Error('Failed to get payment details');
     return null;
   }
 }
@@ -97,6 +94,7 @@ export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscr
     throw new Error('Failed to update subscription');
   }
 };
+
 
 export const updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
   try {
@@ -123,8 +121,7 @@ const formatCardDetails = (card: Card & { card_type: string; account_id: number;
   } as PaymentDetail;
 };
 
-// TODO: fix PurchaseDetails type in InPlayer SDK
-const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction => {
+const formatTransaction = (transaction: PurchaseDetails): Transaction => {
   const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
 
   return {
