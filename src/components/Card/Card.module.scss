@@ -210,6 +210,12 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
   background-color: variables.$red;
 }
 
+svg.scheduled {
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+}
+
 .progressContainer {
   position: absolute;
   right: 0;

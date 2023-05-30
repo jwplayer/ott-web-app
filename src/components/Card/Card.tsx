@@ -8,6 +8,7 @@ import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting
 import Lock from '#src/icons/Lock';
 import Image from '#components/Image/Image';
 import type { ImageData } from '#types/playlist';
+import Today from '#src/icons/Today';
 
 export const cardAspectRatios = ['2:1', '16:9', '5:3', '4:3', '1:1', '9:13', '2:3', '9:16'] as const;
 
@@ -30,6 +31,8 @@ type CardProps = {
   isCurrent?: boolean;
   isLocked?: boolean;
   currentLabel?: string;
+  isLive?: boolean;
+  isScheduled?: boolean;
 };
 
 function Card({
@@ -49,8 +52,10 @@ function Card({
   isCurrent = false,
   isLocked = true,
   currentLabel,
+  isLive = false,
+  isScheduled = false,
 }: CardProps): JSX.Element {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['common', 'video']);
   const [imageLoaded, setImageLoaded] = useState(false);
   const cardClassName = classNames(styles.card, {
     [styles.featured]: featured,
@@ -72,8 +77,15 @@ function Card({
       return <div className={styles.tag}>{formatSeriesMetaString(seasonNumber, episodeNumber)}</div>;
     } else if (duration) {
       return <div className={styles.tag}>{formatDurationTag(duration)}</div>;
-    } else if (duration === 0) {
+    } else if (isLive) {
       return <div className={classNames(styles.tag, styles.live)}>{t('live')}</div>;
+    } else if (isScheduled) {
+      return (
+        <div className={styles.tag}>
+          <Today className={styles.scheduled} />
+          {t('scheduled')}
+        </div>
+      );
     }
   };
 

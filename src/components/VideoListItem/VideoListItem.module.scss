@@ -106,6 +106,12 @@ svg.lock {
   border-radius: 4px;
 }
 
+svg.scheduled {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
 .tag {
   margin-left: 4px;
   padding: 2px 6px;
@@ -115,6 +121,8 @@ svg.lock {
 .live {
   background-color: variables.$red;
 }
+
+
 
 .progressContainer {
   position: absolute;

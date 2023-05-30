@@ -1,3 +1,7 @@
+import { parseISO } from 'date-fns';
+
+import { getMediaStatusFromEventState } from '../utils/liveEvent';
+
 import { addQueryParams } from '#src/utils/formatting';
 import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
@@ -23,13 +27,20 @@ export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
 
   const offerKeys = Object.keys(config?.integrations)[0];
 
-  return {
+  const transformedMediaItem = {
     ...item,
     shelfImage: generateImageData(config, ImageProperty.SHELF, item, playlist),
     backgroundImage: generateImageData(config, ImageProperty.BACKGROUND, item),
     channelLogoImage: generateImageData(config, ImageProperty.CHANNEL_LOGO, item),
     mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
+    scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
+    scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
   };
+
+  // add the media status to the media item after the transformation because the live media status depends on the scheduledStart and scheduledEnd
+  transformedMediaItem.mediaStatus = getMediaStatusFromEventState(transformedMediaItem);
+
+  return transformedMediaItem;
 };
 
 /**
