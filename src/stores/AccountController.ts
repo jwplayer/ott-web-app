@@ -387,9 +387,9 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
 }
 
 export async function exportAccountData() {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
-      return await accountService.exportAccountData(undefined, true, jwt);
+      return await accountService.exportAccountData(undefined, true);
     });
   });
 }

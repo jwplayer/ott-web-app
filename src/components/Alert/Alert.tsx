@@ -18,7 +18,7 @@ const Alert: React.FC<Props> = ({ open, message, onClose, isSuccess }: Props) =>
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <h2 className={styles.title}>{t(`${isSuccess ? 'alert.success' : 'alert.title'}`)}</h2>
+      <h2 className={styles.title}>{isSuccess ? t('alert.success') : t('alert.title')}</h2>
       <p className={styles.body}>{message}</p>
       <Button label={t('alert.close')} variant="outlined" onClick={onClose} fullWidth />
     </Dialog>

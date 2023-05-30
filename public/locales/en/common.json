@@ -1,8 +1,8 @@
 {
   "alert": {
     "close": "Close",
-    "title": "An error occurred",
-    "success": "Success"
+    "success": "Success",
+    "title": "An error occurred"
   },
   "back": "Back",
   "card_lock": "Item locked",
@@ -19,6 +19,7 @@
   "now": "Now",
   "optional": "(Optional)",
   "play_item": "Play {{title}}",
+  "scheduled": "Scheduled",
   "series": "series",
   "sign_in": "Sign in",
   "sign_up": "Sign up",

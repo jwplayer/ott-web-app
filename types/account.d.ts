@@ -333,4 +333,4 @@ type ChangePassword = EnvironmentServiceRequest<ChangePasswordWithTokenPayload, 
 type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWithOldPasswordPayload, ApiResponse<unknown>>;
 type UpdatePersonalShelves = EnvironmentServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
-type ExportAccountData = AuthServiceRequest<undefined, ExportAccountDataResponse>;
+type ExportAccountData = EnvironmentServiceRequest<undefined, ExportAccountDataResponse>;

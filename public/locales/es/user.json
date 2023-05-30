@@ -17,6 +17,10 @@
       "please_enter_valid_email": "Por favor, ingresa una dirección de correo electrónico válida.",
       "unknown_error": "Se produjo un error desconocido"
     },
+    "export_data_body": "Exporte todos los datos de su cuenta personal a <strong>{{email}}</strong> como un archivo adjunto.",
+    "export_data_error": "Ocurrió un error al exportar los datos de su cuenta.",
+    "export_data_success": "Please check your email.",
+    "export_data_title": "Por favor revise su correo electrónico.",
     "firstname": "Nombre",
     "hide_password": "Ocultar contraseña",
     "lastname": "Apellido",
