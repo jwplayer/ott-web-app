@@ -3,9 +3,7 @@ import { useInfiniteQuery } from 'react-query';
 import { getEpisodes, getSeasonWithEpisodes } from '#src/services/api.service';
 import type { EpisodesWithPagination } from '#types/series';
 import type { Pagination } from '#types/pagination';
-
-// 1 hour
-const CACHE_TIME = 60 * 1000 * 60;
+import { SERIES_CACHE_TIME } from '#src/config';
 
 const getNextPageParam = (pagination: Pagination) => {
   const { page, page_limit, total } = pagination;
@@ -50,8 +48,8 @@ export const useEpisodes = (
     {
       getNextPageParam: (lastPage) => getNextPageParam(lastPage?.pagination),
       enabled: options.enabled,
-      staleTime: CACHE_TIME,
-      cacheTime: CACHE_TIME,
+      staleTime: SERIES_CACHE_TIME,
+      cacheTime: SERIES_CACHE_TIME,
     },
   );
 

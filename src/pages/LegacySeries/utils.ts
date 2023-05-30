@@ -1,4 +1,4 @@
-import { deprecatedSeriesURL } from '#src/utils/formatting';
+import { legacySeriesURL } from '#src/utils/formatting';
 import { secondsToISO8601 } from '#src/utils/datetime';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { EpisodeMetadata } from '#types/series';
@@ -69,7 +69,7 @@ export const generateLegacyEpisodeJSONLD = (
   episodeMetadata: EpisodeMetadata | undefined,
   seriesId: string,
 ) => {
-  const episodeCanonical = `${window.location.origin}${deprecatedSeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
+  const episodeCanonical = `${window.location.origin}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
   const seriesMetadata = generateLegacySeriesMetadata(seriesPlaylist, seriesId);
 
   if (!episode) {

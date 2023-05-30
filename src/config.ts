@@ -5,6 +5,9 @@ export const VideoProgressMinMax = {
 
 export const PLAYLIST_LIMIT = 25;
 
+// 8 hours
+export const SERIES_CACHE_TIME = 60 * 1000 * 60 * 8;
+
 // The externalData attribute of Cleeng can contain max 5000 characters
 export const MAX_WATCHLIST_ITEMS_COUNT = 48;
 

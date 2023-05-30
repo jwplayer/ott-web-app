@@ -1,3 +1,5 @@
+import { getLegacySeriesPlaylistIdFromEpisodeTags, getSeriesPlaylistIdFromCustomParams } from './media';
+
 import type { Playlist, PlaylistItem } from '#types/playlist';
 
 export const formatDurationTag = (seconds: number): string | null => {
@@ -82,7 +84,7 @@ export const liveChannelsURL = (playlistId: string, channelId?: string, play = f
   });
 };
 
-export const deprecatedSeriesURL = ({
+export const legacySeriesURL = ({
   seriesId,
   episodeId,
   play,
@@ -93,6 +95,20 @@ export const deprecatedSeriesURL = ({
   play?: boolean;
   playlistId?: string | null;
 }) => addQueryParams(`/s/${seriesId}`, { r: playlistId, e: episodeId, play: play ? '1' : null });
+
+export const buildLegacySeriesUrlFromMediaItem = (media: PlaylistItem, play: boolean, playlistId: string | null) => {
+  const legacyPlaylistIdFromTags = getLegacySeriesPlaylistIdFromEpisodeTags(media);
+  const legacyPlaylistIdFromCustomParams = getSeriesPlaylistIdFromCustomParams(media);
+
+  return legacySeriesURL({
+    // Use the id grabbed from either custom params for series or tags for an episode
+    seriesId: legacyPlaylistIdFromCustomParams || legacyPlaylistIdFromTags || '',
+    play,
+    playlistId,
+    // Add episode id only if series id can be retrieved from tags
+    episodeId: legacyPlaylistIdFromTags && media.mediaid,
+  });
+};
 
 export const formatDate = (dateString: number) => {
   if (!dateString) return '';

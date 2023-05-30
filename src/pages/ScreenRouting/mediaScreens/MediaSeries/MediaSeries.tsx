@@ -11,11 +11,11 @@ import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import { isLocked } from '#src/utils/entitlements';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { getEpisodesInSeason, getFiltersFromSeries } from '#src/utils/series';
-import { deprecatedSeriesURL, formatSeriesMetaString, formatVideoMetaString, mediaURL } from '#src/utils/formatting';
+import { buildLegacySeriesUrlFromMediaItem, formatSeriesMetaString, formatVideoMetaString, mediaURL } from '#src/utils/formatting';
 import useMedia from '#src/hooks/useMedia';
-import { useSeriesData } from '#src/hooks/series/useSeriesData';
+import { useSeries } from '#src/hooks/series/useSeries';
 import { useEpisodes } from '#src/hooks/series/useEpisodes';
-import { useEpisodeMetadata } from '#src/hooks/series/useEpisodeMetadata';
+import { useSeriesLookup } from '#src/hooks/series/useSeriesLookup';
 import { useNextEpisode } from '#src/hooks/series/useNextEpisode';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -32,11 +32,9 @@ import PlayTrailer from '#src/icons/PlayTrailer';
 import type { PlaylistItem } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';
 import type { ScreenComponent } from '#types/screens';
-import useQueryParam from '#src/hooks/useQueryParam';
-import { getSeriesPlaylistIdFromCustomParams } from '#src/utils/media';
 import { VideoProgressMinMax } from '#src/config';
 
-const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
+const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('video');
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
@@ -49,11 +47,10 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
   const episodeId = searchParams.get('e');
 
   // Main data
-  const { isLoading: isSeriesDataLoading, data } = useSeriesData(seriesId, seriesId);
-  const { series, playlist: seriesPlaylist } = data || {};
+  const { isLoading: isSeriesDataLoading, data: series, error: seriesError } = useSeries(seriesId);
   const { isLoading: isEpisodeLoading, data: episode } = useMedia(episodeId || '');
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(episode?.trailerId || '');
-  const { data: episodeMetadata, isLoading: isEpisodeMetadataLoading } = useEpisodeMetadata(episode, series, { enabled: !!episode && !!series });
+  const { data: episodeInSeries, isLoading: isSeriesDictionaryLoading } = useSeriesLookup(episode?.mediaid);
 
   // Whether we show series or episode information
   const selectedItem = (episode || seriesMedia) as PlaylistItem;
@@ -76,9 +73,25 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
   } = useEpisodes(seriesId, seasonFilter, { enabled: seasonFilter !== undefined && !!series });
 
   const firstEpisode = useMemo(() => episodes?.[0]?.episodes?.[0], [episodes]);
-  const playlist = useMemo(() => ({ ...seriesPlaylist, playlist: episodes?.flatMap((e) => e.episodes) || [] }), [seriesPlaylist, episodes]);
+  const episodeMetadata = useMemo(
+    () =>
+      episodeInSeries && {
+        episodeNumber: episodeInSeries?.episode_number ? String(episodeInSeries.episode_number) : '',
+        seasonNumber: episodeInSeries?.season_number ? String(episodeInSeries.season_number) : '',
+      },
+    [episodeInSeries],
+  );
+  const playlist = useMemo(
+    () => ({
+      title: seriesMedia.title,
+      description: seriesMedia.description,
+      feedid: series?.series_id,
+      playlist: episodes?.flatMap((e) => e.episodes) || [],
+    }),
+    [seriesMedia, series, episodes],
+  );
   const episodesInSeason = getEpisodesInSeason(episodeMetadata, series);
-  const nextItem = useNextEpisode({ series, episodeMetadata });
+  const { data: nextItem } = useNextEpisode({ series, episodeMetadata, episodeId });
 
   // Watch history
   const watchHistoryArray = useWatchHistoryStore((state) => state.watchHistory);
@@ -121,11 +134,11 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
   }, [episodeInProgress, setSearchParams, searchParams, feedId]);
 
   useEffect(() => {
-    if (isSeriesDataLoading || isEpisodeLoading || isEpisodeMetadataLoading) {
+    if (isSeriesDataLoading || isEpisodeLoading || isSeriesDictionaryLoading) {
       return;
     }
 
-    if (!episodeId) {
+    if (!episodeId && !seasonFilter) {
       // No episode is selected
       setSeasonFilter(filters[0] || '');
       return;
@@ -135,20 +148,26 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
     if (seasonFilter === undefined && episodeMetadata) {
       setSeasonFilter(episodeMetadata.seasonNumber);
     }
-  }, [episodeMetadata, seasonFilter, isSeriesDataLoading, isEpisodeLoading, isEpisodeMetadataLoading, filters, episodeId]);
+  }, [episodeMetadata, seasonFilter, isSeriesDataLoading, isEpisodeLoading, isSeriesDictionaryLoading, filters, episodeId]);
 
   // UI
-  const isLoading = isSeriesDataLoading || isEpisodeMetadataLoading || isEpisodeLoading;
+  const isLoading = isSeriesDataLoading || isSeriesDictionaryLoading || isEpisodeLoading;
+
   if (isLoading) return <Loading />;
-  if (!series || !seriesMedia) return <ErrorPage title={t('series_error')} />;
+
+  // Legacy series is used
+  if (seriesError?.code === 404) {
+    const url = buildLegacySeriesUrlFromMediaItem(seriesMedia, play, feedId);
+
+    return <Navigate to={url} replace />;
+  }
+
+  if (!seriesMedia || !series) return <ErrorPage title={t('series_error')} />;
 
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const canonicalUrl = `${window.location.origin}${mediaURL({ media: seriesMedia, episodeId: episode?.mediaid })}`;
 
-  const primaryMetadata = formatVideoMetaString(
-    selectedItem,
-    t('video:total_episodes', { count: series ? series.episode_count : seriesPlaylist.playlist.length }),
-  );
+  const primaryMetadata = formatVideoMetaString(selectedItem, t('video:total_episodes', { count: series.episode_count }));
   const secondaryMetadata = episodeMetadata && episode && (
     <>
       <strong>{formatSeriesMetaString(episodeMetadata.seasonNumber, episodeMetadata.episodeNumber)}</strong> - {episode.title}
@@ -205,14 +224,12 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
         {selectedItem.tags?.split(',').map((tag: string) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {seriesPlaylist && selectedItem ? (
-          <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, episode, episodeMetadata)}</script>
-        ) : null}
+        {selectedItem ? <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, episode, episodeMetadata)}</script> : null}
       </Helmet>
       <VideoLayout
         item={selectedItem}
-        title={inlineLayout ? selectedItem.title : seriesPlaylist.title}
-        description={selectedItem.description}
+        title={inlineLayout ? selectedItem.title : seriesMedia.title}
+        description={selectedItem.description || seriesMedia.description}
         inlineLayout={inlineLayout}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
@@ -226,7 +243,7 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
         isLoggedIn={isLoggedIn}
         hasSubscription={hasSubscription}
         playlist={playlist}
-        relatedTitle={inlineLayout ? seriesPlaylist.title : t('episodes')}
+        relatedTitle={inlineLayout ? seriesMedia.title : t('episodes')}
         onItemClick={onCardClick}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
@@ -254,7 +271,7 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
               open={play && isEntitled}
               onClose={goBack}
               item={episode || firstEpisode}
-              title={seriesPlaylist.title}
+              title={seriesMedia.title}
               primaryMetadata={primaryMetadata}
               secondaryMetadata={secondaryMetadata}
               onComplete={handleComplete}
@@ -266,37 +283,6 @@ const MediaSeriesContent: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }
       {episode && <TrailerModal item={trailerItem} title={`${episode.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />}
     </React.Fragment>
   );
-};
-
-/**
- * This wrapper is used to check which series flow is used
- * If only new flow with series api is used, it can be deleted and replaced by MediaSeriesContent
- */
-const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: media, isLoading: isMediaLoading }) => {
-  const { t } = useTranslation('video');
-  const play = useQueryParam('play') === '1';
-  const feedId = useQueryParam('r');
-
-  const mediaId = media.mediaid;
-
-  const legacySeriesPlaylistId = getSeriesPlaylistIdFromCustomParams(media) || '';
-  const { isLoading: isSeriesLoading, isPlaylistError, data } = useSeriesData(legacySeriesPlaylistId, mediaId);
-  const { playlist: seriesPlaylist, series } = data || {};
-
-  if (isSeriesLoading || isMediaLoading) {
-    return <Loading />;
-  }
-
-  if (isPlaylistError || !seriesPlaylist) {
-    return <ErrorPage title={t('series_error')} />;
-  }
-
-  // No series data means that old flow is used
-  if (!series) {
-    return <Navigate to={deprecatedSeriesURL({ seriesId: legacySeriesPlaylistId, play, playlistId: feedId })} replace />;
-  }
-
-  return <MediaSeriesContent data={media} isLoading={isSeriesLoading || isMediaLoading} />;
 };
 
 export default MediaSeries;

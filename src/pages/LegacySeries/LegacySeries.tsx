@@ -10,7 +10,7 @@ import VideoLayout from '#components/VideoLayout/VideoLayout';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import { isLocked } from '#src/utils/entitlements';
 import useEntitlement from '#src/hooks/useEntitlement';
-import { formatSeriesMetaString, formatVideoMetaString, deprecatedSeriesURL, formatPlaylistMetaString } from '#src/utils/formatting';
+import { formatSeriesMetaString, formatVideoMetaString, legacySeriesURL, formatPlaylistMetaString } from '#src/utils/formatting';
 import useMedia from '#src/hooks/useMedia';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -46,6 +46,7 @@ const LegacySeries = () => {
   const { isLoading: isSeriesPlaylistLoading, data: seriesPlaylist, isError: isPlaylistError } = usePlaylist(seriesId, {}, true, false);
   const { isLoading: isEpisodeLoading, data: episode } = useMedia(episodeId || '');
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(episode?.trailerId || '');
+
   const episodeMetadata = useMemo(() => ({ episodeNumber: episode?.episodeNumber || '0', seasonNumber: episode?.seasonNumber || '0' }), [episode]);
 
   // Whether we show series or episode information. For old series flow we only have access to the playlist
@@ -77,11 +78,11 @@ const LegacySeries = () => {
   const hasSubscription = !!subscription;
 
   // Handlers
-  const goBack = () => episode && navigate(deprecatedSeriesURL({ episodeId: episode.mediaid, seriesId, play: false, playlistId: feedId }));
+  const goBack = () => episode && navigate(legacySeriesURL({ episodeId: episode.mediaid, seriesId, play: false, playlistId: feedId }));
   const onCardClick = (toEpisode: PlaylistItem) =>
-    seriesPlaylist && navigate(deprecatedSeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId }));
+    seriesPlaylist && navigate(legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId }));
   const handleComplete = useCallback(async () => {
-    navigate(deprecatedSeriesURL({ episodeId: nextItem?.mediaid, seriesId, play: !!nextItem, playlistId: feedId }));
+    navigate(legacySeriesURL({ episodeId: nextItem?.mediaid, seriesId, play: !!nextItem, playlistId: feedId }));
   }, [navigate, nextItem, seriesId, feedId]);
 
   // Effects
@@ -106,7 +107,7 @@ const LegacySeries = () => {
 
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const pageDescription = selectedItem?.description || '';
-  const canonicalUrl = `${window.location.origin}${deprecatedSeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
+  const canonicalUrl = `${window.location.origin}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
   const backgroundImage = (selectedItem.backgroundImage as ImageData) || undefined;
 
   const primaryMetadata = episode
@@ -124,7 +125,7 @@ const LegacySeries = () => {
   const startWatchingButton = (
     <StartWatchingButton
       item={episode || firstEpisode}
-      playUrl={deprecatedSeriesURL({ episodeId: episode?.mediaid || firstEpisode?.mediaid, seriesId, play: true, playlistId: feedId })}
+      playUrl={legacySeriesURL({ episodeId: episode?.mediaid || firstEpisode?.mediaid, seriesId, play: true, playlistId: feedId })}
     />
   );
 

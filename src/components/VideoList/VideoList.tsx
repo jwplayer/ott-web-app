@@ -50,21 +50,23 @@ function VideoList({
   return (
     <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
       {!!header && header}
-      <InfiniteScroll pageStart={0} loadMore={loadMore || defaultLoadMore} hasMore={hasLoadMore} loader={<InfiniteScrollLoader key="loader" />}>
-        {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
-          <VideoListItem
-            key={playlistItem.mediaid}
-            progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
-            onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
-            onHover={() => onListItemHover && onListItemHover(playlistItem)}
-            loading={isLoading}
-            isActive={activeMediaId === playlistItem.mediaid}
-            activeLabel={activeLabel}
-            isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
-            item={playlistItem}
-          />
-        ))}
-      </InfiniteScroll>
+      <div className={styles.content}>
+        <InfiniteScroll pageStart={0} loadMore={loadMore || defaultLoadMore} hasMore={hasLoadMore} loader={<InfiniteScrollLoader key="loader" />}>
+          {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
+            <VideoListItem
+              key={playlistItem.mediaid}
+              progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
+              onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
+              onHover={() => onListItemHover && onListItemHover(playlistItem)}
+              loading={isLoading}
+              isActive={activeMediaId === playlistItem.mediaid}
+              activeLabel={activeLabel}
+              isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
+              item={playlistItem}
+            />
+          ))}
+        </InfiniteScroll>
+      </div>
     </div>
   );
 }
