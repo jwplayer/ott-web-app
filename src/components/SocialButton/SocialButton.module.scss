@@ -1,0 +1,16 @@
+.socialButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+}
+
+.socialButtonContainer:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.socialButtonContainer:active {
+  transform: scale(0.95);
+}
