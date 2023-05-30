@@ -129,10 +129,10 @@ export const formatVideoSchedule = (locale: string, scheduledStart?: Date, sched
   }
 
   if (!scheduledEnd) {
-    return formatLocalizedDateTime(scheduledStart, locale, '•');
+    return formatLocalizedDateTime(scheduledStart, locale, ' • ');
   }
 
-  return `${formatLocalizedDateTime(scheduledStart, locale, '•')} - ${formatLocalizedTime(scheduledEnd, 'locale')}`;
+  return `${formatLocalizedDateTime(scheduledStart, locale, ' • ')} - ${formatLocalizedTime(scheduledEnd, 'locale')}`;
 };
 
 const formatLocalizedDate = (date: Date, locale: string) => new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
@@ -140,4 +140,4 @@ const formatLocalizedDate = (date: Date, locale: string) => new Intl.DateTimeFor
 const formatLocalizedTime = (date: Date, locale: string) => new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
 
 const formatLocalizedDateTime = (date: Date, locale: string, separator = ' ') =>
-  `${formatLocalizedDate(date, locale)} ${separator} ${formatLocalizedTime(date, locale)}`;
+  `${formatLocalizedDate(date, locale)}${separator}${formatLocalizedTime(date, locale)}`;
