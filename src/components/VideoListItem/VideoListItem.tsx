@@ -9,6 +9,7 @@ import Image from '#components/Image/Image';
 import Lock from '#src/icons/Lock';
 import Tag from '#components/Tag/Tag';
 import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
+import Today from '#src/icons/Today';
 
 type VideoListItemProps = {
   onClick?: () => void;
@@ -24,6 +25,8 @@ type VideoListItemProps = {
   isActive?: boolean;
   activeLabel?: string;
   isLocked?: boolean;
+  isLive?: boolean;
+  isScheduled?: boolean;
 };
 
 function VideoListItem({
@@ -40,6 +43,8 @@ function VideoListItem({
   activeLabel,
   isLocked = true,
   image,
+  isLive = false,
+  isScheduled = false,
 }: VideoListItemProps): JSX.Element {
   const { t } = useTranslation('common');
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -56,8 +61,15 @@ function VideoListItem({
       return formatSeriesMetaString(seasonNumber, episodeNumber);
     } else if (duration) {
       return formatDurationTag(duration);
-    } else if (duration === 0) {
+    } else if (isLive) {
       return t('live');
+    } else if (isScheduled) {
+      return (
+        <>
+          <Today className={styles.scheduled} />
+          {t('scheduled')}
+        </>
+      );
     }
   };
 
@@ -78,7 +90,7 @@ function VideoListItem({
         {isActive && <div className={styles.activeLabel}>{activeLabel}</div>}
         <div className={styles.tags}>
           {isLocked && <Lock className={styles.lock} />}
-          <Tag className={classNames(styles.tag, { [styles.live]: duration === 0 })}>{renderTagLabel()}</Tag>
+          <Tag className={classNames(styles.tag, { [styles.live]: isLive })}>{renderTagLabel()}</Tag>
         </div>
 
         {progress ? (

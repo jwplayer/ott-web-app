@@ -4,6 +4,7 @@ import { generatePlaylistPlaceholder } from '#src/utils/collection';
 import type { GetPlaylistParams } from '#types/playlist';
 import { getPlaylistById } from '#src/services/api.service';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
+import { isScheduledOrLiveMedia } from '#src/utils/liveEvent';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
@@ -25,7 +26,19 @@ export default function usePlaylist(playlistId?: string, params: GetPlaylistPara
   return useQuery(queryKey, () => callback(playlistId, params), {
     enabled: isEnabled,
     placeholderData: usePlaceholderData && isEnabled ? placeholderData : undefined,
-    refetchInterval: (data, _) => (data?.refetch ? 1000 * 30 : false),
+    refetchInterval: (data, _) => {
+      if (!data) return false;
+
+      let shouldRefetchPlaylist = data.refetch;
+
+      for (const media of data.playlist) {
+        if (shouldRefetchPlaylist) break;
+
+        shouldRefetchPlaylist = isScheduledOrLiveMedia(media);
+      }
+
+      return shouldRefetchPlaylist ? 1000 * 30 : false;
+    },
     retry: false,
   });
 }

@@ -110,3 +110,34 @@ export const formatSeriesMetaString = (seasonNumber?: string, episodeNumber?: st
 
   return seasonNumber && seasonNumber !== '0' ? `S${seasonNumber}:E${episodeNumber}` : `E${episodeNumber}`;
 };
+
+export const formatLiveEventMetaString = (media: PlaylistItem, locale: string) => {
+  const metaData = [];
+  const scheduled = formatVideoSchedule(locale, media.scheduledStart, media.scheduledEnd);
+
+  if (scheduled) metaData.push(scheduled);
+  if (media.duration) metaData.push(formatDuration(media.duration));
+  if (media.genre) metaData.push(media.genre);
+  if (media.rating) metaData.push(media.rating);
+
+  return metaData.join(' • ');
+};
+
+export const formatVideoSchedule = (locale: string, scheduledStart?: Date, scheduledEnd?: Date) => {
+  if (!scheduledStart) {
+    return '';
+  }
+
+  if (!scheduledEnd) {
+    return formatLocalizedDateTime(scheduledStart, locale, ' • ');
+  }
+
+  return `${formatLocalizedDateTime(scheduledStart, locale, ' • ')} - ${formatLocalizedTime(scheduledEnd, 'locale')}`;
+};
+
+const formatLocalizedDate = (date: Date, locale: string) => new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+
+const formatLocalizedTime = (date: Date, locale: string) => new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+
+const formatLocalizedDateTime = (date: Date, locale: string, separator = ' ') =>
+  `${formatLocalizedDate(date, locale)}${separator}${formatLocalizedTime(date, locale)}`;
