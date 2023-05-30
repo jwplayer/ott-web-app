@@ -23,6 +23,8 @@ type QueryResult = {
   responseData?: GetEntitlementsResponse;
 };
 
+const notifyOnChangeProps = ['data' as const, 'isLoading' as const];
+
 /**
  * useEntitlement()
  *
@@ -55,6 +57,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
       queryFn: () => checkoutService?.getEntitlements({ offerId }, sandbox),
       enabled: !!playlistItem && !!user && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
+      notifyOnChangeProps,
     })),
   );
 

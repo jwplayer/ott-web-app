@@ -24,6 +24,7 @@ import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
 import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
+import useEventCallback from '#src/hooks/useEventCallback';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -41,6 +42,14 @@ const AccountModal = () => {
   } = config;
   const isPublicView = viewParam && PUBLIC_VIEWS.includes(viewParam);
 
+  const toLogin = useEventCallback(() => {
+    navigate(addQueryParam(location, 'u', 'login'));
+  });
+
+  const closeHandler = useEventCallback(() => {
+    navigate(removeQueryParam(location, 'u'));
+  });
+
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
     if (viewParam) setView(viewParam);
@@ -48,13 +57,9 @@ const AccountModal = () => {
 
   useEffect(() => {
     if (!!viewParam && !loading && !user && !isPublicView) {
-      navigate(addQueryParam(location, 'u', 'login'));
+      toLogin();
     }
-  }, [viewParam, navigate, location, loading, user, isPublicView]);
-
-  const closeHandler = () => {
-    navigate(removeQueryParam(location, 'u'));
-  };
+  }, [viewParam, loading, user, isPublicView, toLogin]);
 
   const renderForm = () => {
     if (!user && loading && !isPublicView) {
