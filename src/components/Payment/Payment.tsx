@@ -12,7 +12,7 @@ import TextField from '#components/TextField/TextField';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Button from '#components/Button/Button';
 import type { Customer } from '#types/account';
-import { formatDate, formatPrice } from '#src/utils/formatting';
+import { formatLocalizedDate, formatPrice } from '#src/utils/formatting';
 import { addQueryParam } from '#src/utils/location';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { AccessModel } from '#types/Config';
@@ -57,7 +57,7 @@ const Payment = ({
   onUpgradeSubscriptionClick,
   offerSwitchesAvailable,
 }: Props): JSX.Element => {
-  const { t } = useTranslation(['user', 'account']);
+  const { t, i18n } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
   const hasMoreTransactions = hiddenTransactionsCount > 0;
   const navigate = useNavigate();
@@ -108,8 +108,8 @@ const Payment = ({
                 <p>
                   <strong>{getTitle(activeSubscription.period)}</strong> <br />
                   {activeSubscription.status === 'active' && !isGrantedSubscription
-                    ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
-                    : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
+                    ? t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })
+                    : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt), i18n.language) })}
                 </p>
                 {!isGrantedSubscription && (
                   <p className={styles.price}>
@@ -193,7 +193,7 @@ const Payment = ({
                   <p>
                     {transaction.transactionId}
                     <br />
-                    {formatDate(transaction.transactionDate)}
+                    {formatLocalizedDate(new Date(transaction.transactionDate * 1000), i18n.language)}
                   </p>
                   {canShowReceipts && (
                     <IconButton aria-label={t('user:payment.show_receipt')} onClick={() => !isLoading && onShowReceiptClick(transaction.transactionId)}>

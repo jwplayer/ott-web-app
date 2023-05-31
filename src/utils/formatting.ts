@@ -78,12 +78,6 @@ export const episodeURL = (episode: PlaylistItem, seriesId?: string, play: boole
     seriesId,
   });
 
-export const formatDate = (dateString: number) => {
-  if (!dateString) return '';
-
-  return new Date(dateString * 1000).toLocaleDateString('en-US');
-};
-
 export const formatPrice = (price: number, currency: string, country: string) => {
   return new Intl.NumberFormat(country || undefined, {
     style: 'currency',
@@ -135,10 +129,14 @@ export const formatVideoSchedule = (locale: string, scheduledStart?: Date, sched
   return `${formatLocalizedDateTime(scheduledStart, locale, ' • ')} - ${formatLocalizedTime(scheduledEnd, locale)}`;
 };
 
-export const formatLocalizedDate = (date: Date, locale: string) =>
-  new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+export const formatLocalizedDate = (date: Date, locale: string) => {
+  return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+};
 
-export const formatLocalizedTime = (date: Date, locale: string) => new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+export const formatLocalizedTime = (date: Date, locale: string) => {
+  return new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+};
 
-export const formatLocalizedDateTime = (date: Date, locale: string, separator = ' ') =>
-  `${formatLocalizedDate(date, locale)}${separator}${formatLocalizedTime(date, locale)}`;
+export const formatLocalizedDateTime = (date: Date, locale: string, separator = ' ') => {
+  return `${formatLocalizedDate(date, locale)}${separator}${formatLocalizedTime(date, locale)}`;
+};

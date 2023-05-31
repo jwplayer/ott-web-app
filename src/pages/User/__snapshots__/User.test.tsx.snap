@@ -749,7 +749,7 @@ exports[`User Component tests > Payments Page 1`] = `
             <p>
               11232
               <br />
-              7/16/2022
+              July 16, 2022
             </p>
           </div>
         </div>
@@ -772,7 +772,7 @@ exports[`User Component tests > Payments Page 1`] = `
             <p>
               11234
               <br />
-              11/9/2022
+              November 9, 2022
             </p>
           </div>
         </div>
