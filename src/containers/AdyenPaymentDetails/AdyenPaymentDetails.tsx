@@ -10,20 +10,19 @@ import type { AdyenPaymentSession } from '#types/checkout';
 import { addAdyenPaymentDetails, createAdyenPaymentSession, finalizeAdyenPayment, finalizeAdyenPaymentDetails } from '#src/stores/CheckoutController';
 import useQueryParam from '#src/hooks/useQueryParam';
 import useEventCallback from '#src/hooks/useEventCallback';
-import { replaceQueryParam } from '#src/utils/location';
+import { addQueryParam, replaceQueryParam } from '#src/utils/location';
 import { addQueryParams } from '#src/utils/formatting';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
 
 type Props = {
   setProcessing: (loading: boolean) => void;
   setPaymentError: (errorMessage?: string) => void;
-  paymentSuccessUrl: string;
   paymentMethodId: number;
   type: AdyenPaymentMethodType;
   error?: string;
 };
 
-export default function AdyenPaymentDetails({ setProcessing, type, setPaymentError, paymentSuccessUrl, error, paymentMethodId }: Props) {
+export default function AdyenPaymentDetails({ setProcessing, type, setPaymentError, error, paymentMethodId }: Props) {
   const { sandbox } = useClientIntegration();
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,6 +30,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
 
   const redirectResult = useQueryParam('redirectResult');
   const finalize = !!redirectResult;
+  const paymentSuccessUrl = addQueryParam(location, 'u', 'payment-method-success');
 
   const finalizePaymentDetails = useEventCallback(async (redirectResult: string) => {
     try {
@@ -86,7 +86,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
         setProcessing(true);
         setPaymentError(undefined);
 
-        const returnUrl = addQueryParams(window.origin, { u: 'payment-method', paymentMethodId: `${paymentMethodId}` });
+        const returnUrl = addQueryParams(window.location.href, { u: 'payment-method', paymentMethodId: `${paymentMethodId}` });
         const result = await addAdyenPaymentDetails(state.data.paymentMethod, paymentMethodId, returnUrl);
 
         if ('action' in result) {

@@ -58,12 +58,11 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
           return;
         }
 
-        const returnUrl = addQueryParams(window.origin, { u: 'finalize-payment', orderId: orderId });
+        const returnUrl = addQueryParams(window.location.href, { u: 'finalize-payment', orderId: orderId });
         const result = await initialAdyenPayment(state.data.paymentMethod, returnUrl);
 
         if ('action' in result) {
           handleAction(result.action);
-          return;
         }
 
         await reloadActiveSubscription({ delay: 2000 });
