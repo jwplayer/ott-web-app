@@ -109,7 +109,7 @@ const Payment = ({
                   <strong>{getTitle(activeSubscription.period)}</strong> <br />
                   {activeSubscription.status === 'active' && !isGrantedSubscription
                     ? t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })
-                    : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt), i18n.language) })}
+                    : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })}
                 </p>
                 {!isGrantedSubscription && (
                   <p className={styles.price}>
