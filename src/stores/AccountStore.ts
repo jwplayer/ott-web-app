@@ -15,6 +15,7 @@ type AccountStore = {
   canRenewSubscription: boolean;
   canChangePasswordWithOldPassword: boolean;
   canExportAccountData: boolean;
+  canDeleteAccount: boolean;
   setLoading: (loading: boolean) => void;
 };
 
@@ -31,5 +32,6 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   canRenewSubscription: false,
   canChangePasswordWithOldPassword: false,
   canExportAccountData: false,
+  canDeleteAccount: false,
   setLoading: (loading: boolean) => set({ loading }),
 }));

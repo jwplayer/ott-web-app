@@ -131,7 +131,6 @@ const Payment = ({
               <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
             </div>
             <Button label={t('Edit card')} variant="outlined" onClick={onEditCardDetailsClick} />
-            {activePaymentDetail.currency}
           </div>
         ) : (
           <div>

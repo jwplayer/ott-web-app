@@ -79,6 +79,7 @@ export const initializeAccount = async () => {
       canRenewSubscription: accountService.canRenewSubscription,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
+      canDeleteAccount: accountService.canExportAccountData,
     });
     accountService.setEnvironment(config);
 
@@ -428,12 +429,20 @@ export const updateCardDetails = async ({
   expYear: number;
   currency: string;
 }) => {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async ({ customerId, auth: { jwt } }) => {
     return await useService(async ({ subscriptionService, sandbox = true }) => {
-      return await subscriptionService?.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox, jwt);
+      const response = await subscriptionService?.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox, jwt);
+      const activePayment = (await subscriptionService?.getActivePayment({ sandbox, customerId, jwt })) || null;
+      useAccountStore.setState({ loading: true });
+      useAccountStore.setState({
+        loading: false,
+        activePayment,
+      });
+      return response;
     });
   });
 };
+
 export async function checkEntitlements(offerId?: string): Promise<unknown> {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ checkoutService, sandbox = true }) => {
@@ -483,6 +492,14 @@ export async function exportAccountData() {
   return await useAccount(async ({ auth: { jwt } }) => {
     return await useService(async ({ accountService }) => {
       return await accountService.exportAccountData(undefined, true, jwt);
+    });
+  });
+}
+
+export async function deleteAccountData(password: string) {
+  return await useAccount(async ({ auth: { jwt } }) => {
+    return await useService(async ({ accountService }) => {
+      return await accountService.deleteAccount({ password }, true, jwt);
     });
   });
 }

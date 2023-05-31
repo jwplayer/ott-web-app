@@ -8,17 +8,17 @@ import EditCardPaymentForm from '#src/components/EditCardPaymentForm/EditCardPay
 const EditCardDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [updatingOrder] = useState(false);
+  const [updatingCardDetails, setUpdatingCardDetails] = useState(false);
 
   const closeHandler = () => {
-    navigate(removeQueryParam(location, 'u'), { replace: true });
+    navigate(removeQueryParam(location, 'u'), { replace: false });
   };
 
   const renderPaymentMethod = () => {
-    return <EditCardPaymentForm onCancel={closeHandler} />;
+    return <EditCardPaymentForm onCancel={closeHandler} setUpdatingCardDetails={setUpdatingCardDetails} />;
   };
 
-  return <EditCardDetailsForm onCancel={closeHandler} renderPaymentMethod={renderPaymentMethod} submitting={updatingOrder} />;
+  return <EditCardDetailsForm onCancel={closeHandler} renderPaymentMethod={renderPaymentMethod} submitting={updatingCardDetails} />;
 };
 
 export default EditCardDetails;
