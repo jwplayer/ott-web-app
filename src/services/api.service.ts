@@ -3,7 +3,7 @@ import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 import type { AdSchedule } from '#types/ad-schedule';
-import type { GetSeriesParams, Series } from '#types/series';
+import type { EpisodesRes, EpisodesWithPagination, GetSeriesParams, Series, EpisodeInSeries } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
 import { generateImageData } from '#src/utils/image';
 
@@ -13,6 +13,8 @@ enum ImageProperty {
   BACKGROUND = 'backgroundImage',
   CHANNEL_LOGO = 'channelLogoImage',
 }
+
+const PAGE_LIMIT = 20;
 
 /**
  * Transform incoming media items
@@ -104,23 +106,6 @@ export const getMediaById = async (id: string, token?: string, drmPolicyId?: str
 };
 
 /**
- * Gets multiple media items by the given ids. Filters out items that don't exist.
- * @param {string[]} ids
- * @param {Object} tokens
- * @param {string} drmPolicyId
- */
-export const getMediaByIds = async (ids: string[], tokens?: Record<string, string>, drmPolicyId?: string): Promise<PlaylistItem[]> => {
-  // @todo this should be updated when it will become possible to request multiple media items in a single request
-  const responses = await Promise.allSettled(ids.map((id) => getMediaById(id, tokens?.[id], drmPolicyId)));
-
-  function notEmpty<Value>(value: Value | null | undefined): value is Value {
-    return value !== null && value !== undefined;
-  }
-
-  return responses.map((result) => (result.status === 'fulfilled' ? result.value : null)).filter(notEmpty);
-};
-
-/**
  * Get series by id
  * @param {string} id
  * @param params
@@ -142,13 +127,68 @@ export const getSeries = async (id: string, params: GetSeriesParams = {}): Promi
  * Get all series for the given media_ids
  * @param {string[]} mediaIds
  */
-export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [key in typeof mediaIds[number]]: Series[] | undefined } | undefined> => {
+export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [mediaId: string]: EpisodeInSeries[] | undefined } | undefined> => {
   const pathname = `/apps/series`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
-    media_ids: mediaIds.join(','),
-  });
+  const url = `${import.meta.env.APP_API_BASE_URL}${pathname}?media_ids=${mediaIds.join(',')}`;
   const response = await fetch(url);
   return await getDataOrThrow(response);
+};
+
+/**
+ * Get all episodes of the selected series (when no particular season is selected or when episodes are attached to series)
+ * @param {string} seriesId
+ */
+export const getEpisodes = async (seriesId: string | undefined, pageOffset: number, pageLimit?: number): Promise<EpisodesWithPagination> => {
+  if (!seriesId) {
+    throw new Error('Series ID is required');
+  }
+
+  const pathname = `/apps/series/${seriesId}/episodes`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit || PAGE_LIMIT });
+
+  const response = await fetch(url);
+  const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
+
+  // Adding images and keys for media items
+  return {
+    episodes: episodes.map((el) => ({
+      ...transformMediaItem(el.media_item),
+      seasonNumber: el.season_number ? String(el.season_number) : '',
+      episodeNumber: String(el.episode_number),
+    })),
+    pagination: { page, page_limit, total },
+  };
+};
+
+/**
+ * Get season of the selected series
+ * @param {string} seriesId
+ */
+export const getSeasonWithEpisodes = async (
+  seriesId: string | undefined,
+  seasonNumber: number,
+  pageOffset: number,
+  pageLimit?: number,
+): Promise<EpisodesWithPagination> => {
+  if (!seriesId) {
+    throw new Error('Series ID is required');
+  }
+
+  const pathname = `/apps/series/${seriesId}/seasons/${seasonNumber}/episodes`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit || PAGE_LIMIT });
+
+  const response = await fetch(url);
+  const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
+
+  // Adding images and keys for media items
+  return {
+    episodes: episodes.map((el) => ({
+      ...transformMediaItem(el.media_item),
+      seasonNumber: String(seasonNumber),
+      episodeNumber: String(el.episode_number),
+    })),
+    pagination: { page, page_limit, total },
+  };
 };
 
 /**

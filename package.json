@@ -102,7 +102,7 @@
     "lint-staged": "^10.5.4",
     "luxon": "^3.2.1",
     "npm-run-all": "^4.1.5",
-    "playwright": "1.33.0",
+    "playwright": "^1.33.0",
     "postcss": "^8.3.5",
     "postcss-import": "^14.0.2",
     "postcss-scss": "^4.0.4",

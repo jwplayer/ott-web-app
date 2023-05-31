@@ -14,7 +14,7 @@ export const testConfigs = {
     label: 'JWP Authvod (No WL)',
   },
   basicNoAuth: {
-    id: 'gnnuzabk',
+    id: 'ehon8mco',
     label: 'Demo App (No Auth)',
   },
   noStyling: {
@@ -22,7 +22,7 @@ export const testConfigs = {
     label: 'No Styling (No Auth)',
   },
   inlinePlayer: {
-    id: 'ata6ucb8',
+    id: '7xlh4b33',
     label: 'Inline Player',
   },
   cleengAuthvod: {

@@ -13,7 +13,7 @@ const getFiltersFromConfig = (config: Config, playlistId: string | undefined): s
 };
 
 const filterPlaylist = (playlist: Playlist, filter: string) => {
-  if (!filter) return playlist;
+  if (filter === '') return playlist;
 
   return {
     ...playlist,
