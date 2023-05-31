@@ -58,7 +58,9 @@
 }
 
 .upgradeSubscription {
+  margin-right: 8px;
+
   @include responsive.mobile-only() {
-    margin-bottom: 8px;
+    margin: 0 0 8px;
   }
 }
