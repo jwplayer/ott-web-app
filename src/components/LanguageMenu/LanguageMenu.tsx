@@ -15,8 +15,6 @@ type Props = {
 const LanguageMenu = ({ onClick, languages, currentLanguage }: Props) => {
   return (
     <ul className={styles.menuItems}>
-      {/* no need to translate */}
-      <li className={styles.header}>Choose language</li>
       {languages.map(({ code, displayName }) => (
         <li key={code} className={classNames(styles.menuItem, { [styles.menuItemActive]: currentLanguage?.code === code })}>
           <Link onClick={() => onClick?.(code)}>{displayName}</Link>
