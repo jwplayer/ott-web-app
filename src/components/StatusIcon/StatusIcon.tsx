@@ -11,7 +11,7 @@ type Props = {
 export default function StatusIcon({ mediaStatus }: Props) {
   const { t } = useTranslation('video');
 
-  if (mediaStatus === MediaStatus.SCHEDULED) {
+  if (mediaStatus === MediaStatus.SCHEDULED || mediaStatus === MediaStatus.VOD) {
     return <Today />;
   } else if (mediaStatus === MediaStatus.LIVE) {
     return <Tag isLive>{t('live')}</Tag>;
