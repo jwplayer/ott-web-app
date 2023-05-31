@@ -120,7 +120,10 @@ const Header: React.FC<Props> = ({
         <IconButton
           className={classNames(styles.iconButton, styles.actionButton)}
           aria-label={t('open_user_menu')}
-          onClick={() => toggleUserMenu(!userMenuOpen)}
+          onClick={() => {
+            toggleLanguageMenu(false);
+            toggleUserMenu(!userMenuOpen);
+          }}
         >
           <AccountCircle />
         </IconButton>
@@ -146,7 +149,10 @@ const Header: React.FC<Props> = ({
         <IconButton
           className={classNames(styles.iconButton, styles.actionButton)}
           aria-label={t('select_language')}
-          onClick={() => toggleLanguageMenu(!languageMenuOpen)}
+          onClick={() => {
+            toggleUserMenu(false);
+            toggleLanguageMenu(!languageMenuOpen);
+          }}
         >
           <Language />
         </IconButton>
