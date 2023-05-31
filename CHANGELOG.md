@@ -1,3 +1,33 @@
+# [4.11.0](https://github.com/jwplayer/ott-web-app/compare/v4.10.0...v4.11.0) (2023-05-31)
+
+
+### Bug Fixes
+
+* card number parsing error ([66bd0f1](https://github.com/jwplayer/ott-web-app/commit/66bd0f1597e238dfd8b9240ceeb798e6da78e023))
+* removed comments ([afacf17](https://github.com/jwplayer/ott-web-app/commit/afacf17dcac0b09d0aa9cc51da75c3930d0e51a8))
+* update credit card parsing ([56c539e](https://github.com/jwplayer/ott-web-app/commit/56c539e6f43f6897048d8e97083d20928380f08d))
+* update inplayer.js version and types ([f62f359](https://github.com/jwplayer/ott-web-app/commit/f62f3598c2d23fc70d2c5011e76310a2fc40765f))
+
+
+### Features
+
+* **series:** add new series flow support ([cffb723](https://github.com/jwplayer/ott-web-app/commit/cffb723b74ec95b02f42224b5ab21392fe84d0d3))
+* **series:** change navigaton ([2d1667a](https://github.com/jwplayer/ott-web-app/commit/2d1667aae4c94a8053be5b51d7664d260502cd2b))
+* **series:** dynamic episodes load ([1e38107](https://github.com/jwplayer/ott-web-app/commit/1e38107fb5674c640b058d42092f5467ae15ab6a))
+* **series:** e2e fixes ([2e794d9](https://github.com/jwplayer/ott-web-app/commit/2e794d9f3532ab98415a78d15e1585a6abfc13c2))
+* **series:** inline player and query init fix ([e248131](https://github.com/jwplayer/ott-web-app/commit/e248131a70e4ac2e691fb43fd8bf4ec6dd0a933e))
+* **series:** node update ([cbbfde5](https://github.com/jwplayer/ott-web-app/commit/cbbfde543ecf0e1ddf8c34a01d02d04200a9fc84))
+* **series:** reorganizing series hooks ([6c7523f](https://github.com/jwplayer/ott-web-app/commit/6c7523fdc459235ca409f7d106174fa24b8032cb))
+* **series:** review fixes ([b46603a](https://github.com/jwplayer/ott-web-app/commit/b46603a4df25e3534f304cdd96f3a2d718e29691))
+* **series:** review fixes ([d9b997e](https://github.com/jwplayer/ott-web-app/commit/d9b997e95ee7672e02cdf2c15dd343772c6bdcc0))
+* **series:** review fixes ([5982c9a](https://github.com/jwplayer/ott-web-app/commit/5982c9adfb3912dc405cdb2feaadb752d7b0c24e))
+* **series:** series docs ([4dcff53](https://github.com/jwplayer/ott-web-app/commit/4dcff53065e6e34d1326f655c423369488b84f45))
+* **series:** support series features ([e9189eb](https://github.com/jwplayer/ott-web-app/commit/e9189eb629d635a1eb98a9bb66579e344d39471a))
+* **series:** use separate pages for deprecated and new flows ([df65db2](https://github.com/jwplayer/ott-web-app/commit/df65db25195f32d1364b7c94e3896f6db05af620))
+* **series:** watch history and favorites for series ([acd9075](https://github.com/jwplayer/ott-web-app/commit/acd907586a39404292799f4458260ae42d188c40))
+
+
+
 # [4.10.0](https://github.com/jwplayer/ott-web-app/compare/v4.9.0...v4.10.0) (2023-05-25)
 
 
