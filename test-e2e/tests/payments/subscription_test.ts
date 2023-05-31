@@ -190,4 +190,24 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       renewPlan(I, addYear(today), props.yearlyOffer.price);
     }
   });
+
+  Scenario(`I can view my invoices - ${providerName}`, async ({ I }) => {
+    if (props.canRenewSubscription) {
+      paidLoginContext = await I.registerOrLogin(paidLoginContext);
+      I.amOnPage(constants.paymentsUrl);
+      I.waitForLoaderDone();
+      I.see('Transactions');
+      I.dontSee('No transactions');
+
+      I.scrollTo('[class*="mainColumn"] :last-child');
+
+      // Open the invoice which is opened in a new tab
+      I.click('Show receipt');
+      I.switchToNextTab();
+
+      // Assert invoice functionality by validating the presence of the purchase button
+      I.seeElement('.purchase-button');
+      I.closeCurrentTab();
+    }
+  });
 }
