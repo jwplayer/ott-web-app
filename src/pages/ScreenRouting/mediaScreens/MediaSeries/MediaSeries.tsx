@@ -91,7 +91,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     [seriesMedia, series, episodes],
   );
   const episodesInSeason = getEpisodesInSeason(episodeMetadata, series);
-  const { data: nextItem } = useNextEpisode({ series, episodeMetadata, episodeId });
+  const { data: nextItem } = useNextEpisode({ series, episodeMetadata, episodeId: episode?.mediaid || firstEpisode?.mediaid });
 
   // Watch history
   const watchHistoryArray = useWatchHistoryStore((state) => state.watchHistory);
@@ -121,6 +121,12 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const handleComplete = useCallback(async () => {
     setSearchParams({ ...searchParams, e: (nextItem || episode)?.mediaid, r: feedId || '', play: nextItem ? '1' : '0' });
   }, [setSearchParams, nextItem, episode, feedId, searchParams]);
+
+  const handleInlinePlay = useCallback(async () => {
+    if (!episode) {
+      setSearchParams({ ...searchParams, e: firstEpisode?.mediaid, r: feedId || '', play: '1' });
+    }
+  }, [setSearchParams, firstEpisode, feedId, episode, searchParams]);
 
   // Effects
   useEffect(() => {
@@ -262,6 +268,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
               item={episode || firstEpisode}
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
+              onPlay={handleInlinePlay}
               startWatchingButton={startWatchingButton}
               paywall={isLocked(accessModel, isLoggedIn, hasSubscription, episode || firstEpisode)}
               autostart={play || undefined}

@@ -20,7 +20,7 @@ export const useNextEpisode = ({
 
       return item;
     },
-    { staleTime: SERIES_CACHE_TIME, cacheTime: SERIES_CACHE_TIME },
+    { staleTime: SERIES_CACHE_TIME, cacheTime: SERIES_CACHE_TIME, enabled: !!(series?.series_id && episodeId && episodeMetadata) },
   );
 
   return {
