@@ -138,11 +138,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    // @ts-ignore
-    // wrong data type from InPlayer SDK (will be updated in the SDK)
-    const result: Consent[] = data?.collection
-      .filter((field: RegisterField) => field.type === 'checkbox')
-      .map((consent: RegisterField) => formatPublisherConsents(consent));
+    const result: Consent[] = data?.collection.filter((field) => field.type === 'checkbox').map((consent) => formatPublisherConsents(consent));
 
     return {
       consents: [getTermsConsent(), ...result],
