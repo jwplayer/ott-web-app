@@ -466,6 +466,12 @@ export async function exportAccountData() {
   });
 }
 
+export async function getSocialLoginUrls() {
+  return await useService(async ({ accountService, config }) => {
+    return await accountService.getSocialUrls(config);
+  });
+}
+
 /**
  * Get multiple media items for the given IDs. This function uses watchlists to get several medias via just one request.
  *

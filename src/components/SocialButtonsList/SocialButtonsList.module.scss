@@ -1,9 +1,9 @@
 .socialButtonsListContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 0;
   gap: 1rem;
 }

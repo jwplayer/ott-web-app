@@ -1,16 +1,57 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+
 .socialButtonContainer {
+  position: relative; /* Add relative positioning to the container */
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Center the contents horizontally and vertically */
   align-items: center;
-  width: fit-content;
+  width: 100%;
   height: fit-content;
+  padding: 0.5rem;
+  color: variables.$gray-darker;
+  text-decoration: none;
+  background-color: variables.$white;
+  border: 1px solid #979797;
+  border-radius: 0.25rem;
+  gap: 0.5rem;
+  transition: background-color 0.1s ease-in-out;
 }
 
 .socialButtonContainer:hover {
-  transform: scale(1.05);
+  background-color: variables.$gray-lighter;
   cursor: pointer;
 }
 
 .socialButtonContainer:active {
-  transform: scale(0.95);
+  background-color: variables.$gray-light;
+}
+
+.socialButtonIconContainer {
+  position: absolute;
+  left: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 100%;
+}
+
+.socialButtonIcon {
+  width: 100%;
+  height: 100%;
+}
+
+.socialButtonTextContainer {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0.5rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
 }

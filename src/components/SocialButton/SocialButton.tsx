@@ -6,10 +6,10 @@ export type SocialButtonVariant = 'facebook' | 'google' | 'twitter';
 
 interface SocialButtonProps {
   variant: SocialButtonVariant;
-  onClick: () => void;
+  href: string;
 }
 
-const SocialButton = ({ variant, onClick }: SocialButtonProps) => {
+const SocialButton = ({ variant, href }: SocialButtonProps) => {
   const [icon, setIcon] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,9 +21,12 @@ const SocialButton = ({ variant, onClick }: SocialButtonProps) => {
   }, [variant]);
 
   return (
-    <div onClick={onClick} className={styles.socialButtonContainer}>
-      <img src={icon ?? ''} alt={`${variant} icon`} />
-    </div>
+    <a href={href} className={styles.socialButtonContainer}>
+      <div className={styles.socialButtonIconContainer}>
+        <img className={styles.socialButtonIcon} src={icon ?? ''} alt={`${variant} icon`} />
+      </div>
+      <span className={styles.socialButtonTextContainer}>Sign in with {variant.charAt(0).toUpperCase() + variant.slice(1)}</span>
+    </a>
   );
 };
 
