@@ -54,6 +54,8 @@ const initI18n = async () => {
     .init({
       supportedLngs: supportedLanguages.map(({ code }) => code),
       fallbackLng: defaultLanguage,
+      // this option ensures that empty strings in translations will fall back to the default language
+      returnEmptyString: false,
       ns: NAMESPACES,
       defaultNS: 'common',
       fallbackNS: 'common',
