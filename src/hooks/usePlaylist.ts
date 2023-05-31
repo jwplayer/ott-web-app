@@ -5,6 +5,7 @@ import type { GetPlaylistParams } from '#types/playlist';
 import { getPlaylistById } from '#src/services/api.service';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { isScheduledOrLiveMedia } from '#src/utils/liveEvent';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
@@ -29,15 +30,9 @@ export default function usePlaylist(playlistId?: string, params: GetPlaylistPara
     refetchInterval: (data, _) => {
       if (!data) return false;
 
-      let shouldRefetchPlaylist = data.refetch;
+      const autoRefetch = isTruthyCustomParamValue(data.refetch) || data.playlist.some(isScheduledOrLiveMedia);
 
-      for (const media of data.playlist) {
-        if (shouldRefetchPlaylist) break;
-
-        shouldRefetchPlaylist = isScheduledOrLiveMedia(media);
-      }
-
-      return shouldRefetchPlaylist ? 1000 * 30 : false;
+      return autoRefetch ? 1000 * 30 : false;
     },
     retry: false,
   });
