@@ -8,13 +8,14 @@ import type { ImageData } from '#types/playlist';
 import Image from '#components/Image/Image';
 import Lock from '#src/icons/Lock';
 import Tag from '#components/Tag/Tag';
-import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
+import { formatDurationTag, formatLocalizedDateTime, formatSeriesMetaString } from '#src/utils/formatting';
 import Today from '#src/icons/Today';
 
 type VideoListItemProps = {
   onClick?: () => void;
   onHover?: () => void;
   title: string;
+  scheduledStart?: Date;
   duration: number;
   image?: ImageData;
   seriesId?: string;
@@ -45,8 +46,12 @@ function VideoListItem({
   image,
   isLive = false,
   isScheduled = false,
+  scheduledStart,
 }: VideoListItemProps): JSX.Element {
-  const { t } = useTranslation('common');
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('common');
   const [imageLoaded, setImageLoaded] = useState(false);
   const posterImageClassNames = classNames(styles.posterImage, {
     [styles.visible]: imageLoaded,
@@ -99,7 +104,10 @@ function VideoListItem({
           </div>
         ) : null}
       </div>
-      <div className={styles.title}>{title}</div>
+      <div className={styles.metadata}>
+        {!!scheduledStart && <div className={styles.scheduledStart}>{formatLocalizedDateTime(scheduledStart, language)}</div>}
+        <div className={styles.title}>{title}</div>
+      </div>
     </div>
   );
 }

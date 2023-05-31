@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './Card.module.scss';
 
-import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
+import { formatDurationTag, formatLocalizedDateTime, formatSeriesMetaString } from '#src/utils/formatting';
 import Lock from '#src/icons/Lock';
 import Image from '#components/Image/Image';
 import type { ImageData } from '#types/playlist';
@@ -19,6 +19,7 @@ type CardProps = {
   onHover?: () => void;
   title: string;
   duration: number;
+  scheduledStart?: Date;
   image?: ImageData;
   seriesId?: string;
   seasonNumber?: string;
@@ -42,6 +43,7 @@ function Card({
   duration,
   image,
   seriesId,
+  scheduledStart,
   seasonNumber,
   episodeNumber,
   progress,
@@ -55,7 +57,10 @@ function Card({
   isLive = false,
   isScheduled = false,
 }: CardProps): JSX.Element {
-  const { t } = useTranslation(['common', 'video']);
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation(['common', 'video']);
   const [imageLoaded, setImageLoaded] = useState(false);
   const cardClassName = classNames(styles.card, {
     [styles.featured]: featured,
@@ -123,6 +128,9 @@ function Card({
       </div>
       {!featured && !disabled && (
         <div className={styles.titleContainer}>
+          {!!scheduledStart && (
+            <div className={classNames(styles.scheduledStart, { [styles.loading]: loading })}>{formatLocalizedDateTime(scheduledStart, language)}</div>
+          )}
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>
       )}
