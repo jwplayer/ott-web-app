@@ -37,6 +37,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       setProcessing(true);
 
       await finalizeAdyenPaymentDetails({ redirectResult: decodeURI(redirectResult) }, paymentMethodId);
+      await reloadActiveSubscription({ delay: 2000 });
 
       setProcessing(false);
       navigate(replaceQueryParam(location, 'u', 'payment-method-success'));
@@ -91,7 +92,6 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
 
         if ('action' in result) {
           handleAction(result.action);
-          return;
         }
 
         await reloadActiveSubscription({ delay: 2000 });
