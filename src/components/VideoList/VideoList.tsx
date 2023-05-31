@@ -51,6 +51,7 @@ function VideoList({
             <VideoListItem
               key={mediaid}
               title={title}
+              scheduledStart={playlistItem.scheduledStart}
               duration={duration}
               image={shelfImage}
               progress={watchHistory ? watchHistory[mediaid] : undefined}

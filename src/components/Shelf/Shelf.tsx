@@ -76,6 +76,7 @@ const Shelf = ({
       <Card
         key={item.mediaid}
         title={item.title}
+        scheduledStart={item.scheduledStart}
         duration={item.duration}
         progress={watchHistory ? watchHistory[item.mediaid] : undefined}
         image={item.shelfImage}
