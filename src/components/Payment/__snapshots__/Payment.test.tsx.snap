@@ -79,7 +79,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         <p>
           T712014024
           <br />
-          5/5/2021
+          May 5, 2021
         </p>
       </div>
     </div>
@@ -102,7 +102,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         <p>
           T177974068
           <br />
-          5/5/2021
+          May 5, 2021
         </p>
       </div>
     </div>
@@ -125,7 +125,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         <p>
           T996601696
           <br />
-          5/5/2021
+          May 5, 2021
         </p>
       </div>
     </div>
