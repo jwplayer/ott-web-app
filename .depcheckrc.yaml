@@ -15,6 +15,7 @@ ignores: [
     '\#types',
     '\#components',
     '\#utils',
+    '\#static',
     # This is used in src/styles, which recognizes absolute paths from the repo root
     'src',
     # To support e2e-reports

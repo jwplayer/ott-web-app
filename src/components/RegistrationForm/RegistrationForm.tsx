@@ -11,7 +11,7 @@ import IconButton from '#components/IconButton/IconButton';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
 import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
-import Checkbox from '#components/Checkbox/Checkbox';
+import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Link from '#components/Link/Link';
@@ -20,16 +20,17 @@ import useToggle from '#src/hooks/useToggle';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { RegistrationFormData, Consent } from '#types/account';
+import type { ConsentFieldVariants } from '#src/services/inplayer.account.service';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onConsentChange: React.ChangeEventHandler<HTMLInputElement>;
+  onConsentChange: (name: string, value: string) => void;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
   loading: boolean;
-  consentValues: Record<string, boolean>;
+  consentValues: Record<string, string>;
   consentErrors: string[];
   submitting: boolean;
   canSubmit: boolean;
@@ -77,6 +78,7 @@ const RegistrationForm: React.FC<Props> = ({
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
+      vvv
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
@@ -113,17 +115,19 @@ const RegistrationForm: React.FC<Props> = ({
         }
         required
       />
-      {publisherConsents?.map((consent, index) => (
-        <Checkbox
-          key={index}
+      {publisherConsents?.map((consent) => (
+        <CustomRegisterField
+          key={consent.name}
+          type={consent.type as ConsentFieldVariants}
           name={consent.name}
-          value={consent.value || ''}
+          options={consent.options}
+          label={formatConsentLabel(consent.label)}
+          placeholder={consent.placeholder}
+          value={consentValues[consent.name]}
+          required={consent.required}
           error={consentErrors?.includes(consent.name)}
           helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required') : undefined}
-          required={consent.required}
-          checked={consentValues[consent.name] || false}
           onChange={onConsentChange}
-          label={formatConsentLabel(consent.label)}
         />
       ))}
       <Button

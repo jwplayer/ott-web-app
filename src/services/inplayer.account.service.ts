@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory, GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
 import type {
@@ -33,6 +33,16 @@ enum InPlayerEnv {
   Development = 'development',
   Production = 'production',
   Daily = 'daily',
+}
+
+export enum ConsentFieldVariants {
+  INPUT = 'input',
+  GENERAL_SELECT = 'select',
+  COUNTRY_SELECT = 'country',
+  US_STATE_SELECT = 'us_state',
+  RADIO = 'radio',
+  CHECKBOX = 'checkbox',
+  DATE_PICKER = 'datepicker', // not implemented yet
 }
 
 export const setEnvironment = (config: Config) => {
@@ -132,16 +142,27 @@ export const updateCustomer: UpdateCustomer = async (customer) => {
   }
 };
 
-export const getPublisherConsents: GetPublisherConsents = async (config) => {
+export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants> = async (config) => {
   try {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    const result: Consent[] = data?.collection.filter((field) => field.type === 'checkbox').map((consent) => formatPublisherConsents(consent));
+    const result = data?.collection
+      // todo 1: update RegisterField.type: string to RegisterField.type: ConsentFieldVariants
+      // todo 2: implement DATE_PICKER at some point
+      .filter((field) => (field.type as ConsentFieldVariants) !== ConsentFieldVariants.DATE_PICKER && field.name !== 'email_confirmation')
+      .map((field) =>
+        formatPublisherConsents({
+          ...field,
+          type: field.type as ConsentFieldVariants,
+          // todo 3: field.option type in SDK is incorrect, remove this line entirely after fixing that
+          options: field.options as unknown as GetRegisterFieldOption,
+        }),
+      );
 
-    return {
-      consents: [getTermsConsent(), ...result],
-    };
+    const consents = [getTermsConsent(), ...result];
+
+    return { consents };
   } catch {
     throw new Error('Failed to fetch publisher consents.');
   }
@@ -402,21 +423,37 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-function formatPublisherConsents(consent: Partial<RegisterField>) {
-  return {
-    broadcasterId: 0,
-    enabledByDefault: false,
-    label: consent.label,
-    name: consent.name,
-    required: consent.required,
-    value: '',
-    version: '1',
-  } as Consent;
-}
+const formatPublisherConsents = <T = string>({
+  type,
+  label,
+  placeholder,
+  name,
+  required,
+  default_value: defaultValue = '',
+  options,
+}: Pick<RegisterField, 'label' | 'name' | 'required'> & {
+  type: T;
+  default_value?: string;
+  placeholder?: string;
+  options?: GetRegisterFieldOption;
+}): Consent<T> => ({
+  type: type as T,
+  label,
+  placeholder,
+  name,
+  required,
+  defaultValue,
+  broadcasterId: 0,
+  value: '',
+  version: '1',
+  options,
+});
 
-function getTermsConsent(): Consent {
+function getTermsConsent() {
   const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
+
   return formatPublisherConsents({
+    type: ConsentFieldVariants.CHECKBOX,
     required: true,
     name: 'terms',
     label: i18next.t('account:registration.terms_consent', { termsUrl }),

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -15,7 +15,7 @@ type Props = {
   options?: (string | { value: string; label: string })[];
   optionsStyle?: string;
   valuePrefix?: string;
-  label?: string;
+  label?: ReactNode;
   fullWidth?: boolean;
   size?: 'small' | 'medium';
   error?: boolean;

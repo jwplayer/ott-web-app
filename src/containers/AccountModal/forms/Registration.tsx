@@ -15,17 +15,20 @@ const Registration = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
-  const [consentValues, setConsentValues] = useState<Record<string, boolean>>({});
+  const [consentValues, setConsentValues] = useState<Record<string, string>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
   const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
-  const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setConsentValues((current) => ({ ...current, [event.target.name]: event.target.checked }));
+  const handleChangeConsent = (name: string, value: string) => {
+    setConsentValues((current) => ({
+      ...current,
+      [name]: value,
+    }));
 
     // Clear the errors for any checkbox that's toggled
-    setConsentErrors((errors) => errors.filter((e) => e !== event.target.name));
+    setConsentErrors((errors) => errors.filter((e) => e !== name));
   };
 
   useEffect(() => {

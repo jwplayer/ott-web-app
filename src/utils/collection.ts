@@ -80,14 +80,14 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
 };
 
 const extractConsentValues = (consents?: Consent[]) => {
-  const values: Record<string, boolean> = {};
+  const values: Record<string, string> = {};
 
   if (!consents) {
     return values;
   }
 
   consents?.forEach((consent) => {
-    values[consent.name] = consent.enabledByDefault;
+    values[consent.name] = consent.defaultValue ?? '';
   });
 
   return values;
@@ -109,7 +109,7 @@ const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: 
   return consents;
 };
 
-const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, boolean>) => {
+const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, string>) => {
   const customerConsents: CustomerConsent[] = [];
   const consentsErrors: string[] = [];
 

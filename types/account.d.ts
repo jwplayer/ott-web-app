@@ -1,3 +1,5 @@
+import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
+
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
 
@@ -127,8 +129,8 @@ export type GetPublisherConsentsPayload = {
   publisherId: string;
 };
 
-export type GetPublisherConsentsResponse = {
-  consents: Consent[];
+export type GetPublisherConsentsResponse<T = string> = {
+  consents: Consent<T>[];
 };
 
 export type GetCustomerConsentsPayload = {
@@ -217,15 +219,19 @@ export type UpdateCustomerArgs = {
   fullName?: string;
 };
 
-export type Consent = {
+export type Consent<T = string> = {
   broadcasterId: number;
   name: string;
   version: string;
   value: string;
   label: string;
-  enabledByDefault: boolean;
+  placeholder?: string;
+  defaultValue: string;
+  options?: GetRegisterFieldOption;
   required: boolean;
+  type: T;
 };
+
 export type CustomerConsent = {
   customerId?: string;
   date?: number;
@@ -330,7 +336,7 @@ type Login = PromiseRequest<AuthArgs, AuthResponse>;
 type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type GetCustomer = AuthServiceRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = AuthServiceRequest<UpdateCustomerArgs, Customer>;
-type GetPublisherConsents = PromiseRequest<Config, GetPublisherConsentsResponse>;
+type GetPublisherConsents<T = string> = PromiseRequest<Config, GetPublisherConsentsResponse>;
 type GetCustomerConsents = PromiseRequest<CustomerConsentArgs, GetCustomerConsentsResponse>;
 type UpdateCustomerConsents = PromiseRequest<UpdateCustomerConsentsArgs, GetCustomerConsentsResponse>;
 type GetCaptureStatus = AuthServiceRequest<GetCaptureStatusArgs, GetCaptureStatusResponse>;
