@@ -15,6 +15,7 @@ import type {
   GetOffers,
   GetOrder,
   GetPaymentMethods,
+  GetSubscriptionSwitch,
   GetSubscriptionSwitches,
   PaymentWithoutDetails,
   PaymentWithPayPal,
@@ -90,6 +91,10 @@ export const paymentWithPayPal: PaymentWithPayPal = async (payload, sandbox) => 
 
 export const getSubscriptionSwitches: GetSubscriptionSwitches = async (payload, sandbox) => {
   return get(sandbox, `/customers/${payload.customerId}/subscription_switches/${payload.offerId}/availability`, { authenticate: true });
+};
+
+export const getSubscriptionSwitch: GetSubscriptionSwitch = async (payload, sandbox) => {
+  return get(sandbox, `/subscription_switches/${payload.switchId}`, { authenticate: true });
 };
 
 export const switchSubscription: SwitchSubscription = async (payload, sandbox) => {

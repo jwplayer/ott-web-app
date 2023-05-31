@@ -9,6 +9,7 @@ export type Subscription = {
   paymentGateway: string;
   paymentMethod: string;
   offerTitle: string;
+  pendingSwitchId: string | null;
   period: 'day' | 'week' | 'month' | 'year' | 'granted';
   totalPrice: number;
   unsubscribeUrl?: string;

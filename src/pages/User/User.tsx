@@ -48,6 +48,7 @@ const User = (): JSX.Element => {
     subscription,
     transactions,
     activePayment,
+    pendingOffer,
     loading,
     canUpdateEmail,
     canRenewSubscription,
@@ -184,6 +185,7 @@ const User = (): JSX.Element => {
                   activePaymentDetail={activePayment}
                   transactions={transactions}
                   customer={customer}
+                  pendingOffer={pendingOffer}
                   isLoading={loading || isLoadingReceipt}
                   panelClassName={styles.panel}
                   panelHeaderClassName={styles.panelHeader}

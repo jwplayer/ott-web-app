@@ -17,6 +17,7 @@ import { addQueryParam } from '#src/utils/location';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { AccessModel } from '#types/Config';
 import PayPal from '#src/icons/PayPal';
+import type { Offer } from '#types/checkout';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -26,6 +27,7 @@ type Props = {
   activePaymentDetail: PaymentDetail | null;
   transactions: Transaction[] | null;
   customer: Customer;
+  pendingOffer: Offer | null;
   isLoading: boolean;
   offerSwitchesAvailable: boolean;
   onShowReceiptClick: (transactionId: string) => void;
@@ -43,6 +45,7 @@ const Payment = ({
   accessModel,
   activePaymentDetail,
   activeSubscription,
+  pendingOffer,
   transactions,
   customer,
   isLoading,
@@ -110,6 +113,9 @@ const Payment = ({
                   {activeSubscription.status === 'active' && !isGrantedSubscription
                     ? t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })
                     : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })}
+                  {pendingOffer && (
+                    <div className={styles.pendingSwitch}>{t('user:payment.pending_offer_switch', { title: getTitle(pendingOffer.period) })}</div>
+                  )}
                 </p>
                 {!isGrantedSubscription && (
                   <p className={styles.price}>

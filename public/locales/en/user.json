@@ -65,6 +65,7 @@
     "no_transactions": "No transactions",
     "other": "other",
     "payment_method": "Payment method",
+    "pending_offer_switch": "Will update to a \"{{title}}\" after the next billing date",
     "price_payed_with": "{{price}} payed with {{method}}",
     "price_payed_with_card": "Price payed with card",
     "renew_subscription": "Renew subscription",

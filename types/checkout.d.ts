@@ -173,9 +173,26 @@ export type GetSubscriptionSwitchesPayload = {
   offerId: string;
 };
 
-export type GetSubscriptionSwitchesReponse = {
+export type GetSubscriptionSwitchesResponse = {
   available: SwitchOffer[];
   unavailable: SwitchOffer[];
+};
+
+export type GetSubscriptionSwitchPayload = {
+  switchId: string;
+};
+
+export type GetSubscriptionSwitchResponse = {
+  id: id;
+  customerId: number;
+  direction: 'downgrade' | 'upgrade';
+  algorithm: string;
+  fromOfferId: string;
+  toOfferId: string;
+  subscriptionId: string;
+  status: string;
+  createdAt: number;
+  updatedAt: number;
 };
 
 export type SwitchSubscriptionPayload = {
@@ -347,7 +364,8 @@ export type GetPaymentMethods = EmptyEnvironmentServiceRequest<PaymentMethodResp
 export type PaymentWithoutDetails = EnvironmentServiceRequest<PaymentWithoutDetailsPayload, Payment>;
 export type PaymentWithAdyen = EnvironmentServiceRequest<PaymentWithAdyenPayload, Payment>;
 export type PaymentWithPayPal = EnvironmentServiceRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
-export type GetSubscriptionSwitches = EnvironmentServiceRequest<GetSubscriptionSwitchesPayload, GetSubscriptionSwitchesReponse>;
+export type GetSubscriptionSwitches = EnvironmentServiceRequest<GetSubscriptionSwitchesPayload, GetSubscriptionSwitchesResponse>;
+export type GetSubscriptionSwitch = EnvironmentServiceRequest<GetSubscriptionSwitchPayload, GetSubscriptionSwitchResponse>;
 export type SwitchSubscription = EnvironmentServiceRequest<SwitchSubscriptionPayload, SwitchSubscriptionResponse>;
 export type GetEntitlements = EnvironmentServiceRequest<GetEntitlementsPayload, GetEntitlementsResponse>;
 export type GetAdyenPaymentSession = EnvironmentServiceRequest<AdyenPaymentMethodPayload, AdyenPaymentSession>;
