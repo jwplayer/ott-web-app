@@ -45,7 +45,7 @@
 
 .cardDetails {
   display: flex;
-  margin-top: variables.$base-spacing * 2;
+  margin-top: calc(#{variables.$base-spacing} * 2);
 }
 
 .paypal {
