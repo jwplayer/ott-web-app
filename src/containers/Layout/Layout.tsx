@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router';
@@ -82,15 +82,11 @@ const Layout = () => {
     await i18n.changeLanguage(code);
   };
 
-  const toggleUserMenu = (value: boolean) =>
-    useUIStore.setState({
-      userMenuOpen: value,
-    });
-
-  const toggleLanguageMenu = (value: boolean) =>
-    useUIStore.setState({
-      languageMenuOpen: value,
-    });
+  // useCallbacks are used here to fix a bug in the Popover when using a Reactive onClose callback
+  const openUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: true }), []);
+  const closeUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: false }), []);
+  const openLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: true }), []);
+  const closeLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: false }), []);
 
   const renderUserActions = () => {
     if (!clientId) return null;
@@ -137,8 +133,10 @@ const Layout = () => {
           isLoggedIn={isLoggedIn}
           userMenuOpen={userMenuOpen}
           languageMenuOpen={languageMenuOpen}
-          toggleUserMenu={toggleUserMenu}
-          toggleLanguageMenu={toggleLanguageMenu}
+          openUserMenu={openUserMenu}
+          closeUserMenu={closeUserMenu}
+          openLanguageMenu={openLanguageMenu}
+          closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
         >

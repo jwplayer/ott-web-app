@@ -34,8 +34,10 @@ type Props = {
   onCloseSearchButtonClick?: () => void;
   onLoginButtonClick?: () => void;
   onSignUpButtonClick?: () => void;
-  toggleUserMenu: (value: boolean) => void;
-  toggleLanguageMenu: (value: boolean) => void;
+  openUserMenu: () => void;
+  closeUserMenu: () => void;
+  openLanguageMenu: () => void;
+  closeLanguageMenu: () => void;
   children?: ReactFragment;
   isLoggedIn: boolean;
   userMenuOpen: boolean;
@@ -62,8 +64,10 @@ const Header: React.FC<Props> = ({
   isLoggedIn,
   userMenuOpen,
   languageMenuOpen,
-  toggleUserMenu,
-  toggleLanguageMenu,
+  openUserMenu,
+  closeUserMenu,
+  openLanguageMenu,
+  closeLanguageMenu,
   canLogin = false,
   showPaymentsMenuItem,
   supportedLanguages,
@@ -117,19 +121,12 @@ const Header: React.FC<Props> = ({
 
     return isLoggedIn ? (
       <React.Fragment>
-        <IconButton
-          className={classNames(styles.iconButton, styles.actionButton)}
-          aria-label={t('open_user_menu')}
-          onClick={() => {
-            toggleLanguageMenu(false);
-            toggleUserMenu(!userMenuOpen);
-          }}
-        >
+        <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('open_user_menu')} onClick={openUserMenu}>
           <AccountCircle />
         </IconButton>
-        <Popover isOpen={userMenuOpen} onClose={() => toggleUserMenu(false)}>
+        <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
           <Panel>
-            <UserMenu onClick={() => toggleUserMenu(false)} showPaymentsItem={showPaymentsMenuItem} small />
+            <UserMenu onClick={closeUserMenu} showPaymentsItem={showPaymentsMenuItem} small />
           </Panel>
         </Popover>
       </React.Fragment>
@@ -146,22 +143,15 @@ const Header: React.FC<Props> = ({
 
     return (
       <React.Fragment>
-        <IconButton
-          className={classNames(styles.iconButton, styles.actionButton)}
-          aria-label={t('select_language')}
-          onClick={() => {
-            toggleUserMenu(false);
-            toggleLanguageMenu(!languageMenuOpen);
-          }}
-        >
+        <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('select_language')} onClick={openLanguageMenu}>
           <Language />
         </IconButton>
-        <Popover isOpen={languageMenuOpen} onClose={() => toggleLanguageMenu(false)}>
+        <Popover isOpen={languageMenuOpen} onClose={closeLanguageMenu}>
           <Panel>
             <LanguageMenu
               onClick={(code) => {
                 onLanguageClick(code);
-                toggleLanguageMenu(false);
+                closeLanguageMenu();
               }}
               languages={supportedLanguages}
               currentLanguage={currentLanguage}
