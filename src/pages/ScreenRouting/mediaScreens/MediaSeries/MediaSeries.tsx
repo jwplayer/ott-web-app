@@ -146,7 +146,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
 
     if (!episodeId && !seasonFilter) {
       // No episode is selected
-      setSeasonFilter(filters[0] || '');
+      setSeasonFilter(filters[0]?.value || '');
       return;
     }
 
@@ -253,7 +253,6 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         onItemClick={onCardClick}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
-        filterValuePrefix={t('season_prefix')}
         defaultFilterLabel={t('all_seasons')}
         activeLabel={t('current_episode')}
         watchHistory={watchHistoryDictionary}

@@ -60,7 +60,7 @@ const LegacySeries = () => {
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Filters
-  const filters = useMemo(() => getFiltersFromSeries(seriesPlaylist), [seriesPlaylist]);
+  const filters = useMemo(() => getFiltersFromSeries(seriesPlaylist, t), [seriesPlaylist, t]);
   const [seasonFilter, setSeasonFilter] = useState<string | undefined>(undefined);
 
   const firstEpisode = useMemo(() => seriesPlaylist?.playlist?.[0], [seriesPlaylist]);
@@ -193,7 +193,6 @@ const LegacySeries = () => {
         onItemClick={onCardClick}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
-        filterValuePrefix={t('season_prefix')}
         defaultFilterLabel={t('all_seasons')}
         activeLabel={t('current_episode')}
         watchHistory={watchHistoryDictionary}
