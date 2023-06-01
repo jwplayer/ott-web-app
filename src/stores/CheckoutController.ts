@@ -286,7 +286,9 @@ export const switchSubscription = async (toOfferId: string, switchDirection: 'up
 
       await checkoutService.switchSubscription(SwitchSubscriptionPayload, sandbox);
 
-      await reloadActiveSubscription();
+      // switching a subscription takes a bit longer to process
+      await reloadActiveSubscription({ delay: 7500 });
+
       // clear current offers
       useCheckoutStore.setState({ offerSwitches: [] });
     });
