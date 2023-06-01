@@ -114,7 +114,7 @@ const Payment = ({
                     ? t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })
                     : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })}
                   {pendingOffer && (
-                    <div className={styles.pendingSwitch}>{t('user:payment.pending_offer_switch', { title: getTitle(pendingOffer.period) })}</div>
+                    <span className={styles.pendingSwitch}>{t('user:payment.pending_offer_switch', { title: getTitle(pendingOffer.period) })}</span>
                   )}
                 </p>
                 {!isGrantedSubscription && (
