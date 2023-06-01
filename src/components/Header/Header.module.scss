@@ -9,7 +9,7 @@
 
 .header {
   height: variables.$header-height;
-  padding: 10px variables.$base-spacing * 2;
+  padding: 10px calc(#{variables.$base-spacing} * 2);
   color: var(--header-contrast-color, variables.$white);
   background: var(--header-background, transparent);
 
@@ -80,7 +80,7 @@
     height: 36px;
     min-height: 36px;
     margin: 0 6px;
-    padding: 0 variables.$base-spacing / 2;
+    padding: 0 calc(#{variables.$base-spacing} / 2);
     font-weight: var(--body-font-weight-bold);
     font-size: 18px;
   }
@@ -100,7 +100,7 @@
 }
 
 .actionButton {
-  margin-left: variables.$base-spacing / 2;
+  margin-left: calc(#{variables.$base-spacing} / 2);
 }
 
 //
@@ -149,7 +149,7 @@
 @include responsive.mobile-and-tablet() {
   .header {
     height: variables.$header-height-mobile;
-    padding: 10px variables.$base-spacing * 2;
+    padding: 10px calc(#{variables.$base-spacing} * 2);
   }
 
   .menu {

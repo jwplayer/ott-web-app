@@ -66,6 +66,7 @@
     "no_transactions": "No hay transacciones",
     "other": "otro",
     "payment_method": "Método de pago",
+    "pending_offer_switch": "Se actualizará a \"{{title}}\" después de la próxima fecha de facturación",
     "price_payed_with": "{{price}} pagado con {{method}}",
     "price_payed_with_card": "Precio pagado con tarjeta",
     "renew_subscription": "Renovar suscripción",

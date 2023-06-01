@@ -16,6 +16,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import type { ChooseOfferFormData } from '#types/account';
 import type { Subscription } from '#types/subscription';
 import useEventCallback from '#src/hooks/useEventCallback';
+import { logDev } from '#src/utils/common';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {
   const currentPeriod = subscription?.period;
@@ -53,8 +54,8 @@ const ChooseOffer = () => {
     navigate(removeQueryParam(location, 'u'), { replace });
   });
 
-  const toCheckout = useEventCallback(() => {
-    navigate(addQueryParam(location, 'u', 'checkout'));
+  const updateAccountModal = useEventCallback((modal: string) => {
+    navigate(addQueryParam(location, 'u', modal));
   });
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = useCallback(
@@ -67,18 +68,25 @@ const ChooseOffer = () => {
         const targetOffer = offerSwitches.find((offer) => offer.offerId === offerId);
         const targetOfferId = targetOffer?.offerId || '';
 
-        await switchSubscription(targetOfferId, determineSwitchDirection(subscription));
-        closeModal();
+        try {
+          await switchSubscription(targetOfferId, determineSwitchDirection(subscription));
+          const isPendingSwitch = !!useAccountStore.getState().pendingOffer;
+
+          updateAccountModal(isPendingSwitch ? 'upgrade-subscription-pending' : 'upgrade-subscription-success');
+        } catch (error: unknown) {
+          logDev('Error occurred while upgrading subscription', error);
+          updateAccountModal('upgrade-subscription-error');
+        }
       } else {
         const selectedOffer = availableOffers.find((offer) => offer.offerId === offerId) || null;
 
         setOffer(selectedOffer);
         updateOffer(selectedOffer);
         setSubmitting(false);
-        toCheckout();
+        updateAccountModal('checkout');
       }
     },
-    [availableOffers, closeModal, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, toCheckout, updateOffer],
+    [availableOffers, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, updateAccountModal, updateOffer],
   );
 
   const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);

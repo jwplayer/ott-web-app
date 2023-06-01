@@ -46,7 +46,6 @@ const initI18n = async () => {
     throw new Error(`The default language is not enabled: ${defaultLanguage}`);
   }
 
-  // eslint-disable-next-line import/no-named-as-default-member
   await i18next
     .use(I18NextHttpBackend)
     .use(LanguageDetector)

@@ -1,9 +1,9 @@
 /**
  * This script generates all i18next resource entries.
  */
-
 const fs = require('fs');
 const path = require('path');
+
 const prettier = require('prettier');
 
 const localesPath = './public/locales';

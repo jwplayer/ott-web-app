@@ -20,6 +20,11 @@
   }
 }
 
+.pendingSwitch {
+  display: inline-block;
+  margin-top: variables.$base-spacing;
+}
+
 .transactionDetails {
   display: flex;
   justify-content: center;
@@ -41,7 +46,7 @@
 
 .cardDetails {
   display: flex;
-  margin-top: variables.$base-spacing * 2;
+  margin-top: calc(#{variables.$base-spacing} * 2);
 }
 
 .paypal {

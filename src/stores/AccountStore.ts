@@ -1,6 +1,7 @@
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { Consent, Customer, CustomerConsent } from '#types/account';
 import { createStore } from '#src/stores/utils';
+import type { Offer } from '#types/checkout';
 
 type AccountStore = {
   loading: boolean;
@@ -10,6 +11,7 @@ type AccountStore = {
   activePayment: PaymentDetail | null;
   customerConsents: CustomerConsent[] | null;
   publisherConsents: Consent[] | null;
+  pendingOffer: Offer | null;
   canUpdateEmail: boolean;
   canRenewSubscription: boolean;
   canUpdatePaymentMethod: boolean;
@@ -27,6 +29,7 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   activePayment: null,
   customerConsents: null,
   publisherConsents: null,
+  pendingOffer: null,
   canUpdateEmail: false,
   canRenewSubscription: false,
   canChangePasswordWithOldPassword: false,

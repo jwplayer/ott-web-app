@@ -12,6 +12,7 @@ import type {
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
 } from '#types/account';
+import type { Offer } from '#types/checkout';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
@@ -355,7 +356,7 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
   useAccountStore.setState({ loading: true });
 
   return await useAccount(async ({ customerId }) => {
-    return await useService(async ({ subscriptionService, sandbox = true, config }) => {
+    return await useService(async ({ subscriptionService, checkoutService, sandbox = true, config }) => {
       if (!subscriptionService) throw new Error('subscription service is not configured');
       // The subscription data takes a few seconds to load after it's purchased,
       // so here's a delay mechanism to give it time to process
@@ -373,11 +374,26 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
         subscriptionService.getActivePayment({ sandbox, customerId }),
       ]);
 
+      let pendingOffer: Offer | null = null;
+
+      // resolve and fetch the pending offer after upgrade/downgrade
+      try {
+        if (activeSubscription?.pendingSwitchId && checkoutService && 'getSubscriptionSwitch' in checkoutService) {
+          const switchOffer = await checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, sandbox);
+          const offerResponse = await checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, sandbox);
+
+          pendingOffer = offerResponse.responseData;
+        }
+      } catch (error: unknown) {
+        logDev('Failed to fetch the pending offer', error);
+      }
+
       // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
       await queryClient.invalidateQueries('entitlements');
 
       useAccountStore.setState({
         subscription: activeSubscription,
+        pendingOffer,
         loading: false,
         transactions,
         activePayment,

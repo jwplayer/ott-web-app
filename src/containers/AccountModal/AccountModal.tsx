@@ -25,6 +25,7 @@ import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
 import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
 import useEventCallback from '#src/hooks/useEventCallback';
+import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -80,6 +81,12 @@ const AccountModal = () => {
         return <ChooseOffer />;
       case 'upgrade-subscription':
         return <ChooseOffer />;
+      case 'upgrade-subscription-error':
+        return <UpgradeSubscription type="error" onCloseButtonClick={closeHandler} />;
+      case 'upgrade-subscription-success':
+        return <UpgradeSubscription type="success" onCloseButtonClick={closeHandler} />;
+      case 'upgrade-subscription-pending':
+        return <UpgradeSubscription type="pending" onCloseButtonClick={closeHandler} />;
       case 'checkout':
         return <Checkout />;
       case 'payment-error':

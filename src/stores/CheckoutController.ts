@@ -17,11 +17,11 @@ import type {
   PaymentMethod,
   PaymentWithPayPalResponse,
   UpdateOrderPayload,
+  SwitchOffer,
 } from '#types/checkout';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import useAccount from '#src/hooks/useAccount';
 import useService from '#src/hooks/useService';
-import type { SwitchOffer } from '#types/checkout.d';
 
 export const createOrder = async (offer: Offer, paymentMethodId?: number): Promise<unknown> => {
   return await useAccount(async ({ customer }) => {
@@ -286,7 +286,9 @@ export const switchSubscription = async (toOfferId: string, switchDirection: 'up
 
       await checkoutService.switchSubscription(SwitchSubscriptionPayload, sandbox);
 
-      reloadActiveSubscription();
+      // switching a subscription takes a bit longer to process
+      await reloadActiveSubscription({ delay: 7500 });
+
       // clear current offers
       useCheckoutStore.setState({ offerSwitches: [] });
     });
