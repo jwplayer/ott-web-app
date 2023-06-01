@@ -36,7 +36,7 @@ export const getOffers: GetOffers = async (payload) => {
       try {
         const { data } = await InPlayer.Asset.getAssetAccessFees(parseInt(`${assetId}`));
 
-        return data?.map((offer) => formatOffer(offer));
+        return (data as unknown as AccessFee[])?.map((offer) => formatOffer(offer));
       } catch {
         throw new Error('Failed to get offers');
       }

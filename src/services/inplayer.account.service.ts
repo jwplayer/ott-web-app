@@ -351,6 +351,23 @@ export const deleteAccount: DeleteAccount = async ({ password }) => {
   }
 };
 
+export const getSocialUrls = async (config: Config) => {
+  const socialState = window.btoa(
+    JSON.stringify({
+      client_id: config.integrations.jwp?.clientId || '',
+      redirect: window.location.href.split('u=')[0],
+    }),
+  );
+
+  const socialResponse = await InPlayer.Account.getSocialLoginUrls(socialState);
+
+  if (socialResponse.status !== 200) {
+    throw new Error('Failed to fetch social urls');
+  }
+
+  return socialResponse.data.social_urls;
+};
+
 const getCustomerExternalData = async (): Promise<ExternalData> => {
   const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
 

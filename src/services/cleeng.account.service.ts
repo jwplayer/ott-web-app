@@ -224,6 +224,7 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload, sand
 export const exportAccountData = () => null;
 
 export const deleteAccount = () => null;
+export const getSocialUrls = () => null;
 
 export const canUpdateEmail = true;
 
