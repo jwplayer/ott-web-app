@@ -23,7 +23,7 @@
     "discount_period_other": "Durante los primeros {{count}} {{period}}",
     "free_trial_discount": "Prueba gratuita",
     "go_back_to_checkout": "Volver a la caja",
-    "invalid_card_expiry": "Fecha de vencimiento de la tarjeta inválida",
+    "invalid_card_expiry": "Fecha de vencimiento Invalido para la tarjeta",
     "invalid_card_number": "Número de tarjeta inválido",
     "invalid_cvc_number": "Número de CVC inválido",
     "monthly": "Suscripción mensual",
