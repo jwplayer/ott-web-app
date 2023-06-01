@@ -86,6 +86,9 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
         registration.password_helper_text
       </div>
     </div>
+    <div
+      class="_customFields_a472a0"
+    />
     <button
       aria-disabled="false"
       class="_button_f8f296 _continue_a472a0 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
