@@ -78,7 +78,6 @@ const RegistrationForm: React.FC<Props> = ({
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
-      vvv
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
