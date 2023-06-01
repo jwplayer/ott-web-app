@@ -85,6 +85,8 @@ const AccountModal = () => {
         return <UpgradeSubscription type="error" onCloseButtonClick={closeHandler} />;
       case 'upgrade-subscription-success':
         return <UpgradeSubscription type="success" onCloseButtonClick={closeHandler} />;
+      case 'upgrade-subscription-pending':
+        return <UpgradeSubscription type="pending" onCloseButtonClick={closeHandler} />;
       case 'checkout':
         return <Checkout />;
       case 'payment-error':

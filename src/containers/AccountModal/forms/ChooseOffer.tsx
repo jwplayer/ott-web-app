@@ -70,7 +70,9 @@ const ChooseOffer = () => {
 
         try {
           await switchSubscription(targetOfferId, determineSwitchDirection(subscription));
-          updateAccountModal('upgrade-subscription-success');
+          const isPendingSwitch = !!useAccountStore.getState().pendingOffer;
+
+          updateAccountModal(isPendingSwitch ? 'upgrade-subscription-pending' : 'upgrade-subscription-success');
         } catch (error: unknown) {
           logDev('Error occurred while upgrading subscription', error);
           updateAccountModal('upgrade-subscription-error');
