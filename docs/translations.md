@@ -4,6 +4,17 @@ The OTT Web App has multilingual support and is enabled by default. The default 
 
 Before changing or adding languages, read the sections below to understand the moving parts better.
 
+## Translation status
+
+Here is a list of all supported translations included in the OTT Web App. The status indicates if the translations are 
+generated using Google Translate/ChatGTP or validated by a person.
+
+| Language | Code | Status    | Validated by             |
+|----------|------|-----------|--------------------------|
+| English  | en   | Validated | Dev team                 |
+| Spanish  | es   | Validated | Jose Alfredo Lopez Urrea |
+| ...      |      |           |                          |
+
 ## Translation files
 
 The web app uses the [react-i18next](https://react.i18next.com/) library for displaying translated strings. Translation 
