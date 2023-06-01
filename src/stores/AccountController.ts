@@ -178,12 +178,24 @@ export const refreshJwtToken = async (auth: AuthData) => {
 
 export const getAccount = async (auth: AuthData) => {
   await useService(async ({ accountService, config, accessModel }) => {
-    const response = await accountService.getUser({ config, auth });
-    if (response) {
-      await afterLogin(auth, response.user, response.customerConsents, accessModel);
-    }
+    try {
+      const response = await accountService.getUser({ config, auth });
+      if (response) {
+        await afterLogin(auth, response.user, response.customerConsents, accessModel);
+      }
 
-    useAccountStore.setState({ loading: false });
+      useAccountStore.setState({ loading: false });
+    } catch (error: unknown) {
+      useAccountStore.setState({
+        auth: null,
+        user: null,
+        subscription: null,
+        transactions: null,
+        activePayment: null,
+        customerConsents: null,
+        publisherConsents: null,
+      });
+    }
   });
 };
 

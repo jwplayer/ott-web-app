@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -14,6 +14,8 @@ import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { subscribeToNotifications } from '#src/stores/NotificationsController';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -44,6 +46,15 @@ const Root: FC = () => {
   useEffect(() => {
     registerCustomScreens();
   }, []);
+
+  const user = useAccountStore((state) => state.user);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  useEffect(() => {
+    if (!isSubscribed && user?.id && user?.uuid) {
+      subscribeToNotifications(user.uuid);
+      setIsSubscribed(true);
+    }
+  }, [user?.id, user?.uuid, isSubscribed]);
 
   const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
