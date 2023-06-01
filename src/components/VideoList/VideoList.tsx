@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import styles from './VideoList.module.scss';
 
@@ -8,8 +9,7 @@ import { isLocked } from '#src/utils/entitlements';
 import { testId } from '#src/utils/common';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import { isLiveChannel } from '#src/utils/media';
-import { MediaStatus } from '#src/utils/liveEvent';
+import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 
 type Props = {
   playlist?: Playlist;
@@ -24,7 +24,12 @@ type Props = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  hasLoadMore?: boolean;
+  loadMore?: () => void;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const defaultLoadMore = () => {};
 
 function VideoList({
   playlist,
@@ -39,36 +44,29 @@ function VideoList({
   accessModel,
   isLoggedIn,
   hasSubscription,
+  hasLoadMore,
+  loadMore = defaultLoadMore,
 }: Props) {
   return (
     <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
       {!!header && header}
-      {playlist &&
-        playlist.playlist.map((playlistItem: PlaylistItem) => {
-          const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage, mediaStatus } = playlistItem;
-
-          return (
+      <div className={styles.content}>
+        <InfiniteScroll pageStart={0} loadMore={loadMore || defaultLoadMore} hasMore={hasLoadMore} loader={<InfiniteScrollLoader key="loader" />}>
+          {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
             <VideoListItem
-              key={mediaid}
-              title={title}
-              scheduledStart={playlistItem.scheduledStart}
-              duration={duration}
-              image={shelfImage}
-              progress={watchHistory ? watchHistory[mediaid] : undefined}
-              seriesId={seriesId}
-              episodeNumber={episodeNumber}
-              seasonNumber={seasonNumber}
+              key={playlistItem.mediaid}
+              progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
               onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
               onHover={() => onListItemHover && onListItemHover(playlistItem)}
               loading={isLoading}
-              isActive={activeMediaId === mediaid}
+              isActive={activeMediaId === playlistItem.mediaid}
               activeLabel={activeLabel}
               isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
-              isLive={mediaStatus === MediaStatus.LIVE || isLiveChannel(playlistItem)}
-              isScheduled={mediaStatus === MediaStatus.SCHEDULED}
+              item={playlistItem}
             />
-          );
-        })}
+          ))}
+        </InfiniteScroll>
+      </div>
     </div>
   );
 }

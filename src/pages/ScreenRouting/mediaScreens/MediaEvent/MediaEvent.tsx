@@ -29,7 +29,7 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import InlinePlayer from '#src/containers/InlinePlayer/InlinePlayer';
 import StatusIcon from '#components/StatusIcon/StatusIcon';
 
-const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
+const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) => {
   const { t, i18n } = useTranslation('video');
 
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const params = useParams();
   const id = params.id || '';
   const play = useQueryParam('play') === '1';
-  const feedId = useQueryParam('r');
+  const playlistId = useQueryParam('r');
 
   // Config
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
@@ -51,19 +51,19 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Media
-  const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(data?.trailerId || '');
-  const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(feedId || '');
+  const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(media?.trailerId || '');
+  const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(playlistId || '');
 
   // Event
-  const liveEvent = useLiveEvent(data);
+  const liveEvent = useLiveEvent(media);
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled } = useEntitlement(data);
+  const { isEntitled } = useEntitlement(media);
 
   // Handlers
-  const goBack = () => data && navigate(mediaURL(data, feedId, false));
-  const onCardClick = (item: PlaylistItem) => navigate(mediaURL(item, feedId));
+  const goBack = () => media && navigate(mediaURL({ media, playlistId, play: false }));
+  const onCardClick = (item: PlaylistItem) => navigate(mediaURL({ media: item, playlistId }));
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -75,8 +75,8 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
       return;
     }
 
-    return nextItem && navigate(mediaURL(nextItem, feedId, true));
-  }, [id, playlist, navigate, feedId]);
+    return nextItem && navigate(mediaURL({ media: nextItem, playlistId, play: true }));
+  }, [id, playlist, navigate, playlistId]);
 
   // Effects
   useEffect(() => {
@@ -84,20 +84,20 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   }, [id]);
 
   // UI
-  const pageTitle = `${data.title} - ${siteName}`;
-  const canonicalUrl = data ? `${window.location.origin}${mediaURL(data)}` : window.location.href;
+  const pageTitle = `${media.title} - ${siteName}`;
+  const canonicalUrl = media ? `${window.location.origin}${mediaURL({ media: media })}` : window.location.href;
 
   const primaryMetadata = (
     <>
-      <StatusIcon mediaStatus={data.mediaStatus} />
-      {formatLiveEventMetaString(data, i18n.language)}
+      <StatusIcon mediaStatus={media.mediaStatus} />
+      {formatLiveEventMetaString(media, i18n.language)}
     </>
   );
 
-  const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
-  const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL(data, feedId, true)} disabled={!liveEvent.isPlayable} />;
+  const shareButton = <ShareButton title={media.title} description={media.description} url={canonicalUrl} />;
+  const startWatchingButton = <StartWatchingButton item={media} playUrl={mediaURL({ media, playlistId, play: true })} disabled={!liveEvent.isPlayable} />;
 
-  const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
+  const favoriteButton = isFavoritesEnabled && <FavoriteButton item={media} />;
   const trailerButton = (!!trailerItem || isTrailerLoading) && (
     <Button
       label={t('video:trailer')}
@@ -118,37 +118,37 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
       <Helmet>
         <title>{pageTitle}</title>
         <link rel="canonical" href={canonicalUrl} />
-        <meta name="description" content={data.description} />
-        <meta property="og:description" content={data.description} />
+        <meta name="description" content={media.description} />
+        <meta property="og:description" content={media.description} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:type" content="video.other" />
-        {data.image && <meta property="og:image" content={data.image?.replace(/^https:/, 'http:')} />}
-        {data.image && <meta property="og:image:secure_url" content={data.image?.replace(/^http:/, 'https:')} />}
-        <meta property="og:image:width" content={data.image ? '720' : ''} />
-        <meta property="og:image:height" content={data.image ? '406' : ''} />
+        {media.image && <meta property="og:image" content={media.image?.replace(/^https:/, 'http:')} />}
+        {media.image && <meta property="og:image:secure_url" content={media.image?.replace(/^http:/, 'https:')} />}
+        <meta property="og:image:width" content={media.image ? '720' : ''} />
+        <meta property="og:image:height" content={media.image ? '406' : ''} />
         <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={data.description} />
-        <meta name="twitter:image" content={data.image} />
+        <meta name="twitter:description" content={media.description} />
+        <meta name="twitter:image" content={media.image} />
         <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
         <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {data.tags?.split(',').map((tag) => (
+        {media.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {data ? <script type="application/ld+json">{generateMovieJSONLD(data)}</script> : null}
+        {media ? <script type="application/ld+json">{generateMovieJSONLD(media)}</script> : null}
       </Helmet>
       <VideoLayout
-        item={data}
+        item={media}
         inlineLayout={inlineLayout}
         isLoading={isLoading || isPlaylistLoading}
         accessModel={accessModel}
         isLoggedIn={isLoggedIn}
         hasSubscription={hasSubscription}
-        title={data.title}
-        description={data.description}
-        image={data.backgroundImage}
+        title={media.title}
+        description={media.description}
+        image={media.backgroundImage}
         primaryMetadata={primaryMetadata}
         shareButton={shareButton}
         favoriteButton={favoriteButton}
@@ -162,11 +162,11 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
           inlineLayout ? (
             <InlinePlayer
               isLoggedIn={isLoggedIn}
-              item={data}
+              item={media}
               onComplete={handleComplete}
-              feedId={feedId ?? undefined}
+              feedId={playlistId ?? undefined}
               startWatchingButton={startWatchingButton}
-              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, data)}
+              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, media)}
               autostart={liveEvent.isPlayable && (play || undefined)}
               playable={liveEvent.isPlayable}
             />
@@ -174,17 +174,17 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
             <Cinema
               open={play && isEntitled}
               onClose={goBack}
-              item={data}
-              title={data.title}
+              item={media}
+              title={media.title}
               primaryMetadata={primaryMetadata}
               onComplete={handleComplete}
-              feedId={feedId ?? undefined}
+              feedId={playlistId ?? undefined}
               onNext={handleComplete}
             />
           )
         }
       />
-      <TrailerModal item={trailerItem} title={`${data.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
+      <TrailerModal item={trailerItem} title={`${media.title} - Trailer`} open={playTrailer} onClose={() => setPlayTrailer(false)} />
     </React.Fragment>
   );
 };

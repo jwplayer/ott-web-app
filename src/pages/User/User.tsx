@@ -57,7 +57,7 @@ const User = (): JSX.Element => {
   const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
   const location = useLocation();
 
-  const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL(playlistItem));
+  const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await logout();

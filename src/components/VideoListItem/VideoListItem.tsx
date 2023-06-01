@@ -4,50 +4,29 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './VideoListItem.module.scss';
 
-import type { ImageData } from '#types/playlist';
+import type { PlaylistItem } from '#types/playlist';
 import Image from '#components/Image/Image';
 import Lock from '#src/icons/Lock';
 import Tag from '#components/Tag/Tag';
 import { formatDurationTag, formatLocalizedDateTime, formatSeriesMetaString } from '#src/utils/formatting';
 import Today from '#src/icons/Today';
+import { isLiveChannel, isSeries } from '#src/utils/media';
+import { MediaStatus } from '#src/utils/liveEvent';
 
 type VideoListItemProps = {
   onClick?: () => void;
   onHover?: () => void;
-  title: string;
-  scheduledStart?: Date;
-  duration: number;
-  image?: ImageData;
-  seriesId?: string;
-  seasonNumber?: string;
-  episodeNumber?: string;
+  item: PlaylistItem;
   progress?: number;
   loading?: boolean;
   isActive?: boolean;
   activeLabel?: string;
   isLocked?: boolean;
-  isLive?: boolean;
-  isScheduled?: boolean;
 };
 
-function VideoListItem({
-  onClick,
-  onHover,
-  title,
-  duration,
-  seriesId,
-  seasonNumber,
-  episodeNumber,
-  progress,
-  loading = false,
-  isActive = false,
-  activeLabel,
-  isLocked = true,
-  image,
-  isLive = false,
-  isScheduled = false,
-  scheduledStart,
-}: VideoListItemProps): JSX.Element {
+function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading = false, isActive = false, isLocked = true }: VideoListItemProps): JSX.Element {
+  const { title, duration, seasonNumber, episodeNumber, shelfImage: image, mediaStatus, scheduledStart } = item;
+
   const {
     t,
     i18n: { language },
@@ -57,10 +36,14 @@ function VideoListItem({
     [styles.visible]: imageLoaded,
   });
 
+  const isSeriesItem = isSeries(item);
+  const isLive = mediaStatus === MediaStatus.LIVE || isLiveChannel(item);
+  const isScheduled = mediaStatus === MediaStatus.SCHEDULED;
+
   const renderTagLabel = () => {
     if (loading || !title) return null;
 
-    if (seriesId) {
+    if (isSeriesItem) {
       return t('series');
     } else if (seasonNumber && episodeNumber) {
       return formatSeriesMetaString(seasonNumber, episodeNumber);

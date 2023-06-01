@@ -16,5 +16,6 @@ export default function useMedia(mediaId: string, enabled: boolean = true): UseM
 
       return autoRefetch ? 1000 * 30 : false;
     },
+    staleTime: 60 * 1000 * 10, // 10 min
   });
 }
