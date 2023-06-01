@@ -90,13 +90,18 @@ window.jwpltx = window.jwpltx || {};
   }
 
   // Process a player ready event
-  o.ready = function (aid, bun, fed, id, t) {
+  o.ready = function (aid, bun, fed, id, t, oaid) {
     uri = JSON.parse(JSON.stringify(URI));
     uri.aid = aid;
     uri.bun = bun;
     uri.fed = fed;
     uri.id = id;
     uri.t = t;
+
+    // Send oaid only for logged in users
+    if (oaid) {
+      uri.oaid = oaid;
+    }
 
     uri.emi = generateId(12);
     uri.pli = generateId(12);

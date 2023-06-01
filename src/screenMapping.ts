@@ -1,5 +1,6 @@
 import { mediaScreenMap } from '#src/pages/ScreenRouting/MediaScreenRouter';
 import MediaHub from '#src/pages/ScreenRouting/mediaScreens/MediaHub/MediaHub';
+import { CONTENT_TYPE } from '#src/config';
 
 /**
  * This file is used to add media and/or playlist screens.
@@ -39,5 +40,5 @@ import MediaHub from '#src/pages/ScreenRouting/mediaScreens/MediaHub/MediaHub';
 
 export default function registerCustomScreens() {
   // Hub is an example screen for the media router
-  mediaScreenMap.registerByContentType(MediaHub, 'hub');
+  mediaScreenMap.registerByContentType(MediaHub, CONTENT_TYPE.hub);
 }

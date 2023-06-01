@@ -13,7 +13,7 @@ export class ScreenMap<T extends Playlist | PlaylistItem> {
   private definitions: ScreenDefinition<T>[] = [];
 
   register(component: ScreenComponent<T>, predicate: ScreenPredicate<T>) {
-    this.definitions.unshift({ component, predicate });
+    this.definitions.push({ component, predicate });
   }
 
   registerByContentType(component: ScreenComponent<T>, contentType: string) {

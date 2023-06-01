@@ -1,5 +1,5 @@
 interface Jwpltx {
-  ready: (analyticsId: string, hostname: string, feedid: string, mediaid: string, title: string) => void;
+  ready: (analyticsid: string, hostname: string, feedid: string, mediaid: string, title: string, accountid?: number) => void;
   adImpression: () => void;
   seek: (offset: number, duration: number) => void;
   seeked: () => void;
