@@ -1,3 +1,40 @@
+# [4.12.0](https://github.com/jwplayer/ott-web-app/compare/v4.11.1...v4.12.0) (2023-06-02)
+
+
+### Bug Fixes
+
+* **home:** endless spinner in bottom row ([2517b9a](https://github.com/jwplayer/ott-web-app/commit/2517b9aae417648d0f775a8659f2ee85afdc92b2))
+* **home:** reintroduce the sign in button ([4ac4dd6](https://github.com/jwplayer/ott-web-app/commit/4ac4dd607cf20eb11718aca3be605e83e0079608))
+* **menu:** overlap issue with user and language icons ([09a3339](https://github.com/jwplayer/ott-web-app/commit/09a3339eb401ac06b243dd4f09a238cb3e3716d7))
+* **menu:** prevent duplicate visible menus ([e4b9267](https://github.com/jwplayer/ott-web-app/commit/e4b92674c9ffa755d2caf506856a459619cb5355))
+* **payment:** fix change subscription button overlap ([f4eb4e5](https://github.com/jwplayer/ott-web-app/commit/f4eb4e51f16b208e8ecf723808b696c3e250a4f4))
+* **project:** allow empty translations to fall back to the default language ([dedcade](https://github.com/jwplayer/ott-web-app/commit/dedcadee7985e0c101a168113ada1b091f2cd957))
+* **project:** not showing updated payment details ([30d65c1](https://github.com/jwplayer/ott-web-app/commit/30d65c19daa13c0ac5cdd09ac7ddac0e03b66b05))
+* **project:** show all dates in a localized format ([5022cdb](https://github.com/jwplayer/ott-web-app/commit/5022cdb3df98bd4b035508aba2d54ddeafbb9262))
+* **project:** TVOD infinite loop and render optimizations ([ab5af13](https://github.com/jwplayer/ott-web-app/commit/ab5af136ab0f391d082447d360ef984a250ac7da))
+* returning to previous screen after redirect ([9f0405e](https://github.com/jwplayer/ott-web-app/commit/9f0405e67e16c331102b0f5f2f0461c20c8961d0))
+
+
+### Features
+
+* add functionality to open and view invoices ([79b6fc7](https://github.com/jwplayer/ott-web-app/commit/79b6fc7b11669fdef685dbfb503ace6336bfc7ca))
+* add today icon to vod items ([6a681ce](https://github.com/jwplayer/ott-web-app/commit/6a681cea7f81521a694e083c054a64362e717332))
+* adds scheduled start to card component ([dc3bf41](https://github.com/jwplayer/ott-web-app/commit/dc3bf4137c72a9ce322c7f3163d0b9c6b2ac8062))
+* **auth:** improve cleeng session stablity ([245c0f8](https://github.com/jwplayer/ott-web-app/commit/245c0f81272143f64fd478208dcaa93d7bbf0feb))
+* **e2e:** test opening invoices ([7a0d029](https://github.com/jwplayer/ott-web-app/commit/7a0d0294e21cbce765fe3dbc5029df8999ff358d))
+* hide tax and payment provider fees when not applicable ([790dba4](https://github.com/jwplayer/ott-web-app/commit/790dba4f064c63fa74e394de0272c4a846b7028f))
+* **i18n:** fix spanish translation after validation ([a0e7cb0](https://github.com/jwplayer/ott-web-app/commit/a0e7cb0b41f0a2ee297996afdb582ba45eaa7255))
+* **payment:** integrate new adyen payment flow (incl 3DS) ([bb0f745](https://github.com/jwplayer/ott-web-app/commit/bb0f7451beceae4f15650bafb1f45644d441c55a))
+* **payment:** update payment details ([f978779](https://github.com/jwplayer/ott-web-app/commit/f9787796705eafc87aa8764724d40184a6f74ed7))
+* **project:** add bcl live events  ([0c53b06](https://github.com/jwplayer/ott-web-app/commit/0c53b060a2af3eb0743bfc92708233c14d04cd6b))
+* **project:** add support for other languages ([f5aaf2c](https://github.com/jwplayer/ott-web-app/commit/f5aaf2c88e6eafd6be3538b478dd3e67f86370bf))
+* **project:** auto refetch media item ([b62300f](https://github.com/jwplayer/ott-web-app/commit/b62300f71b8d2c2e28df997466d0f2d6a1038d3b))
+* remove pricing on payment page for granted subscriptions ([9745686](https://github.com/jwplayer/ott-web-app/commit/97456861ed07651ca0d17f3e408c0defb1c4acdc))
+* **user:** add functionality to switch offers ([2f01739](https://github.com/jwplayer/ott-web-app/commit/2f01739b8b5638c0dd879c93aca895dd63db18cc))
+* **user:** enhance pending offer confirmation and on the payments page ([2a598b7](https://github.com/jwplayer/ott-web-app/commit/2a598b728aa30cc860e5805d602224f7866be3e0))
+
+
+
 ## [4.11.1](https://github.com/jwplayer/ott-web-app/compare/v4.11.0...v4.11.1) (2023-06-02)
 
 
