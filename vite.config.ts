@@ -32,16 +32,6 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     process.env.NODE_ENV = 'production';
   }
 
-  const plugins = [
-    react(),
-    eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
-    StylelintPlugin(),
-    VitePWA(),
-    createHtmlPlugin({
-      minify: true,
-    }),
-  ];
-
   const fileCopyTargets: Target[] = [
     {
       src: localFile,
@@ -58,14 +48,19 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     });
   }
 
-  plugins.push(
-    viteStaticCopy({
-      targets: fileCopyTargets,
-    }),
-  );
-
   return defineConfig({
-    plugins: plugins,
+    plugins: [
+      react(),
+      eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
+      StylelintPlugin(),
+      VitePWA(),
+      createHtmlPlugin({
+        minify: true,
+      }),
+      viteStaticCopy({
+        targets: fileCopyTargets,
+      }),
+    ],
     publicDir: './public',
     envPrefix: 'APP_',
     server: {
