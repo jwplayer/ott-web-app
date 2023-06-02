@@ -1,3 +1,12 @@
+## [4.11.1](https://github.com/jwplayer/ott-web-app/compare/v4.11.0...v4.11.1) (2023-06-02)
+
+
+### Bug Fixes
+
+* **chore:** replace configs ([83cdd93](https://github.com/jwplayer/ott-web-app/commit/83cdd93e3662bdd8643b50dafe9254bf8328d686))
+
+
+
 # [4.11.0](https://github.com/jwplayer/ott-web-app/compare/v4.10.0...v4.11.0) (2023-05-31)
 
 
