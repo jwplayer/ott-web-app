@@ -7,5 +7,6 @@ sed 's/;.*//' |
 sed '/^$/d' |
 # Remove whitespace around the equals signs
 sed 's/[[:blank:]]*=[[:blank:]]/=/' > "$1.tmp.ini"
-
+# The output is piped to a temp file because the -i flag on sed to do inplace varies by OS
+# so copy the temp file back to the original file at the end.
 mv "$1.tmp.ini" "$1"
