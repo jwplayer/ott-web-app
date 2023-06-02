@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './RenewSubscriptionForm.module.scss';
 
 import Button from '#components/Button/Button';
-import { formatDate, formatPrice } from '#src/utils/formatting';
+import { formatLocalizedDate, formatPrice } from '#src/utils/formatting';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import type { Customer } from '#types/account';
 import type { Subscription } from '#types/subscription';
@@ -19,7 +19,7 @@ type Props = {
 };
 
 const RenewSubscriptionForm: React.FC<Props> = ({ subscription, customer, error, submitting, onConfirm, onClose }: Props) => {
-  const { t } = useTranslation('account');
+  const { t, i18n } = useTranslation('account');
 
   return (
     <div>
@@ -29,7 +29,7 @@ const RenewSubscriptionForm: React.FC<Props> = ({ subscription, customer, error,
       <div className={styles.infoBox}>
         <p>
           <strong>{subscription.offerTitle}</strong> <br />
-          {t('renew_subscription.next_billing_date_on', { date: formatDate(subscription.expiresAt) })}
+          {t('renew_subscription.next_billing_date_on', { date: formatLocalizedDate(new Date(subscription.expiresAt * 1000), i18n.language) })}
         </p>
         <p className={styles.price}>
           <strong>{formatPrice(subscription.nextPaymentPrice, subscription.nextPaymentCurrency, customer.country)}</strong>

@@ -28,8 +28,8 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
   const breakpoint = useBreakpoint();
 
   // account
-  const auth = useAccountStore((state) => state.auth);
-  const isLoggedIn = !!auth;
+  const user = useAccountStore((state) => state.user);
+  const isLoggedIn = !!user;
 
   // watch history
   const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));

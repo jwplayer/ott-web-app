@@ -51,7 +51,7 @@ Scenario('I can slide within the featured shelf', async ({ I }) => {
 
   await within(makeShelfXpath(ShelfId.featured), async () => {
     I.see('Blender Channel');
-    I.see('LIVE');
+
     I.dontSee('Spring');
     I.dontSee('8 min');
 

@@ -1,3 +1,6 @@
+import MediaEvent from './pages/ScreenRouting/mediaScreens/MediaEvent/MediaEvent';
+import { isLiveEvent } from './utils/liveEvent';
+
 import { mediaScreenMap } from '#src/pages/ScreenRouting/MediaScreenRouter';
 import MediaHub from '#src/pages/ScreenRouting/mediaScreens/MediaHub/MediaHub';
 import { CONTENT_TYPE } from '#src/config';
@@ -41,4 +44,7 @@ import { CONTENT_TYPE } from '#src/config';
 export default function registerCustomScreens() {
   // Hub is an example screen for the media router
   mediaScreenMap.registerByContentType(MediaHub, CONTENT_TYPE.hub);
+
+  // todo: remove the isLiveEvent function when the media item's contain the correct contentType(without the VCH prefix)
+  mediaScreenMap.register(MediaEvent, isLiveEvent);
 }

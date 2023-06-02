@@ -16,7 +16,7 @@ const useCheckAccess = () => {
   const intervalRef = useRef<number>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('user');
 
   const intervalCheckAccess = useCallback(

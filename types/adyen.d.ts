@@ -9,7 +9,25 @@ interface AdyenPaymentMethod {
 interface AdyenEventData {
   isValid: boolean;
   data: {
+    browserInfo: {
+      acceptHeader: string;
+      colorDepth: string;
+      language: string;
+      javaEnabled: boolean;
+      screenHeight: string;
+      screenWidth: string;
+      userAgent: string;
+      timeZoneOffset: number;
+    };
     paymentMethod: AdyenPaymentMethod;
+    billingAddress?: {
+      street: string;
+      houseNumberOrName: string;
+      postalCode: string;
+      city: string;
+      country: string;
+      stateOrProvince: string;
+    };
   };
 }
 
@@ -21,13 +39,18 @@ interface AdyenConfiguration {
   clientKey: string;
 }
 
-interface AdyenCheckout {
-  create: (method: string) => AdyenCheckout;
-  mount: (selector: string) => AdyenCheckout;
-  submit: () => void;
-  unmount: () => AdyenCheckout;
+interface AdyenAdditionalEventData {
+  isValid: boolean;
+  data: {
+    details: unknown;
+  };
 }
 
 interface AdyenCheckoutStatic {
   (configuration: AdyenConfiguration): AdyenCheckout;
 }
+
+// currently only card payments with Adyen are supported
+const adyenPaymentMethods = ['card'] as const;
+
+type AdyenPaymentMethodType = (typeof adyenPaymentMethods)[number];

@@ -8,15 +8,15 @@ import type { PlaylistItem } from '#types/playlist';
 import Image from '#components/Image/Image';
 import Lock from '#src/icons/Lock';
 import Tag from '#components/Tag/Tag';
-import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
-import { isSeries } from '#src/utils/media';
+import { formatDurationTag, formatLocalizedDateTime, formatSeriesMetaString } from '#src/utils/formatting';
+import Today from '#src/icons/Today';
+import { isLiveChannel, isSeries } from '#src/utils/media';
+import { MediaStatus } from '#src/utils/liveEvent';
 
 type VideoListItemProps = {
   onClick?: () => void;
   onHover?: () => void;
   item: PlaylistItem;
-  seasonNumber?: string;
-  episodeNumber?: string;
   progress?: number;
   loading?: boolean;
   isActive?: boolean;
@@ -25,15 +25,20 @@ type VideoListItemProps = {
 };
 
 function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading = false, isActive = false, isLocked = true }: VideoListItemProps): JSX.Element {
-  const { title, duration, seasonNumber, episodeNumber, shelfImage: image } = item;
+  const { title, duration, seasonNumber, episodeNumber, shelfImage: image, mediaStatus, scheduledStart } = item;
 
-  const { t } = useTranslation('common');
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('common');
   const [imageLoaded, setImageLoaded] = useState(false);
   const posterImageClassNames = classNames(styles.posterImage, {
     [styles.visible]: imageLoaded,
   });
 
   const isSeriesItem = isSeries(item);
+  const isLive = mediaStatus === MediaStatus.LIVE || isLiveChannel(item);
+  const isScheduled = mediaStatus === MediaStatus.SCHEDULED;
 
   const renderTagLabel = () => {
     if (loading || !title) return null;
@@ -44,8 +49,15 @@ function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading 
       return formatSeriesMetaString(seasonNumber, episodeNumber);
     } else if (duration) {
       return formatDurationTag(duration);
-    } else if (duration === 0) {
+    } else if (isLive) {
       return t('live');
+    } else if (isScheduled) {
+      return (
+        <>
+          <Today className={styles.scheduled} />
+          {t('scheduled')}
+        </>
+      );
     }
   };
 
@@ -66,7 +78,7 @@ function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading 
         {isActive && <div className={styles.activeLabel}>{activeLabel}</div>}
         <div className={styles.tags}>
           {isLocked && <Lock className={styles.lock} />}
-          <Tag className={classNames(styles.tag, { [styles.live]: duration === 0 })}>{renderTagLabel()}</Tag>
+          <Tag className={classNames(styles.tag, { [styles.live]: isLive })}>{renderTagLabel()}</Tag>
         </div>
 
         {progress ? (
@@ -75,7 +87,10 @@ function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading 
           </div>
         ) : null}
       </div>
-      <div className={styles.title}>{title}</div>
+      <div className={styles.metadata}>
+        {!!scheduledStart && <div className={styles.scheduledStart}>{formatLocalizedDateTime(scheduledStart, language)}</div>}
+        <div className={styles.title}>{title}</div>
+      </div>
     </div>
   );
 }
