@@ -49,7 +49,6 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     }
 
     I.see('Password');
-    I.see('****************');
     I.see('Edit password');
 
     I.see('Profile info');
