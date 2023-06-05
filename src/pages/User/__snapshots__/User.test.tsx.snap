@@ -704,7 +704,7 @@ exports[`User Component tests > Payments Page 1`] = `
                 class="_label_e16c1b"
                 for="text-field_1235"
               >
-                user:payment.cvc_cvv
+                user:payment.security_code
               </label>
               <p>
                 ******
@@ -736,11 +736,15 @@ exports[`User Component tests > Payments Page 1`] = `
             <br />
             user:payment.price_payed_with
           </p>
-          <p>
-            11232
-            <br />
-            7/16/2022
-          </p>
+          <div
+            class="_transactionDetails_c57ff5"
+          >
+            <p>
+              11232
+              <br />
+              July 16, 2022
+            </p>
+          </div>
         </div>
         <div
           class="_infoBox_c57ff5"
@@ -755,11 +759,15 @@ exports[`User Component tests > Payments Page 1`] = `
             <br />
             user:payment.price_payed_with
           </p>
-          <p>
-            11234
-            <br />
-            11/9/2022
-          </p>
+          <div
+            class="_transactionDetails_c57ff5"
+          >
+            <p>
+              11234
+              <br />
+              November 9, 2022
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -163,6 +163,7 @@ const formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: 
     period: subscription.access_type?.period,
     totalPrice: subscription.charged_amount,
     unsubscribeUrl: subscription.unsubscribe_url,
+    pendingSwitchId: null,
   } as Subscription;
 };
 
@@ -181,5 +182,6 @@ const formatGrantedSubscription = (subscription: GetItemAccessV1) => {
     period: 'granted',
     totalPrice: 0,
     unsubscribeUrl: '',
+    pendingSwitchId: null,
   } as Subscription;
 };

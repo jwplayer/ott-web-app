@@ -32,7 +32,7 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
     setFilter('');
   }, [data.feedid]);
 
-  const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL(playlistItem, data.feedid));
+  const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem, playlistId: data.feedid }));
 
   const pageTitle = `${data.title} - ${config.siteName}`;
 

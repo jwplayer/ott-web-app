@@ -11,8 +11,8 @@
 .buffer div {
   position: absolute;
   display: block;
-  width: variables.$base-spacing * 4;
-  height: variables.$base-spacing * 4;
+  width: calc(#{variables.$base-spacing} * 4);
+  height: calc(#{variables.$base-spacing} * 4);
   margin: 8px;
   border: 4px solid variables.$white;
   border-color: variables.$white transparent transparent transparent;

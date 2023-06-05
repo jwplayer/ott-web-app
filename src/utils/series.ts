@@ -1,85 +1,82 @@
-import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { EpisodeWithSeason, Season, Series } from '#types/series';
+import type { EpisodeMetadata, Series } from '#types/series';
+import { getEpisodes, getSeasonWithEpisodes } from '#src/services/api.service';
 
-export const getFiltersFromSeries = (playlist: Playlist): string[] =>
-  playlist.playlist.reduce(
-    (filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')),
-    [],
-  );
-
-export const filterSeries = (playlist: Playlist, filter: string) => {
-  if (!filter) return playlist;
-
-  return {
-    ...playlist,
-    playlist: playlist.playlist.filter(({ seasonNumber }) => seasonNumber === filter),
-  };
-};
-
-export const getSeriesEpisodes = (series: Series) => {
-  if ('seasons' in series) {
-    return series.seasons.flatMap((season: Season) => season.episodes);
-  }
-
-  return series.episodes;
-};
-
-/** Next episode to show after video is complete */
-export const getNextEpisode = (series: Series, media: PlaylistItem): string => {
-  // To handle array elements
-  const episodes = getSeriesEpisodes(series);
-
-  const episodeIndex = episodes?.findIndex((el) => el.media_id === media.mediaid);
-
-  // If we have the last episode => we leave the same video
-  if (episodeIndex === episodes.length - 1) {
-    return media.mediaid;
-  }
-
-  return episodes[episodeIndex + 1]?.media_id;
-};
-
-export const getNextItem = (item: PlaylistItem | undefined, series: Series | undefined, seriesPlaylist: Playlist | undefined): PlaylistItem | undefined => {
-  if (!item || !seriesPlaylist) return;
-
-  if (series) {
-    const nextEpisodeId = getNextEpisode(series, item);
-
-    return seriesPlaylist.playlist.find((episode) => episode.mediaid === nextEpisodeId);
-  }
-
-  const index = seriesPlaylist?.playlist?.findIndex(({ mediaid }) => mediaid === item.mediaid);
-
-  return seriesPlaylist?.playlist?.[index + 1];
-};
-
-/** We need to add episodeNumber and seasonNumber to each media item we got
- *  That will help with further data retrieval
+/**
+ * Get an array of options for a season filter
  */
-export const enrichMediaItems = (series: Series | undefined, mediaItems: PlaylistItem[] | undefined): PlaylistItem[] => {
-  let episodes: EpisodeWithSeason[] = [];
+export const getFiltersFromSeries = (series: Series | undefined): string[] => {
+  return series && 'seasons' in series ? series.seasons.map((season) => String(season.season_number)) : [];
+};
 
-  if (series) {
-    episodes =
-      'seasons' in series
-        ? series.seasons.flatMap((season: Season) =>
-            season.episodes.map((episode) => ({
-              ...episode,
-              season_number: season.season_number,
-            })),
-          )
-        : series.episodes.map((episode) => ({ ...episode, season_number: 0 }));
+/**
+ * Retrieve a first episode of the next season
+ */
+const getNextSeasonEpisode = async (seasonNumber: number, series: Series | undefined) => {
+  const seasons = series?.seasons;
+
+  // The seasons is the last one in case there is only one season available or it is the same as the last season in the seasons array
+  const isLastSeason = seasons?.length === 1 || seasons?.[seasons?.length - 1]?.season_number === seasonNumber;
+
+  if (isLastSeason) {
+    return;
+  } else {
+    // Need to know the order of seasons to choose the next season number
+    const hasAscendingOrder = (Number(seasons?.[1]?.season_number) || 0) > (Number(seasons?.[0]?.season_number) || 0);
+    const nextSeasonNumber = hasAscendingOrder ? seasonNumber + 1 : seasonNumber - 1;
+
+    return (await getSeasonWithEpisodes(series?.series_id, nextSeasonNumber, 0, 1))?.episodes?.[0];
+  }
+};
+
+/**
+ * Get a next episode of the selected season / episodes list
+ */
+const getNextEpisode = async (seasonNumber: number, seriesId: string, pageWithEpisode: number) => {
+  if (seasonNumber) {
+    return (await getSeasonWithEpisodes(seriesId, seasonNumber, pageWithEpisode, 1))?.episodes?.[0];
+  } else {
+    return (await getEpisodes(seriesId, pageWithEpisode, 1))?.episodes?.[0];
+  }
+};
+
+export const getNextItem = async (series: Series | undefined, episodeMetadata: EpisodeMetadata | undefined) => {
+  if (!episodeMetadata || !series) {
+    return;
   }
 
-  const itemsWithEpisodes = (mediaItems || []).map((item) => {
-    const episode = episodes.find((episode) => episode.media_id === item?.mediaid);
+  const seasonNumber = Number(episodeMetadata.seasonNumber);
+  const episodeNumber = Number(episodeMetadata.episodeNumber);
 
-    return {
-      ...item,
-      seasonNumber: String(episode?.season_number || '0'),
-      episodeNumber: String(episode?.episode_number || '0'),
-    };
-  });
+  // Get initial data to collect information about total number of elements
+  const { episodes, pagination } =
+    seasonNumber !== 0 ? await getSeasonWithEpisodes(series?.series_id, seasonNumber, 0) : await getEpisodes(series?.series_id, 0);
 
-  return itemsWithEpisodes;
+  if (episodes.length === 1 && seasonNumber) {
+    return getNextSeasonEpisode(seasonNumber, series);
+  }
+
+  // Both episodes and seasons can be sorted by asc / desc
+  const hasAscendingOrder = (Number(episodes[1].episodeNumber) || 0) > (Number(episodes[0].episodeNumber) || 0);
+  const nextEpisodeNumber = hasAscendingOrder ? episodeNumber + 1 : episodeNumber - 1;
+  // First page has 0 number, that is why we use Math.floor here und subtract 1
+  const pageWithEpisode = Math.floor(hasAscendingOrder ? nextEpisodeNumber - 1 : pagination.total - nextEpisodeNumber - 1);
+  // Consider the case when we have a next episode in the retrieved list
+  const nextElementIndex = episodes.findIndex((el) => Number(el.episodeNumber) === nextEpisodeNumber);
+
+  if (nextElementIndex !== -1) {
+    return episodes[nextElementIndex];
+  }
+
+  // Fetch the next episodes of the season when there is more to fetch
+  if (pageWithEpisode < pagination.total) {
+    return getNextEpisode(seasonNumber, series?.series_id, pageWithEpisode);
+    // Switch selected season in case the current one has nor more episodes inside
+  } else if (seasonNumber) {
+    return getNextSeasonEpisode(seasonNumber, series);
+  }
+};
+
+/** Get a total amount of episodes in a season */
+export const getEpisodesInSeason = (episodeMetadata: EpisodeMetadata | undefined, series: Series | undefined) => {
+  return (series?.seasons || []).find((el) => el.season_number === Number(episodeMetadata?.seasonNumber))?.episode_count;
 };

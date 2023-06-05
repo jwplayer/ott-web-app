@@ -9,6 +9,7 @@ export type Subscription = {
   paymentGateway: string;
   paymentMethod: string;
   offerTitle: string;
+  pendingSwitchId: string | null;
   period: 'day' | 'week' | 'month' | 'year' | 'granted';
   totalPrice: number;
   unsubscribeUrl?: string;
@@ -111,7 +112,14 @@ export type GetTransactionsResponse = {
   items: Transaction[];
 };
 
-type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
-type UpdateSubscription = CleengAuthRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
-type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
-type GetTransactions = CleengAuthRequest<GetTransactionsPayload, GetTransactionsResponse>;
+export type FetchReceiptPayload = {
+  transactionId: string;
+};
+
+export type FetchReceiptResponse = string;
+
+type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
+type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
+type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
+type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
+type FetchReceipt = CleengRequest<FetchReceiptPayload, FetchReceiptResponse>;

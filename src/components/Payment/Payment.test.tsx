@@ -19,8 +19,12 @@ describe('<Payment>', () => {
         transactions={transactions as Transaction[]}
         activeSubscription={subscription as Subscription}
         activePaymentDetail={paymentDetail as PaymentDetail}
+        pendingOffer={null}
+        canUpdatePaymentMethod={false}
         showAllTransactions={false}
         isLoading={false}
+        offerSwitchesAvailable={false}
+        onShowReceiptClick={vi.fn()}
       />,
     );
 

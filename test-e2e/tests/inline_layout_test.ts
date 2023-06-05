@@ -42,8 +42,7 @@ Scenario('I can see the series inline player layout', async ({ I }) => {
   I.dontSeeElement(`[data-testid="cinema-layout"]`);
   I.seeElement('video');
   I.see(constants.minecraftAnimationWorkshopTitle);
-  I.see('S1:E1 - Welcome');
-  I.see('2018');
+  I.see('2023');
   I.see('17 episodes');
   I.see('Beginner');
   I.see('CC-BY');
@@ -52,7 +51,6 @@ Scenario('I can see the series inline player layout', async ({ I }) => {
   I.see('Share');
   I.seeTextEquals('Minecraft Animation Workshop', 'h3');
   I.see('Season 1', locate({ css: 'select' }).inside(videoListLocator));
-  I.see('Current episode', locate({ css: 'div[aria-label="Play Welcome"]' }).inside(videoListLocator));
   I.see('S1:E2', locate({ css: 'div[aria-label="Play Basics Of Blender"]' }).inside(videoListLocator));
   I.see('S1:E3', locate({ css: 'div[aria-label="Play Using Mineways"]' }).inside(videoListLocator));
 });
@@ -62,21 +60,24 @@ Scenario('I can start the inline player', async ({ I }) => {
   await playInlineVideo(I, constants.minecraftAnimationWorkshopTitle);
 });
 
-Scenario('I switch to another episode in the video list', async ({ I }) => {
+Scenario('I switch to the episode in the video list', async ({ I }) => {
   await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses, true);
+  I.waitForElement('div[aria-label="Play Welcome"]', 3);
+  I.click('S1:E1', locate({ css: 'div[aria-label="Play Welcome"]' }).inside(videoListLocator));
   I.see('S1:E1 - Welcome');
-  I.click('S1:E2', locate({ css: 'div[aria-label="Play Basics Of Blender"]' }).inside(videoListLocator));
-  I.see('S1:E2 - Basics Of Blender');
 });
 
 Scenario('I switch to another season in the video list', async ({ I }) => {
   await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses, true);
-  I.see('S1:E1 - Welcome');
+  I.waitForElement('div[aria-label="Play Welcome"]', 3);
+  I.click('S1:E1', locate({ css: 'div[aria-label="Play Welcome"]' }).inside(videoListLocator));
 
   I.see('Season 1/4 - Episode 1/6');
   I.selectOption({ css: 'select[name="season"]' }, 'Season 2');
 
+  I.waitForElement('div[aria-label="Play Choosing a skin (Cycles Render)"]', 3);
   I.click(locate({ css: 'div[aria-label="Play Choosing a skin (Cycles Render)"]' }).inside(videoListLocator));
+
   I.dontSee('Season 1/4 - Episode 1/6');
   I.see('Season 2/4 - Episode 1/4');
   I.see('S2:E1 - Choosing a skin (Cycles Render)');

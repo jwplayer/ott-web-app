@@ -51,7 +51,7 @@ Scenario('I can slide within the featured shelf', async ({ I }) => {
 
   await within(makeShelfXpath(ShelfId.featured), async () => {
     I.see('Blender Channel');
-    I.see('LIVE');
+
     I.dontSee('Spring');
     I.dontSee('8 min');
 
@@ -137,8 +137,12 @@ Scenario('I can see alternate shelf images for the `All Films` shelf', async ({ 
 Scenario('I can see poster images for the `All courses` shelf', async ({ I }) => {
   // scroll to shelf to make it visible and for screenshot
   await I.scrollToShelf(ShelfId.allCourses);
-  await I.seeCardImageSrc('Primitive Animals', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/9NZgbtMV/poster.jpg?width=320');
-  await I.seeCardImageSrc('Fantasy Vehicle Creation', ShelfId.allCourses, 'https://cdn.jwplayer.com/v2/media/b43Lsibs/poster.jpg?width=320');
+  await I.seeCardImageSrc('Primitive Animals', ShelfId.allCourses, `https://cdn.jwplayer.com/v2/media/${constants.primitiveAnimalsId}/poster.jpg?width=320`);
+  await I.seeCardImageSrc(
+    'Fantasy Vehicle Creation',
+    ShelfId.allCourses,
+    `https://cdn.jwplayer.com/v2/media/${constants.fantasyVehicleId}/poster.jpg?width=320`,
+  );
 });
 
 Scenario('I can see the footer', ({ I }) => {

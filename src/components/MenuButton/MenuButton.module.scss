@@ -28,10 +28,10 @@
   transition: background 0.1s ease;
 
   &.small {
-    padding: 0 variables.$base-spacing * 1.5;
+    padding: 0 calc(#{variables.$base-spacing} * 1.5);
     font-size: 16px;
     > .startIcon {
-      margin-right: variables.$base-spacing * 1.5;
+      margin-right: calc(#{variables.$base-spacing} * 1.5);
     }
   }
 

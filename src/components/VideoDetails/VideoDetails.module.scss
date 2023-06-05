@@ -68,10 +68,16 @@
 }
 
 .primaryMetadata {
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
   font-size: 16px;
   line-height: 18px;
   letter-spacing: 0.15px;
+  
+  > :first-child {
+    margin-right: 8px;
+  }
 
   @include responsive.mobile-only() {
     order: 2;
