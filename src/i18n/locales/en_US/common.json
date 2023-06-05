@@ -1,8 +1,6 @@
 {
   "alert": {
-    "close": "Close",
-    "title": "An error occurred",
-    "success": "Success"
+    "close": "Close"
   },
   "back": "Back",
   "card_lock": "Item locked",
