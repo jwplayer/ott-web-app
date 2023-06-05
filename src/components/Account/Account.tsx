@@ -60,7 +60,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
       publisherConsents,
       canChangePasswordWithOldPassword,
       canExportAccountData,
-      canDeleteAccount: canDeleteAccount,
+      canDeleteAccount,
     }),
     shallow,
   );
@@ -289,28 +289,26 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                 }),
               ]
             : []),
-          ...(canDeleteAccount
-            ? [
-                formSection({
-                  label: t('account.delete_account_title'),
-                  content: () => (
-                    <div className={styles.textWithButtonContainer}>
-                      <div>{t('account.delete_account_body')}</div>
-                      <div>
-                        <Button
-                          label={t('account.delete_account_title')}
-                          type="button"
-                          variant="danger"
-                          onClick={() => {
-                            navigate(addQueryParam(location, 'u', 'delete-account'));
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ),
-                }),
-              ]
-            : []),
+          ...[
+            formSection({
+              label: t('account.delete_account.title'),
+              content: () => (
+                <div className={styles.textWithButtonContainer}>
+                  <div>{t('account.delete_account.body')}</div>
+                  <div>
+                    <Button
+                      label={t('account.delete_account.title')}
+                      type="button"
+                      variant="danger"
+                      onClick={() => {
+                        navigate(addQueryParam(location, 'u', 'delete-account'));
+                      }}
+                    />
+                  </div>
+                </div>
+              ),
+            }),
+          ].filter(() => canDeleteAccount),
         ]}
       </Form>
       {canExportAccountData && (

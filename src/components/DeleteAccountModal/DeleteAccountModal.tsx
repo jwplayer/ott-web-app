@@ -53,17 +53,17 @@ const DeleteAccountModal = () => {
 
   return enteredPassword ? (
     <div className={styles.formContainer}>
-      <h2 className={styles.heading}>{t('account.delete_account_title')}</h2>
+      <h2 className={styles.heading}>{t('account.delete_account.title')}</h2>
       <div className={styles.innerContainer}>
-        <p className={styles.paragraph}>{t('account.delete_account_modal_text_1')}</p>
-        <p className={styles.paragraph}>{t('account.delete_account_modal_text_2')}</p>
+        <p className={styles.paragraph}>{t('account.delete_account.modal.text_1')}</p>
+        <p className={styles.paragraph}>{t('account.delete_account.modal.text_2')}</p>
         <div className={styles.warningBox}>
-          <p className={styles.paragraph}>{t('account.delete_account_modal_warning_1')}</p>
-          <p className={styles.paragraph}>{t('account.delete_account_modal_warning_2')}</p>
+          <p className={styles.paragraph}>{t('account.delete_account.modal.warning_1')}</p>
+          <p className={styles.paragraph}>{t('account.delete_account.modal.warning_2')}</p>
         </div>
         <p className={styles.paragraph}>
-          {t('account.delete_account_modal_text_3')} <br />
-          {t('account.delete_account_modal_text_4')}
+          {t('account.delete_account.modal.text_3')} <br />
+          {t('account.delete_account.modal.text_4')}
         </p>
       </div>
       <div className={styles.buttonsContainer}>
@@ -71,7 +71,7 @@ const DeleteAccountModal = () => {
         <Button
           disabled={deleteAccount.isLoading}
           variant="delete"
-          label={t('account.delete_account_title')}
+          label={t('account.delete_account.title')}
           onClick={() => {
             deleteAccount.mutate(enteredPassword);
           }}
@@ -80,12 +80,12 @@ const DeleteAccountModal = () => {
     </div>
   ) : (
     <form onSubmit={handleSubmit} className={`${styles.formContainer} ${styles.formContainerSmall}`}>
-      <h2 className={styles.heading}>{t('account.delete_account_modal_title')}</h2>
+      <h2 className={styles.heading}>{t('account.delete_account.modal.title')}</h2>
       <PasswordField
         value={values.password}
         onChange={handleChange}
         label={t('account.password')}
-        placeholder={t('account.delete_account_modal_placeholder')}
+        placeholder={t('account.delete_account.modal.placeholder')}
         error={!!errors.password || !!errors.form}
         name="password"
         showHelperText={false}

@@ -106,7 +106,7 @@ const AccountModal = () => {
 
   return (
     <Dialog size={dialogSize} open={!!viewParam} onClose={closeHandler}>
-      {!shouldHideBanner && banner && <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>}
+      {!shouldHideBanner && banner && <div className={styles.banner}>{<img src={banner} alt="" />}</div>}
       {renderForm()}
     </Dialog>
   );

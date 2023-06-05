@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './Dialog.module.scss';
 
@@ -16,7 +17,7 @@ type Props = {
 const Dialog: React.FC<Props> = ({ open, onClose, size = 'small', children }: Props) => {
   return (
     <Modal open={open} onClose={onClose} AnimationComponent={Slide}>
-      <div className={`${styles.dialog}${size === 'large' ? ` ${styles.largeDialog}` : ''}`}>
+      <div className={classNames(styles.dialog, size === 'large' && styles.largeDialog)}>
         <ModalCloseButton onClick={onClose} />
         {children}
       </div>
