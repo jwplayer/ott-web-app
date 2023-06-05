@@ -7,6 +7,8 @@ type CheckoutStore = {
   order: Order | null;
   paymentMethods: PaymentMethod[] | null;
   requestedMediaOffers: MediaOffer[] | null;
+  offerSwitches: Offer[];
+  updateOffer: (offer: Offer | null) => void;
   setOffer: (offer: Offer | null) => void;
   setOrder: (order: Order | null) => void;
   setPaymentMethods: (paymentMethods: PaymentMethod[] | null) => void;
@@ -18,6 +20,8 @@ export const useCheckoutStore = createStore<CheckoutStore>('CheckoutStore', (set
   order: null,
   paymentMethods: null,
   requestedMediaOffers: null,
+  offerSwitches: [],
+  updateOffer: (offer) => set({ offer: offer }),
   setOffer: (offer) => set({ offer }),
   setOrder: (order) => set({ order }),
   setPaymentMethods: (paymentMethods) => set({ paymentMethods }),

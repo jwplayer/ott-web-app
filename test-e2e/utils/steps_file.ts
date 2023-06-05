@@ -19,8 +19,7 @@ const stepsObj = {
     this.waitForLoaderDone();
   },
   login: async function (this: CodeceptJS.I, { email, password }: { email: string; password: string }) {
-    await this.openSignInMenu();
-    this.click('Sign in');
+    await this.openSignInModal();
 
     this.waitForElement('input[name=email]', normalTimeout);
     this.fillField('email', email);
@@ -67,9 +66,7 @@ const stepsObj = {
     } else {
       context = { email: passwordUtils.createRandomEmail(), password: passwordUtils.createRandomPassword() };
 
-      await this.openSignInMenu();
-      this.click('Sign up');
-
+      await this.openSignUpModal();
       await this.fillRegisterForm(context, onRegister);
     }
 
@@ -102,7 +99,7 @@ const stepsObj = {
   },
   payWithCreditCard: async function (
     this: CodeceptJS.I,
-    creditCardNamePresent: boolean,
+    creditCardFieldName: string,
     creditCard: string,
     cardNumber: string,
     expiryDate: string,
@@ -111,9 +108,9 @@ const stepsObj = {
   ) {
     this.see('Credit card');
 
-    if (creditCardNamePresent) {
-      this.see('Cardholder name');
-      this.fillField('Cardholder name', 'John Doe');
+    if (creditCardFieldName) {
+      this.see(creditCardFieldName);
+      this.fillField(creditCardFieldName, 'John Doe');
     }
 
     // Adyen credit card form is loaded asynchronously, so wait for it
@@ -143,6 +140,21 @@ const stepsObj = {
     } else {
       this.waitForInvisible(loaderElement, timeout);
     }
+  },
+  openSignUpModal: async function (this: CodeceptJS.I) {
+    const { isMobile } = await this.openSignInMenu();
+
+    // the sign up button is visible in header and in the mobile menu
+    this.click('Sign up');
+
+    return { isMobile };
+  },
+  openSignInModal: async function (this: CodeceptJS.I) {
+    const { isMobile } = await this.openSignInMenu();
+
+    this.click('Sign in');
+
+    return { isMobile };
   },
   openSignInMenu: async function (this: CodeceptJS.I) {
     const isMobile = await this.isMobile();
@@ -308,7 +320,6 @@ const stepsObj = {
       // If we've run out of tries, fail and return
       if (tries-- <= 0) {
         assert.fail(`Shelf row not found with id '${shelf}'`);
-        return;
       }
 
       // Scroll to the bottom of the grid to trigger loading more virtualized rows

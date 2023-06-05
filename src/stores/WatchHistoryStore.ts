@@ -11,7 +11,8 @@ type WatchHistoryState = {
   continueWatchingPlaylistId: string;
   getItem: (item: PlaylistItem) => WatchHistoryItem | undefined;
   getPlaylist: () => Playlist;
-  getDictionary: () => { [key: string]: number };
+  getDictionaryWithEpisodes: () => { [key: string]: number };
+  getDictionaryWithSeries: () => { [key: string]: number };
 };
 
 export const useWatchHistoryStore = createStore<WatchHistoryState>('WatchHistoryStore', (_, get) => ({
@@ -30,9 +31,19 @@ export const useWatchHistoryStore = createStore<WatchHistoryState>('WatchHistory
         .watchHistory.filter(({ playlistItem, progress }) => !!playlistItem && progress > VideoProgressMinMax.Min && progress < VideoProgressMinMax.Max)
         .map(({ playlistItem }) => playlistItem),
     } as Playlist),
-  getDictionary: () =>
+  getDictionaryWithEpisodes: () =>
     get().watchHistory.reduce((dict: { [key: string]: number }, item) => {
-      dict[item.mediaid] = item.progress;
+      const key = item.mediaid;
+
+      dict[key] = item.progress;
+
+      return dict;
+    }, {}),
+  getDictionaryWithSeries: () =>
+    get().watchHistory.reduce((dict: { [key: string]: number }, item) => {
+      const key = item.seriesId || item.mediaid;
+
+      dict[key] = item.progress;
 
       return dict;
     }, {}),

@@ -22,6 +22,11 @@ type FilterProps = {
   setFilter?: (value: string) => void;
 };
 
+type LoadMoreProps = {
+  hasLoadMore?: boolean;
+  loadMore?: () => void;
+};
+
 type VideoDetailsProps = {
   title: string;
   description: string;
@@ -55,7 +60,8 @@ type Props = {
   playlist?: Playlist;
 } & FilterProps &
   VideoDetailsProps &
-  VideoListProps;
+  VideoListProps &
+  LoadMoreProps;
 
 const VideoLayout: React.FC<Props> = ({
   inlineLayout,
@@ -89,6 +95,9 @@ const VideoLayout: React.FC<Props> = ({
   currentFilter = '',
   defaultFilterLabel = '',
   children,
+  // load more
+  hasLoadMore,
+  loadMore,
 }) => {
   const breakpoint = useBreakpoint();
   const isTablet = breakpoint === Breakpoint.sm || breakpoint === Breakpoint.md;
@@ -132,6 +141,8 @@ const VideoLayout: React.FC<Props> = ({
           currentCardItem={item}
           currentCardLabel={activeLabel}
           hasSubscription={hasSubscription}
+          hasLoadMore={hasLoadMore}
+          loadMore={loadMore}
         />
       </>
     ) : (
@@ -153,6 +164,8 @@ const VideoLayout: React.FC<Props> = ({
           accessModel={accessModel}
           isLoggedIn={isLoggedIn}
           hasSubscription={hasSubscription}
+          hasLoadMore={hasLoadMore}
+          loadMore={loadMore}
         />
       </div>
     );

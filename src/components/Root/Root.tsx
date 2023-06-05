@@ -68,11 +68,7 @@ const Root: FC = () => {
         return;
       }
       InPlayer.Account.setToken(auth.token, auth.refreshToken, auth.expires);
-      await getAccount({
-        jwt: auth.token,
-        refreshToken: auth.refreshToken,
-        customerToken: '',
-      });
+      await getAccount();
       navigate(location.pathname);
     };
     getUserInfo();

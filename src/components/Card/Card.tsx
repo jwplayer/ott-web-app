@@ -4,24 +4,22 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './Card.module.scss';
 
-import { formatDurationTag, formatSeriesMetaString } from '#src/utils/formatting';
+import { formatDurationTag, formatLocalizedDateTime, formatSeriesMetaString } from '#src/utils/formatting';
 import Lock from '#src/icons/Lock';
 import Image from '#components/Image/Image';
-import type { ImageData } from '#types/playlist';
+import Today from '#src/icons/Today';
+import type { PlaylistItem } from '#types/playlist';
+import { isLiveChannel, isSeries } from '#src/utils/media';
+import { MediaStatus } from '#src/utils/liveEvent';
 
 export const cardAspectRatios = ['2:1', '16:9', '5:3', '4:3', '1:1', '9:13', '2:3', '9:16'] as const;
 
-export type PosterAspectRatio = typeof cardAspectRatios[number];
+export type PosterAspectRatio = (typeof cardAspectRatios)[number];
 
 type CardProps = {
+  item: PlaylistItem;
   onClick?: () => void;
   onHover?: () => void;
-  title: string;
-  duration: number;
-  image?: ImageData;
-  seriesId?: string;
-  seasonNumber?: string;
-  episodeNumber?: string;
   progress?: number;
   posterAspect?: PosterAspectRatio;
   featured?: boolean;
@@ -35,13 +33,8 @@ type CardProps = {
 function Card({
   onClick,
   onHover,
-  title,
-  duration,
-  image,
-  seriesId,
-  seasonNumber,
-  episodeNumber,
   progress,
+  item,
   posterAspect = '16:9',
   featured = false,
   disabled = false,
@@ -50,7 +43,11 @@ function Card({
   isLocked = true,
   currentLabel,
 }: CardProps): JSX.Element {
-  const { t } = useTranslation('common');
+  const { title, duration, episodeNumber, seasonNumber, shelfImage: image, mediaStatus, scheduledStart } = item;
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation(['common', 'video']);
   const [imageLoaded, setImageLoaded] = useState(false);
   const cardClassName = classNames(styles.card, {
     [styles.featured]: featured,
@@ -63,17 +60,28 @@ function Card({
     [styles.visible]: imageLoaded,
   });
 
+  const isSeriesItem = isSeries(item);
+  const isLive = mediaStatus === MediaStatus.LIVE || isLiveChannel(item);
+  const isScheduled = mediaStatus === MediaStatus.SCHEDULED;
+
   const renderTag = () => {
     if (loading || disabled || !title) return null;
 
-    if (seriesId) {
+    if (isSeriesItem) {
       return <div className={styles.tag}>Series</div>;
     } else if (episodeNumber) {
       return <div className={styles.tag}>{formatSeriesMetaString(seasonNumber, episodeNumber)}</div>;
     } else if (duration) {
       return <div className={styles.tag}>{formatDurationTag(duration)}</div>;
-    } else if (duration === 0) {
+    } else if (isLive) {
       return <div className={classNames(styles.tag, styles.live)}>{t('live')}</div>;
+    } else if (isScheduled) {
+      return (
+        <div className={styles.tag}>
+          <Today className={styles.scheduled} />
+          {t('scheduled')}
+        </div>
+      );
     }
   };
 
@@ -111,6 +119,9 @@ function Card({
       </div>
       {!featured && !disabled && (
         <div className={styles.titleContainer}>
+          {!!scheduledStart && (
+            <div className={classNames(styles.scheduledStart, { [styles.loading]: loading })}>{formatLocalizedDateTime(scheduledStart, language)}</div>
+          )}
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>
       )}

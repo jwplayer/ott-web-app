@@ -7,8 +7,8 @@ import RootErrorPage from '#components/RootErrorPage/RootErrorPage';
 import About from '#src/pages/About/About';
 import Home from '#src/pages/Home/Home';
 import Search from '#src/pages/Search/Search';
-import Series from '#src/pages/Series/Series';
 import User from '#src/pages/User/User';
+import LegacySeries from '#src/pages/LegacySeries/LegacySeries';
 import MediaScreenRouter from '#src/pages/ScreenRouting/MediaScreenRouter';
 import PlaylistScreenRouter from '#src/pages/ScreenRouting/PlaylistScreenRouter';
 import Layout from '#src/containers/Layout/Layout';
@@ -22,7 +22,7 @@ export default function AppRoutes() {
         <Route index element={<Home />} />
         <Route path="/p/:id" element={<PlaylistScreenRouter />} />
         <Route path="/m/:id/*" element={<MediaScreenRouter />} />
-        <Route path="/s/:id/:slug" element={<Series />} />
+        <Route path="/s/:id/*" element={<LegacySeries />} />
         <Route path="/q/*" element={<Search />} />
         <Route path="/u/*" element={<User />} />
         <Route path="/o/about" element={<About />} />

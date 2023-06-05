@@ -29,21 +29,21 @@ const ShelfList = ({ rows }: Props) => {
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const [rowCount, setRowCount] = useState(INITIAL_ROW_COUNT);
 
-  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
+  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionaryWithSeries());
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
     (playlistItem, playlistId, type) => {
-      navigate(mediaURL(playlistItem, playlistId, type === PersonalShelf.ContinueWatching));
+      navigate(mediaURL({ media: playlistItem, playlistId, play: type === PersonalShelf.ContinueWatching }));
     },
     [navigate],
   );
 
   useEffect(() => {
     // reset row count when the page changes
-    setRowCount(INITIAL_ROW_COUNT);
+    return () => setRowCount(INITIAL_ROW_COUNT);
   }, [rows]);
 
   return (

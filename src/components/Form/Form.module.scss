@@ -2,10 +2,6 @@
 @use 'src/styles/theme';
 @use 'src/styles/mixins/responsive';
 
-button {
-  margin-right: variables.$base-spacing;
-}
-
 .flexBox {
   display: flex;
   flex-direction: column;
