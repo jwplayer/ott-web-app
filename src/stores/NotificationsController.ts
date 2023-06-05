@@ -27,7 +27,7 @@ export const subscribeToNotifications = async (uuid: string = '') => {
               break;
             case NotificationsTypes.ACCOUNT_LOGOUT:
               await getAccount(auth);
-              // redirect to login page with message
+              window.location.href = addQueryParams(window.location.href, { u: 'simultaneous-logins' });
               break;
             case NotificationsTypes.ACCESS_GRANTED:
               await reloadActiveSubscription();

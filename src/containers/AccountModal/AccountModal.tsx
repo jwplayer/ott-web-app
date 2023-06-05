@@ -12,6 +12,7 @@ import ResetPassword from './forms/ResetPassword';
 import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
+import Simultaneouslogins from './forms/Simultaneouslogins';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -23,7 +24,7 @@ import Dialog from '#components/Dialog/Dialog';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import WaitingForPayment from '#src/components/WaitingForPayment/WaitingForPayment';
 
-const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
+const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
 
 const AccountModal = () => {
   const navigate = useNavigate();
@@ -63,6 +64,8 @@ const AccountModal = () => {
       );
     }
     switch (view) {
+      case 'simultaneous-logins':
+        return <Simultaneouslogins />;
       case 'login':
         return <Login />;
       case 'create-account':
