@@ -20,6 +20,20 @@
   }
 }
 
+.pendingSwitch {
+  display: inline-block;
+  margin-top: variables.$base-spacing;
+}
+
+.transactionDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > div {
+    margin-left: variables.$base-spacing;
+  }
+}
+
 .price {
   font-size: 14px;
   line-height: 18px;
@@ -32,5 +46,26 @@
 
 .cardDetails {
   display: flex;
-  margin-top: variables.$base-spacing * 2;
+  margin-top: calc(#{variables.$base-spacing} * 2);
+}
+
+.paypal {
+  display: flex;
+  align-items: center;
+  margin-bottom: variables.$base-spacing;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+  font-style: italic;
+
+  > svg {
+    margin-right: 4px;
+  }
+}
+
+.upgradeSubscription {
+  margin-right: 8px;
+
+  @include responsive.mobile-only() {
+    margin: 0 0 8px;
+  }
 }

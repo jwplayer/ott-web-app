@@ -10,7 +10,6 @@ const jwProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.inplayer,
   paymentFields: constants.paymentFields.inplayer,
   creditCard: constants.creditCard.inplayer,
-  creditCardNamePresent: true,
   applicableTax: 0,
   canRenewSubscription: false,
   fieldWrapper: '',
@@ -22,7 +21,6 @@ const cleengProps: ProviderProps = {
   yearlyOffer: constants.offers.yearlyOffer.cleeng,
   paymentFields: constants.paymentFields.cleeng,
   creditCard: constants.creditCard.cleeng,
-  creditCardNamePresent: false,
   applicableTax: 21,
   canRenewSubscription: true,
   fieldWrapper: 'iframe',
@@ -36,7 +34,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
   const today = new Date();
 
-  const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'CVC / CVV', '******');
+  const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'Security code', '******');
 
   Feature(`payments - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
@@ -113,8 +111,8 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     I.see('Redeem coupon');
     I.see(props.yearlyOffer.price);
-    I.see('Payment method fee');
-    I.see(props.yearlyOffer.paymentFee);
+    I.dontSee('Payment method fee');
+    I.dontSee(props.yearlyOffer.paymentFee);
     I.see('Total');
     if (props.applicableTax !== 0) {
       I.see('Applicable tax (21%)');
@@ -132,7 +130,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     I.see('Card number');
     I.see('Expiry date');
-    I.see('CVC / CVV');
+    I.see('Security code');
     I.see('Continue');
     I.dontSee("Clicking 'continue' will bring you to the PayPal site.");
 
@@ -141,7 +139,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     I.see("Clicking 'continue' will bring you to the PayPal site.");
     I.dontSee('Card number');
     I.dontSee('Expiry date');
-    I.dontSee('CVC / CVV');
+    I.dontSee('Security code');
     I.see('Continue');
   });
 
@@ -164,7 +162,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     await goToCheckout(I);
 
     I.payWithCreditCard(
-      props.creditCardNamePresent,
+      props.paymentFields.creditCardholder,
       props.creditCard,
       props.paymentFields.cardNumber,
       props.paymentFields.expiryDate,
@@ -190,6 +188,26 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     if (props.canRenewSubscription) {
       paidLoginContext = await I.registerOrLogin(paidLoginContext);
       renewPlan(I, addYear(today), props.yearlyOffer.price);
+    }
+  });
+
+  Scenario(`I can view my invoices - ${providerName}`, async ({ I }) => {
+    if (props.canRenewSubscription) {
+      paidLoginContext = await I.registerOrLogin(paidLoginContext);
+      I.amOnPage(constants.paymentsUrl);
+      I.waitForLoaderDone();
+      I.see('Transactions');
+      I.dontSee('No transactions');
+
+      I.scrollTo('[class*="mainColumn"] :last-child');
+
+      // Open the invoice which is opened in a new tab
+      I.click('Show receipt');
+      I.switchToNextTab();
+
+      // Assert invoice functionality by validating the presence of the purchase button
+      I.seeElement('.purchase-button');
+      I.closeCurrentTab();
     }
   });
 }

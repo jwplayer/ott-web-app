@@ -13,7 +13,7 @@
     'player related'
     'details related';
   grid-template-columns: 1fr 360px;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 0.3fr;
 
   @include responsive.mobile-and-tablet() {
     grid-template-areas:

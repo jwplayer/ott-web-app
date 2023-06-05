@@ -1,10 +1,8 @@
-import jwtDecode from 'jwt-decode';
 import i18next from 'i18next';
 
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type {
-  AuthData,
   Capture,
   Customer,
   CustomerConsent,
@@ -13,10 +11,8 @@ import type {
   GetCaptureStatusResponse,
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
-  JwtDetails,
 } from '#types/account';
-import { useConfigStore } from '#src/stores/ConfigStore';
-import * as persist from '#src/utils/persist';
+import type { Offer } from '#types/checkout';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
@@ -24,48 +20,7 @@ import { getMediaByWatchlist } from '#src/services/api.service';
 import useService from '#src/hooks/useService';
 import useAccount from '#src/hooks/useAccount';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
-
-const PERSIST_KEY_ACCOUNT = 'auth';
-
-let subscription: undefined | (() => void);
-let refreshTimeout: number;
-
-export const authNeedsRefresh = (auth: AuthData): boolean => {
-  const decodedToken: JwtDetails = jwtDecode(auth.jwt);
-  const expiresIn = decodedToken.exp * 1000 - Date.now();
-
-  // returns true if token expires in 5 minutes or less
-  return expiresIn < 5 * 60 * 1000;
-};
-
-export const setJwtRefreshTimeout = () => {
-  const auth = useAccountStore.getState().auth;
-
-  // if jwp integration, skip code below
-  if (!auth?.refreshToken) return;
-
-  window.clearTimeout(refreshTimeout);
-
-  if (auth && !document.hidden) {
-    refreshTimeout = window.setTimeout(() => refreshJwtToken(auth), 60 * 5 * 1000);
-  }
-};
-
-export const handleVisibilityChange = () => {
-  if (document.hidden) return window.clearTimeout(refreshTimeout);
-
-  // document is visible again, test if we need to renew the token
-  const auth = useAccountStore.getState().auth;
-
-  // user is not logged in / if jwp integration, skip code below
-  if (!auth || !auth?.refreshToken) return;
-
-  // refresh the jwt token if needed. This starts the timeout as well after receiving the refreshed tokens.
-  if (authNeedsRefresh(auth)) return refreshJwtToken(auth);
-
-  // make sure to start the timeout again since we've cleared it when the document was hidden.
-  setJwtRefreshTimeout();
-};
+import { logDev } from '#src/utils/common';
 
 export const initializeAccount = async () => {
   await useService(async ({ accountService, config }) => {
@@ -73,46 +28,36 @@ export const initializeAccount = async () => {
       useAccountStore.setState({ loading: false });
       return;
     }
+
     useAccountStore.setState({
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
+      canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
       canDeleteAccount: accountService.canExportAccountData,
+      canShowReceipts: accountService.canShowReceipts,
     });
-    accountService.setEnvironment(config);
 
-    const storedSession: AuthData | null = persist.getItem(PERSIST_KEY_ACCOUNT) as AuthData | null;
+    await accountService.initialize(config, logout);
 
-    // clear previous subscribe (for dev environment only)
-    if (subscription) {
-      subscription();
-    }
-
-    document.removeEventListener('visibilitychange', handleVisibilityChange);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    subscription = useAccountStore.subscribe(
-      (state) => state.auth,
-      (authData) => {
-        setJwtRefreshTimeout();
-        persist.setItem(PERSIST_KEY_ACCOUNT, authData);
-      },
-    );
-
-    // restore session from localStorage
     try {
-      if (storedSession) {
-        const refreshedAuthData = await accountService.getFreshJwtToken({ config, auth: storedSession });
-        if (refreshedAuthData) {
-          await getAccount(refreshedAuthData);
-          await restoreWatchHistory();
-          await restoreFavorites();
-        }
+      const authData = await accountService.getAuthData();
+
+      if (authData) {
+        await getAccount();
+        await restoreWatchHistory();
+        await restoreFavorites();
       }
     } catch (error: unknown) {
-      await logout();
+      logDev('Failed to get user', error);
+
+      // clear the session when the token was invalid
+      // don't clear the session when the error is unknown (network hiccup or something similar)
+      if (error instanceof Error && error.message.includes('Invalid JWT token')) {
+        await logout();
+      }
     }
 
     useAccountStore.setState({ loading: false });
@@ -123,14 +68,14 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
   return await useService(async ({ accountService, sandbox = true }) => {
     useAccountStore.setState({ loading: true });
 
-    const { auth, user, canUpdateEmail } = useAccountStore.getState();
+    const { user, canUpdateEmail } = useAccountStore.getState();
 
     if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
       throw new Error('Email update not supported');
     }
 
-    if (!auth || !user) {
-      throw new Error('no auth');
+    if (!user) {
+      throw new Error('User not logged in');
     }
 
     const errors = validateInputLength(values as FirstLastNameInput);
@@ -147,7 +92,7 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
       payload = { ...values, email: user.email };
     }
 
-    const response = await accountService.updateCustomer({ ...payload, id: user.id.toString() }, sandbox, auth.jwt);
+    const response = await accountService.updateCustomer({ ...payload, id: user.id.toString() }, sandbox);
 
     if (!response) {
       throw new Error('Unknown error');
@@ -161,27 +106,12 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
   });
 }
 
-export const refreshJwtToken = async (auth: AuthData) => {
-  await useService(async ({ accountService }) => {
-    try {
-      const { config } = useConfigStore.getState();
-      const authData = await accountService.getFreshJwtToken({ config, auth });
-
-      if (authData) {
-        useAccountStore.setState((s) => ({ auth: { ...s.auth, ...authData } }));
-      }
-    } catch (error: unknown) {
-      // failed to refresh, logout user
-      await logout();
-    }
-  });
-};
-
-export const getAccount = async (auth: AuthData) => {
+export const getAccount = async () => {
   await useService(async ({ accountService, config, accessModel }) => {
-    const response = await accountService.getUser({ config, auth });
+    const response = await accountService.getUser({ config });
+
     if (response) {
-      await afterLogin(auth, response.user, response.customerConsents, accessModel);
+      await afterLogin(response.user, response.customerConsents, accessModel);
     }
 
     useAccountStore.setState({ loading: false });
@@ -194,7 +124,7 @@ export const login = async (email: string, password: string) => {
 
     const response = await accountService.login({ config, email, password });
     if (response) {
-      await afterLogin(response.auth, response.user, response.customerConsents, accessModel);
+      await afterLogin(response.user, response.customerConsents, accessModel);
 
       await restoreFavorites();
       await restoreWatchHistory();
@@ -205,16 +135,11 @@ export const login = async (email: string, password: string) => {
 };
 
 export async function logout() {
-  if (!useAccountStore.getState().auth) return;
-
   await useService(async ({ accountService }) => {
-    persist.removeItem(PERSIST_KEY_ACCOUNT);
-
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
 
     useAccountStore.setState({
-      auth: null,
       user: null,
       subscription: null,
       transactions: null,
@@ -226,7 +151,6 @@ export async function logout() {
     await restoreFavorites();
     await restoreWatchHistory();
 
-    // it's needed for the InPlayer SDK
     await accountService?.logout();
   });
 }
@@ -236,8 +160,8 @@ export const register = async (email: string, password: string) => {
     useAccountStore.setState({ loading: true });
     const response = await accountService.register({ config, email, password });
     if (response) {
-      const { auth, user, customerConsents } = response;
-      await afterLogin(auth, user, customerConsents, accessModel, false);
+      const { user, customerConsents } = response;
+      await afterLogin(user, customerConsents, accessModel);
     }
 
     await updatePersonalShelves();
@@ -245,7 +169,7 @@ export const register = async (email: string, password: string) => {
 };
 
 export const updatePersonalShelves = async () => {
-  await useAccount(async ({ customer, auth: { jwt } }) => {
+  await useAccount(async ({ customer }) => {
     await useService(async ({ accountService, sandbox = true }) => {
       const { watchHistory } = useWatchHistoryStore.getState();
       const { favorites } = useFavoritesStore.getState();
@@ -256,26 +180,24 @@ export const updatePersonalShelves = async () => {
         favorites: serializeFavorites(favorites),
       };
 
-      return await accountService?.updatePersonalShelves(
+      return accountService?.updatePersonalShelves(
         {
           id: customer.id,
           externalData: personalShelfData,
         },
         sandbox,
-        jwt,
       );
     });
   });
 };
 
 export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
-  return await useAccount(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ customer }) => {
     return await useService(async ({ accountService, config }) => {
       useAccountStore.setState({ loading: true });
 
       try {
         const response = await accountService?.updateCustomerConsents({
-          jwt,
           config,
           customer,
           consents: customerConsents,
@@ -302,9 +224,9 @@ export const updateConsents = async (customerConsents: CustomerConsent[]): Promi
 // TODO: Decide if it's worth keeping this or just leave combined with getUser
 // noinspection JSUnusedGlobalSymbols
 export async function getCustomerConsents(): Promise<GetCustomerConsentsResponse> {
-  return await useAccount(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ customer }) => {
     return await useService(async ({ accountService, config }) => {
-      const response = await accountService.getCustomerConsents({ config, customer, jwt });
+      const response = await accountService.getCustomerConsents({ config, customer });
 
       if (response?.consents) {
         useAccountStore.setState({ customerConsents: response.consents });
@@ -326,9 +248,9 @@ export const getPublisherConsents = async (): Promise<GetPublisherConsentsRespon
 };
 
 export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
-  return await useAccount(async ({ customer, auth: { jwt } }) => {
+  return await useAccount(async ({ customer }) => {
     return await useService(async ({ accountService, sandbox = true }) => {
-      const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox, jwt);
+      const { responseData } = await accountService.getCaptureStatus({ customer }, sandbox);
 
       return responseData;
     });
@@ -336,13 +258,13 @@ export const getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
 };
 
 export const updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
-  return await useAccount(async ({ customer, auth, customerConsents }) => {
+  return await useAccount(async ({ customer, customerConsents }) => {
     return await useService(async ({ accountService, accessModel, sandbox = true }) => {
-      const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox, auth.jwt);
+      const response = await accountService.updateCaptureAnswers({ customer, ...capture }, sandbox);
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-      await afterLogin(auth, response.responseData as Customer, customerConsents, accessModel, false);
+      await afterLogin(response.responseData as Customer, customerConsents, accessModel, false);
 
       return response.responseData;
     });
@@ -368,7 +290,14 @@ export const resetPassword = async (email: string, resetUrl: string) => {
 
 export const changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
   return await useService(async ({ accountService, sandbox = true }) => {
-    const response = await accountService.changePasswordWithOldPassword({ oldPassword, newPassword, newPasswordConfirmation }, sandbox);
+    const response = await accountService.changePasswordWithOldPassword(
+      {
+        oldPassword,
+        newPassword,
+        newPasswordConfirmation,
+      },
+      sandbox,
+    );
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
     return response?.responseData;
@@ -388,7 +317,7 @@ export const changePasswordWithToken = async (customerEmail: string, newPassword
 };
 
 export const updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
-  return await useAccount(async ({ customerId, auth: { jwt } }) => {
+  return await useAccount(async ({ customerId }) => {
     return await useService(async ({ subscriptionService, sandbox = true }) => {
       if (!subscriptionService) throw new Error('subscription service is not configured');
       const { subscription } = useAccountStore.getState();
@@ -402,7 +331,6 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
           unsubscribeUrl: subscription.unsubscribeUrl,
         },
         sandbox,
-        jwt,
       );
 
       if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -415,22 +343,21 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
 };
 
 export async function checkEntitlements(offerId?: string): Promise<unknown> {
-  return await useAccount(async ({ auth: { jwt } }) => {
-    return await useService(async ({ checkoutService, sandbox = true }) => {
-      if (!checkoutService) throw new Error('checkout service is not configured');
-      if (!offerId) {
-        return false;
-      }
-      const { responseData } = await checkoutService.getEntitlements({ offerId }, sandbox, jwt);
-      return !!responseData?.accessGranted;
-    });
+  return await useService(async ({ checkoutService, sandbox = true }) => {
+    if (!checkoutService) throw new Error('checkout service is not configured');
+    if (!offerId) {
+      return false;
+    }
+    const { responseData } = await checkoutService.getEntitlements({ offerId }, sandbox);
+    return !!responseData?.accessGranted;
   });
 }
 
 export async function reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> {
   useAccountStore.setState({ loading: true });
-  return await useAccount(async ({ customerId, auth: { jwt } }) => {
-    return await useService(async ({ subscriptionService, sandbox = true, config }) => {
+
+  return await useAccount(async ({ customerId }) => {
+    return await useService(async ({ subscriptionService, checkoutService, sandbox = true, config }) => {
       if (!subscriptionService) throw new Error('subscription service is not configured');
       // The subscription data takes a few seconds to load after it's purchased,
       // so here's a delay mechanism to give it time to process
@@ -441,16 +368,33 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
           }, delay);
         });
       }
+
       const [activeSubscription, transactions, activePayment] = await Promise.all([
-        subscriptionService.getActiveSubscription({ sandbox, customerId, jwt, config }),
-        subscriptionService.getAllTransactions({ sandbox, customerId, jwt }),
-        subscriptionService.getActivePayment({ sandbox, customerId, jwt }),
+        subscriptionService.getActiveSubscription({ sandbox, customerId, config }),
+        subscriptionService.getAllTransactions({ sandbox, customerId }),
+        subscriptionService.getActivePayment({ sandbox, customerId }),
       ]);
+
+      let pendingOffer: Offer | null = null;
+
+      // resolve and fetch the pending offer after upgrade/downgrade
+      try {
+        if (activeSubscription?.pendingSwitchId && checkoutService && 'getSubscriptionSwitch' in checkoutService) {
+          const switchOffer = await checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, sandbox);
+          const offerResponse = await checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, sandbox);
+
+          pendingOffer = offerResponse.responseData;
+        }
+      } catch (error: unknown) {
+        logDev('Failed to fetch the pending offer', error);
+      }
+
       // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
       await queryClient.invalidateQueries('entitlements');
 
       useAccountStore.setState({
         subscription: activeSubscription,
+        pendingOffer,
         loading: false,
         transactions,
         activePayment,
@@ -460,20 +404,31 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
 }
 
 export async function exportAccountData() {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
-      return await accountService.exportAccountData(undefined, true, jwt);
+      return await accountService.exportAccountData(undefined, true);
     });
   });
 }
 
 export async function deleteAccountData(password: string) {
-  return await useAccount(async ({ auth: { jwt } }) => {
+  return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
-      return await accountService.deleteAccount({ password }, true, jwt);
+      return await accountService.deleteAccount({ password }, true);
     });
   });
 }
+export const getReceipt = async (transactionId: string) => {
+  return await useAccount(async () => {
+    return await useService(async ({ subscriptionService, sandbox = true }) => {
+      if (!subscriptionService || !('fetchReceipt' in subscriptionService)) return null;
+
+      const { responseData } = await subscriptionService.fetchReceipt({ transactionId }, sandbox);
+
+      return responseData;
+    });
+  });
+};
 
 /**
  * Get multiple media items for the given IDs. This function uses watchlists to get several medias via just one request.
@@ -489,15 +444,8 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
   return getMediaByWatchlist(watchlistId, mediaIds);
 }
 
-async function afterLogin(
-  auth: AuthData,
-  user: Customer,
-  customerConsents: CustomerConsent[] | null,
-  accessModel: string,
-  shouldSubscriptionReload: boolean = true,
-) {
+async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string, shouldSubscriptionReload: boolean = true) {
   useAccountStore.setState({
-    auth,
     user,
     customerConsents,
   });

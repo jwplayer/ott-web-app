@@ -1,0 +1,13 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+
+.title {
+  display: flex;
+  align-items: center;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+}
+
+.message {
+  font-size: 16px;
+}

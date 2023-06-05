@@ -16,11 +16,11 @@
     "baseUrl": "./",
     /* paths - import rewriting/resolving */
     "paths": {
-      "#src/*": [
-        "./src/*"
-      ],
       "#components/*": [
         "./src/components/*"
+      ],
+      "#src/*": [
+        "./src/*"
       ],
       "#test/*": [
         "./test/*"
@@ -49,6 +49,6 @@
       "@testing-library/jest-dom",
       "@types/jwplayer",
       "vite-plugin-pwa/client"
-    ],
+    ]
   }
 }

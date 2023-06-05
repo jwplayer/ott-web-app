@@ -7,6 +7,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Config } from '#types/Config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import * as checkoutController from '#src/stores/CheckoutController';
 
 const data = {
   loading: false,
@@ -64,6 +65,15 @@ const data = {
 };
 
 describe('User Component tests', () => {
+  beforeEach(() => {
+    const spy = vi.spyOn(checkoutController, 'getSubscriptionSwitches');
+    spy.mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   test('Account Page', () => {
     useAccountStore.setState(data);
 

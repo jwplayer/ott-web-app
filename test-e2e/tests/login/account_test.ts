@@ -17,11 +17,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
   Before(async ({ I }) => {
     I.useConfig(config);
 
-    if (await I.isMobile()) {
-      I.openMenuDrawer();
-    }
-
-    I.click('Sign in');
+    await I.openSignInModal();
 
     I.waitForElement(constants.loginFormSelector, normalTimeout);
   });

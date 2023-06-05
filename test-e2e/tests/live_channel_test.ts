@@ -29,7 +29,7 @@ Before(async ({ I }) => {
   const isSummer = today.offset !== winterDay.offset;
   const isGMT = winterDay.offset === 0 && summerDay.offset === 0;
 
-  // Time is mocked in GMT, so to maintan the same local time we need 1 hour later in GMT in winter
+  // Time is mocked in GMT, so to maintain the same local time we need 1 hour later in GMT in winter
   // Example, during summer time in Amsterdam (GMT+2) 8:00 AM GMT = 10:00 AM CEST
   // In winter time in Amsterdam (GMT+1) 9:00 AM GMT = 10:00 AM CET
   await I.mockTimeGMT(isSummer || isGMT ? 8 : 9, 0, 0);
@@ -65,7 +65,8 @@ Scenario('I can navigate to live channels from the live channels shelf', async (
   I.click('Play Channel 1');
 
   waitForEpgAnimation(I);
-  I.see('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
+  I.see('LIVE');
+  I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 });
 
 Scenario('I can navigate to live channels from the header', ({ I }) => {
@@ -73,14 +74,16 @@ Scenario('I can navigate to live channels from the header', ({ I }) => {
   I.click('Live');
 
   waitForEpgAnimation(I);
-  I.see('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
+  I.see('LIVE');
+  I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 });
 
 Scenario('I can watch the current live program on the live channel screen', async ({ I }) => {
   await I.openVideoCard('Channel 1');
 
   I.see('The Daily Show with Trevor Noah: Ears Edition', locate('h2').inside(videoDetailsLocator));
-  I.see('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
+  I.see('LIVE');
+  I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
   I.see('Start watching');
   I.see('Watch from start');
 
@@ -100,7 +103,8 @@ Scenario('I see the epg on the live channel screen', async ({ I }) => {
   I.see('The Daily Show with Trevor Noah: Ears Edition');
   I.see('Live');
 
-  I.see('LIVEOn Channel 1');
+  I.see('LIVE');
+  I.see('On Channel 1');
   I.see('Start watching');
 
   I.seeElement(channel1LiveProgramLocator);
@@ -134,7 +138,8 @@ Scenario('I can select an upcoming program on the same channel', async ({ I }) =
 
   I.see('The Flash', locate('div').inside(videoDetailsLocator));
 
-  I.dontSee('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
+  I.dontSee('LIVE', locate('div').inside(videoDetailsLocator));
+  I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 
   I.seeElement(locate('button[disabled]').withText('Start watching'));
 
@@ -157,7 +162,8 @@ Scenario('I can select a previous program on the same channel and watch the vide
   I.scrollTo(channel1PreviousProgramLocator);
   await isSelectedProgram(I, channel1PreviousProgramLocator, 'channel 1');
 
-  I.dontSee('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
+  I.dontSee('LIVE', locate('div').inside(videoDetailsLocator));
+  I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 
   I.seeElement(channel1LiveProgramLocator);
   await isLiveProgram(I, channel1LiveProgramLocator, 'channel 1');
@@ -174,10 +180,11 @@ Scenario('I can select a program on another channel', async ({ I }) => {
 
   waitForEpgAnimation(I);
 
-  I.dontSee('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
+  I.see('LIVE');
+  I.dontSee('On Channel 1', locate('div').inside(videoDetailsLocator));
 
   I.see('The Flash', locate('h2').inside(videoDetailsLocator));
-  I.see('LIVEOn Channel 2', locate('div').inside(videoDetailsLocator));
+  I.see('On Channel 2', locate('div').inside(videoDetailsLocator));
 
   I.scrollTo(channel2LiveProgramLocator);
   I.seeElement(channel2LiveProgramLocator);
@@ -185,8 +192,10 @@ Scenario('I can select a program on another channel', async ({ I }) => {
 
   I.click(channel1Locator);
   waitForEpgAnimation(I);
-  I.dontSee('LIVEOn Channel 2', locate('div').inside(videoDetailsLocator));
-  I.see('LIVEOn Channel 1', locate('div').inside(videoDetailsLocator));
+  I.see('LIVE');
+  I.dontSee('On Channel 2', locate('div').inside(videoDetailsLocator));
+  I.see('LIVE');
+  I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 });
 
 Scenario('I can navigate through the epg', async ({ I }) => {

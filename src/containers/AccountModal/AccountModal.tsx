@@ -21,8 +21,12 @@ import Welcome from '#components/Welcome/Welcome';
 import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
 import Dialog from '#components/Dialog/Dialog';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
-import WaitingForPayment from '#src/components/WaitingForPayment/WaitingForPayment';
 import DeleteAccountModal from '#src/components/DeleteAccountModal/DeleteAccountModal';
+import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
+import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
+import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
+import useEventCallback from '#src/hooks/useEventCallback';
+import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
@@ -33,7 +37,7 @@ const AccountModal = () => {
   const isConfirmation = useQueryParam('confirmation');
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
-  const { loading, auth } = useAccountStore(({ loading, auth }) => ({ loading, auth }), shallow);
+  const { loading, user } = useAccountStore(({ loading, user }) => ({ loading, user }), shallow);
   const config = useConfigStore((s) => s.config);
   const {
     assets: { banner },
@@ -41,16 +45,20 @@ const AccountModal = () => {
   } = config;
   const isPublicView = viewParam && PUBLIC_VIEWS.includes(viewParam);
 
+  const toLogin = useEventCallback(() => {
+    navigate(addQueryParam(location, 'u', 'login'));
+  });
+
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
     if (viewParam) setView(viewParam);
   }, [viewParam]);
 
   useEffect(() => {
-    if (!!viewParam && !loading && !auth && !isPublicView) {
-      navigate(addQueryParam(location, 'u', 'login'));
+    if (!!viewParam && !loading && !user && !isPublicView) {
+      toLogin();
     }
-  }, [viewParam, navigate, location, loading, auth, isPublicView]);
+  }, [viewParam, navigate, location, loading, isPublicView, user, toLogin]);
 
   const closeHandler = () => {
     const removedU = removeQueryParam(location, 'u');
@@ -58,7 +66,7 @@ const AccountModal = () => {
   };
 
   const renderForm = () => {
-    if (!auth && loading && !isPublicView) {
+    if (!user && loading && !isPublicView) {
       return (
         <div style={{ height: 300 }}>
           <LoadingOverlay inline />
@@ -74,6 +82,14 @@ const AccountModal = () => {
         return <PersonalDetails />;
       case 'choose-offer':
         return <ChooseOffer />;
+      case 'upgrade-subscription':
+        return <ChooseOffer />;
+      case 'upgrade-subscription-error':
+        return <UpgradeSubscription type="error" onCloseButtonClick={closeHandler} />;
+      case 'upgrade-subscription-success':
+        return <UpgradeSubscription type="success" onCloseButtonClick={closeHandler} />;
+      case 'upgrade-subscription-pending':
+        return <UpgradeSubscription type="pending" onCloseButtonClick={closeHandler} />;
       case 'checkout':
         return <Checkout />;
       case 'payment-error':
@@ -96,8 +112,13 @@ const AccountModal = () => {
         return <CancelSubscription />;
       case 'renew-subscription':
         return <RenewSubscription />;
+      case 'payment-method':
+      case 'payment-method-success':
+        return <UpdatePaymentMethod onCloseButtonClick={closeHandler} />;
       case 'waiting-for-payment':
         return <WaitingForPayment />;
+      case 'finalize-payment':
+        return <FinalizePayment />;
     }
   };
 

@@ -45,7 +45,7 @@ Keep in mind, if the playerLicenseKey ini setting is provided, it will be used e
 
 ### additionalAllowedConfigSources[]
 
-An array of of 8-character IDs (entered 1 per line) for app configs in your JWP account (or url paths) that can be used with the [`app-config=<config source>` query param](configuration.md#switching-between-app-configs).
+An array of 8-character IDs (entered 1 per line) for app configs in your JWP account (or url paths) that can be used with the [`app-config=<config source>` query param](configuration.md#switching-between-app-configs).
 This may be useful for example if you have a staging or experimental config that you want to be able to test on your site using the [`app-config` query parameter](configuration.md#switching-between-app-configs) without changing the default config that the application loads with for all of your users.
 See [.webapp.test.ini](/ini/templates/.webapp.test.ini) for an example.
 

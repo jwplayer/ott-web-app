@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router';
@@ -18,19 +18,23 @@ import Sidebar from '#components/Sidebar/Sidebar';
 import MenuButton from '#components/MenuButton/MenuButton';
 import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
+import { getSupportedLanguages } from '#src/i18n/config';
 
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { menu, assets, siteName, description, styling, features } = config;
   const { clientId } = useClientIntegration();
   const { searchPlaylist } = features || {};
   const { footerText } = styling || {};
+  const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
+  const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
-  const { searchQuery, searchActive, userMenuOpen } = useUIStore(
-    ({ searchQuery, searchActive, userMenuOpen }) => ({
+  const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
+    ({ searchQuery, searchActive, userMenuOpen, languageMenuOpen }) => ({
+      languageMenuOpen,
       searchQuery,
       searchActive,
       userMenuOpen,
@@ -74,10 +78,15 @@ const Layout = () => {
     navigate(addQueryParam(location, 'u', 'create-account'));
   };
 
-  const toggleUserMenu = (value: boolean) =>
-    useUIStore.setState({
-      userMenuOpen: value,
-    });
+  const languageClickHandler = async (code: string) => {
+    await i18n.changeLanguage(code);
+  };
+
+  // useCallbacks are used here to fix a bug in the Popover when using a Reactive onClose callback
+  const openUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: true }), []);
+  const closeUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: false }), []);
+  const openLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: true }), []);
+  const closeLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: false }), []);
 
   const renderUserActions = () => {
     if (!clientId) return null;
@@ -118,9 +127,16 @@ const Layout = () => {
           onCloseSearchButtonClick={closeSearchButtonClickHandler}
           onLoginButtonClick={loginButtonClickHandler}
           onSignUpButtonClick={signUpButtonClickHandler}
+          onLanguageClick={languageClickHandler}
+          supportedLanguages={supportedLanguages}
+          currentLanguage={currentLanguage}
           isLoggedIn={isLoggedIn}
           userMenuOpen={userMenuOpen}
-          toggleUserMenu={toggleUserMenu}
+          languageMenuOpen={languageMenuOpen}
+          openUserMenu={openUserMenu}
+          closeUserMenu={closeUserMenu}
+          openLanguageMenu={openLanguageMenu}
+          closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
         >

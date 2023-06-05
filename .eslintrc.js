@@ -64,6 +64,7 @@ module.exports = {
     ],
     // Not needed in React 17
     'react/react-in-jsx-scope': 'off',
+    'import/no-named-as-default-member': 'off',
   },
   overrides: [
     {
