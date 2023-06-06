@@ -58,7 +58,7 @@ const AccountModal = () => {
     if (!!viewParam && !loading && !user && !isPublicView) {
       toLogin();
     }
-  }, [viewParam, navigate, location, loading, isPublicView, user, toLogin]);
+  }, [viewParam, loading, isPublicView, user, toLogin]);
 
   const closeHandler = useEventCallback(() => {
     navigate(removeMultipleQueryParams(location, ['u', 'confirmation']));
