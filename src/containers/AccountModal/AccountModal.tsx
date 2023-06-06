@@ -34,7 +34,6 @@ const AccountModal = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const viewParam = useQueryParam('u');
-  const isConfirmation = useQueryParam('confirmation');
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
   const { loading, user } = useAccountStore(({ loading, user }) => ({ loading, user }), shallow);
@@ -102,6 +101,7 @@ const AccountModal = () => {
       case 'forgot-password':
         return <ResetPassword type="forgot" />;
       case 'delete-account':
+      case 'delete-account-confirmation':
         return <DeleteAccountModal />;
       case 'send-confirmation':
         return <ResetPassword type="confirmation" />;
@@ -121,8 +121,8 @@ const AccountModal = () => {
     }
   };
 
-  const shouldHideBanner = ['delete-account'].includes(view ?? '');
-  const dialogSize = isConfirmation ? 'large' : 'small';
+  const shouldHideBanner = ['delete-account', 'delete-account-confirmation'].includes(view ?? '');
+  const dialogSize = ['delete-account-confirmation'].includes(view ?? '') ? 'large' : 'small';
 
   return (
     <Dialog size={dialogSize} open={!!viewParam} onClose={closeHandler}>

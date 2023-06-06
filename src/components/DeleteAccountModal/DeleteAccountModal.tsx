@@ -41,7 +41,7 @@ const DeleteAccountModal = () => {
     initialValues,
     () => {
       setEnteredPassword(values.password);
-      navigate(addQueryParam(location, 'confirmation', 'true'));
+      navigate(addQueryParam(location, 'u', 'delete-account-confirmation'));
     },
     validationSchema,
   );
