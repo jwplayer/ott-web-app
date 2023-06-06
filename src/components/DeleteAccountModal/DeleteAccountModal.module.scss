@@ -39,7 +39,7 @@
 .heading {
   width: 50%;
   margin-bottom: 20px;
-  color: variables.$dark-onbackground-main;
+  color: variables.$gray-white;
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;
@@ -50,7 +50,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  color: variables.$dark-onbackground-main;
+  color: variables.$gray-white;
   font-size: 14px;
   line-height: 20px;
   text-align: left;
@@ -64,7 +64,7 @@
   display: flex;
   flex-direction: column;
   padding: 8px 16px 8px 16px;
-  background-color: variables.$dark-warning-surface;
+  background-color: variables.$brown-dark;
   border-radius: 4px;
   gap: 16px;
 }

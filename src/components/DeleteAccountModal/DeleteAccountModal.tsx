@@ -11,7 +11,7 @@ import styles from './DeleteAccountModal.module.scss';
 
 import type { DeleteAccountFormData } from '#types/account';
 import useForm from '#src/hooks/useForm';
-import { addQueryParam, removeQueryParam } from '#src/utils/location';
+import { addQueryParam, removeMultipleQueryParams } from '#src/utils/location';
 import { deleteAccountData, logout } from '#src/stores/AccountController';
 
 const DeleteAccountModal = () => {
@@ -47,23 +47,21 @@ const DeleteAccountModal = () => {
   );
 
   const handleCancel = () => {
-    const removedU = removeQueryParam(location, 'u');
-    navigate(removedU.split('&confirmation')[0]);
+    navigate(removeMultipleQueryParams(location, ['confirmation', 'u']));
   };
 
   return enteredPassword ? (
     <div className={styles.formContainer}>
       <h2 className={styles.heading}>{t('account.delete_account.title')}</h2>
       <div className={styles.innerContainer}>
-        <p className={styles.paragraph}>{t('account.delete_account.modal.text_1')}</p>
-        <p className={styles.paragraph}>{t('account.delete_account.modal.text_2')}</p>
+        <p className={styles.paragraph}>{t('account.delete_account.modal.text_data_erasure')}</p>
+        <p className={styles.paragraph}>{t('account.delete_account.modal.text_revoked_access')}</p>
         <div className={styles.warningBox}>
           <p className={styles.paragraph}>{t('account.delete_account.modal.warning_1')}</p>
-          <p className={styles.paragraph}>{t('account.delete_account.modal.warning_2')}</p>
         </div>
         <p className={styles.paragraph}>
-          {t('account.delete_account.modal.text_3')} <br />
-          {t('account.delete_account.modal.text_4')}
+          {t('account.delete_account.modal.text_cant_be_undone')} <br />
+          {t('account.delete_account.modal.text_contacts')}
         </p>
       </div>
       <div className={styles.buttonsContainer}>

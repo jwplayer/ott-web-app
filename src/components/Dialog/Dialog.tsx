@@ -17,7 +17,7 @@ type Props = {
 const Dialog: React.FC<Props> = ({ open, onClose, size = 'small', children }: Props) => {
   return (
     <Modal open={open} onClose={onClose} AnimationComponent={Slide}>
-      <div className={classNames(styles.dialog, size === 'large' && styles.largeDialog)}>
+      <div className={classNames(styles.dialog, styles[size])}>
         <ModalCloseButton onClick={onClose} />
         {children}
       </div>

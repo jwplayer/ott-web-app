@@ -28,10 +28,10 @@ $btn-primary-bg: variables.$white !default;
 $btn-primary-color: variables.$black !default;
 
 $btn-danger-bg: rgba(0, 0, 0, 0) !default;
-$btn-danger-color: variables.$dark-danger-main !default;
-$btn-danger-outline: 1px solid variables.$dark-danger-main !default;
+$btn-danger-color: variables.$red-dark !default;
+$btn-danger-outline: 1px solid variables.$red-dark !default;
 
-$btn-delete-bg: variables.$dark-danger-main !default;
+$btn-delete-bg: variables.$red-dark !default;
 $btn-delete-color: variables.$white !default;
 
 $btn-facebook-bg: #3b5998 !default;
