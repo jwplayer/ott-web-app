@@ -32,8 +32,9 @@ The JW OTT Webapp is an open-source, dynamically generated video website built a
 ## Documentation
 
 - [Configure JW OTT Webapp](./docs/configuration.md)
+- [Configure Translations](./docs/translations.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
-- [Frameworks, SDK's and Libraries](./docs/frameworks.md)
+- [Frameworks, SDKs and Libraries](./docs/frameworks.md)
 - [Backend Services](./docs/backend-services.md)
 - [Developer Guidelines](./docs/developer-guidelines.md)
 
@@ -70,4 +71,4 @@ To report bugs and feature requests, or request help using JW OTT Webapp, use th
 
 ## Software License
 
-This project is licensed under under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0). See [LICENSE.txt](LICENSE.txt) for more details.
+This project is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0). See [LICENSE.txt](LICENSE.txt) for more details.

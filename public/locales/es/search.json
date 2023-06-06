@@ -1,0 +1,20 @@
+{
+  "error_description": "Vuelve a cargar esta página o inténtalo de nuevo más tarde.",
+  "error_heading": "Algo salió mal",
+  "error_subheading": "Parece que tuvimos un problema al cargar esta página...",
+  "heading": "Resultados de búsqueda",
+  "no_results_heading": "No se encontraron resultados para \"{{query}}\"",
+  "search_bar": {
+    "clear_search_label": "Borrar búsqueda",
+    "search_label": "Buscar",
+    "search_placeholder": "Buscar..."
+  },
+  "start_typing": "Escribe algo en el cuadro de búsqueda para comenzar a buscar",
+  "suggestions": "Sugerencias:",
+  "tip_one": "Asegúrate de que todas las palabras estén escritas correctamente",
+  "tip_two": "Hacer términos de búsqueda más generales",
+  "tip_three": "Prueba con diferentes términos de búsqueda",
+  "title_one": "{{count}} resultado para \"{{query}}\"",
+  "title_many": "",
+  "title_other": "{{count}} resultados para \"{{query}}\""
+}
