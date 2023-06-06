@@ -15,7 +15,7 @@ const SimultaneousLoginsNotification = () => {
 
   return (
     <React.Fragment>
-      <h1 className={styles.title}>You have been logged out because the simultaneous logins limit has been reached.</h1>
+      <h1 className={styles.simultaneousLoginsTitle}>You have been logged out because the simultaneous logins limit has been reached.</h1>
       <Button type="submit" onClick={loginClickHandler} label="Ok" variant="contained" color="primary" size="large" fullWidth />
     </React.Fragment>
   );
