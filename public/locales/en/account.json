@@ -84,7 +84,10 @@
     "sign_up": "Sign up",
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
-    "wrong_email": "Please check your email and try again."
+    "wrong_email": "Please check your email and try again.",
+    "facebook": "Sign in with Facebook",
+    "google": "Sign in with Google",
+    "twitter": "Sign in with Twitter"
   },
   "payment": {
     "back_to_profile": "Back to profile",

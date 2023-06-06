@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import styles from './SocialButton.module.scss';
 
@@ -12,6 +13,8 @@ interface SocialButtonProps {
 const SocialButton = ({ variant, href }: SocialButtonProps) => {
   const [icon, setIcon] = useState<string | null>(null);
 
+  const { t } = useTranslation('account');
+
   useEffect(() => {
     const getIcon = async () => {
       const iconSvg = await (import(`../../assets/icons/${variant}.svg`) as Promise<{ default: string }>);
@@ -21,11 +24,11 @@ const SocialButton = ({ variant, href }: SocialButtonProps) => {
   }, [variant]);
 
   return (
-    <a href={href} className={styles.socialButtonContainer}>
+    <a href={href} className={styles.socialButtonContainer} aria-label={t(`login.${variant}`)}>
       <div className={styles.socialButtonIconContainer}>
         <img className={styles.socialButtonIcon} src={icon ?? ''} alt={`${variant} icon`} />
       </div>
-      <span className={styles.socialButtonTextContainer}>Sign in with {variant.charAt(0).toUpperCase() + variant.slice(1)}</span>
+      <span className={styles.socialButtonTextContainer}>{t(`login.${variant}`)}</span>
     </a>
   );
 };

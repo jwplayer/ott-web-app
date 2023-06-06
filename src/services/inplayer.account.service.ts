@@ -38,6 +38,14 @@ enum InPlayerEnv {
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
+  const queryParams = new URLSearchParams(window.location.href.split('#')[1]);
+  const token = queryParams.get('token');
+  const refreshToken = queryParams.get('refresh_token');
+  const expires = queryParams.get('expires');
+  if (!token || !refreshToken || !expires) {
+    return;
+  }
+  InPlayer.Account.setToken(token, refreshToken, parseInt(expires));
 };
 
 export const getAuthData = async () => {
