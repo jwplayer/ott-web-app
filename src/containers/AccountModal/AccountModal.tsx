@@ -60,9 +60,9 @@ const AccountModal = () => {
     }
   }, [viewParam, navigate, location, loading, isPublicView, user, toLogin]);
 
-  const closeHandler = () => {
+  const closeHandler = useEventCallback(() => {
     navigate(removeMultipleQueryParams(location, ['u', 'confirmation']));
-  };
+  });
 
   const renderForm = () => {
     if (!user && loading && !isPublicView) {
