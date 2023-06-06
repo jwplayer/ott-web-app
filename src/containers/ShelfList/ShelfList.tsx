@@ -43,7 +43,7 @@ const ShelfList = ({ rows }: Props) => {
 
   useEffect(() => {
     // reset row count when the page changes
-    setRowCount(INITIAL_ROW_COUNT);
+    return () => setRowCount(INITIAL_ROW_COUNT);
   }, [rows]);
 
   return (

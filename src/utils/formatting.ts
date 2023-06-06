@@ -110,12 +110,6 @@ export const buildLegacySeriesUrlFromMediaItem = (media: PlaylistItem, play: boo
   });
 };
 
-export const formatDate = (dateString: number) => {
-  if (!dateString) return '';
-
-  return new Date(dateString * 1000).toLocaleDateString('en-US');
-};
-
 export const formatPrice = (price: number, currency: string, country: string) => {
   return new Intl.NumberFormat(country || undefined, {
     style: 'currency',
@@ -151,4 +145,40 @@ export const formatSeriesMetaString = (seasonNumber?: string, episodeNumber?: st
   }
 
   return seasonNumber && seasonNumber !== '0' ? `S${seasonNumber}:E${episodeNumber}` : `E${episodeNumber}`;
+};
+
+export const formatLiveEventMetaString = (media: PlaylistItem, locale: string) => {
+  const metaData = [];
+  const scheduled = formatVideoSchedule(locale, media.scheduledStart, media.scheduledEnd);
+
+  if (scheduled) metaData.push(scheduled);
+  if (media.duration) metaData.push(formatDuration(media.duration));
+  if (media.genre) metaData.push(media.genre);
+  if (media.rating) metaData.push(media.rating);
+
+  return metaData.join(' • ');
+};
+
+export const formatVideoSchedule = (locale: string, scheduledStart?: Date, scheduledEnd?: Date) => {
+  if (!scheduledStart) {
+    return '';
+  }
+
+  if (!scheduledEnd) {
+    return formatLocalizedDateTime(scheduledStart, locale, ' • ');
+  }
+
+  return `${formatLocalizedDateTime(scheduledStart, locale, ' • ')} - ${formatLocalizedTime(scheduledEnd, locale)}`;
+};
+
+export const formatLocalizedDate = (date: Date, locale: string) => {
+  return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+};
+
+export const formatLocalizedTime = (date: Date, locale: string) => {
+  return new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+};
+
+export const formatLocalizedDateTime = (date: Date, locale: string, separator = ' ') => {
+  return `${formatLocalizedDate(date, locale)}${separator}${formatLocalizedTime(date, locale)}`;
 };

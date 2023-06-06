@@ -15,7 +15,7 @@ export enum NotificationsTypes {
 }
 
 export const subscribeToNotifications = async (uuid: string = '') => {
-  return await useAccount(async ({ auth }) => {
+  return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
       return await accountService.subscribeToNotifications(uuid, async (message) => {
         if (message) {
@@ -26,7 +26,7 @@ export const subscribeToNotifications = async (uuid: string = '') => {
               window.location.href = addQueryParams(window.location.href, { u: 'payment-error', message: notification.resource?.message });
               break;
             case NotificationsTypes.ACCOUNT_LOGOUT:
-              await getAccount(auth);
+              await getAccount();
               window.location.href = addQueryParams(window.location.href, { u: 'simultaneous-logins' });
               break;
             case NotificationsTypes.ACCESS_GRANTED:

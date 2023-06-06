@@ -2,16 +2,22 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import IconButton from '../IconButton/IconButton';
+import ExternalLink from '../../icons/ExternalLink';
+
 import styles from './Payment.module.scss';
 
 import TextField from '#components/TextField/TextField';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Button from '#components/Button/Button';
 import type { Customer } from '#types/account';
-import { formatDate, formatPrice } from '#src/utils/formatting';
+import { formatLocalizedDate, formatPrice } from '#src/utils/formatting';
 import { addQueryParam } from '#src/utils/location';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { AccessModel } from '#types/Config';
+import PayPal from '#src/icons/PayPal';
+import type { Offer } from '#types/checkout';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -21,18 +27,25 @@ type Props = {
   activePaymentDetail: PaymentDetail | null;
   transactions: Transaction[] | null;
   customer: Customer;
+  pendingOffer: Offer | null;
   isLoading: boolean;
+  offerSwitchesAvailable: boolean;
+  onShowReceiptClick: (transactionId: string) => void;
   panelClassName?: string;
   panelHeaderClassName?: string;
   onShowAllTransactionsClick?: () => void;
+  onUpgradeSubscriptionClick?: () => void;
   showAllTransactions: boolean;
+  canUpdatePaymentMethod: boolean;
   canRenewSubscription?: boolean;
+  canShowReceipts?: boolean;
 };
 
 const Payment = ({
   accessModel,
   activePaymentDetail,
   activeSubscription,
+  pendingOffer,
   transactions,
   customer,
   isLoading,
@@ -40,13 +53,21 @@ const Payment = ({
   panelHeaderClassName,
   onShowAllTransactionsClick,
   showAllTransactions,
+  onShowReceiptClick,
   canRenewSubscription = false,
+  canShowReceipts = false,
+  canUpdatePaymentMethod,
+  onUpgradeSubscriptionClick,
+  offerSwitchesAvailable,
 }: Props): JSX.Element => {
-  const { t } = useTranslation(['user', 'account']);
+  const { t, i18n } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
   const hasMoreTransactions = hiddenTransactionsCount > 0;
   const navigate = useNavigate();
   const location = useLocation();
+  const isGrantedSubscription = activeSubscription?.period === 'granted';
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === Breakpoint.xs;
 
   function onCompleteSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'choose-offer'));
@@ -89,17 +110,32 @@ const Payment = ({
               <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
                 <p>
                   <strong>{getTitle(activeSubscription.period)}</strong> <br />
-                  {activeSubscription.status === 'active' && activeSubscription.period !== 'granted'
-                    ? t('user:payment.next_billing_date_on', { date: formatDate(activeSubscription.expiresAt) })
-                    : t('user:payment.subscription_expires_on', { date: formatDate(activeSubscription.expiresAt) })}
+                  {activeSubscription.status === 'active' && !isGrantedSubscription
+                    ? t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })
+                    : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })}
+                  {pendingOffer && (
+                    <span className={styles.pendingSwitch}>{t('user:payment.pending_offer_switch', { title: getTitle(pendingOffer.period) })}</span>
+                  )}
                 </p>
-                <p className={styles.price}>
-                  <strong>{formatPrice(activeSubscription.nextPaymentPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
-                  <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
-                </p>
+                {!isGrantedSubscription && (
+                  <p className={styles.price}>
+                    <strong>{formatPrice(activeSubscription.nextPaymentPrice, activeSubscription.nextPaymentCurrency, customer.country)}</strong>
+                    <small>/{t(`account:periods.${activeSubscription.period}`)}</small>
+                  </p>
+                )}
               </div>
-              {activeSubscription.status === 'active' && activeSubscription.period !== 'granted' ? (
-                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} />
+              {offerSwitchesAvailable && (
+                <Button
+                  className={styles.upgradeSubscription}
+                  label={t('user:payment.change_subscription')}
+                  onClick={onUpgradeSubscriptionClick}
+                  fullWidth={isMobile}
+                  color="primary"
+                  data-testid="change-subscription-button"
+                />
+              )}
+              {activeSubscription.status === 'active' && !isGrantedSubscription ? (
+                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} fullWidth={isMobile} />
               ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
               ) : null}
@@ -117,21 +153,30 @@ const Payment = ({
           <h3>{t('user:payment.payment_method')}</h3>
         </div>
         {activePaymentDetail ? (
-          <div key={activePaymentDetail.id}>
-            <TextField
-              label={t('user:payment.card_number')}
-              value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
-              editing={false}
-            />
-            <div className={styles.cardDetails}>
-              <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
-              <TextField label={t('user:payment.cvc_cvv')} value={'******'} editing={false} />
+          activePaymentDetail.paymentMethod === 'paypal' ? (
+            <div className={styles.paypal}>
+              <PayPal /> {t('account:payment.paypal')}
             </div>
-          </div>
+          ) : (
+            <div key={activePaymentDetail.id}>
+              <TextField
+                label={t('user:payment.card_number')}
+                value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
+                editing={false}
+              />
+              <div className={styles.cardDetails}>
+                <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
+                <TextField label={t('user:payment.security_code')} value={'******'} editing={false} />
+              </div>
+            </div>
+          )
         ) : (
           <div>
             <p>{!isLoading && t('user:payment.no_payment_methods')}</p>
           </div>
+        )}
+        {canUpdatePaymentMethod && (
+          <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(addQueryParam(location, 'u', 'payment-method'))} />
         )}
       </div>
       <div className={panelClassName}>
@@ -144,16 +189,24 @@ const Payment = ({
               <div className={styles.infoBox} key={transaction.transactionId}>
                 <p className="transactionItem">
                   <strong>{transaction.offerTitle}</strong> <br />
-                  {t('user:payment.price_payed_with', {
-                    price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
-                    method: transaction.paymentMethod,
-                  })}
+                  {!isGrantedSubscription &&
+                    t('user:payment.price_payed_with', {
+                      price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                      method: transaction.paymentMethod,
+                    })}
                 </p>
-                <p>
-                  {transaction.transactionId}
-                  <br />
-                  {formatDate(transaction.transactionDate)}
-                </p>
+                <div className={styles.transactionDetails}>
+                  <p>
+                    {transaction.transactionId}
+                    <br />
+                    {formatLocalizedDate(new Date(transaction.transactionDate * 1000), i18n.language)}
+                  </p>
+                  {canShowReceipts && (
+                    <IconButton aria-label={t('user:payment.show_receipt')} onClick={() => !isLoading && onShowReceiptClick(transaction.transactionId)}>
+                      <ExternalLink />
+                    </IconButton>
+                  )}
+                </div>
               </div>
             ))}
             {!showAllTransactions && hasMoreTransactions ? (

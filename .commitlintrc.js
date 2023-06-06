@@ -28,6 +28,7 @@ module.exports = {
         'config',
         'epg',
         'tests',
+        'i18n',
       ],
     ],
   },

@@ -15,41 +15,28 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
   });
 
   Scenario(`Sign-in buttons show for accounts config - ${providerName}`, async ({ I }) => {
-    if (await I.isMobile()) {
-      I.openMenuDrawer();
-    }
+    await I.openSignInMenu();
 
     I.see('Sign in');
     I.see('Sign up');
   });
 
   Scenario(`Sign-in buttons don't show for config without accounts - ${providerName}`, async ({ I }) => {
-    if (await I.isMobile()) {
-      I.openMenuDrawer();
-    }
+    await I.openSignInMenu();
 
     I.see('Sign in');
     I.see('Sign up');
 
     I.useConfig(testConfigs.basicNoAuth);
 
+    await I.openSignInMenu();
+
     I.dontSee('Sign in');
     I.dontSee('Sign up');
-
-    if (await I.isMobile()) {
-      I.openMenuDrawer();
-
-      I.dontSee('Sign in');
-      I.dontSee('Sign up');
-    }
   });
 
   Scenario(`I can open the log in modal - ${providerName}`, async ({ I }) => {
-    if (await I.isMobile()) {
-      I.openMenuDrawer();
-    }
-
-    I.click('Sign in');
+    await I.openSignInModal();
     I.waitForElement(constants.loginFormSelector, longTimeout);
 
     await I.seeQueryParams({ u: 'login' });
@@ -65,9 +52,6 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
   Scenario(`I can login - ${providerName}`, async ({ I }) => {
     loginContext = await I.registerOrLogin(loginContext);
 
-    I.dontSee('Sign in');
-    I.dontSee('Sign up');
-
     await I.openMainMenu();
 
     I.dontSee('Sign in');
@@ -81,13 +65,10 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
   Scenario(`I can log out - ${providerName}`, async ({ I }) => {
     loginContext = await I.registerOrLogin(loginContext);
 
-    const isMobile = await I.openMainMenu();
-
+    await I.openMainMenu();
     I.click('Log out');
 
-    if (isMobile) {
-      I.openMenuDrawer();
-    }
+    await I.openSignInMenu();
 
     I.see('Sign in');
     I.see('Sign up');
