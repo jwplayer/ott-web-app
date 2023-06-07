@@ -1,0 +1,30 @@
+[
+  {
+    "name": "movie",
+    "description": "Movie schema",
+    "display_name": "Movie",
+    "hosting_type": "hosted",
+    "is_active": true,
+    "is_series": false,
+    "fields": [
+      {
+        "title": "General",
+        "fields": [
+          {
+            "param": "genre",
+            "label": "Genre",
+            "options": {
+              "field_type": "select",
+              "options": [
+                {
+                  "value": "",
+                  "label": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
