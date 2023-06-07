@@ -121,12 +121,12 @@ const AccountModal = () => {
     }
   };
 
-  const shouldHideBanner = ['delete-account', 'delete-account-confirmation'].includes(view ?? '');
+  const shouldShowBanner = !['delete-account', 'delete-account-confirmation'].includes(view ?? '');
   const dialogSize = ['delete-account-confirmation'].includes(view ?? '') ? 'large' : 'small';
 
   return (
     <Dialog size={dialogSize} open={!!viewParam} onClose={closeHandler}>
-      {!shouldHideBanner && banner && <div className={styles.banner}>{<img src={banner} alt="" />}</div>}
+      {shouldShowBanner && banner && <div className={styles.banner}>{<img src={banner} alt="" />}</div>}
       {renderForm()}
     </Dialog>
   );
