@@ -292,7 +292,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                           options={consent.options}
                           label={formatConsentLabel(consent.label)}
                           placeholder={consent.placeholder}
-                          value={`${section.values.consentsValues[consent.name] || ''}`}
+                          value={section.values.consentsValues[consent.name]}
                           disabled={consent.required || section.isBusy}
                           onChange={section.onChange}
                         />
