@@ -48,8 +48,6 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
   const commonProps = { ...props, name, onChange };
 
   switch (type) {
-    case ConsentFieldVariants.CHECKBOX:
-      return <Checkbox {...commonProps} checked={value === 'true'} />;
     case ConsentFieldVariants.INPUT:
       return <TextField {...commonProps} value={value} />;
     case ConsentFieldVariants.RADIO:
@@ -58,6 +56,8 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
     case ConsentFieldVariants.COUNTRY_SELECT:
     case ConsentFieldVariants.US_STATE_SELECT:
       return <Dropdown {...commonProps} options={optionsList} value={value} defaultLabel={props.placeholder} fullWidth />;
+    default:
+      return <Checkbox {...commonProps} checked={value === 'true'} />;
   }
 
   return null;
