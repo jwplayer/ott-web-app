@@ -5,9 +5,7 @@ const stdIn = require('readline').createInterface({
   output: process.stdout,
 });
 
-// @ts-ignore
-const fetch = require('node-fetch');
-
+const JWP_HOST = process.env.JWP_HOST || 'https://api.jwplayer.com';
 // interface Field {
 //   label: string,
 //   param: string,
@@ -90,7 +88,7 @@ async function uploadSchemas(args: { apiKey: string; siteId: string; schemas: un
   console.info('\r\n\r\nCreating schemas:');
 
   for (const schema of args.schemas) {
-    const response = await fetch(`https://api.jwplayer.com/v2/sites/${args.siteId}/content_type_schemas/`, {
+    const response = await fetch(`${JWP_HOST}/v2/sites/${args.siteId}/content_type_schemas/`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${args.apiKey}`,
