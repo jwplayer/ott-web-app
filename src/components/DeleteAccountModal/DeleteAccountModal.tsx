@@ -57,7 +57,7 @@ const DeleteAccountModal = () => {
         <p className={styles.paragraph}>{t('account.delete_account.modal.text_data_erasure')}</p>
         <p className={styles.paragraph}>{t('account.delete_account.modal.text_revoked_access')}</p>
         <div className={styles.warningBox}>
-          <p className={styles.paragraph}>{t('account.delete_account.modal.warning_1')}</p>
+          <p className={styles.paragraph}>{t('account.delete_account.modal.warning')}</p>
         </div>
         <p className={styles.paragraph}>
           {t('account.delete_account.modal.text_cant_be_undone')} <br />

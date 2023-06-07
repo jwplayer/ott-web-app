@@ -41,7 +41,7 @@
         "text_revoked_access": "Once the erasure is complete, all of your active accesses will be revoked, and any active login sessions, including this one, will be terminated. Your account information will no longer be accessible to our staff in any capacity.",
         "text_cant_be_undone": "Please be aware that this process cannot be undone, so proceed with caution.",
         "text_contacts": "If you have any further questions or concerns, please do not hesitate to contact our support team.",
-        "warning_1": "All active subscriptions that were purchased through a web browser will be automatically canceled upon erasure of personal data. However, if you purchased a subscription through iOS, Android, Roku, or Amazon apps, please be aware that it will not be canceled automatically. In this case, you will need to follow the usual subscription cancelation steps for each respective platform to manually cancel the subscription."
+        "warning": "All active subscriptions that were purchased through a web browser will be automatically canceled upon erasure of personal data. However, if you purchased a subscription through iOS, Android, Roku, or Amazon apps, please be aware that it will not be canceled automatically. In this case, you will need to follow the usual subscription cancelation steps for each respective platform to manually cancel the subscription."
       }
     }
   },
