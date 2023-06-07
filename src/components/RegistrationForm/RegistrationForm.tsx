@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ChangeEventHandler } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
@@ -68,6 +68,15 @@ const RegistrationForm: React.FC<Props> = ({
     return label;
   };
 
+  const changeHandler: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
+    if (!currentTarget) return;
+
+    const { name, type } = currentTarget;
+    const value = type === 'checkbox' ? `${(currentTarget as HTMLInputElement).checked}` : currentTarget.value;
+
+    onConsentChange(name, value);
+  };
+
   if (loading) {
     return (
       <div style={{ height: 400 }}>
@@ -127,7 +136,7 @@ const RegistrationForm: React.FC<Props> = ({
             required={consent.required}
             error={consentErrors?.includes(consent.name)}
             helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required') : undefined}
-            onChange={onConsentChange}
+            onChange={changeHandler}
           />
         ))}
       </div>

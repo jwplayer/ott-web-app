@@ -140,27 +140,27 @@ exports[`<Account> > renders and matches snapshot 1`] = `
     </div>
     <div
       class="_flexBox_1c1c63"
+    />
+    <div
+      class="_controls_1c1c63"
+    />
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.other_registration_details
+      </h3>
+    </div>
+    <div
+      class="_flexBox_1c1c63"
     >
       <div
-        class="_checkbox_531f07"
-      >
-        <div
-          class="_row_531f07"
-        >
-          <input
-            id="check-box_1235_consents.marketing"
-            name="consents.marketing"
-            type="checkbox"
-            value=""
-          />
-          <label
-            for="check-box_1235_consents.marketing"
-          >
-            
-            Receive Marketing Emails
-          </label>
-        </div>
-      </div>
+        class="_customFields_c968f7"
+      />
     </div>
     <div
       class="_controls_1c1c63"

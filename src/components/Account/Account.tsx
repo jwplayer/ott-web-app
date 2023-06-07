@@ -8,6 +8,7 @@ import { useMutation } from 'react-query';
 import styles from './Account.module.scss';
 
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
+import type { ConsentFieldVariants } from '#src/services/inplayer.account.service';
 import Alert from '#components/Alert/Alert';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
@@ -17,8 +18,9 @@ import IconButton from '#components/IconButton/IconButton';
 import TextField from '#components/TextField/TextField';
 import Checkbox from '#components/Checkbox/Checkbox';
 import HelperText from '#components/HelperText/HelperText';
+import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import useToggle from '#src/hooks/useToggle';
-import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
+import { formatConsentsFromValues, formatConsents, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { logDev } from '#src/utils/common';
@@ -64,15 +66,25 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     shallow,
   );
 
-  const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
+  const [termsConsents, nonTermsConsents] = useMemo(() => {
+    const terms = (publisherConsents || []).filter((consent) => consent.name === 'terms');
+    const nonTerms = publisherConsents?.filter((consent) => consent.name !== 'terms');
+
+    return [terms, nonTerms];
+  }, [publisherConsents]);
+
+  const consents = useMemo(() => formatConsents(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
+
+  const consentsValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
 
   const initialValues = useMemo(
     () => ({
       ...customer,
-      consents: consentValues,
+      consents,
+      consentsValues,
       confirmationPassword: '',
     }),
-    [customer, consentValues],
+    [customer, consents, consentsValues],
   );
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
@@ -250,7 +262,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
             content: (section) => (
               <>
-                {publisherConsents?.map((consent, index) => (
+                {termsConsents?.map((consent, index) => (
                   <Checkbox
                     key={index}
                     name={`consents.${consent.name}`}
@@ -264,6 +276,32 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               </>
             ),
           }),
+          ...(nonTermsConsents
+            ? [
+                formSection({
+                  label: t('account.other_registration_details'),
+                  saveButton: t('account.update_consents'),
+                  onSubmit: (values) => updateConsents(formatConsentsFromValues(nonTermsConsents, values.consentsValues)),
+                  content: (section) => (
+                    <div className={styles.customFields}>
+                      {nonTermsConsents.map((consent) => (
+                        <CustomRegisterField
+                          key={consent.name}
+                          type={consent.type as ConsentFieldVariants}
+                          name={`consentsValues.${consent.name}`}
+                          options={consent.options}
+                          label={formatConsentLabel(consent.label)}
+                          placeholder={consent.placeholder}
+                          value={`${section.values.consentsValues[consent.name] || ''}`}
+                          disabled={consent.required || section.isBusy}
+                          onChange={section.onChange}
+                        />
+                      ))}
+                    </div>
+                  ),
+                }),
+              ]
+            : []),
           ...(canExportAccountData
             ? [
                 formSection({

@@ -24,6 +24,7 @@
     "firstname": "Nombre",
     "hide_password": "Ocultar contraseña",
     "lastname": "Apellido",
+    "other_registration_details": "Otros detalles de registro",
     "password": "Contraseña",
     "save": "Guardar",
     "security": "Seguridad",

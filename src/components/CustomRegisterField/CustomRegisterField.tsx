@@ -1,4 +1,4 @@
-import { type FC, type ChangeEventHandler, type ReactNode, useMemo, useCallback } from 'react';
+import { type FC, type ChangeEventHandler, type ReactNode, useMemo } from 'react';
 import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 
 import Checkbox from '#components/Checkbox/Checkbox';
@@ -12,7 +12,7 @@ type Props = {
   type: ConsentFieldVariants;
   name: string;
   value: string;
-  onChange: (name: string, value: string) => void;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 } & Partial<{
   label: ReactNode;
   placeholder: string;
@@ -26,17 +26,6 @@ type Props = {
 export type CustomRegisterFieldCommonProps = Props;
 
 export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChange, ...props }) => {
-  const changeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      if (type === ConsentFieldVariants.CHECKBOX) {
-        onChange(name, `${e.target.checked}`);
-      } else {
-        onChange(name, e.target.value);
-      }
-    },
-    [type, name, onChange],
-  );
-
   const optionsList = useMemo(() => {
     const optionsObject = (() => {
       switch (type) {
@@ -56,7 +45,7 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
     return Object.entries(optionsObject).map(([value, label]) => ({ value, label }));
   }, [type, props.options]);
 
-  const commonProps = { ...props, name, onChange: changeHandler };
+  const commonProps = { ...props, name, onChange };
 
   switch (type) {
     case ConsentFieldVariants.CHECKBOX:

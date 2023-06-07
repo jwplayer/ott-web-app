@@ -69,6 +69,24 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
   if (!publisherConsents || !customerConsents) {
     return {};
   }
+
+  const values: Record<string, string> = {};
+
+  publisherConsents?.forEach((publisherConsent) => {
+    const consent = customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name);
+
+    if (consent) {
+      values[publisherConsent.name] = consent.value ?? '';
+    }
+  });
+
+  return values;
+};
+
+const formatConsents = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+  if (!publisherConsents || !customerConsents) {
+    return {};
+  }
   const values: Record<string, boolean> = {};
   publisherConsents?.forEach((publisherConsent) => {
     if (customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name && customerConsent.state === 'accepted')) {
@@ -102,7 +120,8 @@ const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: 
     consents.push({
       name: consent.name,
       version: consent.version,
-      state: values.consents[consent.name] ? 'accepted' : 'declined',
+      state: values[consent.name] ? 'accepted' : 'declined',
+      value: `${values[consent.name] ?? ''}`,
     });
   });
 
@@ -124,6 +143,7 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
       name: consent.name,
       version: consent.version,
       state: consents[consent.name] ? 'accepted' : 'declined',
+      value: `${consents[consent.name] ?? ''}`,
     });
   });
 
@@ -158,6 +178,7 @@ export {
   findPlaylistImageForWidth,
   generatePlaylistPlaceholder,
   formatConsentValues,
+  formatConsents,
   formatConsentsFromValues,
   extractConsentValues,
   checkConsentsFromValues,
