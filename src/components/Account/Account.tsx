@@ -21,7 +21,7 @@ import useToggle from '#src/hooks/useToggle';
 import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { logDev } from '#src/utils/common';
+import { isTruthy, logDev } from '#src/utils/common';
 import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
 
 type Props = {
@@ -265,31 +265,28 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               </>
             ),
           }),
-          ...(canExportAccountData
-            ? [
-                formSection({
-                  label: t('account.export_data_title'),
-                  content: (section) => (
-                    <div className={styles.textWithButtonContainer}>
-                      <div>
-                        <Trans t={t} i18nKey="account.export_data_body" values={{ email: section.values.email }} />
-                      </div>
-                      <div>
-                        <Button
-                          label={t('account.export_data_title')}
-                          type="button"
-                          disabled={exportData.isLoading}
-                          onClick={async () => {
-                            exportData.mutate();
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ),
-                }),
-              ]
-            : []),
-          ...[
+          canExportAccountData &&
+            formSection({
+              label: t('account.export_data_title'),
+              content: (section) => (
+                <div className={styles.textWithButtonContainer}>
+                  <div>
+                    <Trans t={t} i18nKey="account.export_data_body" values={{ email: section.values.email }} />
+                  </div>
+                  <div>
+                    <Button
+                      label={t('account.export_data_title')}
+                      type="button"
+                      disabled={exportData.isLoading}
+                      onClick={async () => {
+                        exportData.mutate();
+                      }}
+                    />
+                  </div>
+                </div>
+              ),
+            }),
+          canDeleteAccount &&
             formSection({
               label: t('account.delete_account.title'),
               content: () => (
@@ -308,8 +305,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                 </div>
               ),
             }),
-          ].filter(() => canDeleteAccount),
-        ]}
+        ].filter(isTruthy)}
       </Form>
       {canExportAccountData && (
         <Alert open={isAlertVisible} message={exportDataMessage} onClose={() => setIsAlertVisible(false)} isSuccess={exportData.isSuccess} />
