@@ -8,7 +8,8 @@ import { useMutation } from 'react-query';
 import styles from './Account.module.scss';
 
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
-import type { ConsentFieldVariants } from '#src/services/inplayer.account.service';
+import type { Consent } from '#types/account';
+import { ConsentFieldVariants } from '#src/services/inplayer.account.service';
 import Alert from '#components/Alert/Alert';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
@@ -67,8 +68,16 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   );
 
   const [termsConsents, nonTermsConsents] = useMemo(() => {
-    const terms = (publisherConsents || []).filter((consent) => consent.name === 'terms');
-    const nonTerms = publisherConsents?.filter((consent) => consent.name !== 'terms');
+    const terms: Consent[] = [];
+    const nonTerms: Consent[] = [];
+
+    publisherConsents?.forEach((consent) => {
+      if (!Object.hasOwn(consent, 'type') || consent.type === ConsentFieldVariants.CHECKBOX) {
+        terms.push(consent);
+      } else {
+        nonTerms.push(consent);
+      }
+    });
 
     return [terms, nonTerms];
   }, [publisherConsents]);
@@ -267,7 +276,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     key={index}
                     name={`consents.${consent.name}`}
                     value={consent.value || ''}
-                    checked={(section.values.consents?.[consent.name] as boolean) || false}
+                    checked={`${section.values.consents?.[consent.name]}` === 'true'}
                     onChange={section.onChange}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}
@@ -276,7 +285,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               </>
             ),
           }),
-          ...(nonTermsConsents
+          ...(nonTermsConsents?.length
             ? [
                 formSection({
                   label: t('account.other_registration_details'),
