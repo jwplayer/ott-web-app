@@ -18,10 +18,10 @@ const useCheckAccess = () => {
   const location = useLocation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('user');
+  const { clientOffers } = useClientIntegration();
 
   const intervalCheckAccess = useCallback(
     ({ interval = 3000, iterations = 5, offerId }: intervalCheckAccessPayload) => {
-      const { clientOffers } = useClientIntegration();
       if (!offerId && clientOffers?.[0]) {
         offerId = clientOffers[0];
       }
