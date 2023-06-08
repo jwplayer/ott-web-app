@@ -170,7 +170,8 @@ export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants, st
           label: field.label,
           placeholder: field.placeholder,
           required: field.required,
-          options: field.options,
+          // todo: field.option type in SDK is incorrect, remove the type casting after fixing that
+          options: field.options as unknown as Record<string, string>,
           version: '1',
         }),
       );
