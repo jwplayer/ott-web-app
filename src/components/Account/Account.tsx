@@ -72,7 +72,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     const nonTerms: Consent<ConsentFieldVariants>[] = [];
 
     publisherConsents?.forEach((consent) => {
-      if (!Object.hasOwn(consent, 'type') || consent.type === ConsentFieldVariants.CHECKBOX) {
+      if (consent.type === ConsentFieldVariants.CHECKBOX) {
         terms.push(consent);
       } else {
         nonTerms.push(consent);
