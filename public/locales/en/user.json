@@ -1,6 +1,6 @@
 {
   "account": {
-    "about_you": "About you",
+    "about_you": "Profile info",
     "cancel": "Cancel",
     "confirm_password": "Confirm password",
     "edit_account": "Edit account",
@@ -24,10 +24,9 @@
     "firstname": "First name",
     "hide_password": "Hide password",
     "lastname": "Last name",
-    "password": "Password",
     "save": "Save",
-    "security": "Security",
-    "terms_and_tracking": "Terms & tracking",
+    "security": "Password",
+    "terms_and_tracking": "Legal & Marketing",
     "update_consents": "Update consents",
     "view_password": "View password"
   },

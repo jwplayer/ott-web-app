@@ -1,6 +1,6 @@
 {
   "account": {
-    "about_you": "Acerca de ti",
+    "about_you": "Información de perfil",
     "cancel": "Cancelar",
     "confirm_password": "Confirmar contraseña",
     "edit_account": "Editar cuenta",
@@ -24,10 +24,9 @@
     "firstname": "Nombre",
     "hide_password": "Ocultar contraseña",
     "lastname": "Apellido",
-    "password": "Contraseña",
     "save": "Guardar",
-    "security": "Seguridad",
-    "terms_and_tracking": "Términos y seguimiento",
+    "security": "Contraseña",
+    "terms_and_tracking": "Jurídico y marketing",
     "update_consents": "Actualizar consentimientos",
     "view_password": "Ver contraseña"
   },
