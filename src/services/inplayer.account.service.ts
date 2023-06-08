@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory, GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
 import type {
@@ -6,6 +6,7 @@ import type {
   Capture,
   ChangePassword,
   ChangePasswordWithOldPassword,
+  JwConsent,
   Consent,
   Customer,
   CustomerConsent,
@@ -153,21 +154,25 @@ export const updateCustomer: UpdateCustomer = async (customer) => {
   }
 };
 
-export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants> = async (config) => {
+export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants, string | boolean> = async (config) => {
   try {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    const result = data?.collection
-      // todo 1: update RegisterField.type: string to RegisterField.type: ConsentFieldVariants
-      // todo 2: implement DATE_PICKER at some point
+    const result = (data?.collection as JwConsent<ConsentFieldVariants>[])
+      // todo: implement DATE_PICKER at some point
       .filter((field) => (field.type as ConsentFieldVariants) !== ConsentFieldVariants.DATE_PICKER && field.name !== 'email_confirmation')
-      .map((field) =>
-        formatPublisherConsents({
-          ...field,
-          type: field.type as ConsentFieldVariants,
-          // todo 3: field.option type in SDK is incorrect, remove this line entirely after fixing that
-          options: field.options as unknown as GetRegisterFieldOption,
+      .map(
+        (field): Consent<ConsentFieldVariants> => ({
+          type: field.type,
+          provider: 'jwp',
+          defaultValue: field.type === ConsentFieldVariants.CHECKBOX ? field.default_value === 'true' : field.default_value,
+          name: field.name,
+          label: field.label,
+          placeholder: field.placeholder,
+          required: field.required,
+          options: field.options,
+          version: '1',
         }),
       );
 
@@ -433,41 +438,20 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-const formatPublisherConsents = <T = string>({
-  type,
-  label,
-  placeholder,
-  name,
-  required,
-  default_value: defaultValue = '',
-  options,
-}: Pick<RegisterField, 'label' | 'name' | 'required'> & {
-  type: T;
-  default_value?: string;
-  placeholder?: string;
-  options?: GetRegisterFieldOption;
-}): Consent<T> => ({
-  type: type as T,
-  label,
-  placeholder,
-  name,
-  required,
-  defaultValue,
-  broadcasterId: 0,
-  value: '',
-  version: '1',
-  options,
-});
-
-function getTermsConsent() {
+function getTermsConsent(): Consent<ConsentFieldVariants> {
   const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
 
-  return formatPublisherConsents({
+  return {
     type: ConsentFieldVariants.CHECKBOX,
+    provider: 'jwp',
     required: true,
     name: 'terms',
     label: i18next.t('account:registration.terms_consent', { termsUrl }),
-  });
+    defaultValue: false,
+    placeholder: '',
+    options: {},
+    version: '1',
+  };
 }
 
 function parseJson(value: string, fallback = {}) {

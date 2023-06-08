@@ -148,13 +148,13 @@ exports[`<Account> > renders and matches snapshot 1`] = `
           class="_row_531f07"
         >
           <input
-            id="check-box_1235_consents.marketing"
-            name="consents.marketing"
+            id="check-box_1235_consentsValues.marketing"
+            name="consentsValues.marketing"
             type="checkbox"
             value=""
           />
           <label
-            for="check-box_1235_consents.marketing"
+            for="check-box_1235_consentsValues.marketing"
           >
             
             Receive Marketing Emails

@@ -26,11 +26,11 @@ type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onConsentChange: (name: string, value: string) => void;
+  onConsentChange: (name: string, value: string | boolean) => void;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
   loading: boolean;
-  consentValues: Record<string, string>;
+  consentValues: Record<string, string | boolean>;
   consentErrors: string[];
   submitting: boolean;
   canSubmit: boolean;
@@ -72,7 +72,7 @@ const RegistrationForm: React.FC<Props> = ({
     if (!currentTarget) return;
 
     const { name, type } = currentTarget;
-    const value = type === 'checkbox' ? `${(currentTarget as HTMLInputElement).checked}` : currentTarget.value;
+    const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
 
     onConsentChange(name, value);
   };

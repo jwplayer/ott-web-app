@@ -15,13 +15,13 @@ const Registration = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
-  const [consentValues, setConsentValues] = useState<Record<string, string>>({});
+  const [consentValues, setConsentValues] = useState<Record<string, string | boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
   const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
-  const handleChangeConsent = (name: string, value: string) => {
+  const handleChangeConsent = (name: string, value: string | boolean) => {
     setConsentValues((current) => ({
       ...current,
       [name]: value,

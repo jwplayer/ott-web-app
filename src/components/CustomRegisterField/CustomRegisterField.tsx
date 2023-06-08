@@ -11,7 +11,7 @@ import { countries, usStates } from '#static/json';
 type Props = {
   type: ConsentFieldVariants;
   name: string;
-  value: string;
+  value: string | boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
 } & Partial<{
   label: ReactNode;
@@ -48,16 +48,16 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
   const commonProps = { ...props, name, onChange };
 
   switch (type) {
+    case ConsentFieldVariants.CHECKBOX:
+      return <Checkbox {...commonProps} checked={value === true} />;
     case ConsentFieldVariants.INPUT:
-      return <TextField {...commonProps} value={value} />;
+      return <TextField {...commonProps} value={value as string} />;
     case ConsentFieldVariants.RADIO:
-      return <Radio {...commonProps} values={optionsList} value={value} header={props.label} />;
+      return <Radio {...commonProps} values={optionsList} value={value as string} header={props.label} />;
     case ConsentFieldVariants.GENERAL_SELECT:
     case ConsentFieldVariants.COUNTRY_SELECT:
     case ConsentFieldVariants.US_STATE_SELECT:
-      return <Dropdown {...commonProps} options={optionsList} value={value} defaultLabel={props.placeholder} fullWidth />;
-    default:
-      return <Checkbox {...commonProps} checked={value === 'true'} />;
+      return <Dropdown {...commonProps} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
   }
 
   return null;

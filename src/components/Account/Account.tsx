@@ -68,8 +68,8 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   );
 
   const [termsConsents, nonTermsConsents] = useMemo(() => {
-    const terms: Consent[] = [];
-    const nonTerms: Consent[] = [];
+    const terms: Consent<ConsentFieldVariants>[] = [];
+    const nonTerms: Consent<ConsentFieldVariants>[] = [];
 
     publisherConsents?.forEach((consent) => {
       if (!Object.hasOwn(consent, 'type') || consent.type === ConsentFieldVariants.CHECKBOX) {
@@ -268,15 +268,14 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
+            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, { ...values.consentsValues, terms: true })),
             content: (section) => (
               <>
                 {termsConsents?.map((consent, index) => (
                   <Checkbox
                     key={index}
-                    name={`consents.${consent.name}`}
-                    value={consent.value || ''}
-                    checked={`${section.values.consents?.[consent.name]}` === 'true'}
+                    name={`consentsValues.${consent.name}`}
+                    checked={section.values.consentsValues?.[consent.name] === true}
                     onChange={section.onChange}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}
@@ -290,13 +289,13 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                 formSection({
                   label: t('account.other_registration_details'),
                   saveButton: t('account.update_consents'),
-                  onSubmit: (values) => updateConsents(formatConsentsFromValues(nonTermsConsents, values.consentsValues)),
+                  onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
                   content: (section) => (
                     <div className={styles.customFields}>
                       {nonTermsConsents.map((consent) => (
                         <CustomRegisterField
                           key={consent.name}
-                          type={consent.type as ConsentFieldVariants}
+                          type={consent.type}
                           name={`consentsValues.${consent.name}`}
                           options={consent.options}
                           label={formatConsentLabel(consent.label)}

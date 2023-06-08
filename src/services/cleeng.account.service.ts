@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
 import { post, put, patch, get } from './cleeng.service';
+import { ConsentFieldVariants } from './inplayer.account.service';
 
 import type { Config } from '#types/Config';
 import { getOverrideIP } from '#src/utils/common';
@@ -29,6 +30,8 @@ import type {
   UpdateCustomerPayload,
   ChangePasswordWithOldPassword,
   UpdatePersonalShelves,
+  CleengConsent,
+  Consent,
 } from '#types/account';
 import cleengAuthService from '#src/services/cleeng.auth.service';
 
@@ -131,15 +134,27 @@ export async function getUser({ config }: { config: Config }) {
   };
 }
 
-export const getPublisherConsents: GetPublisherConsents = async (config) => {
+export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants, boolean> = async (config) => {
   const { cleeng } = config.integrations;
   const response = await get(!!cleeng?.useSandbox, `/publishers/${cleeng?.id}/consents`);
 
   handleErrors(response.errors);
 
-  return {
-    consents: response?.responseData?.consents || [],
-  };
+  const consents = ((response?.responseData?.consents || []) as CleengConsent[]).map(
+    (cleengConsent): Consent<ConsentFieldVariants> => ({
+      type: ConsentFieldVariants.CHECKBOX,
+      provider: 'cleeng',
+      defaultValue: cleengConsent.enabledByDefault,
+      name: cleengConsent.name,
+      label: cleengConsent.label,
+      placeholder: '',
+      required: cleengConsent.required,
+      options: {},
+      version: cleengConsent.version,
+    }),
+  );
+
+  return { consents };
 };
 
 export const getCustomerConsents: GetCustomerConsents = async (payload) => {

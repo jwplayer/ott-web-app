@@ -57,7 +57,7 @@ export function FormSection<TData extends GenericFormValues>({
       if (!currentTarget) return;
 
       const { name, type } = currentTarget;
-      const value = type === 'checkbox' ? `${(currentTarget as HTMLInputElement).checked}` : currentTarget.value;
+      const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
 
       if (!isEditing) {
         onCancel();

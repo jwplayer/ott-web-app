@@ -65,25 +65,26 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
   ),
 });
 
-const formatConsentValues = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+const formatConsentValues = <T = string>(publisherConsents: Consent<T>[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
 
-  const values: Record<string, string> = {};
+  const values: Record<string, string | boolean> = {};
 
   publisherConsents?.forEach((publisherConsent) => {
     const consent = customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name);
 
     if (consent) {
-      values[publisherConsent.name] = consent.value ?? '';
+      const value = publisherConsent.provider === 'cleeng' ? consent.state === 'accepted' : consent.value ?? '';
+      values[publisherConsent.name] = value;
     }
   });
 
   return values;
 };
 
-const formatConsents = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+const formatConsents = <T = string>(publisherConsents: Consent<T>[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
@@ -98,7 +99,7 @@ const formatConsents = (publisherConsents: Consent[] | null = [], customerConsen
 };
 
 const extractConsentValues = (consents?: Consent[]) => {
-  const values: Record<string, string> = {};
+  const values: Record<string, string | boolean> = {};
 
   if (!consents) {
     return values;
@@ -111,7 +112,7 @@ const extractConsentValues = (consents?: Consent[]) => {
   return values;
 };
 
-const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: GenericFormValues) => {
+const formatConsentsFromValues = <T = string>(publisherConsents: Consent<T>[] | null, values?: GenericFormValues) => {
   const consents: CustomerConsent[] = [];
 
   if (!publisherConsents || !values) return consents;
@@ -121,14 +122,14 @@ const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: 
       name: consent.name,
       version: consent.version,
       state: values[consent.name] ? 'accepted' : 'declined',
-      value: `${values[consent.name] ?? ''}`,
+      value: values[consent.name] ?? '',
     });
   });
 
   return consents;
 };
 
-const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, string>) => {
+const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, string | boolean>) => {
   const customerConsents: CustomerConsent[] = [];
   const consentsErrors: string[] = [];
 
@@ -143,7 +144,7 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
       name: consent.name,
       version: consent.version,
       state: consents[consent.name] ? 'accepted' : 'declined',
-      value: `${consents[consent.name] ?? ''}`,
+      value: consents[consent.name] ?? '',
     });
   });
 
