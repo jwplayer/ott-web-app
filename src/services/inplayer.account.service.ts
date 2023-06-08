@@ -6,7 +6,6 @@ import type {
   Capture,
   ChangePassword,
   ChangePasswordWithOldPassword,
-  JwConsent,
   Consent,
   Customer,
   CustomerConsent,
@@ -159,12 +158,12 @@ export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants, st
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    const result = (data?.collection as JwConsent<ConsentFieldVariants>[])
+    const result = data?.collection
       // todo: implement DATE_PICKER at some point
       .filter((field) => (field.type as ConsentFieldVariants) !== ConsentFieldVariants.DATE_PICKER && field.name !== 'email_confirmation')
       .map(
         (field): Consent<ConsentFieldVariants> => ({
-          type: field.type,
+          type: field.type as ConsentFieldVariants,
           provider: 'jwp',
           defaultValue: field.type === ConsentFieldVariants.CHECKBOX ? field.default_value === 'true' : field.default_value,
           name: field.name,
