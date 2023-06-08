@@ -165,7 +165,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
         // Render the section content, but also add a warning text if there's a form level error
         return (
           <>
-            {props.content({ ...args, errors: formErrors })}
+            {props.content?.({ ...args, errors: formErrors })}
             <HelperText error={!!formErrors?.form}>{formErrors?.form}</HelperText>
           </>
         );
@@ -182,6 +182,35 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     <>
       <Form initialValues={initialValues}>
         {[
+          formSection({
+            label: t('account.about_you'),
+            editButton: t('account.edit_information'),
+            onSubmit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
+            content: (section) => (
+              <>
+                <TextField
+                  name="firstName"
+                  label={t('account.firstname')}
+                  value={section.values.firstName || ''}
+                  onChange={section.onChange}
+                  error={!!section.errors?.firstName}
+                  helperText={section.errors?.firstName}
+                  disabled={section.isBusy}
+                  editing={section.isEditing}
+                />
+                <TextField
+                  name="lastName"
+                  label={t('account.lastname')}
+                  value={section.values.lastName || ''}
+                  onChange={section.onChange}
+                  error={!!section.errors?.lastName}
+                  helperText={section.errors?.lastName}
+                  disabled={section.isBusy}
+                  editing={section.isEditing}
+                />
+              </>
+            ),
+          }),
           formSection({
             label: t('account.email'),
             onSubmit: (values) =>
@@ -229,41 +258,6 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.security'),
             editButton: <Button label={t('account.edit_password')} type="button" onClick={() => (customer ? editPasswordClickHandler() : null)} />,
-            content: () => (
-              <>
-                <strong>{t('account.password')}</strong>
-                <p>****************</p>
-              </>
-            ),
-          }),
-          formSection({
-            label: t('account.about_you'),
-            editButton: t('account.edit_information'),
-            onSubmit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
-            content: (section) => (
-              <>
-                <TextField
-                  name="firstName"
-                  label={t('account.firstname')}
-                  value={section.values.firstName || ''}
-                  onChange={section.onChange}
-                  error={!!section.errors?.firstName}
-                  helperText={section.errors?.firstName}
-                  disabled={section.isBusy}
-                  editing={section.isEditing}
-                />
-                <TextField
-                  name="lastName"
-                  label={t('account.lastname')}
-                  value={section.values.lastName || ''}
-                  onChange={section.onChange}
-                  error={!!section.errors?.lastName}
-                  helperText={section.errors?.lastName}
-                  disabled={section.isBusy}
-                  editing={section.isEditing}
-                />
-              </>
-            ),
           }),
           formSection({
             label: t('account.terms_and_tracking'),

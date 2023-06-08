@@ -9,6 +9,59 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       class="header-class"
     >
       <h3>
+        account.about_you
+      </h3>
+    </div>
+    <div
+      class="_flexBox_1c1c63"
+    >
+      <div
+        class="_textField_e16c1b"
+      >
+        <label
+          class="_label_e16c1b"
+          for="text-field_1235_firstName"
+        >
+          account.firstname
+        </label>
+        <p>
+          John
+        </p>
+      </div>
+      <div
+        class="_textField_e16c1b"
+      >
+        <label
+          class="_label_e16c1b"
+          for="text-field_1235_lastName"
+        >
+          account.lastname
+        </label>
+        <p>
+          Doe
+        </p>
+      </div>
+    </div>
+    <div
+      class="_controls_1c1c63"
+    >
+      <button
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        type="button"
+      >
+        <span>
+          account.edit_information
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
         account.email
       </h3>
     </div>
@@ -54,14 +107,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
     </div>
     <div
       class="_flexBox_1c1c63"
-    >
-      <strong>
-        account.password
-      </strong>
-      <p>
-        ****************
-      </p>
-    </div>
+    />
     <div
       class="_controls_1c1c63"
     >
@@ -71,59 +117,6 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       >
         <span>
           account.edit_password
-        </span>
-      </button>
-    </div>
-  </div>
-  <div
-    class="panel-class"
-  >
-    <div
-      class="header-class"
-    >
-      <h3>
-        account.about_you
-      </h3>
-    </div>
-    <div
-      class="_flexBox_1c1c63"
-    >
-      <div
-        class="_textField_e16c1b"
-      >
-        <label
-          class="_label_e16c1b"
-          for="text-field_1235_firstName"
-        >
-          account.firstname
-        </label>
-        <p>
-          John
-        </p>
-      </div>
-      <div
-        class="_textField_e16c1b"
-      >
-        <label
-          class="_label_e16c1b"
-          for="text-field_1235_lastName"
-        >
-          account.lastname
-        </label>
-        <p>
-          Doe
-        </p>
-      </div>
-    </div>
-    <div
-      class="_controls_1c1c63"
-    >
-      <button
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
-        type="button"
-      >
-        <span>
-          account.edit_information
         </span>
       </button>
     </div>
