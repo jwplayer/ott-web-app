@@ -34,6 +34,7 @@
     "delete_account": {
       "title": "Delete account",
       "body": "Permanently delete your account and all of your content.",
+      "error": "An error occurred while deleting your account. Please try again.",
       "modal": {
         "title": "Enter password to continue",
         "placeholder": "Enter your password",

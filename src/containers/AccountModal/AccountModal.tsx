@@ -20,7 +20,7 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Welcome from '#components/Welcome/Welcome';
 import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
 import Dialog from '#components/Dialog/Dialog';
-import { addQueryParam, removeMultipleQueryParams } from '#src/utils/location';
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import DeleteAccountModal from '#src/components/DeleteAccountModal/DeleteAccountModal';
 import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
 import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
@@ -60,7 +60,7 @@ const AccountModal = () => {
   }, [viewParam, loading, isPublicView, user, toLogin]);
 
   const closeHandler = useEventCallback(() => {
-    navigate(removeMultipleQueryParams(location, ['u', 'confirmation']));
+    navigate(removeQueryParam(location, 'u'));
   });
 
   const renderForm = () => {

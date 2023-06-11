@@ -11,8 +11,9 @@ import styles from './DeleteAccountModal.module.scss';
 
 import type { DeleteAccountFormData } from '#types/account';
 import useForm from '#src/hooks/useForm';
-import { addQueryParam, removeMultipleQueryParams } from '#src/utils/location';
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { deleteAccountData, logout } from '#src/stores/AccountController';
+import Alert from '#components/Alert/Alert';
 
 const DeleteAccountModal = () => {
   const { t } = useTranslation('user');
@@ -26,7 +27,6 @@ const DeleteAccountModal = () => {
     },
     onError: () => {
       setEnteredPassword('');
-      handleCancel();
     },
   });
 
@@ -47,8 +47,12 @@ const DeleteAccountModal = () => {
   );
 
   const handleCancel = () => {
-    navigate(removeMultipleQueryParams(location, ['confirmation', 'u']));
+    navigate(removeQueryParam(location, 'u'));
   };
+
+  if (deleteAccount.isError) {
+    return <Alert open isSuccess={false} onClose={handleCancel} message={t('account.delete_account.error')} />;
+  }
 
   return enteredPassword ? (
     <div className={styles.formContainer}>
