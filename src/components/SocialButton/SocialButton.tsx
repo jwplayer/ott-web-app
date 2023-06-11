@@ -24,6 +24,9 @@ const SocialButton = ({ variant, href }: SocialButtonProps) => {
   }, [variant]);
 
   return (
+    // t('login.facebook');
+    // t('login.google');
+    // t('login.twitter');
     <a href={href} className={styles.socialButtonContainer} aria-label={t(`login.${variant}`)}>
       <div className={styles.socialButtonIconContainer}>
         <img className={styles.socialButtonIcon} src={icon ?? ''} alt={`${variant} icon`} />
