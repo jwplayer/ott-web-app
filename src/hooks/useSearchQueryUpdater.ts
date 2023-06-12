@@ -10,12 +10,15 @@ const useSearchQueryUpdater = () => {
   const updateSearchPath = useDebounce((query: string) => {
     navigate(`/q/${encodeURIComponent(query)}`);
   }, 350);
-  const updateSearchQuery = useCallback((query: string) => {
-    useUIStore.setState({
-      searchQuery: query,
-    });
-    updateSearchPath(query);
-  }, []);
+  const updateSearchQuery = useCallback(
+    (query: string) => {
+      useUIStore.setState({
+        searchQuery: query,
+      });
+      updateSearchPath(query);
+    },
+    [updateSearchPath],
+  );
   const resetSearchQuery = useCallback(() => {
     const returnPage = useUIStore.getState().preSearchPage;
 

@@ -1,15 +1,19 @@
 import { useEffect } from 'react';
 
+import useEventCallback from '#src/hooks/useEventCallback';
+
 export const useWatchHistoryListener = (saveItem: () => void): void => {
+  const saveItemEvent = useEventCallback(saveItem);
+
   useEffect(() => {
-    const visibilityListener = () => document.visibilityState === 'hidden' && saveItem();
-    window.addEventListener('beforeunload', saveItem);
+    const visibilityListener = () => document.visibilityState === 'hidden' && saveItemEvent();
+    window.addEventListener('beforeunload', saveItemEvent);
     window.addEventListener('visibilitychange', visibilityListener);
 
     return () => {
-      saveItem();
-      window.removeEventListener('beforeunload', saveItem);
+      saveItemEvent();
+      window.removeEventListener('beforeunload', saveItemEvent);
       window.removeEventListener('visibilitychange', visibilityListener);
     };
-  }, []);
+  }, [saveItemEvent]);
 };

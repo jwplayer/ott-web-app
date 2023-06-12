@@ -51,7 +51,7 @@ const useOffers = () => {
       offers,
       offersDict,
     };
-  }, [requestedMediaOffers, allOffers, offerType]);
+  }, [allOffers, isLoading, hasPremierOffer, offerType]);
 };
 
 export default useOffers;

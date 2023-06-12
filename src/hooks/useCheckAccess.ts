@@ -12,6 +12,7 @@ type intervalCheckAccessPayload = {
   iterations?: number;
   offerId?: string;
 };
+
 const useCheckAccess = () => {
   const intervalRef = useRef<number>();
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const useCheckAccess = () => {
       if (!offerId && clientOffers?.[0]) {
         offerId = clientOffers[0];
       }
+
       intervalRef.current = window.setInterval(async () => {
         const hasAccess = await checkEntitlements(offerId);
 
@@ -37,7 +39,7 @@ const useCheckAccess = () => {
         }
       }, interval);
     },
-    [intervalRef.current, errorMessage],
+    [clientOffers, navigate, location, t],
   );
 
   useEffect(() => {
