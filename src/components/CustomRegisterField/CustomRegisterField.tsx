@@ -25,7 +25,7 @@ type Props = {
 
 export type CustomRegisterFieldCommonProps = Props;
 
-export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChange, ...props }) => {
+export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) => {
   const optionsList = useMemo(() => {
     const optionsObject = (() => {
       switch (type) {
@@ -45,19 +45,17 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
     return Object.entries(optionsObject).map(([value, label]) => ({ value, label }));
   }, [type, props.options]);
 
-  const commonProps = { ...props, name, onChange };
-
   switch (type) {
     case ConsentFieldVariants.CHECKBOX:
-      return <Checkbox {...commonProps} checked={value === true} />;
+      return <Checkbox {...props} checked={value === true} />;
     case ConsentFieldVariants.INPUT:
-      return <TextField {...commonProps} value={value as string} />;
+      return <TextField {...props} value={value as string} />;
     case ConsentFieldVariants.RADIO:
-      return <Radio {...commonProps} values={optionsList} value={value as string} header={props.label} />;
+      return <Radio {...props} values={optionsList} value={value as string} header={props.label} />;
     case ConsentFieldVariants.GENERAL_SELECT:
     case ConsentFieldVariants.COUNTRY_SELECT:
     case ConsentFieldVariants.US_STATE_SELECT:
-      return <Dropdown {...commonProps} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
+      return <Dropdown {...props} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
   }
 
   return null;
