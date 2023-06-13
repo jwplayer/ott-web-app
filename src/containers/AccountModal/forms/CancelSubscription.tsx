@@ -6,12 +6,12 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import CancelSubscriptionForm from '#components/CancelSubscriptionForm/CancelSubscriptionForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import SubscriptionCancelled from '#components/SubscriptionCancelled/SubscriptionCancelled';
-import { formatDate } from '#src/utils/formatting';
+import { formatLocalizedDate } from '#src/utils/formatting';
 import { removeQueryParam } from '#src/utils/location';
 import { updateSubscription } from '#src/stores/AccountController';
 
 const CancelSubscription = () => {
-  const { t } = useTranslation('account');
+  const { t, i18n } = useTranslation('account');
   const navigate = useNavigate();
   const location = useLocation();
   const subscription = useAccountStore((s) => s.subscription);
@@ -42,7 +42,7 @@ const CancelSubscription = () => {
   return (
     <React.Fragment>
       {cancelled ? (
-        <SubscriptionCancelled expiresDate={formatDate(subscription.expiresAt)} onClose={closeHandler} />
+        <SubscriptionCancelled expiresDate={formatLocalizedDate(new Date(subscription.expiresAt * 1000), i18n.language)} onClose={closeHandler} />
       ) : (
         <CancelSubscriptionForm onConfirm={cancelSubscriptionConfirmHandler} onCancel={closeHandler} submitting={submitting} error={error} />
       )}

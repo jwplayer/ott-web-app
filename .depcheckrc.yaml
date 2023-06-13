@@ -21,6 +21,8 @@ ignores: [
     'allure-commandline',
     '@codeceptjs/allure-legacy',
     'faker',
+    # For extracting i18next translation keys
+    'i18next-parser',
     # To run linting checks
     'npm-run-all',
     # SW code is injected at build time

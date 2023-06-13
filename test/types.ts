@@ -13,6 +13,7 @@ export type PaymentFields = {
   cardNumber: string;
   expiryDate: string;
   securityCode: string;
+  creditCardholder: string;
 };
 
 export type ProviderProps = {
@@ -21,7 +22,6 @@ export type ProviderProps = {
   yearlyOffer: PaymentOffer;
   paymentFields: PaymentFields;
   creditCard: string;
-  creditCardNamePresent: boolean;
   applicableTax: number;
   canRenewSubscription: boolean;
   shouldMakePayment?: boolean;

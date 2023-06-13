@@ -25,10 +25,17 @@ describe('<Header />', () => {
         onCloseSearchButtonClick={vi.fn()}
         onLoginButtonClick={vi.fn()}
         userMenuOpen={false}
-        toggleUserMenu={vi.fn()}
+        openUserMenu={vi.fn()}
+        closeUserMenu={vi.fn()}
+        openLanguageMenu={vi.fn()}
+        closeLanguageMenu={vi.fn()}
         isLoggedIn={false}
         canLogin={true}
         showPaymentsMenuItem={true}
+        supportedLanguages={[]}
+        currentLanguage={undefined}
+        languageMenuOpen={false}
+        onLanguageClick={vi.fn()}
       >
         {playlistMenuItems}
       </Header>,

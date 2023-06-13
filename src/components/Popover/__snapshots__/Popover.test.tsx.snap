@@ -3,7 +3,7 @@
 exports[`<Popover> > renders and matches snapshot 1`] = `
 <div>
   <div
-    style="transition: transform 0.25s ease, opacity 0.25s ease; transform: translate(15px, 0); opacity: 0; z-index: 15;"
+    style="transition: transform 0.25s ease, opacity 0.25s ease; transform: translate(15px, 0); opacity: 0; z-index: 15; position: relative;"
   >
     <div
       class="_popover_9be12f"
