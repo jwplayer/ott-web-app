@@ -67,6 +67,7 @@
     "field_required": "Este campo es obligatorio",
     "monthly": "Mensual",
     "monthly_subscription": "Suscripción mensual",
+    "no_pricing_available": "No hay opciones de precios disponibles en este momento.",
     "offer_not_found": "Oferta no encontrada, por favor intenta volver a cargar la página",
     "one_time_only": "Este video",
     "subscription": "Suscripción",
