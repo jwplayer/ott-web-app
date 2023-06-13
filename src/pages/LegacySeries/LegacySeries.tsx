@@ -60,7 +60,7 @@ const LegacySeries = () => {
   const inlineLayout = Boolean(custom?.inlinePlayer);
 
   // Filters
-  const filters = useMemo(() => getFiltersFromSeries(seriesPlaylist, t), [seriesPlaylist, t]);
+  const filters = useMemo(() => getFiltersFromSeries(seriesPlaylist), [seriesPlaylist]);
   const [seasonFilter, setSeasonFilter] = useState<string | undefined>(undefined);
 
   const firstEpisode = useMemo(() => seriesPlaylist?.playlist?.[0], [seriesPlaylist]);
@@ -96,7 +96,7 @@ const LegacySeries = () => {
     }
 
     if (seasonFilter === undefined) {
-      setSeasonFilter(parseInt(episodeMetadata?.seasonNumber, 10) ? episodeMetadata?.seasonNumber : filters?.[0] || '');
+      setSeasonFilter(parseInt(episodeMetadata?.seasonNumber, 10) ? episodeMetadata?.seasonNumber : filters?.[0]?.value || '');
     }
   }, [episodeMetadata, seasonFilter, isSeriesPlaylistLoading, isEpisodeLoading, filters]);
 

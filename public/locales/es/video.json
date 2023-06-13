@@ -15,7 +15,7 @@
   "live": "EN VIVO",
   "remove_from_favorites": "Eliminar de favoritos",
   "season": "temporada",
-  "season_prefix": "Temporada ",
+  "season_number_filter_template": "Temporada {{seasonNumber}}",
   "series_error": "Se produjo un error al solicitar la serie",
   "share": "Compartir",
   "share_video": "Compartir este video",
