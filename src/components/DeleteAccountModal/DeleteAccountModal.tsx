@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { type SchemaOf, object, string } from 'yup';
 import { useNavigate, useLocation } from 'react-router';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import PasswordField from '../PasswordField/PasswordField';
@@ -37,7 +37,13 @@ const DeleteAccountModal = () => {
     password: string().required(t('login.field_required')),
   });
   const initialValues: DeleteAccountFormData = { password: '' };
-  const { handleSubmit, handleChange, values, errors } = useForm(
+  const {
+    handleSubmit,
+    handleChange,
+    values,
+    errors,
+    reset: resetForm,
+  } = useForm(
     initialValues,
     () => {
       setEnteredPassword(values.password);
@@ -46,12 +52,31 @@ const DeleteAccountModal = () => {
     validationSchema,
   );
 
-  const handleCancel = () => {
-    navigate(removeQueryParam(location, 'u'));
-  };
+  useEffect(() => {
+    if (!location.search.includes('delete-account-confirmation') && enteredPassword) {
+      // handle back button
+      setEnteredPassword('');
+      deleteAccount.reset();
+      resetForm();
+    }
+    if (location.search.includes('delete-account-confirmation') && !enteredPassword) {
+      navigate(addQueryParam(location, 'u', 'delete-account'), { replace: true });
+    }
+  }, [location, location.search, navigate, enteredPassword, deleteAccount, resetForm]);
+
+  const handleError = useCallback(() => {
+    deleteAccount.reset();
+    resetForm();
+    setEnteredPassword('');
+    navigate(addQueryParam(location, 'u', 'delete-account'), { replace: true });
+  }, [location, navigate, setEnteredPassword, deleteAccount, resetForm]);
+
+  const handleCancel = useCallback(() => {
+    navigate(removeQueryParam(location, 'u'), { replace: true });
+  }, [location, navigate]);
 
   if (deleteAccount.isError) {
-    return <Alert open isSuccess={false} onClose={handleCancel} message={t('account.delete_account.error')} />;
+    return <Alert open isSuccess={false} onClose={handleError} message={t('account.delete_account.error')} />;
   }
 
   return enteredPassword ? (
@@ -94,7 +119,7 @@ const DeleteAccountModal = () => {
       />
       <div className={styles.passwordButtonsContainer}>
         <Button type="submit" className={styles.button} color="primary" fullWidth label={t('account.continue')} />
-        <Button onClick={handleCancel} className={styles.button} variant="text" fullWidth label={t('account.cancel')} />
+        <Button type="button" onClick={handleCancel} className={styles.button} variant="text" fullWidth label={t('account.cancel')} />
       </div>
     </form>
   );

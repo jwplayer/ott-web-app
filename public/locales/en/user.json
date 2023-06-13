@@ -39,7 +39,7 @@
     "firstname": "First name",
     "hide_password": "Hide password",
     "lastname": "Last name",
-    "password": "",
+    "password": "Password",
     "save": "Save",
     "security": "Password",
     "terms_and_tracking": "Legal & Marketing",
