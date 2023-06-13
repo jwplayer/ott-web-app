@@ -2,9 +2,9 @@
 @use 'src/styles/theme';
 
 .socialButtonContainer {
-  position: relative; /* Add relative positioning to the container */
+  position: relative;
   display: flex;
-  justify-content: center; /* Center the contents horizontally and vertically */
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: fit-content;
