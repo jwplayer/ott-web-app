@@ -19,17 +19,18 @@ import { useAccountStore } from '#src/stores/AccountStore';
 
 type Props = {
   onCancel: () => void;
+  setUpdatingCardDetails: (e: boolean) => void;
 };
 
-const EditCardPaymentForm: React.FC<Props> = ({ onCancel }) => {
+const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails }) => {
   const { t } = useTranslation('account');
   const updateCard = useMutation(updateCardDetails);
   const { activePayment } = useAccountStore(({ activePayment }) => ({ activePayment }), shallow);
   const paymentData = useForm(
     { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
     async () => {
-      onCancel();
-      updateCard.mutate({
+      setUpdatingCardDetails(true);
+      await updateCard.mutateAsync({
         cardName: paymentData.values.cardholderName,
         cardNumber: paymentData.values.cardNumber.replace(/\s+/g, ''),
         cvc: parseInt(paymentData.values.cardCVC),
@@ -37,6 +38,7 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel }) => {
         expYear: parseInt(paymentData.values.cardExpYear),
         currency: activePayment?.currency || '',
       });
+      onCancel();
     },
     object().shape({
       cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {

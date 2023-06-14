@@ -356,12 +356,20 @@ export const updateCardDetails = async ({
   expYear: number;
   currency: string;
 }) => {
-  return await useAccount(async () => {
+  return await useAccount(async ({ customerId }) => {
     return await useService(async ({ subscriptionService, sandbox = true }) => {
-      return await subscriptionService?.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
+      const response = await subscriptionService?.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
+      const activePayment = (await subscriptionService?.getActivePayment({ sandbox, customerId })) || null;
+      useAccountStore.setState({ loading: true });
+      useAccountStore.setState({
+        loading: false,
+        activePayment,
+      });
+      return response;
     });
   });
 };
+
 export async function checkEntitlements(offerId?: string): Promise<unknown> {
   return await useService(async ({ checkoutService, sandbox = true }) => {
     if (!checkoutService) throw new Error('checkout service is not configured');
