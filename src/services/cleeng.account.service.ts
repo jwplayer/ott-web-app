@@ -22,7 +22,6 @@ import type {
   GetCaptureStatusResponse,
   Capture,
   GetLocales,
-  RefreshToken,
   LoginPayload,
   RegisterPayload,
   UpdateCaptureAnswersPayload,
@@ -31,8 +30,27 @@ import type {
   ChangePasswordWithOldPassword,
   UpdatePersonalShelves,
 } from '#types/account';
+import cleengAuthService from '#src/services/cleeng.auth.service';
 
-export const setEnvironment = () => true;
+const getCustomerIdFromAuthData = (auth: AuthData) => {
+  const decodedToken: JwtDetails = jwtDecode(auth.jwt);
+  return decodedToken.customerId;
+};
+
+export const initialize = async (config: Config, logoutCallback: () => Promise<void>) => {
+  await cleengAuthService.initialize(!!config.integrations.cleeng?.useSandbox, logoutCallback);
+};
+
+export const getAuthData = async () => {
+  if (cleengAuthService.tokens) {
+    return {
+      jwt: cleengAuthService.tokens.accessToken,
+      refreshToken: cleengAuthService.tokens.refreshToken,
+    } as AuthData;
+  }
+
+  return null;
+};
 
 export const login: Login = async ({ config, email, password }) => {
   const payload: LoginPayload = {
@@ -45,11 +63,13 @@ export const login: Login = async ({ config, email, password }) => {
   const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/auths', JSON.stringify(payload));
   handleErrors(errors);
 
-  const { user, customerConsents } = await getUser({ config, auth });
+  await cleengAuthService.setTokens({ accessToken: auth.jwt, refreshToken: auth.refreshToken });
+
+  const { user, customerConsents } = await getUser({ config });
 
   return {
-    auth,
     user,
+    auth,
     customerConsents,
   };
 };
@@ -72,26 +92,34 @@ export const register: Register = async ({ config, email, password }) => {
   const { responseData: auth, errors }: ServiceResponse<AuthData> = await post(!!config.integrations.cleeng?.useSandbox, '/customers', JSON.stringify(payload));
   handleErrors(errors);
 
-  const { user, customerConsents } = await getUser({ config, auth });
+  await cleengAuthService.setTokens({ accessToken: auth.jwt, refreshToken: auth.refreshToken });
+
+  const { user, customerConsents } = await getUser({ config });
 
   return {
-    auth,
     user,
+    auth,
     customerConsents,
   };
 };
 
-export const logout = async () => true;
+export const logout = async () => {
+  // clear the persisted access tokens
+  await cleengAuthService.clearTokens();
+};
 
-export async function getUser({ config, auth }: { config: Config; auth: AuthData }) {
-  const decodedToken: JwtDetails = jwtDecode(auth.jwt);
-  const customerId = decodedToken.customerId;
-  const { responseData: user, errors } = await getCustomer({ customerId }, !!config.integrations.cleeng?.useSandbox, auth.jwt);
+export async function getUser({ config }: { config: Config }) {
+  const authData = await getAuthData();
+
+  if (!authData) throw new Error('Not logged in');
+
+  const customerId = getCustomerIdFromAuthData(authData);
+  const { responseData: user, errors } = await getCustomer({ customerId }, !!config.integrations.cleeng?.useSandbox);
+
   handleErrors(errors);
 
   const consentsPayload = {
     config,
-    jwt: auth.jwt,
     customer: user,
   };
 
@@ -102,14 +130,6 @@ export async function getUser({ config, auth }: { config: Config; auth: AuthData
     customerConsents: consents,
   };
 }
-
-export const getFreshJwtToken = async ({ config, auth }: { config: Config; auth: AuthData }) => {
-  const response = await refreshToken({ refreshToken: auth.refreshToken }, !!config.integrations.cleeng?.useSandbox);
-
-  handleErrors(response.errors);
-
-  return response?.responseData;
-};
 
 export const getPublisherConsents: GetPublisherConsents = async (config) => {
   const { cleeng } = config.integrations;
@@ -123,10 +143,10 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
 };
 
 export const getCustomerConsents: GetCustomerConsents = async (payload) => {
-  const { config, customer, jwt } = payload;
+  const { config, customer } = payload;
   const { cleeng } = config.integrations;
 
-  const response: ServiceResponse<GetCustomerConsentsResponse> = await get(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, jwt);
+  const response: ServiceResponse<GetCustomerConsentsResponse> = await get(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, { authenticate: true });
   handleErrors(response.errors);
 
   return {
@@ -135,7 +155,7 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 };
 
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
-  const { config, customer, jwt } = payload;
+  const { config, customer } = payload;
   const { cleeng } = config.integrations;
 
   const params: UpdateCustomerConsentsPayload = {
@@ -143,30 +163,32 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload) =>
     consents: payload.consents,
   };
 
-  const response: ServiceResponse<never> = await put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(params), jwt);
+  const response: ServiceResponse<never> = await put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(params), {
+    authenticate: true,
+  });
   handleErrors(response.errors);
 
   return await getCustomerConsents(payload);
 };
 
-export const getCaptureStatus: GetCaptureStatus = async ({ customer }, sandbox, jwt) => {
-  const response: ServiceResponse<GetCaptureStatusResponse> = await get(sandbox, `/customers/${customer?.id}/capture/status`, jwt);
+export const getCaptureStatus: GetCaptureStatus = async ({ customer }, sandbox) => {
+  const response: ServiceResponse<GetCaptureStatusResponse> = await get(sandbox, `/customers/${customer?.id}/capture/status`, { authenticate: true });
 
   handleErrors(response.errors);
 
   return response;
 };
 
-export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...payload }, sandbox, jwt) => {
+export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...payload }, sandbox) => {
   const params: UpdateCaptureAnswersPayload = {
     customerId: customer.id,
     ...payload,
   };
 
-  const response: ServiceResponse<Capture> = await put(sandbox, `/customers/${customer.id}/capture`, JSON.stringify(params), jwt);
+  const response: ServiceResponse<Capture> = await put(sandbox, `/customers/${customer.id}/capture`, JSON.stringify(params), { authenticate: true });
   handleErrors(response.errors);
 
-  const { responseData, errors } = await getCustomer({ customerId: customer.id }, sandbox, jwt);
+  const { responseData, errors } = await getCustomer({ customerId: customer.id }, sandbox);
   handleErrors(errors);
 
   return {
@@ -190,21 +212,17 @@ export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = asyn
   };
 };
 
-export const updateCustomer: UpdateCustomer = async (payload, sandbox, jwt) => {
+export const updateCustomer: UpdateCustomer = async (payload, sandbox) => {
   const { id, metadata, fullName, ...rest } = payload;
   const params: UpdateCustomerPayload = {
     id,
     ...rest,
   };
-  return patch(sandbox, `/customers/${id}`, JSON.stringify(params), jwt);
+  return patch(sandbox, `/customers/${id}`, JSON.stringify(params), { authenticate: true });
 };
 
-export const getCustomer: GetCustomer = async (payload, sandbox, jwt) => {
-  return get(sandbox, `/customers/${payload.customerId}`, jwt);
-};
-
-export const refreshToken: RefreshToken = async (payload, sandbox) => {
-  return post(sandbox, '/auths/refresh_token', JSON.stringify(payload));
+export const getCustomer: GetCustomer = async (payload, sandbox) => {
+  return get(sandbox, `/customers/${payload.customerId}`, { authenticate: true });
 };
 
 export const getLocales: GetLocales = async (sandbox) => {
@@ -217,8 +235,8 @@ const handleErrors = (errors: ApiResponse['errors']) => {
   }
 };
 
-export const updatePersonalShelves: UpdatePersonalShelves = async (payload, sandbox, jwt) => {
-  return await updateCustomer(payload, sandbox, jwt);
+export const updatePersonalShelves: UpdatePersonalShelves = async (payload, sandbox) => {
+  return await updateCustomer(payload, sandbox);
 };
 export const exportAccountData = () => null;
 
@@ -230,3 +248,7 @@ export const canChangePasswordWithOldPassword = false;
 export const subscribeToNotifications = async () => true;
 export const canRenewSubscription = true;
 export const canExportAccountData = false;
+
+export const canUpdatePaymentMethod = true;
+
+export const canShowReceipts = true;

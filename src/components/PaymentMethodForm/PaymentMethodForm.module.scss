@@ -1,0 +1,72 @@
+@use '../../styles/variables';
+@use '../../styles/theme';
+@use '../../styles/mixins/responsive';
+
+
+.title {
+  margin: 16px 0 36px;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+  text-align: center;
+}
+
+.success {
+  margin-bottom: 12px;
+}
+
+.paymentMethodsInputs {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -4px 24px;
+}
+
+.paymentMethod {
+  flex: 1;
+  margin: 6px 4px;
+}
+
+.radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+
+  :focus,
+  :active {
+    + .paymentMethodLabel {
+      border-color: variables.$white;
+    }
+  }
+
+  &:checked + .paymentMethodLabel {
+    color: variables.$black;
+    background-color: variables.$white;
+    border-color: variables.$white;
+
+    svg {
+      fill: variables.$black;
+    }
+  }
+}
+
+.paymentMethodLabel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+  background-color: rgba(variables.$black, 0.34);
+  border: 1px solid rgba(variables.$white, 0.34);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border 0.2s ease, background 0.2s ease;
+
+  > svg {
+    margin-right: 4px;
+  }
+}
+

@@ -90,6 +90,21 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
+.metadata {
+  flex: 1;
+  overflow: hidden;
+}
+
+.scheduledStart {
+  margin-bottom: 4px;
+  font-size: 14px;
+  line-height: 1.2em;
+
+  @include responsive.mobile-only {
+    font-size: 12px;
+  }
+}
+
 .tags {
   position: absolute;
   right: 8px;
@@ -106,6 +121,12 @@ svg.lock {
   border-radius: 4px;
 }
 
+svg.scheduled {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
 .tag {
   margin-left: 4px;
   padding: 2px 6px;
@@ -115,6 +136,8 @@ svg.lock {
 .live {
   background-color: variables.$red;
 }
+
+
 
 .progressContainer {
   position: absolute;

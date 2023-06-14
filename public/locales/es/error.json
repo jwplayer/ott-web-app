@@ -1,0 +1,13 @@
+{
+  "check_your_config": "Hubo un problema al recuperar la configuración de la aplicación. Inténtalo de nuevo más tarde. Si el problema persiste, contacta al soporte técnico.",
+  "check_your_settings": "Hubo un problema al cargar los ajustes predeterminados. Inténtalo de nuevo más tarde. Si el problema persiste, contacta al soporte técnico.",
+  "config_invalid": "Configuración inválida o faltante",
+  "generic_error_description": "Intenta actualizar esta página o vuelve más tarde.",
+  "generic_error_heading": "Hubo un problema al cargar la aplicación",
+  "learn_more": "Más información",
+  "notfound_error_description": "Esta página no existe.",
+  "notfound_error_heading": "No encontrado",
+  "playlist_not_found": "Lista de reproducción no encontrada",
+  "settings_invalid": "Ajustes inválidos o faltantes",
+  "video_not_found": "Video no encontrado"
+}

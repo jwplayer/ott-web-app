@@ -8,25 +8,26 @@ import useMedia from '#src/hooks/useMedia';
 import Loading from '#src/pages/Loading/Loading';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import type { PlaylistItem } from '#types/playlist';
-import { isEpisode, isSeriesPlaceholder } from '#src/utils/media';
+import { isEpisode, isLegacySeriesFlow } from '#src/utils/media';
 import MediaMovie from '#src/pages/ScreenRouting/mediaScreens/MediaMovie/MediaMovie';
 import MediaSeries from '#src/pages/ScreenRouting/mediaScreens/MediaSeries/MediaSeries';
-import MediaSeriesEpisode from '#src/pages/ScreenRouting/mediaScreens/MediaSeriesEpisode/MediaSeriesEpisode';
 import MediaLiveChannel from '#src/pages/ScreenRouting/mediaScreens/MediaLiveChannel/MediaLiveChannel';
+import MediaEpisode from '#src/pages/ScreenRouting/mediaScreens/MediaEpisode/MediaEpisode';
 import { ScreenMap } from '#src/pages/ScreenRouting/ScreenMap';
+import { CONTENT_TYPE } from '#src/config';
 
 export const mediaScreenMap = new ScreenMap<PlaylistItem>();
 
-// register media screens
-mediaScreenMap.registerByContentType(MediaSeries, 'series');
-mediaScreenMap.registerByContentType(MediaSeriesEpisode, 'episode');
-mediaScreenMap.registerByContentType(MediaLiveChannel, 'livechannel');
-mediaScreenMap.registerByContentType(MediaStaticPage, 'page');
+// Register media screens
+mediaScreenMap.registerByContentType(MediaSeries, CONTENT_TYPE.series);
+mediaScreenMap.registerByContentType(MediaEpisode, CONTENT_TYPE.episode);
+mediaScreenMap.registerByContentType(MediaLiveChannel, CONTENT_TYPE.livechannel);
+mediaScreenMap.registerByContentType(MediaStaticPage, CONTENT_TYPE.page);
 mediaScreenMap.registerDefault(MediaMovie);
 
-// register legacy series and episode screens when `contentType` is missing
-mediaScreenMap.register(MediaSeriesEpisode, (item) => !!item && isEpisode(item));
-mediaScreenMap.register(MediaSeries, (item) => !!item && isSeriesPlaceholder(item));
+// Register legacy series and episode screens when `contentType` is missing
+mediaScreenMap.register(MediaEpisode, (item) => !!item && isEpisode(item));
+mediaScreenMap.register(MediaSeries, (item) => !!item && isLegacySeriesFlow(item));
 
 const MediaScreenRouter = () => {
   const params = useParams();

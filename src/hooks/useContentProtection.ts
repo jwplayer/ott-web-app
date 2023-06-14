@@ -4,7 +4,7 @@ import { getJWPMediaToken, getMediaToken } from '#src/services/entitlement.servi
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
-import { useAccountStore } from '#src/stores/AccountStore';
+import useService from '#src/hooks/useService';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -14,7 +14,7 @@ const useContentProtection = <T>(
   enabled: boolean = true,
   placeholderData?: T,
 ) => {
-  const jwt = useAccountStore((store) => store.auth?.jwt);
+  const accountService = useService(({ accountService }) => accountService);
   const { configId, signingConfig, contentProtection, jwp, urlSigning } = useConfigStore(({ config }) => ({
     configId: config.id,
     signingConfig: config.contentSigningService,
@@ -28,11 +28,12 @@ const useContentProtection = <T>(
 
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
-    () => {
+    async () => {
       // if provider is not JWP
       if (!!id && !!host) {
+        const authData = await accountService.getAuthData();
         const { host, drmPolicyId } = signingConfig;
-        return getMediaToken(host, id, jwt, params, drmPolicyId);
+        return getMediaToken(host, id, authData?.jwt, params, drmPolicyId);
       }
       // if provider is JWP
       if (jwp && configId && !!id && signingEnabled) {

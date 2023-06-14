@@ -10,6 +10,7 @@ export type Subscription = {
   paymentGateway: string;
   paymentMethod: string;
   offerTitle: string;
+  pendingSwitchId: string | null;
   period: 'day' | 'week' | 'month' | 'year' | 'granted';
   totalPrice: number;
   unsubscribeUrl?: string;
@@ -114,8 +115,15 @@ export type GetTransactionsResponse = {
 };
 export type UpdateCardDetailsPayload = DefaultCreditCardData;
 
-type GetSubscriptions = CleengAuthRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
-type UpdateSubscription = CleengAuthRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
-type GetPaymentDetails = CleengAuthRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
-type GetTransactions = CleengAuthRequest<GetTransactionsPayload, GetTransactionsResponse>;
-type UpdateCardDetails = AuthServiceRequest<DefaultCreditCardData, SetDefaultCard>;
+export type UpdateCardDetails = EnvironmentServiceRequest<DefaultCreditCardData, SetDefaultCard>;
+export type FetchReceiptPayload = {
+  transactionId: string;
+};
+
+export type FetchReceiptResponse = string;
+
+type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
+type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
+type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
+type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
+type FetchReceipt = CleengRequest<FetchReceiptPayload, FetchReceiptResponse>;

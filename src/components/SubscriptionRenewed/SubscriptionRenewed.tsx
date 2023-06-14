@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './SubscriptionRenewed.module.scss';
 
 import Button from '#components/Button/Button';
-import { formatDate, formatPrice } from '#src/utils/formatting';
+import { formatLocalizedDate, formatPrice } from '#src/utils/formatting';
 import type { Subscription } from '#types/subscription';
 import type { Customer } from '#types/account';
 
@@ -15,8 +15,8 @@ type Props = {
 };
 
 const SubscriptionRenewed: React.FC<Props> = ({ onClose, customer, subscription }: Props) => {
-  const { t } = useTranslation('account');
-  const date = formatDate(subscription.expiresAt);
+  const { t, i18n } = useTranslation('account');
+  const date = formatLocalizedDate(new Date(subscription.expiresAt * 1000), i18n.language);
   const price = formatPrice(subscription.nextPaymentPrice, subscription.nextPaymentCurrency, customer.country);
 
   return (

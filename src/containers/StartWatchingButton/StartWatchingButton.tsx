@@ -16,19 +16,20 @@ import { useAccountStore } from '#src/stores/AccountStore';
 
 type Props = {
   item: PlaylistItem;
-  playUrl: string;
+  playUrl?: string;
   disabled?: boolean;
+  onClick?: () => void;
 };
 
-const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false }) => {
+const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false, onClick }) => {
   const { t } = useTranslation('video');
   const navigate = useNavigate();
   const location = useLocation();
   const breakpoint = useBreakpoint();
 
   // account
-  const auth = useAccountStore((state) => state.auth);
-  const isLoggedIn = !!auth;
+  const user = useAccountStore((state) => state.user);
+  const isLoggedIn = !!user;
 
   // watch history
   const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
@@ -48,12 +49,18 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
   }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
 
   const handleStartWatchingClick = useCallback(() => {
-    if (isEntitled) return playUrl && navigate(playUrl);
+    if (isEntitled) {
+      if (onClick) {
+        onClick();
+        return;
+      }
+      return playUrl && navigate(playUrl);
+    }
     if (!isLoggedIn) return navigate(addQueryParam(location, 'u', 'create-account'));
     if (hasMediaOffers) return navigate(addQueryParam(location, 'u', 'choose-offer'));
 
     return navigate('/u/payments');
-  }, [isEntitled, playUrl, navigate, isLoggedIn, location, hasMediaOffers]);
+  }, [isEntitled, playUrl, navigate, isLoggedIn, location, hasMediaOffers, onClick]);
 
   useEffect(() => {
     // set the TVOD mediaOffers in the checkout store

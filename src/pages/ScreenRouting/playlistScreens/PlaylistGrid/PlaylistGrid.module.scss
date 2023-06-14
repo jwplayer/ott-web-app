@@ -3,7 +3,7 @@
 @use 'src/styles/mixins/responsive';
 
 .playlist {
-  margin: 0 variables.$base-spacing * 4;
+  margin: 0 calc(#{variables.$base-spacing} * 4);
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
   text-align: center;
@@ -17,11 +17,11 @@
   }
 
   @include responsive.tablet-only() {
-    margin: 0 variables.$base-spacing * 2;
+    margin: 0 calc(#{variables.$base-spacing} * 2);
   }
 
   @include responsive.desktop-small-only() {
-    margin: 0 variables.$base-spacing * 3;
+    margin: 0 calc(#{variables.$base-spacing} * 3);
   }
 }
 

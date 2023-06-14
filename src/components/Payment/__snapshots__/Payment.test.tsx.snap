@@ -45,7 +45,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
             class="_label_e16c1b"
             for="text-field_1235"
           >
-            user:payment.cvc_cvv
+            user:payment.security_code
           </label>
           <p>
             ******
@@ -80,11 +80,15 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         <br />
         user:payment.price_payed_with
       </p>
-      <p>
-        T712014024
-        <br />
-        5/5/2021
-      </p>
+      <div
+        class="_transactionDetails_c57ff5"
+      >
+        <p>
+          T712014024
+          <br />
+          May 5, 2021
+        </p>
+      </div>
     </div>
     <div
       class="_infoBox_c57ff5"
@@ -99,11 +103,15 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         <br />
         user:payment.price_payed_with
       </p>
-      <p>
-        T177974068
-        <br />
-        5/5/2021
-      </p>
+      <div
+        class="_transactionDetails_c57ff5"
+      >
+        <p>
+          T177974068
+          <br />
+          May 5, 2021
+        </p>
+      </div>
     </div>
     <div
       class="_infoBox_c57ff5"
@@ -118,11 +126,15 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         <br />
         user:payment.price_payed_with
       </p>
-      <p>
-        T996601696
-        <br />
-        5/5/2021
-      </p>
+      <div
+        class="_transactionDetails_c57ff5"
+      >
+        <p>
+          T996601696
+          <br />
+          May 5, 2021
+        </p>
+      </div>
     </div>
   </div>
 </div>

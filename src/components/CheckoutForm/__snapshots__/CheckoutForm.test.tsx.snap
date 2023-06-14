@@ -67,16 +67,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
       <table
         class="_orderTotals_abc9bc"
       >
-        <tbody>
-          <tr>
-            <td>
-              checkout.payment_method_fee
-            </td>
-            <td>
-              € 0,00
-            </td>
-          </tr>
-        </tbody>
+        <tbody />
         <tfoot>
           <tr>
             <td>

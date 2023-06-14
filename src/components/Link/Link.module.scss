@@ -6,9 +6,14 @@
   color: var(--primary-color);
   font-weight: var(--body-font-weight-bold);
   text-decoration: none;
+  cursor: pointer;
 
   &:hover,
   &:focus {
     text-decoration: underline;
+  }
+
+  &:disabled {
+    cursor: default;
   }
 }

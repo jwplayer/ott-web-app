@@ -43,14 +43,17 @@ exports[`<Header /> > renders header 1`] = `
         a
       </nav>
       <div
-        class="_search_f4f7a7"
+        class="_actions_f4f7a7"
       >
         <div
-          class="_searchBar_3bb1d7"
+          aria-label="Open search"
+          class="_iconButton_0fef65 _iconButton_f4f7a7 _actionButton_f4f7a7"
+          role="button"
+          tabindex="0"
         >
           <svg
             aria-hidden="true"
-            class="_icon_1e9999 _icon_3bb1d7"
+            class="_icon_1e9999"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -61,32 +64,25 @@ exports[`<Header /> > renders header 1`] = `
               />
             </g>
           </svg>
-          <input
-            aria-label="search_bar.search_label"
-            class="_input_3bb1d7"
-            placeholder="search_bar.search_placeholder"
-            type="text"
-            value=""
-          />
         </div>
-      </div>
-      <div
-        class="_buttonContainer_f4f7a7"
-      >
-        <button
-          class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        <div
+          class="_buttonContainer_f4f7a7"
         >
-          <span>
-            sign_in
-          </span>
-        </button>
-        <button
-          class="_button_f8f296 _primary_f8f296"
-        >
-          <span>
-            sign_up
-          </span>
-        </button>
+          <button
+            class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+          >
+            <span>
+              sign_in
+            </span>
+          </button>
+          <button
+            class="_button_f8f296 _primary_f8f296"
+          >
+            <span>
+              sign_up
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </header>

@@ -10,9 +10,19 @@ type Props = {
   onCloseAnimationEnd?: () => void;
   children: ReactNode;
   direction?: 'left' | 'top' | 'right' | 'bottom';
+  style?: CSSProperties;
 };
 
-const Slide = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children, direction = 'top' }: Props): JSX.Element | null => {
+const Slide = ({
+  open = true,
+  duration = 250,
+  delay = 0,
+  onOpenAnimationEnd,
+  onCloseAnimationEnd,
+  children,
+  direction = 'top',
+  style = {},
+}: Props): JSX.Element | null => {
   const seconds = duration / 1000;
   const transition = `transform ${seconds}s ease, opacity ${seconds}s ease`; // todo: -webkit-transform;
   const directions = {
@@ -26,6 +36,7 @@ const Slide = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onC
     transform: status === 'opening' || status === 'open' ? 'translate(0, 0)' : directions[direction],
     opacity: status === 'opening' || status === 'open' ? 1 : 0,
     zIndex: 15,
+    ...style,
   });
 
   return (
