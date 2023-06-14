@@ -13,7 +13,7 @@ const parsePlaylistIds = (input: unknown): Content[] => {
 };
 
 const MediaHub: ScreenComponent<PlaylistItem> = ({ data }) => {
-  const rows = useMemo(() => parsePlaylistIds(data.playlists), [data.playlists]);
+  const rows = useMemo(() => parsePlaylistIds(data.playlist || data.playlists), [data.playlist, data.playlists]);
 
   // Effects
   useEffect(() => {

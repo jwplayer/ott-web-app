@@ -6,30 +6,46 @@ const stdIn = require('readline').createInterface({
 });
 
 const JWP_HOST = process.env.JWP_HOST || 'https://api.jwplayer.com';
-// interface Field {
-//   label: string,
-//   param: string,
-//   required?: boolean,
-//   options: {
-//     field_type: 'input' | 'toggle',
-//     placeholder: string
-//   }
-// }
-//
-// interface FieldSet {
-//   title: String,
-//   fields: Field[]
-// }
-//
-// interface Schema {
-//   name: string,
-//   description: string,
-//   display_name: string,
-//   is_series?: boolean,
-//   is_active?: boolean,
-//   hosting_type: 'hosted' | 'external' | 'ott_data',
-//   fields: FieldSet[]
-// }
+
+interface SchemaFile<TField extends Field | FieldOrRef, TSection extends Section<TField> | SectionOrRef<TField>> {
+  fields: {
+    [key: string]: Field;
+  };
+  sections: {
+    [key: string]: Section<FieldOrRef>;
+  };
+  schemas: Schema<TField, TSection>[];
+}
+
+// TODO: Use yup to validate schema
+interface Field {
+  label: string;
+  param: string;
+  required?: boolean;
+  details: {
+    field_type: 'input' | 'toggle';
+    placeholder: string;
+  };
+}
+
+type FieldOrRef = Field | string;
+
+interface Section<TField extends Field | FieldOrRef> {
+  title: string;
+  fields: TField[];
+}
+
+type SectionOrRef<TField extends Field | FieldOrRef> = Section<TField> | string;
+
+interface Schema<TField extends Field | FieldOrRef, TSection extends Section<TField> | SectionOrRef<TField>> {
+  name: string;
+  description: string;
+  display_name: string;
+  is_series?: boolean;
+  is_active?: boolean;
+  hosting_type: 'hosted' | 'external' | 'ott_data';
+  sections: TSection[];
+}
 
 function error(message: string, returnCode?: number): never {
   console.error(message);
@@ -84,14 +100,49 @@ function help() {
   console.info('\r\n\r\nRequired arguments:');
 }
 
-async function uploadSchemas(args: { apiKey: string; siteId: string; schemas: unknown[] }) {
+function parseSchemas(file: string) {
+  try {
+    const schemaDefinitions = JSON.parse(fs.readFileSync(file, 'utf-8')) as SchemaFile<FieldOrRef, SectionOrRef<FieldOrRef>>;
+
+    if (schemaDefinitions.schemas.length <= 0) {
+      error(`Error! No schemas found in file ${file}`, -4);
+    }
+
+    return schemaDefinitions.schemas.map((schema) => ({
+      ...schema,
+      sections: schema.sections
+        .map((section) => lookup(schemaDefinitions.sections, section))
+        .map((section) => ({
+          ...section,
+          fields: section.fields.map((field) => lookup(schemaDefinitions.fields, field)),
+        })),
+    }));
+  } catch (e: unknown) {
+    error(`Error loading schemas from ${file}\r\n${e}`, -3);
+  }
+}
+
+function lookup<T>(references: { [key: string]: T }, value: string | T): T {
+  // If a string is used, treat it as a lookup for the field / section by key
+  if (typeof value === 'string') {
+    if (!references[value]) {
+      error(`Reference "${value}" not found for schema`, -10);
+    }
+
+    return references[value];
+  }
+
+  return value;
+}
+
+async function uploadSchemas({ apiKey, siteId, schemas }: { apiKey: string; siteId: string; schemas: unknown[] }) {
   console.info('\r\n\r\nCreating schemas:');
 
-  for (const schema of args.schemas) {
-    const response = await fetch(`${JWP_HOST}/v2/sites/${args.siteId}/content_type_schemas/`, {
+  for (const schema of schemas) {
+    const response = await fetch(`${JWP_HOST}/v2/sites/${siteId}/content_type_schemas/`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${args.apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -124,18 +175,14 @@ async function run() {
   const apiKey: string = getArg('api-key', { required: true }).value;
   const siteId: string = getArg('site-id', { required: true }).value;
 
-  let schemas: unknown[];
+  const schemas = parseSchemas(file);
 
-  try {
-    schemas = JSON.parse(fs.readFileSync(file, 'utf-8')) as unknown[];
-  } catch (e: unknown) {
-    error(`Error loading schemas from ${file}\r\n${e}`, -3);
+  if (getArg('confirm')?.value !== '1') {
+    await confirmPrompt(`About to load ${schemas.length} content types from ${file} into property ${siteId}`);
+  } else {
+    console.info(`Loading ${schemas.length} content types from ${file} into property ${siteId}`);
   }
 
-  if (schemas.length <= 0) {
-    error(`Error! No schemas found in file ${file}`, -4);
-  }
-  await confirmPrompt(`About to load ${schemas.length} content types from ${file} into property ${siteId}`);
   await uploadSchemas({ siteId, apiKey, schemas });
 }
 

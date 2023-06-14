@@ -1,30 +1,358 @@
-[
-  {
-    "name": "movie",
-    "description": "Movie schema",
-    "display_name": "Movie",
-    "hosting_type": "hosted",
-    "is_active": true,
-    "is_series": false,
-    "fields": [
-      {
-        "title": "General",
-        "fields": [
+{
+  "fields": {
+    "genre": {
+      "param": "genre",
+      "label": "Genre",
+      "details": {
+        "field_type": "select",
+        "placeholder": "Select a genre",
+        "options": [
+          {"value": "Action", "label": "Action"},
+          {"value": "Thriller", "label": "Thriller"},
+          {"value": "Horror", "label": "Horror"},
+          {"value": "Drama", "label": "Drama"},
+          {"value": "Romance", "label": "Romance"},
+          {"value": "Western", "label": "Western"},
+          {"value": "Comedy", "label": "Comedy"},
+          {"value": "Science fiction", "label": "Science fiction"},
+          {"value": "Adventure", "label": "Adventure"},
+          {"value": "Music", "label": "Music"},
+          {"value": "Animation", "label": "Animation"},
+          {"value": "Crime film", "label": "Crime film"},
+          {"value": "History", "label": "History"},
+          {"value": "Musical genre", "label": "Musical genre"},
+          {"value": "Narrative", "label": "Narrative"},
+          {"value": "Documentary", "label": "Documentary"},
+          {"value": "Mystery", "label": "Mystery"},
+          {"value": "Noir", "label": "Noir"},
+          {"value": "Fantasy", "label": "Fantasy"},
+          {"value": "Romantic comedy", "label": "Romantic comedy"},
+          {"value": "Musical", "label": "Musical"},
+          {"value": "War", "label": "War"},
+          {"value": "Television", "label": "Television"},
+          {"value": "Fiction", "label": "Fiction"},
+          {"value": "Historical drama", "label": "Historical drama"},
+          {"value": "Sports", "label": "Sports"},
+          {"value": "Epic", "label": "Epic"},
+          {"value": "Thriller", "label": "Thriller"},
+          {"value": "Disaster", "label": "Disaster"},
+          {"value": "Martial Arts", "label": "Martial Arts"},
+          {"value": "Hindi cinema", "label": "Hindi cinema"},
+          {"value": "Satire", "label": "Satire"},
+          {"value": "Experimental", "label": "Experimental"},
+          {"value": "Slasher", "label": "Slasher"},
+          {"value": "Short", "label": "Short"},
+          {"value": "Biographical", "label": "Biographical"},
+          {"value": "Animated film", "label": "Animated film"},
+          {"value": "Narrative", "label": "Narrative"},
+          {"value": "Educational", "label": "Educational"},
+          {"value": "Cult film", "label": "Cult film"},
+          {"value": "Action/Adventure", "label": "Action/Adventure"}
+        ]
+      }
+    },
+    "rating": {
+      "param": "rating",
+      "label": "Rating",
+      "details": {
+        "field_type": "select",
+        "placeholder": "Select the content rating",
+        "options": [
           {
-            "param": "genre",
-            "label": "Genre",
-            "options": {
-              "field_type": "select",
-              "options": [
-                {
-                  "value": "",
-                  "label": ""
-                }
-              ]
-            }
+            "value": "G",
+            "label": "G"
+          },
+          {
+            "value": "PG",
+            "label": "PG"
+          },
+          {
+            "value": "PG-13",
+            "label": "PG-13"
+          },
+          {
+            "value": "R",
+            "label": "R"
           }
         ]
       }
-    ]
-  }
-]
+    },
+    "trailer_id": {
+      "param": "trailerId",
+      "label": "Trailer",
+      "details": {
+        "field_type": "media_select",
+        "placeholder": "Select a trailer"
+      }
+    },
+    "is_free": {
+      "param": "free",
+      "label": "Free to Watch?",
+      "details": {
+        "field_type": "toggle",
+        "placeholder": "Is this item free to watch?"
+      }
+    },
+    "product_ids": {
+      "param": "productIds",
+      "label": "Product IDs",
+      "details": {
+        "field_type": "input",
+        "placeholder": "CSV subscription IDs"
+      }
+    },
+    "live_status": {
+      "param": "VCH.EventState",
+      "label": "Status",
+      "details": {
+        "field_type": "input",
+        "placeholder": "This value will be populated automatically"
+      }
+    },
+    "live_start_time": {
+      "param": "VCH.ScheduledStart",
+      "label": "Start Time",
+      "details": {
+        "field_type": "input",
+        "placeholder": "This value will be populated automatically"
+      }
+    }
+  },
+  "sections": {
+    "general": {
+      "title": "General",
+      "fields": [
+        "genre",
+        "rating",
+        "trailer_id"
+      ]
+    },
+    "access": {
+      "title": "Access",
+      "fields": [
+        "is_free",
+        "product_ids"
+      ]
+    },
+    "live_custom_params": {
+      "title": "Live Params",
+      "fields": [
+        {
+          "param": "VCH.ID",
+          "label": "VCH ID",
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        },
+        {
+          "param": "VCH.M3U8",
+          "label": "VCH M3U8",
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        },
+        {
+          "param": "VCH.MPD",
+          "label": "VCH MPD",
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        },
+        {
+          "param": "VCH.SmoothStream",
+          "label": "VCH SmoothStream",
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        }
+      ]
+    }
+  },
+  "schemas": [
+    {
+      "name": "movie",
+      "description": "Movie schema",
+      "display_name": "Movie",
+      "hosting_type": "hosted",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        "general",
+        "access"
+      ]
+    },
+    {
+      "name": "series",
+      "description": "Series schema",
+      "display_name": "Series",
+      "hosting_type": "ott_data",
+      "is_active": true,
+      "is_series": true,
+      "sections": [
+        "general",
+        "access"
+      ]
+    },
+    {
+      "name": "episode",
+      "description": "Episode schema",
+      "display_name": "Episode",
+      "hosting_type": "hosted",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        "general",
+        "access"
+      ]
+    },
+    {
+      "name": "channel",
+      "description": "Live Channel Schema",
+      "display_name": "Live Channel",
+      "hosting_type": "external",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "Status",
+          "fields": [
+            "live_status",
+            "live_start_time"
+          ]
+        },
+        "access",
+        {
+          "title": "Schedule",
+          "fields": [
+            {
+              "param": "scheduleUrl",
+              "label": "EPG Schedule URL",
+              "details": {
+                "field_type": "input",
+                "placeholder": "Enter the URL of the EPG Schedule"
+              }
+            },
+            {
+              "param": "scheduleDemo",
+              "label": "Use EPG Demo",
+              "details": {
+                "field_type": "toggle",
+                "placeholder": "Use EPG Demo Mode"
+              }
+            }
+          ]
+        },
+        "live_custom_params"
+      ]
+    },
+    {
+      "name": "event",
+      "description": "Live Event Schema",
+      "display_name": "Live Event",
+      "hosting_type": "external",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "Status",
+          "fields": [
+            "live_status",
+            "live_start_time",
+            {
+              "param": "VCH.ScheduledEnd",
+              "label": "End Time",
+              "details": {
+                "field_type": "input",
+                "placeholder": "This value will be populated automatically"
+              }
+            }
+          ]
+        },
+        "access",
+        "live_custom_params"
+      ]
+    },
+    {
+      "name": "trailer",
+      "description": "Trailer Schema",
+      "display_name": "Trailer",
+      "hosting_type": "hosted",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "Access",
+          "fields": [
+            "is_free"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hub",
+      "description": "Hub Schema",
+      "display_name": "Hub",
+      "hosting_type": "ott_data",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "General",
+          "fields": [
+            {
+              "param": "playlist",
+              "label": "Playlist",
+              "details": {
+                "field_type": "playlist_select",
+                "placeholder": "Select a playlist"
+              }
+            },
+            {
+              "param": "logo",
+              "label": "Logo",
+              "details": {
+                "field_type": "input",
+                "placeholder": "Enter the url of a logo"
+              }
+            },
+            {
+              "param": "backgroundImage",
+              "label": "Background Image",
+              "details": {
+                "field_type": "input",
+                "placeholder": "Enter the url of an image for the background"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "page",
+      "description": "Static Page Schema",
+      "display_name": "Static Page",
+      "hosting_type": "ott_data",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "General",
+          "fields": [
+            {
+              "param": "markdown",
+              "label": "Page Markdown",
+              "details": {
+                "field_type": "textarea",
+                "placeholder": "Enter Markdown for the Page"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
