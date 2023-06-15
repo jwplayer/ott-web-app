@@ -1,3 +1,17 @@
+# [4.15.0](https://github.com/jwplayer/ott-web-app/compare/v4.14.0...v4.15.0) (2023-06-15)
+
+
+### Bug Fixes
+
+* revert English translation ([d5e98eb](https://github.com/jwplayer/ott-web-app/commit/d5e98eb7cde1aaa10c6cff3387a3403d6632bd24))
+
+
+### Features
+
+* add "other_registration_details" as a new translation text ([2c489a2](https://github.com/jwplayer/ott-web-app/commit/2c489a2f966083328ecb36a33093a4e8710d0f5e))
+
+
+
 # [4.14.0](https://github.com/jwplayer/ott-web-app/compare/v4.13.0...v4.14.0) (2023-06-15)
 
 
