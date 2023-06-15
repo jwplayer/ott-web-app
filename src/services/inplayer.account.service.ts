@@ -44,7 +44,7 @@ export enum ConsentFieldVariants {
   US_STATE_SELECT = 'us_state',
   RADIO = 'radio',
   CHECKBOX = 'checkbox',
-  DATE_PICKER = 'datepicker', // not implemented yet
+  DATE_PICKER = 'datepicker',
 }
 
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
