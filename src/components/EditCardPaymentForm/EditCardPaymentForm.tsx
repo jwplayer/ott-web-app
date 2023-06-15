@@ -30,15 +30,19 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
     { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
     async () => {
       setUpdatingCardDetails(true);
-      await updateCard.mutateAsync({
-        cardName: paymentData.values.cardholderName,
-        cardNumber: paymentData.values.cardNumber.replace(/\s+/g, ''),
-        cvc: parseInt(paymentData.values.cardCVC),
-        expMonth: parseInt(paymentData.values.cardExpMonth),
-        expYear: parseInt(paymentData.values.cardExpYear),
-        currency: activePayment?.currency || '',
-      });
-      onCancel();
+      updateCard.mutate(
+        {
+          cardName: paymentData.values.cardholderName,
+          cardNumber: paymentData.values.cardNumber.replace(/\s+/g, ''),
+          cvc: parseInt(paymentData.values.cardCVC),
+          expMonth: parseInt(paymentData.values.cardExpMonth),
+          expYear: parseInt(paymentData.values.cardExpYear),
+          currency: activePayment?.currency || '',
+        },
+        {
+          onSettled: () => onCancel(),
+        },
+      );
     },
     object().shape({
       cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
