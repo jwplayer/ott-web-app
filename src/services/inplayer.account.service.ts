@@ -159,8 +159,7 @@ export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants, st
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
     const result = data?.collection
-      // todo: implement DATE_PICKER at some point
-      .filter((field) => (field.type as ConsentFieldVariants) !== ConsentFieldVariants.DATE_PICKER && field.name !== 'email_confirmation')
+      .filter((field) => field.name !== 'email_confirmation')
       .map(
         (field): Consent<ConsentFieldVariants> => ({
           type: field.type as ConsentFieldVariants,

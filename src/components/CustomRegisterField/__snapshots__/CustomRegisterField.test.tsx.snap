@@ -1548,7 +1548,56 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="co
 </div>
 `;
 
-exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="datepicker"> 1`] = `<div />`;
+exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="datepicker"> 1`] = `
+<div>
+  <div
+    class="_dateField_eb6974"
+  >
+    <label
+      class="_label_eb6974"
+      for="text-field_1235_name"
+    >
+      label
+      <span>
+        optional
+      </span>
+    </label>
+    <div
+      class="_container_eb6974"
+    >
+      <input
+        class="_input_eb6974"
+        id="text-field_1235_name"
+        maxlength="2"
+        name="date"
+        placeholder="dd"
+        type="number"
+        value=""
+      />
+       / 
+      <input
+        class="_input_eb6974"
+        id="text-field_1235_name"
+        maxlength="2"
+        name="month"
+        placeholder="mm"
+        type="number"
+        value=""
+      />
+       / 
+      <input
+        class="_input_eb6974"
+        id="text-field_1235_name"
+        maxlength="4"
+        name="year"
+        placeholder="yyyy"
+        type="number"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;
 
 exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="randomstring"> 1`] = `<div />`;
 

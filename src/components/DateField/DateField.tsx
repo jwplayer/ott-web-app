@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -9,7 +9,7 @@ import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
   className?: string;
-  label?: string;
+  label?: ReactNode;
   placeholder?: string;
   name?: string;
   value: string;

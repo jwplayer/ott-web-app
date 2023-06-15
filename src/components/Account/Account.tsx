@@ -192,7 +192,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   name="firstName"
                   label={t('account.firstname')}
                   value={section.values.firstName || ''}
-                  onChange={section.onChange}
+                  onChange={section.onChangeEvent}
                   error={!!section.errors?.firstName}
                   helperText={section.errors?.firstName}
                   disabled={section.isBusy}
@@ -202,7 +202,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   name="lastName"
                   label={t('account.lastname')}
                   value={section.values.lastName || ''}
-                  onChange={section.onChange}
+                  onChange={section.onChangeEvent}
                   error={!!section.errors?.lastName}
                   helperText={section.errors?.lastName}
                   disabled={section.isBusy}
@@ -227,7 +227,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   name="email"
                   label={t('account.email')}
                   value={section.values.email || ''}
-                  onChange={section.onChange}
+                  onChange={section.onChangeEvent}
                   error={!!section.errors?.email}
                   helperText={section.errors?.email}
                   disabled={section.isBusy}
@@ -239,7 +239,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     name="confirmationPassword"
                     label={t('account.confirm_password')}
                     value={section.values.confirmationPassword}
-                    onChange={section.onChange}
+                    onChange={section.onChangeEvent}
                     error={!!section.errors?.confirmationPassword}
                     helperText={section.errors?.confirmationPassword}
                     type={viewPassword ? 'text' : 'password'}
@@ -270,7 +270,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     key={index}
                     name={`consentsValues.${consent.name}`}
                     checked={section.values.consentsValues?.[consent.name] === true}
-                    onChange={section.onChange}
+                    onChange={section.onChangeEvent}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}
                   />
@@ -295,8 +295,8 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                           label={formatConsentLabel(consent.label)}
                           placeholder={consent.placeholder}
                           value={section.values.consentsValues[consent.name]}
-                          disabled={consent.required || section.isBusy}
-                          onChange={section.onChange}
+                          disabled={(consent.type === ConsentFieldVariants.CHECKBOX && consent.required) || section.isBusy}
+                          onChange={(name, value) => section.onChangeValue(name, value)}
                         />
                       ))}
                     </div>
