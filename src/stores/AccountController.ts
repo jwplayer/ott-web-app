@@ -124,6 +124,7 @@ export const getAccount = async () => {
         activePayment: null,
         customerConsents: null,
         publisherConsents: null,
+        loading: false,
       });
     }
   });
