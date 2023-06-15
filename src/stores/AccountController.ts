@@ -38,6 +38,7 @@ export const initializeAccount = async () => {
       canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
+      canDeleteAccount: accountService.canExportAccountData,
       canShowReceipts: accountService.canShowReceipts,
     });
 
@@ -424,6 +425,18 @@ export async function exportAccountData() {
   });
 }
 
+export async function getSocialLoginUrls() {
+  return await useService(async ({ accountService, config }) => {
+    return await accountService.getSocialUrls(config);
+  });
+}
+export async function deleteAccountData(password: string) {
+  return await useAccount(async () => {
+    return await useService(async ({ accountService }) => {
+      return await accountService.deleteAccount({ password }, true);
+    });
+  });
+}
 export const getReceipt = async (transactionId: string) => {
   return await useAccount(async () => {
     return await useService(async ({ subscriptionService, sandbox = true }) => {

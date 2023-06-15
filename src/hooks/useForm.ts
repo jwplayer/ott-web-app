@@ -13,6 +13,7 @@ export type UseFormReturnValue<T> = {
   setValue: (key: keyof T, value: string) => void;
   setErrors: (errors: FormErrors<T>) => void;
   setSubmitting: (submitting: boolean) => void;
+  reset: () => void;
 };
 
 type UseFormMethods<T> = {
@@ -36,6 +37,13 @@ export default function useForm<T extends GenericFormValues>(
   const [values, setValues] = useState<T>(initialValues);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors<T>>({});
+
+  const reset = useCallback(() => {
+    setValues(initialValues);
+    setErrors({});
+    setSubmitting(false);
+    setTouched(Object.fromEntries((Object.keys(initialValues) as Array<keyof T>).map((key) => [key, false])) as Record<keyof T, boolean>);
+  }, [initialValues]);
 
   const validateField = (name: string, formValues: T) => {
     if (!validationSchema) return;
@@ -121,5 +129,5 @@ export default function useForm<T extends GenericFormValues>(
     onSubmit(values, { setValue, setErrors, setSubmitting, validate });
   };
 
-  return { values, errors, handleChange, handleBlur, handleSubmit, submitting, setValue, setErrors, setSubmitting };
+  return { values, errors, handleChange, handleBlur, handleSubmit, submitting, setValue, setErrors, setSubmitting, reset };
 }

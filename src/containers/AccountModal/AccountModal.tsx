@@ -22,6 +22,7 @@ import Welcome from '#components/Welcome/Welcome';
 import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
 import Dialog from '#components/Dialog/Dialog';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
+import DeleteAccountModal from '#src/components/DeleteAccountModal/DeleteAccountModal';
 import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
 import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
@@ -48,10 +49,6 @@ const AccountModal = () => {
     navigate(addQueryParam(location, 'u', 'login'));
   });
 
-  const closeHandler = useEventCallback(() => {
-    navigate(removeQueryParam(location, 'u'));
-  });
-
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
     if (viewParam) setView(viewParam);
@@ -61,7 +58,11 @@ const AccountModal = () => {
     if (!!viewParam && !loading && !user && !isPublicView) {
       toLogin();
     }
-  }, [viewParam, loading, user, isPublicView, toLogin]);
+  }, [viewParam, loading, isPublicView, user, toLogin]);
+
+  const closeHandler = useEventCallback(() => {
+    navigate(removeQueryParam(location, 'u'));
+  });
 
   const renderForm = () => {
     if (!user && loading && !isPublicView) {
@@ -102,6 +103,9 @@ const AccountModal = () => {
         return <ResetPassword type="reset" />;
       case 'forgot-password':
         return <ResetPassword type="forgot" />;
+      case 'delete-account':
+      case 'delete-account-confirmation':
+        return <DeleteAccountModal />;
       case 'send-confirmation':
         return <ResetPassword type="confirmation" />;
       case 'edit-password':
@@ -120,9 +124,12 @@ const AccountModal = () => {
     }
   };
 
+  const shouldShowBanner = !['delete-account', 'delete-account-confirmation'].includes(view ?? '');
+  const dialogSize = ['delete-account-confirmation'].includes(view ?? '') ? 'large' : 'small';
+
   return (
-    <Dialog open={!!viewParam} onClose={closeHandler}>
-      <div className={styles.banner}>{banner ? <img src={banner} alt="" /> : null}</div>
+    <Dialog size={dialogSize} open={!!viewParam} onClose={closeHandler}>
+      {shouldShowBanner && banner && <div className={styles.banner}>{<img src={banner} alt="" />}</div>}
       {renderForm()}
     </Dialog>
   );
