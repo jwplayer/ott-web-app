@@ -74,14 +74,17 @@
   },
   "login": {
     "email": "Email",
+    "facebook": "Sign in with Facebook",
     "field_is_not_valid_email": "Please re-enter your email details and try again.",
     "field_required": "This field is required",
     "forgot_password": "Forgot password?",
+    "google": "Sign in with Google",
     "hide_password": "Hide password",
     "not_registered": "New to {{siteName}}?",
     "password": "Password",
     "sign_in": "Sign in",
     "sign_up": "Sign up",
+    "twitter": "Sign in with Twitter",
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."

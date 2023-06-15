@@ -411,6 +411,11 @@ export async function exportAccountData() {
   });
 }
 
+export async function getSocialLoginUrls() {
+  return await useService(async ({ accountService, config }) => {
+    return await accountService.getSocialUrls(config);
+  });
+}
 export async function deleteAccountData(password: string) {
   return await useAccount(async () => {
     return await useService(async ({ accountService }) => {

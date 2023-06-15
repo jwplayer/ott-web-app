@@ -40,6 +40,14 @@ enum InPlayerEnv {
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
+  const queryParams = new URLSearchParams(window.location.href.split('#')[1]);
+  const token = queryParams.get('token');
+  const refreshToken = queryParams.get('refresh_token');
+  const expires = queryParams.get('expires');
+  if (!token || !refreshToken || !expires) {
+    return;
+  }
+  InPlayer.Account.setToken(token, refreshToken, parseInt(expires));
 };
 
 export const getAuthData = async () => {
@@ -341,6 +349,23 @@ export const deleteAccount: DeleteAccount = async ({ password }) => {
   } catch {
     throw new Error('Failed to delete account');
   }
+};
+
+export const getSocialUrls = async (config: Config) => {
+  const socialState = window.btoa(
+    JSON.stringify({
+      client_id: config.integrations.jwp?.clientId || '',
+      redirect: window.location.href.split('u=')[0],
+    }),
+  );
+
+  const socialResponse = await InPlayer.Account.getSocialLoginUrls(socialState);
+
+  if (socialResponse.status !== 200) {
+    throw new Error('Failed to fetch social urls');
+  }
+
+  return socialResponse.data.social_urls;
 };
 
 const getCustomerExternalData = async (): Promise<ExternalData> => {
