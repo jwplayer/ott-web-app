@@ -84,7 +84,8 @@
     "sign_up": "Sign up",
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
-    "wrong_email": "Please check your email and try again."
+    "wrong_email": "Please check your email and try again.",
+    "simultaneous_logins": "You have been logged out because the simultaneous logins limit has been reached."
   },
   "payment": {
     "back_to_profile": "Back to profile",
