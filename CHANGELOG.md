@@ -1,3 +1,14 @@
+# [4.13.0](https://github.com/jwplayer/ott-web-app/compare/v4.12.1...v4.13.0) (2023-06-15)
+
+
+### Features
+
+* add error handling for account deletion ([25b2f5a](https://github.com/jwplayer/ott-web-app/commit/25b2f5a5ca96491bed3bae789c1e60fef35f09d2))
+* add reset to useForm, handle back button in DeleteAccountModal ([eacd3b7](https://github.com/jwplayer/ott-web-app/commit/eacd3b7575cc0d6cbf891c7ed7943c9b4b66ab76))
+* **user:** initial account deletion implementation ([b6eda04](https://github.com/jwplayer/ott-web-app/commit/b6eda042a230f106b6a14ea7844b887778a0696d))
+
+
+
 ## [4.12.1](https://github.com/jwplayer/ott-web-app/compare/v4.12.0...v4.12.1) (2023-06-08)
 
 

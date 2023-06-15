@@ -21,7 +21,7 @@ import useToggle from '#src/hooks/useToggle';
 import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { logDev } from '#src/utils/common';
+import { isTruthy, logDev } from '#src/utils/common';
 import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
 
 type Props = {
@@ -53,13 +53,14 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
   }, [exportData.isSuccess, exportData.isError]);
 
-  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData } = useAccountStore(
-    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData }) => ({
+  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = useAccountStore(
+    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount }) => ({
       customer: user,
       customerConsents,
       publisherConsents,
       canChangePasswordWithOldPassword,
       canExportAccountData,
+      canDeleteAccount,
     }),
     shallow,
   );
@@ -258,31 +259,47 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               </>
             ),
           }),
-          ...(canExportAccountData
-            ? [
-                formSection({
-                  label: t('account.export_data_title'),
-                  content: (section) => (
-                    <div className={styles.exportDataContainer}>
-                      <div>
-                        <Trans t={t} i18nKey="account.export_data_body" values={{ email: section.values.email }} />
-                      </div>
-                      <div>
-                        <Button
-                          label={t('account.export_data_title')}
-                          type="button"
-                          disabled={exportData.isLoading}
-                          onClick={async () => {
-                            exportData.mutate();
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ),
-                }),
-              ]
-            : []),
-        ]}
+          canExportAccountData &&
+            formSection({
+              label: t('account.export_data_title'),
+              content: (section) => (
+                <div className={styles.textWithButtonContainer}>
+                  <div>
+                    <Trans t={t} i18nKey="account.export_data_body" values={{ email: section.values.email }} />
+                  </div>
+                  <div>
+                    <Button
+                      label={t('account.export_data_title')}
+                      type="button"
+                      disabled={exportData.isLoading}
+                      onClick={async () => {
+                        exportData.mutate();
+                      }}
+                    />
+                  </div>
+                </div>
+              ),
+            }),
+          canDeleteAccount &&
+            formSection({
+              label: t('account.delete_account.title'),
+              content: () => (
+                <div className={styles.textWithButtonContainer}>
+                  <div>{t('account.delete_account.body')}</div>
+                  <div>
+                    <Button
+                      label={t('account.delete_account.title')}
+                      type="button"
+                      variant="danger"
+                      onClick={() => {
+                        navigate(addQueryParam(location, 'u', 'delete-account'));
+                      }}
+                    />
+                  </div>
+                </div>
+              ),
+            }),
+        ].filter(isTruthy)}
       </Form>
       {canExportAccountData && (
         <Alert open={isAlertVisible} message={exportDataMessage} onClose={() => setIsAlertVisible(false)} isSuccess={exportData.isSuccess} />

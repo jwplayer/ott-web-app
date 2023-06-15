@@ -1,3 +1,5 @@
+import type { CommonResponse } from '@inplayer-org/inplayer.js';
+
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
 
@@ -49,6 +51,10 @@ export type RegistrationFormData = {
 
 export type ForgotPasswordFormData = {
   email: string;
+};
+
+export type DeleteAccountFormData = {
+  password: string;
 };
 
 export type EditPasswordFormData = {
@@ -313,10 +319,14 @@ export type EmailConfirmPasswordInput = {
   confirmationPassword: string;
 };
 
-export type ExportAccountDataResponse = {
+export type CommonAccountResponse = {
   message: string;
   code: number;
   errors?: Record<string, string>;
+};
+
+export type DeleteAccountPayload = {
+  password: string;
 };
 
 type Login = PromiseRequest<AuthArgs, AuthResponse>;
@@ -333,4 +343,5 @@ type ChangePassword = EnvironmentServiceRequest<ChangePasswordWithTokenPayload, 
 type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWithOldPasswordPayload, ApiResponse<unknown>>;
 type UpdatePersonalShelves = EnvironmentServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
-type ExportAccountData = EnvironmentServiceRequest<undefined, ExportAccountDataResponse>;
+type ExportAccountData = AuthServiceRequest<undefined, CommonAccountResponse>;
+type DeleteAccount = EnvironmentServiceRequest<DeleteAccountPayload, CommonAccountResponse>;

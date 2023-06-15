@@ -9,6 +9,7 @@ import type {
   Consent,
   Customer,
   CustomerConsent,
+  DeleteAccount,
   ExportAccountData,
   ExternalData,
   GetCaptureStatus,
@@ -28,6 +29,7 @@ import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
 import type { WatchHistoryItem } from '#types/watchHistory';
+import { getCommonResponseData } from '#src/utils/api';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -324,18 +326,21 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
 
 export const exportAccountData: ExportAccountData = async () => {
   // password is sent as undefined because it is now optional on BE
-  const response = await InPlayer.Account.exportData({ password: undefined, brandingId: 0 });
-  const { code, message } = response.data;
-  if (code !== 200) {
-    throw new Error(message);
+  try {
+    const response = await InPlayer.Account.exportData({ password: undefined, brandingId: 0 });
+    return getCommonResponseData(response);
+  } catch {
+    throw new Error('Failed to export account data');
   }
-  return {
-    errors: [],
-    responseData: {
-      message,
-      code,
-    },
-  };
+};
+
+export const deleteAccount: DeleteAccount = async ({ password }) => {
+  try {
+    const response = await InPlayer.Account.deleteAccount({ password, brandingId: 0 });
+    return getCommonResponseData(response);
+  } catch {
+    throw new Error('Failed to delete account');
+  }
 };
 
 const getCustomerExternalData = async (): Promise<ExternalData> => {
@@ -454,3 +459,5 @@ export const canExportAccountData = true;
 export const canUpdatePaymentMethod = false;
 
 export const canShowReceipts = false;
+
+export const canDeleteAccount = true;
