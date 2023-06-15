@@ -1,3 +1,13 @@
+# [4.14.0](https://github.com/jwplayer/ott-web-app/compare/v4.13.0...v4.14.0) (2023-06-15)
+
+
+### Features
+
+* add logic for inplayer social login ([04c1d74](https://github.com/jwplayer/ott-web-app/commit/04c1d74967c905009d6bdf2e9ce352e6f32cdafa))
+* initial social login buttons implementation ([0dd1204](https://github.com/jwplayer/ott-web-app/commit/0dd120486ef47a6e9dcfd9036cc72ceb699e1a45))
+
+
+
 # [4.13.0](https://github.com/jwplayer/ott-web-app/compare/v4.12.1...v4.13.0) (2023-06-15)
 
 
