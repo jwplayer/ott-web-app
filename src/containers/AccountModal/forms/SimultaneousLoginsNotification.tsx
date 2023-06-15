@@ -18,7 +18,7 @@ const SimultaneousLoginsNotification = () => {
   return (
     <React.Fragment>
       <h1 className={styles.simultaneousLoginsTitle}> {t('login.simultaneous_logins')}</h1>
-      <Button type="submit" onClick={loginClickHandler} label="Ok" variant="contained" color="primary" size="large" fullWidth />
+      <Button type="submit" onClick={loginClickHandler} label={t('login.ok')} variant="contained" color="primary" size="large" fullWidth />
     </React.Fragment>
   );
 };
