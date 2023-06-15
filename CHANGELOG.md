@@ -1,3 +1,28 @@
+# [4.13.0](https://github.com/jwplayer/ott-web-app/compare/v4.12.1...v4.13.0) (2023-06-15)
+
+
+### Features
+
+* add error handling for account deletion ([25b2f5a](https://github.com/jwplayer/ott-web-app/commit/25b2f5a5ca96491bed3bae789c1e60fef35f09d2))
+* add reset to useForm, handle back button in DeleteAccountModal ([eacd3b7](https://github.com/jwplayer/ott-web-app/commit/eacd3b7575cc0d6cbf891c7ed7943c9b4b66ab76))
+* **user:** initial account deletion implementation ([b6eda04](https://github.com/jwplayer/ott-web-app/commit/b6eda042a230f106b6a14ea7844b887778a0696d))
+
+
+
+## [4.12.1](https://github.com/jwplayer/ott-web-app/compare/v4.12.0...v4.12.1) (2023-06-08)
+
+
+### Bug Fixes
+
+* ran yarn i18next ([267bcf5](https://github.com/jwplayer/ott-web-app/commit/267bcf5e9604923c4d7114d37acc2a9129949891))
+* removed files already removed in develop ([37f9030](https://github.com/jwplayer/ott-web-app/commit/37f9030d183742051ab9530799aadcd86878f08d))
+* reverted incorrect changes ([633c84d](https://github.com/jwplayer/ott-web-app/commit/633c84da520a076e73601d37d862f3b50e5d4616))
+* run prettier in FormSection ([996e420](https://github.com/jwplayer/ott-web-app/commit/996e4209d4f0fd8df2bbcb33250f481ef3134973))
+* run yarn i18next ([829603f](https://github.com/jwplayer/ott-web-app/commit/829603fb028a217e021c56afda7b7c60f8564fdb))
+* update user.json ([c3f5434](https://github.com/jwplayer/ott-web-app/commit/c3f5434fe6a560cfe26c518c56ede46ba04dd359))
+
+
+
 # [4.12.0](https://github.com/jwplayer/ott-web-app/compare/v4.11.1...v4.12.0) (2023-06-02)
 
 
