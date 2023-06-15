@@ -169,7 +169,7 @@ export async function logout() {
 
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
-    useAccountStore.setState({ customerConsents: null });
+    useAccountStore.setState({ loading: true });
     const response = await accountService.register({ config, email, password });
     if (response) {
       const { user, customerConsents } = response;
