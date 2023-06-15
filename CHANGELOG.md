@@ -1,3 +1,24 @@
+# [4.14.0](https://github.com/jwplayer/ott-web-app/compare/v4.13.0...v4.14.0) (2023-06-15)
+
+
+### Features
+
+* add logic for inplayer social login ([04c1d74](https://github.com/jwplayer/ott-web-app/commit/04c1d74967c905009d6bdf2e9ce352e6f32cdafa))
+* initial social login buttons implementation ([0dd1204](https://github.com/jwplayer/ott-web-app/commit/0dd120486ef47a6e9dcfd9036cc72ceb699e1a45))
+
+
+
+# [4.13.0](https://github.com/jwplayer/ott-web-app/compare/v4.12.1...v4.13.0) (2023-06-15)
+
+
+### Features
+
+* add error handling for account deletion ([25b2f5a](https://github.com/jwplayer/ott-web-app/commit/25b2f5a5ca96491bed3bae789c1e60fef35f09d2))
+* add reset to useForm, handle back button in DeleteAccountModal ([eacd3b7](https://github.com/jwplayer/ott-web-app/commit/eacd3b7575cc0d6cbf891c7ed7943c9b4b66ab76))
+* **user:** initial account deletion implementation ([b6eda04](https://github.com/jwplayer/ott-web-app/commit/b6eda042a230f106b6a14ea7844b887778a0696d))
+
+
+
 ## [4.12.1](https://github.com/jwplayer/ott-web-app/compare/v4.12.0...v4.12.1) (2023-06-08)
 
 

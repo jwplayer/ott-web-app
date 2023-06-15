@@ -3,6 +3,21 @@
     "about_you": "Información de perfil",
     "cancel": "Cancelar",
     "confirm_password": "Confirmar contraseña",
+    "continue": "",
+    "delete_account": {
+      "body": "",
+      "error": "",
+      "modal": {
+        "placeholder": "",
+        "text_cant_be_undone": "",
+        "text_contacts": "",
+        "text_data_erasure": "",
+        "text_revoked_access": "",
+        "title": "",
+        "warning": ""
+      },
+      "title": ""
+    },
     "edit_account": "Editar cuenta",
     "edit_information": "Editar información",
     "edit_password": "Editar contraseña",
@@ -24,7 +39,7 @@
     "firstname": "Nombre",
     "hide_password": "Ocultar contraseña",
     "lastname": "Apellido",
-    "other_registration_details": "Otros detalles de registro",
+    "password": "",
     "save": "Guardar",
     "security": "Contraseña",
     "terms_and_tracking": "Jurídico y marketing",
@@ -38,6 +53,9 @@
     "no_favorites": "Tus favoritos están vacíos",
     "not_found": "¡Favoritos no encontrados!",
     "title": "Favoritos"
+  },
+  "login": {
+    "field_required": ""
   },
   "nav": {
     "account": "Cuenta",

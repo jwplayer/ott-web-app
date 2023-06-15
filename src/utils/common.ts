@@ -90,3 +90,6 @@ export const isFalsyCustomParamValue = (value: unknown): boolean => ['false', '0
 export function testId(value: string | undefined) {
   return IS_DEVELOPMENT_BUILD || IS_TEST_MODE || IS_PREVIEW_MODE ? value : undefined;
 }
+
+type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;
+export const isTruthy = <T>(value: T | true): value is Truthy<T> => Boolean(value);

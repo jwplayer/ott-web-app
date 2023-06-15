@@ -18,6 +18,7 @@ type AccountStore<T = string> = {
   canUpdatePaymentMethod: boolean;
   canChangePasswordWithOldPassword: boolean;
   canExportAccountData: boolean;
+  canDeleteAccount: boolean;
   canShowReceipts: boolean;
   setLoading: (loading: boolean) => void;
 };
@@ -35,6 +36,7 @@ export const useAccountStore = createStore<AccountStore<ConsentFieldVariants>>('
   canRenewSubscription: false,
   canChangePasswordWithOldPassword: false,
   canExportAccountData: false,
+  canDeleteAccount: false,
   canUpdatePaymentMethod: false,
   canShowReceipts: false,
   setLoading: (loading: boolean) => set({ loading }),
