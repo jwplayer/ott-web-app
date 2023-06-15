@@ -2,7 +2,6 @@ import { logout, reloadActiveSubscription } from './AccountController';
 
 import useService from '#src/hooks/useService';
 import { addQueryParams } from '#src/utils/formatting';
-import useAccount from '#src/hooks/useAccount';
 
 export enum NotificationsTypes {
   ACCESS_GRANTED = 'access.granted',
@@ -15,38 +14,36 @@ export enum NotificationsTypes {
 }
 
 export const subscribeToNotifications = async (uuid: string = '') => {
-  return await useAccount(async () => {
-    return await useService(async ({ accountService }) => {
-      return await accountService.subscribeToNotifications(uuid, async (message) => {
-        if (message) {
-          const notification = JSON.parse(message);
-          switch (notification.type) {
-            case NotificationsTypes.FAILED:
-            case NotificationsTypes.SUBSCRIBE_FAILED:
-              window.location.href = addQueryParams(window.location.href, { u: 'payment-error', message: notification.resource?.message });
-              break;
-            case NotificationsTypes.ACCOUNT_LOGOUT:
-              await logout();
-              if (notification.resource?.reason === 'sessions_limit') {
-                window.location.href = addQueryParams(window.location.href, { u: 'simultaneous-logins' });
-              }
-              break;
-            case NotificationsTypes.ACCESS_GRANTED:
-              await reloadActiveSubscription();
-              window.location.href = addQueryParams(window.location.href, { u: 'welcome' });
-              break;
-            case NotificationsTypes.ACCESS_REVOKED:
-              await reloadActiveSubscription();
-              break;
-            case NotificationsTypes.CARD_REQUIRES_ACTION:
-            case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:
-              window.location.href = notification.resource?.redirect_to_url;
-              break;
-            default:
-              break;
-          }
+  return await useService(async ({ accountService }) => {
+    return await accountService.subscribeToNotifications(uuid, async (message) => {
+      if (message) {
+        const notification = JSON.parse(message);
+        switch (notification.type) {
+          case NotificationsTypes.FAILED:
+          case NotificationsTypes.SUBSCRIBE_FAILED:
+            window.location.href = addQueryParams(window.location.href, { u: 'payment-error', message: notification.resource?.message });
+            break;
+          case NotificationsTypes.ACCOUNT_LOGOUT:
+            if (notification.resource?.reason === 'sessions_limit') {
+              window.location.href = addQueryParams(window.location.href, { u: 'simultaneous-logins' });
+            }
+            await logout();
+            break;
+          case NotificationsTypes.ACCESS_GRANTED:
+            await reloadActiveSubscription();
+            window.location.href = addQueryParams(window.location.href, { u: 'welcome' });
+            break;
+          case NotificationsTypes.ACCESS_REVOKED:
+            await reloadActiveSubscription();
+            break;
+          case NotificationsTypes.CARD_REQUIRES_ACTION:
+          case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:
+            window.location.href = notification.resource?.redirect_to_url;
+            break;
+          default:
+            break;
         }
-      });
+      }
     });
   });
 };
