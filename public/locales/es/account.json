@@ -88,6 +88,7 @@
     "password": "Contraseña",
     "sign_in": "Iniciar sesión",
     "sign_up": "Registrarse",
+    "simultaneous_logins": "",
     "view_password": "Ver contraseña",
     "wrong_combination": "Combinación de correo electrónico/contraseña incorrecta",
     "wrong_email": "Por favor, verifica tu correo electrónico e intenta nuevamente."
