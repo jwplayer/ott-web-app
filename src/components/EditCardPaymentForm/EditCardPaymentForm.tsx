@@ -113,7 +113,7 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
         </div>
       </div>
       <div>
-        <Button label={t('checkout.save')} variant="contained" onClick={paymentData.handleSubmit as () => void} color="primary" size="large" fullWidth />
+        <Button disabled={updateCard.isLoading} label={t('checkout.save')} variant="contained" onClick={paymentData.handleSubmit as () => void} color="primary" size="large" fullWidth />
       </div>
     </div>
   );
