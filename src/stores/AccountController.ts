@@ -157,6 +157,7 @@ export async function logout() {
       activePayment: null,
       customerConsents: null,
       publisherConsents: null,
+      loading: false,
     });
 
     await restoreFavorites();
@@ -168,7 +169,7 @@ export async function logout() {
 
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
-    useAccountStore.setState({ loading: true });
+    useAccountStore.setState({ customerConsents: null });
     const response = await accountService.register({ config, email, password });
     if (response) {
       const { user, customerConsents } = response;
