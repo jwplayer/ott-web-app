@@ -29,7 +29,7 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
           style="transition: transform 0.2s ease, opacity 0.2s ease; transform: translate(0, -15px); opacity: 0; z-index: 15;"
         >
           <div
-            class="_dialog_00d559"
+            class="_dialog_00d559 _small_00d559"
           >
             <div
               aria-label="close_modal"
