@@ -26,10 +26,10 @@ export const subscribeToNotifications = async (uuid: string = '') => {
               window.location.href = addQueryParams(window.location.href, { u: 'payment-error', message: notification.resource?.message });
               break;
             case NotificationsTypes.ACCOUNT_LOGOUT:
+              await logout();
               if (notification.resource?.reason === 'sessions_limit') {
                 window.location.href = addQueryParams(window.location.href, { u: 'simultaneous-logins' });
               }
-              await logout();
               break;
             case NotificationsTypes.ACCESS_GRANTED:
               await reloadActiveSubscription();
