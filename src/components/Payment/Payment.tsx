@@ -175,7 +175,7 @@ const Payment = ({
                 <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
                 <TextField label={t('user:payment.security_code')} value={'******'} editing={false} />
               </div>
-              <Button label={t('Edit card')} variant="outlined" onClick={onEditCardDetailsClick} />
+              <Button label={t('account:payment.edit_card')} variant="outlined" onClick={onEditCardDetailsClick} />
             </div>
           )
         ) : (
