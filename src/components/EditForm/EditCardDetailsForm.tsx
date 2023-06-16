@@ -14,7 +14,7 @@ type Props = {
 };
 
 const EditCardDetailsForm: React.FC<Props> = ({ renderPaymentMethod, submitting, onCancel }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['common', 'user']);
   return (
     <div>
       <div className={styles.title}>
