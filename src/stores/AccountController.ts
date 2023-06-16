@@ -375,7 +375,6 @@ export const updateCardDetails = async ({
     return await useService(async ({ subscriptionService, sandbox = true }) => {
       const response = await subscriptionService?.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
       const activePayment = (await subscriptionService?.getActivePayment({ sandbox, customerId })) || null;
-      useAccountStore.setState({ loading: true });
       useAccountStore.setState({
         loading: false,
         activePayment,

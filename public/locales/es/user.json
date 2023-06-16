@@ -65,6 +65,7 @@
   },
   "payment": {
     "access_granted": "acceso concedido",
+    "add_card_details": "Agregar detalles de la tarjeta",
     "annual_subscription": "Suscripción anual",
     "cancel_subscription": "Cancelar suscripción",
     "card_number": "Número de tarjeta",
