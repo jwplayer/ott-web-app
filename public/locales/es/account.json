@@ -80,11 +80,11 @@
   },
   "login": {
     "email": "Correo electrónico",
-    "facebook": "",
+    "facebook": "Inicia sesión con Facebook",
     "field_is_not_valid_email": "Por favor, vuelve a ingresar tus datos de correo electrónico y prueba nuevamente.",
     "field_required": "Este campo es obligatorio",
     "forgot_password": "¿Olvidaste tu contraseña?",
-    "google": "",
+    "google": "Inicia sesión con Google",
     "hide_password": "Ocultar contraseña",
     "not_registered": "¿Nuevo/a en {{siteName}}?",
     "ok": "Ok",
@@ -92,7 +92,7 @@
     "sign_in": "Iniciar sesión",
     "sign_up": "Registrarse",
     "simultaneous_logins": "Se ha cerrado la sesión porque se ha alcanzado el límite de inicios de sesión simultáneos",
-    "twitter": "Registrate con Twitter",
+    "twitter": "Inicia sesión con Twitter",
     "view_password": "Ver contraseña",
     "wrong_combination": "Combinación de correo electrónico/contraseña incorrecta",
     "wrong_email": "Por favor, verifica tu correo electrónico e intenta nuevamente."
