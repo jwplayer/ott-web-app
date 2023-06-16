@@ -1,5 +1,7 @@
 import i18next from 'i18next';
 
+import { subscribeToNotifications } from './NotificationsController';
+
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type {
@@ -108,13 +110,24 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
 
 export const getAccount = async () => {
   await useService(async ({ accountService, config, accessModel }) => {
-    const response = await accountService.getUser({ config });
+    try {
+      const response = await accountService.getUser({ config });
+      if (response) {
+        await afterLogin(response.user, response.customerConsents, accessModel);
+      }
 
-    if (response) {
-      await afterLogin(response.user, response.customerConsents, accessModel);
+      useAccountStore.setState({ loading: false });
+    } catch (error: unknown) {
+      useAccountStore.setState({
+        user: null,
+        subscription: null,
+        transactions: null,
+        activePayment: null,
+        customerConsents: null,
+        publisherConsents: null,
+        loading: false,
+      });
     }
-
-    useAccountStore.setState({ loading: false });
   });
 };
 
@@ -146,6 +159,7 @@ export async function logout() {
       activePayment: null,
       customerConsents: null,
       publisherConsents: null,
+      loading: false,
     });
 
     await restoreFavorites();
@@ -440,6 +454,11 @@ export async function exportAccountData() {
   });
 }
 
+export async function getSocialLoginUrls() {
+  return await useService(async ({ accountService, config }) => {
+    return await accountService.getSocialUrls(config);
+  });
+}
 export async function deleteAccountData(password: string) {
   return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
@@ -478,6 +497,8 @@ async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | 
     user,
     customerConsents,
   });
+
+  subscribeToNotifications(user.uuid);
 
   return await Promise.allSettled([
     accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
