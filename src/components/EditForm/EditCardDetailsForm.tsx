@@ -18,7 +18,7 @@ const EditCardDetailsForm: React.FC<Props> = ({ renderPaymentMethod, submitting,
   return (
     <div>
       <div className={styles.title}>
-        <h1>Add card details</h1>
+        <h1>t('user:payments.add_card_details')</h1>
       </div>
       <div>{renderPaymentMethod ? renderPaymentMethod() : null}</div>
       <Button onClick={onCancel} className={styles.cancelButton} fullWidth label={t('confirmation_dialog.close')} />
