@@ -715,7 +715,7 @@ exports[`User Component tests > Payments Page 1`] = `
             class="_button_f8f296 _default_f8f296 _outlined_f8f296"
           >
             <span>
-              Edit card
+              account:payment.edit_card
             </span>
           </button>
         </div>
