@@ -87,10 +87,12 @@
     "google": "",
     "hide_password": "Ocultar contraseña",
     "not_registered": "¿Nuevo/a en {{siteName}}?",
+    "ok": "Ok",
     "password": "Contraseña",
     "sign_in": "Iniciar sesión",
     "sign_up": "Registrarse",
-    "twitter": "",
+    "simultaneous_logins": "Se ha cerrado la sesión porque se ha alcanzado el límite de inicios de sesión simultáneos",
+    "twitter": "Registrate con Twitter",
     "view_password": "Ver contraseña",
     "wrong_combination": "Combinación de correo electrónico/contraseña incorrecta",
     "wrong_email": "Por favor, verifica tu correo electrónico e intenta nuevamente."
