@@ -21,7 +21,7 @@ const EditCardDetailsForm: React.FC<Props> = ({ renderPaymentMethod, submitting,
         <h1>t('user:payments.add_card_details')</h1>
       </div>
       <div>{renderPaymentMethod ? renderPaymentMethod() : null}</div>
-      <Button onClick={onCancel} className={styles.cancelButton} fullWidth label={t('confirmation_dialog.close')} />
+      <Button onClick={onCancel} className={styles.cancelButton} fullWidth label={t('common:confirmation_dialog.close')} />
       {submitting && <LoadingOverlay transparentBackground inline />}
     </div>
   );
