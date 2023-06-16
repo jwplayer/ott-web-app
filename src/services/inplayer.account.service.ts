@@ -37,15 +37,17 @@ enum InPlayerEnv {
   Daily = 'daily',
 }
 
-export enum ConsentFieldVariants {
-  INPUT = 'input',
-  GENERAL_SELECT = 'select',
-  COUNTRY_SELECT = 'country',
-  US_STATE_SELECT = 'us_state',
-  RADIO = 'radio',
-  CHECKBOX = 'checkbox',
-  DATE_PICKER = 'datepicker',
-}
+export const REGISTER_FIELD_VARIANT = {
+  INPUT: 'input',
+  GENERIC_SELECT: 'select',
+  COUNTRY_SELECT: 'country',
+  US_STATE_SELECT: 'us_state',
+  RADIO: 'radio',
+  CHECKBOX: 'checkbox',
+  DATE_PICKER: 'datepicker',
+} as const;
+
+export type ConsentFieldVariants = (typeof REGISTER_FIELD_VARIANT)[keyof typeof REGISTER_FIELD_VARIANT];
 
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
@@ -163,7 +165,7 @@ export const updateCustomer: UpdateCustomer = async (customer) => {
   }
 };
 
-export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants, string | boolean> = async (config) => {
+export const getPublisherConsents: GetPublisherConsents = async (config) => {
   try {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
@@ -171,10 +173,10 @@ export const getPublisherConsents: GetPublisherConsents<ConsentFieldVariants, st
     const result = data?.collection
       .filter((field) => field.name !== 'email_confirmation')
       .map(
-        (field): Consent<ConsentFieldVariants> => ({
+        (field): Consent => ({
           type: field.type as ConsentFieldVariants,
           provider: 'jwp',
-          defaultValue: field.type === ConsentFieldVariants.CHECKBOX ? field.default_value === 'true' : field.default_value,
+          defaultValue: field.type === REGISTER_FIELD_VARIANT.CHECKBOX ? field.default_value === 'true' : field.default_value,
           name: field.name,
           label: field.label,
           placeholder: field.placeholder,
@@ -467,11 +469,11 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-function getTermsConsent(): Consent<ConsentFieldVariants> {
+function getTermsConsent(): Consent {
   const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
 
   return {
-    type: ConsentFieldVariants.CHECKBOX,
+    type: REGISTER_FIELD_VARIANT.CHECKBOX,
     provider: 'jwp',
     required: true,
     name: 'terms',

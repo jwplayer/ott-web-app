@@ -6,7 +6,7 @@ import TextField from '#components/TextField/TextField';
 import Radio from '#components/Radio/Radio';
 import Dropdown from '#components/Dropdown/Dropdown';
 import DateField from '#components/DateField/DateField';
-import { ConsentFieldVariants } from '#src/services/inplayer.account.service';
+import { ConsentFieldVariants, REGISTER_FIELD_VARIANT } from '#src/services/inplayer.account.service';
 import { countries, usStates } from '#static/json';
 
 type Props = {
@@ -30,9 +30,9 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
   const optionsList = useMemo(() => {
     const optionsObject = (() => {
       switch (type) {
-        case ConsentFieldVariants.COUNTRY_SELECT:
+        case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
           return countries;
-        case ConsentFieldVariants.US_STATE_SELECT:
+        case REGISTER_FIELD_VARIANT.US_STATE_SELECT:
           return usStates;
         default:
           return props.options;
@@ -48,7 +48,7 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ currentTarget }) => {
-      const value = type === ConsentFieldVariants.CHECKBOX ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
+      const value = type === REGISTER_FIELD_VARIANT.CHECKBOX ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
       onChange(name, value);
     },
     [type, name, onChange],
@@ -57,17 +57,17 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
   const commonProps = { ...props, name, onChange: changeHandler };
 
   switch (type) {
-    case ConsentFieldVariants.CHECKBOX:
+    case REGISTER_FIELD_VARIANT.CHECKBOX:
       return <Checkbox {...commonProps} checked={value === true} />;
-    case ConsentFieldVariants.INPUT:
+    case REGISTER_FIELD_VARIANT.INPUT:
       return <TextField {...commonProps} value={value as string} />;
-    case ConsentFieldVariants.RADIO:
+    case REGISTER_FIELD_VARIANT.RADIO:
       return <Radio {...commonProps} values={optionsList} value={value as string} header={props.label} />;
-    case ConsentFieldVariants.GENERAL_SELECT:
-    case ConsentFieldVariants.COUNTRY_SELECT:
-    case ConsentFieldVariants.US_STATE_SELECT:
+    case REGISTER_FIELD_VARIANT.GENERIC_SELECT:
+    case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
+    case REGISTER_FIELD_VARIANT.US_STATE_SELECT:
       return <Dropdown {...commonProps} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
-    case ConsentFieldVariants.DATE_PICKER:
+    case REGISTER_FIELD_VARIANT.DATE_PICKER:
       return <DateField {...commonProps} value={value as string} onChange={(dateString: string) => onChange(name, dateString)} />;
   }
 

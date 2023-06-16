@@ -9,7 +9,7 @@ import styles from './Account.module.scss';
 
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
 import type { Consent } from '#types/account';
-import { ConsentFieldVariants } from '#src/services/inplayer.account.service';
+import { REGISTER_FIELD_VARIANT } from '#src/services/inplayer.account.service';
 import Alert from '#components/Alert/Alert';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
@@ -69,11 +69,11 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   );
 
   const [termsConsents, nonTermsConsents] = useMemo(() => {
-    const terms: Consent<ConsentFieldVariants>[] = [];
-    const nonTerms: Consent<ConsentFieldVariants>[] = [];
+    const terms: Consent[] = [];
+    const nonTerms: Consent[] = [];
 
     publisherConsents?.forEach((consent) => {
-      if (consent.type === ConsentFieldVariants.CHECKBOX) {
+      if (consent.type === REGISTER_FIELD_VARIANT.CHECKBOX) {
         terms.push(consent);
       } else {
         nonTerms.push(consent);
@@ -295,7 +295,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                       label={formatConsentLabel(consent.label)}
                       placeholder={consent.placeholder}
                       value={section.values.consentsValues[consent.name]}
-                      disabled={(consent.type === ConsentFieldVariants.CHECKBOX && consent.required) || section.isBusy}
+                      disabled={(consent.type === REGISTER_FIELD_VARIANT.CHECKBOX && consent.required) || section.isBusy}
                       onChange={(name, value) => section.onChangeValue(name, value)}
                     />
                   ))}

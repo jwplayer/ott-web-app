@@ -5,8 +5,6 @@ import type { SerializedFavorite } from './favorite';
 
 import type { Config } from '#types/Config';
 
-export type StringedBoolean = 'true' | 'false';
-
 export type AuthData = {
   jwt: string;
   refreshToken: string;
@@ -130,8 +128,8 @@ export type GetPublisherConsentsPayload = {
   publisherId: string;
 };
 
-export type GetPublisherConsentsResponse<T = string, D = string> = {
-  consents: Consent<T, D>[];
+export type GetPublisherConsentsResponse = {
+  consents: Consent[];
 };
 
 export type GetCustomerConsentsPayload = {
@@ -220,32 +218,12 @@ export type UpdateCustomerArgs = {
   fullName?: string;
 };
 
-export interface CleengConsent {
-  broadcasterId: number;
-  enabledByDefault: boolean;
-  label: string;
-  name: string;
-  required: boolean;
-  value: string;
-  version: string;
-}
-
-export interface JwConsent<T = string> {
-  default_value: string | StringedBoolean;
-  id: number;
-  label: string;
-  name: string;
-  placeholder: string;
-  required: boolean;
-  type: T;
-  options: Record<string, string>;
-}
-
 export type ConsentProvider = 'cleeng' | 'jwp';
 
-// the type in which both CleengConsent and JwConsent will be converted for consistency
-export interface Consent<T = string> {
-  type: T;
+export type ConsentFieldVariants = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
+
+export interface Consent {
+  type: ConsentFieldVariantss;
   provider: ConsentProvider;
   defaultValue: string | boolean;
   name: string;
@@ -362,7 +340,7 @@ type Login = PromiseRequest<AuthArgs, AuthResponse>;
 type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type GetCustomer = EnvironmentServiceRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = EnvironmentServiceRequest<UpdateCustomerArgs, Customer>;
-type GetPublisherConsents<T = string, D = string> = PromiseRequest<Config, GetPublisherConsentsResponse<T, D>>;
+type GetPublisherConsents = PromiseRequest<Config, GetPublisherConsentsResponse>;
 type GetCustomerConsents = PromiseRequest<CustomerConsentArgs, GetCustomerConsentsResponse>;
 type UpdateCustomerConsents = PromiseRequest<UpdateCustomerConsentsArgs, GetCustomerConsentsResponse>;
 type GetCaptureStatus = EnvironmentServiceRequest<GetCaptureStatusArgs, GetCaptureStatusResponse>;

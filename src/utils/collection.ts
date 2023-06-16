@@ -65,7 +65,7 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
   ),
 });
 
-const formatConsentValues = <T = string>(publisherConsents: Consent<T>[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+const formatConsentValues = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
@@ -84,7 +84,7 @@ const formatConsentValues = <T = string>(publisherConsents: Consent<T>[] | null 
   return values;
 };
 
-const formatConsents = <T = string>(publisherConsents: Consent<T>[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+const formatConsents = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
@@ -112,7 +112,7 @@ const extractConsentValues = (consents?: Consent[]) => {
   return values;
 };
 
-const formatConsentsFromValues = <T = string>(publisherConsents: Consent<T>[] | null, values?: GenericFormValues) => {
+const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: GenericFormValues) => {
   const consents: CustomerConsent[] = [];
 
   if (!publisherConsents || !values) return consents;
