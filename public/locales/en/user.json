@@ -55,7 +55,7 @@
     "title": "Favorites"
   },
   "login": {
-    "field_required": ""
+    "field_required": "This field is required"
   },
   "nav": {
     "account": "Account",
