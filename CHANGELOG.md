@@ -1,3 +1,12 @@
+# [4.18.0](https://github.com/jwplayer/ott-web-app/compare/v4.17.0...v4.18.0) (2023-06-19)
+
+
+### Features
+
+* add machine translations for delete account and social login ([51a9485](https://github.com/jwplayer/ott-web-app/commit/51a94855e814421aa43d8702024c41c5fec0c96e))
+
+
+
 # [4.17.0](https://github.com/jwplayer/ott-web-app/compare/v4.16.1...v4.17.0) (2023-06-19)
 
 
