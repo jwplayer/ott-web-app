@@ -8,6 +8,7 @@
   },
   "checkout": {
     "applicable_tax": "Applicable tax ({{taxRate}}%)",
+    "card_holder_name": "Cardholder name",
     "close": "Close",
     "continue": "Continue",
     "coupon_applied": "Your coupon code has been applied",
@@ -36,6 +37,7 @@
     "periods_trial_one": "You will be charged after one {{period}}.",
     "periods_trial_other": "You will be charged after {{count}} {{period}}.",
     "redeem_coupon": "Redeem coupon",
+    "save": "Save",
     "start_watching": "Start watching ({{countdown}})",
     "total_price": "Total",
     "upgrade_error": "Failed to update subscription!",
@@ -94,6 +96,7 @@
   "payment": {
     "back_to_profile": "Back to profile",
     "credit_card": "Credit card",
+    "edit_card": "Edit card",
     "paypal": "PayPal",
     "update_payment_details": "Update payment details",
     "update_payment_success": "Your payment details have been updated"

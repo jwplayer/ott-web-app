@@ -8,6 +8,7 @@
   },
   "checkout": {
     "applicable_tax": "Impuesto aplicable ({{taxRate}}%)",
+    "card_holder_name": "Nombre del titular de la tarjeta",
     "close": "Cerrar",
     "continue": "Continuar",
     "coupon_applied": "Se ha aplicado tu código de cupón",
@@ -39,6 +40,7 @@
     "periods_trial_many": "",
     "periods_trial_other": "Se te cobrará después de {{count}} {{period}}.",
     "redeem_coupon": "Canjear cupón",
+    "save": "Ahorrar",
     "start_watching": "Comenzar a ver ({{countdown}})",
     "total_price": "Total",
     "upgrade_error": "No se pudo actualizar la suscripción!",
@@ -100,6 +102,7 @@
   "payment": {
     "back_to_profile": "Volver al perfil",
     "credit_card": "Credit card",
+    "edit_card": "Editar tarjeta",
     "paypal": "PayPal",
     "update_payment_details": "Actualizar detalles de pago",
     "update_payment_success": "Sus detalles de pago han sido actualizados"
