@@ -215,12 +215,7 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
-    const params = {
-      ...formatUpdateAccount(customer),
-      metadata: {
-        consents: JSON.stringify(consents),
-      },
-    };
+    const params = { ...formatUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
 
     const { data } = await InPlayer.Account.updateAccount(params);
 
