@@ -46,3 +46,4 @@ export const getTransactions: GetTransactions = async ({ customerId, limit, offs
 export const fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox) => {
   return get(sandbox, `/receipt/${transactionId}`, { authenticate: true });
 };
+export const updateCardDetails = () => null;

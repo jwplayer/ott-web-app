@@ -129,8 +129,8 @@ export const register: Register = async ({ config, email, password }) => {
 
 export const logout = async () => {
   try {
+    InPlayer.Notifications.unsubscribe();
     await InPlayer.Account.signOut();
-    return InPlayer.Notifications.unsubscribe();
   } catch {
     throw new Error('Failed to sign out.');
   }

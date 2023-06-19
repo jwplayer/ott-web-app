@@ -56,7 +56,7 @@
     "title": "Favorites"
   },
   "login": {
-    "field_required": ""
+    "field_required": "This field is required"
   },
   "nav": {
     "account": "Account",
@@ -66,6 +66,7 @@
   },
   "payment": {
     "access_granted": "access granted",
+    "add_card_details": "Add card details",
     "annual_subscription": "Annual subscription",
     "cancel_subscription": "Cancel subscription",
     "card_number": "Card number",

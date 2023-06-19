@@ -12,6 +12,8 @@ import ResetPassword from './forms/ResetPassword';
 import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
+import EditCardDetails from './forms/EditCardDetails';
+import SimultaneousLoginsNotification from './forms/SimultaneousLoginsNotification';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -28,7 +30,7 @@ import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePayme
 import useEventCallback from '#src/hooks/useEventCallback';
 import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
 
-const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
+const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
 
 const AccountModal = () => {
   const navigate = useNavigate();
@@ -72,6 +74,8 @@ const AccountModal = () => {
       );
     }
     switch (view) {
+      case 'simultaneous-logins':
+        return <SimultaneousLoginsNotification />;
       case 'login':
         return <Login />;
       case 'create-account':
@@ -80,6 +84,8 @@ const AccountModal = () => {
         return <PersonalDetails />;
       case 'choose-offer':
         return <ChooseOffer />;
+      case 'edit-card':
+        return <EditCardDetails />;
       case 'upgrade-subscription':
         return <ChooseOffer />;
       case 'upgrade-subscription-error':
@@ -121,7 +127,7 @@ const AccountModal = () => {
     }
   };
 
-  const shouldShowBanner = !['delete-account', 'delete-account-confirmation'].includes(view ?? '');
+  const shouldShowBanner = !['delete-account', 'delete-account-confirmation', 'edit-card'].includes(view ?? '');
   const dialogSize = ['delete-account-confirmation'].includes(view ?? '') ? 'large' : 'small';
 
   return (

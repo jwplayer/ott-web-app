@@ -72,6 +72,9 @@ const Payment = ({
   function onCompleteSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'choose-offer'));
   }
+  function onEditCardDetailsClick() {
+    navigate(addQueryParam(location, 'u', 'edit-card'));
+  }
 
   function onCancelSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'unsubscribe'));
@@ -154,8 +157,12 @@ const Payment = ({
         </div>
         {activePaymentDetail ? (
           activePaymentDetail.paymentMethod === 'paypal' ? (
-            <div className={styles.paypal}>
-              <PayPal /> {t('account:payment.paypal')}
+            <div>
+              <div className={styles.paypal}>
+                <PayPal /> {t('account:payment.paypal')}
+              </div>
+
+              {activePaymentDetail.currency}
             </div>
           ) : (
             <div key={activePaymentDetail.id}>
@@ -168,6 +175,7 @@ const Payment = ({
                 <TextField label={t('user:payment.expiry_date')} value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate} editing={false} />
                 <TextField label={t('user:payment.security_code')} value={'******'} editing={false} />
               </div>
+              <Button label={t('account:payment.edit_card')} variant="outlined" onClick={onEditCardDetailsClick} />
             </div>
           )
         ) : (
