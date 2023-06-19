@@ -1,3 +1,12 @@
+## [4.16.1](https://github.com/jwplayer/ott-web-app/compare/v4.16.0...v4.16.1) (2023-06-19)
+
+
+### Bug Fixes
+
+* period ([259db6c](https://github.com/jwplayer/ott-web-app/commit/259db6cf6556bf916173c1f79d11533d8e3d82e8))
+
+
+
 # [4.16.0](https://github.com/jwplayer/ott-web-app/compare/v4.15.0...v4.16.0) (2023-06-16)
 
 
