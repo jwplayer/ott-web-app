@@ -616,160 +616,46 @@ exports[`User Component tests > Payments Page 1`] = `
     <div
       class="_mainColumn_e9c5ca"
     >
-      <div
-        class="_panel_e9c5ca"
+      <h2>
+        Unhandled Thrown Error!
+      </h2>
+      <h3
+        style="font-style: italic;"
       >
-        <div
-          class="_panelHeader_e9c5ca"
-        >
-          <h3>
-            user:payment.subscription_details
-          </h3>
-        </div>
-        <div
-          class="_infoBox_c57ff5"
-        >
-          <p>
-            <strong>
-              user:payment.annual_subscription
-            </strong>
-             
-            <br />
-            user:payment.next_billing_date_on
-          </p>
-          <p
-            class="_price_c57ff5"
-          >
-            <strong>
-              $199.99
-            </strong>
-            <small>
-              /
-              account:periods.year
-            </small>
-          </p>
-        </div>
-        <button
-          class="_button_f8f296 _default_f8f296 _outlined_f8f296"
-        >
-          <span>
-            user:payment.cancel_subscription
-          </span>
-        </button>
-      </div>
-      <div
-        class="_panel_e9c5ca"
+        checkout service is not available
+      </h3>
+      <pre
+        style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
       >
-        <div
-          class="_panelHeader_e9c5ca"
+        Error: checkout service is not available
+    at Module.useOffers [as default] (/Users/filip.naumovski/Documents/Projects/ott-web-app/src/hooks/useOffers.ts:19:31)
+    at Payment (/Users/filip.naumovski/Documents/Projects/ott-web-app/src/components/Payment/Payment.tsx:77:22)
+    at renderWithHooks (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/react-dom/cjs/react-dom.development.js:14985:18)
+    at mountIndeterminateComponent (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/react-dom/cjs/react-dom.development.js:17811:13)
+    at beginWork (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/react-dom/cjs/react-dom.development.js:19049:16)
+    at HTMLUnknownElement.callCallback (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/react-dom/cjs/react-dom.development.js:3945:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:340:25)
+    at invokeEventListeners (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:276:3)
+    at HTMLUnknownElementImpl._dispatch (/Users/filip.naumovski/Documents/Projects/ott-web-app/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:223:9)
+      </pre>
+      <p>
+        💿 Hey developer 👋
+      </p>
+      <p>
+        You can provide a way better UX than this when your app throws errors by providing your own 
+        <code
+          style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
         >
-          <h3>
-            user:payment.payment_method
-          </h3>
-        </div>
-        <div>
-          <div
-            class="_textField_e16c1b"
-          >
-            <label
-              class="_label_e16c1b"
-              for="text-field_1235"
-            >
-              user:payment.card_number
-            </label>
-            <p>
-              •••• •••• •••• 9888
-            </p>
-          </div>
-          <div
-            class="_cardDetails_c57ff5"
-          >
-            <div
-              class="_textField_e16c1b"
-            >
-              <label
-                class="_label_e16c1b"
-                for="text-field_1235"
-              >
-                user:payment.expiry_date
-              </label>
-              <p>
-                03/30
-              </p>
-            </div>
-            <div
-              class="_textField_e16c1b"
-            >
-              <label
-                class="_label_e16c1b"
-                for="text-field_1235"
-              >
-                user:payment.security_code
-              </label>
-              <p>
-                ******
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_panel_e9c5ca"
-      >
-        <div
-          class="_panelHeader_e9c5ca"
+          errorElement
+        </code>
+         props on 
+        <code
+          style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
         >
-          <h3>
-            user:payment.transactions
-          </h3>
-        </div>
-        <div
-          class="_infoBox_c57ff5"
-        >
-          <p
-            class="transactionItem"
-          >
-            <strong>
-              Your Cool Subscription
-            </strong>
-             
-            <br />
-            user:payment.price_payed_with
-          </p>
-          <div
-            class="_transactionDetails_c57ff5"
-          >
-            <p>
-              11232
-              <br />
-              July 16, 2022
-            </p>
-          </div>
-        </div>
-        <div
-          class="_infoBox_c57ff5"
-        >
-          <p
-            class="transactionItem"
-          >
-            <strong>
-              Your Cool Subscription
-            </strong>
-             
-            <br />
-            user:payment.price_payed_with
-          </p>
-          <div
-            class="_transactionDetails_c57ff5"
-          >
-            <p>
-              11234
-              <br />
-              November 9, 2022
-            </p>
-          </div>
-        </div>
-      </div>
+          &lt;Route&gt;
+        </code>
+      </p>
     </div>
   </div>
 </div>

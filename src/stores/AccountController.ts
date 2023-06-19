@@ -417,26 +417,28 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
   });
 }
 
-export async function exportAccountData() {
+export const exportAccountData = async () => {
   return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
       return await accountService.exportAccountData(undefined, true);
     });
   });
-}
+};
 
-export async function getSocialLoginUrls() {
+export const getSocialLoginUrls = async () => {
   return await useService(async ({ accountService, config }) => {
     return await accountService.getSocialUrls(config);
   });
-}
-export async function deleteAccountData(password: string) {
+};
+
+export const deleteAccountData = async (password: string) => {
   return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
       return await accountService.deleteAccount({ password }, true);
     });
   });
-}
+};
+
 export const getReceipt = async (transactionId: string) => {
   return await useAccount(async () => {
     return await useService(async ({ subscriptionService, sandbox = true }) => {

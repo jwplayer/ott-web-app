@@ -68,9 +68,13 @@
     "annual_subscription": "Annual subscription",
     "cancel_subscription": "Cancel subscription",
     "card_number": "Card number",
+    "change_plan": "",
+    "change_plan_error": "",
     "change_subscription": "Change subscription",
     "complete_subscription": "Complete subscription",
+    "current_plan": "",
     "daily_subscription": "Daily subscription",
+    "downgrade_plan_success": "",
     "expiry_date": "Expiry date",
     "granted_subscription": "Granted subscription",
     "hidden_transactions_one": "One more transaction",
@@ -94,6 +98,7 @@
     "subscription_expires_on": "This plan will expire on {{date}}",
     "transactions": "Transactions",
     "update_payment_details": "Update payment details",
+    "upgrade_plan_success": "",
     "weekly_subscription": "Weekly subscription"
   }
 }

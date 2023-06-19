@@ -69,3 +69,20 @@
     margin: 0 0 8px;
   }
 }
+
+.changePlanContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.changePlanButtons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 12px;
+}
+
+.changePlanCancelButton {
+  margin-left: auto;
+}
