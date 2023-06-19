@@ -16,7 +16,19 @@ const useOffers = () => {
   const { clientOffers, sandbox } = useClientIntegration();
 
   const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
-  if (!checkoutService) throw new Error('checkout service is not available');
+  if (!checkoutService) {
+    return {
+      hasTVODOffers: false,
+      hasMultipleOfferTypes: false,
+      isLoading: false,
+      hasPremierOffer: false,
+      defaultOfferId: '',
+      offerType: 'svod' as OfferType,
+      setOfferType: () => null,
+      offers: [],
+      offersDict: {},
+    };
+  }
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasTvodOffer = (requestedMediaOffers || []).some((offer) => offer.offerId);
