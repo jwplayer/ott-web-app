@@ -9,6 +9,7 @@ import type {
   Consent,
   Customer,
   CustomerConsent,
+  DeleteAccount,
   ExportAccountData,
   ExternalData,
   GetCaptureStatus,
@@ -28,6 +29,7 @@ import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
 import type { WatchHistoryItem } from '#types/watchHistory';
+import { getCommonResponseData } from '#src/utils/api';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -38,6 +40,14 @@ enum InPlayerEnv {
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
+  const queryParams = new URLSearchParams(window.location.href.split('#')[1]);
+  const token = queryParams.get('token');
+  const refreshToken = queryParams.get('refresh_token');
+  const expires = queryParams.get('expires');
+  if (!token || !refreshToken || !expires) {
+    return;
+  }
+  InPlayer.Account.setToken(token, refreshToken, parseInt(expires));
 };
 
 export const getAuthData = async () => {
@@ -107,8 +117,8 @@ export const register: Register = async ({ config, email, password }) => {
 
 export const logout = async () => {
   try {
+    InPlayer.Notifications.unsubscribe();
     await InPlayer.Account.signOut();
-    return InPlayer.Notifications.unsubscribe();
   } catch {
     throw new Error('Failed to sign out.');
   }
@@ -324,18 +334,38 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
 
 export const exportAccountData: ExportAccountData = async () => {
   // password is sent as undefined because it is now optional on BE
-  const response = await InPlayer.Account.exportData({ password: undefined, brandingId: 0 });
-  const { code, message } = response.data;
-  if (code !== 200) {
-    throw new Error(message);
+  try {
+    const response = await InPlayer.Account.exportData({ password: undefined, brandingId: 0 });
+    return getCommonResponseData(response);
+  } catch {
+    throw new Error('Failed to export account data');
   }
-  return {
-    errors: [],
-    responseData: {
-      message,
-      code,
-    },
-  };
+};
+
+export const deleteAccount: DeleteAccount = async ({ password }) => {
+  try {
+    const response = await InPlayer.Account.deleteAccount({ password, brandingId: 0 });
+    return getCommonResponseData(response);
+  } catch {
+    throw new Error('Failed to delete account');
+  }
+};
+
+export const getSocialUrls = async (config: Config) => {
+  const socialState = window.btoa(
+    JSON.stringify({
+      client_id: config.integrations.jwp?.clientId || '',
+      redirect: window.location.href.split('u=')[0],
+    }),
+  );
+
+  const socialResponse = await InPlayer.Account.getSocialLoginUrls(socialState);
+
+  if (socialResponse.status !== 200) {
+    throw new Error('Failed to fetch social urls');
+  }
+
+  return socialResponse.data.social_urls;
 };
 
 const getCustomerExternalData = async (): Promise<ExternalData> => {
@@ -454,3 +484,5 @@ export const canExportAccountData = true;
 export const canUpdatePaymentMethod = false;
 
 export const canShowReceipts = false;
+
+export const canDeleteAccount = true;

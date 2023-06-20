@@ -1,0 +1,70 @@
+@use 'src/styles/variables';
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  padding: 30px;
+}
+
+.formContainerSmall {
+  gap: 20px;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.passwordButtonsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.heading {
+  width: 50%;
+  margin-bottom: 20px;
+  color: variables.$gray-white;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.paragraph {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: variables.$gray-white;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+}
+
+.button {
+  margin: auto;
+}
+
+.warningBox {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px 8px 16px;
+  background-color: variables.$brown-dark;
+  border-radius: 4px;
+  gap: 16px;
+}

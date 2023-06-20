@@ -3,7 +3,6 @@
 
 .dialog {
   width: 100vw;
-  max-width: 450px;
   max-height: 90vh;
   padding: 24px;
   overflow-y: auto;
@@ -17,4 +16,12 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.small {
+  max-width: 450px;
+}
+
+.large {
+  max-width: 768px;
 }

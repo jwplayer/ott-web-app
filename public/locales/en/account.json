@@ -8,6 +8,7 @@
   },
   "checkout": {
     "applicable_tax": "Applicable tax ({{taxRate}}%)",
+    "card_holder_name": "Cardholder name",
     "close": "Close",
     "continue": "Continue",
     "coupon_applied": "Your coupon code has been applied",
@@ -36,6 +37,7 @@
     "periods_trial_one": "You will be charged after one {{period}}.",
     "periods_trial_other": "You will be charged after {{count}} {{period}}.",
     "redeem_coupon": "Redeem coupon",
+    "save": "Save",
     "start_watching": "Start watching ({{countdown}})",
     "total_price": "Total",
     "upgrade_error": "Failed to update subscription!",
@@ -74,14 +76,19 @@
   },
   "login": {
     "email": "Email",
+    "facebook": "Sign in with Facebook",
     "field_is_not_valid_email": "Please re-enter your email details and try again.",
     "field_required": "This field is required",
     "forgot_password": "Forgot password?",
+    "google": "Sign in with Google",
     "hide_password": "Hide password",
     "not_registered": "New to {{siteName}}?",
+    "ok": "Ok",
     "password": "Password",
     "sign_in": "Sign in",
     "sign_up": "Sign up",
+    "simultaneous_logins": "You have been logged out because the simultaneous logins limit has been reached.",
+    "twitter": "Sign in with Twitter",
     "view_password": "View password",
     "wrong_combination": "Incorrect email/password combination",
     "wrong_email": "Please check your email and try again."
@@ -89,6 +96,7 @@
   "payment": {
     "back_to_profile": "Back to profile",
     "credit_card": "Credit card",
+    "edit_card": "Edit card",
     "paypal": "PayPal",
     "update_payment_details": "Update payment details",
     "update_payment_success": "Your payment details have been updated"

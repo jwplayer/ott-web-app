@@ -1,3 +1,125 @@
+# [4.19.0](https://github.com/jwplayer/ott-web-app/compare/v4.18.0...v4.19.0) (2023-06-20)
+
+
+### Bug Fixes
+
+* **series:** select All episodes ([3ed1151](https://github.com/jwplayer/ott-web-app/commit/3ed115126974bd251cde7c0b1198d70edc7f2f0d))
+
+
+### Features
+
+* **series:** add season titles as filters ([c42f9ad](https://github.com/jwplayer/ott-web-app/commit/c42f9ade9e74dd445124578d2f2bb7beaf144ec6))
+* **series:** modify i18n keys for seasons ([bcbfa1c](https://github.com/jwplayer/ott-web-app/commit/bcbfa1cb23c60d0c31bb09faa9b85724c935ba94))
+
+
+
+# [4.18.0](https://github.com/jwplayer/ott-web-app/compare/v4.17.0...v4.18.0) (2023-06-19)
+
+
+### Features
+
+* add machine translations for delete account and social login ([51a9485](https://github.com/jwplayer/ott-web-app/commit/51a94855e814421aa43d8702024c41c5fec0c96e))
+
+
+
+# [4.17.0](https://github.com/jwplayer/ott-web-app/compare/v4.16.1...v4.17.0) (2023-06-19)
+
+
+### Bug Fixes
+
+* lint ([6639dcf](https://github.com/jwplayer/ott-web-app/commit/6639dcf71b787a22727524e22dd0f146bd4f087a))
+* pr changes ([935748a](https://github.com/jwplayer/ott-web-app/commit/935748a0862d1a60e85231924c272b4981f42060))
+* test ([4a62cfb](https://github.com/jwplayer/ott-web-app/commit/4a62cfb8284de2072aa0e1103d08f2d48ed6cc69))
+
+
+### Features
+
+* edit card details ([58da6e1](https://github.com/jwplayer/ott-web-app/commit/58da6e155be8ac73398421b963d667b82734c06f))
+* empty line delted ([815ab5a](https://github.com/jwplayer/ott-web-app/commit/815ab5a571c6e0d0ba3849bf8a4e229d8cff9119))
+
+
+
+## [4.16.1](https://github.com/jwplayer/ott-web-app/compare/v4.16.0...v4.16.1) (2023-06-19)
+
+
+### Bug Fixes
+
+* period ([259db6c](https://github.com/jwplayer/ott-web-app/commit/259db6cf6556bf916173c1f79d11533d8e3d82e8))
+
+
+
+# [4.16.0](https://github.com/jwplayer/ott-web-app/compare/v4.15.0...v4.16.0) (2023-06-16)
+
+
+### Bug Fixes
+
+* added transaltion ([3d85038](https://github.com/jwplayer/ott-web-app/commit/3d85038be81461552d6594ecc0668a47acc47261))
+* added translations ([0493a0d](https://github.com/jwplayer/ott-web-app/commit/0493a0d07ca31f4ed94d28e22032cf316e2d218a))
+* forgotten logout reorder ([a9a24ca](https://github.com/jwplayer/ott-web-app/commit/a9a24ca0b63bbcf668e74b3f4b9393876d3778b2))
+* handle logout reason ([a6636a1](https://github.com/jwplayer/ott-web-app/commit/a6636a12a4a098f678e096996689039778a9630e))
+* loading state ([2093530](https://github.com/jwplayer/ott-web-app/commit/2093530cd0b6d61e3343cc25a93d000bb12e513c))
+* loading state added ([1cd4df1](https://github.com/jwplayer/ott-web-app/commit/1cd4df139ddaf21349f5e8db55ad2703422e6531))
+* remove use account ([8b288ae](https://github.com/jwplayer/ott-web-app/commit/8b288aeab7252f3fb3dd50e5ddae5fb492d153e3))
+* yarn i18next ([b43a600](https://github.com/jwplayer/ott-web-app/commit/b43a60087a5c1a94be96ce44157828ba38b940c1))
+
+
+### Features
+
+* add initial handling for simultaneous login websocket ([b28d0a2](https://github.com/jwplayer/ott-web-app/commit/b28d0a2483cb7936a4663c3b4ced5887634222f9))
+* className changed ([19748e7](https://github.com/jwplayer/ott-web-app/commit/19748e7bb093fe28b134b3ac04a40d040fcf06d1))
+* simultaneous logins modal has been added ([06f3679](https://github.com/jwplayer/ott-web-app/commit/06f367956ba3102b62d42c0a2b42996264b3b3c1))
+
+
+
+# [4.15.0](https://github.com/jwplayer/ott-web-app/compare/v4.14.0...v4.15.0) (2023-06-15)
+
+
+### Bug Fixes
+
+* revert English translation ([d5e98eb](https://github.com/jwplayer/ott-web-app/commit/d5e98eb7cde1aaa10c6cff3387a3403d6632bd24))
+
+
+### Features
+
+* add "other_registration_details" as a new translation text ([2c489a2](https://github.com/jwplayer/ott-web-app/commit/2c489a2f966083328ecb36a33093a4e8710d0f5e))
+
+
+
+# [4.14.0](https://github.com/jwplayer/ott-web-app/compare/v4.13.0...v4.14.0) (2023-06-15)
+
+
+### Features
+
+* add logic for inplayer social login ([04c1d74](https://github.com/jwplayer/ott-web-app/commit/04c1d74967c905009d6bdf2e9ce352e6f32cdafa))
+* initial social login buttons implementation ([0dd1204](https://github.com/jwplayer/ott-web-app/commit/0dd120486ef47a6e9dcfd9036cc72ceb699e1a45))
+
+
+
+# [4.13.0](https://github.com/jwplayer/ott-web-app/compare/v4.12.1...v4.13.0) (2023-06-15)
+
+
+### Features
+
+* add error handling for account deletion ([25b2f5a](https://github.com/jwplayer/ott-web-app/commit/25b2f5a5ca96491bed3bae789c1e60fef35f09d2))
+* add reset to useForm, handle back button in DeleteAccountModal ([eacd3b7](https://github.com/jwplayer/ott-web-app/commit/eacd3b7575cc0d6cbf891c7ed7943c9b4b66ab76))
+* **user:** initial account deletion implementation ([b6eda04](https://github.com/jwplayer/ott-web-app/commit/b6eda042a230f106b6a14ea7844b887778a0696d))
+
+
+
+## [4.12.1](https://github.com/jwplayer/ott-web-app/compare/v4.12.0...v4.12.1) (2023-06-08)
+
+
+### Bug Fixes
+
+* ran yarn i18next ([267bcf5](https://github.com/jwplayer/ott-web-app/commit/267bcf5e9604923c4d7114d37acc2a9129949891))
+* removed files already removed in develop ([37f9030](https://github.com/jwplayer/ott-web-app/commit/37f9030d183742051ab9530799aadcd86878f08d))
+* reverted incorrect changes ([633c84d](https://github.com/jwplayer/ott-web-app/commit/633c84da520a076e73601d37d862f3b50e5d4616))
+* run prettier in FormSection ([996e420](https://github.com/jwplayer/ott-web-app/commit/996e4209d4f0fd8df2bbcb33250f481ef3134973))
+* run yarn i18next ([829603f](https://github.com/jwplayer/ott-web-app/commit/829603fb028a217e021c56afda7b7c60f8564fdb))
+* update user.json ([c3f5434](https://github.com/jwplayer/ott-web-app/commit/c3f5434fe6a560cfe26c518c56ede46ba04dd359))
+
+
+
 # [4.12.0](https://github.com/jwplayer/ott-web-app/compare/v4.11.1...v4.12.0) (2023-06-02)
 
 

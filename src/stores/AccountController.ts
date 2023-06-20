@@ -1,5 +1,7 @@
 import i18next from 'i18next';
 
+import { subscribeToNotifications } from './NotificationsController';
+
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type {
@@ -36,6 +38,7 @@ export const initializeAccount = async () => {
       canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
+      canDeleteAccount: accountService.canExportAccountData,
       canShowReceipts: accountService.canShowReceipts,
     });
 
@@ -107,13 +110,24 @@ export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswo
 
 export const getAccount = async () => {
   await useService(async ({ accountService, config, accessModel }) => {
-    const response = await accountService.getUser({ config });
+    try {
+      const response = await accountService.getUser({ config });
+      if (response) {
+        await afterLogin(response.user, response.customerConsents, accessModel);
+      }
 
-    if (response) {
-      await afterLogin(response.user, response.customerConsents, accessModel);
+      useAccountStore.setState({ loading: false });
+    } catch (error: unknown) {
+      useAccountStore.setState({
+        user: null,
+        subscription: null,
+        transactions: null,
+        activePayment: null,
+        customerConsents: null,
+        publisherConsents: null,
+        loading: false,
+      });
     }
-
-    useAccountStore.setState({ loading: false });
   });
 };
 
@@ -145,6 +159,7 @@ export async function logout() {
       activePayment: null,
       customerConsents: null,
       publisherConsents: null,
+      loading: false,
     });
 
     await restoreFavorites();
@@ -341,6 +356,34 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
   });
 };
 
+export const updateCardDetails = async ({
+  cardName,
+  cardNumber,
+  cvc,
+  expMonth,
+  expYear,
+  currency,
+}: {
+  cardName: string;
+  cardNumber: string;
+  cvc: number;
+  expMonth: number;
+  expYear: number;
+  currency: string;
+}) => {
+  return await useAccount(async ({ customerId }) => {
+    return await useService(async ({ subscriptionService, sandbox = true }) => {
+      const response = await subscriptionService?.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
+      const activePayment = (await subscriptionService?.getActivePayment({ sandbox, customerId })) || null;
+      useAccountStore.setState({
+        loading: false,
+        activePayment,
+      });
+      return response;
+    });
+  });
+};
+
 export async function checkEntitlements(offerId?: string): Promise<unknown> {
   return await useService(async ({ checkoutService, sandbox = true }) => {
     if (!checkoutService) throw new Error('checkout service is not configured');
@@ -410,6 +453,18 @@ export async function exportAccountData() {
   });
 }
 
+export async function getSocialLoginUrls() {
+  return await useService(async ({ accountService, config }) => {
+    return await accountService.getSocialUrls(config);
+  });
+}
+export async function deleteAccountData(password: string) {
+  return await useAccount(async () => {
+    return await useService(async ({ accountService }) => {
+      return await accountService.deleteAccount({ password }, true);
+    });
+  });
+}
 export const getReceipt = async (transactionId: string) => {
   return await useAccount(async () => {
     return await useService(async ({ subscriptionService, sandbox = true }) => {
@@ -441,6 +496,8 @@ async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | 
     user,
     customerConsents,
   });
+
+  subscribeToNotifications(user.uuid);
 
   return await Promise.allSettled([
     accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
