@@ -18,7 +18,7 @@ const useCountdown = (durationSeconds: number, intervalSeconds: number = 1, comp
     return () => {
       window.clearTimeout(timerRef.current);
     };
-  }, [countdown]);
+  }, [completeHandler, countdown, intervalSeconds]);
 
   return countdown;
 };

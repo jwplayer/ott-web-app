@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { PlaylistItem } from '#types/playlist';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -9,44 +9,45 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const user = useAccountStore((state) => state.user);
 
   // ott app user id (oaid)
-  const oaid: number | undefined = user?.id ? Number(user?.id) : undefined;
+  const oaid: number | undefined = user?.id ? Number(user.id) : undefined;
 
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
-
-  const timeHandler = useCallback(({ position, duration }: jwplayer.TimeParam) => {
-    window.jwpltx.time(position, duration);
-  }, []);
-
-  const seekHandler = useCallback(({ offset, duration }) => {
-    window.jwpltx.seek(offset, duration);
-  }, []);
-
-  const seekedHandler = useCallback(() => {
-    window.jwpltx.seeked();
-  }, []);
-
-  const playlistItemHandler = useCallback(() => {
-    if (!analyticsToken) return;
-
-    if (!item) {
-      return;
-    }
-
-    window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid);
-  }, [item]);
-
-  const completeHandler = useCallback(() => {
-    window.jwpltx.complete();
-  }, []);
-
-  const adImpressionHandler = useCallback(() => {
-    window.jwpltx.adImpression();
-  }, []);
 
   useEffect(() => {
     if (!window.jwpltx || !analyticsToken || !player || !item) {
       return;
     }
+
+    const timeHandler = ({ position, duration }: jwplayer.TimeParam) => {
+      window.jwpltx.time(position, duration);
+    };
+
+    const seekHandler = ({ offset }: jwplayer.SeekParam) => {
+      // TODO: according JWPlayer typings, the seek params doesn't contain a `duration` property, but it actually does
+      window.jwpltx.seek(offset, player.getDuration());
+    };
+
+    const seekedHandler = () => {
+      window.jwpltx.seeked();
+    };
+
+    const playlistItemHandler = () => {
+      if (!analyticsToken) return;
+
+      if (!item) {
+        return;
+      }
+
+      window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid);
+    };
+
+    const completeHandler = () => {
+      window.jwpltx.complete();
+    };
+
+    const adImpressionHandler = () => {
+      window.jwpltx.adImpression();
+    };
 
     player.on('playlistItem', playlistItemHandler);
     player.on('complete', completeHandler);
@@ -65,7 +66,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       player.off('seeked', seekedHandler);
       player.off('adImpression', adImpressionHandler);
     };
-  }, [player, item]);
+  }, [player, item, analyticsToken, feedId, oaid]);
 
   return setPlayer;
 };

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useEpg } from 'planby';
-import { startOfToday, startOfTomorrow } from 'date-fns';
+import { startOfDay, startOfToday, startOfTomorrow } from 'date-fns';
 
 import type { EpgChannel } from '#src/services/epg.service';
 import { is12HourClock } from '#src/utils/datetime';
@@ -44,7 +44,7 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
   //       in the Planby component. E.g. `[subHours(new Date(), 12), addHours(new Date(), 12)]`. The `date` dependency
   //       must also be changed to update every hour instead of daily.
   const date = startOfToday().toJSON();
-  const [startDate, endDate] = useMemo(() => [startOfToday(), startOfTomorrow()], [date]);
+  const [startDate, endDate] = useMemo(() => [startOfDay(new Date(date)), startOfTomorrow()], [date]);
 
   return useEpg({
     channels: epgChannels,
