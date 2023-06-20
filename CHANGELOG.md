@@ -1,3 +1,13 @@
+## [4.19.1](https://github.com/jwplayer/ott-web-app/compare/v4.19.0...v4.19.1) (2023-06-20)
+
+
+### Bug Fixes
+
+* **payment:** infinite render loop when opening choose offer modal ([34fe708](https://github.com/jwplayer/ott-web-app/commit/34fe70860896cd741afddcb50087fd0b6564ed0b))
+* **payment:** react error after payment ([58b877f](https://github.com/jwplayer/ott-web-app/commit/58b877fd4be086b90e01301f1c898059509f4bab))
+
+
+
 # [4.19.0](https://github.com/jwplayer/ott-web-app/compare/v4.18.0...v4.19.0) (2023-06-20)
 
 
