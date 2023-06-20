@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Payment from 'payment';
 import { object, string } from 'yup';
+import { useMutation } from 'react-query';
+import shallow from 'zustand/shallow';
 
 import Button from '../Button/Button';
 import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
@@ -9,27 +11,38 @@ import CreditCardExpiryField from '../CreditCardExpiryField/CreditCardExpiryFiel
 import CreditCardNumberField from '../CreditCardNumberField/CreditCardNumberField';
 import TextField from '../TextField/TextField';
 
-import styles from './PaymentForm.module.scss';
+import styles from './EditCardPaymentForm.module.scss';
 
 import useForm from '#src/hooks/useForm';
-import { directPostCardPayment } from '#src/stores/CheckoutController';
-import useCheckAccess from '#src/hooks/useCheckAccess';
+import { updateCardDetails } from '#src/stores/AccountController';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 type Props = {
-  couponCode?: string;
-  setUpdatingOrder: (value: boolean) => void;
+  onCancel: () => void;
+  setUpdatingCardDetails: (e: boolean) => void;
 };
 
-const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
+const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails }) => {
   const { t } = useTranslation('account');
-  const { intervalCheckAccess } = useCheckAccess();
-
+  const updateCard = useMutation(updateCardDetails);
+  const { activePayment } = useAccountStore(({ activePayment }) => ({ activePayment }), shallow);
   const paymentData = useForm(
     { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
     async () => {
-      setUpdatingOrder(true);
-      await directPostCardPayment({ couponCode, ...paymentData.values });
-      intervalCheckAccess({ interval: 15000 });
+      setUpdatingCardDetails(true);
+      updateCard.mutate(
+        {
+          cardName: paymentData.values.cardholderName,
+          cardNumber: paymentData.values.cardNumber.replace(/\s+/g, ''),
+          cvc: parseInt(paymentData.values.cardCVC),
+          expMonth: parseInt(paymentData.values.cardExpMonth),
+          expYear: parseInt(paymentData.values.cardExpYear),
+          currency: activePayment?.currency || '',
+        },
+        {
+          onSettled: () => onCancel(),
+        },
+      );
     },
     object().shape({
       cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
@@ -43,6 +56,7 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
         return Payment.fns.validateCardCVC(value as string, issuer);
       }),
     }),
+
     true,
   );
 
@@ -99,10 +113,18 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
         </div>
       </div>
       <div>
-        <Button label={t('checkout.continue')} variant="contained" color="primary" onClick={paymentData.handleSubmit as () => void} size="large" fullWidth />
+        <Button
+          disabled={updateCard.isLoading}
+          label={t('checkout.save')}
+          variant="contained"
+          onClick={paymentData.handleSubmit as () => void}
+          color="primary"
+          size="large"
+          fullWidth
+        />
       </div>
     </div>
   );
 };
 
-export default PaymentForm;
+export default EditCardPaymentForm;

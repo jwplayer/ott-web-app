@@ -206,7 +206,7 @@ const formatOffer = (offer: AccessFee): Offer => {
     customerCurrency: offer.currency,
     offerTitle: offer.description,
     active: true,
-    period: offer.access_type.period,
+    period: offer.access_type.period === 'month' && offer.access_type.quantity === 12 ? 'year' : offer.access_type.period,
     freePeriods: offer.trial_period ? 1 : 0,
     planSwitchEnabled: offer.item.plan_switch_enabled ?? false,
   } as Offer;

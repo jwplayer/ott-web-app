@@ -1,3 +1,38 @@
+# [4.18.0](https://github.com/jwplayer/ott-web-app/compare/v4.17.0...v4.18.0) (2023-06-19)
+
+
+### Features
+
+* add machine translations for delete account and social login ([51a9485](https://github.com/jwplayer/ott-web-app/commit/51a94855e814421aa43d8702024c41c5fec0c96e))
+
+
+
+# [4.17.0](https://github.com/jwplayer/ott-web-app/compare/v4.16.1...v4.17.0) (2023-06-19)
+
+
+### Bug Fixes
+
+* lint ([6639dcf](https://github.com/jwplayer/ott-web-app/commit/6639dcf71b787a22727524e22dd0f146bd4f087a))
+* pr changes ([935748a](https://github.com/jwplayer/ott-web-app/commit/935748a0862d1a60e85231924c272b4981f42060))
+* test ([4a62cfb](https://github.com/jwplayer/ott-web-app/commit/4a62cfb8284de2072aa0e1103d08f2d48ed6cc69))
+
+
+### Features
+
+* edit card details ([58da6e1](https://github.com/jwplayer/ott-web-app/commit/58da6e155be8ac73398421b963d667b82734c06f))
+* empty line delted ([815ab5a](https://github.com/jwplayer/ott-web-app/commit/815ab5a571c6e0d0ba3849bf8a4e229d8cff9119))
+
+
+
+## [4.16.1](https://github.com/jwplayer/ott-web-app/compare/v4.16.0...v4.16.1) (2023-06-19)
+
+
+### Bug Fixes
+
+* period ([259db6c](https://github.com/jwplayer/ott-web-app/commit/259db6cf6556bf916173c1f79d11533d8e3d82e8))
+
+
+
 # [4.16.0](https://github.com/jwplayer/ott-web-app/compare/v4.15.0...v4.16.0) (2023-06-16)
 
 

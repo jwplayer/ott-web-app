@@ -12,6 +12,7 @@ import ResetPassword from './forms/ResetPassword';
 import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
+import EditCardDetails from './forms/EditCardDetails';
 import SimultaneousLoginsNotification from './forms/SimultaneousLoginsNotification';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -83,6 +84,8 @@ const AccountModal = () => {
         return <PersonalDetails />;
       case 'choose-offer':
         return <ChooseOffer />;
+      case 'edit-card':
+        return <EditCardDetails />;
       case 'upgrade-subscription':
         return <ChooseOffer />;
       case 'upgrade-subscription-error':
@@ -124,7 +127,7 @@ const AccountModal = () => {
     }
   };
 
-  const shouldShowBanner = !['delete-account', 'delete-account-confirmation'].includes(view ?? '');
+  const shouldShowBanner = !['delete-account', 'delete-account-confirmation', 'edit-card'].includes(view ?? '');
   const dialogSize = ['delete-account-confirmation'].includes(view ?? '') ? 'large' : 'small';
 
   return (

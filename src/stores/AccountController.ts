@@ -356,6 +356,34 @@ export const updateSubscription = async (status: 'active' | 'cancelled'): Promis
   });
 };
 
+export const updateCardDetails = async ({
+  cardName,
+  cardNumber,
+  cvc,
+  expMonth,
+  expYear,
+  currency,
+}: {
+  cardName: string;
+  cardNumber: string;
+  cvc: number;
+  expMonth: number;
+  expYear: number;
+  currency: string;
+}) => {
+  return await useAccount(async ({ customerId }) => {
+    return await useService(async ({ subscriptionService, sandbox = true }) => {
+      const response = await subscriptionService?.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
+      const activePayment = (await subscriptionService?.getActivePayment({ sandbox, customerId })) || null;
+      useAccountStore.setState({
+        loading: false,
+        activePayment,
+      });
+      return response;
+    });
+  });
+};
+
 export async function checkEntitlements(offerId?: string): Promise<unknown> {
   return await useService(async ({ checkoutService, sandbox = true }) => {
     if (!checkoutService) throw new Error('checkout service is not configured');

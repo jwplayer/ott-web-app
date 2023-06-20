@@ -1,5 +1,4 @@
-import type { ChangeSubscriptionPlanRequestBody, ChangeSubscriptionPlanResponse } from '@inplayer-org/inplayer.js';
-
+import type { DefaultCreditCardData, SetDefaultCard, ChangeSubscriptionPlanRequestBody, ChangeSubscriptionPlanResponse } from '@inplayer-org/inplayer.js';
 // Subscription types
 export type Subscription = {
   subscriptionId: number | string;
@@ -26,6 +25,7 @@ export type PaymentDetail = {
   paymentMethodSpecificParams: Record<PaymentMethodSpecificParam>;
   paymentMethodId: number;
   active: boolean;
+  currency?: string;
 };
 
 export type PaymentMethodSpecificParam = {
@@ -114,7 +114,9 @@ export type GetTransactionsPayload = {
 export type GetTransactionsResponse = {
   items: Transaction[];
 };
+export type UpdateCardDetailsPayload = DefaultCreditCardData;
 
+export type UpdateCardDetails = EnvironmentServiceRequest<DefaultCreditCardData, SetDefaultCard>;
 export type FetchReceiptPayload = {
   transactionId: string;
 };
