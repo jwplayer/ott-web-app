@@ -146,12 +146,14 @@ const Payment = ({
   return (
     <>
       <Alert
-        isSuccess={changeSubscriptionPlan.isSuccess}
+        isSuccess={!changeSubscriptionPlan.isError}
         message={
-          changeSubscriptionPlan.isSuccess
+          !changeSubscriptionPlan.isError
             ? isUpgradeOffer
               ? t('user:payment.upgrade_plan_success')
-              : t('user:payment.downgrade_plan_success')
+              : t('user:payment.downgrade_plan_success', {
+                  date: activeSubscription?.expiresAt && formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language),
+                })
             : t('user:payment.change_plan_error')
         }
         open={isChangingOffer && (changeSubscriptionPlan.isSuccess || changeSubscriptionPlan.isError)}
