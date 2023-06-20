@@ -36,4 +36,4 @@ There are many examples in the included [content-types.json](scripts/content-typ
 
 > Note: Although the upload file allows you to define reused fields and sections, when these are uploaded they become distinct copies for each instance in the schemas where they are used.
 > That means that changing fields and sections via the api after they are uploaded must be done individually for each schema.
-> Alternatively, you can  
+> Alternatively, you can re-upload and overwrite the existing schemas, but use caution because you will lose any other manual changes you have made.  

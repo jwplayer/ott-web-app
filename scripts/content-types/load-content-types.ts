@@ -2,7 +2,9 @@
 const fs = require('fs');
 const readline = require('readline');
 
+// These options should not typically be used, so set as env vars instead of regular args
 const JWP_HOST = process.env.JWP_HOST || 'https://api.jwplayer.com';
+const AUTO_CONFIRM = process.env.AUTO_CONFIRM || false;
 
 interface SchemaFile {
   fields: {
@@ -14,31 +16,19 @@ interface SchemaFile {
   schemas: Schema<Field | string, Section<Field | string> | string>[];
 }
 
-// TODO: Use yup to validate schema
-interface Field {
-  label: string;
-  param: string;
-  required?: boolean;
-  details: {
-    field_type: 'input' | 'toggle';
-    placeholder: string;
-  };
-}
+// Only defining the properties we need here for the script.
+// Let any other validation come from the API,
+// otherwise we risk script-side validation getting outdated / out of sync.
+type Field = unknown;
 
-interface Section<TField extends Field | string> {
-  title: string;
+type Section<TField extends Field | string> = unknown & {
   fields: TField[];
-}
+};
 
-interface Schema<TField extends Field | string, TSection extends Section<TField> | string> {
+type Schema<TField extends Field | string, TSection extends Section<TField> | string> = unknown & {
   name: string;
-  description: string;
-  display_name: string;
-  is_series?: boolean;
-  is_active?: boolean;
-  hosting_type: 'hosted' | 'external' | 'ott_data';
   sections: TSection[];
-}
+};
 
 function error(message: string, returnCode?: number): never {
   console.error(message);
@@ -82,7 +72,7 @@ function parseSchemas(file: string) {
       error(`Error! No schemas found in file ${file}`, -4);
     }
 
-    const mapSchema = (schema: Schema<Field | string, Section<Field | string> | string>) => {
+    const mapSchema = (schema: SchemaFile['schemas'][0]) => {
       const lookup = <TKey extends keyof Omit<SchemaFile, 'schemas'>, TValue extends SchemaFile[TKey]['']>(
         schemaDefs: SchemaFile,
         key: TKey,
@@ -156,6 +146,8 @@ async function createSchema(schema: Schema<Field, Section<Field>>, options: Uplo
 
     if (id && (await confirmPrompt(` A schema with name "${schema.name}" already exists with ID ${id}.`, ' Do you want to overwrite it?'))) {
       await updateSchema(id, schema, options);
+    } else {
+      console.info(` Skipped "${schema.name}"`);
     }
   } else {
     console.error(` Error creating ${schema.name}: ${response.status} - ${JSON.stringify(await response.json())}`);
@@ -239,11 +231,11 @@ async function run() {
 
   const schemas = parseSchemas(file);
 
-  if (args['confirm'] !== '1' && !(await confirmPrompt(`About to load ${schemas.length} content types from ${file} into property ${siteId}`))) {
+  if (AUTO_CONFIRM || (await confirmPrompt(`About to load ${schemas.length} content types from ${file} into property ${siteId}`))) {
+    console.info(`Loading ${schemas.length} content types from ${file} into property ${siteId}`);
+  } else {
     console.info('User cancelled');
     process.exit(1);
-  } else {
-    console.info(`Loading ${schemas.length} content types from ${file} into property ${siteId}`);
   }
 
   await uploadSchemas(schemas, { siteId, apiKey });
