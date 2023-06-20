@@ -229,7 +229,11 @@ const Payment = ({
                   />
                 ))}
               <div className={styles.changePlanButtons}>
-                <Button label={t('user:account.save')} onClick={onChangePlanClick} disabled={changeSubscriptionPlan.isLoading} />
+                <Button
+                  label={t('user:account.save')}
+                  onClick={onChangePlanClick}
+                  disabled={selectedOfferId === activeSubscription?.accessFeeId || changeSubscriptionPlan.isLoading}
+                />
                 <Button label={t('user:account.cancel')} onClick={() => setIsChangingOffer(false)} variant="text" />
                 {activeSubscription?.status !== 'cancelled' && (
                   <Button
