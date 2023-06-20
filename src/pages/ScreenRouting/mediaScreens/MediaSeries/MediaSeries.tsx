@@ -144,9 +144,9 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
       return;
     }
 
-    if (!episodeId && !seasonFilter) {
-      // No episode is selected
-      setSeasonFilter(filters[0] || '');
+    // No episode is selected, filter is not set
+    if (!episodeId && seasonFilter === undefined) {
+      setSeasonFilter(filters[0]?.value || '');
       return;
     }
 
@@ -155,6 +155,18 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
       setSeasonFilter(episodeMetadata.seasonNumber);
     }
   }, [episodeMetadata, seasonFilter, isSeriesDataLoading, isEpisodeLoading, isSeriesDictionaryLoading, filters, episodeId]);
+
+  const startWatchingButton = useMemo(
+    () => (
+      <StartWatchingButton
+        item={episode || firstEpisode}
+        onClick={() => {
+          setSearchParams({ ...searchParams, e: (episode || firstEpisode).mediaid, r: feedId || '', play: '1' }, { replace: true });
+        }}
+      />
+    ),
+    [episode, firstEpisode, feedId, searchParams, setSearchParams],
+  );
 
   // UI
   const isLoading = isSeriesDataLoading || isSeriesDictionaryLoading || isEpisodeLoading;
@@ -183,14 +195,6 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     episodeMetadata &&
     ` ${t('video:season')} ${episodeMetadata.seasonNumber}/${filters?.length} - ${t('video:episode')} ${episodeMetadata.episodeNumber}/${episodesInSeason}`;
   const shareButton = <ShareButton title={selectedItem?.title} description={selectedItem.description} url={canonicalUrl} />;
-  const startWatchingButton = (
-    <StartWatchingButton
-      item={episode || firstEpisode}
-      onClick={() => {
-        setSearchParams({ ...searchParams, e: (episode || firstEpisode).mediaid, r: feedId || '', play: '1' }, { replace: true });
-      }}
-    />
-  );
 
   // For the old series approach we mark episodes as favorite items. New approach is applied to the series
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={seriesMedia || firstEpisode} />;
@@ -253,7 +257,6 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         onItemClick={onCardClick}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
-        filterValuePrefix={t('season_prefix')}
         defaultFilterLabel={t('all_seasons')}
         activeLabel={t('current_episode')}
         watchHistory={watchHistoryDictionary}

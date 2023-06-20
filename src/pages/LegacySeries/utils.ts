@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 import { legacySeriesURL } from '#src/utils/formatting';
 import { secondsToISO8601 } from '#src/utils/datetime';
 import type { Playlist, PlaylistItem } from '#types/playlist';
@@ -6,11 +8,19 @@ import type { EpisodeMetadata } from '#types/series';
 /**
  * Get an array of options for a season filter
  */
-export const getFiltersFromSeries = (playlist: Playlist | undefined): string[] => {
+export const getFiltersFromSeries = (playlist: Playlist | undefined): { value: string; label: string }[] => {
   // Old series doesn't have sorting supported and just aggregates all episodes in one playlist
   // So we need to sort the playlist manually based on the selected filter (season).
   return (playlist?.playlist || [])
-    .reduce((filters: string[], item) => (item.seasonNumber && filters.includes(item.seasonNumber) ? filters : filters.concat(item.seasonNumber || '')), [])
+    .reduce((filters, item) => {
+      if (filters.some((el) => el?.value === item?.seasonNumber)) {
+        return filters;
+      }
+
+      return filters.concat(
+        item.seasonNumber ? [{ label: i18next.t('video:season_number_filter_template', { seasonNumber: item.seasonNumber }), value: item.seasonNumber }] : [],
+      );
+    }, [] as { value: string; label: string }[])
     .slice()
     .sort();
 };

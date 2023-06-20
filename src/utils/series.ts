@@ -4,8 +4,10 @@ import { getEpisodes, getSeasonWithEpisodes } from '#src/services/api.service';
 /**
  * Get an array of options for a season filter
  */
-export const getFiltersFromSeries = (series: Series | undefined): string[] => {
-  return series && 'seasons' in series ? series.seasons.map((season) => String(season.season_number)) : [];
+export const getFiltersFromSeries = (series: Series | undefined): { label: string; value: string }[] => {
+  return series && 'seasons' in series
+    ? series.seasons.map((season) => ({ label: season.season_title || String(season.season_number), value: String(season.season_number) }))
+    : [];
 };
 
 /**
