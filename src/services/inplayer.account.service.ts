@@ -171,7 +171,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
     const result = data?.collection
-      .filter((field) => !['email_confirmation'].includes(field.name))
+      .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name))
       .map(
         (field): Consent => ({
           type: field.type as ConsentFieldVariants,
@@ -215,7 +215,12 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
-    const params = { ...formatUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
+    const params = {
+      ...formatUpdateAccount(customer),
+      metadata: {
+        consents: JSON.stringify(consents),
+      },
+    };
 
     const { data } = await InPlayer.Account.updateAccount(params);
 
