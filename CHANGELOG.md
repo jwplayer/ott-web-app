@@ -1,3 +1,18 @@
+# [4.19.0](https://github.com/jwplayer/ott-web-app/compare/v4.18.0...v4.19.0) (2023-06-20)
+
+
+### Bug Fixes
+
+* **series:** select All episodes ([3ed1151](https://github.com/jwplayer/ott-web-app/commit/3ed115126974bd251cde7c0b1198d70edc7f2f0d))
+
+
+### Features
+
+* **series:** add season titles as filters ([c42f9ad](https://github.com/jwplayer/ott-web-app/commit/c42f9ade9e74dd445124578d2f2bb7beaf144ec6))
+* **series:** modify i18n keys for seasons ([bcbfa1c](https://github.com/jwplayer/ott-web-app/commit/bcbfa1cb23c60d0c31bb09faa9b85724c935ba94))
+
+
+
 # [4.18.0](https://github.com/jwplayer/ott-web-app/compare/v4.17.0...v4.18.0) (2023-06-19)
 
 
