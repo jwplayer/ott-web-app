@@ -10,7 +10,11 @@ import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
 
-const Login = () => {
+type Props = {
+  message?: string;
+};
+
+const Login: React.FC<Props> = ({ message }: Props) => {
   const { siteName } = useConfigStore((s) => s.config);
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,7 +47,9 @@ const Login = () => {
   const initialValues: LoginFormData = { email: '', password: '' };
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, loginSubmitHandler, validationSchema);
 
-  return <LoginForm onSubmit={handleSubmit} onChange={handleChange} values={values} errors={errors} submitting={submitting} siteName={siteName} />;
+  return (
+    <LoginForm message={message} onSubmit={handleSubmit} onChange={handleChange} values={values} errors={errors} submitting={submitting} siteName={siteName} />
+  );
 };
 
 export default Login;

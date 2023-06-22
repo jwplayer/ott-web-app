@@ -27,15 +27,17 @@ type Props = {
   values: LoginFormData;
   submitting: boolean;
   siteName?: string;
+  message?: string;
 };
 
-const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName }: Props) => {
+const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName, message }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
   const { t } = useTranslation('account');
   const location = useLocation();
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
+      <div className={styles.top}>{message && <FormFeedback variant="warning">{t('login.simultaneous_logins')}</FormFeedback>}</div>
       <SocialButtonsList />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}

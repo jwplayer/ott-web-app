@@ -13,7 +13,6 @@ import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
 import EditCardDetails from './forms/EditCardDetails';
-import SimultaneousLoginsNotification from './forms/SimultaneousLoginsNotification';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -73,11 +72,10 @@ const AccountModal = () => {
         </div>
       );
     }
+
     switch (view) {
-      case 'simultaneous-logins':
-        return <SimultaneousLoginsNotification />;
       case 'login':
-        return <Login />;
+        return <Login message={message} />;
       case 'create-account':
         return <Registration />;
       case 'personal-details':
