@@ -16,19 +16,6 @@ const useOffers = () => {
   const { clientOffers, sandbox } = useClientIntegration();
 
   const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
-  if (!checkoutService) {
-    return {
-      hasTVODOffers: false,
-      hasMultipleOfferTypes: false,
-      isLoading: false,
-      hasPremierOffer: false,
-      defaultOfferId: '',
-      offerType: 'svod' as OfferType,
-      setOfferType: () => null,
-      offers: [],
-      offersDict: {},
-    };
-  }
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasTvodOffer = (requestedMediaOffers || []).some((offer) => offer.offerId);
@@ -40,10 +27,10 @@ const useOffers = () => {
     return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...clientOffers].filter(Boolean);
   }, [requestedMediaOffers, clientOffers]);
 
-  const { data: allOffers = [], isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutService.getOffers({ offerIds }, sandbox));
+  const { data: allOffers = [], isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutService?.getOffers({ offerIds }, sandbox));
 
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
-  return useMemo(() => {
+  const offerData = useMemo(() => {
     const offers = allOffers.filter((offer: Offer) => (offerType === 'tvod' ? !isSVODOffer(offer) : isSVODOffer(offer)));
 
     const hasMultipleOfferTypes = allOffers.some((offer: Offer) => (offerType === 'tvod' ? isSVODOffer(offer) : !isSVODOffer(offer)));
@@ -65,6 +52,20 @@ const useOffers = () => {
       offersDict,
     };
   }, [requestedMediaOffers, allOffers, offerType]);
+
+  return checkoutService
+    ? offerData
+    : {
+        hasTVODOffers: false,
+        hasMultipleOfferTypes: false,
+        isLoading: false,
+        hasPremierOffer: false,
+        defaultOfferId: '',
+        offerType: 'svod' as OfferType,
+        setOfferType: () => null,
+        offers: [],
+        offersDict: {},
+      };
 };
 
 export default useOffers;
