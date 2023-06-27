@@ -312,6 +312,7 @@ export type UpdatePersonalShelvesArgs = {
 export type FirstLastNameInput = {
   firstName: string;
   lastName: string;
+  metadata?: Record<string, string>;
 };
 
 export type EmailConfirmPasswordInput = {

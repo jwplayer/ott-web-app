@@ -636,6 +636,7 @@ exports[`User Component tests > Payments Page 1`] = `
              
             <br />
             user:payment.next_billing_date_on
+            
           </p>
           <p
             class="_price_c57ff5"

@@ -23,6 +23,8 @@ import useOffers from '#src/hooks/useOffers';
 import OfferSwitch from '#components/OfferSwitch/OfferSwitch';
 import { changeSubscription } from '#src/stores/CheckoutController';
 import Alert from '#components/Alert/Alert';
+import { updateUser } from '#src/stores/AccountController';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -81,8 +83,6 @@ const Payment = ({
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(activeSubscription?.accessFeeId ?? null);
   const [isUpgradeOffer, setIsUpgradeOffer] = useState<boolean | undefined>(undefined);
 
-  // TODO: debug why offer upgrade works but downgrade doesn't
-
   useEffect(() => {
     if (!isChangingOffer) {
       setSelectedOfferId(activeSubscription?.accessFeeId ?? null);
@@ -98,7 +98,28 @@ const Payment = ({
     }
   }, [selectedOfferId, offers, activeSubscription]);
 
-  const changeSubscriptionPlan = useMutation(changeSubscription);
+  const updateSubscriptionMetadata = useMutation(updateUser, {
+    onSuccess: () => {
+      useAccountStore.setState({
+        loading: false,
+      });
+    },
+  });
+  const changeSubscriptionPlan = useMutation(changeSubscription, {
+    onSuccess: () => {
+      if (!isUpgradeOffer && selectedOfferId) {
+        updateSubscriptionMetadata.mutate({
+          firstName: customer.firstName || '',
+          lastName: customer.lastName || '',
+          metadata: {
+            [`${activeSubscription?.subscriptionId}_pending_downgrade`]: selectedOfferId,
+          },
+        });
+      }
+    },
+  });
+
+  const pendingDowngradeOfferId = (customer.metadata?.[`${activeSubscription?.subscriptionId}_pending_downgrade`] as string) || '';
 
   const onChangePlanClick = async () => {
     if (selectedOfferId && activeSubscription?.subscriptionId) {
@@ -173,11 +194,15 @@ const Payment = ({
                 <div className={styles.infoBox} key={activeSubscription.subscriptionId}>
                   <p>
                     <strong>{getTitle(activeSubscription.period)}</strong> <br />
-                    {activeSubscription.status === 'active' && !isGrantedSubscription
+                    {activeSubscription.status === 'active' && !isGrantedSubscription && !pendingDowngradeOfferId
                       ? t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })
                       : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })}
-                    {pendingOffer && (
-                      <span className={styles.pendingSwitch}>{t('user:payment.pending_offer_switch', { title: getTitle(pendingOffer.period) })}</span>
+                    {(pendingOffer || pendingDowngradeOfferId) && (
+                      <span className={styles.pendingSwitch}>
+                        {t('user:payment.pending_offer_switch', {
+                          title: getTitle(pendingOffer?.period || offers.find((offer) => offer.offerId === pendingDowngradeOfferId)?.period || 'month'),
+                        })}
+                      </span>
                     )}
                   </p>
                   {!isGrantedSubscription && (
@@ -224,6 +249,7 @@ const Payment = ({
                   <OfferSwitch
                     key={offer.offerId}
                     isCurrentOffer={offer.offerId === activeSubscription?.accessFeeId}
+                    pendingDowngradeOfferId={pendingDowngradeOfferId}
                     offer={offer}
                     selected={{ value: selectedOfferId === offer.offerId, set: setSelectedOfferId }}
                   />

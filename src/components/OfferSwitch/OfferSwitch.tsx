@@ -10,6 +10,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 
 interface OfferSwitchProps {
   isCurrentOffer: boolean;
+  pendingDowngradeOfferId: string;
   offer: Offer;
   selected: {
     value: boolean;
@@ -17,23 +18,31 @@ interface OfferSwitchProps {
   };
 }
 
-const OfferSwitch = ({ isCurrentOffer, offer, selected }: OfferSwitchProps) => {
+const OfferSwitch = ({ isCurrentOffer, pendingDowngradeOfferId, offer, selected }: OfferSwitchProps) => {
   const { t, i18n } = useTranslation('user');
   const { customerPriceInclTax, customerCurrency, period } = offer;
   const expiresAt = useAccountStore((state) => state.subscription?.expiresAt);
 
+  const isPendingDowngrade = pendingDowngradeOfferId === offer.offerId;
+
   return (
     <div className={classNames(styles.offerSwitchContainer, { [styles.activeOfferSwitchContainer]: selected.value })}>
-      <Checkbox name={offer.offerId} checked={selected.value} onChange={() => selected.set(offer.offerId)} />
+      <Checkbox disabled={isPendingDowngrade} name={offer.offerId} checked={selected.value} onChange={() => selected.set(offer.offerId)} />
       <div className={styles.offerSwitchInfoContainer}>
-        {isCurrentOffer && (
-          <div className={classNames(styles.currentPlanHeading, { [styles.activeCurrentPlanHeading]: selected.value })}>{t('payment.current_plan')}</div>
+        {(isCurrentOffer || isPendingDowngrade) && (
+          <div className={classNames(styles.currentPlanHeading, { [styles.activeCurrentPlanHeading]: selected.value })}>
+            {isCurrentOffer && t('payment.current_plan').toUpperCase()}
+            {isPendingDowngrade && t('payment.pending_downgrade').toUpperCase()}
+          </div>
         )}
         <div className={styles.offerSwitchPlanContainer}>
           <div>{t(`payment.${period === 'month' ? 'monthly' : 'annual'}_subscription`)}</div>
-          {isCurrentOffer && expiresAt && (
+          {(isCurrentOffer || isPendingDowngrade) && expiresAt && (
             <div className={styles.nextBillingDate}>
-              {t('payment.next_billing_date_on', { date: formatLocalizedDate(new Date(expiresAt * 1000), i18n.language) })}
+              {isCurrentOffer &&
+                !pendingDowngradeOfferId &&
+                t('payment.next_billing_date_on', { date: formatLocalizedDate(new Date(expiresAt * 1000), i18n.language) })}
+              {isPendingDowngrade && t('payment.downgrade_on', { date: formatLocalizedDate(new Date(expiresAt * 1000), i18n.language) })}
             </div>
           )}
         </div>
