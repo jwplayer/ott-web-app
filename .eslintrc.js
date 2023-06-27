@@ -95,7 +95,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.jsx', '*.tsx'],
+      files: ['*.jsx', '*.tsx', 'src/hooks/*.ts'],
       plugins: [
         // Enable linting React code
         'react',

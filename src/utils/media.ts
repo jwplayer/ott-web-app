@@ -22,12 +22,12 @@ export const isLegacySeriesFlow = (item: PlaylistItem) => {
 
 // For the new series flow we use contentType custom param to define media item to be series
 // In this case media item and series item have the same id
-export const isSeriesContentType = (item: PlaylistItem) => item.contentType === CONTENT_TYPE.series;
+export const isSeriesContentType = (item: PlaylistItem) => item.contentType?.toLowerCase() === CONTENT_TYPE.series;
 
 export const isSeries = (item: PlaylistItem) => isLegacySeriesFlow(item) || isSeriesContentType(item);
 
 export const isEpisode = (item: PlaylistItem) => {
-  return typeof item?.episodeNumber !== 'undefined' || item?.contentType === CONTENT_TYPE.episode;
+  return typeof item?.episodeNumber !== 'undefined' || item?.contentType?.toLowerCase() === CONTENT_TYPE.episode;
 };
 
 export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | undefined) => {

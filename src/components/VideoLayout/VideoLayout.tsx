@@ -15,10 +15,9 @@ import type { AccessModel } from '#types/Config';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
-  filters?: string[];
+  filters?: (string | { label: string; value: string })[];
   currentFilter?: string;
   defaultFilterLabel?: string;
-  filterValuePrefix?: string;
   setFilter?: (value: string) => void;
 };
 
@@ -91,7 +90,6 @@ const VideoLayout: React.FC<Props> = ({
   filters,
   setFilter,
   filterMetadata,
-  filterValuePrefix,
   currentFilter = '',
   defaultFilterLabel = '',
   children,
@@ -109,15 +107,7 @@ const VideoLayout: React.FC<Props> = ({
     <div className={classNames(styles.filters, { [styles.filtersInline]: inlineLayout })}>
       {!!filterMetadata && inlineLayout && <span className={styles.filterMetadata}>{filterMetadata}</span>}
       {showFilters && (
-        <Filter
-          name="season"
-          value={currentFilter}
-          valuePrefix={filterValuePrefix}
-          defaultLabel={defaultFilterLabel}
-          options={filters}
-          setValue={setFilter}
-          forceDropdown={forceDropdown}
-        />
+        <Filter name="season" value={currentFilter} defaultLabel={defaultFilterLabel} options={filters} setValue={setFilter} forceDropdown={forceDropdown} />
       )}
     </div>
   );

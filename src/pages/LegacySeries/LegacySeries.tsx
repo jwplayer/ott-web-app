@@ -96,7 +96,7 @@ const LegacySeries = () => {
     }
 
     if (seasonFilter === undefined) {
-      setSeasonFilter(parseInt(episodeMetadata?.seasonNumber, 10) ? episodeMetadata?.seasonNumber : filters?.[0] || '');
+      setSeasonFilter(parseInt(episodeMetadata?.seasonNumber, 10) ? episodeMetadata?.seasonNumber : filters?.[0]?.value || '');
     }
   }, [episodeMetadata, seasonFilter, isSeriesPlaylistLoading, isEpisodeLoading, filters]);
 
@@ -193,7 +193,6 @@ const LegacySeries = () => {
         onItemClick={onCardClick}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
-        filterValuePrefix={t('season_prefix')}
         defaultFilterLabel={t('all_seasons')}
         activeLabel={t('current_episode')}
         watchHistory={watchHistoryDictionary}
