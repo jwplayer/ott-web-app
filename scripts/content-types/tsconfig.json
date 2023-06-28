@@ -1,0 +1,10 @@
+{
+  "files": ["./*"],
+  "compilerOptions": {
+    "module": "NodeNext",
+    "types": [
+      "./lib/content-type-types",
+      "node"
+    ]
+  },
+}
