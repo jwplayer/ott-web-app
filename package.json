@@ -2,6 +2,7 @@
   "name": "jw-ott-webapp",
   "version": "4.19.0",
   "main": "index.js",
+  "type": "commonjs",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "JW Player",
   "private": true,

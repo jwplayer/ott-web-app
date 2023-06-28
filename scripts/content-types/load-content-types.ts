@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import { uploadSchema } from './lib/api';
+import { parseSchemas } from './lib/parse-schemas';
+import { apiKeyPrompt, confirmPrompt, getRequiredParam } from './lib/utils';
+
 // These options should not typically be used, so set as env vars instead of regular args
 const JWP_HOST = process.env.JWP_HOST || 'https://api.jwplayer.com';
 const AUTO_CONFIRM = process.env.AUTO_CONFIRM === '1';
 const AUTO_REPLACE = process.env.AUTO_REPLACE === '1';
 
 async function run() {
-  const { apiKeyPrompt, confirmPrompt, getRequiredParam } = require('./lib/utils');
-  const { parseSchemas } = require('./lib/parse-schemas');
-  const { uploadSchema } = require('./lib/api');
-
   console.info('-------------------------------------------------------');
   console.info('|           Load Content Types                        |');
   console.info('-------------------------------------------------------');
