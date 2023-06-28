@@ -35,8 +35,7 @@
     "serve-report:desktop": "cd test-e2e && allure serve \"./output/desktop\"",
     "codecept-serve:mobile": "yarn codecept:mobile ; yarn serve-report:mobile",
     "codecept-serve:desktop": "yarn codecept:desktop ; yarn serve-report:desktop",
-    "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test-commit",
-    "deploy:github": "node ./scripts/deploy-github.js"
+    "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test-commit"
   },
   "dependencies": {
     "@adyen/adyen-web": "^5.42.1",

@@ -13,7 +13,6 @@ import CloseIcon from '#src/icons/Close';
 import Button from '#components/Button/Button';
 import Popover from '#components/Popover/Popover';
 import UserMenu from '#components/UserMenu/UserMenu';
-import { getPublicUrl } from '#src/utils/domHelpers';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import IconButton from '#components/IconButton/IconButton';
 import Language from '#src/icons/Language';
@@ -172,7 +171,7 @@ const Header: React.FC<Props> = ({
         </div>
         {logoSrc && (
           <div className={styles.brand}>
-            <Logo src={getPublicUrl(logoSrc)} onLoad={() => setLogoLoaded(true)} />
+            <Logo src={logoSrc} onLoad={() => setLogoLoaded(true)} />
           </div>
         )}
         <nav className={styles.nav} aria-label="menu">
