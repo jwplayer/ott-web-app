@@ -90,9 +90,6 @@ Scenario('I can watch the current live program on the live channel screen', asyn
   I.click('Start watching');
   I.seeElement('video');
 
-  // to make sure the back button is visible and can be clicked on
-  I.click('video');
-
   I.click('div[aria-label="Back"]');
   await I.checkPlayerClosed();
 });

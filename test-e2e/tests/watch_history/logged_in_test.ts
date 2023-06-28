@@ -1,6 +1,5 @@
 import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
-import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
-import { LoginContext } from '#utils/password_utils';
+import { checkElapsed, checkProgress, playVideo, registerAndPlayVideo } from '#utils/watch_history';
 import { testConfigs } from '#test/constants';
 
 const videoLength = 596;
@@ -10,31 +9,10 @@ runTestSuite(testConfigs.jwpAuth, testConfigs.jwpAuthNoWatchlist, 'JW Player');
 runTestSuite(testConfigs.cleengAuthvod, testConfigs.cleengAuthvodNoWatchlist, 'Cleeng');
 
 function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof testConfigs.jwpAuthNoWatchlist, providerName: string) {
-  let loginContext: LoginContext;
-
   Feature(`watch_history - logged in - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
   Before(({ I }) => {
     I.useConfig(config);
-  });
-
-  Scenario(`I can get my watch history when logged in - ${providerName}`, async ({ I }) => {
-    await registerOrLogin(I);
-
-    // New user has no continue watching history shelf
-    I.dontSee(constants.continueWatchingShelfTitle);
-
-    await I.openVideoCard(videoTitle);
-
-    await playVideo(I, 0, videoTitle);
-    I.see(constants.startWatchingButton);
-    I.dontSee(constants.continueWatchingButton);
-
-    await playVideo(I, 80, videoTitle);
-
-    I.see(constants.continueWatchingButton);
-    I.dontSee(constants.startWatchingButton);
-    await checkProgress(I, `//button[contains(., "${constants.continueWatchingButton}")]`, (80 / videoLength) * 100, 5, '_progressRail_', '_progress_');
   });
 
   Scenario(`I can get my watch history stored to my account after login - ${providerName}`, async ({ I }) => {
@@ -44,7 +22,7 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
     I.dontSee(constants.continueWatchingButton);
     I.see(constants.startWatchingButton);
 
-    await registerOrLogin(I);
+    await registerAndPlayVideo(I, videoTitle);
     I.clickHome();
     I.waitForText(constants.continueWatchingShelfTitle, normalTimeout);
 
@@ -62,7 +40,8 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
   Scenario(`I can see my watch history on the Home screen when logged in - ${providerName}`, async ({ I }) => {
     I.dontSee(constants.continueWatchingShelfTitle);
 
-    await registerOrLogin(I);
+    await registerAndPlayVideo(I, videoTitle);
+
     I.clickHome();
     I.waitForText(constants.continueWatchingShelfTitle, normalTimeout);
 
@@ -84,7 +63,7 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
   Scenario(`I do not see continue_watching videos on the home page and video page if there is not such config setting - ${providerName}`, async ({ I }) => {
     I.useConfig(configNoWatchlist);
 
-    await registerOrLogin(I);
+    I.registerOrLogin();
 
     I.dontSee(constants.continueWatchingShelfTitle);
 
@@ -98,8 +77,4 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
     I.amOnPage(constants.baseUrl);
     I.dontSee(constants.continueWatchingShelfTitle);
   });
-
-  async function registerOrLogin(I: CodeceptJS.I) {
-    loginContext = await I.registerOrLogin(loginContext);
-  }
 }
