@@ -1,6 +1,7 @@
 import constants, { longTimeout } from './constants';
 
 import { overrideIPCookieKey } from '#test/constants';
+import { ProviderProps } from '#test/types';
 
 export async function goToCheckout(I: CodeceptJS.I) {
   await I.openMainMenu();
@@ -128,4 +129,25 @@ export function renewPlan(I: CodeceptJS.I, billingDate: Date, yearlyPrice: strin
 export function overrideIP(I: CodeceptJS.I) {
   // Set this as a cookie so it persists between page navigations (local storage would also work, but the permissions don't work)
   I.setCookie({ name: overrideIPCookieKey, value: '5.132.0.0', domain: 'localhost', path: '/' });
+}
+
+export async function registerAndSubscribe(I: CodeceptJS.I, props: ProviderProps, today: Date) {
+  const user = await I.registerOrLogin();
+
+  await goToCheckout(I);
+
+  I.waitForElement('#card', longTimeout);
+
+  I.payWithCreditCard(
+    props.paymentFields.creditCardholder,
+    props.creditCard,
+    props.paymentFields.cardNumber,
+    props.paymentFields.expiryDate,
+    props.paymentFields.securityCode,
+    props.fieldWrapper,
+  );
+
+  await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
+
+  return user;
 }
