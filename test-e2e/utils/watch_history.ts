@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import constants, { ShelfId } from '#utils/constants';
+import constants from '#utils/constants';
 import LocatorOrString = CodeceptJS.LocatorOrString;
 
 export async function playVideo(I: CodeceptJS.I, seekTo: number, title: string, startButton: string | null = constants.startWatchingButton) {
@@ -63,23 +63,4 @@ export async function checkElapsed(I: CodeceptJS.I, expectedMinutes: number, exp
   } else {
     assert.ok(expectedSeconds);
   }
-}
-
-export async function registerAndPlayVideo(I: CodeceptJS.I, videoTitle: string, progress: number = 80) {
-  I.registerOrLogin();
-  I.clickHome();
-
-  // New user has no continue watching history shelf
-  I.dontSee(constants.continueWatchingShelfTitle);
-
-  await I.openVideoCard(videoTitle, ShelfId.allFilms);
-
-  await playVideo(I, 0, videoTitle);
-  I.see(constants.startWatchingButton);
-  I.dontSee(constants.continueWatchingButton);
-
-  await playVideo(I, progress, videoTitle);
-
-  I.see(constants.continueWatchingButton);
-  I.dontSee(constants.startWatchingButton);
 }

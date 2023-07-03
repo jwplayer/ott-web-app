@@ -1,6 +1,6 @@
 import { LoginContext } from '#utils/password_utils';
 import constants, { longTimeout } from '#utils/constants';
-import { goToCheckout, finishAndCheckSubscription, cancelPlan, renewPlan, overrideIP, addYear, registerAndSubscribe } from '#utils/payments';
+import { goToCheckout, finishAndCheckSubscription, cancelPlan, renewPlan, overrideIP, addYear } from '#utils/payments';
 import { testConfigs } from '#test/constants';
 import { ProviderProps } from '#test/types';
 
@@ -30,6 +30,8 @@ runTestSuite(jwProps, 'JW Player');
 runTestSuite(cleengProps, 'Cleeng');
 
 function runTestSuite(props: ProviderProps, providerName: string) {
+  let paidLoginContext: LoginContext;
+
   const today = new Date();
 
   const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'Security code', '******');
@@ -43,7 +45,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   });
 
   Scenario(`I can see my payments data - ${providerName}`, async ({ I }) => {
-    await I.registerOrLogin();
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
     await I.openMainMenu();
 
@@ -60,7 +62,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   });
 
   Scenario(`I can see offered subscriptions - ${providerName}`, async ({ I }) => {
-    await I.registerOrLogin();
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
     I.amOnPage(constants.paymentsUrl);
 
@@ -88,7 +90,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   });
 
   Scenario(`I can choose an offer - ${providerName}`, async ({ I }) => {
-    await I.registerOrLogin();
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
     I.amOnPage(constants.offersUrl);
 
@@ -119,14 +121,13 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   });
 
   Scenario(`I can see payment types - ${providerName}`, async ({ I }) => {
-    await I.registerOrLogin();
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
     await goToCheckout(I);
 
-    I.waitForElement('#card', longTimeout);
     I.see('Credit card');
     I.see('PayPal');
-
+    I.see('Cardholder name');
     I.see('Card number');
     I.see('Expiry date');
     I.see('Security code');
@@ -143,7 +144,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   });
 
   Scenario(`I can open the PayPal site - ${providerName}`, async ({ I }) => {
-    await I.registerOrLogin();
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
     await goToCheckout(I);
 
@@ -156,13 +157,26 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   });
 
   Scenario(`I can finish my subscription with credit card - ${providerName}`, async ({ I }) => {
-    await registerAndSubscribe(I, props, today);
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
+
+    await goToCheckout(I);
+
+    I.payWithCreditCard(
+      props.paymentFields.creditCardholder,
+      props.creditCard,
+      props.paymentFields.cardNumber,
+      props.paymentFields.expiryDate,
+      props.paymentFields.securityCode,
+      props.fieldWrapper,
+    );
+
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
 
     I.seeAll(cardInfo);
   });
 
   Scenario(`I can cancel my subscription - ${providerName}`, async ({ I }) => {
-    await registerAndSubscribe(I, props, today);
+    paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
     cancelPlan(I, addYear(today), props.canRenewSubscription);
 
@@ -172,17 +186,16 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
   Scenario(`I can renew my subscription - ${providerName}`, async ({ I }) => {
     if (props.canRenewSubscription) {
-      await registerAndSubscribe(I, props, today);
-      cancelPlan(I, addYear(today), props.canRenewSubscription);
+      paidLoginContext = await I.registerOrLogin(paidLoginContext);
       renewPlan(I, addYear(today), props.yearlyOffer.price);
     }
   });
 
   Scenario(`I can view my invoices - ${providerName}`, async ({ I }) => {
     if (props.canRenewSubscription) {
-      await registerAndSubscribe(I, props, today);
+      paidLoginContext = await I.registerOrLogin(paidLoginContext);
       I.amOnPage(constants.paymentsUrl);
-      I.waitForLoaderDone(25);
+      I.waitForLoaderDone();
       I.see('Transactions');
       I.dontSee('No transactions');
 
