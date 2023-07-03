@@ -18,7 +18,7 @@ async function run() {
 
   if (args['help'] || Object.keys(args).length === 0) {
     console.info('\r\nThis script can be used to upload content types to your JWP environment');
-    console.info('\r\n\r\nUsage: ts-node load-content-types --site-id=<JWP site ID> --api-key=<JWP V2 API Key> [optional arguments]');
+    console.info('\r\n\r\nUsage: ts-node load-content-types --site-id=<JWP site ID> [optional arguments]');
     console.info('\r\n\r\nRequired argument: site-id - specify the JWP property ID to upload to');
     console.info('Optional argument: source-file - specify a schema file to upload (defaults to ./content-types.json');
     console.info(

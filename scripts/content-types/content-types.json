@@ -84,8 +84,7 @@
       "label": "Trailer",
       "description": "If this item has a trailer, select it here",
       "details": {
-        "field_type": "media_select",
-        "placeholder": "Select a trailer"
+        "field_type": "media_select"
       }
     },
     "product_ids": {
@@ -133,8 +132,7 @@
           "label": "Free to Watch?",
           "description": "If this item can be watched for free and doesn't require a login or subscription, you can set this value to true. Otherwise, if you leave this setting false, the application level subscription and authentication level rules will apply.",
           "details": {
-            "field_type": "toggle",
-            "placeholder": "Is this item free to watch?"
+            "field_type": "toggle"
           }
         },
         "product_ids"
@@ -243,8 +241,7 @@
               "label": "EPG Schedule URL",
               "description": "The path to an EPG schedule source for this stream",
               "details": {
-                "field_type": "input",
-                "placeholder": "Enter the URL of the EPG Schedule"
+                "field_type": "input"
               }
             },
             {
@@ -252,8 +249,7 @@
               "label": "Use EPG Demo",
               "description": "Only enable this for non-production (demo) sites where you want the EPG schedule to loop",
               "details": {
-                "field_type": "toggle",
-                "placeholder": "Use EPG Demo Mode"
+                "field_type": "toggle"
               }
             }
           ]
@@ -306,8 +302,7 @@
               "description": "Trailers can usually be watched for free, even if you have subscription based apps. If that is the case, set this value to true. Otherwise, set this value to false if you want to restrict viewing this trailer to only authenticated / paying customers.",
               "details": {
                 "field_type": "toggle",
-                "default": true,
-                "placeholder": "Is this item free to watch?"
+                "default": true
               }
             }
           ]
@@ -331,8 +326,7 @@
               "description": "The playlist ID to display on this hub page",
               "required": true,
               "details": {
-                "field_type": "playlist_select",
-                "placeholder": "Select a playlist"
+                "field_type": "playlist_select"
               }
             },
             {
