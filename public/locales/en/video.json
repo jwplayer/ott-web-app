@@ -14,7 +14,7 @@
   "live": "Live",
   "remove_from_favorites": "Remove from favorites",
   "season": "season",
-  "season_prefix": "Season ",
+  "season_number_filter_template": "Season {{seasonNumber}}",
   "series_error": "An error occurred while requesting series",
   "share": "Share",
   "share_video": "Share this video",

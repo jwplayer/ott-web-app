@@ -67,6 +67,7 @@ const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | un
       setChannel(updatedChannel);
       setProgram(updatedProgram);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channels]);
 
   // update the selected channel and optionally the program
