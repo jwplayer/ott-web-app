@@ -97,6 +97,8 @@ window.jwpltx = window.jwpltx || {};
     uri.fed = fed;
     uri.id = id;
     uri.t = t;
+    // eslint-disable-next-line no-undef
+    uri.av = APP_VERSION;
 
     // Send oaid only for logged in users
     if (oaid) {

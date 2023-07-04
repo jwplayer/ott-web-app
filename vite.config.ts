@@ -61,6 +61,9 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
         targets: fileCopyTargets,
       }),
     ],
+    define: {
+      APP_VERSION: JSON.stringify(process.env.npm_package_version),
+    },
     publicDir: './public',
     envPrefix: 'APP_',
     server: {
