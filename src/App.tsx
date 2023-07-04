@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
 import '#src/screenMapping';
@@ -41,10 +42,17 @@ export default function App() {
   const Router = import.meta.env.APP_PUBLIC_GITHUB_PAGES ? HashRouter : BrowserRouter;
 
   return (
-    <QueryProvider>
-      <Router>
-        <Root />
-      </Router>
-    </QueryProvider>
+    <>
+      {import.meta.env.APP_GOOGLE_SITE_VERIFICATION_ID && (
+        <Helmet>
+          <meta name="google-site-verification" content={import.meta.env.APP_GOOGLE_SITE_VERIFICATION_ID} />
+        </Helmet>
+      )}
+      <QueryProvider>
+        <Router>
+          <Root />
+        </Router>
+      </QueryProvider>
+    </>
   );
 }
