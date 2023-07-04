@@ -12,7 +12,7 @@ jobs:
       - name: Build
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
-          APP_GOOGLE_SITE_VERIFICATION_ID: ${{ variables.GOOGLE_SITE_VERIFICATION_ID }}
+          APP_GOOGLE_SITE_VERIFICATION_ID: ${{ vars.GOOGLE_SITE_VERIFICATION_ID }}
         run: yarn &&  MODE=demo yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
