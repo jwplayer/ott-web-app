@@ -7,9 +7,13 @@ import { useAccountStore } from '#src/stores/AccountStore';
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
   const user = useAccountStore((state) => state.user);
+  const { config } = useConfigStore((s) => s);
 
   // ott app user id (oaid)
   const oaid: number | undefined = user?.id ? Number(user.id) : undefined;
+
+  // app config id (oiid)
+  const oiid = config?.id;
 
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
@@ -38,7 +42,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
         return;
       }
 
-      window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid);
+      window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid, oiid);
     };
 
     const completeHandler = () => {
@@ -66,7 +70,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       player.off('seeked', seekedHandler);
       player.off('adImpression', adImpressionHandler);
     };
-  }, [player, item, analyticsToken, feedId, oaid]);
+  }, [player, item, analyticsToken, feedId, oaid, oiid]);
 
   return setPlayer;
 };
