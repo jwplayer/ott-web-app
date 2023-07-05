@@ -62,7 +62,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       }),
     ],
     define: {
-      APP_VERSION: JSON.stringify(process.env.npm_package_version),
+      'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
     },
     publicDir: './public',
     envPrefix: 'APP_',
