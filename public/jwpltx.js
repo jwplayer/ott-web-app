@@ -90,7 +90,7 @@ window.jwpltx = window.jwpltx || {};
   }
 
   // Process a player ready event
-  o.ready = function (aid, bun, fed, id, t, oaid, oiid) {
+  o.ready = function (aid, bun, fed, id, t, oaid, oiid, av) {
     uri = JSON.parse(JSON.stringify(URI));
     uri.aid = aid;
     uri.bun = bun;
@@ -98,8 +98,7 @@ window.jwpltx = window.jwpltx || {};
     uri.id = id;
     uri.t = t;
     uri.oiid = oiid;
-    // eslint-disable-next-line no-undef
-    uri.av = APP_VERSION;
+    uri.av = av;
 
     // Send oaid only for logged in users
     if (oaid) {

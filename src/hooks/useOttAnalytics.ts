@@ -15,6 +15,9 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   // app config id (oiid)
   const oiid = config?.id;
 
+  // app version number (av)
+  const av = import.meta.env.APP_VERSION;
+
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
         return;
       }
 
-      window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid, oiid);
+      window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid, oiid, av);
     };
 
     const completeHandler = () => {
@@ -70,7 +73,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
       player.off('seeked', seekedHandler);
       player.off('adImpression', adImpressionHandler);
     };
-  }, [player, item, analyticsToken, feedId, oaid, oiid]);
+  }, [player, item, analyticsToken, feedId, oaid, oiid, av]);
 
   return setPlayer;
 };
