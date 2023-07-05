@@ -6,7 +6,6 @@ import styles from './ErrorPage.module.scss';
 import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/common';
 import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import { getPublicUrl } from '#src/utils/domHelpers';
 
 interface Props {
   disableFallbackTranslation?: boolean;
@@ -37,7 +36,7 @@ export const ErrorPageWithoutTranslation = ({ title, children, message, learnMor
   return (
     <div className={styles.errorPage}>
       <div className={styles.box}>
-        <img className={styles.image} src={getPublicUrl(logo || '/images/logo.png')} alt={'Logo'} />
+        <img className={styles.image} src={logo || '/images/logo.png'} alt={'Logo'} />
         <header>
           <h1 className={styles.title}>{title || 'An error occurred'}</h1>
         </header>
