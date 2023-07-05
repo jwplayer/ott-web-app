@@ -21,13 +21,14 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Welcome from '#components/Welcome/Welcome';
 import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
 import Dialog from '#components/Dialog/Dialog';
-import { addQueryParam, removeQueryParam } from '#src/utils/location';
+import { addQueryParam, removeMultipleQueryParams } from '#src/utils/location';
 import DeleteAccountModal from '#src/components/DeleteAccountModal/DeleteAccountModal';
 import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
 import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
 import useEventCallback from '#src/hooks/useEventCallback';
 import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
+import type { LoginFormMessage } from '#components/LoginForm/LoginForm';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
 
@@ -61,7 +62,7 @@ const AccountModal = () => {
   }, [viewParam, loading, isPublicView, user, toLogin]);
 
   const closeHandler = useEventCallback(() => {
-    navigate(removeQueryParam(location, 'u'));
+    navigate(removeMultipleQueryParams(location, ['u', 'message']));
   });
 
   const renderForm = () => {
@@ -75,7 +76,7 @@ const AccountModal = () => {
 
     switch (view) {
       case 'login':
-        return <Login message={message} />;
+        return <Login message={message as LoginFormMessage} />;
       case 'create-account':
         return <Registration />;
       case 'personal-details':

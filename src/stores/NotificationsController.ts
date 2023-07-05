@@ -2,6 +2,7 @@ import { logout, reloadActiveSubscription } from './AccountController';
 
 import useService from '#src/hooks/useService';
 import { addQueryParams } from '#src/utils/formatting';
+import type { LoginFormMessage } from '#components/LoginForm/LoginForm';
 
 export enum NotificationsTypes {
   ACCESS_GRANTED = 'access.granted',
@@ -26,7 +27,8 @@ export const subscribeToNotifications = async (uuid: string = '') => {
           case NotificationsTypes.ACCOUNT_LOGOUT:
             await logout();
             if (notification.resource?.reason === 'sessions_limit') {
-              window.location.href = addQueryParams(window.location.href, { u: 'login', message: 'true' });
+              const message: LoginFormMessage = 'simultaneous_warning';
+              window.location.href = addQueryParams(window.location.href, { u: 'login', message });
             }
             break;
           case NotificationsTypes.ACCESS_GRANTED:

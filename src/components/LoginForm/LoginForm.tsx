@@ -19,6 +19,8 @@ import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { LoginFormData } from '#types/account';
 
+export type LoginFormMessage = 'simultaneous_warning' | undefined;
+
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -27,7 +29,7 @@ type Props = {
   values: LoginFormData;
   submitting: boolean;
   siteName?: string;
-  message?: string;
+  message?: LoginFormMessage;
 };
 
 const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName, message }: Props) => {
@@ -37,7 +39,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
-      <div className={styles.top}>{message && <FormFeedback variant="warning">{t('login.simultaneous_logins')}</FormFeedback>}</div>
+      <div className={styles.top}>{message === 'simultaneous_warning' && <FormFeedback variant="warning">{t('login.simultaneous_logins')}</FormFeedback>}</div>
       <SocialButtonsList />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}

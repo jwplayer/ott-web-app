@@ -5,13 +5,13 @@ import { useLocation, useNavigate } from 'react-router';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import LoginForm from '#components/LoginForm/LoginForm';
+import LoginForm, { LoginFormMessage } from '#components/LoginForm/LoginForm';
 import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
 
 type Props = {
-  message?: string;
+  message: LoginFormMessage;
 };
 
 const Login: React.FC<Props> = ({ message }: Props) => {
