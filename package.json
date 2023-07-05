@@ -36,7 +36,6 @@
     "codecept-serve:mobile": "yarn codecept:mobile ; yarn serve-report:mobile",
     "codecept-serve:desktop": "yarn codecept:desktop ; yarn serve-report:desktop",
     "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test-commit",
-    "deploy:github": "node ./scripts/deploy-github.js",
     "load-content-types": "npx ts-node ./scripts/content-types/load-content-types"
   },
   "dependencies": {

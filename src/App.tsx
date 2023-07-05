@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
@@ -39,8 +39,6 @@ export default function App() {
     );
   }
 
-  const Router = import.meta.env.APP_PUBLIC_GITHUB_PAGES ? HashRouter : BrowserRouter;
-
   return (
     <>
       {import.meta.env.APP_GOOGLE_SITE_VERIFICATION_ID && (
@@ -49,9 +47,9 @@ export default function App() {
         </Helmet>
       )}
       <QueryProvider>
-        <Router>
+        <BrowserRouter>
           <Root />
-        </Router>
+        </BrowserRouter>
       </QueryProvider>
     </>
   );
