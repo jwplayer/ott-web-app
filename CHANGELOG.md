@@ -1,3 +1,12 @@
+# [4.20.0](https://github.com/jwplayer/ott-web-app/compare/v4.19.1...v4.20.0) (2023-07-04)
+
+
+### Features
+
+* **project:** add variable for GA ([fa0e0d7](https://github.com/jwplayer/ott-web-app/commit/fa0e0d75e20ea506bb2ebde92f9744e1645cab16))
+
+
+
 ## [4.19.1](https://github.com/jwplayer/ott-web-app/compare/v4.19.0...v4.19.1) (2023-06-20)
 
 

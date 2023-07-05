@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "4.19.1",
+  "version": "4.20.0",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "JW Player",
@@ -35,7 +35,8 @@
     "serve-report:desktop": "cd test-e2e && allure serve \"./output/desktop\"",
     "codecept-serve:mobile": "yarn codecept:mobile ; yarn serve-report:mobile",
     "codecept-serve:desktop": "yarn codecept:desktop ; yarn serve-report:desktop",
-    "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test-commit"
+    "pre-commit": "depcheck && lint-staged && TZ=UTC yarn test-commit",
+    "load-content-types": "npx ts-node ./scripts/content-types/load-content-types"
   },
   "dependencies": {
     "@adyen/adyen-web": "^5.42.1",
@@ -109,6 +110,7 @@
     "postcss-scss": "^4.0.4",
     "prettier": "^2.8.8",
     "react-app-polyfill": "^3.0.0",
+    "read": "^2.1.0",
     "sass": "^1.49.10",
     "stylelint": "^13.13.1",
     "stylelint-config-recommended-scss": "^4.3.0",
@@ -116,7 +118,7 @@
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.20.0",
     "timezone-mock": "^1.3.4",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.3.4",
     "vi-fetch": "^0.8.0",
