@@ -25,7 +25,7 @@ const MediaStaticPage: ScreenComponent<PlaylistItem> = ({ data }) => {
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       <div className={styles.mediaStaticPage}>
-        <MarkdownComponent markdownString={data.description} />
+        <MarkdownComponent markdownString={data.markdown || data.description} />
       </div>
     </>
   );

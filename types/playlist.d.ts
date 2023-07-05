@@ -61,6 +61,7 @@ export type PlaylistItem = {
   mediaStatus?: MediaStatus;
   scheduledStart?: Date;
   scheduledEnd?: Date;
+  markdown?: string;
   [key: string]: unknown;
 };
 

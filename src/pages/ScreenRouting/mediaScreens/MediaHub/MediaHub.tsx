@@ -13,7 +13,8 @@ const parsePlaylistIds = (input: unknown): Content[] => {
 };
 
 const MediaHub: ScreenComponent<PlaylistItem> = ({ data }) => {
-  const rows = useMemo(() => parsePlaylistIds(data.playlists), [data.playlists]);
+  // Hub may specify multiple playlists as a CSV list of IDs or a single playlist
+  const rows = useMemo(() => parsePlaylistIds(data.playlists || data.playlist), [data.playlist, data.playlists]);
 
   // Effects
   useEffect(() => {
