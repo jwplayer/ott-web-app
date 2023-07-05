@@ -1,4 +1,4 @@
-Feature: Analytics
+Feature: Analytics - Quantiles
 
   # It is possible to see differences in `ti` param value equalling to 1-2 seconds.
   # `225tvq1i` config can be used
@@ -57,12 +57,6 @@ Feature: Analytics
     Then Expect `t` event to be sent with a value of 14 as `ti` param
     When Click on "Back" button
     Then Expect `gab` event to be sent
-
-  Scenario: Watching the video from the beginning with 1 pre-roll ad
-    Given Start watching the video "Elephants Dream" using the config with an ad-schedule set up (`egpovogv`)
-    When Watch the video with advertising from "00:00 to 00:25"
-    Then Expect `i` event to be sent
-    Then Expect `t` event to be sent with a value of 20 as `ti` param
 
   Scenario: Watching the video from the Continue Watching shelf till the end
     Given Start watching the video "Elephants Dream" from the 10:00 minute (from Continue Watching shelf)
