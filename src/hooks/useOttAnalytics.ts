@@ -30,7 +30,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
     };
 
     const seekHandler = ({ offset }: jwplayer.SeekParam) => {
-      // TODO: according JWPlayer typings, the seek params doesn't contain a `duration` property, but it actually does
+      // TODO: according to JWPlayer typings, the seek param doesn't contain a `duration` property, but it actually does
       window.jwpltx.seek(offset, player.getDuration());
     };
 
