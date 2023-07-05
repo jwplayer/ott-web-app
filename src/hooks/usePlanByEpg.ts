@@ -4,6 +4,7 @@ import { startOfDay, startOfToday, startOfTomorrow } from 'date-fns';
 
 import type { EpgChannel } from '#src/services/epg.service';
 import { is12HourClock } from '#src/utils/datetime';
+import { getImage } from '#src/utils/image';
 
 const isBaseTimeFormat = is12HourClock();
 
@@ -13,24 +14,24 @@ const isBaseTimeFormat = is12HourClock();
 const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number, highlightColor?: string | null, backgroundColor?: string | null) => {
   const [epgChannels, epgPrograms] = useMemo(() => {
     return [
-      channels.map((channel) => ({
-        uuid: channel.id,
-        logo: channel.channelLogoImage?.image || '',
-        channelLogoImage: channel.channelLogoImage,
-        backgroundImage: channel.backgroundImage,
+      channels.map(({ id, channelLogoImage, backgroundImage }) => ({
+        uuid: id,
+        logo: getImage(channelLogoImage),
+        channelLogoImage: getImage(channelLogoImage),
+        backgroundImage: getImage(backgroundImage),
       })),
       channels.flatMap((channel) =>
-        channel.programs.map((program) => ({
+        channel.programs.map(({ id, title, shelfImage, backgroundImage, description, endTime, startTime }) => ({
           channelUuid: channel.id,
-          id: program.id,
-          title: program.title,
-          image: program.shelfImage?.image || '',
+          id: id,
+          title,
+          image: getImage(shelfImage),
           // programs have the same shelfImage/backgroundImage (different API)
-          shelfImage: program.shelfImage,
-          backgroundImage: program.backgroundImage,
-          description: program.description || '',
-          till: program.endTime,
-          since: program.startTime,
+          shelfImage: getImage(shelfImage),
+          backgroundImage: getImage(backgroundImage),
+          description: description || '',
+          till: endTime,
+          since: startTime,
         })),
       ),
     ];

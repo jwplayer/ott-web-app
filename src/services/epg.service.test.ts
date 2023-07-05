@@ -334,8 +334,8 @@ describe('epgService', () => {
       startTime: '2022-07-19T12:00:00Z',
       endTime: '2022-07-19T15:00:00Z',
       description: 'A description',
-      shelfImage: { image: 'https://cdn.jwplayer/logo.jpg' },
-      backgroundImage: { image: 'https://cdn.jwplayer/logo.jpg' },
+      shelfImage: 'https://cdn.jwplayer/logo.jpg',
+      backgroundImage: 'https://cdn.jwplayer/logo.jpg',
     });
   });
 });

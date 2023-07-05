@@ -6,7 +6,6 @@ import styles from './VideoDetails.module.scss';
 import CollapsibleText from '#components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Image from '#components/Image/Image';
-import type { ImageData } from '#types/playlist';
 import { testId } from '#src/utils/common';
 
 type Props = {
@@ -14,7 +13,7 @@ type Props = {
   description: string;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
-  image?: ImageData;
+  image?: string;
   startWatchingButton: React.ReactNode;
   shareButton: React.ReactNode;
   favoriteButton: React.ReactNode;
