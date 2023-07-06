@@ -650,13 +650,6 @@ exports[`User Component tests > Payments Page 1`] = `
             </small>
           </p>
         </div>
-        <button
-          class="_button_f8f296 _default_f8f296 _outlined_f8f296"
-        >
-          <span>
-            user:payment.cancel_subscription
-          </span>
-        </button>
       </div>
       <div
         class="_panel_e9c5ca"

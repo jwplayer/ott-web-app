@@ -197,7 +197,7 @@ const Payment = ({
                     {activeSubscription.status === 'active' && !isGrantedSubscription && !pendingDowngradeOfferId
                       ? t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })
                       : t('user:payment.subscription_expires_on', { date: formatLocalizedDate(new Date(activeSubscription.expiresAt * 1000), i18n.language) })}
-                    {(pendingOffer || pendingDowngradeOfferId) && (
+                    {(pendingOffer || pendingDowngradeOfferId) && activeSubscription.status !== 'cancelled' && (
                       <span className={styles.pendingSwitch}>
                         {t('user:payment.pending_offer_switch', {
                           title: getTitle(pendingOffer?.period || offers.find((offer) => offer.offerId === pendingDowngradeOfferId)?.period || 'month'),
@@ -218,7 +218,7 @@ const Payment = ({
                   className={styles.upgradeSubscription}
                   label={t('user:payment.change_subscription')}
                   onClick={() => {
-                    if (offers.length > 1) {
+                    if (offers.length > 1 && !canRenewSubscription) {
                       setIsChangingOffer(true);
                     } else {
                       onUpgradeSubscriptionClick?.();
@@ -229,7 +229,10 @@ const Payment = ({
                   data-testid="change-subscription-button"
                 />
               )}
-              {activeSubscription.status === 'active' && !isGrantedSubscription && !isChangingOffer ? (
+              {(activeSubscription.status === 'active' || activeSubscription.status === 'active_trial') &&
+              !isGrantedSubscription &&
+              !isChangingOffer &&
+              canRenewSubscription ? (
                 <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} fullWidth={isMobile} />
               ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
