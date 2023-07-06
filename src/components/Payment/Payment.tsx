@@ -220,6 +220,7 @@ const Payment = ({
                 <Button
                   className={styles.upgradeSubscription}
                   label={t('user:payment.change_subscription')}
+                  disabled={!canRenewSubscription && activeSubscription.status === 'cancelled'}
                   onClick={() => {
                     if (offers.length > 1 && !canRenewSubscription) {
                       setIsChangingOffer(true);
