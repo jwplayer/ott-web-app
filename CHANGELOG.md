@@ -1,3 +1,12 @@
+## [4.23.1](https://github.com/jwplayer/ott-web-app/compare/v4.23.0...v4.23.1) (2023-07-06)
+
+
+### Bug Fixes
+
+* **project:** add meta tag for GA ([#330](https://github.com/jwplayer/ott-web-app/issues/330)) ([87db5f9](https://github.com/jwplayer/ott-web-app/commit/87db5f9a5dc2ab42117267933b5a914825a756bb))
+
+
+
 # [4.23.0](https://github.com/jwplayer/ott-web-app/compare/v4.22.0...v4.23.0) (2023-07-06)
 
 
