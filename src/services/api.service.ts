@@ -149,13 +149,20 @@ export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [mediaI
  * Get all episodes of the selected series (when no particular season is selected or when episodes are attached to series)
  * @param {string} seriesId
  */
-export const getEpisodes = async (seriesId: string | undefined, pageOffset: number, pageLimit?: number): Promise<EpisodesWithPagination> => {
+export const getEpisodes = async (
+  seriesId: string | undefined | null,
+  pageOffset: number | null,
+  pageLimit: number | null = PAGE_LIMIT,
+  afterId?: string | null,
+): Promise<EpisodesWithPagination> => {
   if (!seriesId) {
     throw new Error('Series ID is required');
+  } else if (pageOffset && afterId) {
+    throw new Error('page_offset and after_id are not allowed in the same query');
   }
 
   const pathname = `/apps/series/${seriesId}/episodes`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit || PAGE_LIMIT });
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit, after_id: afterId });
 
   const response = await fetch(url);
   const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
