@@ -10,6 +10,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
     </div>
     <a
       class="_link_a14c64"
+      href="javascript:;"
     >
       click_to_unselect_config
     </a>
@@ -104,7 +105,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               rel="noreferrer"
               target="_blank"
             >
-              learn_more
+              app_config_learn_more
             </a>
           </p>
         </main>

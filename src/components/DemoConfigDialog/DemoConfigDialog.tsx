@@ -2,6 +2,7 @@ import React, { ChangeEventHandler, MouseEventHandler, useEffect, useState } fro
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import type { UseQueryResult } from 'react-query';
+import { Helmet } from 'react-helmet';
 
 import styles from './DemoConfigDialog.module.scss';
 
@@ -136,16 +137,24 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
 
   return (
     <>
+      {!configQuery.isSuccess && (
+        <Helmet>
+          <meta name="description" content="Enter the App Config ID" />
+        </Helmet>
+      )}
       {configQuery.isSuccess && (
         <div className={styles.note}>
           <div>{t('currently_previewing_config', { configSource: selectedConfigSource })}</div>
-          <Link onClick={clearConfig}>{t('click_to_unselect_config')}</Link>
+          <Link href="javascript:;" onClick={clearConfig}>
+            {t('click_to_unselect_config')}
+          </Link>
         </div>
       )}
       {!configQuery.isSuccess && (
         <div className={styles.configModal}>
           <ErrorPage
             title={t('app_config_not_found')}
+            learnMoreLabel={t('app_config_learn_more')}
             helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'}
             error={typeof state.error === 'string' ? undefined : state.error}
           >

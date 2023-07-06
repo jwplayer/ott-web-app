@@ -1,5 +1,6 @@
 {
   "app_config_not_found": "Invalid or Missing App Config",
+  "app_config_learn_more": "Learn more about the App Config creation",
   "cancel_config_id": "Cancel",
   "click_to_unselect_config": "(click here to unselect this config)",
   "currently_previewing_config": "You are currently previewing config: '{{configSource}}'",
