@@ -1,3 +1,12 @@
+## [4.23.2](https://github.com/jwplayer/ott-web-app/compare/v4.23.1...v4.23.2) (2023-07-06)
+
+
+### Bug Fixes
+
+* **deps:** bump @sideway/formula from 3.0.0 to 3.0.1 ([#309](https://github.com/jwplayer/ott-web-app/issues/309)) ([8dbb314](https://github.com/jwplayer/ott-web-app/commit/8dbb3145a866237b9cb07e2e61caf69bac2a1d55))
+
+
+
 ## [4.23.1](https://github.com/jwplayer/ott-web-app/compare/v4.23.0...v4.23.1) (2023-07-06)
 
 
