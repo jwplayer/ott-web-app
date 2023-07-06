@@ -22,6 +22,14 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
+"@ampproject/remapping@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.1.tgz#99e8e11851128b8702cd57c33684f1d0f260b630"
+  integrity sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==
+  dependencies:
+    "@jridgewell/gen-mapping" "^0.3.0"
+    "@jridgewell/trace-mapping" "^0.3.9"
+
 "@apideck/better-ajv-errors@^0.3.1":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@apideck/better-ajv-errors/-/better-ajv-errors-0.3.3.tgz#ab0b1e981e1749bf59736cf7ebe25cfc9f949c15"
@@ -2116,11 +2124,6 @@
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.1.tgz#e2c6e73e0bdeb2521d00756d099218e9f5d90a04"
   integrity sha512-/zPMqDkzSZ8t3VtxOa4KPq7uzzW978M9Tvh+j7GHKuo6k6GTLxPJ4J5gE5cjfJ26pnXst0N5Hax8Sr0T2Mi9zQ==
 
-"@types/chai@^4.3.3":
-  version "4.3.3"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.3.tgz#3c90752792660c4b562ad73b3fbd68bf3bc7ae07"
-  integrity sha512-hC7OMnszpxhZPduX+m+nrx+uFoLkWOMiR4oa/AZF3MuSETYTZmFfJAHqZEM8MVlvfG7BEUcgvtwoCTxBp6hm3g==
-
 "@types/chai@^4.3.5":
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.5.tgz#ae69bcbb1bebb68c4ac0b11e9d8ed04526b3562b"
@@ -2468,13 +2471,16 @@
     react-refresh "^0.12.0"
     resolve "^1.22.0"
 
-"@vitest/coverage-c8@^0.25.7":
-  version "0.25.7"
-  resolved "https://registry.yarnpkg.com/@vitest/coverage-c8/-/coverage-c8-0.25.7.tgz#37f5b2611aa138c806aca507c43db93863de83c2"
-  integrity sha512-TEoYjW4YIDXKCMmLqduIGpIq2JmlhE3M0Q68apjNM0ljrJyEvYpaDI5b7OyfXbAJjhmZvIlfEZfZnmhbExHLHg==
+"@vitest/coverage-c8@^0.32.4":
+  version "0.32.4"
+  resolved "https://registry.yarnpkg.com/@vitest/coverage-c8/-/coverage-c8-0.32.4.tgz#fb191263d42f035b461784448d7850e2ea0d1208"
+  integrity sha512-ahJowPxgSBnaI2J+L/xmzM2oWFkk/+HtjnRfkQZrZd7H80JyG1/D6Xp6UPSZk8MXnoa90NThoyXRDBt12tNBRg==
   dependencies:
-    c8 "^7.12.0"
-    vitest "0.25.7"
+    "@ampproject/remapping" "^2.2.1"
+    c8 "^7.14.0"
+    magic-string "^0.30.0"
+    picocolors "^1.0.0"
+    std-env "^3.3.3"
 
 "@vitest/expect@0.32.4":
   version "0.32.4"
@@ -2623,15 +2629,10 @@ acorn@^7.1.1, acorn@^7.4.0, acorn@^7.4.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-acorn@^8.4.1, acorn@^8.5.0, acorn@^8.8.0:
+acorn@^8.4.1, acorn@^8.5.0:
   version "8.8.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.8.0.tgz#88c0187620435c7f6015803f5539dae05a9dbea8"
   integrity sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==
-
-acorn@^8.8.1:
-  version "8.8.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.8.1.tgz#0a3f9cbecc4ec3bea6f0a80b66ae8dd2da250b73"
-  integrity sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==
 
 acorn@^8.8.2, acorn@^8.9.0:
   version "8.10.0"
@@ -3144,10 +3145,10 @@ builtin-modules@^3.1.0:
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.2.0.tgz#45d5db99e7ee5e6bc4f362e008bf917ab5049887"
   integrity sha512-lGzLKcioL90C7wMczpkY0n/oART3MbBa8R9OFGE1rJxoVI86u4WAGfEk8Wjv10eKSyTHVGkSo3bvBylCEtk7LA==
 
-c8@^7.12.0:
-  version "7.12.0"
-  resolved "https://registry.yarnpkg.com/c8/-/c8-7.12.0.tgz#402db1c1af4af5249153535d1c84ad70c5c96b14"
-  integrity sha512-CtgQrHOkyxr5koX1wEUmN/5cfDa2ckbHRA4Gy5LAL0zaCFtVWJS5++n+w4/sr2GWGerBxgTjpKeDclk/Qk6W/A==
+c8@^7.14.0:
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/c8/-/c8-7.14.0.tgz#f368184c73b125a80565e9ab2396ff0be4d732f3"
+  integrity sha512-i04rtkkcNcCf7zsQcSv/T9EbUn4RXQ6mropeMcjFOsQXQ0iGLAr/xT6TImQg4+U9hmNpN9XdvPkjUL1IzbgxJw==
   dependencies:
     "@bcoe/v8-coverage" "^0.2.3"
     "@istanbuljs/schema" "^0.1.3"
@@ -6265,11 +6266,6 @@ load-json-file@^4.0.0:
     pify "^3.0.0"
     strip-bom "^3.0.0"
 
-local-pkg@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/local-pkg/-/local-pkg-0.4.2.tgz#13107310b77e74a0e513147a131a2ba288176c2f"
-  integrity sha512-mlERgSPrbxU3BP4qBqAvvwlgW4MTg78iwJdGGnv7kibKjWcJksrG3t6LB5lXI93wXRDvG4NpUgJFmTG4T6rdrg==
-
 local-pkg@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/local-pkg/-/local-pkg-0.4.3.tgz#0ff361ab3ae7f1c19113d9bb97b98b905dbc4963"
@@ -8820,13 +8816,6 @@ strip-json-comments@3.1.1, strip-json-comments@^3.1.0, strip-json-comments@^3.1.
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-strip-literal@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/strip-literal/-/strip-literal-1.0.0.tgz#0a484ed5a978cd9d2becf3cf8f4f2cb5ab0e1e74"
-  integrity sha512-5o4LsH1lzBzO9UFH63AJ2ad2/S2AVx6NtjOcaz+VTT2h1RiRvbipW72z8M/lxEhcPHDBQwpDrnTF7sXy/7OwCQ==
-  dependencies:
-    acorn "^8.8.1"
-
 strip-literal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/strip-literal/-/strip-literal-1.0.1.tgz#0115a332710c849b4e46497891fb8d585e404bd2"
@@ -9114,20 +9103,10 @@ timezone-mock@^1.3.4:
   resolved "https://registry.yarnpkg.com/timezone-mock/-/timezone-mock-1.3.4.tgz#16cc40bfad10d461f8a41ed7396eeb6ea1e1b2b3"
   integrity sha512-B0CGmOgMPVUZqp63eU/FGcDaL68JjHeiVnCF24K99Kj6AwCV15BHWMLCv8ZKSUq5oyVHTtg7p1ajOWfXB+0wnQ==
 
-tinybench@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/tinybench/-/tinybench-2.3.1.tgz#14f64e6b77d7ef0b1f6ab850c7a808c6760b414d"
-  integrity sha512-hGYWYBMPr7p4g5IarQE7XhlyWveh1EKhy4wUBS1LrHXCKYgvz+4/jCqgmJqZxxldesn05vccrtME2RLLZNW7iA==
-
 tinybench@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tinybench/-/tinybench-2.5.0.tgz#4711c99bbf6f3e986f67eb722fed9cddb3a68ba5"
   integrity sha512-kRwSG8Zx4tjF9ZiyH4bhaebu+EDz1BOx9hOigYHlUW4xxI/wKIUQUqo018UlU4ar6ATPBsaMrdbKZ+tmPdohFA==
-
-tinypool@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/tinypool/-/tinypool-0.3.0.tgz#c405d8b743509fc28ea4ca358433190be654f819"
-  integrity sha512-NX5KeqHOBZU6Bc0xj9Vr5Szbb1j8tUHIeD18s41aDJaPeC5QTdEhK0SpdpUrZlj2nv5cctNcSjaKNanXlfcVEQ==
 
 tinypool@^0.5.0:
   version "0.5.0"
@@ -9138,11 +9117,6 @@ tinyspy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-1.0.0.tgz#0cb34587287b0432b33fe36a9bd945fe22b1eb89"
   integrity sha512-FI5B2QdODQYDRjfuLF+OrJ8bjWRMCXokQPcwKm0W3IzcbUmBNv536cQc7eXGoAuXphZwgx1DFbqImwzz08Fnhw==
-
-tinyspy@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-1.0.2.tgz#6da0b3918bfd56170fb3cd3a2b5ef832ee1dff0d"
-  integrity sha512-bSGlgwLBYf7PnUsQ6WOc6SJ3pGOcd+d8AA6EUnLDDM0kWEstC1JIlSZA3UNliDXhd9ABoS7hiRBDCu+XP/sf1Q==
 
 tinyspy@^2.1.1:
   version "2.1.1"
@@ -9716,26 +9690,6 @@ vite-plugin-stylelint@^4.0.1:
     rollup "^3.25.2"
   optionalDependencies:
     fsevents "~2.3.2"
-
-vitest@0.25.7:
-  version "0.25.7"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.25.7.tgz#dbb384907a56265fe0ce95149803a4c839388174"
-  integrity sha512-lJ+Ue+v8kHl2JzjaKHJ9u5Yo/loU7zrWK2/Whn8OKQjtq5G7nkeWfXuq3elZaC8xKdkdIuWiiIicaNBG1F5yzg==
-  dependencies:
-    "@types/chai" "^4.3.3"
-    "@types/chai-subset" "^1.3.3"
-    "@types/node" "*"
-    acorn "^8.8.0"
-    acorn-walk "^8.2.0"
-    chai "^4.3.6"
-    debug "^4.3.4"
-    local-pkg "^0.4.2"
-    source-map "^0.6.1"
-    strip-literal "^1.0.0"
-    tinybench "^2.3.1"
-    tinypool "^0.3.0"
-    tinyspy "^1.0.2"
-    vite "^3.0.0 || ^4.0.0"
 
 vitest@^0.32.3:
   version "0.32.4"
