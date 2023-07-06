@@ -35,7 +35,7 @@ export function formatDate(date: Date) {
   return new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 }
 
-export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date, yearlyPrice: string) {
+export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date, yearlyPrice: string, providerName?: string) {
   I.click('Continue');
   I.waitForLoaderDone(longTimeout);
   I.wait(2);
@@ -63,18 +63,30 @@ export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: D
   I.see(yearlyPrice);
   I.see('/year');
   I.see('Next billing date is on ' + formatDate(billingDate));
-  I.see('Cancel subscription');
 
-  I.waitForElement('[class*="transactionItem"]');
+  if (providerName?.includes('JW')) {
+    I.waitForElement('[data-testid="change-subscription-button"]', 10);
+    I.click('[data-testid="change-subscription-button"]');
+  }
+
+  I.waitForElement('[data-testid="cancel-subscription-button"]', 10);
+
+  I.waitForElement('[class*="transactionItem"]', 10);
 
   I.see(formatDate(today));
 }
 
-export function cancelPlan(I: CodeceptJS.I, expirationDate: Date, canRenewSubscription: boolean) {
+export function cancelPlan(I: CodeceptJS.I, expirationDate: Date, canRenewSubscription: boolean, providerName?: string) {
   I.amOnPage(constants.paymentsUrl);
   I.waitForLoaderDone();
 
-  I.click('Cancel subscription');
+  if (providerName?.includes('JW')) {
+    I.waitForElement('[data-testid="change-subscription-button"]', 10);
+    I.click('[data-testid="change-subscription-button"]');
+  }
+
+  I.waitForElement('[data-testid="cancel-subscription-button"]', 10);
+  I.click('[data-testid="cancel-subscription-button"]');
   I.see('We are sorry to see you go.');
   I.see('You will be unsubscribed from your current plan by clicking the unsubscribe button below.');
   I.see('Unsubscribe');
@@ -83,7 +95,8 @@ export function cancelPlan(I: CodeceptJS.I, expirationDate: Date, canRenewSubscr
 
   I.dontSee('This plan will expire');
 
-  I.click('Cancel subscription');
+  I.waitForElement('[data-testid="cancel-subscription-button"]', 10);
+  I.click('[data-testid="cancel-subscription-button"]');
   I.click('Unsubscribe');
   I.waitForLoaderDone();
   I.see('Miss you already.');
@@ -122,7 +135,7 @@ export function renewPlan(I: CodeceptJS.I, billingDate: Date, yearlyPrice: strin
 
   I.see('Annual subscription');
   I.see('Next billing date is on');
-  I.see('Cancel subscription');
+  I.waitForElement('[data-testid="cancel-subscription-button"]', 10);
 }
 
 export function overrideIP(I: CodeceptJS.I) {

@@ -170,7 +170,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       props.fieldWrapper,
     );
 
-    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, providerName);
 
     I.seeAll(cardInfo);
   });
@@ -178,7 +178,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   Scenario(`I can cancel my subscription - ${providerName}`, async ({ I }) => {
     paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-    cancelPlan(I, addYear(today), props.canRenewSubscription);
+    cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
 
     // Still see payment info
     I.seeAll(cardInfo);

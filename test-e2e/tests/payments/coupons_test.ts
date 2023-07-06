@@ -86,12 +86,12 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       );
     }
 
-    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, providerName);
   });
 
   Scenario(`I can cancel a free subscription - ${providerName}`, async ({ I }) => {
     couponLoginContext = await I.registerOrLogin(couponLoginContext);
-    cancelPlan(I, addYear(today), props.canRenewSubscription);
+    cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
   });
 
   Scenario(`I can renew a free subscription - ${providerName}`, async ({ I }) => {

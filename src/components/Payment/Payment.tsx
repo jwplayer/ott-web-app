@@ -77,7 +77,6 @@ const Payment = ({
   const isMobile = breakpoint === Breakpoint.xs;
 
   const { offers } = useOffers();
-  const hasSelectableOffers = offers.some((offer) => offer.planSwitchEnabled);
 
   const [isChangingOffer, setIsChangingOffer] = useState(false);
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(activeSubscription?.accessFeeId ?? null);
@@ -88,6 +87,10 @@ const Payment = ({
       setSelectedOfferId(activeSubscription?.accessFeeId ?? null);
     }
   }, [activeSubscription, isChangingOffer]);
+
+  useEffect(() => {
+    setIsChangingOffer(false);
+  }, [activeSubscription?.status, activeSubscription?.pendingSwitchId]);
 
   useEffect(() => {
     if (selectedOfferId && offers) {
@@ -162,7 +165,7 @@ const Payment = ({
     }
   }
 
-  const showChangeSubscriptionButton = offerSwitchesAvailable || (hasSelectableOffers && !isChangingOffer && activeSubscription?.status !== 'active_trial');
+  const showChangeSubscriptionButton = offerSwitchesAvailable || (!isChangingOffer && !canRenewSubscription);
 
   return (
     <>
@@ -233,7 +236,12 @@ const Payment = ({
               !isGrantedSubscription &&
               !isChangingOffer &&
               canRenewSubscription ? (
-                <Button label={t('user:payment.cancel_subscription')} onClick={onCancelSubscriptionClick} fullWidth={isMobile} />
+                <Button
+                  label={t('user:payment.cancel_subscription')}
+                  onClick={onCancelSubscriptionClick}
+                  fullWidth={isMobile}
+                  data-testid="cancel-subscription-button"
+                />
               ) : canRenewSubscription ? (
                 <Button label={t('user:payment.renew_subscription')} onClick={onRenewSubscriptionClick} />
               ) : null}
@@ -270,6 +278,7 @@ const Payment = ({
                     label={t('user:payment.cancel_subscription')}
                     onClick={onCancelSubscriptionClick}
                     variant="danger"
+                    data-testid="cancel-subscription-button"
                   />
                 )}
               </div>
