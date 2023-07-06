@@ -1,3 +1,23 @@
+# [4.22.0](https://github.com/jwplayer/ott-web-app/compare/v4.21.0...v4.22.0) (2023-07-05)
+
+
+### Features
+
+* **project:** remove github pages ([a83bfe9](https://github.com/jwplayer/ott-web-app/commit/a83bfe9ac5087def6d46bebce2b226ec80313cbf))
+* **project:** remove hash routing ([91acf86](https://github.com/jwplayer/ott-web-app/commit/91acf86508b9b93fbb7ef965b12aa05ac8e5b246))
+
+
+
+# [4.21.0](https://github.com/jwplayer/ott-web-app/compare/v4.20.0...v4.21.0) (2023-07-05)
+
+
+### Features
+
+* **project:** test cases for analytics ([2abf28b](https://github.com/jwplayer/ott-web-app/commit/2abf28b88cb716efb33ac154e375285c307e7246))
+* **project:** test cases for analytics ([41f900d](https://github.com/jwplayer/ott-web-app/commit/41f900d88361b862048e281e00ffe27fc5ec7c04))
+
+
+
 # [4.20.0](https://github.com/jwplayer/ott-web-app/compare/v4.19.1...v4.20.0) (2023-07-04)
 
 

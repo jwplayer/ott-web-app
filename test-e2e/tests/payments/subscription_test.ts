@@ -127,7 +127,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     I.see('Credit card');
     I.see('PayPal');
-
+    I.see(props.paymentFields.creditCardholder);
     I.see('Card number');
     I.see('Expiry date');
     I.see('Security code');
