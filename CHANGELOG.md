@@ -1,3 +1,17 @@
+# [4.23.0](https://github.com/jwplayer/ott-web-app/compare/v4.22.0...v4.23.0) (2023-07-06)
+
+
+### Features
+
+* av ([743af3e](https://github.com/jwplayer/ott-web-app/commit/743af3e4b855fed61178f2b8f52757edeb944e6f))
+* code cleanup ([13a1e21](https://github.com/jwplayer/ott-web-app/commit/13a1e2120adf9486fb4e34b8544726811331c4c3))
+* comment fix ([6ab4dcb](https://github.com/jwplayer/ott-web-app/commit/6ab4dcbff33f95539cbf8c20fc18b67976463f07))
+* fix vite config definition ([2d772ed](https://github.com/jwplayer/ott-web-app/commit/2d772ed52ae835485fe48ffc4a0b3352ab9edcb5))
+* oiid for analytics ([898f94a](https://github.com/jwplayer/ott-web-app/commit/898f94a6683dfcc18020deef90fc8a1bc987b6b3))
+* update docs ([1fa1bcf](https://github.com/jwplayer/ott-web-app/commit/1fa1bcf093ff24514ead4e2a4ae943badf6f0871))
+
+
+
 # [4.22.0](https://github.com/jwplayer/ott-web-app/compare/v4.21.0...v4.22.0) (2023-07-05)
 
 
