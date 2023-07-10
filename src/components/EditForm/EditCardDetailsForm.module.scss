@@ -1,0 +1,13 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+
+.title {
+  margin-bottom: 24px;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+}
+
+.cancelButton{
+  margin-top: 8px;
+}
+

@@ -2,6 +2,7 @@ import type { PlaylistItem } from './playlist';
 
 export type WatchHistoryItem = {
   mediaid: string;
+  seriesId: string | undefined;
   title: string;
   tags: string;
   duration: number;

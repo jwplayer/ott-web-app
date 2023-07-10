@@ -15,11 +15,15 @@ import type { AccessModel } from '#types/Config';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
-  filters?: string[];
+  filters?: (string | { label: string; value: string })[];
   currentFilter?: string;
   defaultFilterLabel?: string;
-  filterValuePrefix?: string;
   setFilter?: (value: string) => void;
+};
+
+type LoadMoreProps = {
+  hasLoadMore?: boolean;
+  loadMore?: () => void;
 };
 
 type VideoDetailsProps = {
@@ -55,7 +59,8 @@ type Props = {
   playlist?: Playlist;
 } & FilterProps &
   VideoDetailsProps &
-  VideoListProps;
+  VideoListProps &
+  LoadMoreProps;
 
 const VideoLayout: React.FC<Props> = ({
   inlineLayout,
@@ -85,10 +90,12 @@ const VideoLayout: React.FC<Props> = ({
   filters,
   setFilter,
   filterMetadata,
-  filterValuePrefix,
   currentFilter = '',
   defaultFilterLabel = '',
   children,
+  // load more
+  hasLoadMore,
+  loadMore,
 }) => {
   const breakpoint = useBreakpoint();
   const isTablet = breakpoint === Breakpoint.sm || breakpoint === Breakpoint.md;
@@ -100,15 +107,7 @@ const VideoLayout: React.FC<Props> = ({
     <div className={classNames(styles.filters, { [styles.filtersInline]: inlineLayout })}>
       {!!filterMetadata && inlineLayout && <span className={styles.filterMetadata}>{filterMetadata}</span>}
       {showFilters && (
-        <Filter
-          name="season"
-          value={currentFilter}
-          valuePrefix={filterValuePrefix}
-          defaultLabel={defaultFilterLabel}
-          options={filters}
-          setValue={setFilter}
-          forceDropdown={forceDropdown}
-        />
+        <Filter name="season" value={currentFilter} defaultLabel={defaultFilterLabel} options={filters} setValue={setFilter} forceDropdown={forceDropdown} />
       )}
     </div>
   );
@@ -132,6 +131,8 @@ const VideoLayout: React.FC<Props> = ({
           currentCardItem={item}
           currentCardLabel={activeLabel}
           hasSubscription={hasSubscription}
+          hasLoadMore={hasLoadMore}
+          loadMore={loadMore}
         />
       </>
     ) : (
@@ -153,6 +154,8 @@ const VideoLayout: React.FC<Props> = ({
           accessModel={accessModel}
           isLoggedIn={isLoggedIn}
           hasSubscription={hasSubscription}
+          hasLoadMore={hasLoadMore}
+          loadMore={loadMore}
         />
       </div>
     );

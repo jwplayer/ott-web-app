@@ -1,9 +1,7 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 import styles from './VideoDetailsInline.module.scss';
 
-import Tag from '#components/Tag/Tag';
 import CollapsibleText from '#components/CollapsibleText/CollapsibleText';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { testId } from '#src/utils/common';
@@ -18,8 +16,7 @@ type Props = {
   live?: boolean;
 };
 
-const VideoDetailsInline: React.FC<Props> = ({ title, description, primaryMetadata, shareButton, favoriteButton, trailerButton, live }) => {
-  const { t } = useTranslation('common');
+const VideoDetailsInline: React.FC<Props> = ({ title, description, primaryMetadata, shareButton, favoriteButton, trailerButton }) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
@@ -29,14 +26,7 @@ const VideoDetailsInline: React.FC<Props> = ({ title, description, primaryMetada
     <div className={styles.details} data-testid={testId('video-details-inline')}>
       <TitleComponent className={styles.title}>{title}</TitleComponent>
       <div className={styles.inlinePlayerMetadata}>
-        <div className={styles.primaryMetadata}>
-          {live && (
-            <Tag className={styles.live} isLive>
-              {t('live')}
-            </Tag>
-          )}
-          {primaryMetadata}
-        </div>
+        <div className={styles.primaryMetadata}>{primaryMetadata}</div>
         {trailerButton}
         {favoriteButton}
         {shareButton}

@@ -12,13 +12,14 @@ exports.config = {
   grep: '(?=.*)^(?!.*@desktop-only)',
   tests: ['./tests/**/*.js', './tests/**/*.ts'],
   output: './output/mobile',
-  timeout: 60,
+  timeout: 3000,
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',
       show: !!process.env.SHOW,
       channel: 'chrome',
       emulate: devices['Pixel 5'],
+      keepCookies: false,
     },
   },
   include: {
@@ -39,6 +40,7 @@ exports.config = {
     },
     allure: {
       enabled: true,
+      require: '@codeceptjs/allure-legacy',
     },
   },
 };

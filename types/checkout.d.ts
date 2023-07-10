@@ -1,3 +1,5 @@
+import type { e } from 'vitest/dist/index-fde81ec3';
+
 import type { PayloadWithIPOverride } from '#types/account';
 
 export type Offer = {
@@ -132,6 +134,7 @@ export type Payment = {
   refundedReason: string | null;
   paymentDetailsId: number | null;
   paymentOperation: string;
+  gatewaySpecificParams?: string;
 };
 
 export type GetOfferPayload = {
@@ -151,6 +154,55 @@ export type CreateOrderPayload = {
   paymentMethodId?: number;
   couponCode?: string;
 };
+
+export type SwitchOffer = {
+  currency: string;
+  currencySymbol: string;
+  nextPaymentPrice: number;
+  nextPaymentPriceCurrency: string;
+  nextPaymentPriceCurrencySymbol: string;
+  period: string;
+  price: number;
+  switchDirection: string;
+  title: string;
+  toOfferId: string;
+};
+
+export type GetSubscriptionSwitchesPayload = {
+  customerId: string;
+  offerId: string;
+};
+
+export type GetSubscriptionSwitchesResponse = {
+  available: SwitchOffer[];
+  unavailable: SwitchOffer[];
+};
+
+export type GetSubscriptionSwitchPayload = {
+  switchId: string;
+};
+
+export type GetSubscriptionSwitchResponse = {
+  id: id;
+  customerId: number;
+  direction: 'downgrade' | 'upgrade';
+  algorithm: string;
+  fromOfferId: string;
+  toOfferId: string;
+  subscriptionId: string;
+  status: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type SwitchSubscriptionPayload = {
+  customerId: string;
+  offerId: string;
+  toOfferId: string;
+  switchDirection: string;
+};
+
+export type SwitchSubscriptionResponse = string;
 
 export type CreateOrderArgs = {
   offer: Offer;
@@ -174,6 +226,16 @@ export type UpdateOrderPayload = {
 };
 
 export type UpdateOrderResponse = {
+  message: string;
+  order: Order;
+  success: boolean;
+};
+
+export type GetOrderPayload = {
+  orderId: number;
+};
+
+export type GetOrderResponse = {
   message: string;
   order: Order;
   success: boolean;
@@ -209,12 +271,107 @@ export type GetEntitlementsResponse = {
   expiresAt: number;
 };
 
+export type AdyenPaymentMethodPayload = {
+  orderId?: number;
+  returnUrl: string;
+  filteredPaymentMethods?: string[];
+  filterPaymentMethodsByType?: string[];
+};
+
+export type InitialAdyenPaymentPayload = {
+  orderId: number;
+  returnUrl: string;
+  paymentMethod: AdyenPaymentMethod;
+  billingAddress?: {
+    street: string;
+    houseNumberOrName: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    stateOrProvince: string;
+  };
+  origin?: string;
+  customerIP?: string;
+  browserInfo?: unknown;
+  attemptAuthentication?: 'always' | 'never' | 'preferNo';
+  enable3DSRedirectFlow?: boolean;
+};
+
+export type AdyenAction = {
+  action: {
+    paymentMethodType: string;
+    url: string;
+    data: unknown;
+    method: string;
+    type: string;
+  };
+};
+
+export type InitialAdyenPayment = Payment | AdyenAction;
+
+export type FinalizeAdyenPaymentPayload = {
+  orderId: number;
+  details: unknown;
+  paymentData?: string;
+};
+
+export type FinalizeAdyenPayment = {
+  payment: Payment;
+};
+
+export type AdyenPaymentSession = {
+  allowedPaymentMethods: string[];
+  blockedPaymentMethods: string[];
+  shopperStatement: string;
+  amount: {
+    currency: string;
+    value: number;
+  };
+  countryCode: string;
+  expiresAt: string;
+  id: string;
+  returnUrl: string;
+  merchantAccount: string;
+  reference: string;
+  paymentMethod: AdyenPaymentMethod[];
+  sessionData: string;
+};
+
+export type UpdatePaymentWithPayPalPayload = Omit<PaymentWithPaypalPayload, 'orderId'> & { paymentMethodId: number };
+
+export type DeletePaymentMethodPayload = {
+  paymentDetailsId: number;
+};
+
+export type DeletePaymentMethodResponse = {
+  paymentDetailsId: string;
+};
+
+export type AddAdyenPaymentDetailsPayload = Omit<InitialAdyenPaymentPayload, 'orderId'> & { paymentMethodId: number };
+
+export type AddAdyenPaymentDetailsResponse = Omit<PaymentDetail, 'customerId'>;
+
+export type FinalizeAdyenPaymentDetailsPayload = Omit<FinalizeAdyenPaymentPayload, 'orderId'> & { paymentMethodId: number };
+
+export type FinalizeAdyenPaymentDetailsResponse = PaymentDetail;
+
 export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
 export type GetOffer = EnvironmentServiceRequest<GetOfferPayload, Offer>;
-export type CreateOrder = AuthServiceRequest<CreateOrderArgs, CreateOrderResponse>;
-export type UpdateOrder = AuthServiceRequest<UpdateOrderPayload, UpdateOrderResponse>;
-export type GetPaymentMethods = EmptyAuthServiceRequest<PaymentMethodResponse>;
-export type PaymentWithoutDetails = AuthServiceRequest<PaymentWithoutDetailsPayload, Payment>;
-export type PaymentWithAdyen = AuthServiceRequest<PaymentWithAdyenPayload, Payment>;
-export type PaymentWithPayPal = AuthServiceRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
-export type GetEntitlements = AuthServiceRequest<GetEntitlementsPayload, GetEntitlementsResponse>;
+export type CreateOrder = EnvironmentServiceRequest<CreateOrderArgs, CreateOrderResponse>;
+export type GetOrder = EnvironmentServiceRequest<GetOrderPayload, GetOrderResponse>;
+export type UpdateOrder = EnvironmentServiceRequest<UpdateOrderPayload, UpdateOrderResponse>;
+export type GetPaymentMethods = EmptyEnvironmentServiceRequest<PaymentMethodResponse>;
+export type PaymentWithoutDetails = EnvironmentServiceRequest<PaymentWithoutDetailsPayload, Payment>;
+export type PaymentWithAdyen = EnvironmentServiceRequest<PaymentWithAdyenPayload, Payment>;
+export type PaymentWithPayPal = EnvironmentServiceRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
+export type GetSubscriptionSwitches = EnvironmentServiceRequest<GetSubscriptionSwitchesPayload, GetSubscriptionSwitchesResponse>;
+export type GetSubscriptionSwitch = EnvironmentServiceRequest<GetSubscriptionSwitchPayload, GetSubscriptionSwitchResponse>;
+export type SwitchSubscription = EnvironmentServiceRequest<SwitchSubscriptionPayload, SwitchSubscriptionResponse>;
+export type GetEntitlements = EnvironmentServiceRequest<GetEntitlementsPayload, GetEntitlementsResponse>;
+export type GetAdyenPaymentSession = EnvironmentServiceRequest<AdyenPaymentMethodPayload, AdyenPaymentSession>;
+export type GetInitialAdyenPayment = EnvironmentServiceRequest<InitialAdyenPaymentPayload, InitialAdyenPayment>;
+export type GetFinalizeAdyenPayment = EnvironmentServiceRequest<FinalizeAdyenPaymentPayload, FinalizeAdyenPayment>;
+export type UpdatePaymentWithPayPal = EnvironmentServiceRequest<UpdatePaymentWithPayPalPayload, PaymentWithPayPalResponse>;
+export type DeletePaymentMethod = EnvironmentServiceRequest<DeletePaymentMethodPayload, DeletePaymentMethodResponse>;
+export type AddAdyenPaymentDetails = EnvironmentServiceRequest<AddAdyenPaymentDetailsPayload, AddAdyenPaymentDetailsResponse>;
+export type FinalizeAdyenPaymentDetails = EnvironmentServiceRequest<FinalizeAdyenPaymentDetailsPayload, FinalizeAdyenPaymentDetailsResponse>;

@@ -25,8 +25,6 @@ const defaultCols: Breakpoints = {
 
 type CardGridProps = {
   playlist: Playlist;
-  onCardHover?: (item: PlaylistItem) => void;
-  onCardClick: (item: PlaylistItem, playlistId?: string) => void;
   watchHistory?: { [key: string]: number };
   isLoading: boolean;
   cols?: Breakpoints;
@@ -35,12 +33,14 @@ type CardGridProps = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  hasLoadMore?: boolean;
+  loadMore?: () => void;
+  onCardHover?: (item: PlaylistItem) => void;
+  onCardClick: (item: PlaylistItem, playlistId?: string) => void;
 };
 
 function CardGrid({
   playlist,
-  onCardClick,
-  onCardHover,
   watchHistory,
   isLoading = false,
   cols = defaultCols,
@@ -49,11 +49,18 @@ function CardGrid({
   accessModel,
   isLoggedIn,
   hasSubscription,
+  hasLoadMore,
+  loadMore,
+  onCardClick,
+  onCardHover,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
   const posterAspect = parseAspectRatio(playlist.shelfImageAspectRatio);
   const visibleTiles = cols[breakpoint] + parseTilesDelta(posterAspect);
   const [rowCount, setRowCount] = useState(INITIAL_ROW_COUNT);
+
+  const defaultLoadMore = () => setRowCount((current) => current + LOAD_ROWS_COUNT);
+  const defaultHasMore = rowCount * visibleTiles < playlist.playlist.length;
 
   useEffect(() => {
     // reset row count when the page changes
@@ -61,19 +68,13 @@ function CardGrid({
   }, [playlist.feedid]);
 
   const renderTile = (playlistItem: PlaylistItem) => {
-    const { mediaid, title, duration, seriesId, episodeNumber, seasonNumber, shelfImage } = playlistItem;
+    const { mediaid } = playlistItem;
 
     return (
       <div className={styles.cell} key={mediaid} role="row">
         <div role="cell">
           <Card
-            title={title}
-            duration={duration}
-            image={shelfImage}
             progress={watchHistory ? watchHistory[mediaid] : undefined}
-            seriesId={seriesId}
-            episodeNumber={episodeNumber}
-            seasonNumber={seasonNumber}
             onClick={() => onCardClick(playlistItem, playlistItem.feedid)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
@@ -81,6 +82,7 @@ function CardGrid({
             currentLabel={currentCardLabel}
             isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
             posterAspect={posterAspect}
+            item={playlistItem}
           />
         </div>
       </div>
@@ -88,12 +90,7 @@ function CardGrid({
   };
 
   return (
-    <InfiniteScroll
-      pageStart={0}
-      loadMore={() => setRowCount((current) => current + LOAD_ROWS_COUNT)}
-      hasMore={rowCount * visibleTiles < playlist.playlist.length}
-      loader={<InfiniteScrollLoader key="loader" />}
-    >
+    <InfiniteScroll pageStart={0} loadMore={loadMore || defaultLoadMore} hasMore={hasLoadMore || defaultHasMore} loader={<InfiniteScrollLoader key="loader" />}>
       <div className={classNames(styles.container, styles[`cols-${visibleTiles}`])} role="grid">
         {playlist.playlist.slice(0, rowCount * visibleTiles).map(renderTile)}
       </div>

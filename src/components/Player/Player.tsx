@@ -13,6 +13,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   playerId: string;
+  playerLicenseKey: string | undefined;
   feedId?: string;
   item: PlaylistItem;
   startTime?: number;
@@ -33,6 +34,7 @@ type Props = {
 
 const Player: React.FC<Props> = ({
   playerId,
+  playerLicenseKey,
   item,
   onReady,
   onPlay,
@@ -55,7 +57,6 @@ const Player: React.FC<Props> = ({
   const loadingRef = useRef(false);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
-  const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
   const setPlayer = useOttAnalytics(item, feedId);
 
   const { adScheduleData } = useConfigStore((s) => s);
@@ -116,23 +117,21 @@ const Player: React.FC<Props> = ({
     if (!window.jwplayer && !loadingRef.current) {
       loadingRef.current = true;
 
+      const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
+
       addScript(scriptUrl).then(() => {
         setLibLoaded(true);
         loadingRef.current = false;
       });
     }
-  }, [scriptUrl]);
+  }, [playerId]);
 
   useEffect(() => {
-    // update the startTimeRef each time the startTime changes
+    // Update the startTimeRef each time the startTime changes
     startTimeRef.current = startTime;
   }, [startTime]);
 
   useEffect(() => {
-    if (!playerId) {
-      return;
-    }
-
     const loadPlaylist = () => {
       if (!item || !playerRef.current) {
         return;
@@ -140,19 +139,19 @@ const Player: React.FC<Props> = ({
 
       const currentItem = playerRef.current?.getPlaylistItem() as PlaylistItem | null;
 
-      // we already loaded this item
+      // We already loaded this item
       if (currentItem && currentItem.mediaid === item.mediaid) {
         logDev('Calling loadPlaylist with the same item, check the dependencies');
         return;
       }
 
-      // update autostart parameter
+      // Update autostart parameter
       if (typeof autostart !== 'undefined') {
         playerRef.current?.setConfig({ autostart });
       }
 
-      // load new item
-      playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current })]);
+      // Load new item
+      playerRef.current.load([deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId })]);
     };
 
     const initializePlayer = () => {
@@ -160,7 +159,7 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      // player options are untyped
+      // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
         advertising: adScheduleData,
         aspectratio: false,
@@ -175,22 +174,29 @@ const Player: React.FC<Props> = ({
         mute: false,
         playbackRateControls: true,
         pipIcon: 'disabled',
-        playlist: [deepCopy({ ...item, starttime: startTimeRef.current })],
+        playlist: [deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId })],
         repeat: false,
         cast: {},
         stretching: 'uniform',
         width: '100%',
       };
 
-      // only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
+      // Only set the autostart parameter when it is defined or it will override the player.defaults autostart setting
       if (typeof autostart !== 'undefined') {
         playerOptions.autostart = autostart;
       }
+
+      // Set the license key if provided
+      if (playerLicenseKey) {
+        playerOptions.key = playerLicenseKey;
+      }
+
       playerRef.current.setup(playerOptions);
 
       setPlayer(playerRef.current);
       attachEvents();
     };
+
     if (playerRef.current) {
       return loadPlaylist();
     }
@@ -198,7 +204,7 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey, feedId]);
 
   useEffect(() => {
     return () => {

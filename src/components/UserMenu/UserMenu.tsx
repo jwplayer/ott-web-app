@@ -16,12 +16,12 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import ArrowLeftRight from '#src/icons/ArrowLeftRight';
 
 type Props = {
-  inPopover?: boolean;
+  small?: boolean;
   showPaymentsItem: boolean;
   onClick?: () => void;
 };
 
-const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
+const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const { accessModel } = useConfigStore();
@@ -36,36 +36,30 @@ const UserMenu = ({ showPaymentsItem, inPopover = false, onClick }: Props) => {
     navigate('/', { replace: true });
   }, [onClick, navigate]);
 
-  const menuItems = (
+  return (
     <ul className={styles.menuItems}>
       <li>
-        <MenuButton small={inPopover} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
+        <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>
       {accessModel === 'SVOD' && canManageProfiles && (
         <li>
-          <MenuButton small={inPopover} onClick={onClick} to="/u/profiles" label="Switch profile" startIcon={<ArrowLeftRight />} />
+          <MenuButton small={small} onClick={onClick} to="/u/profiles" label="Switch profile" startIcon={<ArrowLeftRight />} />
         </li>
       )}
       <li>
-        <MenuButton small={inPopover} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
+        <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
       </li>
       {showPaymentsItem && (
         <li>
-          <MenuButton small={inPopover} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
+          <MenuButton small={small} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
         </li>
       )}
-      <hr className={classNames(styles.divider, { [styles.inPopover]: inPopover })} />
+      <hr className={classNames(styles.divider, { [styles.small]: small })} />
       <li>
-        <MenuButton small={inPopover} onClick={onLogout} label={t('nav.logout')} startIcon={<Exit />} />
+        <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Exit />} />
       </li>
     </ul>
   );
-
-  if (inPopover) {
-    return <nav className={styles.panel}>{menuItems}</nav>;
-  }
-
-  return menuItems;
 };
 
 export default UserMenu;

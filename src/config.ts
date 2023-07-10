@@ -5,6 +5,9 @@ export const VideoProgressMinMax = {
 
 export const PLAYLIST_LIMIT = 25;
 
+// 8 hours
+export const SERIES_CACHE_TIME = 60 * 1000 * 60 * 8;
+
 // The externalData attribute of Cleeng can contain max 5000 characters
 export const MAX_WATCHLIST_ITEMS_COUNT = 48;
 
@@ -16,4 +19,20 @@ export const ADYEN_LIVE_CLIENT_KEY = 'live_BQDOFBYTGZB3XKF62GBYSLPUJ4YW2TPL';
 export const LIVE_CHANNELS_REFETCH_INTERVAL = 15 * 60_000;
 
 // OTT shared player
-export const DEFAULT_PLAYER_ID: string = import.meta.env.APP_DEFAULT_PLAYER ?? 'M4qoGvUk';
+export const OTT_GLOBAL_PLAYER_ID = 'M4qoGvUk';
+
+// Some predefined types of JW
+export const CONTENT_TYPE = {
+  // Series page with seasons / episodes
+  series: 'series',
+  // Separate episode page
+  episode: 'episode',
+  // Page with a list of channels
+  live: 'live',
+  // Separate channel page
+  livechannel: 'livechannel',
+  // Static page with markdown
+  page: 'page',
+  // Page with shelves list
+  hub: 'hub',
+} as const;

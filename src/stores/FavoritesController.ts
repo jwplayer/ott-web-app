@@ -25,7 +25,7 @@ export const restoreFavorites = async () => {
 
     const favorites = (playlistItems || []).map((item) => createFavorite(item));
 
-    useFavoritesStore.setState({ favorites });
+    useFavoritesStore.setState({ favorites, favoritesPlaylistId: favoritesList });
   }
 };
 

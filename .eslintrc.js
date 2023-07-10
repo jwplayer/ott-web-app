@@ -64,6 +64,7 @@ module.exports = {
     ],
     // Not needed in React 17
     'react/react-in-jsx-scope': 'off',
+    'import/no-named-as-default-member': 'off',
   },
   overrides: [
     {
@@ -94,7 +95,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.jsx', '*.tsx'],
+      files: ['*.jsx', '*.tsx', 'src/hooks/*.ts'],
       plugins: [
         // Enable linting React code
         'react',

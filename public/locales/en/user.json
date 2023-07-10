@@ -1,0 +1,100 @@
+{
+  "account": {
+    "about_you": "Profile info",
+    "cancel": "Cancel",
+    "confirm_password": "Confirm password",
+    "continue": "Continue",
+    "delete_account": {
+      "body": "Permanently delete your account and all of your content.",
+      "error": "An error occurred while deleting your account. Please try again.",
+      "modal": {
+        "placeholder": "Enter your password",
+        "text_cant_be_undone": "Please be aware that this process cannot be undone, so proceed with caution.",
+        "text_contacts": "If you have any further questions or concerns, please do not hesitate to contact our support team.",
+        "text_data_erasure": "Please note that if you choose to proceed with this process, all of your personal data will be erased from our system. This includes any personal information you provided during the registration process, as well as any location and device information that we gathered during the authentication process. Additionally, all other personal information stored in various parts of our database will be deleted as well. However, please be aware that due to some legislations we are required to keep certain personal data as part of transaction and subscription records.",
+        "text_revoked_access": "Once the erasure is complete, all of your active accesses will be revoked, and any active login sessions, including this one, will be terminated. Your account information will no longer be accessible to our staff in any capacity.",
+        "title": "Enter password to continue",
+        "warning": "All active subscriptions that were purchased through a web browser will be automatically canceled upon erasure of personal data. However, if you purchased a subscription through iOS, Android, Roku, or Amazon apps, please be aware that it will not be canceled automatically. In this case, you will need to follow the usual subscription cancelation steps for each respective platform to manually cancel the subscription."
+      },
+      "title": "Delete account"
+    },
+    "edit_account": "Edit account",
+    "edit_information": "Edit information",
+    "edit_password": "Edit password",
+    "email": "Email",
+    "errors": {
+      "email_exists": "Email already exists!",
+      "email_update_not_supported": "Email update not supported",
+      "first_name_too_long": "Please limit First Name to 50 characters or fewer.",
+      "invalid_param_email": "Invalid email address!",
+      "invalid_password": "Password incorrect!",
+      "last_name_too_long": "Please limit Last Name to 50 characters or fewer.",
+      "please_enter_valid_email": "Please enter a valid email address.",
+      "unknown_error": "An unknown error occurred"
+    },
+    "export_data_body": "Export all of your personal account data to <strong>{{email}}</strong> as an attachment.",
+    "export_data_error": "An error occurred while exporting your account data.",
+    "export_data_success": "Please check your email.",
+    "export_data_title": "Export account data",
+    "firstname": "First name",
+    "hide_password": "Hide password",
+    "lastname": "Last name",
+    "password": "Password",
+    "save": "Save",
+    "security": "Password",
+    "terms_and_tracking": "Legal & Marketing",
+    "update_consents": "Update consents",
+    "view_password": "View password"
+  },
+  "favorites": {
+    "clear": "Clear favorites",
+    "clear_favorites_body": "You are about to clear all of your favorite videos. Are you sure?",
+    "clear_favorites_title": "Clear favorites?",
+    "no_favorites": "Your favorites are empty",
+    "not_found": "Favorites not found!",
+    "title": "Favorites"
+  },
+  "login": {
+    "field_required": "This field is required"
+  },
+  "nav": {
+    "account": "Account",
+    "favorites": "Favorites",
+    "logout": "Log out",
+    "payments": "Payments"
+  },
+  "payment": {
+    "access_granted": "access granted",
+    "add_card_details": "Add card details",
+    "annual_subscription": "Annual subscription",
+    "cancel_subscription": "Cancel subscription",
+    "card_number": "Card number",
+    "change_subscription": "Change subscription",
+    "complete_subscription": "Complete subscription",
+    "daily_subscription": "Daily subscription",
+    "expiry_date": "Expiry date",
+    "granted_subscription": "Granted subscription",
+    "hidden_transactions_one": "One more transaction",
+    "hidden_transactions_other": "{{count}} more transactions",
+    "monthly_subscription": "Monthly subscription",
+    "next_billing_date_on": "Next billing date is on {{date}}",
+    "no_payment_methods": "No payment methods",
+    "no_subscription": "You have no subscription. Complete your subscription to start watching all movies and series.",
+    "no_transaction": "No transaction",
+    "no_transactions": "No transactions",
+    "other": "other",
+    "payment_method": "Payment method",
+    "pending_offer_switch": "Will update to a \"{{title}}\" after the next billing date",
+    "price_payed_with": "{{price}} payed with {{method}}",
+    "price_payed_with_card": "Price payed with card",
+    "renew_subscription": "Renew subscription",
+    "security_code": "Security code",
+    "show_all": "Show all",
+    "show_receipt": "Show receipt",
+    "subscription_details": "Subscription details",
+    "subscription_expires_on": "This plan will expire on {{date}}",
+    "transactions": "Transactions",
+    "update_payment_details": "Update payment details",
+    "weekly_subscription": "Weekly subscription"
+  }
+}

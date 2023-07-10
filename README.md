@@ -3,6 +3,7 @@
 The JW OTT Webapp is an open-source, dynamically generated video website built around JW Player and JW Platform services. It enables you to easily publish your JW Player-hosted video content with no coding and minimal configuration.
 
 **Examples of JW OTT Webapp in action:**
+
 - [Free Content + Live + EPG](https://app-preview.jwplayer.com/?app-config=225tvq1i)
 - [Ad-based Monetization](https://app-preview.jwplayer.com/?app-config=egpovogv)
 - [Subscription-based Monetization](https://app-preview.jwplayer.com/?app-config=kziwdpjr)
@@ -31,8 +32,9 @@ The JW OTT Webapp is an open-source, dynamically generated video website built a
 ## Documentation
 
 - [Configure JW OTT Webapp](./docs/configuration.md)
+- [Configure Translations](./docs/translations.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
-- [Frameworks, SDK's and Libraries](./docs/frameworks.md)
+- [Frameworks, SDKs and Libraries](./docs/frameworks.md)
 - [Backend Services](./docs/backend-services.md)
 - [Developer Guidelines](./docs/developer-guidelines.md)
 
@@ -45,7 +47,7 @@ The JW OTT Webapp is an open-source, dynamically generated video website built a
 - Playback of HLS video content from the JW Platform CDN. You can add external URLs (for example, URLS from your own server or CDN) to your playlists in the Content section of your JW Player account dashboard, but they must be HLS streams (`.m3u8` files).
 - Support for live video streams (must be registered as external .m3u8 URLs in your JW Dashboard).
 - Customize the user interface with your own branding. The default app is configured for JW Player branding and content, but you can easily change this to use your own assets by modifying the `config.json` file. Advanced customization is possible (for example, editing the CSS files), but you will need to modify the source code and [build from source](docs/build-from-source.md).
-- Site-wide video search and related video recommendations powered by [JW Recommendations](https://support.jwplayer.com/customer/portal/articles/2191721-jw-recommendations).
+- Site-wide video search and related video recommendations powered by [JW Recommendations](https://docs.jwplayer.com/platform/docs/vdh-create-a-recommendations-playlist).
 - Basic playback analytics is reported to your JW Dashboard.
 - Ad integrations (VAST, VPAID, GoogleIMA, etc.). These features require a JW Player Ads Edition license. For more information, see the [JW Player pricing page](https://www.jwplayer.com/pricing/).
 - A "Favorites" feature for users to save videos for watching later. A separate list for "Continue Watching" is also kept so users can resume watching videos from where they left off. The lists are per-browser at this time (i.e., lists do not sync across user's browsers or devices). The "Continue Watching" list can be disabled in your JW OTT Webapp's `config.json` file.
@@ -69,4 +71,4 @@ To report bugs and feature requests, or request help using JW OTT Webapp, use th
 
 ## Software License
 
-This project is licensed under under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).  See [LICENSE.txt](LICENSE.txt) for more details.
+This project is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0). See [LICENSE.txt](LICENSE.txt) for more details.

@@ -8,7 +8,6 @@ import DeleteProfile from './DeleteProfile';
 
 import styles from '#src/pages/User/User.module.scss';
 import { getProfileDetails, updateProfile } from '#src/services/inplayer.account.service';
-import { useAccountStore } from '#src/stores/AccountStore';
 import type { Profile, ProfilePayload } from '#types/account';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -21,13 +20,12 @@ const EditProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [fullName, setFullName] = useState<string>('');
-  const { auth } = useAccountStore();
 
   const {
     data: profileDetails,
     isLoading,
     isFetching,
-  }: UseQueryResult<Profile> = useQuery(['getProfileDetails'], () => getProfileDetails(auth, true, id), {
+  }: UseQueryResult<Profile> = useQuery(['getProfileDetails'], () => getProfileDetails(null, true, id), {
     staleTime: 0,
   });
 
@@ -44,7 +42,7 @@ const EditProfile = () => {
   const updateProfileHandler: UseFormOnSubmitHandler<ProfilePayload> = async (formData, { setErrors, setSubmitting }) => {
     try {
       const adult = formData.adult.toString() === 'true' ? true : false;
-      const profile = await updateProfile(auth, true, {
+      const profile = await updateProfile(null, true, {
         id: formData.id,
         name: formData.name,
         adult,

@@ -22,15 +22,15 @@ const AVATARS = [
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const { auth, canManageProfiles } = useAccountStore.getState();
+  const { canManageProfiles } = useAccountStore.getState();
   const [fullName, setFullName] = useState<string>('');
 
   useEffect(() => {
-    if (!auth || !canManageProfiles) navigate('/');
-  }, [auth, canManageProfiles, navigate]);
+    if (!canManageProfiles) navigate('/');
+  }, [canManageProfiles, navigate]);
 
   // this is only needed so we can set different avatar url which will be temporary
-  const { data, isLoading }: UseQueryResult<ListProfiles> = useQuery(['listProfiles'], () => listProfiles(auth), { staleTime: 0 });
+  const { data, isLoading }: UseQueryResult<ListProfiles> = useQuery(['listProfiles'], () => listProfiles(null), { staleTime: 0 });
   const activeProfiles = data?.collection?.length || 0;
 
   const initialValues = {
@@ -42,7 +42,7 @@ const CreateProfile = () => {
 
   const createProfileHandler: UseFormOnSubmitHandler<ProfilePayload> = async (formData, { setSubmitting, setErrors }) => {
     try {
-      const profile = await createProfile(auth, true, {
+      const profile = await createProfile(null, true, {
         name: formData.name,
         adult: formData.adult,
         avatar_url: AVATARS[activeProfiles],

@@ -57,7 +57,7 @@ exports[`<Layout /> > renders layout 1`] = `
             </a>
           </nav>
           <div
-            class="_search_f4f7a7"
+            class="_actions_f4f7a7"
           />
         </div>
       </header>

@@ -3,18 +3,19 @@
 exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_textField_e16c1b"
+    class="_textField_e16c1b directPostSecurityCode"
   >
     <label
       class="_label_e16c1b"
       for="text-field_1235_cardCVC"
     >
-      CVC/CVV
+      payment.security_code
     </label>
     <div
       class="_container_e16c1b"
     >
       <input
+        aria-label="payment.security_code"
         class="_input_e16c1b"
         id="text-field_1235_cardCVC"
         name="cardCVC"

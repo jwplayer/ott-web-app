@@ -27,7 +27,7 @@ const useLiveProgram = (program: EpgProgram | undefined, catchupHours: number | 
     calculateStatus();
 
     return () => clearInterval(intervalId);
-  }, [program]);
+  }, [catchupHours, program]);
 
   return {
     isLive,

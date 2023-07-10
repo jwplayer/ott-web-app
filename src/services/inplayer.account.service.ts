@@ -1,4 +1,5 @@
-import InPlayer, { AccountData, Env, GetRegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import i18next from 'i18next';
 
 import { get, performDelete, post, put } from './inplayer.service';
 
@@ -13,6 +14,8 @@ import type {
   CustomerConsent,
   EnterProfile,
   EnterProfilePayload,
+  DeleteAccount,
+  ExportAccountData,
   ExternalData,
   GetCaptureStatus,
   GetCustomerConsents,
@@ -32,6 +35,7 @@ import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
 import type { WatchHistoryItem } from '#types/watchHistory';
+import { getCommonResponseData } from '#src/utils/api';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -39,9 +43,30 @@ enum InPlayerEnv {
   Daily = 'daily',
 }
 
-export const setEnvironment = (config: Config) => {
-  const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Daily : InPlayerEnv.Production;
+export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
+  const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
+  const queryParams = new URLSearchParams(window.location.href.split('#')[1]);
+  const token = queryParams.get('token');
+  const refreshToken = queryParams.get('refresh_token');
+  const expires = queryParams.get('expires');
+  if (!token || !refreshToken || !expires) {
+    return;
+  }
+  InPlayer.Account.setToken(token, refreshToken, parseInt(expires));
+};
+
+export const getAuthData = async () => {
+  if (InPlayer.Account.isAuthenticated()) {
+    const credentials = InPlayer.Account.getToken().toObject();
+
+    return {
+      jwt: credentials.token,
+      refreshToken: credentials.refreshToken,
+    } as AuthData;
+  }
+
+  return null;
 };
 
 export const login: Login = async ({ config, email, password }) => {
@@ -73,6 +98,10 @@ export const register: Register = async ({ config, email, password }) => {
       password,
       passwordConfirmation: password,
       fullName: email,
+      metadata: {
+        first_name: ' ',
+        surname: ' ',
+      },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
       referrer: window.location.href,
@@ -94,8 +123,8 @@ export const register: Register = async ({ config, email, password }) => {
 
 export const logout = async () => {
   try {
+    InPlayer.Notifications.unsubscribe();
     await InPlayer.Account.signOut();
-    return InPlayer.Notifications.unsubscribe();
   } catch {
     throw new Error('Failed to sign out.');
   }
@@ -117,8 +146,6 @@ export const getUser = async () => {
   }
 };
 
-export const getFreshJwtToken = async ({ auth }: { auth: AuthData }) => auth;
-
 export const updateCustomer: UpdateCustomer = async (customer) => {
   try {
     const response = await InPlayer.Account.updateAccount(formatUpdateAccount(customer));
@@ -137,11 +164,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    // @ts-ignore
-    // wrong data type from InPlayer SDK (will be updated in the SDK)
-    const result: Consent[] = data?.collection
-      .filter((field: GetRegisterField) => field.type === 'checkbox')
-      .map((consent: GetRegisterField) => formatPublisherConsents(consent));
+    const result: Consent[] = data?.collection.filter((field) => field.type === 'checkbox').map((consent) => formatPublisherConsents(consent));
 
     return {
       consents: [getTermsConsent(), ...result],
@@ -205,7 +228,7 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
 };
 
 export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
-  return (await updateCustomer(metadata, true, '')) as ServiceResponse<Capture>;
+  return (await updateCustomer(metadata, true)) as ServiceResponse<Capture>;
 };
 
 export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
@@ -375,6 +398,42 @@ export const deleteProfile = async (auth: AuthData | null, sandbox: boolean, id:
   }
 };
 
+export const exportAccountData: ExportAccountData = async () => {
+  // password is sent as undefined because it is now optional on BE
+  try {
+    const response = await InPlayer.Account.exportData({ password: undefined, brandingId: 0 });
+    return getCommonResponseData(response);
+  } catch {
+    throw new Error('Failed to export account data');
+  }
+};
+
+export const deleteAccount: DeleteAccount = async ({ password }) => {
+  try {
+    const response = await InPlayer.Account.deleteAccount({ password, brandingId: 0 });
+    return getCommonResponseData(response);
+  } catch {
+    throw new Error('Failed to delete account');
+  }
+};
+
+export const getSocialUrls = async (config: Config) => {
+  const socialState = window.btoa(
+    JSON.stringify({
+      client_id: config.integrations.jwp?.clientId || '',
+      redirect: window.location.href.split('u=')[0],
+    }),
+  );
+
+  const socialResponse = await InPlayer.Account.getSocialLoginUrls(socialState);
+
+  if (socialResponse.status !== 200) {
+    throw new Error('Failed to fetch social urls');
+  }
+
+  return socialResponse.data.social_urls;
+};
+
 const getCustomerExternalData = async (): Promise<ExternalData> => {
   const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
 
@@ -409,13 +468,9 @@ function formatAccount(account: AccountData): Customer {
   const { id, uuid, email, full_name: fullName, metadata, created_at: createdAt } = account;
   const regDate = new Date(createdAt * 1000).toLocaleString();
 
-  let firstName = metadata?.first_name as string;
-  let lastName = metadata?.surname as string;
-  if (!firstName && !lastName) {
-    const nameParts = fullName.split(' ');
-    firstName = nameParts[0] || '';
-    lastName = nameParts.slice(1)?.join(' ');
-  }
+  const firstName = metadata?.first_name as string;
+  const lastName = metadata?.surname as string;
+
   return {
     id: id.toString(),
     uuid,
@@ -433,8 +488,7 @@ function formatAccount(account: AccountData): Customer {
 function formatUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
-  const fullName = `${firstName} ${lastName}`;
-
+  const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
   const data: UpdateAccountData = {
     fullName,
     metadata: {
@@ -450,12 +504,11 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   const { access_token: jwt } = auth;
   return {
     jwt,
-    customerToken: '',
     refreshToken: '',
   };
 }
 
-function formatPublisherConsents(consent: Partial<GetRegisterField>) {
+function formatPublisherConsents(consent: Partial<RegisterField>) {
   return {
     broadcasterId: 0,
     enabledByDefault: false,
@@ -468,11 +521,11 @@ function formatPublisherConsents(consent: Partial<GetRegisterField>) {
 }
 
 function getTermsConsent(): Consent {
-  const label = 'I accept the <a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a> of InPlayer.';
+  const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
   return formatPublisherConsents({
     required: true,
     name: 'terms',
-    label,
+    label: i18next.t('account:registration.terms_consent', { termsUrl }),
   });
 }
 
@@ -486,6 +539,18 @@ function parseJson(value: string, fallback = {}) {
 
 export const canUpdateEmail = false;
 
+export const canSupportEmptyFullName = false;
+
 export const canChangePasswordWithOldPassword = true;
 
 export const canRenewSubscription = false;
+
+export const canExportAccountData = true;
+
+export const canUpdatePaymentMethod = false;
+
+export const canShowReceipts = false;
+
+export const canDeleteAccount = true;
+
+export const canManageProfiles = true;

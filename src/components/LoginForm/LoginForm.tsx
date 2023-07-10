@@ -13,6 +13,7 @@ import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import SocialButtonsList from '#components/SocialButtonsList/SocialButtonsList';
 import { testId } from '#src/utils/common';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
@@ -35,6 +36,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
+      <SocialButtonsList />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField

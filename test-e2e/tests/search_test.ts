@@ -150,10 +150,8 @@ function verifyOnHomePage(I: CodeceptJS.I) {
 }
 
 async function openSearch(I: CodeceptJS.I) {
-  if (await I.isMobile()) {
-    I.dontSeeElement(searchBarLocator);
-    I.click(openSearchLocator);
-  }
+  I.dontSeeElement(searchBarLocator);
+  I.click(openSearchLocator);
 
   I.seeElement(searchBarLocator);
 }

@@ -28,14 +28,13 @@ type Props = {
 const Profiles = ({ editMode = false }: Props) => {
   const navigate = useNavigate();
 
-  const { canManageProfiles, auth, loading } = useAccountStore(({ canManageProfiles, auth, loading }) => ({ canManageProfiles, auth, loading }), shallow);
+  const { canManageProfiles, loading } = useAccountStore(({ canManageProfiles, loading }) => ({ canManageProfiles, loading }), shallow);
 
   useEffect(() => {
-    if (!auth || !canManageProfiles) navigate('/');
-  }, [auth, canManageProfiles, navigate]);
+    if (!canManageProfiles) navigate('/');
+  }, [canManageProfiles, navigate]);
 
-  const { data, isLoading, isFetching }: UseQueryResult<ListProfiles> = useQuery(['listProfiles'], () => listProfiles(auth), {
-    enabled: !!auth,
+  const { data, isLoading, isFetching }: UseQueryResult<ListProfiles> = useQuery(['listProfiles'], () => listProfiles(null), {
     staleTime: 0,
   });
   const activeProfiles = data?.collection?.length || 0;
@@ -44,12 +43,11 @@ const Profiles = ({ editMode = false }: Props) => {
   const handleProfileSelection = async (id: string) => {
     try {
       useAccountStore.setState({ loading: true });
-      const profile = await enterProfile(auth, true, { id });
+      const profile = await enterProfile(null, true, { id });
 
       if (profile?.credentials?.access_token) {
         const authData: AuthData = {
           jwt: profile.credentials.access_token,
-          customerToken: '',
           refreshToken: '',
         };
         persist.setItem(PERSIST_KEY_ACCOUNT, authData);
@@ -59,7 +57,7 @@ const Profiles = ({ editMode = false }: Props) => {
           token: profile.credentials.access_token,
           refreshToken: '',
         });
-        useAccountStore.setState({ auth: authData });
+        // useAccountStore.setState({ auth: authData });
         useFavoritesStore.setState({ favorites: [] });
         useWatchHistoryStore.setState({ watchHistory: [] });
         await initializeAccount().finally(() => {

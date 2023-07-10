@@ -1,4 +1,4 @@
-import InPlayer, { GetAccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 
 import type {
   CardPaymentData,
@@ -31,16 +31,19 @@ export const createOrder: CreateOrder = async (payload) => {
 };
 
 export const getOffers: GetOffers = async (payload) => {
-  try {
-    const assetId = parseInt(`${payload?.offerIds?.[0]}`);
-    const { data } = await InPlayer.Asset.getAssetAccessFees(assetId);
+  const offers = await Promise.all(
+    payload.offerIds.map(async (assetId) => {
+      try {
+        const { data } = await InPlayer.Asset.getAssetAccessFees(parseInt(`${assetId}`));
 
-    // @ts-ignore
-    //TODO fix this type in the InPlayer SDK
-    return data?.map((offer: GetAccessFee) => formatOffer(offer)) as Offer[];
-  } catch {
-    throw new Error('Failed to get offers');
-  }
+        return data?.map((offer) => formatOffer(offer));
+      } catch {
+        throw new Error('Failed to get offers');
+      }
+    }),
+  );
+
+  return offers.flat();
 };
 
 export const getPaymentMethods: GetPaymentMethods = async () => {
@@ -80,11 +83,9 @@ export const paymentWithPayPal: PaymentWithPayPal = async (payload) => {
       origin: `${window.location.origin}?u=waiting-for-payment`,
       accessFeeId: payload.order.id,
       paymentMethod: 2,
-      //@ts-ignore
       voucherCode: payload.couponCode,
     });
-    //@ts-ignore
-    //TODO fix this type in InPlayer SDK
+
     if (response.data?.id) {
       return {
         errors: ['Already have an active access'],
@@ -127,8 +128,6 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
     order.discount = {
       applied: true,
       type: 'coupon',
-      //@ts-ignore
-      // TODO fix this type in InPlayer SDK
       periods: response.data.discount_duration,
     };
 
@@ -151,13 +150,13 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
 
 export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
   const payload = {
-    number: cardPaymentPayload.cardNumber,
+    number: parseInt(String(cardPaymentPayload.cardNumber).replace(/\s/g, ''), 10),
     cardName: cardPaymentPayload.cardholderName,
     expMonth: cardPaymentPayload.cardExpMonth || '',
     expYear: cardPaymentPayload.cardExpYear || '',
     cvv: parseInt(cardPaymentPayload.cardCVC),
     accessFee: order.id,
-    paymentMethod: '1',
+    paymentMethod: 1,
     voucherCode: cardPaymentPayload.couponCode,
     referrer: window.location.href,
     returnUrl: `${window.location.href}&u=waiting-for-payment`,
@@ -165,8 +164,6 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData,
 
   try {
     if (isSVODOffer(order)) {
-      //@ts-ignore
-      //Fix this type in InPlayer SDK
       await InPlayer.Subscription.createSubscription(payload);
     } else {
       await InPlayer.Payment.createPayment(payload);
@@ -197,16 +194,19 @@ const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = fals
   };
 };
 
-const formatOffer = (offer: GetAccessFee): Offer => {
+const formatOffer = (offer: AccessFee): Offer => {
+  const ppvOffers = ['ppv', 'ppv_custom'];
+  const offerId = ppvOffers.includes(offer.access_type.name) ? `C${offer.id}` : `S${offer.id}`;
+
   return {
     id: offer.id,
-    offerId: `S${offer.id}`,
+    offerId,
     offerCurrency: offer.currency,
     customerPriceInclTax: offer.amount,
     customerCurrency: offer.currency,
     offerTitle: offer.description,
     active: true,
-    period: offer.access_type.period,
+    period: offer.access_type.period === 'month' && offer.access_type.quantity === 12 ? 'year' : offer.access_type.period,
     freePeriods: offer.trial_period ? 1 : 0,
   } as Offer;
 };

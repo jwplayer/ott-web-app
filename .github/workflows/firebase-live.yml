@@ -2,7 +2,7 @@ name: 'Firebase Live'
 
 on:
   push:
-    branches: ['develop']
+    branches: ['release']
 
 jobs:
   deploy_live_website:
@@ -10,7 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: yarn && yarn build --mode demo
+        env:
+          APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
+          APP_GOOGLE_SITE_VERIFICATION_ID: ${{ vars.GOOGLE_SITE_VERIFICATION_ID }}
+        run: yarn &&  MODE=demo yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

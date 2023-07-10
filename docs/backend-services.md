@@ -1,15 +1,14 @@
 # Backend dependencies and architecture
 
 The application is built as a single page web app that can run without its own dedicated backend. This is useful for
-hosting it with a very simple, static host, like github pages. The server serves the static web content and the frontend
+hosting it with a very simple, static host. The server serves the static web content and the frontend
 calls the [JW Player Delivery API](https://developer.jwplayer.com/jwplayer/docs) directly.
 However, for additional functionality, the application can also connect to other backends to provide user
-accounts / authentication, subscription management, and checkout flows. 
-
+accounts / authentication, subscription management, and checkout flows.
 
 ## Roles and Functions
 
-The available backend integrations serve 3 main roles, Accounts, Subscription, and Checkout. Below are the methods
+The available backend integrations serve 3 main roles: Accounts, Subscription, and Checkout. Below are the methods
 that any backend integration needs to support broken down by role:
 
 - [Account](src/services/account.service.ts)
@@ -48,4 +47,4 @@ The OTT Web App is optimized to work with JWP authentication, subscriptions, and
 
 ### Cleeng (https://developers.cleeng.com/docs)
 
-The Web App was also developed with support for Cleeng.  Cleeng is a 3rd party platform that also provides support for the 3 functional roles above. 
+The Web App was also developed with support for Cleeng. Cleeng is a 3rd party platform that also provides support for the 3 functional roles above.

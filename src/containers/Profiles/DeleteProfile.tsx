@@ -8,14 +8,12 @@ import Dialog from '#src/components/Dialog/Dialog';
 import { removeQueryParam } from '#src/utils/location';
 import useQueryParam from '#src/hooks/useQueryParam';
 import { deleteProfile } from '#src/services/inplayer.account.service';
-import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 
 const DeleteProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const { auth } = useAccountStore();
 
   const viewParam = useQueryParam('action');
   const [view, setView] = useState(viewParam);
@@ -27,7 +25,7 @@ const DeleteProfile = () => {
   const deleteHandler = async () => {
     try {
       setIsDeleting(true);
-      const profile = await deleteProfile(auth, true, id);
+      const profile = await deleteProfile(null, true, id);
       if (profile.code === 200) {
         closeHandler();
         setIsDeleting(false);

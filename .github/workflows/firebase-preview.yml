@@ -2,7 +2,7 @@ name: 'Firebase Preview'
 
 on:
   pull_request:
-    branches: [ 'develop', 'feat/*', 'feature/*' ]
+    branches: [ 'develop', 'feat/*', 'feature/*', 'release' ]
 
 jobs:
   build_and_preview:
@@ -10,7 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: yarn && yarn build --mode preview
+        env:
+          APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
+        run: yarn && MODE=preview yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

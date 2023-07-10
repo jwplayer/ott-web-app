@@ -1,35 +1,9 @@
-/***
- Javascript library for sending OTT analytics to JW Player.
- Include in your head and include the following listeners:
-
- jwplayer().on("ready",function(evt) {
-	jwpltx.ready(
-		CONFIG.analyticsToken, // Analytics token
-		window.location.hostname, // Domain name
-		getParam("fed"), // ID of referring feed
-		item.mediaid, // ID of media playing
-		item.title // Title of media playing
-	);
-});
-
- jwplayer().on("time",function(evt) {
-	jwpltx.time(evt.currentTime,evt.duration);
-});
-
- jwplayer().on("complete",function(evt) {
-	jwpltx.complete();
-});
-
- jwplayer().on("adImpression",function(evt) {
-	jwpltx.adImpression();
-});
- ***/
-
 window.jwpltx = window.jwpltx || {};
 
 (function (o) {
   // Hostname for sending analytics
   const URL = 'https://ihe.jwpltx.com/v1/jwplayer6/ping.gif?';
+
   // Query parameters for sending analytics
   const URI = {
     pss: '1',
@@ -37,19 +11,99 @@ window.jwpltx = window.jwpltx || {};
     oosv: '5',
     sdk: '0',
   };
-  // query params instance.
+
+  // There are anywhere between 1 to 128 quantiles in any given video, 128 is max for every video
+  const MAX_DURATION_IN_QUANTILES = 128;
+  // Query params instance
   let uri;
-  // Current time for live streams.
-  let current;
+  // Time watched after last t event was sent
+  let timeWatched = 0;
+  // Last progress of the video stored
+  let lastVp = 0;
+  // Next quantile to send t event
+  let nextQuantile;
+  // Seeking state, gets reset after 1 sec of the latest seeked event
+  let isSeeking = false;
+  // Interval for Live Streams seeking state
+  let liveInterval = null;
+  // Timeout for seeking state
+  let seekingTimeout = null;
+
+  // Here we convert seconds watched to quantiles, the units accepted by the analytics service (res is 0 - 128)
+  function getCurrentProgressQuantile(progress, duration) {
+    return Math.floor(MAX_DURATION_IN_QUANTILES * (progress / duration));
+  }
+
+  // We convert `q` metric to quantiles (0 - 128) to define next breakpoint for `t` event
+  function getNextTriggerQuantile(progress, duration) {
+    return (Math.ceil((progress / duration) * uri.q) * MAX_DURATION_IN_QUANTILES) / uri.q;
+  }
+
+  // Sends the last ping when closing the player or window
+  function sendRemainingData() {
+    if (uri.pw === -1) {
+      clearLiveInterval();
+    } else {
+      const pw = getCurrentProgressQuantile(lastVp, uri.vd);
+      uri.pw = pw;
+    }
+
+    clearSeekingTimeout();
+
+    if (timeWatched) {
+      uri.ti = Math.floor(timeWatched);
+      timeWatched = 0;
+
+      sendData('gab');
+    }
+  }
+
+  // We set interval for sending t events for live streams where we can't get progress info
+  function setLiveInterval() {
+    liveInterval = setInterval(() => {
+      timeWatched += 1;
+    }, 1000);
+  }
+
+  // We clear interval after complete or when seeking
+  function clearLiveInterval() {
+    clearInterval(liveInterval);
+    liveInterval = null;
+  }
+
+  // There is currently a 1 sec debounce surrounding seeking event in order to logically group multiple `seeked` events
+  function setSeekingTimeout() {
+    seekingTimeout = setTimeout(() => {
+      isSeeking = false;
+      // Set new timeout when seeked event reached for live events
+      if (uri.pw === -1 && !liveInterval) {
+        setLiveInterval();
+      }
+      sendData('vs');
+    }, 1000);
+  }
+
+  // We clear timeout after complete event or when new seeking events are received
+  function clearSeekingTimeout() {
+    clearTimeout(seekingTimeout);
+    seekingTimeout = null;
+  }
 
   // Process a player ready event
-  o.ready = function (aid, bun, fed, id, t) {
+  o.ready = function (aid, bun, fed, id, t, oaid, oiid, av) {
     uri = JSON.parse(JSON.stringify(URI));
     uri.aid = aid;
     uri.bun = bun;
     uri.fed = fed;
     uri.id = id;
     uri.t = t;
+    uri.oiid = oiid;
+    uri.av = av;
+
+    // Send oaid only for logged in users
+    if (oaid) {
+      uri.oaid = oaid;
+    }
 
     uri.emi = generateId(12);
     uri.pli = generateId(12);
@@ -61,8 +115,41 @@ window.jwpltx = window.jwpltx || {};
     sendData('i');
   };
 
+  // Process seek event
+  o.seek = function (offset, duration) {
+    isSeeking = true;
+    clearSeekingTimeout();
+    // Clear interval in case of a live stream not to update time watched while seeking
+    if (uri.pw === -1) {
+      clearLiveInterval();
+    } else {
+      // We need to rewrite progress of the video when seeking to have a valid ti param
+      lastVp = offset;
+      nextQuantile = getNextTriggerQuantile(offset, duration);
+    }
+  };
+
+  // Process seeked event
+  o.seeked = function () {
+    setSeekingTimeout();
+  };
+
+  // When player is disconnected from the page -> send the rest of the data and cancel possible intervals
+  o.remove = function () {
+    sendRemainingData();
+  };
+
+  // Send the rest of the data and cancel possible intervals in case a web page is closed while watching
+  window.addEventListener('beforeunload', () => {
+    sendRemainingData();
+  });
+
   // Process a time tick event
   o.time = function (vp, vd) {
+    if (isSeeking) {
+      return;
+    }
+
     // 0 or negative vd means live stream
     if (vd < 1) {
       // Initial tick means play() event
@@ -70,19 +157,19 @@ window.jwpltx = window.jwpltx || {};
         uri.vd = 0;
         uri.q = 0;
         uri.pw = -1;
-        uri.ti = 20;
-        current = vp;
-        sendData('s');
 
-        // monitor ticks for 20s elapsed
+        sendData('s');
+        setLiveInterval();
+        // Monitor ticks for 20s elapsed
       } else {
-        if (vp - current > 20) {
-          current = vp;
+        if (timeWatched > 19) {
+          uri.ti = timeWatched;
+          timeWatched = 0;
           sendData('t');
         }
       }
 
-      // positive vd means  VOD stream
+      // Positive vd means VOD stream
     } else {
       // Initial tick means play() event
       if (!uri.vd) {
@@ -98,16 +185,33 @@ window.jwpltx = window.jwpltx || {};
         } else {
           uri.q = 32;
         }
-        uri.ti = Math.round(uri.vd / uri.q);
-        uri.pw = 0;
-        sendData('s');
 
-        // monitor ticks for entering new quantile
+        uri.ti = 0;
+        uri.pw = 0;
+
+        // Initialize latest quantile to compare further quantiles with
+        nextQuantile = getNextTriggerQuantile(vp, vd);
+        // Initial values to compare watched progress
+        lastVp = vp;
+
+        sendData('s');
+        // Monitor ticks for entering new quantile
       } else {
-        let pw = (Math.floor(vp / uri.ti) * 128) / uri.q;
-        if (pw != uri.pw) {
+        const pw = getCurrentProgressQuantile(vp, vd);
+        const quantile = getNextTriggerQuantile(vp, vd);
+
+        // Total time watched since last t event.
+        timeWatched = timeWatched + (vp - lastVp);
+        lastVp = vp;
+
+        if (pw >= nextQuantile) {
+          uri.ti = Math.round(timeWatched);
           uri.pw = pw;
+
           sendData('t');
+
+          nextQuantile = quantile;
+          timeWatched = 0;
         }
       }
     }
@@ -115,10 +219,19 @@ window.jwpltx = window.jwpltx || {};
 
   // Process a video complete events
   o.complete = function () {
-    if (uri.pw != 128) {
-      uri.pw = 128;
-      sendData('t');
+    // Clear intervals for live streams
+    if (uri.pw === -1) {
+      clearLiveInterval();
+    } else {
+      uri.pw = MAX_DURATION_IN_QUANTILES;
     }
+
+    clearSeekingTimeout();
+
+    uri.ti = Math.floor(timeWatched);
+    timeWatched = 0;
+
+    sendData('gab');
   };
 
   // Helper function to generate IDs
@@ -136,6 +249,7 @@ window.jwpltx = window.jwpltx || {};
   function sendData(type) {
     uri.e = type;
     uri.sa = Date.now();
+
     // Serialize data
     let str = '';
     for (let key in uri) {
@@ -144,11 +258,13 @@ window.jwpltx = window.jwpltx || {};
         str += key + '=' + encodeURIComponent(uri[key]);
       }
     }
+
     // Ads are sent to special bucket
     let url = URL;
     if (uri.e == 'i') {
       url = URL.replace('jwplayer6', 'clienta');
     }
+
     // Send data if analytics token is set
     if (uri.aid) {
       navigator.sendBeacon(url + str);

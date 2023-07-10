@@ -1,9 +1,9 @@
 import i18next from 'i18next';
-import InPlayer, { Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 
-import type { PaymentDetail, Subscription, Transaction, UpdateSubscription } from '#types/subscription';
+import type { PaymentDetail, Subscription, Transaction, UpdateCardDetails, UpdateSubscription } from '#types/subscription';
 import type { Config } from '#types/Config';
-import type { InPlayerError, InPlayerPurchaseDetails } from '#types/inplayer';
+import type { InPlayerError } from '#types/inplayer';
 
 interface SubscriptionDetails extends InplayerSubscription {
   item_id?: number;
@@ -29,7 +29,7 @@ export async function getActiveSubscription({ config }: { config: Config }) {
       const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
 
       if (activeSubscription) {
-        return formatActiveSubscription(activeSubscription);
+        return formatActiveSubscription(activeSubscription, hasAccess?.data?.expires_at);
       }
 
       return formatGrantedSubscription(hasAccess.data);
@@ -47,32 +47,31 @@ export async function getActiveSubscription({ config }: { config: Config }) {
 export async function getAllTransactions() {
   try {
     const { data } = await InPlayer.Payment.getPurchaseHistory('active', 0, 30);
-    // @ts-ignore
-    // TODO fix PurchaseHistoryCollection type in InPlayer SDK
-    return data?.collection?.map((transaction: InPlayerPurchaseDetails) => formatTransaction(transaction));
+
+    return data?.collection?.map((transaction) => formatTransaction(transaction));
   } catch {
     throw new Error('Failed to get transactions');
   }
 }
-
 export async function getActivePayment() {
   try {
     const { data } = await InPlayer.Payment.getDefaultCreditCard();
     const cards: PaymentDetail[] = [];
     for (const currency in data?.cards) {
-      // @ts-ignore
-      // TODO fix Card type in InPlayer SDK
-      cards.push(formatCardDetails(data.cards?.[currency]));
+      cards.push(
+        // @ts-ignore
+        // TODO fix Card type in InPlayer SDK
+        formatCardDetails({
+          ...data.cards?.[currency],
+          currency: currency,
+        }),
+      );
     }
-
     return cards.find((paymentDetails) => paymentDetails.active) || null;
   } catch {
-    //TODO Fix response code in the InPlayer API
-    //throw new Error('Failed to get payment details');
     return null;
   }
 }
-
 export const getSubscriptions = async () => {
   return {
     errors: [],
@@ -95,8 +94,17 @@ export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscr
   }
 };
 
-const formatCardDetails = (card: Card & { card_type: string; account_id: number }): PaymentDetail => {
-  const { number, exp_month, exp_year, card_name, card_type, account_id } = card;
+export const updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
+  try {
+    const response = await InPlayer.Payment.setDefaultCreditCard({ cardName, cardNumber, cvc, expMonth, expYear, currency });
+
+    return { responseData: response.data, errors: [] };
+  } catch {
+    throw new Error('Failed to update card details');
+  }
+};
+const formatCardDetails = (card: Card & { card_type: string; account_id: number; currency: string }): PaymentDetail => {
+  const { number, exp_month, exp_year, card_name, card_type, account_id, currency } = card;
   const zeroFillExpMonth = `0${exp_month}`.slice(-2);
   return {
     customerId: account_id.toString(),
@@ -107,11 +115,11 @@ const formatCardDetails = (card: Card & { card_type: string; account_id: number 
       cardExpirationDate: `${zeroFillExpMonth}/${exp_year}`,
     },
     active: true,
+    currency,
   } as PaymentDetail;
 };
 
-// TODO: fix PurchaseDetails type in InPlayer SDK
-const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction => {
+const formatTransaction = (transaction: PurchaseDetails): Transaction => {
   const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
 
   return {
@@ -138,7 +146,7 @@ const formatTransaction = (transaction: InPlayerPurchaseDetails): Transaction =>
   };
 };
 
-const formatActiveSubscription = (subscription: SubscriptionDetails) => {
+const formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: number) => {
   let status = '';
   switch (subscription.action_type) {
     case 'free-trial':
@@ -159,7 +167,7 @@ const formatActiveSubscription = (subscription: SubscriptionDetails) => {
     subscriptionId: subscription.subscription_id,
     offerId: subscription.item_id?.toString(),
     status,
-    expiresAt: subscription.next_rebill_date,
+    expiresAt,
     nextPaymentAt: subscription.next_rebill_date,
     nextPaymentPrice: subscription.subscription_price,
     nextPaymentCurrency: subscription.currency,
@@ -169,6 +177,7 @@ const formatActiveSubscription = (subscription: SubscriptionDetails) => {
     period: subscription.access_type?.period,
     totalPrice: subscription.charged_amount,
     unsubscribeUrl: subscription.unsubscribe_url,
+    pendingSwitchId: null,
   } as Subscription;
 };
 
@@ -187,5 +196,6 @@ const formatGrantedSubscription = (subscription: GetItemAccessV1) => {
     period: 'granted',
     totalPrice: 0,
     unsubscribeUrl: '',
+    pendingSwitchId: null,
   } as Subscription;
 };

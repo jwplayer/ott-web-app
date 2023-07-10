@@ -7,17 +7,23 @@ import Dropdown from '#components/Dropdown/Dropdown';
 import Button from '#components/Button/Button';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
+type FilterOption =
+  | {
+      label: string;
+      value: string;
+    }
+  | string;
+
 type Props = {
   name: string;
   value: string;
-  valuePrefix?: string;
   defaultLabel: string;
-  options: string[];
+  options: FilterOption[];
   forceDropdown?: boolean;
   setValue: (value: string) => void;
 };
 
-const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, valuePrefix = '', forceDropdown = false }) => {
+const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, forceDropdown = false }) => {
   const { t } = useTranslation('common');
   const breakpoint: Breakpoint = useBreakpoint();
 
@@ -32,9 +38,12 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
     <Fragment>
       {showFilterRow ? (
         <div className={styles.filterRow} role="listbox" aria-label={t('filter_videos_by', { name })}>
-          {options.map((option) => (
-            <Button label={`${valuePrefix}${option}`} onClick={() => setValue(option)} key={option} active={value === option} role="option" />
-          ))}
+          {options.map((option) => {
+            const optionLabel = typeof option === 'string' ? option : option.label;
+            const optionValue = typeof option === 'string' ? option : option.value;
+
+            return <Button label={optionLabel} onClick={() => setValue(optionValue)} key={optionValue} active={value === optionValue} role="option" />;
+          })}
           <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} role="option" />
         </div>
       ) : (
@@ -44,7 +53,6 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, value
             size="small"
             options={options}
             defaultLabel={defaultLabel}
-            valuePrefix={valuePrefix}
             name={name}
             value={value}
             onChange={handleChange}

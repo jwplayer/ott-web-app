@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
@@ -14,6 +14,7 @@ import { loadAndValidateConfig } from '#src/utils/configLoad';
 import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -45,6 +46,12 @@ const Root: FC = () => {
     registerCustomScreens();
   }, []);
 
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
+
+  if (userData.user && !userData.loading && window.location.href.includes('#token')) {
+    return <Navigate to="/" />; // component instead of hook to prevent extra re-renders
+  }
+
   const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
@@ -65,7 +72,7 @@ const Root: FC = () => {
 
   return (
     <>
-      {!configQuery.isError && !configQuery.isLoading && <AppRoutes />}
+      {!configQuery.isError && !configQuery.isLoading && configQuery.data && <AppRoutes />}
       {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
       {configQuery.isError && !IS_DEMO_OR_PREVIEW && (
         <ErrorPage

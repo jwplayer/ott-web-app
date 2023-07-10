@@ -6,8 +6,36 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
+import { getSeriesByMediaIds } from '#src/services/api.service';
 
 const PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
+
+// Retrieve watch history media items info using a provided watch list
+const getWatchHistoryItems = async (continueWatchingList: string, ids: string[]): Promise<Record<string, PlaylistItem>> => {
+  const watchHistoryItems = await getMediaItems(continueWatchingList, ids);
+  const watchHistoryItemsDict = Object.fromEntries((watchHistoryItems || []).map((item) => [item.mediaid, item]));
+
+  return watchHistoryItemsDict;
+};
+
+// We store separate episodes in the watch history and to show series card in the Continue Watching shelf we need to get their parent media items
+const getWatchHistorySeriesItems = async (continueWatchingList: string, ids: string[]): Promise<Record<string, PlaylistItem | undefined>> => {
+  const mediaWithSeries = await getSeriesByMediaIds(ids);
+  const seriesIds = Object.keys(mediaWithSeries || {})
+    .map((key) => mediaWithSeries?.[key]?.[0]?.series_id)
+    .filter(Boolean) as string[];
+
+  const seriesItems = await getMediaItems(continueWatchingList, seriesIds);
+  const seriesItemsDict = Object.keys(mediaWithSeries || {}).reduce((acc, key) => {
+    const seriesItemId = mediaWithSeries?.[key]?.[0]?.series_id;
+    if (seriesItemId) {
+      acc[key] = seriesItems?.find((el) => el.mediaid === seriesItemId);
+    }
+    return acc;
+  }, {} as Record<string, PlaylistItem | undefined>);
+
+  return seriesItemsDict;
+};
 
 export const restoreWatchHistory = async () => {
   const { user } = useAccountStore.getState();
@@ -16,32 +44,34 @@ export const restoreWatchHistory = async () => {
   const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(PERSIST_KEY_WATCH_HISTORY);
 
   if (savedItems?.length && continueWatchingList) {
-    const watchHistoryItems = await getMediaItems(
-      continueWatchingList,
-      savedItems.map(({ mediaid }) => mediaid),
-    );
+    // When item is an episode of the new flow -> show the card as a series one, but keep episode to redirect in a right way
+    const ids = savedItems.map(({ mediaid }) => mediaid);
 
-    const watchHistoryItemsDict = Object.fromEntries((watchHistoryItems || []).map((item) => [item.mediaid, item]));
+    const watchHistoryItems = await getWatchHistoryItems(continueWatchingList, ids);
+    const seriesItems = await getWatchHistorySeriesItems(continueWatchingList, ids);
 
     const watchHistory = savedItems.map((item) => {
-      if (watchHistoryItemsDict[item.mediaid]) {
-        return createWatchHistoryItem(watchHistoryItemsDict[item.mediaid], item.progress);
+      const parentSeries = seriesItems?.[item.mediaid];
+      const historyItem = watchHistoryItems[item.mediaid];
+
+      if (historyItem) {
+        return createWatchHistoryItem(parentSeries || historyItem, item.mediaid, parentSeries?.mediaid, item.progress);
       }
     });
 
     useWatchHistoryStore.setState({
       watchHistory: watchHistory.filter((item): item is WatchHistoryItem => !!item?.mediaid),
       playlistItemsLoaded: true,
+      continueWatchingPlaylistId: continueWatchingList,
     });
   }
 };
 
-export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {
-  return watchHistory.map(({ mediaid, progress }) => ({
+export const serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] =>
+  watchHistory.map(({ mediaid, progress }) => ({
     mediaid,
     progress,
   }));
-};
 
 export const persistWatchHistory = () => {
   const { watchHistory } = useWatchHistoryStore.getState();
@@ -54,9 +84,13 @@ export const persistWatchHistory = () => {
   persist.setItem(PERSIST_KEY_WATCH_HISTORY, serializeWatchHistory(watchHistory));
 };
 
-export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number): WatchHistoryItem => {
+/** Use mediaid of originally watched movie / episode.
+ * A playlistItem can be either a series item (to show series card) or media item
+ * */
+export const createWatchHistoryItem = (item: PlaylistItem, mediaid: string, seriesId: string | undefined, videoProgress: number): WatchHistoryItem => {
   return {
-    mediaid: item.mediaid,
+    mediaid,
+    seriesId,
     title: item.title,
     tags: item.tags,
     duration: item.duration,
@@ -75,12 +109,26 @@ export const createWatchHistoryItem = (item: PlaylistItem, videoProgress: number
  */
 export const saveItem = async (item: PlaylistItem, videoProgress: number | null) => {
   const { watchHistory } = useWatchHistoryStore.getState();
+  const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;
+  let seriesItem;
 
   if (!videoProgress) return;
 
-  const watchHistoryItem = createWatchHistoryItem(item, videoProgress);
+  // Checking whether an item has a parent series item and getting its information
+  const mediaWithSeries = await getSeriesByMediaIds([item.mediaid]);
 
-  const updatedHistory = watchHistory.filter(({ mediaid }) => mediaid !== watchHistoryItem.mediaid);
+  if (mediaWithSeries?.[item.mediaid]) {
+    try {
+      const seriesId = mediaWithSeries?.[item.mediaid]?.[0]?.series_id;
+      seriesItem = (await getMediaItems(continueWatchingList, seriesId ? [seriesId] : []))?.[0];
+    } catch {
+      // For the old approach we just save the episode as before
+    }
+  }
+
+  const watchHistoryItem = createWatchHistoryItem(seriesItem || item, item.mediaid, seriesItem?.mediaid, videoProgress);
+  const updatedHistory = watchHistory.filter(({ mediaid, seriesId }) => mediaid !== watchHistoryItem.mediaid && seriesId !== watchHistoryItem.seriesId);
+
   updatedHistory.unshift(watchHistoryItem);
   updatedHistory.splice(MAX_WATCHLIST_ITEMS_COUNT);
 

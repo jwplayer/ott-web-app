@@ -67,11 +67,6 @@ $large-button-height: 40px;
     background-color: var(--highlight-color, theme.$btn-primary-bg);
   }
 
-  &.delete {
-    color: variables.$white;
-    background-color: var(--highlight-color, variables.$red);
-  }
-
   &.outlined {
     border: 1px solid rgba(255, 255, 255, 0.3);
 
@@ -101,6 +96,18 @@ $large-button-height: 40px;
         opacity: 1;
       }
     }
+  }
+
+  &.danger {
+    color: theme.$btn-danger-color;
+    background-color: theme.$btn-danger-bg;
+    outline: theme.$btn-danger-outline;
+  }
+
+  &.delete {
+    color: theme.$btn-delete-color;
+    background-color: theme.$btn-delete-bg;
+    outline: none;
   }
 
   &.fullWidth {

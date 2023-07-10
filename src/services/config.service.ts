@@ -72,6 +72,14 @@ const configSchema: SchemaOf<Config> = object({
     host: string().required() as StringSchema<string>,
     drmPolicyId: string().notRequired(),
   }),
+  contentProtection: object()
+    .shape({
+      accessModel: string().oneOf(['free', 'freeauth', 'authvod', 'svod']).notRequired(),
+      drm: object({
+        defaultPolicyId: string(),
+      }).notRequired(),
+    })
+    .notRequired(),
 }).defined();
 
 const loadConfig = async (configLocation: string) => {

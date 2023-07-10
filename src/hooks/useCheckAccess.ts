@@ -12,19 +12,21 @@ type intervalCheckAccessPayload = {
   iterations?: number;
   offerId?: string;
 };
+
 const useCheckAccess = () => {
   const intervalRef = useRef<number>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('user');
+  const { clientOffers } = useClientIntegration();
 
   const intervalCheckAccess = useCallback(
     ({ interval = 3000, iterations = 5, offerId }: intervalCheckAccessPayload) => {
-      const { clientOffers } = useClientIntegration();
       if (!offerId && clientOffers?.[0]) {
         offerId = clientOffers[0];
       }
+
       intervalRef.current = window.setInterval(async () => {
         const hasAccess = await checkEntitlements(offerId);
 
@@ -37,7 +39,7 @@ const useCheckAccess = () => {
         }
       }, interval);
     },
-    [intervalRef.current, errorMessage],
+    [clientOffers, navigate, location, t],
   );
 
   useEffect(() => {

@@ -16,7 +16,7 @@ import type { Config } from '#types/Config';
 import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
 
 const regex = /^[a-z,\d]{0,8}$/g;
-const fallbackConfig = import.meta.env.APP_DEMO_FALLBACK_CONFIG_ID;
+const DEMO_CONFIG = '225tvq1i';
 
 interface Props {
   selectedConfigSource: string | undefined;
@@ -111,13 +111,11 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
   const cancelConfigClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
 
-    if (fallbackConfig) {
-      setState({ configSource: '', error: undefined, loaded: false, showDialog: true });
-    }
+    setState({ configSource: '', error: undefined, loaded: false, showDialog: true });
   };
 
   const confirmDemoClick = async () => {
-    await configNavigate(fallbackConfig);
+    await configNavigate(DEMO_CONFIG);
   };
 
   const cancelDemoClick = () => setState((s) => ({ ...s, showDialog: false }));
@@ -182,7 +180,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
                   disabled={configQuery.isLoading}
                   busy={configQuery.isLoading && !state.showDialog}
                 />
-                {fallbackConfig && <Button label={t('cancel_config_id')} onClick={cancelConfigClick} disabled={configQuery.isLoading} />}
+                <Button label={t('cancel_config_id')} onClick={cancelConfigClick} disabled={configQuery.isLoading} />
               </div>
             </form>
             <p>{t('use_the_jwp_dashboard')}</p>

@@ -1,3 +1,5 @@
+import { formatPrice } from './payments';
+
 const baseUrl = 'http://localhost:8080/';
 
 export const normalTimeout = 10;
@@ -25,6 +27,7 @@ export default {
   accountsUrl: `${baseUrl}u/my-account`,
   paymentsUrl: `${baseUrl}u/payments`,
   offersUrl: `${baseUrl}u/payments?u=choose-offer`,
+  primitiveAnimalsId: 'oXGyKQ97',
   primitiveAnimalsTitle: 'Primitive Animals',
   primitiveAnimalsDescription: "If you're brand new to Blender or are getting stuck, check out the Blender 2.8 Fundamentals series.",
   agent327Title: 'Agent 327',
@@ -37,11 +40,56 @@ export default {
   elephantsDreamDescription:
     'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',
   fantasyVehicleTitle: 'Fantasy Vehicle Creation',
+  fantasyVehicleId: 'lsFXY5xn',
   minecraftAnimationWorkshopTitle: 'Minecraft Animation Workshop',
   minecraftAnimationWorkshopDescription:
-    'Dillon Gu explains a little bit about what you can expect to see in this workshop. Check out his showcase video for this workshop here on his YouTube channel!',
+    'Ever wanted to learn how to make Minecraft Animation? Dillon walks you through the step by step process he used to create this Trident Animation. This includes everything from importing your Minecraft world to rendering and posting on YouTube. Enjoy!',
   startWatchingButton: 'Start watching',
   continueWatchingButton: 'Continue watching',
   signUpToWatch: 'Sign up to start watching!',
   continueWatchingShelfTitle: 'Continue Watching',
+  paymentFields: {
+    inplayer: {
+      creditCardholder: 'Cardholder name',
+      cardNumber: 'directPostCreditCardNumber',
+      expiryDate: 'directPostExpiryDate',
+      securityCode: 'directPostSecurityCode',
+    },
+    cleeng: {
+      creditCardholder: 'Name on card',
+      cardNumber: 'adyen-checkout__field--cardNumber',
+      expiryDate: 'adyen-checkout__field--expiryDate',
+      securityCode: 'adyen-checkout__field--securityCode',
+    },
+  },
+  offers: {
+    monthlyOffer: {
+      cleeng: {
+        label: `label[for="S970187168_NL"]`,
+        price: formatPrice(6.99, 'EUR', 'NL'),
+        paymentFee: formatPrice(0, 'EUR', 'NL'),
+      },
+      inplayer: {
+        label: `label[for="S38279"]`,
+        price: formatPrice(6.99, 'EUR'),
+        paymentFee: formatPrice(0, 'EUR'),
+      },
+    },
+    yearlyOffer: {
+      cleeng: {
+        label: `label[for="S467691538_NL"]`,
+        price: formatPrice(50, 'EUR', 'NL'),
+        paymentFee: formatPrice(0, 'EUR', 'NL'),
+      },
+      inplayer: {
+        label: `label[for="S38280"]`,
+        price: formatPrice(50, 'EUR'),
+        paymentFee: formatPrice(0, 'EUR'),
+      },
+    },
+  },
+  creditCard: {
+    inplayer: '4111111111111111',
+    cleeng: '5555444433331111',
+  },
 };

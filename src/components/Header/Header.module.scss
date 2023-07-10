@@ -9,7 +9,7 @@
 
 .header {
   height: variables.$header-height;
-  padding: 10px variables.$base-spacing * 4;
+  padding: 10px calc(#{variables.$base-spacing} * 2);
   color: var(--header-contrast-color, variables.$white);
   background: var(--header-background, transparent);
 
@@ -80,9 +80,27 @@
     height: 36px;
     min-height: 36px;
     margin: 0 6px;
+    padding: 0 calc(#{variables.$base-spacing} / 2);
     font-weight: var(--body-font-weight-bold);
     font-size: 18px;
   }
+}
+
+//
+// Header actions
+//
+.actions {
+  position: relative;
+  display: flex;
+
+  @include responsive.mobile-and-tablet() {
+    // the search container wants to position itself against the header
+    position: static;
+  }
+}
+
+.actionButton {
+  margin-left: calc(#{variables.$base-spacing} / 2);
 }
 
 //
@@ -93,33 +111,34 @@
 }
 
 //
-// Header mobile search
+// Header search container
 //
-.mobileSearch {
+.searchContainer {
   position: absolute;
-  right: 0;
-  left: 0;
+  left: -#{variables.$search-bar-width-desktop};
   display: flex;
+  width: variables.$search-bar-width-desktop;
 
   > div:first-child {
     flex: 1;
   }
-}
 
-//
-// Header modifier when mobile search is active
-//
-.mobileSearchActive {
-  .menu,
-  .brand {
-    display: none;
+  @include responsive.mobile-and-tablet() {
+    right: 0;
+    left: 0;
+    width: auto;
   }
 }
 
+//
+// Container for the user button(s)
+//
 .buttonContainer {
+  // this is a visual fix for putting a button with background besides a transparent button
+  margin-left: variables.$base-spacing;
+
   > button:first-child {
     margin-right: calc(#{variables.$base-spacing} / 2);
-    margin-left: variables.$base-spacing;
   }
 }
 
@@ -133,7 +152,7 @@
   }
 }
 .profile {
-  display:flex;
+  display: flex;
   align-items: center;
   h2 {
     cursor: pointer;
@@ -146,7 +165,7 @@
 @include responsive.mobile-and-tablet() {
   .header {
     height: variables.$header-height-mobile;
-    padding: 10px variables.$base-spacing * 2;
+    padding: 10px calc(#{variables.$base-spacing} * 2);
   }
 
   .menu {
@@ -155,17 +174,20 @@
 
   .brand {
     flex: 1;
-    margin: 0;
-    margin-left: 8px;
-    text-align: left;
+    margin-left: variables.$base-spacing;
   }
 
   .nav {
     display: none;
   }
 
-  .search {
-    text-align: right;
+  .searchActive {
+    .menu,
+    .brand,
+    .buttonContainer,
+    .actionButton {
+      display: none;
+    }
   }
 }
 
@@ -174,11 +196,12 @@
     padding: 10px variables.$base-spacing;
   }
 
-  .menu {
-    width: 40px;
+  .brand {
+    text-align: center;
   }
 
-  .search {
-    width: 40px;
+  .menu,
+  .actions {
+    width: 80px;
   }
 }

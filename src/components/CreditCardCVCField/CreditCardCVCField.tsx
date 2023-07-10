@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import TextField from '../TextField/TextField';
 
@@ -10,6 +11,7 @@ type Props = {
 };
 
 const CreditCardCVCField: React.FC<Props> = ({ value, onChange, error, ...props }: Props) => {
+  const { t } = useTranslation('user');
   const formatCVC: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const clearValue = e.target.value.replace(/\D+/g, '');
     if (onChange) {
@@ -19,11 +21,13 @@ const CreditCardCVCField: React.FC<Props> = ({ value, onChange, error, ...props 
   };
   return (
     <TextField
-      label={`CVC/CVV`}
+      label={t('payment.security_code')}
+      aria-label={t('payment.security_code')}
       {...props}
       error={!!error}
       helperText={error ? error : null}
       name="cardCVC"
+      className="directPostSecurityCode"
       type="text"
       value={value}
       onChange={formatCVC}

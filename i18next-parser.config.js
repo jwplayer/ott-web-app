@@ -1,4 +1,7 @@
-// i18next-parser.config.js
+const fs = require('fs');
+
+const localesEntries = fs.readdirSync('./public/locales');
+const locales = localesEntries.filter((entry) => entry !== '..' && entry !== '.');
 
 module.exports = {
   contextSeparator: '_',
@@ -17,8 +20,8 @@ module.exports = {
     default: ['JavascriptLexer'],
   },
   lineEnding: 'auto',
-  locales: ['en_US', 'nl_NL'],
+  locales,
   namespaceSeparator: ':',
-  output: 'src/i18n/locales/$LOCALE/$NAMESPACE.json',
+  output: 'public/locales/$LOCALE/$NAMESPACE.json',
   sort: true,
 };
