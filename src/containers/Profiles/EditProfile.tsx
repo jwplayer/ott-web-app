@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useQuery, UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 import profileStyles from './Profiles.module.scss';
@@ -7,13 +7,13 @@ import Form from './Form';
 import DeleteProfile from './DeleteProfile';
 
 import styles from '#src/pages/User/User.module.scss';
-import { getProfileDetails, updateProfile } from '#src/services/inplayer.account.service';
-import type { Profile, ProfilePayload } from '#types/account';
+import type { ProfilePayload } from '#types/account';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import Button from '#src/components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
 import FormFeedback from '#src/components/FormFeedback/FormFeedback';
+import { getProfileDetails, updateProfile } from '#src/stores/AccountController';
 
 const EditProfile = () => {
   const { id } = useParams();
@@ -21,13 +21,11 @@ const EditProfile = () => {
   const navigate = useNavigate();
   const [fullName, setFullName] = useState<string>('');
 
-  const {
-    data: profileDetails,
-    isLoading,
-    isFetching,
-  }: UseQueryResult<Profile> = useQuery(['getProfileDetails'], () => getProfileDetails(null, true, id), {
+  const { data, isLoading, isFetching } = useQuery(['getProfileDetails'], () => getProfileDetails({ id: id || '' }), {
     staleTime: 0,
   });
+
+  const profileDetails = data?.responseData;
 
   const initialValues = useMemo(() => {
     return {
@@ -35,25 +33,30 @@ const EditProfile = () => {
       name: profileDetails?.name || '',
       adult: profileDetails?.adult ?? true,
       avatar_url: profileDetails?.avatar_url || '',
-      pin: null,
+      pin: undefined,
     };
   }, [profileDetails]);
 
+  if (!id) {
+    navigate('/u/profiles');
+  }
+
   const updateProfileHandler: UseFormOnSubmitHandler<ProfilePayload> = async (formData, { setErrors, setSubmitting }) => {
     try {
-      const adult = formData.adult.toString() === 'true' ? true : false;
-      const profile = await updateProfile(null, true, {
-        id: formData.id,
+      const response = await updateProfile({
+        id: id,
         name: formData.name,
-        adult,
-        avatar_url: formData.avatar_url,
+        adult: formData.adult,
+        avatar_url: formData.avatar_url || profileDetails?.avatar_url,
       });
+
+      const profile = response?.responseData;
 
       if (profile?.id) {
         setSubmitting(false);
         navigate('/u/profiles');
       } else {
-        setErrors({ form: profile?.message || 'Something went wrong. Please try again later.' });
+        setErrors({ form: 'Something went wrong. Please try again later.' });
         setSubmitting(false);
       }
     } catch {

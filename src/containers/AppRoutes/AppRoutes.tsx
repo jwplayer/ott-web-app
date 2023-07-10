@@ -25,8 +25,8 @@ export default function AppRoutes() {
   const userModal = useQueryParam('u');
 
   const { accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { canManageProfiles, profile } = useAccountStore(({ canManageProfiles, profile }) => ({ canManageProfiles, profile }), shallow);
-  const shouldManageProfiles = canManageProfiles && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal;
+  const { canManageProfiles, profile, user } = useAccountStore(({ canManageProfiles, profile, user }) => ({ canManageProfiles, profile, user }), shallow);
+  const shouldManageProfiles = !!user && canManageProfiles && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal;
 
   return (
     <Routes>

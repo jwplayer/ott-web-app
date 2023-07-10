@@ -257,9 +257,9 @@ export const canUpdatePaymentMethod = true;
 export const canShowReceipts = true;
 export const canManageProfiles = false;
 
-export const listProfiles = async () => {
-  return {
-    canManageProfiles: false,
-    collection: [],
-  };
-};
+export const listProfiles = () => null;
+export const createProfile = () => null;
+export const enterProfile = () => null;
+export const updateProfile = () => null;
+export const getProfileDetails = () => null;
+export const deleteProfile = () => null;

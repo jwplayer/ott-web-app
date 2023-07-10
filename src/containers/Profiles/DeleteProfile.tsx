@@ -7,8 +7,8 @@ import Button from '#src/components/Button/Button';
 import Dialog from '#src/components/Dialog/Dialog';
 import { removeQueryParam } from '#src/utils/location';
 import useQueryParam from '#src/hooks/useQueryParam';
-import { deleteProfile } from '#src/services/inplayer.account.service';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
+import { deleteProfile } from '#src/stores/AccountController';
 
 const DeleteProfile = () => {
   const navigate = useNavigate();
@@ -25,8 +25,11 @@ const DeleteProfile = () => {
   const deleteHandler = async () => {
     try {
       setIsDeleting(true);
-      const profile = await deleteProfile(null, true, id);
-      if (profile.code === 200) {
+      if (!id) {
+        return;
+      }
+      const response = await deleteProfile({ id });
+      if (response?.errors.length === 0) {
         closeHandler();
         setIsDeleting(false);
         navigate('/u/profiles');

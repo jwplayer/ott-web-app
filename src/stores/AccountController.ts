@@ -6,15 +6,17 @@ import * as persist from '#src/utils/persist';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type {
-  AuthData,
   Capture,
   Customer,
   CustomerConsent,
   EmailConfirmPasswordInput,
+  EnterProfilePayload,
   FirstLastNameInput,
   GetCaptureStatusResponse,
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
+  ProfileDetailsPayload,
+  ProfilePayload,
 } from '#types/account';
 import type { Offer } from '#types/checkout';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -138,10 +140,39 @@ export const getAccount = async () => {
   });
 };
 
-export const listProfiles = async (auth: AuthData | null) => {
-  return await useService(async ({ accountService }) => {
-    const response = await accountService.listProfiles(auth);
-    return response;
+export const listProfiles = async () => {
+  return await useService(async ({ accountService, sandbox }) => {
+    return await accountService.listProfiles(undefined, sandbox ?? true);
+  });
+};
+
+export const createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
+  return await useService(async ({ accountService, sandbox }) => {
+    return await accountService.createProfile({ name, adult, avatar_url, pin }, sandbox ?? true);
+  });
+};
+
+export const updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
+  return await useService(async ({ accountService, sandbox }) => {
+    return await accountService.updateProfile({ id, name, adult, avatar_url, pin }, sandbox ?? true);
+  });
+};
+
+export const enterProfile = async ({ id, pin }: EnterProfilePayload) => {
+  return await useService(async ({ accountService, sandbox }) => {
+    return await accountService.enterProfile({ id, pin }, sandbox ?? true);
+  });
+};
+
+export const deleteProfile = async ({ id }: ProfileDetailsPayload) => {
+  return await useService(async ({ accountService, sandbox }) => {
+    return await accountService.deleteProfile({ id }, sandbox ?? true);
+  });
+};
+
+export const getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
+  return await useService(async ({ accountService, sandbox }) => {
+    return await accountService.getProfileDetails({ id }, sandbox ?? true);
   });
 };
 
@@ -511,7 +542,8 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
 }
 
 async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string, shouldSubscriptionReload: boolean = true) {
-  const { canManageProfiles } = await listProfiles(null);
+  const response = await listProfiles();
+  const canManageProfiles = response?.responseData?.canManageProfiles ?? false;
   useAccountStore.setState({
     user,
     canManageProfiles,

@@ -1,19 +1,15 @@
 import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
-import { get, performDelete, post, put } from './inplayer.service';
-
 import type {
   AuthData,
   Capture,
   ChangePassword,
   ChangePasswordWithOldPassword,
   Consent,
-  ProfilePayload,
   Customer,
   CustomerConsent,
   EnterProfile,
-  EnterProfilePayload,
   DeleteAccount,
   ExportAccountData,
   ExternalData,
@@ -22,7 +18,6 @@ import type {
   GetCustomerConsentsResponse,
   GetPublisherConsents,
   Login,
-  Profile,
   Register,
   ResetPassword,
   UpdateCaptureAnswers,
@@ -30,6 +25,11 @@ import type {
   UpdateCustomerArgs,
   UpdateCustomerConsents,
   UpdatePersonalShelves,
+  DeleteProfile,
+  GetProfileDetails,
+  UpdateProfile,
+  CreateProfile,
+  ListProfiles,
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
@@ -43,8 +43,12 @@ enum InPlayerEnv {
   Daily = 'daily',
 }
 
+// TODO: remove ignore
+// @ts-ignore
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
-  const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
+  // TODO: Remove this when feature flag exists in dev database
+  // const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
+  const env: string = InPlayerEnv.Daily;
   InPlayer.setConfig(env as Env);
   const queryParams = new URLSearchParams(window.location.href.split('#')[1]);
   const token = queryParams.get('token');
@@ -338,61 +342,82 @@ export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
   }
 };
 
-export const listProfiles = async (auth: AuthData | null) => {
+export const listProfiles: ListProfiles = async () => {
   try {
-    const response = await get(true, `/v2/accounts/profiles`, auth?.jwt);
+    const response = await InPlayer.Account.getProfiles();
     return {
-      canManageProfiles: true,
-      collection: response as Profile[],
+      responseData: {
+        canManageProfiles: true,
+        collection: response.data,
+      },
+      errors: [],
     };
   } catch {
-    return {
-      canManageProfiles: false,
-      collection: [],
-    };
+    throw new Error('Unable to fetch profiles.');
   }
 };
 
-export const createProfile = async (auth: AuthData | null, sandbox: boolean, payload: ProfilePayload) => {
+export const createProfile: CreateProfile = async (payload) => {
   try {
-    const response = await post(sandbox, `/v2/accounts/profiles`, JSON.stringify(payload), auth?.jwt);
-    return response;
+    const response = await InPlayer.Account.createProfile(payload.name, payload.adult, payload.avatar_url, payload.pin);
+    return {
+      responseData: response.data,
+      errors: [],
+    };
   } catch {
     throw new Error('Unable to create profile.');
   }
 };
 
-export const updateProfile = async (auth: AuthData | null, sandbox: boolean, payload: ProfilePayload) => {
+export const updateProfile: UpdateProfile = async (payload) => {
   try {
-    const response = await put(sandbox, `/v2/accounts/profiles/${payload.id}`, JSON.stringify(payload), auth?.jwt);
-    return response;
+    if (!payload.id) {
+      throw new Error('Profile id is required.');
+    }
+    const response = await InPlayer.Account.updateProfile(payload.id, payload.name, payload.avatar_url, payload.adult);
+    return {
+      responseData: response.data,
+      errors: [],
+    };
   } catch {
     throw new Error('Unable to update profile.');
   }
 };
 
-export const enterProfile = async (auth: AuthData | null, sandbox: boolean, payload: EnterProfilePayload): Promise<EnterProfile> => {
+export const enterProfile: EnterProfile = async ({ id, pin }) => {
   try {
-    const response = await post(sandbox, `/v2/accounts/profiles/${payload.id}/token`, JSON.stringify(payload), auth?.jwt);
-    return response;
+    const response = await InPlayer.Account.enterProfile(id, pin);
+    return {
+      responseData: response.data,
+      errors: [],
+    };
   } catch {
     throw new Error('Unable to enter profile.');
   }
 };
 
-export const getProfileDetails = async (auth: AuthData | null, sandbox: boolean, id: string = ''): Promise<Profile> => {
+export const getProfileDetails: GetProfileDetails = async ({ id }) => {
   try {
-    const response = await get(sandbox, `/v2/accounts/profiles/${id}`, auth?.jwt);
-    return response;
+    const response = await InPlayer.Account.getProfileDetails(id);
+    return {
+      responseData: response.data,
+      errors: [],
+    };
   } catch {
     throw new Error('Unable to get profile details.');
   }
 };
 
-export const deleteProfile = async (auth: AuthData | null, sandbox: boolean, id: string = '') => {
+export const deleteProfile: DeleteProfile = async ({ id }) => {
   try {
-    const response = await performDelete(sandbox, `/v2/accounts/profiles/${id}`, auth?.jwt);
-    return response;
+    await InPlayer.Account.deleteProfile(id);
+    return {
+      responseData: {
+        message: 'Profile deleted successfully',
+        code: 200,
+      },
+      errors: [],
+    };
   } catch {
     throw new Error('Unable to delete profile.');
   }

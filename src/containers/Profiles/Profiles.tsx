@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useQuery, UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import shallow from 'zustand/shallow';
 
 import styles from './Profiles.module.scss';
@@ -8,11 +8,10 @@ import styles from './Profiles.module.scss';
 import * as persist from '#src/utils/persist';
 import ProfileBox from '#src/components/ProfileBox/ProfileBox';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { initializeAccount, listProfiles } from '#src/stores/AccountController';
-import type { AuthData, ListProfiles, Profile } from '#types/account';
+import { enterProfile, initializeAccount, listProfiles } from '#src/stores/AccountController';
+import type { AuthData, Profile } from '#types/account';
 import AddNewProfile from '#src/components/ProfileBox/AddNewProfile';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import { enterProfile } from '#src/services/inplayer.account.service';
 import Button from '#src/components/Button/Button';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -34,16 +33,17 @@ const Profiles = ({ editMode = false }: Props) => {
     if (!canManageProfiles) navigate('/');
   }, [canManageProfiles, navigate]);
 
-  const { data, isLoading, isFetching }: UseQueryResult<ListProfiles> = useQuery(['listProfiles'], () => listProfiles(null), {
+  const { data, isLoading, isFetching } = useQuery(['listProfiles'], listProfiles, {
     staleTime: 0,
   });
-  const activeProfiles = data?.collection?.length || 0;
+  const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
 
   const handleProfileSelection = async (id: string) => {
     try {
       useAccountStore.setState({ loading: true });
-      const profile = await enterProfile(null, true, { id });
+      const response = await enterProfile({ id });
+      const profile = response?.responseData;
 
       if (profile?.credentials?.access_token) {
         const authData: AuthData = {
@@ -82,7 +82,7 @@ const Profiles = ({ editMode = false }: Props) => {
         <h2 className={styles.heading}>{!editMode ? 'Who’s watching?' : 'Manage profiles'}</h2>
       )}
       <div className={styles.flex}>
-        {data?.collection?.map((profile: Profile) => (
+        {data?.responseData.collection?.map((profile: Profile) => (
           <ProfileBox
             editMode={editMode}
             onEdit={() => navigate(`/u/profiles/edit/${profile.id}`)}

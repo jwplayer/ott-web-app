@@ -6,10 +6,9 @@ import profileStyles from './Profiles.module.scss';
 import Form from './Form';
 
 import styles from '#src/pages/User/User.module.scss';
-import { createProfile } from '#src/services/inplayer.account.service';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type { ProfilePayload, ListProfiles } from '#types/account';
-import { listProfiles } from '#src/stores/AccountController';
+import type { ProfilePayload, ListProfilesResponse } from '#types/account';
+import { createProfile, listProfiles } from '#src/stores/AccountController';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 
@@ -30,28 +29,30 @@ const CreateProfile = () => {
   }, [canManageProfiles, navigate]);
 
   // this is only needed so we can set different avatar url which will be temporary
-  const { data, isLoading }: UseQueryResult<ListProfiles> = useQuery(['listProfiles'], () => listProfiles(null), { staleTime: 0 });
+  const { data, isLoading }: UseQueryResult<ListProfilesResponse> = useQuery(['listProfiles'], () => listProfiles(), { staleTime: 0 });
   const activeProfiles = data?.collection?.length || 0;
 
   const initialValues = {
     name: '',
     adult: true,
     avatar_url: '',
-    pin: null,
+    pin: undefined,
   };
 
   const createProfileHandler: UseFormOnSubmitHandler<ProfilePayload> = async (formData, { setSubmitting, setErrors }) => {
     try {
-      const profile = await createProfile(null, true, {
-        name: formData.name,
-        adult: formData.adult,
-        avatar_url: AVATARS[activeProfiles],
-      });
+      const profile = (
+        await createProfile({
+          name: formData.name,
+          adult: formData.adult,
+          avatar_url: AVATARS[activeProfiles],
+        })
+      )?.responseData;
       if (profile?.id) {
         setSubmitting(false);
         navigate('/u/profiles');
       } else {
-        setErrors({ form: profile?.message || 'Something went wrong. Please try again later.' });
+        setErrors({ form: 'Something went wrong. Please try again later.' });
         setSubmitting(false);
       }
     } catch {

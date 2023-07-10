@@ -1,4 +1,4 @@
-import type { CommonResponse } from '@inplayer-org/inplayer.js';
+import type { CommonResponse, ProfilesData } from '@inplayer-org/inplayer.js';
 
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
@@ -309,29 +309,14 @@ export type UpdatePersonalShelvesArgs = {
   };
 };
 
-export type Profile = {
-  id: string;
-  name: string;
-  avatar_url: string;
-  adult: boolean;
-  account_id?: number;
-  default?: boolean;
-  pin_required?: boolean;
-  created_at?: number;
-  updated_at?: number;
-};
-
-export type ListProfiles = {
-  canManageProfiles: boolean;
-  collection: Profile[];
-};
+export type Profile = ProfilesData;
 
 export type ProfilePayload = {
   id?: string;
   name: string;
   adult: boolean;
   avatar_url?: string;
-  pin?: number | null;
+  pin?: number;
 };
 
 export type EnterProfilePayload = {
@@ -339,17 +324,13 @@ export type EnterProfilePayload = {
   pin?: number;
 };
 
-export type EnterProfile = {
+export type ProfileDetailsPayload = {
   id: string;
-  name: string;
-  account_id: number;
-  adult: boolean;
-  avatar_url: string;
-  pin_required: boolean;
-  credentials: {
-    access_token: string;
-    expires: number;
-  };
+};
+
+export type ListProfilesResponse = {
+  canManageProfiles: boolean;
+  collection: ProfilesData[];
 };
 
 export type FirstLastNameInput = {
@@ -386,5 +367,11 @@ type ChangePassword = EnvironmentServiceRequest<ChangePasswordWithTokenPayload, 
 type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWithOldPasswordPayload, ApiResponse<unknown>>;
 type UpdatePersonalShelves = EnvironmentServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
-type ExportAccountData = AuthServiceRequest<undefined, CommonAccountResponse>;
+type ExportAccountData = EnvironmentServiceRequest<undefined, CommonAccountResponse>;
 type DeleteAccount = EnvironmentServiceRequest<DeleteAccountPayload, CommonAccountResponse>;
+type ListProfiles = EnvironmentServiceRequest<undefined, ListProfilesResponse>;
+type CreateProfile = EnvironmentServiceRequest<ProfilePayload, ProfilesData>;
+type UpdateProfile = EnvironmentServiceRequest<ProfilePayload, ProfilesData>;
+type EnterProfile = EnvironmentServiceRequest<EnterProfilePayload, ProfilesData>;
+type GetProfileDetails = EnvironmentServiceRequest<ProfileDetailsPayload, ProfilesData>;
+type DeleteProfile = EnvironmentServiceRequest<ProfileDetailsPayload, CommonAccountResponse>;
