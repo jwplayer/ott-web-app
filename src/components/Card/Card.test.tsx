@@ -6,7 +6,7 @@ import Card from './Card';
 import type { PlaylistItem } from '#types/playlist';
 
 const item = { title: 'aa', duration: 120 } as PlaylistItem;
-const itemWithImage = { title: 'This is a movie', duration: 120, shelfImage: 'http://movie.jpg' } as PlaylistItem;
+const itemWithImage = { title: 'This is a movie', duration: 120, cardImage: 'http://movie.jpg' } as PlaylistItem;
 
 describe('<Card>', () => {
   it('renders card with video title', () => {

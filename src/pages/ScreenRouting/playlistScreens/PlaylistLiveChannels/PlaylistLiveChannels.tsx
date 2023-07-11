@@ -24,7 +24,6 @@ import { generateMovieJSONLD } from '#src/utils/structuredData';
 import type { ScreenComponent } from '#types/screens';
 import type { Playlist } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';
-import { getImage } from '#src/utils/image';
 
 const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playlist } }) => {
   const { t } = useTranslation('epg');
@@ -58,7 +57,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
       return {
         title: program.title,
         description: program.description || '',
-        image: getImage(program.backgroundImage),
+        image: program.backgroundImage,
         canWatch: isLive || (isVod && isWatchableFromBeginning),
         canWatchFromBeginning: isEntitled && isLive && isWatchableFromBeginning,
       };
@@ -67,7 +66,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     return {
       title: channel?.title || '',
       description: channel?.description || '',
-      image: getImage(channel?.backgroundImage),
+      image: channel?.backgroundImage,
       canWatch: true,
       canWatchFromBeginning: false,
     };

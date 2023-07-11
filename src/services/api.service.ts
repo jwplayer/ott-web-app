@@ -33,7 +33,7 @@ export const transformMediaItem = (item: PlaylistItem) => {
 
   const transformedMediaItem = {
     ...item,
-    shelfImage: generateAlternateImageURL(item, ImageProperty.CARD),
+    cardImage: generateAlternateImageURL(item, ImageProperty.CARD),
     backgroundImage: generateAlternateImageURL(item, ImageProperty.BACKGROUND),
     channelLogoImage: generateAlternateImageURL(item, ImageProperty.CHANNEL_LOGO),
     mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,

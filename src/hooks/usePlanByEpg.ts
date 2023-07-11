@@ -4,7 +4,6 @@ import { startOfDay, startOfToday, startOfTomorrow } from 'date-fns';
 
 import type { EpgChannel } from '#src/services/epg.service';
 import { is12HourClock } from '#src/utils/datetime';
-import { getImage } from '#src/utils/image';
 
 const isBaseTimeFormat = is12HourClock();
 
@@ -16,19 +15,19 @@ const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: 
     return [
       channels.map(({ id, channelLogoImage, backgroundImage }) => ({
         uuid: id,
-        logo: getImage(channelLogoImage),
-        channelLogoImage: getImage(channelLogoImage),
-        backgroundImage: getImage(backgroundImage),
+        logo: channelLogoImage,
+        channelLogoImage: channelLogoImage,
+        backgroundImage: backgroundImage,
       })),
       channels.flatMap((channel) =>
-        channel.programs.map(({ id, title, shelfImage, backgroundImage, description, endTime, startTime }) => ({
+        channel.programs.map(({ id, title, cardImage, backgroundImage, description, endTime, startTime }) => ({
           channelUuid: channel.id,
           id: id,
           title,
-          image: getImage(shelfImage),
-          // programs have the same shelfImage/backgroundImage (different API)
-          shelfImage: getImage(shelfImage),
-          backgroundImage: getImage(backgroundImage),
+          image: cardImage || '',
+          // programs have the same cardImage/backgroundImage (different API)
+          cardImage: cardImage || '',
+          backgroundImage: backgroundImage || '',
           description: description || '',
           till: endTime,
           since: startTime,

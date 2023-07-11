@@ -8,11 +8,6 @@ export type Image = {
   width: number;
 };
 
-export type ImageData = {
-  image: string;
-  fallbackImage?: string;
-};
-
 export type Source = {
   file: string;
   type: string;
@@ -30,7 +25,7 @@ export type PlaylistItem = {
   feedid: string;
   image: string;
   images: Image[];
-  shelfImage?: string;
+  cardImage?: string;
   backgroundImage?: string;
   channelLogoImage?: string;
   link: string;

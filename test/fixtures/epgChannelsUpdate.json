@@ -12,7 +12,7 @@
         "title": "Program 1",
         "startTime": "2022-07-15T10:00:00Z",
         "endTime": "2022-07-15T10:45:00Z",
-        "shelfImage": "",
+        "cardImage": "",
         "backgroundImage": ""
       },
       {
@@ -20,7 +20,7 @@
         "title": "Program 2",
         "startTime": "2022-07-15T10:45:00Z",
         "endTime": "2022-07-15T11:00:00Z",
-        "shelfImage": "",
+        "cardImage": "",
         "backgroundImage": ""
       },
       {
@@ -28,7 +28,7 @@
         "title": "Program 5",
         "startTime": "2022-07-15T11:00:00Z",
         "endTime": "2022-07-15T11:30:00Z",
-        "shelfImage": "",
+        "cardImage": "",
         "backgroundImage": ""
       }
     ],
@@ -47,7 +47,7 @@
         "title": "Program 3",
         "startTime": "2022-07-15T10:00:00Z",
         "endTime": "2022-07-15T10:45:00Z",
-        "shelfImage": "",
+        "cardImage": "",
         "backgroundImage": ""
       },
       {
@@ -55,7 +55,7 @@
         "title": "Program 4",
         "startTime": "2022-07-15T10:45:00Z",
         "endTime": "2022-07-15T11:00:00Z",
-        "shelfImage": "",
+        "cardImage": "",
         "backgroundImage": ""
       },
       {
@@ -63,7 +63,7 @@
         "title": "Program 6",
         "startTime": "2022-07-15T11:30:00Z",
         "endTime": "2022-07-15T12:00:00Z",
-        "shelfImage": "",
+        "cardImage": "",
         "backgroundImage": ""
       }
     ],
