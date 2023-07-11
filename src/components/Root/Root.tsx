@@ -72,6 +72,8 @@ const Root: FC = () => {
 
   return (
     <>
+      <a href="/test2" />
+      <a href="/test3.html" />
       {!configQuery.isError && !configQuery.isLoading && configQuery.data && <AppRoutes />}
       {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
       {configQuery.isError && !IS_DEMO_OR_PREVIEW && (
