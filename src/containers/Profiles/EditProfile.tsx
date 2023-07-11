@@ -5,9 +5,9 @@ import { useLocation, useNavigate, useParams } from 'react-router';
 import profileStyles from './Profiles.module.scss';
 import Form from './Form';
 import DeleteProfile from './DeleteProfile';
+import type { ProfileFormValues } from './types';
 
 import styles from '#src/pages/User/User.module.scss';
-import type { ProfilePayload } from '#types/account';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import Button from '#src/components/Button/Button';
@@ -31,7 +31,7 @@ const EditProfile = () => {
     return {
       id: profileDetails?.id || '',
       name: profileDetails?.name || '',
-      adult: profileDetails?.adult ?? true,
+      adult: profileDetails?.adult ? 'true' : 'false',
       avatar_url: profileDetails?.avatar_url || '',
       pin: undefined,
     };
@@ -41,12 +41,12 @@ const EditProfile = () => {
     navigate('/u/profiles');
   }
 
-  const updateProfileHandler: UseFormOnSubmitHandler<ProfilePayload> = async (formData, { setErrors, setSubmitting }) => {
+  const updateProfileHandler: UseFormOnSubmitHandler<ProfileFormValues> = async (formData, { setErrors, setSubmitting }) => {
     try {
       const response = await updateProfile({
         id: id,
         name: formData.name,
-        adult: formData.adult,
+        adult: formData.adult === 'true',
         avatar_url: formData.avatar_url || profileDetails?.avatar_url,
       });
 

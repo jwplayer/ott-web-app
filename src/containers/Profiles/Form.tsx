@@ -3,6 +3,7 @@ import { type SchemaOf, object, string } from 'yup';
 import { useNavigate } from 'react-router';
 
 import profileStyles from './Profiles.module.scss';
+import type { ProfileFormValues } from './types';
 
 import Button from '#src/components/Button/Button';
 import Dropdown from '#src/components/Dropdown/Dropdown';
@@ -10,12 +11,11 @@ import FormFeedback from '#src/components/FormFeedback/FormFeedback';
 import TextField from '#src/components/TextField/TextField';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import styles from '#src/pages/User/User.module.scss';
-import type { ProfilePayload } from '#types/account';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 
 type Props = {
-  initialValues: ProfilePayload;
-  formHandler: UseFormOnSubmitHandler<ProfilePayload>;
+  initialValues: ProfileFormValues;
+  formHandler: UseFormOnSubmitHandler<ProfileFormValues>;
   setFullName?: (name: string) => void;
 };
 

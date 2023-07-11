@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router';
 
 import profileStyles from './Profiles.module.scss';
 import Form from './Form';
+import type { ProfileFormValues } from './types';
 
 import styles from '#src/pages/User/User.module.scss';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type { ProfilePayload, ListProfilesResponse } from '#types/account';
+import type { ListProfilesResponse } from '#types/account';
 import { createProfile, listProfiles } from '#src/stores/AccountController';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -34,17 +35,17 @@ const CreateProfile = () => {
 
   const initialValues = {
     name: '',
-    adult: true,
+    adult: 'true',
     avatar_url: '',
     pin: undefined,
   };
 
-  const createProfileHandler: UseFormOnSubmitHandler<ProfilePayload> = async (formData, { setSubmitting, setErrors }) => {
+  const createProfileHandler: UseFormOnSubmitHandler<ProfileFormValues> = async (formData, { setSubmitting, setErrors }) => {
     try {
       const profile = (
         await createProfile({
           name: formData.name,
-          adult: formData.adult,
+          adult: formData.adult === 'true',
           avatar_url: AVATARS[activeProfiles],
         })
       )?.responseData;
