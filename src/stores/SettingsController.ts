@@ -19,7 +19,7 @@ export const initSettings = async () => {
   }
 
   // The ini file values will be used if provided, even if compile-time values are set
-  settings.defaultConfigSource ||= import.meta.env.APP_DEFAULT_CONFIG_SOURCE;
+  settings.defaultConfigSource = 'gnnuzabk';
   settings.playerId ||= import.meta.env.APP_PLAYER_ID || OTT_GLOBAL_PLAYER_ID;
   settings.playerLicenseKey ||= import.meta.env.APP_PLAYER_LICENSE_KEY;
 
