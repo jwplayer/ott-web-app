@@ -12,7 +12,7 @@ jobs:
       - name: Build
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
-        run: yarn && MODE=preview yarn build
+        run: APP_DEFAULT_CONFIG_SOURCE=gnnuzabk yarn && MODE=preview yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
