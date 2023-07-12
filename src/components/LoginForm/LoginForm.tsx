@@ -43,14 +43,19 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const { t } = useTranslation('account');
   const location = useLocation();
 
+  const getTranslatedErrorMessage = (messageId: LoginFormMessage | undefined) => {
+    switch (messageId) {
+      case 'simultaneous_logins':
+        return t('login.simultaneous_logins');
+    }
+    return t('login.unexpected_error');
+  };
+
   return (
     <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
       {message && (
         <div className={styles.top}>
-          {
-            // t('login.simultaneous_logins'
-          }
-          <FormFeedback variant="warning">{t(`login.${message}`)}</FormFeedback>
+          <FormFeedback variant="warning">{getTranslatedErrorMessage(message)}</FormFeedback>
         </div>
       )}
 
