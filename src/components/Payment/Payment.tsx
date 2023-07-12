@@ -189,26 +189,25 @@ const Payment = ({
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('user:payment.transactions')}</h3>
+          <h3>{t('user:payment.billing_history')}</h3>
         </div>
         {transactions?.length ? (
           <React.Fragment>
             {transactions?.slice(0, showAllTransactions ? 9999 : VISIBLE_TRANSACTIONS).map((transaction) => (
               <div className={styles.infoBox} key={transaction.transactionId}>
-                <p className="transactionItem">
-                  <strong>{transaction.offerTitle}</strong> <br />
-                  {!isGrantedSubscription &&
-                    t('user:payment.price_payed_with', {
-                      price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
-                      method: transaction.paymentMethod,
-                    })}
+                <p className={styles.transactionItem}>
+                  <strong>{formatLocalizedDate(new Date(transaction.transactionDate * 1000), i18n.language)}</strong>
+                  <span>{transaction.offerTitle}</span>
+                  <span>{transaction.transactionId}</span>
                 </p>
                 <div className={styles.transactionDetails}>
-                  <p>
-                    {transaction.transactionId}
-                    <br />
-                    {formatLocalizedDate(new Date(transaction.transactionDate * 1000), i18n.language)}
-                  </p>
+                  <div className={styles.transationPrice}>
+                    {!isGrantedSubscription &&
+                      t('user:payment.price_paid_with', {
+                        price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
+                        method: transaction.paymentMethod,
+                      })}
+                  </div>
                   {canShowReceipts && (
                     <IconButton aria-label={t('user:payment.show_receipt')} onClick={() => !isLoading && onShowReceiptClick(transaction.transactionId)}>
                       <ExternalLink />
