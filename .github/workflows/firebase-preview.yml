@@ -2,7 +2,7 @@ name: 'Firebase Preview'
 
 on:
   pull_request:
-    branches: [ 'develop', 'feat/*', 'feature/*' ]
+    branches: ['develop', 'feat/*', 'feature/*', 'release']
 
 jobs:
   build_and_preview:
@@ -15,6 +15,8 @@ jobs:
         run: yarn && MODE=preview yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           expires: 30d
+      - name: Export url
+        run: echo urls ${{steps.firebase_hosting_preview.outputs.url}}
