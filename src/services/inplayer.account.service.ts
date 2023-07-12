@@ -120,7 +120,7 @@ export const logout = async () => {
     InPlayer.Notifications.unsubscribe();
     await InPlayer.Account.signOut();
   } catch {
-    throw new Error('Failed to sign out.');
+    console.error('Failed to sign out.');
   }
 };
 
