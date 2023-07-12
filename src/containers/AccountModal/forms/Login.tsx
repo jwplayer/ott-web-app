@@ -11,7 +11,7 @@ import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
 
 type Props = {
-  message: LoginFormMessage;
+  message?: LoginFormMessage;
 };
 
 const Login: React.FC<Props> = ({ message }: Props) => {

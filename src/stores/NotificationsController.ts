@@ -27,7 +27,7 @@ export const subscribeToNotifications = async (uuid: string = '') => {
           case NotificationsTypes.ACCOUNT_LOGOUT:
             await logout();
             if (notification.resource?.reason === 'sessions_limit') {
-              const message: LoginFormMessage = 'simultaneous_warning';
+              const message: LoginFormMessage = 'simultaneous_logins';
               window.location.href = addQueryParams(window.location.href, { u: 'login', message });
             }
             break;

@@ -28,7 +28,7 @@ import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
 import useEventCallback from '#src/hooks/useEventCallback';
 import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
-import type { LoginFormMessage } from '#components/LoginForm/LoginForm';
+import { getLoginFormMessage } from '#components/LoginForm/LoginForm';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
 
@@ -76,7 +76,7 @@ const AccountModal = () => {
 
     switch (view) {
       case 'login':
-        return <Login message={message as LoginFormMessage} />;
+        return <Login message={getLoginFormMessage(message)} />;
       case 'create-account':
         return <Registration />;
       case 'personal-details':
