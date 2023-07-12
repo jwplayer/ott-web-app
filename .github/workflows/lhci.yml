@@ -1,20 +1,18 @@
 name: Lighthouse
 
 on:
-  workflow_run:
-    workflows: ['Firebase Preview']
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Fill preview link'
 
 jobs:
   lhci:
     name: Lighthouse
     runs-on: ubuntu-latest
     steps:
-      - name: install Lighthouse CI
-        run: |
-          sudo yarn global add @lhci/cli@0.12.x http-server
-      - name: run Lighthouse CI
-        with:
-          LHCI_SERVER_BASE_URL: '${{ github.event.client_payload.url }}'
-        run: lhci autorun
+      - uses: actions/checkout@v1
+      - name: Install Lighthouse CI
+        run: sudo yarn global add @lhci/cli@0.12.x http-server
+      - name: Run Lighthouse CI
+        run: lhci autorun --collect.url=${{ github.event.inputs.url }}?app-config=gnnuzabk --config=./lighthouserc.js

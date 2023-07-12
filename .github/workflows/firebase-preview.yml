@@ -1,4 +1,4 @@
-name: 'Firebase Preview'
+name: Firebase Preview
 
 on:
   pull_request:
@@ -14,9 +14,13 @@ jobs:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
         run: yarn && MODE=preview yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        id: firebase_hosting_preview
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           expires: 30d
-      - name: Export url
-        run: echo urls ${{steps.firebase_hosting_preview.outputs.url}}
+      - name: Dispatch init event to run Lighthouse
+        env:
+          GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        run: |
+          gh workflow run 'Lighthouse' --ref '${{ github.event.pull_request.head.ref }}' -f url='${{ steps.firebase_hosting_preview.outputs.details_url }}'
