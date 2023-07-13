@@ -8,12 +8,13 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
     <div>
       currently_previewing_config
     </div>
-    <a
-      class="_link_a14c64"
-      href="javascript:;"
+    <button
+      class="_button_f8f296 _default_f8f296 _text_f8f296"
     >
-      click_to_unselect_config
-    </a>
+      <span>
+        click_to_unselect_config
+      </span>
+    </button>
   </div>
 </div>
 `;
