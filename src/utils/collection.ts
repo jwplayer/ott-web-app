@@ -76,7 +76,7 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
     const consent = customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name);
 
     if (consent) {
-      const value = publisherConsent.provider === 'cleeng' ? consent.state === 'accepted' : consent.value ?? '';
+      const value = publisherConsent.isCustomRegisterField ? consent.value ?? '' : consent.state === 'accepted';
       values[publisherConsent.name] = value;
     }
   });

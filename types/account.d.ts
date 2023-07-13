@@ -218,13 +218,11 @@ export type UpdateCustomerArgs = {
   fullName?: string;
 };
 
-export type ConsentProvider = 'cleeng' | 'jwp';
-
 export type ConsentFieldVariants = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
 
 export interface Consent {
   type: ConsentFieldVariantss;
-  provider: ConsentProvider;
+  isCustomRegisterField: boolean;
   defaultValue: string | boolean;
   name: string;
   label: string;

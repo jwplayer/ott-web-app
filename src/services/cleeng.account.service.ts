@@ -152,7 +152,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
   const consents = ((response?.responseData?.consents || []) as CleengConsent[]).map(
     (cleengConsent): Consent => ({
       type: REGISTER_FIELD_VARIANT.CHECKBOX,
-      provider: 'cleeng',
+      isCustomRegisterField: false,
       defaultValue: cleengConsent.enabledByDefault,
       name: cleengConsent.name,
       label: cleengConsent.label,

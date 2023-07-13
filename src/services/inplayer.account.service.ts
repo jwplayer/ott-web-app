@@ -175,7 +175,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
       .map(
         (field): Consent => ({
           type: field.type as ConsentFieldVariants,
-          provider: 'jwp',
+          isCustomRegisterField: true,
           defaultValue: field.type === REGISTER_FIELD_VARIANT.CHECKBOX ? field.default_value === 'true' : field.default_value,
           name: field.name,
           label: field.label,
@@ -479,7 +479,7 @@ function getTermsConsent(): Consent {
 
   return {
     type: REGISTER_FIELD_VARIANT.CHECKBOX,
-    provider: 'jwp',
+    isCustomRegisterField: true,
     required: true,
     name: 'terms',
     label: i18next.t('account:registration.terms_consent', { termsUrl }),
