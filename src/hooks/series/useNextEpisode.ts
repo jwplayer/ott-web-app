@@ -4,11 +4,11 @@ import type { Series } from '#types/series';
 import { SERIES_CACHE_TIME } from '#src/config';
 import { getEpisodes } from '#src/services/api.service';
 
-export const useNextEpisode = ({ series, episodeId }: { series: Series | undefined; episodeId: string | null }) => {
+export const useNextEpisode = ({ series, episodeId }: { series: Series | undefined; episodeId: string | undefined }) => {
   const { isLoading, data } = useQuery(
     ['next-episode', series?.series_id, episodeId],
     async () => {
-      const item = await getEpisodes(series?.series_id, null, 1, episodeId);
+      const item = await getEpisodes({ seriesId: series?.series_id, pageLimit: 1, afterId: episodeId });
 
       return item?.episodes?.[0];
     },
