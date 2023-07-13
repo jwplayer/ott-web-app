@@ -4,7 +4,7 @@ name: Release
 on:
   # Triggers the workflow on push or pull request events but only for the "develop" branch
   push:
-    branches: ['develop']
+    branches: ['release']
 
 jobs:
   create-new-release-version:

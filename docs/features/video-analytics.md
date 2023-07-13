@@ -79,12 +79,12 @@ These metrics are described below.
 
 ### App Metrics
 
-| Name                    | Key  | Rqd | Values              | Example                                  | Description                                         |
-| ----------------------- | ---- | --- | ------------------- | ---------------------------------------- | --------------------------------------------------- |
-| App Version             | av   | Yes | A string            | 1.0.0                                    | Version of the App                                  |
-| App Bundle ID           | bun  | Yes | Reverse domain name | com.apple.calculator                     | Unique ID to the App; persists through uninstalls.  |
-| App User ID             | oaid | Yes | \[0-9a-z\]{40}      | 51f8cf1797aac87ede45c2883797f124fed0258d | Hash of the app user account login ID. <sup>1</sub> |
-| App Install Instance ID | oiid | No  | \[0-9a-z\]{40}      | 51f8cf1797aac87ede45c2883797f124fed0258d | App install instance ID. Resets with reinstalls     |
+| Name          | Key  | Rqd | Values              | Example                                  | Description                                         |
+| ------------- | ---- | --- | ------------------- | ---------------------------------------- | --------------------------------------------------- |
+| App Version   | av   | Yes | A string            | 1.0.0                                    | Version of the App                                  |
+| App Bundle ID | bun  | Yes | Reverse domain name | com.apple.calculator                     | Unique ID to the App; persists through uninstalls.  |
+| App User ID   | oaid | Yes | \[0-9a-z\]{40}      | 51f8cf1797aac87ede45c2883797f124fed0258d | Hash of the app user account login ID. <sup>1</sub> |
+| App Config ID | oiid | No  | \[0-9a-z\]{8}       | dGSUzs9o                                 | Unique ID of app config.                            |
 
 <sup>1</sup> For Cleeng `oaid` maps to the `subscriberId`
 
