@@ -42,7 +42,7 @@ export const initializeAccount = async () => {
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
-      profile: persist.getItem(PERSIST_PROFILE) || '',
+      profile: persist.getItem(PERSIST_PROFILE) || null,
       canManageProfiles: accountService.canManageProfiles,
       canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
@@ -202,7 +202,7 @@ export async function logout() {
 
     useAccountStore.setState({
       user: null,
-      profile: '',
+      profile: null,
       canManageProfiles: false,
       subscription: null,
       transactions: null,

@@ -15,8 +15,6 @@ import Popover from '#components/Popover/Popover';
 import UserMenu from '#components/UserMenu/UserMenu';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import IconButton from '#components/IconButton/IconButton';
-import { useAccountStore } from '#src/stores/AccountStore';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import Language from '#src/icons/Language';
 import LanguageMenu from '#components/LanguageMenu/LanguageMenu';
 import type { LanguageDefinition } from '#src/i18n/config';
@@ -76,8 +74,6 @@ const Header: React.FC<Props> = ({
   onLanguageClick,
 }) => {
   const { t } = useTranslation('menu');
-  const { accessModel } = useConfigStore();
-  const { canManageProfiles, profile } = useAccountStore();
   const [logoLoaded, setLogoLoaded] = useState(false);
   const breakpoint = useBreakpoint();
   const headerClassName = classNames(styles.header, styles[headerType], {
@@ -131,7 +127,6 @@ const Header: React.FC<Props> = ({
           <Panel>
             <UserMenu onClick={closeUserMenu} showPaymentsItem={showPaymentsMenuItem} small />
           </Panel>
-          {canManageProfiles && accessModel === 'SVOD' && <h2 onClick={() => (userMenuOpen ? closeUserMenu() : openUserMenu())}>Hi, {profile}</h2>}
         </Popover>
       </React.Fragment>
     ) : (

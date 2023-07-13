@@ -1,24 +1,17 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useQuery } from 'react-query';
 import shallow from 'zustand/shallow';
 
 import styles from './Profiles.module.scss';
+import { useHandleProfileSelection, useListProfiles } from './utils';
 
-import * as persist from '#src/utils/persist';
 import ProfileBox from '#src/components/ProfileBox/ProfileBox';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { enterProfile, initializeAccount, listProfiles } from '#src/stores/AccountController';
-import type { AuthData, Profile } from '#types/account';
+import type { Profile } from '#types/account';
 import AddNewProfile from '#src/components/ProfileBox/AddNewProfile';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import Button from '#src/components/Button/Button';
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-
 const MAX_PROFILES = 4;
-const PERSIST_KEY_ACCOUNT = 'auth';
-const PERSIST_PROFILE = 'profile';
 
 type Props = {
   editMode?: boolean;
@@ -33,41 +26,11 @@ const Profiles = ({ editMode = false }: Props) => {
     if (!canManageProfiles) navigate('/');
   }, [canManageProfiles, navigate]);
 
-  const { data, isLoading, isFetching } = useQuery(['listProfiles'], listProfiles, {
-    staleTime: 0,
-  });
+  const { data, isLoading, isFetching } = useListProfiles();
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
 
-  const handleProfileSelection = async (id: string) => {
-    try {
-      useAccountStore.setState({ loading: true });
-      const response = await enterProfile({ id });
-      const profile = response?.responseData;
-
-      if (profile?.credentials?.access_token) {
-        const authData: AuthData = {
-          jwt: profile.credentials.access_token,
-          refreshToken: '',
-        };
-        persist.setItem(PERSIST_KEY_ACCOUNT, authData);
-        persist.setItem(PERSIST_PROFILE, profile.name);
-        persist.setItemStorage('inplayer_token', {
-          expires: profile.credentials.expires,
-          token: profile.credentials.access_token,
-          refreshToken: '',
-        });
-        // useAccountStore.setState({ auth: authData });
-        useFavoritesStore.setState({ favorites: [] });
-        useWatchHistoryStore.setState({ watchHistory: [] });
-        await initializeAccount().finally(() => {
-          navigate('/');
-        });
-      }
-    } catch {
-      throw new Error('Unable to enter profile.');
-    }
-  };
+  const selectProfile = useHandleProfileSelection();
 
   if (loading || isLoading || isFetching) return <LoadingOverlay inline />;
 
@@ -86,7 +49,7 @@ const Profiles = ({ editMode = false }: Props) => {
           <ProfileBox
             editMode={editMode}
             onEdit={() => navigate(`/u/profiles/edit/${profile.id}`)}
-            onClick={() => handleProfileSelection(profile.id)}
+            onClick={() => selectProfile.mutate({ id: profile.id, navigate })}
             key={profile.id}
             name={profile.name}
             adult={profile.adult}

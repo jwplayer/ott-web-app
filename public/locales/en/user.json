@@ -59,9 +59,13 @@
   },
   "nav": {
     "account": "Account",
+    "add_profile": "Add new profile",
     "favorites": "Favorites",
     "logout": "Log out",
-    "payments": "Payments"
+    "payments": "Payments",
+    "profile": "Profile",
+    "settings": "Settings",
+    "switch_profiles": "Switch profiles"
   },
   "payment": {
     "access_granted": "access granted",

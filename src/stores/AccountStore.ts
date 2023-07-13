@@ -1,12 +1,12 @@
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
-import type { Consent, Customer, CustomerConsent } from '#types/account';
+import type { Consent, Customer, CustomerConsent, Profile } from '#types/account';
 import { createStore } from '#src/stores/utils';
 import type { Offer } from '#types/checkout';
 
 type AccountStore = {
   loading: boolean;
   user: Customer | null;
-  profile: string;
+  profile: Profile | null;
   canManageProfiles: boolean;
   subscription: Subscription | null;
   transactions: Transaction[] | null;
@@ -28,7 +28,7 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   loading: true,
   user: null,
   canManageProfiles: false,
-  profile: '',
+  profile: null,
   subscription: null,
   transactions: null,
   activePayment: null,
