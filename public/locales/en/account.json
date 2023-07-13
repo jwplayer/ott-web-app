@@ -64,6 +64,7 @@
     "field_required": "This field is required",
     "monthly": "Monthly",
     "monthly_subscription": "Monthly subscription",
+    "no_pricing_available": "There are no pricing options available at the moment.",
     "offer_not_found": "Offer not found, please try reloading the page",
     "one_time_only": "This video",
     "subscription": "Subscription",
