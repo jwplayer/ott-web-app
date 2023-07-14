@@ -10,12 +10,12 @@ import type { AuthData } from '#types/account';
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
 
-type HandleProfileSelectionPayload = {
+type ProfileSelectionPayload = {
   id: string;
   navigate: (path: string) => void;
 };
 
-const handleProfileSelection = async ({ id, navigate }: HandleProfileSelectionPayload) => {
+const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload) => {
   try {
     useAccountStore.setState({ loading: true });
     const response = await enterProfile({ id });
@@ -44,7 +44,7 @@ const handleProfileSelection = async ({ id, navigate }: HandleProfileSelectionPa
   }
 };
 
-export const useHandleProfileSelection = () =>
+export const useSelectProfile = () =>
   useMutation(handleProfileSelection, {
     onSettled: () => {
       getAccount();

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -46,9 +46,13 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
       avatar_url: profileDetails?.avatar_url || '',
       pin: undefined,
     };
-  }, [profileDetails]);
+  }, [profileDetails?.id, profileDetails?.name, profileDetails?.adult, profileDetails?.avatar_url]);
 
-  const [selectedAvatar, setSelectedAvatar] = useState<string | undefined>(initialValues.avatar_url);
+  const [selectedAvatar, setSelectedAvatar] = useState<string | undefined>(initialValues?.avatar_url);
+
+  useEffect(() => {
+    setSelectedAvatar(profileDetails?.avatar_url);
+  }, [profileDetails?.avatar_url]);
 
   if (!id) {
     navigate('/u/profiles');
@@ -91,7 +95,7 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
                 {t('profile.greeting')}
                 {`${fullName && ','} ${fullName}`}
               </h2>
-              <img src={profileDetails?.avatar_url} />
+              <img src={selectedAvatar || profileDetails?.avatar_url} />
             </div>
           </div>
         </div>
@@ -105,10 +109,17 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
             set: setSelectedAvatar,
             value: selectedAvatar || '',
           }}
+          showCancelButton={!contained}
         />
         <div className={styles.panel}>
-          <h2 className={styles.panelHeader}>{t('profile.delete')}</h2>
-          {profileDetails?.default && <FormFeedback variant="info">{t('profile.delete_main')}</FormFeedback>}
+          <div className={styles.panelHeader}>
+            <h3>{t('profile.delete')}</h3>
+          </div>
+          {profileDetails?.default ? (
+            <FormFeedback variant="info">{t('profile.delete_main')}</FormFeedback>
+          ) : (
+            <div className={profileStyles.profileInfo}>{t('profile.delete_description')}</div>
+          )}
           <Button
             onClick={() => navigate(addQueryParam(location, 'action', 'delete-profile'))}
             label={t('profile.delete')}

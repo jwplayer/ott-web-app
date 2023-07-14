@@ -26,16 +26,17 @@ type Props = {
     set: (avatarUrl: string) => void;
     value: string;
   };
+  showCancelButton?: boolean;
 };
 
-const Form = ({ initialValues, formHandler, setFullName, selectedAvatar }: Props) => {
+const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCancelButton = true }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
   const profile = useAccountStore((s) => s.profile);
 
   const options: { value: string; label: string }[] = [
-    { label: 'Adult', value: 'true' },
-    { label: 'Kids', value: 'false' },
+    { label: t('profile.adult'), value: 'true' },
+    { label: t('profile.kids'), value: 'false' },
   ];
 
   const validationSchema: SchemaOf<{ name: string }> = object().shape({
@@ -105,7 +106,7 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar }: Props
         </div>
         <>
           <Button type="submit" label="Save" variant="outlined" disabled={submitting} />
-          <Button onClick={() => navigate('/u/profiles')} label="Cancel" variant="text" />
+          {showCancelButton && <Button onClick={() => navigate('/u/profiles')} label="Cancel" variant="text" />}
         </>
       </div>
     </form>
