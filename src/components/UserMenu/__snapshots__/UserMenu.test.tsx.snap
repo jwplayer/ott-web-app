@@ -5,6 +5,30 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
   <ul
     class="_menuItems_457528"
   >
+    <div
+      class="_sectionHeader_457528"
+    >
+      nav.settings
+    </div>
+    <li>
+      <a
+        aria-label="nav.profile"
+        class="_menuButton_91706b"
+        href="/u/profiles"
+        tabindex="0"
+      >
+        <div
+          class="_startIcon_91706b"
+        >
+          <img
+            class="_profileIcon_457528"
+          />
+        </div>
+        <span>
+          nav.profile
+        </span>
+      </a>
+    </li>
     <li>
       <a
         aria-label="nav.account"
