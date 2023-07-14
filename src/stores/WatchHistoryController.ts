@@ -127,7 +127,10 @@ export const saveItem = async (item: PlaylistItem, videoProgress: number | null)
   }
 
   const watchHistoryItem = createWatchHistoryItem(seriesItem || item, item.mediaid, seriesItem?.mediaid, videoProgress);
-  const updatedHistory = watchHistory.filter(({ mediaid, seriesId }) => mediaid !== watchHistoryItem.mediaid && seriesId !== watchHistoryItem.seriesId);
+  // filter out the existing watch history item, so we can add it to the beginning of the list
+  const updatedHistory = watchHistory.filter(({ mediaid, seriesId }) => {
+    return mediaid !== watchHistoryItem.mediaid && (!seriesId || seriesId !== watchHistoryItem.seriesId)
+  });
 
   updatedHistory.unshift(watchHistoryItem);
   updatedHistory.splice(MAX_WATCHLIST_ITEMS_COUNT);
