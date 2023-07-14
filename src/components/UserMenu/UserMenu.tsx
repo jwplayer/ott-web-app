@@ -13,9 +13,9 @@ import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useHandleProfileSelection, useListProfiles } from '#src/containers/Profiles/utils';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Plus from '#src/icons/Plus';
+import { useHandleProfileSelection, useListProfiles } from '#src/hooks/useProfiles';
 
 type Props = {
   small?: boolean;

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
 import styles from './Profiles.module.scss';
-import { useHandleProfileSelection, useListProfiles } from './utils';
 
 import ProfileBox from '#src/components/ProfileBox/ProfileBox';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -11,6 +10,7 @@ import type { Profile } from '#types/account';
 import AddNewProfile from '#src/components/ProfileBox/AddNewProfile';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import Button from '#src/components/Button/Button';
+import { useHandleProfileSelection, useListProfiles } from '#src/hooks/useProfiles';
 const MAX_PROFILES = 4;
 
 type Props = {

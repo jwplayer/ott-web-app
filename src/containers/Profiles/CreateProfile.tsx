@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router';
 import profileStyles from './Profiles.module.scss';
 import Form from './Form';
 import type { ProfileFormValues } from './types';
-import { useListProfiles } from './utils';
 
 import styles from '#src/pages/User/User.module.scss';
 import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { createProfile } from '#src/stores/AccountController';
+import { useListProfiles } from '#src/hooks/useProfiles';
 
 const AVATARS = [
   'https://gravatar.com/avatar/5e62c8c13582f94b74ae21cfeb83e28a?s=400&d=robohash&r=x',

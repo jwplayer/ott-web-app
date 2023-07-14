@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 import styles from './Profiles.module.scss';
-import { useListProfiles } from './utils';
 
 import Button from '#src/components/Button/Button';
 import Dialog from '#src/components/Dialog/Dialog';
@@ -10,6 +9,7 @@ import { removeQueryParam } from '#src/utils/location';
 import useQueryParam from '#src/hooks/useQueryParam';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { deleteProfile } from '#src/stores/AccountController';
+import { useListProfiles } from '#src/hooks/useProfiles';
 
 const DeleteProfile = () => {
   const navigate = useNavigate();
