@@ -63,7 +63,7 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
     <div className={styles.paymentForm}>
       <div>
         <TextField
-          label="Cardholder name"
+          label={t('checkout.card_holder_name')}
           name="cardholderName"
           value={paymentData?.values?.cardholderName}
           onChange={paymentData?.handleChange}

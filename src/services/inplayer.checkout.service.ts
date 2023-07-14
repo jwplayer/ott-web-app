@@ -1,4 +1,4 @@
-import InPlayer, { GetAccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 
 import type {
   CardPaymentData,
@@ -36,8 +36,7 @@ export const getOffers: GetOffers = async (payload) => {
       try {
         const { data } = await InPlayer.Asset.getAssetAccessFees(parseInt(`${assetId}`));
 
-        // TODO fix this type in the InPlayer SDK, because the actual type of `data` is GetAccessFee[], not GetAccessFee
-        return (data as unknown as GetAccessFee[])?.map((offer) => formatOffer(offer));
+        return data?.map((offer) => formatOffer(offer));
       } catch {
         throw new Error('Failed to get offers');
       }
@@ -84,11 +83,9 @@ export const paymentWithPayPal: PaymentWithPayPal = async (payload) => {
       origin: `${window.location.origin}?u=waiting-for-payment`,
       accessFeeId: payload.order.id,
       paymentMethod: 2,
-      //@ts-ignore
       voucherCode: payload.couponCode,
     });
-    //@ts-ignore
-    //TODO fix this type in InPlayer SDK
+
     if (response.data?.id) {
       return {
         errors: ['Already have an active access'],
@@ -131,8 +128,6 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
     order.discount = {
       applied: true,
       type: 'coupon',
-      //@ts-ignore
-      // TODO fix this type in InPlayer SDK
       periods: response.data.discount_duration,
     };
 
@@ -155,13 +150,13 @@ export const updateOrder: UpdateOrder = async ({ order, couponCode }) => {
 
 export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
   const payload = {
-    number: cardPaymentPayload.cardNumber,
+    number: parseInt(String(cardPaymentPayload.cardNumber).replace(/\s/g, ''), 10),
     cardName: cardPaymentPayload.cardholderName,
     expMonth: cardPaymentPayload.cardExpMonth || '',
     expYear: cardPaymentPayload.cardExpYear || '',
     cvv: parseInt(cardPaymentPayload.cardCVC),
     accessFee: order.id,
-    paymentMethod: '1',
+    paymentMethod: 1,
     voucherCode: cardPaymentPayload.couponCode,
     referrer: window.location.href,
     returnUrl: `${window.location.href}&u=waiting-for-payment`,
@@ -169,8 +164,6 @@ export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData,
 
   try {
     if (isSVODOffer(order)) {
-      //@ts-ignore
-      //Fix this type in InPlayer SDK
       await InPlayer.Subscription.createSubscription(payload);
     } else {
       await InPlayer.Payment.createPayment(payload);
@@ -201,8 +194,10 @@ const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = fals
   };
 };
 
-const formatOffer = (offer: GetAccessFee): Offer => {
-  const offerId = offer.access_type.name === 'ppv' ? `C${offer.id}` : `S${offer.id}`;
+const formatOffer = (offer: AccessFee): Offer => {
+  const ppvOffers = ['ppv', 'ppv_custom'];
+  const offerId = ppvOffers.includes(offer.access_type.name) ? `C${offer.id}` : `S${offer.id}`;
+
   return {
     id: offer.id,
     offerId,
@@ -211,7 +206,7 @@ const formatOffer = (offer: GetAccessFee): Offer => {
     customerCurrency: offer.currency,
     offerTitle: offer.description,
     active: true,
-    period: offer.access_type.period,
+    period: offer.access_type.period === 'month' && offer.access_type.quantity === 12 ? 'year' : offer.access_type.period,
     freePeriods: offer.trial_period ? 1 : 0,
   } as Offer;
 };

@@ -5,6 +5,7 @@
 $white: #fff !default;
 $black: #000 !default;
 
+$gray-white: #f7f8fa !default;
 $gray-lighter: #eee !default;
 $gray-light: #d7dbe6 !default;
 $gray: #999 !default;
@@ -16,6 +17,9 @@ $red: #ce153f !default;
 $blue: #2b3b57 !default;
 $green: #5aae4a !default;
 $orange: #e9a95b !default;
+
+$red-dark: #ec0041 !default;
+$brown-dark: #7c2f01 !default;
 
 //
 // Base
@@ -49,6 +53,7 @@ $desktop-large-min-width: 1200px !default;
 $header-height: 56px !default;
 $header-height-mobile: 56px !default;
 $search-height: 36px !default;
+$search-bar-width-desktop: 200px !default;
 
 //
 // Z-index

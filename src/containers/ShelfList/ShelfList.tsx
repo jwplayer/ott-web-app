@@ -4,8 +4,6 @@ import shallow from 'zustand/shallow';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useNavigate } from 'react-router';
 
-import type { PlaylistItem } from '../../../types/playlist';
-
 import styles from './ShelfList.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
@@ -13,7 +11,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import ShelfComponent from '#components/Shelf/Shelf';
 import { mediaURL, slugify } from '#src/utils/formatting';
-import type { Content, ContentType } from '#types/Config';
+import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
@@ -31,21 +29,21 @@ const ShelfList = ({ rows }: Props) => {
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const [rowCount, setRowCount] = useState(INITIAL_ROW_COUNT);
 
-  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionary());
+  const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionaryWithSeries());
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
-    (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => {
-      navigate(mediaURL(playlistItem, playlistId, type === PersonalShelf.ContinueWatching));
+    (playlistItem, playlistId, type) => {
+      navigate(mediaURL({ media: playlistItem, playlistId, play: type === PersonalShelf.ContinueWatching }));
     },
     [navigate],
   );
 
   useEffect(() => {
     // reset row count when the page changes
-    setRowCount(INITIAL_ROW_COUNT);
+    return () => setRowCount(INITIAL_ROW_COUNT);
   }, [rows]);
 
   return (

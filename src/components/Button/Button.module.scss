@@ -98,6 +98,18 @@ $large-button-height: 40px;
     }
   }
 
+  &.danger {
+    color: theme.$btn-danger-color;
+    background-color: theme.$btn-danger-bg;
+    outline: theme.$btn-danger-outline;
+  }
+
+  &.delete {
+    color: theme.$btn-delete-color;
+    background-color: theme.$btn-delete-bg;
+    outline: none;
+  }
+
   &.fullWidth {
     justify-content: center;
     width: 100%;

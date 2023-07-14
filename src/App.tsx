@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
 import '#src/screenMapping';
@@ -38,13 +38,11 @@ export default function App() {
     );
   }
 
-  const Router = import.meta.env.APP_PUBLIC_GITHUB_PAGES ? HashRouter : BrowserRouter;
-
   return (
     <QueryProvider>
-      <Router>
+      <BrowserRouter>
         <Root />
-      </Router>
+      </BrowserRouter>
     </QueryProvider>
   );
 }

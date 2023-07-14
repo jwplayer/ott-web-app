@@ -38,13 +38,13 @@ Scenario('It renders the correct meta tags for the playlist screen', async ({ I 
 
 Scenario('It renders the correct meta tags for the movie screen', async ({ I }) => {
   await I.openVideoCard(constants.agent327Title);
-  await checkMetaTags(I, constants.agent327Title, constants.agent327Description, false);
+  await checkMetaTags(I, constants.agent327Title, constants.agent327Description, 'other');
 });
 
 Scenario('It renders the correct structured metadata for the movie screen', async ({ I }) => {
   await I.openVideoCard(constants.agent327Title);
 
-  const url = removeQueryParam(await I.grabCurrentUrl(), 'r');
+  const url = removeQueryParams(await I.grabCurrentUrl(), ['r', 'app-config']);
 
   I.seeTextEquals(
     JSON.stringify({
@@ -65,47 +65,82 @@ Scenario('It renders the correct meta tags for the series screen', async ({ I })
   await I.openVideoCard(constants.primitiveAnimalsTitle);
   I.see('Primitive Animals');
 
-  await checkMetaTags(I, 'Blocking', constants.primitiveAnimalsDescription, true);
+  await checkMetaTags(I, 'Primitive Animals', constants.primitiveAnimalsDescription, 'series');
+});
+
+Scenario('It renders the correct meta tags for the episode screen', async ({ I }) => {
+  await I.openVideoCard(constants.primitiveAnimalsTitle);
+  I.see('Primitive Animals');
+
+  I.click('div[aria-label="Play Blocking"]');
+
+  await checkMetaTags(I, 'Blocking', constants.primitiveAnimalsDescription, 'episode');
 });
 
 Scenario('It renders the correct structured metadata for the series screen', async ({ I }) => {
   await I.openVideoCard(constants.primitiveAnimalsTitle);
   I.see('Primitive Animals');
 
-  const url = await I.grabCurrentUrl();
-  const seriesId = getQueryParam(url, 'seriesId');
+  const rawURL = await I.grabCurrentUrl();
+  const url = removeQueryParams(rawURL, ['r', 'app-config']);
+  const seriesURL = getSeriesURL(url);
+
+  I.seeTextEquals(
+    JSON.stringify({
+      '@type': 'TVSeries',
+      '@id': seriesURL,
+      name: 'Primitive Animals',
+      numberOfEpisodes: '4',
+      numberOfSeasons: '0',
+    }),
+    { css: 'script[type="application/ld+json"]' },
+  );
+});
+
+Scenario('It renders the correct structured metadata for the episode screen', async ({ I }) => {
+  await I.openVideoCard(constants.primitiveAnimalsTitle);
+  I.see('Primitive Animals');
+
+  I.click('div[aria-label="Play Blocking"]');
+
+  const rawURL = await I.grabCurrentUrl();
+  const url = removeQueryParams(rawURL, ['r', 'app-config']);
+  const seriesURL = getSeriesURL(url);
+  const episodeURL = getEpisodeURL(url);
 
   I.seeTextEquals(
     JSON.stringify({
       '@context': 'http://schema.org/',
       '@type': 'TVEpisode',
-      '@id': removeQueryParam(url, 'r'),
+      '@id': episodeURL,
       episodeNumber: '1',
-      seasonNumber: '1',
+      seasonNumber: '0',
       name: 'Blocking',
       uploadDate: '2021-03-10T10:00:00.000Z',
       partOfSeries: {
         '@type': 'TVSeries',
-        '@id': `${constants.baseUrl}s/${seriesId}`,
+        '@id': seriesURL,
         name: 'Primitive Animals',
-        numberOfEpisodes: 4,
-        numberOfSeasons: 1,
+        numberOfEpisodes: '4',
+        numberOfSeasons: '0',
       },
     }),
     { css: 'script[type="application/ld+json"]' },
   );
 });
 
-async function checkMetaTags(I: CodeceptJS.I, title: string, description, isSeries: boolean) {
+async function checkMetaTags(I: CodeceptJS.I, title: string, description, type: 'series' | 'episode' | 'other' = 'other') {
   I.seeTitleEquals(`${title} - JW OTT Web App`);
 
   I.seeAttributesOnElements('meta[name="description"]', { content: description });
 
-  const url = removeQueryParam(await I.grabCurrentUrl(), 'r');
-  const posterUrl = getPosterUrl(url);
+  const ogType = type === 'other' ? 'video.other' : type === 'series' ? 'video.series' : 'video.episode';
+
+  const url = removeQueryParams(await I.grabCurrentUrl(), ['r', 'app-config']);
+  const posterUrl = getPosterUrl(url, type);
   I.seeAttributesOnElements('meta[property="og:title"]', { content: `${title} - JW OTT Web App` });
   I.seeAttributesOnElements('meta[property="og:description"]', { content: description });
-  I.seeAttributesOnElements('meta[property="og:type"]', { content: isSeries ? 'video.episode' : 'video.other' });
+  I.seeAttributesOnElements('meta[property="og:type"]', { content: ogType });
   I.seeAttributesOnElements('meta[property="og:image"]', { content: posterUrl });
   I.seeAttributesOnElements('meta[property="og:image:secure_url"]', { content: makeHttps(posterUrl) });
   I.seeAttributesOnElements('meta[property="og:image:width"]', { content: '720' });
@@ -122,9 +157,11 @@ async function checkMetaTags(I: CodeceptJS.I, title: string, description, isSeri
   I.seeAttributesOnElements('meta[name="twitter:image"]', { content: makeHttps(posterUrl) });
 }
 
-function removeQueryParam(href: string, param: string) {
+function removeQueryParams(href: string, params: string[]) {
   const url = new URL(href);
-  url.searchParams.delete(param);
+  params.forEach((p) => {
+    url.searchParams.delete(p);
+  });
   return url.toString();
 }
 
@@ -139,9 +176,25 @@ function makeHttps(href: string) {
   return url.toString();
 }
 
-function getPosterUrl(href: string) {
+function getPosterUrl(href: string, type: 'series' | 'episode' | 'other' = 'other') {
   const url = new URL(href);
-  const mediaId = url.pathname.split('/')[2];
+
+  const mediaId = type === 'episode' ? getQueryParam(href, 'e') : url.pathname.split('/')[2];
 
   return `http://cdn.jwplayer.com/v2/media/${mediaId}/poster.jpg?width=720`;
+}
+
+function getSeriesURL(url: string) {
+  const parsedURL = new URL(removeQueryParams(url, ['e']));
+  const mediaId = parsedURL.pathname.split('/')[2];
+
+  return `${parsedURL.origin}/m/${mediaId}`;
+}
+
+function getEpisodeURL(url: string) {
+  const episodeId = getQueryParam(url, 'e');
+  const parsedURL = new URL(removeQueryParams(url, ['e']));
+  const mediaId = parsedURL.pathname.split('/')[2];
+
+  return `${parsedURL.origin}/m/${mediaId}?e=${episodeId}`;
 }

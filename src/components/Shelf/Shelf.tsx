@@ -70,25 +70,22 @@ const Shelf = ({
   const tilesToShow: number = (featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint]) + visibleTilesDelta;
 
   const renderTile = useCallback(
-    (item: PlaylistItem, isInView: boolean) => (
-      <Card
-        key={item.mediaid}
-        title={item.title}
-        duration={item.duration}
-        progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-        image={item.shelfImage}
-        seriesId={item.seriesId}
-        seasonNumber={item.seasonNumber}
-        episodeNumber={item.episodeNumber}
-        onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
-        onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
-        featured={featured}
-        disabled={!isInView}
-        loading={loading}
-        isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
-        posterAspect={posterAspect}
-      />
-    ),
+    (item: PlaylistItem, isInView: boolean) => {
+      return (
+        <Card
+          key={item.mediaid}
+          progress={watchHistory ? watchHistory[item.mediaid] : undefined}
+          onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
+          onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
+          featured={featured}
+          disabled={!isInView}
+          loading={loading}
+          isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+          posterAspect={posterAspect}
+          item={item}
+        />
+      );
+    },
     [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, onCardClick, playlist.feedid, type],
   );
 

@@ -58,6 +58,10 @@ export type PlaylistItem = {
   scheduleDataFormat?: string;
   scheduleDemo?: string;
   catchupHours?: string;
+  mediaStatus?: MediaStatus;
+  scheduledStart?: Date;
+  scheduledEnd?: Date;
+  markdown?: string;
   [key: string]: unknown;
 };
 

@@ -108,70 +108,6 @@ exports[`User Component tests > Account Page 1`] = `
           class="_panelHeader_e9c5ca"
         >
           <h3>
-            account.email
-          </h3>
-        </div>
-        <div
-          class="_flexBox_1c1c63"
-        >
-          <div
-            class="_textField_e16c1b"
-          >
-            <label
-              class="_label_e16c1b"
-              for="text-field_1235_email"
-            >
-              account.email
-            </label>
-            <p>
-              user@jwplayer.com
-            </p>
-          </div>
-        </div>
-        <div
-          class="_controls_1c1c63"
-        />
-      </div>
-      <div
-        class="_panel_e9c5ca"
-      >
-        <div
-          class="_panelHeader_e9c5ca"
-        >
-          <h3>
-            account.security
-          </h3>
-        </div>
-        <div
-          class="_flexBox_1c1c63"
-        >
-          <strong>
-            account.password
-          </strong>
-          <p>
-            ****************
-          </p>
-        </div>
-        <div
-          class="_controls_1c1c63"
-        >
-          <button
-            class="_button_f8f296 _default_f8f296 _outlined_f8f296"
-            type="button"
-          >
-            <span>
-              account.edit_password
-            </span>
-          </button>
-        </div>
-      </div>
-      <div
-        class="_panel_e9c5ca"
-      >
-        <div
-          class="_panelHeader_e9c5ca"
-        >
-          <h3>
             account.about_you
           </h3>
         </div>
@@ -214,6 +150,63 @@ exports[`User Component tests > Account Page 1`] = `
           >
             <span>
               account.edit_information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="_panel_e9c5ca"
+      >
+        <div
+          class="_panelHeader_e9c5ca"
+        >
+          <h3>
+            account.email
+          </h3>
+        </div>
+        <div
+          class="_flexBox_1c1c63"
+        >
+          <div
+            class="_textField_e16c1b"
+          >
+            <label
+              class="_label_e16c1b"
+              for="text-field_1235_email"
+            >
+              account.email
+            </label>
+            <p>
+              user@jwplayer.com
+            </p>
+          </div>
+        </div>
+        <div
+          class="_controls_1c1c63"
+        />
+      </div>
+      <div
+        class="_panel_e9c5ca"
+      >
+        <div
+          class="_panelHeader_e9c5ca"
+        >
+          <h3>
+            account.security
+          </h3>
+        </div>
+        <div
+          class="_flexBox_1c1c63"
+        />
+        <div
+          class="_controls_1c1c63"
+        >
+          <button
+            class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+            type="button"
+          >
+            <span>
+              account.edit_password
             </span>
           </button>
         </div>
@@ -711,13 +704,20 @@ exports[`User Component tests > Payments Page 1`] = `
                 class="_label_e16c1b"
                 for="text-field_1235"
               >
-                user:payment.cvc_cvv
+                user:payment.security_code
               </label>
               <p>
                 ******
               </p>
             </div>
           </div>
+          <button
+            class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+          >
+            <span>
+              account:payment.edit_card
+            </span>
+          </button>
         </div>
       </div>
       <div
@@ -727,46 +727,60 @@ exports[`User Component tests > Payments Page 1`] = `
           class="_panelHeader_e9c5ca"
         >
           <h3>
-            user:payment.transactions
+            user:payment.billing_history
           </h3>
         </div>
         <div
           class="_infoBox_c57ff5"
         >
           <p
-            class="transactionItem"
+            class="_transactionItem_c57ff5"
           >
             <strong>
-              Your Cool Subscription
+              July 16, 2022
             </strong>
-             
-            <br />
-            user:payment.price_payed_with
+            <span>
+              Your Cool Subscription
+            </span>
+            <span>
+              11232
+            </span>
           </p>
-          <p>
-            11232
-            <br />
-            7/16/2022
-          </p>
+          <div
+            class="_transactionDetails_c57ff5"
+          >
+            <div
+              class="_transationPrice_c57ff5"
+            >
+              user:payment.price_paid_with
+            </div>
+          </div>
         </div>
         <div
           class="_infoBox_c57ff5"
         >
           <p
-            class="transactionItem"
+            class="_transactionItem_c57ff5"
           >
             <strong>
-              Your Cool Subscription
+              November 9, 2022
             </strong>
-             
-            <br />
-            user:payment.price_payed_with
+            <span>
+              Your Cool Subscription
+            </span>
+            <span>
+              11234
+            </span>
           </p>
-          <p>
-            11234
-            <br />
-            11/9/2022
-          </p>
+          <div
+            class="_transactionDetails_c57ff5"
+          >
+            <div
+              class="_transationPrice_c57ff5"
+            >
+              user:payment.price_paid_with
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,101 @@
+{
+  "account": {
+    "about_you": "Información de perfil",
+    "cancel": "Cancelar",
+    "confirm_password": "Confirmar contraseña",
+    "continue": "Continuar",
+    "delete_account": {
+      "body": "Elimine permanentemente su cuenta y todo su contenido.",
+      "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
+      "modal": {
+        "placeholder": "Ingresa tu contraseña",
+        "text_cant_be_undone": "Tenga en cuenta que este proceso no se puede deshacer, así que proceda con precaución.",
+        "text_contacts": "Si tiene más preguntas o inquietudes, no dude en ponerse en contacto con nuestro equipo de soporte.",
+        "text_data_erasure": "Tenga en cuenta que si elige continuar con este proceso, todos sus datos personales se borrarán de nuestro sistema. Esto incluye cualquier información personal que haya proporcionado durante el proceso de registro, así como cualquier información de ubicación y dispositivo que hayamos recopilado durante el proceso de autenticación. Además, también se eliminará toda otra información personal almacenada en varias partes de nuestra base de datos. Sin embargo, tenga en cuenta que, debido a algunas legislaciones, estamos obligados a mantener ciertos datos personales como parte de los registros de transacciones y suscripciones.",
+        "text_revoked_access": "Una vez que se complete el borrado, se revocarán todos sus accesos activos y se cancelarán todas las sesiones de inicio de sesión activas, incluida esta. La información de su cuenta ya no será accesible para nuestro personal de ninguna manera.",
+        "title": "Introduce la contraseña para continuar",
+        "warning": "Todas las suscripciones activas que se compraron a través de un navegador web se cancelarán automáticamente al borrar los datos personales. Sin embargo, si compró una suscripción a través de las aplicaciones iOS, Android, Roku o Amazon, tenga en cuenta que no se cancelará automáticamente. En este caso, deberá seguir los pasos habituales de cancelación de suscripción para cada plataforma respectiva para cancelar manualmente la suscripción."
+      },
+      "title": "Borrar cuenta"
+    },
+    "edit_account": "Editar cuenta",
+    "edit_information": "Editar información",
+    "edit_password": "Editar contraseña",
+    "email": "Correo electrónico",
+    "errors": {
+      "email_exists": "¡El correo electrónico ya existe!",
+      "email_update_not_supported": "No se admite la actualización del correo electrónico",
+      "first_name_too_long": "Por favor, limita el Nombre a 50 caracteres o menos.",
+      "invalid_param_email": "¡Dirección de correo electrónico no válida!",
+      "invalid_password": "¡Contraseña incorrecta!",
+      "last_name_too_long": "Por favor, limita el Apellido a 50 caracteres o menos.",
+      "please_enter_valid_email": "Por favor, ingresa una dirección de correo electrónico válida.",
+      "unknown_error": "Se produjo un error desconocido"
+    },
+    "export_data_body": "Exporte todos los datos de su cuenta personal a <strong>{{email}}</strong> como un archivo adjunto.",
+    "export_data_error": "Ocurrió un error al exportar los datos de su cuenta.",
+    "export_data_success": "Please check your email.",
+    "export_data_title": "Por favor revise su correo electrónico.",
+    "firstname": "Nombre",
+    "hide_password": "Ocultar contraseña",
+    "lastname": "Apellido",
+    "password": "Contraseña",
+    "save": "Guardar",
+    "security": "Contraseña",
+    "terms_and_tracking": "Jurídico y marketing",
+    "update_consents": "Actualizar consentimientos",
+    "view_password": "Ver contraseña"
+  },
+  "favorites": {
+    "clear": "Borrar favoritos",
+    "clear_favorites_body": "Estás a punto de borrar todos tus videos favoritos. ¿Estás seguro?",
+    "clear_favorites_title": "¿Borrar favoritos?",
+    "no_favorites": "Tus favoritos están vacíos",
+    "not_found": "¡Favoritos no encontrados!",
+    "title": "Favoritos"
+  },
+  "login": {
+    "field_required": ""
+  },
+  "nav": {
+    "account": "Cuenta",
+    "favorites": "Favoritos",
+    "logout": "Cerrar sesión",
+    "payments": "Pagos"
+  },
+  "payment": {
+    "access_granted": "acceso concedido",
+    "add_card_details": "Agregar detalles de la tarjeta",
+    "annual_subscription": "Suscripción anual",
+    "billing_history": "Historial de facturación",
+    "cancel_subscription": "Cancelar suscripción",
+    "card_number": "Número de tarjeta",
+    "change_subscription": "Cambiar suscripción",
+    "complete_subscription": "Completar suscripción",
+    "daily_subscription": "Suscripción diaria",
+    "expiry_date": "Fecha de vencimiento",
+    "granted_subscription": "Suscripción otorgada",
+    "hidden_transactions_one": "Una transacción más",
+    "hidden_transactions_many": "",
+    "hidden_transactions_other": "{{count}} transacciones más",
+    "monthly_subscription": "Suscripción mensual",
+    "next_billing_date_on": "La próxima fecha de facturación es el {{date}}",
+    "no_payment_methods": "No hay métodos de pago",
+    "no_subscription": "No tienes una suscripción. Completa tu suscripción para comenzar a ver todas las películas y series.",
+    "no_transaction": "No hay transacción",
+    "no_transactions": "No hay transacciones",
+    "other": "otro",
+    "payment_method": "Método de pago",
+    "pending_offer_switch": "Se actualizará a \"{{title}}\" después de la próxima fecha de facturación",
+    "price_paid_with": "{{price}} pagado con {{method}}",
+    "price_paid_with_card": "Precio pagado con tarjeta",
+    "renew_subscription": "Renovar suscripción",
+    "security_code": "Código de seguridad",
+    "show_all": "Mostrar todo",
+    "show_receipt": "Mostrar recibo",
+    "subscription_details": "Detalles de la suscripción",
+    "subscription_expires_on": "Este plan expirará el {{date}}",
+    "update_payment_details": "Actualizar detalles de pago",
+    "weekly_subscription": "Suscripción semanal"
+  }
+}

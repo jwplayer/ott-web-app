@@ -14,7 +14,7 @@ const MediaStaticPage: ScreenComponent<PlaylistItem> = ({ data }) => {
   const { config } = useConfigStore(({ config }) => ({ config }), shallow);
   const { siteName } = config;
   const pageTitle = `${data.title} - ${siteName}`;
-  const canonicalUrl = data ? `${window.location.origin}${mediaURL(data)}` : window.location.href;
+  const canonicalUrl = data ? `${window.location.origin}${mediaURL({ media: data })}` : window.location.href;
 
   return (
     <>
@@ -25,7 +25,7 @@ const MediaStaticPage: ScreenComponent<PlaylistItem> = ({ data }) => {
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       <div className={styles.mediaStaticPage}>
-        <MarkdownComponent markdownString={data.description} />
+        <MarkdownComponent markdownString={data.markdown || data.description} />
       </div>
     </>
   );

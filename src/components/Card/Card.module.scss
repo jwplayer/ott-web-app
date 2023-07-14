@@ -164,6 +164,16 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
   }
 }
 
+.scheduledStart {
+  font-size: 0.88em;
+  line-height: 1em;
+
+  @include responsive.mobile-only {
+    font-size: 12px;
+  }
+}
+
+
 .meta {
   position: absolute;
   bottom: 0;
@@ -208,6 +218,12 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
 
 .live {
   background-color: variables.$red;
+}
+
+svg.scheduled {
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
 }
 
 .progressContainer {

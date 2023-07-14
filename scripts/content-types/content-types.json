@@ -1,0 +1,380 @@
+{
+  "fields": {
+    "genre": {
+      "param": "genre",
+      "label": "Genre",
+      "description": "Use genre to categorize content",
+      "details": {
+        "field_type": "select",
+        "placeholder": "Select a genre",
+        "options": [
+          {"value": "Action", "label": "Action"},
+          {"value": "Thriller", "label": "Thriller"},
+          {"value": "Horror", "label": "Horror"},
+          {"value": "Drama", "label": "Drama"},
+          {"value": "Romance", "label": "Romance"},
+          {"value": "Western", "label": "Western"},
+          {"value": "Comedy", "label": "Comedy"},
+          {"value": "Science fiction", "label": "Science fiction"},
+          {"value": "Adventure", "label": "Adventure"},
+          {"value": "Music", "label": "Music"},
+          {"value": "Animation", "label": "Animation"},
+          {"value": "Crime film", "label": "Crime film"},
+          {"value": "History", "label": "History"},
+          {"value": "Musical genre", "label": "Musical genre"},
+          {"value": "Narrative", "label": "Narrative"},
+          {"value": "Documentary", "label": "Documentary"},
+          {"value": "Mystery", "label": "Mystery"},
+          {"value": "Noir", "label": "Noir"},
+          {"value": "Fantasy", "label": "Fantasy"},
+          {"value": "Romantic comedy", "label": "Romantic comedy"},
+          {"value": "Musical", "label": "Musical"},
+          {"value": "War", "label": "War"},
+          {"value": "Television", "label": "Television"},
+          {"value": "Fiction", "label": "Fiction"},
+          {"value": "Historical drama", "label": "Historical drama"},
+          {"value": "Sports", "label": "Sports"},
+          {"value": "Epic", "label": "Epic"},
+          {"value": "Thriller", "label": "Thriller"},
+          {"value": "Disaster", "label": "Disaster"},
+          {"value": "Martial Arts", "label": "Martial Arts"},
+          {"value": "Hindi cinema", "label": "Hindi cinema"},
+          {"value": "Satire", "label": "Satire"},
+          {"value": "Experimental", "label": "Experimental"},
+          {"value": "Slasher", "label": "Slasher"},
+          {"value": "Short", "label": "Short"},
+          {"value": "Biographical", "label": "Biographical"},
+          {"value": "Animated film", "label": "Animated film"},
+          {"value": "Narrative", "label": "Narrative"},
+          {"value": "Educational", "label": "Educational"},
+          {"value": "Cult film", "label": "Cult film"},
+          {"value": "Action/Adventure", "label": "Action/Adventure"}
+        ]
+      }
+    },
+    "rating": {
+      "param": "rating",
+      "label": "Rating",
+      "description": "Specifies the intended audience for this content",
+      "details": {
+        "field_type": "select",
+        "placeholder": "Select the content rating",
+        "options": [
+          {
+            "value": "G",
+            "label": "G"
+          },
+          {
+            "value": "PG",
+            "label": "PG"
+          },
+          {
+            "value": "PG-13",
+            "label": "PG-13"
+          },
+          {
+            "value": "R",
+            "label": "R"
+          }
+        ]
+      }
+    },
+    "trailer_id": {
+      "param": "trailerId",
+      "label": "Trailer",
+      "description": "If this item has a trailer, select it here",
+      "details": {
+        "field_type": "media_select"
+      }
+    },
+    "product_ids": {
+      "param": "productIds",
+      "label": "Product IDs",
+      "description": "Enter a CSV list of subscription assets that allow access to this content",
+      "details": {
+        "field_type": "input",
+        "placeholder": "CSV subscription IDs"
+      }
+    },
+    "live_status": {
+      "param": "VCH.EventState",
+      "label": "Status",
+      "description": "Do Not Modify - This is the state of the live event (populated automatically)",
+      "details": {
+        "field_type": "input",
+        "placeholder": "This value will be populated automatically"
+      }
+    },
+    "live_start_time": {
+      "param": "VCH.ScheduledStart",
+      "label": "Start Time",
+      "description": "Do Not Modify - This is the schedules start time of the live event (populated automatically)",
+      "details": {
+        "field_type": "input",
+        "placeholder": "This value will be populated automatically"
+      }
+    }
+  },
+  "sections": {
+    "general": {
+      "title": "General",
+      "fields": [
+        "genre",
+        "rating",
+        "trailer_id"
+      ]
+    },
+    "access": {
+      "title": "Access",
+      "fields": [
+        {
+          "param": "free",
+          "label": "Free to Watch?",
+          "description": "If this item can be watched for free and doesn't require a login or subscription, you can set this value to true. Otherwise, if you leave this setting false, the application level subscription and authentication level rules will apply.",
+          "details": {
+            "field_type": "toggle"
+          }
+        },
+        "product_ids"
+      ]
+    },
+    "live_custom_params": {
+      "title": "Live Params",
+      "fields": [
+        {
+          "param": "VCH.ID",
+          "label": "VCH ID",
+          "description": "Do Not Modify - This is the ID of the live event (populated automatically)",
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        },
+        {
+          "param": "VCH.M3U8",
+          "label": "VCH M3U8",
+          "description": "Do Not Modify - Live event data (populated automatically)",
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        },
+        {
+          "param": "VCH.MPD",
+          "label": "VCH MPD",
+          "description": "Do Not Modify - Live event data (populated automatically)",
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        },
+        {
+          "param": "VCH.SmoothStream",
+          "label": "VCH SmoothStream",
+          "description": "Do Not Modify - Live event data (populated automatically)",
+
+          "details": {
+            "field_type": "input",
+            "placeholder": "This value will be populated automatically"
+          }
+        }
+      ]
+    }
+  },
+  "schemas": [
+    {
+      "name": "movie",
+      "description": "Movie schema",
+      "display_name": "Movie",
+      "hosting_type": "hosted",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        "general",
+        "access"
+      ]
+    },
+    {
+      "name": "series",
+      "description": "Series schema",
+      "display_name": "Series",
+      "hosting_type": "ott_data",
+      "is_active": true,
+      "is_series": true,
+      "sections": [
+        "general"
+      ]
+    },
+    {
+      "name": "episode",
+      "description": "Episode schema",
+      "display_name": "Episode",
+      "hosting_type": "hosted",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        "general",
+        "access"
+      ]
+    },
+    {
+      "name": "channel",
+      "description": "Live Channel Schema",
+      "display_name": "Live Channel",
+      "hosting_type": "external",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "Status",
+          "fields": [
+            "live_status",
+            "live_start_time"
+          ]
+        },
+        "access",
+        {
+          "title": "Schedule",
+          "fields": [
+            {
+              "param": "scheduleUrl",
+              "label": "EPG Schedule URL",
+              "description": "The path to an EPG schedule source for this stream",
+              "details": {
+                "field_type": "input"
+              }
+            },
+            {
+              "param": "scheduleDemo",
+              "label": "Use EPG Demo",
+              "description": "Only enable this for non-production (demo) sites where you want the EPG schedule to loop",
+              "details": {
+                "field_type": "toggle"
+              }
+            }
+          ]
+        },
+        "live_custom_params"
+      ]
+    },
+    {
+      "name": "event",
+      "description": "Live Event Schema",
+      "display_name": "Live Event",
+      "hosting_type": "external",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "Status",
+          "fields": [
+            "live_status",
+            "live_start_time",
+            {
+              "param": "VCH.ScheduledEnd",
+              "label": "End Time",
+              "description": "Do not Modify - Live event start time (populated automatically)",
+              "details": {
+                "field_type": "input",
+                "placeholder": "This value will be populated automatically"
+              }
+            }
+          ]
+        },
+        "access",
+        "live_custom_params"
+      ]
+    },
+    {
+      "name": "trailer",
+      "description": "Trailer Schema",
+      "display_name": "Trailer",
+      "hosting_type": "hosted",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "Access",
+          "fields": [
+            {
+              "param": "free",
+              "label": "Free to Watch?",
+              "description": "Trailers can usually be watched for free, even if you have subscription based apps. If that is the case, set this value to true. Otherwise, set this value to false if you want to restrict viewing this trailer to only authenticated / paying customers.",
+              "details": {
+                "field_type": "toggle",
+                "default": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hub",
+      "description": "Hub Schema",
+      "display_name": "Hub",
+      "hosting_type": "ott_data",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "General",
+          "fields": [
+            {
+              "param": "playlist",
+              "label": "Playlist",
+              "description": "The playlist ID to display on this hub page",
+              "required": true,
+              "details": {
+                "field_type": "playlist_select"
+              }
+            },
+            {
+              "param": "logo",
+              "label": "Logo",
+              "description": "Enter the absolute path to a logo to display for this page",
+              "details": {
+                "field_type": "input",
+                "placeholder": "Enter the url of a logo"
+              }
+            },
+            {
+              "param": "backgroundImage",
+              "label": "Background Image",
+              "description": "Enter the absolute path for a background image to display for this page",
+              "details": {
+                "field_type": "input",
+                "placeholder": "Enter the url of an image for the background"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "page",
+      "description": "Static Page Schema",
+      "display_name": "Static Page",
+      "hosting_type": "ott_data",
+      "is_active": true,
+      "is_series": false,
+      "sections": [
+        {
+          "title": "General",
+          "fields": [
+            {
+              "param": "markdown",
+              "label": "Page Markdown",
+              "description": "Enter markdown to define the static content for this page",
+              "required": true,
+              "details": {
+                "field_type": "textarea",
+                "placeholder": "Enter Markdown for the Page"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

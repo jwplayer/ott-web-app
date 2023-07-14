@@ -56,10 +56,10 @@ const ChooseOfferForm: React.FC<Props> = ({
     if (offer.freeDays) {
       return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
     } else if (offer.freePeriods) {
-      // t('periods.day')
-      // t('periods.week')
-      // t('periods.month')
-      // t('periods.year')
+      // t('periods.day', { count })
+      // t('periods.week', { count })
+      // t('periods.month', { count })
+      // t('periods.year', { count })
       const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
 
       return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
@@ -172,9 +172,9 @@ const ChooseOfferForm: React.FC<Props> = ({
           </label>
         </div>
       )}
-      <div className={styles.offers}>{offers.map(renderOfferBox)}</div>
+      {<div className={styles.offers}>{!offers.length ? <p>{t('choose_offer.no_pricing_available')}</p> : offers.map(renderOfferBox)}</div>}
       {submitting && <LoadingOverlay transparentBackground inline />}
-      <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
+      <Button label={t('choose_offer.continue')} disabled={submitting || !offers.length} variant="contained" color="primary" type="submit" fullWidth />
     </form>
   );
 };
