@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import profileStyles from './Profiles.module.scss';
 import Form from './Form';
 import type { ProfileFormValues } from './types';
+import AVATARS from './avatarUrls.json';
 
 import styles from '#src/pages/User/User.module.scss';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -12,17 +13,11 @@ import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { createProfile } from '#src/stores/AccountController';
 import { useListProfiles } from '#src/hooks/useProfiles';
 
-const AVATARS = [
-  'https://gravatar.com/avatar/5e62c8c13582f94b74ae21cfeb83e28a?s=400&d=robohash&r=x',
-  'https://gravatar.com/avatar/a82dc2482b1ae8d9070462a37b5e19e9?s=400&d=robohash&r=x',
-  'https://gravatar.com/avatar/236030198309afe28c9fce9c3ebfec3b?s=400&d=robohash&r=x',
-  'https://gravatar.com/avatar/c97a042d43cc5cc28802f2bc7bf2e5ab?s=400&d=robohash&r=x',
-];
-
 const CreateProfile = () => {
   const navigate = useNavigate();
   const { canManageProfiles } = useAccountStore.getState();
   const [fullName, setFullName] = useState<string>('');
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
 
   useEffect(() => {
     if (!canManageProfiles) navigate('/');
@@ -45,7 +40,7 @@ const CreateProfile = () => {
         await createProfile({
           name: formData.name,
           adult: formData.adult === 'true',
-          avatar_url: AVATARS[activeProfiles],
+          avatar_url: formData.avatar_url,
         })
       )?.responseData;
       if (profile?.id) {
@@ -70,12 +65,20 @@ const CreateProfile = () => {
         <div className={styles.panel}>
           <div className={profileStyles.avatar}>
             <h2>Howdy{`${fullName && ','} ${fullName}`}</h2>
-            <img src={AVATARS[activeProfiles]} />
+            <img src={avatarUrl || AVATARS[activeProfiles]} />
           </div>
         </div>
       </div>
       <div className={styles.mainColumn}>
-        <Form initialValues={initialValues} formHandler={createProfileHandler} setFullName={setFullName} />
+        <Form
+          initialValues={initialValues}
+          formHandler={createProfileHandler}
+          setFullName={setFullName}
+          selectedAvatar={{
+            set: setAvatarUrl,
+            value: avatarUrl,
+          }}
+        />
       </div>
     </div>
   );

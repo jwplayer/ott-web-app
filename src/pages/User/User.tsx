@@ -23,10 +23,10 @@ import Favorites from '#components/Favorites/Favorites';
 import type { PlaylistItem } from '#types/playlist';
 import { getReceipt, logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
-import ArrowLeftRight from '#src/icons/ArrowLeftRight';
 import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { addQueryParam } from '#src/utils/location';
+import EditProfile from '#src/containers/Profiles/EditProfile';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -56,6 +56,7 @@ const User = (): JSX.Element => {
     canUpdatePaymentMethod,
     canShowReceipts,
     canManageProfiles,
+    profile,
   } = useAccountStore();
   const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
   const location = useLocation();
@@ -119,14 +120,20 @@ const User = (): JSX.Element => {
         <div className={styles.leftColumn}>
           <div className={styles.panel}>
             <ul>
+              {accessModel === 'SVOD' && canManageProfiles && (
+                <li>
+                  <Button
+                    to={`my-profile/${profile?.id}`}
+                    label={t('nav.profile')}
+                    variant="text"
+                    startIcon={<img className={styles.profileIcon} src={profile?.avatar_url} alt={profile?.name} />}
+                    className={styles.button}
+                  />
+                </li>
+              )}
               <li>
                 <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
               </li>
-              {accessModel === 'SVOD' && canManageProfiles && (
-                <li>
-                  <Button to="profiles" label="Switch profiles" variant="text" startIcon={<ArrowLeftRight />} className={styles.button} />
-                </li>
-              )}
               {favoritesList && (
                 <li>
                   <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
@@ -152,6 +159,7 @@ const User = (): JSX.Element => {
             path="my-account"
             element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
           />
+          {canManageProfiles && <Route path="my-profile/:id" element={<EditProfile contained />} />}
           {favoritesList && (
             <Route
               path="favorites"
