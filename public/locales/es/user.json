@@ -59,9 +59,13 @@
   },
   "nav": {
     "account": "Cuenta",
+    "add_profile": "",
     "favorites": "Favoritos",
     "logout": "Cerrar sesión",
-    "payments": "Pagos"
+    "payments": "Pagos",
+    "profile": "",
+    "settings": "",
+    "switch_profiles": ""
   },
   "payment": {
     "access_granted": "acceso concedido",

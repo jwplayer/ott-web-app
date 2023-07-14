@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router';
 
 import profileStyles from './Profiles.module.scss';
 import Form from './Form';
 import type { ProfileFormValues } from './types';
+import { useListProfiles } from './utils';
 
 import styles from '#src/pages/User/User.module.scss';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type { ListProfilesResponse } from '#types/account';
-import { createProfile, listProfiles } from '#src/stores/AccountController';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
+import { createProfile } from '#src/stores/AccountController';
 
 const AVATARS = [
   'https://gravatar.com/avatar/5e62c8c13582f94b74ae21cfeb83e28a?s=400&d=robohash&r=x',
@@ -30,8 +29,8 @@ const CreateProfile = () => {
   }, [canManageProfiles, navigate]);
 
   // this is only needed so we can set different avatar url which will be temporary
-  const { data, isLoading }: UseQueryResult<ListProfilesResponse> = useQuery(['listProfiles'], () => listProfiles(), { staleTime: 0 });
-  const activeProfiles = data?.collection?.length || 0;
+  const listProfiles = useListProfiles();
+  const activeProfiles = listProfiles.data?.responseData.collection?.length || 0;
 
   const initialValues = {
     name: '',
@@ -50,6 +49,7 @@ const CreateProfile = () => {
         })
       )?.responseData;
       if (profile?.id) {
+        listProfiles.refetch();
         setSubmitting(false);
         navigate('/u/profiles');
       } else {
@@ -62,7 +62,7 @@ const CreateProfile = () => {
     }
   };
 
-  if (isLoading) return <LoadingOverlay inline />;
+  if (listProfiles.isLoading) return <LoadingOverlay inline />;
 
   return (
     <div className={styles.user}>

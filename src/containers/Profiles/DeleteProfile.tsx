@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 import styles from './Profiles.module.scss';
+import { useListProfiles } from './utils';
 
 import Button from '#src/components/Button/Button';
 import Dialog from '#src/components/Dialog/Dialog';
@@ -19,9 +20,12 @@ const DeleteProfile = () => {
   const [view, setView] = useState(viewParam);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
+  const listProfiles = useListProfiles();
+
   const closeHandler = () => {
     navigate(removeQueryParam(location, 'action'));
   };
+
   const deleteHandler = async () => {
     try {
       setIsDeleting(true);
@@ -31,6 +35,7 @@ const DeleteProfile = () => {
       const response = await deleteProfile({ id });
       if (response?.errors.length === 0) {
         closeHandler();
+        listProfiles.refetch();
         setIsDeleting(false);
         navigate('/u/profiles');
       }

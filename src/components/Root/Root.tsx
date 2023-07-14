@@ -55,7 +55,7 @@ const Root: FC = () => {
   const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
-  if (settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
+  if (userData.loading || settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
     return <LoadingOverlay />;
   }
 
