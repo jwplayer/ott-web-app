@@ -30,6 +30,20 @@
   height: variables.$base-spacing;
 }
 
+.large {
+  width: 142px;
+  height: 142px;
+}
+
+.large div {
+  width: calc(#{variables.$base-spacing} * 8);
+  height: calc(#{variables.$base-spacing} * 8);
+}
+
+.large.buffer div {
+  border-color: variables.$red-dark variables.$white variables.$white variables.$white;
+}
+
 .buffer div:nth-child(1) {
   animation-delay: -0.45s;
 }
