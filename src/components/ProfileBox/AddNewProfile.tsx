@@ -17,7 +17,7 @@ const AddNewProfile = ({ onClick }: Props) => {
           />
         </svg>
       </div>
-      <h2 className={styles.title}>Add new</h2>
+      <h2 className={styles.title}>Add profile</h2>
     </div>
   );
 };

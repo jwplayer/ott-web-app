@@ -2,8 +2,8 @@
 
 .inner {
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
+    border: 2px solid rgba(95, 114, 152);
+    border-radius: 74px;
     &:hover {
         border: 1px solid variables.$white;
         opacity: 0.8;
@@ -27,7 +27,7 @@
         position: relative;
         width: 140px;
         height: 140px;
-        padding: 10px;
+        padding: 25px;
         img {
             position: relative;
             transition: all 0.5s ease;
@@ -49,9 +49,8 @@
         justify-content: center;
         align-items: center;        
         // border: 1px solid rgba(255, 255, 255, 0.3);
-        background: #1F232C;
-        border: 1px solid transparent;
-        border-radius: 100px;
+        border: 1px solid white;
+        border-radius: 75px;
     }
     .overlay {
         position: absolute;
@@ -64,12 +63,13 @@
         height: 100%;
         background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 95%);
         border: 1px solid transparent;
-        border-radius: 4px;
+        border-radius: 75px;
     }
 
      &:hover {
         .box {
             border: 1px solid variables.$white;
+            border-radius: 50%;
             opacity: 0.8;
         }
         h2 {

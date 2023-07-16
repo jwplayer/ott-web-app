@@ -79,7 +79,7 @@ const Profiles = ({ editMode = false }: Props) => {
           <h2 className={styles.heading}>Create your profile</h2>
         </div>
       ) : (
-        <h2 className={styles.heading}>{!editMode ? 'Who’s watching?' : 'Manage profiles'}</h2>
+        <h2 className={styles.heading}>Who’s watching?</h2>
       )}
       <div className={styles.flex}>
         {data?.responseData.collection?.map((profile: Profile) => (
@@ -93,12 +93,12 @@ const Profiles = ({ editMode = false }: Props) => {
             image={profile.avatar_url}
           />
         ))}
-        {canAddNew && !editMode && <AddNewProfile onClick={() => navigate('/u/profiles/create')} />}
+        {canAddNew && <AddNewProfile onClick={() => navigate('/u/profiles/create')} />}
       </div>
       {activeProfiles > 0 && (
         <>
           {!editMode ? (
-            <Button onClick={() => navigate('/u/profiles/edit')} label="Edit profiles" variant="outlined" size="large" />
+            <Button onClick={() => navigate('/u/profiles/edit')} label="Manage profiles" variant="outlined" size="large" />
           ) : (
             <Button onClick={() => navigate('/u/profiles')} label="Done" variant="outlined" size="large" />
           )}
