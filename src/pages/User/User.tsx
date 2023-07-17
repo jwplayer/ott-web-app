@@ -26,7 +26,6 @@ import { clear as clearFavorites } from '#src/stores/FavoritesController';
 import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { addQueryParam } from '#src/utils/location';
-import useOffers from '#src/hooks/useOffers';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -57,7 +56,6 @@ const User = (): JSX.Element => {
     canShowReceipts,
   } = useAccountStore();
   const { offerSwitches } = useCheckoutStore();
-  const { offers } = useOffers();
   const location = useLocation();
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
@@ -199,7 +197,6 @@ const User = (): JSX.Element => {
                   offerSwitchesAvailable={!!offerSwitches.length}
                   canShowReceipts={canShowReceipts}
                   onShowReceiptClick={handleShowReceiptClick}
-                  offers={offers}
                 />
               ) : (
                 <Navigate to="my-account" />
