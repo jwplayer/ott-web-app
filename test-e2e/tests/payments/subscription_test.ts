@@ -202,7 +202,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       I.scrollTo('[class*="mainColumn"] :last-child');
 
       // TODO: Remove this when cleeng fixes the invoices (it is set to be skipped for the next month)
-      if (DateTime.now() > DateTime.utc(2023, 8, 17)) {
+      if (Date.now() > Date.UTC(2023, 8, 17)) {
         I.switchToNextTab();
 
         // Assert invoice functionality by validating the presence of the purchase button
