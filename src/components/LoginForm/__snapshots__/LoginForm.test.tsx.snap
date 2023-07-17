@@ -6,9 +6,6 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
     data-testid="login-form"
     novalidate=""
   >
-    <div
-      class="_top_7bd5f4"
-    />
     <h2
       class="_title_7bd5f4"
     >
