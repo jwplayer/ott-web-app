@@ -26,11 +26,15 @@ const Profiles = ({ editMode = false }: Props) => {
     if (!canManageProfiles) navigate('/');
   }, [canManageProfiles, navigate]);
 
-  const { data, isLoading, isFetching } = useListProfiles();
+  const { data, isLoading, isFetching, refetch } = useListProfiles();
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
 
   const selectProfile = useSelectProfile();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   if (loading || isLoading || isFetching) return <LoadingOverlay inline />;
 

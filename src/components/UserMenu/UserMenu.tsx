@@ -32,7 +32,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
   const { data, isFetching } = useListProfiles();
   const profiles = data?.responseData.collection;
 
-  if (!profiles?.length) {
+  if (canManageProfiles && !profiles?.length) {
     unpersistProfile();
     navigate('/u/profiles');
   }
