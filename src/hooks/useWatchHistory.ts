@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 
 import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
@@ -35,7 +35,7 @@ type QueuedProgress = {
  * @param item
  */
 export const useWatchHistory = (player: JWPlayer | undefined, item: PlaylistItem) => {
-  const queuedWatchProgress = useRef<QueuedProgress | null>(null) as MutableRefObject<QueuedProgress | null>;
+  const queuedWatchProgress = useRef<QueuedProgress | null>(null);
 
   // config
   const { features } = useConfigStore((s) => s.config);
@@ -46,10 +46,11 @@ export const useWatchHistory = (player: JWPlayer | undefined, item: PlaylistItem
   const watchHistoryItem = useWatchHistoryStore((state) => (!!item && watchHistoryEnabled ? state.getItem(item) : undefined));
 
   // update the queued watch progress on each time update event
-  const handleTimeUpdate = useEventCallback(() => {
-    if (!player) return;
+  const handleTimeUpdate = useEventCallback((event: jwplayer.TimeParam) => {
+    // live streams have a negative duration, we ignore these for now
+    if (event.duration < 0) return;
 
-    const progress = player.getPosition() / item.duration;
+    const progress = event.position / event.duration;
 
     if (!isNaN(progress) && isFinite(progress)) {
       queuedWatchProgress.current = {
