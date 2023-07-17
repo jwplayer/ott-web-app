@@ -15,6 +15,11 @@ type ProfileSelectionPayload = {
   navigate: (path: string) => void;
 };
 
+export const unpersistProfile = () => {
+  persist.removeItem(PERSIST_PROFILE);
+  persist.removeItem(PERSIST_KEY_ACCOUNT);
+};
+
 const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload) => {
   try {
     useAccountStore.setState({ loading: true });

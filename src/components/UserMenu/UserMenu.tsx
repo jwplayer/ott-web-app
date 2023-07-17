@@ -15,7 +15,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Plus from '#src/icons/Plus';
-import { useSelectProfile, useListProfiles } from '#src/hooks/useProfiles';
+import { useSelectProfile, useListProfiles, unpersistProfile } from '#src/hooks/useProfiles';
 
 type Props = {
   small?: boolean;
@@ -31,6 +31,11 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
 
   const { data, isFetching } = useListProfiles();
   const profiles = data?.responseData.collection;
+
+  if (!profiles?.length) {
+    unpersistProfile();
+    navigate('/u/profiles');
+  }
 
   const selectProfile = useSelectProfile();
 

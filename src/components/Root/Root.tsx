@@ -46,7 +46,7 @@ const Root: FC = () => {
     registerCustomScreens();
   }, []);
 
-  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile }));
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {
     return <Navigate to="/" />; // component instead of hook to prevent extra re-renders
@@ -57,6 +57,10 @@ const Root: FC = () => {
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
   if (userData.loading || settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
     return <LoadingOverlay />;
+  }
+
+  if (!userData.profile) {
+    return <Navigate to="/u/profiles" />;
   }
 
   if (settingsQuery.isError) {

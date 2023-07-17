@@ -79,7 +79,6 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
             required
             name="adult"
             label={t('profile.content_rating')}
-            helperText={t('profile.content_rating_helper')}
             className={styles.dropdown}
             options={options}
             value={values?.adult?.toString() || 'true'}
