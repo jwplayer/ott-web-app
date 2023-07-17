@@ -108,10 +108,11 @@
     "content_rating_helper": "Content 12+ will not be available for kids profiles",
     "create": "Create profile",
     "delete": "Delete profile",
-    "delete_main": "The main profile cannot be deleted.",
     "delete_description": "Permanently delete your profile along with all of your watch history and favorites.",
+    "delete_main": "The main profile cannot be deleted.",
     "description": "Profiles allow you to watch content and assemble your own personal collection of favorites.",
     "greeting": "Howdy",
+    "greeting_with_name": "Howdy, {{name}}",
     "info": "Profile info",
     "kids": "Kids",
     "name": "User name"

@@ -109,9 +109,11 @@
     "content_rating_helper": "",
     "create": "",
     "delete": "",
+    "delete_description": "",
     "delete_main": "",
     "description": "",
     "greeting": "",
+    "greeting_with_name": "",
     "info": "",
     "kids": "",
     "name": ""
