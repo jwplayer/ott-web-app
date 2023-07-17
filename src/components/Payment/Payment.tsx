@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
 
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 import IconButton from '../IconButton/IconButton';
@@ -20,10 +19,8 @@ import type { AccessModel } from '#types/Config';
 import PayPal from '#src/icons/PayPal';
 import type { Offer } from '#types/checkout';
 import OfferSwitch from '#components/OfferSwitch/OfferSwitch';
-import { changeSubscription } from '#src/stores/CheckoutController';
 import Alert from '#components/Alert/Alert';
-import { updateUser } from '#src/stores/AccountController';
-import { useAccountStore } from '#src/stores/AccountStore';
+import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -100,26 +97,7 @@ const Payment = ({
     }
   }, [selectedOfferId, offers, activeSubscription]);
 
-  const updateSubscriptionMetadata = useMutation(updateUser, {
-    onSuccess: () => {
-      useAccountStore.setState({
-        loading: false,
-      });
-    },
-  });
-  const changeSubscriptionPlan = useMutation(changeSubscription, {
-    onSuccess: () => {
-      if (!isUpgradeOffer && selectedOfferId) {
-        updateSubscriptionMetadata.mutate({
-          firstName: customer.firstName || '',
-          lastName: customer.lastName || '',
-          metadata: {
-            [`${activeSubscription?.subscriptionId}_pending_downgrade`]: selectedOfferId,
-          },
-        });
-      }
-    },
-  });
+  const changeSubscriptionPlan = useSubscriptionChange(isUpgradeOffer ?? false, selectedOfferId, customer, activeSubscription?.subscriptionId);
 
   const pendingDowngradeOfferId = (customer.metadata?.[`${activeSubscription?.subscriptionId}_pending_downgrade`] as string) || '';
 
@@ -262,7 +240,9 @@ const Payment = ({
                     isCurrentOffer={offer.offerId === activeSubscription?.accessFeeId}
                     pendingDowngradeOfferId={pendingDowngradeOfferId}
                     offer={offer}
-                    selected={{ value: selectedOfferId === offer.offerId, set: setSelectedOfferId }}
+                    selected={selectedOfferId === offer.offerId}
+                    onChange={(offerId) => setSelectedOfferId(offerId)}
+                    expiresAt={activeSubscription?.expiresAt}
                   />
                 ))}
               <div className={styles.changePlanButtons}>

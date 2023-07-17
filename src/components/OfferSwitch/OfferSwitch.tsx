@@ -6,31 +6,28 @@ import styles from './OfferSwitch.module.scss';
 import type { Offer } from '#types/checkout';
 import Checkbox from '#components/Checkbox/Checkbox';
 import { formatLocalizedDate, formatPrice } from '#src/utils/formatting';
-import { useAccountStore } from '#src/stores/AccountStore';
 
-interface OfferSwitchProps {
+type OfferSwitchProps = {
   isCurrentOffer: boolean;
   pendingDowngradeOfferId: string;
   offer: Offer;
-  selected: {
-    value: boolean;
-    set: React.Dispatch<React.SetStateAction<string | null>>;
-  };
-}
+  selected: boolean;
+  onChange: (offerId: string) => void;
+  expiresAt: number | undefined;
+};
 
-const OfferSwitch = ({ isCurrentOffer, pendingDowngradeOfferId, offer, selected }: OfferSwitchProps) => {
+const OfferSwitch = ({ isCurrentOffer, pendingDowngradeOfferId, offer, selected, onChange, expiresAt }: OfferSwitchProps) => {
   const { t, i18n } = useTranslation('user');
   const { customerPriceInclTax, customerCurrency, period } = offer;
-  const expiresAt = useAccountStore((state) => state.subscription?.expiresAt);
 
   const isPendingDowngrade = pendingDowngradeOfferId === offer.offerId;
 
   return (
-    <div className={classNames(styles.offerSwitchContainer, { [styles.activeOfferSwitchContainer]: selected.value })}>
-      <Checkbox disabled={isPendingDowngrade} name={offer.offerId} checked={selected.value} onChange={() => selected.set(offer.offerId)} />
+    <div className={classNames(styles.offerSwitchContainer, { [styles.activeOfferSwitchContainer]: selected })}>
+      <Checkbox disabled={isPendingDowngrade} name={offer.offerId} checked={selected} onChange={() => onChange(offer.offerId)} />
       <div className={styles.offerSwitchInfoContainer}>
         {(isCurrentOffer || isPendingDowngrade) && (
-          <div className={classNames(styles.currentPlanHeading, { [styles.activeCurrentPlanHeading]: selected.value })}>
+          <div className={classNames(styles.currentPlanHeading, { [styles.activeCurrentPlanHeading]: selected })}>
             {isCurrentOffer && t('payment.current_plan').toUpperCase()}
             {isPendingDowngrade && t('payment.pending_downgrade').toUpperCase()}
           </div>
