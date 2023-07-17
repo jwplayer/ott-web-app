@@ -30,8 +30,9 @@ const useOffers = () => {
   const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutService?.getOffers({ offerIds }, sandbox));
 
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
-  const offerData = useMemo(() => {
+  return useMemo(() => {
     const offers = (allOffers || []).filter((offer: Offer) => (offerType === 'tvod' ? !isSVODOffer(offer) : isSVODOffer(offer)));
+    useCheckoutStore.setState({ availableOffers: offers });
     const hasMultipleOfferTypes = (allOffers || []).some((offer: Offer) => (offerType === 'tvod' ? isSVODOffer(offer) : !isSVODOffer(offer)));
 
     const offersDict = (!isLoading && Object.fromEntries(offers.map((offer: Offer) => [offer.offerId, offer]))) || {};
@@ -51,20 +52,6 @@ const useOffers = () => {
       offersDict,
     };
   }, [allOffers, isLoading, hasPremierOffer, offerType]);
-
-  return checkoutService
-    ? offerData
-    : {
-        hasTVODOffers: false,
-        hasMultipleOfferTypes: false,
-        isLoading: false,
-        hasPremierOffer: false,
-        defaultOfferId: '',
-        offerType: 'svod' as OfferType,
-        setOfferType: () => null,
-        offers: [],
-        offersDict: {},
-      };
 };
 
 export default useOffers;

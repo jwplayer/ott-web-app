@@ -55,7 +55,7 @@ const User = (): JSX.Element => {
     canUpdatePaymentMethod,
     canShowReceipts,
   } = useAccountStore();
-  const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
+  const { offerSwitches, availableOffers } = useCheckoutStore();
   const location = useLocation();
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
@@ -197,6 +197,7 @@ const User = (): JSX.Element => {
                   offerSwitchesAvailable={!!offerSwitches.length}
                   canShowReceipts={canShowReceipts}
                   onShowReceiptClick={handleShowReceiptClick}
+                  offers={availableOffers}
                 />
               ) : (
                 <Navigate to="my-account" />

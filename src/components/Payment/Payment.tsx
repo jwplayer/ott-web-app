@@ -19,7 +19,6 @@ import type { PaymentDetail, Subscription, Transaction } from '#types/subscripti
 import type { AccessModel } from '#types/Config';
 import PayPal from '#src/icons/PayPal';
 import type { Offer } from '#types/checkout';
-import useOffers from '#src/hooks/useOffers';
 import OfferSwitch from '#components/OfferSwitch/OfferSwitch';
 import { changeSubscription } from '#src/stores/CheckoutController';
 import Alert from '#components/Alert/Alert';
@@ -46,6 +45,7 @@ type Props = {
   canUpdatePaymentMethod: boolean;
   canRenewSubscription?: boolean;
   canShowReceipts?: boolean;
+  offers?: Offer[];
 };
 
 const Payment = ({
@@ -66,6 +66,7 @@ const Payment = ({
   canUpdatePaymentMethod,
   onUpgradeSubscriptionClick,
   offerSwitchesAvailable,
+  offers = [],
 }: Props): JSX.Element => {
   const { t, i18n } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -75,8 +76,6 @@ const Payment = ({
   const isGrantedSubscription = activeSubscription?.period === 'granted';
   const breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
-
-  const { offers } = useOffers();
 
   const [isChangingOffer, setIsChangingOffer] = useState(false);
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(activeSubscription?.accessFeeId ?? null);
