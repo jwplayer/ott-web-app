@@ -91,11 +91,11 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
           holderNameRequired: true,
         },
       },
-      onAdditionalDetails: async (state: CoreOptions['additionalData']) => {
+      onAdditionalDetails: async (state: AdyenAdditionalEventData) => {
         try {
           setUpdatingOrder(true);
 
-          await finalizeAdyenPayment(orderId, state.data.details);
+          await finalizeAdyenPayment(orderId, state.data.details as number);
 
           navigate(paymentSuccessUrl, { replace: true });
         } catch (error: unknown) {

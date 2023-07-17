@@ -76,8 +76,8 @@ describe('User Component tests', () => {
 
   test('Account Page', () => {
     useAccountStore.setState(data);
+    mockWindowLocation('my-account');
 
-    mockWindowLocation('/my-account');
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();
@@ -85,7 +85,9 @@ describe('User Component tests', () => {
 
   test('Payments Page', () => {
     useAccountStore.setState(data);
-    mockWindowLocation('/payments');
+
+    mockWindowLocation('payments');
+
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();
@@ -128,9 +130,8 @@ describe('User Component tests', () => {
         };
       },
     });
-    //vi.fn().mockImplementation(() => window.location).mockReturnValue('/favorites');
-    // const windowMock = vi.fn().mockReturnValue(window.location).mockReturnValue('/favorites');
-    mockWindowLocation('/favorites');
+
+    mockWindowLocation('favorites');
 
     const { container } = renderWithRouter(<User />);
 

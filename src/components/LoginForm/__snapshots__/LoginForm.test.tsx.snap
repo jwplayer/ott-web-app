@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`<LoginForm> > renders and matches snapshot 1`] = `
 <div>
@@ -6,6 +6,70 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
     data-testid="login-form"
     novalidate=""
   >
+    <div
+      class="_socialButtonsListContainer_313d0d"
+    >
+      <a
+        aria-label="login.twitter"
+        class="_socialButtonContainer_b830cd"
+        href="https://staging-v2.inplayer.com/"
+      >
+        <div
+          class="_socialButtonIconContainer_b830cd"
+        >
+          <img
+            alt="twitter icon"
+            class="_socialButtonIcon_b830cd"
+            src=""
+          />
+        </div>
+        <span
+          class="_socialButtonTextContainer_b830cd"
+        >
+          login.twitter
+        </span>
+      </a>
+      <a
+        aria-label="login.facebook"
+        class="_socialButtonContainer_b830cd"
+        href="https://www.facebook.com/"
+      >
+        <div
+          class="_socialButtonIconContainer_b830cd"
+        >
+          <img
+            alt="facebook icon"
+            class="_socialButtonIcon_b830cd"
+            src=""
+          />
+        </div>
+        <span
+          class="_socialButtonTextContainer_b830cd"
+        >
+          login.facebook
+        </span>
+      </a>
+      <a
+        aria-label="login.google"
+        class="_socialButtonContainer_b830cd"
+        href="https://accounts.google.com/"
+      >
+        <div
+          class="_socialButtonIconContainer_b830cd"
+        >
+          <img
+            alt="google icon"
+            class="_socialButtonIcon_b830cd"
+            src=""
+          />
+        </div>
+        <span
+          class="_socialButtonTextContainer_b830cd"
+        >
+          login.google
+        </span>
+      </a>
+    </div>
     <h2
       class="_title_7bd5f4"
     >

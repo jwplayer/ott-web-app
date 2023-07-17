@@ -51,7 +51,7 @@ type VideoListProps = {
 type Props = {
   inlineLayout: boolean;
   player: React.ReactNode;
-  // children?: React.ReactNode;
+  children?: React.ReactNode;
   isLoading: boolean;
   accessModel: AccessModel;
   isLoggedIn: boolean;
