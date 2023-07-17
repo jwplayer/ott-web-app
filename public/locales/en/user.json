@@ -1,6 +1,7 @@
 {
   "account": {
     "about_you": "Profile info",
+    "add_profile": "Add profile",
     "cancel": "Cancel",
     "confirm_password": "Confirm password",
     "continue": "Continue",
@@ -39,12 +40,14 @@
     "firstname": "First name",
     "hide_password": "Hide password",
     "lastname": "Last name",
+    "manage_profiles": "Manage profiles",
     "password": "Password",
     "save": "Save",
     "security": "Password",
     "terms_and_tracking": "Legal & Marketing",
     "update_consents": "Update consents",
-    "view_password": "View password"
+    "view_password": "View password",
+    "who_is_watching": "Who’s watching?"
   },
   "favorites": {
     "clear": "Clear favorites",

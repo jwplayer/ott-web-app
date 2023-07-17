@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 import shallow from 'zustand/shallow';
+import { useTranslation } from 'react-i18next';
 
 import styles from './Profiles.module.scss';
 
@@ -26,7 +27,7 @@ type Props = {
 
 const Profiles = ({ editMode = false }: Props) => {
   const navigate = useNavigate();
-
+  const { t } = useTranslation('user');
   const { canManageProfiles, loading } = useAccountStore(({ canManageProfiles, loading }) => ({ canManageProfiles, loading }), shallow);
 
   useEffect(() => {
@@ -79,7 +80,7 @@ const Profiles = ({ editMode = false }: Props) => {
           <h2 className={styles.heading}>Create your profile</h2>
         </div>
       ) : (
-        <h2 className={styles.heading}>Who’s watching?</h2>
+        <h2 className={styles.heading}>{t('account.who_is_watching')}</h2>
       )}
       <div className={styles.flex}>
         {data?.responseData.collection?.map((profile: Profile) => (
@@ -98,7 +99,7 @@ const Profiles = ({ editMode = false }: Props) => {
       {activeProfiles > 0 && (
         <>
           {!editMode ? (
-            <Button onClick={() => navigate('/u/profiles/edit')} label="Manage profiles" variant="outlined" size="large" />
+            <Button onClick={() => navigate('/u/profiles/edit')} label={t('account.manage_profiles')} variant="outlined" size="large" />
           ) : (
             <Button onClick={() => navigate('/u/profiles')} label="Done" variant="outlined" size="large" />
           )}
