@@ -107,24 +107,10 @@ export const createWatchHistoryItem = (item: PlaylistItem, mediaid: string, seri
  *    1. Move the element to the continue watching list start
  *    2. If there are many elements in continue watching state we remove the oldest one
  */
-export const saveItem = async (item: PlaylistItem, videoProgress: number | null) => {
+export const saveItem = async (item: PlaylistItem, seriesItem: PlaylistItem | undefined, videoProgress: number | null) => {
   const { watchHistory } = useWatchHistoryStore.getState();
-  const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;
-  let seriesItem;
 
   if (!videoProgress) return;
-
-  // Checking whether an item has a parent series item and getting its information
-  const mediaWithSeries = await getSeriesByMediaIds([item.mediaid]);
-
-  if (mediaWithSeries?.[item.mediaid]) {
-    try {
-      const seriesId = mediaWithSeries?.[item.mediaid]?.[0]?.series_id;
-      seriesItem = (await getMediaItems(continueWatchingList, seriesId ? [seriesId] : []))?.[0];
-    } catch {
-      // For the old approach we just save the episode as before
-    }
-  }
 
   const watchHistoryItem = createWatchHistoryItem(seriesItem || item, item.mediaid, seriesItem?.mediaid, videoProgress);
   // filter out the existing watch history item, so we can add it to the beginning of the list
@@ -133,8 +119,8 @@ export const saveItem = async (item: PlaylistItem, videoProgress: number | null)
   });
 
   updatedHistory.unshift(watchHistoryItem);
-  updatedHistory.splice(MAX_WATCHLIST_ITEMS_COUNT);
 
+  updatedHistory.splice(MAX_WATCHLIST_ITEMS_COUNT);
   useWatchHistoryStore.setState({ watchHistory: updatedHistory });
 
   await persistWatchHistory();

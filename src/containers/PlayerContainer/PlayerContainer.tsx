@@ -12,6 +12,7 @@ import { useSettingsStore } from '#src/stores/SettingsStore';
 
 type Props = {
   item: PlaylistItem;
+  seriesItem?: PlaylistItem;
   onPlay?: () => void;
   onPause?: () => void;
   onComplete?: () => void;
@@ -28,6 +29,7 @@ type Props = {
 
 const PlayerContainer: React.FC<Props> = ({
   item,
+  seriesItem,
   feedId,
   onPlay,
   onPause,
@@ -48,7 +50,7 @@ const PlayerContainer: React.FC<Props> = ({
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
 
   // watch history
-  const startTime = useWatchHistory(playerInstance, item);
+  const startTime = useWatchHistory(playerInstance, item, seriesItem);
 
   // player events
   const handleReady = useCallback((player?: JWPlayer) => {

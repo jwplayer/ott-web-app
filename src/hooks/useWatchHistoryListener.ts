@@ -8,6 +8,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 
 type QueuedProgress = {
   item: PlaylistItem;
+  seriesItem?: PlaylistItem;
   progress: number;
   timestamp: number;
 };
@@ -29,7 +30,7 @@ const PROGRESSIVE_SAVE_INTERVAL = 300_000; // 5 minutes
  * item. When this needs to be saved, the queue is used to look up the last progress and item and save it when
  * necessary. The queue is then cleared to prevent duplicate saves and API calls.
  */
-export const useWatchHistoryListener = (player: JWPlayer | undefined, item: PlaylistItem) => {
+export const useWatchHistoryListener = (player: JWPlayer | undefined, item: PlaylistItem, seriesItem?: PlaylistItem) => {
   const queuedWatchProgress = useRef<QueuedProgress | null>(null);
 
   // config
@@ -41,10 +42,10 @@ export const useWatchHistoryListener = (player: JWPlayer | undefined, item: Play
   const maybeSaveWatchProgress = useCallback(() => {
     if (!watchHistoryEnabled || !queuedWatchProgress.current) return;
 
-    const { item, progress } = queuedWatchProgress.current;
+    const { item, seriesItem, progress } = queuedWatchProgress.current;
 
     // save the queued watch progress
-    saveItem(item, progress);
+    saveItem(item, seriesItem, progress);
 
     // clear the queue
     queuedWatchProgress.current = null;
@@ -60,6 +61,7 @@ export const useWatchHistoryListener = (player: JWPlayer | undefined, item: Play
     if (!isNaN(progress) && isFinite(progress)) {
       queuedWatchProgress.current = {
         item,
+        seriesItem,
         progress,
         timestamp: queuedWatchProgress.current?.timestamp || Date.now(),
       };
@@ -99,12 +101,10 @@ export const useWatchHistoryListener = (player: JWPlayer | undefined, item: Play
   useLayoutEffect(() => {
     const visibilityListener = () => document.visibilityState === 'hidden' && maybeSaveWatchProgress();
 
-    window.addEventListener('beforeunload', maybeSaveWatchProgress);
     window.addEventListener('pagehide', maybeSaveWatchProgress);
     window.addEventListener('visibilitychange', visibilityListener);
 
     return () => {
-      window.removeEventListener('beforeunload', maybeSaveWatchProgress);
       window.removeEventListener('pagehide', maybeSaveWatchProgress);
       window.removeEventListener('visibilitychange', visibilityListener);
     };
