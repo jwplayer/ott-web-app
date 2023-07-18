@@ -12,6 +12,7 @@
     "confirm": "Yes"
   },
   "default_site_name": "My OTT Application",
+  "default_description": "JW OTT Webapp is an open-source, dynamically generated video website.",
   "filter_videos_by": "Filter videos by {{name}}",
   "filter_videos_by_genre": "Filter videos by genre",
   "home": "Home",
