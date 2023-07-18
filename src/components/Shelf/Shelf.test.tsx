@@ -66,9 +66,6 @@ describe('Shelf Component tests', () => {
         accessModel={'AVOD'}
         hasSubscription={true}
         isLoggedIn={true}
-        onCardClick={() => {
-          /**/
-        }}
         playlist={playlist}
         enableCardTitles
         enableTitle
@@ -86,9 +83,6 @@ describe('Shelf Component tests', () => {
         accessModel={'AUTHVOD'}
         hasSubscription={true}
         isLoggedIn={true}
-        onCardClick={() => {
-          /**/
-        }}
         playlist={playlist}
         featured
         enableCardTitles
