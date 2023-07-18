@@ -74,5 +74,10 @@ export type Playlist = {
   playlist: PlaylistItem[];
   title: string;
   contentType?: string;
+  /**
+   * @deprecated Use {@link Playlist.cardImageAspectRatio} instead.
+   */
+  shelfImageAspectRatio?: string;
+  cardImageAspectRatio?: string;
   [key: string]: unknown;
 };
