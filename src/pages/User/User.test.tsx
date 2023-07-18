@@ -78,6 +78,7 @@ describe('User Component tests', () => {
     useAccountStore.setState(data);
     mockWindowLocation('my-account');
 
+    mockWindowLocation('my-account');
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();
@@ -85,9 +86,7 @@ describe('User Component tests', () => {
 
   test('Payments Page', () => {
     useAccountStore.setState(data);
-
     mockWindowLocation('payments');
-
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();

@@ -51,11 +51,11 @@ type VideoListProps = {
 type Props = {
   inlineLayout: boolean;
   player: React.ReactNode;
-  children?: React.ReactNode;
   isLoading: boolean;
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  children?: React.ReactNode;
   item?: PlaylistItem;
   playlist?: Playlist;
 } & FilterProps &

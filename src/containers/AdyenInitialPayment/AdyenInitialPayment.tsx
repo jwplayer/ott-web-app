@@ -95,7 +95,9 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
         try {
           setUpdatingOrder(true);
 
-          await finalizeAdyenPayment(orderId, state.data.details as number);
+          const data = state.data.details as number | undefined;
+
+          await finalizeAdyenPayment(orderId, data);
 
           navigate(paymentSuccessUrl, { replace: true });
         } catch (error: unknown) {
