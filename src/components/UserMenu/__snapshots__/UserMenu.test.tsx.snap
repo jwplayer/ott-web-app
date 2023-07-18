@@ -14,7 +14,7 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
       <a
         aria-label="nav.profile"
         class="_menuButton_91706b"
-        href="/u/profiles"
+        href="/u/my-profile/"
         tabindex="0"
       >
         <div
