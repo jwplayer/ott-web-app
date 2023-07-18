@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
@@ -25,6 +25,7 @@ const Root: FC = () => {
   });
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
 
   const configSource = useMemo(() => getConfigSource(searchParams, settingsQuery.data), [searchParams, settingsQuery.data]);
 
@@ -46,7 +47,7 @@ const Root: FC = () => {
     registerCustomScreens();
   }, []);
 
-  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile, canManageProfiles: s.canManageProfiles }));
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {
     return <Navigate to="/" />; // component instead of hook to prevent extra re-renders
@@ -57,6 +58,10 @@ const Root: FC = () => {
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
   if (userData.loading || settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
     return <LoadingOverlay />;
+  }
+
+  if (userData.canManageProfiles && !userData.profile && !location.pathname.includes('/u/profiles')) {
+    return <Navigate to="/u/profiles" />;
   }
 
   if (settingsQuery.isError) {

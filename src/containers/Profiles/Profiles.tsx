@@ -10,7 +10,7 @@ import type { Profile } from '#types/account';
 import AddNewProfile from '#src/components/ProfileBox/AddNewProfile';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import Button from '#src/components/Button/Button';
-import { useHandleProfileSelection, useListProfiles } from '#src/hooks/useProfiles';
+import { useSelectProfile, useListProfiles } from '#src/hooks/useProfiles';
 const MAX_PROFILES = 4;
 
 type Props = {
@@ -26,11 +26,15 @@ const Profiles = ({ editMode = false }: Props) => {
     if (!canManageProfiles) navigate('/');
   }, [canManageProfiles, navigate]);
 
-  const { data, isLoading, isFetching } = useListProfiles();
+  const { data, isLoading, isFetching, refetch } = useListProfiles();
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
 
-  const selectProfile = useHandleProfileSelection();
+  const selectProfile = useSelectProfile();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   if (loading || isLoading || isFetching) return <LoadingOverlay inline />;
 

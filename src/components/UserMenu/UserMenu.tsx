@@ -15,7 +15,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Plus from '#src/icons/Plus';
-import { useHandleProfileSelection, useListProfiles } from '#src/hooks/useProfiles';
+import { useSelectProfile, useListProfiles, unpersistProfile } from '#src/hooks/useProfiles';
 
 type Props = {
   small?: boolean;
@@ -32,7 +32,12 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
   const { data, isFetching } = useListProfiles();
   const profiles = data?.responseData.collection;
 
-  const selectProfile = useHandleProfileSelection();
+  if (canManageProfiles && !profiles?.length) {
+    unpersistProfile();
+    navigate('/u/profiles');
+  }
+
+  const selectProfile = useSelectProfile();
 
   const onLogout = useCallback(async () => {
     if (onClick) {
@@ -80,7 +85,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
         <MenuButton
           small={small}
           onClick={onClick}
-          to="/u/profiles"
+          to={`/u/my-profile/${currentProfile?.id ?? ''}`}
           label={t('nav.profile')}
           startIcon={<img className={styles.profileIcon} src={currentProfile?.avatar_url} alt={currentProfile?.name} />}
         />
