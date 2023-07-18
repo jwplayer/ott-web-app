@@ -19,14 +19,6 @@ import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { LoginFormData } from '#types/account';
 
-const LOGIN_FORM_MESSAGES = ['simultaneous_logins'] as const;
-
-export type LoginFormMessage = (typeof LOGIN_FORM_MESSAGES)[number];
-
-const isValidLoginFormMessage = (message: string | undefined): message is LoginFormMessage => LOGIN_FORM_MESSAGES.includes(message as LoginFormMessage);
-
-export const getLoginFormMessage = (message: string | undefined): LoginFormMessage | undefined => (isValidLoginFormMessage(message) ? message : undefined);
-
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -35,7 +27,7 @@ type Props = {
   values: LoginFormData;
   submitting: boolean;
   siteName?: string;
-  message?: LoginFormMessage;
+  message?: string;
 };
 
 const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName, message }: Props) => {
@@ -43,7 +35,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const { t } = useTranslation('account');
   const location = useLocation();
 
-  const getTranslatedErrorMessage = (messageId: LoginFormMessage | undefined) => {
+  const getTranslatedErrorMessage = (messageId: string | undefined) => {
     switch (messageId) {
       case 'simultaneous_logins':
         return t('login.simultaneous_logins');
