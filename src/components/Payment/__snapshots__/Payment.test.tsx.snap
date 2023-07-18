@@ -64,76 +64,85 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
   <div>
     <div>
       <h3>
-        user:payment.transactions
+        user:payment.billing_history
       </h3>
     </div>
     <div
       class="_infoBox_c57ff5"
     >
       <p
-        class="transactionItem"
+        class="_transactionItem_c57ff5"
       >
         <strong>
-          Monthly subscription (recurring)
+          May 5, 2021
         </strong>
-         
-        <br />
-        user:payment.price_payed_with
-      </p>
-      <div
-        class="_transactionDetails_c57ff5"
-      >
-        <p>
+        <span>
+          Monthly subscription (recurring)
+        </span>
+        <span>
           T712014024
-          <br />
-          May 5, 2021
-        </p>
+        </span>
+      </p>
+      <div
+        class="_transactionDetails_c57ff5"
+      >
+        <div
+          class="_transationPrice_c57ff5"
+        >
+          user:payment.price_paid_with
+        </div>
       </div>
     </div>
     <div
       class="_infoBox_c57ff5"
     >
       <p
-        class="transactionItem"
+        class="_transactionItem_c57ff5"
       >
         <strong>
-          Monthly subscription (recurring)
+          May 5, 2021
         </strong>
-         
-        <br />
-        user:payment.price_payed_with
-      </p>
-      <div
-        class="_transactionDetails_c57ff5"
-      >
-        <p>
+        <span>
+          Monthly subscription (recurring)
+        </span>
+        <span>
           T177974068
-          <br />
-          May 5, 2021
-        </p>
+        </span>
+      </p>
+      <div
+        class="_transactionDetails_c57ff5"
+      >
+        <div
+          class="_transationPrice_c57ff5"
+        >
+          user:payment.price_paid_with
+        </div>
       </div>
     </div>
     <div
       class="_infoBox_c57ff5"
     >
       <p
-        class="transactionItem"
+        class="_transactionItem_c57ff5"
       >
         <strong>
-          Monthly subscription (recurring)
+          May 5, 2021
         </strong>
-         
-        <br />
-        user:payment.price_payed_with
+        <span>
+          Monthly subscription (recurring)
+        </span>
+        <span>
+          T996601696
+        </span>
       </p>
       <div
         class="_transactionDetails_c57ff5"
       >
-        <p>
-          T996601696
-          <br />
-          May 5, 2021
-        </p>
+        <div
+          class="_transationPrice_c57ff5"
+        >
+          user:payment.price_paid_with
+        </div>
       </div>
     </div>
   </div>

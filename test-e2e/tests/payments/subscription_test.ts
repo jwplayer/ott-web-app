@@ -57,7 +57,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     I.see('Payment method');
     I.see('No payment methods');
 
-    I.see('Transactions');
+    I.see('Billing history');
     I.see('No transactions');
   });
 
@@ -196,7 +196,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       paidLoginContext = await I.registerOrLogin(paidLoginContext);
       I.amOnPage(constants.paymentsUrl);
       I.waitForLoaderDone();
-      I.see('Transactions');
+      I.see('Billing history');
       I.dontSee('No transactions');
 
       I.scrollTo('[class*="mainColumn"] :last-child');

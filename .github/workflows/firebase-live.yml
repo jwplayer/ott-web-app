@@ -2,7 +2,7 @@ name: 'Firebase Live'
 
 on:
   push:
-    branches: ['develop']
+    branches: ['release']
 
 jobs:
   deploy_live_website:

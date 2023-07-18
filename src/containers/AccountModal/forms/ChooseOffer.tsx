@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
 import useOffers from '#src/hooks/useOffers';
-import { addQueryParam, removeQueryParam } from '#src/utils/location';
+import { addQueryParam } from '#src/utils/location';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#components/ChooseOfferForm/ChooseOfferForm';
@@ -35,7 +35,7 @@ const ChooseOffer = () => {
   const location = useLocation();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
-  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer } = useOffers();
+  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer, isTvodRequested } = useOffers();
   const { subscription } = useAccountStore.getState();
   const [offerSwitches, updateOffer] = useCheckoutStore((state) => [state.offerSwitches, state.updateOffer]);
   const isOfferSwitch = useQueryParam('u') === 'upgrade-subscription';
@@ -49,10 +49,6 @@ const ChooseOffer = () => {
   const initialValues: ChooseOfferFormData = {
     offerId: defaultOfferId,
   };
-
-  const closeModal = useEventCallback((replace = false) => {
-    navigate(removeQueryParam(location, 'u'), { replace });
-  });
 
   const updateAccountModal = useEventCallback((modal: string) => {
     navigate(addQueryParam(location, 'u', modal));
@@ -92,13 +88,6 @@ const ChooseOffer = () => {
   const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
 
   useEffect(() => {
-    // close auth modal when there are no offers defined in the config
-    if (!isLoading && !offers.length) {
-      closeModal(true);
-    }
-  }, [isLoading, offers, closeModal]);
-
-  useEffect(() => {
     if (!isOfferSwitch) setValue('offerId', defaultOfferId);
 
     // Update offerId if the user is switching offers to ensure the correct offer is checked in the ChooseOfferForm
@@ -110,7 +99,7 @@ const ChooseOffer = () => {
   }, [setValue, defaultOfferId, availableOffers]);
 
   // loading state
-  if (!offers.length || isLoading) {
+  if (isLoading) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
@@ -127,7 +116,7 @@ const ChooseOffer = () => {
       submitting={submitting}
       offers={availableOffers}
       offerType={offerType}
-      setOfferType={hasMultipleOfferTypes && !hasPremierOffer ? setOfferType : undefined}
+      setOfferType={isTvodRequested || (hasMultipleOfferTypes && !hasPremierOffer) ? setOfferType : undefined}
     />
   );
 };

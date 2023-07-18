@@ -2,7 +2,7 @@ name: 'Firebase Preview'
 
 on:
   pull_request:
-    branches: [ 'develop', 'feat/*', 'feature/*' ]
+    branches: [ 'develop', 'feat/*', 'feature/*', 'release' ]
 
 jobs:
   build_and_preview:
