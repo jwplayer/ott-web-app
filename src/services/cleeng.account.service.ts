@@ -218,7 +218,8 @@ export const updateCustomer: UpdateCustomer = async (payload, sandbox) => {
     id,
     ...rest,
   };
-  return patch(sandbox, `/customers/${id}`, JSON.stringify(params), { authenticate: true });
+  // enable keepalive to ensure data is persisted when closing the browser/tab
+  return patch(sandbox, `/customers/${id}`, JSON.stringify(params), { authenticate: true, keepalive: true });
 };
 
 export const getCustomer: GetCustomer = async (payload, sandbox) => {
