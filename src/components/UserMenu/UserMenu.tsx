@@ -13,7 +13,9 @@ import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import ArrowLeftRight from '#src/icons/ArrowLeftRight';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Plus from '#src/icons/Plus';
+import { useSelectProfile, useListProfiles, unpersistProfile } from '#src/hooks/useProfiles';
 
 type Props = {
   small?: boolean;
@@ -25,7 +27,17 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const { accessModel } = useConfigStore();
-  const { canManageProfiles } = useAccountStore();
+  const { canManageProfiles, profile: currentProfile } = useAccountStore();
+
+  const { data, isFetching } = useListProfiles();
+  const profiles = data?.responseData.collection;
+
+  if (canManageProfiles && !profiles?.length) {
+    unpersistProfile();
+    navigate('/u/profiles');
+  }
+
+  const selectProfile = useSelectProfile();
 
   const onLogout = useCallback(async () => {
     if (onClick) {
@@ -38,14 +50,50 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
 
   return (
     <ul className={styles.menuItems}>
+      {accessModel === 'SVOD' && canManageProfiles && (
+        <>
+          <div className={styles.sectionHeader}>{t('nav.switch_profiles')}</div>
+          {selectProfile.isLoading || isFetching ? (
+            <LoadingOverlay inline />
+          ) : (
+            profiles?.map((profile) => (
+              <li key={profile.id}>
+                <MenuButton
+                  active={profile.id === currentProfile?.id}
+                  small={small}
+                  onClick={() => selectProfile.mutate({ id: profile.id, navigate })}
+                  label={profile.name}
+                  startIcon={<img className={styles.profileIcon} src={profile.avatar_url} alt={profile.name} />}
+                />
+              </li>
+            ))
+          )}
+          {(profiles?.length || 0) < 4 && (
+            <li>
+              <MenuButton small={small} onClick={() => navigate('/u/profiles/create')} label={t('nav.add_profile')} startIcon={<Plus />} />
+            </li>
+          )}
+          <hr
+            className={classNames(styles.divider, {
+              [styles.small]: small,
+            })}
+          />
+        </>
+      )}
+      <div className={styles.sectionHeader}>{t('nav.settings')}</div>
+      <li>
+        <MenuButton
+          small={small}
+          onClick={onClick}
+          to={`/u/my-profile/${currentProfile?.id ?? ''}`}
+          label={t('nav.profile')}
+          startIcon={<img className={styles.profileIcon} src={currentProfile?.avatar_url} alt={currentProfile?.name} />}
+        />
+      </li>
       <li>
         <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>
-      {accessModel === 'SVOD' && canManageProfiles && (
-        <li>
-          <MenuButton small={small} onClick={onClick} to="/u/profiles" label="Switch profile" startIcon={<ArrowLeftRight />} />
-        </li>
-      )}
+
       <li>
         <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
       </li>

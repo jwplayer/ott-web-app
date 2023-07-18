@@ -3,82 +3,136 @@
 $avatar-size: 50%;
 
 .inner {
-    position: relative;
-    border: 2px solid rgba(95, 114, 152);
-    border-radius:$avatar-size;
-    &:hover {
-        border: 1px solid variables.$white;
-        opacity: 0.8;
-    }
+  position: relative;
+  box-sizing: border-box;
+  border: 2px solid rgba(95, 114, 152);
+  border-radius: $avatar-size;
+  &:hover {
+    border: 1px solid variables.$white;
+    opacity: 0.8;
+  }
 }
+
+.selected {
+  border: 2px solid variables.$deep-blue !important;
+  border-radius: 4px;
+}
+
 .wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: min-content;
+  height: min-content;
+  cursor: pointer;
+
+  .image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .box {
     position: relative;
+    width: 140px;
+    height: 140px;
+    padding: 10px;
+    img {
+      position: relative;
+      transition: all 0.5s ease;
+    }
+    .kidsLabel {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      color: variables.$link;
+    }
+    &:hover {
+      img {
+        transform: translate(-5px, -5px);
+      }
+    }
+  }
+  .circle {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    cursor: pointer;
+    // border: 1px solid rgba(255, 255, 255, 0.3);
+    background: #1f232c;
+    border: 1px solid transparent;
+    border-radius: 100px;
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 95%);
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
 
-    .image {
-        width: 100%;
-        height: 100%;
+  &:hover {
+    h2 {
+      opacity: 0.8;
     }
 
     .box {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      padding: 25px;
+      img {
         position: relative;
-        width: 140px;
-        height: 140px;
-        padding: 25px;
+        transition: all 0.5s ease;
+      }
+      .kids {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: variables.$link;
+      }
+      &:hover {
         img {
-            position: relative;
-            transition: all 0.5s ease;
+          transform: translate(-5px, -5px);
         }
-        .kids {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: variables.$link;
-        }
-        &:hover {
-            img {
-                transform: translate(-5px, -5px);
-            }
-        }
+      }
     }
     .circle {
-        display: flex;
-        justify-content: center;
-        align-items: center;        
-        border: 1px solid white;
-        border-radius: $avatar-size;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid white;
+      border-radius: $avatar-size;
     }
     .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 95%);
-        border: 1px solid transparent;
-        border-radius: $avatar-size;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 95%);
+      border: 1px solid transparent;
+      border-radius: $avatar-size;
     }
 
-     &:hover {
-        .box {
-            border: 1px solid variables.$white;
-            border-radius: 50%;
-            opacity: 0.8;
-        }
-        h2 {
-            opacity: 0.8;
-        }
+    &:hover {
+      .box {
+        border: 1px solid variables.$white;
+        border-radius: 50%;
+        opacity: 0.8;
+      }
+      h2 {
+        opacity: 0.8;
+      }
     }
-
-    
-  
+  }
 }
-

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './ProfileBox.module.scss';
 
@@ -11,15 +12,16 @@ type Props = {
   editMode?: boolean;
   onClick: () => void;
   onEdit: () => void;
+  selected?: boolean;
 };
 
-const ProfileBox = ({ name, image, adult = true, editMode = false, onClick, onEdit }: Props) => {
+const ProfileBox = ({ name, image, adult = true, editMode = false, onClick, onEdit, selected = false }: Props) => {
   return (
     <div className={styles.wrapper}>
-      <div className={styles.inner}>
+      <div className={classNames(styles.inner, selected && styles.selected)}>
         <div onClick={onClick} className={styles.box}>
           <img className={styles.image} src={image} alt="" />
-          {!adult && <span className={styles.kids}>Kids</span>}
+          {!adult && <span className={styles.kidsLabel}>Kids</span>}
         </div>
         {editMode && (
           <div onClick={onEdit} className={styles.overlay}>

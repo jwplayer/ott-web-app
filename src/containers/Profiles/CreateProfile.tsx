@@ -1,37 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router';
 
 import profileStyles from './Profiles.module.scss';
 import Form from './Form';
 import type { ProfileFormValues } from './types';
+import AVATARS from './avatarUrls.json';
 
 import styles from '#src/pages/User/User.module.scss';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type { ListProfilesResponse } from '#types/account';
-import { createProfile, listProfiles } from '#src/stores/AccountController';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-
-const AVATARS = [
-  'https://gravatar.com/avatar/5e62c8c13582f94b74ae21cfeb83e28a?s=400&d=robohash&r=x',
-  'https://gravatar.com/avatar/a82dc2482b1ae8d9070462a37b5e19e9?s=400&d=robohash&r=x',
-  'https://gravatar.com/avatar/236030198309afe28c9fce9c3ebfec3b?s=400&d=robohash&r=x',
-  'https://gravatar.com/avatar/c97a042d43cc5cc28802f2bc7bf2e5ab?s=400&d=robohash&r=x',
-];
+import { createProfile } from '#src/stores/AccountController';
+import { useListProfiles } from '#src/hooks/useProfiles';
 
 const CreateProfile = () => {
   const navigate = useNavigate();
   const { canManageProfiles } = useAccountStore.getState();
   const [fullName, setFullName] = useState<string>('');
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
 
   useEffect(() => {
     if (!canManageProfiles) navigate('/');
   }, [canManageProfiles, navigate]);
 
   // this is only needed so we can set different avatar url which will be temporary
-  const { data, isLoading }: UseQueryResult<ListProfilesResponse> = useQuery(['listProfiles'], () => listProfiles(), { staleTime: 0 });
-  const activeProfiles = data?.collection?.length || 0;
+  const listProfiles = useListProfiles();
+  const activeProfiles = listProfiles.data?.responseData.collection?.length || 0;
 
   const initialValues = {
     name: '',
@@ -46,10 +40,11 @@ const CreateProfile = () => {
         await createProfile({
           name: formData.name,
           adult: formData.adult === 'true',
-          avatar_url: AVATARS[activeProfiles],
+          avatar_url: formData.avatar_url,
         })
       )?.responseData;
       if (profile?.id) {
+        listProfiles.refetch();
         setSubmitting(false);
         navigate('/u/profiles');
       } else {
@@ -62,7 +57,7 @@ const CreateProfile = () => {
     }
   };
 
-  if (isLoading) return <LoadingOverlay inline />;
+  if (listProfiles.isLoading) return <LoadingOverlay inline />;
 
   return (
     <div className={styles.user}>
@@ -70,12 +65,20 @@ const CreateProfile = () => {
         <div className={styles.panel}>
           <div className={profileStyles.avatar}>
             <h2>Howdy{`${fullName && ','} ${fullName}`}</h2>
-            <img src={AVATARS[activeProfiles]} />
+            <img src={avatarUrl || AVATARS[activeProfiles]} />
           </div>
         </div>
       </div>
       <div className={styles.mainColumn}>
-        <Form initialValues={initialValues} formHandler={createProfileHandler} setFullName={setFullName} />
+        <Form
+          initialValues={initialValues}
+          formHandler={createProfileHandler}
+          setFullName={setFullName}
+          selectedAvatar={{
+            set: setAvatarUrl,
+            value: avatarUrl,
+          }}
+        />
       </div>
     </div>
   );

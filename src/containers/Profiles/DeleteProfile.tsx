@@ -9,6 +9,7 @@ import { removeQueryParam } from '#src/utils/location';
 import useQueryParam from '#src/hooks/useQueryParam';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import { deleteProfile } from '#src/stores/AccountController';
+import { useListProfiles } from '#src/hooks/useProfiles';
 
 const DeleteProfile = () => {
   const navigate = useNavigate();
@@ -19,9 +20,12 @@ const DeleteProfile = () => {
   const [view, setView] = useState(viewParam);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
+  const listProfiles = useListProfiles();
+
   const closeHandler = () => {
     navigate(removeQueryParam(location, 'action'));
   };
+
   const deleteHandler = async () => {
     try {
       setIsDeleting(true);
@@ -31,6 +35,7 @@ const DeleteProfile = () => {
       const response = await deleteProfile({ id });
       if (response?.errors.length === 0) {
         closeHandler();
+        listProfiles.refetch();
         setIsDeleting(false);
         navigate('/u/profiles');
       }
