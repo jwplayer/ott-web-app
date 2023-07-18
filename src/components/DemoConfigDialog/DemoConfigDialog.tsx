@@ -10,7 +10,6 @@ import ErrorPage from '#components/ErrorPage/ErrorPage';
 import TextField from '#components/TextField/TextField';
 import Button from '#components/Button/Button';
 import { getConfigNavigateCallback } from '#src/utils/configOverride';
-import Link from '#components/Link/Link';
 import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import type { Config } from '#types/Config';
@@ -145,9 +144,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
       {configQuery.isSuccess && (
         <div className={styles.note}>
           <div>{t('currently_previewing_config', { configSource: selectedConfigSource })}</div>
-          <Link href="javascript:;" onClick={clearConfig}>
-            {t('click_to_unselect_config')}
-          </Link>
+          <Button variant="text" label={t('click_to_unselect_config')} onClick={clearConfig} />
         </div>
       )}
       {!configQuery.isSuccess && (

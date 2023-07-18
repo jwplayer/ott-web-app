@@ -50,8 +50,9 @@ const useOffers = () => {
       setOfferType,
       offers,
       offersDict,
+      isTvodRequested: hasTvodOffer,
     };
-  }, [allOffers, isLoading, hasPremierOffer, offerType]);
+  }, [allOffers, isLoading, hasPremierOffer, offerType, hasTvodOffer]);
 };
 
 export default useOffers;
