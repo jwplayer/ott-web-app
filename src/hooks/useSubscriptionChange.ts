@@ -8,7 +8,7 @@ import type { Customer } from '#types/account';
 export const useSubscriptionChange = (
   isUpgradeOffer: boolean,
   selectedOfferId: string | null,
-  customer: Customer,
+  customer: Customer | null,
   activeSubscriptionId: string | number | undefined,
 ) => {
   const updateSubscriptionMetadata = useMutation(updateUser, {
@@ -23,8 +23,8 @@ export const useSubscriptionChange = (
     onSuccess: () => {
       if (!isUpgradeOffer && selectedOfferId) {
         updateSubscriptionMetadata.mutate({
-          firstName: customer.firstName || '',
-          lastName: customer.lastName || '',
+          firstName: customer?.firstName || '',
+          lastName: customer?.lastName || '',
           metadata: {
             [`${activeSubscriptionId}_pending_downgrade`]: selectedOfferId,
           },

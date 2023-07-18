@@ -3,24 +3,23 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
-import IconButton from '../IconButton/IconButton';
 import ExternalLink from '../../icons/ExternalLink';
+import IconButton from '../IconButton/IconButton';
 
 import styles from './Payment.module.scss';
 
-import TextField from '#components/TextField/TextField';
-import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import Alert from '#components/Alert/Alert';
 import Button from '#components/Button/Button';
-import type { Customer } from '#types/account';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import OfferSwitch from '#components/OfferSwitch/OfferSwitch';
+import TextField from '#components/TextField/TextField';
+import PayPal from '#src/icons/PayPal';
 import { formatLocalizedDate, formatPrice } from '#src/utils/formatting';
 import { addQueryParam } from '#src/utils/location';
-import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { AccessModel } from '#types/Config';
-import PayPal from '#src/icons/PayPal';
+import type { Customer } from '#types/account';
 import type { Offer } from '#types/checkout';
-import OfferSwitch from '#components/OfferSwitch/OfferSwitch';
-import Alert from '#components/Alert/Alert';
-import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
+import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -44,6 +43,17 @@ type Props = {
   canShowReceipts?: boolean;
   offers?: Offer[];
   pendingDowngradeOfferId?: string;
+  changeSubscriptionPlan: {
+    isLoading: boolean;
+    isError: boolean;
+    isSuccess: boolean;
+    reset: () => void;
+  };
+  onChangePlanClick: () => void;
+  selectedOfferId: string | null;
+  setSelectedOfferId: (offerId: string | null) => void;
+  isUpgradeOffer: boolean | undefined;
+  setIsUpgradeOffer: (isUpgradeOffer: boolean | undefined) => void;
 };
 
 const Payment = ({
@@ -66,6 +76,12 @@ const Payment = ({
   offerSwitchesAvailable,
   offers = [],
   pendingDowngradeOfferId = '',
+  changeSubscriptionPlan,
+  onChangePlanClick,
+  selectedOfferId,
+  setSelectedOfferId,
+  isUpgradeOffer,
+  setIsUpgradeOffer,
 }: Props): JSX.Element => {
   const { t, i18n } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
@@ -77,14 +93,12 @@ const Payment = ({
   const isMobile = breakpoint === Breakpoint.xs;
 
   const [isChangingOffer, setIsChangingOffer] = useState(false);
-  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(activeSubscription?.accessFeeId ?? null);
-  const [isUpgradeOffer, setIsUpgradeOffer] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     if (!isChangingOffer) {
       setSelectedOfferId(activeSubscription?.accessFeeId ?? null);
     }
-  }, [activeSubscription, isChangingOffer]);
+  }, [activeSubscription, isChangingOffer, setSelectedOfferId]);
 
   useEffect(() => {
     setIsChangingOffer(false);
@@ -97,18 +111,7 @@ const Payment = ({
           (offers.find((offer) => offer.offerId === activeSubscription?.accessFeeId)?.customerPriceInclTax ?? 0),
       );
     }
-  }, [selectedOfferId, offers, activeSubscription]);
-
-  const changeSubscriptionPlan = useSubscriptionChange(isUpgradeOffer ?? false, selectedOfferId, customer, activeSubscription?.subscriptionId);
-
-  const onChangePlanClick = async () => {
-    if (selectedOfferId && activeSubscription?.subscriptionId) {
-      changeSubscriptionPlan.mutate({
-        accessFeeId: selectedOfferId.slice(1),
-        subscriptionId: `${activeSubscription.subscriptionId}`,
-      });
-    }
-  };
+  }, [selectedOfferId, offers, activeSubscription, setIsUpgradeOffer]);
 
   function onCompleteSubscriptionClick() {
     navigate(addQueryParam(location, 'u', 'choose-offer'));

@@ -12,6 +12,7 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { addQueryParam } from '#src/utils/location';
 import useOffers from '#src/hooks/useOffers';
+import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
 
 const PaymentContainer = () => {
   const { accessModel } = useConfigStore(
@@ -22,8 +23,6 @@ const PaymentContainer = () => {
     shallow,
   );
   const navigate = useNavigate();
-  const [showAllTransactions, setShowAllTransactions] = useState(false);
-  const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);
 
   const {
     user: customer,
@@ -36,6 +35,12 @@ const PaymentContainer = () => {
     canUpdatePaymentMethod,
     canShowReceipts,
   } = useAccountStore();
+
+  const [showAllTransactions, setShowAllTransactions] = useState(false);
+  const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);
+  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(activeSubscription?.accessFeeId ?? null);
+  const [isUpgradeOffer, setIsUpgradeOffer] = useState<boolean | undefined>(undefined);
+
   const { offerSwitches } = useCheckoutStore();
   const location = useLocation();
 
@@ -80,6 +85,17 @@ const PaymentContainer = () => {
 
   const { offers } = useOffers();
 
+  const changeSubscriptionPlan = useSubscriptionChange(isUpgradeOffer ?? false, selectedOfferId, customer, activeSubscription?.subscriptionId);
+
+  const onChangePlanClick = async () => {
+    if (selectedOfferId && activeSubscription?.subscriptionId) {
+      changeSubscriptionPlan.mutate({
+        accessFeeId: selectedOfferId.slice(1),
+        subscriptionId: `${activeSubscription.subscriptionId}`,
+      });
+    }
+  };
+
   if (!customer) {
     return <LoadingOverlay />;
   }
@@ -107,6 +123,12 @@ const PaymentContainer = () => {
       onShowReceiptClick={handleShowReceiptClick}
       offers={offers}
       pendingDowngradeOfferId={pendingDowngradeOfferId}
+      changeSubscriptionPlan={changeSubscriptionPlan}
+      onChangePlanClick={onChangePlanClick}
+      selectedOfferId={selectedOfferId}
+      setSelectedOfferId={(offerId: string | null) => setSelectedOfferId(offerId)}
+      isUpgradeOffer={isUpgradeOffer}
+      setIsUpgradeOffer={(isUpgradeOffer: boolean | undefined) => setIsUpgradeOffer(isUpgradeOffer)}
     />
   );
 };
