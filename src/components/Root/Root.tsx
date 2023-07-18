@@ -60,7 +60,7 @@ const Root: FC = () => {
     return <LoadingOverlay />;
   }
 
-  if (userData.canManageProfiles && !userData.profile && !location.pathname.includes('/u/profiles')) {
+  if (userData.canManageProfiles && userData.user && !userData.profile && !location.pathname.includes('/u/profiles')) {
     return <Navigate to="/u/profiles" />;
   }
 
