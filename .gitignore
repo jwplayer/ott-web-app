@@ -9,6 +9,7 @@ yarn-error.log
 .firebase
 firebase-debug.log
 .stylelintcache
+.lighthouseci
 
 # os or editor
 .idea

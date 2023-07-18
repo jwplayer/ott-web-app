@@ -12,6 +12,7 @@
     "confirm": "Sí"
   },
   "default_site_name": "Mi aplicación OTT",
+  "default_description": "",
   "filter_videos_by": "Filtrar videos por {{name}}",
   "filter_videos_by_genre": "Filtrar videos por género",
   "home": "Inicio",
