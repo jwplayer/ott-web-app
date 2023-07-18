@@ -21,7 +21,6 @@ import type { Offer } from '#types/checkout';
 import OfferSwitch from '#components/OfferSwitch/OfferSwitch';
 import Alert from '#components/Alert/Alert';
 import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
-import useOffers from '#src/hooks/useOffers';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -43,6 +42,8 @@ type Props = {
   canUpdatePaymentMethod: boolean;
   canRenewSubscription?: boolean;
   canShowReceipts?: boolean;
+  offers?: Offer[];
+  pendingDowngradeOfferId?: string;
 };
 
 const Payment = ({
@@ -63,9 +64,9 @@ const Payment = ({
   canUpdatePaymentMethod,
   onUpgradeSubscriptionClick,
   offerSwitchesAvailable,
+  offers = [],
+  pendingDowngradeOfferId = '',
 }: Props): JSX.Element => {
-  const { offers } = useOffers();
-
   const { t, i18n } = useTranslation(['user', 'account']);
   const hiddenTransactionsCount = transactions ? transactions?.length - VISIBLE_TRANSACTIONS : 0;
   const hasMoreTransactions = hiddenTransactionsCount > 0;
@@ -99,8 +100,6 @@ const Payment = ({
   }, [selectedOfferId, offers, activeSubscription]);
 
   const changeSubscriptionPlan = useSubscriptionChange(isUpgradeOffer ?? false, selectedOfferId, customer, activeSubscription?.subscriptionId);
-
-  const pendingDowngradeOfferId = (customer.metadata?.[`${activeSubscription?.subscriptionId}_pending_downgrade`] as string) || '';
 
   const onChangePlanClick = async () => {
     if (selectedOfferId && activeSubscription?.subscriptionId) {
