@@ -60,7 +60,7 @@ const ShelfList = ({ rows }: Props) => {
           <PlaylistContainer type={row.type} playlistId={row.contentId} key={`${row.contentId || row.type}_${index}`}>
             {({ playlist, error, isLoading, style }) => {
               const title = row?.title || playlist.title;
-              const posterAspect = parseAspectRatio(playlist.aspectRatio || playlist.shelfImageAspectRatio);
+              const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
               const visibleTilesDelta = parseTilesDelta(posterAspect);
 
               return (
