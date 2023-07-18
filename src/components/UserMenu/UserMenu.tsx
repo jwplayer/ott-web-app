@@ -85,7 +85,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
         <MenuButton
           small={small}
           onClick={onClick}
-          to={`/u/my-profile/${currentProfile?.id}`}
+          to={`/u/my-profile/${currentProfile?.id ?? ''}`}
           label={t('nav.profile')}
           startIcon={<img className={styles.profileIcon} src={currentProfile?.avatar_url} alt={currentProfile?.name} />}
         />
