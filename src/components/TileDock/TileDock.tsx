@@ -189,9 +189,9 @@ function TileDock<T>({
       if (frameRef.current) frameRef.current.style.transition = 'none';
       setTransform(-100);
 
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         if (frameRef.current) frameRef.current.style.transition = transitionBasis;
-      }, 0);
+      });
       setDoAnimationReset(false);
     };
 

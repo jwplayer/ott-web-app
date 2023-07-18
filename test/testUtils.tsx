@@ -34,10 +34,13 @@ export const wrapper = ({ children }: WrapperProps) => (
 const customRender = (ui: ReactElement, options?: RenderOptions) => render(ui, { wrapper, ...options });
 
 export const mockWindowLocation = (path: string) => {
-  vi.stubGlobal('location', {
-    pathname: path,
-    assign: vi.fn(),
-  });
+  const location = new URL(`https://www.jwplayer.com/${path}`) as unknown as Location;
+
+  if ('location' in globalThis) {
+    // @ts-ignore
+    delete globalThis.location;
+    globalThis.location = location;
+  }
 };
 
 export { customRender as renderWithRouter };
