@@ -27,12 +27,12 @@ export const subscribeToNotifications = async (uuid: string = '') => {
           case NotificationsTypes.ACCOUNT_LOGOUT:
             await logout();
             if (notification.resource?.reason === 'sessions_limit') {
-              window.location.href = addQueryParams(window.location.href, { u: 'login' });
+              window.location.href = addQueryParams(window.location.href, { u: 'login', message: simultaneousLoginWarningKey });
             }
             break;
           case NotificationsTypes.ACCESS_GRANTED:
             await reloadActiveSubscription();
-            window.location.href = addQueryParams(window.location.href, { u: 'welcome', message: simultaneousLoginWarningKey });
+            window.location.href = addQueryParams(window.location.href, { u: 'welcome' });
             break;
           case NotificationsTypes.ACCESS_REVOKED:
             await reloadActiveSubscription();
