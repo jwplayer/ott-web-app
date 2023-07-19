@@ -30,7 +30,7 @@ type Props = {
   messageKey?: string;
 };
 
-export const messageId: string = 'simultaneous_logins';
+export const simultaneousLoginWarningKey = 'simultaneous_logins';
 
 const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName, messageKey }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
