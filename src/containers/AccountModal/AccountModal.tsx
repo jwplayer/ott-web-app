@@ -75,7 +75,7 @@ const AccountModal = () => {
 
     switch (view) {
       case 'login':
-        return <Login message={message} />;
+        return <Login messageKey={message} />;
       case 'create-account':
         return <Registration />;
       case 'personal-details':

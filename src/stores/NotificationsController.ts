@@ -2,6 +2,7 @@ import { logout, reloadActiveSubscription } from './AccountController';
 
 import useService from '#src/hooks/useService';
 import { addQueryParams } from '#src/utils/formatting';
+import { messageId } from '#src/components/LoginForm/LoginForm';
 
 export enum NotificationsTypes {
   ACCESS_GRANTED = 'access.granted',
@@ -26,13 +27,12 @@ export const subscribeToNotifications = async (uuid: string = '') => {
           case NotificationsTypes.ACCOUNT_LOGOUT:
             await logout();
             if (notification.resource?.reason === 'sessions_limit') {
-              const message: string = 'simultaneous_logins';
-              window.location.href = addQueryParams(window.location.href, { u: 'login', message });
+              window.location.href = addQueryParams(window.location.href, { u: 'login' });
             }
             break;
           case NotificationsTypes.ACCESS_GRANTED:
             await reloadActiveSubscription();
-            window.location.href = addQueryParams(window.location.href, { u: 'welcome' });
+            window.location.href = addQueryParams(window.location.href, { u: 'welcome', message: messageId });
             break;
           case NotificationsTypes.ACCESS_REVOKED:
             await reloadActiveSubscription();

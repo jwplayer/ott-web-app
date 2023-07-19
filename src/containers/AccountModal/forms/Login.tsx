@@ -11,10 +11,10 @@ import type { LoginFormData } from '#types/account';
 import { login } from '#src/stores/AccountController';
 
 type Props = {
-  message?: string;
+  messageKey?: string;
 };
 
-const Login: React.FC<Props> = ({ message }: Props) => {
+const Login: React.FC<Props> = ({ messageKey }: Props) => {
   const { siteName } = useConfigStore((s) => s.config);
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,7 +48,15 @@ const Login: React.FC<Props> = ({ message }: Props) => {
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, loginSubmitHandler, validationSchema);
 
   return (
-    <LoginForm message={message} onSubmit={handleSubmit} onChange={handleChange} values={values} errors={errors} submitting={submitting} siteName={siteName} />
+    <LoginForm
+      messageKey={messageKey}
+      onSubmit={handleSubmit}
+      onChange={handleChange}
+      values={values}
+      errors={errors}
+      submitting={submitting}
+      siteName={siteName}
+    />
   );
 };
 
