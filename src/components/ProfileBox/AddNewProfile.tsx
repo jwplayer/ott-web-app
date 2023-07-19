@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import styles from './ProfileBox.module.scss';
 
@@ -7,6 +8,7 @@ type Props = {
 };
 
 const AddNewProfile = ({ onClick }: Props) => {
+  const { t } = useTranslation('user');
   return (
     <div onClick={onClick} className={styles.wrapper}>
       <div className={`${styles.box} ${styles.circle}`}>
@@ -17,7 +19,7 @@ const AddNewProfile = ({ onClick }: Props) => {
           />
         </svg>
       </div>
-      <h2 className={styles.title}>Add new</h2>
+      <h2 className={styles.title}>{t('account.add_profile')}</h2>
     </div>
   );
 };
