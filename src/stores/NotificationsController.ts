@@ -2,7 +2,7 @@ import { logout, reloadActiveSubscription } from './AccountController';
 
 import useService from '#src/hooks/useService';
 import { addQueryParams } from '#src/utils/formatting';
-import { messageId } from '#src/components/LoginForm/LoginForm';
+import { simultaneousLoginWarningKey } from '#src/components/LoginForm/LoginForm';
 
 export enum NotificationsTypes {
   ACCESS_GRANTED = 'access.granted',
@@ -32,7 +32,7 @@ export const subscribeToNotifications = async (uuid: string = '') => {
             break;
           case NotificationsTypes.ACCESS_GRANTED:
             await reloadActiveSubscription();
-            window.location.href = addQueryParams(window.location.href, { u: 'welcome', message: messageId });
+            window.location.href = addQueryParams(window.location.href, { u: 'welcome', message: simultaneousLoginWarningKey });
             break;
           case NotificationsTypes.ACCESS_REVOKED:
             await reloadActiveSubscription();
