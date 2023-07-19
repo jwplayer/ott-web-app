@@ -39,7 +39,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
 
   const getTranslatedErrorMessage = (messageId: string | undefined) => {
     switch (messageId) {
-      case 'simultaneous_logins':
+      case simultaneousLoginWarningKey:
         return t('login.simultaneous_logins');
     }
     return t('login.unexpected_error');
