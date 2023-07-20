@@ -1,7 +1,7 @@
 import { array, object, string } from 'yup';
 import { addDays, differenceInDays, endOfDay, isValid, startOfDay, subDays } from 'date-fns';
 
-import type { ImageData, PlaylistItem } from '#types/playlist';
+import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
 import { logDev } from '#src/utils/common';
 
@@ -20,8 +20,8 @@ export type EpgChannel = {
   id: string;
   title: string;
   description: string;
-  channelLogoImage: ImageData;
-  backgroundImage: ImageData;
+  channelLogoImage: string;
+  backgroundImage: string;
   programs: EpgProgram[];
   catchupHours: number;
 };
@@ -32,8 +32,8 @@ export type EpgProgram = {
   startTime: string;
   endTime: string;
   description?: string;
-  shelfImage?: ImageData;
-  backgroundImage?: ImageData;
+  cardImage?: string;
+  backgroundImage?: string;
 };
 
 const epgProgramSchema = object().shape({
@@ -64,7 +64,7 @@ class EpgService {
       description,
       startTime: subDays(startOfDay(new Date()), 1).toJSON(),
       endTime: addDays(endOfDay(new Date()), 1).toJSON(),
-      shelfImage: undefined,
+      cardImage: undefined,
       backgroundImage: undefined,
     };
   }
@@ -96,16 +96,15 @@ class EpgService {
    */
   async transformProgram(data: unknown): Promise<EpgProgram> {
     const program = await epgProgramSchema.validate(data);
-    const image = program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || '';
-    const imageData = image ? { image } : undefined;
+    const image = program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || undefined;
 
     return {
       id: program.id,
       title: program.title,
       startTime: program.startTime,
       endTime: program.endTime,
-      shelfImage: imageData,
-      backgroundImage: imageData,
+      cardImage: image,
+      backgroundImage: image,
       description: program.chapterPointCustomProperties?.find((item) => item.key === 'description')?.value || undefined,
     };
   }

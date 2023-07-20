@@ -25,7 +25,7 @@ type VideoListItemProps = {
 };
 
 function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading = false, isActive = false, isLocked = true }: VideoListItemProps): JSX.Element {
-  const { title, duration, seasonNumber, episodeNumber, shelfImage: image, mediaStatus, scheduledStart } = item;
+  const { title, duration, seasonNumber, episodeNumber, cardImage: image, mediaStatus, scheduledStart } = item;
 
   const {
     t,
