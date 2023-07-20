@@ -36,10 +36,10 @@ export const subscribeToNotifications = async (uuid: string = '') => {
             window.location.href = notification.resource?.redirect_to_url;
             break;
           case NotificationsTypes.ACCOUNT_LOGOUT:
-            await logout(true);
             if (notification.resource?.reason === 'sessions_limit') {
               window.location.href = addQueryParams(window.location.href, { u: 'login', message: simultaneousLoginWarningKey });
             }
+            await logout();
             break;
           default:
             break;
