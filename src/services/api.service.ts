@@ -9,31 +9,33 @@ import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist'
 import type { AdSchedule } from '#types/ad-schedule';
 import type { EpisodesRes, EpisodesWithPagination, GetSeriesParams, Series, EpisodeInSeries } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
-import { generateImageData } from '#src/utils/image';
 
 // change the values below to change the property used to look up the alternate image
 enum ImageProperty {
-  SHELF = 'shelfImage',
-  BACKGROUND = 'backgroundImage',
-  CHANNEL_LOGO = 'channelLogoImage',
+  CARD = 'card',
+  BACKGROUND = 'background',
+  CHANNEL_LOGO = 'channel_logo',
 }
 
 const PAGE_LIMIT = 20;
+
+const generateAlternateImageURL = (item: PlaylistItem, label: string) =>
+  `https://img.jwplayer.com/v1/media/${item.mediaid}/images/${label}.webp?poster_fallback=1`;
 
 /**
  * Transform incoming media items
  * - Parses productId into MediaOffer[] for all cleeng offers
  */
-export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
+export const transformMediaItem = (item: PlaylistItem) => {
   const config = ConfigStore.getState().config;
 
   const offerKeys = Object.keys(config?.integrations)[0];
 
   const transformedMediaItem = {
     ...item,
-    shelfImage: generateImageData(config, ImageProperty.SHELF, item, playlist),
-    backgroundImage: generateImageData(config, ImageProperty.BACKGROUND, item),
-    channelLogoImage: generateImageData(config, ImageProperty.CHANNEL_LOGO, item),
+    cardImage: generateAlternateImageURL(item, ImageProperty.CARD),
+    backgroundImage: generateAlternateImageURL(item, ImageProperty.BACKGROUND),
+    channelLogoImage: generateAlternateImageURL(item, ImageProperty.CHANNEL_LOGO),
     mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
     scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
     scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
@@ -52,7 +54,7 @@ export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
  * @param relatedMediaId
  */
 export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
-  playlist.playlist = playlist.playlist.map((item) => transformMediaItem(item, playlist));
+  playlist.playlist = playlist.playlist.map((item) => transformMediaItem(item));
 
   // remove the related media item (when this is a recommendations playlist)
   if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
@@ -96,7 +98,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
 
   if (!data) throw new Error(`The data was not found using the watchlist ${playlistId}`);
 
-  return (data.playlist || []).map((item) => transformMediaItem(item, data));
+  return (data.playlist || []).map((item) => transformMediaItem(item));
 };
 
 /**
