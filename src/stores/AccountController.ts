@@ -146,8 +146,7 @@ export const login = async (email: string, password: string) => {
     useAccountStore.setState({ loading: false });
   });
 };
-
-export async function logout() {
+export async function logout(onlyState = false) {
   await useService(async ({ accountService }) => {
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
@@ -164,11 +163,11 @@ export async function logout() {
 
     await restoreFavorites();
     await restoreWatchHistory();
-
-    await accountService?.logout();
+    if (!onlyState) {
+      await accountService?.logout();
+    }
   });
 }
-
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
