@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`<CardGrid> > renders and matches snapshot 1`] = `
 <div>
@@ -14,9 +14,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_0/?r="
             role="button"
             tabindex="0"
           >
@@ -38,7 +39,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -48,9 +49,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_1/?r="
             role="button"
             tabindex="0"
           >
@@ -72,7 +74,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -82,9 +84,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_2/?r="
             role="button"
             tabindex="0"
           >
@@ -106,7 +109,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -116,9 +119,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_3/?r="
             role="button"
             tabindex="0"
           >
@@ -140,7 +144,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -150,9 +154,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_4/?r="
             role="button"
             tabindex="0"
           >
@@ -174,7 +179,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -184,9 +189,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_5/?r="
             role="button"
             tabindex="0"
           >
@@ -208,7 +214,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -218,9 +224,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_6/?r="
             role="button"
             tabindex="0"
           >
@@ -242,7 +249,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -252,9 +259,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_7/?r="
             role="button"
             tabindex="0"
           >
@@ -276,7 +284,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -286,9 +294,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_8/?r="
             role="button"
             tabindex="0"
           >
@@ -310,7 +319,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -320,9 +329,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_9/?r="
             role="button"
             tabindex="0"
           >
@@ -344,7 +354,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -354,9 +364,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_10/?r="
             role="button"
             tabindex="0"
           >
@@ -378,7 +389,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -388,9 +399,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_11/?r="
             role="button"
             tabindex="0"
           >
@@ -412,7 +424,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -422,9 +434,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_12/?r="
             role="button"
             tabindex="0"
           >
@@ -446,7 +459,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -456,9 +469,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_13/?r="
             role="button"
             tabindex="0"
           >
@@ -480,7 +494,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -490,9 +504,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
+          <a
             aria-label="play_item"
             class="_card_d75732"
+            href="/m/placeholder_14/?r="
             role="button"
             tabindex="0"
           >
@@ -514,7 +529,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
                 class="_title_d75732"
               />
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>

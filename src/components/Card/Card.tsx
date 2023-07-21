@@ -1,6 +1,7 @@
 import React, { KeyboardEvent, memo, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import styles from './Card.module.scss';
 
@@ -28,6 +29,7 @@ type CardProps = {
   isCurrent?: boolean;
   isLocked?: boolean;
   currentLabel?: string;
+  redirectUrl?: string;
 };
 
 function Card({
@@ -42,6 +44,7 @@ function Card({
   isCurrent = false,
   isLocked = true,
   currentLabel,
+  redirectUrl,
 }: CardProps): JSX.Element {
   const { title, duration, episodeNumber, seasonNumber, shelfImage: image, mediaStatus, scheduledStart } = item;
   const {
@@ -86,7 +89,8 @@ function Card({
   };
 
   return (
-    <div
+    <Link
+      to={redirectUrl ?? ''}
       className={cardClassName}
       onClick={onClick}
       onMouseEnter={onHover}
@@ -125,7 +129,7 @@ function Card({
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
 

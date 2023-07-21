@@ -73,19 +73,18 @@ const Shelf = ({
     (item: PlaylistItem, isInView: boolean) => {
       const url = mediaURL({ media: item, playlistId: playlist.feedid, play: type === PersonalShelf.ContinueWatching });
       return (
-        <a href={isInView ? url : undefined} className={styles.cardWrapper}>
-          <Card
-            key={item.mediaid}
-            progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-            onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
-            featured={featured}
-            disabled={!isInView}
-            loading={loading}
-            isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
-            posterAspect={posterAspect}
-            item={item}
-          />
-        </a>
+        <Card
+          key={item.mediaid}
+          progress={watchHistory ? watchHistory[item.mediaid] : undefined}
+          onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
+          featured={featured}
+          disabled={!isInView}
+          loading={loading}
+          isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
+          posterAspect={posterAspect}
+          item={item}
+          redirectUrl={isInView ? url : undefined}
+        />
       );
     },
     [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, playlist.feedid, type],

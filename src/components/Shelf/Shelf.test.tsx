@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 
 import Shelf from '#components/Shelf/Shelf';
 
@@ -60,16 +61,18 @@ const playlist = {
 describe('Shelf Component tests', () => {
   test('Regular shelf', () => {
     const { container } = render(
-      <Shelf
-        title="Test Shelf"
-        type={'playlist'}
-        accessModel={'AVOD'}
-        hasSubscription={true}
-        isLoggedIn={true}
-        playlist={playlist}
-        enableCardTitles
-        enableTitle
-      />,
+      <BrowserRouter>
+        <Shelf
+          title="Test Shelf"
+          type={'playlist'}
+          accessModel={'AVOD'}
+          hasSubscription={true}
+          isLoggedIn={true}
+          playlist={playlist}
+          enableCardTitles
+          enableTitle
+        />
+      </BrowserRouter>,
     );
 
     expect(container).toMatchSnapshot();
@@ -77,17 +80,19 @@ describe('Shelf Component tests', () => {
 
   test('Featured shelf', () => {
     const { container } = render(
-      <Shelf
-        title="Featured Shelf"
-        type={'playlist'}
-        accessModel={'AUTHVOD'}
-        hasSubscription={true}
-        isLoggedIn={true}
-        playlist={playlist}
-        featured
-        enableCardTitles
-        enableTitle
-      />,
+      <BrowserRouter>
+        <Shelf
+          title="Featured Shelf"
+          type={'playlist'}
+          accessModel={'AUTHVOD'}
+          hasSubscription={true}
+          isLoggedIn={true}
+          playlist={playlist}
+          featured
+          enableCardTitles
+          enableTitle
+        />
+      </BrowserRouter>,
     );
 
     expect(container).toMatchSnapshot();

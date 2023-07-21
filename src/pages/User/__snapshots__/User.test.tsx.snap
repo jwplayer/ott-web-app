@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`User Component tests > Account Page 1`] = `
 <div>
@@ -388,9 +388,10 @@ exports[`User Component tests > Favorites Page 1`] = `
               <div
                 role="cell"
               >
-                <div
+                <a
                   aria-label="play_item"
                   class="_card_d75732"
+                  href="/m/aaabbbcc/fav-1?r=abcdffff"
                   role="button"
                   tabindex="0"
                 >
@@ -420,7 +421,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                       Fav 1
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
             <div
@@ -430,9 +431,10 @@ exports[`User Component tests > Favorites Page 1`] = `
               <div
                 role="cell"
               >
-                <div
+                <a
                   aria-label="play_item"
                   class="_card_d75732"
+                  href="/m/aaabbbcd/big-buck-bunny?r=bbbdddff"
                   role="button"
                   tabindex="0"
                 >
@@ -462,7 +464,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                       Big Buck Bunny
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
             <div
@@ -472,9 +474,10 @@ exports[`User Component tests > Favorites Page 1`] = `
               <div
                 role="cell"
               >
-                <div
+                <a
                   aria-label="play_item"
                   class="_card_d75732"
+                  href="/m/ggaaccvv/my-last-favorite?r=bbbbbbbb"
                   role="button"
                   tabindex="0"
                 >
@@ -504,7 +507,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                       My last favorite
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>

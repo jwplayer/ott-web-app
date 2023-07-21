@@ -11,6 +11,7 @@ import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
+import { mediaURL } from '#src/utils/formatting';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -69,12 +70,14 @@ function CardGrid({
 
   const renderTile = (playlistItem: PlaylistItem) => {
     const { mediaid } = playlistItem;
+    const url = mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
 
     return (
       <div className={styles.cell} key={mediaid} role="row">
         <div role="cell">
           <Card
             progress={watchHistory ? watchHistory[mediaid] : undefined}
+            redirectUrl={url}
             onClick={() => onCardClick(playlistItem, playlistItem.feedid)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
