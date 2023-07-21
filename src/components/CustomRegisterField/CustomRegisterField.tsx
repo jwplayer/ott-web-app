@@ -1,4 +1,5 @@
 import { type FC, type ChangeEventHandler, type ReactNode, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 
 import Checkbox from '#components/Checkbox/Checkbox';
@@ -7,7 +8,8 @@ import Radio from '#components/Radio/Radio';
 import Dropdown from '#components/Dropdown/Dropdown';
 import DateField from '#components/DateField/DateField';
 import { ConsentFieldVariants, REGISTER_FIELD_VARIANT } from '#src/services/inplayer.account.service';
-import { countries, usStates } from '#static/json';
+import countriesCodes from '#static/countries-codes.json';
+import usStatesCodes from '#static/us-states-codes.json';
 
 type Props = {
   type: ConsentFieldVariants;
@@ -27,24 +29,33 @@ type Props = {
 export type CustomRegisterFieldCommonProps = Props;
 
 export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChange, ...props }) => {
+  const { t } = useTranslation(type);
+
   const optionsList = useMemo(() => {
     const optionsObject = (() => {
       switch (type) {
         case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
-          return countries;
+          return countriesCodes;
         case REGISTER_FIELD_VARIANT.US_STATE_SELECT:
-          return usStates;
+          return usStatesCodes;
         default:
-          return props.options;
+          return null;
       }
     })();
 
-    if (!optionsObject) {
+    if (optionsObject) {
+      return optionsObject.map((countryCode) => ({
+        value: countryCode,
+        label: t(`${type}:${countryCode}`),
+      }));
+    }
+
+    if (!props.options) {
       return [];
     }
 
-    return Object.entries(optionsObject).map(([value, label]) => ({ value, label }));
-  }, [type, props.options]);
+    return Object.entries(props.options).map(([value, label]) => ({ value, label }));
+  }, [t, type, props.options]);
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ currentTarget }) => {

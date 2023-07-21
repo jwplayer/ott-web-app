@@ -52,1495 +52,1495 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="co
           class="_option_bb73c6"
           value="af"
         >
-          Afghanistan
+          country:af
         </option>
         <option
           class="_option_bb73c6"
           value="ax"
         >
-          Åland Islands
+          country:ax
         </option>
         <option
           class="_option_bb73c6"
           value="al"
         >
-          Albania
+          country:al
         </option>
         <option
           class="_option_bb73c6"
           value="dz"
         >
-          Algeria
+          country:dz
         </option>
         <option
           class="_option_bb73c6"
           value="as"
         >
-          American Samoa
+          country:as
         </option>
         <option
           class="_option_bb73c6"
           value="ad"
         >
-          Andorra
+          country:ad
         </option>
         <option
           class="_option_bb73c6"
           value="ao"
         >
-          Angola
+          country:ao
         </option>
         <option
           class="_option_bb73c6"
           value="ai"
         >
-          Anguilla
+          country:ai
         </option>
         <option
           class="_option_bb73c6"
           value="aq"
         >
-          Antarctica
+          country:aq
         </option>
         <option
           class="_option_bb73c6"
           value="ag"
         >
-          Antigua and Barbuda
+          country:ag
         </option>
         <option
           class="_option_bb73c6"
           value="ar"
         >
-          Argentina
+          country:ar
         </option>
         <option
           class="_option_bb73c6"
           value="am"
         >
-          Armenia
+          country:am
         </option>
         <option
           class="_option_bb73c6"
           value="aw"
         >
-          Aruba
+          country:aw
         </option>
         <option
           class="_option_bb73c6"
           value="au"
         >
-          Australia
+          country:au
         </option>
         <option
           class="_option_bb73c6"
           value="at"
         >
-          Austria
+          country:at
         </option>
         <option
           class="_option_bb73c6"
           value="az"
         >
-          Azerbaijan
+          country:az
         </option>
         <option
           class="_option_bb73c6"
           value="bs"
         >
-          Bahamas
+          country:bs
         </option>
         <option
           class="_option_bb73c6"
           value="bh"
         >
-          Bahrain
+          country:bh
         </option>
         <option
           class="_option_bb73c6"
           value="bd"
         >
-          Bangladesh
+          country:bd
         </option>
         <option
           class="_option_bb73c6"
           value="bb"
         >
-          Barbados
+          country:bb
         </option>
         <option
           class="_option_bb73c6"
           value="by"
         >
-          Belarus
+          country:by
         </option>
         <option
           class="_option_bb73c6"
           value="be"
         >
-          Belgium
+          country:be
         </option>
         <option
           class="_option_bb73c6"
           value="bz"
         >
-          Belize
+          country:bz
         </option>
         <option
           class="_option_bb73c6"
           value="bj"
         >
-          Benin
+          country:bj
         </option>
         <option
           class="_option_bb73c6"
           value="bm"
         >
-          Bermuda
+          country:bm
         </option>
         <option
           class="_option_bb73c6"
           value="bt"
         >
-          Bhutan
+          country:bt
         </option>
         <option
           class="_option_bb73c6"
           value="bo"
         >
-          Bolivia, Plurinational State of
+          country:bo
         </option>
         <option
           class="_option_bb73c6"
           value="bq"
         >
-          Bonaire, Sint Eustatius and Saba
+          country:bq
         </option>
         <option
           class="_option_bb73c6"
           value="ba"
         >
-          Bosnia and Herzegovina
+          country:ba
         </option>
         <option
           class="_option_bb73c6"
           value="bw"
         >
-          Botswana
+          country:bw
         </option>
         <option
           class="_option_bb73c6"
           value="bv"
         >
-          Bouvet Island
+          country:bv
         </option>
         <option
           class="_option_bb73c6"
           value="br"
         >
-          Brazil
+          country:br
         </option>
         <option
           class="_option_bb73c6"
           value="io"
         >
-          British Indian Ocean Territory
+          country:io
         </option>
         <option
           class="_option_bb73c6"
           value="bn"
         >
-          Brunei Darussalam
+          country:bn
         </option>
         <option
           class="_option_bb73c6"
           value="bg"
         >
-          Bulgaria
+          country:bg
         </option>
         <option
           class="_option_bb73c6"
           value="bf"
         >
-          Burkina Faso
+          country:bf
         </option>
         <option
           class="_option_bb73c6"
           value="bi"
         >
-          Burundi
+          country:bi
         </option>
         <option
           class="_option_bb73c6"
           value="kh"
         >
-          Cambodia
+          country:kh
         </option>
         <option
           class="_option_bb73c6"
           value="cm"
         >
-          Cameroon
+          country:cm
         </option>
         <option
           class="_option_bb73c6"
           value="ca"
         >
-          Canada
+          country:ca
         </option>
         <option
           class="_option_bb73c6"
           value="cv"
         >
-          Cape Verde
+          country:cv
         </option>
         <option
           class="_option_bb73c6"
           value="ky"
         >
-          Cayman Islands
+          country:ky
         </option>
         <option
           class="_option_bb73c6"
           value="cf"
         >
-          Central African Republic
+          country:cf
         </option>
         <option
           class="_option_bb73c6"
           value="td"
         >
-          Chad
+          country:td
         </option>
         <option
           class="_option_bb73c6"
           value="cl"
         >
-          Chile
+          country:cl
         </option>
         <option
           class="_option_bb73c6"
           value="cn"
         >
-          China
+          country:cn
         </option>
         <option
           class="_option_bb73c6"
           value="cx"
         >
-          Christmas Island
+          country:cx
         </option>
         <option
           class="_option_bb73c6"
           value="cc"
         >
-          Cocos (Keeling) Islands
+          country:cc
         </option>
         <option
           class="_option_bb73c6"
           value="co"
         >
-          Colombia
+          country:co
         </option>
         <option
           class="_option_bb73c6"
           value="km"
         >
-          Comoros
+          country:km
         </option>
         <option
           class="_option_bb73c6"
           value="cg"
         >
-          Congo
+          country:cg
         </option>
         <option
           class="_option_bb73c6"
           value="cd"
         >
-          Congo, the Democratic Republic of the
+          country:cd
         </option>
         <option
           class="_option_bb73c6"
           value="ck"
         >
-          Cook Islands
+          country:ck
         </option>
         <option
           class="_option_bb73c6"
           value="cr"
         >
-          Costa Rica
+          country:cr
         </option>
         <option
           class="_option_bb73c6"
           value="ci"
         >
-          Côte d'Ivoire
+          country:ci
         </option>
         <option
           class="_option_bb73c6"
           value="hr"
         >
-          Croatia
+          country:hr
         </option>
         <option
           class="_option_bb73c6"
           value="cu"
         >
-          Cuba
+          country:cu
         </option>
         <option
           class="_option_bb73c6"
           value="cw"
         >
-          Curaçao
+          country:cw
         </option>
         <option
           class="_option_bb73c6"
           value="cy"
         >
-          Cyprus
+          country:cy
         </option>
         <option
           class="_option_bb73c6"
           value="cz"
         >
-          Czech Republic
+          country:cz
         </option>
         <option
           class="_option_bb73c6"
           value="dk"
         >
-          Denmark
+          country:dk
         </option>
         <option
           class="_option_bb73c6"
           value="dj"
         >
-          Djibouti
+          country:dj
         </option>
         <option
           class="_option_bb73c6"
           value="dm"
         >
-          Dominica
+          country:dm
         </option>
         <option
           class="_option_bb73c6"
           value="do"
         >
-          Dominican Republic
+          country:do
         </option>
         <option
           class="_option_bb73c6"
           value="ec"
         >
-          Ecuador
+          country:ec
         </option>
         <option
           class="_option_bb73c6"
           value="eg"
         >
-          Egypt
+          country:eg
         </option>
         <option
           class="_option_bb73c6"
           value="sv"
         >
-          El Salvador
+          country:sv
         </option>
         <option
           class="_option_bb73c6"
           value="gq"
         >
-          Equatorial Guinea
+          country:gq
         </option>
         <option
           class="_option_bb73c6"
           value="er"
         >
-          Eritrea
+          country:er
         </option>
         <option
           class="_option_bb73c6"
           value="ee"
         >
-          Estonia
+          country:ee
         </option>
         <option
           class="_option_bb73c6"
           value="et"
         >
-          Ethiopia
+          country:et
         </option>
         <option
           class="_option_bb73c6"
           value="fk"
         >
-          Falkland Islands (Malvinas)
+          country:fk
         </option>
         <option
           class="_option_bb73c6"
           value="fo"
         >
-          Faroe Islands
+          country:fo
         </option>
         <option
           class="_option_bb73c6"
           value="fj"
         >
-          Fiji
+          country:fj
         </option>
         <option
           class="_option_bb73c6"
           value="fi"
         >
-          Finland
+          country:fi
         </option>
         <option
           class="_option_bb73c6"
           value="fr"
         >
-          France
+          country:fr
         </option>
         <option
           class="_option_bb73c6"
           value="gf"
         >
-          French Guiana
+          country:gf
         </option>
         <option
           class="_option_bb73c6"
           value="pf"
         >
-          French Polynesia
+          country:pf
         </option>
         <option
           class="_option_bb73c6"
           value="tf"
         >
-          French Southern Territories
+          country:tf
         </option>
         <option
           class="_option_bb73c6"
           value="ga"
         >
-          Gabon
+          country:ga
         </option>
         <option
           class="_option_bb73c6"
           value="gm"
         >
-          Gambia
+          country:gm
         </option>
         <option
           class="_option_bb73c6"
           value="ge"
         >
-          Georgia
+          country:ge
         </option>
         <option
           class="_option_bb73c6"
           value="de"
         >
-          Germany
+          country:de
         </option>
         <option
           class="_option_bb73c6"
           value="gh"
         >
-          Ghana
+          country:gh
         </option>
         <option
           class="_option_bb73c6"
           value="gi"
         >
-          Gibraltar
+          country:gi
         </option>
         <option
           class="_option_bb73c6"
           value="gr"
         >
-          Greece
+          country:gr
         </option>
         <option
           class="_option_bb73c6"
           value="gl"
         >
-          Greenland
+          country:gl
         </option>
         <option
           class="_option_bb73c6"
           value="gd"
         >
-          Grenada
+          country:gd
         </option>
         <option
           class="_option_bb73c6"
           value="gp"
         >
-          Guadeloupe
+          country:gp
         </option>
         <option
           class="_option_bb73c6"
           value="gu"
         >
-          Guam
+          country:gu
         </option>
         <option
           class="_option_bb73c6"
           value="gt"
         >
-          Guatemala
+          country:gt
         </option>
         <option
           class="_option_bb73c6"
           value="gg"
         >
-          Guernsey
+          country:gg
         </option>
         <option
           class="_option_bb73c6"
           value="gn"
         >
-          Guinea
+          country:gn
         </option>
         <option
           class="_option_bb73c6"
           value="gw"
         >
-          Guinea-Bissau
+          country:gw
         </option>
         <option
           class="_option_bb73c6"
           value="gy"
         >
-          Guyana
+          country:gy
         </option>
         <option
           class="_option_bb73c6"
           value="ht"
         >
-          Haiti
+          country:ht
         </option>
         <option
           class="_option_bb73c6"
           value="hm"
         >
-          Heard Island and McDonald Islands
+          country:hm
         </option>
         <option
           class="_option_bb73c6"
           value="va"
         >
-          Holy See (Vatican City State)
+          country:va
         </option>
         <option
           class="_option_bb73c6"
           value="hn"
         >
-          Honduras
+          country:hn
         </option>
         <option
           class="_option_bb73c6"
           value="hk"
         >
-          Hong Kong
+          country:hk
         </option>
         <option
           class="_option_bb73c6"
           value="hu"
         >
-          Hungary
+          country:hu
         </option>
         <option
           class="_option_bb73c6"
           value="is"
         >
-          Iceland
+          country:is
         </option>
         <option
           class="_option_bb73c6"
           value="in"
         >
-          India
+          country:in
         </option>
         <option
           class="_option_bb73c6"
           value="id"
         >
-          Indonesia
+          country:id
         </option>
         <option
           class="_option_bb73c6"
           value="ir"
         >
-          Iran, Islamic Republic of
+          country:ir
         </option>
         <option
           class="_option_bb73c6"
           value="iq"
         >
-          Iraq
+          country:iq
         </option>
         <option
           class="_option_bb73c6"
           value="ie"
         >
-          Ireland
+          country:ie
         </option>
         <option
           class="_option_bb73c6"
           value="im"
         >
-          Isle of Man
+          country:im
         </option>
         <option
           class="_option_bb73c6"
           value="il"
         >
-          Israel
+          country:il
         </option>
         <option
           class="_option_bb73c6"
           value="it"
         >
-          Italy
+          country:it
         </option>
         <option
           class="_option_bb73c6"
           value="jm"
         >
-          Jamaica
+          country:jm
         </option>
         <option
           class="_option_bb73c6"
           value="jp"
         >
-          Japan
+          country:jp
         </option>
         <option
           class="_option_bb73c6"
           value="je"
         >
-          Jersey
+          country:je
         </option>
         <option
           class="_option_bb73c6"
           value="jo"
         >
-          Jordan
+          country:jo
         </option>
         <option
           class="_option_bb73c6"
           value="kz"
         >
-          Kazakhstan
+          country:kz
         </option>
         <option
           class="_option_bb73c6"
           value="ke"
         >
-          Kenya
+          country:ke
         </option>
         <option
           class="_option_bb73c6"
           value="ki"
         >
-          Kiribati
+          country:ki
         </option>
         <option
           class="_option_bb73c6"
           value="kp"
         >
-          Korea, Democratic People's Republic of
+          country:kp
         </option>
         <option
           class="_option_bb73c6"
           value="kr"
         >
-          Korea, Republic of
+          country:kr
         </option>
         <option
           class="_option_bb73c6"
           value="kw"
         >
-          Kuwait
+          country:kw
         </option>
         <option
           class="_option_bb73c6"
           value="kg"
         >
-          Kyrgyzstan
+          country:kg
         </option>
         <option
           class="_option_bb73c6"
           value="la"
         >
-          Lao People's Democratic Republic
+          country:la
         </option>
         <option
           class="_option_bb73c6"
           value="lv"
         >
-          Latvia
+          country:lv
         </option>
         <option
           class="_option_bb73c6"
           value="lb"
         >
-          Lebanon
+          country:lb
         </option>
         <option
           class="_option_bb73c6"
           value="ls"
         >
-          Lesotho
+          country:ls
         </option>
         <option
           class="_option_bb73c6"
           value="lr"
         >
-          Liberia
+          country:lr
         </option>
         <option
           class="_option_bb73c6"
           value="ly"
         >
-          Libya
+          country:ly
         </option>
         <option
           class="_option_bb73c6"
           value="li"
         >
-          Liechtenstein
+          country:li
         </option>
         <option
           class="_option_bb73c6"
           value="lt"
         >
-          Lithuania
+          country:lt
         </option>
         <option
           class="_option_bb73c6"
           value="lu"
         >
-          Luxembourg
+          country:lu
         </option>
         <option
           class="_option_bb73c6"
           value="mo"
         >
-          Macao
+          country:mo
         </option>
         <option
           class="_option_bb73c6"
           value="mk"
         >
-          Macedonia
+          country:mk
         </option>
         <option
           class="_option_bb73c6"
           value="mg"
         >
-          Madagascar
+          country:mg
         </option>
         <option
           class="_option_bb73c6"
           value="mw"
         >
-          Malawi
+          country:mw
         </option>
         <option
           class="_option_bb73c6"
           value="my"
         >
-          Malaysia
+          country:my
         </option>
         <option
           class="_option_bb73c6"
           value="mv"
         >
-          Maldives
+          country:mv
         </option>
         <option
           class="_option_bb73c6"
           value="ml"
         >
-          Mali
+          country:ml
         </option>
         <option
           class="_option_bb73c6"
           value="mt"
         >
-          Malta
+          country:mt
         </option>
         <option
           class="_option_bb73c6"
           value="mh"
         >
-          Marshall Islands
+          country:mh
         </option>
         <option
           class="_option_bb73c6"
           value="mq"
         >
-          Martinique
+          country:mq
         </option>
         <option
           class="_option_bb73c6"
           value="mr"
         >
-          Mauritania
+          country:mr
         </option>
         <option
           class="_option_bb73c6"
           value="mu"
         >
-          Mauritius
+          country:mu
         </option>
         <option
           class="_option_bb73c6"
           value="yt"
         >
-          Mayotte
+          country:yt
         </option>
         <option
           class="_option_bb73c6"
           value="mx"
         >
-          Mexico
+          country:mx
         </option>
         <option
           class="_option_bb73c6"
           value="fm"
         >
-          Micronesia, Federated States of
+          country:fm
         </option>
         <option
           class="_option_bb73c6"
           value="md"
         >
-          Moldova, Republic of
+          country:md
         </option>
         <option
           class="_option_bb73c6"
           value="mc"
         >
-          Monaco
+          country:mc
         </option>
         <option
           class="_option_bb73c6"
           value="mn"
         >
-          Mongolia
+          country:mn
         </option>
         <option
           class="_option_bb73c6"
           value="me"
         >
-          Montenegro
+          country:me
         </option>
         <option
           class="_option_bb73c6"
           value="ms"
         >
-          Montserrat
+          country:ms
         </option>
         <option
           class="_option_bb73c6"
           value="ma"
         >
-          Morocco
+          country:ma
         </option>
         <option
           class="_option_bb73c6"
           value="mz"
         >
-          Mozambique
+          country:mz
         </option>
         <option
           class="_option_bb73c6"
           value="mm"
         >
-          Myanmar
+          country:mm
         </option>
         <option
           class="_option_bb73c6"
           value="na"
         >
-          Namibia
+          country:na
         </option>
         <option
           class="_option_bb73c6"
           value="nr"
         >
-          Nauru
+          country:nr
         </option>
         <option
           class="_option_bb73c6"
           value="np"
         >
-          Nepal
+          country:np
         </option>
         <option
           class="_option_bb73c6"
           value="nl"
         >
-          Netherlands
+          country:nl
         </option>
         <option
           class="_option_bb73c6"
           value="nc"
         >
-          New Caledonia
+          country:nc
         </option>
         <option
           class="_option_bb73c6"
           value="nz"
         >
-          New Zealand
+          country:nz
         </option>
         <option
           class="_option_bb73c6"
           value="ni"
         >
-          Nicaragua
+          country:ni
         </option>
         <option
           class="_option_bb73c6"
           value="ne"
         >
-          Niger
+          country:ne
         </option>
         <option
           class="_option_bb73c6"
           value="ng"
         >
-          Nigeria
+          country:ng
         </option>
         <option
           class="_option_bb73c6"
           value="nu"
         >
-          Niue
+          country:nu
         </option>
         <option
           class="_option_bb73c6"
           value="nf"
         >
-          Norfolk Island
+          country:nf
         </option>
         <option
           class="_option_bb73c6"
           value="mp"
         >
-          Northern Mariana Islands
+          country:mp
         </option>
         <option
           class="_option_bb73c6"
           value="no"
         >
-          Norway
+          country:no
         </option>
         <option
           class="_option_bb73c6"
           value="om"
         >
-          Oman
+          country:om
         </option>
         <option
           class="_option_bb73c6"
           value="pk"
         >
-          Pakistan
+          country:pk
         </option>
         <option
           class="_option_bb73c6"
           value="pw"
         >
-          Palau
+          country:pw
         </option>
         <option
           class="_option_bb73c6"
           value="ps"
         >
-          Palestine, State of
+          country:ps
         </option>
         <option
           class="_option_bb73c6"
           value="pa"
         >
-          Panama
+          country:pa
         </option>
         <option
           class="_option_bb73c6"
           value="pg"
         >
-          Papua New Guinea
+          country:pg
         </option>
         <option
           class="_option_bb73c6"
           value="py"
         >
-          Paraguay
+          country:py
         </option>
         <option
           class="_option_bb73c6"
           value="pe"
         >
-          Peru
+          country:pe
         </option>
         <option
           class="_option_bb73c6"
           value="ph"
         >
-          Philippines
+          country:ph
         </option>
         <option
           class="_option_bb73c6"
           value="pn"
         >
-          Pitcairn
+          country:pn
         </option>
         <option
           class="_option_bb73c6"
           value="pl"
         >
-          Poland
+          country:pl
         </option>
         <option
           class="_option_bb73c6"
           value="pt"
         >
-          Portugal
+          country:pt
         </option>
         <option
           class="_option_bb73c6"
           value="pr"
         >
-          Puerto Rico
+          country:pr
         </option>
         <option
           class="_option_bb73c6"
           value="qa"
         >
-          Qatar
+          country:qa
         </option>
         <option
           class="_option_bb73c6"
           value="re"
         >
-          Réunion
+          country:re
         </option>
         <option
           class="_option_bb73c6"
           value="ro"
         >
-          Romania
+          country:ro
         </option>
         <option
           class="_option_bb73c6"
           value="ru"
         >
-          Russian Federation
+          country:ru
         </option>
         <option
           class="_option_bb73c6"
           value="rw"
         >
-          Rwanda
+          country:rw
         </option>
         <option
           class="_option_bb73c6"
           value="bl"
         >
-          Saint Barthélemy
+          country:bl
         </option>
         <option
           class="_option_bb73c6"
           value="sh"
         >
-          Saint Helena, Ascension and Tristan da Cunha
+          country:sh
         </option>
         <option
           class="_option_bb73c6"
           value="kn"
         >
-          Saint Kitts and Nevis
+          country:kn
         </option>
         <option
           class="_option_bb73c6"
           value="lc"
         >
-          Saint Lucia
+          country:lc
         </option>
         <option
           class="_option_bb73c6"
           value="mf"
         >
-          Saint Martin (French part)
+          country:mf
         </option>
         <option
           class="_option_bb73c6"
           value="pm"
         >
-          Saint Pierre and Miquelon
+          country:pm
         </option>
         <option
           class="_option_bb73c6"
           value="vc"
         >
-          Saint Vincent and the Grenadines
+          country:vc
         </option>
         <option
           class="_option_bb73c6"
           value="ws"
         >
-          Samoa
+          country:ws
         </option>
         <option
           class="_option_bb73c6"
           value="sm"
         >
-          San Marino
+          country:sm
         </option>
         <option
           class="_option_bb73c6"
           value="st"
         >
-          Sao Tome and Principe
+          country:st
         </option>
         <option
           class="_option_bb73c6"
           value="sa"
         >
-          Saudi Arabia
+          country:sa
         </option>
         <option
           class="_option_bb73c6"
           value="sn"
         >
-          Senegal
+          country:sn
         </option>
         <option
           class="_option_bb73c6"
           value="rs"
         >
-          Serbia
+          country:rs
         </option>
         <option
           class="_option_bb73c6"
           value="sc"
         >
-          Seychelles
+          country:sc
         </option>
         <option
           class="_option_bb73c6"
           value="sl"
         >
-          Sierra Leone
+          country:sl
         </option>
         <option
           class="_option_bb73c6"
           value="sg"
         >
-          Singapore
+          country:sg
         </option>
         <option
           class="_option_bb73c6"
           value="sx"
         >
-          Sint Maarten (Dutch part)
+          country:sx
         </option>
         <option
           class="_option_bb73c6"
           value="sk"
         >
-          Slovakia
+          country:sk
         </option>
         <option
           class="_option_bb73c6"
           value="si"
         >
-          Slovenia
+          country:si
         </option>
         <option
           class="_option_bb73c6"
           value="sb"
         >
-          Solomon Islands
+          country:sb
         </option>
         <option
           class="_option_bb73c6"
           value="so"
         >
-          Somalia
+          country:so
         </option>
         <option
           class="_option_bb73c6"
           value="za"
         >
-          South Africa
+          country:za
         </option>
         <option
           class="_option_bb73c6"
           value="gs"
         >
-          South Georgia and the South Sandwich Islands
+          country:gs
         </option>
         <option
           class="_option_bb73c6"
           value="ss"
         >
-          South Sudan
+          country:ss
         </option>
         <option
           class="_option_bb73c6"
           value="es"
         >
-          Spain
+          country:es
         </option>
         <option
           class="_option_bb73c6"
           value="lk"
         >
-          Sri Lanka
+          country:lk
         </option>
         <option
           class="_option_bb73c6"
           value="sd"
         >
-          Sudan
+          country:sd
         </option>
         <option
           class="_option_bb73c6"
           value="sr"
         >
-          SuridisplayName
+          country:sr
         </option>
         <option
           class="_option_bb73c6"
           value="sj"
         >
-          Svalbard and Jan Mayen
+          country:sj
         </option>
         <option
           class="_option_bb73c6"
           value="sz"
         >
-          Swaziland
+          country:sz
         </option>
         <option
           class="_option_bb73c6"
           value="se"
         >
-          Sweden
+          country:se
         </option>
         <option
           class="_option_bb73c6"
           value="ch"
         >
-          Switzerland
+          country:ch
         </option>
         <option
           class="_option_bb73c6"
           value="sy"
         >
-          Syrian Arab Republic
+          country:sy
         </option>
         <option
           class="_option_bb73c6"
           value="tw"
         >
-          Taiwan, Province of China
+          country:tw
         </option>
         <option
           class="_option_bb73c6"
           value="tj"
         >
-          Tajikistan
+          country:tj
         </option>
         <option
           class="_option_bb73c6"
           value="tz"
         >
-          Tanzania, United Republic of
+          country:tz
         </option>
         <option
           class="_option_bb73c6"
           value="th"
         >
-          Thailand
+          country:th
         </option>
         <option
           class="_option_bb73c6"
           value="tl"
         >
-          Timor-Leste
+          country:tl
         </option>
         <option
           class="_option_bb73c6"
           value="tg"
         >
-          Togo
+          country:tg
         </option>
         <option
           class="_option_bb73c6"
           value="tk"
         >
-          Tokelau
+          country:tk
         </option>
         <option
           class="_option_bb73c6"
           value="to"
         >
-          Tonga
+          country:to
         </option>
         <option
           class="_option_bb73c6"
           value="tt"
         >
-          Trinidad and Tobago
+          country:tt
         </option>
         <option
           class="_option_bb73c6"
           value="tn"
         >
-          Tunisia
+          country:tn
         </option>
         <option
           class="_option_bb73c6"
           value="tr"
         >
-          Turkey
+          country:tr
         </option>
         <option
           class="_option_bb73c6"
           value="tm"
         >
-          Turkmenistan
+          country:tm
         </option>
         <option
           class="_option_bb73c6"
           value="tc"
         >
-          Turks and Caicos Islands
+          country:tc
         </option>
         <option
           class="_option_bb73c6"
           value="tv"
         >
-          Tuvalu
+          country:tv
         </option>
         <option
           class="_option_bb73c6"
           value="ug"
         >
-          Uganda
+          country:ug
         </option>
         <option
           class="_option_bb73c6"
           value="ua"
         >
-          Ukraine
+          country:ua
         </option>
         <option
           class="_option_bb73c6"
           value="ae"
         >
-          United Arab Emirates
+          country:ae
         </option>
         <option
           class="_option_bb73c6"
           value="gb"
         >
-          United Kingdom
+          country:gb
         </option>
         <option
           class="_option_bb73c6"
           value="us"
         >
-          United States
+          country:us
         </option>
         <option
           class="_option_bb73c6"
           value="um"
         >
-          United States Minor Outlying Islands
+          country:um
         </option>
         <option
           class="_option_bb73c6"
           value="uy"
         >
-          Uruguay
+          country:uy
         </option>
         <option
           class="_option_bb73c6"
           value="uz"
         >
-          Uzbekistan
+          country:uz
         </option>
         <option
           class="_option_bb73c6"
           value="vu"
         >
-          Vanuatu
+          country:vu
         </option>
         <option
           class="_option_bb73c6"
           value="ve"
         >
-          Venezuela, Bolivarian Republic of
+          country:ve
         </option>
         <option
           class="_option_bb73c6"
           value="vn"
         >
-          Viet Nam
+          country:vn
         </option>
         <option
           class="_option_bb73c6"
           value="vg"
         >
-          Virgin Islands, British
+          country:vg
         </option>
         <option
           class="_option_bb73c6"
           value="vi"
         >
-          Virgin Islands, U.S.
+          country:vi
         </option>
         <option
           class="_option_bb73c6"
           value="wf"
         >
-          Wallis and Futuna
+          country:wf
         </option>
         <option
           class="_option_bb73c6"
           value="eh"
         >
-          Western Sahara
+          country:eh
         </option>
         <option
           class="_option_bb73c6"
           value="ye"
         >
-          Yemen
+          country:ye
         </option>
         <option
           class="_option_bb73c6"
           value="zm"
         >
-          Zambia
+          country:zm
         </option>
         <option
           class="_option_bb73c6"
           value="zw"
         >
-          Zimbabwe
+          country:zw
         </option>
       </select>
     </div>
@@ -1656,355 +1656,355 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
           class="_option_bb73c6"
           value="al"
         >
-          Alabama
+          us_state:al
         </option>
         <option
           class="_option_bb73c6"
           value="ak"
         >
-          Alaska
+          us_state:ak
         </option>
         <option
           class="_option_bb73c6"
           value="as"
         >
-          American Samoa
+          us_state:as
         </option>
         <option
           class="_option_bb73c6"
           value="az"
         >
-          Arizona
+          us_state:az
         </option>
         <option
           class="_option_bb73c6"
           value="ar"
         >
-          Arkansas
+          us_state:ar
         </option>
         <option
           class="_option_bb73c6"
           value="ca"
         >
-          California
+          us_state:ca
         </option>
         <option
           class="_option_bb73c6"
           value="co"
         >
-          Colorado
+          us_state:co
         </option>
         <option
           class="_option_bb73c6"
           value="ct"
         >
-          Connecticut
+          us_state:ct
         </option>
         <option
           class="_option_bb73c6"
           value="de"
         >
-          Delaware
+          us_state:de
         </option>
         <option
           class="_option_bb73c6"
           value="dc"
         >
-          District Of Columbia
+          us_state:dc
         </option>
         <option
           class="_option_bb73c6"
           value="fm"
         >
-          Federated States Of Micronesia
+          us_state:fm
         </option>
         <option
           class="_option_bb73c6"
           value="fl"
         >
-          Florida
+          us_state:fl
         </option>
         <option
           class="_option_bb73c6"
           value="ga"
         >
-          Georgia
+          us_state:ga
         </option>
         <option
           class="_option_bb73c6"
           value="gu"
         >
-          Guam
+          us_state:gu
         </option>
         <option
           class="_option_bb73c6"
           value="hi"
         >
-          Hawaii
+          us_state:hi
         </option>
         <option
           class="_option_bb73c6"
           value="id"
         >
-          Idaho
+          us_state:id
         </option>
         <option
           class="_option_bb73c6"
           value="il"
         >
-          Illinois
+          us_state:il
         </option>
         <option
           class="_option_bb73c6"
           value="in"
         >
-          Indiana
+          us_state:in
         </option>
         <option
           class="_option_bb73c6"
           value="ia"
         >
-          Iowa
+          us_state:ia
         </option>
         <option
           class="_option_bb73c6"
           value="ks"
         >
-          Kansas
+          us_state:ks
         </option>
         <option
           class="_option_bb73c6"
           value="ky"
         >
-          Kentucky
+          us_state:ky
         </option>
         <option
           class="_option_bb73c6"
           value="la"
         >
-          Louisiana
+          us_state:la
         </option>
         <option
           class="_option_bb73c6"
           value="me"
         >
-          Maine
+          us_state:me
         </option>
         <option
           class="_option_bb73c6"
           value="mh"
         >
-          Marshall Islands
+          us_state:mh
         </option>
         <option
           class="_option_bb73c6"
           value="md"
         >
-          Maryland
+          us_state:md
         </option>
         <option
           class="_option_bb73c6"
           value="ma"
         >
-          Massachusetts
+          us_state:ma
         </option>
         <option
           class="_option_bb73c6"
           value="mi"
         >
-          Michigan
+          us_state:mi
         </option>
         <option
           class="_option_bb73c6"
           value="mn"
         >
-          Minnesota
+          us_state:mn
         </option>
         <option
           class="_option_bb73c6"
           value="ms"
         >
-          Mississippi
+          us_state:ms
         </option>
         <option
           class="_option_bb73c6"
           value="mo"
         >
-          Missouri
+          us_state:mo
         </option>
         <option
           class="_option_bb73c6"
           value="mt"
         >
-          Montana
+          us_state:mt
         </option>
         <option
           class="_option_bb73c6"
           value="ne"
         >
-          Nebraska
+          us_state:ne
         </option>
         <option
           class="_option_bb73c6"
           value="nv"
         >
-          Nevada
+          us_state:nv
         </option>
         <option
           class="_option_bb73c6"
           value="nh"
         >
-          New Hampshire
+          us_state:nh
         </option>
         <option
           class="_option_bb73c6"
           value="nj"
         >
-          New Jersey
+          us_state:nj
         </option>
         <option
           class="_option_bb73c6"
           value="nm"
         >
-          New Mexico
+          us_state:nm
         </option>
         <option
           class="_option_bb73c6"
           value="ny"
         >
-          New York
+          us_state:ny
         </option>
         <option
           class="_option_bb73c6"
           value="nc"
         >
-          North Carolina
+          us_state:nc
         </option>
         <option
           class="_option_bb73c6"
           value="nd"
         >
-          North Dakota
+          us_state:nd
         </option>
         <option
           class="_option_bb73c6"
           value="mp"
         >
-          Northern Mariana Islands
+          us_state:mp
         </option>
         <option
           class="_option_bb73c6"
           value="oh"
         >
-          Ohio
+          us_state:oh
         </option>
         <option
           class="_option_bb73c6"
           value="ok"
         >
-          Oklahoma
+          us_state:ok
         </option>
         <option
           class="_option_bb73c6"
           value="or"
         >
-          Oregon
+          us_state:or
         </option>
         <option
           class="_option_bb73c6"
           value="pw"
         >
-          Palau
+          us_state:pw
         </option>
         <option
           class="_option_bb73c6"
           value="pa"
         >
-          Pennsylvania
+          us_state:pa
         </option>
         <option
           class="_option_bb73c6"
           value="pr"
         >
-          Puerto Rico
+          us_state:pr
         </option>
         <option
           class="_option_bb73c6"
           value="ri"
         >
-          Rhode Island
+          us_state:ri
         </option>
         <option
           class="_option_bb73c6"
           value="sc"
         >
-          South Carolina
+          us_state:sc
         </option>
         <option
           class="_option_bb73c6"
           value="sd"
         >
-          South Dakota
+          us_state:sd
         </option>
         <option
           class="_option_bb73c6"
           value="tn"
         >
-          Tennessee
+          us_state:tn
         </option>
         <option
           class="_option_bb73c6"
           value="tx"
         >
-          Texas
+          us_state:tx
         </option>
         <option
           class="_option_bb73c6"
           value="ut"
         >
-          Utah
+          us_state:ut
         </option>
         <option
           class="_option_bb73c6"
           value="vt"
         >
-          Vermont
+          us_state:vt
         </option>
         <option
           class="_option_bb73c6"
           value="vi"
         >
-          Virgin Islands
+          us_state:vi
         </option>
         <option
           class="_option_bb73c6"
           value="va"
         >
-          Virginia
+          us_state:va
         </option>
         <option
           class="_option_bb73c6"
           value="wa"
         >
-          Washington
+          us_state:wa
         </option>
         <option
           class="_option_bb73c6"
           value="wv"
         >
-          West Virginia
+          us_state:wv
         </option>
         <option
           class="_option_bb73c6"
           value="wi"
         >
-          Wisconsin
+          us_state:wi
         </option>
         <option
           class="_option_bb73c6"
           value="wy"
         >
-          Wyoming
+          us_state:wy
         </option>
       </select>
     </div>
