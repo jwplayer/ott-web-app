@@ -32,11 +32,7 @@ const CreateProfile = () => {
     avatar_url: avatarUrl,
     pin: undefined,
   };
-
-  useEffect(() => {
-    setAvatarUrl(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
-  }, [setAvatarUrl]);
-
+  
   const createProfileHandler: UseFormOnSubmitHandler<ProfileFormValues> = async (formData, { setSubmitting, setErrors }) => {
     try {
       const profile = (
