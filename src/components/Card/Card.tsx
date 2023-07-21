@@ -43,7 +43,7 @@ function Card({
   isLocked = true,
   currentLabel,
 }: CardProps): JSX.Element {
-  const { title, duration, episodeNumber, seasonNumber, shelfImage: image, mediaStatus, scheduledStart } = item;
+  const { title, duration, episodeNumber, seasonNumber, cardImage: image, mediaStatus, scheduledStart } = item;
   const {
     t,
     i18n: { language },

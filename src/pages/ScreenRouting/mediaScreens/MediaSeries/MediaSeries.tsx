@@ -91,7 +91,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     [seriesMedia, series, episodes],
   );
   const episodesInSeason = getEpisodesInSeason(episodeMetadata, series);
-  const { data: nextItem } = useNextEpisode({ series, episodeMetadata, episodeId: episode?.mediaid || firstEpisode?.mediaid });
+  const { data: nextItem } = useNextEpisode({ series, episodeId: episode?.mediaid || firstEpisode?.mediaid });
 
   // Watch history
   const watchHistoryArray = useWatchHistoryStore((state) => state.watchHistory);

@@ -119,9 +119,3 @@ It is recommended that this value be provided via a .env.local file or a github 
 
 If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey).
 Keep in mind, if the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey) is provided, it will be used even if the `APP_PLAYER_LICENSE_KEY` environment variable is set.
-
-### APP_GITHUB_PUBLIC_BASE_URL
-
-This value is used to set the URL of links in the app correctly when running on [github pages](easy-deployments.md#github-pages).
-By default, if `APP_GITHUB_PUBLIC_BASE_URL` is empty, the value will be based on the `git remote get-url origin` command.
-You can also pass your own `APP_GITHUB_PUBLIC_BASE_URL` envvar by running `APP_GITHUB_PUBLIC_BASE_URL=/my-base/ yarn deploy:github`.

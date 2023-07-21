@@ -172,9 +172,9 @@ const ChooseOfferForm: React.FC<Props> = ({
           </label>
         </div>
       )}
-      <div className={styles.offers}>{offers.map(renderOfferBox)}</div>
+      {<div className={styles.offers}>{!offers.length ? <p>{t('choose_offer.no_pricing_available')}</p> : offers.map(renderOfferBox)}</div>}
       {submitting && <LoadingOverlay transparentBackground inline />}
-      <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
+      <Button label={t('choose_offer.continue')} disabled={submitting || !offers.length} variant="contained" color="primary" type="submit" fullWidth />
     </form>
   );
 };

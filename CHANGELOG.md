@@ -1,3 +1,64 @@
+## [4.23.2](https://github.com/jwplayer/ott-web-app/compare/v4.23.1...v4.23.2) (2023-07-06)
+
+
+### Bug Fixes
+
+* **deps:** bump @sideway/formula from 3.0.0 to 3.0.1 ([#309](https://github.com/jwplayer/ott-web-app/issues/309)) ([8dbb314](https://github.com/jwplayer/ott-web-app/commit/8dbb3145a866237b9cb07e2e61caf69bac2a1d55))
+
+
+
+## [4.23.1](https://github.com/jwplayer/ott-web-app/compare/v4.23.0...v4.23.1) (2023-07-06)
+
+
+### Bug Fixes
+
+* **project:** add meta tag for GA ([#330](https://github.com/jwplayer/ott-web-app/issues/330)) ([87db5f9](https://github.com/jwplayer/ott-web-app/commit/87db5f9a5dc2ab42117267933b5a914825a756bb))
+
+
+
+# [4.23.0](https://github.com/jwplayer/ott-web-app/compare/v4.22.0...v4.23.0) (2023-07-06)
+
+
+### Features
+
+* av ([743af3e](https://github.com/jwplayer/ott-web-app/commit/743af3e4b855fed61178f2b8f52757edeb944e6f))
+* code cleanup ([13a1e21](https://github.com/jwplayer/ott-web-app/commit/13a1e2120adf9486fb4e34b8544726811331c4c3))
+* comment fix ([6ab4dcb](https://github.com/jwplayer/ott-web-app/commit/6ab4dcbff33f95539cbf8c20fc18b67976463f07))
+* fix vite config definition ([2d772ed](https://github.com/jwplayer/ott-web-app/commit/2d772ed52ae835485fe48ffc4a0b3352ab9edcb5))
+* oiid for analytics ([898f94a](https://github.com/jwplayer/ott-web-app/commit/898f94a6683dfcc18020deef90fc8a1bc987b6b3))
+* update docs ([1fa1bcf](https://github.com/jwplayer/ott-web-app/commit/1fa1bcf093ff24514ead4e2a4ae943badf6f0871))
+
+
+
+# [4.22.0](https://github.com/jwplayer/ott-web-app/compare/v4.21.0...v4.22.0) (2023-07-05)
+
+
+### Features
+
+* **project:** remove github pages ([a83bfe9](https://github.com/jwplayer/ott-web-app/commit/a83bfe9ac5087def6d46bebce2b226ec80313cbf))
+* **project:** remove hash routing ([91acf86](https://github.com/jwplayer/ott-web-app/commit/91acf86508b9b93fbb7ef965b12aa05ac8e5b246))
+
+
+
+# [4.21.0](https://github.com/jwplayer/ott-web-app/compare/v4.20.0...v4.21.0) (2023-07-05)
+
+
+### Features
+
+* **project:** test cases for analytics ([2abf28b](https://github.com/jwplayer/ott-web-app/commit/2abf28b88cb716efb33ac154e375285c307e7246))
+* **project:** test cases for analytics ([41f900d](https://github.com/jwplayer/ott-web-app/commit/41f900d88361b862048e281e00ffe27fc5ec7c04))
+
+
+
+# [4.20.0](https://github.com/jwplayer/ott-web-app/compare/v4.19.1...v4.20.0) (2023-07-04)
+
+
+### Features
+
+* **project:** add variable for GA ([fa0e0d7](https://github.com/jwplayer/ott-web-app/commit/fa0e0d75e20ea506bb2ebde92f9744e1645cab16))
+
+
+
 ## [4.19.1](https://github.com/jwplayer/ott-web-app/compare/v4.19.0...v4.19.1) (2023-06-20)
 
 

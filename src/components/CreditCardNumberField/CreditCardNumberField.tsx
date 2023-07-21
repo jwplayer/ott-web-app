@@ -5,8 +5,6 @@ import TextField from '../TextField/TextField';
 
 import styles from './CreditCardNumberField.module.scss';
 
-import { getPublicUrl } from '#src/utils/domHelpers';
-
 type Props = {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -15,15 +13,15 @@ type Props = {
 };
 
 const cardIssuers: { [key: string]: string } = {
-  visa: getPublicUrl('/images/payments/visa.svg'),
-  mastercard: getPublicUrl('/images/payments/mastercard.svg'),
-  maestro: getPublicUrl('/images/payments/maestro.svg'),
-  amex: getPublicUrl('/images/payments/amex.svg'),
-  discover: getPublicUrl('/images/payments/discover.svg'),
-  diners: getPublicUrl('/images/payments/diners.svg'),
-  dinersclub: getPublicUrl('/images/payments/diners.svg'),
-  unionpay: getPublicUrl('/images/payments/unionpay.svg'),
-  hiper: getPublicUrl('/images/payments/hiper.svg'),
+  visa: '/images/payments/visa.svg',
+  mastercard: '/images/payments/mastercard.svg',
+  maestro: '/images/payments/maestro.svg',
+  amex: '/images/payments/amex.svg',
+  discover: '/images/payments/discover.svg',
+  diners: '/images/payments/diners.svg',
+  dinersclub: '/images/payments/diners.svg',
+  unionpay: '/images/payments/unionpay.svg',
+  hiper: '/images/payments/hiper.svg',
 };
 
 const CreditCardNumberField: React.FC<Props> = ({ value, error, onChange, onBlur, ...props }: Props) => {

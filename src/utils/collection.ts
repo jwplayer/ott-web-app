@@ -40,18 +40,9 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
         feedid: '',
         image: '',
         images: [],
-        shelfImage: {
-          image: '',
-          fallbackImage: '',
-        },
-        backgroundImage: {
-          image: '',
-          fallbackImage: '',
-        },
-        channelLogoImage: {
-          image: '',
-          fallbackImage: '',
-        },
+        cardImage: '',
+        backgroundImage: '',
+        channelLogoImage: '',
         link: '',
         genre: '',
         mediaid: `placeholder_${index}`,
