@@ -44,7 +44,7 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
   });
 
   const { handleSubmit, handleChange, values, errors, submitting, setValue } = useForm(initialValues, formHandler, validationSchema);
-
+  const isDirty = Object.entries(values).some(([k, v]) => v !== initialValues[k as keyof typeof initialValues]);
   useEffect(() => {
     setValue('avatar_url', selectedAvatar?.value || profile?.avatar_url || '');
   }, [profile?.avatar_url, selectedAvatar?.value, setValue]);
@@ -104,7 +104,7 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
           </div>
         </div>
         <>
-          <Button type="submit" label={t('account.save')} variant="outlined" disabled={submitting} />
+          <Button type="submit" label={t('account.save')} variant="outlined" disabled={!isDirty || submitting} />
           {showCancelButton && <Button onClick={() => navigate('/u/profiles')} label={t('account.cancel')} variant="text" />}
         </>
       </div>

@@ -57,7 +57,7 @@ const Root: FC = () => {
 
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
   if (userData.loading || settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
-    return <LoadingOverlay />;
+    return <LoadingOverlay profileImageUrl={userData.profile?.avatar_url} />;
   }
 
   if (userData.canManageProfiles && userData.user && !userData.profile && !location.pathname.includes('/u/profiles')) {
