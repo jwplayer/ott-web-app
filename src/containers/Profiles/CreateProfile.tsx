@@ -32,7 +32,7 @@ const CreateProfile = () => {
     avatar_url: avatarUrl,
     pin: undefined,
   };
-  
+
   const createProfileHandler: UseFormOnSubmitHandler<ProfileFormValues> = async (formData, { setSubmitting, setErrors }) => {
     try {
       const profile = (

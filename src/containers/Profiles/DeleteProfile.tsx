@@ -62,7 +62,7 @@ const DeleteProfile = () => {
           </div>
           <div className={styles.deleteButtons}>
             <Button label="Delete" color="delete" variant="contained" onClick={deleteHandler} />
-            <Button className={styles.cancelButton} label="Cancel" variant="outlined" onClick={closeHandler} />
+            <Button label="Cancel" variant="outlined" onClick={closeHandler} />
           </div>
         </div>
       </Dialog>
