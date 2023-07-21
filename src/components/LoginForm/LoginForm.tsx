@@ -27,15 +27,32 @@ type Props = {
   values: LoginFormData;
   submitting: boolean;
   siteName?: string;
+  messageKey?: string;
 };
 
-const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName }: Props) => {
+export const simultaneousLoginWarningKey = 'simultaneous_logins';
+
+const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName, messageKey }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
   const { t } = useTranslation('account');
   const location = useLocation();
 
+  const getTranslatedErrorMessage = (messageId: string | undefined) => {
+    switch (messageId) {
+      case simultaneousLoginWarningKey:
+        return t('login.simultaneous_logins');
+    }
+    return t('login.unexpected_error');
+  };
+
   return (
     <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
+      {messageKey && (
+        <div className={styles.top}>
+          <FormFeedback variant="warning">{getTranslatedErrorMessage(messageKey)}</FormFeedback>
+        </div>
+      )}
+
       <SocialButtonsList />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}

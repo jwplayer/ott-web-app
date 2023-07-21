@@ -2,6 +2,7 @@ import { logout, reloadActiveSubscription } from './AccountController';
 
 import useService from '#src/hooks/useService';
 import { addQueryParams } from '#src/utils/formatting';
+import { simultaneousLoginWarningKey } from '#src/components/LoginForm/LoginForm';
 
 export enum NotificationsTypes {
   ACCESS_GRANTED = 'access.granted',
@@ -23,12 +24,6 @@ export const subscribeToNotifications = async (uuid: string = '') => {
           case NotificationsTypes.SUBSCRIBE_FAILED:
             window.location.href = addQueryParams(window.location.href, { u: 'payment-error', message: notification.resource?.message });
             break;
-          case NotificationsTypes.ACCOUNT_LOGOUT:
-            await logout();
-            if (notification.resource?.reason === 'sessions_limit') {
-              window.location.href = addQueryParams(window.location.href, { u: 'simultaneous-logins' });
-            }
-            break;
           case NotificationsTypes.ACCESS_GRANTED:
             await reloadActiveSubscription();
             window.location.href = addQueryParams(window.location.href, { u: 'welcome' });
@@ -39,6 +34,13 @@ export const subscribeToNotifications = async (uuid: string = '') => {
           case NotificationsTypes.CARD_REQUIRES_ACTION:
           case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:
             window.location.href = notification.resource?.redirect_to_url;
+            break;
+          case NotificationsTypes.ACCOUNT_LOGOUT:
+            if (notification.resource?.reason === 'sessions_limit') {
+              window.location.href = addQueryParams(window.location.href, { u: 'login', message: simultaneousLoginWarningKey });
+            } else {
+              await logout();
+            }
             break;
           default:
             break;
