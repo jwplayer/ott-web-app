@@ -56,7 +56,7 @@ function CardGrid({
   onCardHover,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
-  const posterAspect = parseAspectRatio(playlist.shelfImageAspectRatio);
+  const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
   const visibleTiles = cols[breakpoint] + parseTilesDelta(posterAspect);
   const [rowCount, setRowCount] = useState(INITIAL_ROW_COUNT);
 
