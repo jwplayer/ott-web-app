@@ -77,7 +77,7 @@ function CardGrid({
         <div role="cell">
           <Card
             progress={watchHistory ? watchHistory[mediaid] : undefined}
-            redirectUrl={url}
+            url={url}
             onClick={() => onCardClick(playlistItem, playlistItem.feedid)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}

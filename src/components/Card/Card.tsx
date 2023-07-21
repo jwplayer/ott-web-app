@@ -29,7 +29,7 @@ type CardProps = {
   isCurrent?: boolean;
   isLocked?: boolean;
   currentLabel?: string;
-  redirectUrl?: string;
+  url?: string;
 };
 
 function Card({
@@ -44,7 +44,7 @@ function Card({
   isCurrent = false,
   isLocked = true,
   currentLabel,
-  redirectUrl,
+  url,
 }: CardProps): JSX.Element {
   const { title, duration, episodeNumber, seasonNumber, cardImage: image, mediaStatus, scheduledStart } = item;
   const {
@@ -90,7 +90,7 @@ function Card({
 
   return (
     <Link
-      to={redirectUrl ?? ''}
+      to={url ?? ''}
       className={cardClassName}
       onClick={onClick}
       onMouseEnter={onHover}
