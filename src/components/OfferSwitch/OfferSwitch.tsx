@@ -17,7 +17,7 @@ type OfferSwitchProps = {
 };
 
 const OfferSwitch = ({ isCurrentOffer, pendingDowngradeOfferId, offer, selected, onChange, expiresAt }: OfferSwitchProps) => {
-  const { t, i18n } = useTranslation('user');
+  const { t, i18n } = useTranslation(['user', 'account']);
   const { customerPriceInclTax, customerCurrency, period } = offer;
 
   const isPendingDowngrade = pendingDowngradeOfferId === offer.offerId;
@@ -28,28 +28,25 @@ const OfferSwitch = ({ isCurrentOffer, pendingDowngradeOfferId, offer, selected,
       <div className={styles.offerSwitchInfoContainer}>
         {(isCurrentOffer || isPendingDowngrade) && (
           <div className={classNames(styles.currentPlanHeading, { [styles.activeCurrentPlanHeading]: selected })}>
-            {isCurrentOffer && t('payment.current_plan').toUpperCase()}
-            {isPendingDowngrade && t('payment.pending_downgrade').toUpperCase()}
+            {isCurrentOffer && t('user:payment.current_plan').toUpperCase()}
+            {isPendingDowngrade && t('user:payment.pending_downgrade').toUpperCase()}
           </div>
         )}
         <div className={styles.offerSwitchPlanContainer}>
-          <div>{t(`payment.${period === 'month' ? 'monthly' : 'annual'}_subscription`)}</div>
+          <div>{t(`user:payment.${period === 'month' ? 'monthly' : 'annual'}_subscription`)}</div>
           {(isCurrentOffer || isPendingDowngrade) && expiresAt && (
             <div className={styles.nextBillingDate}>
               {isCurrentOffer &&
                 !pendingDowngradeOfferId &&
-                t('payment.next_billing_date_on', { date: formatLocalizedDate(new Date(expiresAt * 1000), i18n.language) })}
-              {isPendingDowngrade && t('payment.downgrade_on', { date: formatLocalizedDate(new Date(expiresAt * 1000), i18n.language) })}
+                t('user:payment.next_billing_date_on', { date: formatLocalizedDate(new Date(expiresAt * 1000), i18n.language) })}
+              {isPendingDowngrade && t('user:payment.downgrade_on', { date: formatLocalizedDate(new Date(expiresAt * 1000), i18n.language) })}
             </div>
           )}
         </div>
       </div>
       <div className={styles.price}>
         {formatPrice(customerPriceInclTax, customerCurrency, undefined)}
-        {
-          //todo: i18n
-        }
-        <span className={styles.paymentFrequency}>/{period === 'month' ? 'month' : 'year'}</span>
+        <span className={styles.paymentFrequency}>/{t(`account:periods.${period}_one`)}</span>
       </div>
     </div>
   );
