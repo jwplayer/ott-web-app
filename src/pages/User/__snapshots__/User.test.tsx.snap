@@ -389,7 +389,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                 role="cell"
               >
                 <a
-                  aria-label="play_item"
+                  aria-label="Fav 1"
                   class="_card_d75732"
                   href="/m/aaabbbcc/fav-1?r=abcdffff"
                   role="button"
@@ -432,7 +432,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                 role="cell"
               >
                 <a
-                  aria-label="play_item"
+                  aria-label="Big Buck Bunny"
                   class="_card_d75732"
                   href="/m/aaabbbcd/big-buck-bunny?r=bbbdddff"
                   role="button"
@@ -475,7 +475,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                 role="cell"
               >
                 <a
-                  aria-label="play_item"
+                  aria-label="My last favorite"
                   class="_card_d75732"
                   href="/m/ggaaccvv/my-last-favorite?r=bbbbbbbb"
                   role="button"

@@ -97,7 +97,7 @@ function Card({
       tabIndex={disabled ? -1 : 0}
       onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()}
       role="button"
-      aria-label={t('play_item', { title })}
+      aria-label={title}
     >
       <div className={posterClassNames}>
         <Image className={posterImageClassNames} image={image} width={featured ? 640 : 320} onLoad={() => setImageLoaded(true)} alt={title} />

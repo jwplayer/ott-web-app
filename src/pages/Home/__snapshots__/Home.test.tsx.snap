@@ -35,7 +35,7 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="play_item"
+                      aria-label="My video"
                       class="_card_d75732"
                       href="/m/abcddabc/my-video"
                       role="button"
@@ -92,7 +92,7 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="play_item"
+                      aria-label="Other Vids"
                       class="_card_d75732"
                       href="/m/zzzaaazz/other-vids"
                       role="button"
@@ -178,7 +178,7 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="play_item"
+                      aria-label="My video"
                       class="_card_d75732"
                       href="/m/abcddabc/my-video"
                       role="button"
@@ -235,7 +235,7 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="play_item"
+                      aria-label="Other Vids"
                       class="_card_d75732"
                       href="/m/zzzaaazz/other-vids"
                       role="button"
