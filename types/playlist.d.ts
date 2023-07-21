@@ -2,11 +2,6 @@ import type { MediaOffer } from '#types/media';
 
 export type GetPlaylistParams = { page_limit?: string; related_media_id?: string; token?: string; search?: string };
 
-export type ImageData = {
-  image: string;
-  fallbackImage?: string;
-};
-
 export type Image = {
   src: string;
   type: string;
@@ -30,9 +25,9 @@ export type PlaylistItem = {
   feedid: string;
   image: string;
   images: Image[];
-  shelfImage?: ImageData;
-  backgroundImage?: ImageData;
-  channelLogoImage?: ImageData;
+  cardImage?: string;
+  backgroundImage?: string;
+  channelLogoImage?: string;
   link: string;
   genre?: string;
   mediaid: string;
@@ -79,5 +74,10 @@ export type Playlist = {
   playlist: PlaylistItem[];
   title: string;
   contentType?: string;
+  /**
+   * @deprecated Use {@link Playlist.cardImageAspectRatio} instead.
+   */
+  shelfImageAspectRatio?: string;
+  cardImageAspectRatio?: string;
   [key: string]: unknown;
 };
