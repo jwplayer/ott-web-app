@@ -91,7 +91,7 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
         <div className={styles.leftColumn}>
           <div className={styles.panel}>
             <div className={profileStyles.avatar}>
-              <h2>{fullName ? t('profile.greeting_with_name', { fullName }) : t('profile.greeting')}</h2>
+              <h2>{fullName ? t('profile.greeting_with_name', { name: fullName }) : t('profile.greeting')}</h2>
               <img src={selectedAvatar || profileDetails?.avatar_url} />
             </div>
           </div>

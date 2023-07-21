@@ -17,7 +17,7 @@ const CreateProfile = () => {
   const navigate = useNavigate();
   const { canManageProfiles } = useAccountStore.getState();
   const [fullName, setFullName] = useState<string>('');
-  const [avatarUrl, setAvatarUrl] = useState<string>('');
+  const [avatarUrl, setAvatarUrl] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
 
   useEffect(() => {
     if (!canManageProfiles) navigate('/');
@@ -25,12 +25,11 @@ const CreateProfile = () => {
 
   // this is only needed so we can set different avatar url which will be temporary
   const listProfiles = useListProfiles();
-  const activeProfiles = listProfiles.data?.responseData.collection?.length || 0;
 
   const initialValues = {
     name: '',
     adult: 'true',
-    avatar_url: '',
+    avatar_url: avatarUrl,
     pin: undefined,
   };
 
@@ -65,7 +64,7 @@ const CreateProfile = () => {
         <div className={styles.panel}>
           <div className={profileStyles.avatar}>
             <h2>Howdy{`${fullName && ','} ${fullName}`}</h2>
-            <img src={avatarUrl || AVATARS[activeProfiles]} />
+            <img src={avatarUrl} />
           </div>
         </div>
       </div>
