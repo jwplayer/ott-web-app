@@ -5,28 +5,35 @@ import LoginForm from './LoginForm';
 
 import { createWrapper, waitForWithFakeTimers } from '#test/testUtils';
 
+vi.mock('../SocialButton/SocialButton.tsx', () => ({
+  default: (props: { href: string }) => {
+    return <a href={props.href}>Social Button</a>;
+  },
+}));
+
+vi.mock('#src/stores/AccountController', async (importOriginal) => {
+  const mod = await importOriginal();
+
+  return {
+    ...(mod as Record<string, unknown>),
+    getSocialLoginUrls: () =>
+      Promise.resolve([
+        {
+          twitter: 'https://staging-v2.inplayer.com/',
+        },
+        {
+          facebook: 'https://www.facebook.com/',
+        },
+        {
+          google: 'https://accounts.google.com/',
+        },
+      ]),
+  };
+});
+
 describe('<LoginForm>', () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    vi.mock('#src/stores/AccountController', async (importOriginal) => {
-      const mod = await importOriginal();
-
-      return {
-        ...(mod as Record<string, unknown>),
-        getSocialLoginUrls: () =>
-          Promise.resolve([
-            {
-              twitter: 'https://staging-v2.inplayer.com/',
-            },
-            {
-              facebook: 'https://www.facebook.com/',
-            },
-            {
-              google: 'https://accounts.google.com/',
-            },
-          ]),
-      };
-    });
   });
 
   test('renders and matches snapshot', async () => {

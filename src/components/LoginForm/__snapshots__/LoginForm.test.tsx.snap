@@ -10,64 +10,19 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
       class="_socialButtonsListContainer_313d0d"
     >
       <a
-        aria-label="login.twitter"
-        class="_socialButtonContainer_b830cd"
         href="https://staging-v2.inplayer.com/"
       >
-        <div
-          class="_socialButtonIconContainer_b830cd"
-        >
-          <img
-            alt="twitter icon"
-            class="_socialButtonIcon_b830cd"
-            src=""
-          />
-        </div>
-        <span
-          class="_socialButtonTextContainer_b830cd"
-        >
-          login.twitter
-        </span>
+        Social Button
       </a>
       <a
-        aria-label="login.facebook"
-        class="_socialButtonContainer_b830cd"
         href="https://www.facebook.com/"
       >
-        <div
-          class="_socialButtonIconContainer_b830cd"
-        >
-          <img
-            alt="facebook icon"
-            class="_socialButtonIcon_b830cd"
-            src=""
-          />
-        </div>
-        <span
-          class="_socialButtonTextContainer_b830cd"
-        >
-          login.facebook
-        </span>
+        Social Button
       </a>
       <a
-        aria-label="login.google"
-        class="_socialButtonContainer_b830cd"
         href="https://accounts.google.com/"
       >
-        <div
-          class="_socialButtonIconContainer_b830cd"
-        >
-          <img
-            alt="google icon"
-            class="_socialButtonIcon_b830cd"
-            src=""
-          />
-        </div>
-        <span
-          class="_socialButtonTextContainer_b830cd"
-        >
-          login.google
-        </span>
+        Social Button
       </a>
     </div>
     <h2
