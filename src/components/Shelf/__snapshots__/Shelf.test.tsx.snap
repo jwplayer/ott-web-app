@@ -34,7 +34,7 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
           </div>
         </div>
         <ul
-          style="transform: translate3d(-200%, 0, 0); transition: transform 0.3s ease; margin-left: -4px; margin-right: -4px;"
+          style="transform: translate3d(-200%, 0, 0); margin-left: -4px; margin-right: -4px;"
         >
           <li
             class="_notInView_22abb0"
