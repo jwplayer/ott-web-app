@@ -11,7 +11,7 @@ jobs:
     outputs:
       output1: ${{ steps.firebase_hosting_preview.outputs.details_url }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build Preview Link
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_preview
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Lighthouse CI
         run: sudo yarn global add @lhci/cli@0.12.x
       - name: Run Lighthouse CI
