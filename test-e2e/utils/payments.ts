@@ -35,7 +35,7 @@ export function formatDate(date: Date) {
   return new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 }
 
-export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date, yearlyPrice: string, providerName?: string) {
+export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date, yearlyPrice: string, hasInlineOfferSwitch: boolean) {
   I.click('Continue');
   I.waitForLoaderDone(longTimeout);
   I.wait(2);
@@ -64,7 +64,7 @@ export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: D
   I.see('/year');
   I.see('Next billing date is on ' + formatDate(billingDate));
 
-  if (providerName?.includes('JW')) {
+  if (hasInlineOfferSwitch) {
     I.waitForElement('[data-testid="change-subscription-button"]', 10);
     I.click('[data-testid="change-subscription-button"]');
   }

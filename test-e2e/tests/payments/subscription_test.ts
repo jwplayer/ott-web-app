@@ -13,6 +13,7 @@ const jwProps: ProviderProps = {
   applicableTax: 0,
   canRenewSubscription: false,
   fieldWrapper: '',
+  hasInlineOfferSwitch: true,
 };
 
 const cleengProps: ProviderProps = {
@@ -24,6 +25,7 @@ const cleengProps: ProviderProps = {
   applicableTax: 21,
   canRenewSubscription: true,
   fieldWrapper: 'iframe',
+  hasInlineOfferSwitch: false,
 };
 
 runTestSuite(jwProps, 'JW Player');
@@ -170,7 +172,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       props.fieldWrapper,
     );
 
-    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, providerName);
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, props.hasInlineOfferSwitch);
 
     I.seeAll(cardInfo);
   });
