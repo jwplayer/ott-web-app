@@ -378,7 +378,7 @@ const stepsObj = {
     scrollToTheRight: boolean = true,
     preOpenCallback?: (locator: string) => void,
   ) {
-    const locator = `//div[@aria-label="Play ${name}"]`;
+    const locator = `//a[@aria-label="${name}"]`;
     const shelfXpath = shelf ? makeShelfXpath(shelf) : undefined;
 
     if (shelfXpath) {
