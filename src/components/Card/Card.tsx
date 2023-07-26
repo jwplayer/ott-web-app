@@ -29,7 +29,7 @@ type CardProps = {
   isCurrent?: boolean;
   isLocked?: boolean;
   currentLabel?: string;
-  url?: string;
+  url: string;
 };
 
 function Card({
@@ -90,7 +90,7 @@ function Card({
 
   return (
     <Link
-      to={url ?? ''}
+      to={disabled ? '/' : url}
       className={cardClassName}
       onClick={onClick}
       onMouseEnter={onHover}
