@@ -11,23 +11,23 @@ const itemWithImage = { title: 'This is a movie', duration: 120, cardImage: 'htt
 
 describe('<Card>', () => {
   it('renders card with video title', () => {
-    const { getByText } = renderWithRouter(<Card item={item} onClick={() => ''} url="" />);
+    const { getByText } = renderWithRouter(<Card item={item} onClick={() => ''} url="https://test.dummy.jwplayer.com" />);
     expect(getByText(/aa/i)).toBeTruthy();
   });
 
   it('renders tag with correct duration', () => {
-    const { getByText } = renderWithRouter(<Card item={item} onClick={() => ''} url="" />);
+    const { getByText } = renderWithRouter(<Card item={item} onClick={() => ''} url="https://test.dummy.jwplayer.com" />);
     expect(getByText(/2/i)).toBeTruthy();
   });
 
   it('renders the image with the image prop when valid', () => {
-    const { getByAltText } = renderWithRouter(<Card item={itemWithImage} onClick={() => ''} url="" />);
+    const { getByAltText } = renderWithRouter(<Card item={itemWithImage} onClick={() => ''} url="https://test.dummy.jwplayer.com" />);
 
     expect(getByAltText('This is a movie')).toHaveAttribute('src', 'http://movie.jpg?width=320');
   });
 
   it('makes the image visible after load', () => {
-    const { getByAltText } = renderWithRouter(<Card item={itemWithImage} onClick={() => ''} url="" />);
+    const { getByAltText } = renderWithRouter(<Card item={itemWithImage} onClick={() => ''} url="https://test.dummy.jwplayer.com" />);
 
     expect(getByAltText('This is a movie')).toHaveAttribute('src', 'http://movie.jpg?width=320');
     expect(getByAltText('This is a movie')).toHaveStyle({ opacity: 0 });
