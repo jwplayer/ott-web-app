@@ -41,12 +41,14 @@ const Search = () => {
     }
   }, [firstRender, query, searchQuery, updateSearchQuery]);
 
-  const onCardClick = () => {
-    useUIStore.setState({
-      searchQuery: '',
-      searchActive: false,
-    });
-  };
+  useEffect(() => {
+    return () => {
+      useUIStore.setState({
+        searchQuery: '',
+        searchActive: false,
+      });
+    };
+  }, []);
 
   if ((error || !playlist) && !isFetching) {
     return (
@@ -85,14 +87,7 @@ const Search = () => {
         <h2>{t('heading')}</h2>
       </header>
       <main className={styles.main}>
-        <CardGrid
-          playlist={playlist}
-          onCardClick={onCardClick}
-          isLoading={firstRender}
-          accessModel={accessModel}
-          isLoggedIn={!!user}
-          hasSubscription={!!subscription}
-        />
+        <CardGrid playlist={playlist} isLoading={firstRender} accessModel={accessModel} isLoggedIn={!!user} hasSubscription={!!subscription} />
       </main>
     </div>
   );
