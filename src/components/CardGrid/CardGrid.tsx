@@ -37,7 +37,7 @@ type CardGridProps = {
   hasLoadMore?: boolean;
   loadMore?: () => void;
   onCardHover?: (item: PlaylistItem) => void;
-  onCardClick: (item: PlaylistItem, playlistId?: string) => void;
+  onCardClick?: (item: PlaylistItem, playlistId?: string) => void;
 };
 
 function CardGrid({
@@ -78,7 +78,7 @@ function CardGrid({
           <Card
             progress={watchHistory ? watchHistory[mediaid] : undefined}
             url={url}
-            onClick={() => onCardClick(playlistItem, playlistItem.feedid)}
+            onClick={() => onCardClick && onCardClick(playlistItem, playlistItem.feedid)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}

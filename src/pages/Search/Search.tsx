@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
@@ -7,11 +7,9 @@ import shallow from 'zustand/shallow';
 import styles from './Search.module.scss';
 
 import { useUIStore } from '#src/stores/UIStore';
-import { mediaURL } from '#src/utils/formatting';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useFirstRender from '#src/hooks/useFirstRender';
-import type { PlaylistItem } from '#types/playlist';
 import useSearchQueryUpdater from '#src/hooks/useSearchQueryUpdater';
 import CardGrid from '#components/CardGrid/CardGrid';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
@@ -25,7 +23,6 @@ const Search = () => {
   const firstRender = useFirstRender();
   const searchQuery = useUIStore((state) => state.searchQuery);
   const { updateSearchQuery } = useSearchQueryUpdater();
-  const navigate = useNavigate();
   const params = useParams();
   const query = params['*'];
   const { isFetching, error, data: playlist } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
@@ -44,13 +41,11 @@ const Search = () => {
     }
   }, [firstRender, query, searchQuery, updateSearchQuery]);
 
-  const onCardClick = (playlistItem: PlaylistItem) => {
+  const onCardClick = () => {
     useUIStore.setState({
       searchQuery: '',
       searchActive: false,
     });
-
-    navigate(mediaURL({ media: playlistItem, playlistId: features?.searchPlaylist }));
   };
 
   if ((error || !playlist) && !isFetching) {

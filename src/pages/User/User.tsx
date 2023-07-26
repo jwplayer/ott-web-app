@@ -6,7 +6,6 @@ import shallow from 'zustand/shallow';
 import styles from './User.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
-import { mediaURL } from '#src/utils/formatting';
 import AccountCircle from '#src/icons/AccountCircle';
 import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
@@ -20,7 +19,6 @@ import Payment from '#components/Payment/Payment';
 import AccountComponent from '#components/Account/Account';
 import Button from '#components/Button/Button';
 import Favorites from '#components/Favorites/Favorites';
-import type { PlaylistItem } from '#types/playlist';
 import { getReceipt, logout } from '#src/stores/AccountController';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
@@ -58,7 +56,6 @@ const User = (): JSX.Element => {
   const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
   const location = useLocation();
 
-  const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await logout();
@@ -154,7 +151,6 @@ const User = (): JSX.Element => {
                         playlist={playlist}
                         error={error}
                         isLoading={isLoading}
-                        onCardClick={onCardClick}
                         onClearFavoritesClick={() => setClearFavoritesOpen(true)}
                         accessModel={accessModel}
                         hasSubscription={!!subscription}

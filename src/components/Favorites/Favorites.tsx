@@ -17,7 +17,6 @@ type Props = {
   isLoading: boolean;
   accessModel: AccessModel;
   hasSubscription: boolean;
-  onCardClick: (item: PlaylistItem) => void;
   onCardHover?: (item: PlaylistItem) => void;
   onClearFavoritesClick: () => void;
 };
@@ -30,7 +29,7 @@ const cols: Breakpoints = {
   [Breakpoint.xl]: 3,
 };
 
-const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, onCardClick, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
+const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
   const { t } = useTranslation('user');
 
   if (isLoading) return <LoadingOverlay />;
@@ -48,7 +47,6 @@ const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, o
       {playlist.playlist.length > 0 ? (
         <CardGrid
           playlist={playlist}
-          onCardClick={onCardClick}
           onCardHover={onCardHover}
           cols={cols}
           isLoading={isLoading}
