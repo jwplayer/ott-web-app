@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 
-import type { PaymentDetail, Subscription, Transaction, UpdateCardDetails, UpdateSubscription } from '#types/subscription';
+import type { ChangeSubscription, PaymentDetail, Subscription, Transaction, UpdateCardDetails, UpdateSubscription } from '#types/subscription';
 import type { Config } from '#types/Config';
 import type { InPlayerError } from '#types/inplayer';
 
@@ -17,6 +17,7 @@ interface SubscriptionDetails extends InplayerSubscription {
   access_type?: {
     period: string;
   };
+  access_fee_id?: number;
 }
 
 export async function getActiveSubscription({ config }: { config: Config }) {
@@ -94,6 +95,18 @@ export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscr
   }
 };
 
+export const changeSubscription: ChangeSubscription = async ({ accessFeeId, subscriptionId }) => {
+  try {
+    const response = await InPlayer.Subscription.changeSubscriptionPlan({ access_fee_id: parseInt(accessFeeId), inplayer_token: subscriptionId });
+    return {
+      errors: [],
+      responseData: { message: response.data.message },
+    };
+  } catch {
+    throw new Error('Failed to change subscription');
+  }
+};
+
 export const updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
   try {
     const response = await InPlayer.Payment.setDefaultCreditCard({ cardName, cardNumber, cvc, expMonth, expYear, currency });
@@ -103,6 +116,7 @@ export const updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumbe
     throw new Error('Failed to update card details');
   }
 };
+
 const formatCardDetails = (card: Card & { card_type: string; account_id: number; currency: string }): PaymentDetail => {
   const { number, exp_month, exp_year, card_name, card_type, account_id, currency } = card;
   const zeroFillExpMonth = `0${exp_month}`.slice(-2);
@@ -150,6 +164,8 @@ const formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: 
   let status = '';
   switch (subscription.action_type) {
     case 'free-trial':
+      status = 'active_trial';
+      break;
     case 'recurrent':
       status = 'active';
       break;
@@ -166,6 +182,7 @@ const formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: 
   return {
     subscriptionId: subscription.subscription_id,
     offerId: subscription.item_id?.toString(),
+    accessFeeId: `S${subscription.access_fee_id}`,
     status,
     expiresAt,
     nextPaymentAt: subscription.next_rebill_date,
