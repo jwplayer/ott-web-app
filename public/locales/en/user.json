@@ -70,9 +70,14 @@
     "billing_history": "Billing history",
     "cancel_subscription": "Cancel subscription",
     "card_number": "Card number",
+    "change_plan": "Change Plan",
+    "change_plan_error": "There was a problem saving your subscription plan change.",
     "change_subscription": "Change subscription",
     "complete_subscription": "Complete subscription",
+    "current_plan": "CURRENT PLAN",
     "daily_subscription": "Daily subscription",
+    "downgrade_on": "Pending downgrade on {{date}}",
+    "downgrade_plan_success": "You've successfully changed the subscription plan. Your new plan will start after the end of the current cycle ({{date}}).",
     "expiry_date": "Expiry date",
     "granted_subscription": "Granted subscription",
     "hidden_transactions_one": "One more transaction",
@@ -85,6 +90,7 @@
     "no_transactions": "No transactions",
     "other": "other",
     "payment_method": "Payment method",
+    "pending_downgrade": "Pending downgrade",
     "pending_offer_switch": "Will update to a \"{{title}}\" after the next billing date",
     "price_paid_with": "{{price}} paid with {{method}}",
     "price_paid_with_card": "Price paid with card",
@@ -95,6 +101,7 @@
     "subscription_details": "Subscription details",
     "subscription_expires_on": "This plan will expire on {{date}}",
     "update_payment_details": "Update payment details",
+    "upgrade_plan_success": "You've successfully changed the subscription plan. You can enjoy your additional benefits immediately.",
     "weekly_subscription": "Weekly subscription"
   }
 }
