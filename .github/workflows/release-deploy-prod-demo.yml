@@ -3,6 +3,7 @@ name: Release - Deploy Prod Demo Site
 on:
   push:
     branches: ['release']
+  workflow_dispatch:
 
 jobs:
   deploy_live_website:

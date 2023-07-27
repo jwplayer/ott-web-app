@@ -7,6 +7,8 @@ on:
     branches: [ 'develop', 'release', 'release-candidate' ]
   schedule:
     - cron: '30 3 * * 1-5'
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
