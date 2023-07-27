@@ -1,4 +1,4 @@
-name: Create Release Candidate Branch
+name: Release - Create Release Candidate Branch
 
 # Triggered manually
 on:
@@ -10,14 +10,13 @@ jobs:
   create-release-branch:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.ACTION_TOKEN }}
           ref: release
       # It would be easier to create the branch from develop,
-      # but unfortunately the script that creates the PR's only considers commits added during the action run 
+      # but unfortunately the script that creates the PR's only considers commits added during the action run
       - name: Merge latest from develop
         run: |
           git config --global user.name 'Release Script'
