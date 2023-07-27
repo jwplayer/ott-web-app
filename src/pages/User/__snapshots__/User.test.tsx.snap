@@ -392,7 +392,6 @@ exports[`User Component tests > Favorites Page 1`] = `
                   aria-label="Fav 1"
                   class="_card_d75732"
                   href="/m/aaabbbcc/fav-1?r=abcdffff"
-                  role="button"
                   tabindex="0"
                 >
                   <div
@@ -435,7 +434,6 @@ exports[`User Component tests > Favorites Page 1`] = `
                   aria-label="Big Buck Bunny"
                   class="_card_d75732"
                   href="/m/aaabbbcd/big-buck-bunny?r=bbbdddff"
-                  role="button"
                   tabindex="0"
                 >
                   <div
@@ -478,7 +476,6 @@ exports[`User Component tests > Favorites Page 1`] = `
                   aria-label="My last favorite"
                   class="_card_d75732"
                   href="/m/ggaaccvv/my-last-favorite?r=bbbbbbbb"
-                  role="button"
                   tabindex="0"
                 >
                   <div

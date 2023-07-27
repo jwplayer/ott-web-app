@@ -95,8 +95,7 @@ function Card({
       onClick={disabled ? (e) => e.preventDefault() : onClick}
       onMouseEnter={onHover}
       tabIndex={disabled ? -1 : 0}
-      onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()}
-      role="button"
+      onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled}
       aria-label={title}
     >
       <div className={posterClassNames}>

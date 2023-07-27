@@ -52,7 +52,6 @@ function CardGrid({
   hasSubscription,
   hasLoadMore,
   loadMore,
-  onCardClick,
   onCardHover,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
@@ -78,7 +77,6 @@ function CardGrid({
           <Card
             progress={watchHistory ? watchHistory[mediaid] : undefined}
             url={url}
-            onClick={() => onCardClick && onCardClick(playlistItem, playlistItem.feedid)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
