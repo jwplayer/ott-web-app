@@ -19,7 +19,6 @@ export type PosterAspectRatio = (typeof cardAspectRatios)[number];
 
 type CardProps = {
   item: PlaylistItem;
-  onClick?: () => void;
   onHover?: () => void;
   progress?: number;
   posterAspect?: PosterAspectRatio;
@@ -33,7 +32,6 @@ type CardProps = {
 };
 
 function Card({
-  onClick,
   onHover,
   progress,
   item,
@@ -92,7 +90,7 @@ function Card({
     <Link
       to={url}
       className={cardClassName}
-      onClick={disabled ? (e) => e.preventDefault() : onClick}
+      onClick={disabled ? (e) => e.preventDefault() : undefined}
       onMouseEnter={onHover}
       tabIndex={disabled ? -1 : 0}
       onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled}
