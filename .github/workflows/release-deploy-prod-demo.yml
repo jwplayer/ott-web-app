@@ -1,4 +1,4 @@
-name: 'Firebase Live'
+name: Release - Deploy Prod Demo Site
 
 on:
   push:

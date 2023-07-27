@@ -1,4 +1,4 @@
-name: Create Release Candidate Branch
+name: Release - Create Release Candidate Branch
 
 # Triggered manually
 on:
