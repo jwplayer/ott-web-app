@@ -1,4 +1,4 @@
-name: Tests - End to End
+name: Test - End to End
 
 on:
   pull_request:
