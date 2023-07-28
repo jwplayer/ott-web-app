@@ -2,13 +2,9 @@ import cleengAuthService from '#src/services/cleeng.auth.service';
 
 export const getBaseUrl = (sandbox: boolean) => (sandbox ? 'https://mediastore-sandbox.cleeng.com' : 'https://mediastore.cleeng.com');
 
-export const performRequest = async (
-  sandbox: boolean,
-  path: string = '/',
-  method = 'GET',
-  body?: string,
-  options: { authenticate?: boolean } = { authenticate: false },
-) => {
+type RequestOptions = { authenticate?: boolean; keepalive?: boolean };
+
+export const performRequest = async (sandbox: boolean, path: string = '/', method = 'GET', body?: string, options: RequestOptions = {}) => {
   try {
     const token = options.authenticate ? await cleengAuthService.getAccessTokenOrThrow() : undefined;
 
@@ -18,6 +14,7 @@ export const performRequest = async (
         'Content-Type': 'application/json',
         Authorization: token ? `Bearer ${token}` : '',
       },
+      keepalive: options.keepalive,
       method,
       body,
     });
@@ -30,10 +27,8 @@ export const performRequest = async (
   }
 };
 
-export const get = (sandbox: boolean, path: string, options?: { authenticate?: boolean }) => performRequest(sandbox, path, 'GET', undefined, options);
-export const patch = (sandbox: boolean, path: string, body?: string, options?: { authenticate?: boolean }) =>
-  performRequest(sandbox, path, 'PATCH', body, options);
-export const put = (sandbox: boolean, path: string, body?: string, options?: { authenticate?: boolean }) => performRequest(sandbox, path, 'PUT', body, options);
-export const post = (sandbox: boolean, path: string, body?: string, options?: { authenticate?: boolean }) =>
-  performRequest(sandbox, path, 'POST', body, options);
-export const remove = (sandbox: boolean, path: string, options?: { authenticate?: boolean }) => performRequest(sandbox, path, 'DELETE', undefined, options);
+export const get = (sandbox: boolean, path: string, options?: RequestOptions) => performRequest(sandbox, path, 'GET', undefined, options);
+export const patch = (sandbox: boolean, path: string, body?: string, options?: RequestOptions) => performRequest(sandbox, path, 'PATCH', body, options);
+export const put = (sandbox: boolean, path: string, body?: string, options?: RequestOptions) => performRequest(sandbox, path, 'PUT', body, options);
+export const post = (sandbox: boolean, path: string, body?: string, options?: RequestOptions) => performRequest(sandbox, path, 'POST', body, options);
+export const remove = (sandbox: boolean, path: string, options?: RequestOptions) => performRequest(sandbox, path, 'DELETE', undefined, options);

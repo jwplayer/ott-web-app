@@ -1,9 +1,10 @@
-import type { DefaultCreditCardData, SetDefaultCard } from '@inplayer-org/inplayer.js';
+import type { DefaultCreditCardData, SetDefaultCard, ChangeSubscriptionPlanRequestBody, ChangeSubscriptionPlanResponse } from '@inplayer-org/inplayer.js';
 // Subscription types
 export type Subscription = {
   subscriptionId: number | string;
   offerId: string;
-  status: 'active' | 'cancelled' | 'expired' | 'terminated';
+  accessFeeId?: string;
+  status: 'active' | 'active_trial' | 'cancelled' | 'expired' | 'terminated';
   expiresAt: number;
   nextPaymentPrice: number;
   nextPaymentCurrency: string;
@@ -122,8 +123,15 @@ export type FetchReceiptPayload = {
 
 export type FetchReceiptResponse = string;
 
+type ChangeSubscriptionPayload = {
+  accessFeeId: string;
+  subscriptionId: string;
+};
+
 type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
 type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
 type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
 type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
 type FetchReceipt = CleengRequest<FetchReceiptPayload, FetchReceiptResponse>;
+
+type ChangeSubscription = EnvironmentServiceRequest<ChangeSubscriptionPayload, ChangeSubscriptionPlanResponse>;
