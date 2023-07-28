@@ -12,12 +12,17 @@ import PayPal from '#components/PayPal/PayPal';
 import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
 import { addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
-import { reloadActiveSubscription } from '#src/stores/AccountController';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '#src/containers/AdyenInitialPayment/AdyenInitialPayment';
+import type AccountController from '#src/controllers/AccountController';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const Checkout = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+
   const location = useLocation();
   const { t } = useTranslation('account');
   const navigate = useNavigate();
@@ -49,7 +54,7 @@ const Checkout = () => {
 
     if (values.couponCode && order) {
       try {
-        await updateOrder(order, paymentMethodId, values.couponCode);
+        await checkoutController.updateOrder(order, paymentMethodId, values.couponCode);
         setCouponCodeApplied(true);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -73,7 +78,7 @@ const Checkout = () => {
     couponCodeForm.setErrors({ couponCode: undefined });
     if (couponCodeForm.values.couponCode && order) {
       try {
-        await updateOrder(order, paymentMethodId, couponCodeForm.values.couponCode);
+        await checkoutController.updateOrder(order, paymentMethodId, couponCodeForm.values.couponCode);
         setCouponCodeApplied(true);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -95,11 +100,11 @@ const Checkout = () => {
       if (offer) {
         setUpdatingOrder(true);
         setCouponCodeApplied(false);
-        const methods = await getPaymentMethods();
+        const methods = await checkoutController.getPaymentMethods();
 
         setPaymentMethodId(methods[0]?.id);
 
-        await createOrder(offer, methods[0]?.id);
+        await checkoutController.createOrder(offer, methods[0]?.id);
 
         setUpdatingOrder(false);
       }
@@ -111,7 +116,7 @@ const Checkout = () => {
 
     // noinspection JSIgnoredPromiseFromCall
     createNewOrder();
-  }, [location, navigate, offer]);
+  }, [location, navigate, offer, checkoutController]);
 
   // clear the order after closing the checkout modal
   useEffect(() => {
@@ -131,7 +136,8 @@ const Checkout = () => {
     if (order && toPaymentMethodId) {
       setUpdatingOrder(true);
       setCouponCodeApplied(false);
-      updateOrder(order, toPaymentMethodId, couponCodeForm.values.couponCode)
+      checkoutController
+        .updateOrder(order, toPaymentMethodId, couponCodeForm.values.couponCode)
         .catch((error: Error) => {
           if (error.message.includes(`Order with id ${order.id}} not found`)) {
             navigate(addQueryParam(location, 'u', 'choose-offer'));
@@ -145,8 +151,8 @@ const Checkout = () => {
     try {
       setUpdatingOrder(true);
       setPaymentError(undefined);
-      await paymentWithoutDetails();
-      await reloadActiveSubscription({ delay: 1000 });
+      await checkoutController.paymentWithoutDetails();
+      await accountController.reloadActiveSubscription({ delay: 1000 });
       navigate(paymentSuccessUrl, { replace: true });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -165,7 +171,7 @@ const Checkout = () => {
       const errorUrl = addQueryParams(window.location.href, { u: 'payment-error' });
       const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
 
-      const response = await paypalPayment(successUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
+      const response = await checkoutController.paypalPayment(successUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
 
       if (response.redirectUrl) {
         window.location.href = response.redirectUrl;

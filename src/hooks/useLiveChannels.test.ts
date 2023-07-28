@@ -1,17 +1,29 @@
 import { describe, expect, test } from 'vitest';
 import { renderHook } from '@testing-library/react-hooks';
 
-import epgService, { EpgChannel } from '#src/services/epg.service';
+import type { EpgChannel } from '#types/epg';
 import useLiveChannels from '#src/hooks/useLiveChannels';
 import { createWrapper } from '#test/testUtils';
 import type { Playlist } from '#types/playlist';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
 import epgChannelsFixture from '#test/fixtures/epgChannels.json';
 import epgChannelsUpdateFixture from '#test/fixtures/epgChannelsUpdate.json';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const livePlaylist: Playlist = livePlaylistFixture;
 const schedule: EpgChannel[] = epgChannelsFixture;
 const scheduleUpdate: EpgChannel[] = epgChannelsUpdateFixture;
+
+const mockSchedule = vi.fn();
+
+vi.mock('#src/ioc/container', () => ({
+  useController: (type: symbol) => {
+    switch (type) {
+      case CONTROLLERS.Epg:
+        return { getSchedules: mockSchedule };
+    }
+  },
+}));
 
 describe('useLiveChannels', () => {
   beforeEach(() => {
@@ -24,7 +36,7 @@ describe('useLiveChannels', () => {
   });
 
   test('gets the date using the EPG service getSchedules method', async () => {
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    const mock = mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, ''), { wrapper: createWrapper() });
 
     // initial empty channels
@@ -44,7 +56,7 @@ describe('useLiveChannels', () => {
   });
 
   test('selects the initial channel based of the initialChannelId', async () => {
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, 'channel2'), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -56,7 +68,7 @@ describe('useLiveChannels', () => {
   test('selects the live program of the current channel', async () => {
     vi.setSystemTime(new Date('2022-07-15T10:45:00Z'));
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -68,7 +80,7 @@ describe('useLiveChannels', () => {
   test('updates the program automatically when no program was found', async () => {
     vi.setSystemTime(new Date('2022-07-15T09:00:00Z'));
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -87,7 +99,7 @@ describe('useLiveChannels', () => {
   test('updates the program automatically when being live', async () => {
     vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -106,7 +118,7 @@ describe('useLiveChannels', () => {
   test("doesn't update the program automatically when not being live", async () => {
     vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -125,7 +137,7 @@ describe('useLiveChannels', () => {
   test('updates the channel and program when using the `setChannel` function', async () => {
     vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -149,7 +161,7 @@ describe('useLiveChannels', () => {
   test("doesn't update the channel or program when using the `setChannel` function with an invalid channelId ", async () => {
     vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -167,7 +179,7 @@ describe('useLiveChannels', () => {
   test('updates the channel and program when the data changes', async () => {
     vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
 
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    const mock = mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -191,7 +203,7 @@ describe('useLiveChannels', () => {
   test('updates the channel and program when the data changes', async () => {
     vi.setSystemTime(new Date('2022-07-15T11:05:00Z'));
 
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    const mock = mockSchedule.mockResolvedValue(schedule);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();
@@ -214,7 +226,7 @@ describe('useLiveChannels', () => {
     vi.setSystemTime(new Date('2022-07-15T11:05:00Z'));
 
     // start with update schedule (which has more programs)
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(scheduleUpdate);
+    const mock = mockSchedule.mockResolvedValue(scheduleUpdate);
     const { result, waitForNextUpdate } = renderHook(() => useLiveChannels(livePlaylist.playlist, undefined), { wrapper: createWrapper() });
 
     await waitForNextUpdate();

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 
-import { PersonalShelf, PersonalShelves } from '#src/stores/ConfigStore';
+import { PersonalShelf, PersonalShelves, PLAYLIST_LIMIT } from '#src/config';
 import usePlaylist from '#src/hooks/usePlaylist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { PLAYLIST_LIMIT } from '#src/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { ContentType } from '#types/Config';
 
@@ -32,6 +31,7 @@ const PlaylistContainer = ({ playlistId, type, onPlaylistUpdate, style, children
     error,
     data: fetchedPlaylist = { title: '', playlist: [] },
   } = usePlaylist(playlistId, { page_limit: PLAYLIST_LIMIT.toString() }, !isAlternativeShelf, true);
+
   let playlist = fetchedPlaylist;
 
   const favoritesPlaylist = useFavoritesStore((state) => state.getPlaylist());

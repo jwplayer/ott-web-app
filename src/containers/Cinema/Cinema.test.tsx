@@ -4,6 +4,20 @@ import Cinema from './Cinema';
 
 import { renderWithRouter } from '#test/testUtils';
 import type { PlaylistItem } from '#types/playlist';
+import { CONTROLLERS } from '#src/ioc/types';
+
+vi.mock('#src/ioc/container', () => ({
+  useController: (type: symbol) => {
+    switch (type) {
+      case CONTROLLERS.Api:
+        return {
+          getPlaylistById: vi.fn(() => ({
+            id: 'fake_id',
+          })),
+        };
+    }
+  },
+}));
 
 describe('<Cinema>', () => {
   test('renders and matches snapshot', () => {

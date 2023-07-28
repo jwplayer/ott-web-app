@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import 'reflect-metadata';
 
 import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
 import '#src/screenMapping';
@@ -8,6 +9,7 @@ import initI18n from '#src/i18n/config';
 import Root from '#components/Root/Root';
 import { ErrorPageWithoutTranslation } from '#components/ErrorPage/ErrorPage';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import { initDefaultServices } from '#src/ioc/init';
 
 interface State {
   isLoading: boolean;
@@ -18,6 +20,7 @@ export default function App() {
   const [i18nState, seti18nState] = useState<State>({ isLoading: true });
 
   useEffect(() => {
+    initDefaultServices();
     initI18n()
       .then(() => seti18nState({ isLoading: false }))
       .catch((e) => seti18nState({ isLoading: false, error: e as Error }));

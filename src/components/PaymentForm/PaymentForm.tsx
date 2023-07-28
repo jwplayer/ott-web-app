@@ -12,8 +12,10 @@ import TextField from '../TextField/TextField';
 import styles from './PaymentForm.module.scss';
 
 import useForm from '#src/hooks/useForm';
-import { directPostCardPayment } from '#src/stores/CheckoutController';
 import useCheckAccess from '#src/hooks/useCheckAccess';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 type Props = {
   couponCode?: string;
@@ -21,6 +23,8 @@ type Props = {
 };
 
 const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
+  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+
   const { t } = useTranslation('account');
   const { intervalCheckAccess } = useCheckAccess();
 
@@ -28,7 +32,7 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
     { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
     async () => {
       setUpdatingOrder(true);
-      await directPostCardPayment({ couponCode, ...paymentData.values });
+      await checkoutController.directPostCardPayment({ couponCode, ...paymentData.values });
       intervalCheckAccess({ interval: 15000 });
     },
     object().shape({

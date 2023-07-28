@@ -8,12 +8,18 @@ import styles from './FinalizePayment.module.scss';
 import Button from '#components/Button/Button';
 import Spinner from '#components/Spinner/Spinner';
 import useEventCallback from '#src/hooks/useEventCallback';
-import { reloadActiveSubscription } from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { replaceQueryParam, removeQueryParam, addQueryParam } from '#src/utils/location';
-import { finalizeAdyenPayment } from '#src/stores/CheckoutController';
+import type AccountController from '#src/controllers/AccountController';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
+import { ACCESS_MODEL } from '#src/config';
 
 const FinalizePayment = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,15 +32,15 @@ const FinalizePayment = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const paymentSuccessUrl = useMemo(() => {
-    return accessModel === 'SVOD' ? replaceQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
+    return accessModel === ACCESS_MODEL.SVOD ? replaceQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
   }, [accessModel, location]);
 
   const checkPaymentResult = useEventCallback(async (redirectResult: string) => {
     const orderId = orderIdQueryParam ? parseInt(orderIdQueryParam, 10) : undefined;
 
     try {
-      await finalizeAdyenPayment({ redirectResult: decodeURI(redirectResult) }, orderId);
-      await reloadActiveSubscription({ delay: 2000 });
+      await checkoutController.finalizeAdyenPayment({ redirectResult: decodeURI(redirectResult) }, orderId);
+      await accountController.reloadActiveSubscription({ delay: 2000 });
 
       navigate(paymentSuccessUrl);
     } catch (error: unknown) {

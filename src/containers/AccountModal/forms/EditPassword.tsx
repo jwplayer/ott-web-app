@@ -8,10 +8,14 @@ import EditPasswordForm from '#components/EditPasswordForm/EditPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { addQueryParams } from '#src/utils/formatting';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { changePasswordWithOldPassword, changePasswordWithToken, logout } from '#src/stores/AccountController';
 import useQueryParam from '#src/hooks/useQueryParam';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const ResetPassword: React.FC = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
@@ -31,16 +35,16 @@ const ResetPassword: React.FC = () => {
     }
     try {
       if (user && !resetToken) {
-        await changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
+        await accountController.changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
       } else {
         if (!resetToken) {
           setErrors({ form: t('reset.invalid_link') });
 
           return setSubmitting(false);
         }
-        await changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
+        await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
-      await logout();
+      await accountController.logout();
       navigate(addQueryParams(window.location.origin, { u: 'login' }));
     } catch (error: unknown) {
       if (error instanceof Error) {

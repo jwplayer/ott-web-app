@@ -8,9 +8,13 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import RenewSubscriptionForm from '#components/RenewSubscriptionForm/RenewSubscriptionForm';
 import SubscriptionRenewed from '#components/SubscriptionRenewed/SubscriptionRenewed';
 import { removeQueryParam } from '#src/utils/location';
-import { updateSubscription } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const RenewSubscription = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
@@ -24,7 +28,7 @@ const RenewSubscription = () => {
     setError(null);
 
     try {
-      await updateSubscription('active');
+      await accountController.updateSubscription('active');
       setRenewed(true);
     } catch (error: unknown) {
       setError(t('renew_subscription.unknown_error_occurred'));

@@ -1,3 +1,16 @@
+export enum PersonalShelf {
+  ContinueWatching = 'continue_watching',
+  Favorites = 'favorites',
+}
+
+export const PersonalShelves = [PersonalShelf.Favorites, PersonalShelf.ContinueWatching];
+
+export const ACCESS_MODEL = {
+  AVOD: 'AVOD',
+  AUTHVOD: 'AUTHVOD',
+  SVOD: 'SVOD',
+} as const;
+
 export const VideoProgressMinMax = {
   Min: 0.05,
   Max: 0.95,

@@ -22,7 +22,9 @@ import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collec
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
-import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 type Props = {
   panelClassName?: string;
@@ -39,11 +41,13 @@ interface FormErrors {
 }
 
 const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
-  const exportData = useMutation(exportAccountData);
+  const exportData = useMutation(() => accountController.exportAccountData());
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const exportDataMessage = exportData.isSuccess ? t('account.export_data_success') : t('account.export_data_error');
 
@@ -165,7 +169,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.about_you'),
             editButton: t('account.edit_information'),
-            onSubmit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
+            onSubmit: (values) => accountController.updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
             content: (section) => (
               <>
                 <TextField
@@ -194,7 +198,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.email'),
             onSubmit: (values) =>
-              updateUser({
+              accountController.updateUser({
                 email: values.email || '',
                 confirmationPassword: values.confirmationPassword,
               }),
@@ -242,7 +246,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
+            onSubmit: (values) => accountController.updateConsents(formatConsentsFromValues(publisherConsents, values)),
             content: (section) => (
               <>
                 {publisherConsents?.map((consent, index) => (

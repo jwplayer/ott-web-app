@@ -9,16 +9,20 @@ import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
 import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
-import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const Registration = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
   const [consentValues, setConsentValues] = useState<Record<string, boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getPublisherConsents);
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], () => accountController.getPublisherConsents());
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
   const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +48,9 @@ const Registration = () => {
         return;
       }
 
-      await register(email, password);
+      await accountController.register(email, password);
 
-      await updateConsents(customerConsents).catch(() => {
+      await accountController.updateConsents(customerConsents).catch(() => {
         // error caught while updating the consents, but continue the registration flow
       });
 

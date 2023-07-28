@@ -17,15 +17,22 @@ import AccountCircle from '#src/icons/AccountCircle';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import Favorite from '#src/icons/Favorite';
-import { logout } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
-import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
-import { clear as clearFavorites } from '#src/stores/FavoritesController';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { ACCESS_MODEL, PersonalShelf } from '#src/config';
+import type FavoritesController from '#src/controllers/FavoritesController';
 import { mediaURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
+import type AccountController from '#src/controllers/AccountController';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const User = (): JSX.Element => {
+  const favoritesController = useController<FavoritesController>(CONTROLLERS.Favorites);
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+
   const { accessModel, favoritesList } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
@@ -44,14 +51,14 @@ const User = (): JSX.Element => {
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
-    await logout();
-  }, []);
+    await accountController.logout();
+  }, [accountController]);
 
   useEffect(() => {
-    if (accessModel !== 'AVOD') {
-      getSubscriptionSwitches();
+    if (accessModel !== ACCESS_MODEL.AVOD) {
+      checkoutController.getSubscriptionSwitches();
     }
-  }, [accessModel]);
+  }, [accessModel, checkoutController]);
 
   useEffect(() => {
     if (!loading && !customer) {
@@ -81,7 +88,7 @@ const User = (): JSX.Element => {
                   <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
                 </li>
               )}
-              {accessModel !== 'AVOD' && (
+              {accessModel !== ACCESS_MODEL.AVOD && (
                 <li>
                   <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
                 </li>
@@ -122,7 +129,7 @@ const User = (): JSX.Element => {
                     title={t('favorites.clear_favorites_title')}
                     body={t('favorites.clear_favorites_body')}
                     onConfirm={async () => {
-                      await clearFavorites();
+                      await favoritesController.clear();
                       setClearFavoritesOpen(false);
                     }}
                     onClose={() => setClearFavoritesOpen(false)}
@@ -131,7 +138,7 @@ const User = (): JSX.Element => {
               }
             />
           )}
-          <Route path="payments" element={accessModel !== 'AVOD' ? <PaymentContainer /> : <Navigate to="my-account" />} />
+          <Route path="payments" element={accessModel !== ACCESS_MODEL.AVOD ? <PaymentContainer /> : <Navigate to="my-account" />} />
           <Route path="*" element={<Navigate to="my-account" />} />
         </Routes>
       </div>

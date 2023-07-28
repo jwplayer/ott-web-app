@@ -1,9 +1,13 @@
 import { useQuery } from 'react-query';
 
-import { getSeriesByMediaIds } from '#src/services/api.service';
 import { SERIES_CACHE_TIME } from '#src/config';
+import type ApiController from '#src/controllers/ApiController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 export const useSeriesLookup = (mediaId: string | undefined) => {
+  const apiController = useController<ApiController>(CONTROLLERS.Api);
+
   const { isLoading, data } = useQuery(
     ['seriesLookup', mediaId],
     async () => {
@@ -12,7 +16,7 @@ export const useSeriesLookup = (mediaId: string | undefined) => {
       }
 
       // get all series for the given media id
-      const data = await getSeriesByMediaIds([mediaId]);
+      const data = await apiController.getSeriesByMediaIds([mediaId]);
       // get first series for the requested episode
       const firstSeries = data?.[mediaId]?.[0];
 

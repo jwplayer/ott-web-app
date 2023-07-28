@@ -2,26 +2,14 @@ import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
 import type { AdSchedule } from '#types/ad-schedule';
-
-export enum PersonalShelf {
-  ContinueWatching = 'continue_watching',
-  Favorites = 'favorites',
-}
-
-export const PersonalShelves = [PersonalShelf.Favorites, PersonalShelf.ContinueWatching];
-
-type CleengData = {
-  cleengId: string | null | undefined;
-  cleengSandbox: boolean;
-  monthlyOfferId: string;
-  yearlyOfferId: string;
-};
+import { ACCESS_MODEL } from '#src/config';
 
 type ConfigState = {
   config: Config;
   accessModel: AccessModel;
   adScheduleData: AdSchedule | null | undefined;
-  getCleengData: () => CleengData;
+  getSandbox: () => boolean;
+  getAuthProvider: () => string | undefined;
 };
 
 export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) => ({
@@ -47,16 +35,23 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
       footerText: '',
     },
   },
-  accessModel: 'SVOD',
+  accessModel: ACCESS_MODEL.SVOD,
   adScheduleData: null,
-  getCleengData: (): CleengData => {
-    const cleeng = get().config?.integrations?.cleeng;
+  getSandbox: (): boolean => {
+    const { cleeng, jwp } = get().config?.integrations;
 
-    const cleengId = cleeng?.id;
-    const cleengSandbox = !!cleeng?.useSandbox;
-    const monthlyOfferId = cleeng?.monthlyOffer || '';
-    const yearlyOfferId = cleeng?.yearlyOffer || '';
+    if (jwp?.clientId) return !!jwp?.useSandbox;
 
-    return { cleengId, cleengSandbox, monthlyOfferId, yearlyOfferId };
+    if (cleeng?.id) return !!cleeng.useSandbox;
+
+    return true;
+  },
+
+  getAuthProvider: (): string | undefined => {
+    const { cleeng, jwp } = get().config?.integrations;
+
+    if (jwp?.clientId) return jwp?.clientId?.toString();
+
+    if (cleeng?.id) return cleeng?.id;
   },
 }));

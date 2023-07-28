@@ -5,7 +5,9 @@ import { useTranslation } from 'react-i18next';
 import useClientIntegration from './useClientIntegration';
 
 import { addQueryParam } from '#src/utils/location';
-import { checkEntitlements, reloadActiveSubscription } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 type intervalCheckAccessPayload = {
   interval?: number;
@@ -14,6 +16,8 @@ type intervalCheckAccessPayload = {
 };
 
 const useCheckAccess = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const intervalRef = useRef<number>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,10 +32,10 @@ const useCheckAccess = () => {
       }
 
       intervalRef.current = window.setInterval(async () => {
-        const hasAccess = await checkEntitlements(offerId);
+        const hasAccess = await accountController.checkEntitlements(offerId);
 
         if (hasAccess) {
-          await reloadActiveSubscription();
+          await accountController.reloadActiveSubscription();
           navigate(addQueryParam(location, 'u', 'welcome'));
         } else if (--iterations === 0) {
           window.clearInterval(intervalRef.current);
@@ -39,7 +43,7 @@ const useCheckAccess = () => {
         }
       }, interval);
     },
-    [clientOffers, navigate, location, t],
+    [clientOffers, navigate, location, t, accountController],
   );
 
   useEffect(() => {

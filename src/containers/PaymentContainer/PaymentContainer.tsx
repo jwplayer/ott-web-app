@@ -5,16 +5,22 @@ import shallow from 'zustand/shallow';
 import styles from '#src/pages/User/User.module.scss';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Payment from '#components/Payment/Payment';
-import { getReceipt } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { addQueryParam } from '#src/utils/location';
 import useOffers from '#src/hooks/useOffers';
 import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
+import type AccountController from '#src/controllers/AccountController';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
+import { ACCESS_MODEL } from '#src/config';
 
 const PaymentContainer = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+
   const { accessModel } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
@@ -52,7 +58,7 @@ const PaymentContainer = () => {
     setIsLoadingReceipt(true);
 
     try {
-      const receipt = await getReceipt(transactionId);
+      const receipt = await accountController.getReceipt(transactionId);
 
       if (receipt) {
         const newWindow = window.open('', `Receipt ${transactionId}`, '');
@@ -72,10 +78,10 @@ const PaymentContainer = () => {
   };
 
   useEffect(() => {
-    if (accessModel !== 'AVOD') {
-      getSubscriptionSwitches();
+    if (accessModel !== ACCESS_MODEL.AVOD) {
+      checkoutController.getSubscriptionSwitches();
     }
-  }, [accessModel]);
+  }, [accessModel, checkoutController]);
 
   useEffect(() => {
     if (!loading && !customer) {

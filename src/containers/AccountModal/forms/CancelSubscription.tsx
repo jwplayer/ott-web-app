@@ -8,9 +8,13 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import SubscriptionCancelled from '#components/SubscriptionCancelled/SubscriptionCancelled';
 import { formatLocalizedDate } from '#src/utils/formatting';
 import { removeQueryParam } from '#src/utils/location';
-import { updateSubscription } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const CancelSubscription = () => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const { t, i18n } = useTranslation('account');
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,7 +28,7 @@ const CancelSubscription = () => {
     setError(null);
 
     try {
-      await updateSubscription('cancelled');
+      await accountController.updateSubscription('cancelled');
       setCancelled(true);
     } catch (error: unknown) {
       setError(t('cancel_subscription.unknown_error_occurred'));

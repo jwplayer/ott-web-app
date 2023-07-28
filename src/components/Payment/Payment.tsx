@@ -20,6 +20,7 @@ import type { AccessModel } from '#types/Config';
 import type { Customer } from '#types/account';
 import type { Offer } from '#types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
+import { ACCESS_MODEL } from '#src/config';
 
 const VISIBLE_TRANSACTIONS = 4;
 
@@ -166,7 +167,7 @@ const Payment = ({
           setIsChangingOffer(false);
         }}
       />
-      {accessModel === 'SVOD' && (
+      {accessModel === ACCESS_MODEL.SVOD && (
         <div className={panelClassName}>
           <div className={panelHeaderClassName}>
             <h3>{isChangingOffer ? t('user:payment.change_plan') : t('user:payment.subscription_details')}</h3>

@@ -1,7 +1,6 @@
 import { useQueries } from 'react-query';
 import shallow from 'zustand/shallow';
 
-import useService, { CheckoutService } from './useService';
 import useClientIntegration from './useClientIntegration';
 
 import type { MediaOffer } from '#types/media';
@@ -10,6 +9,9 @@ import type { PlaylistItem } from '#types/playlist';
 import { isLocked } from '#src/utils/entitlements';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 export type UseEntitlementResult = {
   isEntitled: boolean;
@@ -35,8 +37,7 @@ const notifyOnChangeProps = ['data' as const, 'isLoading' as const];
  *
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
-  const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
-
+  let checkoutController: CheckoutController | null = null;
   const { sandbox } = useClientIntegration();
   const { accessModel } = useConfigStore();
   const { user, subscription } = useAccountStore(
@@ -47,6 +48,11 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
     shallow,
   );
 
+  if (user?.id) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  }
+
   const isPreEntitled = playlistItem && !isLocked(accessModel, !!user, !!subscription, playlistItem);
   const mediaOffers = playlistItem?.mediaOffers || [];
 
@@ -54,7 +60,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => checkoutService?.getEntitlements({ offerId }, sandbox),
+      queryFn: () => checkoutController?.getEntitlements({ offerId }, sandbox),
       enabled: !!playlistItem && !!user && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
       notifyOnChangeProps,

@@ -2,9 +2,12 @@ import { useQuery } from 'react-query';
 import { useCallback, useEffect, useState } from 'react';
 
 import type { PlaylistItem } from '#types/playlist';
-import epgService, { EpgChannel, EpgProgram } from '#src/services/epg.service';
+import type { EpgProgram, EpgChannel } from '#types/epg';
 import { getLiveProgram, programIsLive } from '#src/utils/epg';
 import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
+import type EpgController from '#src/controllers/EpgController';
+import { CONTROLLERS } from '#src/ioc/types';
+import { useController } from '#src/ioc/container';
 
 /**
  * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.
@@ -21,7 +24,9 @@ import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
  *       program information will be reactive based on the current time in the stream.
  */
 const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | undefined, enableAutoUpdate = true) => {
-  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist), {
+  const epgController = useController<EpgController>(CONTROLLERS.Epg);
+
+  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgController.getSchedules(playlist), {
     refetchInterval: LIVE_CHANNELS_REFETCH_INTERVAL,
   });
 

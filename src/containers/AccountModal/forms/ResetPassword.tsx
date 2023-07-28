@@ -13,13 +13,17 @@ import ConfirmationForm from '#components/ConfirmationForm/ConfirmationForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { logDev } from '#src/utils/common';
-import { logout, resetPassword } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 type Prop = {
   type: 'confirmation' | 'forgot' | 'reset' | 'edit';
 };
 
 const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const { t } = useTranslation('account');
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,7 +49,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     );
 
     if (user) {
-      await logout();
+      await accountController.logout();
     }
   };
 
@@ -59,7 +63,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
 
       setResetPasswordSubmitting(true);
 
-      await resetPassword(user.email, resetUrl);
+      await accountController.resetPassword(user.email, resetUrl);
 
       setResetPasswordSubmitting(false);
       navigate(addQueryParam(location, 'u', 'send-confirmation'));
@@ -72,7 +76,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     const resetUrl = `${window.location.origin}/?u=edit-password`;
 
     try {
-      await resetPassword(formData.email, resetUrl);
+      await accountController.resetPassword(formData.email, resetUrl);
       const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'send-confirmation';
       navigate(addQueryParam(location, 'u', modal));
     } catch (error: unknown) {

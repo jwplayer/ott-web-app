@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { EpgProgram } from '#src/services/epg.service';
+import type { EpgProgram } from '#types/epg';
 import { programIsFullyWatchable, programIsLive, programIsVod } from '#src/utils/epg';
 
 /**

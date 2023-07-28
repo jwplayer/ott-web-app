@@ -1,11 +1,10 @@
 import { ChangeEvent, useCallback } from 'react';
-import { useNavigate } from 'react-router';
 
 import styles from './DevConfigSelector.module.scss';
 
 import Dropdown from '#components/Dropdown/Dropdown';
-import { getConfigNavigateCallback } from '#src/utils/configOverride';
 import { jwDevEnvConfigs, testConfigs } from '#test/constants';
+import { addQueryParams } from '#src/utils/formatting';
 
 interface Props {
   selectedConfig: string | undefined;
@@ -18,14 +17,9 @@ const configOptions: { value: string; label: string }[] = [
 ];
 
 const DevConfigSelector = ({ selectedConfig }: Props) => {
-  const configNavigate = getConfigNavigateCallback(useNavigate());
-
-  const onChange = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      configNavigate(event.target.value);
-    },
-    [configNavigate],
-  );
+  const onChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+    window.location.href = addQueryParams(window.location.href, { 'app-config': event.target.value });
+  }, []);
 
   return <Dropdown className={styles.dropdown} size="small" options={configOptions} name="config-select" value={selectedConfig || ''} onChange={onChange} />;
 };

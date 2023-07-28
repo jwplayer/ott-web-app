@@ -14,6 +14,7 @@ import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialo
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import type { Config } from '#types/Config';
 import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
+import { addQueryParams } from '#src/utils/formatting';
 
 const regex = /^[a-z,\d]{0,8}$/g;
 const DEMO_CONFIG = '225tvq1i';
@@ -56,7 +57,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
     }
     // Get a new config by triggering a query param change
     else {
-      navigateCallback(configSource);
+      window.location.href = addQueryParams(window.location.href, { 'app-config': configSource });
     }
   };
 

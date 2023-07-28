@@ -10,7 +10,9 @@ import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
-import { logout } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 type Props = {
   small?: boolean;
@@ -19,6 +21,8 @@ type Props = {
 };
 
 const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+
   const { t } = useTranslation('user');
   const navigate = useNavigate();
 
@@ -27,9 +31,9 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
       onClick();
     }
 
-    await logout();
+    await accountController.logout();
     navigate('/', { replace: true });
-  }, [onClick, navigate]);
+  }, [onClick, navigate, accountController]);
 
   return (
     <ul className={styles.menuItems}>

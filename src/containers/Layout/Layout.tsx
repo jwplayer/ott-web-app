@@ -19,6 +19,7 @@ import MenuButton from '#components/MenuButton/MenuButton';
 import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
+import { ACCESS_MODEL } from '#src/config';
 
 const Layout = () => {
   const location = useLocation();
@@ -93,7 +94,7 @@ const Layout = () => {
     if (!clientId) return null;
 
     return isLoggedIn ? (
-      <UserMenu showPaymentsItem={accessModel !== 'AVOD'} />
+      <UserMenu showPaymentsItem={accessModel !== ACCESS_MODEL.AVOD} />
     ) : (
       <div className={styles.buttonContainer}>
         <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
@@ -139,7 +140,7 @@ const Layout = () => {
           openLanguageMenu={openLanguageMenu}
           closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
-          showPaymentsMenuItem={accessModel !== 'AVOD'}
+          showPaymentsMenuItem={accessModel !== ACCESS_MODEL.AVOD}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

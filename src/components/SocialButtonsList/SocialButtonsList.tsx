@@ -4,10 +4,13 @@ import SocialButton, { SocialButtonVariant } from '../SocialButton/SocialButton'
 
 import styles from './SocialButtonsList.module.scss';
 
-import { getSocialLoginUrls } from '#src/stores/AccountController';
+import type AccountController from '#src/controllers/AccountController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const SocialButtonsList = () => {
-  const urls = useQuery('socialUrls', getSocialLoginUrls);
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const urls = useQuery('socialUrls', () => accountController.getSocialLoginUrls());
 
   if (urls.error || !urls.data) {
     return null;

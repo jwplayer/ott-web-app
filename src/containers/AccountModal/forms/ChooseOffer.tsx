@@ -11,12 +11,14 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#components/ChooseOfferForm/ChooseOfferForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import useQueryParam from '#src/hooks/useQueryParam';
-import { switchSubscription } from '#src/stores/CheckoutController';
 import { useAccountStore } from '#src/stores/AccountStore';
 import type { ChooseOfferFormData } from '#types/account';
 import type { Subscription } from '#types/subscription';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {
   const currentPeriod = subscription?.period;
@@ -31,6 +33,8 @@ const determineSwitchDirection = (subscription: Subscription | null) => {
 };
 
 const ChooseOffer = () => {
+  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
@@ -65,7 +69,7 @@ const ChooseOffer = () => {
         const targetOfferId = targetOffer?.offerId || '';
 
         try {
-          await switchSubscription(targetOfferId, determineSwitchDirection(subscription));
+          await checkoutController.switchSubscription(targetOfferId, determineSwitchDirection(subscription));
           const isPendingSwitch = !!useAccountStore.getState().pendingOffer;
 
           updateAccountModal(isPendingSwitch ? 'upgrade-subscription-pending' : 'upgrade-subscription-success');
@@ -74,7 +78,7 @@ const ChooseOffer = () => {
           updateAccountModal('upgrade-subscription-error');
         }
       } else {
-        const selectedOffer = availableOffers.find((offer) => offer.offerId === offerId) || null;
+        const selectedOffer = availableOffers?.find((offer) => offer.offerId === offerId) || null;
 
         setOffer(selectedOffer);
         updateOffer(selectedOffer);
@@ -82,7 +86,7 @@ const ChooseOffer = () => {
         updateAccountModal('checkout');
       }
     },
-    [availableOffers, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, updateAccountModal, updateOffer],
+    [availableOffers, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, updateAccountModal, updateOffer, checkoutController],
   );
 
   const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);

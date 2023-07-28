@@ -1,6 +1,6 @@
 import { isAfter, isFuture, isPast, subHours } from 'date-fns';
 
-import type { EpgChannel, EpgProgram } from '#src/services/epg.service';
+import type { EpgChannel, EpgProgram } from '#types/epg';
 
 /**
  * Returns true when the program is currently live e.g. the startTime is before now and the endTime is after now

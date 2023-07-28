@@ -7,7 +7,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Config } from '#types/Config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import * as checkoutController from '#src/stores/CheckoutController';
+import { CONTROLLERS } from '#src/ioc/types';
 
 const data = {
   loading: false,
@@ -64,16 +64,20 @@ const data = {
   } as unknown as PaymentDetail,
 };
 
+vi.mock('#src/ioc/container', () => ({
+  useController: (type: symbol) => {
+    switch (type) {
+      case CONTROLLERS.Favorites:
+        return { clear: vi.fn() };
+      case CONTROLLERS.Account:
+        return { logout: vi.fn() };
+      case CONTROLLERS.Checkout:
+        return { getSubscriptionSwitches: vi.fn() };
+    }
+  },
+}));
+
 describe('User Component tests', () => {
-  beforeEach(() => {
-    const spy = vi.spyOn(checkoutController, 'getSubscriptionSwitches');
-    spy.mockResolvedValue(undefined);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   test('Account Page', () => {
     useAccountStore.setState(data);
 

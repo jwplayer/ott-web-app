@@ -1,9 +1,11 @@
 import { useMutation } from 'react-query';
 
-import { updateUser } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { changeSubscription } from '#src/stores/CheckoutController';
-import type { Customer } from '#types/account';
+import type { Customer, EmailConfirmPasswordInput, FirstLastNameInput } from '#types/account';
+import type AccountController from '#src/controllers/AccountController';
+import type CheckoutController from '#src/controllers/CheckoutController';
+import { useController } from '#src/ioc/container';
+import { CONTROLLERS } from '#src/ioc/types';
 
 export const useSubscriptionChange = (
   isUpgradeOffer: boolean,
@@ -11,7 +13,10 @@ export const useSubscriptionChange = (
   customer: Customer | null,
   activeSubscriptionId: string | number | undefined,
 ) => {
-  const updateSubscriptionMetadata = useMutation(updateUser, {
+  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+
+  const updateSubscriptionMetadata = useMutation((args: FirstLastNameInput | EmailConfirmPasswordInput) => accountController.updateUser(args), {
     onSuccess: () => {
       useAccountStore.setState({
         loading: false,
@@ -19,7 +24,7 @@ export const useSubscriptionChange = (
     },
   });
 
-  return useMutation(changeSubscription, {
+  return useMutation((args: { accessFeeId: string; subscriptionId: string }) => checkoutController.changeSubscription(args), {
     onSuccess: () => {
       if (!isUpgradeOffer && selectedOfferId) {
         updateSubscriptionMetadata.mutate({

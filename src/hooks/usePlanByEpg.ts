@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useEpg } from 'planby';
 import { startOfDay, startOfToday, startOfTomorrow } from 'date-fns';
 
-import type { EpgChannel } from '#src/services/epg.service';
+import type { EpgChannel } from '#types/epg';
 import { is12HourClock } from '#src/utils/datetime';
 
 const isBaseTimeFormat = is12HourClock();
