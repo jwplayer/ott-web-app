@@ -10,15 +10,7 @@ describe('<CardGrid>', () => {
   it('renders and matches snapshot', () => {
     const playlist = playlistFixture as Playlist;
     const { container } = renderWithRouter(
-      <CardGrid
-        playlist={playlist}
-        onCardHover={vi.fn()}
-        onCardClick={vi.fn()}
-        isLoading={false}
-        accessModel={'SVOD'}
-        isLoggedIn={true}
-        hasSubscription={true}
-      />,
+      <CardGrid playlist={playlist} onCardHover={vi.fn()} isLoading={false} accessModel={'SVOD'} isLoggedIn={true} hasSubscription={true} />,
     );
 
     expect(container).toMatchSnapshot();
