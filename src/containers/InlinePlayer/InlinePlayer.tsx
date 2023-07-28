@@ -15,6 +15,7 @@ import PlayerContainer from '#src/containers/PlayerContainer/PlayerContainer';
 
 type Props = {
   item: PlaylistItem;
+  seriesItem?: PlaylistItem;
   onPlay?: () => void;
   onPause?: () => void;
   onComplete?: () => void;
@@ -31,6 +32,7 @@ type Props = {
 
 const InlinePlayer: React.FC<Props> = ({
   item,
+  seriesItem,
   onPlay,
   onPause,
   onComplete,
@@ -72,6 +74,7 @@ const InlinePlayer: React.FC<Props> = ({
       {!paywall && playable && (
         <PlayerContainer
           item={item}
+          seriesItem={seriesItem}
           feedId={feedId}
           autostart={autostart}
           onPlay={onPlay}

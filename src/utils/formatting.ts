@@ -110,8 +110,8 @@ export const buildLegacySeriesUrlFromMediaItem = (media: PlaylistItem, play: boo
   });
 };
 
-export const formatPrice = (price: number, currency: string, country: string) => {
-  return new Intl.NumberFormat(country || undefined, {
+export const formatPrice = (price: number, currency: string, country?: string) => {
+  return new Intl.NumberFormat(country || 'en-US', {
     style: 'currency',
     currency: currency,
   }).format(price);

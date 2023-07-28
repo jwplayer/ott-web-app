@@ -1,9 +1,9 @@
-name: Linting
+name: Test - Unit and Snapshot
 
 on: [pull_request]
 
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -11,14 +11,14 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn install, lint
+      - name: yarn install, build, and test
         run: |
-          yarn install
-          yarn lint
+          yarn
+          yarn test
         env:
           CI: true

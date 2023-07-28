@@ -41,7 +41,7 @@
   "dependencies": {
     "@adyen/adyen-web": "^5.42.1",
     "@codeceptjs/allure-legacy": "^1.0.2",
-    "@inplayer-org/inplayer.js": "^3.13.12",
+    "@inplayer-org/inplayer.js": "^3.13.13",
     "classnames": "^2.3.1",
     "date-fns": "^2.28.0",
     "dompurify": "^2.3.8",
@@ -87,7 +87,7 @@
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "@vitejs/plugin-react": "^1.0.7",
-    "@vitest/coverage-c8": "^0.32.4",
+    "@vitest/coverage-v8": "^0.33.0",
     "allure-commandline": "^2.17.2",
     "codeceptjs": "3.4.1",
     "confusing-browser-globals": "^1.0.10",
