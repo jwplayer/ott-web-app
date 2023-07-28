@@ -29,7 +29,6 @@ type CardProps = {
   isLocked?: boolean;
   currentLabel?: string;
   url: string;
-};
 
 function Card({
   onHover,

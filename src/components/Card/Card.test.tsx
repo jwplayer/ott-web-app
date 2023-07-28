@@ -22,7 +22,6 @@ describe('<Card>', () => {
 
   it('renders the image with the image prop when valid', () => {
     const { getByAltText } = renderWithRouter(<Card item={itemWithImage} url="https://test.dummy.jwplayer.com" />);
-
     expect(getByAltText('This is a movie')).toHaveAttribute('src', 'http://movie.jpg?width=320');
   });
 
