@@ -37,7 +37,6 @@ type CardGridProps = {
   hasLoadMore?: boolean;
   loadMore?: () => void;
   onCardHover?: (item: PlaylistItem) => void;
-  onCardClick?: (item: PlaylistItem, playlistId?: string) => void;
 };
 
 function CardGrid({

@@ -123,7 +123,6 @@ const VideoLayout: React.FC<Props> = ({
         </div>
         <CardGrid
           playlist={playlist}
-          onCardClick={onItemClick}
           isLoading={isLoading}
           watchHistory={watchHistory}
           accessModel={accessModel}
