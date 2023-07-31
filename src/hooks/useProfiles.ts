@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from 'react-query';
 
-import { enterProfile, getAccount, initializeAccount, listProfiles } from '#src/stores/AccountController';
+import { enterProfile, initializeAccount, listProfiles } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
@@ -22,7 +22,7 @@ export const unpersistProfile = () => {
 
 const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload) => {
   try {
-    useAccountStore.setState({ loading: true });
+    useAccountStore.setState({ loading: true, profile: null });
     const response = await enterProfile({ id });
     const profile = response?.responseData;
 
@@ -49,11 +49,6 @@ const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload)
   }
 };
 
-export const useSelectProfile = () =>
-  useMutation(handleProfileSelection, {
-    onSettled: () => {
-      getAccount();
-    },
-  });
+export const useSelectProfile = () => useMutation(handleProfileSelection);
 
 export const useListProfiles = () => useQuery(['listProfiles'], listProfiles);

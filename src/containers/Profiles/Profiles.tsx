@@ -21,11 +21,11 @@ type Props = {
 const Profiles = ({ editMode = false }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
-  const { canManageProfiles, loading } = useAccountStore(({ canManageProfiles, loading }) => ({ canManageProfiles, loading }), shallow);
+  const { canManageProfiles, loading, user } = useAccountStore(({ canManageProfiles, loading, user }) => ({ canManageProfiles, loading, user }), shallow);
 
   useEffect(() => {
-    if (!canManageProfiles) navigate('/');
-  }, [canManageProfiles, navigate]);
+    if (!canManageProfiles || !user?.id) navigate('/');
+  }, [canManageProfiles, navigate, user?.id]);
 
   const { data, isLoading, isFetching, refetch } = useListProfiles();
   const activeProfiles = data?.responseData.collection.length || 0;

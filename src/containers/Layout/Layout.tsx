@@ -42,7 +42,8 @@ const Layout = () => {
     shallow,
   );
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const isLoggedIn = !!useAccountStore((state) => state.user);
+  const { user, profile } = useAccountStore(({ user, profile }) => ({ user, profile }), shallow);
+  const isLoggedIn = !!user;
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
@@ -139,6 +140,7 @@ const Layout = () => {
           closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
+          currentProfile={profile ?? undefined}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

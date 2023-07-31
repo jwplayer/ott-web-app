@@ -16,6 +16,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Plus from '#src/icons/Plus';
 import { useSelectProfile, useListProfiles, unpersistProfile } from '#src/hooks/useProfiles';
+import ProfileCircle from '#src/icons/ProfileCircle';
 
 type Props = {
   small?: boolean;
@@ -63,7 +64,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
                   small={small}
                   onClick={() => selectProfile.mutate({ id: profile.id, navigate })}
                   label={profile.name}
-                  startIcon={<img className={styles.profileIcon} src={profile.avatar_url} alt={profile.name} />}
+                  startIcon={<ProfileCircle src={profile.avatar_url} alt={profile.name} />}
                 />
               </li>
             ))
@@ -87,7 +88,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
           onClick={onClick}
           to={`/u/my-profile/${currentProfile?.id ?? ''}`}
           label={t('nav.profile')}
-          startIcon={<img className={styles.profileIcon} src={currentProfile?.avatar_url} alt={currentProfile?.name} />}
+          startIcon={<ProfileCircle src={currentProfile?.avatar_url ?? ''} alt={currentProfile?.name ?? ''} />}
         />
       </li>
       <li>

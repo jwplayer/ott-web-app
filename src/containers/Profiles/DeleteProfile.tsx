@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import styles from './Profiles.module.scss';
 
@@ -15,6 +16,8 @@ const DeleteProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
+
+  const { t } = useTranslation('user');
 
   const viewParam = useQueryParam('action');
   const [view, setView] = useState(viewParam);
@@ -57,8 +60,8 @@ const DeleteProfile = () => {
         {isDeleting && <LoadingOverlay inline />}
         <div className={styles.deleteModal}>
           <div>
-            <h2>Delete profile</h2>
-            <p>Are you sure you want to delete your profile? You will lose all you watch history and settings connected to this profile.</p>
+            <h2>{t('profile.delete')}</h2>
+            <p>{t('profile.delete_confirmation')}</p>
           </div>
           <div className={styles.deleteButtons}>
             <Button label="Delete" color="delete" variant="contained" onClick={deleteHandler} />
