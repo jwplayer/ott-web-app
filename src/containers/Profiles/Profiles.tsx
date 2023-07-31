@@ -12,6 +12,7 @@ import AddNewProfile from '#src/components/ProfileBox/AddNewProfile';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import Button from '#src/components/Button/Button';
 import { useSelectProfile, useListProfiles } from '#src/hooks/useProfiles';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 const MAX_PROFILES = 4;
 
 type Props = {
@@ -22,6 +23,9 @@ const Profiles = ({ editMode = false }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
   const { canManageProfiles, loading, user } = useAccountStore(({ canManageProfiles, loading, user }) => ({ canManageProfiles, loading, user }), shallow);
+
+  const breakpoint: Breakpoint = useBreakpoint();
+  const isMobile = breakpoint === Breakpoint.xs;
 
   useEffect(() => {
     if (!canManageProfiles || !user?.id) navigate('/');
@@ -66,7 +70,7 @@ const Profiles = ({ editMode = false }: Props) => {
       {activeProfiles > 0 && (
         <>
           {!editMode ? (
-            <Button onClick={() => navigate('/u/profiles/edit')} label={t('account.manage_profiles')} variant="outlined" size="large" />
+            <Button onClick={() => navigate('/u/profiles/edit')} label={t('account.manage_profiles')} variant="outlined" size="large" fullWidth={isMobile} />
           ) : (
             <Button onClick={() => navigate('/u/profiles')} label="Done" variant="outlined" size="large" />
           )}

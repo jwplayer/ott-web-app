@@ -25,8 +25,6 @@ $avatar-border-radius: 50%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: min-content;
-  height: min-content;
   cursor: pointer;
 
   .image {
@@ -59,9 +57,11 @@ $avatar-border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 56px;
+    height: 56px;
     background: #1f232c;
-    border: 1px solid transparent;
-    border-radius: 100px;
+    border: 1px solid white;
+    border-radius: $avatar-border-radius;
   }
   .overlay {
     position: absolute;
@@ -135,4 +135,23 @@ $avatar-border-radius: 50%;
       }
     }
   }
+}
+
+.addProfileContainer {
+  justify-content: space-between;
+  padding: 10px;
+  &:hover {
+    .box {
+      width: 56px;
+      height: 56px;
+    }
+  }
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
+  height: 140px;
 }
