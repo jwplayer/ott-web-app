@@ -26,7 +26,6 @@ const CreateProfile = () => {
     if (!profilesEnabled) navigate('/');
   }, [profilesEnabled, navigate]);
 
-  // this is only needed so we can set different avatar url which will be temporary
   const listProfiles = useListProfiles();
 
   const initialValues = {
