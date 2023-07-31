@@ -32,29 +32,22 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
   const { t } = useTranslation(type);
 
   const optionsList = useMemo(() => {
-    const optionsObject = (() => {
-      switch (type) {
-        case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
-          return countriesCodes;
-        case REGISTER_FIELD_VARIANT.US_STATE_SELECT:
-          return usStatesCodes;
-        default:
-          return null;
+    switch (type) {
+      case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
+      case REGISTER_FIELD_VARIANT.US_STATE_SELECT: {
+        return (type === REGISTER_FIELD_VARIANT.COUNTRY_SELECT ? countriesCodes : usStatesCodes).map((code) => ({
+          value: code,
+          label: t(`${type}:${code}`),
+        }));
       }
-    })();
+      default: {
+        if (props.options) {
+          return Object.entries(props.options).map(([value, label]) => ({ value, label }));
+        }
 
-    if (optionsObject) {
-      return optionsObject.map((countryCode) => ({
-        value: countryCode,
-        label: t(`${type}:${countryCode}`),
-      }));
+        return [];
+      }
     }
-
-    if (!props.options) {
-      return [];
-    }
-
-    return Object.entries(props.options).map(([value, label]) => ({ value, label }));
   }, [t, type, props.options]);
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -80,9 +73,9 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
       return <Dropdown {...commonProps} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
     case REGISTER_FIELD_VARIANT.DATE_PICKER:
       return <DateField {...commonProps} value={value as string} onChange={(dateString: string) => onChange(name, dateString)} />;
+    default:
+      return null;
   }
-
-  return null;
 };
 
 export default CustomRegisterField;
