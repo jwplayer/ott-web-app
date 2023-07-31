@@ -1292,12 +1292,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="co
         </option>
         <option
           class="_option_bb73c6"
-          value="ss"
-        >
-          country:ss
-        </option>
-        <option
-          class="_option_bb73c6"
           value="es"
         >
           country:es
@@ -1666,12 +1660,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
         </option>
         <option
           class="_option_bb73c6"
-          value="as"
-        >
-          us_state:as
-        </option>
-        <option
-          class="_option_bb73c6"
           value="az"
         >
           us_state:az
@@ -1714,12 +1702,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
         </option>
         <option
           class="_option_bb73c6"
-          value="fm"
-        >
-          us_state:fm
-        </option>
-        <option
-          class="_option_bb73c6"
           value="fl"
         >
           us_state:fl
@@ -1729,12 +1711,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
           value="ga"
         >
           us_state:ga
-        </option>
-        <option
-          class="_option_bb73c6"
-          value="gu"
-        >
-          us_state:gu
         </option>
         <option
           class="_option_bb73c6"
@@ -1789,12 +1765,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
           value="me"
         >
           us_state:me
-        </option>
-        <option
-          class="_option_bb73c6"
-          value="mh"
-        >
-          us_state:mh
         </option>
         <option
           class="_option_bb73c6"
@@ -1888,12 +1858,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
         </option>
         <option
           class="_option_bb73c6"
-          value="mp"
-        >
-          us_state:mp
-        </option>
-        <option
-          class="_option_bb73c6"
           value="oh"
         >
           us_state:oh
@@ -1912,21 +1876,9 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
         </option>
         <option
           class="_option_bb73c6"
-          value="pw"
-        >
-          us_state:pw
-        </option>
-        <option
-          class="_option_bb73c6"
           value="pa"
         >
           us_state:pa
-        </option>
-        <option
-          class="_option_bb73c6"
-          value="pr"
-        >
-          us_state:pr
         </option>
         <option
           class="_option_bb73c6"
@@ -1969,12 +1921,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
           value="vt"
         >
           us_state:vt
-        </option>
-        <option
-          class="_option_bb73c6"
-          value="vi"
-        >
-          us_state:vi
         </option>
         <option
           class="_option_bb73c6"
