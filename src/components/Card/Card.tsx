@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -93,7 +93,6 @@ function Card({
       onClick={disabled ? (e) => e.preventDefault() : undefined}
       onMouseEnter={onHover}
       tabIndex={disabled ? -1 : 0}
-      onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled}
       aria-label={title}
     >
       <div className={posterClassNames}>
