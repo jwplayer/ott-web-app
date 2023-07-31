@@ -1,4 +1,5 @@
 import { type FC, type ChangeEventHandler, type ReactNode, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 
 import Checkbox from '#components/Checkbox/Checkbox';
@@ -7,7 +8,8 @@ import Radio from '#components/Radio/Radio';
 import Dropdown from '#components/Dropdown/Dropdown';
 import DateField from '#components/DateField/DateField';
 import { ConsentFieldVariants, REGISTER_FIELD_VARIANT } from '#src/services/inplayer.account.service';
-import { countries, usStates } from '#static/json';
+import countriesCodes from '#static/countries-codes.json';
+import usStatesCodes from '#static/us-states-codes.json';
 
 type Props = {
   type: ConsentFieldVariants;
@@ -27,24 +29,26 @@ type Props = {
 export type CustomRegisterFieldCommonProps = Props;
 
 export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChange, ...props }) => {
+  const { t } = useTranslation(type);
+
   const optionsList = useMemo(() => {
-    const optionsObject = (() => {
-      switch (type) {
-        case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
-          return countries;
-        case REGISTER_FIELD_VARIANT.US_STATE_SELECT:
-          return usStates;
-        default:
-          return props.options;
+    switch (type) {
+      case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
+      case REGISTER_FIELD_VARIANT.US_STATE_SELECT: {
+        return (type === REGISTER_FIELD_VARIANT.COUNTRY_SELECT ? countriesCodes : usStatesCodes).map((code) => ({
+          value: code,
+          label: t(`${type}:${code}`),
+        }));
       }
-    })();
+      default: {
+        if (props.options) {
+          return Object.entries(props.options).map(([value, label]) => ({ value, label }));
+        }
 
-    if (!optionsObject) {
-      return [];
+        return [];
+      }
     }
-
-    return Object.entries(optionsObject).map(([value, label]) => ({ value, label }));
-  }, [type, props.options]);
+  }, [t, type, props.options]);
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ currentTarget }) => {
@@ -69,9 +73,9 @@ export const CustomRegisterField: FC<Props> = ({ type, name, value = '', onChang
       return <Dropdown {...commonProps} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
     case REGISTER_FIELD_VARIANT.DATE_PICKER:
       return <DateField {...commonProps} value={value as string} onChange={(dateString: string) => onChange(name, dateString)} />;
+    default:
+      return null;
   }
-
-  return null;
 };
 
 export default CustomRegisterField;
