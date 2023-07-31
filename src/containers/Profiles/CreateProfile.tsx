@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import profileStyles from './Profiles.module.scss';
 import Form from './Form';
@@ -18,6 +19,8 @@ const CreateProfile = () => {
   const { canManageProfiles } = useAccountStore.getState();
   const [fullName, setFullName] = useState<string>('');
   const [avatarUrl, setAvatarUrl] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
+
+  const { t } = useTranslation('user');
 
   useEffect(() => {
     if (!canManageProfiles) navigate('/');
@@ -47,11 +50,11 @@ const CreateProfile = () => {
         setSubmitting(false);
         navigate('/u/profiles');
       } else {
-        setErrors({ form: 'Something went wrong. Please try again later.' });
+        setErrors({ form: t('profile.form_error') });
         setSubmitting(false);
       }
     } catch {
-      setErrors({ form: 'Something went wrong. Please try again later.' });
+      setErrors({ form: t('profile.form_error') });
       setSubmitting(false);
     }
   };
@@ -63,7 +66,7 @@ const CreateProfile = () => {
       <div className={styles.leftColumn}>
         <div className={styles.panel}>
           <div className={profileStyles.avatar}>
-            <h2>Howdy{`${fullName && ','} ${fullName}`}</h2>
+            <h2>{fullName ? t('profile.greeting_with_name', { name: fullName }) : t('profile.greeting')}</h2>
             <img src={avatarUrl} />
           </div>
         </div>

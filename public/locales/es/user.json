@@ -110,15 +110,24 @@
     "avatar": "",
     "content_rating": "",
     "create": "",
+    "create_message": "",
     "delete": "",
     "delete_confirmation": "",
     "delete_description": "",
     "delete_main": "",
     "description": "",
+    "form_error": "",
     "greeting": "",
     "greeting_with_name": "",
     "info": "",
     "kids": "",
-    "name": ""
+    "name": "",
+    "no_one_watching": "",
+    "validation": {
+      "name": {
+        "required": "",
+        "too_short": ""
+      }
+    }
   }
 }

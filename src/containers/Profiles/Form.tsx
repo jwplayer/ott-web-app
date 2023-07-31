@@ -40,7 +40,7 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
   ];
 
   const validationSchema: SchemaOf<{ name: string }> = object().shape({
-    name: string().required('You must enter your full name').min(2, 'You must include at least 2 characters'),
+    name: string().required(t('profile.validation.name.required')).min(2, t('profile.validation.name.too_short')),
   });
 
   const { handleSubmit, handleChange, values, errors, submitting, setValue } = useForm(initialValues, formHandler, validationSchema);

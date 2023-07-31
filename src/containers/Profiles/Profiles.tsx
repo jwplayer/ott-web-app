@@ -43,8 +43,8 @@ const Profiles = ({ editMode = false }: Props) => {
     <div className={styles.wrapper}>
       {activeProfiles === 0 ? (
         <div className={styles.headings}>
-          <p className={styles.paragarph}>There’s no one watching.</p>
-          <h2 className={styles.heading}>Create your profile</h2>
+          <p className={styles.paragarph}>{t('profile.no_one_watching')}</p>
+          <h2 className={styles.heading}>{t('profile.create_message')}</h2>
         </div>
       ) : (
         <h2 className={styles.heading}>{t('account.who_is_watching')}</h2>

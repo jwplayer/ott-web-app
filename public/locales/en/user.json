@@ -109,15 +109,24 @@
     "avatar": "Avatar",
     "content_rating": "Content rating",
     "create": "Create profile",
+    "create_message": "Create your profile",
     "delete": "Delete profile",
     "delete_confirmation": "Are you sure you want to delete your profile? You will lose all you watch history and settings connected to this profile.",
     "delete_description": "Permanently delete your profile along with all of your watch history and favorites.",
     "delete_main": "The main profile cannot be deleted because it’s linked to your account's watch history and favorites.",
     "description": "Profiles allow you to watch content and assemble your own personal collection of favorites.",
+    "form_error": "Something went wrong. Please try again later.",
     "greeting": "Howdy",
     "greeting_with_name": "Howdy, {{name}}",
     "info": "Profile info",
     "kids": "Kids",
-    "name": "User name"
+    "name": "User name",
+    "no_one_watching": "There’s no one watching.",
+    "validation": {
+      "name": {
+        "required": "Please enter a name for your profile.",
+        "too_short": "Please enter at least 2 characters."
+      }
+    }
   }
 }

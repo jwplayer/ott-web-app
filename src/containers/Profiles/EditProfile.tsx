@@ -74,11 +74,11 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
         listProfiles.refetch();
         navigate('/u/profiles');
       } else {
-        setErrors({ form: 'Something went wrong. Please try again later.' });
+        setErrors({ form: t('profile.form_error') });
         setSubmitting(false);
       }
     } catch {
-      setErrors({ form: 'Something went wrong. Please try again later.' });
+      setErrors({ form: t('profile.form_error') });
       setSubmitting(false);
     }
   };
