@@ -48,8 +48,12 @@ const Root: FC = () => {
     registerCustomScreens();
   }, []);
 
-  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile }));
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile, selectingProfile: s.selectingProfile }));
   const profilesEnabled = useProfilesFeatureEnabled();
+
+  if (userData.user && profilesEnabled && userData.selectingProfile) {
+    return <LoadingOverlay profileImageUrl={userData.profile?.avatar_url} />;
+  }
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {
     return <Navigate to="/" />; // component instead of hook to prevent extra re-renders
@@ -58,8 +62,8 @@ const Root: FC = () => {
   const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
-  if (userData.loading || settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
-    return <LoadingOverlay profileImageUrl={userData.profile?.avatar_url} />;
+  if (settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
+    return <LoadingOverlay />;
   }
 
   if (profilesEnabled && userData.user && !userData.profile && !location.pathname.includes('/u/profiles')) {

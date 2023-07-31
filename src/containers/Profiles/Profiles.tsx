@@ -28,13 +28,13 @@ const Profiles = ({ editMode = false }: Props) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  useEffect(() => {
-    if (!profilesEnabled || !user?.id) navigate('/');
-  }, [profilesEnabled, navigate, user?.id]);
-
-  const { data, isLoading, isFetching, refetch } = useListProfiles();
+  const { data, isLoading, isFetching, refetch, isError } = useListProfiles();
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
+
+  useEffect(() => {
+    if (!profilesEnabled || !user?.id || isError) navigate('/');
+  }, [profilesEnabled, navigate, user?.id, isError]);
 
   const selectProfile = useSelectProfile();
 

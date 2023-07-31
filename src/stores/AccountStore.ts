@@ -8,6 +8,7 @@ type AccountStore = {
   user: Customer | null;
   profile: Profile | null;
   canManageProfiles: boolean;
+  selectingProfile: boolean;
   subscription: Subscription | null;
   transactions: Transaction[] | null;
   activePayment: PaymentDetail | null;
@@ -27,8 +28,9 @@ type AccountStore = {
 export const useAccountStore = createStore<AccountStore>('AccountStore', (set) => ({
   loading: true,
   user: null,
-  canManageProfiles: false,
   profile: null,
+  canManageProfiles: false,
+  selectingProfile: false,
   subscription: null,
   transactions: null,
   activePayment: null,

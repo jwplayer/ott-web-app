@@ -23,7 +23,7 @@ export const unpersistProfile = () => {
 
 const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload) => {
   try {
-    useAccountStore.setState({ loading: true, profile: null });
+    useAccountStore.setState({ selectingProfile: true, profile: null });
     const response = await enterProfile({ id });
     const profile = response?.responseData;
 
@@ -47,6 +47,8 @@ const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload)
     }
   } catch {
     throw new Error('Unable to enter profile.');
+  } finally {
+    useAccountStore.setState({ selectingProfile: false });
   }
 };
 

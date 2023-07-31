@@ -43,12 +43,8 @@ enum InPlayerEnv {
   Daily = 'daily',
 }
 
-// TODO: remove ignore
-// @ts-ignore
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
-  // TODO: Remove this when feature flag exists in dev database
-  // const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
-  const env: string = InPlayerEnv.Daily;
+  const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
   InPlayer.setConfig(env as Env);
   const queryParams = new URLSearchParams(window.location.href.split('#')[1]);
   const token = queryParams.get('token');
