@@ -15,7 +15,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Plus from '#src/icons/Plus';
-import { useSelectProfile, useListProfiles, unpersistProfile } from '#src/hooks/useProfiles';
+import { useSelectProfile, useListProfiles, unpersistProfile, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
 
 type Props = {
@@ -28,12 +28,13 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const { accessModel } = useConfigStore();
-  const { canManageProfiles, profile: currentProfile } = useAccountStore();
+  const { profile: currentProfile } = useAccountStore();
+  const profilesEnabled = useProfilesFeatureEnabled();
 
   const { data, isFetching } = useListProfiles();
   const profiles = data?.responseData.collection;
 
-  if (canManageProfiles && !profiles?.length) {
+  if (profilesEnabled && !profiles?.length) {
     unpersistProfile();
     navigate('/u/profiles');
   }
@@ -51,7 +52,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
 
   return (
     <ul className={styles.menuItems}>
-      {accessModel === 'SVOD' && canManageProfiles && (
+      {accessModel === 'SVOD' && profilesEnabled && (
         <>
           <div className={styles.sectionHeader}>{t('nav.switch_profiles')}</div>
           {selectProfile.isLoading || isFetching ? (
@@ -82,15 +83,17 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
         </>
       )}
       <div className={styles.sectionHeader}>{t('nav.settings')}</div>
-      <li>
-        <MenuButton
-          small={small}
-          onClick={onClick}
-          to={`/u/my-profile/${currentProfile?.id ?? ''}`}
-          label={t('nav.profile')}
-          startIcon={<ProfileCircle src={currentProfile?.avatar_url ?? ''} alt={currentProfile?.name ?? ''} />}
-        />
-      </li>
+      {profilesEnabled && (
+        <li>
+          <MenuButton
+            small={small}
+            onClick={onClick}
+            to={`/u/my-profile/${currentProfile?.id ?? ''}`}
+            label={t('nav.profile')}
+            startIcon={<ProfileCircle src={currentProfile?.avatar_url ?? ''} alt={currentProfile?.name ?? ''} />}
+          />
+        </li>
+      )}
       <li>
         <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>

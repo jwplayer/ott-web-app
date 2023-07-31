@@ -8,23 +8,23 @@ import type { ProfileFormValues } from './types';
 import AVATARS from './avatarUrls.json';
 
 import styles from '#src/pages/User/User.module.scss';
-import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { createProfile } from '#src/stores/AccountController';
-import { useListProfiles } from '#src/hooks/useProfiles';
+import { useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const { canManageProfiles } = useAccountStore.getState();
+  const profilesEnabled = useProfilesFeatureEnabled();
+
   const [fullName, setFullName] = useState<string>('');
   const [avatarUrl, setAvatarUrl] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
 
   const { t } = useTranslation('user');
 
   useEffect(() => {
-    if (!canManageProfiles) navigate('/');
-  }, [canManageProfiles, navigate]);
+    if (!profilesEnabled) navigate('/');
+  }, [profilesEnabled, navigate]);
 
   // this is only needed so we can set different avatar url which will be temporary
   const listProfiles = useListProfiles();

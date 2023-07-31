@@ -15,6 +15,7 @@ import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import { useAccountStore } from '#src/stores/AccountStore';
+import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -47,7 +48,8 @@ const Root: FC = () => {
     registerCustomScreens();
   }, []);
 
-  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile, canManageProfiles: s.canManageProfiles }));
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile }));
+  const profilesEnabled = useProfilesFeatureEnabled();
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {
     return <Navigate to="/" />; // component instead of hook to prevent extra re-renders
@@ -60,7 +62,7 @@ const Root: FC = () => {
     return <LoadingOverlay profileImageUrl={userData.profile?.avatar_url} />;
   }
 
-  if (userData.canManageProfiles && userData.user && !userData.profile && !location.pathname.includes('/u/profiles')) {
+  if (profilesEnabled && userData.user && !userData.profile && !location.pathname.includes('/u/profiles')) {
     return <Navigate to="/u/profiles" />;
   }
 

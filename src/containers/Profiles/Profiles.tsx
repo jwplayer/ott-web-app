@@ -11,7 +11,7 @@ import type { Profile } from '#types/account';
 import AddNewProfile from '#src/components/ProfileBox/AddNewProfile';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import Button from '#src/components/Button/Button';
-import { useSelectProfile, useListProfiles } from '#src/hooks/useProfiles';
+import { useSelectProfile, useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 const MAX_PROFILES = 4;
 
@@ -22,14 +22,15 @@ type Props = {
 const Profiles = ({ editMode = false }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
-  const { canManageProfiles, loading, user } = useAccountStore(({ canManageProfiles, loading, user }) => ({ canManageProfiles, loading, user }), shallow);
+  const { loading, user } = useAccountStore(({ loading, user }) => ({ loading, user }), shallow);
+  const profilesEnabled = useProfilesFeatureEnabled();
 
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
   useEffect(() => {
-    if (!canManageProfiles || !user?.id) navigate('/');
-  }, [canManageProfiles, navigate, user?.id]);
+    if (!profilesEnabled || !user?.id) navigate('/');
+  }, [profilesEnabled, navigate, user?.id]);
 
   const { data, isLoading, isFetching, refetch } = useListProfiles();
   const activeProfiles = data?.responseData.collection.length || 0;

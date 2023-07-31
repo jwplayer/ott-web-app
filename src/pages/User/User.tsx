@@ -27,6 +27,7 @@ import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { addQueryParam } from '#src/utils/location';
 import EditProfile from '#src/containers/Profiles/EditProfile';
+import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -55,9 +56,11 @@ const User = (): JSX.Element => {
     canRenewSubscription,
     canUpdatePaymentMethod,
     canShowReceipts,
-    canManageProfiles,
     profile,
   } = useAccountStore();
+
+  const profilesEnabled = useProfilesFeatureEnabled();
+
   const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
   const location = useLocation();
 
@@ -120,7 +123,7 @@ const User = (): JSX.Element => {
         <div className={styles.leftColumn}>
           <div className={styles.panel}>
             <ul>
-              {accessModel === 'SVOD' && canManageProfiles && (
+              {accessModel === 'SVOD' && profilesEnabled && (
                 <li>
                   <Button
                     to={`my-profile/${profile?.id}`}
@@ -159,7 +162,7 @@ const User = (): JSX.Element => {
             path="my-account"
             element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
           />
-          {canManageProfiles && <Route path="my-profile/:id" element={<EditProfile contained />} />}
+          {profilesEnabled && <Route path="my-profile/:id" element={<EditProfile contained />} />}
           {favoritesList && (
             <Route
               path="favorites"

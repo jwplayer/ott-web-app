@@ -6,6 +6,7 @@ import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import type { AuthData } from '#types/account';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
@@ -52,3 +53,9 @@ const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload)
 export const useSelectProfile = () => useMutation(handleProfileSelection);
 
 export const useListProfiles = () => useQuery(['listProfiles'], listProfiles);
+
+export const useProfilesFeatureEnabled = (): boolean => {
+  const canManageProfiles = useAccountStore((s) => s.canManageProfiles);
+  const profilesFeatureEnabled = useConfigStore((s) => s.config.custom?.profilesFeatureEnabled);
+  return canManageProfiles && !!profilesFeatureEnabled;
+};
