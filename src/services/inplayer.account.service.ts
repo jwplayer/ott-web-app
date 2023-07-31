@@ -514,12 +514,14 @@ function formatUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
   const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
+  const metadata: { [key: string]: string } = {
+    first_name: firstName,
+    surname: lastName,
+    ...customer.metadata,
+  };
   const data: UpdateAccountData = {
     fullName,
-    metadata: {
-      first_name: firstName,
-      surname: lastName,
-    },
+    metadata,
   };
 
   return data;

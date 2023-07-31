@@ -13,6 +13,7 @@ const jwProps: ProviderProps = {
   applicableTax: 0,
   canRenewSubscription: false,
   fieldWrapper: '',
+  hasInlineOfferSwitch: true,
 };
 
 const cleengProps: ProviderProps = {
@@ -24,6 +25,7 @@ const cleengProps: ProviderProps = {
   applicableTax: 21,
   canRenewSubscription: true,
   fieldWrapper: 'iframe',
+  hasInlineOfferSwitch: false,
 };
 
 runTestSuite(jwProps, 'JW Player');
@@ -57,7 +59,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     I.see('Payment method');
     I.see('No payment methods');
 
-    I.see('Transactions');
+    I.see('Billing history');
     I.see('No transactions');
   });
 
@@ -170,7 +172,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       props.fieldWrapper,
     );
 
-    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, props.hasInlineOfferSwitch);
 
     I.seeAll(cardInfo);
   });
@@ -178,7 +180,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   Scenario(`I can cancel my subscription - ${providerName}`, async ({ I }) => {
     paidLoginContext = await I.registerOrLogin(paidLoginContext);
 
-    cancelPlan(I, addYear(today), props.canRenewSubscription);
+    cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
 
     // Still see payment info
     I.seeAll(cardInfo);
@@ -196,7 +198,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       paidLoginContext = await I.registerOrLogin(paidLoginContext);
       I.amOnPage(constants.paymentsUrl);
       I.waitForLoaderDone();
-      I.see('Transactions');
+      I.see('Billing history');
       I.dontSee('No transactions');
 
       I.scrollTo('[class*="mainColumn"] :last-child');

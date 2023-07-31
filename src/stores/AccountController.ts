@@ -191,7 +191,6 @@ export const login = async (email: string, password: string) => {
     useAccountStore.setState({ loading: false });
   });
 };
-
 export async function logout() {
   await useService(async ({ accountService }) => {
     persist.removeItem(PERSIST_KEY_ACCOUNT);
@@ -214,11 +213,9 @@ export async function logout() {
 
     await restoreFavorites();
     await restoreWatchHistory();
-
     await accountService?.logout();
   });
 }
-
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
@@ -495,26 +492,28 @@ export async function reloadActiveSubscription({ delay }: { delay: number } = { 
   });
 }
 
-export async function exportAccountData() {
+export const exportAccountData = async () => {
   return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
       return await accountService.exportAccountData(undefined, true);
     });
   });
-}
+};
 
-export async function getSocialLoginUrls() {
+export const getSocialLoginUrls = async () => {
   return await useService(async ({ accountService, config }) => {
     return await accountService.getSocialUrls(config);
   });
-}
-export async function deleteAccountData(password: string) {
+};
+
+export const deleteAccountData = async (password: string) => {
   return await useAccount(async () => {
     return await useService(async ({ accountService }) => {
       return await accountService.deleteAccount({ password }, true);
     });
   });
-}
+};
+
 export const getReceipt = async (transactionId: string) => {
   return await useAccount(async () => {
     return await useService(async ({ subscriptionService, sandbox = true }) => {

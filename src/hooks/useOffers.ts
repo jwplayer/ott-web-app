@@ -16,7 +16,6 @@ const useOffers = () => {
   const { clientOffers, sandbox } = useClientIntegration();
 
   const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
-  if (!checkoutService) throw new Error('checkout service is not available');
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasTvodOffer = (requestedMediaOffers || []).some((offer) => offer.offerId);
@@ -28,7 +27,7 @@ const useOffers = () => {
     return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...clientOffers].filter(Boolean);
   }, [requestedMediaOffers, clientOffers]);
 
-  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutService.getOffers({ offerIds }, sandbox));
+  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutService?.getOffers({ offerIds }, sandbox));
 
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
   return useMemo(() => {
@@ -50,8 +49,9 @@ const useOffers = () => {
       setOfferType,
       offers,
       offersDict,
+      isTvodRequested: hasTvodOffer,
     };
-  }, [allOffers, isLoading, hasPremierOffer, offerType]);
+  }, [allOffers, isLoading, hasPremierOffer, offerType, hasTvodOffer]);
 };
 
 export default useOffers;

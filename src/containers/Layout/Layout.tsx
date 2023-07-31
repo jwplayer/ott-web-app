@@ -26,6 +26,7 @@ const Layout = () => {
   const { t, i18n } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { menu, assets, siteName, description, styling, features } = config;
+  const metaDescription = description || t('default_description');
   const { clientId } = useClientIntegration();
   const { searchPlaylist } = features || {};
   const { footerText } = styling || {};
@@ -106,11 +107,11 @@ const Layout = () => {
     <div className={styles.layout}>
       <Helmet>
         <title>{siteName}</title>
-        <meta name="description" content={description} />
-        <meta property="og:description" content={description} />
+        <meta name="description" content={metaDescription} />
+        <meta property="og:description" content={metaDescription} />
         <meta property="og:title" content={siteName} />
         <meta name="twitter:title" content={siteName} />
-        <meta name="twitter:description" content={description} />
+        <meta name="twitter:description" content={metaDescription} />
       </Helmet>
       <div className={styles.main}>
         <Header

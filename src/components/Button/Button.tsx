@@ -28,6 +28,7 @@ type Props = {
   disabled?: boolean;
   busy?: boolean;
   id?: string;
+  as?: 'button' | 'a';
 } & React.AriaAttributes;
 
 const Button: React.FC<Props> = ({
@@ -43,6 +44,7 @@ const Button: React.FC<Props> = ({
   busy,
   type,
   to,
+  as = 'button',
   onClick,
   className,
   ...rest

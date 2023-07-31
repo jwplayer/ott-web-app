@@ -336,6 +336,7 @@ export type ListProfilesResponse = {
 export type FirstLastNameInput = {
   firstName: string;
   lastName: string;
+  metadata?: Record<string, string>;
 };
 
 export type EmailConfirmPasswordInput = {

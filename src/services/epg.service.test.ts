@@ -313,7 +313,7 @@ describe('epgService', () => {
       endTime: '2022-07-19T15:00:00Z',
       description: undefined,
       image: undefined,
-      shelfImage: undefined,
+      cardImage: undefined,
       backgroundImage: undefined,
     });
 
@@ -324,7 +324,7 @@ describe('epgService', () => {
       endTime: '2022-07-19T15:00:00Z',
       description: undefined,
       image: undefined,
-      shelfImage: undefined,
+      cardImage: undefined,
       backgroundImage: undefined,
     });
 
@@ -334,8 +334,8 @@ describe('epgService', () => {
       startTime: '2022-07-19T12:00:00Z',
       endTime: '2022-07-19T15:00:00Z',
       description: 'A description',
-      shelfImage: { image: 'https://cdn.jwplayer/logo.jpg' },
-      backgroundImage: { image: 'https://cdn.jwplayer/logo.jpg' },
+      cardImage: 'https://cdn.jwplayer/logo.jpg',
+      backgroundImage: 'https://cdn.jwplayer/logo.jpg',
     });
   });
 });

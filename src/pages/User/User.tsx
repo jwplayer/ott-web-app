@@ -1,33 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 
 import styles from './User.module.scss';
 
-import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
-import { mediaURL } from '#src/utils/formatting';
-import AccountCircle from '#src/icons/AccountCircle';
-import Favorite from '#src/icons/Favorite';
-import BalanceWallet from '#src/icons/BalanceWallet';
-import Exit from '#src/icons/Exit';
-import { useAccountStore } from '#src/stores/AccountStore';
-import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
-import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
-import Payment from '#components/Payment/Payment';
 import AccountComponent from '#components/Account/Account';
 import Button from '#components/Button/Button';
+import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
 import Favorites from '#components/Favorites/Favorites';
-import type { PlaylistItem } from '#types/playlist';
-import { getReceipt, logout } from '#src/stores/AccountController';
-import { clear as clearFavorites } from '#src/stores/FavoritesController';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import PaymentContainer from '#src/containers/PaymentContainer/PaymentContainer';
+import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import AccountCircle from '#src/icons/AccountCircle';
+import BalanceWallet from '#src/icons/BalanceWallet';
+import Exit from '#src/icons/Exit';
+import Favorite from '#src/icons/Favorite';
+import { logout } from '#src/stores/AccountController';
+import { useAccountStore } from '#src/stores/AccountStore';
 import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
-import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { addQueryParam } from '#src/utils/location';
 import EditProfile from '#src/containers/Profiles/EditProfile';
 import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
+import { clear as clearFavorites } from '#src/stores/FavoritesController';
+import { mediaURL } from '#src/utils/formatting';
+import type { PlaylistItem } from '#types/playlist';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -41,61 +39,17 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
-  const [showAllTransactions, setShowAllTransactions] = useState(false);
-  const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);
 
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const {
-    user: customer,
-    subscription,
-    transactions,
-    activePayment,
-    pendingOffer,
-    loading,
-    canUpdateEmail,
-    canRenewSubscription,
-    canUpdatePaymentMethod,
-    canShowReceipts,
-    profile,
-  } = useAccountStore();
+  const { user: customer, subscription, loading, canUpdateEmail, profile } = useAccountStore();
 
   const profilesEnabled = useProfilesFeatureEnabled();
-
-  const offerSwitches = useCheckoutStore((state) => state.offerSwitches);
-  const location = useLocation();
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await logout();
   }, []);
-
-  const handleUpgradeSubscriptionClick = async () => {
-    navigate(addQueryParam(location, 'u', 'upgrade-subscription'));
-  };
-
-  const handleShowReceiptClick = async (transactionId: string) => {
-    setIsLoadingReceipt(true);
-
-    try {
-      const receipt = await getReceipt(transactionId);
-
-      if (receipt) {
-        const newWindow = window.open('', `Receipt ${transactionId}`, '');
-        const htmlString = window.atob(receipt);
-
-        if (newWindow) {
-          newWindow.opener = null;
-          newWindow.document.write(htmlString);
-          newWindow.document.close();
-        }
-      }
-    } catch (error: unknown) {
-      throw new Error("Couldn't parse receipt. " + (error instanceof Error ? error.message : ''));
-    }
-
-    setIsLoadingReceipt(false);
-  };
 
   useEffect(() => {
     if (accessModel !== 'AVOD') {
@@ -195,34 +149,7 @@ const User = (): JSX.Element => {
               }
             />
           )}
-          <Route
-            path="payments"
-            element={
-              accessModel !== 'AVOD' ? (
-                <Payment
-                  accessModel={accessModel}
-                  activeSubscription={subscription}
-                  activePaymentDetail={activePayment}
-                  transactions={transactions}
-                  customer={customer}
-                  pendingOffer={pendingOffer}
-                  isLoading={loading || isLoadingReceipt}
-                  panelClassName={styles.panel}
-                  panelHeaderClassName={styles.panelHeader}
-                  onShowAllTransactionsClick={() => setShowAllTransactions(true)}
-                  showAllTransactions={showAllTransactions}
-                  canUpdatePaymentMethod={canUpdatePaymentMethod}
-                  canRenewSubscription={canRenewSubscription}
-                  onUpgradeSubscriptionClick={handleUpgradeSubscriptionClick}
-                  offerSwitchesAvailable={!!offerSwitches.length}
-                  canShowReceipts={canShowReceipts}
-                  onShowReceiptClick={handleShowReceiptClick}
-                />
-              ) : (
-                <Navigate to="my-account" />
-              )
-            }
-          />
+          <Route path="payments" element={accessModel !== 'AVOD' ? <PaymentContainer /> : <Navigate to="my-account" />} />
           <Route path="*" element={<Navigate to="my-account" />} />
         </Routes>
       </div>

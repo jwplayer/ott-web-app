@@ -636,6 +636,7 @@ exports[`User Component tests > Payments Page 1`] = `
              
             <br />
             user:payment.next_billing_date_on
+            
           </p>
           <p
             class="_price_c57ff5"
@@ -650,10 +651,12 @@ exports[`User Component tests > Payments Page 1`] = `
           </p>
         </div>
         <button
-          class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+          aria-disabled="false"
+          class="_button_f8f296 _upgradeSubscription_c57ff5 _primary_f8f296 _outlined_f8f296"
+          data-testid="change-subscription-button"
         >
           <span>
-            user:payment.cancel_subscription
+            user:payment.change_subscription
           </span>
         </button>
       </div>
@@ -727,53 +730,59 @@ exports[`User Component tests > Payments Page 1`] = `
           class="_panelHeader_e9c5ca"
         >
           <h3>
-            user:payment.transactions
+            user:payment.billing_history
           </h3>
         </div>
         <div
           class="_infoBox_c57ff5"
         >
           <p
-            class="transactionItem"
+            class="_transactionItem_c57ff5"
           >
             <strong>
-              Your Cool Subscription
+              July 16, 2022
             </strong>
-             
-            <br />
-            user:payment.price_payed_with
+            <span>
+              Your Cool Subscription
+            </span>
+            <span>
+              11232
+            </span>
           </p>
           <div
             class="_transactionDetails_c57ff5"
           >
-            <p>
-              11232
-              <br />
-              July 16, 2022
-            </p>
+            <div
+              class="_transationPrice_c57ff5"
+            >
+              user:payment.price_paid_with
+            </div>
           </div>
         </div>
         <div
           class="_infoBox_c57ff5"
         >
           <p
-            class="transactionItem"
+            class="_transactionItem_c57ff5"
           >
             <strong>
-              Your Cool Subscription
+              November 9, 2022
             </strong>
-             
-            <br />
-            user:payment.price_payed_with
+            <span>
+              Your Cool Subscription
+            </span>
+            <span>
+              11234
+            </span>
           </p>
           <div
             class="_transactionDetails_c57ff5"
           >
-            <p>
-              11234
-              <br />
-              November 9, 2022
-            </p>
+            <div
+              class="_transationPrice_c57ff5"
+            >
+              user:payment.price_paid_with
+            </div>
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ import ShareButton from '#components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import Button from '#components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
-import type { PlaylistItem, ImageData } from '#types/playlist';
+import type { PlaylistItem } from '#types/playlist';
 import useQueryParam from '#src/hooks/useQueryParam';
 import Loading from '#src/pages/Loading/Loading';
 import usePlaylist from '#src/hooks/usePlaylist';
@@ -108,7 +108,7 @@ const LegacySeries = () => {
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const pageDescription = selectedItem?.description || '';
   const canonicalUrl = `${window.location.origin}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
-  const backgroundImage = (selectedItem.backgroundImage as ImageData) || undefined;
+  const backgroundImage = (selectedItem.backgroundImage as string) || undefined;
 
   const primaryMetadata = episode
     ? formatVideoMetaString(episode, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))
