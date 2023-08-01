@@ -1,8 +1,9 @@
-# [4.24.0](https://github.com/jwplayer/ott-web-app/compare/v4.23.2...v4.24.0) (2023-07-27)
+# [4.25.0](https://github.com/jwplayer/ott-web-app/compare/v4.23.2...v4.25.0) (2023-08-01)
 
 
 ### Bug Fixes
 
+* add missing Spanish translations ([2270049](https://github.com/jwplayer/ott-web-app/commit/22700493c6e3bb9a247684aa353002d68cbde509))
 * add per-provider flag for subscription change tests ([19cd475](https://github.com/jwplayer/ott-web-app/commit/19cd4752177a0c816e257a1192337b41664af37b))
 * choose offer modal without pricing options ([bc8389e](https://github.com/jwplayer/ott-web-app/commit/bc8389e3ab9f0c343e25d3dcf60f139b56204f34))
 * disable change subscription button when subscription is cancelled and can't renew ([be09ba2](https://github.com/jwplayer/ott-web-app/commit/be09ba2b3cb8ae6688e7673f8216e31b02e38bf0))
