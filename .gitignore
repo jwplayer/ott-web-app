@@ -9,6 +9,7 @@ yarn-error.log
 .firebase
 firebase-debug.log
 .stylelintcache
+.lighthouseci
 
 # os or editor
 .idea
@@ -20,3 +21,6 @@ firebase-debug.log
 
 # Exclude ini files because they have customer specific data
 ini/*.ini
+
+# Ignore working area for i18n checks
+.temp-translations

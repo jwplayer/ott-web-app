@@ -20,6 +20,16 @@
   }
 }
 
+.transactionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  > span {
+    color: variables.$gray-light;
+  }
+}
+
 .pendingSwitch {
   display: inline-block;
   margin-top: variables.$base-spacing;
@@ -32,6 +42,10 @@
   > div {
     margin-left: variables.$base-spacing;
   }
+}
+
+.transationPrice {
+  font-size: 1.25em;
 }
 
 .price {
@@ -68,4 +82,21 @@
   @include responsive.mobile-only() {
     margin: 0 0 8px;
   }
+}
+
+.changePlanContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.changePlanButtons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 12px;
+}
+
+.changePlanCancelButton {
+  margin-left: auto;
 }

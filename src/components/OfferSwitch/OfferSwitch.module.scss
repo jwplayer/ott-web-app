@@ -1,0 +1,62 @@
+@use 'src/styles/variables';
+@use 'src/styles/theme';
+
+.offerSwitchContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 16px;
+  gap: 25px;
+  color: variables.$gray-white;
+  background-color: theme.$panel-bg;
+  border-radius: 4px;
+}
+
+.activeOfferSwitchContainer {
+  color: variables.$gray-darker;
+  background-color: variables.$white;
+}
+
+.offerSwitchInfoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.offerSwitchPlanContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.currentPlanHeading {
+  color: variables.$gray;
+  font-size: 10px;
+}
+
+.activeCurrentPlanHeading {
+  color: variables.$gray;
+}
+
+.nextBillingDate {
+  color: variables.$gray;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.price {
+  margin-left: auto;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.paymentFrequency {
+  font-size: 12px;
+}
