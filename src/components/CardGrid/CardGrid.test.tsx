@@ -17,7 +17,7 @@ describe('<CardGrid>', () => {
         accessModel={'SVOD'}
         isLoggedIn={true}
         hasSubscription={true}
-        getUrl={(item: PlaylistItem) => `https://test.dummy.jwplayer.com?media_id=${item.id}`}
+        getUrl={(item: PlaylistItem) => `https://test.dummy.jwplayer.com?media_id=${item.mediaid}`}
       />,
     );
 
