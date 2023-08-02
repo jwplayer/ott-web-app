@@ -1,14 +1,15 @@
-name: 'Firebase Live'
+name: Release - Deploy Prod Demo Site
 
 on:
   push:
     branches: ['release']
+  workflow_dispatch:
 
 jobs:
   deploy_live_website:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}

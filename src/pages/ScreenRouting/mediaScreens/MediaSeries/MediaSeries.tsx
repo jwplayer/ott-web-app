@@ -91,7 +91,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     [seriesMedia, series, episodes],
   );
   const episodesInSeason = getEpisodesInSeason(episodeMetadata, series);
-  const { data: nextItem } = useNextEpisode({ series, episodeMetadata, episodeId: episode?.mediaid || firstEpisode?.mediaid });
+  const { data: nextItem } = useNextEpisode({ series, episodeId: episode?.mediaid || firstEpisode?.mediaid });
 
   // Watch history
   const watchHistoryArray = useWatchHistoryStore((state) => state.watchHistory);
@@ -269,6 +269,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
             <InlinePlayer
               isLoggedIn={isLoggedIn}
               item={episode || firstEpisode}
+              seriesItem={seriesMedia}
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
               onPlay={handleInlinePlay}
@@ -281,6 +282,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
               open={play && isEntitled}
               onClose={goBack}
               item={episode || firstEpisode}
+              seriesItem={seriesMedia}
               title={seriesMedia.title}
               primaryMetadata={primaryMetadata}
               secondaryMetadata={secondaryMetadata}

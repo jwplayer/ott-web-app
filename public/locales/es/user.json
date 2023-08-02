@@ -70,9 +70,14 @@
     "billing_history": "Historial de facturación",
     "cancel_subscription": "Cancelar suscripción",
     "card_number": "Número de tarjeta",
+    "change_plan": "Cambiar De Plan",
+    "change_plan_error": "Hubo un problema al guardar los cambios en el plan de tu suscripción.",
     "change_subscription": "Cambiar suscripción",
     "complete_subscription": "Completar suscripción",
+    "current_plan": "PLAN ACTUAL",
     "daily_subscription": "Suscripción diaria",
+    "downgrade_on": "Degradaciónde plan pendiente para el {{date}}",
+    "downgrade_plan_success": "Haz cambiado exitosamente el plan de tu suscripción. Tu nuevo plan comenzará después de que finalice el periodo actual el {{date}}.",
     "expiry_date": "Fecha de vencimiento",
     "granted_subscription": "Suscripción otorgada",
     "hidden_transactions_one": "Una transacción más",
@@ -86,6 +91,7 @@
     "no_transactions": "No hay transacciones",
     "other": "otro",
     "payment_method": "Método de pago",
+    "pending_downgrade": "Degradación de plan pendiente",
     "pending_offer_switch": "Se actualizará a \"{{title}}\" después de la próxima fecha de facturación",
     "price_paid_with": "{{price}} pagado con {{method}}",
     "price_paid_with_card": "Precio pagado con tarjeta",
@@ -96,6 +102,7 @@
     "subscription_details": "Detalles de la suscripción",
     "subscription_expires_on": "Este plan expirará el {{date}}",
     "update_payment_details": "Actualizar detalles de pago",
+    "upgrade_plan_success": "Haz cambiado exitosamente el plan de tu suscripción. Puedes comenzar a disfrutar de los beneficios adicionales de inmediato.",
     "weekly_subscription": "Suscripción semanal"
   }
 }

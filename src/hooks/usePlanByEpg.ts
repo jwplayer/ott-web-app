@@ -13,24 +13,24 @@ const isBaseTimeFormat = is12HourClock();
 const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number, highlightColor?: string | null, backgroundColor?: string | null) => {
   const [epgChannels, epgPrograms] = useMemo(() => {
     return [
-      channels.map((channel) => ({
-        uuid: channel.id,
-        logo: channel.channelLogoImage?.image || '',
-        channelLogoImage: channel.channelLogoImage,
-        backgroundImage: channel.backgroundImage,
+      channels.map(({ id, channelLogoImage, backgroundImage }) => ({
+        uuid: id,
+        logo: channelLogoImage,
+        channelLogoImage: channelLogoImage,
+        backgroundImage: backgroundImage,
       })),
       channels.flatMap((channel) =>
-        channel.programs.map((program) => ({
+        channel.programs.map(({ id, title, cardImage, backgroundImage, description, endTime, startTime }) => ({
           channelUuid: channel.id,
-          id: program.id,
-          title: program.title,
-          image: program.shelfImage?.image || '',
-          // programs have the same shelfImage/backgroundImage (different API)
-          shelfImage: program.shelfImage,
-          backgroundImage: program.backgroundImage,
-          description: program.description || '',
-          till: program.endTime,
-          since: program.startTime,
+          id: id,
+          title,
+          image: cardImage || '',
+          // programs have the same cardImage/backgroundImage (different API)
+          cardImage: cardImage || '',
+          backgroundImage: backgroundImage || '',
+          description: description || '',
+          till: endTime,
+          since: startTime,
         })),
       ),
     ];

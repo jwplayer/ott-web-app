@@ -227,24 +227,24 @@ Scenario('I can navigate through the epg', async ({ I }) => {
   await isLiveProgram(I, channel2LiveProgramLocator, 'channel 2');
 });
 
-Scenario('I can see an alternate channel logo for Channel 1', async ({ I }) => {
+Scenario('I can see the channel logo for Channel 1', async ({ I }) => {
   await I.openVideoCard('Channel 1');
-  await I.seeEpgChannelLogoImage('Uh7zcqVm', 'https://img.jwplayer.com/v1/media/Uh7zcqVm/images/channel_logo.webp?width=320');
+  await I.seeEpgChannelLogoImage('Uh7zcqVm', 'https://img.jwplayer.com/v1/media/Uh7zcqVm/images/channel_logo.webp?poster_fallback=1&width=320');
 });
 
-Scenario('I can see the default channel logo for Channel 2', async ({ I }) => {
+Scenario('I can see the channel logo for Channel 2', async ({ I }) => {
   await I.openVideoCard('Channel 2');
-  await I.seeEpgChannelLogoImage('Z2evecey', 'https://cdn.jwplayer.com/v2/media/Z2evecey/poster.jpg?width=320');
+  await I.seeEpgChannelLogoImage('Z2evecey', 'https://img.jwplayer.com/v1/media/Z2evecey/images/channel_logo.webp?poster_fallback=1&width=320');
 });
 
-Scenario('I can see an alternate background image for Channel 3', async ({ I }) => {
+Scenario('I can see the background image for Channel 3', async ({ I }) => {
   await I.openVideoCard('Channel 3');
-  await I.seeVideoDetailsBackgroundImage('Channel 3', 'https://img.jwplayer.com/v1/media/wewsVyR7/images/background.webp?width=1280');
+  await I.seeVideoDetailsBackgroundImage('Channel 3', 'https://img.jwplayer.com/v1/media/wewsVyR7/images/background.webp?poster_fallback=1&width=1280');
 });
 
-Scenario('I can see the default background image for Channel 4', async ({ I }) => {
+Scenario('I can see the background image for Channel 4', async ({ I }) => {
   await I.openVideoCard('Channel 4');
-  await I.seeVideoDetailsBackgroundImage('Channel 4', 'https://cdn.jwplayer.com/v2/media/kH7LozaK/poster.jpg?width=1280');
+  await I.seeVideoDetailsBackgroundImage('Channel 4', 'https://img.jwplayer.com/v1/media/kH7LozaK/images/background.webp?poster_fallback=1&width=1280');
 });
 
 async function isSelectedProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {

@@ -1,6 +1,13 @@
-name: CodeceptJS
+name: Test - End to End
 
-on: [pull_request]
+on:
+  pull_request:
+    branches: [ 'develop', 'feat/*', 'feature/*', 'release', 'release-candidate' ]
+  push:
+    branches: [ 'develop', 'release', 'release-candidate' ]
+  schedule:
+    - cron: '30 3 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,9 +20,9 @@ jobs:
         config: [desktop, mobile]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
