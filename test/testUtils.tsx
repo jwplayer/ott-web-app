@@ -35,12 +35,7 @@ const customRender = (ui: ReactElement, options?: RenderOptions) => render(ui, {
 
 export const mockWindowLocation = (path: string) => {
   const location = new URL(`https://www.jwplayer.com/${path}`) as unknown as Location;
-
-  if ('location' in globalThis) {
-    // @ts-ignore
-    delete globalThis.location;
-    globalThis.location = location;
-  }
+  globalThis.location = location;
 };
 
 export { customRender as renderWithRouter };
