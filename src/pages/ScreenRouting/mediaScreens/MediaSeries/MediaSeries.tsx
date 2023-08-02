@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
@@ -33,6 +33,7 @@ import type { PlaylistItem } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';
 import type { ScreenComponent } from '#types/screens';
 import { VideoProgressMinMax } from '#src/config';
+import { addQueryParam } from '#src/utils/location';
 
 const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const breakpoint = useBreakpoint();
@@ -105,6 +106,11 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const { isEntitled } = useEntitlement(episode);
   const isLoggedIn = !!user;
   const hasSubscription = !!subscription;
+
+  const location = useLocation();
+  const getURL = (toEpisode: PlaylistItem) => {
+    return addQueryParam(location, 'e', toEpisode.mediaid);
+  };
 
   // Handlers
   const goBack = useCallback(() => {
@@ -181,10 +187,6 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   }
 
   if (!seriesMedia || !series) return <ErrorPage title={t('series_error')} />;
-
-  const getURL = (toEpisode: PlaylistItem) => {
-    return mediaURL({ media: seriesMedia, episodeId: toEpisode.mediaid });
-  };
 
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const canonicalUrl = `${window.location.origin}${mediaURL({ media: seriesMedia, episodeId: episode?.mediaid })}`;
