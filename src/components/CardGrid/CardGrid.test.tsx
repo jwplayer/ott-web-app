@@ -4,7 +4,7 @@ import CardGrid from './CardGrid';
 
 import playlistFixture from '#test/fixtures/playlist.json';
 import { renderWithRouter } from '#test/testUtils';
-import type { Playlist } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 
 describe('<CardGrid>', () => {
   it('renders and matches snapshot', () => {
@@ -17,7 +17,7 @@ describe('<CardGrid>', () => {
         accessModel={'SVOD'}
         isLoggedIn={true}
         hasSubscription={true}
-        getUrl={() => '/https://test.dummy.jwplayer.com'}
+        getUrl={(item: PlaylistItem) => `https://test.dummy.jwplayer.com?media_id=${item.id}`}
       />,
     );
 
