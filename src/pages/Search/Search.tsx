@@ -14,6 +14,8 @@ import useSearchQueryUpdater from '#src/hooks/useSearchQueryUpdater';
 import CardGrid from '#components/CardGrid/CardGrid';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import usePlaylist from '#src/hooks/usePlaylist';
+import type { PlaylistItem } from '#types/playlist';
+import { mediaURL } from '#src/utils/formatting';
 
 const Search = () => {
   const { t } = useTranslation('search');
@@ -29,6 +31,8 @@ const Search = () => {
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
+
+  const getURL = (playlistItem: PlaylistItem) => mediaURL({ media: playlistItem, playlistId: features?.searchPlaylist });
 
   // Update the search bar query to match the route param on mount
   useEffect(() => {
@@ -87,7 +91,7 @@ const Search = () => {
         <h2>{t('heading')}</h2>
       </header>
       <main className={styles.main}>
-        <CardGrid playlist={playlist} isLoading={firstRender} accessModel={accessModel} isLoggedIn={!!user} hasSubscription={!!subscription} />
+        <CardGrid getUrl={getURL} playlist={playlist} isLoading={firstRender} accessModel={accessModel} isLoggedIn={!!user} hasSubscription={!!subscription} />
       </main>
     </div>
   );

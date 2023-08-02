@@ -10,6 +10,7 @@ import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { mediaURL } from '#src/utils/formatting';
 
 type Props = {
   playlist: Playlist;
@@ -38,6 +39,8 @@ const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, o
     return <ErrorPage title={t('favorites.not_found')} />;
   }
 
+  const getURL = (playlistItem: PlaylistItem) => mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
+
   return (
     <div>
       <div className={styles.header}>
@@ -46,6 +49,7 @@ const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, o
       </div>
       {playlist.playlist.length > 0 ? (
         <CardGrid
+          getUrl={getURL}
           playlist={playlist}
           onCardHover={onCardHover}
           cols={cols}

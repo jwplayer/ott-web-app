@@ -182,6 +182,10 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
 
   if (!seriesMedia || !series) return <ErrorPage title={t('series_error')} />;
 
+  const getURL = (toEpisode: PlaylistItem) => {
+    return mediaURL({ media: seriesMedia, episodeId: toEpisode.mediaid });
+  };
+
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const canonicalUrl = `${window.location.origin}${mediaURL({ media: seriesMedia, episodeId: episode?.mediaid })}`;
 
@@ -255,6 +259,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         playlist={playlist}
         relatedTitle={inlineLayout ? seriesMedia.title : t('episodes')}
         onItemClick={onCardClick}
+        getURL={getURL}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
         defaultFilterLabel={t('all_seasons')}

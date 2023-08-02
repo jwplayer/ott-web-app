@@ -46,7 +46,7 @@ type VideoListProps = {
   watchHistory?: { [key: string]: number };
   activeMediaId?: string;
   activeLabel?: string;
-  seriesPlaylist?: Playlist;
+  getURL: (item: PlaylistItem) => string;
 };
 
 type Props = {
@@ -97,7 +97,7 @@ const VideoLayout: React.FC<Props> = ({
   // load more
   hasLoadMore,
   loadMore,
-  seriesPlaylist,
+  getURL,
 }) => {
   const breakpoint = useBreakpoint();
   const isTablet = breakpoint === Breakpoint.sm || breakpoint === Breakpoint.md;
@@ -134,7 +134,7 @@ const VideoLayout: React.FC<Props> = ({
           hasSubscription={hasSubscription}
           hasLoadMore={hasLoadMore}
           loadMore={loadMore}
-          seriesPlaylist={seriesPlaylist}
+          getUrl={getURL}
         />
       </>
     ) : (

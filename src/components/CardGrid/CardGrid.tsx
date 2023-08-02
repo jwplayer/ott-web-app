@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import InfiniteScroll from 'react-infinite-scroller';
-import { useParams } from 'react-router';
 
 import styles from './CardGrid.module.scss';
 
@@ -12,8 +11,6 @@ import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
-import { legacySeriesURL, mediaURL } from '#src/utils/formatting';
-import useQueryParam from '#src/hooks/useQueryParam';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -37,9 +34,9 @@ type CardGridProps = {
   isLoggedIn: boolean;
   hasSubscription: boolean;
   hasLoadMore?: boolean;
-  seriesPlaylist?: Playlist;
   loadMore?: () => void;
   onCardHover?: (item: PlaylistItem) => void;
+  getUrl: (item: PlaylistItem) => string;
 };
 
 function CardGrid({
@@ -53,7 +50,7 @@ function CardGrid({
   isLoggedIn,
   hasSubscription,
   hasLoadMore,
-  seriesPlaylist,
+  getUrl,
   loadMore,
   onCardHover,
 }: CardGridProps) {
@@ -65,11 +62,6 @@ function CardGrid({
   const defaultLoadMore = () => setRowCount((current) => current + LOAD_ROWS_COUNT);
   const defaultHasMore = rowCount * visibleTiles < playlist.playlist.length;
 
-  // fetch to build seriesUrl
-  const params = useParams();
-  const seriesId = params.id || '';
-  const feedId = useQueryParam('r');
-
   useEffect(() => {
     // reset row count when the page changes
     setRowCount(INITIAL_ROW_COUNT);
@@ -78,15 +70,12 @@ function CardGrid({
   const renderTile = (playlistItem: PlaylistItem) => {
     const { mediaid } = playlistItem;
 
-    const url = mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
-    const seriesUrl = legacySeriesURL({ episodeId: mediaid, seriesId, play: false, playlistId: feedId });
-
     return (
       <div className={styles.cell} key={mediaid} role="row">
         <div role="cell">
           <Card
             progress={watchHistory ? watchHistory[mediaid] : undefined}
-            url={seriesPlaylist ? seriesUrl : url}
+            url={getUrl(playlistItem)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}

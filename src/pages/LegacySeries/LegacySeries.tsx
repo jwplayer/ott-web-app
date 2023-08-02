@@ -27,6 +27,7 @@ import PlayTrailer from '#src/icons/PlayTrailer';
 import useQueryParam from '#src/hooks/useQueryParam';
 import Loading from '#src/pages/Loading/Loading';
 import usePlaylist from '#src/hooks/usePlaylist';
+import type { PlaylistItem } from '#types/playlist';
 
 const LegacySeries = () => {
   const breakpoint = useBreakpoint();
@@ -78,6 +79,10 @@ const LegacySeries = () => {
 
   // Handlers
   const goBack = () => episode && navigate(legacySeriesURL({ episodeId: episode.mediaid, seriesId, play: false, playlistId: feedId }));
+  const getUrl = (toEpisode: PlaylistItem) => {
+    return (seriesPlaylist && legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId })) || '';
+  };
+
   const handleComplete = useCallback(async () => {
     navigate(legacySeriesURL({ episodeId: nextItem?.mediaid, seriesId, play: !!nextItem, playlistId: feedId }));
   }, [navigate, nextItem, seriesId, feedId]);
@@ -194,7 +199,7 @@ const LegacySeries = () => {
         watchHistory={watchHistoryDictionary}
         filterMetadata={filterMetadata}
         filters={filters}
-        seriesPlaylist={seriesPlaylist}
+        getURL={getUrl}
         player={
           inlineLayout && (episode || firstEpisode) ? (
             <InlinePlayer

@@ -201,6 +201,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         shareButton={shareButton}
         trailerButton={null}
         favoriteButton={null}
+        getURL={() => ''} // needs to be added with <Link> to <Epg>
         player={
           channelMediaItem && (
             <Cinema
