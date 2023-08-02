@@ -419,7 +419,7 @@ const stepsObj = {
       if (isMobile) {
         // This swipes on the current item in the carousel where the card we're trying to click is
         await this.swipe({
-          xpath: shelfXpath ? `${shelfXpath}//*[@tabindex=0]` : `${locator}/ancestor::ul/li/div[@tabindex=0]`,
+          xpath: shelfXpath ? `${shelfXpath}//*[@tabindex=0]` : `${locator}/ancestor::ul/li/a[@tabindex=0]`,
           direction: scrollToTheRight ? 'left' : 'right',
         });
       } else {
