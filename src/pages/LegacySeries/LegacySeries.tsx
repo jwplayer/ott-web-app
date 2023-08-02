@@ -80,7 +80,7 @@ const LegacySeries = () => {
   // Handlers
   const goBack = () => episode && navigate(legacySeriesURL({ episodeId: episode.mediaid, seriesId, play: false, playlistId: feedId }));
   const getUrl = (toEpisode: PlaylistItem) => {
-    return (seriesPlaylist && legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId })) || '';
+    return seriesPlaylist ? legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId }) : '';
   };
 
   const handleComplete = useCallback(async () => {
