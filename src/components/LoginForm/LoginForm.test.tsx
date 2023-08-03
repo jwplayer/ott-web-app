@@ -11,29 +11,27 @@ vi.mock('../SocialButton/SocialButton.tsx', () => ({
   },
 }));
 
-vi.mock('#src/stores/AccountController', async (importOriginal) => {
-  const mod = await importOriginal();
-
-  return {
-    ...(mod as Record<string, unknown>),
-    getSocialLoginUrls: () =>
-      Promise.resolve([
-        {
-          twitter: 'https://staging-v2.inplayer.com/',
-        },
-        {
-          facebook: 'https://www.facebook.com/',
-        },
-        {
-          google: 'https://accounts.google.com/',
-        },
-      ]),
-  };
-});
+vi.mock('#src/stores/AccountController', async () => ({
+  getSocialLoginUrls: vi.fn(() => [
+    {
+      twitter: 'https://staging-v2.inplayer.com/',
+    },
+    {
+      facebook: 'https://www.facebook.com/',
+    },
+    {
+      google: 'https://accounts.google.com/',
+    },
+  ]),
+}));
 
 describe('<LoginForm>', () => {
   beforeEach(() => {
     vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   test('renders and matches snapshot', async () => {
