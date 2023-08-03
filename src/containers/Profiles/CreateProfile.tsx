@@ -9,7 +9,7 @@ import AVATARS from './avatarUrls.json';
 import styles from '#src/pages/User/User.module.scss';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import { createProfile } from '#src/stores/AccountController';
+import { createProfile } from '#src/stores/ProfileController';
 import { useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 

@@ -16,6 +16,7 @@ import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -48,11 +49,13 @@ const Root: FC = () => {
     registerCustomScreens();
   }, []);
 
-  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile, selectingProfileAvatar: s.selectingProfileAvatar }));
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
+
+  const { profile, selectingProfileAvatar } = useProfileStore();
   const profilesEnabled = useProfilesFeatureEnabled();
 
-  if (userData.user && profilesEnabled && userData.selectingProfileAvatar !== null) {
-    return <LoadingOverlay profileImageUrl={userData.profile?.avatar_url || userData.selectingProfileAvatar} />;
+  if (userData.user && profilesEnabled && selectingProfileAvatar !== null) {
+    return <LoadingOverlay profileImageUrl={profile?.avatar_url || selectingProfileAvatar} />;
   }
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {
@@ -66,7 +69,7 @@ const Root: FC = () => {
     return <LoadingOverlay />;
   }
 
-  if (profilesEnabled && userData.user && !userData.profile && !location.pathname.includes('/u/profiles')) {
+  if (profilesEnabled && userData.user && !profile && !location.pathname.includes('/u/profiles')) {
     return <Navigate to="/u/profiles" />;
   }
 

@@ -26,6 +26,7 @@ import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 import { mediaURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -41,7 +42,8 @@ const User = (): JSX.Element => {
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
 
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, loading, canUpdateEmail, profile } = useAccountStore();
+  const { user: customer, subscription, loading, canUpdateEmail } = useAccountStore();
+  const { profile } = useProfileStore();
 
   const profilesEnabled = useProfilesFeatureEnabled();
 

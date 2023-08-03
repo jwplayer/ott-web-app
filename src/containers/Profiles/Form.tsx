@@ -16,7 +16,7 @@ import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import styles from '#src/pages/User/User.module.scss';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import ProfileBox from '#components/ProfileBox/ProfileBox';
-import { useAccountStore } from '#src/stores/AccountStore';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 type Props = {
   initialValues: ProfileFormValues;
@@ -33,7 +33,7 @@ type Props = {
 const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = true, showContentRating = false, isMobile = false }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
-  const profile = useAccountStore((s) => s.profile);
+  const { profile } = useProfileStore();
 
   const options: { value: string; label: string }[] = [
     { label: t('profile.adult'), value: 'true' },

@@ -1,12 +1,14 @@
 import { useMutation, useQuery } from 'react-query';
 
-import { enterProfile, initializeAccount, listProfiles } from '#src/stores/AccountController';
+import { initializeAccount } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import type { AuthData } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { enterProfile, listProfiles } from '#src/stores/ProfileController';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
@@ -24,7 +26,7 @@ export const unpersistProfile = () => {
 
 const handleProfileSelection = async ({ id, navigate, selectingProfileAvatarUrl = '' }: ProfileSelectionPayload) => {
   try {
-    useAccountStore.setState({ selectingProfileAvatar: selectingProfileAvatarUrl, profile: null });
+    useProfileStore.setState({ selectingProfileAvatar: selectingProfileAvatarUrl, profile: null });
     const response = await enterProfile({ id });
     const profile = response?.responseData;
 
@@ -49,7 +51,7 @@ const handleProfileSelection = async ({ id, navigate, selectingProfileAvatarUrl 
   } catch {
     throw new Error('Unable to enter profile.');
   } finally {
-    useAccountStore.setState({ selectingProfileAvatar: null });
+    useProfileStore.setState({ selectingProfileAvatar: null });
   }
 };
 

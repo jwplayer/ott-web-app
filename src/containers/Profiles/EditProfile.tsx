@@ -14,9 +14,9 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import Button from '#src/components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
-import { getProfileDetails, updateProfile } from '#src/stores/AccountController';
 import { useListProfiles } from '#src/hooks/useProfiles';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
+import { getProfileDetails, updateProfile } from '#src/stores/ProfileController';
 
 type EditProfileProps = {
   contained?: boolean;

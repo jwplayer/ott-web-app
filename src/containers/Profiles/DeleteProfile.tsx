@@ -9,7 +9,7 @@ import Dialog from '#src/components/Dialog/Dialog';
 import { removeQueryParam } from '#src/utils/location';
 import useQueryParam from '#src/hooks/useQueryParam';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import { deleteProfile } from '#src/stores/AccountController';
+import { deleteProfile } from '#src/stores/ProfileController';
 import { useListProfiles } from '#src/hooks/useProfiles';
 
 const DeleteProfile = () => {

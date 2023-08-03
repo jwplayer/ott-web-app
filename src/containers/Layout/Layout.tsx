@@ -19,6 +19,7 @@ import MenuButton from '#components/MenuButton/MenuButton';
 import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 const Layout = () => {
   const location = useLocation();
@@ -43,7 +44,8 @@ const Layout = () => {
     shallow,
   );
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const { user, profile } = useAccountStore(({ user, profile }) => ({ user, profile }), shallow);
+  const user = useAccountStore(({ user }) => user, shallow);
+  const { profile } = useProfileStore();
   const isLoggedIn = !!user;
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;

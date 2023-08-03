@@ -12,11 +12,11 @@ import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import { useAccountStore } from '#src/stores/AccountStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Plus from '#src/icons/Plus';
 import { useSelectProfile, useListProfiles, unpersistProfile, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 type Props = {
   small?: boolean;
@@ -28,7 +28,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const { accessModel } = useConfigStore();
-  const { profile: currentProfile } = useAccountStore();
+  const { profile: currentProfile } = useProfileStore();
   const profilesEnabled = useProfilesFeatureEnabled();
 
   const { data, isFetching } = useListProfiles();

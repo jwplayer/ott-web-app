@@ -1,32 +1,31 @@
 import i18next from 'i18next';
 
 import { subscribeToNotifications } from './NotificationsController';
+import { useProfileStore } from './ProfileStore';
+import { listProfiles } from './ProfileController';
 
-import * as persist from '#src/utils/persist';
+import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
+import useAccount from '#src/hooks/useAccount';
+import useService from '#src/hooks/useService';
+import { getMediaByWatchlist } from '#src/services/api.service';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { logDev } from '#src/utils/common';
+import * as persist from '#src/utils/persist';
 import type {
   Capture,
   Customer,
   CustomerConsent,
   EmailConfirmPasswordInput,
-  EnterProfilePayload,
   FirstLastNameInput,
   GetCaptureStatusResponse,
   GetCustomerConsentsResponse,
   GetPublisherConsentsResponse,
-  ProfileDetailsPayload,
-  ProfilePayload,
 } from '#types/account';
 import type { Offer } from '#types/checkout';
-import { useAccountStore } from '#src/stores/AccountStore';
-import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
-import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
-import { getMediaByWatchlist } from '#src/services/api.service';
-import useService from '#src/hooks/useService';
-import useAccount from '#src/hooks/useAccount';
-import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
-import { logDev } from '#src/utils/common';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
@@ -42,13 +41,16 @@ export const initializeAccount = async () => {
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
-      profile: persist.getItem(PERSIST_PROFILE) || null,
       canManageProfiles: accountService.canManageProfiles,
       canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
       canDeleteAccount: accountService.canExportAccountData,
       canShowReceipts: accountService.canShowReceipts,
+    });
+
+    useProfileStore.setState({
+      profile: persist.getItem(PERSIST_PROFILE) || null,
     });
 
     await accountService.initialize(config, logout);
@@ -140,42 +142,6 @@ export const getAccount = async () => {
   });
 };
 
-export const listProfiles = async () => {
-  return await useService(async ({ accountService, sandbox }) => {
-    return await accountService.listProfiles(undefined, sandbox ?? true);
-  });
-};
-
-export const createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
-  return await useService(async ({ accountService, sandbox }) => {
-    return await accountService.createProfile({ name, adult, avatar_url, pin }, sandbox ?? true);
-  });
-};
-
-export const updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
-  return await useService(async ({ accountService, sandbox }) => {
-    return await accountService.updateProfile({ id, name, adult, avatar_url, pin }, sandbox ?? true);
-  });
-};
-
-export const enterProfile = async ({ id, pin }: EnterProfilePayload) => {
-  return await useService(async ({ accountService, sandbox }) => {
-    return await accountService.enterProfile({ id, pin }, sandbox ?? true);
-  });
-};
-
-export const deleteProfile = async ({ id }: ProfileDetailsPayload) => {
-  return await useService(async ({ accountService, sandbox }) => {
-    return await accountService.deleteProfile({ id }, sandbox ?? true);
-  });
-};
-
-export const getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
-  return await useService(async ({ accountService, sandbox }) => {
-    return await accountService.getProfileDetails({ id }, sandbox ?? true);
-  });
-};
-
 export const login = async (email: string, password: string) => {
   await useService(async ({ accountService, config, accessModel }) => {
     useAccountStore.setState({ loading: true });
@@ -201,7 +167,6 @@ export async function logout() {
 
     useAccountStore.setState({
       user: null,
-      profile: null,
       canManageProfiles: false,
       subscription: null,
       transactions: null,
@@ -209,6 +174,11 @@ export async function logout() {
       customerConsents: null,
       publisherConsents: null,
       loading: false,
+    });
+
+    useProfileStore.setState({
+      profile: null,
+      selectingProfileAvatar: null,
     });
 
     await restoreFavorites();

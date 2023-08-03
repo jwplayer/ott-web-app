@@ -20,13 +20,15 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import EditProfile from '#src/containers/Profiles/EditProfile';
 import useQueryParam from '#src/hooks/useQueryParam';
 import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 export default function AppRoutes() {
   const { t } = useTranslation('error');
   const userModal = useQueryParam('u');
 
   const { accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { profile, user } = useAccountStore(({ profile, user }) => ({ profile, user }), shallow);
+  const user = useAccountStore(({ user }) => user, shallow);
+  const { profile } = useProfileStore();
   const profilesEnabled = useProfilesFeatureEnabled();
 
   const shouldManageProfiles = !!user && profilesEnabled && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal;

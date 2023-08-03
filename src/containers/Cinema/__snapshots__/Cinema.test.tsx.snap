@@ -12,7 +12,6 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
       <div
         class="_loadingOverlay_eb61cb _inline_eb61cb"
       >
-        
         <div
           class="_buffer_d122df"
         >
