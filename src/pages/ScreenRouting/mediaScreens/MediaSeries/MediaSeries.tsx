@@ -117,13 +117,6 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     setSearchParams({ ...searchParams, e: episode?.mediaid, r: feedId || '' });
   }, [setSearchParams, searchParams, episode, feedId]);
 
-  const onCardClick = useCallback(
-    (toEpisode: PlaylistItem) => {
-      setSearchParams({ ...searchParams, e: toEpisode.mediaid });
-    },
-    [setSearchParams, searchParams],
-  );
-
   const handleComplete = useCallback(async () => {
     setSearchParams({ ...searchParams, e: (nextItem || episode)?.mediaid, r: feedId || '', play: nextItem ? '1' : '0' });
   }, [setSearchParams, nextItem, episode, feedId, searchParams]);
@@ -260,7 +253,6 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         hasSubscription={hasSubscription}
         playlist={playlist}
         relatedTitle={inlineLayout ? seriesMedia.title : t('episodes')}
-        onItemClick={onCardClick}
         getURL={getURL}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
