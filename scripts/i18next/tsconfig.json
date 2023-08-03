@@ -1,0 +1,9 @@
+{
+  "include": ["./**/*"],
+  "compilerOptions": {
+    "module": "NodeNext",
+    "types": [
+      "node"
+    ]
+  },
+}
