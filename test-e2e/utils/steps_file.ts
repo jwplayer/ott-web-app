@@ -378,7 +378,7 @@ const stepsObj = {
     scrollToTheRight: boolean = true,
     preOpenCallback?: (locator: string) => void,
   ) {
-    const locator = `//div[@aria-label="Play ${name}"]`;
+    const locator = `//a[@aria-label="${name}"]`;
     const shelfXpath = shelf ? makeShelfXpath(shelf) : undefined;
 
     if (shelfXpath) {
@@ -419,7 +419,7 @@ const stepsObj = {
       if (isMobile) {
         // This swipes on the current item in the carousel where the card we're trying to click is
         await this.swipe({
-          xpath: shelfXpath ? `${shelfXpath}//*[@tabindex=0]` : `${locator}/ancestor::ul/li/div[@tabindex=0]`,
+          xpath: shelfXpath ? `${shelfXpath}//*[@tabindex=0]` : `${locator}/ancestor::ul/li/a[@tabindex=0]`,
           direction: scrollToTheRight ? 'left' : 'right',
         });
       } else {

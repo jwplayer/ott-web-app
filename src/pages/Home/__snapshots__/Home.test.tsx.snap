@@ -38,7 +38,6 @@ exports[`Home Component tests > Home test 1`] = `
                       aria-label="My video"
                       class="_card_d75732"
                       href="/m/abcddabc/my-video"
-                      role="button"
                       tabindex="0"
                     >
                       <div
@@ -95,7 +94,6 @@ exports[`Home Component tests > Home test 1`] = `
                       aria-label="Other Vids"
                       class="_card_d75732"
                       href="/m/zzzaaazz/other-vids"
-                      role="button"
                       tabindex="0"
                     >
                       <div
@@ -181,7 +179,6 @@ exports[`Home Component tests > Home test 1`] = `
                       aria-label="My video"
                       class="_card_d75732"
                       href="/m/abcddabc/my-video"
-                      role="button"
                       tabindex="0"
                     >
                       <div
@@ -238,7 +235,6 @@ exports[`Home Component tests > Home test 1`] = `
                       aria-label="Other Vids"
                       class="_card_d75732"
                       href="/m/zzzaaazz/other-vids"
-                      role="button"
                       tabindex="0"
                     >
                       <div

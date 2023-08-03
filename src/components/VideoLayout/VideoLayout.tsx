@@ -46,6 +46,7 @@ type VideoListProps = {
   watchHistory?: { [key: string]: number };
   activeMediaId?: string;
   activeLabel?: string;
+  getURL: (item: PlaylistItem) => string;
 };
 
 type Props = {
@@ -96,6 +97,7 @@ const VideoLayout: React.FC<Props> = ({
   // load more
   hasLoadMore,
   loadMore,
+  getURL,
 }) => {
   const breakpoint = useBreakpoint();
   const isTablet = breakpoint === Breakpoint.sm || breakpoint === Breakpoint.md;
@@ -113,7 +115,7 @@ const VideoLayout: React.FC<Props> = ({
   );
 
   const renderRelatedVideos = (grid = true) => {
-    if (!playlist || !onItemClick) return null;
+    if (!playlist) return null;
 
     return grid ? (
       <>
@@ -123,7 +125,6 @@ const VideoLayout: React.FC<Props> = ({
         </div>
         <CardGrid
           playlist={playlist}
-          onCardClick={onItemClick}
           isLoading={isLoading}
           watchHistory={watchHistory}
           accessModel={accessModel}
@@ -133,6 +134,7 @@ const VideoLayout: React.FC<Props> = ({
           hasSubscription={hasSubscription}
           hasLoadMore={hasLoadMore}
           loadMore={loadMore}
+          getUrl={getURL}
         />
       </>
     ) : (
@@ -195,7 +197,7 @@ const VideoLayout: React.FC<Props> = ({
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
       />
-      {playlist && onItemClick && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
+      {playlist && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
       {children}
       {player}
     </div>

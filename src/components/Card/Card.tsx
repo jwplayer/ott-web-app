@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,6 @@ export type PosterAspectRatio = (typeof cardAspectRatios)[number];
 
 type CardProps = {
   item: PlaylistItem;
-  onClick?: () => void;
   onHover?: () => void;
   progress?: number;
   posterAspect?: PosterAspectRatio;
@@ -29,11 +28,10 @@ type CardProps = {
   isCurrent?: boolean;
   isLocked?: boolean;
   currentLabel?: string;
-  url?: string;
+  url: string;
 };
 
 function Card({
-  onClick,
   onHover,
   progress,
   item,
@@ -90,13 +88,11 @@ function Card({
 
   return (
     <Link
-      to={url ?? ''}
+      to={url}
       className={cardClassName}
-      onClick={onClick}
+      onClick={disabled ? (e) => e.preventDefault() : undefined}
       onMouseEnter={onHover}
       tabIndex={disabled ? -1 : 0}
-      onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()}
-      role="button"
       aria-label={title}
     >
       <div className={posterClassNames}>

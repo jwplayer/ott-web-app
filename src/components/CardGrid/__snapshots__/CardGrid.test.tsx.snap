@@ -17,8 +17,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
           <a
             aria-label="Agent 327"
             class="_card_d75732"
-            href="/m/uB8aRnu6/agent-327?r=dGSUzs9o"
-            role="button"
+            href="/https://test.dummy.jwplayer.com?media_id=uB8aRnu6"
             tabindex="0"
           >
             <div
@@ -60,8 +59,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
           <a
             aria-label="Big Buck Bunny"
             class="_card_d75732"
-            href="/m/awWEFyPu/big-buck-bunny?r=dGSUzs9o"
-            role="button"
+            href="/https://test.dummy.jwplayer.com?media_id=awWEFyPu"
             tabindex="0"
           >
             <div
@@ -103,8 +101,7 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
           <a
             aria-label="Elephants Dream"
             class="_card_d75732"
-            href="/m/eFPH2tVG/elephants-dream?r=dGSUzs9o"
-            role="button"
+            href="/https://test.dummy.jwplayer.com?media_id=eFPH2tVG"
             tabindex="0"
           >
             <div

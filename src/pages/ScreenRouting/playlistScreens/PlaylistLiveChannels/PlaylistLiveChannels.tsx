@@ -201,6 +201,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         shareButton={shareButton}
         trailerButton={null}
         favoriteButton={null}
+        getURL={() => ''} // TODO: OWA-31 - Add link for EPG item
         player={
           channelMediaItem && (
             <Cinema

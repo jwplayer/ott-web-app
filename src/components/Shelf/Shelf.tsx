@@ -83,7 +83,7 @@ const Shelf = ({
           isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           posterAspect={posterAspect}
           item={item}
-          url={isInView ? url : undefined}
+          url={url}
         />
       );
     },

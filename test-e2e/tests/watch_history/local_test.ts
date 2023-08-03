@@ -44,7 +44,7 @@ Scenario('I can see my watch history on the Home screen', async ({ I }) => {
     I.see('10 min');
   });
 
-  const selector = `${makeShelfXpath(ShelfId.continueWatching)}//div[@aria-label="Play ${videoTitle}"]`;
+  const selector = `${makeShelfXpath(ShelfId.continueWatching)}//a[@aria-label="${videoTitle}"]`;
   await checkProgress(I, selector, (200 / videoLength) * 100);
 
   I.click(selector);
