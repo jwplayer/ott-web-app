@@ -1,5 +1,5 @@
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
-import { UseMutationOptions, useMutation, useQuery } from 'react-query';
+import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 
 import { initializeAccount } from '#src/stores/AccountController';
@@ -10,7 +10,7 @@ import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
-import type { AuthData, CommonAccountResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
+import type { AuthData, CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
@@ -57,11 +57,11 @@ export const useSelectProfile = () => {
   });
 };
 
-export const useCreateProfile = () => {
+export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
   const listProfiles = useListProfiles();
   const navigate = useNavigate();
 
-  return useMutation(createProfile, {
+  return useMutation<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>(createProfile, {
     onSuccess: (res) => {
       const profile = res?.responseData;
       if (profile?.id) {
@@ -69,6 +69,7 @@ export const useCreateProfile = () => {
         navigate('/u/profiles');
       }
     },
+    ...options,
   });
 };
 
@@ -103,7 +104,9 @@ export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<Co
   });
 };
 
-export const useListProfiles = () => useQuery(['listProfiles'], listProfiles);
+export const useListProfiles = (
+  options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
+) => useQuery(['listProfiles'], listProfiles, { ...options });
 
 export const useProfilesFeatureEnabled = (): boolean => {
   const canManageProfiles = useAccountStore((s) => s.canManageProfiles);

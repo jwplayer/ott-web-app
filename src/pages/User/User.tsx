@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 
 import styles from './User.module.scss';
@@ -40,12 +40,15 @@ const User = (): JSX.Element => {
   const { t } = useTranslation('user');
   const breakpoint = useBreakpoint();
   const [clearFavoritesOpen, setClearFavoritesOpen] = useState(false);
+  const location = useLocation();
 
   const isLargeScreen = breakpoint > Breakpoint.md;
   const { user: customer, subscription, loading, canUpdateEmail } = useAccountStore();
   const { profile } = useProfileStore();
 
   const profilesEnabled = useProfilesFeatureEnabled();
+
+  const profileAndFavoritesPage = location.pathname?.includes('my-profile') || location.pathname.includes('favorites');
 
   const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
   const onLogout = useCallback(async () => {
@@ -79,7 +82,7 @@ const User = (): JSX.Element => {
         <div className={styles.leftColumn}>
           <div className={styles.panel}>
             <ul>
-              {accessModel === 'SVOD' && profilesEnabled && (
+              {accessModel === 'SVOD' && profilesEnabled && profileAndFavoritesPage && (
                 <li>
                   <Button
                     to={`my-profile/${profile?.id}`}
@@ -90,16 +93,18 @@ const User = (): JSX.Element => {
                   />
                 </li>
               )}
-              <li>
-                <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
-              </li>
-              {favoritesList && (
+              {(!profilesEnabled || !profileAndFavoritesPage) && (
+                <li>
+                  <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
+                </li>
+              )}
+              {favoritesList && (!profilesEnabled || profileAndFavoritesPage) && (
                 <li>
                   <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
                 </li>
               )}
 
-              {accessModel !== 'AVOD' && (
+              {accessModel !== 'AVOD' && (!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
                   <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
                 </li>

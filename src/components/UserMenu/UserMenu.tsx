@@ -36,7 +36,6 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
 
   if (profilesEnabled && !profiles?.length) {
     unpersistProfile();
-    navigate('/u/profiles');
   }
 
   const selectProfile = useSelectProfile();
@@ -83,7 +82,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
         </>
       )}
       <div className={styles.sectionHeader}>{t('nav.settings')}</div>
-      {profilesEnabled && (
+      {profilesEnabled && currentProfile && (
         <li>
           <MenuButton
             small={small}
