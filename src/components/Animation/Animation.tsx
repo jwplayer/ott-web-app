@@ -6,6 +6,7 @@ type Props = {
   open?: boolean;
   duration?: number;
   delay?: number;
+  children?: React.ReactNode;
   keepMounted?: boolean;
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
