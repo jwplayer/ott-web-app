@@ -9,31 +9,33 @@ import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist'
 import type { AdSchedule } from '#types/ad-schedule';
 import type { EpisodesRes, EpisodesWithPagination, GetSeriesParams, Series, EpisodeInSeries } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
-import { generateImageData } from '#src/utils/image';
 
 // change the values below to change the property used to look up the alternate image
 enum ImageProperty {
-  SHELF = 'shelfImage',
-  BACKGROUND = 'backgroundImage',
-  CHANNEL_LOGO = 'channelLogoImage',
+  CARD = 'card',
+  BACKGROUND = 'background',
+  CHANNEL_LOGO = 'channel_logo',
 }
 
 const PAGE_LIMIT = 20;
+
+const generateAlternateImageURL = (item: PlaylistItem, label: string) =>
+  `https://img.jwplayer.com/v1/media/${item.mediaid}/images/${label}.webp?poster_fallback=1`;
 
 /**
  * Transform incoming media items
  * - Parses productId into MediaOffer[] for all cleeng offers
  */
-export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
+export const transformMediaItem = (item: PlaylistItem) => {
   const config = ConfigStore.getState().config;
 
   const offerKeys = Object.keys(config?.integrations)[0];
 
   const transformedMediaItem = {
     ...item,
-    shelfImage: generateImageData(config, ImageProperty.SHELF, item, playlist),
-    backgroundImage: generateImageData(config, ImageProperty.BACKGROUND, item),
-    channelLogoImage: generateImageData(config, ImageProperty.CHANNEL_LOGO, item),
+    cardImage: generateAlternateImageURL(item, ImageProperty.CARD),
+    backgroundImage: generateAlternateImageURL(item, ImageProperty.BACKGROUND),
+    channelLogoImage: generateAlternateImageURL(item, ImageProperty.CHANNEL_LOGO),
     mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
     scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
     scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
@@ -52,7 +54,7 @@ export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
  * @param relatedMediaId
  */
 export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
-  playlist.playlist = playlist.playlist.map((item) => transformMediaItem(item, playlist));
+  playlist.playlist = playlist.playlist.map((item) => transformMediaItem(item));
 
   // remove the related media item (when this is a recommendations playlist)
   if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
@@ -96,7 +98,7 @@ export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[]
 
   if (!data) throw new Error(`The data was not found using the watchlist ${playlistId}`);
 
-  return (data.playlist || []).map((item) => transformMediaItem(item, data));
+  return (data.playlist || []).map((item) => transformMediaItem(item));
 };
 
 /**
@@ -149,13 +151,27 @@ export const getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [mediaI
  * Get all episodes of the selected series (when no particular season is selected or when episodes are attached to series)
  * @param {string} seriesId
  */
-export const getEpisodes = async (seriesId: string | undefined, pageOffset: number, pageLimit?: number): Promise<EpisodesWithPagination> => {
+export const getEpisodes = async ({
+  seriesId,
+  pageOffset,
+  pageLimit = PAGE_LIMIT,
+  afterId,
+}: {
+  seriesId: string | undefined;
+  pageOffset?: number;
+  pageLimit?: number;
+  afterId?: string;
+}): Promise<EpisodesWithPagination> => {
   if (!seriesId) {
     throw new Error('Series ID is required');
   }
 
   const pathname = `/apps/series/${seriesId}/episodes`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit || PAGE_LIMIT });
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
+    page_offset: pageOffset,
+    page_limit: pageLimit,
+    after_id: afterId,
+  });
 
   const response = await fetch(url);
   const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
@@ -175,18 +191,23 @@ export const getEpisodes = async (seriesId: string | undefined, pageOffset: numb
  * Get season of the selected series
  * @param {string} seriesId
  */
-export const getSeasonWithEpisodes = async (
-  seriesId: string | undefined,
-  seasonNumber: number,
-  pageOffset: number,
-  pageLimit?: number,
-): Promise<EpisodesWithPagination> => {
+export const getSeasonWithEpisodes = async ({
+  seriesId,
+  seasonNumber,
+  pageOffset,
+  pageLimit = PAGE_LIMIT,
+}: {
+  seriesId: string | undefined;
+  seasonNumber: number;
+  pageOffset?: number;
+  pageLimit?: number;
+}): Promise<EpisodesWithPagination> => {
   if (!seriesId) {
     throw new Error('Series ID is required');
   }
 
   const pathname = `/apps/series/${seriesId}/seasons/${seasonNumber}/episodes`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit || PAGE_LIMIT });
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit });
 
   const response = await fetch(url);
   const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);

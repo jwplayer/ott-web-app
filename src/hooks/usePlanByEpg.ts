@@ -7,24 +7,24 @@ import { is12HourClock } from '#src/utils/datetime';
 
 const isBaseTimeFormat = is12HourClock();
 
-export const formatChannel = (channel: EpgChannel) => ({
-  uuid: channel.id,
-  logo: channel.channelLogoImage?.image || '',
-  channelLogoImage: channel.channelLogoImage,
-  backgroundImage: channel.backgroundImage,
+export const formatChannel = ({ id, channelLogoImage, backgroundImage }: EpgChannel) => ({
+  uuid: id,
+  logo: channelLogoImage,
+  channelLogoImage: channelLogoImage,
+  backgroundImage: backgroundImage,
 });
 
-export const formatProgram = (channelId: string, program: EpgProgram) => ({
+export const formatProgram = (channelId: string, { id, title, cardImage, backgroundImage, description, endTime, startTime }: EpgProgram) => ({
   channelUuid: channelId,
-  id: program.id,
-  title: program.title,
-  image: program.shelfImage?.image || '',
-  // programs have the same shelfImage/backgroundImage (different API)
-  shelfImage: program.shelfImage,
-  backgroundImage: program.backgroundImage,
-  description: program.description || '',
-  till: program.endTime,
-  since: program.startTime,
+  id: id,
+  title: title,
+  image: cardImage || '',
+  // programs have the same cardImage/backgroundImage (different API)
+  cardImage: cardImage || '',
+  backgroundImage: backgroundImage || '',
+  description: description || '',
+  till: endTime,
+  since: startTime,
 });
 
 /**

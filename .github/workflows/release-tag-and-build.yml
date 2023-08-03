@@ -1,8 +1,6 @@
-name: Release
+name: Release - Tag and Build Artifacts
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "develop" branch
   push:
     branches: ['release']
 
@@ -11,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: false
 
@@ -45,7 +43,7 @@ jobs:
         uses: ncipollo/release-action@v1
         if: ${{ steps.changelog.outputs.tag }}
         with:
-          artifacts: "build/ott-web-app-build-*.tar.gz, build/ott-web-app-build-*.zip"
+          artifacts: 'build/ott-web-app-build-*.tar.gz, build/ott-web-app-build-*.zip'
           tag: ${{ steps.changelog.outputs.tag }}
-          bodyFile: ".github/RELEASE_BODY_TEMPLATE.md"
+          bodyFile: '.github/RELEASE_BODY_TEMPLATE.md'
           token: ${{ secrets.github_token }}
