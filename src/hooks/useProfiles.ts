@@ -1,61 +1,107 @@
-import { useMutation, useQuery } from 'react-query';
+import type { ProfilesData } from '@inplayer-org/inplayer.js';
+import { UseMutationOptions, useMutation, useQuery } from 'react-query';
+import { useNavigate } from 'react-router';
 
 import { initializeAccount } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile } from '#src/stores/ProfileController';
+import { useProfileStore } from '#src/stores/ProfileStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
-import type { AuthData } from '#types/account';
-import { useConfigStore } from '#src/stores/ConfigStore';
-import { enterProfile, listProfiles } from '#src/stores/ProfileController';
-import { useProfileStore } from '#src/stores/ProfileStore';
+import type { AuthData, CommonAccountResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
-
-type ProfileSelectionPayload = {
-  id: string;
-  navigate: (path: string) => void;
-  selectingProfileAvatarUrl?: string;
-};
 
 export const unpersistProfile = () => {
   persist.removeItem(PERSIST_PROFILE);
   persist.removeItem(PERSIST_KEY_ACCOUNT);
 };
 
-const handleProfileSelection = async ({ id, navigate, selectingProfileAvatarUrl = '' }: ProfileSelectionPayload) => {
-  try {
-    useProfileStore.setState({ selectingProfileAvatar: selectingProfileAvatarUrl, profile: null });
-    const response = await enterProfile({ id });
-    const profile = response?.responseData;
+export const useSelectProfile = () => {
+  const navigate = useNavigate();
 
-    if (profile?.credentials?.access_token) {
-      const authData: AuthData = {
-        jwt: profile.credentials.access_token,
-        refreshToken: '',
-      };
-      persist.setItem(PERSIST_KEY_ACCOUNT, authData);
-      persist.setItem(PERSIST_PROFILE, profile);
-      persist.setItemStorage('inplayer_token', {
-        expires: profile.credentials.expires,
-        token: profile.credentials.access_token,
-        refreshToken: '',
-      });
-      useFavoritesStore.setState({ favorites: [] });
-      useWatchHistoryStore.setState({ watchHistory: [] });
-      await initializeAccount().finally(() => {
-        navigate('/');
-      });
-    }
-  } catch {
-    throw new Error('Unable to enter profile.');
-  } finally {
-    useProfileStore.setState({ selectingProfileAvatar: null });
-  }
+  return useMutation((vars: { id: string; pin?: number; avatarUrl: string }) => enterProfile({ id: vars.id, pin: vars.pin }), {
+    onMutate: ({ avatarUrl }) => {
+      useProfileStore.setState({ selectingProfileAvatar: avatarUrl });
+    },
+    onSuccess: async (response) => {
+      const profile = response?.responseData;
+      if (profile?.credentials?.access_token) {
+        const authData: AuthData = {
+          jwt: profile.credentials.access_token,
+          refreshToken: '',
+        };
+        persist.setItem(PERSIST_KEY_ACCOUNT, authData);
+        persist.setItem(PERSIST_PROFILE, profile);
+        persist.setItemStorage('inplayer_token', {
+          expires: profile.credentials.expires,
+          token: profile.credentials.access_token,
+          refreshToken: '',
+        });
+        useFavoritesStore.setState({ favorites: [] });
+        useWatchHistoryStore.setState({ watchHistory: [] });
+        useProfileStore.setState({ profile });
+        await initializeAccount().finally(() => {
+          useProfileStore.setState({ selectingProfileAvatar: null });
+          navigate('/');
+        });
+      }
+    },
+    onError: () => {
+      useProfileStore.setState({ selectingProfileAvatar: null });
+      throw new Error('Unable to enter profile.');
+    },
+  });
 };
 
-export const useSelectProfile = () => useMutation(handleProfileSelection);
+export const useCreateProfile = () => {
+  const listProfiles = useListProfiles();
+  const navigate = useNavigate();
+
+  return useMutation(createProfile, {
+    onSuccess: (res) => {
+      const profile = res?.responseData;
+      if (profile?.id) {
+        listProfiles.refetch();
+        navigate('/u/profiles');
+      }
+    },
+  });
+};
+
+export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
+  const listProfiles = useListProfiles();
+  const navigate = useNavigate();
+
+  return useMutation(updateProfile, {
+    onError: () => {
+      throw new Error('Unable to update profile.');
+    },
+    onSuccess: () => {
+      navigate('/u/profiles');
+    },
+    onSettled: () => {
+      listProfiles.refetch();
+    },
+    ...options,
+  });
+};
+
+export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>) => {
+  const listProfiles = useListProfiles();
+  const navigate = useNavigate();
+
+  return useMutation<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>(deleteProfile, {
+    onSuccess: () => {
+      listProfiles.refetch();
+      navigate('/u/profiles');
+    },
+    ...options,
+  });
+};
 
 export const useListProfiles = () => useQuery(['listProfiles'], listProfiles);
 

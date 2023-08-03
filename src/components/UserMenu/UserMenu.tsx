@@ -63,7 +63,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
                 <MenuButton
                   active={profile.id === currentProfile?.id}
                   small={small}
-                  onClick={() => selectProfile.mutate({ id: profile.id, navigate, selectingProfileAvatarUrl: profile.avatar_url })}
+                  onClick={() => selectProfile.mutate({ id: profile.id, avatarUrl: profile.avatar_url })}
                   label={profile.name}
                   startIcon={<ProfileCircle src={profile.avatar_url} alt={profile.name} />}
                 />

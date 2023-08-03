@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import styles from './Profiles.module.scss';
@@ -9,13 +9,12 @@ import Dialog from '#src/components/Dialog/Dialog';
 import { removeQueryParam } from '#src/utils/location';
 import useQueryParam from '#src/hooks/useQueryParam';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
-import { deleteProfile } from '#src/stores/ProfileController';
-import { useListProfiles } from '#src/hooks/useProfiles';
+import { useDeleteProfile } from '#src/hooks/useProfiles';
 
 const DeleteProfile = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { id } = useParams();
+  const location = useLocation();
 
   const { t } = useTranslation('user');
 
@@ -23,35 +22,29 @@ const DeleteProfile = () => {
   const [view, setView] = useState(viewParam);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
-  const listProfiles = useListProfiles();
-
   const closeHandler = () => {
     navigate(removeQueryParam(location, 'action'));
   };
 
-  const deleteHandler = async () => {
-    try {
-      setIsDeleting(true);
-      if (!id) {
-        return;
-      }
-      const response = await deleteProfile({ id });
-      if (response?.errors.length === 0) {
-        closeHandler();
-        listProfiles.refetch();
-        setIsDeleting(false);
-        navigate('/u/profiles');
-      }
+  const deleteProfile = useDeleteProfile({
+    onMutate: () => {
       closeHandler();
-    } catch {
+    },
+    onError: () => {
       setIsDeleting(false);
-    }
-  };
+    },
+  });
+
+  const deleteHandler = async () => id && deleteProfile.mutate({ id });
 
   useEffect(() => {
     // make sure the last view is rendered even when the modal gets closed
     if (viewParam) setView(viewParam);
   }, [viewParam]);
+
+  if (!id) {
+    return <Navigate to="/u/profiles" />;
+  }
 
   if (view !== 'delete-profile') return null;
   return (

@@ -55,7 +55,7 @@ const Root: FC = () => {
   const profilesEnabled = useProfilesFeatureEnabled();
 
   if (userData.user && profilesEnabled && selectingProfileAvatar !== null) {
-    return <LoadingOverlay profileImageUrl={profile?.avatar_url || selectingProfileAvatar} />;
+    return <LoadingOverlay profileImageUrl={selectingProfileAvatar || profile?.avatar_url} />;
   }
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {

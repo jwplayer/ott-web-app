@@ -59,7 +59,7 @@ const Profiles = ({ editMode = false }: Props) => {
           <ProfileBox
             editMode={editMode}
             onEdit={() => navigate(`/u/profiles/edit/${profile.id}`)}
-            onClick={() => selectProfile.mutate({ id: profile.id, navigate, selectingProfileAvatarUrl: profile.avatar_url })}
+            onClick={() => selectProfile.mutate({ id: profile.id, avatarUrl: profile.avatar_url })}
             key={profile.id}
             name={profile.name}
             adult={profile.adult}
