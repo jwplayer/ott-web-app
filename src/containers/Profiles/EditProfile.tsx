@@ -14,9 +14,9 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import Button from '#src/components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
-import FormFeedback from '#src/components/FormFeedback/FormFeedback';
 import { getProfileDetails, updateProfile } from '#src/stores/AccountController';
 import { useListProfiles } from '#src/hooks/useProfiles';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 type EditProfileProps = {
   contained?: boolean;
@@ -27,8 +27,10 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
   const { id } = params;
   const location = useLocation();
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState<string>('');
   const { t } = useTranslation('user');
+
+  const breakpoint: Breakpoint = useBreakpoint();
+  const isMobile = breakpoint === Breakpoint.xs;
 
   const listProfiles = useListProfiles();
 
@@ -87,43 +89,31 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
 
   return (
     <div className={classNames(styles.user, contained && profileStyles.contained)}>
-      {!contained && (
-        <div className={styles.leftColumn}>
-          <div className={styles.panel}>
-            <div className={profileStyles.avatar}>
-              <h2>{fullName ? t('profile.greeting_with_name', { name: fullName }) : t('profile.greeting')}</h2>
-              <img src={selectedAvatar || profileDetails?.avatar_url} />
-            </div>
-          </div>
-        </div>
-      )}
       <div className={classNames(styles.mainColumn)}>
         <Form
           initialValues={initialValues}
           formHandler={updateProfileHandler}
-          setFullName={setFullName}
           selectedAvatar={{
             set: setSelectedAvatar,
             value: selectedAvatar || '',
           }}
           showCancelButton={!contained}
+          isMobile={isMobile}
         />
         <div className={styles.panel}>
           <div className={styles.panelHeader}>
             <h3>{t('profile.delete')}</h3>
           </div>
-          {profileDetails?.default ? (
-            <FormFeedback variant="info">{t('profile.delete_main')}</FormFeedback>
-          ) : (
-            <div className={profileStyles.profileInfo}>{t('profile.delete_description')}</div>
+          <div className={profileStyles.profileInfo}>{t(`profile.delete_${profileDetails?.default ? 'main' : 'description'}`)}</div>
+          {!profileDetails?.default && (
+            <Button
+              onClick={() => navigate(addQueryParam(location, 'action', 'delete-profile'))}
+              label={t('profile.delete')}
+              variant="contained"
+              color="delete"
+              fullWidth={isMobile}
+            />
           )}
-          <Button
-            onClick={() => navigate(addQueryParam(location, 'action', 'delete-profile'))}
-            label={t('profile.delete')}
-            variant="contained"
-            color="delete"
-            disabled={profileDetails?.default}
-          />
         </div>
       </div>
       <DeleteProfile />

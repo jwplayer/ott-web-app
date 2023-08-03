@@ -14,9 +14,29 @@ $avatar-border-radius: 50%;
   }
 }
 
+.checkmarkContainer {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  background-color: variables.$deep-blue;
+  border-radius: $avatar-border-radius;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  color: variables.$white;
+}
+
 .selected {
   border: 2px solid variables.$deep-blue !important;
   border-radius: $avatar-border-radius;
+  box-shadow: variables.$blue-dark 0 0 0 3px;
 }
 
 .wrapper {
@@ -25,18 +45,25 @@ $avatar-border-radius: 50%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 12px;
   cursor: pointer;
 
   .image {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    width: 130%;
+    height: 130%;
+    border-radius: $avatar-border-radius;
   }
 
   .box {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 140px;
     height: 140px;
     padding: 10px;
+
     img {
       position: relative;
       transition: all 0.5s ease;
@@ -139,7 +166,6 @@ $avatar-border-radius: 50%;
 
 .addProfileContainer {
   justify-content: space-between;
-  padding: 10px;
   &:hover {
     .box {
       width: 56px;

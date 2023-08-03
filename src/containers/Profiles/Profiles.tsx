@@ -59,7 +59,7 @@ const Profiles = ({ editMode = false }: Props) => {
           <ProfileBox
             editMode={editMode}
             onEdit={() => navigate(`/u/profiles/edit/${profile.id}`)}
-            onClick={() => selectProfile.mutate({ id: profile.id, navigate })}
+            onClick={() => selectProfile.mutate({ id: profile.id, navigate, selectingProfileAvatarUrl: profile.avatar_url })}
             key={profile.id}
             name={profile.name}
             adult={profile.adult}
@@ -69,13 +69,13 @@ const Profiles = ({ editMode = false }: Props) => {
         {canAddNew && <AddNewProfile onClick={() => navigate('/u/profiles/create')} />}
       </div>
       {activeProfiles > 0 && (
-        <>
+        <div className={styles.buttonContainer}>
           {!editMode ? (
             <Button onClick={() => navigate('/u/profiles/edit')} label={t('account.manage_profiles')} variant="outlined" size="large" fullWidth={isMobile} />
           ) : (
-            <Button onClick={() => navigate('/u/profiles')} label="Done" variant="outlined" size="large" />
+            <Button onClick={() => navigate('/u/profiles')} label="Done" variant="outlined" size="large" fullWidth={isMobile} />
           )}
-        </>
+        </div>
       )}
     </div>
   );

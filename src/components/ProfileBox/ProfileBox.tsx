@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import styles from './ProfileBox.module.scss';
 
 import Edit from '#src/icons/Edit';
+import Check from '#src/icons/Check';
 
 type Props = {
-  name: string;
+  name?: string;
   image: string;
   adult?: boolean;
   editMode?: boolean;
@@ -29,7 +30,12 @@ const ProfileBox = ({ name, image, adult = true, editMode = false, onClick, onEd
           </div>
         )}
       </div>
-      <h2 className={styles.title}>{name}</h2>
+      {name && <h2 className={styles.title}>{name}</h2>}
+      {selected && (
+        <div className={styles.checkmarkContainer}>
+          <Check className={styles.checkmark} />
+        </div>
+      )}
     </div>
   );
 };

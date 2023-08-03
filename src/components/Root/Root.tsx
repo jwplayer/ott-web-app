@@ -48,11 +48,11 @@ const Root: FC = () => {
     registerCustomScreens();
   }, []);
 
-  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile, selectingProfile: s.selectingProfile }));
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user, profile: s.profile, selectingProfileAvatar: s.selectingProfileAvatar }));
   const profilesEnabled = useProfilesFeatureEnabled();
 
-  if (userData.user && profilesEnabled && userData.selectingProfile) {
-    return <LoadingOverlay profileImageUrl={userData.profile?.avatar_url} />;
+  if (userData.user && profilesEnabled && userData.selectingProfileAvatar !== null) {
+    return <LoadingOverlay profileImageUrl={userData.profile?.avatar_url || userData.selectingProfileAvatar} />;
   }
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {

@@ -21,15 +21,16 @@ import { useAccountStore } from '#src/stores/AccountStore';
 type Props = {
   initialValues: ProfileFormValues;
   formHandler: UseFormOnSubmitHandler<ProfileFormValues>;
-  setFullName?: (name: string) => void;
   selectedAvatar?: {
     set: (avatarUrl: string) => void;
     value: string;
   };
   showCancelButton?: boolean;
+  showContentRating?: boolean;
+  isMobile?: boolean;
 };
 
-const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCancelButton = true }: Props) => {
+const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = true, showContentRating = false, isMobile = false }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
   const profile = useAccountStore((s) => s.profile);
@@ -49,10 +50,6 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
     setValue('avatar_url', selectedAvatar?.value || profile?.avatar_url || '');
   }, [profile?.avatar_url, selectedAvatar?.value, setValue]);
 
-  useEffect(() => {
-    setFullName?.(values.name);
-  }, [values, setFullName]);
-
   const formLabel = values?.id ? t('profile.info') : t('profile.create');
 
   return (
@@ -65,6 +62,7 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
         <div className={profileStyles.formFields}>
           {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
           {submitting && <LoadingOverlay inline />}
+          <h2 className={profileStyles.nameHeading}>Name</h2>
           <TextField
             required
             name="name"
@@ -74,16 +72,18 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
             error={!!errors.name || !!errors.form}
             helperText={errors.name}
           />
-          <Dropdown
-            fullWidth
-            required
-            name="adult"
-            label={t('profile.content_rating')}
-            className={styles.dropdown}
-            options={options}
-            value={values?.adult?.toString() || 'true'}
-            onChange={handleChange}
-          />
+          {showContentRating && (
+            <Dropdown
+              fullWidth
+              required
+              name="adult"
+              label={t('profile.content_rating')}
+              className={styles.dropdown}
+              options={options}
+              value={values?.adult?.toString() || 'true'}
+              onChange={handleChange}
+            />
+          )}
         </div>
         <hr className={profileStyles.divider} />
         <div className={classNames(styles.panelHeader, profileStyles.noBottomBorder)}>
@@ -96,7 +96,6 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
                 onClick={() => selectedAvatar?.set(avatarUrl)}
                 selected={selectedAvatar?.value === avatarUrl}
                 key={avatarUrl}
-                name={''}
                 adult={true}
                 image={avatarUrl}
               />
@@ -104,8 +103,8 @@ const Form = ({ initialValues, formHandler, setFullName, selectedAvatar, showCan
           </div>
         </div>
         <>
-          <Button type="submit" label={t('account.save')} variant="outlined" disabled={!isDirty || submitting} />
-          {showCancelButton && <Button onClick={() => navigate('/u/profiles')} label={t('account.cancel')} variant="text" />}
+          <Button type="submit" label={t('account.save')} variant="outlined" disabled={!isDirty || submitting} fullWidth={isMobile} />
+          {showCancelButton && <Button onClick={() => navigate('/u/profiles')} label={t('account.cancel')} variant="text" fullWidth={isMobile} />}
         </>
       </div>
     </form>

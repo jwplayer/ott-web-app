@@ -14,6 +14,7 @@ const PERSIST_PROFILE = 'profile';
 type ProfileSelectionPayload = {
   id: string;
   navigate: (path: string) => void;
+  selectingProfileAvatarUrl?: string;
 };
 
 export const unpersistProfile = () => {
@@ -21,9 +22,9 @@ export const unpersistProfile = () => {
   persist.removeItem(PERSIST_KEY_ACCOUNT);
 };
 
-const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload) => {
+const handleProfileSelection = async ({ id, navigate, selectingProfileAvatarUrl = '' }: ProfileSelectionPayload) => {
   try {
-    useAccountStore.setState({ selectingProfile: true, profile: null });
+    useAccountStore.setState({ selectingProfileAvatar: selectingProfileAvatarUrl, profile: null });
     const response = await enterProfile({ id });
     const profile = response?.responseData;
 
@@ -48,7 +49,7 @@ const handleProfileSelection = async ({ id, navigate }: ProfileSelectionPayload)
   } catch {
     throw new Error('Unable to enter profile.');
   } finally {
-    useAccountStore.setState({ selectingProfile: false });
+    useAccountStore.setState({ selectingProfileAvatar: null });
   }
 };
 

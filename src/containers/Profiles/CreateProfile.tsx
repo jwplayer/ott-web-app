@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
-import profileStyles from './Profiles.module.scss';
 import Form from './Form';
 import type { ProfileFormValues } from './types';
 import AVATARS from './avatarUrls.json';
@@ -12,15 +11,18 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { createProfile } from '#src/stores/AccountController';
 import { useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 
 const CreateProfile = () => {
   const navigate = useNavigate();
   const profilesEnabled = useProfilesFeatureEnabled();
 
-  const [fullName, setFullName] = useState<string>('');
   const [avatarUrl, setAvatarUrl] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
 
   const { t } = useTranslation('user');
+
+  const breakpoint: Breakpoint = useBreakpoint();
+  const isMobile = breakpoint === Breakpoint.xs;
 
   useEffect(() => {
     if (!profilesEnabled) navigate('/');
@@ -62,23 +64,15 @@ const CreateProfile = () => {
 
   return (
     <div className={styles.user}>
-      <div className={styles.leftColumn}>
-        <div className={styles.panel}>
-          <div className={profileStyles.avatar}>
-            <h2>{fullName ? t('profile.greeting_with_name', { name: fullName }) : t('profile.greeting')}</h2>
-            <img src={avatarUrl} />
-          </div>
-        </div>
-      </div>
       <div className={styles.mainColumn}>
         <Form
           initialValues={initialValues}
           formHandler={createProfileHandler}
-          setFullName={setFullName}
           selectedAvatar={{
             set: setAvatarUrl,
             value: avatarUrl,
           }}
+          isMobile={isMobile}
         />
       </div>
     </div>
