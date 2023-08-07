@@ -12,6 +12,7 @@ import PlayerContainer from '#src/containers/PlayerContainer/PlayerContainer';
 type Props = {
   open: boolean;
   item: PlaylistItem;
+  seriesItem?: PlaylistItem;
   onPlay?: () => void;
   onPause?: () => void;
   onComplete?: () => void;
@@ -29,6 +30,7 @@ type Props = {
 const Cinema: React.FC<Props> = ({
   open,
   item,
+  seriesItem,
   title,
   primaryMetadata,
   secondaryMetadata,
@@ -86,6 +88,7 @@ const Cinema: React.FC<Props> = ({
       <div className={styles.cinema}>
         <PlayerContainer
           item={item}
+          seriesItem={seriesItem}
           feedId={feedId}
           autostart={true}
           onPlay={handlePlay}

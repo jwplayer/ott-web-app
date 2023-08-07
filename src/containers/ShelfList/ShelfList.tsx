@@ -11,11 +11,12 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import ShelfComponent from '#components/Shelf/Shelf';
 import { mediaURL, slugify } from '#src/utils/formatting';
-import type { Content } from '#types/Config';
+import type { Content, ContentType } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 import { testId } from '#src/utils/common';
+import type { PlaylistItem } from '#types/playlist';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -35,7 +36,7 @@ const ShelfList = ({ rows }: Props) => {
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
-    (playlistItem, playlistId, type) => {
+    (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => {
       navigate(mediaURL({ media: playlistItem, playlistId, play: type === PersonalShelf.ContinueWatching }));
     },
     [navigate],
@@ -60,7 +61,7 @@ const ShelfList = ({ rows }: Props) => {
           <PlaylistContainer type={row.type} playlistId={row.contentId} key={`${row.contentId || row.type}_${index}`}>
             {({ playlist, error, isLoading, style }) => {
               const title = row?.title || playlist.title;
-              const posterAspect = parseAspectRatio(playlist.shelfImageAspectRatio);
+              const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
               const visibleTilesDelta = parseTilesDelta(posterAspect);
 
               return (

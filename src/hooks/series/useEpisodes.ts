@@ -36,12 +36,12 @@ export const useEpisodes = (
     async ({ pageParam = 0 }) => {
       if (Number(seasonNumber)) {
         // Get episodes from a selected season using pagination
-        const season = await getSeasonWithEpisodes(seriesId || '', Number(seasonNumber), pageParam);
+        const season = await getSeasonWithEpisodes({ seriesId, seasonNumber: Number(seasonNumber), pageOffset: pageParam });
 
         return { pagination: season.pagination, episodes: season.episodes };
       } else {
         // Get episodes from a selected series using pagination
-        const data = await getEpisodes(seriesId || '', pageParam);
+        const data = await getEpisodes({ seriesId, pageOffset: pageParam });
         return data;
       }
     },

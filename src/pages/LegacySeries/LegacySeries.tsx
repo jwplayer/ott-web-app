@@ -24,7 +24,7 @@ import ShareButton from '#components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import Button from '#components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
-import type { PlaylistItem, ImageData } from '#types/playlist';
+import type { PlaylistItem } from '#types/playlist';
 import useQueryParam from '#src/hooks/useQueryParam';
 import Loading from '#src/pages/Loading/Loading';
 import usePlaylist from '#src/hooks/usePlaylist';
@@ -108,7 +108,7 @@ const LegacySeries = () => {
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const pageDescription = selectedItem?.description || '';
   const canonicalUrl = `${window.location.origin}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
-  const backgroundImage = (selectedItem.backgroundImage as ImageData) || undefined;
+  const backgroundImage = (selectedItem.backgroundImage as string) || undefined;
 
   const primaryMetadata = episode
     ? formatVideoMetaString(episode, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))
@@ -146,31 +146,33 @@ const LegacySeries = () => {
   return (
     <React.Fragment>
       <Helmet>
-        <title>{pageTitle}</title>
-        <link rel="canonical" href={canonicalUrl} />
-        <meta name="description" content={pageDescription} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:type" content={episode ? 'video.episode' : 'video.series'} />
-        {selectedItemImage && <meta property="og:image" content={selectedItemImage?.replace(/^https:/, 'http:')} />}
-        {selectedItemImage && <meta property="og:image:secure_url" content={selectedItemImage?.replace(/^http:/, 'https:')} />}
-        {selectedItemImage && <meta property="og:image:width" content={selectedItemImage ? '720' : ''} />}
-        {selectedItemImage && <meta property="og:image:height" content={selectedItemImage ? '406' : ''} />}
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        {selectedItemImage && <meta name="twitter:image" content={selectedItemImage} />}
-        <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
-        <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
-        <meta property="og:video:type" content="text/html" />
-        <meta property="og:video:width" content="1280" />
-        <meta property="og:video:height" content="720" />
-        {selectedItem.tags &&
-          String(selectedItem.tags)
-            .split(',')
-            .map((tag: string) => <meta property="og:video:tag" content={tag} key={tag} />)}
-        {seriesPlaylist && selectedItem ? (
-          <script type="application/ld+json">{generateLegacyEpisodeJSONLD(seriesPlaylist, episode, episodeMetadata, seriesId)}</script>
-        ) : null}
+        <>
+          <title>{pageTitle}</title>
+          <link rel="canonical" href={canonicalUrl} />
+          <meta name="description" content={pageDescription} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:type" content={episode ? 'video.episode' : 'video.series'} />
+          {selectedItemImage && <meta property="og:image" content={selectedItemImage?.replace(/^https:/, 'http:')} />}
+          {selectedItemImage && <meta property="og:image:secure_url" content={selectedItemImage?.replace(/^http:/, 'https:')} />}
+          {selectedItemImage && <meta property="og:image:width" content={selectedItemImage ? '720' : ''} />}
+          {selectedItemImage && <meta property="og:image:height" content={selectedItemImage ? '406' : ''} />}
+          <meta name="twitter:title" content={pageTitle} />
+          <meta name="twitter:description" content={pageDescription} />
+          {selectedItemImage && <meta name="twitter:image" content={selectedItemImage} />}
+          <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
+          <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
+          <meta property="og:video:type" content="text/html" />
+          <meta property="og:video:width" content="1280" />
+          <meta property="og:video:height" content="720" />
+          {selectedItem.tags &&
+            String(selectedItem.tags)
+              .split(',')
+              .map((tag: string) => <meta property="og:video:tag" content={tag} key={tag} />)}
+          {seriesPlaylist && selectedItem ? (
+            <script type="application/ld+json">{generateLegacyEpisodeJSONLD(seriesPlaylist, episode, episodeMetadata, seriesId)}</script>
+          ) : null}
+        </>
       </Helmet>
       <VideoLayout
         item={episode}
