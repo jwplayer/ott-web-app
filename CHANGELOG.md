@@ -1,3 +1,71 @@
+# [4.25.0](https://github.com/jwplayer/ott-web-app/compare/v4.23.2...v4.25.0) (2023-08-01)
+
+
+### Bug Fixes
+
+* add missing Spanish translations ([2270049](https://github.com/jwplayer/ott-web-app/commit/22700493c6e3bb9a247684aa353002d68cbde509))
+* add per-provider flag for subscription change tests ([19cd475](https://github.com/jwplayer/ott-web-app/commit/19cd4752177a0c816e257a1192337b41664af37b))
+* choose offer modal without pricing options ([bc8389e](https://github.com/jwplayer/ott-web-app/commit/bc8389e3ab9f0c343e25d3dcf60f139b56204f34))
+* disable change subscription button when subscription is cancelled and can't renew ([be09ba2](https://github.com/jwplayer/ott-web-app/commit/be09ba2b3cb8ae6688e7673f8216e31b02e38bf0))
+* hide cancel button for inplayer configs ([8f71448](https://github.com/jwplayer/ott-web-app/commit/8f714488fc5d21725f9a8d1286326f38c7b9608c))
+* move additional logic to container ([7a350fa](https://github.com/jwplayer/ott-web-app/commit/7a350fab301e841d9a7c126033e6045247fbec52))
+* move logic from user and payment to paymentcontainer ([6b7a72a](https://github.com/jwplayer/ott-web-app/commit/6b7a72ab5126431f8a19dae18cd992d1f59cffd6))
+* move useoffers call to payments ([1cfcf45](https://github.com/jwplayer/ott-web-app/commit/1cfcf454231d101d9975c50958fb07d32dfff9dd))
+* offerswitch props ([d79f779](https://github.com/jwplayer/ott-web-app/commit/d79f779c7ac9a7ff5a46ce4702df68f8145fa572))
+* pr comments ([c9d5bbb](https://github.com/jwplayer/ott-web-app/commit/c9d5bbba4f1c29adf733d678a981a6cfd968574f))
+* remove unnecessary redirect ([4a8a5ff](https://github.com/jwplayer/ott-web-app/commit/4a8a5ff75759ba76fd07361cc2f7670f70a9ade7))
+* **seo:** fix seo score ([2274c9b](https://github.com/jwplayer/ott-web-app/commit/2274c9b5999507a96f781ee5d5ba1501b00036e5))
+* tests ([0654af6](https://github.com/jwplayer/ott-web-app/commit/0654af6665bc1b542ea1148fb64cc00806b8446b))
+* **watchhistory:** improve watch history storage calls and fix bugs ([9fd1774](https://github.com/jwplayer/ott-web-app/commit/9fd17746d27490d43fe6f595252bba29c9e20d02))
+
+
+### Features
+
+* initial inplayer subscription change implementation ([b335b69](https://github.com/jwplayer/ott-web-app/commit/b335b69f6429bb73a72cd8a442f5e52fdf77084b))
+* **project:** add new `cardImageAspectRatio` custom param for playlists ([65264eb](https://github.com/jwplayer/ott-web-app/commit/65264eb5ae99fcbfb9348de01e9ed6a8f64c9cf0))
+* **project:** fix lhci workflow ([466e8e3](https://github.com/jwplayer/ott-web-app/commit/466e8e3650d769bdcf324539d7c27e1fb6d8df11))
+* **project:** lighthouse actions triggering ([0d004eb](https://github.com/jwplayer/ott-web-app/commit/0d004eb216c4dec331be93e0c35d3e369861b11a))
+* **project:** lighthouse check ([3ba3617](https://github.com/jwplayer/ott-web-app/commit/3ba36174b114a46905942ed3ede1f085654c9729))
+* **project:** remove ImageData type ([6f993c6](https://github.com/jwplayer/ott-web-app/commit/6f993c608a98fa4c6269a0ccf69058f434054f81))
+* **project:** use a native fallback for image service ([0fc9bd6](https://github.com/jwplayer/ott-web-app/commit/0fc9bd6fcf71d43e336d1759410a2a5a5c40352b))
+* **series:** add native support for next episodes ([1f11d6a](https://github.com/jwplayer/ott-web-app/commit/1f11d6a445813957277abcaedf3975ec6fb05bc1))
+* **series:** use named params ([ba6560e](https://github.com/jwplayer/ott-web-app/commit/ba6560e53ac291e671b53c9206eeaf197c135253))
+* temporary FE handling for downgrade subscription ([53ee10d](https://github.com/jwplayer/ott-web-app/commit/53ee10d7e26c9a9dea5454c00ae869b115169a7d))
+
+
+
+## [4.23.2](https://github.com/jwplayer/ott-web-app/compare/v4.23.1...v4.23.2) (2023-07-06)
+
+
+### Bug Fixes
+
+* **deps:** bump @sideway/formula from 3.0.0 to 3.0.1 ([#309](https://github.com/jwplayer/ott-web-app/issues/309)) ([8dbb314](https://github.com/jwplayer/ott-web-app/commit/8dbb3145a866237b9cb07e2e61caf69bac2a1d55))
+
+
+
+## [4.23.1](https://github.com/jwplayer/ott-web-app/compare/v4.23.0...v4.23.1) (2023-07-06)
+
+
+### Bug Fixes
+
+* **project:** add meta tag for GA ([#330](https://github.com/jwplayer/ott-web-app/issues/330)) ([87db5f9](https://github.com/jwplayer/ott-web-app/commit/87db5f9a5dc2ab42117267933b5a914825a756bb))
+
+
+
+# [4.23.0](https://github.com/jwplayer/ott-web-app/compare/v4.22.0...v4.23.0) (2023-07-06)
+
+
+### Features
+
+* av ([743af3e](https://github.com/jwplayer/ott-web-app/commit/743af3e4b855fed61178f2b8f52757edeb944e6f))
+* code cleanup ([13a1e21](https://github.com/jwplayer/ott-web-app/commit/13a1e2120adf9486fb4e34b8544726811331c4c3))
+* comment fix ([6ab4dcb](https://github.com/jwplayer/ott-web-app/commit/6ab4dcbff33f95539cbf8c20fc18b67976463f07))
+* fix vite config definition ([2d772ed](https://github.com/jwplayer/ott-web-app/commit/2d772ed52ae835485fe48ffc4a0b3352ab9edcb5))
+* oiid for analytics ([898f94a](https://github.com/jwplayer/ott-web-app/commit/898f94a6683dfcc18020deef90fc8a1bc987b6b3))
+* update docs ([1fa1bcf](https://github.com/jwplayer/ott-web-app/commit/1fa1bcf093ff24514ead4e2a4ae943badf6f0871))
+
+
+
 # [4.22.0](https://github.com/jwplayer/ott-web-app/compare/v4.21.0...v4.22.0) (2023-07-05)
 
 

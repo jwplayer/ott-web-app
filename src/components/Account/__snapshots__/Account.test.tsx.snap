@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`<Account> > renders and matches snapshot 1`] = `
 <div>
@@ -149,7 +149,6 @@ exports[`<Account> > renders and matches snapshot 1`] = `
           <label
             for="check-box_1235_consents.marketing"
           >
-            
             Receive Marketing Emails
           </label>
         </div>

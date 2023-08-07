@@ -10,7 +10,7 @@ import VideoDetailsInline from '#components/VideoDetailsInline/VideoDetailsInlin
 import VideoList from '#components/VideoList/VideoList';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { testId } from '#src/utils/common';
-import type { ImageData, Playlist, PlaylistItem } from '#types/playlist';
+import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { AccessModel } from '#types/Config';
 
 type FilterProps = {
@@ -29,7 +29,7 @@ type LoadMoreProps = {
 type VideoDetailsProps = {
   title: string;
   description: string;
-  image?: ImageData;
+  image?: string;
   primaryMetadata: React.ReactNode;
   secondaryMetadata?: React.ReactNode;
   shareButton: React.ReactNode;
@@ -55,6 +55,7 @@ type Props = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  children?: React.ReactNode;
   item?: PlaylistItem;
   playlist?: Playlist;
 } & FilterProps &

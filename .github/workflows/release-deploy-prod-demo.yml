@@ -1,14 +1,15 @@
-name: 'Firebase Live'
+name: Release - Deploy Prod Demo Site
 
 on:
   push:
-    branches: ['develop']
+    branches: ['release']
+  workflow_dispatch:
 
 jobs:
   deploy_live_website:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
@@ -16,6 +17,6 @@ jobs:
         run: yarn &&  MODE=demo yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           channelId: live
