@@ -2,6 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Routes } from 'react-router-dom';
 
+import AppWrapper from '../AppWrapper/AppWrapper';
+
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import RootErrorPage from '#components/RootErrorPage/RootErrorPage';
 import About from '#src/pages/About/About';
@@ -12,7 +14,6 @@ import LegacySeries from '#src/pages/LegacySeries/LegacySeries';
 import MediaScreenRouter from '#src/pages/ScreenRouting/MediaScreenRouter';
 import PlaylistScreenRouter from '#src/pages/ScreenRouting/PlaylistScreenRouter';
 import Layout from '#src/containers/Layout/Layout';
-import AppWrapper from '../AppWrapper/AppWrapper';
 
 export default function AppRoutes() {
   const { t } = useTranslation('error');

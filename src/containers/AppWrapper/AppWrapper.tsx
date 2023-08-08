@@ -5,7 +5,7 @@ interface WrapperProps {
 const AppBuilderComponent = import.meta.env.APP_BUILDER_COMPONENT;
 
 const EmptyWrapper = ({ children }: WrapperProps) => {
-  return children;
+  return <>{children}</>;
 };
 const AppWrapper = AppBuilderComponent
   ? //@ts-ignore
