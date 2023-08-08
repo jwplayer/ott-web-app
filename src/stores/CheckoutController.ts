@@ -373,3 +373,13 @@ export const finalizeAdyenPaymentDetails = async (details: unknown, paymentMetho
     });
   });
 };
+
+export const getAssetsData = async (assetIds: string[]) => {
+  return await useAccount(async () => {
+    return await useService(async ({ checkoutService, sandbox = true }) => {
+      if (!checkoutService || !('getAssetsData' in checkoutService)) return null;
+      const { responseData } = await checkoutService.getAssetsData(assetIds, sandbox);
+      return responseData;
+    });
+  });
+};

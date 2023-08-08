@@ -33,6 +33,9 @@ const determineSwitchDirection = (subscription: Subscription | null) => {
 const ChooseOffer = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const shopItemId = useQueryParam('shopItemId');
+  const isPurchasingProduct = !!shopItemId;
+  const { purchasingOffer } = useCheckoutStore();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
   const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer } = useOffers();
@@ -47,7 +50,7 @@ const ChooseOffer = () => {
   });
 
   const initialValues: ChooseOfferFormData = {
-    offerId: defaultOfferId,
+    offerId: shopItemId || defaultOfferId,
   };
 
   const closeModal = useEventCallback((replace = false) => {
@@ -60,9 +63,16 @@ const ChooseOffer = () => {
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = useCallback(
     async ({ offerId }, { setSubmitting, setErrors }) => {
-      const offer = offerId && offersDict[offerId];
+      const offer = offerId && (offersDict[offerId] || !!purchasingOffer);
 
       if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
+
+      if (isPurchasingProduct) {
+        setOffer(purchasingOffer);
+        setSubmitting(false);
+        updateAccountModal('checkout');
+        return;
+      }
 
       if (isOfferSwitch) {
         const targetOffer = offerSwitches.find((offer) => offer.offerId === offerId);
@@ -86,17 +96,29 @@ const ChooseOffer = () => {
         updateAccountModal('checkout');
       }
     },
-    [availableOffers, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, updateAccountModal, updateOffer],
+    [
+      availableOffers,
+      isOfferSwitch,
+      offerSwitches,
+      offersDict,
+      setOffer,
+      subscription,
+      t,
+      updateAccountModal,
+      updateOffer,
+      isPurchasingProduct,
+      purchasingOffer,
+    ],
   );
 
   const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
 
   useEffect(() => {
     // close auth modal when there are no offers defined in the config
-    if (!isLoading && !offers.length) {
+    if (!isLoading && !offers.length && !isPurchasingProduct) {
       closeModal(true);
     }
-  }, [isLoading, offers, closeModal]);
+  }, [isLoading, offers, closeModal, isPurchasingProduct]);
 
   useEffect(() => {
     if (!isOfferSwitch) setValue('offerId', defaultOfferId);
@@ -128,6 +150,7 @@ const ChooseOffer = () => {
       offers={availableOffers}
       offerType={offerType}
       setOfferType={hasMultipleOfferTypes && !hasPremierOffer ? setOfferType : undefined}
+      purchasingOffer={purchasingOffer ?? undefined}
     />
   );
 };

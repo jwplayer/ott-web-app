@@ -16,6 +16,7 @@ import type {
   PaymentWithoutDetails,
   PaymentWithPayPal,
   UpdateOrder,
+  GetAssetsData,
 } from '#types/checkout';
 import { isSVODOffer } from '#src/utils/subscription';
 
@@ -181,6 +182,21 @@ export const getEntitlements: GetEntitlements = async ({ offerId }) => {
     return formatEntitlements(response.data.expires_at, true);
   } catch {
     return formatEntitlements();
+  }
+};
+
+export const getAssetsData: GetAssetsData = async (ids: string[]) => {
+  try {
+    const assets = await Promise.all(ids.map((id) => InPlayer.Asset.getAsset(parseInt(id))));
+    return {
+      responseData: assets.map((asset) => ({
+        ...asset.data,
+        offers: asset.data.access_fees.map((offer) => formatOffer(offer)),
+      })),
+      errors: [],
+    };
+  } catch {
+    throw new Error('Failed to fetch assets data');
   }
 };
 

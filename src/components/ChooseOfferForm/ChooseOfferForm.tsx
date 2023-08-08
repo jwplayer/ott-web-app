@@ -26,6 +26,7 @@ type Props = {
   submitting: boolean;
   offerType: OfferType;
   setOfferType?: (offerType: OfferType) => void;
+  purchasingOffer?: Offer;
 };
 
 type OfferBoxProps = {
@@ -34,9 +35,10 @@ type OfferBoxProps = {
   ariaLabel: string;
   secondBenefit?: string;
   periodString?: string;
+  isProductPurchase?: boolean;
 };
 
-type OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }: OfferBoxProps) => JSX.Element;
+type OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString, isProductPurchase }: OfferBoxProps) => JSX.Element;
 
 const ChooseOfferForm: React.FC<Props> = ({
   values,
@@ -48,6 +50,7 @@ const ChooseOfferForm: React.FC<Props> = ({
   onBackButtonClickHandler,
   offerType,
   setOfferType,
+  purchasingOffer,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation('account');
@@ -68,7 +71,7 @@ const ChooseOfferForm: React.FC<Props> = ({
     return null;
   };
 
-  const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }) => (
+  const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString, isProductPurchase }) => (
     <div className={styles.offer}>
       <input
         className={styles.radio}
@@ -84,20 +87,23 @@ const ChooseOfferForm: React.FC<Props> = ({
         <h4 className={styles.offerTitle}>{title}</h4>
         <hr className={styles.offerDivider} />
         <ul className={styles.offerBenefits}>
-          {offer.freeDays || offer.freePeriods ? (
+          {isProductPurchase && <li>You will recieve an email with shipping details.</li>}
+          {!isProductPurchase && (offer.freeDays || offer.freePeriods) ? (
             <li>
               <CheckCircle /> {getFreeTrialText(offer)}
             </li>
           ) : null}
 
-          {!!secondBenefit && (
+          {!!secondBenefit && !isProductPurchase && (
             <li>
               <CheckCircle /> {secondBenefit}
             </li>
           )}
-          <li>
-            <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
-          </li>
+          {!isProductPurchase && (
+            <li>
+              <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
+            </li>
+          )}
         </ul>
         <div className={styles.fill} />
         <div className={styles.offerPrice}>
@@ -107,7 +113,7 @@ const ChooseOfferForm: React.FC<Props> = ({
     </div>
   );
 
-  const renderOfferBox = (offer: Offer) => {
+  const renderOfferBox = (offer: Offer, isProductPurchase = false) => {
     if (isSVODOffer(offer)) {
       const isMonthly = offer.period === 'month';
 
@@ -119,6 +125,7 @@ const ChooseOfferForm: React.FC<Props> = ({
           ariaLabel={isMonthly ? t('choose_offer.monthly_subscription') : t('choose_offer.yearly_subscription')}
           secondBenefit={t('choose_offer.benefits.cancel_anytime')}
           periodString={isMonthly ? t('periods.month') : t('periods.year')}
+          isProductPurchase={isProductPurchase}
         />
       );
     }
@@ -134,6 +141,7 @@ const ChooseOfferForm: React.FC<Props> = ({
             ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
             : undefined
         }
+        isProductPurchase={isProductPurchase}
       />
     );
   };
@@ -141,10 +149,14 @@ const ChooseOfferForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
       {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
-      <h2 className={styles.title}>{t('choose_offer.title')}</h2>
-      <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
+      {!purchasingOffer && (
+        <>
+          <h2 className={styles.title}>{t('choose_offer.title')}</h2>
+          <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
+        </>
+      )}
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      {setOfferType && (
+      {setOfferType && !purchasingOffer && (
         <div className={styles.offerGroupSwitch}>
           <input
             className={styles.radio}
@@ -172,7 +184,7 @@ const ChooseOfferForm: React.FC<Props> = ({
           </label>
         </div>
       )}
-      <div className={styles.offers}>{offers.map(renderOfferBox)}</div>
+      <div className={styles.offers}>{purchasingOffer ? renderOfferBox(purchasingOffer, !!purchasingOffer) : offers.map((o) => renderOfferBox(o))}</div>
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
     </form>

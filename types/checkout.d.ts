@@ -1,4 +1,5 @@
 import type { e } from 'vitest/dist/index-fde81ec3';
+import type { ExternalItemDetails } from '@inplayer-org/inplayer.js';
 
 import type { PayloadWithIPOverride } from '#types/account';
 
@@ -355,6 +356,8 @@ export type FinalizeAdyenPaymentDetailsPayload = Omit<FinalizeAdyenPaymentPayloa
 
 export type FinalizeAdyenPaymentDetailsResponse = PaymentDetail;
 
+export type GetAssetsDataResponse = (ExternalItemDetails & { offers: Offer[] })[];
+
 export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
 export type GetOffer = EnvironmentServiceRequest<GetOfferPayload, Offer>;
 export type CreateOrder = EnvironmentServiceRequest<CreateOrderArgs, CreateOrderResponse>;
@@ -375,3 +378,4 @@ export type UpdatePaymentWithPayPal = EnvironmentServiceRequest<UpdatePaymentWit
 export type DeletePaymentMethod = EnvironmentServiceRequest<DeletePaymentMethodPayload, DeletePaymentMethodResponse>;
 export type AddAdyenPaymentDetails = EnvironmentServiceRequest<AddAdyenPaymentDetailsPayload, AddAdyenPaymentDetailsResponse>;
 export type FinalizeAdyenPaymentDetails = EnvironmentServiceRequest<FinalizeAdyenPaymentDetailsPayload, FinalizeAdyenPaymentDetailsResponse>;
+type GetAssetsData = EnvironmentServiceRequest<string[], GetAssetsDataResponse>;

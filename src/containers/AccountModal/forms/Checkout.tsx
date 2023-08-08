@@ -27,12 +27,13 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const { order, offer, paymentMethods, setOrder } = useCheckoutStore(
-    ({ order, offer, paymentMethods, setOrder }) => ({
+  const { order, offer, paymentMethods, setOrder, purchasingOffer } = useCheckoutStore(
+    ({ order, offer, paymentMethods, setOrder, purchasingOffer }) => ({
       order,
       offer,
       paymentMethods,
       setOrder,
+      purchasingOffer,
     }),
     shallow,
   );
@@ -40,8 +41,11 @@ const Checkout = () => {
   const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
 
   const paymentSuccessUrl = useMemo(() => {
+    if (purchasingOffer) {
+      return '/';
+    }
     return offerType === 'svod' ? addQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
-  }, [location, offerType]);
+  }, [location, offerType, purchasingOffer]);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);
