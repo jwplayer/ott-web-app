@@ -28,7 +28,7 @@ const Checkout = () => {
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
   const { order, offer, paymentMethods, setOrder, purchasingOffer } = useCheckoutStore(
-    ({ order, offer, paymentMethods, setOrder, purchasingOffer }) => ({
+    ({ order, offer, paymentMethods, setOrder, purchasingOffers: purchasingOffer }) => ({
       order,
       offer,
       paymentMethods,

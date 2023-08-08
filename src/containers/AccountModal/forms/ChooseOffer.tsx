@@ -33,24 +33,25 @@ const determineSwitchDirection = (subscription: Subscription | null) => {
 const ChooseOffer = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const shopItemId = useQueryParam('shopItemId');
-  const isPurchasingProduct = !!shopItemId;
-  const { purchasingOffer } = useCheckoutStore();
+  const { purchasingOffers } = useCheckoutStore();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
-  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer } = useOffers();
+  const { isLoading, offerType, setOfferType, offers: loadedOffers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer } = useOffers();
+  const offers = purchasingOffers?.offers || loadedOffers;
   const { subscription } = useAccountStore.getState();
   const [offerSwitches, updateOffer] = useCheckoutStore((state) => [state.offerSwitches, state.updateOffer]);
   const isOfferSwitch = useQueryParam('u') === 'upgrade-subscription';
   const availableOffers = isOfferSwitch ? offerSwitches : offers;
   const offerId = availableOffers[0]?.offerId || '';
 
+  const isPurchasingProduct = !!purchasingOffers?.offers.length;
+
   const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
     offerId: mixed<string>().required(t('choose_offer.field_required')),
   });
 
   const initialValues: ChooseOfferFormData = {
-    offerId: shopItemId || defaultOfferId,
+    offerId: `${purchasingOffers?.offers?.[0].id}` || defaultOfferId,
   };
 
   const closeModal = useEventCallback((replace = false) => {
@@ -63,12 +64,12 @@ const ChooseOffer = () => {
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = useCallback(
     async ({ offerId }, { setSubmitting, setErrors }) => {
-      const offer = offerId && (offersDict[offerId] || !!purchasingOffer);
+      const offer = offerId && (offersDict[offerId] || purchasingOffers?.offers.find((offer) => `${offer.offerId}` === offerId));
 
       if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
 
       if (isPurchasingProduct) {
-        setOffer(purchasingOffer);
+        setOffer(offer);
         setSubmitting(false);
         updateAccountModal('checkout');
         return;
@@ -97,17 +98,17 @@ const ChooseOffer = () => {
       }
     },
     [
-      availableOffers,
-      isOfferSwitch,
-      offerSwitches,
       offersDict,
-      setOffer,
-      subscription,
+      purchasingOffers?.offers,
       t,
-      updateAccountModal,
-      updateOffer,
       isPurchasingProduct,
-      purchasingOffer,
+      isOfferSwitch,
+      setOffer,
+      updateAccountModal,
+      offerSwitches,
+      subscription,
+      availableOffers,
+      updateOffer,
     ],
   );
 
@@ -150,7 +151,8 @@ const ChooseOffer = () => {
       offers={availableOffers}
       offerType={offerType}
       setOfferType={hasMultipleOfferTypes && !hasPremierOffer ? setOfferType : undefined}
-      purchasingOffer={purchasingOffer ?? undefined}
+      purchasingOffers={purchasingOffers?.offers ?? []}
+      productImageUrl={purchasingOffers?.pictureUrl}
     />
   );
 };

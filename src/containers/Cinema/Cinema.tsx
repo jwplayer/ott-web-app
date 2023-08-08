@@ -86,10 +86,10 @@ const Cinema: React.FC<Props> = ({
   const [shopIsOpen, setShopIsOpen] = useState(false);
 
   const handleProductPurchase = useCallback(
-    async (offer: Offer, pictureUrl: string) => {
-      if (!offer?.id) return;
-      useCheckoutStore.setState({ purchasingOffer: { ...offer, pictureUrl } });
-      navigate('?u=choose-offer&shopItemId=' + offer.id, { replace: true });
+    async (offers: Offer[], pictureUrl: string) => {
+      if (!offers.length) return;
+      useCheckoutStore.setState({ purchasingOffers: { offers, pictureUrl } });
+      navigate('?u=choose-offer', { replace: true });
     },
     [navigate],
   );
@@ -137,7 +137,7 @@ const Cinema: React.FC<Props> = ({
                   <div className={styles.shopHeader}>Products</div>
                   {shopItems?.map((shopItem) => (
                     <div className={styles.shopItemContainer} key={shopItem.id}>
-                      <img className={styles.shopItemImage} src={shopItem.metahash.thumbnail_image} />
+                      <img className={styles.shopItemImage} src={shopItem.metahash.paywall_cover_photo} />
                       <div className={styles.shopItemTextContainer}>
                         <h2>{shopItem.title}</h2>
                         <div className={styles.shopItemPrice}>
@@ -148,7 +148,7 @@ const Cinema: React.FC<Props> = ({
                           type="button"
                           label={t('video:buy')}
                           fullWidth
-                          onClick={() => handleProductPurchase(shopItem.offers[0], shopItem.metahash.thumbnail_image)}
+                          onClick={() => handleProductPurchase(shopItem.offers, shopItem.metahash.paywall_cover_photo)}
                         />
                       </div>
                     </div>

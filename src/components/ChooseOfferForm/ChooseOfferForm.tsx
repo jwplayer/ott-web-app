@@ -26,7 +26,8 @@ type Props = {
   submitting: boolean;
   offerType: OfferType;
   setOfferType?: (offerType: OfferType) => void;
-  purchasingOffer?: Offer;
+  purchasingOffers?: Offer[];
+  productImageUrl?: string;
 };
 
 type OfferBoxProps = {
@@ -50,7 +51,8 @@ const ChooseOfferForm: React.FC<Props> = ({
   onBackButtonClickHandler,
   offerType,
   setOfferType,
-  purchasingOffer,
+  purchasingOffers,
+  productImageUrl,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation('account');
@@ -87,7 +89,6 @@ const ChooseOfferForm: React.FC<Props> = ({
         <h4 className={styles.offerTitle}>{title}</h4>
         <hr className={styles.offerDivider} />
         <ul className={styles.offerBenefits}>
-          {isProductPurchase && <li>You will recieve an email with shipping details.</li>}
           {!isProductPurchase && (offer.freeDays || offer.freePeriods) ? (
             <li>
               <CheckCircle /> {getFreeTrialText(offer)}
@@ -149,14 +150,14 @@ const ChooseOfferForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
       {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
-      {!purchasingOffer && (
+      {!purchasingOffers && (
         <>
           <h2 className={styles.title}>{t('choose_offer.title')}</h2>
           <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
         </>
       )}
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      {setOfferType && !purchasingOffer && (
+      {setOfferType && !purchasingOffers && (
         <div className={styles.offerGroupSwitch}>
           <input
             className={styles.radio}
@@ -184,7 +185,13 @@ const ChooseOfferForm: React.FC<Props> = ({
           </label>
         </div>
       )}
-      <div className={styles.offers}>{purchasingOffer ? renderOfferBox(purchasingOffer, !!purchasingOffer) : offers.map((o) => renderOfferBox(o))}</div>
+      {purchasingOffers && productImageUrl && (
+        <div className={styles.productInfo}>
+          <img className={styles.productImage} src={productImageUrl} />
+          <h2 className={styles.title}>Purchase options</h2>
+        </div>
+      )}
+      <div className={styles.offers}>{(purchasingOffers || offers).map((o) => renderOfferBox(o, !!purchasingOffers?.length))}</div>
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
     </form>
