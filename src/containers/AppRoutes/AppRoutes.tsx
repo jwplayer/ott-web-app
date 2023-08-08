@@ -12,25 +12,27 @@ import LegacySeries from '#src/pages/LegacySeries/LegacySeries';
 import MediaScreenRouter from '#src/pages/ScreenRouting/MediaScreenRouter';
 import PlaylistScreenRouter from '#src/pages/ScreenRouting/PlaylistScreenRouter';
 import Layout from '#src/containers/Layout/Layout';
+import AppWrapper from '../AppWrapper/AppWrapper';
 
 export default function AppRoutes() {
   const { t } = useTranslation('error');
-
   return (
-    <Routes>
-      <Route element={<Layout />} errorElement={<RootErrorPage />}>
-        <Route index element={<Home />} />
-        <Route path="/p/:id" element={<PlaylistScreenRouter />} />
-        <Route path="/m/:id/*" element={<MediaScreenRouter />} />
-        <Route path="/s/:id/*" element={<LegacySeries />} />
-        <Route path="/q/*" element={<Search />} />
-        <Route path="/u/*" element={<User />} />
-        <Route path="/o/about" element={<About />} />
-        <Route
-          path="/*"
-          element={<ErrorPage title={t('notfound_error_heading', 'Not found')} message={t('notfound_error_description', "This page doesn't exist.")} />}
-        />
-      </Route>
-    </Routes>
+    <AppWrapper>
+      <Routes>
+        <Route element={<Layout />} errorElement={<RootErrorPage />}>
+          <Route index element={<Home />} />
+          <Route path="/p/:id" element={<PlaylistScreenRouter />} />
+          <Route path="/m/:id/*" element={<MediaScreenRouter />} />
+          <Route path="/s/:id/*" element={<LegacySeries />} />
+          <Route path="/q/*" element={<Search />} />
+          <Route path="/u/*" element={<User />} />
+          <Route path="/o/about" element={<About />} />
+          <Route
+            path="/*"
+            element={<ErrorPage title={t('notfound_error_heading', 'Not found')} message={t('notfound_error_description', "This page doesn't exist.")} />}
+          />
+        </Route>
+      </Routes>
+    </AppWrapper>
   );
 }

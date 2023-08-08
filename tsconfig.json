@@ -1,13 +1,5 @@
 {
-  "include": [
-    "src",
-    "types",
-    "scripts",
-    "test",
-    "vite.config.ts",
-    "vitest.config.ts",
-    "vitest.setup.ts"
-  ],
+  "include": ["src", "plugins/appbuilder", "types", "scripts", "test", "vite.config.ts", "vitest.config.ts", "vitest.setup.ts"],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
@@ -16,18 +8,11 @@
     "baseUrl": "./",
     /* paths - import rewriting/resolving */
     "paths": {
-      "#components/*": [
-        "./src/components/*"
-      ],
-      "#src/*": [
-        "./src/*"
-      ],
-      "#test/*": [
-        "./test/*"
-      ],
-      "#types/*": [
-        "./types/*"
-      ]
+      "#components/*": ["./src/components/*"],
+      "#src/*": ["./src/*"],
+      "#test/*": ["./test/*"],
+      "#types/*": ["./types/*"],
+      "#plugins/*": ["plugins/*"]
     },
     /* noEmit - Vite builds (emits) files, not tsc. */
     "noEmit": true,
@@ -43,12 +28,6 @@
     "noUnusedLocals": true,
     // Fallthrough must be documented
     "noFallthroughCasesInSwitch": true,
-    "types": [
-      "vi-fetch/matchers",
-      "vitest/globals",
-      "@testing-library/jest-dom",
-      "@types/jwplayer",
-      "vite-plugin-pwa/client"
-    ]
+    "types": ["vi-fetch/matchers", "vitest/globals", "@testing-library/jest-dom", "@types/jwplayer", "vite-plugin-pwa/client"]
   }
 }
