@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -15,6 +15,7 @@ import type { FormErrors } from '#types/form';
 import { testId } from '#src/utils/common';
 import type { ChooseOfferFormData, OfferType } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import Dialog from '#components/Dialog/Dialog';
 
 type Props = {
   values: ChooseOfferFormData;
@@ -28,6 +29,7 @@ type Props = {
   setOfferType?: (offerType: OfferType) => void;
   purchasingOffers?: Offer[];
   productImageUrl?: string;
+  productTitle?: string;
 };
 
 type OfferBoxProps = {
@@ -53,9 +55,12 @@ const ChooseOfferForm: React.FC<Props> = ({
   setOfferType,
   purchasingOffers,
   productImageUrl,
+  productTitle,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation('account');
+
+  const [zoomedImage, setZoomedImage] = useState<boolean>(false);
 
   const getFreeTrialText = (offer: Offer) => {
     if (offer.freeDays) {
@@ -72,6 +77,8 @@ const ChooseOfferForm: React.FC<Props> = ({
 
     return null;
   };
+
+  const handleImageZoom = () => setZoomedImage((zoomedImage) => !zoomedImage);
 
   const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString, isProductPurchase }) => (
     <div className={styles.offer}>
@@ -148,53 +155,59 @@ const ChooseOfferForm: React.FC<Props> = ({
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
-      {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
-      {!purchasingOffers && (
-        <>
-          <h2 className={styles.title}>{t('choose_offer.title')}</h2>
-          <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
-        </>
-      )}
-      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      {setOfferType && !purchasingOffers && (
-        <div className={styles.offerGroupSwitch}>
-          <input
-            className={styles.radio}
-            onChange={() => setOfferType('svod')}
-            type="radio"
-            name="offerType"
-            id="svod"
-            value="svod"
-            checked={offerType === 'svod'}
-          />
-          <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
-            {t('choose_offer.subscription')}
-          </label>
-          <input
-            className={styles.radio}
-            onChange={() => setOfferType('tvod')}
-            type="radio"
-            name="offerType"
-            id="tvod"
-            value="tvod"
-            checked={offerType === 'tvod'}
-          />
-          <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="tvod">
-            {t('choose_offer.one_time_only')}
-          </label>
-        </div>
-      )}
-      {purchasingOffers && productImageUrl && (
-        <div className={styles.productInfo}>
-          <img className={styles.productImage} src={productImageUrl} />
-          <h2 className={styles.title}>Purchase options</h2>
-        </div>
-      )}
-      <div className={styles.offers}>{(purchasingOffers || offers).map((o) => renderOfferBox(o, !!purchasingOffers?.length))}</div>
-      {submitting && <LoadingOverlay transparentBackground inline />}
-      <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
-    </form>
+    <>
+      <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
+        {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
+        {!purchasingOffers && (
+          <>
+            <h2 className={styles.title}>{t('choose_offer.title')}</h2>
+            <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
+          </>
+        )}
+        {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
+        {setOfferType && !purchasingOffers && (
+          <div className={styles.offerGroupSwitch}>
+            <input
+              className={styles.radio}
+              onChange={() => setOfferType('svod')}
+              type="radio"
+              name="offerType"
+              id="svod"
+              value="svod"
+              checked={offerType === 'svod'}
+            />
+            <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
+              {t('choose_offer.subscription')}
+            </label>
+            <input
+              className={styles.radio}
+              onChange={() => setOfferType('tvod')}
+              type="radio"
+              name="offerType"
+              id="tvod"
+              value="tvod"
+              checked={offerType === 'tvod'}
+            />
+            <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="tvod">
+              {t('choose_offer.one_time_only')}
+            </label>
+          </div>
+        )}
+        {purchasingOffers && (
+          <div className={styles.productInfo}>
+            {productTitle && <h2 className={styles.title}>{productTitle}</h2>}
+            <img className={styles.productImage} src={productImageUrl} onClick={handleImageZoom} />
+            <h2 className={styles.title}>Purchase options</h2>
+          </div>
+        )}
+        <div className={styles.offers}>{(purchasingOffers || offers).map((o) => renderOfferBox(o, !!purchasingOffers?.length))}</div>
+        {submitting && <LoadingOverlay transparentBackground inline />}
+        <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
+      </form>
+      <Dialog open={zoomedImage} onClose={handleImageZoom}>
+        <img className={styles.productImageZoomed} src={productImageUrl} />
+      </Dialog>
+    </>
   );
 };
 export default ChooseOfferForm;

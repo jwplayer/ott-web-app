@@ -153,6 +153,7 @@ const ChooseOffer = () => {
       setOfferType={hasMultipleOfferTypes && !hasPremierOffer ? setOfferType : undefined}
       purchasingOffers={purchasingOffers?.offers ?? []}
       productImageUrl={purchasingOffers?.pictureUrl}
+      productTitle={purchasingOffers?.productTitle}
     />
   );
 };

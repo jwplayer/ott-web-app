@@ -86,9 +86,9 @@ const Cinema: React.FC<Props> = ({
   const [shopIsOpen, setShopIsOpen] = useState(false);
 
   const handleProductPurchase = useCallback(
-    async (offers: Offer[], pictureUrl: string) => {
+    async (offers: Offer[], pictureUrl: string, productTitle: string) => {
       if (!offers.length) return;
-      useCheckoutStore.setState({ purchasingOffers: { offers, pictureUrl } });
+      useCheckoutStore.setState({ purchasingOffers: { offers, pictureUrl, productTitle } });
       navigate('?u=choose-offer', { replace: true });
     },
     [navigate],
@@ -148,7 +148,7 @@ const Cinema: React.FC<Props> = ({
                           type="button"
                           label={t('video:buy')}
                           fullWidth
-                          onClick={() => handleProductPurchase(shopItem.offers, shopItem.metahash.paywall_cover_photo)}
+                          onClick={() => handleProductPurchase(shopItem.offers, shopItem.metahash.paywall_cover_photo, shopItem.title)}
                         />
                       </div>
                     </div>

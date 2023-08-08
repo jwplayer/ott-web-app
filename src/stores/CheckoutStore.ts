@@ -8,7 +8,7 @@ type CheckoutStore = {
   paymentMethods: PaymentMethod[] | null;
   requestedMediaOffers: MediaOffer[] | null;
   offerSwitches: Offer[];
-  purchasingOffers: { offers: Offer[]; pictureUrl: string } | null;
+  purchasingOffers: { offers: Offer[]; pictureUrl: string; productTitle: string } | null;
   updateOffer: (offer: Offer | null) => void;
   setOffer: (offer: Offer | null) => void;
   setOrder: (order: Order | null) => void;

@@ -153,4 +153,18 @@
   overflow: hidden;
   border: 1px solid rgba(variables.$white, 0.34);
   border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: variables.$white;
+    transform: scale(1.02);
+    cursor: pointer;
+  }
+}
+
+.productImageZoomed {
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(variables.$white, 0.34);
+  border-radius: 4px;
 }

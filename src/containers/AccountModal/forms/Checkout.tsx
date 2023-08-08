@@ -27,6 +27,10 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
+  if (updatingOrder) {
+    useCheckoutStore.setState({ purchasingOffers: null });
+  }
+
   const { order, offer, paymentMethods, setOrder, purchasingOffer } = useCheckoutStore(
     ({ order, offer, paymentMethods, setOrder, purchasingOffers: purchasingOffer }) => ({
       order,
