@@ -11,7 +11,7 @@ const AppWrapper = AppBuilderComponent
   ? //@ts-ignore
     React.lazy(() => {
       /* @vite-ignore */
-      return import(`#plugins/appbuilder/AppBuilder`).catch(() => {
+      return import(AppBuilderComponent && '#plugins/appbuilder/AppBuilder').catch(() => {
         return { default: EmptyWrapper };
       });
     })
