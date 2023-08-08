@@ -25,6 +25,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: webapp
+          name: webapp-${{ github.event.inputs.tag }}
           path: ./build
           retention-days: 1
