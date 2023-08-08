@@ -113,6 +113,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
             return 'index';
           },
         },
+        external: [/^#plugins\/.*/],
       },
     },
     css: {
