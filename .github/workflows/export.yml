@@ -7,6 +7,8 @@ on:
         type: input
         description: 'unique tag'
 
+permissions: read-all
+
 jobs:
   build:
     runs-on: ubuntu-latest
