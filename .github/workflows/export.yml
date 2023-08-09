@@ -17,9 +17,13 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-            ${{ runner.os }}-build
+
+      - name: Cache Build Artifacts
+        if: ${{ steps.check-cache.outputs.cache-exists != 'true' }}
+        uses: actions/cache@v2
+        with:
+          path: build
+          key: ${{ runner.os }}-build
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v1
@@ -35,13 +39,6 @@ jobs:
         run: |
           yarn
           npx vite build --mode prod
-
-      - name: Cache Build Artifacts
-        if: ${{ steps.check-cache.outputs.cache-exists != 'true' }}
-        uses: actions/cache@v2
-        with:
-          path: build
-          key: ${{ runner.os }}-build
 
       - name: Inject config-id in webapp.ini
         run: |
