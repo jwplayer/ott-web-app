@@ -25,7 +25,7 @@ jobs:
 
       - name: Check Build Cache
         id: check-cache
-        run: echo ::set-output name=cache-exists::$(test -d build && echo true || echo false)
+        run: echo "cache-exists=$(test -d build && echo true || echo false)" >> $GITHUB_OUTPUT
 
       - name: Build WebApp
         if: ${{ steps.check-cache.outputs.cache-exists != 'true' }}
