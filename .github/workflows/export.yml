@@ -7,8 +7,6 @@ on:
         type: input
         description: 'unique tag'
 
-permissions: read-all
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,12 +22,37 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18.x
+
+      - name: Check Build Cache
+        id: check-cache
+        run: echo ::set-output name=cache-exists::$(test -d build && echo true || echo false)
+
       - name: Build WebApp
+        if: ${{ steps.check-cache.outputs.cache-exists != 'true' }}
         run: |
           yarn
           npx vite build --mode prod
+
+      - name: Restore Build Cache
+        if: steps.check-cache.outputs.cache-exists == 'true'
+        uses: actions/cache@v2
+        with:
+          path: build
+          key: ${{ runner.os }}-build
+          restore-keys: ${{ runner.os }}-build
+
+      - name: Cache Build Artifacts
+        if: ${{ steps.check-cache.outputs.cache-exists != 'true' }}
+        uses: actions/cache@v2
+        with:
+          path: build
+          key: ${{ runner.os }}-build
+
+      - name: Inject config-id in webapp.ini
+        run: |
           touch build/public/.webapp.ini
           echo "defaultConfigSource=${{ github.event.inputs.tag }}" > build/public/.webapp.ini
+
       - name: Uploading artifact
         if: always()
         uses: actions/upload-artifact@v3
