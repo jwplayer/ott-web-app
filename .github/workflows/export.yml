@@ -25,11 +25,13 @@ jobs:
       - name: Build WebApp
         run: |
           yarn
-          yarn build
+          npx vite build --mode prod
+          touch build/public/.webapp.ini
+          echo "defaultConfigSource=${{ github.event.inputs.tag }}" > build/public/.webapp.ini
       - name: Uploading artifact
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: webapp-${{ github.event.inputs.tagx }}
+          name: webapp-${{ github.event.inputs.tag }}
           path: ./build
           retention-days: 1
