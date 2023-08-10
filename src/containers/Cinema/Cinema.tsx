@@ -17,6 +17,7 @@ import ChevronRight from '#src/icons/ChevronRight';
 import { formatPrice } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import type { Offer } from '#types/checkout';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   open: boolean;
@@ -80,8 +81,10 @@ const Cinema: React.FC<Props> = ({
 
   const navigate = useNavigate();
 
+  const { config } = useConfigStore();
+
   const shopItemIds = item.shopIds?.split(',');
-  const hasShop = shopItemIds && shopItemIds.length > 0;
+  const hasShop = shopItemIds && shopItemIds.length > 0 && config?.custom?.useWebStore;
 
   const [shopIsOpen, setShopIsOpen] = useState(false);
 

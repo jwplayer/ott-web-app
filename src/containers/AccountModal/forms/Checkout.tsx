@@ -10,7 +10,7 @@ import useForm from '#src/hooks/useForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import PayPal from '#components/PayPal/PayPal';
 import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
-import { addQueryParams } from '#src/utils/formatting';
+import { addMultipleQueryParams, addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
@@ -26,10 +26,6 @@ const Checkout = () => {
   const [couponFormOpen, setCouponFormOpen] = useState(false);
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
-
-  if (updatingOrder) {
-    useCheckoutStore.setState({ purchasingOffers: null });
-  }
 
   const { order, offer, paymentMethods, setOrder, purchasingOffer } = useCheckoutStore(
     ({ order, offer, paymentMethods, setOrder, purchasingOffers: purchasingOffer }) => ({
@@ -197,7 +193,13 @@ const Checkout = () => {
 
     if (paymentMethod?.methodName === 'card') {
       if (paymentMethod?.provider === 'stripe') {
-        return <PaymentForm couponCode={couponCodeForm.values.couponCode} setUpdatingOrder={setUpdatingOrder} />;
+        return (
+          <PaymentForm
+            couponCode={couponCodeForm.values.couponCode}
+            setUpdatingOrder={setUpdatingOrder}
+            successUrl={addMultipleQueryParams(location, { u: 'welcome', isProductPurchase: 'true' })}
+          />
+        );
       }
 
       return (

@@ -37,7 +37,7 @@ const ChooseOffer = () => {
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
   const { isLoading, offerType, setOfferType, offers: loadedOffers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer } = useOffers();
-  const offers = purchasingOffers?.offers || loadedOffers;
+  const offers = purchasingOffers?.offers.length ? purchasingOffers.offers : loadedOffers;
   const { subscription } = useAccountStore.getState();
   const [offerSwitches, updateOffer] = useCheckoutStore((state) => [state.offerSwitches, state.updateOffer]);
   const isOfferSwitch = useQueryParam('u') === 'upgrade-subscription';
@@ -151,7 +151,7 @@ const ChooseOffer = () => {
       offers={availableOffers}
       offerType={offerType}
       setOfferType={hasMultipleOfferTypes && !hasPremierOffer ? setOfferType : undefined}
-      purchasingOffers={purchasingOffers?.offers ?? []}
+      purchasingOffers={purchasingOffers?.offers || null}
       productImageUrl={purchasingOffers?.pictureUrl}
       productTitle={purchasingOffers?.productTitle}
     />

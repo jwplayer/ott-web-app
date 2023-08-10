@@ -22,13 +22,14 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Welcome from '#components/Welcome/Welcome';
 import PaymentFailed from '#components/PaymentFailed/PaymentFailed';
 import Dialog from '#components/Dialog/Dialog';
-import { addQueryParam, removeQueryParam } from '#src/utils/location';
+import { addQueryParam, removeMultipleQueryParams } from '#src/utils/location';
 import DeleteAccountModal from '#src/components/DeleteAccountModal/DeleteAccountModal';
 import FinalizePayment from '#components/FinalizePayment/FinalizePayment';
 import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
 import useEventCallback from '#src/hooks/useEventCallback';
 import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
+import { useCheckoutStore } from '#src/stores/CheckoutStore';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
 
@@ -36,6 +37,7 @@ const AccountModal = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const viewParam = useQueryParam('u');
+  const isProductPurchase = useQueryParam('isProductPurchase') === 'true';
   const [view, setView] = useState(viewParam);
   const message = useQueryParam('message');
   const { loading, user } = useAccountStore(({ loading, user }) => ({ loading, user }), shallow);
@@ -62,7 +64,10 @@ const AccountModal = () => {
   }, [viewParam, loading, isPublicView, user, toLogin]);
 
   const closeHandler = useEventCallback(() => {
-    navigate(removeQueryParam(location, 'u'));
+    navigate(removeMultipleQueryParams(location, ['u', 'isProductPurchase']), { replace: true });
+    if (isProductPurchase) {
+      useCheckoutStore.setState({ purchasingOffers: null });
+    }
   });
 
   const renderForm = () => {
@@ -101,7 +106,7 @@ const AccountModal = () => {
       case 'payment-cancelled':
         return <PaymentFailed type="cancelled" onCloseButtonClick={closeHandler} />;
       case 'welcome':
-        return <Welcome onCloseButtonClick={closeHandler} onCountdownCompleted={closeHandler} siteName={siteName} />;
+        return <Welcome onCloseButtonClick={closeHandler} onCountdownCompleted={closeHandler} siteName={siteName} hasPurchasedProduct={isProductPurchase} />;
       case 'reset-password':
         return <ResetPassword type="reset" />;
       case 'forgot-password':

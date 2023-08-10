@@ -27,7 +27,7 @@ type Props = {
   submitting: boolean;
   offerType: OfferType;
   setOfferType?: (offerType: OfferType) => void;
-  purchasingOffers?: Offer[];
+  purchasingOffers?: Offer[] | null;
   productImageUrl?: string;
   productTitle?: string;
 };
