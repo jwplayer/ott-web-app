@@ -27,6 +27,8 @@ const featuresSchema: SchemaOf<Features> = object({
   searchPlaylist: string().nullable(),
   continueWatchingList: string().nullable(),
   favoritesList: string().nullable(),
+  enableSharing: boolean(),
+  useShop: boolean(),
 });
 
 const cleengSchema: SchemaOf<Cleeng> = object({
@@ -53,6 +55,7 @@ const configSchema: SchemaOf<Config> = object({
   id: string().notRequired(),
   siteName: string().notRequired(),
   description: string().defined(),
+  keywords: array().of(string()).notRequired(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
   assets: object({

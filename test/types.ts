@@ -27,4 +27,5 @@ export type ProviderProps = {
   shouldMakePayment?: boolean;
   locale?: string | undefined;
   fieldWrapper?: string;
+  hasInlineOfferSwitch: boolean;
 };

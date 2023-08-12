@@ -56,11 +56,28 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       VitePWA(),
       createHtmlPlugin({
         minify: true,
+        inject: process.env.APP_GOOGLE_SITE_VERIFICATION_ID
+          ? {
+              tags: [
+                {
+                  tag: 'meta',
+                  injectTo: 'head',
+                  attrs: {
+                    content: process.env.APP_GOOGLE_SITE_VERIFICATION_ID,
+                    name: 'google-site-verification',
+                  },
+                },
+              ],
+            }
+          : {},
       }),
       viteStaticCopy({
         targets: fileCopyTargets,
       }),
     ],
+    define: {
+      'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
+    },
     publicDir: './public',
     envPrefix: 'APP_',
     server: {
@@ -96,6 +113,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
             return 'index';
           },
         },
+        external: [/^#plugins\/.*/],
       },
     },
     css: {
@@ -108,6 +126,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
         '#test': path.join(__dirname, 'test'),
         '#test-e2e': path.join(__dirname, 'test-e2e'),
         '#types': path.join(__dirname, 'types'),
+        '#plugins': path.join(__dirname, 'plugins'),
       },
     },
     test: {

@@ -90,7 +90,7 @@ const Shelf = ({
   );
 
   const renderRightControl = useCallback(
-    (doSlide) => (
+    (doSlide: () => void) => (
       <div
         className={styles.chevron}
         role="button"
@@ -106,7 +106,7 @@ const Shelf = ({
   );
 
   const renderLeftControl = useCallback(
-    (doSlide) => (
+    (doSlide: () => void) => (
       <div
         className={classNames(styles.chevron, {
           [styles.disabled]: !didSlideBefore,

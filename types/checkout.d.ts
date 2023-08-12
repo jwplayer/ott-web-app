@@ -42,6 +42,7 @@ export type Offer = {
   contentExternalId: number | null;
   contentExternalData: string | null;
   contentAgeRestriction: string | null;
+  planSwitchEnabled?: boolean;
 };
 
 export type OrderOffer = {

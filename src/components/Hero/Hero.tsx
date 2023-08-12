@@ -3,12 +3,11 @@ import React from 'react';
 import styles from './Hero.module.scss';
 
 import Image from '#components/Image/Image';
-import type { ImageData } from '#types/playlist';
 
 type Props = {
   title: string;
   description: string;
-  image?: ImageData;
+  image?: string;
 };
 
 const Hero = ({ title, description, image }: Props) => {

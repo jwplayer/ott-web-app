@@ -22,6 +22,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 type Props = {
   open: boolean;
   item: PlaylistItem;
+  seriesItem?: PlaylistItem;
   onPlay?: () => void;
   onPause?: () => void;
   onComplete?: () => void;
@@ -39,6 +40,7 @@ type Props = {
 const Cinema: React.FC<Props> = ({
   open,
   item,
+  seriesItem,
   title,
   primaryMetadata,
   secondaryMetadata,
@@ -116,6 +118,7 @@ const Cinema: React.FC<Props> = ({
       <div className={styles.cinema}>
         <PlayerContainer
           item={item}
+          seriesItem={seriesItem}
           feedId={feedId}
           autostart={true}
           onPlay={handlePlay}
@@ -130,53 +133,55 @@ const Cinema: React.FC<Props> = ({
         />
 
         <Fade open={!isPlaying || userActive || shopIsOpen}>
-          {hasShop && (
-            <>
-              <Fade open={shopIsOpen}>
-                <div className={styles.shop}>
-                  {
-                    //{t('video:shop')}
-                  }
-                  <div className={styles.shopHeader}>Products</div>
-                  {shopItems?.map((shopItem) => (
-                    <div className={styles.shopItemContainer} key={shopItem.id}>
-                      <img className={styles.shopItemImage} src={shopItem.metahash.paywall_cover_photo} />
-                      <div className={styles.shopItemTextContainer}>
-                        <h2>{shopItem.title}</h2>
-                        <div className={styles.shopItemPrice}>
-                          {formatPrice(shopItem.offers[0].customerPriceInclTax, shopItem.offers[0].customerCurrency, shopItem.offers[0].customerCountry)}
+          <>
+            {hasShop && (
+              <>
+                <Fade open={shopIsOpen}>
+                  <div className={styles.shop}>
+                    {
+                      //{t('video:shop')}
+                    }
+                    <div className={styles.shopHeader}>Products</div>
+                    {shopItems?.map((shopItem) => (
+                      <div className={styles.shopItemContainer} key={shopItem.id}>
+                        <img className={styles.shopItemImage} src={shopItem.metahash.paywall_cover_photo} />
+                        <div className={styles.shopItemTextContainer}>
+                          <h2>{shopItem.title}</h2>
+                          <div className={styles.shopItemPrice}>
+                            {formatPrice(shopItem.offers[0].customerPriceInclTax, shopItem.offers[0].customerCurrency, shopItem.offers[0].customerCountry)}
+                          </div>
+                          <Button
+                            className={styles.shopItemButton}
+                            type="button"
+                            label={t('video:buy')}
+                            fullWidth
+                            onClick={() => handleProductPurchase(shopItem.offers, shopItem.metahash.paywall_cover_photo, shopItem.title)}
+                          />
                         </div>
-                        <Button
-                          className={styles.shopItemButton}
-                          type="button"
-                          label={t('video:buy')}
-                          fullWidth
-                          onClick={() => handleProductPurchase(shopItem.offers, shopItem.metahash.paywall_cover_photo, shopItem.title)}
-                        />
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </Fade>
-              <IconButton aria-label={t('video:shop')} onClick={() => setShopIsOpen((o) => !o)} className={styles.shopToggle}>
-                {shopIsOpen ? <ChevronRight /> : <ChevronLeft />}
-              </IconButton>
-            </>
-          )}
-          <div className={styles.playerOverlay}>
-            <div className={styles.playerContent}>
-              <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
-                <ArrowLeft />
-              </IconButton>
-              <div>
-                <h2 className={styles.title}>{title}</h2>
-                <div className={styles.metaContainer}>
-                  {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
-                  <div className={styles.primaryMetadata}>{primaryMetadata}</div>
+                    ))}
+                  </div>
+                </Fade>
+                <IconButton aria-label={t('video:shop')} onClick={() => setShopIsOpen((o) => !o)} className={styles.shopToggle}>
+                  {shopIsOpen ? <ChevronRight /> : <ChevronLeft />}
+                </IconButton>
+              </>
+            )}
+            <div className={styles.playerOverlay}>
+              <div className={styles.playerContent}>
+                <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
+                  <ArrowLeft />
+                </IconButton>
+                <div>
+                  <h2 className={styles.title}>{title}</h2>
+                  <div className={styles.metaContainer}>
+                    {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
+                    <div className={styles.primaryMetadata}>{primaryMetadata}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </>
         </Fade>
       </div>
     </Fade>

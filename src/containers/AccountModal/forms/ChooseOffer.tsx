@@ -36,7 +36,17 @@ const ChooseOffer = () => {
   const { purchasingOffers } = useCheckoutStore();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
-  const { isLoading, offerType, setOfferType, offers: loadedOffers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer } = useOffers();
+  const {
+    isLoading,
+    offerType,
+    setOfferType,
+    offers: loadedOffers,
+    offersDict,
+    defaultOfferId,
+    hasMultipleOfferTypes,
+    hasPremierOffer,
+    isTvodRequested,
+  } = useOffers();
   const offers = purchasingOffers?.offers.length ? purchasingOffers.offers : loadedOffers;
   const { subscription } = useAccountStore.getState();
   const [offerSwitches, updateOffer] = useCheckoutStore((state) => [state.offerSwitches, state.updateOffer]);
@@ -133,7 +143,7 @@ const ChooseOffer = () => {
   }, [setValue, defaultOfferId, availableOffers]);
 
   // loading state
-  if (!offers.length || isLoading) {
+  if (isLoading) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
@@ -150,8 +160,8 @@ const ChooseOffer = () => {
       submitting={submitting}
       offers={availableOffers}
       offerType={offerType}
-      setOfferType={hasMultipleOfferTypes && !hasPremierOffer ? setOfferType : undefined}
-      purchasingOffers={purchasingOffers?.offers || null}
+      setOfferType={isTvodRequested || (hasMultipleOfferTypes && !hasPremierOffer) ? setOfferType : undefined}
+      isProductPurchase={!!purchasingOffers?.offers.length}
       productImageUrl={purchasingOffers?.pictureUrl}
       productTitle={purchasingOffers?.productTitle}
     />

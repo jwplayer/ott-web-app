@@ -312,6 +312,7 @@ export type UpdatePersonalShelvesArgs = {
 export type FirstLastNameInput = {
   firstName: string;
   lastName: string;
+  metadata?: Record<string, string>;
 };
 
 export type EmailConfirmPasswordInput = {
@@ -343,5 +344,5 @@ type ChangePassword = EnvironmentServiceRequest<ChangePasswordWithTokenPayload, 
 type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWithOldPasswordPayload, ApiResponse<unknown>>;
 type UpdatePersonalShelves = EnvironmentServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
-type ExportAccountData = AuthServiceRequest<undefined, CommonAccountResponse>;
+type ExportAccountData = EnvironmentServiceRequest<undefined, CommonAccountResponse>;
 type DeleteAccount = EnvironmentServiceRequest<DeleteAccountPayload, CommonAccountResponse>;

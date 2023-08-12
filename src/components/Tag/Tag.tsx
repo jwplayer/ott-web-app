@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import styles from './Tag.module.scss';
@@ -6,6 +6,7 @@ import styles from './Tag.module.scss';
 type Props = {
   className?: string;
   isLive?: boolean;
+  children?: ReactNode;
   size?: 'normal' | 'large';
 };
 

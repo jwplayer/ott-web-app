@@ -13,7 +13,6 @@ import CancelSubscription from './forms/CancelSubscription';
 import RenewSubscription from './forms/RenewSubscription';
 import EditPassword from './forms/EditPassword';
 import EditCardDetails from './forms/EditCardDetails';
-import SimultaneousLoginsNotification from './forms/SimultaneousLoginsNotification';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -64,7 +63,7 @@ const AccountModal = () => {
   }, [viewParam, loading, isPublicView, user, toLogin]);
 
   const closeHandler = useEventCallback(() => {
-    navigate(removeMultipleQueryParams(location, ['u', 'isProductPurchase']), { replace: true });
+    navigate(removeMultipleQueryParams(location, ['u', 'message', 'isProductPurchase']), { replace: true });
     if (isProductPurchase) {
       useCheckoutStore.setState({ purchasingOffers: null });
     }
@@ -78,11 +77,10 @@ const AccountModal = () => {
         </div>
       );
     }
+
     switch (view) {
-      case 'simultaneous-logins':
-        return <SimultaneousLoginsNotification />;
       case 'login':
-        return <Login />;
+        return <Login messageKey={message} />;
       case 'create-account':
         return <Registration />;
       case 'personal-details':

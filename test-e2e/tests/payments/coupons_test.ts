@@ -14,6 +14,7 @@ const jwProps: ProviderProps = {
   locale: undefined,
   shouldMakePayment: true,
   canRenewSubscription: false,
+  hasInlineOfferSwitch: true,
 };
 
 const cleengProps: ProviderProps = {
@@ -26,6 +27,7 @@ const cleengProps: ProviderProps = {
   locale: 'NL',
   shouldMakePayment: false,
   canRenewSubscription: true,
+  hasInlineOfferSwitch: false,
 };
 
 runTestSuite(jwProps, 'JW Player');
@@ -86,12 +88,12 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       );
     }
 
-    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price);
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, props.hasInlineOfferSwitch);
   });
 
   Scenario(`I can cancel a free subscription - ${providerName}`, async ({ I }) => {
     couponLoginContext = await I.registerOrLogin(couponLoginContext);
-    cancelPlan(I, addYear(today), props.canRenewSubscription);
+    cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
   });
 
   Scenario(`I can renew a free subscription - ${providerName}`, async ({ I }) => {

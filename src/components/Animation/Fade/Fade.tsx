@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
 import Animation, { Status } from '#components/Animation/Animation';
 
@@ -7,6 +7,7 @@ type Props = {
   open?: boolean;
   duration?: number;
   delay?: number;
+  children?: ReactNode;
   keepMounted?: boolean;
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;

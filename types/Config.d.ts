@@ -5,6 +5,7 @@
 export type Config = {
   id?: string;
   siteName?: string;
+  keywords?: string[];
   description: string;
   analyticsToken?: string | null;
   adSchedule?: string | null;
@@ -76,6 +77,8 @@ export type Features = {
   searchPlaylist?: string | null;
   favoritesList?: string | null;
   continueWatchingList?: string | null;
+  enableSharing?: boolean;
+  useShop?: boolean;
 };
 
 /**

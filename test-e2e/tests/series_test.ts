@@ -90,9 +90,3 @@ Scenario('I can play other episodes from the series', async ({ I }) => {
   assert.strictEqual((await I.grabPageScrollPosition()).y, 0);
   I.see('Placing the lights and creating the environment then finishes up this workshop!');
 });
-
-Scenario('I can see an alternate background image for Fantasy Vehicle Creation', async ({ I }) => {
-  await I.openVideoCard(constants.fantasyVehicleTitle, ShelfId.allCourses);
-  I.see('Fantasy Vehicle Creation');
-  await I.seeVideoDetailsBackgroundImage('Fantasy Vehicle Creation', 'https://img.jwplayer.com/v1/media/lsFXY5xn/images/background.webp?width=1280');
-});

@@ -27,7 +27,7 @@ type Props = {
   submitting: boolean;
   offerType: OfferType;
   setOfferType?: (offerType: OfferType) => void;
-  purchasingOffers?: Offer[] | null;
+  isProductPurchase?: boolean;
   productImageUrl?: string;
   productTitle?: string;
 };
@@ -53,7 +53,7 @@ const ChooseOfferForm: React.FC<Props> = ({
   onBackButtonClickHandler,
   offerType,
   setOfferType,
-  purchasingOffers,
+  isProductPurchase,
   productImageUrl,
   productTitle,
 }: Props) => {
@@ -158,14 +158,14 @@ const ChooseOfferForm: React.FC<Props> = ({
     <>
       <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
         {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
-        {!purchasingOffers && (
+        {!isProductPurchase && (
           <>
             <h2 className={styles.title}>{t('choose_offer.title')}</h2>
             <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
           </>
         )}
         {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-        {setOfferType && !purchasingOffers && (
+        {setOfferType && !isProductPurchase && (
           <div className={styles.offerGroupSwitch}>
             <input
               className={styles.radio}
@@ -193,16 +193,18 @@ const ChooseOfferForm: React.FC<Props> = ({
             </label>
           </div>
         )}
-        {purchasingOffers && (
+        {isProductPurchase && (
           <div className={styles.productInfo}>
             {productTitle && <h2 className={styles.title}>{productTitle}</h2>}
             <img className={styles.productImage} src={productImageUrl} onClick={handleImageZoom} />
             <h2 className={styles.title}>Purchase options</h2>
           </div>
         )}
-        <div className={styles.offers}>{(purchasingOffers || offers).map((o) => renderOfferBox(o, !!purchasingOffers?.length))}</div>
+        <div className={styles.offers}>
+          {!offers.length ? <p>{t('choose_offer.no_pricing_available')}</p> : offers.map((o) => renderOfferBox(o, isProductPurchase))}
+        </div>
         {submitting && <LoadingOverlay transparentBackground inline />}
-        <Button label={t('choose_offer.continue')} disabled={submitting} variant="contained" color="primary" type="submit" fullWidth />
+        <Button label={t('choose_offer.continue')} disabled={submitting || !offers.length} variant="contained" color="primary" type="submit" fullWidth />
       </form>
       <Dialog open={zoomedImage} onClose={handleImageZoom}>
         <img className={styles.productImageZoomed} src={productImageUrl} />

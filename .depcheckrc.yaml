@@ -5,7 +5,7 @@ ignores: [
     'stylelint-config-recommended-scss',
     'stylelint-declaration-strict-value',
     'stylelint-scss',
-    '@vitest/coverage-c8',
+    '@vitest/coverage-v8',
     # This is used by commitlint in .commitlintrc.js
     '@commitlint/config-conventional',
     # These are vite aliases / tsconfig paths that point to specific local directories
@@ -15,6 +15,7 @@ ignores: [
     '\#types',
     '\#components',
     '\#utils',
+    '\#plugins',
     # This is used in src/styles, which recognizes absolute paths from the repo root
     'src',
     # To support e2e-reports

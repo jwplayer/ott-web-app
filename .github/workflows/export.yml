@@ -1,0 +1,54 @@
+name: Export WebApp [ Hackweek ]
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: input
+        description: 'unique tag'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache Build Artifacts
+        if: ${{ steps.check-cache.outputs.cache-exists != 'true' }}
+        uses: actions/cache@v2
+        with:
+          path: build
+          key: ${{ runner.os }}-build
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
+      - name: Check Build Cache
+        id: check-cache
+        run: echo "cache-exists=$(test -d build && echo true || echo false)" >> $GITHUB_OUTPUT
+
+      - name: Build WebApp
+        if: ${{ steps.check-cache.outputs.cache-exists != 'true' }}
+        run: |
+          yarn
+          npx vite build --mode prod
+
+      - name: Inject config-id in webapp.ini
+        run: |
+          touch build/public/.webapp.ini
+          echo "defaultConfigSource=${{ github.event.inputs.tag }}" > build/public/.webapp.ini
+
+      - name: Uploading artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: webapp-${{ github.event.inputs.tag }}
+          path: ./build
+          retention-days: 1

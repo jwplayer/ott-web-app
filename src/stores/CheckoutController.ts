@@ -295,6 +295,16 @@ export const switchSubscription = async (toOfferId: string, switchDirection: 'up
   });
 };
 
+export const changeSubscription = async ({ accessFeeId, subscriptionId }: { accessFeeId: string; subscriptionId: string }) => {
+  return await useService(async ({ subscriptionService, sandbox = true }) => {
+    if (!subscriptionService || !('changeSubscription' in subscriptionService)) throw new Error('subscription service is not configured');
+
+    const { responseData } = await subscriptionService.changeSubscription({ accessFeeId, subscriptionId }, sandbox);
+
+    return responseData;
+  });
+};
+
 export const updatePayPalPaymentMethod = async (
   successUrl: string,
   cancelUrl: string,
