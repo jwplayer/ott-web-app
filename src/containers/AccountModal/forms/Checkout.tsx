@@ -197,7 +197,7 @@ const Checkout = () => {
           <PaymentForm
             couponCode={couponCodeForm.values.couponCode}
             setUpdatingOrder={setUpdatingOrder}
-            successUrl={addMultipleQueryParams(location, { u: 'welcome', isProductPurchase: 'true' })}
+            successUrl={addMultipleQueryParams(location, { u: 'welcome', isProductPurchase: purchasingOffer ? 'true' : 'false' })}
           />
         );
       }

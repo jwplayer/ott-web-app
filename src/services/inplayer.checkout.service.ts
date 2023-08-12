@@ -195,7 +195,8 @@ export const getAssetsData: GetAssetsData = async (ids: string[]) => {
       })),
       errors: [],
     };
-  } catch {
+  } catch (e: unknown) {
+    console.error(e);
     throw new Error('Failed to fetch assets data');
   }
 };
@@ -224,7 +225,7 @@ const formatOffer = (offer: AccessFee): Offer => {
     active: true,
     period: offer.access_type.period === 'month' && offer.access_type.quantity === 12 ? 'year' : offer.access_type.period,
     freePeriods: offer.trial_period ? 1 : 0,
-    planSwitchEnabled: offer.item.plan_switch_enabled ?? false,
+    planSwitchEnabled: offer.item?.plan_switch_enabled ?? false,
   } as Offer;
 };
 
