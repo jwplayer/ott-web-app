@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -15,6 +15,7 @@ import type { FormErrors } from '#types/form';
 import { testId } from '#src/utils/common';
 import type { ChooseOfferFormData, OfferType } from '#types/account';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import Dialog from '#components/Dialog/Dialog';
 
 type Props = {
   values: ChooseOfferFormData;
@@ -26,6 +27,9 @@ type Props = {
   submitting: boolean;
   offerType: OfferType;
   setOfferType?: (offerType: OfferType) => void;
+  isProductPurchase?: boolean;
+  productImageUrl?: string;
+  productTitle?: string;
 };
 
 type OfferBoxProps = {
@@ -34,9 +38,10 @@ type OfferBoxProps = {
   ariaLabel: string;
   secondBenefit?: string;
   periodString?: string;
+  isProductPurchase?: boolean;
 };
 
-type OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }: OfferBoxProps) => JSX.Element;
+type OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString, isProductPurchase }: OfferBoxProps) => JSX.Element;
 
 const ChooseOfferForm: React.FC<Props> = ({
   values,
@@ -48,9 +53,14 @@ const ChooseOfferForm: React.FC<Props> = ({
   onBackButtonClickHandler,
   offerType,
   setOfferType,
+  isProductPurchase,
+  productImageUrl,
+  productTitle,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation('account');
+
+  const [zoomedImage, setZoomedImage] = useState<boolean>(false);
 
   const getFreeTrialText = (offer: Offer) => {
     if (offer.freeDays) {
@@ -68,7 +78,9 @@ const ChooseOfferForm: React.FC<Props> = ({
     return null;
   };
 
-  const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }) => (
+  const handleImageZoom = () => setZoomedImage((zoomedImage) => !zoomedImage);
+
+  const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString, isProductPurchase }) => (
     <div className={styles.offer}>
       <input
         className={styles.radio}
@@ -84,20 +96,22 @@ const ChooseOfferForm: React.FC<Props> = ({
         <h4 className={styles.offerTitle}>{title}</h4>
         <hr className={styles.offerDivider} />
         <ul className={styles.offerBenefits}>
-          {offer.freeDays || offer.freePeriods ? (
+          {!isProductPurchase && (offer.freeDays || offer.freePeriods) ? (
             <li>
               <CheckCircle /> {getFreeTrialText(offer)}
             </li>
           ) : null}
 
-          {!!secondBenefit && (
+          {!!secondBenefit && !isProductPurchase && (
             <li>
               <CheckCircle /> {secondBenefit}
             </li>
           )}
-          <li>
-            <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
-          </li>
+          {!isProductPurchase && (
+            <li>
+              <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
+            </li>
+          )}
         </ul>
         <div className={styles.fill} />
         <div className={styles.offerPrice}>
@@ -107,7 +121,7 @@ const ChooseOfferForm: React.FC<Props> = ({
     </div>
   );
 
-  const renderOfferBox = (offer: Offer) => {
+  const renderOfferBox = (offer: Offer, isProductPurchase = false) => {
     if (isSVODOffer(offer)) {
       const isMonthly = offer.period === 'month';
 
@@ -119,6 +133,7 @@ const ChooseOfferForm: React.FC<Props> = ({
           ariaLabel={isMonthly ? t('choose_offer.monthly_subscription') : t('choose_offer.yearly_subscription')}
           secondBenefit={t('choose_offer.benefits.cancel_anytime')}
           periodString={isMonthly ? t('periods.month') : t('periods.year')}
+          isProductPurchase={isProductPurchase}
         />
       );
     }
@@ -134,48 +149,67 @@ const ChooseOfferForm: React.FC<Props> = ({
             ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
             : undefined
         }
+        isProductPurchase={isProductPurchase}
       />
     );
   };
 
   return (
-    <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
-      {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
-      <h2 className={styles.title}>{t('choose_offer.title')}</h2>
-      <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
-      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      {setOfferType && (
-        <div className={styles.offerGroupSwitch}>
-          <input
-            className={styles.radio}
-            onChange={() => setOfferType('svod')}
-            type="radio"
-            name="offerType"
-            id="svod"
-            value="svod"
-            checked={offerType === 'svod'}
-          />
-          <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
-            {t('choose_offer.subscription')}
-          </label>
-          <input
-            className={styles.radio}
-            onChange={() => setOfferType('tvod')}
-            type="radio"
-            name="offerType"
-            id="tvod"
-            value="tvod"
-            checked={offerType === 'tvod'}
-          />
-          <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="tvod">
-            {t('choose_offer.one_time_only')}
-          </label>
+    <>
+      <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
+        {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
+        {!isProductPurchase && (
+          <>
+            <h2 className={styles.title}>{t('choose_offer.title')}</h2>
+            <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
+          </>
+        )}
+        {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
+        {setOfferType && !isProductPurchase && (
+          <div className={styles.offerGroupSwitch}>
+            <input
+              className={styles.radio}
+              onChange={() => setOfferType('svod')}
+              type="radio"
+              name="offerType"
+              id="svod"
+              value="svod"
+              checked={offerType === 'svod'}
+            />
+            <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
+              {t('choose_offer.subscription')}
+            </label>
+            <input
+              className={styles.radio}
+              onChange={() => setOfferType('tvod')}
+              type="radio"
+              name="offerType"
+              id="tvod"
+              value="tvod"
+              checked={offerType === 'tvod'}
+            />
+            <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="tvod">
+              {t('choose_offer.one_time_only')}
+            </label>
+          </div>
+        )}
+        {isProductPurchase && (
+          <div className={styles.productInfo}>
+            {productTitle && <h2 className={styles.title}>{productTitle}</h2>}
+            <img className={styles.productImage} src={productImageUrl} onClick={handleImageZoom} />
+            <h2 className={styles.title}>Purchase options</h2>
+          </div>
+        )}
+        <div className={styles.offers}>
+          {!offers.length ? <p>{t('choose_offer.no_pricing_available')}</p> : offers.map((o) => renderOfferBox(o, isProductPurchase))}
         </div>
-      )}
-      {<div className={styles.offers}>{!offers.length ? <p>{t('choose_offer.no_pricing_available')}</p> : offers.map(renderOfferBox)}</div>}
-      {submitting && <LoadingOverlay transparentBackground inline />}
-      <Button label={t('choose_offer.continue')} disabled={submitting || !offers.length} variant="contained" color="primary" type="submit" fullWidth />
-    </form>
+        {submitting && <LoadingOverlay transparentBackground inline />}
+        <Button label={t('choose_offer.continue')} disabled={submitting || !offers.length} variant="contained" color="primary" type="submit" fullWidth />
+      </form>
+      <Dialog open={zoomedImage} onClose={handleImageZoom}>
+        <img className={styles.productImageZoomed} src={productImageUrl} />
+      </Dialog>
+    </>
   );
 };
 export default ChooseOfferForm;

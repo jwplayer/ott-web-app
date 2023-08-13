@@ -16,6 +16,7 @@ import type {
   PaymentWithoutDetails,
   PaymentWithPayPal,
   UpdateOrder,
+  GetAssetsData,
 } from '#types/checkout';
 import { isSVODOffer } from '#src/utils/subscription';
 
@@ -184,6 +185,22 @@ export const getEntitlements: GetEntitlements = async ({ offerId }) => {
   }
 };
 
+export const getAssetsData: GetAssetsData = async (ids: string[]) => {
+  try {
+    const assets = await Promise.all(ids.map((id) => InPlayer.Asset.getAsset(parseInt(id))));
+    return {
+      responseData: assets.map((asset) => ({
+        ...asset.data,
+        offers: asset.data.access_fees.map((offer) => formatOffer(offer)),
+      })),
+      errors: [],
+    };
+  } catch (e: unknown) {
+    console.error(e);
+    throw new Error('Failed to fetch assets data');
+  }
+};
+
 const formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = false): ServiceResponse<GetEntitlementsResponse> => {
   return {
     errors: [],
@@ -208,7 +225,7 @@ const formatOffer = (offer: AccessFee): Offer => {
     active: true,
     period: offer.access_type.period === 'month' && offer.access_type.quantity === 12 ? 'year' : offer.access_type.period,
     freePeriods: offer.trial_period ? 1 : 0,
-    planSwitchEnabled: offer.item.plan_switch_enabled ?? false,
+    planSwitchEnabled: offer.item?.plan_switch_enabled ?? false,
   } as Offer;
 };
 

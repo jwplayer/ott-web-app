@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Payment from 'payment';
 import { object, string } from 'yup';
+import type { Location } from 'react-router';
 
 import Button from '../Button/Button';
 import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
@@ -18,9 +19,10 @@ import useCheckAccess from '#src/hooks/useCheckAccess';
 type Props = {
   couponCode?: string;
   setUpdatingOrder: (value: boolean) => void;
+  successUrl?: Location;
 };
 
-const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
+const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder, successUrl }) => {
   const { t } = useTranslation('account');
   const { intervalCheckAccess } = useCheckAccess();
 
@@ -29,7 +31,7 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
     async () => {
       setUpdatingOrder(true);
       await directPostCardPayment({ couponCode, ...paymentData.values });
-      intervalCheckAccess({ interval: 15000 });
+      intervalCheckAccess({ interval: 15000, successUrl: successUrl || undefined });
     },
     object().shape({
       cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {

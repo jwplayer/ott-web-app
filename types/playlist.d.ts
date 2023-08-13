@@ -45,6 +45,7 @@ export type PlaylistItem = {
   variations?: Record<string, unknown>;
   free?: string;
   productIds?: string;
+  shopIds?: string;
   mediaOffers?: MediaOffer[] | null;
   contentType?: string;
   liveChannelsId?: string;
