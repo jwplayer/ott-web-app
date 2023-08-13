@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
 
 import useOffers from '#src/hooks/useOffers';
-import { addQueryParam } from '#src/utils/location';
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ChooseOfferForm from '#components/ChooseOfferForm/ChooseOfferForm';
@@ -33,22 +33,40 @@ const determineSwitchDirection = (subscription: Subscription | null) => {
 const ChooseOffer = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { purchasingOffers } = useCheckoutStore();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
-  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer, isTvodRequested } = useOffers();
+  const {
+    isLoading,
+    offerType,
+    setOfferType,
+    offers: loadedOffers,
+    offersDict,
+    defaultOfferId,
+    hasMultipleOfferTypes,
+    hasPremierOffer,
+    isTvodRequested,
+  } = useOffers();
+  const offers = purchasingOffers?.offers.length ? purchasingOffers.offers : loadedOffers;
   const { subscription } = useAccountStore.getState();
   const [offerSwitches, updateOffer] = useCheckoutStore((state) => [state.offerSwitches, state.updateOffer]);
   const isOfferSwitch = useQueryParam('u') === 'upgrade-subscription';
   const availableOffers = isOfferSwitch ? offerSwitches : offers;
   const offerId = availableOffers[0]?.offerId || '';
 
+  const isPurchasingProduct = !!purchasingOffers?.offers.length;
+
   const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
     offerId: mixed<string>().required(t('choose_offer.field_required')),
   });
 
   const initialValues: ChooseOfferFormData = {
-    offerId: defaultOfferId,
+    offerId: `${purchasingOffers?.offers?.[0].id}` || defaultOfferId,
   };
+
+  const closeModal = useEventCallback((replace = false) => {
+    navigate(removeQueryParam(location, 'u'), { replace });
+  });
 
   const updateAccountModal = useEventCallback((modal: string) => {
     navigate(addQueryParam(location, 'u', modal));
@@ -56,9 +74,16 @@ const ChooseOffer = () => {
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = useCallback(
     async ({ offerId }, { setSubmitting, setErrors }) => {
-      const offer = offerId && offersDict[offerId];
+      const offer = offerId && (offersDict[offerId] || purchasingOffers?.offers.find((offer) => `${offer.offerId}` === offerId));
 
       if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
+
+      if (isPurchasingProduct) {
+        setOffer(offer);
+        setSubmitting(false);
+        updateAccountModal('checkout');
+        return;
+      }
 
       if (isOfferSwitch) {
         const targetOffer = offerSwitches.find((offer) => offer.offerId === offerId);
@@ -82,10 +107,29 @@ const ChooseOffer = () => {
         updateAccountModal('checkout');
       }
     },
-    [availableOffers, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, updateAccountModal, updateOffer],
+    [
+      offersDict,
+      purchasingOffers?.offers,
+      t,
+      isPurchasingProduct,
+      isOfferSwitch,
+      setOffer,
+      updateAccountModal,
+      offerSwitches,
+      subscription,
+      availableOffers,
+      updateOffer,
+    ],
   );
 
   const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
+
+  useEffect(() => {
+    // close auth modal when there are no offers defined in the config
+    if (!isLoading && !offers.length && !isPurchasingProduct) {
+      closeModal(true);
+    }
+  }, [isLoading, offers, closeModal, isPurchasingProduct]);
 
   useEffect(() => {
     if (!isOfferSwitch) setValue('offerId', defaultOfferId);
@@ -117,6 +161,9 @@ const ChooseOffer = () => {
       offers={availableOffers}
       offerType={offerType}
       setOfferType={isTvodRequested || (hasMultipleOfferTypes && !hasPremierOffer) ? setOfferType : undefined}
+      isProductPurchase={!!purchasingOffers?.offers.length}
+      productImageUrl={purchasingOffers?.pictureUrl}
+      productTitle={purchasingOffers?.productTitle}
     />
   );
 };

@@ -10,7 +10,7 @@ import useForm from '#src/hooks/useForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import PayPal from '#components/PayPal/PayPal';
 import NoPaymentRequired from '#components/NoPaymentRequired/NoPaymentRequired';
-import { addQueryParams } from '#src/utils/formatting';
+import { addMultipleQueryParams, addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { createOrder, getPaymentMethods, paymentWithoutDetails, paypalPayment, updateOrder } from '#src/stores/CheckoutController';
 import { reloadActiveSubscription } from '#src/stores/AccountController';
@@ -27,12 +27,13 @@ const Checkout = () => {
   const [couponCodeApplied, setCouponCodeApplied] = useState(false);
   const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
 
-  const { order, offer, paymentMethods, setOrder } = useCheckoutStore(
-    ({ order, offer, paymentMethods, setOrder }) => ({
+  const { order, offer, paymentMethods, setOrder, purchasingOffer } = useCheckoutStore(
+    ({ order, offer, paymentMethods, setOrder, purchasingOffers: purchasingOffer }) => ({
       order,
       offer,
       paymentMethods,
       setOrder,
+      purchasingOffer,
     }),
     shallow,
   );
@@ -40,8 +41,11 @@ const Checkout = () => {
   const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
 
   const paymentSuccessUrl = useMemo(() => {
+    if (purchasingOffer) {
+      return '/';
+    }
     return offerType === 'svod' ? addQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
-  }, [location, offerType]);
+  }, [location, offerType, purchasingOffer]);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
     setUpdatingOrder(true);
@@ -189,7 +193,13 @@ const Checkout = () => {
 
     if (paymentMethod?.methodName === 'card') {
       if (paymentMethod?.provider === 'stripe') {
-        return <PaymentForm couponCode={couponCodeForm.values.couponCode} setUpdatingOrder={setUpdatingOrder} />;
+        return (
+          <PaymentForm
+            couponCode={couponCodeForm.values.couponCode}
+            setUpdatingOrder={setUpdatingOrder}
+            successUrl={addMultipleQueryParams(location, { u: 'welcome', isProductPurchase: purchasingOffer ? 'true' : 'false' })}
+          />
+        );
       }
 
       return (

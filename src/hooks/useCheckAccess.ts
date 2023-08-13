@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { Location, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import useClientIntegration from './useClientIntegration';
@@ -11,6 +11,7 @@ type intervalCheckAccessPayload = {
   interval?: number;
   iterations?: number;
   offerId?: string;
+  successUrl?: Location;
 };
 
 const useCheckAccess = () => {
@@ -22,7 +23,7 @@ const useCheckAccess = () => {
   const { clientOffers } = useClientIntegration();
 
   const intervalCheckAccess = useCallback(
-    ({ interval = 3000, iterations = 5, offerId }: intervalCheckAccessPayload) => {
+    ({ interval = 3000, iterations = 5, offerId, successUrl }: intervalCheckAccessPayload) => {
       if (!offerId && clientOffers?.[0]) {
         offerId = clientOffers[0];
       }
@@ -32,7 +33,7 @@ const useCheckAccess = () => {
 
         if (hasAccess) {
           await reloadActiveSubscription();
-          navigate(addQueryParam(location, 'u', 'welcome'));
+          navigate(successUrl || addQueryParam(location, 'u', 'welcome'));
         } else if (--iterations === 0) {
           window.clearInterval(intervalRef.current);
           setErrorMessage(t('payment.longer_than_usual'));

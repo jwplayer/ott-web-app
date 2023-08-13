@@ -1,3 +1,5 @@
+import type { Location } from 'react-router';
+
 import { getLegacySeriesPlaylistIdFromEpisodeTags, getSeriesPlaylistIdFromCustomParams } from './media';
 
 import type { Playlist, PlaylistItem } from '#types/playlist';
@@ -52,6 +54,31 @@ export const addQueryParams = (url: string, queryParams: { [key: string]: string
   const queryString = urlSearchParams.toString();
 
   return `${urlWithoutSearch}${queryString ? `?${queryString}` : ''}`;
+};
+
+export const addMultipleQueryParams = (url: Location, queryParams: { [key: string]: string | number | string[] | undefined | null }) => {
+  const urlSearchParams = new URLSearchParams(url.search);
+
+  for (const [key, value] of Object.entries(queryParams)) {
+    if (value === undefined || value === null) {
+      urlSearchParams.delete(key);
+    } else if (Array.isArray(value)) {
+      value.forEach((v) => {
+        if (v !== undefined && v !== null) {
+          urlSearchParams.append(key, v.toString());
+        }
+      });
+    } else {
+      urlSearchParams.set(key, value.toString());
+    }
+  }
+
+  const newUrl = {
+    ...url,
+    search: urlSearchParams.toString(),
+  };
+
+  return newUrl;
 };
 
 export const slugify = (text: string, whitespaceChar: string = '-') =>
