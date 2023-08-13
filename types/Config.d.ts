@@ -4,6 +4,7 @@
 
 export type Config = {
   id?: string;
+  siteId?: string;
   siteName?: string;
   keywords?: string[];
   description: string;

@@ -53,6 +53,7 @@ const stylingSchema: SchemaOf<Styling> = object({
 
 const configSchema: SchemaOf<Config> = object({
   id: string().notRequired(),
+  siteId: string().notRequired(),
   siteName: string().notRequired(),
   description: string().defined(),
   keywords: array().of(string()).notRequired(),
