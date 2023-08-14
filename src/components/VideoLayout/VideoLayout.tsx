@@ -41,7 +41,6 @@ type VideoDetailsProps = {
 
 type VideoListProps = {
   relatedTitle?: string;
-  onItemClick?: (item: PlaylistItem) => void;
   onItemHover?: (item: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
   activeMediaId?: string;
@@ -84,7 +83,6 @@ const VideoLayout: React.FC<Props> = ({
   startWatchingButton,
   trailerButton,
   // list
-  onItemClick,
   relatedTitle,
   watchHistory,
   activeLabel,
@@ -151,7 +149,6 @@ const VideoLayout: React.FC<Props> = ({
           activeMediaId={item?.mediaid}
           activeLabel={activeLabel}
           playlist={playlist}
-          onListItemClick={onItemClick}
           watchHistory={watchHistory}
           isLoading={isLoading}
           accessModel={accessModel}
@@ -159,6 +156,7 @@ const VideoLayout: React.FC<Props> = ({
           hasSubscription={hasSubscription}
           hasLoadMore={hasLoadMore}
           loadMore={loadMore}
+          getUrl={getURL}
         />
       </div>
     );
