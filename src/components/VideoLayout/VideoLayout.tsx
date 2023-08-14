@@ -55,6 +55,7 @@ type Props = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  children?: React.ReactNode;
   item?: PlaylistItem;
   playlist?: Playlist;
 } & FilterProps &
