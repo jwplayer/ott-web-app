@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { inject, injectable } from 'inversify';
+import { inject, injectable, LazyServiceIdentifer, optional } from 'inversify';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
@@ -10,16 +10,18 @@ import { SERVICES } from '#src/ioc/types';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type AccountService from '#src/services/account/account.service';
 import type { Customer } from '#types/account';
-import { lazyInject } from '#src/ioc/container';
 
 @injectable()
 export default class FavoritesController {
   private favoritesService: FavoritesService;
-  @lazyInject(SERVICES.Account) // No need in account service for AVOD
   private accountService!: AccountService;
 
-  constructor(@inject(SERVICES.Favorites) favoritesService: FavoritesService) {
+  constructor(
+    @inject(SERVICES.Favorites) favoritesService: FavoritesService,
+    @inject(new LazyServiceIdentifer(() => SERVICES.Account)) @optional() accountService: AccountService,
+  ) {
     this.favoritesService = favoritesService;
+    this.accountService = accountService;
   }
 
   async restoreFavorites() {

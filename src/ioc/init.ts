@@ -59,8 +59,6 @@ export const initIOCData = (integration: IntegrationProvider | null) => {
     iocContainer.bind(IS_INITIALIZED).toConstantValue(true);
   }
 
-  bindServices(COMMON_CONTROLLERS);
-
   if (integration === INTEGRATION_PROVIDER.CLEENG) {
     bindServices(CLEENG_SERVICES);
   }
@@ -73,6 +71,8 @@ export const initIOCData = (integration: IntegrationProvider | null) => {
     iocContainer.bind<AccountController>(CONTROLLERS.Account).to(AccountController);
     iocContainer.bind<CheckoutController>(CONTROLLERS.Checkout).to(CheckoutController);
   }
+
+  bindServices(COMMON_CONTROLLERS);
 };
 
 // Config injectables initialized by default

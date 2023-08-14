@@ -125,7 +125,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
           holderNameRequired: true,
         },
       },
-      onAdditionalDetails: async (state: CoreOptions['additionalData']) => {
+      onAdditionalDetails: async (state: AdyenAdditionalEventData) => {
         try {
           setProcessing(true);
 

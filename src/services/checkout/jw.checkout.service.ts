@@ -255,15 +255,21 @@ export default class JWCheckout implements CheckoutService {
     }
   };
 
+  getSubscriptionSwitches: GetSubscriptionSwitches = async () => {
+    return {
+      responseData: {
+        available: [],
+        unavailable: [],
+      },
+      errors: [],
+    };
+  };
+
   getOrder: GetOrder = () => {
     throw new Error('Method is not supported');
   };
 
   switchSubscription: SwitchSubscription = () => {
-    throw new Error('Method is not supported');
-  };
-
-  getSubscriptionSwitches: GetSubscriptionSwitches = () => {
     throw new Error('Method is not supported');
   };
 

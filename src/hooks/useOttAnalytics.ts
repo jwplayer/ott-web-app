@@ -11,10 +11,8 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
 
   // ott app user id (oaid)
   const oaid: number | undefined = user?.id ? Number(user.id) : undefined;
-
   // app config id (oiid)
   const oiid = config?.id;
-
   // app version number (av)
   const av = import.meta.env.APP_VERSION;
 

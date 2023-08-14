@@ -135,8 +135,8 @@ export default class JWSubscriptionService implements SubscriptionService {
     } as Subscription;
   }
 
-  getActiveSubscription: GetActiveSubscription = async ({ customerId }) => {
-    const assetId = Number(customerId);
+  getActiveSubscription: GetActiveSubscription = async ({ config }) => {
+    const assetId = config.integrations.jwp?.assetId || 0;
 
     try {
       const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);

@@ -12,11 +12,12 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { PersonalShelf } from '#src/config';
 import ShelfComponent from '#components/Shelf/Shelf';
 import { mediaURL, slugify } from '#src/utils/formatting';
-import type { Content } from '#types/Config';
+import type { Content, ContentType } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 import { testId } from '#src/utils/common';
+import type { PlaylistItem } from '#types/playlist';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -36,7 +37,7 @@ const ShelfList = ({ rows }: Props) => {
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
   const onCardClick = useCallback(
-    (playlistItem, playlistId, type) => {
+    (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => {
       navigate(mediaURL({ media: playlistItem, playlistId, play: type === PersonalShelf.ContinueWatching }));
     },
     [navigate],

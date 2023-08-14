@@ -16,7 +16,6 @@ const useContentProtection = <T>(
   enabled: boolean = true,
   placeholderData?: T,
 ) => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
   const entitlementController = useController<EntitlementController>(CONTROLLERS.Entitlement);
 
   const { configId, signingConfig, contentProtection, jwp, urlSigning } = useConfigStore(({ config }) => ({
@@ -35,6 +34,8 @@ const useContentProtection = <T>(
     async () => {
       // if provider is not JWP
       if (!!id && !!host) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const accountController = useController<AccountController>(CONTROLLERS.Account);
         const authData = await accountController.getAuthData();
         const { host, drmPolicyId } = signingConfig;
         return entitlementController.getMediaToken(host, id, authData?.jwt, params, drmPolicyId);

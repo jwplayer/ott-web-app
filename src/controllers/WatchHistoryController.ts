@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { inject, injectable, LazyServiceIdentifer, optional } from 'inversify';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -9,16 +9,18 @@ import type WatchHistoryService from '#src/services/watchHistory/watchhistory.se
 import { SERVICES } from '#src/ioc/types';
 import type AccountService from '#src/services/account/account.service';
 import type { Customer } from '#types/account';
-import { lazyInject } from '#src/ioc/container';
 
 @injectable()
 export default class WatchHistoryController {
   private watchHistoryService: WatchHistoryService;
-  @lazyInject(SERVICES.Account) // No need in account service for AVOD
   private accountService!: AccountService;
 
-  constructor(@inject(SERVICES.WatchHistory) watchHistoryService: WatchHistoryService) {
+  constructor(
+    @inject(SERVICES.WatchHistory) watchHistoryService: WatchHistoryService,
+    @inject(new LazyServiceIdentifer(() => SERVICES.Account)) @optional() accountService: AccountService,
+  ) {
     this.watchHistoryService = watchHistoryService;
+    this.accountService = accountService;
   }
 
   serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {
@@ -28,7 +30,7 @@ export default class WatchHistoryController {
   private updateUserWatchHistory(watchHistory: WatchHistoryItem[]) {
     useAccountStore.setState((state) => ({
       ...state,
-      user: { ...(state.user as Customer), externalData: { ...state.user?.externalData, favorites: this.serializeWatchHistory(watchHistory) } },
+      user: { ...(state.user as Customer), externalData: { ...state.user?.externalData, history: this.serializeWatchHistory(watchHistory) } },
     }));
   }
 

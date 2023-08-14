@@ -449,7 +449,7 @@ export default class AccountController {
 
   async reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> {
     useAccountStore.setState({ loading: true });
-    const { getSandbox } = useConfigStore.getState();
+    const { getSandbox, config } = useConfigStore.getState();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
@@ -467,7 +467,7 @@ export default class AccountController {
     }
 
     const [activeSubscription, transactions, activePayment] = await Promise.all([
-      this.subscriptionService.getActiveSubscription({ sandbox, customerId }),
+      this.subscriptionService.getActiveSubscription({ sandbox, customerId, config }),
       this.subscriptionService.getAllTransactions({ sandbox, customerId }),
       this.subscriptionService.getActivePayment({ sandbox, customerId }),
     ]);
