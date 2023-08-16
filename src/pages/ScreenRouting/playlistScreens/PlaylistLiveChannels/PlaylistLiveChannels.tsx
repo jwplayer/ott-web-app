@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
 import { useLocation, useNavigate } from 'react-router';
@@ -110,20 +110,13 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     setActiveChannel(channelId);
   };
 
-  // Effects
-  useEffect(() => {
-    // update the channel id in URL
-    if (channel && feedid && channelId !== channel.id) {
-      navigate(liveChannelsURL(feedid, channel.id), { replace: true });
-    }
-  }, [navigate, feedid, channel, channelId]);
-
   // Loading (channel and feedid must be defined)
   if (!channel || !feedid) {
     return <Loading />;
   }
 
   // SEO (for channels)
+  const getChannelUrl = (id: string) => liveChannelsURL(feedid, id);
   const canonicalUrl = `${window.location.origin}${liveChannelsURL(feedid, channel.id)}`;
   const pageTitle = `${channel.title} - ${siteName}`;
 
@@ -201,7 +194,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         shareButton={shareButton}
         trailerButton={null}
         favoriteButton={null}
-        getURL={() => ''} // TODO: OWA-31 - Add link for EPG item
+        getURL={() => ''} // set in <Epg>
         player={
           channelMediaItem && (
             <Cinema
@@ -226,6 +219,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
             channel={channel}
             program={program}
             config={config}
+            getUrl={getChannelUrl}
           />
         </div>
       </VideoLayout>
