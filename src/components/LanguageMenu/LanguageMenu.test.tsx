@@ -28,8 +28,8 @@ describe('<LanguageMenu>', () => {
     const currentLanguage = languages[1];
     const { queryByText } = renderWithRouter(<LanguageMenu languages={languages} currentLanguage={currentLanguage} onClick={() => undefined} />);
 
-    expect(queryByText('English')).toBeInTheDOM();
-    expect(queryByText('español')).toBeInTheDOM();
+    expect(queryByText('English')).toBeInTheDocument();
+    expect(queryByText('español')).toBeInTheDocument();
   });
 
   test('renders languages and calls the onClick callback with the correct language code', () => {

@@ -57,42 +57,44 @@ const ShelfList = ({ rows }: Props) => {
         role="grid"
         loader={<InfiniteScrollLoader key="loader" />}
       >
-        {rows.slice(0, rowCount).map((row, index) => (
-          <PlaylistContainer type={row.type} playlistId={row.contentId} key={`${row.contentId || row.type}_${index}`}>
-            {({ playlist, error, isLoading, style }) => {
-              const title = row?.title || playlist.title;
-              const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
-              const visibleTilesDelta = parseTilesDelta(posterAspect);
+        <>
+          {rows.slice(0, rowCount).map((row, index) => (
+            <PlaylistContainer type={row.type} playlistId={row.contentId} key={`${row.contentId || row.type}_${index}`}>
+              {({ playlist, error, isLoading, style }) => {
+                const title = row?.title || playlist.title;
+                const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
+                const visibleTilesDelta = parseTilesDelta(posterAspect);
 
-              return (
-                <div
-                  style={style}
-                  role="row"
-                  className={classNames(styles.shelfContainer, { [styles.featured]: row.featured })}
-                  data-testid={testId(`shelf-${row.featured ? 'featured' : row.type !== 'playlist' ? row.type : slugify(title)}`)}
-                >
-                  <div role="cell">
-                    <ShelfComponent
-                      loading={isLoading}
-                      error={error}
-                      type={row.type}
-                      playlist={playlist}
-                      watchHistory={row.type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                      onCardClick={onCardClick}
-                      title={title}
-                      featured={row.featured === true}
-                      accessModel={accessModel}
-                      isLoggedIn={!!user}
-                      hasSubscription={!!subscription}
-                      posterAspect={posterAspect}
-                      visibleTilesDelta={visibleTilesDelta}
-                    />
+                return (
+                  <div
+                    style={style}
+                    role="row"
+                    className={classNames(styles.shelfContainer, { [styles.featured]: row.featured })}
+                    data-testid={testId(`shelf-${row.featured ? 'featured' : row.type !== 'playlist' ? row.type : slugify(title)}`)}
+                  >
+                    <div role="cell">
+                      <ShelfComponent
+                        loading={isLoading}
+                        error={error}
+                        type={row.type}
+                        playlist={playlist}
+                        watchHistory={row.type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
+                        onCardClick={onCardClick}
+                        title={title}
+                        featured={row.featured === true}
+                        accessModel={accessModel}
+                        isLoggedIn={!!user}
+                        hasSubscription={!!subscription}
+                        posterAspect={posterAspect}
+                        visibleTilesDelta={visibleTilesDelta}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            }}
-          </PlaylistContainer>
-        ))}
+                );
+              }}
+            </PlaylistContainer>
+          ))}
+        </>
       </InfiniteScroll>
     </div>
   );

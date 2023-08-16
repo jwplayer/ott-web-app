@@ -76,7 +76,6 @@ describe('User Component tests', () => {
 
   test('Account Page', () => {
     useAccountStore.setState(data);
-
     mockWindowLocation('my-account');
     const { container } = renderWithRouter(<User />);
 
