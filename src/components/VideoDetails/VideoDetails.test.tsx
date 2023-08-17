@@ -16,7 +16,9 @@ describe('<VideoDetails>', () => {
         shareButton={<button>share</button>}
         favoriteButton={<button>favorite</button>}
         trailerButton={<button>play trailer</button>}
-      />,
+      >
+        <div>Related Videos</div>
+      </VideoDetails>,
     );
 
     expect(container).toMatchSnapshot();
@@ -34,7 +36,9 @@ describe('<VideoDetails>', () => {
         shareButton={<button>share</button>}
         favoriteButton={<button>favorite</button>}
         trailerButton={<button>play trailer</button>}
-      />,
+      >
+        <div>Related Videos</div>
+      </VideoDetails>,
     );
 
     expect(getByAltText('Test video')).toHaveAttribute('src', 'http://image.jpg?width=1280');

@@ -7,7 +7,7 @@ import { differenceInSeconds, format } from 'date-fns';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
-import VideoLayout from '#components/VideoLayout/VideoLayout';
+import { testId } from '#src/utils/common';
 import Epg from '#components/Epg/Epg';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useLiveChannels from '#src/hooks/useLiveChannels';
@@ -24,12 +24,13 @@ import { generateMovieJSONLD } from '#src/utils/structuredData';
 import type { ScreenComponent } from '#types/screens';
 import type { Playlist } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';
+import VideoDetails from '#components/VideoDetails/VideoDetails';
 
 const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playlist } }) => {
   const { t } = useTranslation('epg');
 
   // Config
-  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { config } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName } = config;
 
   // Routing
@@ -116,7 +117,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
   }
 
   // SEO (for channels)
-  const getChannelUrl = (id: string) => liveChannelsURL(feedid, id);
+  const getUrl = (id: string) => liveChannelsURL(feedid, id);
   const canonicalUrl = `${window.location.origin}${liveChannelsURL(feedid, channel.id)}`;
   const pageTitle = `${channel.title} - ${siteName}`;
 
@@ -178,25 +179,16 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         ))}
         {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem)}</script> : null}
       </Helmet>
-      <VideoLayout
-        inlineLayout={false}
-        isLoading={false}
-        // live channels are public, so we don't need to check for entitlements
-        isLoggedIn={true}
-        hasSubscription={true}
-        accessModel={accessModel}
-        title={videoDetails.title}
-        description={videoDetails.description}
-        item={channelMediaItem}
-        primaryMetadata={primaryMetadata}
-        image={videoDetails.image}
-        startWatchingButton={startWatchingButton}
-        shareButton={shareButton}
-        trailerButton={null}
-        favoriteButton={null}
-        getURL={() => ''} // set in <Epg>
-        player={
-          channelMediaItem && (
+      <div className={styles.videoCinemaLayout} data-testid={testId('cinema-layout')}>
+        <VideoDetails
+          title={videoDetails.title}
+          description={videoDetails.description}
+          image={videoDetails.image}
+          startWatchingButton={startWatchingButton}
+          shareButton={shareButton}
+          primaryMetadata={primaryMetadata}
+        >
+          {channelMediaItem && (
             <Cinema
               open={play && isEntitled}
               onClose={goBack}
@@ -208,21 +200,20 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
               liveEndDateTime={liveEndDateTime}
               liveFromBeginning={liveFromBeginning}
             />
-          )
-        }
-      >
-        <div className={styles.epgContainer}>
-          <Epg
-            channels={channels}
-            onChannelClick={handleChannelClick}
-            onProgramClick={handleProgramClick}
-            channel={channel}
-            program={program}
-            config={config}
-            getUrl={getChannelUrl}
-          />
-        </div>
-      </VideoLayout>
+          )}
+        </VideoDetails>
+      </div>
+      <div className={styles.epgContainer}>
+        <Epg
+          channels={channels}
+          onChannelClick={handleChannelClick}
+          onProgramClick={handleProgramClick}
+          channel={channel}
+          program={program}
+          config={config}
+          getUrl={getUrl}
+        />
+      </div>
     </>
   );
 };

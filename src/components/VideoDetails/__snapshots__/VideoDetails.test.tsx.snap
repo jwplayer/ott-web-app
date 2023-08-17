@@ -66,6 +66,9 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
         </div>
       </div>
     </div>
+    <div>
+      Related Videos
+    </div>
   </div>
 </div>
 `;

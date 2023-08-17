@@ -16,8 +16,9 @@ type Props = {
   image?: string;
   startWatchingButton: React.ReactNode;
   shareButton: React.ReactNode;
-  favoriteButton: React.ReactNode;
-  trailerButton: React.ReactNode;
+  favoriteButton?: React.ReactNode;
+  trailerButton?: React.ReactNode;
+  children: React.ReactNode;
 };
 
 const VideoDetails: React.VFC<Props> = ({
@@ -30,6 +31,7 @@ const VideoDetails: React.VFC<Props> = ({
   shareButton,
   favoriteButton,
   trailerButton,
+  children,
 }) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
@@ -54,6 +56,7 @@ const VideoDetails: React.VFC<Props> = ({
           </div>
         </div>
       </div>
+      {children}
     </div>
   );
 };

@@ -195,10 +195,11 @@ const VideoLayout: React.FC<Props> = ({
         shareButton={shareButton}
         primaryMetadata={primaryMetadata}
         secondaryMetadata={secondaryMetadata}
-      />
-      {playlist && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
-      {children}
-      {player}
+      >
+        {playlist && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
+        {children}
+        {player}
+      </VideoDetails>
     </div>
   );
 };
