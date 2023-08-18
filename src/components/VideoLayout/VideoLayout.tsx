@@ -184,22 +184,21 @@ const VideoLayout: React.FC<Props> = ({
   }
 
   return (
-    <div className={styles.videoCinemaLayout} data-testid={testId('cinema-layout')}>
-      <VideoDetails
-        title={title}
-        description={description}
-        image={image}
-        startWatchingButton={startWatchingButton}
-        favoriteButton={favoriteButton}
-        trailerButton={trailerButton}
-        shareButton={shareButton}
-        primaryMetadata={primaryMetadata}
-        secondaryMetadata={secondaryMetadata}
-      />
+    <VideoDetails
+      title={title}
+      description={description}
+      image={image}
+      startWatchingButton={startWatchingButton}
+      favoriteButton={favoriteButton}
+      trailerButton={trailerButton}
+      shareButton={shareButton}
+      primaryMetadata={primaryMetadata}
+      secondaryMetadata={secondaryMetadata}
+    >
       {playlist && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
       {children}
       {player}
-    </div>
+    </VideoDetails>
   );
 };
 
