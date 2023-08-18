@@ -32,7 +32,7 @@ const Radio: React.FC<Props> = ({ name, onChange, header, value, values, helperT
       {values.map(({ value: optionValue, label: optionLabel }, index) => (
         <div className={styles.radio} key={index}>
           <input value={optionValue} name={name} type="radio" id={id + index} onChange={onChange} checked={value === optionValue} required={required} />
-          <label htmlFor={id + index}>{optionLabel ?? optionValue}</label>
+          <label htmlFor={id + index}>{optionLabel}</label>
         </div>
       ))}
       <HelperText error={error}>{helperText}</HelperText>

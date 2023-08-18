@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ChangeEventHandler, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
@@ -26,7 +26,7 @@ type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onConsentChange: (name: string, value: string | boolean) => void;
+  onConsentChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
   loading: boolean;
@@ -56,6 +56,8 @@ const RegistrationForm: React.FC<Props> = ({
   const { t } = useTranslation('account');
   const location = useLocation();
 
+  const ref = useRef<HTMLDivElement>(null);
+
   const formatConsentLabel = (label: string): string | JSX.Element => {
     const sanitizedLabel = DOMPurify.sanitize(label);
     const hasHrefOpenTag = /<a(.|\n)*?>/.test(sanitizedLabel);
@@ -68,6 +70,12 @@ const RegistrationForm: React.FC<Props> = ({
     return label;
   };
 
+  useEffect(() => {
+    if (errors.form) {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
+  }, [errors.form]);
+
   if (loading) {
     return (
       <div style={{ height: 400 }}>
@@ -79,7 +87,7 @@ const RegistrationForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
-      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
+      <div ref={ref}>{errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}</div>
       <TextField
         value={values.email}
         onChange={onChange}

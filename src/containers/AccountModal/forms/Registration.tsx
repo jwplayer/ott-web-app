@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, type ChangeEventHandler } from 'react';
 import { object, string, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
@@ -21,7 +21,12 @@ const Registration = () => {
   const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
-  const handleChangeConsent = (name: string, value: string | boolean) => {
+  const handleChangeConsent: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ currentTarget }) => {
+    if (!currentTarget) return;
+
+    const { name, type } = currentTarget;
+    const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
+
     setConsentValues((current) => ({
       ...current,
       [name]: value,

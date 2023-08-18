@@ -11,6 +11,7 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
     >
       registration.sign_up
     </h2>
+    <div />
     <div
       class="_textField_e16c1b"
     >

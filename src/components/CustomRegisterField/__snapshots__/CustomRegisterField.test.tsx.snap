@@ -1560,8 +1560,13 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
       class="_container_eb6974"
     >
       <input
-        class="_input_eb6974"
+        class="_hiddenInput_eb6974"
         id="text-field_1235_name"
+        name="name"
+      />
+      <input
+        class="_input_eb6974"
+        id="text-field_1235_name-date"
         maxlength="2"
         name="date"
         placeholder="dd"
@@ -1571,7 +1576,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
        / 
       <input
         class="_input_eb6974"
-        id="text-field_1235_name"
+        id="text-field_1235_name-month"
         maxlength="2"
         name="month"
         placeholder="mm"
@@ -1581,7 +1586,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
        / 
       <input
         class="_input_eb6974"
-        id="text-field_1235_name"
+        id="text-field_1235_name-year"
         maxlength="4"
         name="year"
         placeholder="yyyy"

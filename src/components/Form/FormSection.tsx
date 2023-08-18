@@ -12,8 +12,7 @@ export interface FormSectionContentArgs<T extends GenericFormValues, TErrors> {
   values: T;
   isEditing: boolean;
   isBusy: boolean;
-  onChangeEvent: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onChangeValue: (name: string, value: string | boolean) => void;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   errors?: TErrors | undefined;
 }
 
@@ -53,8 +52,13 @@ export function FormSection<TData extends GenericFormValues>({
 
   const isEditing = sectionId === activeSectionId;
 
-  const onChangeValue = useCallback(
-    (name: string, value: string | boolean) => {
+  const onChange = useCallback(
+    ({ currentTarget }: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      if (!currentTarget) return;
+
+      const { name, type } = currentTarget;
+      const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
+
       if (!isEditing) {
         onCancel();
       }
@@ -82,18 +86,6 @@ export function FormSection<TData extends GenericFormValues>({
       });
     },
     [isEditing, onCancel, sectionId, setFormState],
-  );
-
-  const onChangeEvent = useCallback(
-    function onChange({ currentTarget }: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
-      if (!currentTarget) return;
-
-      const { name, type } = currentTarget;
-      const value = type === 'checkbox' ? (currentTarget as HTMLInputElement).checked : currentTarget.value;
-
-      onChangeValue(name, value);
-    },
-    [onChangeValue],
   );
 
   const handleSubmit = useCallback(
@@ -163,10 +155,10 @@ export function FormSection<TData extends GenericFormValues>({
       {content &&
         (isEditing ? (
           <form className={styles.flexBox} noValidate onSubmit={(event) => event.preventDefault()}>
-            {content({ values, isEditing, isBusy, onChangeEvent, onChangeValue, errors: formErrors })}
+            {content({ values, isEditing, isBusy, onChange, errors: formErrors })}
           </form>
         ) : (
-          <div className={styles.flexBox}>{content({ values, isEditing, isBusy, onChangeEvent, onChangeValue })}</div>
+          <div className={styles.flexBox}>{content({ values, isEditing, isBusy, onChange })}</div>
         ))}
       {(saveButton || editButton || cancelButton) && (
         <div className={styles.controls}>

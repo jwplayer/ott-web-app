@@ -171,6 +171,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
     const result = data?.collection
+      // we exclude these fields because we already have them by default
       .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name))
       .map(
         (field): Consent => ({

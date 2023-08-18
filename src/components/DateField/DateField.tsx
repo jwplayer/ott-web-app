@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode } from 'react';
+import React, { useState, type ReactNode, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -14,7 +14,7 @@ type Props = {
   name?: string;
   value: string;
   format?: string;
-  onChange?: (dateString: string) => void;
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onFocus?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;
   error?: boolean;
@@ -38,6 +38,8 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
   });
 
   const id = useOpaqueId('text-field', rest.name);
+
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   const DateFieldClassName = classNames(
     styles.dateField,
@@ -105,14 +107,24 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
 
     setValues({ date, month, year });
 
-    if (onChange) {
-      onChange(date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '');
-    }
-
     if ((nextSibling && name === 'month' && month.length === 2) || (name === 'date' && date.length === 2)) {
       setTimeout(() => nextSibling.focus(), 1);
     }
   };
+
+  useEffect(() => {
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+
+    const { date, month, year } = values;
+
+    const newValue = date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '';
+
+    nativeInputValueSetter?.call(hiddenInputRef.current, newValue);
+
+    const inputEvent = new Event('input', { bubbles: true });
+
+    hiddenInputRef.current?.dispatchEvent(inputEvent);
+  }, [values, format]);
 
   return (
     <div className={DateFieldClassName}>
@@ -121,6 +133,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
         {!rest.required ? <span>{t('optional')}</span> : null}
       </label>
       <div className={styles.container}>
+        <input ref={hiddenInputRef} id={id} className={styles.hiddenInput} name={rest.name} onChange={onChange} />
         <input
           className={styles.input}
           name="date"
@@ -132,7 +145,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           onKeyDown={handleKeyDown}
           maxLength={2}
           type="number"
-          id={id}
+          id={`${id}-date`}
         />
         {' / '}
         <input
@@ -146,7 +159,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           onKeyDown={handleKeyDown}
           maxLength={2}
           type="number"
-          id={id}
+          id={`${id}-month`}
         />
         {' / '}
         <input
@@ -160,7 +173,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           onKeyDown={handleKeyDown}
           maxLength={4}
           type="number"
-          id={id}
+          id={`${id}-year`}
         />
       </div>
       <HelperText error={error}>{helperText}</HelperText>

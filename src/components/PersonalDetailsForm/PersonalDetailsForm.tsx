@@ -181,7 +181,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
       {fields.birthDate?.enabled ? (
         <DateField
           value={values.birthDate}
-          onChange={(value) => setValue('birthDate', value)}
+          onChange={(event) => setValue('birthDate', event.currentTarget.value)}
           label={t('personal_details.birth_date')}
           placeholder={t('personal_details.birth_date')}
           error={!!errors.birthDate || !!errors.form}
