@@ -5,7 +5,7 @@ exports[`<Card> > should render anchor tag 1`] = `
   <a
     aria-label="This is a movie"
     class="_card_d75732"
-    href="/https://test.dummy.jwplayer.com"
+    href="https://test.dummy.jwplayer.com"
     tabindex="0"
   >
     <div
