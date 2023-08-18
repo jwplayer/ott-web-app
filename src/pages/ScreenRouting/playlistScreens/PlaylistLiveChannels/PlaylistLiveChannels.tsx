@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
 import { useLocation, useNavigate } from 'react-router';
@@ -7,7 +7,6 @@ import { differenceInSeconds, format } from 'date-fns';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
-import { testId } from '#src/utils/common';
 import Epg from '#components/Epg/Epg';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useLiveChannels from '#src/hooks/useLiveChannels';
@@ -30,7 +29,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
   const { t } = useTranslation('epg');
 
   // Config
-  const { config } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { config } = useConfigStore(({ config }) => ({ config }), shallow);
   const { siteName } = config;
 
   // Routing
@@ -111,6 +110,14 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     setActiveChannel(channelId);
   };
 
+  // Effects
+  useEffect(() => {
+    // update the channel id in URL
+    if (channel && feedid && channelId !== channel.id) {
+      navigate(liveChannelsURL(feedid, channel.id), { replace: true });
+    }
+  }, [navigate, feedid, channel, channelId]);
+
   // Loading (channel and feedid must be defined)
   if (!channel || !feedid) {
     return <Loading />;
@@ -179,41 +186,39 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         ))}
         {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem)}</script> : null}
       </Helmet>
-      <div className={styles.videoCinemaLayout} data-testid={testId('cinema-layout')}>
-        <VideoDetails
-          title={videoDetails.title}
-          description={videoDetails.description}
-          image={videoDetails.image}
-          startWatchingButton={startWatchingButton}
-          shareButton={shareButton}
-          primaryMetadata={primaryMetadata}
-        >
-          {channelMediaItem && (
-            <Cinema
-              open={play && isEntitled}
-              onClose={goBack}
-              item={channelMediaItem}
-              title={videoDetails.title}
-              primaryMetadata={primaryMetadata}
-              feedId={feedid}
-              liveStartDateTime={liveStartDateTime}
-              liveEndDateTime={liveEndDateTime}
-              liveFromBeginning={liveFromBeginning}
-            />
-          )}
-        </VideoDetails>
-      </div>
-      <div className={styles.epgContainer}>
-        <Epg
-          channels={channels}
-          onChannelClick={handleChannelClick}
-          onProgramClick={handleProgramClick}
-          channel={channel}
-          program={program}
-          config={config}
-          getUrl={getUrl}
-        />
-      </div>
+      <VideoDetails
+        title={videoDetails.title}
+        description={videoDetails.description}
+        image={videoDetails.image}
+        startWatchingButton={startWatchingButton}
+        shareButton={shareButton}
+        primaryMetadata={primaryMetadata}
+      >
+        {channelMediaItem && (
+          <Cinema
+            open={play && isEntitled}
+            onClose={goBack}
+            item={channelMediaItem}
+            title={videoDetails.title}
+            primaryMetadata={primaryMetadata}
+            feedId={feedid}
+            liveStartDateTime={liveStartDateTime}
+            liveEndDateTime={liveEndDateTime}
+            liveFromBeginning={liveFromBeginning}
+          />
+        )}
+        <div className={styles.epgContainer}>
+          <Epg
+            channels={channels}
+            onChannelClick={handleChannelClick}
+            onProgramClick={handleProgramClick}
+            channel={channel}
+            program={program}
+            config={config}
+            getUrl={getUrl}
+          />
+        </div>
+      </VideoDetails>
     </>
   );
 };
