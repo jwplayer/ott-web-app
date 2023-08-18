@@ -132,5 +132,5 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       setupFiles: ['test/vitest.setup.ts'],
       css: true,
     },
-  } as UserConfigExport);
+  });
 };
