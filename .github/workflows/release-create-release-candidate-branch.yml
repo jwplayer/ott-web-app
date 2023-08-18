@@ -1,4 +1,4 @@
-name: Create Release Candidate Branch
+name: Release - Create Release Candidate Branch
 
 # Triggered manually
 on:
@@ -10,20 +10,22 @@ jobs:
   create-release-branch:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.ACTION_TOKEN }}
           ref: release
       # It would be easier to create the branch from develop,
-      # but unfortunately the script that creates the PR's only considers commits added during the action run 
+      # but unfortunately the script that creates the PR's only considers commits added during the action run
       - name: Merge latest from develop
         run: |
           git config --global user.name 'Release Script'
           git config --global user.email 'ott-release-script@jwplayer.com'
           git fetch origin develop
           git merge origin/develop
+          yarn && yarn i18next
+          git add public/locales/*
+          git commit -m 'chore: parse latest translation tags'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
 
@@ -35,6 +37,7 @@ jobs:
           release-count: 0
           skip-tag: true
           git-push: false
+          skip-ci: false
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5

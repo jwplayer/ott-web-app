@@ -1,7 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 
-import { ConfigEnv, defineConfig, UserConfigExport } from 'vitest/config';
+import { defineConfig } from 'vite';
+import type { ConfigEnv, UserConfigExport } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
@@ -101,15 +102,12 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
             ) {
               return 'react';
             }
-
             if (id.includes('/node_modules/@inplayer')) {
               return 'inplayer';
             }
-
             if (id.includes('/node_modules/')) {
               return 'vendor';
             }
-
             return 'index';
           },
         },

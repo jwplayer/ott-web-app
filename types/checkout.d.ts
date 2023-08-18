@@ -1,5 +1,3 @@
-import type { e } from 'vitest/dist/index-fde81ec3';
-
 import type { PayloadWithIPOverride } from '#types/account';
 
 export type Offer = {
@@ -41,6 +39,7 @@ export type Offer = {
   contentExternalId: number | null;
   contentExternalData: string | null;
   contentAgeRestriction: string | null;
+  planSwitchEnabled?: boolean;
 };
 
 export type OrderOffer = {

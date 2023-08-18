@@ -164,10 +164,11 @@ const LegacySeries = () => {
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-        {selectedItem.tags &&
-          String(selectedItem.tags)
-            .split(',')
-            .map((tag: string) => <meta property="og:video:tag" content={tag} key={tag} />)}
+        {selectedItem.tags
+          ? String(selectedItem.tags)
+              .split(',')
+              .map((tag: string) => <meta property="og:video:tag" content={tag} key={tag} />)
+          : null}
         {seriesPlaylist && selectedItem ? (
           <script type="application/ld+json">{generateLegacyEpisodeJSONLD(seriesPlaylist, episode, episodeMetadata, seriesId)}</script>
         ) : null}

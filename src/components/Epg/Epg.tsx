@@ -39,13 +39,13 @@ export default function Epg({ channels, onChannelClick, onProgramClick, channel,
 
   // Epg
   const { highlightColor, backgroundColor } = config.styling;
-  const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg(
+  const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg({
     channels,
     sidebarWidth,
     itemHeight,
     highlightColor,
     backgroundColor,
-  );
+  });
   const catchupHoursDict = useMemo(() => Object.fromEntries(channels.map((channel) => [channel.id, channel.catchupHours])), [channels]);
 
   return (

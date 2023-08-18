@@ -17,7 +17,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Checkbox> 1`] = `
       <label
         for="check-box_1235_name"
       >
-        
         label
       </label>
     </div>
