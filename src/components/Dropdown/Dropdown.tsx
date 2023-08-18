@@ -44,7 +44,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
 
   return (
     <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)}>
-      {label && (
+      {(label || !required) && (
         <label htmlFor={id} className={styles.label}>
           {label}
           {!required ? <span>{t('optional')}</span> : null}
