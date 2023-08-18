@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
@@ -23,6 +23,8 @@ import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import { useProfileStore } from '#src/stores/ProfileStore';
 
 export default function AppRoutes() {
+  const location = useLocation();
+
   const { t } = useTranslation('error');
   const userModal = useQueryParam('u');
 
@@ -31,11 +33,15 @@ export default function AppRoutes() {
   const { profile } = useProfileStore();
   const profilesEnabled = useProfilesFeatureEnabled();
 
-  const shouldManageProfiles = !!user && profilesEnabled && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal;
+  const shouldManageProfiles =
+    !!user && profilesEnabled && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal && !location.pathname.includes('/u/profiles');
+
+  if (shouldManageProfiles) {
+    return <Navigate to="/u/profiles" />;
+  }
 
   return (
     <Routes>
-      <Route index={shouldManageProfiles} element={<Navigate to="/u/profiles" />} />
       <Route path="/u/profiles" element={<Profiles />} />
       <Route path="/u/profiles/create" element={<CreateProfile />} />
       <Route path="/u/profiles/edit" element={<Profiles editMode />} />

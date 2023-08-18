@@ -11,32 +11,26 @@ import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Plus from '#src/icons/Plus';
-import { useSelectProfile, useListProfiles, unpersistProfile, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import { useSelectProfile } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
-import { useProfileStore } from '#src/stores/ProfileStore';
+import type { AccessModel } from '#types/Config';
+import type { Profile } from '#types/account';
 
 type Props = {
   small?: boolean;
   showPaymentsItem: boolean;
   onClick?: () => void;
+  accessModel?: AccessModel;
+  currentProfile?: Profile;
+  profilesEnabled?: boolean;
+  profiles?: Profile[];
 };
 
-const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
+const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, currentProfile, profilesEnabled, profiles }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
-  const { accessModel } = useConfigStore();
-  const { profile: currentProfile } = useProfileStore();
-  const profilesEnabled = useProfilesFeatureEnabled();
-
-  const { data, isFetching } = useListProfiles();
-  const profiles = data?.responseData.collection;
-
-  if (profilesEnabled && !profiles?.length) {
-    unpersistProfile();
-  }
 
   const selectProfile = useSelectProfile();
 
@@ -53,8 +47,8 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
     <ul className={styles.menuItems}>
       {accessModel === 'SVOD' && profilesEnabled && (
         <>
-          <div className={styles.sectionHeader}>{t('nav.switch_profiles')}</div>
-          {selectProfile.isLoading || isFetching ? (
+          <li className={styles.sectionHeader}>{t('nav.switch_profiles')}</li>
+          {selectProfile.isLoading ? (
             <LoadingOverlay inline />
           ) : (
             profiles?.map((profile) => (
@@ -81,7 +75,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
           />
         </>
       )}
-      <div className={styles.sectionHeader}>{t('nav.settings')}</div>
+      <li className={styles.sectionHeader}>{t('nav.settings')}</li>
       {profilesEnabled && currentProfile && (
         <li>
           <MenuButton

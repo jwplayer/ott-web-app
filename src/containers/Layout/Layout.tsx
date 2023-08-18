@@ -20,12 +20,16 @@ import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
 import { useProfileStore } from '#src/stores/ProfileStore';
+import { unpersistProfile, useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { data: profilesData } = useListProfiles();
+  const profiles = profilesData?.responseData.collection;
+  const profilesEnabled = useProfilesFeatureEnabled();
   const { menu, assets, siteName, description, styling, features } = config;
   const metaDescription = description || t('default_description');
   const { clientId } = useClientIntegration();
@@ -33,6 +37,10 @@ const Layout = () => {
   const { footerText } = styling || {};
   const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
+
+  if (profilesEnabled && !profiles?.length) {
+    unpersistProfile();
+  }
 
   const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
     ({ searchQuery, searchActive, userMenuOpen, languageMenuOpen }) => ({
@@ -144,6 +152,9 @@ const Layout = () => {
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
           currentProfile={profile ?? undefined}
+          profiles={profiles}
+          profilesEnabled={profilesEnabled}
+          accessModel={accessModel}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

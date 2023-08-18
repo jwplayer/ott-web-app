@@ -5,6 +5,7 @@ import styles from './ProfileBox.module.scss';
 
 import Edit from '#src/icons/Edit';
 import Check from '#src/icons/Check';
+import IconButton from '#components/IconButton/IconButton';
 
 type Props = {
   name?: string;
@@ -25,9 +26,9 @@ const ProfileBox = ({ name, image, adult = true, editMode = false, onClick, onEd
           {!adult && <span className={styles.kidsLabel}>Kids</span>}
         </div>
         {editMode && (
-          <div onClick={onEdit} className={styles.overlay}>
+          <IconButton aria-label="edit-profile-button" onClick={onEdit} className={styles.overlay}>
             <Edit />
-          </div>
+          </IconButton>
         )}
       </div>
       {name && <h2 className={styles.title}>{name}</h2>}

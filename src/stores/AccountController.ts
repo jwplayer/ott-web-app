@@ -26,6 +26,7 @@ import type {
   GetPublisherConsentsResponse,
 } from '#types/account';
 import type { Offer } from '#types/checkout';
+import { unpersistProfile } from '#src/hooks/useProfiles';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
@@ -180,6 +181,8 @@ export async function logout() {
       profile: null,
       selectingProfileAvatar: null,
     });
+
+    unpersistProfile();
 
     await restoreFavorites();
     await restoreWatchHistory();

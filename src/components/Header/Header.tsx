@@ -21,6 +21,7 @@ import type { LanguageDefinition } from '#src/i18n/config';
 import Panel from '#components/Panel/Panel';
 import type { Profile } from '#types/account';
 import ProfileCircle from '#src/icons/ProfileCircle';
+import type { AccessModel } from '#types/Config';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -49,6 +50,9 @@ type Props = {
   currentLanguage: LanguageDefinition | undefined;
   onLanguageClick: (code: string) => void;
   currentProfile?: Profile;
+  profiles?: Profile[];
+  profilesEnabled?: boolean;
+  accessModel?: AccessModel;
 };
 
 const Header: React.FC<Props> = ({
@@ -76,6 +80,9 @@ const Header: React.FC<Props> = ({
   currentLanguage,
   onLanguageClick,
   currentProfile,
+  profiles,
+  profilesEnabled,
+  accessModel,
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -130,7 +137,15 @@ const Header: React.FC<Props> = ({
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
           <Panel>
-            <UserMenu onClick={closeUserMenu} showPaymentsItem={showPaymentsMenuItem} small />
+            <UserMenu
+              onClick={closeUserMenu}
+              showPaymentsItem={showPaymentsMenuItem}
+              small
+              accessModel={accessModel}
+              currentProfile={currentProfile}
+              profilesEnabled={profilesEnabled}
+              profiles={profiles}
+            />
           </Panel>
         </Popover>
       </React.Fragment>

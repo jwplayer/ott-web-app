@@ -28,19 +28,21 @@ const Profiles = ({ editMode = false }: Props) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  const { data, isLoading, isFetching, refetch, isError } = useListProfiles();
+  const { data, isLoading, isFetching, isError, refetch } = useListProfiles();
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
 
   useEffect(() => {
-    if (!profilesEnabled || !user?.id || isError) navigate('/');
+    refetch();
+  }, [refetch]);
+
+  useEffect(() => {
+    if (!profilesEnabled || !user?.id || isError) {
+      navigate('/');
+    }
   }, [profilesEnabled, navigate, user?.id, isError]);
 
   const selectProfile = useSelectProfile();
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   if (loading || isLoading || isFetching) return <LoadingOverlay inline />;
 
