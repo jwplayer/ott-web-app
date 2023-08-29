@@ -388,10 +388,10 @@ exports[`User Component tests > Favorites Page 1`] = `
               <div
                 role="cell"
               >
-                <div
-                  aria-label="play_item"
+                <a
+                  aria-label="Fav 1"
                   class="_card_d75732"
-                  role="button"
+                  href="/m/aaabbbcc/fav-1?r=abcdffff"
                   tabindex="0"
                 >
                   <div
@@ -420,7 +420,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                       Fav 1
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
             <div
@@ -430,10 +430,10 @@ exports[`User Component tests > Favorites Page 1`] = `
               <div
                 role="cell"
               >
-                <div
-                  aria-label="play_item"
+                <a
+                  aria-label="Big Buck Bunny"
                   class="_card_d75732"
-                  role="button"
+                  href="/m/aaabbbcd/big-buck-bunny?r=bbbdddff"
                   tabindex="0"
                 >
                   <div
@@ -462,7 +462,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                       Big Buck Bunny
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
             <div
@@ -472,10 +472,10 @@ exports[`User Component tests > Favorites Page 1`] = `
               <div
                 role="cell"
               >
-                <div
-                  aria-label="play_item"
+                <a
+                  aria-label="My last favorite"
                   class="_card_d75732"
-                  role="button"
+                  href="/m/ggaaccvv/my-last-favorite?r=bbbbbbbb"
                   tabindex="0"
                 >
                   <div
@@ -504,7 +504,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                       My last favorite
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>
