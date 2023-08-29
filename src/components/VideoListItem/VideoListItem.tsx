@@ -1,6 +1,7 @@
-import React, { KeyboardEvent, memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import styles from './VideoListItem.module.scss';
 
@@ -14,7 +15,6 @@ import { isLiveChannel, isSeries } from '#src/utils/media';
 import { MediaStatus } from '#src/utils/liveEvent';
 
 type VideoListItemProps = {
-  onClick?: () => void;
   onHover?: () => void;
   item: PlaylistItem;
   progress?: number;
@@ -22,9 +22,10 @@ type VideoListItemProps = {
   isActive?: boolean;
   activeLabel?: string;
   isLocked?: boolean;
+  url: string;
 };
 
-function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading = false, isActive = false, isLocked = true }: VideoListItemProps): JSX.Element {
+function VideoListItem({ onHover, progress, activeLabel, item, url, loading = false, isActive = false, isLocked = true }: VideoListItemProps): JSX.Element {
   const { title, duration, seasonNumber, episodeNumber, cardImage: image, mediaStatus, scheduledStart } = item;
 
   const {
@@ -61,18 +62,8 @@ function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading 
     }
   };
 
-  const handleKeyDown = (event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && onClick && onClick();
-
   return (
-    <div
-      className={styles.listItem}
-      onClick={onClick}
-      onMouseEnter={onHover}
-      onKeyDown={handleKeyDown}
-      role="button"
-      aria-label={t('play_item', { title })}
-      tabIndex={0}
-    >
+    <Link to={url} className={styles.listItem} onMouseEnter={onHover} aria-label={title} tabIndex={0}>
       <div className={styles.poster}>
         <Image className={posterImageClassNames} image={image} alt={title} onLoad={() => setImageLoaded(true)} width={320} />
         {isActive && <div className={styles.activeLabel}>{activeLabel}</div>}
@@ -91,7 +82,7 @@ function VideoListItem({ onClick, onHover, progress, activeLabel, item, loading 
         {!!scheduledStart && <div className={styles.scheduledStart}>{formatLocalizedDateTime(scheduledStart, language)}</div>}
         <div className={styles.title}>{title}</div>
       </div>
-    </div>
+    </Link>
   );
 }
 

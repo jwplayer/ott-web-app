@@ -15,7 +15,6 @@ type Props = {
   playlist?: Playlist;
   header?: React.ReactNode;
   onListItemHover?: (item: PlaylistItem) => void;
-  onListItemClick?: (item: PlaylistItem, playlistId?: string) => void;
   watchHistory?: { [key: string]: number };
   isLoading: boolean;
   activeMediaId?: string;
@@ -26,6 +25,7 @@ type Props = {
   hasSubscription: boolean;
   hasLoadMore?: boolean;
   loadMore?: () => void;
+  getUrl: (item: PlaylistItem) => string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -34,7 +34,6 @@ const defaultLoadMore = () => {};
 function VideoList({
   playlist,
   header,
-  onListItemClick,
   onListItemHover,
   isLoading = false,
   watchHistory,
@@ -46,6 +45,7 @@ function VideoList({
   hasSubscription,
   hasLoadMore,
   loadMore = defaultLoadMore,
+  getUrl,
 }: Props) {
   return (
     <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
@@ -54,9 +54,9 @@ function VideoList({
         <InfiniteScroll pageStart={0} loadMore={loadMore || defaultLoadMore} hasMore={hasLoadMore} loader={<InfiniteScrollLoader key="loader" />}>
           {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
             <VideoListItem
+              url={getUrl(playlistItem)}
               key={playlistItem.mediaid}
               progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
-              onClick={() => onListItemClick && onListItemClick(playlistItem, playlistItem.feedid)}
               onHover={() => onListItemHover && onListItemHover(playlistItem)}
               loading={isLoading}
               isActive={activeMediaId === playlistItem.mediaid}

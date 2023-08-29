@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  color: inherit;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 0.2s ease-out, -webkit-transform 0.2s ease-out;
 
