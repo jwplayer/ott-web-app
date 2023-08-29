@@ -146,28 +146,33 @@ export const login = async (email: string, password: string) => {
     useAccountStore.setState({ loading: false });
   });
 };
-export async function logout(onlyState = false) {
+
+async function clearLoginState() {
+  useAccountStore.setState({
+    user: null,
+    subscription: null,
+    transactions: null,
+    activePayment: null,
+    customerConsents: null,
+    publisherConsents: null,
+    loading: false,
+  });
+
+  await restoreFavorites();
+  await restoreWatchHistory();
+}
+
+export async function logout(logoutAndClearState = true) {
   await useService(async ({ accountService }) => {
-    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
 
-    useAccountStore.setState({
-      user: null,
-      subscription: null,
-      transactions: null,
-      activePayment: null,
-      customerConsents: null,
-      publisherConsents: null,
-      loading: false,
-    });
-
-    await restoreFavorites();
-    await restoreWatchHistory();
-    if (!onlyState) {
+    if (logoutAndClearState) {
+      await clearLoginState();
       await accountService?.logout();
     }
   });
 }
+
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
