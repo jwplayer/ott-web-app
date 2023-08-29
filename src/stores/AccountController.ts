@@ -165,9 +165,8 @@ async function clearLoginState() {
 export async function logout(logoutAndClearState = true) {
   await useService(async ({ accountService }) => {
     await queryClient.invalidateQueries('entitlements');
-
-    if (logoutAndClearState) {
-      await clearLoginState();
+    await clearLoginState();
+    if (!logoutAndClearState) {
       await accountService?.logout();
     }
   });

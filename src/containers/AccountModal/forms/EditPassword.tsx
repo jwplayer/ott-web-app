@@ -41,7 +41,7 @@ const ResetPassword: React.FC = () => {
         }
         await changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
-      await logout(true);
+      await logout();
       navigate(addQueryParam(location, 'u', 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {
