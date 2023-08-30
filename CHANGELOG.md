@@ -1,4 +1,4 @@
-# [4.26.0](https://github.com/jwplayer/ott-web-app/compare/v4.25.0...v4.26.0) (2023-08-30)
+# [4.27.0](https://github.com/jwplayer/ott-web-app/compare/v4.25.0...v4.27.0) (2023-08-30)
 
 
 ### Bug Fixes
