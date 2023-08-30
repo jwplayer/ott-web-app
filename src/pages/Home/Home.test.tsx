@@ -37,6 +37,7 @@ describe('Home Component tests', () => {
           dataUpdatedAt: 0,
           error: null,
           errorUpdatedAt: 0,
+          errorUpdateCount: 0,
           failureCount: 0,
           isError: false,
           isFetched: false,

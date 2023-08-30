@@ -34,10 +34,10 @@ exports[`Home Component tests > Home test 1`] = `
                     class=""
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
-                    <div
-                      aria-label="play_item"
+                    <a
+                      aria-label="My video"
                       class="_card_d75732"
-                      role="button"
+                      href="/m/abcddabc/my-video"
                       tabindex="0"
                     >
                       <div
@@ -84,16 +84,16 @@ exports[`Home Component tests > Home test 1`] = `
                           My video
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </li>
                   <li
                     class=""
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
-                    <div
-                      aria-label="play_item"
+                    <a
+                      aria-label="Other Vids"
                       class="_card_d75732"
-                      role="button"
+                      href="/m/zzzaaazz/other-vids"
                       tabindex="0"
                     >
                       <div
@@ -140,7 +140,7 @@ exports[`Home Component tests > Home test 1`] = `
                           Other Vids
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -175,10 +175,10 @@ exports[`Home Component tests > Home test 1`] = `
                     class=""
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
-                    <div
-                      aria-label="play_item"
+                    <a
+                      aria-label="My video"
                       class="_card_d75732"
-                      role="button"
+                      href="/m/abcddabc/my-video"
                       tabindex="0"
                     >
                       <div
@@ -225,16 +225,16 @@ exports[`Home Component tests > Home test 1`] = `
                           My video
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </li>
                   <li
                     class=""
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
-                    <div
-                      aria-label="play_item"
+                    <a
+                      aria-label="Other Vids"
                       class="_card_d75732"
-                      role="button"
+                      href="/m/zzzaaazz/other-vids"
                       tabindex="0"
                     >
                       <div
@@ -281,7 +281,7 @@ exports[`Home Component tests > Home test 1`] = `
                           Other Vids
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </li>
                 </ul>
               </div>

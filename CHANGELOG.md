@@ -1,3 +1,20 @@
+# [4.26.0](https://github.com/jwplayer/ott-web-app/compare/v4.25.0...v4.26.0) (2023-08-30)
+
+
+### Bug Fixes
+
+* **project:** fix helmet for legacy series after react update ([90d489c](https://github.com/jwplayer/ott-web-app/commit/90d489c67dde2d10324a5a554a7b28cfe99d5823))
+
+
+### Features
+
+* **project:** convert click based navigation to use links for SEO ([625fbdc](https://github.com/jwplayer/ott-web-app/commit/625fbdc5f845fb79cf33a8fe97459e728be0df4c))
+* **project:** update react ([03e3d30](https://github.com/jwplayer/ott-web-app/commit/03e3d300a4c0e451eb6124ac418b0ed469b23a95))
+* **project:** update React to 18.2.0 ([c98512d](https://github.com/jwplayer/ott-web-app/commit/c98512d4876b81759afa2883875048503e98e419))
+* **project:** update react to 18.2.0 and related dependencies ([83931d2](https://github.com/jwplayer/ott-web-app/commit/83931d235dcba122f0f054bacf891081cbc64821))
+
+
+
 # [4.25.0](https://github.com/jwplayer/ott-web-app/compare/v4.23.2...v4.25.0) (2023-08-01)
 
 

@@ -25,9 +25,10 @@ type Props = {
   channel: EpgChannel | undefined;
   program: EpgProgram | undefined;
   config: Config;
+  getUrl: (channelId: string) => string;
 };
 
-export default function Epg({ channels, onChannelClick, onProgramClick, channel, program, config }: Props) {
+export default function Epg({ channels, onChannelClick, onProgramClick, channel, program, config, getUrl }: Props) {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
 
@@ -39,13 +40,13 @@ export default function Epg({ channels, onChannelClick, onProgramClick, channel,
 
   // Epg
   const { highlightColor, backgroundColor } = config.styling;
-  const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg(
+  const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg({
     channels,
     sidebarWidth,
     itemHeight,
     highlightColor,
     backgroundColor,
-  );
+  });
   const catchupHoursDict = useMemo(() => Object.fromEntries(channels.map((channel) => [channel.id, channel.catchupHours])), [channels]);
 
   return (
@@ -74,6 +75,7 @@ export default function Epg({ channels, onChannelClick, onProgramClick, channel,
                 onScrollToNow();
               }}
               isActive={channel?.id === epgChannel.uuid}
+              url={getUrl(epgChannel.uuid)}
             />
           )}
           renderProgram={({ program: programItem, isBaseTimeFormat }) => {
@@ -89,6 +91,7 @@ export default function Epg({ channels, onChannelClick, onProgramClick, channel,
                 isActive={program?.id === programItem.data.id}
                 compact={isMobile}
                 isBaseTimeFormat={isBaseTimeFormat}
+                url={getUrl(programItem.data.channelUuid)}
               />
             );
           }}

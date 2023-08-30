@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import shallow from 'zustand/shallow';
 import InfiniteScroll from 'react-infinite-scroller';
-import { useNavigate } from 'react-router';
 
 import styles from './ShelfList.module.scss';
 
@@ -10,7 +9,7 @@ import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContain
 import { useAccountStore } from '#src/stores/AccountStore';
 import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import ShelfComponent from '#components/Shelf/Shelf';
-import { mediaURL, slugify } from '#src/utils/formatting';
+import { slugify } from '#src/utils/formatting';
 import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
@@ -25,7 +24,6 @@ type Props = {
 };
 
 const ShelfList = ({ rows }: Props) => {
-  const navigate = useNavigate();
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const [rowCount, setRowCount] = useState(INITIAL_ROW_COUNT);
 
@@ -33,13 +31,6 @@ const ShelfList = ({ rows }: Props) => {
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-
-  const onCardClick = useCallback(
-    (playlistItem, playlistId, type) => {
-      navigate(mediaURL({ media: playlistItem, playlistId, play: type === PersonalShelf.ContinueWatching }));
-    },
-    [navigate],
-  );
 
   useEffect(() => {
     // reset row count when the page changes
@@ -77,7 +68,6 @@ const ShelfList = ({ rows }: Props) => {
                       type={row.type}
                       playlist={playlist}
                       watchHistory={row.type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                      onCardClick={onCardClick}
                       title={title}
                       featured={row.featured === true}
                       accessModel={accessModel}

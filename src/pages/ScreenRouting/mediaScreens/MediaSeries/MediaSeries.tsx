@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
@@ -33,6 +33,7 @@ import type { PlaylistItem } from '#types/playlist';
 import Loading from '#src/pages/Loading/Loading';
 import type { ScreenComponent } from '#types/screens';
 import { VideoProgressMinMax } from '#src/config';
+import { addQueryParam } from '#src/utils/location';
 
 const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const breakpoint = useBreakpoint();
@@ -106,17 +107,15 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const isLoggedIn = !!user;
   const hasSubscription = !!subscription;
 
+  const location = useLocation();
+  const getURL = (toEpisode: PlaylistItem) => {
+    return addQueryParam(location, 'e', toEpisode.mediaid);
+  };
+
   // Handlers
   const goBack = useCallback(() => {
     setSearchParams({ ...searchParams, e: episode?.mediaid, r: feedId || '' });
   }, [setSearchParams, searchParams, episode, feedId]);
-
-  const onCardClick = useCallback(
-    (toEpisode: PlaylistItem) => {
-      setSearchParams({ ...searchParams, e: toEpisode.mediaid });
-    },
-    [setSearchParams, searchParams],
-  );
 
   const handleComplete = useCallback(async () => {
     setSearchParams({ ...searchParams, e: (nextItem || episode)?.mediaid, r: feedId || '', play: nextItem ? '1' : '0' });
@@ -254,7 +253,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         hasSubscription={hasSubscription}
         playlist={playlist}
         relatedTitle={inlineLayout ? seriesMedia.title : t('episodes')}
-        onItemClick={onCardClick}
+        getURL={getURL}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
         defaultFilterLabel={t('all_seasons')}

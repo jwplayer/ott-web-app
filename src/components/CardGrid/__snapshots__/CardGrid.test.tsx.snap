@@ -14,10 +14,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
-            aria-label="play_item"
+          <a
+            aria-label="Agent 327"
             class="_card_d75732"
-            role="button"
+            href="/m/uB8aRnu6"
             tabindex="0"
           >
             <div
@@ -28,7 +28,13 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
               >
                 <div
                   class="_tags_d75732"
-                />
+                >
+                  <div
+                    class="_tag_d75732"
+                  >
+                    4 min
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -36,9 +42,11 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
             >
               <div
                 class="_title_d75732"
-              />
+              >
+                Agent 327
+              </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -48,10 +56,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
-            aria-label="play_item"
+          <a
+            aria-label="Big Buck Bunny"
             class="_card_d75732"
-            role="button"
+            href="/m/awWEFyPu"
             tabindex="0"
           >
             <div
@@ -62,7 +70,13 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
               >
                 <div
                   class="_tags_d75732"
-                />
+                >
+                  <div
+                    class="_tag_d75732"
+                  >
+                    10 min
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -70,9 +84,11 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
             >
               <div
                 class="_title_d75732"
-              />
+              >
+                Big Buck Bunny
+              </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div
@@ -82,10 +98,10 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         <div
           role="cell"
         >
-          <div
-            aria-label="play_item"
+          <a
+            aria-label="Elephants Dream"
             class="_card_d75732"
-            role="button"
+            href="/m/eFPH2tVG"
             tabindex="0"
           >
             <div
@@ -96,7 +112,13 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
               >
                 <div
                   class="_tags_d75732"
-                />
+                >
+                  <div
+                    class="_tag_d75732"
+                  >
+                    11 min
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -104,417 +126,11 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
             >
               <div
                 class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
               >
-                <div
-                  class="_tags_d75732"
-                />
+                Elephants Dream
               </div>
             </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="_cell_7175d1"
-        role="row"
-      >
-        <div
-          role="cell"
-        >
-          <div
-            aria-label="play_item"
-            class="_card_d75732"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-            <div
-              class="_titleContainer_d75732"
-            >
-              <div
-                class="_title_d75732"
-              />
-            </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>

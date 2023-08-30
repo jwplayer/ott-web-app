@@ -41,11 +41,11 @@ type VideoDetailsProps = {
 
 type VideoListProps = {
   relatedTitle?: string;
-  onItemClick?: (item: PlaylistItem) => void;
   onItemHover?: (item: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
   activeMediaId?: string;
   activeLabel?: string;
+  getURL: (item: PlaylistItem) => string;
 };
 
 type Props = {
@@ -55,6 +55,7 @@ type Props = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
+  children?: React.ReactNode;
   item?: PlaylistItem;
   playlist?: Playlist;
 } & FilterProps &
@@ -82,7 +83,6 @@ const VideoLayout: React.FC<Props> = ({
   startWatchingButton,
   trailerButton,
   // list
-  onItemClick,
   relatedTitle,
   watchHistory,
   activeLabel,
@@ -96,6 +96,7 @@ const VideoLayout: React.FC<Props> = ({
   // load more
   hasLoadMore,
   loadMore,
+  getURL,
 }) => {
   const breakpoint = useBreakpoint();
   const isTablet = breakpoint === Breakpoint.sm || breakpoint === Breakpoint.md;
@@ -113,7 +114,7 @@ const VideoLayout: React.FC<Props> = ({
   );
 
   const renderRelatedVideos = (grid = true) => {
-    if (!playlist || !onItemClick) return null;
+    if (!playlist) return null;
 
     return grid ? (
       <>
@@ -123,7 +124,6 @@ const VideoLayout: React.FC<Props> = ({
         </div>
         <CardGrid
           playlist={playlist}
-          onCardClick={onItemClick}
           isLoading={isLoading}
           watchHistory={watchHistory}
           accessModel={accessModel}
@@ -133,6 +133,7 @@ const VideoLayout: React.FC<Props> = ({
           hasSubscription={hasSubscription}
           hasLoadMore={hasLoadMore}
           loadMore={loadMore}
+          getUrl={getURL}
         />
       </>
     ) : (
@@ -148,7 +149,6 @@ const VideoLayout: React.FC<Props> = ({
           activeMediaId={item?.mediaid}
           activeLabel={activeLabel}
           playlist={playlist}
-          onListItemClick={onItemClick}
           watchHistory={watchHistory}
           isLoading={isLoading}
           accessModel={accessModel}
@@ -156,6 +156,7 @@ const VideoLayout: React.FC<Props> = ({
           hasSubscription={hasSubscription}
           hasLoadMore={hasLoadMore}
           loadMore={loadMore}
+          getUrl={getURL}
         />
       </div>
     );
@@ -183,22 +184,21 @@ const VideoLayout: React.FC<Props> = ({
   }
 
   return (
-    <div className={styles.videoCinemaLayout} data-testid={testId('cinema-layout')}>
-      <VideoDetails
-        title={title}
-        description={description}
-        image={image}
-        startWatchingButton={startWatchingButton}
-        favoriteButton={favoriteButton}
-        trailerButton={trailerButton}
-        shareButton={shareButton}
-        primaryMetadata={primaryMetadata}
-        secondaryMetadata={secondaryMetadata}
-      />
-      {playlist && onItemClick && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
+    <VideoDetails
+      title={title}
+      description={description}
+      image={image}
+      startWatchingButton={startWatchingButton}
+      favoriteButton={favoriteButton}
+      trailerButton={trailerButton}
+      shareButton={shareButton}
+      primaryMetadata={primaryMetadata}
+      secondaryMetadata={secondaryMetadata}
+    >
+      {playlist && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
       {children}
       {player}
-    </div>
+    </VideoDetails>
   );
 };
 

@@ -20,7 +20,15 @@ import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
  *       on a different program. This can be solved when we implement syncing the stream PDT with the schedule. Then the
  *       program information will be reactive based on the current time in the stream.
  */
-const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | undefined, enableAutoUpdate = true) => {
+const useLiveChannels = ({
+  playlist,
+  initialChannelId,
+  enableAutoUpdate = true,
+}: {
+  playlist: PlaylistItem[];
+  initialChannelId: string | undefined;
+  enableAutoUpdate?: boolean;
+}) => {
   const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist), {
     refetchInterval: LIVE_CHANNELS_REFETCH_INTERVAL,
   });

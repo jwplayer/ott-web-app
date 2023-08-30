@@ -48,9 +48,11 @@ const sliceItems = <T,>(items: T[], isMultiPage: boolean, index: number, tilesTo
 
   const sliceFrom: number = index;
   const sliceTo: number = index + tilesToShow * 3;
+
   const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 0;
   const listStartClone: T[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation + 1);
   const listEndClone: T[] = items.slice(0 - (tilesToShow + cycleModeEndlessCompensation + 1));
+
   const itemsWithClones: T[] = [...listEndClone, ...items, ...listStartClone];
   const itemsSlice: T[] = itemsWithClones.slice(sliceFrom, sliceTo + 2);
 
@@ -77,6 +79,8 @@ function TileDock<T>({
   const [slideToIndex, setSlideToIndex] = useState<number>(0);
   const [transform, setTransform] = useState<number>(-100);
   const [doAnimationReset, setDoAnimationReset] = useState<boolean>(false);
+  const [hasTransition, setHasTransition] = useState(false);
+
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
   const isMultiPage: boolean = items?.length > tilesToShow;
@@ -86,7 +90,7 @@ function TileDock<T>({
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
-  const transitionBasis: string = isMultiPage && animated ? `transform ${transitionTime} ease` : '';
+  const transitionBasis: string = isMultiPage && animated && hasTransition ? `transform ${transitionTime} ease` : '';
 
   const needControls: boolean = showControls && isMultiPage;
   const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
@@ -94,6 +98,10 @@ function TileDock<T>({
 
   const slide = useCallback(
     (direction: Direction): void => {
+      if (hasTransition) {
+        return;
+      }
+
       const directionFactor = direction === 'right' ? 1 : -1;
       let nextIndex: number = index + tilesToShow * directionFactor;
 
@@ -112,10 +120,11 @@ function TileDock<T>({
 
       setSlideToIndex(nextIndex);
       setTransform(-100 + movement);
+      setHasTransition(true);
 
       if (!animated) setDoAnimationReset(true);
     },
-    [animated, cycleMode, index, items.length, tileWidth, tilesToShow],
+    [animated, cycleMode, index, items.length, tileWidth, tilesToShow, hasTransition],
   );
 
   const handleTouchStart = useCallback(
@@ -185,13 +194,7 @@ function TileDock<T>({
       }
 
       setIndex(resetIndex);
-
-      if (frameRef.current) frameRef.current.style.transition = 'none';
       setTransform(-100);
-
-      setTimeout(() => {
-        if (frameRef.current) frameRef.current.style.transition = transitionBasis;
-      }, 0);
       setDoAnimationReset(false);
     };
 
@@ -201,6 +204,7 @@ function TileDock<T>({
   const handleTransitionEnd = (event: React.TransitionEvent<HTMLUListElement>) => {
     if (event.target === frameRef.current) {
       setDoAnimationReset(true);
+      setHasTransition(false);
     }
   };
 
