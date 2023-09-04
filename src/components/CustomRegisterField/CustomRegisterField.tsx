@@ -30,10 +30,6 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
   const { t, i18n } = useTranslation(type);
 
   const optionsList = useMemo(() => {
-    if (!i18n.isInitialized) {
-      return [];
-    }
-
     switch (type) {
       case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
       case REGISTER_FIELD_VARIANT.US_STATE_SELECT: {
