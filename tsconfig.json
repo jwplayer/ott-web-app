@@ -27,9 +27,6 @@
       ],
       "#types/*": [
         "./types/*"
-      ],
-      "#static/*": [
-        "./src/static/*"
       ]
     },
     /* noEmit - Vite builds (emits) files, not tsc. */

@@ -8,8 +8,6 @@ import Radio from '#components/Radio/Radio';
 import Dropdown from '#components/Dropdown/Dropdown';
 import DateField from '#components/DateField/DateField';
 import { ConsentFieldVariants, REGISTER_FIELD_VARIANT } from '#src/services/inplayer.account.service';
-import countriesCodes from '#static/countries-codes.json';
-import usStatesCodes from '#static/us-states-codes.json';
 
 type Props = {
   type: ConsentFieldVariants;
@@ -29,13 +27,19 @@ type Props = {
 export type CustomRegisterFieldCommonProps = Props;
 
 export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) => {
-  const { t } = useTranslation(type);
+  const { t, i18n } = useTranslation(type);
 
   const optionsList = useMemo(() => {
+    if (!i18n.isInitialized) {
+      return [];
+    }
+
     switch (type) {
       case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
       case REGISTER_FIELD_VARIANT.US_STATE_SELECT: {
-        return (type === REGISTER_FIELD_VARIANT.COUNTRY_SELECT ? countriesCodes : usStatesCodes).map((code) => ({
+        const codes = Object.keys(i18n.getResourceBundle(i18n.language, type));
+
+        return codes.map((code) => ({
           value: code,
           label: t(`${type}:${code}`),
         }));
@@ -48,7 +52,7 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
         return [];
       }
     }
-  }, [t, type, props.options]);
+  }, [t, type, props.options, i18n]);
 
   switch (type) {
     case REGISTER_FIELD_VARIANT.CHECKBOX:

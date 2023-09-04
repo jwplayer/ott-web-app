@@ -123,7 +123,6 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
         '#test': path.join(__dirname, 'test'),
         '#test-e2e': path.join(__dirname, 'test-e2e'),
         '#types': path.join(__dirname, 'types'),
-        '#static': path.join(__dirname, 'src/static'),
       },
     },
     test: {
