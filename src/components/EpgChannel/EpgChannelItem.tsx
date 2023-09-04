@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Channel } from 'planby';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import styles from './EpgChannelItem.module.scss';
 
@@ -13,14 +14,15 @@ type Props = {
   sidebarWidth: number;
   onClick?: (channel: Channel) => void;
   isActive: boolean;
+  url: string;
 };
 
-const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWidth, onClick, isActive }) => {
+const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWidth, onClick, isActive, url }) => {
   const { position, uuid, channelLogoImage } = channel;
   const style = { top: position.top, height: position.height, width: sidebarWidth };
 
   return (
-    <div className={styles.epgChannelBox} style={style}>
+    <Link to={url} className={styles.epgChannelBox} style={style}>
       <div
         className={classNames(styles.epgChannel, { [styles.active]: isActive })}
         style={{ width: channelItemWidth }}
@@ -29,7 +31,7 @@ const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWi
       >
         <Image className={styles.epgChannelLogo} image={channelLogoImage} alt="Logo" width={320} />
       </div>
-    </div>
+    </Link>
   );
 };
 

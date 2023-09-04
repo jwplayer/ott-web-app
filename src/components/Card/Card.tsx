@@ -1,6 +1,7 @@
-import React, { KeyboardEvent, memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import styles from './Card.module.scss';
 
@@ -18,7 +19,6 @@ export type PosterAspectRatio = (typeof cardAspectRatios)[number];
 
 type CardProps = {
   item: PlaylistItem;
-  onClick?: () => void;
   onHover?: () => void;
   progress?: number;
   posterAspect?: PosterAspectRatio;
@@ -28,10 +28,10 @@ type CardProps = {
   isCurrent?: boolean;
   isLocked?: boolean;
   currentLabel?: string;
+  url: string;
 };
 
 function Card({
-  onClick,
   onHover,
   progress,
   item,
@@ -42,6 +42,7 @@ function Card({
   isCurrent = false,
   isLocked = true,
   currentLabel,
+  url,
 }: CardProps): JSX.Element {
   const { title, duration, episodeNumber, seasonNumber, cardImage: image, mediaStatus, scheduledStart } = item;
   const {
@@ -86,14 +87,13 @@ function Card({
   };
 
   return (
-    <div
+    <Link
+      to={url}
       className={cardClassName}
-      onClick={onClick}
+      onClick={disabled ? (e) => e.preventDefault() : undefined}
       onMouseEnter={onHover}
       tabIndex={disabled ? -1 : 0}
-      onKeyDown={(event: KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && !disabled && onClick && onClick()}
-      role="button"
-      aria-label={t('play_item', { title })}
+      aria-label={title}
     >
       <div className={posterClassNames}>
         <Image className={posterImageClassNames} image={image} width={featured ? 640 : 320} onLoad={() => setImageLoaded(true)} alt={title} />
@@ -125,7 +125,7 @@ function Card({
           <div className={classNames(styles.title, { [styles.loading]: loading })}>{title}</div>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
 
