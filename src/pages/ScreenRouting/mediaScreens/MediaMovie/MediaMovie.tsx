@@ -57,7 +57,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // Handlers
   const goBack = () => data && navigate(mediaURL({ media: data, playlistId: feedId, play: false }));
-  const onCardClick = (item: PlaylistItem) => navigate(mediaURL({ media: item, playlistId: features?.recommendationsPlaylist }));
+  const getUrl = (item: PlaylistItem) => mediaURL({ media: item, playlistId: features?.recommendationsPlaylist });
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -140,7 +140,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
         startWatchingButton={startWatchingButton}
         playlist={playlist}
         relatedTitle={playlist?.title}
-        onItemClick={onCardClick}
+        getURL={getUrl}
         activeLabel={t('current_video')}
         player={
           inlineLayout ? (

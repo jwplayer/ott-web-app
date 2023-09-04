@@ -2,6 +2,7 @@ import React from 'react';
 import { Program, useProgram } from 'planby';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import styles from './EpgProgramItem.module.scss';
 
@@ -14,9 +15,10 @@ type Props = {
   compact: boolean;
   disabled: boolean;
   isBaseTimeFormat: boolean;
+  url: string;
 };
 
-const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, disabled, isBaseTimeFormat }) => {
+const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, disabled, isBaseTimeFormat, url }) => {
   const {
     styles: { position },
     formatTime,
@@ -39,7 +41,7 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, di
   const showLiveTagInImage = !compact && isMinWidth && isLive;
 
   return (
-    <div className={styles.epgProgramBox} style={position} onClick={() => onClick && onClick(program)}>
+    <Link to={url} className={styles.epgProgramBox} style={position} onClick={() => onClick && onClick(program)}>
       <div
         className={classNames(styles.epgProgram, {
           [styles.selected]: isActive,
@@ -59,7 +61,7 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, di
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

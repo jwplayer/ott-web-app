@@ -36,7 +36,7 @@ type CardGridProps = {
   hasLoadMore?: boolean;
   loadMore?: () => void;
   onCardHover?: (item: PlaylistItem) => void;
-  onCardClick: (item: PlaylistItem, playlistId?: string) => void;
+  getUrl: (item: PlaylistItem) => string;
 };
 
 function CardGrid({
@@ -50,8 +50,8 @@ function CardGrid({
   isLoggedIn,
   hasSubscription,
   hasLoadMore,
+  getUrl,
   loadMore,
-  onCardClick,
   onCardHover,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
@@ -75,7 +75,7 @@ function CardGrid({
         <div role="cell">
           <Card
             progress={watchHistory ? watchHistory[mediaid] : undefined}
-            onClick={() => onCardClick(playlistItem, playlistItem.feedid)}
+            url={getUrl(playlistItem)}
             onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
             loading={isLoading}
             isCurrent={currentCardItem && currentCardItem.mediaid === mediaid}
