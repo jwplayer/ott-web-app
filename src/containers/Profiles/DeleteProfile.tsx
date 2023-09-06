@@ -57,8 +57,8 @@ const DeleteProfile = () => {
             <p>{t('profile.delete_confirmation')}</p>
           </div>
           <div className={styles.deleteButtons}>
-            <Button label="Delete" color="delete" variant="contained" onClick={deleteHandler} />
-            <Button label="Cancel" variant="outlined" onClick={closeHandler} />
+            <Button label={t('account.delete')} color="delete" variant="contained" onClick={deleteHandler} />
+            <Button label={t('account.cancel')} variant="outlined" onClick={closeHandler} />
           </div>
         </div>
       </Dialog>

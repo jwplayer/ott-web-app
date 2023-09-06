@@ -17,13 +17,12 @@ type Props = {
   selected?: boolean;
 };
 
-const ProfileBox = ({ name, image, adult = true, editMode = false, onClick, onEdit, selected = false }: Props) => {
+const ProfileBox = ({ name, image, editMode = false, onClick, onEdit, selected = false }: Props) => {
   return (
     <div className={styles.wrapper}>
       <div className={classNames(styles.inner, selected && styles.selected)}>
         <div onClick={onClick} className={styles.box}>
           <img className={styles.image} src={image} alt="" />
-          {!adult && <span className={styles.kidsLabel}>Kids</span>}
         </div>
         {editMode && (
           <IconButton aria-label="edit-profile-button" onClick={onEdit} className={styles.overlay}>

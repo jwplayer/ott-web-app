@@ -5,6 +5,7 @@
     "cancel": "Cancel",
     "confirm_password": "Confirm password",
     "continue": "Continue",
+    "delete": "Delete",
     "delete_account": {
       "body": "Permanently delete your account and all of your content.",
       "error": "An error occurred while deleting your account. Please try again.",
@@ -123,8 +124,6 @@
     "delete_main": "The main profile cannot be deleted because it’s linked to your account's watch history and favorites.",
     "description": "Profiles allow you to watch content and assemble your own personal collection of favorites.",
     "form_error": "Something went wrong. Please try again later.",
-    "greeting": "Howdy",
-    "greeting_with_name": "Howdy, {{name}}",
     "info": "Profile info",
     "kids": "Kids",
     "name": "User name",

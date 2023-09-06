@@ -97,7 +97,7 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
           <div className={styles.panelHeader}>
             <h3>{t('profile.delete')}</h3>
           </div>
-          <div className={profileStyles.profileInfo}>{t(`profile.delete_${profileDetails?.default ? 'main' : 'description'}`)}</div>
+          <div className={profileStyles.profileInfo}>{t(profileDetails?.default ? 'profile.delete_main' : 'profile.delete_description')}</div>
           {!profileDetails?.default && (
             <Button
               onClick={() => navigate(addQueryParam(location, 'action', 'delete-profile'))}

@@ -28,13 +28,13 @@ const Profiles = ({ editMode = false }: Props) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  const { data, isLoading, isFetching, isError, refetch } = useListProfiles();
+  const { data, isLoading, isFetching, isError } = useListProfiles({
+    refetchOnMount: true,
+    staleTime: 0,
+  });
+
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   useEffect(() => {
     if (!profilesEnabled || !user?.id || isError) {

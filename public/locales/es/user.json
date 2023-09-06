@@ -5,6 +5,7 @@
     "cancel": "Cancelar",
     "confirm_password": "Confirmar contraseña",
     "continue": "Continuar",
+    "delete": "",
     "delete_account": {
       "body": "Elimine permanentemente su cuenta y todo su contenido.",
       "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
@@ -124,8 +125,6 @@
     "delete_main": "",
     "description": "",
     "form_error": "",
-    "greeting": "",
-    "greeting_with_name": "",
     "info": "",
     "kids": "",
     "name": "",

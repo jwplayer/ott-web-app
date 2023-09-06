@@ -52,7 +52,7 @@ const Layout = () => {
     shallow,
   );
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const user = useAccountStore(({ user }) => user, shallow);
+  const user = useAccountStore(({ user }) => user);
   const { profile } = useProfileStore();
   const isLoggedIn = !!user;
 
