@@ -24,8 +24,6 @@ import EditProfile from '#src/containers/Profiles/EditProfile';
 import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
-import { mediaURL } from '#src/utils/formatting';
-import type { PlaylistItem } from '#types/playlist';
 import { useProfileStore } from '#src/stores/ProfileStore';
 
 const User = (): JSX.Element => {
@@ -50,7 +48,6 @@ const User = (): JSX.Element => {
 
   const profileAndFavoritesPage = location.pathname?.includes('my-profile') || location.pathname.includes('favorites');
 
-  const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem }));
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await logout();
@@ -137,7 +134,6 @@ const User = (): JSX.Element => {
                         playlist={playlist}
                         error={error}
                         isLoading={isLoading}
-                        onCardClick={onCardClick}
                         onClearFavoritesClick={() => setClearFavoritesOpen(true)}
                         accessModel={accessModel}
                         hasSubscription={!!subscription}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 
 import Shelf from '#components/Shelf/Shelf';
+import { renderWithRouter } from '#test/testUtils';
 
 const playlist = {
   playlist: [
@@ -59,16 +59,13 @@ const playlist = {
 
 describe('Shelf Component tests', () => {
   test('Regular shelf', () => {
-    const { container } = render(
+    const { container } = renderWithRouter(
       <Shelf
         title="Test Shelf"
         type={'playlist'}
         accessModel={'AVOD'}
         hasSubscription={true}
         isLoggedIn={true}
-        onCardClick={() => {
-          /**/
-        }}
         playlist={playlist}
         enableCardTitles
         enableTitle
@@ -79,16 +76,13 @@ describe('Shelf Component tests', () => {
   });
 
   test('Featured shelf', () => {
-    const { container } = render(
+    const { container } = renderWithRouter(
       <Shelf
         title="Featured Shelf"
         type={'playlist'}
         accessModel={'AUTHVOD'}
         hasSubscription={true}
         isLoggedIn={true}
-        onCardClick={() => {
-          /**/
-        }}
         playlist={playlist}
         featured
         enableCardTitles

@@ -24,15 +24,15 @@ Scenario('I can see the movie inline player layout', async ({ I }) => {
   I.see('Favorite');
   I.see('Share');
   I.seeTextEquals('Related Films', 'h3');
-  I.see('Caminandes 1: Llama Drama', locate({ css: 'div[aria-label="Play Caminandes 1: Llama Drama"]' }).inside(videoListLocator));
-  I.see('Caminandes 2: Gran Dillama', locate({ css: 'div[aria-label="Play Caminandes 2: Gran Dillama"]' }).inside(videoListLocator));
+  I.see('Caminandes 1: Llama Drama', locate({ css: 'a[aria-label="Caminandes 1: Llama Drama"]' }).inside(videoListLocator));
+  I.see('Caminandes 2: Gran Dillama', locate({ css: 'a[aria-label="Caminandes 2: Gran Dillama"]' }).inside(videoListLocator));
 });
 
 Scenario('I switch to another video in the movie screen', async ({ I }) => {
   await I.openVideoCard(constants.bigBuckBunnyTitle, ShelfId.allFilms);
   I.see(constants.bigBuckBunnyTitle);
 
-  I.click('Caminandes 1: Llama Drama', locate({ css: 'div[aria-label="Play Caminandes 1: Llama Drama"]' }).inside(videoListLocator));
+  I.click('Caminandes 1: Llama Drama', locate({ css: 'a[aria-label="Caminandes 1: Llama Drama"]' }).inside(videoListLocator));
   I.see('Caminandes 1: Llama Drama');
 });
 
@@ -51,8 +51,8 @@ Scenario('I can see the series inline player layout', async ({ I }) => {
   I.see('Share');
   I.seeTextEquals('Minecraft Animation Workshop', 'h3');
   I.see('Season 1', locate({ css: 'select' }).inside(videoListLocator));
-  I.see('S1:E2', locate({ css: 'div[aria-label="Play Basics Of Blender"]' }).inside(videoListLocator));
-  I.see('S1:E3', locate({ css: 'div[aria-label="Play Using Mineways"]' }).inside(videoListLocator));
+  I.see('S1:E2', locate({ css: 'a[aria-label="Basics Of Blender"]' }).inside(videoListLocator));
+  I.see('S1:E3', locate({ css: 'a[aria-label="Using Mineways"]' }).inside(videoListLocator));
 });
 
 Scenario('I can start the inline player', async ({ I }) => {
@@ -62,21 +62,21 @@ Scenario('I can start the inline player', async ({ I }) => {
 
 Scenario('I switch to the episode in the video list', async ({ I }) => {
   await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses, true);
-  I.waitForElement('div[aria-label="Play Welcome"]', 3);
-  I.click('S1:E1', locate({ css: 'div[aria-label="Play Welcome"]' }).inside(videoListLocator));
+  I.waitForElement('a[aria-label="Welcome"]', 3);
+  I.click('S1:E1', locate({ css: 'a[aria-label="Welcome"]' }).inside(videoListLocator));
   I.see('S1:E1 - Welcome');
 });
 
 Scenario('I switch to another season in the video list', async ({ I }) => {
   await I.openVideoCard(constants.minecraftAnimationWorkshopTitle, ShelfId.allCourses, true);
-  I.waitForElement('div[aria-label="Play Welcome"]', 3);
-  I.click('S1:E1', locate({ css: 'div[aria-label="Play Welcome"]' }).inside(videoListLocator));
+  I.waitForElement('a[aria-label="Welcome"]', 3);
+  I.click('S1:E1', locate({ css: 'a[aria-label="Welcome"]' }).inside(videoListLocator));
 
   I.see('Season 1/4 - Episode 1/6');
   I.selectOption({ css: 'select[name="season"]' }, 'Season 2');
 
-  I.waitForElement('div[aria-label="Play Choosing a skin (Cycles Render)"]', 3);
-  I.click(locate({ css: 'div[aria-label="Play Choosing a skin (Cycles Render)"]' }).inside(videoListLocator));
+  I.waitForElement('a[aria-label="Choosing a skin (Cycles Render)"]', 3);
+  I.click(locate({ css: 'a[aria-label="Choosing a skin (Cycles Render)"]' }).inside(videoListLocator));
 
   I.dontSee('Season 1/4 - Episode 1/6');
   I.see('Season 2/4 - Episode 1/4');

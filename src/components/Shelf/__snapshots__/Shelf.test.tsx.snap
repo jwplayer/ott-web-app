@@ -40,10 +40,10 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             class="_notInView_22abb0"
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Third movie"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
-              role="button"
+              href="/m/12332123/third-movie"
               tabindex="-1"
             >
               <div
@@ -57,16 +57,16 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                   />
                 </div>
               </div>
-            </div>
+            </a>
           </li>
           <li
             class="_notInView_22abb0"
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Last playlist item"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
-              role="button"
+              href="/m/ddeeddee/last-playlist-item"
               tabindex="-1"
             >
               <div
@@ -80,16 +80,16 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                   />
                 </div>
               </div>
-            </div>
+            </a>
           </li>
           <li
             class=""
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Movie 1"
               class="_card_d75732 _featured_d75732"
-              role="button"
+              href="/m/1234abcd/movie-1"
               tabindex="0"
             >
               <div
@@ -114,16 +114,16 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </li>
           <li
             class="_notInView_22abb0"
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Movie 2"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
-              role="button"
+              href="/m/aaaaaaaa/movie-2"
               tabindex="-1"
             >
               <div
@@ -137,16 +137,16 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                   />
                 </div>
               </div>
-            </div>
+            </a>
           </li>
           <li
             class="_notInView_22abb0"
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Third movie"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
-              role="button"
+              href="/m/12332123/third-movie"
               tabindex="-1"
             >
               <div
@@ -160,7 +160,7 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                   />
                 </div>
               </div>
-            </div>
+            </a>
           </li>
         </ul>
         <div
@@ -230,10 +230,10 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
             class=""
             style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Movie 1"
               class="_card_d75732"
-              role="button"
+              href="/m/1234abcd/movie-1"
               tabindex="0"
             >
               <div
@@ -262,16 +262,16 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                   Movie 1
                 </div>
               </div>
-            </div>
+            </a>
           </li>
           <li
             class=""
             style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Movie 2"
               class="_card_d75732"
-              role="button"
+              href="/m/aaaaaaaa/movie-2"
               tabindex="0"
             >
               <div
@@ -300,16 +300,16 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                   Movie 2
                 </div>
               </div>
-            </div>
+            </a>
           </li>
           <li
             class=""
             style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Third movie"
               class="_card_d75732"
-              role="button"
+              href="/m/12332123/third-movie"
               tabindex="0"
             >
               <div
@@ -338,16 +338,16 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                   Third movie
                 </div>
               </div>
-            </div>
+            </a>
           </li>
           <li
             class=""
             style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
-            <div
-              aria-label="play_item"
+            <a
+              aria-label="Last playlist item"
               class="_card_d75732"
-              role="button"
+              href="/m/ddeeddee/last-playlist-item"
               tabindex="0"
             >
               <div
@@ -376,7 +376,7 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                   Last playlist item
                 </div>
               </div>
-            </div>
+            </a>
           </li>
         </ul>
       </div>
