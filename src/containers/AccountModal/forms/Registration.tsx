@@ -19,9 +19,9 @@ const Registration = () => {
   const [consentValues, setConsentValues] = useState<Record<string, string | boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
-  const appConfig = useConfigStore(({ config }) => config.id);
+  const appConfigId = useConfigStore(({ config }) => config.id);
 
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfig], getPublisherConsents);
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
   const handleChangeConsent: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ currentTarget }) => {
