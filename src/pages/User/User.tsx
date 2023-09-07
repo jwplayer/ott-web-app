@@ -86,7 +86,7 @@ const User = (): JSX.Element => {
                 <li>
                   <Button
                     to={`my-profile/${profile?.id}`}
-                    label={t('nav.profile')}
+                    label={profile?.name ?? t('nav.profile')}
                     variant="text"
                     startIcon={<img className={styles.profileIcon} src={profile?.avatar_url} alt={profile?.name} />}
                     className={styles.button}
@@ -110,9 +110,11 @@ const User = (): JSX.Element => {
                 </li>
               )}
 
-              <li className={styles.logoutLi}>
-                <Button onClick={onLogout} label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
-              </li>
+              {(!profilesEnabled || !profileAndFavoritesPage) && (
+                <li className={styles.logoutLi}>
+                  <Button onClick={onLogout} label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
+                </li>
+              )}
             </ul>
           </div>
         </div>
