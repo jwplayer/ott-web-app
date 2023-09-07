@@ -166,7 +166,7 @@ type LogoutOptions = {
   includeNetworkRequest: boolean;
 };
 
-export async function logout(logoutOptions: LogoutOptions = { includeNetworkRequest: true }) {
+export async function logout(logoutOptions: { includeNetworkRequest: boolean }) {
   await useService(async ({ accountService }) => {
     await queryClient.invalidateQueries('entitlements');
     await clearLoginState();
