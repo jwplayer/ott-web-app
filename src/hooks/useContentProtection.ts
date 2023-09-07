@@ -3,9 +3,9 @@ import { useQuery } from 'react-query';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
-import EntitlementController from '#src/controllers/EntitlementController';
+import EntitlementController from '#src/stores/EntitlementController';
 
 const useContentProtection = <T>(
   type: EntitlementType,

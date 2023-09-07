@@ -20,11 +20,11 @@ import Favorite from '#src/icons/Favorite';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { ACCESS_MODEL, PersonalShelf } from '#src/config';
-import FavoritesController from '#src/controllers/FavoritesController';
+import FavoritesController from '#src/stores/FavoritesController';
 import { mediaURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
-import AccountController from '#src/controllers/AccountController';
-import CheckoutController from '#src/controllers/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 
 const User = (): JSX.Element => {

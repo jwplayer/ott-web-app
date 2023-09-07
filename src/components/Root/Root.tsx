@@ -13,7 +13,7 @@ import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import { initApp } from '#src/modules/initApp';
-import loadSettings from '#src/controllers/SettingsController';
+import loadSettings from '#src/stores/SettingsController';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');

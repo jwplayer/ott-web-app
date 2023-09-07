@@ -16,7 +16,7 @@ import type { ChooseOfferFormData } from '#types/account';
 import type { Subscription } from '#types/subscription';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
-import CheckoutController from '#src/controllers/CheckoutController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {

@@ -11,8 +11,8 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { addQueryParam } from '#src/utils/location';
 import useOffers from '#src/hooks/useOffers';
 import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
-import AccountController from '#src/controllers/AccountController';
-import CheckoutController from '#src/controllers/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 import { ACCESS_MODEL } from '#src/config';
 const PaymentContainer = () => {

@@ -3,7 +3,7 @@ import { useInfiniteQuery } from 'react-query';
 import type { EpisodesWithPagination } from '#types/series';
 import type { Pagination } from '#types/pagination';
 import { SERIES_CACHE_TIME } from '#src/config';
-import ApiController from '#src/controllers/ApiController';
+import ApiController from '#src/stores/ApiController';
 import { getModule } from '#src/modules/container';
 
 const getNextPageParam = (pagination: Pagination) => {

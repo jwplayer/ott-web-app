@@ -9,7 +9,7 @@ import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { addQueryParams } from '#src/utils/formatting';
 import { useAccountStore } from '#src/stores/AccountStore';
 import useQueryParam from '#src/hooks/useQueryParam';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
 
 const ResetPassword: React.FC = () => {

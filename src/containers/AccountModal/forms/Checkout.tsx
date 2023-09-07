@@ -14,8 +14,8 @@ import { addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '#src/containers/AdyenInitialPayment/AdyenInitialPayment';
-import AccountController from '#src/controllers/AccountController';
-import CheckoutController from '#src/controllers/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 
 const Checkout = () => {

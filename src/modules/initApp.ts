@@ -1,12 +1,12 @@
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { loadAndValidateConfig } from '#src/utils/configLoad';
-import FavoritesController from '#src/controllers/FavoritesController';
+import FavoritesController from '#src/stores/FavoritesController';
 import { PersonalShelf } from '#src/config';
 import { container } from '#src/modules/container';
 import ApiService from '#src/services/api.service';
-import ApiController from '#src/controllers/ApiController';
+import ApiController from '#src/stores/ApiController';
 import WatchHistoryService from '#src/services/WatchHistoryService';
-import WatchHistoryController from '#src/controllers/WatchHistoryController';
+import WatchHistoryController from '#src/stores/WatchHistoryController';
 import getIntegration, { IntegrationType } from '#src/utils/getIntegration';
 import CleengService from '#src/services/cleeng.service';
 import AccountService from '#src/services/account.service';
@@ -18,12 +18,12 @@ import CleengSubscriptionService from '#src/services/cleeng.subscription.service
 import InplayerAccountService from '#src/services/inplayer.account.service';
 import InplayerCheckoutService from '#src/services/inplayer.checkout.service';
 import SubscriptionJWService from '#src/services/inplayer.subscription.service';
-import CheckoutController from '#src/controllers/CheckoutController';
+import CheckoutController from '#src/stores/CheckoutController';
 import EpgService from '#src/services/epg.service';
 import EntitlementService from '#src/services/entitlement.service';
 import FavoritesService from '#src/services/FavoritesService';
-import EpgController from '#src/controllers/EpgController';
-import EntitlementController from '#src/controllers/EntitlementController';
+import EpgController from '#src/stores/EpgController';
+import EntitlementController from '#src/stores/EntitlementController';
 
 export const initApp = async (configSource: string | undefined) => {
   const config = await loadAndValidateConfig(configSource);

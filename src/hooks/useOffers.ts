@@ -9,7 +9,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Offer } from '#types/checkout';
 import type { OfferType } from '#types/account';
 import { isSVODOffer } from '#src/utils/subscription';
-import CheckoutController from '#src/controllers/CheckoutController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 import { ACCESS_MODEL } from '#src/config';
 

@@ -11,7 +11,7 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam } from '#src/utils/location';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
 import useOffers from '#src/hooks/useOffers';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
 import { ACCESS_MODEL } from '#src/config';
 

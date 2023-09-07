@@ -4,7 +4,7 @@ import Cinema from './Cinema';
 
 import { renderWithRouter } from '#test/testUtils';
 import type { PlaylistItem } from '#types/playlist';
-import ApiController from '#src/controllers/ApiController';
+import ApiController from '#src/stores/ApiController';
 import { container } from '#src/modules/container';
 
 vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {

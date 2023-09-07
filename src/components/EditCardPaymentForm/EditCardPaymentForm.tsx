@@ -15,7 +15,7 @@ import styles from './EditCardPaymentForm.module.scss';
 
 import useForm from '#src/hooks/useForm';
 import { useAccountStore } from '#src/stores/AccountStore';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
 
 type Props = {

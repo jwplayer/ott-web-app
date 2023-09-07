@@ -8,7 +8,7 @@ import type { JWPlayer } from '#types/jwplayer';
 import useContentProtection from '#src/hooks/useContentProtection';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { useSettingsStore } from '#src/stores/SettingsStore';
-import ApiController from '#src/controllers/ApiController';
+import ApiController from '#src/stores/ApiController';
 import { getModule } from '#src/modules/container';
 
 type Props = {

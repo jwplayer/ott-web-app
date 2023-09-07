@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import useClientIntegration from './useClientIntegration';
 
 import { addQueryParam } from '#src/utils/location';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
 
 type intervalCheckAccessPayload = {

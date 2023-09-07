@@ -2,8 +2,8 @@ import { useMutation } from 'react-query';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import type { Customer, EmailConfirmPasswordInput, FirstLastNameInput } from '#types/account';
-import AccountController from '#src/controllers/AccountController';
-import CheckoutController from '#src/controllers/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 
 export const useSubscriptionChange = (

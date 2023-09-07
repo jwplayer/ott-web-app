@@ -10,8 +10,8 @@ import Spinner from '#components/Spinner/Spinner';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { replaceQueryParam, removeQueryParam, addQueryParam } from '#src/utils/location';
-import AccountController from '#src/controllers/AccountController';
-import CheckoutController from '#src/controllers/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 import { ACCESS_MODEL } from '#src/config';
 

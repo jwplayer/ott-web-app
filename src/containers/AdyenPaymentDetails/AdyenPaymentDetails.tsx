@@ -11,8 +11,8 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { addQueryParam, replaceQueryParam } from '#src/utils/location';
 import { addQueryParams } from '#src/utils/formatting';
-import AccountController from '#src/controllers/AccountController';
-import CheckoutController from '#src/controllers/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
 
 type Props = {

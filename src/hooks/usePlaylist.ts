@@ -6,7 +6,7 @@ import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { isScheduledOrLiveMedia } from '#src/utils/liveEvent';
 import { isTruthyCustomParamValue } from '#src/utils/common';
 import type { ApiError } from '#src/utils/api';
-import ApiController from '#src/controllers/ApiController';
+import ApiController from '#src/stores/ApiController';
 import { getModule } from '#src/modules/container';
 
 const placeholderData = generatePlaylistPlaceholder(30);

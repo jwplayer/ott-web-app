@@ -5,7 +5,7 @@ import Favorites from './Favorites';
 import { PersonalShelf } from '#src/config';
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { renderWithRouter } from '#test/testUtils';
-import ApiController from '#src/controllers/ApiController';
+import ApiController from '#src/stores/ApiController';
 import { container } from '#src/modules/container';
 
 vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {

@@ -3,7 +3,7 @@ import React from 'react';
 import UserMenu from './UserMenu';
 
 import { renderWithRouter } from '#test/testUtils';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { container } from '#src/modules/container';
 
 vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {

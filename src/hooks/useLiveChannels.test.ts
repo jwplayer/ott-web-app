@@ -8,7 +8,7 @@ import type { Playlist } from '#types/playlist';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
 import epgChannelsFixture from '#test/fixtures/epgChannels.json';
 import epgChannelsUpdateFixture from '#test/fixtures/epgChannelsUpdate.json';
-import EpgController from '#src/controllers/EpgController';
+import EpgController from '#src/stores/EpgController';
 import { container } from '#src/modules/container';
 
 const livePlaylist: Playlist = livePlaylistFixture;

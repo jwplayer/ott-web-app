@@ -5,7 +5,7 @@ import type { PlaylistItem } from '#types/playlist';
 import type { EpgProgram, EpgChannel } from '#types/epg';
 import { getLiveProgram, programIsLive } from '#src/utils/epg';
 import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
-import EpgController from '#src/controllers/EpgController';
+import EpgController from '#src/stores/EpgController';
 import { getModule } from '#src/modules/container';
 
 /**

@@ -5,7 +5,7 @@ import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { getModule } from '#src/modules/container';
-import WatchHistoryController from '#src/controllers/WatchHistoryController';
+import WatchHistoryController from '#src/stores/WatchHistoryController';
 
 type QueuedProgress = {
   item: PlaylistItem;

@@ -8,9 +8,9 @@ import Adyen from '#components/Adyen/Adyen';
 import useClientIntegration from '#src/hooks/useClientIntegration';
 import { addQueryParams } from '#src/utils/formatting';
 import type { AdyenPaymentSession } from '#types/checkout';
-import CheckoutController from '#src/controllers/CheckoutController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 
 type Props = {
   setUpdatingOrder: (loading: boolean) => void;

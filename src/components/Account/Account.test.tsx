@@ -6,7 +6,7 @@ import customer from '#test/fixtures/customer.json';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { renderWithRouter } from '#test/testUtils';
 import type { Consent } from '#types/account';
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { container } from '#src/modules/container';
 
 vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {

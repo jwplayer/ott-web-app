@@ -9,7 +9,7 @@ import type { PlaylistItem } from '#types/playlist';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import Alert from '#components/Alert/Alert';
 import { getModule } from '#src/modules/container';
-import FavoritesController from '#src/controllers/FavoritesController';
+import FavoritesController from '#src/stores/FavoritesController';
 
 type Props = {
   item: PlaylistItem;

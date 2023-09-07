@@ -4,7 +4,7 @@ import SocialButton, { SocialButtonVariant } from '../SocialButton/SocialButton'
 
 import styles from './SocialButtonsList.module.scss';
 
-import AccountController from '#src/controllers/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
 
 const SocialButtonsList = () => {

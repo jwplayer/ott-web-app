@@ -7,9 +7,9 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Config } from '#types/Config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import FavoritesController from '#src/controllers/FavoritesController';
-import AccountController from '#src/controllers/AccountController';
-import CheckoutController from '#src/controllers/CheckoutController';
+import FavoritesController from '#src/stores/FavoritesController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import { container } from '#src/modules/container';
 
 const data = {
