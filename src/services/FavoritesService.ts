@@ -1,13 +1,11 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
-import type ApiService from '../api/api.service';
-
+import ApiService from '#src/services/api.service';
 import * as persist from '#src/utils/persist';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { PlaylistItem } from '#types/playlist';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 import type { Customer } from '#types/account';
-import { SERVICES } from '#src/ioc/types';
 
 @injectable()
 export default class FavoritesService {
@@ -15,7 +13,7 @@ export default class FavoritesService {
   private PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}` : ''}`;
   private apiService;
 
-  constructor(@inject(SERVICES.Api) apiService: ApiService) {
+  constructor(apiService: ApiService) {
     this.apiService = apiService;
   }
 

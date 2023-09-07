@@ -5,20 +5,22 @@ import Favorites from './Favorites';
 import { PersonalShelf } from '#src/config';
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { renderWithRouter } from '#test/testUtils';
-import { CONTROLLERS } from '#src/ioc/types';
+import ApiController from '#src/controllers/ApiController';
+import { container } from '#src/modules/container';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
-    switch (type) {
-      case CONTROLLERS.Api:
-        return {
-          getPlaylistById: vi.fn(() => ({
-            id: 'fake_id',
-          })),
-        };
-    }
-  },
-}));
+vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {
+  if (type === ApiController) {
+    return [
+      {
+        getPlaylistById: vi.fn(() => ({
+          id: 'fake_id',
+        })),
+      },
+    ];
+  }
+
+  return [];
+});
 
 describe('<Favorites>', () => {
   test('renders and matches snapshot', () => {

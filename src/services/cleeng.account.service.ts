@@ -1,9 +1,8 @@
 import jwtDecode from 'jwt-decode';
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
-import type AccountService from './account.service';
-
-import type CleengService from '#src/services/cleeng/cleeng.service';
+import AccountService from '#src/services/account.service';
+import CleengService from '#src/services/cleeng.service';
 import type { Config } from '#types/Config';
 import { getOverrideIP } from '#src/utils/common';
 import type {
@@ -36,22 +35,23 @@ import type {
   SocialURLSData,
   DeleteAccount,
 } from '#types/account';
-import { SERVICES } from '#src/ioc/types';
 
 @injectable()
-export default class CleengAccountService implements AccountService {
+export default class CleengAccountService extends AccountService {
   private cleengService: CleengService;
 
-  public canUpdateEmail = true;
-  public canSupportEmptyFullName = true;
-  public canChangePasswordWithOldPassword = false;
-  public canRenewSubscription = true;
-  public canExportAccountData = false;
-  public canDeleteAccount = false;
-  public canUpdatePaymentMethod = true;
-  public canShowReceipts = true;
+  constructor(cleengService: CleengService) {
+    super({
+      canUpdateEmail: true,
+      canSupportEmptyFullName: true,
+      canChangePasswordWithOldPassword: false,
+      canRenewSubscription: true,
+      canExportAccountData: false,
+      canDeleteAccount: false,
+      canUpdatePaymentMethod: true,
+      canShowReceipts: true,
+    });
 
-  constructor(@inject(SERVICES.Cleeng) cleengService: CleengService) {
     this.cleengService = cleengService;
   }
 

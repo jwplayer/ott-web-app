@@ -13,9 +13,8 @@ import styles from './PaymentForm.module.scss';
 
 import useForm from '#src/hooks/useForm';
 import useCheckAccess from '#src/hooks/useCheckAccess';
-import type CheckoutController from '#src/controllers/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   couponCode?: string;
@@ -23,7 +22,7 @@ type Props = {
 };
 
 const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const checkoutController = getModule(CheckoutController);
 
   const { t } = useTranslation('account');
   const { intervalCheckAccess } = useCheckAccess();

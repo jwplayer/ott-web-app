@@ -7,7 +7,10 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Config } from '#types/Config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import { CONTROLLERS } from '#src/ioc/types';
+import FavoritesController from '#src/controllers/FavoritesController';
+import AccountController from '#src/controllers/AccountController';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { container } from '#src/modules/container';
 
 const data = {
   loading: false,
@@ -64,18 +67,18 @@ const data = {
   } as unknown as PaymentDetail,
 };
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
-    switch (type) {
-      case CONTROLLERS.Favorites:
-        return { clear: vi.fn() };
-      case CONTROLLERS.Account:
-        return { logout: vi.fn() };
-      case CONTROLLERS.Checkout:
-        return { getSubscriptionSwitches: vi.fn() };
-    }
-  },
-}));
+vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {
+  switch (type) {
+    case FavoritesController:
+      return [{ clear: vi.fn() }];
+    case AccountController:
+      return [{ logout: vi.fn() }];
+    case CheckoutController:
+      return [{ getSubscriptionSwitches: vi.fn() }];
+    default:
+      return [{}];
+  }
+});
 
 describe('User Component tests', () => {
   test('Account Page', () => {

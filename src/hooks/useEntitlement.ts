@@ -1,4 +1,4 @@
-import { useQueries } from 'react-query';
+import { useQueries, UseQueryOptions } from 'react-query';
 import shallow from 'zustand/shallow';
 
 import useClientIntegration from './useClientIntegration';
@@ -9,9 +9,8 @@ import type { PlaylistItem } from '#types/playlist';
 import { isLocked } from '#src/utils/entitlements';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type CheckoutController from '#src/controllers/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 export type UseEntitlementResult = {
   isEntitled: boolean;
@@ -50,7 +49,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
 
   if (user?.id) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+    checkoutController = getModule(CheckoutController);
   }
 
   const isPreEntitled = playlistItem && !isLocked(accessModel, !!user, !!subscription, playlistItem);
@@ -58,7 +57,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
 
   // this query is invalidated when the subscription gets reloaded
   const mediaEntitlementQueries = useQueries(
-    mediaOffers.map(({ offerId }) => ({
+    mediaOffers.map<UseQueryOptions<ServiceResponse<GetEntitlementsResponse> | undefined>>(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
       queryFn: () => checkoutController?.getEntitlements({ offerId }, sandbox),
       enabled: !!playlistItem && !!user && !!offerId && !isPreEntitled,

@@ -1,4 +1,4 @@
-import { createStore } from '#src/stores/utils';
+import { createStore } from '#src/utils/createStore';
 import { OTT_GLOBAL_PLAYER_ID } from '#src/config';
 
 export interface Settings {

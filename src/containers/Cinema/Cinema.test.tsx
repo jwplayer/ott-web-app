@@ -4,20 +4,23 @@ import Cinema from './Cinema';
 
 import { renderWithRouter } from '#test/testUtils';
 import type { PlaylistItem } from '#types/playlist';
-import { CONTROLLERS } from '#src/ioc/types';
+import ApiController from '#src/controllers/ApiController';
+import { container } from '#src/modules/container';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
-    switch (type) {
-      case CONTROLLERS.Api:
-        return {
+vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {
+  switch (type) {
+    case ApiController:
+      return [
+        {
           getPlaylistById: vi.fn(() => ({
             id: 'fake_id',
           })),
-        };
-    }
-  },
-}));
+        },
+      ];
+  }
+
+  return [{}];
+});
 
 describe('<Cinema>', () => {
   test('renders and matches snapshot', () => {

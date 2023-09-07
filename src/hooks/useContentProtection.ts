@@ -3,10 +3,9 @@ import { useQuery } from 'react-query';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
-import type AccountController from '#src/controllers/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
-import type EntitlementController from '#src/controllers/EntitlementController';
+import AccountController from '#src/controllers/AccountController';
+import { getModule } from '#src/modules/container';
+import EntitlementController from '#src/controllers/EntitlementController';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -16,8 +15,6 @@ const useContentProtection = <T>(
   enabled: boolean = true,
   placeholderData?: T,
 ) => {
-  const entitlementController = useController<EntitlementController>(CONTROLLERS.Entitlement);
-
   const { configId, signingConfig, contentProtection, jwp, urlSigning } = useConfigStore(({ config }) => ({
     configId: config.id,
     signingConfig: config.contentSigningService,
@@ -32,10 +29,11 @@ const useContentProtection = <T>(
   const { data: token, isLoading } = useQuery(
     ['token', type, id, params],
     async () => {
+      const entitlementController = getModule(EntitlementController);
+      const accountController = getModule(AccountController);
+
       // if provider is not JWP
       if (!!id && !!host) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const accountController = useController<AccountController>(CONTROLLERS.Account);
         const authData = await accountController.getAuthData();
         const { host, drmPolicyId } = signingConfig;
         return entitlementController.getMediaToken(host, id, authData?.jwt, params, drmPolicyId);

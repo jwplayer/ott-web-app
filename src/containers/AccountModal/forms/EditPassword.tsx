@@ -9,12 +9,11 @@ import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { addQueryParams } from '#src/utils/formatting';
 import { useAccountStore } from '#src/stores/AccountStore';
 import useQueryParam from '#src/hooks/useQueryParam';
-import type AccountController from '#src/controllers/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import { getModule } from '#src/modules/container';
 
 const ResetPassword: React.FC = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { t } = useTranslation('account');
   const navigate = useNavigate();
@@ -80,7 +79,7 @@ const ResetPassword: React.FC = () => {
       onBlur={passwordForm.handleBlur}
       errors={passwordForm.errors}
       onSubmit={passwordForm.handleSubmit}
-      showOldPasswordField={user && !resetPasswordTokenParam ? true : false}
+      showOldPasswordField={!!user && !resetPasswordTokenParam}
       showResetTokenField={!user && !resetPasswordTokenParam}
     />
   );

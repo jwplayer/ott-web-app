@@ -11,15 +11,13 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { addQueryParam } from '#src/utils/location';
 import useOffers from '#src/hooks/useOffers';
 import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
-import type AccountController from '#src/controllers/AccountController';
-import type CheckoutController from '#src/controllers/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { getModule } from '#src/modules/container';
 import { ACCESS_MODEL } from '#src/config';
-
 const PaymentContainer = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
   const { accessModel } = useConfigStore(
     (s) => ({

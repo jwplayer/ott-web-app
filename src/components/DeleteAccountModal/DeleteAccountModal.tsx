@@ -13,18 +13,18 @@ import type { DeleteAccountFormData } from '#types/account';
 import useForm from '#src/hooks/useForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import Alert from '#components/Alert/Alert';
-import type AccountController from '#src/controllers/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import { getModule } from '#src/modules/container';
+import { required } from '#src/utils/common';
 
 const DeleteAccountModal = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { t } = useTranslation('user');
 
   const [enteredPassword, setEnteredPassword] = useState<string>('');
 
-  const deleteAccount = useMutation((psw: string) => accountController.deleteAccountData(psw), {
+  const deleteAccount = useMutation((psw: string) => required(accountController.deleteAccountData)(psw), {
     onSuccess: async () => {
       await accountController.logout();
       navigate('/');

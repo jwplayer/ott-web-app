@@ -11,10 +11,9 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { addQueryParam, replaceQueryParam } from '#src/utils/location';
 import { addQueryParams } from '#src/utils/formatting';
-import type AccountController from '#src/controllers/AccountController';
-import type CheckoutController from '#src/controllers/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   setProcessing: (loading: boolean) => void;
@@ -25,8 +24,8 @@ type Props = {
 };
 
 export default function AdyenPaymentDetails({ setProcessing, type, setPaymentError, error, paymentMethodId }: Props) {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
   const { sandbox } = useClientIntegration();
   const navigate = useNavigate();

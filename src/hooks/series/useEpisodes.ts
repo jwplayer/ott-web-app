@@ -3,9 +3,8 @@ import { useInfiniteQuery } from 'react-query';
 import type { EpisodesWithPagination } from '#types/series';
 import type { Pagination } from '#types/pagination';
 import { SERIES_CACHE_TIME } from '#src/config';
-import type ApiController from '#src/controllers/ApiController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import ApiController from '#src/controllers/ApiController';
+import { getModule } from '#src/modules/container';
 
 const getNextPageParam = (pagination: Pagination) => {
   const { page, page_limit, total } = pagination;
@@ -28,7 +27,7 @@ export const useEpisodes = (
   fetchNextPage: (params?: { pageParam?: number }) => void;
   isLoading: boolean;
 } => {
-  const apiController = useController<ApiController>(CONTROLLERS.Api);
+  const apiController = getModule(ApiController);
 
   const {
     data,
@@ -45,8 +44,7 @@ export const useEpisodes = (
         return { pagination: season.pagination, episodes: season.episodes };
       } else {
         // Get episodes from a selected series using pagination
-        const data = await apiController.getEpisodes({ seriesId, pageOffset: pageParam });
-        return data;
+        return await apiController.getEpisodes({ seriesId, pageOffset: pageParam });
       }
     },
     {

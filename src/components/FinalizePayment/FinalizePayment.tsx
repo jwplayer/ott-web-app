@@ -10,15 +10,14 @@ import Spinner from '#components/Spinner/Spinner';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { replaceQueryParam, removeQueryParam, addQueryParam } from '#src/utils/location';
-import type AccountController from '#src/controllers/AccountController';
-import type CheckoutController from '#src/controllers/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { getModule } from '#src/modules/container';
 import { ACCESS_MODEL } from '#src/config';
 
 const FinalizePayment = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
   const { t } = useTranslation('account');
   const navigate = useNavigate();

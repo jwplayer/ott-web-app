@@ -12,20 +12,23 @@ import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
 import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
-import { initApp } from '#src/init/initApp';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
-import type SettingsController from '#src/controllers/SettingsController';
+import { initApp } from '#src/modules/initApp';
+import loadSettings from '#src/controllers/SettingsController';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
-  const settingsController = useController<SettingsController>(CONTROLLERS.Settings);
 
-  const settingsQuery = useQuery('settings-init', () => settingsController.initSettings(), {
-    enabled: true,
-    retry: 1,
-    refetchInterval: false,
-  });
+  const settingsQuery = useQuery(
+    'settings-init',
+    async () => {
+      return await loadSettings();
+    },
+    {
+      enabled: true,
+      retry: 1,
+      refetchInterval: false,
+    },
+  );
 
   const [searchParams, setSearchParams] = useSearchParams();
   const configSource = useMemo(() => getConfigSource(searchParams, settingsQuery.data), [searchParams, settingsQuery.data]);

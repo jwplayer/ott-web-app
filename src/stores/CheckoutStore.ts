@@ -1,6 +1,6 @@
 import type { Offer, Order, PaymentMethod } from '#types/checkout';
 import type { MediaOffer } from '#types/media';
-import { createStore } from '#src/stores/utils';
+import { createStore } from '#src/utils/createStore';
 
 type CheckoutStore = {
   offer: Offer | null;

@@ -1,5 +1,3 @@
-import type { e } from 'vitest/dist/index-fde81ec3';
-
 import type { PayloadWithIPOverride } from '#types/account';
 
 export type Offer = {
@@ -97,11 +95,6 @@ export type PaymentMethodResponse = {
   message: string;
   paymentMethods: PaymentMethod[];
   status: number;
-};
-
-export type PaymentStatus = {
-  status: 'successful' | 'failed';
-  message?: string;
 };
 
 export type CardPaymentData = {
@@ -232,23 +225,8 @@ export type UpdateOrderResponse = {
   success: boolean;
 };
 
-export type GetOrderPayload = {
-  orderId: number;
-};
-
-export type GetOrderResponse = {
-  message: string;
-  order: Order;
-  success: boolean;
-};
-
 export type PaymentWithoutDetailsPayload = {
   orderId: number;
-};
-
-export type PaymentWithAdyenPayload = PayloadWithIPOverride & {
-  orderId: number;
-  card: AdyenPaymentMethod;
 };
 
 export type PaymentWithPayPalPayload = {
@@ -359,11 +337,9 @@ export type FinalizeAdyenPaymentDetailsResponse = PaymentDetail;
 export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
 export type GetOffer = EnvironmentServiceRequest<GetOfferPayload, Offer>;
 export type CreateOrder = EnvironmentServiceRequest<CreateOrderArgs, CreateOrderResponse>;
-export type GetOrder = EnvironmentServiceRequest<GetOrderPayload, GetOrderResponse>;
 export type UpdateOrder = EnvironmentServiceRequest<UpdateOrderPayload, UpdateOrderResponse>;
 export type GetPaymentMethods = EmptyEnvironmentServiceRequest<PaymentMethodResponse>;
 export type PaymentWithoutDetails = EnvironmentServiceRequest<PaymentWithoutDetailsPayload, Payment>;
-export type PaymentWithAdyen = EnvironmentServiceRequest<PaymentWithAdyenPayload, Payment>;
 export type PaymentWithPayPal = EnvironmentServiceRequest<PaymentWithPayPalPayload, PaymentWithPayPalResponse>;
 export type GetSubscriptionSwitches = EnvironmentServiceRequest<GetSubscriptionSwitchesPayload, GetSubscriptionSwitchesResponse>;
 export type GetSubscriptionSwitch = EnvironmentServiceRequest<GetSubscriptionSwitchPayload, GetSubscriptionSwitchResponse>;
@@ -376,5 +352,4 @@ export type UpdatePaymentWithPayPal = EnvironmentServiceRequest<UpdatePaymentWit
 export type DeletePaymentMethod = EnvironmentServiceRequest<DeletePaymentMethodPayload, DeletePaymentMethodResponse>;
 export type AddAdyenPaymentDetails = EnvironmentServiceRequest<AddAdyenPaymentDetailsPayload, AddAdyenPaymentDetailsResponse>;
 export type FinalizeAdyenPaymentDetails = EnvironmentServiceRequest<FinalizeAdyenPaymentDetailsPayload, FinalizeAdyenPaymentDetailsResponse>;
-export type GetCardPaymentProvider = () => string;
 export type GetDirectPostCardPayment = (cardPaymentPayload: CardPaymentData, order: Order) => Promise<boolean>;

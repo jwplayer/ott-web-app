@@ -1,16 +1,15 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
-import { SERVICES } from '#src/ioc/types';
-import type ApiService from '#src/services/api/api.service';
+import ApiService from '#src/services/api.service';
 import type { AdSchedule } from '#types/ad-schedule';
 import type { EpisodeInSeries, EpisodesWithPagination, GetSeriesParams, Series } from '#types/series';
 
 @injectable()
-export default class EpgController {
-  private apiService: ApiService;
+export default class ApiController {
+  private readonly apiService: ApiService;
 
-  constructor(@inject(SERVICES.Api) apiService: ApiService) {
+  constructor(apiService: ApiService) {
     this.apiService = apiService;
   }
 

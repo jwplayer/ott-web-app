@@ -93,3 +93,11 @@ export function testId(value: string | undefined) {
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;
 export const isTruthy = <T>(value: T | true): value is Truthy<T> => Boolean(value);
+
+export const required = <T>(dependency: T | undefined): T => {
+  if (dependency === undefined) {
+    throw new Error('Not Implemented');
+  }
+
+  return dependency;
+};

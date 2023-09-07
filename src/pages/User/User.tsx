@@ -20,18 +20,17 @@ import Favorite from '#src/icons/Favorite';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { ACCESS_MODEL, PersonalShelf } from '#src/config';
-import type FavoritesController from '#src/controllers/FavoritesController';
+import FavoritesController from '#src/controllers/FavoritesController';
 import { mediaURL } from '#src/utils/formatting';
 import type { PlaylistItem } from '#types/playlist';
-import type AccountController from '#src/controllers/AccountController';
-import type CheckoutController from '#src/controllers/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 const User = (): JSX.Element => {
-  const favoritesController = useController<FavoritesController>(CONTROLLERS.Favorites);
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const favoritesController = getModule(FavoritesController);
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
   const { accessModel, favoritesList } = useConfigStore(
     (s) => ({

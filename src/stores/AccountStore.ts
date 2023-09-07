@@ -1,6 +1,6 @@
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 import type { Consent, Customer, CustomerConsent } from '#types/account';
-import { createStore } from '#src/stores/utils';
+import { createStore } from '#src/utils/createStore';
 import type { Offer } from '#types/checkout';
 
 type AccountStore = {

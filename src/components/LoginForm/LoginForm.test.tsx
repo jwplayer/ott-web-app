@@ -4,16 +4,16 @@ import { fireEvent } from '@testing-library/react';
 import LoginForm from './LoginForm';
 
 import { renderWithRouter } from '#test/testUtils';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import { container } from '#src/modules/container';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
-    switch (type) {
-      case CONTROLLERS.Account:
-        return { getSocialLoginUrls: vi.fn() };
-    }
-  },
-}));
+vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {
+  if (type === AccountController) {
+    return [{ getSocialLoginUrls: vi.fn() }];
+  }
+
+  return [];
+});
 
 describe('<LoginForm>', () => {
   test('renders and matches snapshot', () => {

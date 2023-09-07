@@ -22,9 +22,8 @@ import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collec
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
-import type AccountController from '#src/controllers/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import { getModule } from '#src/modules/container';
+import AccountController from '#src/controllers/AccountController';
 
 type Props = {
   panelClassName?: string;
@@ -41,8 +40,7 @@ interface FormErrors {
 }
 
 const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-
+  const accountController = getModule(AccountController);
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const location = useLocation();

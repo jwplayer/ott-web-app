@@ -1,5 +1,4 @@
-import { createStore } from './utils';
-
+import { createStore } from '#src/utils/createStore';
 import type { Favorite } from '#types/favorite';
 import { PersonalShelf } from '#src/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';

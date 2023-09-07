@@ -1,7 +1,7 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
-import type CleengService from '../cleeng/cleeng.service';
-
+import SubscriptionService from '#src/services/subscription.service';
+import CleengService from '#src/services/cleeng.service';
 import { addQueryParams } from '#src/utils/formatting';
 import type {
   ChangeSubscription,
@@ -15,13 +15,13 @@ import type {
   UpdateCardDetails,
   UpdateSubscription,
 } from '#types/subscription';
-import { SERVICES } from '#src/ioc/types';
 
 @injectable()
-export default class SubscriptionService implements SubscriptionService {
+export default class CleengSubscriptionService extends SubscriptionService {
   private cleengService: CleengService;
 
-  constructor(@inject(SERVICES.Cleeng) cleengService: CleengService) {
+  constructor(cleengService: CleengService) {
+    super();
     this.cleengService = cleengService;
   }
 

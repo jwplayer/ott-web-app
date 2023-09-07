@@ -1,8 +1,7 @@
 import InPlayer, { AccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import type CheckoutService from './checkout.service';
-
+import CheckoutService from '#src/services/checkout.service';
 import type {
   AddAdyenPaymentDetails,
   CardPaymentData,
@@ -11,14 +10,12 @@ import type {
   DeletePaymentMethod,
   FinalizeAdyenPaymentDetails,
   GetAdyenPaymentSession,
-  GetCardPaymentProvider,
   GetEntitlements,
   GetEntitlementsResponse,
   GetFinalizeAdyenPayment,
   GetInitialAdyenPayment,
   GetOffer,
   GetOffers,
-  GetOrder,
   GetPaymentMethods,
   GetSubscriptionSwitch,
   GetSubscriptionSwitches,
@@ -26,7 +23,6 @@ import type {
   Order,
   Payment,
   PaymentMethod,
-  PaymentWithAdyen,
   PaymentWithoutDetails,
   PaymentWithPayPal,
   SwitchSubscription,
@@ -36,14 +32,14 @@ import type {
 import { isSVODOffer } from '#src/utils/subscription';
 
 @injectable()
-export default class JWCheckout implements CheckoutService {
-  cardPaymentProvider = 'stripe';
+export default class InplayerCheckoutService extends CheckoutService {
+  private readonly cardPaymentProvider = 'stripe';
 
-  private formatPaymentMethod(method: MerchantPaymentMethod, cardPaymentProvider: string): PaymentMethod {
+  private formatPaymentMethod(method: MerchantPaymentMethod): PaymentMethod {
     return {
       id: method.id,
       methodName: method.method_name.toLocaleLowerCase(),
-      provider: cardPaymentProvider,
+      provider: this.cardPaymentProvider,
       logoUrl: '',
     } as PaymentMethod;
   }
@@ -95,10 +91,6 @@ export default class JWCheckout implements CheckoutService {
     } as Order;
   }
 
-  getCardPaymentProvider: GetCardPaymentProvider = () => {
-    return this.cardPaymentProvider;
-  };
-
   createOrder: CreateOrder = async (payload) => {
     return {
       errors: [],
@@ -132,7 +124,7 @@ export default class JWCheckout implements CheckoutService {
       const paymentMethods: PaymentMethod[] = [];
       response.data.forEach((method: MerchantPaymentMethod) => {
         if (['card', 'paypal'].includes(method.method_name.toLowerCase())) {
-          paymentMethods.push(this.formatPaymentMethod(method, this.cardPaymentProvider));
+          paymentMethods.push(this.formatPaymentMethod(method));
         }
       });
       return {
@@ -174,13 +166,6 @@ export default class JWCheckout implements CheckoutService {
     } catch {
       throw new Error('Failed to generate PayPal payment url');
     }
-  };
-
-  iFrameCardPayment: PaymentWithAdyen = async () => {
-    return {
-      errors: [],
-      responseData: {} as Payment,
-    };
   };
 
   paymentWithoutDetails: PaymentWithoutDetails = async () => {
@@ -263,10 +248,6 @@ export default class JWCheckout implements CheckoutService {
       },
       errors: [],
     };
-  };
-
-  getOrder: GetOrder = () => {
-    throw new Error('Method is not supported');
   };
 
   switchSubscription: SwitchSubscription = () => {

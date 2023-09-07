@@ -6,16 +6,15 @@ import customer from '#test/fixtures/customer.json';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { renderWithRouter } from '#test/testUtils';
 import type { Consent } from '#types/account';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import { container } from '#src/modules/container';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
-    switch (type) {
-      case CONTROLLERS.Account:
-        return { exportAccountData: vi.fn() };
-    }
-  },
-}));
+vi.spyOn(container, 'getAll').mockImplementation((type: unknown) => {
+  if (type === AccountController) {
+    return [{ exportAccountData: vi.fn() }];
+  }
+  return [];
+});
 
 describe('<Account>', () => {
   test('renders and matches snapshot', () => {

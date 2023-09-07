@@ -8,16 +8,15 @@ import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import LoginForm from '#components/LoginForm/LoginForm';
 import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
-import type AccountController from '#src/controllers/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   messageKey?: string;
 };
 
 const Login: React.FC<Props> = ({ messageKey }: Props) => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { siteName } = useConfigStore((s) => s.config);
   const navigate = useNavigate();

@@ -1,14 +1,13 @@
 import { parseISO } from 'date-fns';
 import { injectable } from 'inversify';
 
-import { getMediaStatusFromEventState } from '../../utils/liveEvent';
-
+import { getMediaStatusFromEventState } from '#src/utils/liveEvent';
 import { addQueryParams } from '#src/utils/formatting';
 import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
 import type { AdSchedule } from '#types/ad-schedule';
-import type { EpisodesRes, EpisodesWithPagination, GetSeriesParams, Series, EpisodeInSeries } from '#types/series';
+import type { EpisodeInSeries, EpisodesRes, EpisodesWithPagination, GetSeriesParams, Series } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
 
 // change the values below to change the property used to look up the alternate image
@@ -68,9 +67,6 @@ export default class ApiService {
 
   /**
    * Get playlist by id
-   * @param {string} id
-   * @param params
-   * @param {string} [drmPolicyId]
    */
   async getPlaylistById(id?: string, params: GetPlaylistParams = {}): Promise<Playlist | undefined> {
     if (!id) {
@@ -87,8 +83,6 @@ export default class ApiService {
 
   /**
    * Get watchlist by playlistId
-   * @param {string} playlistId
-   * @param {string} [token]
    */
   async getMediaByWatchlist(playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> {
     if (!mediaIds?.length) {
@@ -135,9 +129,7 @@ export default class ApiService {
     const pathname = `/apps/series/${id}`;
     const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
     const response = await fetch(url);
-    const data = await getDataOrThrow(response);
-
-    return data;
+    return await getDataOrThrow(response);
   }
 
   /**
@@ -153,7 +145,6 @@ export default class ApiService {
 
   /**
    * Get all episodes of the selected series (when no particular season is selected or when episodes are attached to series)
-   * @param {string} seriesId
    */
   async getEpisodes({
     seriesId,
@@ -193,7 +184,6 @@ export default class ApiService {
 
   /**
    * Get season of the selected series
-   * @param {string} seriesId
    */
   async getSeasonWithEpisodes({
     seriesId,
@@ -230,7 +220,6 @@ export default class ApiService {
   /**
    * Get series by id
    * @param {string} id
-   * @param params
    */
   async getAdSchedule(id: string | undefined | null): Promise<AdSchedule | undefined> {
     if (!id) {
@@ -239,8 +228,6 @@ export default class ApiService {
 
     const url = import.meta.env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
     const response = await fetch(url);
-    const data = await getDataOrThrow(response);
-
-    return data;
+    return await getDataOrThrow(response);
   }
 }

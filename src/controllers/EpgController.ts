@@ -1,14 +1,13 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import type { PlaylistItem } from '#types/playlist';
-import type EpgService from '#src/services/epg/epg.service';
-import { SERVICES } from '#src/ioc/types';
+import EpgService from '#src/services/epg.service';
 
 @injectable()
 export default class EpgController {
-  private epgService: EpgService;
+  private readonly epgService: EpgService;
 
-  constructor(@inject(SERVICES.EPG) epgService: EpgService) {
+  constructor(epgService: EpgService) {
     this.epgService = epgService;
   }
 

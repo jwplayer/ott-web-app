@@ -1,11 +1,10 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import * as persist from '#src/utils/persist';
 import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
-import type ApiService from '#src/services/api/api.service';
+import ApiService from '#src/services/api.service';
 import type { Customer } from '#types/account';
-import { SERVICES } from '#src/ioc/types';
 
 @injectable()
 export default class WatchHistoryService {
@@ -13,16 +12,14 @@ export default class WatchHistoryService {
   private MAX_WATCH_HISTORY_COUNT = 48;
   private apiService: ApiService;
 
-  constructor(@inject(SERVICES.Api) apiService: ApiService) {
+  constructor(apiService: ApiService) {
     this.apiService = apiService;
   }
 
   // Retrieve watch history media items info using a provided watch list
   private async getWatchHistoryItems(continueWatchingList: string, ids: string[]): Promise<Record<string, PlaylistItem>> {
     const watchHistoryItems = await this.apiService.getMediaByWatchlist(continueWatchingList, ids);
-    const watchHistoryItemsDict = Object.fromEntries((watchHistoryItems || []).map((item) => [item.mediaid, item]));
-
-    return watchHistoryItemsDict;
+    return Object.fromEntries((watchHistoryItems || []).map((item) => [item.mediaid, item]));
   }
 
   // We store separate episodes in the watch history and to show series card in the Continue Watching shelf we need to get their parent media items
@@ -33,15 +30,13 @@ export default class WatchHistoryService {
       .filter(Boolean) as string[];
 
     const seriesItems = await this.apiService.getMediaByWatchlist(continueWatchingList, seriesIds);
-    const seriesItemsDict = Object.keys(mediaWithSeries || {}).reduce((acc, key) => {
+    return Object.keys(mediaWithSeries || {}).reduce((acc, key) => {
       const seriesItemId = mediaWithSeries?.[key]?.[0]?.series_id;
       if (seriesItemId) {
         acc[key] = seriesItems?.find((el) => el.mediaid === seriesItemId);
       }
       return acc;
     }, {} as Record<string, PlaylistItem | undefined>);
-
-    return seriesItemsDict;
   };
 
   getWatchHistory = async (user: Customer | null, continueWatchingList: string) => {
@@ -54,7 +49,7 @@ export default class WatchHistoryService {
       const watchHistoryItems = await this.getWatchHistoryItems(continueWatchingList, ids);
       const seriesItems = await this.getWatchHistorySeriesItems(continueWatchingList, ids);
 
-      const watchHistory = savedItems.map((item) => {
+      return savedItems.map((item) => {
         const parentSeries = seriesItems?.[item.mediaid];
         const historyItem = watchHistoryItems[item.mediaid];
 
@@ -62,8 +57,6 @@ export default class WatchHistoryService {
           return this.createWatchHistoryItem(parentSeries || historyItem, item.mediaid, parentSeries?.mediaid, item.progress);
         }
       });
-
-      return watchHistory;
     }
   };
 

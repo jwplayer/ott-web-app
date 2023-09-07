@@ -17,14 +17,15 @@ ignores: [
     '\#utils',
     # This is used in src/styles, which recognizes absolute paths from the repo root
     'src',
-    # To support e2e-reports
-    'allure-commandline',
+    'allure-commandline', # To support e2e-reports
     '@codeceptjs/allure-legacy',
     'faker',
-    # For extracting i18next translation keys
-    'i18next-parser',
-    # To run linting checks
-    'npm-run-all',
-    # SW code is injected at build time
-    'virtual:pwa-register',
+    'i18next-parser', # For extracting i18next translation keys
+    'npm-run-all', # To run linting checks
+    "virtual:pwa-register", # Service Worker code is injected at build time
+    "vite-plugin-pwa/client", # Used to generate pwa framework
+    "reflect-metadata", # Used for ioc resolution
+    "@babel/plugin-proposal-decorators", # Used to build with decorators for ioc resolution
+    "babel-plugin-transform-typescript-metadata", # Used to build with decorators for ioc resolution
+    "@babel/core" # Required peer dependency for babel plugins above
   ]

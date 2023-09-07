@@ -10,9 +10,8 @@ import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
-import type AccountController from '#src/controllers/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   small?: boolean;
@@ -21,7 +20,7 @@ type Props = {
 };
 
 const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { t } = useTranslation('user');
   const navigate = useNavigate();

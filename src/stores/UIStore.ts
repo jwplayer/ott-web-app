@@ -1,6 +1,6 @@
 import type { Location } from 'react-router-dom';
 
-import { createStore } from './utils';
+import { createStore } from '#src/utils/createStore';
 
 type UIState = {
   searchQuery: string;

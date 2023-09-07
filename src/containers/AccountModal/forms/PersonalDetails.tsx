@@ -11,9 +11,8 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam } from '#src/utils/location';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
 import useOffers from '#src/hooks/useOffers';
-import type AccountController from '#src/controllers/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/controllers/AccountController';
+import { getModule } from '#src/modules/container';
 import { ACCESS_MODEL } from '#src/config';
 
 const yupConditional = (required: boolean, message: string) => {
@@ -21,7 +20,7 @@ const yupConditional = (required: boolean, message: string) => {
 };
 
 const PersonalDetails = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const navigate = useNavigate();
   const location = useLocation();

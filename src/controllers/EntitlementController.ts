@@ -1,14 +1,13 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
-import { SERVICES } from '#src/ioc/types';
-import type EntitlementService from '#src/services/entitlement/entitlement.service';
+import EntitlementService from '#src/services/entitlement.service';
 import type { GetMediaParams } from '#types/media';
 
 @injectable()
 export default class EntitlementController {
-  private entitlementService: EntitlementService;
+  private readonly entitlementService: EntitlementService;
 
-  constructor(@inject(SERVICES.Entitlement) entitlementService: EntitlementService) {
+  constructor(entitlementService: EntitlementService) {
     this.entitlementService = entitlementService;
   }
 

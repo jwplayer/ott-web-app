@@ -8,10 +8,9 @@ import Adyen from '#components/Adyen/Adyen';
 import useClientIntegration from '#src/hooks/useClientIntegration';
 import { addQueryParams } from '#src/utils/formatting';
 import type { AdyenPaymentSession } from '#types/checkout';
-import { CONTROLLERS } from '#src/ioc/types';
-import type CheckoutController from '#src/controllers/CheckoutController';
-import { useController } from '#src/ioc/container';
-import type AccountController from '#src/controllers/AccountController';
+import CheckoutController from '#src/controllers/CheckoutController';
+import { getModule } from '#src/modules/container';
+import AccountController from '#src/controllers/AccountController';
 
 type Props = {
   setUpdatingOrder: (loading: boolean) => void;
@@ -22,8 +21,8 @@ type Props = {
 };
 
 export default function AdyenInitialPayment({ setUpdatingOrder, type, setPaymentError, paymentSuccessUrl, orderId }: Props) {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
   const [session, setSession] = useState<AdyenPaymentSession>();
 

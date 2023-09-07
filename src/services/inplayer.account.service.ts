@@ -2,8 +2,7 @@ import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, Favorites
 import i18next from 'i18next';
 import { injectable } from 'inversify';
 
-import type AccountService from './account.service';
-
+import AccountService from '#src/services/account.service';
 import type {
   AuthData,
   Capture,
@@ -41,19 +40,22 @@ import { getCommonResponseData } from '#src/utils/api';
 enum InPlayerEnv {
   Development = 'development',
   Production = 'production',
-  Daily = 'daily',
 }
 
 @injectable()
-export default class JWAccountService implements AccountService {
-  public canUpdateEmail = false;
-  public canSupportEmptyFullName = false;
-  public canChangePasswordWithOldPassword = true;
-  public canRenewSubscription = false;
-  public canExportAccountData = true;
-  public canUpdatePaymentMethod = false;
-  public canShowReceipts = false;
-  public canDeleteAccount = true;
+export default class InplayerAccountService extends AccountService {
+  constructor() {
+    super({
+      canUpdateEmail: false,
+      canSupportEmptyFullName: false,
+      canChangePasswordWithOldPassword: true,
+      canRenewSubscription: false,
+      canExportAccountData: true,
+      canUpdatePaymentMethod: false,
+      canShowReceipts: false,
+      canDeleteAccount: true,
+    });
+  }
 
   private getCustomerExternalData = async (): Promise<ExternalData> => {
     const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);

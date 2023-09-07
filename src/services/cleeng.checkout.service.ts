@@ -1,9 +1,7 @@
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 
-import type CleengService from '../cleeng/cleeng.service';
-
-import type CheckoutService from './checkout.service';
-
+import CheckoutService from '#src/services/checkout.service';
+import CleengService from '#src/services/cleeng.service';
 import type {
   AddAdyenPaymentDetails,
   CreateOrder,
@@ -16,10 +14,8 @@ import type {
   GetInitialAdyenPayment,
   GetOffer,
   GetOffers,
-  GetOrder,
   GetPaymentMethods,
   GetSubscriptionSwitch,
-  GetCardPaymentProvider,
   GetSubscriptionSwitches,
   PaymentWithoutDetails,
   PaymentWithPayPal,
@@ -28,20 +24,15 @@ import type {
   UpdatePaymentWithPayPal,
 } from '#types/checkout';
 import { getOverrideIP } from '#src/utils/common';
-import { SERVICES } from '#src/ioc/types';
 
 @injectable()
-export default class CleengCheckout implements CheckoutService {
-  private cleengService: CleengService;
-  cardPaymentProvider = 'adyen';
+export default class CleengCheckoutService extends CheckoutService {
+  private readonly cleengService: CleengService;
 
-  constructor(@inject(SERVICES.Cleeng) cleengService: CleengService) {
+  constructor(cleengService: CleengService) {
+    super();
     this.cleengService = cleengService;
   }
-
-  getCardPaymentProvider: GetCardPaymentProvider = () => {
-    return this.cardPaymentProvider;
-  };
 
   getOffers: GetOffers = async (payload, sandbox) => {
     return await Promise.all(
@@ -76,10 +67,6 @@ export default class CleengCheckout implements CheckoutService {
     };
 
     return this.cleengService.post(sandbox, '/orders', JSON.stringify(createOrderPayload), { authenticate: true });
-  };
-
-  getOrder: GetOrder = async ({ orderId }, sandbox) => {
-    return this.cleengService.get(sandbox, `/orders/${orderId}`, { authenticate: true });
   };
 
   updateOrder: UpdateOrder = async ({ order, ...payload }, sandbox) => {

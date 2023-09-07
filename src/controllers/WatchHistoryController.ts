@@ -1,24 +1,20 @@
-import { inject, injectable, LazyServiceIdentifer, optional } from 'inversify';
+import { injectable, optional } from 'inversify';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
-import type WatchHistoryService from '#src/services/watchHistory/watchhistory.service';
-import { SERVICES } from '#src/ioc/types';
-import type AccountService from '#src/services/account/account.service';
+import WatchHistoryService from '#src/services/WatchHistoryService';
+import AccountService from '#src/services/account.service';
 import type { Customer } from '#types/account';
 
 @injectable()
 export default class WatchHistoryController {
-  private watchHistoryService: WatchHistoryService;
-  private accountService!: AccountService;
+  private readonly watchHistoryService: WatchHistoryService;
+  private readonly accountService?: AccountService;
 
-  constructor(
-    @inject(SERVICES.WatchHistory) watchHistoryService: WatchHistoryService,
-    @inject(new LazyServiceIdentifer(() => SERVICES.Account)) @optional() accountService: AccountService,
-  ) {
+  constructor(watchHistoryService: WatchHistoryService, @optional() accountService?: AccountService) {
     this.watchHistoryService = watchHistoryService;
     this.accountService = accountService;
   }
@@ -58,7 +54,7 @@ export default class WatchHistoryController {
     const { user } = useAccountStore.getState();
     const { getSandbox } = useConfigStore.getState();
 
-    if (user?.id && user?.externalData) {
+    if (user?.id && user?.externalData && this.accountService) {
       return this.accountService.updatePersonalShelves({ id: user.id, externalData: user.externalData }, getSandbox());
     }
 

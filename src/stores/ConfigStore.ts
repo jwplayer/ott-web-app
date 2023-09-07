@@ -1,5 +1,4 @@
-import { createStore } from './utils';
-
+import { createStore } from '#src/utils/createStore';
 import type { AccessModel, Config } from '#types/Config';
 import type { AdSchedule } from '#types/ad-schedule';
 import { ACCESS_MODEL } from '#src/config';

@@ -1,5 +1,4 @@
-import { createStore } from './utils';
-
+import { createStore } from '#src/utils/createStore';
 import { VideoProgressMinMax, PersonalShelf } from '#src/config';
 import type { WatchHistoryItem } from '#types/watchHistory';
 import type { Playlist, PlaylistItem } from '#types/playlist';
