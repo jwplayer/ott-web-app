@@ -19,23 +19,31 @@ enum ImageProperty {
 
 const PAGE_LIMIT = 20;
 
-const generateAlternateImageURL = (item: PlaylistItem, label: string) =>
-  `https://img.jwplayer.com/v1/media/${item.mediaid}/images/${label}.webp?poster_fallback=1`;
+/**
+ * We use playlistLabel prop to define the label used for all media items inside.
+ * That way we can change the behavior of the same media items being in different playlists
+ */
+const generateAlternateImageURL = ({ item, label, playlistLabel }: { item: PlaylistItem; label: string; playlistLabel?: string }) => {
+  const pathname = `/v2/media/${item.mediaid}/images/${playlistLabel || label}.webp`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { poster_fallback: 1, fallback: playlistLabel ? label : null });
+
+  return url;
+};
 
 /**
  * Transform incoming media items
  * - Parses productId into MediaOffer[] for all cleeng offers
  */
-export const transformMediaItem = (item: PlaylistItem) => {
+export const transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
   const config = ConfigStore.getState().config;
-
   const offerKeys = Object.keys(config?.integrations)[0];
+  const playlistLabel = playlist?.imageLabel;
 
   const transformedMediaItem = {
     ...item,
-    cardImage: generateAlternateImageURL(item, ImageProperty.CARD),
-    backgroundImage: generateAlternateImageURL(item, ImageProperty.BACKGROUND),
-    channelLogoImage: generateAlternateImageURL(item, ImageProperty.CHANNEL_LOGO),
+    cardImage: generateAlternateImageURL({ item, label: ImageProperty.CARD, playlistLabel }),
+    channelLogoImage: generateAlternateImageURL({ item, label: ImageProperty.CHANNEL_LOGO, playlistLabel }),
+    backgroundImage: generateAlternateImageURL({ item, label: ImageProperty.BACKGROUND }),
     mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
     scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
     scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
@@ -54,7 +62,7 @@ export const transformMediaItem = (item: PlaylistItem) => {
  * @param relatedMediaId
  */
 export const transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
-  playlist.playlist = playlist.playlist.map((item) => transformMediaItem(item));
+  playlist.playlist = playlist.playlist.map((item) => transformMediaItem(item, playlist));
 
   // remove the related media item (when this is a recommendations playlist)
   if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
