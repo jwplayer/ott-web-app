@@ -6,6 +6,7 @@ import styles from './ProfileBox.module.scss';
 import Edit from '#src/icons/Edit';
 import Check from '#src/icons/Check';
 import IconButton from '#components/IconButton/IconButton';
+import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 type Props = {
   name?: string;
@@ -22,7 +23,7 @@ const ProfileBox = ({ name, image, editMode = false, onClick, onEdit, selected =
     <div className={styles.wrapper}>
       <div className={classNames(styles.inner, selected && styles.selected)}>
         <div onClick={onClick} className={styles.box}>
-          <img className={styles.image} src={image} alt="" />
+          <img className={styles.image} src={image || defaultAvatar} alt="" />
         </div>
         {editMode && (
           <IconButton aria-label="edit-profile-button" onClick={onEdit} className={styles.overlay}>

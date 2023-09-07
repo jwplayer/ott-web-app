@@ -46,9 +46,6 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     styling: {
       footerText: '',
     },
-    custom: {
-      profiles_feature_enabled: false,
-    },
   },
   accessModel: 'SVOD',
   adScheduleData: null,

@@ -17,6 +17,7 @@ import { useSelectProfile } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
 import type { Profile } from '#types/account';
+import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 type Props = {
   small?: boolean;
@@ -58,7 +59,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
                   small={small}
                   onClick={() => selectProfile.mutate({ id: profile.id, avatarUrl: profile.avatar_url })}
                   label={profile.name}
-                  startIcon={<ProfileCircle src={profile.avatar_url} alt={profile.name} />}
+                  startIcon={<ProfileCircle src={profile.avatar_url || defaultAvatar} alt={profile.name} />}
                 />
               </li>
             ))
@@ -83,7 +84,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
             onClick={onClick}
             to={`/u/my-profile/${currentProfile?.id ?? ''}`}
             label={t('nav.profile')}
-            startIcon={<ProfileCircle src={currentProfile?.avatar_url ?? ''} alt={currentProfile?.name ?? ''} />}
+            startIcon={<ProfileCircle src={currentProfile?.avatar_url || defaultAvatar} alt={currentProfile?.name ?? ''} />}
           />
         </li>
       )}

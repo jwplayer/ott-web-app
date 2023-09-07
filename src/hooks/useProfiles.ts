@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 
 import { initializeAccount } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile } from '#src/stores/ProfileController';
 import { useProfileStore } from '#src/stores/ProfileStore';
@@ -110,6 +109,5 @@ export const useListProfiles = (
 
 export const useProfilesFeatureEnabled = (): boolean => {
   const canManageProfiles = useAccountStore((s) => s.canManageProfiles);
-  const profilesFeatureEnabled = useConfigStore((s) => s.config.custom?.profilesFeatureEnabled);
-  return canManageProfiles && !!profilesFeatureEnabled;
+  return canManageProfiles;
 };

@@ -13,7 +13,14 @@ export const listProfiles: ListProfiles = async () => {
       errors: [],
     };
   } catch {
-    throw new Error('Unable to fetch profiles.');
+    console.error('Unable to list profiles.');
+    return {
+      responseData: {
+        canManageProfiles: false,
+        collection: [],
+      },
+      errors: ['Unable to list profiles.'],
+    };
   }
 };
 
