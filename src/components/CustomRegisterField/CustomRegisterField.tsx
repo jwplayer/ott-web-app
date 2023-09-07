@@ -10,7 +10,8 @@ import Dropdown from '#components/Dropdown/Dropdown';
 import DateField from '#components/DateField/DateField';
 
 type Props = {
-  type: ConsentFieldVariants;
+  type?: ConsentFieldVariants;
+  isCustomRegisterField?: boolean;
   name: string;
   value: string | boolean;
   onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -26,7 +27,7 @@ type Props = {
 
 export type CustomRegisterFieldCommonProps = Props;
 
-export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) => {
+export const CustomRegisterField: FC<Props> = ({ type, isCustomRegisterField, value = '', ...props }) => {
   const { t, i18n } = useTranslation(type);
 
   const optionsList = useMemo(() => {
@@ -49,6 +50,11 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
       }
     }
   }, [t, type, props.options, i18n]);
+
+  // Cleeng case which is always checkbox
+  if (!isCustomRegisterField) {
+    return <Checkbox {...props} checked={value === true} />;
+  }
 
   switch (type) {
     case 'checkbox':

@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState, type ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, useEffect, useMemo, useState } from 'react';
 import { object, string, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -11,16 +10,17 @@ import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collec
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
 import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 const Registration = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchParams] = useSearchParams();
+  const { config } = useConfigStore();
   const { t } = useTranslation('account');
   const [consentValues, setConsentValues] = useState<Record<string, string | boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', searchParams.get('app-config')], getPublisherConsents);
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', config?.id], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
   const handleChangeConsent: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ currentTarget }) => {

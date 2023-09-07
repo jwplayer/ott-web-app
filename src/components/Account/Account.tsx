@@ -72,7 +72,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     const nonTerms: Consent[] = [];
 
     publisherConsents?.forEach((consent) => {
-      if (consent.type === 'checkbox') {
+      if (!consent.isCustomRegisterField || consent?.type === 'checkbox') {
         terms.push(consent);
       } else {
         nonTerms.push(consent);
@@ -287,6 +287,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                 <div className={styles.customFields}>
                   {nonTermsConsents.map((consent) => (
                     <CustomRegisterField
+                      isCustomRegisterField={consent?.isCustomRegisterField}
                       key={consent.name}
                       type={consent.type}
                       name={`consentsValues.${consent.name}`}

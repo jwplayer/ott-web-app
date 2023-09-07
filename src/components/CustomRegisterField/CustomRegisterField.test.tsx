@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import CustomRegisterField from './CustomRegisterField';
+import { CustomRegisterField } from './CustomRegisterField';
 
 describe('<CustomRegisterField>', () => {
   test('renders and matches snapshot <Checkbox>', () => {
