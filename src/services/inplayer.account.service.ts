@@ -24,6 +24,7 @@ import type {
   UpdateCustomerArgs,
   UpdateCustomerConsents,
   UpdatePersonalShelves,
+  ConsentFieldVariants,
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
@@ -36,18 +37,6 @@ enum InPlayerEnv {
   Production = 'production',
   Daily = 'daily',
 }
-
-export const REGISTER_FIELD_VARIANT = {
-  INPUT: 'input',
-  GENERIC_SELECT: 'select',
-  COUNTRY_SELECT: 'country',
-  US_STATE_SELECT: 'us_state',
-  RADIO: 'radio',
-  CHECKBOX: 'checkbox',
-  DATE_PICKER: 'datepicker',
-} as const;
-
-export type ConsentFieldVariants = (typeof REGISTER_FIELD_VARIANT)[keyof typeof REGISTER_FIELD_VARIANT];
 
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
@@ -177,7 +166,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
         (field): Consent => ({
           type: field.type as ConsentFieldVariants,
           isCustomRegisterField: true,
-          defaultValue: field.type === REGISTER_FIELD_VARIANT.CHECKBOX ? field.default_value === 'true' : field.default_value,
+          defaultValue: field.type === 'checkbox' ? field.default_value === 'true' : field.default_value,
           name: field.name,
           label: field.label,
           placeholder: field.placeholder,
@@ -481,7 +470,7 @@ function getTermsConsent(): Consent {
   const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
 
   return {
-    type: REGISTER_FIELD_VARIANT.CHECKBOX,
+    type: 'checkbox',
     isCustomRegisterField: true,
     required: true,
     name: 'terms',

@@ -221,7 +221,7 @@ export type UpdateCustomerArgs = {
 export type ConsentFieldVariants = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
 
 export interface Consent {
-  type: ConsentFieldVariantss;
+  type: ConsentFieldVariants;
   isCustomRegisterField: boolean;
   defaultValue: string | boolean;
   name: string;

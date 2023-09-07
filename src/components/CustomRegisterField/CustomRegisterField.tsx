@@ -2,12 +2,12 @@ import { type FC, type ChangeEventHandler, type ReactNode, useMemo } from 'react
 import { useTranslation } from 'react-i18next';
 import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 
+import type { ConsentFieldVariants } from '#types/account';
 import Checkbox from '#components/Checkbox/Checkbox';
 import TextField from '#components/TextField/TextField';
 import Radio from '#components/Radio/Radio';
 import Dropdown from '#components/Dropdown/Dropdown';
 import DateField from '#components/DateField/DateField';
-import { ConsentFieldVariants, REGISTER_FIELD_VARIANT } from '#src/services/inplayer.account.service';
 
 type Props = {
   type: ConsentFieldVariants;
@@ -31,8 +31,8 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
 
   const optionsList = useMemo(() => {
     switch (type) {
-      case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
-      case REGISTER_FIELD_VARIANT.US_STATE_SELECT: {
+      case 'country':
+      case 'us_state': {
         const codes = Object.keys(i18n.getResourceBundle(i18n.language, type));
 
         return codes.map((code) => ({
@@ -51,17 +51,17 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
   }, [t, type, props.options, i18n]);
 
   switch (type) {
-    case REGISTER_FIELD_VARIANT.CHECKBOX:
+    case 'checkbox':
       return <Checkbox {...props} checked={value === true} />;
-    case REGISTER_FIELD_VARIANT.INPUT:
+    case 'input':
       return <TextField {...props} value={value as string} />;
-    case REGISTER_FIELD_VARIANT.RADIO:
+    case 'radio':
       return <Radio {...props} values={optionsList} value={value as string} header={props.label} />;
-    case REGISTER_FIELD_VARIANT.GENERIC_SELECT:
-    case REGISTER_FIELD_VARIANT.COUNTRY_SELECT:
-    case REGISTER_FIELD_VARIANT.US_STATE_SELECT:
+    case 'select':
+    case 'country':
+    case 'us_state':
       return <Dropdown {...props} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
-    case REGISTER_FIELD_VARIANT.DATE_PICKER:
+    case 'datepicker':
       return <DateField {...props} value={value as string} />;
     default:
       return null;

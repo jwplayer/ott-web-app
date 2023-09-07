@@ -1,7 +1,6 @@
 import jwtDecode from 'jwt-decode';
 
 import { post, put, patch, get } from './cleeng.service';
-import { REGISTER_FIELD_VARIANT } from './inplayer.account.service';
 
 import type { Config } from '#types/Config';
 import { getOverrideIP } from '#src/utils/common';
@@ -151,7 +150,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
 
   const consents = ((response?.responseData?.consents || []) as CleengConsent[]).map(
     (cleengConsent): Consent => ({
-      type: REGISTER_FIELD_VARIANT.CHECKBOX,
+      type: 'checkbox',
       isCustomRegisterField: false,
       defaultValue: cleengConsent.enabledByDefault,
       name: cleengConsent.name,

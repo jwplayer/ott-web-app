@@ -20,7 +20,6 @@ import useToggle from '#src/hooks/useToggle';
 import { addQueryParam } from '#src/utils/location';
 import type { FormErrors } from '#types/form';
 import type { RegistrationFormData, Consent } from '#types/account';
-import type { ConsentFieldVariants } from '#src/services/inplayer.account.service';
 
 type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
@@ -127,7 +126,7 @@ const RegistrationForm: React.FC<Props> = ({
           {publisherConsents.map((consent) => (
             <CustomRegisterField
               key={consent.name}
-              type={consent.type as ConsentFieldVariants}
+              type={consent.type}
               name={consent.name}
               options={consent.options}
               label={formatConsentLabel(consent.label)}
