@@ -162,10 +162,6 @@ async function clearLoginState() {
   await restoreWatchHistory();
 }
 
-type LogoutOptions = {
-  includeNetworkRequest: boolean;
-};
-
 export async function logout(logoutOptions: { includeNetworkRequest: boolean } = { includeNetworkRequest: true }) {
   await useService(async ({ accountService }) => {
     await queryClient.invalidateQueries('entitlements');
