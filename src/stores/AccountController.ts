@@ -158,7 +158,29 @@ export const login = async (email: string, password: string) => {
     useAccountStore.setState({ loading: false });
   });
 };
-export async function logout() {
+
+async function clearLoginState() {
+  useAccountStore.setState({
+    user: null,
+    subscription: null,
+    transactions: null,
+    activePayment: null,
+    customerConsents: null,
+    publisherConsents: null,
+    loading: false,
+  });
+
+  useProfileStore.setState({
+    profile: null,
+    selectingProfileAvatar: null,
+  });
+  unpersistProfile();
+
+  await restoreFavorites();
+  await restoreWatchHistory();
+}
+
+export async function logout(logoutOptions: { includeNetworkRequest: boolean } = { includeNetworkRequest: true }) {
   await useService(async ({ accountService }) => {
     persist.removeItem(PERSIST_KEY_ACCOUNT);
     persist.removeItem(PERSIST_PROFILE);
@@ -166,29 +188,13 @@ export async function logout() {
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
 
-    useAccountStore.setState({
-      user: null,
-      canManageProfiles: false,
-      subscription: null,
-      transactions: null,
-      activePayment: null,
-      customerConsents: null,
-      publisherConsents: null,
-      loading: false,
-    });
-
-    useProfileStore.setState({
-      profile: null,
-      selectingProfileAvatar: null,
-    });
-
-    unpersistProfile();
-
-    await restoreFavorites();
-    await restoreWatchHistory();
-    await accountService?.logout();
+    await clearLoginState();
+    if (logoutOptions.includeNetworkRequest) {
+      await accountService?.logout();
+    }
   });
 }
+
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
