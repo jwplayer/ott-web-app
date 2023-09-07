@@ -10,6 +10,7 @@ import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { mediaURL } from '#src/utils/formatting';
 
 type Props = {
   playlist: Playlist;
@@ -17,7 +18,6 @@ type Props = {
   isLoading: boolean;
   accessModel: AccessModel;
   hasSubscription: boolean;
-  onCardClick: (item: PlaylistItem) => void;
   onCardHover?: (item: PlaylistItem) => void;
   onClearFavoritesClick: () => void;
 };
@@ -30,7 +30,7 @@ const cols: Breakpoints = {
   [Breakpoint.xl]: 3,
 };
 
-const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, onCardClick, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
+const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
   const { t } = useTranslation('user');
 
   if (isLoading) return <LoadingOverlay />;
@@ -38,6 +38,8 @@ const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, o
   if (error || !playlist) {
     return <ErrorPage title={t('favorites.not_found')} />;
   }
+
+  const getURL = (playlistItem: PlaylistItem) => mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
 
   return (
     <div>
@@ -47,8 +49,8 @@ const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, o
       </div>
       {playlist.playlist.length > 0 ? (
         <CardGrid
+          getUrl={getURL}
           playlist={playlist}
-          onCardClick={onCardClick}
           onCardHover={onCardHover}
           cols={cols}
           isLoading={isLoading}

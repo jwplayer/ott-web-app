@@ -24,10 +24,10 @@ import ShareButton from '#components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import Button from '#components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
-import type { PlaylistItem } from '#types/playlist';
 import useQueryParam from '#src/hooks/useQueryParam';
 import Loading from '#src/pages/Loading/Loading';
 import usePlaylist from '#src/hooks/usePlaylist';
+import type { PlaylistItem } from '#types/playlist';
 
 const LegacySeries = () => {
   const breakpoint = useBreakpoint();
@@ -79,8 +79,10 @@ const LegacySeries = () => {
 
   // Handlers
   const goBack = () => episode && navigate(legacySeriesURL({ episodeId: episode.mediaid, seriesId, play: false, playlistId: feedId }));
-  const onCardClick = (toEpisode: PlaylistItem) =>
-    seriesPlaylist && navigate(legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId }));
+  const getUrl = (toEpisode: PlaylistItem) => {
+    return seriesPlaylist ? legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId }) : '';
+  };
+
   const handleComplete = useCallback(async () => {
     navigate(legacySeriesURL({ episodeId: nextItem?.mediaid, seriesId, play: !!nextItem, playlistId: feedId }));
   }, [navigate, nextItem, seriesId, feedId]);
@@ -191,7 +193,6 @@ const LegacySeries = () => {
         hasSubscription={hasSubscription}
         playlist={filteredPlaylist}
         relatedTitle={inlineLayout ? selectedItem.title : t('episodes')}
-        onItemClick={onCardClick}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
         defaultFilterLabel={t('all_seasons')}
@@ -199,6 +200,7 @@ const LegacySeries = () => {
         watchHistory={watchHistoryDictionary}
         filterMetadata={filterMetadata}
         filters={filters}
+        getURL={getUrl}
         player={
           inlineLayout && (episode || firstEpisode) ? (
             <InlinePlayer

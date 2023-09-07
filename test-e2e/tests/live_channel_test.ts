@@ -62,7 +62,7 @@ Scenario('I can navigate to live channels from the live channels shelf', async (
   }
 
   I.see('Live Channels');
-  I.click('Play Channel 1');
+  I.click('Channel 1');
 
   waitForEpgAnimation(I);
   I.see('LIVE');

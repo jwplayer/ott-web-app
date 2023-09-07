@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
 
 import styles from './PlaylistGrid.module.scss';
 
-import { mediaURL } from '#src/utils/formatting';
 import { filterPlaylist, getFiltersFromConfig } from '#src/utils/collection';
 import CardGrid from '#components/CardGrid/CardGrid';
 import Filter from '#components/Filter/Filter';
@@ -13,9 +11,9 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { ScreenComponent } from '#types/screens';
+import { mediaURL } from '#src/utils/formatting';
 
 const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
-  const navigate = useNavigate();
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
 
   const [filter, setFilter] = useState<string>('');
@@ -32,9 +30,9 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
     setFilter('');
   }, [data.feedid]);
 
-  const onCardClick = (playlistItem: PlaylistItem) => navigate(mediaURL({ media: playlistItem, playlistId: data.feedid }));
-
   const pageTitle = `${data.title} - ${config.siteName}`;
+
+  const getUrl = (playlistItem: PlaylistItem) => mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
 
   return (
     <div className={styles.playlist}>
@@ -49,8 +47,8 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
       </header>
       <main className={styles.main}>
         <CardGrid
+          getUrl={getUrl}
           playlist={filteredPlaylist}
-          onCardClick={onCardClick}
           accessModel={accessModel}
           isLoggedIn={!!user}
           hasSubscription={!!subscription}
