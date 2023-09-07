@@ -15,12 +15,13 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 const Registration = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { config } = useConfigStore();
   const { t } = useTranslation('account');
   const [consentValues, setConsentValues] = useState<Record<string, string | boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', config?.id], getPublisherConsents);
+  const appConfigId = useConfigStore(({ config }) => config.id);
+
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
   const handleChangeConsent: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ currentTarget }) => {
