@@ -22,7 +22,15 @@ import { getModule } from '#src/modules/container';
  *       on a different program. This can be solved when we implement syncing the stream PDT with the schedule. Then the
  *       program information will be reactive based on the current time in the stream.
  */
-const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | undefined, enableAutoUpdate = true) => {
+const useLiveChannels = ({
+  playlist,
+  initialChannelId,
+  enableAutoUpdate = true,
+}: {
+  playlist: PlaylistItem[];
+  initialChannelId: string | undefined;
+  enableAutoUpdate?: boolean;
+}) => {
   const epgController = getModule(EpgController);
 
   const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgController.getSchedules(playlist), {

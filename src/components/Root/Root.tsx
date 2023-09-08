@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
-import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/common';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE, IS_TEST_MODE } from '#src/utils/common';
 import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
@@ -84,7 +84,7 @@ const Root: FC = () => {
       {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
       <AccountModal />
       {/* Config select control to improve testing experience */}
-      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
+      {((IS_DEVELOPMENT_BUILD && !IS_TEST_MODE) || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
     </>
   );
 };

@@ -24,10 +24,10 @@ import ShareButton from '#components/ShareButton/ShareButton';
 import FavoriteButton from '#src/containers/FavoriteButton/FavoriteButton';
 import Button from '#components/Button/Button';
 import PlayTrailer from '#src/icons/PlayTrailer';
-import type { PlaylistItem } from '#types/playlist';
 import useQueryParam from '#src/hooks/useQueryParam';
 import Loading from '#src/pages/Loading/Loading';
 import usePlaylist from '#src/hooks/usePlaylist';
+import type { PlaylistItem } from '#types/playlist';
 
 const LegacySeries = () => {
   const breakpoint = useBreakpoint();
@@ -79,8 +79,10 @@ const LegacySeries = () => {
 
   // Handlers
   const goBack = () => episode && navigate(legacySeriesURL({ episodeId: episode.mediaid, seriesId, play: false, playlistId: feedId }));
-  const onCardClick = (toEpisode: PlaylistItem) =>
-    seriesPlaylist && navigate(legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId }));
+  const getUrl = (toEpisode: PlaylistItem) => {
+    return seriesPlaylist ? legacySeriesURL({ episodeId: toEpisode.mediaid, seriesId, play: false, playlistId: feedId }) : '';
+  };
+
   const handleComplete = useCallback(async () => {
     navigate(legacySeriesURL({ episodeId: nextItem?.mediaid, seriesId, play: !!nextItem, playlistId: feedId }));
   }, [navigate, nextItem, seriesId, feedId]);
@@ -146,33 +148,32 @@ const LegacySeries = () => {
   return (
     <React.Fragment>
       <Helmet>
-        <>
-          <title>{pageTitle}</title>
-          <link rel="canonical" href={canonicalUrl} />
-          <meta name="description" content={pageDescription} />
-          <meta property="og:description" content={pageDescription} />
-          <meta property="og:title" content={pageTitle} />
-          <meta property="og:type" content={episode ? 'video.episode' : 'video.series'} />
-          {selectedItemImage && <meta property="og:image" content={selectedItemImage?.replace(/^https:/, 'http:')} />}
-          {selectedItemImage && <meta property="og:image:secure_url" content={selectedItemImage?.replace(/^http:/, 'https:')} />}
-          {selectedItemImage && <meta property="og:image:width" content={selectedItemImage ? '720' : ''} />}
-          {selectedItemImage && <meta property="og:image:height" content={selectedItemImage ? '406' : ''} />}
-          <meta name="twitter:title" content={pageTitle} />
-          <meta name="twitter:description" content={pageDescription} />
-          {selectedItemImage && <meta name="twitter:image" content={selectedItemImage} />}
-          <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
-          <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
-          <meta property="og:video:type" content="text/html" />
-          <meta property="og:video:width" content="1280" />
-          <meta property="og:video:height" content="720" />
-          {selectedItem.tags &&
-            String(selectedItem.tags)
+        <title>{pageTitle}</title>
+        <link rel="canonical" href={canonicalUrl} />
+        <meta name="description" content={pageDescription} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:type" content={episode ? 'video.episode' : 'video.series'} />
+        {selectedItemImage && <meta property="og:image" content={selectedItemImage?.replace(/^https:/, 'http:')} />}
+        {selectedItemImage && <meta property="og:image:secure_url" content={selectedItemImage?.replace(/^http:/, 'https:')} />}
+        {selectedItemImage && <meta property="og:image:width" content={selectedItemImage ? '720' : ''} />}
+        {selectedItemImage && <meta property="og:image:height" content={selectedItemImage ? '406' : ''} />}
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        {selectedItemImage && <meta name="twitter:image" content={selectedItemImage} />}
+        <meta property="og:video" content={canonicalUrl.replace(/^https:/, 'http:')} />
+        <meta property="og:video:secure_url" content={canonicalUrl.replace(/^http:/, 'https:')} />
+        <meta property="og:video:type" content="text/html" />
+        <meta property="og:video:width" content="1280" />
+        <meta property="og:video:height" content="720" />
+        {selectedItem.tags
+          ? String(selectedItem.tags)
               .split(',')
-              .map((tag: string) => <meta property="og:video:tag" content={tag} key={tag} />)}
-          {seriesPlaylist && selectedItem ? (
-            <script type="application/ld+json">{generateLegacyEpisodeJSONLD(seriesPlaylist, episode, episodeMetadata, seriesId)}</script>
-          ) : null}
-        </>
+              .map((tag: string) => <meta property="og:video:tag" content={tag} key={tag} />)
+          : null}
+        {seriesPlaylist && selectedItem ? (
+          <script type="application/ld+json">{generateLegacyEpisodeJSONLD(seriesPlaylist, episode, episodeMetadata, seriesId)}</script>
+        ) : null}
       </Helmet>
       <VideoLayout
         item={episode}
@@ -192,7 +193,6 @@ const LegacySeries = () => {
         hasSubscription={hasSubscription}
         playlist={filteredPlaylist}
         relatedTitle={inlineLayout ? selectedItem.title : t('episodes')}
-        onItemClick={onCardClick}
         setFilter={setSeasonFilter}
         currentFilter={seasonFilter}
         defaultFilterLabel={t('all_seasons')}
@@ -200,6 +200,7 @@ const LegacySeries = () => {
         watchHistory={watchHistoryDictionary}
         filterMetadata={filterMetadata}
         filters={filters}
+        getURL={getUrl}
         player={
           inlineLayout && (episode || firstEpisode) ? (
             <InlinePlayer

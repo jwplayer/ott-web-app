@@ -1,7 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import React, { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { render, RenderOptions } from '@testing-library/react';
+import { render, RenderOptions, act } from '@testing-library/react';
 
 import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
 
@@ -39,3 +39,11 @@ export const mockWindowLocation = (path: string) => {
 };
 
 export { customRender as renderWithRouter };
+
+// native 'waitFor' uses 'setInterval' under the hood which is also faked when using vi.useFakeTimers...
+// this custom method is to trigger micro task queue and wait for updates
+export const waitForWithFakeTimers = async () => {
+  await act(async () => {
+    await Promise.resolve();
+  });
+};

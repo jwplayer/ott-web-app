@@ -20,7 +20,6 @@ Feature('languages').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
 Scenario('English language is selected when the locale is `en-US`', async ({ I }) => {
   I.useConfig(testConfigs.basicNoAuth);
-  I.click(languageText.en.selectLanguage);
 
   // validate
   await checkActiveLanguage(I, 'en');
@@ -69,7 +68,7 @@ Scenario('Changing the language is persisted in the localStorage`', async ({ I }
 });
 
 Scenario('The language is restored from localStorage`', async ({ I }) => {
-  await I.restartBrowser({
+  I.restartBrowser({
     storageState: {
       origins: [
         {

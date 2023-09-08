@@ -2,38 +2,49 @@ import { useMemo } from 'react';
 import { useEpg } from 'planby';
 import { startOfDay, startOfToday, startOfTomorrow } from 'date-fns';
 
-import type { EpgChannel } from '#types/epg';
+import type { EpgChannel, EpgProgram } from '#types/epg';
 import { is12HourClock } from '#src/utils/datetime';
 
 const isBaseTimeFormat = is12HourClock();
 
+export const formatChannel = ({ id, channelLogoImage, backgroundImage }: EpgChannel) => ({
+  uuid: id,
+  logo: channelLogoImage,
+  channelLogoImage: channelLogoImage,
+  backgroundImage: backgroundImage,
+});
+
+export const formatProgram = (channelId: string, { id, title, cardImage, backgroundImage, description, endTime, startTime }: EpgProgram) => ({
+  channelUuid: channelId,
+  id: id,
+  title: title,
+  image: cardImage || '',
+  // programs have the same cardImage/backgroundImage (different API)
+  cardImage: cardImage || '',
+  backgroundImage: backgroundImage || '',
+  description: description || '',
+  till: endTime,
+  since: startTime,
+});
+
 /**
  * Return the Planby EPG props for the given channels
  */
-const usePlanByEpg = (channels: EpgChannel[], sidebarWidth: number, itemHeight: number, highlightColor?: string | null, backgroundColor?: string | null) => {
+const usePlanByEpg = ({
+  channels,
+  sidebarWidth,
+  itemHeight,
+  highlightColor,
+  backgroundColor,
+}: {
+  channels: EpgChannel[];
+  sidebarWidth: number;
+  itemHeight: number;
+  highlightColor?: string | null;
+  backgroundColor?: string | null;
+}) => {
   const [epgChannels, epgPrograms] = useMemo(() => {
-    return [
-      channels.map(({ id, channelLogoImage, backgroundImage }) => ({
-        uuid: id,
-        logo: channelLogoImage,
-        channelLogoImage: channelLogoImage,
-        backgroundImage: backgroundImage,
-      })),
-      channels.flatMap((channel) =>
-        channel.programs.map(({ id, title, cardImage, backgroundImage, description, endTime, startTime }) => ({
-          channelUuid: channel.id,
-          id: id,
-          title,
-          image: cardImage || '',
-          // programs have the same cardImage/backgroundImage (different API)
-          cardImage: cardImage || '',
-          backgroundImage: backgroundImage || '',
-          description: description || '',
-          till: endTime,
-          since: startTime,
-        })),
-      ),
-    ];
+    return [channels.map(formatChannel), channels.flatMap((channel) => channel.programs.map((program) => formatProgram(channel.id, program)))];
   }, [channels]);
 
   const theme = useMemo(() => makeTheme(highlightColor, backgroundColor), [highlightColor, backgroundColor]);

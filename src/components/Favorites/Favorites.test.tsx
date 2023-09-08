@@ -31,7 +31,6 @@ describe('<Favorites>', () => {
             playlist={playlist}
             error={error}
             isLoading={isLoading}
-            onCardClick={() => null}
             onCardHover={() => null}
             onClearFavoritesClick={() => null}
             hasSubscription={true}
