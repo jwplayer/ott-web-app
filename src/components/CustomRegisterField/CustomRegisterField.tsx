@@ -2,7 +2,7 @@ import { type FC, type ChangeEventHandler, type ReactNode, useMemo } from 'react
 import { useTranslation } from 'react-i18next';
 import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 
-import type { ConsentFieldVariants } from '#types/account';
+import type { CustomRegisterFieldVariant } from '#types/account';
 import Checkbox from '#components/Checkbox/Checkbox';
 import TextField from '#components/TextField/TextField';
 import Radio from '#components/Radio/Radio';
@@ -10,7 +10,7 @@ import Dropdown from '#components/Dropdown/Dropdown';
 import DateField from '#components/DateField/DateField';
 
 type Props = {
-  type: ConsentFieldVariants;
+  type?: CustomRegisterFieldVariant;
   name: string;
   value: string | boolean;
   onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -51,8 +51,6 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
   }, [t, type, props.options, i18n]);
 
   switch (type) {
-    case 'checkbox':
-      return <Checkbox {...props} checked={value === true} />;
     case 'input':
       return <TextField {...props} value={value as string} />;
     case 'radio':
@@ -64,7 +62,7 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
     case 'datepicker':
       return <DateField {...props} value={value as string} />;
     default:
-      return null;
+      return <Checkbox {...props} checked={value === true} />;
   }
 };
 

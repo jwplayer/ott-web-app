@@ -218,12 +218,13 @@ export type UpdateCustomerArgs = {
   fullName?: string;
 };
 
-export type ConsentFieldVariants = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
+export type CustomRegisterFieldVariant = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
 
 export interface Consent {
-  type: ConsentFieldVariants;
-  isCustomRegisterField: boolean;
-  defaultValue: string | boolean;
+  type?: CustomRegisterFieldVariant;
+  isCustomRegisterField?: boolean;
+  enabledByDefault?: boolean;
+  defaultValue?: string;
   name: string;
   label: string;
   placeholder: string;

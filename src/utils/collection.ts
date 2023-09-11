@@ -67,7 +67,7 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
     const consent = customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name);
 
     if (consent) {
-      const value = publisherConsent.isCustomRegisterField ? consent.value ?? '' : consent.state === 'accepted';
+      const value = publisherConsent.isCustomRegisterField === true ? consent.value ?? '' : consent.state === 'accepted';
       values[publisherConsent.name] = value;
     }
   });
@@ -97,7 +97,7 @@ const extractConsentValues = (consents?: Consent[]) => {
   }
 
   consents?.forEach((consent) => {
-    values[consent.name] = consent.defaultValue ?? '';
+    values[consent.name] = consent.type === 'checkbox' ? consent.enabledByDefault === true : consent.defaultValue ?? '';
   });
 
   return values;

@@ -1597,7 +1597,29 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
 </div>
 `;
 
-exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="randomstring"> 1`] = `<div />`;
+exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="randomstring"> 1`] = `
+<div>
+  <div
+    class="_checkbox_531f07"
+  >
+    <div
+      class="_row_531f07"
+    >
+      <input
+        id="check-box_1235_name"
+        name="name"
+        type="checkbox"
+        value=""
+      />
+      <label
+        for="check-box_1235_name"
+      >
+        label
+      </label>
+    </div>
+  </div>
+</div>
+`;
 
 exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="select"> 1`] = `
 <div>

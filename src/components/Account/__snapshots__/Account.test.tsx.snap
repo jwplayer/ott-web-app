@@ -158,7 +158,27 @@ exports[`<Account> > renders and matches snapshot 1`] = `
     >
       <div
         class="_customFields_c968f7"
-      />
+      >
+        <div
+          class="_checkbox_531f07"
+        >
+          <div
+            class="_row_531f07"
+          >
+            <input
+              id="check-box_1235_consentsValues.marketing"
+              name="consentsValues.marketing"
+              type="checkbox"
+              value=""
+            />
+            <label
+              for="check-box_1235_consentsValues.marketing"
+            >
+              Receive Marketing Emails
+            </label>
+          </div>
+        </div>
+      </div>
     </form>
     <div
       class="_controls_1c1c63"

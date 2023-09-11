@@ -24,7 +24,7 @@ import type {
   UpdateCustomerArgs,
   UpdateCustomerConsents,
   UpdatePersonalShelves,
-  ConsentFieldVariants,
+  CustomRegisterFieldVariant,
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
@@ -164,9 +164,8 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
       .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name))
       .map(
         (field): Consent => ({
-          type: field.type as ConsentFieldVariants,
+          type: field.type as CustomRegisterFieldVariant,
           isCustomRegisterField: true,
-          defaultValue: field.type === 'checkbox' ? field.default_value === 'true' : field.default_value,
           name: field.name,
           label: field.label,
           placeholder: field.placeholder,
@@ -174,6 +173,13 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
           // todo: field.option type in SDK is incorrect, remove the type casting after fixing that
           options: field.options as unknown as Record<string, string>,
           version: '1',
+          ...(field.type === 'checkbox'
+            ? {
+                enabledByDefault: field.default_value === 'true',
+              }
+            : {
+                defaultValue: field.default_value,
+              }),
         }),
       );
 
@@ -475,7 +481,7 @@ function getTermsConsent(): Consent {
     required: true,
     name: 'terms',
     label: i18next.t('account:registration.terms_consent', { termsUrl }),
-    defaultValue: false,
+    enabledByDefault: false,
     placeholder: '',
     options: {},
     version: '1',
