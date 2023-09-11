@@ -106,7 +106,8 @@ export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<Co
 export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
-  const query = useQuery(['listProfiles'], listProfiles, { ...options });
+  const user = useAccountStore((s) => s.user);
+  const query = useQuery(['listProfiles'], listProfiles, { ...options, enabled: !!user });
   const { canManageProfiles } = useAccountStore();
   if (!canManageProfiles && query.data?.responseData.canManageProfiles) {
     useAccountStore.setState({ canManageProfiles: true });
