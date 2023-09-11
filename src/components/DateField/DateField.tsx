@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode, useRef, useEffect } from 'react';
+import React, { useState, type ReactNode, useRef } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -97,6 +97,18 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
     });
   };
 
+  const triggerChangeEvent = (date: string, month: string, year: string) => {
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+
+    const newValue = date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '';
+
+    nativeInputValueSetter?.call(hiddenInputRef.current, newValue);
+
+    const inputEvent = new Event('input', { bubbles: true });
+
+    hiddenInputRef.current?.dispatchEvent(inputEvent);
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     const nextSibling = event.currentTarget?.nextElementSibling as HTMLInputElement;
@@ -107,24 +119,12 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
 
     setValues({ date, month, year });
 
+    triggerChangeEvent(date, month, year);
+
     if ((nextSibling && name === 'month' && month.length === 2) || (name === 'date' && date.length === 2)) {
       setTimeout(() => nextSibling.focus(), 1);
     }
   };
-
-  useEffect(() => {
-    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
-
-    const { date, month, year } = values;
-
-    const newValue = date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '';
-
-    nativeInputValueSetter?.call(hiddenInputRef.current, newValue);
-
-    const inputEvent = new Event('input', { bubbles: true });
-
-    hiddenInputRef.current?.dispatchEvent(inputEvent);
-  }, [values, format]);
 
   return (
     <div className={DateFieldClassName}>

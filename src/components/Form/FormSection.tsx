@@ -152,14 +152,17 @@ export function FormSection<TData extends GenericFormValues>({
         <h3>{label}</h3>
       </div>
       {isBusy && isEditing && <LoadingOverlay transparentBackground />}
-      {content &&
-        (isEditing ? (
-          <form className={styles.flexBox} noValidate onSubmit={(event) => event.preventDefault()}>
-            {content({ values, isEditing, isBusy, onChange, errors: formErrors })}
-          </form>
-        ) : (
-          <div className={styles.flexBox}>{content({ values, isEditing, isBusy, onChange })}</div>
-        ))}
+      {content && (
+        <form className={styles.flexBox} noValidate onSubmit={(event) => event.preventDefault()}>
+          {content({
+            values,
+            isEditing,
+            isBusy,
+            onChange,
+            ...(isEditing ? { errors: formErrors } : {}),
+          })}
+        </form>
+      )}
       {(saveButton || editButton || cancelButton) && (
         <div className={styles.controls}>
           {isEditing ? (

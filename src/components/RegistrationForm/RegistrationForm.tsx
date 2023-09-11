@@ -125,7 +125,6 @@ const RegistrationForm: React.FC<Props> = ({
         <div className={styles.customFields}>
           {publisherConsents.map((consent) => (
             <CustomRegisterField
-              isCustomRegisterField={consent?.isCustomRegisterField}
               key={consent.name}
               type={consent.type}
               name={consent.name}

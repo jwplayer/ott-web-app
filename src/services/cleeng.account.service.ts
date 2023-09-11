@@ -29,6 +29,7 @@ import type {
   UpdateCustomerPayload,
   ChangePasswordWithOldPassword,
   UpdatePersonalShelves,
+  Consent,
 } from '#types/account';
 import cleengAuthService from '#src/services/cleeng.auth.service';
 
@@ -131,15 +132,37 @@ export async function getUser({ config }: { config: Config }) {
   };
 }
 
+interface CleengConsent {
+  broadcasterId: number;
+  enabledByDefault: boolean;
+  label: string;
+  name: string;
+  required: boolean;
+  value: string;
+  version: string;
+}
+
 export const getPublisherConsents: GetPublisherConsents = async (config) => {
   const { cleeng } = config.integrations;
   const response = await get(!!cleeng?.useSandbox, `/publishers/${cleeng?.id}/consents`);
 
   handleErrors(response.errors);
 
-  return {
-    consents: response?.responseData?.consents || [],
-  };
+  const consents = ((response?.responseData?.consents || []) as CleengConsent[]).map(
+    (cleengConsent): Consent => ({
+      type: 'checkbox',
+      isCustomRegisterField: false,
+      defaultValue: cleengConsent.enabledByDefault,
+      name: cleengConsent.name,
+      label: cleengConsent.label,
+      placeholder: '',
+      required: cleengConsent.required,
+      options: {},
+      version: cleengConsent.version,
+    }),
+  );
+
+  return { consents };
 };
 
 export const getCustomerConsents: GetCustomerConsents = async (payload) => {
