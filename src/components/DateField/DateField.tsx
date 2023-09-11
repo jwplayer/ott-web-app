@@ -133,6 +133,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
         {!rest.required ? <span>{t('optional')}</span> : null}
       </label>
       <div className={styles.container}>
+        {/* don't be tempted to make it type="hidden", onChange will practically be ignored that way */}
         <input ref={hiddenInputRef} id={id} className={styles.hiddenInput} name={rest.name} onChange={onChange} />
         <input
           className={styles.input}
