@@ -19,8 +19,8 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
 import EditProfile from '#src/containers/Profiles/EditProfile';
 import useQueryParam from '#src/hooks/useQueryParam';
-import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import { useProfileStore } from '#src/stores/ProfileStore';
+import { useProfiles } from '#src/hooks/useProfiles';
 
 export default function AppRoutes() {
   const location = useLocation();
@@ -31,7 +31,7 @@ export default function AppRoutes() {
   const { accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const user = useAccountStore(({ user }) => user, shallow);
   const { profile } = useProfileStore();
-  const profilesEnabled = useProfilesFeatureEnabled();
+  const { profilesEnabled } = useProfiles();
 
   const shouldManageProfiles =
     !!user && profilesEnabled && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal && !location.pathname.includes('/u/profiles');

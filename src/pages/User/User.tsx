@@ -21,10 +21,10 @@ import { logout } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
 import EditProfile from '#src/containers/Profiles/EditProfile';
-import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 import { useProfileStore } from '#src/stores/ProfileStore';
+import { useProfiles } from '#src/hooks/useProfiles';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -44,7 +44,7 @@ const User = (): JSX.Element => {
   const { user: customer, subscription, loading, canUpdateEmail } = useAccountStore();
   const { profile } = useProfileStore();
 
-  const profilesEnabled = useProfilesFeatureEnabled();
+  const { profilesEnabled } = useProfiles();
 
   const profileAndFavoritesPage = location.pathname?.includes('my-profile') || location.pathname.includes('favorites');
 

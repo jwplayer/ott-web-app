@@ -3,13 +3,13 @@ import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from 'reac
 import { useNavigate } from 'react-router';
 
 import { initializeAccount } from '#src/stores/AccountController';
-import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile } from '#src/stores/ProfileController';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import type { AuthData, CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
@@ -57,7 +57,7 @@ export const useSelectProfile = () => {
 };
 
 export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
-  const listProfiles = useListProfiles();
+  const listProfiles = useProfiles();
   const navigate = useNavigate();
 
   return useMutation<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>(createProfile, {
@@ -73,7 +73,7 @@ export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 };
 
 export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
-  const listProfiles = useListProfiles();
+  const listProfiles = useProfiles();
   const navigate = useNavigate();
 
   return useMutation(updateProfile, {
@@ -91,7 +91,7 @@ export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 };
 
 export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>) => {
-  const listProfiles = useListProfiles();
+  const listProfiles = useProfiles();
   const navigate = useNavigate();
 
   return useMutation<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>(deleteProfile, {
@@ -103,11 +103,13 @@ export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<Co
   });
 };
 
-export const useListProfiles = (
+export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
-) => useQuery(['listProfiles'], listProfiles, { ...options });
-
-export const useProfilesFeatureEnabled = (): boolean => {
-  const canManageProfiles = useAccountStore((s) => s.canManageProfiles);
-  return canManageProfiles;
+) => {
+  const query = useQuery(['listProfiles'], listProfiles, { ...options });
+  const { canManageProfiles } = useAccountStore();
+  if (!canManageProfiles && query.data?.responseData.canManageProfiles) {
+    useAccountStore.setState({ canManageProfiles: true });
+  }
+  return { ...query, profilesEnabled: query.data?.responseData.canManageProfiles && canManageProfiles };
 };

@@ -15,7 +15,6 @@ import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
 import { useProfileStore } from '#src/stores/ProfileStore';
 
 const Root: FC = () => {
@@ -51,9 +50,8 @@ const Root: FC = () => {
   const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
 
   const { profile, selectingProfileAvatar } = useProfileStore();
-  const profilesEnabled = useProfilesFeatureEnabled();
 
-  if (userData.user && profilesEnabled && selectingProfileAvatar !== null) {
+  if (userData.user && selectingProfileAvatar !== null) {
     return <LoadingOverlay profileImageUrl={selectingProfileAvatar || profile?.avatar_url} />;
   }
 

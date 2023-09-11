@@ -2,7 +2,6 @@ import i18next from 'i18next';
 
 import { subscribeToNotifications } from './NotificationsController';
 import { useProfileStore } from './ProfileStore';
-import { listProfiles } from './ProfileController';
 
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import useAccount from '#src/hooks/useAccount';
@@ -520,11 +519,8 @@ export async function getMediaItems(watchlistId: string | undefined | null, medi
 }
 
 async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string, shouldSubscriptionReload: boolean = true) {
-  const response = await listProfiles();
-  const canManageProfiles = response?.responseData?.canManageProfiles ?? false;
   useAccountStore.setState({
     user,
-    canManageProfiles,
     customerConsents,
   });
 

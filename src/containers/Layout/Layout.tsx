@@ -20,16 +20,13 @@ import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
 import { useProfileStore } from '#src/stores/ProfileStore';
-import { unpersistProfile, useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import { unpersistProfile, useProfiles } from '#src/hooks/useProfiles';
 
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
-  const { data: profilesData } = useListProfiles();
-  const profiles = profilesData?.responseData.collection;
-  const profilesEnabled = useProfilesFeatureEnabled();
   const { menu, assets, siteName, description, styling, features } = config;
   const metaDescription = description || t('default_description');
   const { clientId } = useClientIntegration();
@@ -37,6 +34,8 @@ const Layout = () => {
   const { footerText } = styling || {};
   const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
+
+  const { data: { responseData: { collection: profiles = [] } = {} } = {}, profilesEnabled } = useProfiles();
 
   if (profilesEnabled && !profiles?.length) {
     unpersistProfile();
@@ -52,9 +51,8 @@ const Layout = () => {
     shallow,
   );
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const user = useAccountStore(({ user }) => user);
   const { profile } = useProfileStore();
-  const isLoggedIn = !!user;
+  const isLoggedIn = !!useAccountStore(({ user }) => user);
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 

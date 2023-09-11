@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
 import styles from './UserMenu.module.scss';
+import ProfilesMenu from './ProfilesMenu/ProfilesMenu';
 
 import AccountCircle from '#src/icons/AccountCircle';
 import Favorite from '#src/icons/Favorite';
@@ -11,8 +12,6 @@ import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
-import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-import Plus from '#src/icons/Plus';
 import { useSelectProfile } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
@@ -47,34 +46,17 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
   return (
     <ul className={styles.menuItems}>
       {accessModel === 'SVOD' && profilesEnabled && (
-        <>
-          <li className={styles.sectionHeader}>{t('nav.switch_profiles')}</li>
-          {selectProfile.isLoading ? (
-            <LoadingOverlay inline />
-          ) : (
-            profiles?.map((profile) => (
-              <li key={profile.id}>
-                <MenuButton
-                  active={profile.id === currentProfile?.id}
-                  small={small}
-                  onClick={() => selectProfile.mutate({ id: profile.id, avatarUrl: profile.avatar_url })}
-                  label={profile.name}
-                  startIcon={<ProfileCircle src={profile.avatar_url || defaultAvatar} alt={profile.name} />}
-                />
-              </li>
-            ))
-          )}
-          {(profiles?.length || 0) < 4 && (
-            <li>
-              <MenuButton small={small} onClick={() => navigate('/u/profiles/create')} label={t('nav.add_profile')} startIcon={<Plus />} />
-            </li>
-          )}
-          <hr
-            className={classNames(styles.divider, {
-              [styles.small]: small,
-            })}
-          />
-        </>
+        <ProfilesMenu
+          profiles={profiles ?? []}
+          currentProfile={currentProfile}
+          small={small}
+          selectingProfile={selectProfile.isLoading}
+          selectProfile={selectProfile.mutate}
+          defaultAvatar={defaultAvatar}
+          createButtonLabel={t('nav.add_profile')}
+          switchProfilesLabel={t('nav.switch_profiles')}
+          onCreateButtonClick={() => navigate('/u/profiles/create')}
+        />
       )}
       <li className={styles.sectionHeader}>{t('nav.settings')}</li>
       {profilesEnabled && currentProfile && (

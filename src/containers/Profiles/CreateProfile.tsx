@@ -9,12 +9,12 @@ import type { ProfileFormValues } from './types';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import { useCreateProfile, useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import { useCreateProfile, useProfiles } from '#src/hooks/useProfiles';
 import styles from '#src/pages/User/User.module.scss';
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const profilesEnabled = useProfilesFeatureEnabled();
+  const { profilesEnabled } = useProfiles();
 
   const [avatarUrl, setAvatarUrl] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
 
@@ -27,7 +27,7 @@ const CreateProfile = () => {
     if (!profilesEnabled) navigate('/');
   }, [profilesEnabled, navigate]);
 
-  const listProfiles = useListProfiles();
+  const { isLoading: loadingProfilesList } = useProfiles();
 
   const initialValues = {
     name: '',
@@ -55,7 +55,7 @@ const CreateProfile = () => {
       },
     );
 
-  if (listProfiles.isLoading) return <LoadingOverlay inline />;
+  if (loadingProfilesList) return <LoadingOverlay inline />;
 
   return (
     <div className={styles.user}>

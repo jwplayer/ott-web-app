@@ -11,7 +11,7 @@ import type { Profile } from '#types/account';
 import AddNewProfile from '#src/components/ProfileBox/AddNewProfile';
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import Button from '#src/components/Button/Button';
-import { useSelectProfile, useListProfiles, useProfilesFeatureEnabled } from '#src/hooks/useProfiles';
+import { useSelectProfile, useProfiles } from '#src/hooks/useProfiles';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 const MAX_PROFILES = 4;
 
@@ -23,15 +23,11 @@ const Profiles = ({ editMode = false }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
   const { loading, user } = useAccountStore(({ loading, user }) => ({ loading, user }), shallow);
-  const profilesEnabled = useProfilesFeatureEnabled();
 
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  const { data, isLoading, isFetching, isError } = useListProfiles({
-    refetchOnMount: true,
-    staleTime: 0,
-  });
+  const { data, isLoading, isFetching, isError, profilesEnabled } = useProfiles();
 
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
