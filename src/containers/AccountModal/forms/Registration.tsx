@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { object, string, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
@@ -20,6 +20,8 @@ const Registration = () => {
 
   const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
+
+  const queryClient = useQueryClient();
 
   const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConsentValues((current) => ({ ...current, [event.target.name]: event.target.checked }));
@@ -49,6 +51,8 @@ const Registration = () => {
       await updateConsents(customerConsents).catch(() => {
         // error caught while updating the consents, but continue the registration flow
       });
+
+      await queryClient.invalidateQueries('listProfiles');
 
       navigate(addQueryParam(location, 'u', 'personal-details'));
     } catch (error: unknown) {
