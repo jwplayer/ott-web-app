@@ -39,6 +39,7 @@
     "firstname": "First name",
     "hide_password": "Hide password",
     "lastname": "Last name",
+    "other_registration_details": "Other registration details",
     "password": "Password",
     "save": "Save",
     "security": "Password",

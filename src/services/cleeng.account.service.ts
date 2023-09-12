@@ -137,9 +137,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
 
   handleErrors(response.errors);
 
-  return {
-    consents: response?.responseData?.consents || [],
-  };
+  return { consents: response?.responseData?.consents || [] };
 };
 
 export const getCustomerConsents: GetCustomerConsents = async (payload) => {

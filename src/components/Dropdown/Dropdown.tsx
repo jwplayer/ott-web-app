@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -14,7 +14,7 @@ type Props = {
   defaultLabel?: string;
   options?: (string | { value: string; label: string })[];
   optionsStyle?: string;
-  label?: string;
+  label?: ReactNode;
   fullWidth?: boolean;
   size?: 'small' | 'medium';
   error?: boolean;
@@ -44,7 +44,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
 
   return (
     <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)}>
-      {label && (
+      {(label || !required) && (
         <label htmlFor={id} className={styles.label}>
           {label}
           {!required ? <span>{t('optional')}</span> : null}

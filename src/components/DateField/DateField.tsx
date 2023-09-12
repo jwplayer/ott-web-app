@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type ReactNode, useRef } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -9,12 +9,12 @@ import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
   className?: string;
-  label?: string;
+  label?: ReactNode;
   placeholder?: string;
   name?: string;
   value: string;
   format?: string;
-  onChange?: (dateString: string) => void;
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onFocus?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   helperText?: React.ReactNode;
   error?: boolean;
@@ -38,6 +38,8 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
   });
 
   const id = useOpaqueId('text-field', rest.name);
+
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   const DateFieldClassName = classNames(
     styles.dateField,
@@ -95,6 +97,18 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
     });
   };
 
+  const triggerChangeEvent = (date: string, month: string, year: string) => {
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+
+    const newValue = date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '';
+
+    nativeInputValueSetter?.call(hiddenInputRef.current, newValue);
+
+    const inputEvent = new Event('input', { bubbles: true });
+
+    hiddenInputRef.current?.dispatchEvent(inputEvent);
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     const nextSibling = event.currentTarget?.nextElementSibling as HTMLInputElement;
@@ -105,9 +119,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
 
     setValues({ date, month, year });
 
-    if (onChange) {
-      onChange(date && month && year ? format.replace('YYYY', year).replace('MM', month).replace('DD', date) : '');
-    }
+    triggerChangeEvent(date, month, year);
 
     if ((nextSibling && name === 'month' && month.length === 2) || (name === 'date' && date.length === 2)) {
       setTimeout(() => nextSibling.focus(), 1);
@@ -121,6 +133,8 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
         {!rest.required ? <span>{t('optional')}</span> : null}
       </label>
       <div className={styles.container}>
+        {/* don't be tempted to make it type="hidden", onChange will practically be ignored that way */}
+        <input ref={hiddenInputRef} id={id} className={styles.hiddenInput} name={rest.name} onChange={onChange} />
         <input
           className={styles.input}
           name="date"
@@ -132,7 +146,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           onKeyDown={handleKeyDown}
           maxLength={2}
           type="number"
-          id={id}
+          id={`${id}-date`}
         />
         {' / '}
         <input
@@ -146,7 +160,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           onKeyDown={handleKeyDown}
           maxLength={2}
           type="number"
-          id={id}
+          id={`${id}-month`}
         />
         {' / '}
         <input
@@ -160,7 +174,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
           onKeyDown={handleKeyDown}
           maxLength={4}
           type="number"
-          id={id}
+          id={`${id}-year`}
         />
       </div>
       <HelperText error={error}>{helperText}</HelperText>
