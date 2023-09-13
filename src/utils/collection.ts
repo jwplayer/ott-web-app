@@ -60,6 +60,25 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
   if (!publisherConsents || !customerConsents) {
     return {};
   }
+
+  const values: Record<string, string | boolean> = {};
+
+  publisherConsents?.forEach((publisherConsent) => {
+    const consent = customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name);
+
+    if (consent) {
+      const value = publisherConsent.isCustomRegisterField === true ? consent.value ?? '' : consent.state === 'accepted';
+      values[publisherConsent.name] = value;
+    }
+  });
+
+  return values;
+};
+
+const formatConsents = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+  if (!publisherConsents || !customerConsents) {
+    return {};
+  }
   const values: Record<string, boolean> = {};
   publisherConsents?.forEach((publisherConsent) => {
     if (customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name && customerConsent.state === 'accepted')) {
@@ -71,14 +90,14 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
 };
 
 const extractConsentValues = (consents?: Consent[]) => {
-  const values: Record<string, boolean> = {};
+  const values: Record<string, string | boolean> = {};
 
   if (!consents) {
     return values;
   }
 
   consents?.forEach((consent) => {
-    values[consent.name] = consent.enabledByDefault;
+    values[consent.name] = consent.type === 'checkbox' ? consent.enabledByDefault === true : consent.defaultValue ?? '';
   });
 
   return values;
@@ -93,14 +112,15 @@ const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: 
     consents.push({
       name: consent.name,
       version: consent.version,
-      state: values.consents[consent.name] ? 'accepted' : 'declined',
+      state: values[consent.name] ? 'accepted' : 'declined',
+      value: values[consent.name] ?? '',
     });
   });
 
   return consents;
 };
 
-const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, boolean>) => {
+const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, string | boolean>) => {
   const customerConsents: CustomerConsent[] = [];
   const consentsErrors: string[] = [];
 
@@ -115,6 +135,7 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
       name: consent.name,
       version: consent.version,
       state: consents[consent.name] ? 'accepted' : 'declined',
+      value: consents[consent.name] ?? '',
     });
   });
 
@@ -149,6 +170,7 @@ export {
   findPlaylistImageForWidth,
   generatePlaylistPlaceholder,
   formatConsentValues,
+  formatConsents,
   formatConsentsFromValues,
   extractConsentValues,
   checkConsentsFromValues,
