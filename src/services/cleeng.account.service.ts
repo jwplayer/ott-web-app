@@ -254,3 +254,11 @@ export const canExportAccountData = false;
 export const canDeleteAccount = false;
 export const canUpdatePaymentMethod = true;
 export const canShowReceipts = true;
+export const canManageProfiles = false;
+
+export const listProfiles = () => null;
+export const createProfile = () => null;
+export const enterProfile = () => null;
+export const updateProfile = () => null;
+export const getProfileDetails = () => null;
+export const deleteProfile = () => null;

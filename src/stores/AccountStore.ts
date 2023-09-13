@@ -1,7 +1,7 @@
-import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
-import type { Consent, Customer, CustomerConsent } from '#types/account';
 import { createStore } from '#src/stores/utils';
+import type { Consent, Customer, CustomerConsent } from '#types/account';
 import type { Offer } from '#types/checkout';
+import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 
 type AccountStore = {
   loading: boolean;
@@ -19,6 +19,7 @@ type AccountStore = {
   canExportAccountData: boolean;
   canDeleteAccount: boolean;
   canShowReceipts: boolean;
+  canManageProfiles: boolean;
   setLoading: (loading: boolean) => void;
 };
 
@@ -38,5 +39,6 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set) =
   canDeleteAccount: false,
   canUpdatePaymentMethod: false,
   canShowReceipts: false,
+  canManageProfiles: false,
   setLoading: (loading: boolean) => set({ loading }),
 }));

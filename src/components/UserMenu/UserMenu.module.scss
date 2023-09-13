@@ -2,6 +2,7 @@
 @use 'src/styles/theme';
 
 .menuItems {
+  width: auto;
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -26,4 +27,33 @@
     margin: variables.$base-spacing;
     border-top: 1px solid rgba(255, 255, 255, 0.32);
   }
+}
+
+.sectionHeader {
+  width: 100%;
+  padding: 0 0 12px 24px;
+  color: variables.$slate-gray;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.profileButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 6px 18px;
+  gap: 12px;
+  color: variables.$white;
+  font-size: 16px;
+  transition: all 0.1s ease-out;
+}
+
+.profileButton:hover {
+  background: rgba(variables.$white, 0.12);
+}
+
+.profileButton:active {
+  background: rgba(variables.$white, 0.24);
 }
