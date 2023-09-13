@@ -27,7 +27,6 @@ import type {
 import type { Offer } from '#types/checkout';
 import { unpersistProfile } from '#src/hooks/useProfiles';
 
-const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
 
 export const initializeAccount = async () => {
@@ -181,7 +180,6 @@ async function clearLoginState() {
 
 export async function logout(logoutOptions: { includeNetworkRequest: boolean } = { includeNetworkRequest: true }) {
   await useService(async ({ accountService }) => {
-    persist.removeItem(PERSIST_KEY_ACCOUNT);
     persist.removeItem(PERSIST_PROFILE);
 
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.

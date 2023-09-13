@@ -8,15 +8,13 @@ import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
-import type { AuthData, CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
+import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 import { useAccountStore } from '#src/stores/AccountStore';
 
-const PERSIST_KEY_ACCOUNT = 'auth';
 const PERSIST_PROFILE = 'profile';
 
 export const unpersistProfile = () => {
   persist.removeItem(PERSIST_PROFILE);
-  persist.removeItem(PERSIST_KEY_ACCOUNT);
 };
 
 export const useSelectProfile = () => {
@@ -29,11 +27,6 @@ export const useSelectProfile = () => {
     onSuccess: async (response) => {
       const profile = response?.responseData;
       if (profile?.credentials?.access_token) {
-        const authData: AuthData = {
-          jwt: profile.credentials.access_token,
-          refreshToken: '',
-        };
-        persist.setItem(PERSIST_KEY_ACCOUNT, authData);
         persist.setItem(PERSIST_PROFILE, profile);
         persist.setItemStorage('inplayer_token', {
           expires: profile.credentials.expires,
