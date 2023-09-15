@@ -1,9 +1,11 @@
 {
   "account": {
     "about_you": "Profile info",
+    "add_profile": "Add profile",
     "cancel": "Cancel",
     "confirm_password": "Confirm password",
     "continue": "Continue",
+    "delete": "Delete",
     "delete_account": {
       "body": "Permanently delete your account and all of your content.",
       "error": "An error occurred while deleting your account. Please try again.",
@@ -39,12 +41,15 @@
     "firstname": "First name",
     "hide_password": "Hide password",
     "lastname": "Last name",
+    "manage_profiles": "Manage profiles",
+    "other_registration_details": "Other registration details",
     "password": "Password",
     "save": "Save",
     "security": "Password",
     "terms_and_tracking": "Legal & Marketing",
     "update_consents": "Update consents",
-    "view_password": "View password"
+    "view_password": "View password",
+    "who_is_watching": "Who’s watching?"
   },
   "favorites": {
     "clear": "Clear favorites",
@@ -59,9 +64,13 @@
   },
   "nav": {
     "account": "Account",
+    "add_profile": "Add new profile",
     "favorites": "Favorites",
     "logout": "Log out",
-    "payments": "Payments"
+    "payments": "Payments",
+    "profile": "Profile",
+    "settings": "Settings",
+    "switch_profiles": "Switch profiles"
   },
   "payment": {
     "access_granted": "access granted",
@@ -103,5 +112,28 @@
     "update_payment_details": "Update payment details",
     "upgrade_plan_success": "You've successfully changed the subscription plan. You can enjoy your additional benefits immediately.",
     "weekly_subscription": "Weekly subscription"
+  },
+  "profile": {
+    "adult": "Adult",
+    "avatar": "Avatar",
+    "content_rating": "Content rating",
+    "create": "Create profile",
+    "create_message": "Create your profile",
+    "delete": "Delete profile",
+    "delete_confirmation": "Are you sure you want to delete your profile? You will lose all you watch history and settings connected to this profile.",
+    "delete_description": "Permanently delete your profile along with all of your watch history and favorites.",
+    "delete_main": "The main profile cannot be deleted because it’s linked to your account's watch history and favorites.",
+    "description": "Profiles allow you to watch content and assemble your own personal collection of favorites.",
+    "form_error": "Something went wrong. Please try again later.",
+    "info": "Profile info",
+    "kids": "Kids",
+    "name": "User name",
+    "no_one_watching": "There’s no one watching.",
+    "validation": {
+      "name": {
+        "required": "Please enter a name for your profile.",
+        "too_short": "Please enter at least 2 characters."
+      }
+    }
   }
 }

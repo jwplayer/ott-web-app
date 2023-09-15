@@ -14,7 +14,7 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
   >
     TypeError: Cannot destructure property 'authState' of '__vite_ssr_import_5__.useOktaAuth(...)' as it is null.
-    at UserMenu (/Users/kire.mitrov/projects/jw/ott-web-app/src/components/UserMenu/UserMenu.tsx:25:11)
+    at UserMenu (/Users/kire.mitrov/projects/jw/ott-web-app/src/components/UserMenu/UserMenu.tsx:35:11)
     at renderWithHooks (/Users/kire.mitrov/projects/jw/ott-web-app/node_modules/react-dom/cjs/react-dom.development.js:16305:18)
     at mountIndeterminateComponent (/Users/kire.mitrov/projects/jw/ott-web-app/node_modules/react-dom/cjs/react-dom.development.js:20074:13)
     at beginWork (/Users/kire.mitrov/projects/jw/ott-web-app/node_modules/react-dom/cjs/react-dom.development.js:21587:16)

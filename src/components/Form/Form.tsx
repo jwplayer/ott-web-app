@@ -75,7 +75,7 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
       }}
     >
       {children?.map((props, i) => (
-        <FormSection key={i} {...props} />
+        <FormSection<TData> key={i} {...props} />
       ))}
     </FormContext.Provider>
   );

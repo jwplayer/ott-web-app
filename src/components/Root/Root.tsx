@@ -15,6 +15,7 @@ import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import { useAccountStore } from '#src/stores/AccountStore';
+import { useProfileStore } from '#src/stores/ProfileStore';
 
 const Root: FC = () => {
   const { t } = useTranslation('error');
@@ -47,6 +48,12 @@ const Root: FC = () => {
   }, []);
 
   const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
+
+  const { profile, selectingProfileAvatar } = useProfileStore();
+
+  if (userData.user && selectingProfileAvatar !== null) {
+    return <LoadingOverlay profileImageUrl={selectingProfileAvatar || profile?.avatar_url} />;
+  }
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {
     return <Navigate to="/" />; // component instead of hook to prevent extra re-renders
