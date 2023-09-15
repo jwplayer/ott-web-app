@@ -393,7 +393,7 @@ export const getSocialUrls = async (config: Config) => {
     throw new Error('Failed to fetch social urls');
   }
 
-  socialResponse.data.social_urls.push({ okta: 'http://localhost:8080/okta/auth?app-config=a2kbjdv0' } as any);
+  socialResponse.data.social_urls.push({ okta: window.location.origin + '/okta/auth?app-config=a2kbjdv0' } as any);
 
   return socialResponse.data.social_urls;
 };
