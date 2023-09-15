@@ -71,6 +71,8 @@
     "@codeceptjs/configure": "^0.8.0",
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
+    "@okta/okta-auth-js": "^7.4.2",
+    "@okta/okta-react": "^6.7.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/dompurify": "^2.3.4",

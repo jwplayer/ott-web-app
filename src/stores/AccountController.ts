@@ -132,6 +132,7 @@ export const getAccount = async () => {
 };
 
 export const login = async (email: string, password: string) => {
+  let ret = {};
   await useService(async ({ accountService, config, accessModel }) => {
     useAccountStore.setState({ loading: true });
 
@@ -144,7 +145,9 @@ export const login = async (email: string, password: string) => {
     }
 
     useAccountStore.setState({ loading: false });
+    ret = response;
   });
+  return ret;
 };
 
 async function clearLoginState() {

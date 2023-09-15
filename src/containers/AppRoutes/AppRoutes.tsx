@@ -1,6 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Routes } from 'react-router-dom';
+import { Security } from '@okta/okta-react';
+
+import { oktaAuth } from '../OktaAuth/config';
+import OktaAuth from '../OktaAuth/OktaAuth';
+import OktaAuthCallback from '../OktaAuth/OktaAuthCallback';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import RootErrorPage from '#components/RootErrorPage/RootErrorPage';
@@ -16,21 +21,29 @@ import Layout from '#src/containers/Layout/Layout';
 export default function AppRoutes() {
   const { t } = useTranslation('error');
 
+  const restoreOriginalUri = async () => {
+    // placeholder
+  };
+
   return (
-    <Routes>
-      <Route element={<Layout />} errorElement={<RootErrorPage />}>
-        <Route index element={<Home />} />
-        <Route path="/p/:id" element={<PlaylistScreenRouter />} />
-        <Route path="/m/:id/*" element={<MediaScreenRouter />} />
-        <Route path="/s/:id/*" element={<LegacySeries />} />
-        <Route path="/q/*" element={<Search />} />
-        <Route path="/u/*" element={<User />} />
-        <Route path="/o/about" element={<About />} />
-        <Route
-          path="/*"
-          element={<ErrorPage title={t('notfound_error_heading', 'Not found')} message={t('notfound_error_description', "This page doesn't exist.")} />}
-        />
-      </Route>
-    </Routes>
+    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+      <Routes>
+        <Route path="/okta/auth/callback" element={<OktaAuthCallback />} />
+        <Route path="/okta/auth" element={<OktaAuth />} />
+        <Route element={<Layout />} errorElement={<RootErrorPage />}>
+          <Route index element={<Home />} />
+          <Route path="/p/:id" element={<PlaylistScreenRouter />} />
+          <Route path="/m/:id/*" element={<MediaScreenRouter />} />
+          <Route path="/s/:id/*" element={<LegacySeries />} />
+          <Route path="/q/*" element={<Search />} />
+          <Route path="/u/*" element={<User />} />
+          <Route path="/o/about" element={<About />} />
+          <Route
+            path="/*"
+            element={<ErrorPage title={t('notfound_error_heading', 'Not found')} message={t('notfound_error_description', "This page doesn't exist.")} />}
+          />
+        </Route>
+      </Routes>
+    </Security>
   );
 }

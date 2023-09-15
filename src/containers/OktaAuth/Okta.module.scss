@@ -1,0 +1,35 @@
+@use 'src/styles/variables';
+
+.authContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    button {
+        margin-top: 30px;
+    }
+  }
+  
+  .authFrame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 300px;
+    padding: 20px;
+    text-align: center;
+    background-color: variables.$gray-darker;
+    p {
+        margin-bottom: 0;
+    }
+  }
+  .logoWrapper {
+    display: flex;
+    align-items: center;
+    .authLogo {
+        display: inline;
+        width: 100px;
+    }
+  }
+
+  

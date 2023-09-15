@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
+import { useOktaAuth } from '@okta/okta-react';
 
 import styles from './UserMenu.module.scss';
 
@@ -21,15 +22,19 @@ type Props = {
 const UserMenu = ({ showPaymentsItem, small = false, onClick }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
+  const { authState } = useOktaAuth();
 
   const onLogout = useCallback(async () => {
+    if (authState?.isAuthenticated) {
+      return navigate('/okta/auth');
+    }
     if (onClick) {
       onClick();
     }
 
     await logout();
     navigate('/', { replace: true });
-  }, [onClick, navigate]);
+  }, [onClick, navigate, authState]);
 
   return (
     <ul className={styles.menuItems}>
