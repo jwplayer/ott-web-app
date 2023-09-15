@@ -10,6 +10,7 @@ import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev, testId } from '#src/utils/common';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { useMediaAds } from '#src/hooks/useMediaAds';
 
 type Props = {
   playerId: string;
@@ -59,7 +60,9 @@ const Player: React.FC<Props> = ({
   const startTimeRef = useRef(startTime);
   const setPlayer = useOttAnalytics(item, feedId);
 
-  const { adScheduleData } = useConfigStore((s) => s);
+  const adScheduleId = useConfigStore((s) => s.config.adSchedule);
+  const { preRollUrl, midRollUrl, postRollUrl } = item;
+  const { data: adScheduleData, isLoading: isAdScheduleLoading } = useMediaAds(adScheduleId, item?.mediaid, { preRollUrl, midRollUrl, postRollUrl });
 
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
@@ -201,10 +204,10 @@ const Player: React.FC<Props> = ({
       return loadPlaylist();
     }
 
-    if (libLoaded) {
+    if (libLoaded && !isAdScheduleLoading) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey, feedId]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey, feedId, isAdScheduleLoading]);
 
   useEffect(() => {
     return () => {

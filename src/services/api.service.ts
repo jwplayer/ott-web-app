@@ -6,7 +6,7 @@ import { addQueryParams } from '#src/utils/formatting';
 import { getDataOrThrow } from '#src/utils/api';
 import { filterMediaOffers } from '#src/utils/entitlements';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '#types/playlist';
-import type { AdSchedule } from '#types/ad-schedule';
+import type { AdSchedule, AdTagUrls } from '#types/ad-schedule';
 import type { EpisodesRes, EpisodesWithPagination, GetSeriesParams, Series, EpisodeInSeries } from '#types/series';
 import { useConfigStore as ConfigStore } from '#src/stores/ConfigStore';
 
@@ -92,6 +92,7 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
 /**
  * Get watchlist by playlistId
  * @param {string} playlistId
+ * @param {string[]} mediaIds
  * @param {string} [token]
  */
 export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
@@ -246,4 +247,26 @@ export const getAdSchedule = async (id: string | undefined | null): Promise<AdSc
   const data = await getDataOrThrow(response);
 
   return data;
+};
+
+export const getMediaAdSchedule = async (id: string, urls: AdTagUrls, fallbackAdSchedule: string | undefined | null): Promise<AdSchedule | undefined> => {
+  const { preRollUrl, midRollUrl, postRollUrl } = urls;
+  const pathname = `/v2/advertising/media/${id}/schedule.json`;
+  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
+    preroll_url: preRollUrl,
+    midroll_url: midRollUrl,
+    postroll_url: postRollUrl,
+    fallback_ad_schedule: fallbackAdSchedule,
+  });
+
+  const response = await fetch(url);
+
+  // No media ads set up
+  if (response.status === 204) {
+    return;
+  }
+
+  const data = (await getDataOrThrow(response)) as { timings: AdSchedule };
+
+  return data.timings;
 };
