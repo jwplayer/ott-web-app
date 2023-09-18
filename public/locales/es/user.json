@@ -1,9 +1,11 @@
 {
   "account": {
     "about_you": "Información de perfil",
+    "add_profile": "Añadir perfil",
     "cancel": "Cancelar",
     "confirm_password": "Confirmar contraseña",
     "continue": "Continuar",
+    "delete": "",
     "delete_account": {
       "body": "Elimine permanentemente su cuenta y todo su contenido.",
       "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
@@ -39,12 +41,15 @@
     "firstname": "Nombre",
     "hide_password": "Ocultar contraseña",
     "lastname": "Apellido",
+    "manage_profiles": "Administrar perfiles",
+    "other_registration_details": "Otros detalles de registro",
     "password": "Contraseña",
     "save": "Guardar",
     "security": "Contraseña",
     "terms_and_tracking": "Jurídico y marketing",
     "update_consents": "Actualizar consentimientos",
-    "view_password": "Ver contraseña"
+    "view_password": "Ver contraseña",
+    "who_is_watching": "¿Quién está mirando?"
   },
   "favorites": {
     "clear": "Borrar favoritos",
@@ -59,9 +64,13 @@
   },
   "nav": {
     "account": "Cuenta",
+    "add_profile": "",
     "favorites": "Favoritos",
     "logout": "Cerrar sesión",
-    "payments": "Pagos"
+    "payments": "Pagos",
+    "profile": "",
+    "settings": "",
+    "switch_profiles": ""
   },
   "payment": {
     "access_granted": "acceso concedido",
@@ -104,5 +113,28 @@
     "update_payment_details": "Actualizar detalles de pago",
     "upgrade_plan_success": "Haz cambiado exitosamente el plan de tu suscripción. Puedes comenzar a disfrutar de los beneficios adicionales de inmediato.",
     "weekly_subscription": "Suscripción semanal"
+  },
+  "profile": {
+    "adult": "",
+    "avatar": "",
+    "content_rating": "",
+    "create": "",
+    "create_message": "",
+    "delete": "",
+    "delete_confirmation": "",
+    "delete_description": "",
+    "delete_main": "",
+    "description": "",
+    "form_error": "",
+    "info": "",
+    "kids": "",
+    "name": "",
+    "no_one_watching": "",
+    "validation": {
+      "name": {
+        "required": "",
+        "too_short": ""
+      }
+    }
   }
 }

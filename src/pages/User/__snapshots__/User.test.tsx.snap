@@ -111,8 +111,9 @@ exports[`User Component tests > Account Page 1`] = `
             account.about_you
           </h3>
         </div>
-        <div
+        <form
           class="_flexBox_1c1c63"
+          novalidate=""
         >
           <div
             class="_textField_e16c1b"
@@ -140,7 +141,7 @@ exports[`User Component tests > Account Page 1`] = `
               Person
             </p>
           </div>
-        </div>
+        </form>
         <div
           class="_controls_1c1c63"
         >
@@ -164,8 +165,9 @@ exports[`User Component tests > Account Page 1`] = `
             account.email
           </h3>
         </div>
-        <div
+        <form
           class="_flexBox_1c1c63"
+          novalidate=""
         >
           <div
             class="_textField_e16c1b"
@@ -180,7 +182,7 @@ exports[`User Component tests > Account Page 1`] = `
               user@jwplayer.com
             </p>
           </div>
-        </div>
+        </form>
         <div
           class="_controls_1c1c63"
         />
@@ -195,8 +197,9 @@ exports[`User Component tests > Account Page 1`] = `
             account.security
           </h3>
         </div>
-        <div
+        <form
           class="_flexBox_1c1c63"
+          novalidate=""
         />
         <div
           class="_controls_1c1c63"
@@ -221,8 +224,9 @@ exports[`User Component tests > Account Page 1`] = `
             account.terms_and_tracking
           </h3>
         </div>
-        <div
+        <form
           class="_flexBox_1c1c63"
+          novalidate=""
         />
         <div
           class="_controls_1c1c63"

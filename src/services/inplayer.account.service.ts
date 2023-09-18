@@ -1,8 +1,10 @@
-import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 import { injectable } from 'inversify';
 
 import AccountService from '#src/services/account.service';
+import { getCommonResponseData } from '#src/utils/api';
+import type { Config } from '#types/Config';
 import type {
   AuthData,
   Capture,
@@ -30,12 +32,11 @@ import type {
   UpdateCustomerArgs,
   UpdateCustomerConsents,
   UpdatePersonalShelves,
+  CustomRegisterFieldVariant,
 } from '#types/account';
-import type { Config } from '#types/Config';
-import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
+import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 import type { WatchHistoryItem } from '#types/watchHistory';
-import { getCommonResponseData } from '#src/utils/api';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -76,11 +77,18 @@ export default class InplayerAccountService extends AccountService {
 
   private getTermsConsent(): Consent {
     const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
-    return this.formatPublisherConsents({
+
+    return {
+      type: 'checkbox',
+      isCustomRegisterField: true,
       required: true,
       name: 'terms',
       label: i18next.t('account:registration.terms_consent', { termsUrl }),
-    });
+      enabledByDefault: false,
+      placeholder: '',
+      options: {},
+      version: '1',
+    };
   }
 
   private parseJson(value: string, fallback = {}) {
@@ -148,18 +156,6 @@ export default class InplayerAccountService extends AccountService {
       jwt,
       refreshToken: '',
     };
-  }
-
-  private formatPublisherConsents(consent: Partial<RegisterField>) {
-    return {
-      broadcasterId: 0,
-      enabledByDefault: false,
-      label: consent.label,
-      name: consent.name,
-      required: consent.required,
-      value: '',
-      version: '1',
-    } as Consent;
   }
 
   initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
@@ -283,11 +279,33 @@ export default class InplayerAccountService extends AccountService {
       const { jwp } = config.integrations;
       const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-      const result: Consent[] = data?.collection.filter((field) => field.type === 'checkbox').map((consent) => this.formatPublisherConsents(consent));
+      const result = data?.collection
+        // we exclude these fields because we already have them by default
+        .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name))
+        .map(
+          (field): Consent => ({
+            type: field.type as CustomRegisterFieldVariant,
+            isCustomRegisterField: true,
+            name: field.name,
+            label: field.label,
+            placeholder: field.placeholder,
+            required: field.required,
+            // todo: field.option type in SDK is incorrect, remove the type casting after fixing that
+            options: field.options as unknown as Record<string, string>,
+            version: '1',
+            ...(field.type === 'checkbox'
+              ? {
+                  enabledByDefault: field.default_value === 'true',
+                }
+              : {
+                  defaultValue: field.default_value,
+                }),
+          }),
+        );
 
-      return {
-        consents: [this.getTermsConsent(), ...result],
-      };
+      const consents = [this.getTermsConsent(), ...result];
+
+      return { consents };
     } catch {
       throw new Error('Failed to fetch publisher consents.');
     }
@@ -406,9 +424,9 @@ export default class InplayerAccountService extends AccountService {
   updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
     const { favorites, history } = payload.externalData;
     const externalData = await this.getCustomerExternalData();
-    const currentWatchHistoryIds = externalData?.history?.map((e) => e.mediaid);
     const currentFavoriteIds = externalData?.favorites?.map((e) => e.mediaid);
     const payloadFavoriteIds = favorites?.map((e) => e.mediaid) || [];
+    const currentWatchHistoryIds = externalData?.history?.map((e) => e.mediaid);
 
     try {
       history?.forEach(async (history) => {

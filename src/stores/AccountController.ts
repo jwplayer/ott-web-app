@@ -1,9 +1,16 @@
 import i18next from 'i18next';
 import { injectable, optional } from 'inversify';
 
+import { useProfileStore } from './ProfileStore';
 import FavoritesController from './FavoritesController';
 import WatchHistoryController from './WatchHistoryController';
 
+import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { logDev } from '#src/utils/common';
+import * as persist from '#src/utils/persist';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type {
   Capture,
@@ -16,17 +23,17 @@ import type {
   GetPublisherConsentsResponse,
 } from '#types/account';
 import type { Offer } from '#types/checkout';
-import { useAccountStore } from '#src/stores/AccountStore';
-import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
-import { logDev } from '#src/utils/common';
+import { unpersistProfile } from '#src/hooks/useProfiles';
 import SubscriptionService from '#src/services/subscription.service';
 import AccountService from '#src/services/account.service';
 import CheckoutService from '#src/services/checkout.service';
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { addQueryParams } from '#src/utils/formatting';
 import { simultaneousLoginWarningKey } from '#components/LoginForm/LoginForm';
 import { ACCESS_MODEL } from '#src/config';
+import { container } from '#src/modules/container';
+import { ProfileService } from '#src/services/profile.service';
+
+const PERSIST_PROFILE = 'profile';
 
 enum NotificationsTypes {
   ACCESS_GRANTED = 'access.granted',
@@ -75,11 +82,16 @@ export default class AccountController {
       loading: true,
       canUpdateEmail,
       canRenewSubscription,
+      canManageProfiles: container.isBound(ProfileService),
       canUpdatePaymentMethod,
       canChangePasswordWithOldPassword,
       canExportAccountData,
       canDeleteAccount: canExportAccountData,
       canShowReceipts,
+    });
+
+    useProfileStore.setState({
+      profile: persist.getItem(PERSIST_PROFILE) || null,
     });
 
     await this.accountService.initialize(config, this.logout);
@@ -222,12 +234,21 @@ export default class AccountController {
       loading: false,
     });
 
+    useProfileStore.setState({
+      profile: null,
+      selectingProfileAvatar: null,
+    });
+    unpersistProfile();
+
     await this.favoritesController?.restoreFavorites();
     await this.watchHistoryController?.restoreWatchHistory();
   }
 
   async logout(logoutOptions: { includeNetworkRequest: boolean } = { includeNetworkRequest: true }) {
+    persist.removeItem(PERSIST_PROFILE);
+    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
+
     await this.clearLoginState();
     if (logoutOptions.includeNetworkRequest) {
       await this.accountService?.logout();

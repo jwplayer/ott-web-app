@@ -24,6 +24,9 @@ import EntitlementService from '#src/services/entitlement.service';
 import FavoritesService from '#src/services/FavoritesService';
 import EpgController from '#src/stores/EpgController';
 import EntitlementController from '#src/stores/EntitlementController';
+import { ProfileService } from '#src/services/profile.service';
+import InplayerProfileService from '#src/services/inplayer.profile.service';
+import ProfileController from '#src/stores/ProfileController';
 
 export const initApp = async (configSource: string | undefined) => {
   const config = await loadAndValidateConfig(configSource);
@@ -50,6 +53,8 @@ export const initApp = async (configSource: string | undefined) => {
     container.bind(AccountService).to(InplayerAccountService);
     container.bind(CheckoutService).to(InplayerCheckoutService);
     container.bind(SubscriptionService).to(SubscriptionJWService);
+    container.bind(ProfileService).to(InplayerProfileService);
+    container.bind(ProfileController).toSelf();
   }
 
   // We only request favorites and continue_watching data if there is a corresponding item in the content section

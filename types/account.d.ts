@@ -1,4 +1,4 @@
-import type { CommonResponse } from '@inplayer-org/inplayer.js';
+import type { CommonResponse, ProfilesData } from '@inplayer-org/inplayer.js';
 
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
@@ -218,15 +218,21 @@ export type UpdateCustomerArgs = {
   fullName?: string;
 };
 
-export type Consent = {
-  broadcasterId: number;
+export type CustomRegisterFieldVariant = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
+
+export interface Consent {
+  type?: CustomRegisterFieldVariant;
+  isCustomRegisterField?: boolean;
+  enabledByDefault?: boolean;
+  defaultValue?: string;
   name: string;
-  version: string;
-  value: string;
   label: string;
-  enabledByDefault: boolean;
+  placeholder: string;
   required: boolean;
-};
+  options: Record<string, string>;
+  version: string;
+}
+
 export type CustomerConsent = {
   customerId?: string;
   date?: number;
@@ -236,7 +242,7 @@ export type CustomerConsent = {
   newestVersion?: string;
   required?: boolean;
   state: 'accepted' | 'declined';
-  value?: string;
+  value?: string | boolean;
   version: string;
 };
 
@@ -309,6 +315,30 @@ export type UpdatePersonalShelvesArgs = {
   };
 };
 
+export type Profile = ProfilesData;
+
+export type ProfilePayload = {
+  id?: string;
+  name: string;
+  adult: boolean;
+  avatar_url?: string;
+  pin?: number;
+};
+
+export type EnterProfilePayload = {
+  id: string;
+  pin?: number;
+};
+
+export type ProfileDetailsPayload = {
+  id: string;
+};
+
+export type ListProfilesResponse = {
+  canManageProfiles: boolean;
+  collection: ProfilesData[];
+};
+
 export type FirstLastNameInput = {
   firstName: string;
   lastName: string;
@@ -359,3 +389,9 @@ type ExportAccountData = EnvironmentServiceRequest<undefined, CommonAccountRespo
 type SocialURLSData = PromiseRequest<Config, SocialURLs[]>;
 type NotificationsData = PromiseRequest<SubscribeToNotificationsPayload, boolean>;
 type DeleteAccount = EnvironmentServiceRequest<DeleteAccountPayload, CommonAccountResponse>;
+type ListProfiles = EnvironmentServiceRequest<undefined, ListProfilesResponse>;
+type CreateProfile = EnvironmentServiceRequest<ProfilePayload, ProfilesData>;
+type UpdateProfile = EnvironmentServiceRequest<ProfilePayload, ProfilesData>;
+type EnterProfile = EnvironmentServiceRequest<EnterProfilePayload, ProfilesData>;
+type GetProfileDetails = EnvironmentServiceRequest<ProfileDetailsPayload, ProfilesData>;
+type DeleteProfile = EnvironmentServiceRequest<ProfileDetailsPayload, CommonAccountResponse>;

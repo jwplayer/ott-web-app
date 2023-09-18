@@ -174,9 +174,7 @@ export default class CleengAccountService extends AccountService {
 
     this.handleErrors(response.errors);
 
-    return {
-      consents: response?.responseData?.consents || [],
-    };
+    return { consents: response?.responseData?.consents || [] };
   };
 
   getCustomerConsents: GetCustomerConsents = async (payload) => {

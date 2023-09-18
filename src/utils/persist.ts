@@ -17,6 +17,16 @@ const setItem = (key: string, value: unknown) => {
   }
 };
 
+const setItemStorage = (key: string, value: unknown) => {
+  const storageValue = JSON.stringify(value);
+
+  try {
+    window.localStorage.setItem(key, storageValue);
+  } catch (error: unknown) {
+    console.error(error);
+  }
+};
+
 const getItem = <T>(key: string) => {
   const storageKey = `${LOCAL_STORAGE_PREFIX}${key}`;
 
@@ -47,4 +57,4 @@ const parseJSON = <T>(value?: string | null): T | undefined => {
   }
 };
 
-export { setItem, getItem, removeItem };
+export { setItem, setItemStorage, getItem, removeItem };
