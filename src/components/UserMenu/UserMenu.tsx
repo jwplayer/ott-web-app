@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
+import type { UseMutateFunction } from 'react-query';
 
 import styles from './UserMenu.module.scss';
 import ProfilesMenu from './ProfilesMenu/ProfilesMenu';
@@ -12,7 +13,6 @@ import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
-import { useSelectProfile } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
 import type { Profile } from '#types/account';
@@ -26,13 +26,23 @@ type Props = {
   currentProfile?: Profile;
   profilesEnabled?: boolean;
   profiles?: Profile[];
+  isSelectingProfile?: boolean;
+  selectProfile?: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
 };
 
-const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, currentProfile, profilesEnabled, profiles }: Props) => {
+const UserMenu = ({
+  showPaymentsItem,
+  small = false,
+  onClick,
+  accessModel,
+  currentProfile,
+  profilesEnabled,
+  profiles,
+  isSelectingProfile,
+  selectProfile,
+}: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
-
-  const selectProfile = useSelectProfile();
 
   const onLogout = useCallback(async () => {
     if (onClick) {
@@ -45,13 +55,13 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
 
   return (
     <ul className={styles.menuItems}>
-      {accessModel === 'SVOD' && profilesEnabled && (
+      {accessModel === 'SVOD' && profilesEnabled && selectProfile && (
         <ProfilesMenu
           profiles={profiles ?? []}
           currentProfile={currentProfile}
           small={small}
-          selectingProfile={selectProfile.isLoading}
-          selectProfile={selectProfile.mutate}
+          selectingProfile={!!isSelectingProfile}
+          selectProfile={selectProfile}
           defaultAvatar={defaultAvatar}
           createButtonLabel={t('nav.add_profile')}
           switchProfilesLabel={t('nav.switch_profiles')}
@@ -82,7 +92,9 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
           <MenuButton small={small} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
         </li>
       )}
-      <hr className={classNames(styles.divider, { [styles.small]: small })} />
+      <li>
+        <hr className={classNames(styles.divider, { [styles.small]: small })} />
+      </li>
       <li>
         <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Exit />} />
       </li>

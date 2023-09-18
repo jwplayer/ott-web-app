@@ -1,6 +1,7 @@
 import React, { ReactFragment, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import type { UseMutateFunction } from 'react-query';
 
 import styles from './Header.module.scss';
 
@@ -52,6 +53,8 @@ type Props = {
   currentProfile?: Profile;
   profiles?: Profile[];
   profilesEnabled?: boolean;
+  selectProfile?: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
+  isSelectingProfile?: boolean;
   accessModel?: AccessModel;
 };
 
@@ -82,6 +85,8 @@ const Header: React.FC<Props> = ({
   currentProfile,
   profiles,
   profilesEnabled,
+  selectProfile,
+  isSelectingProfile,
   accessModel,
 }) => {
   const { t } = useTranslation('menu');
@@ -145,6 +150,8 @@ const Header: React.FC<Props> = ({
               currentProfile={currentProfile}
               profilesEnabled={profilesEnabled}
               profiles={profiles}
+              selectProfile={selectProfile}
+              isSelectingProfile={!!isSelectingProfile}
             />
           </Panel>
         </Popover>

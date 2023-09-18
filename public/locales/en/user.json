@@ -61,6 +61,7 @@
   "login": {
     "field_required": "This field is required"
   },
+  "name": "Name",
   "nav": {
     "account": "Account",
     "add_profile": "Add new profile",
@@ -123,6 +124,8 @@
     "delete_description": "Permanently delete your profile along with all of your watch history and favorites.",
     "delete_main": "The main profile cannot be deleted because it’s linked to your account's watch history and favorites.",
     "description": "Profiles allow you to watch content and assemble your own personal collection of favorites.",
+    "done": "Done",
+    "edit": "Edit profile",
     "form_error": "Something went wrong. Please try again later.",
     "info": "Profile info",
     "kids": "Kids",

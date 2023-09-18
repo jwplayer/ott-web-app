@@ -35,7 +35,9 @@ const ProfilesMenu = ({
   <>
     <li className={styles.sectionHeader}>{switchProfilesLabel}</li>
     {selectingProfile ? (
-      <LoadingOverlay inline />
+      <li>
+        <LoadingOverlay inline />
+      </li>
     ) : (
       profiles?.map((profile) => (
         <li key={profile.id}>
@@ -54,11 +56,13 @@ const ProfilesMenu = ({
         <MenuButton small={small} onClick={onCreateButtonClick} startIcon={<Plus />} label={createButtonLabel} />
       </li>
     )}
-    <hr
-      className={classNames(styles.divider, {
-        [styles.small]: small,
-      })}
-    />
+    <li>
+      <hr
+        className={classNames(styles.divider, {
+          [styles.small]: small,
+        })}
+      />
+    </li>
   </>
 );
 
