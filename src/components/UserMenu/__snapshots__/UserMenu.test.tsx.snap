@@ -97,9 +97,11 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
         </span>
       </a>
     </li>
-    <hr
-      class="_divider_457528"
-    />
+    <li>
+      <hr
+        class="_divider_457528"
+      />
+    </li>
     <li>
       <div
         aria-label="nav.logout"

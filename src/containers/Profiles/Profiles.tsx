@@ -46,7 +46,7 @@ const Profiles = ({ editMode = false }: Props) => {
     <div className={styles.wrapper}>
       {activeProfiles === 0 ? (
         <div className={styles.headings}>
-          <p className={styles.paragarph}>{t('profile.no_one_watching')}</p>
+          <p className={styles.paragraph}>{t('profile.no_one_watching')}</p>
           <h2 className={styles.heading}>{t('profile.create_message')}</h2>
         </div>
       ) : (
@@ -71,7 +71,7 @@ const Profiles = ({ editMode = false }: Props) => {
           {!editMode ? (
             <Button onClick={() => navigate('/u/profiles/edit')} label={t('account.manage_profiles')} variant="outlined" size="large" fullWidth={isMobile} />
           ) : (
-            <Button onClick={() => navigate('/u/profiles')} label="Done" variant="outlined" size="large" fullWidth={isMobile} />
+            <Button onClick={() => navigate('/u/profiles')} label={t('profile.done')} variant="outlined" size="large" fullWidth={isMobile} />
           )}
         </div>
       )}

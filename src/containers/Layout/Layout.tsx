@@ -43,6 +43,8 @@ const Layout = () => {
     unpersistProfile();
   }
 
+  const selectProfile = useSelectProfile();
+
   const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
     ({ searchQuery, searchActive, userMenuOpen, languageMenuOpen }) => ({
       languageMenuOpen,
@@ -154,6 +156,8 @@ const Layout = () => {
           currentProfile={profile ?? undefined}
           profiles={profiles}
           profilesEnabled={profilesEnabled}
+          selectProfile={selectProfile.mutate}
+          isSelectingProfile={!!selectProfile.isLoading}
           accessModel={accessModel}
         >
           <Button label={t('home')} to="/" variant="text" />

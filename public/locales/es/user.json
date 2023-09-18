@@ -61,6 +61,7 @@
   "login": {
     "field_required": ""
   },
+  "name": "",
   "nav": {
     "account": "Cuenta",
     "add_profile": "Añade un nuevo perfil",

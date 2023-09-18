@@ -62,7 +62,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
         <div className={profileStyles.formFields}>
           {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
           {submitting && <LoadingOverlay inline />}
-          <h2 className={profileStyles.nameHeading}>Name</h2>
+          <h2 className={profileStyles.nameHeading}>{t('name')}</h2>
           <TextField
             required
             name="name"
