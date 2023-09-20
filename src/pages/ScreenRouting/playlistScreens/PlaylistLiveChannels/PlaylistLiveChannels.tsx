@@ -124,7 +124,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
   }
 
   // SEO (for channels)
-  const getUrl = (id: string) => liveChannelsURL(feedid, id);
+  // const getUrl = (id: string) => liveChannelsURL(feedid, id);
   const canonicalUrl = `${window.location.origin}${liveChannelsURL(feedid, channel.id)}`;
   const pageTitle = `${channel.title} - ${siteName}`;
 
@@ -215,7 +215,6 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
             channel={channel}
             program={program}
             config={config}
-            getUrl={getUrl}
           />
         </div>
       </VideoDetails>
