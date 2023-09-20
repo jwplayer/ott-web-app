@@ -5,7 +5,6 @@ import type { UseMutateFunction } from 'react-query';
 
 import styles from './Header.module.scss';
 
-import AccountCircle from '#src/icons/AccountCircle';
 import SearchBar, { Props as SearchBarProps } from '#components/SearchBar/SearchBar';
 import Logo from '#components/Logo/Logo';
 import Menu from '#src/icons/Menu';
@@ -23,6 +22,7 @@ import Panel from '#components/Panel/Panel';
 import type { Profile } from '#types/account';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
+import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -138,7 +138,7 @@ const Header: React.FC<Props> = ({
     return isLoggedIn ? (
       <React.Fragment>
         <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('open_user_menu')} onClick={openUserMenu}>
-          {currentProfile?.avatar_url ? <ProfileCircle src={currentProfile.avatar_url} alt={currentProfile.name} /> : <AccountCircle />}
+          <ProfileCircle src={currentProfile?.avatar_url || defaultAvatar} alt={currentProfile?.name ?? t('profile_icon')} />
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
           <Panel>

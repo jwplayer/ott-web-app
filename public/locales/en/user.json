@@ -116,9 +116,11 @@
   "profile": {
     "adult": "Adult",
     "avatar": "Avatar",
+    "back_to_profiles": "Back to profiles",
     "content_rating": "Content rating",
-    "create": "Create profile",
     "create_message": "Create your profile",
+    "created_message": "You successfully created your profile. Now go and watch some awesome content and assemble your own personal collection of favorites.",
+    "created_title": "You’ve created your profile",
     "delete": "Delete profile",
     "delete_confirmation": "Are you sure you want to delete your profile? You will lose all you watch history and settings connected to this profile.",
     "delete_description": "Permanently delete your profile along with all of your watch history and favorites.",
@@ -136,6 +138,7 @@
         "required": "Please enter a name for your profile.",
         "too_short": "Please enter at least 2 characters."
       }
-    }
+    },
+    "watch_now": "Watch now"
   }
 }
