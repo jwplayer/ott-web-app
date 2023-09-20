@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory, RegisterField } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
 import { getCommonResponseData } from '#src/utils/api';
@@ -26,7 +26,6 @@ import type {
   UpdateCustomerArgs,
   UpdateCustomerConsents,
   UpdatePersonalShelves,
-  CustomRegisterFieldVariant,
 } from '#types/account';
 import type { Favorite } from '#types/favorite';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
@@ -159,33 +158,11 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    const result = data?.collection
-      // we exclude these fields because we already have them by default
-      .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name))
-      .map(
-        (field): Consent => ({
-          type: field.type as CustomRegisterFieldVariant,
-          isCustomRegisterField: true,
-          name: field.name,
-          label: field.label,
-          placeholder: field.placeholder,
-          required: field.required,
-          // todo: field.option type in SDK is incorrect, remove the type casting after fixing that
-          options: field.options as unknown as Record<string, string>,
-          version: '1',
-          ...(field.type === 'checkbox'
-            ? {
-                enabledByDefault: field.default_value === 'true',
-              }
-            : {
-                defaultValue: field.default_value,
-              }),
-        }),
-      );
+    const result: Consent[] = data?.collection.filter((field) => field.type === 'checkbox').map((consent) => formatPublisherConsents(consent));
 
-    const consents = [getTermsConsent(), ...result];
-
-    return { consents };
+    return {
+      consents: [getTermsConsent(), ...result],
+    };
   } catch {
     throw new Error('Failed to fetch publisher consents.');
   }
@@ -211,12 +188,7 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
-    const params = {
-      ...formatUpdateAccount(customer),
-      metadata: {
-        consents: JSON.stringify(consents),
-      },
-    };
+    const params = { ...formatUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
 
     const { data } = await InPlayer.Account.updateAccount(params);
 
@@ -472,20 +444,25 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
+function formatPublisherConsents(consent: Partial<RegisterField>) {
+  return {
+    broadcasterId: 0,
+    enabledByDefault: false,
+    label: consent.label,
+    name: consent.name,
+    required: consent.required,
+    value: '',
+    version: '1',
+  } as Consent;
+}
+
 function getTermsConsent(): Consent {
   const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
-
-  return {
-    type: 'checkbox',
-    isCustomRegisterField: true,
+  return formatPublisherConsents({
     required: true,
     name: 'terms',
     label: i18next.t('account:registration.terms_consent', { termsUrl }),
-    enabledByDefault: false,
-    placeholder: '',
-    options: {},
-    version: '1',
-  };
+  });
 }
 
 function parseJson(value: string, fallback = {}) {
