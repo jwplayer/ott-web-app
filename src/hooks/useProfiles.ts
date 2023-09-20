@@ -58,7 +58,7 @@ export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
       const profile = res?.responseData;
       if (profile?.id) {
         listProfiles.refetch();
-        navigate('/u/profiles');
+        navigate(`/u/profiles?success=true&id=${profile.id}`);
       }
     },
     ...options,

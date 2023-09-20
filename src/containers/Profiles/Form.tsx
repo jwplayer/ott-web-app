@@ -50,7 +50,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
     setValue('avatar_url', selectedAvatar?.value || profile?.avatar_url || '');
   }, [profile?.avatar_url, selectedAvatar?.value, setValue]);
 
-  const formLabel = values?.id ? t('profile.info') : t('profile.create');
+  const formLabel = t('profile.info');
 
   return (
     <form onSubmit={handleSubmit} noValidate>
