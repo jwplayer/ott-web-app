@@ -106,32 +106,29 @@ const stepsObj = {
     securityCode: string,
     fieldWrapper: string = '',
   ) {
-    this.see('Credit card');
+    this.waitForText('Credit card');
 
     if (creditCardFieldName) {
-      this.see(creditCardFieldName);
-      this.fillField(creditCardFieldName, 'John Doe');
+      this.waitForText(creditCardFieldName);
+      this.fillByLabel(creditCardFieldName, 'John Doe');
     }
 
     // Adyen credit card form is loaded asynchronously, so wait for it
     this.waitForElement(`[class*="${cardNumber}"]`, normalTimeout);
 
     // Each of the 3 credit card fields is a separate iframe
-    this.switchTo(`[class*="${cardNumber}"] ${fieldWrapper}`);
+    this.fillByLabel('Card number', creditCard, fieldWrapper ? `[class*="${cardNumber}"] ${fieldWrapper}` : undefined);
 
-    this.fillField('Card number', creditCard);
-    // @ts-expect-error
-    this.switchTo(null); // Exit the iframe context back to the main document
+    this.fillByLabel('Expiry date', '03/30', fieldWrapper ? `[class*="${expiryDate}"] ${fieldWrapper}` : undefined);
 
-    this.switchTo(`[class*="${expiryDate}"] ${fieldWrapper}`);
-    this.fillField('Expiry date', '03/30');
-    // @ts-expect-error
-    this.switchTo(null); // Exit the iframe context back to the main document
+    this.fillByLabel('Security code', '737', fieldWrapper ? `[class*="${securityCode}"] ${fieldWrapper}` : undefined);
+  },
+  fillByLabel: function (this: CodeceptJS.I, label: string, value: string, frameLocator?: string) {
+    this.usePlaywrightTo('Fill field by label', async ({ page }) => {
+      const locator = frameLocator ? page.frameLocator(frameLocator) : page;
 
-    this.switchTo(`[class*="${securityCode}"] ${fieldWrapper}`);
-    this.fillField('Security code', '737');
-    // @ts-expect-error
-    this.switchTo(null); // Exit the iframe context back to the main document
+      await locator.getByLabel(label).fill(value);
+    });
   },
   waitForLoaderDone: function (this: CodeceptJS.I, timeout: number | false = normalTimeout) {
     // Specify false when the loader is NOT expected to be shown at all
@@ -144,7 +141,7 @@ const stepsObj = {
   openSignUpModal: async function (this: CodeceptJS.I) {
     const { isMobile } = await this.openSignInMenu();
 
-    // the sign up button is visible in header and in the mobile menu
+    // the sign-up button is visible in header and in the mobile menu
     this.click('Sign up');
 
     return { isMobile };
