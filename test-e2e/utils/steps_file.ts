@@ -450,7 +450,7 @@ const stepsObj = {
     });
   },
   clickHome: function (this: CodeceptJS.I) {
-    this.click('img[alt="logo"]');
+    this.click('a[href="/"]');
   },
 };
 declare global {
