@@ -192,10 +192,10 @@ export async function logout(logoutOptions: { includeNetworkRequest: boolean } =
   });
 }
 
-export const register = async (email: string, password: string) => {
+export const register = async (email: string, password: string, customFields: Record<string, string | boolean>) => {
   await useService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
-    const response = await accountService.register({ config, email, password });
+    const response = await accountService.register({ config, email, password, customFields });
     if (response) {
       const { user, customerConsents } = response;
       await afterLogin(user, customerConsents, accessModel);

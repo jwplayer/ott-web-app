@@ -57,7 +57,7 @@ const Registration = () => {
         return;
       }
 
-      await register(email, password);
+      await register(email, password, consentValues);
 
       await updateConsents(customerConsents).catch(() => {
         // error caught while updating the consents, but continue the registration flow

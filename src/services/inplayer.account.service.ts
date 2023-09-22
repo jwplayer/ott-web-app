@@ -86,8 +86,33 @@ export const login: Login = async ({ config, email, password }) => {
   }
 };
 
-export const register: Register = async ({ config, email, password }) => {
+export const register: Register = async ({ config, email, password, customFields }) => {
   try {
+    const metadata = {
+      ...customFields,
+      ...Object.entries(customFields).reduce((acc, [name, val]) => {
+        const isBoolean = val === true || val === false;
+
+        if (isBoolean) {
+          if (name === 'terms') {
+            return { ...acc, [name]: val };
+          }
+
+          return { ...acc, [name]: val === true ? 'on' : 'off' };
+        }
+
+        if (name === 'us_state') {
+          if (customFields.country === 'us') {
+            return { ...acc, [name]: val === 'n/a' ? '' : val };
+          }
+
+          return { ...acc, [name]: 'n/a' };
+        }
+
+        return { ...acc, [name]: val };
+      }, {}),
+    };
+
     const { data } = await InPlayer.Account.signUpV2({
       email,
       password,
@@ -96,6 +121,7 @@ export const register: Register = async ({ config, email, password }) => {
       metadata: {
         first_name: ' ',
         surname: ' ',
+        ...metadata,
       },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
