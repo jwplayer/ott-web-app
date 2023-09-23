@@ -97,7 +97,7 @@ export function cancelPlan(I: CodeceptJS.I, expirationDate: Date, canRenewSubscr
     I.waitForText('Renew subscription');
   }
 
-  I.waitForText('This plan will expire on ' + formatDate(expirationDate));
+  I.waitForText('This plan will expire on ' + formatDate(expirationDate), longTimeout);
 }
 
 export function renewPlan(I: CodeceptJS.I, billingDate: Date, yearlyPrice: string) {
@@ -129,6 +129,6 @@ export function renewPlan(I: CodeceptJS.I, billingDate: Date, yearlyPrice: strin
 }
 
 export function overrideIP(I: CodeceptJS.I) {
-  // Set this as a cookie so it persists between page navigations (local storage would also work, but the permissions don't work)
+  // Set this as a cookie, so it persists between page navigations (local storage would also work, but the permissions don't work)
   I.setCookie({ name: overrideIPCookieKey, value: '5.132.0.0', domain: 'localhost', path: '/' });
 }

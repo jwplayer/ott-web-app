@@ -201,7 +201,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       I.see('Billing history');
       I.dontSee('No transactions');
 
-      I.scrollTo('[class*="mainColumn"] :last-child');
+      I.scrollPageToBottom();
 
       // Open the invoice which is opened in a new tab
       I.click('Show receipt');
