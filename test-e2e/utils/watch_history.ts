@@ -58,7 +58,7 @@ export async function checkElapsed(I: CodeceptJS.I, expectedMinutes: number, exp
   const [minutes, seconds] = elapsed.split(':').map((item) => Number.parseInt(item));
   assert.strictEqual(minutes, expectedMinutes);
 
-  if (seconds < expectedSeconds || seconds > expectedSeconds + bufferSeconds) {
+  if (seconds < expectedSeconds - bufferSeconds || seconds > expectedSeconds + bufferSeconds) {
     assert.fail(`Elapsed time of ${minutes}m ${seconds}s is not within ${bufferSeconds} seconds of ${expectedMinutes}m ${expectedSeconds}s`);
   } else {
     assert.ok(expectedSeconds);

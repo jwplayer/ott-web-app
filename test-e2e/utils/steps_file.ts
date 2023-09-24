@@ -229,8 +229,8 @@ const stepsObj = {
       );
     }, args);
   },
-  waitForPlayerPlaying: async function (title: string, tries = normalTimeout) {
-    this.seeElement('div[class*="jwplayer"]');
+  waitForPlayerPlaying: async function (title: string, tries = 10) {
+    this.waitForElement('div[class*="jwplayer"]', normalTimeout);
     this.see(title);
     await this.waitForPlayerState('playing', ['buffering', 'idle', ''], tries);
   },
@@ -265,13 +265,9 @@ const stepsObj = {
     assert.equal(await this.executeScript(() => (typeof jwplayer === 'undefined' ? undefined : jwplayer().getState)), undefined);
   },
   isMobile: async function (this: CodeceptJS.I): Promise<boolean> {
-    let isMobile = false;
-
-    this.usePlaywrightTo('Get is Mobile', async ({ browserContext }) => {
-      isMobile = Boolean(browserContext['_options'].isMobile);
+    return await this.executeScript(() => {
+      return window.navigator.userAgent.toLowerCase().includes('pixel');
     });
-
-    return isMobile;
   },
   isDesktop: async function (this: CodeceptJS.I) {
     return !(await this.isMobile());

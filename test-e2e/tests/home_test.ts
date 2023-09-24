@@ -131,6 +131,7 @@ Scenario('I can see the footer', ({ I }) => {
   I.see('© JW Player');
   I.see('jwplayer.com');
   I.click('jwplayer.com');
+  I.wait(2);
   I.switchToNextTab();
   I.seeCurrentUrlEquals('https://jwplayer.com/');
 });
