@@ -103,7 +103,7 @@ export const register: Register = async ({ config, email, password, customFields
           const isBoolean = val === true || val === false;
 
           if (isBoolean && name !== 'terms') {
-            return val === true ? 'on' : 'off';
+            return val ? 'on' : 'off';
           }
 
           return val;
