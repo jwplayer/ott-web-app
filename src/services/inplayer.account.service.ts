@@ -91,25 +91,25 @@ export const register: Register = async ({ config, email, password, customFields
     const metadata = {
       ...customFields,
       ...Object.entries(customFields).reduce((acc, [name, val]) => {
-        const isBoolean = val === true || val === false;
+        const value = (() => {
+          if (name === 'us_state') {
+            if (customFields.country === 'us') {
+              return val === 'n/a' ? '' : val;
+            }
 
-        if (isBoolean) {
-          if (name === 'terms') {
-            return { ...acc, [name]: val };
+            return 'n/a';
           }
 
-          return { ...acc, [name]: val === true ? 'on' : 'off' };
-        }
+          const isBoolean = val === true || val === false;
 
-        if (name === 'us_state') {
-          if (customFields.country === 'us') {
-            return { ...acc, [name]: val === 'n/a' ? '' : val };
+          if (isBoolean && name !== 'terms') {
+            return val === true ? 'on' : 'off';
           }
 
-          return { ...acc, [name]: 'n/a' };
-        }
+          return val;
+        })();
 
-        return { ...acc, [name]: val };
+        return { ...acc, [name]: value };
       }, {}),
     };
 
