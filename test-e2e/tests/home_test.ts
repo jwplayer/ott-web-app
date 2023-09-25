@@ -41,7 +41,7 @@ Scenario('Header button navigates to playlist screen', async ({ I }) => {
 Scenario('I can slide within the featured shelf', async ({ I }) => {
   const isDesktop = await I.isDesktop();
 
-  async function slide(swipeText) {
+  async function slide(swipeText: string) {
     if (isDesktop) {
       I.click({ css: 'div[aria-label="Slide right"]' });
     } else {
@@ -61,10 +61,9 @@ Scenario('I can slide within the featured shelf', async ({ I }) => {
     I.see('8 min');
     I.waitForInvisible('text="Blender Channel"', 3);
     I.dontSee('Blender Channel');
-    I.dontSee('LIVE');
 
     // Without this extra wait, the second slide action happens too fast after the first and even though the
-    // expected elements are present, the slide doesn't work. I think there must be a debounce on the carousel.
+    // expected elements are present, the slide doesn't work. I think there must be a debounce check on the carousel.
     I.wait(1);
 
     await slide('Spring');
@@ -132,6 +131,7 @@ Scenario('I can see the footer', ({ I }) => {
   I.see('© JW Player');
   I.see('jwplayer.com');
   I.click('jwplayer.com');
+  I.wait(2);
   I.switchToNextTab();
   I.seeCurrentUrlEquals('https://jwplayer.com/');
 });

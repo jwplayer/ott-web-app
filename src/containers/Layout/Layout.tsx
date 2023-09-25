@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
+import classNames from 'classnames';
 
 import styles from './Layout.module.scss';
 
@@ -21,6 +22,7 @@ import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { unpersistProfile, useProfiles } from '#src/hooks/useProfiles';
+import { IS_DEVELOPMENT_BUILD } from '#src/utils/common';
 
 const Layout = () => {
   const location = useLocation();
@@ -169,7 +171,14 @@ const Layout = () => {
         </Sidebar>
         <Outlet />
       </div>
-      {!!footerText && <MarkdownComponent className={styles.footer} markdownString={footerText} inline />}
+      {!!footerText && (
+        <MarkdownComponent
+          // The extra style below is just to fix the footer on mobile when the dev selector is shown
+          className={classNames(styles.footer, { [styles.testFixMargin]: IS_DEVELOPMENT_BUILD })}
+          markdownString={footerText}
+          inline
+        />
+      )}
     </div>
   );
 };

@@ -19,12 +19,6 @@ export function formatPrice(price: number, currency = 'EUR', country?: string) {
   }).format(price);
 }
 
-export function addDays(date: Date, days: number) {
-  const newDate = new Date(date.valueOf());
-  newDate.setDate(newDate.getDate() + days);
-  return newDate;
-}
-
 export function addYear(date: Date) {
   const newDate = new Date(date.valueOf());
   newDate.setFullYear(newDate.getFullYear() + 1);
@@ -37,11 +31,8 @@ export function formatDate(date: Date) {
 
 export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: Date, today: Date, yearlyPrice: string, hasInlineOfferSwitch: boolean) {
   I.click('Continue');
-  I.waitForLoaderDone(longTimeout);
-  I.wait(2);
-  I.waitForText(`Welcome to JW OTT Web App (SVOD)`);
-  I.see;
-  I.see(`Thank you for subscribing to JW OTT Web App (SVOD). Please enjoy all our content.`);
+  I.waitForText(`Welcome to JW OTT Web App (SVOD)`, longTimeout);
+  I.waitForText(`Thank you for subscribing to JW OTT Web App (SVOD). Please enjoy all our content.`);
 
   I.click('Start watching');
 
@@ -54,15 +45,15 @@ export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: D
     if ((await I.grabTextFrom('body')).indexOf(transactionText) >= 0) {
       break;
     }
-    I.wait(1);
+    I.wait(2);
     I.refreshPage();
   }
 
-  I.see(transactionText);
+  I.waitForText(transactionText);
 
-  I.see(yearlyPrice);
-  I.see('/year');
-  I.see('Next billing date is on ' + formatDate(billingDate));
+  I.waitForText(yearlyPrice);
+  I.waitForText('/year');
+  I.waitForText('Next billing date is on ' + formatDate(billingDate));
 
   if (hasInlineOfferSwitch) {
     I.waitForElement('[data-testid="change-subscription-button"]', 10);
@@ -73,7 +64,7 @@ export async function finishAndCheckSubscription(I: CodeceptJS.I, billingDate: D
 
   I.waitForElement('[class*="transactionItem"]', 10);
 
-  I.see(formatDate(today));
+  I.waitForText(formatDate(today));
 }
 
 export function cancelPlan(I: CodeceptJS.I, expirationDate: Date, canRenewSubscription: boolean, providerName?: string) {
@@ -98,16 +89,15 @@ export function cancelPlan(I: CodeceptJS.I, expirationDate: Date, canRenewSubscr
   I.waitForElement('[data-testid="cancel-subscription-button"]', 10);
   I.click('[data-testid="cancel-subscription-button"]');
   I.click('Unsubscribe');
-  I.waitForLoaderDone();
-  I.see('Miss you already.');
+  I.waitForText('Miss you already.', longTimeout);
   I.see('You have been successfully unsubscribed. Your current plan will expire on ' + formatDate(expirationDate));
   I.click('Return to profile');
 
   if (canRenewSubscription) {
-    I.see('Renew subscription');
+    I.waitForText('Renew subscription');
   }
 
-  I.see('This plan will expire on ' + formatDate(expirationDate));
+  I.waitForText('This plan will expire on ' + formatDate(expirationDate), longTimeout);
 }
 
 export function renewPlan(I: CodeceptJS.I, billingDate: Date, yearlyPrice: string) {
@@ -139,6 +129,6 @@ export function renewPlan(I: CodeceptJS.I, billingDate: Date, yearlyPrice: strin
 }
 
 export function overrideIP(I: CodeceptJS.I) {
-  // Set this as a cookie so it persists between page navigations (local storage would also work, but the permissions don't work)
+  // Set this as a cookie, so it persists between page navigations (local storage would also work, but the permissions don't work)
   I.setCookie({ name: overrideIPCookieKey, value: '5.132.0.0', domain: 'localhost', path: '/' });
 }

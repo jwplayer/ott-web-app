@@ -11,7 +11,7 @@ exports.config = {
   grep: '(?=.*)^(?!.*@mobile-only)',
   tests: ['./tests/**/*.js', './tests/**/*.ts'],
   output: './output/desktop',
-  timeout: 3000,
+  timeout: 60,
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',
@@ -30,7 +30,7 @@ exports.config = {
   plugins: {
     pauseOnFail: {},
     retryFailedStep: {
-      minTimeout: 100,
+      minTimeout: 1000,
       enabled: true,
       retries: 5,
     },

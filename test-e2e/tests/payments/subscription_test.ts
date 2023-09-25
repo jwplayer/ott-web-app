@@ -127,22 +127,22 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     await goToCheckout(I);
 
-    I.see('Credit card');
-    I.see('PayPal');
-    I.see(props.paymentFields.creditCardholder);
-    I.see('Card number');
-    I.see('Expiry date');
-    I.see('Security code');
-    I.see('Continue');
+    I.waitForText('Credit card');
+    I.waitForText('PayPal');
+    I.waitForText(props.paymentFields.creditCardholder);
+    I.waitForText('Card number');
+    I.waitForText('Expiry date');
+    I.waitForText('Security code');
+    I.waitForText('Continue');
     I.dontSee("Clicking 'continue' will bring you to the PayPal site.");
 
     I.click('PayPal');
 
-    I.see("Clicking 'continue' will bring you to the PayPal site.");
+    I.waitForText("Clicking 'continue' will bring you to the PayPal site.");
     I.dontSee('Card number');
     I.dontSee('Expiry date');
     I.dontSee('Security code');
-    I.see('Continue');
+    I.waitForText('Continue');
   });
 
   Scenario(`I can open the PayPal site - ${providerName}`, async ({ I }) => {
@@ -163,7 +163,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     await goToCheckout(I);
 
-    I.payWithCreditCard(
+    await I.payWithCreditCard(
       props.paymentFields.creditCardholder,
       props.creditCard,
       props.paymentFields.cardNumber,
@@ -174,7 +174,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, props.hasInlineOfferSwitch);
 
-    I.seeAll(cardInfo);
+    cardInfo.forEach((s) => I.waitForText(s));
   });
 
   Scenario(`I can cancel my subscription - ${providerName}`, async ({ I }) => {
@@ -183,7 +183,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
 
     // Still see payment info
-    I.seeAll(cardInfo);
+    cardInfo.forEach((s) => I.waitForText(s));
   });
 
   Scenario(`I can renew my subscription - ${providerName}`, async ({ I }) => {
@@ -201,7 +201,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       I.see('Billing history');
       I.dontSee('No transactions');
 
-      I.scrollTo('[class*="mainColumn"] :last-child');
+      I.scrollPageToBottom();
 
       // Open the invoice which is opened in a new tab
       I.click('Show receipt');
