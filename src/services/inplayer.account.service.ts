@@ -127,7 +127,7 @@ export const logout = async () => {
   }
 };
 
-export async function getUser({ shouldFetchData = false }: { shouldFetchData?: boolean }) {
+export const getUser = async ({ shouldFetchData = false }: { shouldFetchData?: boolean }) => {
   try {
     const accountInfo = await getAccountInfo({ shouldFetchData });
     const user = formatAccount(accountInfo);
@@ -143,7 +143,7 @@ export async function getUser({ shouldFetchData = false }: { shouldFetchData?: b
   } catch {
     throw new Error('Failed to fetch user data.');
   }
-}
+};
 
 export const updateCustomer: UpdateCustomer = async (customer) => {
   try {
