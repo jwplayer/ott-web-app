@@ -6,6 +6,7 @@ import type { PaymentDetail, Subscription, Transaction } from '#types/subscripti
 type AccountStore = {
   loading: boolean;
   user: Customer | null;
+  fetchOnVisit: boolean;
   subscription: Subscription | null;
   transactions: Transaction[] | null;
   activePayment: PaymentDetail | null;
@@ -26,6 +27,7 @@ type AccountStore = {
 export const useAccountStore = createStore<AccountStore>('AccountStore', (set) => ({
   loading: true,
   user: null,
+  fetchOnVisit: false,
   subscription: null,
   transactions: null,
   activePayment: null,

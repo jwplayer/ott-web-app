@@ -16,6 +16,13 @@ export type JwtDetails = {
   publisherId: number;
 };
 
+export type JwtDecodeValues = {
+  aid: number;
+  aud: string;
+  sub: string;
+  tuuid: string;
+};
+
 export type PayloadWithIPOverride = {
   customerIP?: string;
 };

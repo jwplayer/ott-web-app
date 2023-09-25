@@ -25,6 +25,8 @@ import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
 import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
+import useService from '#src/hooks/useService';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   panelClassName?: string;
@@ -48,6 +50,8 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const exportData = useMutation(exportAccountData);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const exportDataMessage = exportData.isSuccess ? t('account.export_data_success') : t('account.export_data_error');
+  const { config } = useConfigStore();
+  const accountService = useService(({ accountService }) => accountService);
 
   useEffect(() => {
     if (exportData.isSuccess || exportData.isError) {
@@ -55,17 +59,30 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
   }, [exportData.isSuccess, exportData.isError]);
 
-  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = useAccountStore(
-    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount }) => ({
-      customer: user,
-      customerConsents,
-      publisherConsents,
-      canChangePasswordWithOldPassword,
-      canExportAccountData,
-      canDeleteAccount,
-    }),
-    shallow,
-  );
+  const { customer, fetchOnVisit, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } =
+    useAccountStore(
+      ({ user, fetchOnVisit, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount }) => ({
+        customer: user,
+        fetchOnVisit,
+        customerConsents,
+        publisherConsents,
+        canChangePasswordWithOldPassword,
+        canExportAccountData,
+        canDeleteAccount,
+      }),
+      shallow,
+    );
+
+  // update account with fresh data when visited
+  useEffect(() => {
+    const getUserInfo = async () => {
+      if (fetchOnVisit) {
+        const { user } = await accountService.getUser({ config, shouldFetchData: true });
+        useAccountStore.setState({ user, fetchOnVisit: false });
+      }
+    };
+    getUserInfo();
+  }, [customer, fetchOnVisit, accountService, config]);
 
   const [termsConsents, nonTermsConsents] = useMemo(() => {
     const terms: Consent[] = [];

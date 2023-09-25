@@ -1,5 +1,6 @@
 import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
+import jwtDecode from 'jwt-decode';
 
 import { getCommonResponseData } from '#src/utils/api';
 import type { Config } from '#types/Config';
@@ -27,6 +28,7 @@ import type {
   UpdateCustomerConsents,
   UpdatePersonalShelves,
   CustomRegisterFieldVariant,
+  JwtDecodeValues,
 } from '#types/account';
 import type { Favorite } from '#types/favorite';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
@@ -125,12 +127,14 @@ export const logout = async () => {
   }
 };
 
-export const getUser = async () => {
+export async function getUser({ shouldFetchData = false }: { shouldFetchData?: boolean }) {
   try {
-    const { data } = await InPlayer.Account.getAccountInfo();
+    const accountInfo = await getAccountInfo({ shouldFetchData });
+    const user = formatAccount(accountInfo);
 
-    const user = formatAccount(data);
-    user.externalData = await getCustomerExternalData();
+    if (!shouldFetchData) {
+      user.externalData = await getCustomerExternalData();
+    }
 
     return {
       user,
@@ -139,7 +143,7 @@ export const getUser = async () => {
   } catch {
     throw new Error('Failed to fetch user data.');
   }
-};
+}
 
 export const updateCustomer: UpdateCustomer = async (customer) => {
   try {
@@ -396,6 +400,33 @@ export const getSocialUrls = async (config: Config) => {
   return socialResponse.data.social_urls;
 };
 
+const getAccountInfo = async ({ shouldFetchData }: { shouldFetchData: boolean }): Promise<AccountData> => {
+  if (!shouldFetchData) {
+    const authData = await getAuthData();
+    if (authData) {
+      const token: JwtDecodeValues = jwtDecode(authData.jwt);
+      return {
+        id: token.aid,
+        email: token.sub,
+        full_name: '',
+        referrer: '',
+        metadata: { first_name: '', register_source: 'inplayer', surname: '' },
+        social_apps_metadata: [],
+        roles: ['consumer'],
+        completed: true,
+        created_at: 0,
+        updated_at: 0,
+        date_of_birth: 0,
+        uuid: token.tuuid,
+        merchant_uuid: token.aud,
+      };
+    }
+  }
+
+  const { data } = await InPlayer.Account.getAccountInfo();
+  return data;
+};
+
 const getCustomerExternalData = async (): Promise<ExternalData> => {
   const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
 
@@ -497,19 +528,12 @@ function parseJson(value: string, fallback = {}) {
 }
 
 export const canUpdateEmail = false;
-
 export const canSupportEmptyFullName = false;
-
 export const canChangePasswordWithOldPassword = true;
-
 export const canRenewSubscription = false;
-
 export const canExportAccountData = true;
-
 export const canUpdatePaymentMethod = false;
-
 export const canShowReceipts = false;
-
 export const canDeleteAccount = true;
-
 export const canManageProfiles = true;
+export const fetchOnVisit = true;

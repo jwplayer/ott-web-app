@@ -38,6 +38,7 @@ export const initializeAccount = async () => {
 
     useAccountStore.setState({
       loading: true,
+      fetchOnVisit: accountService.fetchOnVisit,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
       canManageProfiles: accountService.canManageProfiles,
