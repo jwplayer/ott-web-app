@@ -16,7 +16,6 @@ import { logout } from '#src/stores/AccountController';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
 import type { Profile } from '#types/account';
-import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 type Props = {
   small?: boolean;
@@ -62,7 +61,6 @@ const UserMenu = ({
           small={small}
           selectingProfile={!!isSelectingProfile}
           selectProfile={selectProfile}
-          defaultAvatar={defaultAvatar}
           createButtonLabel={t('nav.add_profile')}
           switchProfilesLabel={t('nav.switch_profiles')}
           onCreateButtonClick={() => navigate('/u/profiles/create')}
@@ -76,7 +74,7 @@ const UserMenu = ({
             onClick={onClick}
             to={`/u/my-profile/${currentProfile?.id ?? ''}`}
             label={t('nav.profile')}
-            startIcon={<ProfileCircle src={currentProfile?.avatar_url || defaultAvatar} alt={currentProfile?.name ?? ''} />}
+            startIcon={<ProfileCircle src={currentProfile?.avatar_url} alt={currentProfile?.name ?? ''} />}
           />
         </li>
       )}

@@ -22,7 +22,6 @@ import Panel from '#components/Panel/Panel';
 import type { Profile } from '#types/account';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
-import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -50,12 +49,15 @@ type Props = {
   supportedLanguages: LanguageDefinition[];
   currentLanguage: LanguageDefinition | undefined;
   onLanguageClick: (code: string) => void;
-  currentProfile?: Profile;
-  profiles?: Profile[];
-  profilesEnabled?: boolean;
-  selectProfile?: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
-  isSelectingProfile?: boolean;
+
   accessModel?: AccessModel;
+  profilesData?: {
+    currentProfile?: Profile;
+    profiles?: Profile[];
+    profilesEnabled?: boolean;
+    selectProfile?: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
+    isSelectingProfile?: boolean;
+  };
 };
 
 const Header: React.FC<Props> = ({
@@ -82,12 +84,8 @@ const Header: React.FC<Props> = ({
   supportedLanguages,
   currentLanguage,
   onLanguageClick,
-  currentProfile,
-  profiles,
-  profilesEnabled,
-  selectProfile,
-  isSelectingProfile,
   accessModel,
+  profilesData: { currentProfile, profiles, profilesEnabled, selectProfile, isSelectingProfile } = {},
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -138,7 +136,7 @@ const Header: React.FC<Props> = ({
     return isLoggedIn ? (
       <React.Fragment>
         <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('open_user_menu')} onClick={openUserMenu}>
-          <ProfileCircle src={currentProfile?.avatar_url || defaultAvatar} alt={currentProfile?.name ?? t('profile_icon')} />
+          <ProfileCircle src={currentProfile?.avatar_url ?? ''} alt={currentProfile?.name ?? t('profile_icon')} />
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
           <Panel>

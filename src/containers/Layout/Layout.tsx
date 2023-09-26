@@ -153,12 +153,14 @@ const Layout = () => {
           closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
-          currentProfile={profile ?? undefined}
-          profiles={profiles}
-          profilesEnabled={profilesEnabled}
-          selectProfile={selectProfile.mutate}
-          isSelectingProfile={!!selectProfile.isLoading}
           accessModel={accessModel}
+          profilesData={{
+            currentProfile: profile ?? undefined,
+            profiles,
+            profilesEnabled,
+            selectProfile: selectProfile.mutate,
+            isSelectingProfile: !!selectProfile.isLoading,
+          }}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

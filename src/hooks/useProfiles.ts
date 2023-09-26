@@ -10,6 +10,7 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 import { useAccountStore } from '#src/stores/AccountStore';
+import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -35,7 +36,7 @@ export const useSelectProfile = () => {
         });
         useFavoritesStore.setState({ favorites: [] });
         useWatchHistoryStore.setState({ watchHistory: [] });
-        useProfileStore.setState({ profile });
+        useProfileStore.getState().setProfile(profile);
         await initializeAccount().finally(() => {
           useProfileStore.setState({ selectingProfileAvatar: null });
           navigate('/');
@@ -105,5 +106,20 @@ export const useProfiles = (
   if (!canManageProfiles && query.data?.responseData.canManageProfiles) {
     useAccountStore.setState({ canManageProfiles: true });
   }
-  return { ...query, profilesEnabled: query.data?.responseData.canManageProfiles && canManageProfiles };
+
+  return {
+    ...query,
+    data: {
+      ...query.data,
+      responseData: {
+        ...query.data?.responseData,
+        collection:
+          query.data?.responseData.collection.map((profile) => ({
+            ...profile,
+            avatar_url: profile?.avatar_url || defaultAvatar,
+          })) ?? [],
+      },
+    },
+    profilesEnabled: query.data?.responseData.canManageProfiles && canManageProfiles,
+  };
 };

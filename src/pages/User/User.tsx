@@ -25,7 +25,6 @@ import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
 import { clear as clearFavorites } from '#src/stores/FavoritesController';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useProfiles } from '#src/hooks/useProfiles';
-import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 const User = (): JSX.Element => {
   const { accessModel, favoritesList } = useConfigStore(
@@ -86,7 +85,7 @@ const User = (): JSX.Element => {
                     to={`my-profile/${profile?.id}`}
                     label={profile?.name ?? t('nav.profile')}
                     variant="text"
-                    startIcon={<img className={styles.profileIcon} src={profile?.avatar_url || defaultAvatar} alt={profile?.name} />}
+                    startIcon={<img className={styles.profileIcon} src={profile?.avatar_url} alt={profile?.name} />}
                     className={styles.button}
                   />
                 </li>
