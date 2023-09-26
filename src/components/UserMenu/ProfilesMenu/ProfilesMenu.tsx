@@ -15,7 +15,6 @@ type ProfilesMenuProps = {
   small?: boolean;
   selectingProfile: boolean;
   selectProfile: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
-  defaultAvatar: string;
   createButtonLabel?: string;
   switchProfilesLabel?: string;
   onCreateButtonClick: () => void;
@@ -27,7 +26,6 @@ const ProfilesMenu = ({
   small,
   selectingProfile,
   selectProfile,
-  defaultAvatar,
   createButtonLabel,
   switchProfilesLabel,
   onCreateButtonClick,
@@ -46,7 +44,7 @@ const ProfilesMenu = ({
             small={small}
             onClick={() => selectProfile({ id: profile.id, avatarUrl: profile.avatar_url })}
             label={profile.name}
-            startIcon={<ProfileCircle src={profile.avatar_url || defaultAvatar} alt={profile.name} />}
+            startIcon={<ProfileCircle src={profile.avatar_url} alt={profile.name} />}
           />
         </li>
       ))
