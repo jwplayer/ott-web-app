@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router';
-import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import type { ScreenComponent } from '#types/screens';
 import { isLiveChannel } from '#src/utils/media';
@@ -10,13 +9,10 @@ import Loading from '#src/pages/Loading/Loading';
 
 const MediaLiveChannel: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const liveChannelsId = isLiveChannel(data) ? data.liveChannelsId : undefined;
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (data && !isLoading && liveChannelsId) {
-      navigate(liveChannelsURL(liveChannelsId, data.mediaid), { replace: true });
-    }
-  }, [data, isLoading, liveChannelsId, navigate]);
+  if (data && !isLoading && liveChannelsId) {
+    return <Navigate to={liveChannelsURL(liveChannelsId, data.mediaid)} replace={true}></Navigate>;
+  }
 
   if (!liveChannelsId) {
     return <ErrorPage title="Live channel not found" />;
