@@ -352,6 +352,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
   function editAndCancel(I: CodeceptJS.I, editButton: string, fields: { name: string; startingValue: string; newValue: string; expectedError?: string }[]) {
     I.amOnPage(constants.accountsUrl);
     I.waitForElement(`//*[text() = "${editButton}"]`, normalTimeout);
+    I.scrollTo(`//*[text() = "${editButton}"]`);
     I.click(editButton);
 
     I.see('Save');
