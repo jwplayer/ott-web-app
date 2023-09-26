@@ -22,6 +22,7 @@ import Panel from '#components/Panel/Panel';
 import type { Profile } from '#types/account';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
+import AccountCircle from '#src/icons/AccountCircle';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -136,7 +137,11 @@ const Header: React.FC<Props> = ({
     return isLoggedIn ? (
       <React.Fragment>
         <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('open_user_menu')} onClick={openUserMenu}>
-          <ProfileCircle src={currentProfile?.avatar_url ?? ''} alt={currentProfile?.name ?? t('profile_icon')} />
+          {profilesEnabled && currentProfile ? (
+            <ProfileCircle src={currentProfile.avatar_url} alt={currentProfile?.name ?? t('profile_icon')} />
+          ) : (
+            <AccountCircle />
+          )}
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
           <Panel>
