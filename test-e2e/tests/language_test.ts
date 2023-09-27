@@ -69,7 +69,7 @@ Scenario('Changing the language is persisted in the localStorage`', async ({ I }
 });
 
 Scenario('The language is restored from localStorage`', async ({ I }) => {
-  await I.restartBrowser({
+  I.restartBrowser({
     storageState: {
       origins: [
         {
@@ -103,5 +103,6 @@ async function checkActiveLanguage(I: CodeceptJS.I, activeLanguage: keyof typeof
 }
 
 async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
+  I.waitForElement(locator);
   I.seeCssPropertiesOnElements(locator, styles);
 }

@@ -1,13 +1,14 @@
 import * as assert from 'assert';
 
-import { overrideIP } from './payments';
-
 import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 import { TestConfig } from '#test/types';
 
 const configFileQueryKey = 'app-config';
 const loaderElement = '[class*=_loadingOverlay]';
+
+type SwipeTarget = { text: string } | { xpath: string };
+type SwipeDirection = { direction: 'left' | 'right' } | { points: { x1: number; y1: number; x2: number; y2: number } };
 
 const stepsObj = {
   useConfig: function (this: CodeceptJS.I, config: TestConfig) {
@@ -39,23 +40,6 @@ const stepsObj = {
     await this.openMainMenu();
 
     this.click('div[aria-label="Log out"]');
-  },
-  beforeRegisterOrLogin: async function (this: CodeceptJS.I, config: TestConfig, mode: string) {
-    this.useConfig(config);
-    if (await this.isMobile()) {
-      this.openMenuDrawer();
-    }
-
-    let clickOnText = 'Sign in';
-    let waitForElement = constants.loginFormSelector;
-    if (mode === 'signup') {
-      clickOnText = 'Sign up';
-      waitForElement = constants.registrationFormSelector;
-    }
-
-    this.click(clickOnText);
-
-    this.waitForElement(waitForElement, normalTimeout);
   },
   // This function will register the user on the first call and return the context
   // then assuming context is passed in the next time, will log that same user back in
@@ -106,32 +90,29 @@ const stepsObj = {
     securityCode: string,
     fieldWrapper: string = '',
   ) {
-    this.see('Credit card');
+    this.waitForText('Credit card');
 
     if (creditCardFieldName) {
-      this.see(creditCardFieldName);
-      this.fillField(creditCardFieldName, 'John Doe');
+      this.waitForText(creditCardFieldName);
+      this.fillByLabel(creditCardFieldName, 'John Doe');
     }
 
     // Adyen credit card form is loaded asynchronously, so wait for it
     this.waitForElement(`[class*="${cardNumber}"]`, normalTimeout);
 
     // Each of the 3 credit card fields is a separate iframe
-    this.switchTo(`[class*="${cardNumber}"] ${fieldWrapper}`);
+    this.fillByLabel('Card number', creditCard, fieldWrapper ? `[class*="${cardNumber}"] ${fieldWrapper}` : undefined);
 
-    this.fillField('Card number', creditCard);
-    // @ts-expect-error
-    this.switchTo(null); // Exit the iframe context back to the main document
+    this.fillByLabel('Expiry date', '03/30', fieldWrapper ? `[class*="${expiryDate}"] ${fieldWrapper}` : undefined);
 
-    this.switchTo(`[class*="${expiryDate}"] ${fieldWrapper}`);
-    this.fillField('Expiry date', '03/30');
-    // @ts-expect-error
-    this.switchTo(null); // Exit the iframe context back to the main document
+    this.fillByLabel('Security code', '737', fieldWrapper ? `[class*="${securityCode}"] ${fieldWrapper}` : undefined);
+  },
+  fillByLabel: function (this: CodeceptJS.I, label: string, value: string, frameLocator?: string) {
+    this.usePlaywrightTo('Fill field by label', async ({ page }) => {
+      const locator = frameLocator ? page.frameLocator(frameLocator) : page;
 
-    this.switchTo(`[class*="${securityCode}"] ${fieldWrapper}`);
-    this.fillField('Security code', '737');
-    // @ts-expect-error
-    this.switchTo(null); // Exit the iframe context back to the main document
+      await locator.getByLabel(label).fill(value);
+    });
   },
   waitForLoaderDone: function (this: CodeceptJS.I, timeout: number | false = normalTimeout) {
     // Specify false when the loader is NOT expected to be shown at all
@@ -144,7 +125,7 @@ const stepsObj = {
   openSignUpModal: async function (this: CodeceptJS.I) {
     const { isMobile } = await this.openSignInMenu();
 
-    // the sign up button is visible in header and in the mobile menu
+    // the sign-up button is visible in header and in the mobile menu
     this.click('Sign up');
 
     return { isMobile };
@@ -191,15 +172,13 @@ const stepsObj = {
   waitForAllInvisible: function (this: CodeceptJS.I, allStrings: string[], timeout: number | undefined = undefined) {
     allStrings.forEach((s) => this.waitForInvisible(s, timeout));
   },
-  swipeLeft: async function (this: CodeceptJS.I, args) {
-    args.direction = 'left';
-    await this.swipe(args);
+  swipeLeft: async function (this: CodeceptJS.I, args: SwipeTarget) {
+    await this.swipe({ ...args, direction: 'left' });
   },
-  swipeRight: async function (this: CodeceptJS.I, args) {
-    args.direction = 'right';
-    await this.swipe(args);
+  swipeRight: async function (this: CodeceptJS.I, args: SwipeTarget) {
+    await this.swipe({ ...args, direction: 'right' });
   },
-  swipe: async function (this: CodeceptJS.I, args) {
+  swipe: async function (this: CodeceptJS.I, args: SwipeTarget & SwipeDirection) {
     await this.executeScript((args) => {
       const xpath = args.xpath || `//*[text() = "${args.text}"]`;
 
@@ -250,12 +229,12 @@ const stepsObj = {
       );
     }, args);
   },
-  waitForPlayerPlaying: async function (title, tries = normalTimeout) {
-    this.seeElement('div[class*="jwplayer"]');
+  waitForPlayerPlaying: async function (title: string, tries = 10) {
+    this.waitForElement('div[class*="jwplayer"]', normalTimeout);
     this.see(title);
     await this.waitForPlayerState('playing', ['buffering', 'idle', ''], tries);
   },
-  waitForPlayerState: async function (this: CodeceptJS.I, expectedState, allowedStates: string[] = [], tries = 5) {
+  waitForPlayerState: async function (this: CodeceptJS.I, expectedState: string, allowedStates: string[] = [], tries = 5) {
     // Since this check executes a script in the browser, it won't use the codecept retries,
     // so we have to manually retry (this is because the video can take time to load and the state will be buffering)
     for (let i = 0; i < tries; i++) {
@@ -264,7 +243,7 @@ const stepsObj = {
         typeof window.jwplayer === 'undefined' || typeof window.jwplayer().getState === 'undefined' ? '' : jwplayer().getState(),
       );
 
-      await this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
+      this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
 
       if (state === expectedState) {
         return;
@@ -286,50 +265,43 @@ const stepsObj = {
     assert.equal(await this.executeScript(() => (typeof jwplayer === 'undefined' ? undefined : jwplayer().getState)), undefined);
   },
   isMobile: async function (this: CodeceptJS.I): Promise<boolean> {
-    let isMobile = false;
-
-    await this.usePlaywrightTo('Get is Mobile', async ({ browserContext }) => {
-      isMobile = Boolean(browserContext._options.isMobile);
+    return await this.executeScript(() => {
+      return window.navigator.userAgent.toLowerCase().includes('pixel');
     });
-
-    return isMobile;
   },
   isDesktop: async function (this: CodeceptJS.I) {
     return !(await this.isMobile());
   },
   enableClipboard: async function (this: CodeceptJS.I) {
-    await this.usePlaywrightTo('Setup the clipboard', async ({ browserContext }) => {
+    this.usePlaywrightTo('Setup the clipboard', async ({ browserContext }) => {
       await browserContext.grantPermissions(['clipboard-read', 'clipboard-write']);
     });
-  },
-  readClipboard: async function (this: CodeceptJS.I) {
-    return this.executeScript(async () => navigator.clipboard.readText());
   },
   writeClipboard: async function (this: CodeceptJS.I, text: string) {
     await this.executeScript((text) => navigator.clipboard.writeText(text), text);
   },
   scrollToShelf: async function (this: CodeceptJS.I, shelf: ShelfId) {
     this.waitForLoaderDone();
+    this.scrollPageToTop();
+    this.wait(1);
 
     const targetSelector = makeShelfXpath(shelf);
 
-    let tries = 5;
-
     // Scroll down until the target shelf is visible
-    while ((await this.grabNumberOfVisibleElements(targetSelector)) <= 0) {
-      // If we've run out of tries, fail and return
-      if (tries-- <= 0) {
-        assert.fail(`Shelf row not found with id '${shelf}'`);
+    for (let tries = 0; tries < 5; tries++) {
+      if ((await this.grabNumberOfVisibleElements(targetSelector)) > 0) {
+        // Scroll directly to the shelf
+        this.scrollTo(targetSelector);
+        return;
       }
 
       // Scroll to the bottom of the grid to trigger loading more virtualized rows
-      this.scrollTo('[role="row"]:last-child');
-      this.wait(0.2);
+      this.scrollTo('header', undefined, tries * 800);
+      this.wait(1);
     }
 
-    // Scroll directly to the shelf
-    this.scrollTo(targetSelector);
-    return;
+    // If we've run out of tries, fail and return
+    assert.fail(`Shelf row not found with id '${shelf}'`);
   },
   mockTimeGMT: async function (this: CodeceptJS.I, hours: number, minutes: number, seconds: number) {
     return this.usePlaywrightTo(`Mock current time as ${hours}:${minutes}:${seconds}`, async ({ page }) => {
@@ -354,13 +326,6 @@ const stepsObj = {
       }`);
     });
   },
-  seeCardImageSrc: async function (this: CodeceptJS.I, name: string, shelf: ShelfId, src: string) {
-    const locator = `//img[@alt="${name}"]`;
-    await within(makeShelfXpath(shelf), async () => {
-      const cardSrc = await this.grabAttributeFrom(locator, 'src');
-      assert.equal(cardSrc, src, "img element src attribute doesn't match");
-    });
-  },
   seeVideoDetailsBackgroundImage: async function (this: CodeceptJS.I, name: string, src: string) {
     const imageLocator = locate({ css: `div[data-testid="video-details"] img[alt="${name}"]` });
     const imgSrc = await this.grabAttributeFrom(imageLocator, 'src');
@@ -378,38 +343,37 @@ const stepsObj = {
     scrollToTheRight: boolean = true,
     preOpenCallback?: (locator: string) => void,
   ) {
-    const locator = `//a[@aria-label="${name}"]`;
-    const shelfXpath = shelf ? makeShelfXpath(shelf) : undefined;
+    const cardLocator = `//a[@aria-label="${name}"]`;
+    const shelfLocator = shelf ? makeShelfXpath(shelf) : undefined;
 
-    if (shelfXpath) {
-      for (let n = 0; n < 5; n++) {
-        const visible = await this.grabNumberOfVisibleElements(shelfXpath);
+    this.scrollPageToTop();
+    this.wait(1);
 
-        if (visible > 0) {
-          this.scrollTo(shelfXpath);
-          break;
-        } else {
-          this.scrollPageToBottom();
-          this.wait(0.2);
-        }
+    for (let n = 0; n < 5; n++) {
+      if ((await this.grabNumberOfVisibleElements(shelfLocator || cardLocator)) > 0) {
+        this.scrollTo(shelfLocator || cardLocator);
+        this.wait(1);
+        break;
       }
-    } else {
-      this.scrollTo(locator);
+
+      // Scroll down from the top of the page
+      this.scrollTo('header', undefined, 800 * n);
+      this.wait(1);
     }
 
     const isMobile = await this.isMobile();
     // Easy way to limit to 10 swipes
     for (let i = 0; i < 10; i++) {
-      const [isElementVisible, tabindex] = await within(shelfXpath || 'body', async () => {
-        const isElementVisible = (await this.grabNumberOfVisibleElements(locator)) === 1;
-        const tabindex = isElementVisible ? Number(await this.grabAttributeFrom(locator, 'tabindex')) : -1;
+      const [isElementVisible, tabindex] = await within(shelfLocator || 'body', async () => {
+        const isElementVisible = (await this.grabNumberOfVisibleElements(cardLocator)) >= 1;
+        const tabindex = isElementVisible ? Number(await this.grabAttributeFrom(cardLocator, 'tabindex')) : -1;
 
         return [isElementVisible, tabindex];
       });
 
       // If the item isn't virtualized yet, throw an error (we need more information)
-      if (!shelfXpath && !isElementVisible) {
-        throw `Can't find item with locator: "${locator}". Try specifying which shelf to look in.`;
+      if (!shelfLocator && !isElementVisible) {
+        throw `Can't find item with locator: "${cardLocator}". Try specifying which shelf to look in.`;
       }
 
       if (tabindex >= 0) {
@@ -419,21 +383,21 @@ const stepsObj = {
       if (isMobile) {
         // This swipes on the current item in the carousel where the card we're trying to click is
         await this.swipe({
-          xpath: shelfXpath ? `${shelfXpath}//*[@tabindex=0]` : `${locator}/ancestor::ul/li/a[@tabindex=0]`,
+          xpath: shelfLocator ? `${shelfLocator}//*[@tabindex=0]` : `${cardLocator}/ancestor::ul/li/a[@tabindex=0]`,
           direction: scrollToTheRight ? 'left' : 'right',
         });
       } else {
-        this.click({ css: `div[aria-label="Slide ${scrollToTheRight ? 'right' : 'left'}"]` }, shelfXpath);
+        this.click({ css: `div[aria-label="Slide ${scrollToTheRight ? 'right' : 'left'}"]` }, shelfLocator);
       }
 
-      this.wait(0.5);
+      this.wait(1);
     }
 
     if (preOpenCallback) {
-      preOpenCallback(shelfXpath + locator);
+      preOpenCallback(shelfLocator + cardLocator);
     }
 
-    this.click(locator, shelfXpath);
+    this.click(cardLocator, shelfLocator);
   },
   clickPlayerContainer: function (this: CodeceptJS.I) {
     // sometimes Playwright throws an error when the click hits a different element than specified
@@ -450,7 +414,7 @@ const stepsObj = {
     });
   },
   clickHome: function (this: CodeceptJS.I) {
-    this.click('img[alt="logo"]');
+    this.click('a[href="/"]');
   },
 };
 declare global {
