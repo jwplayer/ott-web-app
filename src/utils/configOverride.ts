@@ -1,4 +1,6 @@
 import type { NavigateFunction } from 'react-router/dist/lib/hooks';
+import { useLayoutEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { logDev } from '#src/utils/common';
 import type { Settings } from '#src/stores/SettingsStore';
@@ -23,7 +25,7 @@ export function getConfigNavigateCallback(navigate: NavigateFunction) {
   };
 }
 
-export function getConfigSource(searchParams: URLSearchParams, settings: Settings | undefined) {
+function getConfigSource(configKey: string | null, settings: Settings | undefined) {
   if (!settings) {
     return '';
   }
@@ -33,22 +35,20 @@ export function getConfigSource(searchParams: URLSearchParams, settings: Setting
     return settings.defaultConfigSource;
   }
 
-  const configQueryParam = searchParams.get(configQueryKey) ?? searchParams.get(configLegacyQueryKey);
-
-  if (configQueryParam !== null) {
+  if (configKey !== null) {
     // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
-    if (!configQueryParam) {
+    if (!configKey) {
       storage.removeItem(configFileStorageKey);
       return settings.defaultConfigSource;
     }
 
     // If it's valid, store it and return it
-    if (isValidConfigSource(configQueryParam, settings)) {
-      storage.setItem(configFileStorageKey, configQueryParam);
-      return configQueryParam;
+    if (isValidConfigSource(configKey, settings)) {
+      storage.setItem(configFileStorageKey, configKey);
+      return configKey;
     }
 
-    logDev(`Invalid app-config query param: ${configQueryParam}`);
+    logDev(`Invalid app-config query param: ${configKey}`);
   }
   // Yes this falls through from above to look up the stored value if the query string is invalid and that's OK
 
@@ -67,28 +67,54 @@ export function getConfigSource(searchParams: URLSearchParams, settings: Setting
   return settings.defaultConfigSource;
 }
 
-export function cleanupQueryParams(searchParams: URLSearchParams, settings: Settings, configSource: string | undefined) {
-  let anyTouched = false;
+export function useConfigSource(settings?: Settings) {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Remove the old ?c= param
-  if (searchParams.has(configLegacyQueryKey)) {
-    searchParams.delete(configLegacyQueryKey);
-    anyTouched = true;
-  }
+  const configKey = searchParams.get(configQueryKey) ?? searchParams.get(configLegacyQueryKey);
+  const configSource = useMemo(() => getConfigSource(configKey, settings), [configKey, settings]);
 
-  // If there is no valid config source or the config source equals the default, remove the ?app-config= param
-  if (searchParams.has(configQueryKey) && (!configSource || configSource === settings?.defaultConfigSource)) {
-    searchParams.delete(configQueryKey);
-    anyTouched = true;
-  }
+  // Update the query string to maintain the right params
+  useLayoutEffect(() => {
+    if (!settings) {
+      return;
+    }
 
-  // If the config source is not the default and the query string isn't set right, set the ?app-config= param
-  if (configSource && configSource !== settings?.defaultConfigSource && searchParams.get(configQueryKey) !== configSource) {
-    searchParams.set(configQueryKey, configSource);
-    anyTouched = true;
-  }
+    // Remove the old ?c= param
+    if (searchParams.has(configLegacyQueryKey)) {
+      setSearchParams(
+        (s) => {
+          s.delete(configLegacyQueryKey);
+          return s;
+        },
+        { replace: true },
+      );
+    }
 
-  return anyTouched;
+    // If there is no valid config source or the config source equals the default, remove the ?app-config= param
+    if (searchParams.has(configQueryKey) && (!configSource || configSource === settings?.defaultConfigSource)) {
+      setSearchParams(
+        (s) => {
+          s.delete(configQueryKey);
+
+          return s;
+        },
+        { replace: true },
+      );
+    }
+
+    // If the config source is not the default and the query string isn't set right, set the ?app-config= param
+    if (configSource && configSource !== settings?.defaultConfigSource && searchParams.get(configQueryKey) !== configSource) {
+      setSearchParams(
+        (s) => {
+          s.set(configQueryKey, configSource);
+          return s;
+        },
+        { replace: true },
+      );
+    }
+  }, [configSource, searchParams, setSearchParams, configQueryKey, configLegacyQueryKey, configSource, settings]);
+
+  return configSource;
 }
 
 function isValidConfigSource(source: string, settings: Settings) {

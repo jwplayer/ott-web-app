@@ -1,9 +1,9 @@
 import passwordUtils, { LoginContext } from '#utils/password_utils';
-import constants from '#utils/constants';
+import constants, { longTimeout, normalTimeout } from '#utils/constants';
 import { testConfigs } from '#test/constants';
 
 const editAccount = 'Edit account';
-const editDetials = 'Edit information';
+const editDetails = 'Edit information';
 const emailField = 'email';
 const passwordField = 'confirmationPassword';
 const firstNameField = 'firstName';
@@ -149,21 +149,21 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
   });
 
   Scenario(`I can update firstName - ${providerName}`, async ({ I }) => {
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: firstNameField,
         newValue: '',
       },
     ]);
 
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: firstNameField,
         newValue: 'Jack',
       },
     ]);
 
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: firstNameField,
         newValue: firstName,
@@ -172,21 +172,21 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
   });
 
   Scenario(`I can update lastName - ${providerName}`, async ({ I }) => {
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: lastNameField,
         newValue: '',
       },
     ]);
 
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: lastNameField,
         newValue: 'Jones',
       },
     ]);
 
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: lastNameField,
         newValue: lastName,
@@ -195,7 +195,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
   });
 
   Scenario(`I can update details - ${providerName}`, async ({ I }) => {
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: firstNameField,
         newValue: '',
@@ -206,7 +206,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
       },
     ]);
 
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: firstNameField,
         newValue: 'Newname',
@@ -217,7 +217,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
       },
     ]);
 
-    editAndSave(I, editDetials, [
+    editAndSave(I, editDetails, [
       {
         name: firstNameField,
         newValue: firstName,
@@ -230,7 +230,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
   });
 
   Scenario(`I see name limit errors - ${providerName}`, async ({ I }) => {
-    editAndCancel(I, editDetials, [
+    editAndCancel(I, editDetails, [
       {
         name: firstNameField,
         startingValue: firstName,
@@ -248,6 +248,8 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
 
   Scenario(`I can update my consents - ${providerName}`, async ({ I }) => {
     I.amOnPage(constants.accountsUrl);
+    I.waitForText('Profile info', longTimeout);
+    I.scrollTo('//*[text() = "Other registration details"]');
 
     I.dontSeeCheckboxIsChecked(consentCheckbox);
     I.dontSee('Save');
@@ -259,6 +261,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.see('Save');
     I.see('Cancel');
 
+    I.scrollTo('//*[text() = "Cancel"]');
     I.click('Cancel');
 
     I.dontSeeCheckboxIsChecked(consentCheckbox);
@@ -270,6 +273,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.see('Save');
     I.see('Cancel');
 
+    I.scrollTo('//*[text() = "Save"]');
     I.click('Save');
     I.waitForLoaderDone();
 
@@ -298,7 +302,8 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
 
   function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string; newValue: string; expectedError?: string }[]) {
     I.amOnPage(constants.accountsUrl);
-
+    I.waitForElement(`//*[text() = "${editButton}"]`, normalTimeout);
+    I.scrollTo(`//*[text() = "${editButton}"]`);
     I.click(editButton);
 
     I.see('Save');
@@ -356,7 +361,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     });
 
     for (const field of fieldsWithPaths) {
-      I.seeElement(field.xpath);
+      I.waitForElement(field.xpath);
       I.waitForValue(field.xpath, field.startingValue, 0);
       I.fillField(field.xpath, field.newValue);
     }

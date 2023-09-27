@@ -41,11 +41,16 @@ window.jwpltx = window.jwpltx || {};
 
   // Sends the last ping when closing the player or window
   function sendRemainingData() {
+    // This is rare, but happens in e2e tests and can occur if the user closes the player really fast before any ticks.
+    // There is no data, so just skip.
+    if (!uri) {
+      return;
+    }
+
     if (uri.pw === -1) {
       clearLiveInterval();
     } else {
-      const pw = getCurrentProgressQuantile(lastVp, uri.vd);
-      uri.pw = pw;
+      uri.pw = getCurrentProgressQuantile(lastVp, uri.vd);
     }
 
     clearSeekingTimeout();
