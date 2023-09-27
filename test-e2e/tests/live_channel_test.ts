@@ -247,6 +247,8 @@ Scenario('I can see the background image for Channel 4', async ({ I }) => {
 });
 
 async function isSelectedProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string, isLive: boolean) {
+  I.moveCursorTo('body', 0, 0); // This prevents accidentally triggering the hover state
+
   await checkStyle(I, locator, {
     'background-color': programSelectedBackgroundColor,
     border: isLive ? programLiveBorder : programBorder,

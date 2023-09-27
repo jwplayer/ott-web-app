@@ -71,11 +71,14 @@ export function useConfigSource(settings?: Settings) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const configKey = searchParams.get(configQueryKey) ?? searchParams.get(configLegacyQueryKey);
-
   const configSource = useMemo(() => getConfigSource(configKey, settings), [configKey, settings]);
 
   // Update the query string to maintain the right params
   useLayoutEffect(() => {
+    if (!settings) {
+      return;
+    }
+
     // Remove the old ?c= param
     if (searchParams.has(configLegacyQueryKey)) {
       setSearchParams(
@@ -109,7 +112,7 @@ export function useConfigSource(settings?: Settings) {
         { replace: true },
       );
     }
-  }, [configSource, setSearchParams, configQueryKey, configLegacyQueryKey, configSource]);
+  }, [configSource, searchParams, setSearchParams, configQueryKey, configLegacyQueryKey, configSource, settings]);
 
   return configSource;
 }
