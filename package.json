@@ -99,7 +99,6 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "faker": "^5.5.1",
     "husky": "^6.0.0",
     "i18next-parser": "^8.0.0",
     "jsdom": "^22.1.0",
