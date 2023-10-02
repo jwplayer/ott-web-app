@@ -237,9 +237,28 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
+
+    const existingAccountData = formatUpdateAccount(customer);
+
+    const newMetadata = Object.fromEntries(
+      consents
+        .filter(({ value }) => value !== '')
+        .map(({ name, value }) => {
+          const isBoolean = value === true || value === false;
+
+          if (isBoolean) {
+            return [name, value === true ? 'on' : 'off'];
+          }
+
+          return [name, value];
+        }),
+    );
+
     const params = {
-      ...formatUpdateAccount(customer),
+      ...existingAccountData,
       metadata: {
+        ...existingAccountData.metadata,
+        ...newMetadata,
         consents: JSON.stringify(consents),
       },
     };
