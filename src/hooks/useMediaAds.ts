@@ -18,6 +18,9 @@ export const useMediaAds = (adScheduleId: string | null | undefined, mediaId: st
     { enabled: Boolean(mediaId) },
   );
 
+  console.log(perMediaAds, 'perMediaAds');
+  console.log(adSchedule, 'adSchedule');
+
   return {
     isLoading: isAdScheduleLoading || isPerMediaAdSchedule,
     data: perMediaAds || adSchedule,

@@ -162,9 +162,19 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
+      const data = {
+        ...adScheduleData,
+        schedule: adScheduleData.schedule.map((el) => ({ ...el, offset: el.offset / 1000 })),
+        client: 'googima',
+        vpaidmode: 'insecure',
+        rules: { startOnSeek: 'pre', timeBetweenAds: 0 },
+      };
+
+      console.log(data, 'data');
+
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
-        advertising: adScheduleData,
+        advertising: data,
         aspectratio: false,
         controls: true,
         displaytitle: false,

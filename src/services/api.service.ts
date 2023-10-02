@@ -251,10 +251,10 @@ export const getAdSchedule = async (id: string | undefined | null): Promise<AdSc
 
 export const getMediaAdSchedule = async (id: string, urls: AdTagUrls, fallbackAdSchedule: string | undefined | null): Promise<AdSchedule | undefined> => {
   const { preRollUrl, midRollUrl, postRollUrl } = urls;
-  const pathname = `/v2/advertising/media/${id}/schedule.json`;
-  const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
+  const pathname = `/v1/advertising/media/${id}/schedule.json`;
+  const url = addQueryParams(`https://timing-delivery.jwplayer.com${pathname}`, {
     preroll_url: preRollUrl,
-    midroll_url: midRollUrl,
+    midroll_url: midRollUrl || 'https://playertest.longtailvideo.com/vast-30s-ad.xml',
     postroll_url: postRollUrl,
     fallback_ad_schedule: fallbackAdSchedule,
   });
@@ -266,7 +266,89 @@ export const getMediaAdSchedule = async (id: string, urls: AdTagUrls, fallbackAd
     return;
   }
 
-  const data = (await getDataOrThrow(response)) as { timings: AdSchedule };
+  const data = (await getDataOrThrow(response)) as AdSchedule;
 
-  return data.timings;
+  return data;
+};
+
+const advertising = {
+  rules: {
+    startOnSeek: 'pre',
+    timeBetweenAds: 0,
+  },
+  client: 'googima',
+  schedule: [
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 9,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 21,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 41,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 65,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 88,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 103,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 127,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 154,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 181,
+    },
+    {
+      tag: [
+        'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpremidpost&ciu_szs=300x250&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&impl=s&cmsid=496&vid=short_onecue&correlator=',
+      ],
+      type: 'linear',
+      offset: 212,
+    },
+  ],
+  adscheduleid: 'p7C1mlvt',
+  vpaidmode: 'insecure',
 };
