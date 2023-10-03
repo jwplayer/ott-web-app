@@ -272,7 +272,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   <Checkbox
                     key={index}
                     name={`consentsValues.${consent.name}`}
-                    checked={section.values.consentsValues?.[consent.name] === true}
+                    checked={[true, 'on'].includes(section.values.consentsValues?.[consent.name])}
                     onChange={section.onChange}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}

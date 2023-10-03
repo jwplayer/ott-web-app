@@ -62,7 +62,7 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
     case 'datepicker':
       return <DateField {...props} value={value as string} />;
     default:
-      return <Checkbox {...props} checked={value === true} />;
+      return <Checkbox {...props} checked={[true, 'on'].includes(value)} />;
   }
 };
 
