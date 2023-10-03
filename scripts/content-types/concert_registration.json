@@ -1,0 +1,391 @@
+{
+    "fields": {
+      "period": {
+        "param": "period",
+        "label": "Period",
+        "required": true,
+        "details": {
+          "field_type": "select",
+          "options": [
+            {
+                "value": "Medieval",
+                "label": "Medieval"
+            },
+            {
+                "value": "Baroque",
+                "label": "Baroque"
+            },
+            {
+                "value": "Classical",
+                "label": "Classical"
+            },
+            {
+                "value": "Romantic",
+                "label": "Romantic"
+            },
+            {
+                "value": "Modern",
+                "label": "Modern"
+            },
+            {
+                "value": "Contemporary",
+                "label": "Contemporary"
+            }
+          ]
+        }
+      },
+      "audio_format": {
+        "param": "audioFormat",
+        "label": "Audio Format",
+        "required": true,
+        "details": {
+          "field_type": "select",
+          "options": [
+            {
+                "value": "Mono",
+                "label": "Mono"
+            },
+            {
+                "value": "Stereo",
+                "label": "Stereo"
+            },
+            {
+                "value": "5.1",
+                "label": "5.1"
+            }
+          ]
+        }
+      },
+      "video_format": {
+        "param": "videoFormat",
+        "label": "Video Format",
+        "required": true,
+        "details": {
+          "field_type": "select",
+          "options": [
+            {
+                "value": "SD",
+                "label": "SD"
+            },
+            {
+                "value": "HD",
+                "label": "HD"
+            },
+            {
+                "value": "4K",
+                "label": "4K"
+            },
+            {
+                "value": "4K HDR",
+                "label": "4K HDR"
+            }
+          ]
+        }
+      },
+      "license_partner": {
+        "param": "licensePartner",
+        "label": "License Partner",
+        "required": true,
+        "details": {
+          "field_type": "select",
+          "options": [
+            {
+                "value": "CMajor",
+                "label": "CMajor"
+            },
+            {
+                "value": "EuroArts",
+                "label": "EuroArts"
+            },
+            {
+                "value": "Unitel",
+                "label": "Unitel"
+            },
+            {
+                "value": "Bavarian Radio Symphony Orchestra",
+                "label": "Bavarian Radio Symphony Orchestra"
+            },
+            {
+                "value": "Budapest Festival Orchestra",
+                "label": "Budapest Festival Orchestra"
+            },
+            {
+                "value": "The Cleveland Orchestra",
+                "label": "The Cleveland Orchestra"
+            },
+            {
+                "value": "Czech Philharmonic",
+                "label": "Czech Philharmonic"
+            },
+            {
+                "value": "London Symphony Orchestra",
+                "label": "London Symphony Orchestra"
+            },
+            {
+                "value": "Münchner Philharmoniker",
+                "label": "Münchner Philharmoniker"
+            },
+            {
+                "value": "Orchestre symphonique de Montréal",
+                "label": "Orchestre symphonique de Montréal"
+            },
+            {
+                "value": "Royal Concertgebouw Orchestra",
+                "label": "Royal Concertgebouw Orchestra"
+            },
+            {
+                "value": "Royal Stockholm Philharmonic",
+                "label": "Royal Stockholm Philharmonic"
+            },
+            {
+                "value": "Sydney Symphony Orchestra",
+                "label": "Sydney Symphony Orchestra"
+            },
+            {
+                "value": "Tonhalle-Orchester Zürich",
+                "label": "Tonhalle-Orchester Zürich"
+            }
+          ]
+        }
+      },
+      "media_type": {
+        "param": "mediaType",
+        "label": "Media Type",
+        "required": true,
+        "details": {
+          "field_type": "select",
+          "options": [
+            {
+                "value": "Movie",
+                "label": "Movie"
+            },
+            {
+                "value": "Concert",
+                "label": "Concert"
+            },
+            {
+                "value": "Work",
+                "label": "Work"
+            },
+            {
+                "value": "Movement",
+                "label": "Movement"
+            }
+          ]
+        }
+      },
+      "production": {
+        "param": "production",
+        "label": "Production",
+        "required": true,
+        "details": {
+            "field_type": "select",
+            "default": "Off",
+            "options": [
+                {
+                    "value": "On",
+                    "label": "On"
+                },
+                {
+                    "value": "Off",
+                    "label": "Off"
+                }
+            ]
+        }
+      },
+      "no_index": {
+        "param": "noIndex",
+        "label": "No Index",
+        "required": true,
+        "details": {
+            "field_type": "select",
+            "default": "On",
+            "options": [
+                {
+                    "value": "On",
+                    "label": "On"
+                },
+                {
+                    "value": "Off",
+                    "label": "Off"
+                }
+            ]
+        }
+      },
+      "orchestra": {
+        "param": "orchestra",
+        "label": "Orchestra",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "venue": {
+        "param": "venue",
+        "label": "Venue",
+        "description": "The venue in which the concert takes place",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "composer": {
+        "param": "composer",
+        "label": "Composer",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "synopsis": {
+        "param": "synopsis",
+        "label": "Synopsis",
+        "required": true,
+        "details": {
+            "field_type": "textarea"
+        }
+      },
+      "subtitle": {
+        "param": "subtitle",
+        "label": "Subtitle",
+        "required": true,
+        "details": {
+            "field_type": "textarea"
+        }
+      },
+      "video_director": {
+        "param": "videoDirector",
+        "label": "Director",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "conductor": {
+        "param": "conductor",
+        "label": "Conductor",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "date": {
+        "param": "date",
+        "label": "Date",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "featured_soloists": {
+        "param": "featuredSoloists",
+        "label": "Featured Solist",
+        "required": false,
+        "details": {
+            "field_type": "textarea"
+        }
+      },
+      "producer": {
+        "param": "producer",
+        "label": "Producer",
+        "required": true,
+        "details": {
+            "field_type": "textarea"
+        }
+      },
+      "genre": {
+        "param": "genre",
+        "label": "Genre",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "distribution_id": {
+        "param": "distributionID",
+        "label": "Distribution ID",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "distributor_title": {
+        "param": "distributorTitle",
+        "label": "Distributor Title",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "copyright": {
+        "param": "copyright",
+        "label": "Copyright",
+        "required": true,
+        "details": {
+            "field_type": "input"
+        }
+      },
+      "series_id": {
+        "param": "seriesId",
+        "label": "Playlist",
+        "required": true,
+        "details": {
+            "field_type": "playlist_select"
+        }
+      }
+    },
+    "sections": {
+      "main": {
+        "title": "Main",
+        "fields": [
+          "orchestra",
+          "venue",
+          "composer",
+          "synopsis",
+          "subtitle",
+          "video_director",
+          "period",
+          "conductor",
+          "date",
+          "featured_soloists",
+          "audio_format",
+          "video_format",
+          "producer",
+          "genre"
+        ]
+      },
+      "distributor": {
+        "title": "Distributor",
+        "fields": [
+          "distribution_id",
+          "distributor_title",
+          "license_partner",
+          "copyright"
+        ]
+      },
+      "platform": {
+        "title": "Platform",
+        "fields": [
+          "production",
+          "no_index",
+          "series_id",
+          "media_type"
+        ]
+      }
+    },
+    "schemas": [
+      {
+        "name": "concert registration",
+        "description": "Content type for managing Concert metadata",
+        "display_name": "Concert registration",
+        "hosting_type": "hosted",
+        "is_active": true,
+        "is_series": false,
+        "sections": [
+          "main",
+          "distributor",
+          "platform"
+        ]
+      }
+    ]
+  }
