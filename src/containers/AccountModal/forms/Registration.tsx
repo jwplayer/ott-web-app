@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from 'react-query';
 
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
-import { extractConsentValues, checkConsentsFromValues, noEmptyStringEntries, formatCrfEntries } from '#src/utils/collection';
+import { extractConsentValues, checkConsentsFromValues, isNotEmptyStringEntry, formatCrfEntry } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
 import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
@@ -57,7 +57,7 @@ const Registration = () => {
         return;
       }
 
-      const cleanConsentValues = Object.fromEntries(Object.entries(consentValues).filter(noEmptyStringEntries).map(formatCrfEntries));
+      const cleanConsentValues = Object.fromEntries(Object.entries(consentValues).filter(isNotEmptyStringEntry).map(formatCrfEntry));
 
       await register(email, password, cleanConsentValues);
 

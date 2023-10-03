@@ -142,9 +142,9 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
   return { customerConsents, consentsErrors };
 };
 
-const noEmptyStringEntries = <T>([, value]: [string, T]) => value !== '';
+const isNotEmptyStringEntry = <T>([, value]: [string, T]) => value !== '';
 
-const formatCrfEntries = <T>([name, value]: [string, T], _: number, collection: [string, T][]) => {
+const formatCrfEntry = <T>([name, value]: [string, T], _: number, collection: [string, T][]) => {
   const val = (() => {
     if (name === 'us_state') {
       if (Object.fromEntries(collection).country === 'us') {
@@ -201,6 +201,6 @@ export {
   deepCopy,
   parseAspectRatio,
   parseTilesDelta,
-  noEmptyStringEntries,
-  formatCrfEntries,
+  isNotEmptyStringEntry,
+  formatCrfEntry,
 };

@@ -20,7 +20,7 @@ import Checkbox from '#components/Checkbox/Checkbox';
 import HelperText from '#components/HelperText/HelperText';
 import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import useToggle from '#src/hooks/useToggle';
-import { formatConsentsFromValues, formatConsents, formatConsentValues, noEmptyStringEntries, formatCrfEntries } from '#src/utils/collection';
+import { formatConsentsFromValues, formatConsents, formatConsentValues, isNotEmptyStringEntry, formatCrfEntry } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
@@ -263,7 +263,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
             onSubmit: (values) => {
-              const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(noEmptyStringEntries).map(formatCrfEntries));
+              const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(isNotEmptyStringEntry).map(formatCrfEntry));
               return updateConsents(formatConsentsFromValues(publisherConsents, { ...cleanConsentValues, terms: true }), cleanConsentValues);
             },
             content: (section) => (
@@ -286,7 +286,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               label: t('account.other_registration_details'),
               saveButton: t('account.update_consents'),
               onSubmit: (values) => {
-                const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(noEmptyStringEntries).map(formatCrfEntries));
+                const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(isNotEmptyStringEntry).map(formatCrfEntry));
                 return updateConsents(formatConsentsFromValues(publisherConsents, cleanConsentValues), cleanConsentValues);
               },
 
