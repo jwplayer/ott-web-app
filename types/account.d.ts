@@ -218,21 +218,15 @@ export type UpdateCustomerArgs = {
   fullName?: string;
 };
 
-export type CustomRegisterFieldVariant = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
-
-export interface Consent {
-  type?: CustomRegisterFieldVariant;
-  isCustomRegisterField?: boolean;
-  enabledByDefault?: boolean;
-  defaultValue?: string;
+export type Consent = {
+  broadcasterId: number;
   name: string;
-  label: string;
-  placeholder: string;
-  required: boolean;
-  options: Record<string, string>;
   version: string;
-}
-
+  value: string;
+  label: string;
+  enabledByDefault: boolean;
+  required: boolean;
+};
 export type CustomerConsent = {
   customerId?: string;
   date?: number;
@@ -242,7 +236,7 @@ export type CustomerConsent = {
   newestVersion?: string;
   required?: boolean;
   state: 'accepted' | 'declined';
-  value?: string | boolean;
+  value?: string;
   version: string;
 };
 
