@@ -5,6 +5,7 @@ import { mixed, object, string } from 'yup';
 import { useQuery } from 'react-query';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { useAccountStore } from '#src/stores/AccountStore';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import PersonalDetailsForm from '#components/PersonalDetailsForm/PersonalDetailsForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
@@ -23,6 +24,7 @@ const PersonalDetails = () => {
   const { t } = useTranslation('account');
   const accessModel = useConfigStore((s) => s.accessModel);
   const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
+  const { user } = useAccountStore();
   const { hasTVODOffers } = useOffers();
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
@@ -117,7 +119,10 @@ const PersonalDetails = () => {
             value: questionValues[question.key],
           } as CaptureCustomAnswer),
       );
-      await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
+
+      const metadata = removeEmpty({ ...user?.metadata });
+
+      await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers, metadata }));
 
       nextStep();
     } catch (error: unknown) {
