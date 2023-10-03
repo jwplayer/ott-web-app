@@ -88,31 +88,6 @@ export const login: Login = async ({ config, email, password }) => {
 
 export const register: Register = async ({ config, email, password, customFields }) => {
   try {
-    const metadata = {
-      ...customFields,
-      ...Object.entries(customFields).reduce((acc, [name, val]) => {
-        const value = (() => {
-          if (name === 'us_state') {
-            if (customFields.country === 'us') {
-              return val === 'n/a' ? '' : val;
-            }
-
-            return 'n/a';
-          }
-
-          const isBoolean = val === true || val === false;
-
-          if (isBoolean && name !== 'terms') {
-            return val ? 'on' : 'off';
-          }
-
-          return val;
-        })();
-
-        return { ...acc, [name]: value };
-      }, {}),
-    };
-
     const { data } = await InPlayer.Account.signUpV2({
       email,
       password,
@@ -121,7 +96,7 @@ export const register: Register = async ({ config, email, password, customFields
       metadata: {
         first_name: ' ',
         surname: ' ',
-        ...metadata,
+        ...customFields,
       },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
@@ -236,29 +211,15 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
-    const { customer, consents } = payload;
+    const { customer, consents, consentValues } = payload;
 
     const existingAccountData = formatUpdateAccount(customer);
-
-    const newMetadata = Object.fromEntries(
-      consents
-        .filter(({ value }) => value !== '')
-        .map(({ name, value }) => {
-          const isBoolean = value === true || value === false;
-
-          if (isBoolean) {
-            return [name, value === true ? 'on' : 'off'];
-          }
-
-          return [name, value];
-        }),
-    );
 
     const params = {
       ...existingAccountData,
       metadata: {
         ...existingAccountData.metadata,
-        ...newMetadata,
+        ...consentValues,
         consents: JSON.stringify(consents),
       },
     };

@@ -142,6 +142,30 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
   return { customerConsents, consentsErrors };
 };
 
+const noEmptyStringEntries = <T>([, value]: [string, T]) => value !== '';
+
+const formatCrfEntries = <T>([name, value]: [string, T], _: number, collection: [string, T][]) => {
+  const val = (() => {
+    if (name === 'us_state') {
+      if (Object.fromEntries(collection).country === 'us') {
+        return value === 'n/a' ? '' : value;
+      }
+
+      return 'n/a';
+    }
+
+    const isBoolean = value === true || value === false;
+
+    if (isBoolean && name !== 'terms') {
+      return value ? 'on' : 'off';
+    }
+
+    return value;
+  })();
+
+  return [name, val] as const;
+};
+
 const deepCopy = (obj: unknown) => {
   if (Array.isArray(obj) || (typeof obj === 'object' && obj !== null)) {
     return JSON.parse(JSON.stringify(obj));
@@ -177,4 +201,6 @@ export {
   deepCopy,
   parseAspectRatio,
   parseTilesDelta,
+  noEmptyStringEntries,
+  formatCrfEntries,
 };

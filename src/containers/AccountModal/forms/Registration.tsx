@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from 'react-query';
 
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
-import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
+import { extractConsentValues, checkConsentsFromValues, noEmptyStringEntries, formatCrfEntries } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
 import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
@@ -57,9 +57,11 @@ const Registration = () => {
         return;
       }
 
-      await register(email, password, consentValues);
+      const cleanConsentValues = Object.fromEntries(Object.entries(consentValues).filter(noEmptyStringEntries).map(formatCrfEntries));
 
-      await updateConsents(customerConsents).catch(() => {
+      await register(email, password, cleanConsentValues);
+
+      await updateConsents(customerConsents, cleanConsentValues).catch(() => {
         // error caught while updating the consents, but continue the registration flow
       });
 

@@ -260,6 +260,7 @@ export type UpdateCustomerConsentsArgs = {
   config: Config;
   customer: Customer;
   consents: CustomerConsent[];
+  consentValues: Record<string, string | boolean>;
 };
 
 export type LocalesData = {

@@ -20,7 +20,7 @@ import Checkbox from '#components/Checkbox/Checkbox';
 import HelperText from '#components/HelperText/HelperText';
 import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import useToggle from '#src/hooks/useToggle';
-import { formatConsentsFromValues, formatConsents, formatConsentValues } from '#src/utils/collection';
+import { formatConsentsFromValues, formatConsents, formatConsentValues, noEmptyStringEntries, formatCrfEntries } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
@@ -262,7 +262,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, { ...values.consentsValues, terms: true })),
+            onSubmit: (values) => {
+              const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(noEmptyStringEntries).map(formatCrfEntries));
+              return updateConsents(formatConsentsFromValues(publisherConsents, { ...cleanConsentValues, terms: true }), cleanConsentValues);
+            },
             content: (section) => (
               <>
                 {termsConsents?.map((consent, index) => (
@@ -282,7 +285,11 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             formSection({
               label: t('account.other_registration_details'),
               saveButton: t('account.update_consents'),
-              onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
+              onSubmit: (values) => {
+                const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(noEmptyStringEntries).map(formatCrfEntries));
+                return updateConsents(formatConsentsFromValues(publisherConsents, cleanConsentValues), cleanConsentValues);
+              },
+
               content: (section) => (
                 <div className={styles.customFields}>
                   {nonTermsConsents.map((consent) => (
