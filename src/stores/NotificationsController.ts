@@ -3,14 +3,17 @@ import { logout, reloadActiveSubscription } from './AccountController';
 import useService from '#src/hooks/useService';
 import { addQueryParams } from '#src/utils/formatting';
 import { simultaneousLoginWarningKey } from '#src/components/LoginForm/LoginForm';
+import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 
 export enum NotificationsTypes {
-  ACCESS_GRANTED = 'access.granted',
   ACCESS_REVOKED = 'access.revoked',
   CARD_REQUIRES_ACTION = 'payment.card.requires.action',
+  CARD_FAILED = 'payment.card.failed',
+  CARD_SUCCESS = 'payment.card.success',
   SUBSCRIBE_REQUIRES_ACTION = 'subscribe.requires.action',
   FAILED = '.failed',
   SUBSCRIBE_FAILED = 'subscribe.failed',
+  SUBSCRIBE_SUCCESS = 'subscribe.success',
   ACCOUNT_LOGOUT = 'account.logout',
 }
 
@@ -19,12 +22,17 @@ export const subscribeToNotifications = async (uuid: string = '') => {
     return await accountService.subscribeToNotifications(uuid, async (message) => {
       if (message) {
         const notification = JSON.parse(message);
+
         switch (notification.type) {
           case NotificationsTypes.FAILED:
+          case NotificationsTypes.CARD_FAILED:
           case NotificationsTypes.SUBSCRIBE_FAILED:
             window.location.href = addQueryParams(window.location.href, { u: 'payment-error', message: notification.resource?.message });
             break;
-          case NotificationsTypes.ACCESS_GRANTED:
+          case NotificationsTypes.CARD_SUCCESS:
+            await queryClient.invalidateQueries('entitlements');
+            break;
+          case NotificationsTypes.SUBSCRIBE_SUCCESS:
             await reloadActiveSubscription();
             break;
           case NotificationsTypes.ACCESS_REVOKED:

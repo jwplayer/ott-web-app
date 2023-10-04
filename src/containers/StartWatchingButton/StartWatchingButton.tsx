@@ -7,12 +7,13 @@ import styles from './StartWatchingButton.module.scss';
 import Play from '#src/icons/Play';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import Button from '#components/Button/Button';
-import { addQueryParam } from '#src/utils/location';
+import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import useEntitlement from '#src/hooks/useEntitlement';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import type { PlaylistItem } from '#types/playlist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useAccountStore } from '#src/stores/AccountStore';
+import useQueryParam from '#src/hooks/useQueryParam';
 
 type Props = {
   item: PlaylistItem;
@@ -26,6 +27,7 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
   const navigate = useNavigate();
   const location = useLocation();
   const breakpoint = useBreakpoint();
+  const viewParam = useQueryParam('u');
 
   // account
   const user = useAccountStore((state) => state.user);
@@ -68,6 +70,14 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
 
     return () => setRequestedMediaOffers(null);
   }, [mediaOffers, setRequestedMediaOffers]);
+
+  // clear modal if access is present for the media
+  // cannot be done in the notifications controller without causing a page refresh
+  useEffect(() => {
+    if (isEntitled && (viewParam === 'checkout' || viewParam === 'choose-offer')) {
+      return navigate(removeQueryParam(location, 'u'));
+    }
+  }, [isEntitled, location, navigate, viewParam]);
 
   return (
     <Button
