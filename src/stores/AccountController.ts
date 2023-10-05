@@ -1,6 +1,5 @@
 import i18next from 'i18next';
 
-import { subscribeToNotifications } from './NotificationsController';
 import { useProfileStore } from './ProfileStore';
 
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
@@ -521,8 +520,6 @@ async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | 
     user,
     customerConsents,
   });
-
-  subscribeToNotifications(user.uuid);
 
   return await Promise.allSettled([
     accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
