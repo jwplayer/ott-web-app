@@ -63,14 +63,7 @@ const AccountModal = () => {
 
   // handle websocket notifications
   useEffect(() => {
-    if (user) {
-      const handleNotification = async () => {
-        if (user) {
-          await subscribeToNotifications(user.uuid, navigate);
-        }
-      };
-      handleNotification();
-    }
+    if (user) subscribeToNotifications(user.uuid, navigate);
     // we don't need to subscribe on each navigate change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
