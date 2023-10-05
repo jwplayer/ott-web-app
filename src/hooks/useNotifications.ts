@@ -1,13 +1,14 @@
-import type { NavigateFunction } from 'react-router';
+import { useNavigate } from 'react-router';
 
-import { logout, reloadActiveSubscription } from './AccountController';
+import useService from './useService';
 
-import useService from '#src/hooks/useService';
-import { addQueryParams, removeQueryParamFromUrl } from '#src/utils/formatting';
-import { simultaneousLoginWarningKey } from '#src/components/LoginForm/LoginForm';
+import { simultaneousLoginWarningKey } from '#components/LoginForm/LoginForm';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
+import { logout } from '#src/services/inplayer.account.service';
+import { reloadActiveSubscription } from '#src/stores/AccountController';
+import { addQueryParams, removeQueryParamFromUrl } from '#src/utils/formatting';
 
-export enum NotificationsTypes {
+enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
   CARD_REQUIRES_ACTION = 'payment.card.requires.action',
   CARD_FAILED = 'payment.card.failed',
@@ -19,7 +20,9 @@ export enum NotificationsTypes {
   ACCOUNT_LOGOUT = 'account.logout',
 }
 
-export const subscribeToNotifications = async (uuid: string = '', navigateTo: NavigateFunction) => {
+export default async function useNotifications(uuid: string = '') {
+  const navigate = useNavigate();
+
   return await useService(async ({ accountService }) => {
     return await accountService.subscribeToNotifications(uuid, async (message) => {
       if (message) {
@@ -29,11 +32,11 @@ export const subscribeToNotifications = async (uuid: string = '', navigateTo: Na
           case NotificationsTypes.FAILED:
           case NotificationsTypes.CARD_FAILED:
           case NotificationsTypes.SUBSCRIBE_FAILED:
-            navigateTo(addQueryParams(window.location.pathname, { u: 'payment-error', message: notification.resource?.message }));
+            navigate(addQueryParams(window.location.pathname, { u: 'payment-error', message: notification.resource?.message }));
             break;
           case NotificationsTypes.CARD_SUCCESS:
             await queryClient.invalidateQueries('entitlements');
-            navigateTo(removeQueryParamFromUrl('u'));
+            navigate(removeQueryParamFromUrl('u'));
             break;
           case NotificationsTypes.SUBSCRIBE_SUCCESS:
             await reloadActiveSubscription();
@@ -47,7 +50,7 @@ export const subscribeToNotifications = async (uuid: string = '', navigateTo: Na
             break;
           case NotificationsTypes.ACCOUNT_LOGOUT:
             if (notification.resource?.reason === 'sessions_limit') {
-              navigateTo(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
+              navigate(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
             } else {
               await logout();
             }
@@ -58,4 +61,4 @@ export const subscribeToNotifications = async (uuid: string = '', navigateTo: Na
       }
     });
   });
-};
+}
