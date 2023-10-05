@@ -1,7 +1,7 @@
 import { logout, reloadActiveSubscription } from './AccountController';
 
 import useService from '#src/hooks/useService';
-import { addQueryParams } from '#src/utils/formatting';
+import { addQueryParams, removeQueryParam } from '#src/utils/formatting';
 import { simultaneousLoginWarningKey } from '#src/components/LoginForm/LoginForm';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 
@@ -17,7 +17,7 @@ export enum NotificationsTypes {
   ACCOUNT_LOGOUT = 'account.logout',
 }
 
-export const subscribeToNotifications = async (uuid: string = '') => {
+export const subscribeToNotifications = async (uuid: string = '', navigateTo: ({ url }: { url: string }) => void) => {
   return await useService(async ({ accountService }) => {
     return await accountService.subscribeToNotifications(uuid, async (message) => {
       if (message) {
@@ -27,10 +27,11 @@ export const subscribeToNotifications = async (uuid: string = '') => {
           case NotificationsTypes.FAILED:
           case NotificationsTypes.CARD_FAILED:
           case NotificationsTypes.SUBSCRIBE_FAILED:
-            window.location.href = addQueryParams(window.location.href, { u: 'payment-error', message: notification.resource?.message });
+            navigateTo({ url: addQueryParams(window.location.pathname, { u: 'payment-error', message: notification.resource?.message }) });
             break;
           case NotificationsTypes.CARD_SUCCESS:
             await queryClient.invalidateQueries('entitlements');
+            navigateTo({ url: removeQueryParam('u') });
             break;
           case NotificationsTypes.SUBSCRIBE_SUCCESS:
             await reloadActiveSubscription();
@@ -44,7 +45,7 @@ export const subscribeToNotifications = async (uuid: string = '') => {
             break;
           case NotificationsTypes.ACCOUNT_LOGOUT:
             if (notification.resource?.reason === 'sessions_limit') {
-              window.location.href = addQueryParams(window.location.href, { u: 'login', message: simultaneousLoginWarningKey });
+              navigateTo({ url: addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }) });
             } else {
               await logout();
             }

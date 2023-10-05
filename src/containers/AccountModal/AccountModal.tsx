@@ -28,6 +28,7 @@ import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
 import useEventCallback from '#src/hooks/useEventCallback';
 import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
+import { subscribeToNotifications } from '#src/stores/NotificationsController';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
 
@@ -59,6 +60,22 @@ const AccountModal = () => {
       toLogin();
     }
   }, [viewParam, loading, isPublicView, user, toLogin]);
+
+  // handle websocket notifications
+  useEffect(() => {
+    if (user) {
+      const handleNotification = async () => {
+        if (user) {
+          await subscribeToNotifications(user.uuid, async (navigateTo) => {
+            navigate(navigateTo.url);
+          });
+        }
+      };
+      handleNotification();
+    }
+    // we don't need to subscribe on each navigate change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const closeHandler = useEventCallback(() => {
     navigate(removeMultipleQueryParams(location, ['u', 'message']));
