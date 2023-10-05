@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "4.25.0",
+  "version": "4.27.0",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "JW Player",
@@ -19,7 +19,7 @@
     "test-commit": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --changed HEAD~1 --coverage",
     "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update",
     "i18next": "i18next src/{components,containers,pages,services,stores}/**/{**/,/}*.{ts,tsx} && node ./scripts/i18next/generate.js",
-    "i18next-diff": "yarn i18next && npx ts-node ./scripts/i18next/diff-translations",
+    "i18next-diff": "npx ts-node ./scripts/i18next/diff-translations",
     "i18next-update": "npx ts-node ./scripts/i18next/update-translations && yarn i18next",
     "format": "run-s -c format:*",
     "format:eslint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\" --fix",
