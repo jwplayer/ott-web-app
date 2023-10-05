@@ -66,9 +66,7 @@ const AccountModal = () => {
     if (user) {
       const handleNotification = async () => {
         if (user) {
-          await subscribeToNotifications(user.uuid, async (navigateTo) => {
-            navigate(navigateTo.url);
-          });
+          await subscribeToNotifications(user.uuid, navigate);
         }
       };
       handleNotification();

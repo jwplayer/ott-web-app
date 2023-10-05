@@ -1,7 +1,9 @@
+import type { NavigateFunction } from 'react-router';
+
 import { logout, reloadActiveSubscription } from './AccountController';
 
 import useService from '#src/hooks/useService';
-import { addQueryParams, removeQueryParam } from '#src/utils/formatting';
+import { addQueryParams, removeQueryParamFromUrl } from '#src/utils/formatting';
 import { simultaneousLoginWarningKey } from '#src/components/LoginForm/LoginForm';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 
@@ -17,7 +19,7 @@ export enum NotificationsTypes {
   ACCOUNT_LOGOUT = 'account.logout',
 }
 
-export const subscribeToNotifications = async (uuid: string = '', navigateTo: ({ url }: { url: string }) => void) => {
+export const subscribeToNotifications = async (uuid: string = '', navigateTo: NavigateFunction) => {
   return await useService(async ({ accountService }) => {
     return await accountService.subscribeToNotifications(uuid, async (message) => {
       if (message) {
@@ -27,11 +29,11 @@ export const subscribeToNotifications = async (uuid: string = '', navigateTo: ({
           case NotificationsTypes.FAILED:
           case NotificationsTypes.CARD_FAILED:
           case NotificationsTypes.SUBSCRIBE_FAILED:
-            navigateTo({ url: addQueryParams(window.location.pathname, { u: 'payment-error', message: notification.resource?.message }) });
+            navigateTo(addQueryParams(window.location.pathname, { u: 'payment-error', message: notification.resource?.message }));
             break;
           case NotificationsTypes.CARD_SUCCESS:
             await queryClient.invalidateQueries('entitlements');
-            navigateTo({ url: removeQueryParam('u') });
+            navigateTo(removeQueryParamFromUrl('u'));
             break;
           case NotificationsTypes.SUBSCRIBE_SUCCESS:
             await reloadActiveSubscription();
@@ -45,7 +47,7 @@ export const subscribeToNotifications = async (uuid: string = '', navigateTo: ({
             break;
           case NotificationsTypes.ACCOUNT_LOGOUT:
             if (notification.resource?.reason === 'sessions_limit') {
-              navigateTo({ url: addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }) });
+              navigateTo(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
             } else {
               await logout();
             }

@@ -54,7 +54,7 @@ export const addQueryParams = (url: string, queryParams: { [key: string]: string
   return `${urlWithoutSearch}${queryString ? `?${queryString}` : ''}`;
 };
 
-export function removeQueryParam(key: string): string {
+export function removeQueryParamFromUrl(key: string): string {
   const url = new URL(window.location.href);
   const urlSearchParams = new URLSearchParams(url.search);
 
