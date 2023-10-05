@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 
 import styles from './Account.module.scss';
 
+import { isTruthyCustomParamValue, isTruthy, logDev } from '#src/utils/common';
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
 import type { Consent } from '#types/account';
 import Alert from '#components/Alert/Alert';
@@ -20,10 +21,9 @@ import Checkbox from '#components/Checkbox/Checkbox';
 import HelperText from '#components/HelperText/HelperText';
 import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import useToggle from '#src/hooks/useToggle';
-import { formatConsentsFromValues, formatConsents, formatConsentValues, isNotEmptyStringEntry, formatCrfEntry } from '#src/utils/collection';
+import { formatConsentsFromValues, formatConsents, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { isTruthy, logDev } from '#src/utils/common';
 import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
 
 type Props = {
@@ -262,17 +262,14 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => {
-              const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(isNotEmptyStringEntry).map(formatCrfEntry));
-              return updateConsents(formatConsentsFromValues(publisherConsents, { ...cleanConsentValues, terms: true }), cleanConsentValues);
-            },
+            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, { ...values.consentsValues, terms: true })),
             content: (section) => (
               <>
                 {termsConsents?.map((consent, index) => (
                   <Checkbox
                     key={index}
                     name={`consentsValues.${consent.name}`}
-                    checked={[true, 'on'].includes(section.values.consentsValues?.[consent.name])}
+                    checked={isTruthyCustomParamValue(section.values.consentsValues?.[consent.name])}
                     onChange={section.onChange}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}
@@ -285,11 +282,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             formSection({
               label: t('account.other_registration_details'),
               saveButton: t('account.update_consents'),
-              onSubmit: (values) => {
-                const cleanConsentValues = Object.fromEntries(Object.entries(values.consentsValues).filter(isNotEmptyStringEntry).map(formatCrfEntry));
-                return updateConsents(formatConsentsFromValues(publisherConsents, cleanConsentValues), cleanConsentValues);
-              },
-
+              onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
               content: (section) => (
                 <div className={styles.customFields}>
                   {nonTermsConsents.map((consent) => (

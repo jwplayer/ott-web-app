@@ -1,6 +1,7 @@
 import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
+import { formatConsentsToRegisterFields } from '#src/utils/collection';
 import { getCommonResponseData } from '#src/utils/api';
 import type { Config } from '#types/Config';
 import type {
@@ -211,7 +212,7 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
-    const { customer, consents, consentValues } = payload;
+    const { customer, consents } = payload;
 
     const existingAccountData = formatUpdateAccount(customer);
 
@@ -219,7 +220,7 @@ export const updateCustomerConsents: UpdateCustomerConsents = async (payload) =>
       ...existingAccountData,
       metadata: {
         ...existingAccountData.metadata,
-        ...consentValues,
+        ...formatConsentsToRegisterFields(consents),
         consents: JSON.stringify(consents),
       },
     };
@@ -255,8 +256,8 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
   };
 };
 
-export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
-  return (await updateCustomer(metadata, true)) as ServiceResponse<Capture>;
+export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...newAnswers }) => {
+  return (await updateCustomer({ ...customer, ...newAnswers }, true)) as ServiceResponse<Capture>;
 };
 
 export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {

@@ -142,12 +142,12 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
   return { customerConsents, consentsErrors };
 };
 
-const isNotEmptyStringEntry = <T>([, value]: [string, T]) => value !== '';
+const isNotEmptyConsent = (consent: CustomerConsent) => consent.value !== '';
 
-const formatCrfEntry = <T>([name, value]: [string, T], _: number, collection: [string, T][]) => {
+const formatConsentToRegisterField = ({ name, value = '' }: CustomerConsent, _: number, collection: CustomerConsent[]) => {
   const val = (() => {
     if (name === 'us_state') {
-      if (Object.fromEntries(collection).country === 'us') {
+      if (collection.find(({ name, value }) => name === 'country' && value === 'us')) {
         return value === 'n/a' ? '' : value;
       }
 
@@ -165,6 +165,9 @@ const formatCrfEntry = <T>([name, value]: [string, T], _: number, collection: [s
 
   return [name, val] as const;
 };
+
+const formatConsentsToRegisterFields = (consents: CustomerConsent[]) =>
+  Object.fromEntries(consents.filter(isNotEmptyConsent).map(formatConsentToRegisterField));
 
 const deepCopy = (obj: unknown) => {
   if (Array.isArray(obj) || (typeof obj === 'object' && obj !== null)) {
@@ -201,6 +204,7 @@ export {
   deepCopy,
   parseAspectRatio,
   parseTilesDelta,
-  isNotEmptyStringEntry,
-  formatCrfEntry,
+  isNotEmptyConsent,
+  formatConsentToRegisterField,
+  formatConsentsToRegisterFields,
 };

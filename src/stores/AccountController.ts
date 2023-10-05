@@ -228,10 +228,7 @@ export const updatePersonalShelves = async () => {
   });
 };
 
-export const updateConsents = async (
-  customerConsents: CustomerConsent[],
-  consentValues: Record<string, string | boolean>,
-): Promise<ServiceResponse<CustomerConsent[]>> => {
+export const updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
   return await useAccount(async ({ customer }) => {
     return await useService(async ({ accountService, config }) => {
       useAccountStore.setState({ loading: true });
@@ -241,7 +238,6 @@ export const updateConsents = async (
           config,
           customer,
           consents: customerConsents,
-          consentValues,
         });
 
         if (response?.consents) {
