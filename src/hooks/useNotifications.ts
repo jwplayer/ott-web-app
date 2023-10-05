@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import useService from './useService';
@@ -22,9 +23,12 @@ enum NotificationsTypes {
 
 export default async function useNotifications(uuid: string = '') {
   const navigate = useNavigate();
+  const accountService = useService(({ accountService }) => accountService);
 
-  return await useService(async ({ accountService }) => {
-    return await accountService.subscribeToNotifications(uuid, async (message) => {
+  useEffect(() => {
+    if (!uuid) return;
+
+    accountService.subscribeToNotifications(uuid, async (message) => {
       if (message) {
         const notification = JSON.parse(message);
 
@@ -32,7 +36,12 @@ export default async function useNotifications(uuid: string = '') {
           case NotificationsTypes.FAILED:
           case NotificationsTypes.CARD_FAILED:
           case NotificationsTypes.SUBSCRIBE_FAILED:
-            navigate(addQueryParams(window.location.pathname, { u: 'payment-error', message: notification.resource?.message }));
+            navigate(
+              addQueryParams(window.location.pathname, {
+                u: 'payment-error',
+                message: notification.resource?.message,
+              }),
+            );
             break;
           case NotificationsTypes.CARD_SUCCESS:
             await queryClient.invalidateQueries('entitlements');
@@ -60,5 +69,6 @@ export default async function useNotifications(uuid: string = '') {
         }
       }
     });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountService, uuid]);
 }
