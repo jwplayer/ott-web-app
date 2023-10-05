@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -8,7 +8,7 @@ import HelperText from '#components/HelperText/HelperText';
 import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
-  label?: string | JSX.Element;
+  label?: ReactNode;
   name: string;
   value?: string;
   checked?: boolean;
