@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './Radio.module.scss';
@@ -9,9 +9,9 @@ import useOpaqueId from '#src/hooks/useOpaqueId';
 type Props = {
   name: string;
   value?: string;
-  values: { value: string; label: string }[];
+  values: string[];
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  header?: ReactNode;
+  header?: string;
   helperText?: string;
   error?: boolean;
   required?: boolean;
@@ -29,10 +29,10 @@ const Radio: React.FC<Props> = ({ name, onChange, header, value, values, helperT
           {!required ? <span>{t('optional')}</span> : null}
         </div>
       ) : null}
-      {values.map(({ value: optionValue, label: optionLabel }, index) => (
+      {values.map((optionValue, index) => (
         <div className={styles.radio} key={index}>
           <input value={optionValue} name={name} type="radio" id={id + index} onChange={onChange} checked={value === optionValue} required={required} />
-          <label htmlFor={id + index}>{optionLabel}</label>
+          <label htmlFor={id + index}>{optionValue}</label>
         </div>
       ))}
       <HelperText error={error}>{helperText}</HelperText>
