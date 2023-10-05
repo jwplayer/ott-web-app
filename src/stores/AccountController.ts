@@ -521,8 +521,6 @@ async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | 
     customerConsents,
   });
 
-  // subscribeToNotifications(user.uuid);
-
   return await Promise.allSettled([
     accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),
     getPublisherConsents(),
