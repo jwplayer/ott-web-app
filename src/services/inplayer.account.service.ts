@@ -87,7 +87,7 @@ export const login: Login = async ({ config, email, password }) => {
   }
 };
 
-export const register: Register = async ({ config, email, password, customFields }) => {
+export const register: Register = async ({ config, email, password, consents }) => {
   try {
     const { data } = await InPlayer.Account.signUpV2({
       email,
@@ -97,7 +97,7 @@ export const register: Register = async ({ config, email, password, customFields
       metadata: {
         first_name: ' ',
         surname: ' ',
-        ...customFields,
+        ...formatConsentsToRegisterFields(consents),
       },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',

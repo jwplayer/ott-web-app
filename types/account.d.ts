@@ -27,7 +27,7 @@ export type LoginArgs = {
 };
 
 export type RegistrationArgs = LoginArgs & {
-  customFields: Record<string, string | boolean>;
+  consents: CustomerConsent[];
 };
 
 export type AuthResponse = {
