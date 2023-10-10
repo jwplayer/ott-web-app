@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 
 import { useProfileStore } from './ProfileStore';
+import { unpersistProfile } from './ProfileController';
 
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import useAccount from '#src/hooks/useAccount';
@@ -24,7 +25,6 @@ import type {
   GetPublisherConsentsResponse,
 } from '#types/account';
 import type { Offer } from '#types/checkout';
-import { unpersistProfile } from '#src/hooks/useProfiles';
 
 const PERSIST_PROFILE = 'profile';
 

@@ -2,21 +2,11 @@ import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 
-import { initializeAccount } from '#src/stores/AccountController';
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile } from '#src/stores/ProfileController';
 import { useProfileStore } from '#src/stores/ProfileStore';
-import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import * as persist from '#src/utils/persist';
 import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 import { useAccountStore } from '#src/stores/AccountStore';
 import defaultAvatar from '#src/assets/profiles/default_avatar.png';
-
-const PERSIST_PROFILE = 'profile';
-
-export const unpersistProfile = () => {
-  persist.removeItem(PERSIST_PROFILE);
-};
 
 export const useSelectProfile = () => {
   const navigate = useNavigate();
@@ -25,27 +15,14 @@ export const useSelectProfile = () => {
     onMutate: ({ avatarUrl }) => {
       useProfileStore.setState({ selectingProfileAvatar: avatarUrl });
     },
-    onSuccess: async (response) => {
-      const profile = response?.responseData;
-      if (profile?.credentials?.access_token) {
-        persist.setItem(PERSIST_PROFILE, profile);
-        persist.setItemStorage('inplayer_token', {
-          expires: profile.credentials.expires,
-          token: profile.credentials.access_token,
-          refreshToken: '',
-        });
-        useFavoritesStore.setState({ favorites: [] });
-        useWatchHistoryStore.setState({ watchHistory: [] });
-        useProfileStore.getState().setProfile(profile);
-        await initializeAccount().finally(() => {
-          useProfileStore.setState({ selectingProfileAvatar: null });
-          navigate('/');
-        });
-      }
+    onSuccess: async () => {
+      useProfileStore.setState({ selectingProfileAvatar: null });
+      navigate('/');
     },
     onError: () => {
       useProfileStore.setState({ selectingProfileAvatar: null });
-      throw new Error('Unable to enter profile.');
+      navigate('/u/profiles');
+      console.error('Unable to enter profile.');
     },
   });
 };
@@ -72,7 +49,7 @@ export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 
   return useMutation(updateProfile, {
     onError: () => {
-      throw new Error('Unable to update profile.');
+      console.error('Unable to update profile.');
     },
     onSuccess: () => {
       navigate('/u/profiles');
