@@ -21,8 +21,9 @@ import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
 import { useProfileStore } from '#src/stores/ProfileStore';
-import { unpersistProfile, useProfiles } from '#src/hooks/useProfiles';
+import { useProfiles } from '#src/hooks/useProfiles';
 import { IS_DEVELOPMENT_BUILD } from '#src/utils/common';
+import { unpersistProfile } from '#src/stores/ProfileController';
 
 const Layout = () => {
   const location = useLocation();

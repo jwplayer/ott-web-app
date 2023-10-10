@@ -41,7 +41,12 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
   ];
 
   const validationSchema: SchemaOf<{ name: string }> = object().shape({
-    name: string().required(t('profile.validation.name.required')).min(2, t('profile.validation.name.too_short')),
+    name: string()
+      .trim()
+      .required(t('profile.validation.name.required'))
+      .min(3, t('profile.validation.name.too_short'))
+      .max(30, t('profile.validation.name.too_long'))
+      .matches(/^[a-zA-Z0-9\s]*$/, t('profile.validation.name.invalid_characters')),
   });
 
   const { handleSubmit, handleChange, values, errors, submitting, setValue } = useForm(initialValues, formHandler, validationSchema);
