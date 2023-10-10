@@ -78,7 +78,7 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
       },
     );
 
-  if (isLoading || isFetching) return <LoadingOverlay inline />;
+  if (isLoading || isFetching) return <LoadingOverlay />;
 
   return (
     <div className={classNames(styles.user, contained && profileStyles.contained)}>

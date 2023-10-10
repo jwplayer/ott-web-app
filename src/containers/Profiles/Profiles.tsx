@@ -48,7 +48,7 @@ const Profiles = ({ editMode = false }: Props) => {
 
   const createdProfileData = data?.responseData.collection.find((profile: Profile) => profile.id === createdProfileId);
 
-  if (loading || isLoading || isFetching) return <LoadingOverlay inline />;
+  if (loading || isLoading || isFetching) return <LoadingOverlay />;
 
   return (
     <>

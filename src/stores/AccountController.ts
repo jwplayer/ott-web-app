@@ -3,6 +3,17 @@ import i18next from 'i18next';
 import { useProfileStore } from './ProfileStore';
 import { unpersistProfile } from './ProfileController';
 
+import type {
+  Profile,
+  Capture,
+  Customer,
+  CustomerConsent,
+  EmailConfirmPasswordInput,
+  FirstLastNameInput,
+  GetCaptureStatusResponse,
+  GetCustomerConsentsResponse,
+  GetPublisherConsentsResponse,
+} from '#types/account';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import useAccount from '#src/hooks/useAccount';
 import useService from '#src/hooks/useService';
@@ -14,21 +25,11 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { logDev } from '#src/utils/common';
 import * as persist from '#src/utils/persist';
-import type {
-  Capture,
-  Customer,
-  CustomerConsent,
-  EmailConfirmPasswordInput,
-  FirstLastNameInput,
-  GetCaptureStatusResponse,
-  GetCustomerConsentsResponse,
-  GetPublisherConsentsResponse,
-} from '#types/account';
 import type { Offer } from '#types/checkout';
 
 const PERSIST_PROFILE = 'profile';
 
-export const initializeAccount = async () => {
+export const initializeAccount = async ({ profile }: { profile?: Profile } = {}) => {
   await useService(async ({ accountService, config }) => {
     if (!accountService) {
       useAccountStore.setState({ loading: false });
@@ -52,6 +53,9 @@ export const initializeAccount = async () => {
     await accountService.initialize(config, logout);
 
     try {
+      if (profile?.credentials?.access_token) {
+        loadProfile(profile);
+      }
       const authData = await accountService.getAuthData();
 
       if (authData) {
@@ -71,6 +75,18 @@ export const initializeAccount = async () => {
 
     useAccountStore.setState({ loading: false });
   });
+};
+
+const loadProfile = (profile: Profile) => {
+  persist.setItem(PERSIST_PROFILE, profile);
+  persist.setItemStorage('inplayer_token', {
+    expires: profile.credentials.expires,
+    token: profile.credentials.access_token,
+    refreshToken: '',
+  });
+  useFavoritesStore.setState({ favorites: [] });
+  useWatchHistoryStore.setState({ watchHistory: [] });
+  useProfileStore.getState().setProfile(profile);
 };
 
 export async function updateUser(values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> {

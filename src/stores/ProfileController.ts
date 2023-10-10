@@ -1,6 +1,3 @@
-import { useFavoritesStore } from './FavoritesStore';
-import { useProfileStore } from './ProfileStore';
-import { useWatchHistoryStore } from './WatchHistoryStore';
 import { initializeAccount } from './AccountController';
 import { useAccountStore } from './AccountStore';
 
@@ -41,18 +38,9 @@ export const enterProfile = async ({ id, pin }: EnterProfilePayload) => {
   return await useService(async ({ profileService, sandbox }) => {
     const response = await profileService?.enterProfile({ id, pin }, sandbox ?? true);
     const profile = response?.responseData;
-    if (profile?.credentials?.access_token) {
-      persist.setItem(PERSIST_PROFILE, profile);
-      persist.setItemStorage('inplayer_token', {
-        expires: profile.credentials.expires,
-        token: profile.credentials.access_token,
-        refreshToken: '',
-      });
-      useFavoritesStore.setState({ favorites: [] });
-      useWatchHistoryStore.setState({ watchHistory: [] });
-      useProfileStore.getState().setProfile(profile);
-    }
-    return initializeAccount();
+    return initializeAccount({
+      profile,
+    });
   });
 };
 
