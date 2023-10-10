@@ -100,8 +100,7 @@
     "edit_card": "Edit card",
     "paypal": "PayPal",
     "update_payment_details": "Update payment details",
-    "update_payment_success": "Your payment details have been updated",
-    "longer_than_usual": "The payment is taking longer than usual. Please try again later."
+    "update_payment_success": "Your payment details have been updated"
   },
   "periods": {
     "day_one": "day",

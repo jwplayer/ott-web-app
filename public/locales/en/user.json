@@ -135,8 +135,10 @@
     "no_one_watching": "There’s no one watching.",
     "validation": {
       "name": {
+        "invalid_characters": "Your profile name can only contain letters, numbers, and spaces.",
         "required": "Please enter a name for your profile.",
-        "too_short": "Please enter at least 2 characters."
+        "too_long": "Please limit your profile name to {{count}} characters or fewer.",
+        "too_short": "Please enter at least {{count}} characters."
       }
     },
     "watch_now": "Watch now"

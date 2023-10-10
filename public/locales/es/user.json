@@ -132,8 +132,10 @@
     "no_one_watching": "No hay nadie mirando.",
     "validation": {
       "name": {
-        "required": "Por favor",
-        "too_short": "Por favor"
+        "invalid_characters": "",
+        "required": "",
+        "too_long": "",
+        "too_short": ""
       }
     },
     "watch_now": ""

@@ -44,8 +44,8 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
     name: string()
       .trim()
       .required(t('profile.validation.name.required'))
-      .min(3, t('profile.validation.name.too_short'))
-      .max(30, t('profile.validation.name.too_long'))
+      .min(3, t('profile.validation.name.too_short', { count: 3 }))
+      .max(30, t('profile.validation.name.too_long', { count: 30 }))
       .matches(/^[a-zA-Z0-9\s]*$/, t('profile.validation.name.invalid_characters')),
   });
 
