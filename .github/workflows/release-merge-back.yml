@@ -1,4 +1,4 @@
-name: Merge Release Back to Dev
+name: Release - Merge Back to Dev
 on:
   push:
     branches: ['release']
