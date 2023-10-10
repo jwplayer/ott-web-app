@@ -1,6 +1,7 @@
 import InPlayer from '@inplayer-org/inplayer.js';
 
 import type { ListProfiles, CreateProfile, UpdateProfile, EnterProfile, GetProfileDetails, DeleteProfile } from '#types/account';
+import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 export const listProfiles: ListProfiles = async () => {
   try {
@@ -8,7 +9,11 @@ export const listProfiles: ListProfiles = async () => {
     return {
       responseData: {
         canManageProfiles: true,
-        collection: response.data,
+        collection:
+          response.data.map((profile) => ({
+            ...profile,
+            avatar_url: profile?.avatar_url || defaultAvatar,
+          })) ?? [],
       },
       errors: [],
     };

@@ -7,7 +7,6 @@ import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile
 import { useProfileStore } from '#src/stores/ProfileStore';
 import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 import { useAccountStore } from '#src/stores/AccountStore';
-import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 import type { GenericFormErrors } from '#types/form';
 import type { ProfileFormSubmitError } from '#src/containers/Profiles/types';
 
@@ -102,23 +101,9 @@ export const useProfiles = (
   const user = useAccountStore((s) => s.user);
   const query = useQuery(['listProfiles'], listProfiles, { ...options, enabled: !!user });
   const { canManageProfiles } = useAccountStore();
-  if (!canManageProfiles && query.data?.responseData.canManageProfiles) {
-    useAccountStore.setState({ canManageProfiles: true });
-  }
 
   return {
     ...query,
-    data: {
-      ...query.data,
-      responseData: {
-        ...query.data?.responseData,
-        collection:
-          query.data?.responseData.collection.map((profile) => ({
-            ...profile,
-            avatar_url: profile?.avatar_url || defaultAvatar,
-          })) ?? [],
-      },
-    },
     profilesEnabled: query.data?.responseData.canManageProfiles && canManageProfiles,
   };
 };
