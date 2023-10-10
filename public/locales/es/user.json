@@ -92,6 +92,7 @@
     "hidden_transactions_one": "Una transacción más",
     "hidden_transactions_many": "",
     "hidden_transactions_other": "{{count}} transacciones más",
+    "longer_than_usual": "",
     "monthly_subscription": "Suscripción mensual",
     "next_billing_date_on": "La próxima fecha de facturación es el {{date}}",
     "no_payment_methods": "No hay métodos de pago",
@@ -132,6 +133,7 @@
     "no_one_watching": "No hay nadie mirando.",
     "validation": {
       "name": {
+        "already_exists": "",
         "invalid_characters": "",
         "required": "",
         "too_long": "",

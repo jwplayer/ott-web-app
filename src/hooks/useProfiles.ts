@@ -1,12 +1,15 @@
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import { createProfile, deleteProfile, enterProfile, listProfiles, updateProfile } from '#src/stores/ProfileController';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 import { useAccountStore } from '#src/stores/AccountStore';
 import defaultAvatar from '#src/assets/profiles/default_avatar.png';
+import type { GenericFormErrors } from '#types/form';
+import type { ProfileFormSubmitError } from '#src/containers/Profiles/types';
 
 export const useSelectProfile = () => {
   const navigate = useNavigate();
@@ -48,9 +51,6 @@ export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
   const navigate = useNavigate();
 
   return useMutation(updateProfile, {
-    onError: () => {
-      console.error('Unable to update profile.');
-    },
     onSuccess: () => {
       navigate('/u/profiles');
     },
@@ -72,6 +72,28 @@ export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<Co
     },
     ...options,
   });
+};
+
+export const useProfileErrorHandler = () => {
+  const { t } = useTranslation('user');
+
+  return (
+    e: unknown,
+    setErrors: (
+      errors: Partial<
+        Omit<ProfilePayload, 'adult'> & {
+          adult: string;
+        } & GenericFormErrors
+      >,
+    ) => void,
+  ) => {
+    const formError = e as ProfileFormSubmitError;
+    if (formError.message.includes('409')) {
+      setErrors({ name: t('profile.validation.name.already_exists') });
+      return;
+    }
+    setErrors({ form: t('profile.form_error') });
+  };
 };
 
 export const useProfiles = (
