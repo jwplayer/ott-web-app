@@ -25,30 +25,22 @@ export const listProfiles: ListProfiles = async () => {
 };
 
 export const createProfile: CreateProfile = async (payload) => {
-  try {
-    const response = await InPlayer.Account.createProfile(payload.name, payload.adult, payload.avatar_url, payload.pin);
-    return {
-      responseData: response.data,
-      errors: [],
-    };
-  } catch {
-    throw new Error('Unable to create profile.');
-  }
+  const response = await InPlayer.Account.createProfile(payload.name, payload.adult, payload.avatar_url, payload.pin);
+  return {
+    responseData: response.data,
+    errors: [],
+  };
 };
 
 export const updateProfile: UpdateProfile = async (payload) => {
-  try {
-    if (!payload.id) {
-      throw new Error('Profile id is required.');
-    }
-    const response = await InPlayer.Account.updateProfile(payload.id, payload.name, payload.avatar_url, payload.adult);
-    return {
-      responseData: response.data,
-      errors: [],
-    };
-  } catch {
-    throw new Error('Unable to update profile.');
+  if (!payload.id) {
+    throw new Error('Profile id is required.');
   }
+  const response = await InPlayer.Account.updateProfile(payload.id, payload.name, payload.avatar_url, payload.adult);
+  return {
+    responseData: response.data,
+    errors: [],
+  };
 };
 
 export const enterProfile: EnterProfile = async ({ id, pin }) => {
