@@ -52,7 +52,7 @@ const CreateProfile = () => {
       },
     );
 
-  if (loadingProfilesList) return <LoadingOverlay inline />;
+  if (loadingProfilesList) return <LoadingOverlay />;
 
   return (
     <div className={styles.user}>
