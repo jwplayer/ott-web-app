@@ -106,8 +106,7 @@
     "edit_card": "Editar tarjeta",
     "paypal": "PayPal",
     "update_payment_details": "Actualizar detalles de pago",
-    "update_payment_success": "Sus detalles de pago han sido actualizados",
-    "longer_than_usual": "El pago está tardando más de lo habitual. Por favor, inténtelo de nuevo más tarde."
+    "update_payment_success": "Sus detalles de pago han sido actualizados"
   },
   "periods": {
     "day_one": "día",
