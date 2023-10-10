@@ -39,7 +39,6 @@ jobs:
           git-push: false
           skip-ci: false
           skip-version-file: true
-          pre-release: true
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
