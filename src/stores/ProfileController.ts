@@ -2,6 +2,7 @@ import { useFavoritesStore } from './FavoritesStore';
 import { useProfileStore } from './ProfileStore';
 import { useWatchHistoryStore } from './WatchHistoryStore';
 import { initializeAccount } from './AccountController';
+import { useAccountStore } from './AccountStore';
 
 import * as persist from '#src/utils/persist';
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
@@ -15,7 +16,12 @@ export const unpersistProfile = () => {
 
 export const listProfiles = async () => {
   return await useService(async ({ profileService, sandbox }) => {
-    return await profileService?.listProfiles(undefined, sandbox ?? true);
+    const res = await profileService?.listProfiles(undefined, sandbox ?? true);
+    const canManageProfiles = useAccountStore.getState().canManageProfiles;
+    if (!canManageProfiles && res?.responseData.canManageProfiles) {
+      useAccountStore.setState({ canManageProfiles: true });
+    }
+    return res;
   });
 };
 

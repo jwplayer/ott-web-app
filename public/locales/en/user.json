@@ -139,8 +139,8 @@
         "already_exists": "This profile name is already taken. Please choose another one.",
         "invalid_characters": "Your profile name can only contain letters, numbers, and spaces.",
         "required": "Please enter a name for your profile.",
-        "too_long": "Please limit your profile name to {{count}} characters or fewer.",
-        "too_short": "Please enter at least {{count}} characters."
+        "too_long": "Please limit your profile name to {{charactersCount}} characters or fewer.",
+        "too_short": "Please enter at least {{charactersCount}} characters."
       }
     },
     "watch_now": "Watch now"
