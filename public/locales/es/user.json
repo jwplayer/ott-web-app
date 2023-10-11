@@ -5,7 +5,7 @@
     "cancel": "Cancelar",
     "confirm_password": "Confirmar contraseña",
     "continue": "Continuar",
-    "delete": "",
+    "delete": "Eliminar",
     "delete_account": {
       "body": "Elimine permanentemente su cuenta y todo su contenido.",
       "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
@@ -63,13 +63,13 @@
   },
   "nav": {
     "account": "Cuenta",
-    "add_profile": "",
+    "add_profile": "Añade un nuevo perfil",
     "favorites": "Favoritos",
     "logout": "Cerrar sesión",
     "payments": "Pagos",
-    "profile": "",
-    "settings": "",
-    "switch_profiles": ""
+    "profile": "Perfil",
+    "settings": "Ajustes",
+    "switch_profiles": "Cambiar de perfil"
   },
   "payment": {
     "access_granted": "acceso concedido",
@@ -114,25 +114,25 @@
     "weekly_subscription": "Suscripción semanal"
   },
   "profile": {
-    "adult": "",
-    "avatar": "",
-    "content_rating": "",
-    "create": "",
-    "create_message": "",
-    "delete": "",
-    "delete_confirmation": "",
-    "delete_description": "",
-    "delete_main": "",
-    "description": "",
-    "form_error": "",
-    "info": "",
-    "kids": "",
-    "name": "",
-    "no_one_watching": "",
+    "adult": "Adultos",
+    "avatar": "Avatar",
+    "content_rating": "Puntuación del contenido",
+    "create": "Crear perfil",
+    "create_message": "Crea tu perfil",
+    "delete": "Eliminar perfil",
+    "delete_confirmation": "¿Estás seguro que quieres eliminar tu perfil? Perderás todo tu historial y ajustes en este perfil.",
+    "delete_description": "Borrar permentemente el perfil junto con el contenido de tu historial y favoritos.",
+    "delete_main": "El perfil principal no puede ser borrado debido a que está ligado al historial de tu cuenta y tus favoritos.",
+    "description": "Los perfiles te permiten ver el contenido y organizar tu colección de favoritos.",
+    "form_error": "Algo salió mal. Intenta de nuevo más tarde",
+    "info": "Información del perfil",
+    "kids": "Niños",
+    "name": "Nombre del usuario",
+    "no_one_watching": "No hay nadie mirando.",
     "validation": {
       "name": {
-        "required": "",
-        "too_short": ""
+        "required": "Por favor",
+        "too_short": "Por favor"
       }
     }
   }
