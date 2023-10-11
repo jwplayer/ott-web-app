@@ -3,7 +3,7 @@ import { UseBaseQueryResult, useQuery } from 'react-query';
 import type { PlaylistItem } from '#types/playlist';
 import { isScheduledOrLiveMedia } from '#src/utils/liveEvent';
 import { CONTROLLERS } from '#src/ioc/types';
-import type ApiController from '#src/controllers/ApiController';
+import type ApiController from '#src/stores/ApiController';
 import { useController } from '#src/ioc/container';
 
 export type UseMediaResult<TData = PlaylistItem, TError = unknown> = UseBaseQueryResult<TData, TError>;

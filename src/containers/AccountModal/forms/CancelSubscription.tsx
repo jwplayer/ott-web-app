@@ -8,7 +8,7 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import SubscriptionCancelled from '#components/SubscriptionCancelled/SubscriptionCancelled';
 import { formatLocalizedDate } from '#src/utils/formatting';
 import { removeQueryParam } from '#src/utils/location';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

@@ -1,4 +1,4 @@
-import type { CommonResponse } from '@inplayer-org/inplayer.js';
+import type { CommonResponse, ProfilesData } from '@inplayer-org/inplayer.js';
 
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
@@ -309,6 +309,30 @@ export type UpdatePersonalShelvesArgs = {
   };
 };
 
+export type Profile = ProfilesData;
+
+export type ProfilePayload = {
+  id?: string;
+  name: string;
+  adult: boolean;
+  avatar_url?: string;
+  pin?: number;
+};
+
+export type EnterProfilePayload = {
+  id: string;
+  pin?: number;
+};
+
+export type ProfileDetailsPayload = {
+  id: string;
+};
+
+export type ListProfilesResponse = {
+  canManageProfiles: boolean;
+  collection: ProfilesData[];
+};
+
 export type FirstLastNameInput = {
   firstName: string;
   lastName: string;
@@ -359,3 +383,9 @@ type ExportAccountData = EnvironmentServiceRequest<undefined, CommonAccountRespo
 type SocialURLSData = PromiseRequest<Config, SocialURLs[]>;
 type NotificationsData = PromiseRequest<SubscribeToNotificationsPayload, boolean>;
 type DeleteAccount = EnvironmentServiceRequest<DeleteAccountPayload, CommonAccountResponse>;
+type ListProfiles = EnvironmentServiceRequest<undefined, ListProfilesResponse>;
+type CreateProfile = EnvironmentServiceRequest<ProfilePayload, ProfilesData>;
+type UpdateProfile = EnvironmentServiceRequest<ProfilePayload, ProfilesData>;
+type EnterProfile = EnvironmentServiceRequest<EnterProfilePayload, ProfilesData>;
+type GetProfileDetails = EnvironmentServiceRequest<ProfileDetailsPayload, ProfilesData>;
+type DeleteProfile = EnvironmentServiceRequest<ProfileDetailsPayload, CommonAccountResponse>;

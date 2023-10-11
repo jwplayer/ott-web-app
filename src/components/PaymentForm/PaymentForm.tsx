@@ -13,7 +13,7 @@ import styles from './PaymentForm.module.scss';
 
 import useForm from '#src/hooks/useForm';
 import useCheckAccess from '#src/hooks/useCheckAccess';
-import type CheckoutController from '#src/controllers/CheckoutController';
+import type CheckoutController from '#src/stores/CheckoutController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

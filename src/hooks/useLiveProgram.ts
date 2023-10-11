@@ -7,7 +7,7 @@ import { programIsFullyWatchable, programIsLive, programIsVod } from '#src/utils
  * This hook returns memoized program state variables that change based on the given program and the current time.
  * For example, the live and VOD states, toggle when the program is not live anymore.
  */
-const useLiveProgram = (program: EpgProgram | undefined, catchupHours: number | undefined) => {
+const useLiveProgram = ({ program, catchupHours }: { program: EpgProgram | undefined; catchupHours: number | undefined }) => {
   const [isLive, setIsLive] = useState(false);
   const [isVod, setIsVod] = useState(false);
   const [isWatchableFromBeginning, setIsWatchableFromBeginning] = useState(false);

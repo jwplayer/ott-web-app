@@ -21,7 +21,17 @@ const DevConfigSelector = ({ selectedConfig }: Props) => {
     window.location.href = addQueryParams(window.location.href, { 'app-config': event.target.value });
   }, []);
 
-  return <Dropdown className={styles.dropdown} size="small" options={configOptions} name="config-select" value={selectedConfig || ''} onChange={onChange} />;
+  return (
+    <Dropdown
+      className={styles.dropdown}
+      size="small"
+      options={configOptions}
+      name="config-select"
+      value={selectedConfig || ''}
+      onChange={onChange}
+      required={true}
+    />
+  );
 };
 
 export default DevConfigSelector;

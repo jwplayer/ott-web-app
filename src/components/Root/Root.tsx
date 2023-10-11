@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
-import { useSearchParams } from 'react-router-dom';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
@@ -9,15 +8,16 @@ import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/
 import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
-import { cleanupQueryParams, getConfigSource } from '#src/utils/configOverride';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import { initApp } from '#src/init/initApp';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
-import type SettingsController from '#src/controllers/SettingsController';
+import type SettingsController from '#src/stores/SettingsController';
+import { useConfigSource } from '#src/utils/configOverride';
 
-const Root: FC = () => {
+// This is moved to a separate, parallel component to reduce rerenders
+const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const { t } = useTranslation('error');
   const settingsController = useController<SettingsController>(CONTROLLERS.Settings);
 
@@ -27,15 +27,7 @@ const Root: FC = () => {
     refetchInterval: false,
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const configSource = useMemo(() => getConfigSource(searchParams, settingsQuery.data), [searchParams, settingsQuery.data]);
-
-  // Update the query string to maintain the right params
-  useEffect(() => {
-    if (settingsQuery.data && cleanupQueryParams(searchParams, settingsQuery.data, configSource)) {
-      setSearchParams(searchParams, { replace: true });
-    }
-  }, [configSource, searchParams, setSearchParams, settingsQuery.data]);
+  const configSource = useConfigSource(settingsQuery?.data);
 
   const configQuery = useQuery('config-init-' + configSource, async () => initApp(configSource), {
     enabled: settingsQuery.isSuccess && !!configSource,
@@ -43,10 +35,10 @@ const Root: FC = () => {
     refetchInterval: false,
   });
 
-  // Register custom screen mappings
+  // After the config loads, we can show the rest of the App
   useEffect(() => {
-    registerCustomScreens();
-  }, []);
+    setAppIsReady(!configQuery.isError && !configQuery.isLoading && !!configQuery.data);
+  }, [setAppIsReady, configQuery.isError, configQuery.isLoading, configQuery.data]);
 
   const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
@@ -68,7 +60,6 @@ const Root: FC = () => {
 
   return (
     <>
-      {!configQuery.isError && !configQuery.isLoading && configQuery.data && <AppRoutes />}
       {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
       {configQuery.isError && !IS_DEMO_OR_PREVIEW && (
         <ErrorPage
@@ -79,9 +70,26 @@ const Root: FC = () => {
         />
       )}
       {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
-      <AccountModal />
       {/* Config select control to improve testing experience */}
       {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
+    </>
+  );
+};
+
+const Root: FC = () => {
+  const [isReady, setIsReady] = useState(false);
+
+  // Register custom screen mappings
+  useEffect(() => {
+    registerCustomScreens();
+  }, []);
+
+  return (
+    <>
+      {isReady && <AppRoutes />}
+      {isReady && <AccountModal />}
+      {/*This is moved to a separate, parallel component to reduce rerenders*/}
+      <RootLoader setAppIsReady={setIsReady} />
     </>
   );
 };

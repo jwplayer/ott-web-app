@@ -1,15 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
 import type { EditPasswordFormData } from '#types/account';
 import EditPasswordForm from '#components/EditPasswordForm/EditPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import { addQueryParams } from '#src/utils/formatting';
+import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import useQueryParam from '#src/hooks/useQueryParam';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 
@@ -17,6 +17,7 @@ const ResetPassword: React.FC = () => {
   const accountController = useController<AccountController>(CONTROLLERS.Account);
 
   const { t } = useTranslation('account');
+  const location = useLocation();
   const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
   const emailParam = useQueryParam('email');
@@ -44,8 +45,8 @@ const ResetPassword: React.FC = () => {
         }
         await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
-      await accountController.logout();
-      navigate(addQueryParams(window.location.origin, { u: 'login' }));
+      await accountController.logout({ includeNetworkRequest: false });
+      navigate(addQueryParam(location, 'u', 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.includes('invalid param password')) {

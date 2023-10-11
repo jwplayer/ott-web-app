@@ -15,7 +15,7 @@ import styles from './EditCardPaymentForm.module.scss';
 
 import useForm from '#src/hooks/useForm';
 import { useAccountStore } from '#src/stores/AccountStore';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

@@ -1,3 +1,5 @@
+import { act } from '@testing-library/react';
+
 import User from './User';
 
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -73,67 +75,73 @@ vi.mock('#src/ioc/container', () => ({
         return { logout: vi.fn() };
       case CONTROLLERS.Checkout:
         return { getSubscriptionSwitches: vi.fn() };
+      case CONTROLLERS.Profile:
+        return { listProfiles: vi.fn() };
     }
   },
 }));
 
 describe('User Component tests', () => {
   test('Account Page', () => {
-    useAccountStore.setState(data);
-
-    mockWindowLocation('my-account');
+    act(() => {
+      useAccountStore.setState(data);
+      mockWindowLocation('my-account');
+    });
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();
   });
 
   test('Payments Page', () => {
-    useAccountStore.setState(data);
-    mockWindowLocation('payments');
+    act(() => {
+      useAccountStore.setState(data);
+      mockWindowLocation('payments');
+    });
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();
   });
 
   test('Favorites Page', () => {
-    useAccountStore.setState(data);
-    useConfigStore.setState({
-      config: {
-        features: {
-          favoritesList: 'abcdefgh',
+    act(() => {
+      useAccountStore.setState(data);
+      useConfigStore.setState({
+        config: {
+          features: {
+            favoritesList: 'abcdefgh',
+          },
+          styling: {},
+        } as unknown as Config,
+      });
+      useFavoritesStore.setState({
+        getPlaylist: (): Playlist => {
+          return {
+            title: 'These are my favorite things',
+            playlist: [
+              {
+                mediaid: 'aaabbbcc',
+                title: 'Fav 1',
+                duration: 12,
+                feedid: 'abcdffff',
+              } as unknown as PlaylistItem,
+              {
+                mediaid: 'aaabbbcd',
+                title: 'Big Buck Bunny',
+                duration: 6000,
+                feedid: 'bbbdddff',
+              } as unknown as PlaylistItem,
+              {
+                mediaid: 'ggaaccvv',
+                title: 'My last favorite',
+                duration: 659,
+                feedid: 'bbbbbbbb',
+              } as unknown as PlaylistItem,
+            ],
+          };
         },
-        styling: {},
-      } as unknown as Config,
+      });
+      mockWindowLocation('favorites');
     });
-    useFavoritesStore.setState({
-      getPlaylist: (): Playlist => {
-        return {
-          title: 'These are my favorite things',
-          playlist: [
-            {
-              mediaid: 'aaabbbcc',
-              title: 'Fav 1',
-              duration: 12,
-              feedid: 'abcdffff',
-            } as unknown as PlaylistItem,
-            {
-              mediaid: 'aaabbbcd',
-              title: 'Big Buck Bunny',
-              duration: 6000,
-              feedid: 'bbbdddff',
-            } as unknown as PlaylistItem,
-            {
-              mediaid: 'ggaaccvv',
-              title: 'My last favorite',
-              duration: 659,
-              feedid: 'bbbbbbbb',
-            } as unknown as PlaylistItem,
-          ],
-        };
-      },
-    });
-
-    mockWindowLocation('favorites');
 
     const { container } = renderWithRouter(<User />);
 

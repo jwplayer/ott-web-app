@@ -11,8 +11,8 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { addQueryParam, replaceQueryParam } from '#src/utils/location';
 import { addQueryParams } from '#src/utils/formatting';
-import type AccountController from '#src/controllers/AccountController';
-import type CheckoutController from '#src/controllers/CheckoutController';
+import type AccountController from '#src/stores/AccountController';
+import type CheckoutController from '#src/stores/CheckoutController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

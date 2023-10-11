@@ -5,7 +5,7 @@ import type { PlaylistItem } from '#types/playlist';
 import type { EpgProgram, EpgChannel } from '#types/epg';
 import { getLiveProgram, programIsLive } from '#src/utils/epg';
 import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
-import type EpgController from '#src/controllers/EpgController';
+import type EpgController from '#src/stores/EpgController';
 import { CONTROLLERS } from '#src/ioc/types';
 import { useController } from '#src/ioc/container';
 
@@ -23,7 +23,15 @@ import { useController } from '#src/ioc/container';
  *       on a different program. This can be solved when we implement syncing the stream PDT with the schedule. Then the
  *       program information will be reactive based on the current time in the stream.
  */
-const useLiveChannels = (playlist: PlaylistItem[], initialChannelId: string | undefined, enableAutoUpdate = true) => {
+const useLiveChannels = ({
+  playlist,
+  initialChannelId,
+  enableAutoUpdate = true,
+}: {
+  playlist: PlaylistItem[];
+  initialChannelId: string | undefined;
+  enableAutoUpdate?: boolean;
+}) => {
   const epgController = useController<EpgController>(CONTROLLERS.Epg);
 
   const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgController.getSchedules(playlist), {

@@ -14,8 +14,8 @@ import { addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '#src/containers/AdyenInitialPayment/AdyenInitialPayment';
-import type AccountController from '#src/controllers/AccountController';
-import type CheckoutController from '#src/controllers/CheckoutController';
+import type AccountController from '#src/stores/AccountController';
+import type CheckoutController from '#src/stores/CheckoutController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

@@ -6,7 +6,7 @@ import useEventCallback from '#src/hooks/useEventCallback';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
-import type WatchHistoryController from '#src/controllers/WatchHistoryController';
+import type WatchHistoryController from '#src/stores/WatchHistoryController';
 
 type QueuedProgress = {
   item: PlaylistItem;

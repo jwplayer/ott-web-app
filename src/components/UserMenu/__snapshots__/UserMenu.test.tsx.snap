@@ -5,6 +5,11 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
   <ul
     class="_menuItems_457528"
   >
+    <li
+      class="_sectionHeader_457528"
+    >
+      nav.settings
+    </li>
     <li>
       <a
         aria-label="nav.account"

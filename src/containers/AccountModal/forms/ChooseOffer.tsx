@@ -16,7 +16,7 @@ import type { ChooseOfferFormData } from '#types/account';
 import type { Subscription } from '#types/subscription';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
-import type CheckoutController from '#src/controllers/CheckoutController';
+import type CheckoutController from '#src/stores/CheckoutController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

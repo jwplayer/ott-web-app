@@ -1,7 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 
-import { ConfigEnv, defineConfig, UserConfigExport } from 'vitest/config';
+import { defineConfig } from 'vite';
+import type { ConfigEnv, UserConfigExport } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
@@ -51,15 +52,10 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   return defineConfig({
     // https://github.com/jwplayer/ott-web-app/pull/346
     plugins: [
-      // @ts-expect-error
       react(),
-      // @ts-expect-error
       eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
-      // @ts-expect-error
       StylelintPlugin(),
-      // @ts-expect-error
       VitePWA(),
-      // @ts-expect-error
       createHtmlPlugin({
         minify: true,
         inject: process.env.APP_GOOGLE_SITE_VERIFICATION_ID
@@ -77,7 +73,6 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
             }
           : {},
       }),
-      // @ts-expect-error
       viteStaticCopy({
         targets: fileCopyTargets,
       }),
@@ -108,15 +103,12 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
             ) {
               return 'react';
             }
-
             if (id.includes('/node_modules/@inplayer')) {
               return 'inplayer';
             }
-
             if (id.includes('/node_modules/')) {
               return 'vendor';
             }
-
             return 'index';
           },
         },

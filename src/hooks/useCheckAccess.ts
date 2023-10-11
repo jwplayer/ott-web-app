@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import useClientIntegration from './useClientIntegration';
 
 import { addQueryParam } from '#src/utils/location';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

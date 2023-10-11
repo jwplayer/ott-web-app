@@ -24,7 +24,7 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
     // New user has no continue watching history shelf
     I.dontSee(constants.continueWatchingShelfTitle);
 
-    await I.openVideoCard(videoTitle);
+    await I.openVideoCard(videoTitle, ShelfId.allFilms);
 
     await playVideo(I, 0, videoTitle);
     I.see(constants.startWatchingButton);
@@ -71,7 +71,7 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
       I.see('10 min');
     });
 
-    const selector = `${makeShelfXpath(ShelfId.continueWatching)}//div[@aria-label="Play ${videoTitle}"]`;
+    const selector = `${makeShelfXpath(ShelfId.continueWatching)}//a[@aria-label="${videoTitle}"]`;
     await checkProgress(I, selector, (80 / videoLength) * 100);
 
     I.click(selector);
@@ -81,23 +81,28 @@ function runTestSuite(config: typeof testConfigs.svod, configNoWatchlist: typeof
     I.seeInCurrentUrl('play=1');
   });
 
-  Scenario(`I do not see continue_watching videos on the home page and video page if there is not such config setting - ${providerName}`, async ({ I }) => {
-    I.useConfig(configNoWatchlist);
+  Scenario(
+    `I do not see continue_watching videos on the home page and video page if there is not such config setting (logged in) - ${providerName}`,
+    async ({ I }) => {
+      I.useConfig(configNoWatchlist);
 
-    await registerOrLogin(I);
+      await registerOrLogin(I);
+      I.wait(5);
+      I.waitForText('All Films');
 
-    I.dontSee(constants.continueWatchingShelfTitle);
+      I.dontSee(constants.continueWatchingShelfTitle);
 
-    await I.openVideoCard(videoTitle);
-    I.dontSee(constants.continueWatchingButton);
+      await I.openVideoCard(videoTitle, ShelfId.allFilms);
+      I.dontSee(constants.continueWatchingButton);
 
-    await playVideo(I, 50, videoTitle);
-    I.see(constants.startWatchingButton);
-    I.dontSee(constants.continueWatchingButton);
+      await playVideo(I, 50, videoTitle);
+      I.see(constants.startWatchingButton);
+      I.dontSee(constants.continueWatchingButton);
 
-    I.amOnPage(constants.baseUrl);
-    I.dontSee(constants.continueWatchingShelfTitle);
-  });
+      I.amOnPage(constants.baseUrl);
+      I.dontSee(constants.continueWatchingShelfTitle);
+    },
+  );
 
   async function registerOrLogin(I: CodeceptJS.I) {
     loginContext = await I.registerOrLogin(loginContext);

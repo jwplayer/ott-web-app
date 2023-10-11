@@ -2,16 +2,17 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { object, string, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
 import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 const Registration = () => {
   const accountController = useController<AccountController>(CONTROLLERS.Account);
@@ -22,8 +23,12 @@ const Registration = () => {
   const [consentValues, setConsentValues] = useState<Record<string, boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], () => accountController.getPublisherConsents());
+  const appConfigId = useConfigStore(({ config }) => config.id);
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], () => accountController.getPublisherConsents());
+
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
+
+  const queryClient = useQueryClient();
 
   const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConsentValues((current) => ({ ...current, [event.target.name]: event.target.checked }));
@@ -53,6 +58,8 @@ const Registration = () => {
       await accountController.updateConsents(customerConsents).catch(() => {
         // error caught while updating the consents, but continue the registration flow
       });
+
+      await queryClient.invalidateQueries('listProfiles');
 
       navigate(addQueryParam(location, 'u', 'personal-details'));
     } catch (error: unknown) {

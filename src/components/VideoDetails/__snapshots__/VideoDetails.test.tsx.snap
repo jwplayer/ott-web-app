@@ -3,68 +3,75 @@
 exports[`<VideoDetails> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_video_d0c133"
-    data-testid="video-details"
+    data-testid="cinema-layout"
   >
     <div
-      class="_main_d0c133 _mainPadding_d0c133"
+      class="_video_d0c133"
+      data-testid="video-details"
     >
-      <img
-        alt="Test video"
-        class="_poster_d0c133 _image_4c41c3"
-        src="http://image.jpg?width=1280"
-      />
       <div
-        class="_info_d0c133"
+        class="_main_d0c133 _mainPadding_d0c133"
       >
-        <h2
-          class="_title_d0c133"
-        >
-          Test video
-        </h2>
+        <img
+          alt="Test video"
+          class="_poster_d0c133 _image_4c41c3"
+          src="http://image.jpg?width=1280"
+        />
         <div
-          class="_metaContainer_d0c133"
+          class="_info_d0c133"
         >
-          <div
-            class="_primaryMetadata_d0c133"
+          <h2
+            class="_title_d0c133"
           >
-            Primary metadata string
+            Test video
+          </h2>
+          <div
+            class="_metaContainer_d0c133"
+          >
+            <div
+              class="_primaryMetadata_d0c133"
+            >
+              Primary metadata string
+            </div>
+            <div
+              class="_secondaryMetadata_d0c133"
+            >
+              <strong>
+                Secondary metadata string
+              </strong>
+            </div>
           </div>
           <div
-            class="_secondaryMetadata_d0c133"
+            class="_collapsibleText_561522"
           >
-            <strong>
-              Secondary metadata string
-            </strong>
+            <div
+              class="_textContainer_561522 _description_d0c133"
+              style="max-height: none;"
+            >
+              Video description
+            </div>
           </div>
-        </div>
-        <div
-          class="_collapsibleText_561522"
-        >
           <div
-            class="_textContainer_561522 _description_d0c133"
-            style="max-height: none;"
+            class="_buttonBar_d0c133"
           >
-            Video description
+            <button>
+              Start watching
+            </button>
+            <button>
+              play trailer
+            </button>
+            <button>
+              favorite
+            </button>
+            <button>
+              share
+            </button>
           </div>
-        </div>
-        <div
-          class="_buttonBar_d0c133"
-        >
-          <button>
-            Start watching
-          </button>
-          <button>
-            play trailer
-          </button>
-          <button>
-            favorite
-          </button>
-          <button>
-            share
-          </button>
         </div>
       </div>
+    </div>
+    <div>
+      Related Videos
     </div>
   </div>
 </div>

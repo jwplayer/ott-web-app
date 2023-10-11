@@ -2,8 +2,8 @@ import { useMutation } from 'react-query';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import type { Customer, EmailConfirmPasswordInput, FirstLastNameInput } from '#types/account';
-import type AccountController from '#src/controllers/AccountController';
-import type CheckoutController from '#src/controllers/CheckoutController';
+import type AccountController from '#src/stores/AccountController';
+import type CheckoutController from '#src/stores/CheckoutController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

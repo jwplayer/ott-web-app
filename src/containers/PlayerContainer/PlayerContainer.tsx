@@ -8,7 +8,7 @@ import type { JWPlayer } from '#types/jwplayer';
 import useContentProtection from '#src/hooks/useContentProtection';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { useSettingsStore } from '#src/stores/SettingsStore';
-import type ApiController from '#src/controllers/ApiController';
+import type ApiController from '#src/stores/ApiController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

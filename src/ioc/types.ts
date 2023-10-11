@@ -9,6 +9,7 @@ export const SERVICES = {
   Favorites: Symbol.for('FavoritesService'),
   Subscription: Symbol.for('SubscriptionService'),
   WatchHistory: Symbol.for('WatchHistoryService'),
+  Profile: Symbol.for('ProfileService'),
 };
 
 export const CONTROLLERS = {
@@ -21,6 +22,7 @@ export const CONTROLLERS = {
   Settings: Symbol.for('SettingsController'),
   WatchHistory: Symbol.for('WatchHistoryController'),
   Epg: Symbol.for('EpgController'),
+  Profile: Symbol.for('ProfileController'),
 };
 
 export const INTEGRATION_PROVIDER = {

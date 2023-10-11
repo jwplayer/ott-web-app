@@ -6,7 +6,7 @@ import styles from './Button.module.scss';
 
 import Spinner from '#components/Spinner/Spinner';
 
-type Color = 'default' | 'primary';
+type Color = 'default' | 'primary' | 'delete';
 
 type Variant = 'contained' | 'outlined' | 'text' | 'danger' | 'delete';
 

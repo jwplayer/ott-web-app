@@ -1,8 +1,8 @@
 import * as planby from 'planby';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import usePlanByEpg, { makeTheme } from '#src/hooks/usePlanByEpg';
+import usePlanByEpg, { makeTheme, formatChannel, formatProgram } from '#src/hooks/usePlanByEpg';
 import epgChannelsFixture from '#test/fixtures/epgChannels.json';
 import type { EpgChannel } from '#types/epg';
 
@@ -23,12 +23,12 @@ describe('usePlanByEpg', () => {
   });
 
   test('calls the `useEpg` hook with the correct parameters', () => {
-    renderHook(() => usePlanByEpg([], 100, 80));
+    renderHook((props) => usePlanByEpg(props), { initialProps: { channels: schedule, sidebarWidth: 100, itemHeight: 80 } });
 
     expect(planby.useEpg).toBeCalled();
     expect(planby.useEpg).toHaveBeenCalledWith({
-      channels: [],
-      epg: [],
+      channels: schedule.map(formatChannel),
+      epg: schedule.flatMap((channel) => channel.programs.map((program) => formatProgram(channel.id, program))),
       dayWidth: 7200,
       sidebarWidth: 100,
       itemHeight: 80,
@@ -45,7 +45,7 @@ describe('usePlanByEpg', () => {
   test('updates the startDate and endDate only when the date changes', () => {
     const mockFn = vi.spyOn(planby, 'useEpg');
 
-    const { rerender } = renderHook(() => usePlanByEpg([], 100, 80));
+    const { rerender } = renderHook((props) => usePlanByEpg(props), { initialProps: { channels: schedule, sidebarWidth: 100, itemHeight: 80 } });
 
     expect(mockFn).toHaveBeenCalled();
     expect(mockFn.mock.calls[0][0]).toMatchObject({
@@ -58,7 +58,7 @@ describe('usePlanByEpg', () => {
 
     // 15 minutes later
     vi.setSystemTime('2022-07-26T16:45:20.543Z');
-    rerender();
+    rerender({ channels: schedule, sidebarWidth: 100, itemHeight: 80 });
 
     expect(mockFn).toHaveBeenCalledTimes(2);
     expect(mockFn.mock.calls[1][0]).toMatchObject({
@@ -72,7 +72,7 @@ describe('usePlanByEpg', () => {
 
     // next day
     vi.setSystemTime('2022-07-27T16:30:20.543Z');
-    rerender();
+    rerender({ channels: schedule, sidebarWidth: 100, itemHeight: 80 });
 
     expect(mockFn).toHaveBeenCalledTimes(3);
     expect(mockFn.mock.calls[2][0]).toMatchObject({
@@ -84,7 +84,7 @@ describe('usePlanByEpg', () => {
   test('transforms the channels and programs according to planby types', () => {
     const mockFn = vi.spyOn(planby, 'useEpg');
 
-    renderHook(() => usePlanByEpg(schedule, 100, 80));
+    renderHook((props) => usePlanByEpg(props), { initialProps: { channels: schedule, sidebarWidth: 100, itemHeight: 80 } });
 
     expect(mockFn.mock.calls[0][0].channels[0]).toMatchObject({
       uuid: 'channel1',

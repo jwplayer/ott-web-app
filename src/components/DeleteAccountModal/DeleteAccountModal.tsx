@@ -13,7 +13,7 @@ import type { DeleteAccountFormData } from '#types/account';
 import useForm from '#src/hooks/useForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import Alert from '#components/Alert/Alert';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

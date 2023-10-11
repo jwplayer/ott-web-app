@@ -1,7 +1,7 @@
-import type AccountController from '#src/controllers/AccountController';
-import type ConfigController from '#src/controllers/ConfigController';
-import type FavoritesController from '#src/controllers/FavoritesController';
-import type WatchHistoryController from '#src/controllers/WatchHistoryController';
+import type AccountController from '#src/stores/AccountController';
+import type ConfigController from '#src/stores/ConfigController';
+import type FavoritesController from '#src/stores/FavoritesController';
+import type WatchHistoryController from '#src/stores/WatchHistoryController';
 import { PersonalShelf } from '#src/config';
 import { initIOCData } from '#src/ioc/init';
 import { useController } from '#src/ioc/container';

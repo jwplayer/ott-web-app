@@ -8,7 +8,7 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import RenewSubscriptionForm from '#components/RenewSubscriptionForm/RenewSubscriptionForm';
 import SubscriptionRenewed from '#components/SubscriptionRenewed/SubscriptionRenewed';
 import { removeQueryParam } from '#src/utils/location';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

@@ -9,9 +9,9 @@ import useClientIntegration from '#src/hooks/useClientIntegration';
 import { addQueryParams } from '#src/utils/formatting';
 import type { AdyenPaymentSession } from '#types/checkout';
 import { CONTROLLERS } from '#src/ioc/types';
-import type CheckoutController from '#src/controllers/CheckoutController';
+import type CheckoutController from '#src/stores/CheckoutController';
 import { useController } from '#src/ioc/container';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 
 type Props = {
   setUpdatingOrder: (loading: boolean) => void;

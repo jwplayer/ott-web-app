@@ -8,7 +8,7 @@ import PaymentMethodForm from '#components/PaymentMethodForm/PaymentMethodForm';
 import useQueryParam from '#src/hooks/useQueryParam';
 import { useAccountStore } from '#src/stores/AccountStore';
 import PayPal from '#components/PayPal/PayPal';
-import type CheckoutController from '#src/controllers/CheckoutController';
+import type CheckoutController from '#src/stores/CheckoutController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

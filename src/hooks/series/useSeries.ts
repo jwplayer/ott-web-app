@@ -3,7 +3,7 @@ import { useQuery, UseQueryResult } from 'react-query';
 import type { Series } from '#types/series';
 import type { ApiError } from '#src/utils/api';
 import { SERIES_CACHE_TIME } from '#src/config';
-import type ApiController from '#src/controllers/ApiController';
+import type ApiController from '#src/stores/ApiController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

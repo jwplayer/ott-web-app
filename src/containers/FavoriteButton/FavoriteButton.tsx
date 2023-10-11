@@ -9,7 +9,7 @@ import type { PlaylistItem } from '#types/playlist';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import Alert from '#components/Alert/Alert';
 import { useController } from '#src/ioc/container';
-import type FavoritesController from '#src/controllers/FavoritesController';
+import type FavoritesController from '#src/stores/FavoritesController';
 import { CONTROLLERS } from '#src/ioc/types';
 
 type Props = {

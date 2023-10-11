@@ -4,7 +4,7 @@ import SocialButton, { SocialButtonVariant } from '../SocialButton/SocialButton'
 
 import styles from './SocialButtonsList.module.scss';
 
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

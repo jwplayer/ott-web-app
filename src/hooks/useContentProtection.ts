@@ -3,10 +3,10 @@ import { useQuery } from 'react-query';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
-import type AccountController from '#src/controllers/AccountController';
+import type AccountController from '#src/stores/AccountController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
-import type EntitlementController from '#src/controllers/EntitlementController';
+import type EntitlementController from '#src/stores/EntitlementController';
 
 const useContentProtection = <T>(
   type: EntitlementType,

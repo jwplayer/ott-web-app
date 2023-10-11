@@ -48,9 +48,11 @@ const sliceItems = <T,>(items: T[], isMultiPage: boolean, index: number, tilesTo
 
   const sliceFrom: number = index;
   const sliceTo: number = index + tilesToShow * 3;
+
   const cycleModeEndlessCompensation: number = cycleMode === 'endless' ? tilesToShow : 0;
   const listStartClone: T[] = items.slice(0, tilesToShow + cycleModeEndlessCompensation + 1);
   const listEndClone: T[] = items.slice(0 - (tilesToShow + cycleModeEndlessCompensation + 1));
+
   const itemsWithClones: T[] = [...listEndClone, ...items, ...listStartClone];
   const itemsSlice: T[] = itemsWithClones.slice(sliceFrom, sliceTo + 2);
 

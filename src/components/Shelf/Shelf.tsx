@@ -12,6 +12,8 @@ import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#components/TileDock/TileDock';
 import Card, { type PosterAspectRatio } from '#components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
+import { mediaURL } from '#src/utils/formatting';
+import { PersonalShelf } from '#src/config';
 
 export const tileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,
@@ -32,7 +34,6 @@ export const featuredTileBreakpoints: Breakpoints = {
 export type ShelfProps = {
   playlist: Playlist;
   type: ContentType;
-  onCardClick: (playlistItem: PlaylistItem, playlistId: string | undefined, type: ContentType) => void;
   onCardHover?: (playlistItem: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
   enableTitle?: boolean;
@@ -51,7 +52,6 @@ export type ShelfProps = {
 const Shelf = ({
   playlist,
   type,
-  onCardClick,
   onCardHover,
   title,
   watchHistory,
@@ -71,11 +71,11 @@ const Shelf = ({
 
   const renderTile = useCallback(
     (item: PlaylistItem, isInView: boolean) => {
+      const url = mediaURL({ media: item, playlistId: playlist.feedid, play: type === PersonalShelf.ContinueWatching });
       return (
         <Card
           key={item.mediaid}
           progress={watchHistory ? watchHistory[item.mediaid] : undefined}
-          onClick={isInView ? () => onCardClick(item, playlist.feedid, type) : undefined}
           onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
           featured={featured}
           disabled={!isInView}
@@ -83,10 +83,11 @@ const Shelf = ({
           isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           posterAspect={posterAspect}
           item={item}
+          url={url}
         />
       );
     },
-    [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, onCardClick, playlist.feedid, type],
+    [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, playlist.feedid, type],
   );
 
   const renderRightControl = useCallback(

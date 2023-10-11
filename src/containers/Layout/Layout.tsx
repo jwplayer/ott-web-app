@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import shallow from 'zustand/shallow';
+import classNames from 'classnames';
 
 import styles from './Layout.module.scss';
 
@@ -20,6 +21,9 @@ import UserMenu from '#components/UserMenu/UserMenu';
 import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
 import { ACCESS_MODEL } from '#src/config';
+import { useProfileStore } from '#src/stores/ProfileStore';
+import { unpersistProfile, useProfiles } from '#src/hooks/useProfiles';
+import { IS_DEVELOPMENT_BUILD } from '#src/utils/common';
 
 const Layout = () => {
   const location = useLocation();
@@ -34,6 +38,12 @@ const Layout = () => {
   const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
+  const { data: { responseData: { collection: profiles = [] } = {} } = {}, profilesEnabled } = useProfiles();
+
+  if (profilesEnabled && !profiles?.length) {
+    unpersistProfile();
+  }
+
   const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
     ({ searchQuery, searchActive, userMenuOpen, languageMenuOpen }) => ({
       languageMenuOpen,
@@ -44,7 +54,8 @@ const Layout = () => {
     shallow,
   );
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
-  const isLoggedIn = !!useAccountStore((state) => state.user);
+  const { profile } = useProfileStore();
+  const isLoggedIn = !!useAccountStore(({ user }) => user);
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
@@ -141,6 +152,10 @@ const Layout = () => {
           closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== ACCESS_MODEL.AVOD}
+          currentProfile={profile ?? undefined}
+          profiles={profiles}
+          profilesEnabled={profilesEnabled}
+          accessModel={accessModel}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
@@ -157,7 +172,14 @@ const Layout = () => {
         </Sidebar>
         <Outlet />
       </div>
-      {!!footerText && <MarkdownComponent className={styles.footer} markdownString={footerText} inline />}
+      {!!footerText && (
+        <MarkdownComponent
+          // The extra style below is just to fix the footer on mobile when the dev selector is shown
+          className={classNames(styles.footer, { [styles.testFixMargin]: IS_DEVELOPMENT_BUILD })}
+          markdownString={footerText}
+          inline
+        />
+      )}
     </div>
   );
 };

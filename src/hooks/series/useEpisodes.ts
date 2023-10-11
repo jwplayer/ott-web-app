@@ -3,7 +3,7 @@ import { useInfiniteQuery } from 'react-query';
 import type { EpisodesWithPagination } from '#types/series';
 import type { Pagination } from '#types/pagination';
 import { SERIES_CACHE_TIME } from '#src/config';
-import type ApiController from '#src/controllers/ApiController';
+import type ApiController from '#src/stores/ApiController';
 import { useController } from '#src/ioc/container';
 import { CONTROLLERS } from '#src/ioc/types';
 

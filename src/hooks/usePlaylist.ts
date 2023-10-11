@@ -7,7 +7,7 @@ import { isScheduledOrLiveMedia } from '#src/utils/liveEvent';
 import { isTruthyCustomParamValue } from '#src/utils/common';
 import type { ApiError } from '#src/utils/api';
 import { CONTROLLERS } from '#src/ioc/types';
-import type ApiController from '#src/controllers/ApiController';
+import type ApiController from '#src/stores/ApiController';
 import { useController } from '#src/ioc/container';
 
 const placeholderData = generatePlaylistPlaceholder(30);
