@@ -1,6 +1,8 @@
 import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
+import { getCommonResponseData } from '#src/utils/api';
+import type { Config } from '#types/Config';
 import type {
   AuthData,
   Capture,
@@ -25,11 +27,9 @@ import type {
   UpdateCustomerConsents,
   UpdatePersonalShelves,
 } from '#types/account';
-import type { Config } from '#types/Config';
-import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
+import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
 import type { WatchHistoryItem } from '#types/watchHistory';
-import { getCommonResponseData } from '#src/utils/api';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -295,9 +295,9 @@ export const subscribeToNotifications = async (uuid: string = '', onMessage: (pa
 export const updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
   const { favorites, history } = payload.externalData;
   const externalData = await getCustomerExternalData();
-  const currentWatchHistoryIds = externalData?.history?.map((e) => e.mediaid);
   const currentFavoriteIds = externalData?.favorites?.map((e) => e.mediaid);
   const payloadFavoriteIds = favorites?.map((e) => e.mediaid);
+  const currentWatchHistoryIds = externalData?.history?.map((e) => e.mediaid);
 
   try {
     history.forEach(async (history) => {
@@ -488,3 +488,5 @@ export const canUpdatePaymentMethod = false;
 export const canShowReceipts = false;
 
 export const canDeleteAccount = true;
+
+export const canManageProfiles = true;

@@ -1,9 +1,11 @@
 {
   "account": {
     "about_you": "Información de perfil",
+    "add_profile": "Añadir perfil",
     "cancel": "Cancelar",
     "confirm_password": "Confirmar contraseña",
     "continue": "Continuar",
+    "delete": "Eliminar",
     "delete_account": {
       "body": "Elimine permanentemente su cuenta y todo su contenido.",
       "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
@@ -39,12 +41,14 @@
     "firstname": "Nombre",
     "hide_password": "Ocultar contraseña",
     "lastname": "Apellido",
+    "manage_profiles": "Administrar perfiles",
     "password": "Contraseña",
     "save": "Guardar",
     "security": "Contraseña",
     "terms_and_tracking": "Jurídico y marketing",
     "update_consents": "Actualizar consentimientos",
-    "view_password": "Ver contraseña"
+    "view_password": "Ver contraseña",
+    "who_is_watching": "¿Quién está mirando?"
   },
   "favorites": {
     "clear": "Borrar favoritos",
@@ -59,9 +63,13 @@
   },
   "nav": {
     "account": "Cuenta",
+    "add_profile": "Añade un nuevo perfil",
     "favorites": "Favoritos",
     "logout": "Cerrar sesión",
-    "payments": "Pagos"
+    "payments": "Pagos",
+    "profile": "Perfil",
+    "settings": "Ajustes",
+    "switch_profiles": "Cambiar de perfil"
   },
   "payment": {
     "access_granted": "acceso concedido",
@@ -104,5 +112,28 @@
     "update_payment_details": "Actualizar detalles de pago",
     "upgrade_plan_success": "Haz cambiado exitosamente el plan de tu suscripción. Puedes comenzar a disfrutar de los beneficios adicionales de inmediato.",
     "weekly_subscription": "Suscripción semanal"
+  },
+  "profile": {
+    "adult": "Adultos",
+    "avatar": "Avatar",
+    "content_rating": "Puntuación del contenido",
+    "create": "Crear perfil",
+    "create_message": "Crea tu perfil",
+    "delete": "Eliminar perfil",
+    "delete_confirmation": "¿Estás seguro que quieres eliminar tu perfil? Perderás todo tu historial y ajustes en este perfil.",
+    "delete_description": "Borrar permentemente el perfil junto con el contenido de tu historial y favoritos.",
+    "delete_main": "El perfil principal no puede ser borrado debido a que está ligado al historial de tu cuenta y tus favoritos.",
+    "description": "Los perfiles te permiten ver el contenido y organizar tu colección de favoritos.",
+    "form_error": "Algo salió mal. Intenta de nuevo más tarde",
+    "info": "Información del perfil",
+    "kids": "Niños",
+    "name": "Nombre del usuario",
+    "no_one_watching": "No hay nadie mirando.",
+    "validation": {
+      "name": {
+        "required": "Por favor",
+        "too_short": "Por favor"
+      }
+    }
   }
 }

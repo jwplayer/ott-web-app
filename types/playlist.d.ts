@@ -79,5 +79,6 @@ export type Playlist = {
    */
   shelfImageAspectRatio?: string;
   cardImageAspectRatio?: string;
+  imageLabel?: string;
   [key: string]: unknown;
 };

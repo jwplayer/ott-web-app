@@ -1,18 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 
 import type { EditPasswordFormData } from '#types/account';
 import EditPasswordForm from '#components/EditPasswordForm/EditPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import { addQueryParams } from '#src/utils/formatting';
+import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { changePasswordWithOldPassword, changePasswordWithToken, logout } from '#src/stores/AccountController';
 import useQueryParam from '#src/hooks/useQueryParam';
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation('account');
+  const location = useLocation();
   const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
   const emailParam = useQueryParam('email');
@@ -40,8 +41,8 @@ const ResetPassword: React.FC = () => {
         }
         await changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
-      await logout();
-      navigate(addQueryParams(window.location.origin, { u: 'login' }));
+      await logout({ includeNetworkRequest: false });
+      navigate(addQueryParam(location, 'u', 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.includes('invalid param password')) {

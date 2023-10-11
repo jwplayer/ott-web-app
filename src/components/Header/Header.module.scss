@@ -142,6 +142,22 @@
   }
 }
 
+.userMenuButton {
+  margin-left: 8px;
+}
+
+.brandCentered {
+  .brand {
+    text-align: center;
+  }
+}
+.profile {
+  display: flex;
+  align-items: center;
+  h2 {
+    cursor: pointer;
+  }
+}
 //
 // mediaQueries
 // --------------------------------

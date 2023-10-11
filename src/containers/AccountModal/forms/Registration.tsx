@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { object, string, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
@@ -10,6 +10,7 @@ import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collec
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
 import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -18,8 +19,12 @@ const Registration = () => {
   const [consentValues, setConsentValues] = useState<Record<string, boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents'], getPublisherConsents);
+  const appConfigId = useConfigStore(({ config }) => config.id);
+
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
+
+  const queryClient = useQueryClient();
 
   const handleChangeConsent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConsentValues((current) => ({ ...current, [event.target.name]: event.target.checked }));
@@ -49,6 +54,8 @@ const Registration = () => {
       await updateConsents(customerConsents).catch(() => {
         // error caught while updating the consents, but continue the registration flow
       });
+
+      await queryClient.invalidateQueries('listProfiles');
 
       navigate(addQueryParam(location, 'u', 'personal-details'));
     } catch (error: unknown) {

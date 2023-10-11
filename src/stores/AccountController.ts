@@ -1,9 +1,18 @@
 import i18next from 'i18next';
 
-import { subscribeToNotifications } from './NotificationsController';
+import { useProfileStore } from './ProfileStore';
 
+import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
+import useAccount from '#src/hooks/useAccount';
+import useService from '#src/hooks/useService';
+import { getMediaByWatchlist } from '#src/services/api.service';
+import { useAccountStore } from '#src/stores/AccountStore';
+import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
+import { logDev } from '#src/utils/common';
+import * as persist from '#src/utils/persist';
 import type {
   Capture,
   Customer,
@@ -15,14 +24,9 @@ import type {
   GetPublisherConsentsResponse,
 } from '#types/account';
 import type { Offer } from '#types/checkout';
-import { useAccountStore } from '#src/stores/AccountStore';
-import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHistoryController';
-import { restoreFavorites, serializeFavorites } from '#src/stores/FavoritesController';
-import { getMediaByWatchlist } from '#src/services/api.service';
-import useService from '#src/hooks/useService';
-import useAccount from '#src/hooks/useAccount';
-import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
-import { logDev } from '#src/utils/common';
+import { unpersistProfile } from '#src/hooks/useProfiles';
+
+const PERSIST_PROFILE = 'profile';
 
 export const initializeAccount = async () => {
   await useService(async ({ accountService, config }) => {
@@ -35,11 +39,16 @@ export const initializeAccount = async () => {
       loading: true,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
+      canManageProfiles: accountService.canManageProfiles,
       canUpdatePaymentMethod: accountService.canUpdatePaymentMethod,
       canChangePasswordWithOldPassword: accountService.canChangePasswordWithOldPassword,
       canExportAccountData: accountService.canExportAccountData,
       canDeleteAccount: accountService.canExportAccountData,
       canShowReceipts: accountService.canShowReceipts,
+    });
+
+    useProfileStore.setState({
+      profile: persist.getItem(PERSIST_PROFILE) || null,
     });
 
     await accountService.initialize(config, logout);
@@ -146,26 +155,42 @@ export const login = async (email: string, password: string) => {
     useAccountStore.setState({ loading: false });
   });
 };
-export async function logout() {
+
+async function clearLoginState() {
+  useAccountStore.setState({
+    user: null,
+    subscription: null,
+    transactions: null,
+    activePayment: null,
+    customerConsents: null,
+    publisherConsents: null,
+    loading: false,
+  });
+
+  useProfileStore.setState({
+    profile: null,
+    selectingProfileAvatar: null,
+  });
+  unpersistProfile();
+
+  await restoreFavorites();
+  await restoreWatchHistory();
+}
+
+export async function logout(logoutOptions: { includeNetworkRequest: boolean } = { includeNetworkRequest: true }) {
   await useService(async ({ accountService }) => {
+    persist.removeItem(PERSIST_PROFILE);
+
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
 
-    useAccountStore.setState({
-      user: null,
-      subscription: null,
-      transactions: null,
-      activePayment: null,
-      customerConsents: null,
-      publisherConsents: null,
-      loading: false,
-    });
-
-    await restoreFavorites();
-    await restoreWatchHistory();
-    await accountService?.logout();
+    await clearLoginState();
+    if (logoutOptions.includeNetworkRequest) {
+      await accountService?.logout();
+    }
   });
 }
+
 export const register = async (email: string, password: string) => {
   await useService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
@@ -495,8 +520,6 @@ async function afterLogin(user: Customer, customerConsents: CustomerConsent[] | 
     user,
     customerConsents,
   });
-
-  subscribeToNotifications(user.uuid);
 
   return await Promise.allSettled([
     accessModel === 'SVOD' && shouldSubscriptionReload ? reloadActiveSubscription() : Promise.resolve(),

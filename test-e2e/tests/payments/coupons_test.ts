@@ -39,18 +39,17 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   const today = new Date();
 
   // This is written as a second test suite so that the login context is a different user.
-  // Otherwise there's no way to re-enter payment info and add a coupon code
+  // Otherwise, there's no way to re-enter payment info and add a coupon code
   Feature(`payments-coupon - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
   Before(async ({ I }) => {
     // This gets used in checkoutService.getOffer to make sure the offers are geolocated for NL
     overrideIP(I);
     I.useConfig(props.config);
+    couponLoginContext = await I.registerOrLogin(couponLoginContext);
   });
 
   Scenario(`I can redeem coupons - ${providerName}`, async ({ I }) => {
-    couponLoginContext = await I.registerOrLogin(couponLoginContext);
-
     await goToCheckout(I);
 
     I.click('Redeem coupon');
@@ -78,7 +77,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     I.see(formatPrice(0, 'EUR', props.locale));
 
     if (props.shouldMakePayment) {
-      I.payWithCreditCard(
+      await I.payWithCreditCard(
         props.paymentFields.creditCardholder,
         props.creditCard,
         props.paymentFields.cardNumber,
@@ -92,14 +91,14 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   });
 
   Scenario(`I can cancel a free subscription - ${providerName}`, async ({ I }) => {
-    couponLoginContext = await I.registerOrLogin(couponLoginContext);
     cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
   });
 
   Scenario(`I can renew a free subscription - ${providerName}`, async ({ I }) => {
     if (props.canRenewSubscription) {
-      couponLoginContext = await I.registerOrLogin(couponLoginContext);
       renewPlan(I, addYear(today), props.yearlyOffer.price);
+    } else {
+      I.say(`Provider ${providerName} does not support renewal. Skipping test...`);
     }
   });
 }

@@ -27,7 +27,17 @@ const DevConfigSelector = ({ selectedConfig }: Props) => {
     [configNavigate],
   );
 
-  return <Dropdown className={styles.dropdown} size="small" options={configOptions} name="config-select" value={selectedConfig || ''} onChange={onChange} />;
+  return (
+    <Dropdown
+      className={styles.dropdown}
+      size="small"
+      options={configOptions}
+      name="config-select"
+      value={selectedConfig || ''}
+      onChange={onChange}
+      required={true}
+    />
+  );
 };
 
 export default DevConfigSelector;

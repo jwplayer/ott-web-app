@@ -2,6 +2,7 @@ import React from 'react';
 import { object, SchemaOf, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
+import { useQueryClient } from 'react-query';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
@@ -20,9 +21,12 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
   const location = useLocation();
   const { t } = useTranslation('account');
 
+  const queryClient = useQueryClient();
+
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await login(formData.email, formData.password);
+      await queryClient.invalidateQueries('listProfiles');
 
       // close modal
       navigate(removeQueryParam(location, 'u'));

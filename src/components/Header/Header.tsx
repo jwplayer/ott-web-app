@@ -19,6 +19,9 @@ import Language from '#src/icons/Language';
 import LanguageMenu from '#components/LanguageMenu/LanguageMenu';
 import type { LanguageDefinition } from '#src/i18n/config';
 import Panel from '#components/Panel/Panel';
+import type { Profile } from '#types/account';
+import ProfileCircle from '#src/icons/ProfileCircle';
+import type { AccessModel } from '#types/Config';
 
 type TypeHeader = 'static' | 'fixed';
 
@@ -46,6 +49,10 @@ type Props = {
   supportedLanguages: LanguageDefinition[];
   currentLanguage: LanguageDefinition | undefined;
   onLanguageClick: (code: string) => void;
+  currentProfile?: Profile;
+  profiles?: Profile[];
+  profilesEnabled?: boolean;
+  accessModel?: AccessModel;
 };
 
 const Header: React.FC<Props> = ({
@@ -72,6 +79,10 @@ const Header: React.FC<Props> = ({
   supportedLanguages,
   currentLanguage,
   onLanguageClick,
+  currentProfile,
+  profiles,
+  profilesEnabled,
+  accessModel,
 }) => {
   const { t } = useTranslation('menu');
   const [logoLoaded, setLogoLoaded] = useState(false);
@@ -79,6 +90,7 @@ const Header: React.FC<Props> = ({
   const headerClassName = classNames(styles.header, styles[headerType], {
     [styles.searchActive]: searchActive,
   });
+
   // only show the language dropdown when there are other languages to choose from
   const showLanguageSwitcher = supportedLanguages.length > 1;
 
@@ -121,11 +133,19 @@ const Header: React.FC<Props> = ({
     return isLoggedIn ? (
       <React.Fragment>
         <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('open_user_menu')} onClick={openUserMenu}>
-          <AccountCircle />
+          {currentProfile?.avatar_url ? <ProfileCircle src={currentProfile.avatar_url} alt={currentProfile.name} /> : <AccountCircle />}
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
           <Panel>
-            <UserMenu onClick={closeUserMenu} showPaymentsItem={showPaymentsMenuItem} small />
+            <UserMenu
+              onClick={closeUserMenu}
+              showPaymentsItem={showPaymentsMenuItem}
+              small
+              accessModel={accessModel}
+              currentProfile={currentProfile}
+              profilesEnabled={profilesEnabled}
+              profiles={profiles}
+            />
           </Panel>
         </Popover>
       </React.Fragment>

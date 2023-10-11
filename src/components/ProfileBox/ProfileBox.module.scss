@@ -1,0 +1,183 @@
+@use 'src/styles/variables';
+
+$avatar-border-radius: 50%;
+
+.inner {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid rgba(95, 114, 152);
+  border-radius: $avatar-border-radius;
+  &:hover {
+    border: 1px solid variables.$white;
+    opacity: 0.8;
+  }
+}
+
+.checkmarkContainer {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  background-color: variables.$deep-blue;
+  border-radius: $avatar-border-radius;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  color: variables.$white;
+}
+
+.selected {
+  border: 2px solid variables.$deep-blue !important;
+  border-radius: $avatar-border-radius;
+  box-shadow: variables.$blue-dark 0 0 0 3px;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+
+  .image {
+    position: relative;
+    width: 130%;
+    height: 130%;
+    border-radius: $avatar-border-radius;
+  }
+
+  .box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    height: 140px;
+    padding: 10px;
+
+    img {
+      position: relative;
+      transition: all 0.5s ease;
+    }
+    .kidsLabel {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      color: variables.$link;
+    }
+    &:hover {
+      img {
+        transform: translate(-5px, -5px);
+      }
+    }
+  }
+  .circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    background: #1f232c;
+    border: 1px solid white;
+    border-radius: $avatar-border-radius;
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 95%);
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+
+  &:hover {
+    h2 {
+      opacity: 0.8;
+    }
+
+    .box {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      padding: 10px;
+      img {
+        position: relative;
+        transition: all 0.5s ease;
+      }
+      .kids {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: variables.$link;
+      }
+      &:hover {
+        img {
+          transform: translate(-5px, -5px);
+        }
+      }
+    }
+    .circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid white;
+      border-radius: $avatar-border-radius;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 95%);
+      border: 1px solid transparent;
+      border-radius: $avatar-border-radius;
+    }
+
+    &:hover {
+      .box {
+        border: 1px solid variables.$white;
+        border-radius: 50%;
+        opacity: 0.8;
+      }
+      h2 {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+.addProfileContainer {
+  justify-content: space-between;
+  &:hover {
+    .box {
+      width: 56px;
+      height: 56px;
+    }
+  }
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
+  height: 140px;
+}
