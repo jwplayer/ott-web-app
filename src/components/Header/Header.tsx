@@ -1,7 +1,6 @@
 import React, { ReactFragment, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import type { UseMutateFunction } from 'react-query';
 
 import styles from './Header.module.scss';
 
@@ -53,11 +52,11 @@ type Props = {
 
   accessModel?: AccessModel;
   profilesData?: {
-    currentProfile?: Profile;
-    profiles?: Profile[];
-    profilesEnabled?: boolean;
-    selectProfile?: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
-    isSelectingProfile?: boolean;
+    currentProfile: Profile | null;
+    profiles: Profile[];
+    profilesEnabled: boolean;
+    selectProfile: ({ avatarUrl, id }: { avatarUrl: string; id: string }) => void;
+    isSelectingProfile: boolean;
   };
 };
 
@@ -138,7 +137,7 @@ const Header: React.FC<Props> = ({
       <React.Fragment>
         <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('open_user_menu')} onClick={openUserMenu}>
           {profilesEnabled && currentProfile ? (
-            <ProfileCircle src={currentProfile.avatar_url} alt={currentProfile?.name ?? t('profile_icon')} />
+            <ProfileCircle src={currentProfile.avatar_url} alt={currentProfile.name || t('profile_icon')} />
           ) : (
             <AccountCircle />
           )}

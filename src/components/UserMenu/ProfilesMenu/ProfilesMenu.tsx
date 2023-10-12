@@ -11,7 +11,7 @@ import type { Profile } from '#types/account';
 
 type ProfilesMenuProps = {
   profiles: Profile[];
-  currentProfile?: Profile;
+  currentProfile?: Profile | null;
   small?: boolean;
   selectingProfile: boolean;
   selectProfile: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;

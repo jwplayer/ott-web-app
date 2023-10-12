@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import type { UseMutateFunction } from 'react-query';
 
 import styles from './UserMenu.module.scss';
 import ProfilesMenu from './ProfilesMenu/ProfilesMenu';
@@ -22,11 +21,11 @@ type Props = {
   showPaymentsItem: boolean;
   onClick?: () => void;
   accessModel?: AccessModel;
-  currentProfile?: Profile;
+  currentProfile?: Profile | null;
   profilesEnabled?: boolean;
   profiles?: Profile[];
   isSelectingProfile?: boolean;
-  selectProfile?: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
+  selectProfile?: ({ id, avatarUrl }: { id: string; avatarUrl: string }) => void;
 };
 
 const UserMenu = ({

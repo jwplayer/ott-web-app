@@ -38,7 +38,10 @@ const Layout = () => {
   const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
-  const { data: { responseData: { collection: profiles = [] } = {} } = {}, profilesEnabled } = useProfiles();
+  const {
+    query: { data: { responseData: { collection: profiles = [] } = {} } = {} },
+    profilesEnabled,
+  } = useProfiles();
 
   if (profilesEnabled && !profiles?.length) {
     unpersistProfile();
@@ -156,10 +159,10 @@ const Layout = () => {
           showPaymentsMenuItem={accessModel !== 'AVOD'}
           accessModel={accessModel}
           profilesData={{
-            currentProfile: profile ?? undefined,
+            currentProfile: profile,
             profiles,
             profilesEnabled,
-            selectProfile: selectProfile.mutate,
+            selectProfile: ({ avatarUrl, id }) => selectProfile.mutate({ id, avatarUrl }),
             isSelectingProfile: !!selectProfile.isLoading,
           }}
         >
