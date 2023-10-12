@@ -1,4 +1,4 @@
-# [4.29.0](https://github.com/jwplayer/ott-web-app/compare/v4.27.0...v4.29.0) (2023-10-11)
+## [4.29.0](https://github.com/jwplayer/ott-web-app/compare/v4.27.0...v4.29.0) (2023-10-11)
 
 
 ### Bug Fixes
@@ -88,7 +88,7 @@
 
 
 
-# [4.27.0](https://github.com/jwplayer/ott-web-app/compare/v4.25.0...v4.27.0) (2023-08-30)
+## [4.27.0](https://github.com/jwplayer/ott-web-app/compare/v4.25.0...v4.27.0) (2023-08-30)
 
 
 ### Bug Fixes
@@ -105,7 +105,7 @@
 
 
 
-# [4.25.0](https://github.com/jwplayer/ott-web-app/compare/v4.23.2...v4.25.0) (2023-08-01)
+## [4.25.0](https://github.com/jwplayer/ott-web-app/compare/v4.23.2...v4.25.0) (2023-08-01)
 
 
 ### Bug Fixes
@@ -159,7 +159,7 @@
 
 
 
-# [4.23.0](https://github.com/jwplayer/ott-web-app/compare/v4.22.0...v4.23.0) (2023-07-06)
+## [4.23.0](https://github.com/jwplayer/ott-web-app/compare/v4.22.0...v4.23.0) (2023-07-06)
 
 
 ### Features
@@ -173,7 +173,7 @@
 
 
 
-# [4.22.0](https://github.com/jwplayer/ott-web-app/compare/v4.21.0...v4.22.0) (2023-07-05)
+## [4.22.0](https://github.com/jwplayer/ott-web-app/compare/v4.21.0...v4.22.0) (2023-07-05)
 
 
 ### Features
@@ -183,7 +183,7 @@
 
 
 
-# [4.21.0](https://github.com/jwplayer/ott-web-app/compare/v4.20.0...v4.21.0) (2023-07-05)
+## [4.21.0](https://github.com/jwplayer/ott-web-app/compare/v4.20.0...v4.21.0) (2023-07-05)
 
 
 ### Features
@@ -193,7 +193,7 @@
 
 
 
-# [4.20.0](https://github.com/jwplayer/ott-web-app/compare/v4.19.1...v4.20.0) (2023-07-04)
+## [4.20.0](https://github.com/jwplayer/ott-web-app/compare/v4.19.1...v4.20.0) (2023-07-04)
 
 
 ### Features
@@ -212,7 +212,7 @@
 
 
 
-# [4.19.0](https://github.com/jwplayer/ott-web-app/compare/v4.18.0...v4.19.0) (2023-06-20)
+## [4.19.0](https://github.com/jwplayer/ott-web-app/compare/v4.18.0...v4.19.0) (2023-06-20)
 
 
 ### Bug Fixes
@@ -227,7 +227,7 @@
 
 
 
-# [4.18.0](https://github.com/jwplayer/ott-web-app/compare/v4.17.0...v4.18.0) (2023-06-19)
+## [4.18.0](https://github.com/jwplayer/ott-web-app/compare/v4.17.0...v4.18.0) (2023-06-19)
 
 
 ### Features
@@ -236,7 +236,7 @@
 
 
 
-# [4.17.0](https://github.com/jwplayer/ott-web-app/compare/v4.16.1...v4.17.0) (2023-06-19)
+## [4.17.0](https://github.com/jwplayer/ott-web-app/compare/v4.16.1...v4.17.0) (2023-06-19)
 
 
 ### Bug Fixes
@@ -262,7 +262,7 @@
 
 
 
-# [4.16.0](https://github.com/jwplayer/ott-web-app/compare/v4.15.0...v4.16.0) (2023-06-16)
+## [4.16.0](https://github.com/jwplayer/ott-web-app/compare/v4.15.0...v4.16.0) (2023-06-16)
 
 
 ### Bug Fixes
@@ -285,7 +285,7 @@
 
 
 
-# [4.15.0](https://github.com/jwplayer/ott-web-app/compare/v4.14.0...v4.15.0) (2023-06-15)
+## [4.15.0](https://github.com/jwplayer/ott-web-app/compare/v4.14.0...v4.15.0) (2023-06-15)
 
 
 ### Bug Fixes
@@ -299,7 +299,7 @@
 
 
 
-# [4.14.0](https://github.com/jwplayer/ott-web-app/compare/v4.13.0...v4.14.0) (2023-06-15)
+## [4.14.0](https://github.com/jwplayer/ott-web-app/compare/v4.13.0...v4.14.0) (2023-06-15)
 
 
 ### Features
@@ -309,7 +309,7 @@
 
 
 
-# [4.13.0](https://github.com/jwplayer/ott-web-app/compare/v4.12.1...v4.13.0) (2023-06-15)
+## [4.13.0](https://github.com/jwplayer/ott-web-app/compare/v4.12.1...v4.13.0) (2023-06-15)
 
 
 ### Features
@@ -334,7 +334,7 @@
 
 
 
-# [4.12.0](https://github.com/jwplayer/ott-web-app/compare/v4.11.1...v4.12.0) (2023-06-02)
+## [4.12.0](https://github.com/jwplayer/ott-web-app/compare/v4.11.1...v4.12.0) (2023-06-02)
 
 
 ### Bug Fixes
@@ -380,7 +380,7 @@
 
 
 
-# [4.11.0](https://github.com/jwplayer/ott-web-app/compare/v4.10.0...v4.11.0) (2023-05-31)
+## [4.11.0](https://github.com/jwplayer/ott-web-app/compare/v4.10.0...v4.11.0) (2023-05-31)
 
 
 ### Bug Fixes
@@ -410,7 +410,7 @@
 
 
 
-# [4.10.0](https://github.com/jwplayer/ott-web-app/compare/v4.9.0...v4.10.0) (2023-05-25)
+## [4.10.0](https://github.com/jwplayer/ott-web-app/compare/v4.9.0...v4.10.0) (2023-05-25)
 
 
 ### Features
@@ -419,7 +419,7 @@
 
 
 
-# [4.9.0](https://github.com/jwplayer/ott-web-app/compare/v4.8.0...v4.9.0) (2023-05-24)
+## [4.9.0](https://github.com/jwplayer/ott-web-app/compare/v4.8.0...v4.9.0) (2023-05-24)
 
 
 ### Bug Fixes
@@ -439,7 +439,7 @@
 
 
 
-# [4.8.0](https://github.com/jwplayer/ott-web-app/compare/v4.7.0...v4.8.0) (2023-05-10)
+## [4.8.0](https://github.com/jwplayer/ott-web-app/compare/v4.7.0...v4.8.0) (2023-05-10)
 
 
 ### Features
@@ -449,7 +449,7 @@
 
 
 
-# [4.7.0](https://github.com/jwplayer/ott-web-app/compare/v4.6.3...v4.7.0) (2023-05-08)
+## [4.7.0](https://github.com/jwplayer/ott-web-app/compare/v4.6.3...v4.7.0) (2023-05-08)
 
 
 ### Features
@@ -495,7 +495,7 @@
 
 
 
-# [4.6.0](https://github.com/jwplayer/ott-web-app/compare/v4.5.0...v4.6.0) (2023-04-12)
+## [4.6.0](https://github.com/jwplayer/ott-web-app/compare/v4.5.0...v4.6.0) (2023-04-12)
 
 
 ### Bug Fixes
@@ -510,7 +510,7 @@
 
 
 
-# [4.5.0](https://github.com/jwplayer/ott-web-app/compare/v4.4.2...v4.5.0) (2023-04-12)
+## [4.5.0](https://github.com/jwplayer/ott-web-app/compare/v4.4.2...v4.5.0) (2023-04-12)
 
 
 ### Bug Fixes
@@ -573,7 +573,7 @@
 
 
 
-# [4.4.0](https://github.com/jwplayer/ott-web-app/compare/v4.3.0...v4.4.0) (2023-03-28)
+## [4.4.0](https://github.com/jwplayer/ott-web-app/compare/v4.3.0...v4.4.0) (2023-03-28)
 
 
 ### Features
@@ -582,7 +582,7 @@
 
 
 
-# [4.3.0](https://github.com/jwplayer/ott-web-app/compare/v4.2.3...v4.3.0) (2023-03-23)
+## [4.3.0](https://github.com/jwplayer/ott-web-app/compare/v4.2.3...v4.3.0) (2023-03-23)
 
 
 ### Bug Fixes
@@ -625,7 +625,7 @@
 
 
 
-# [4.2.0](https://github.com/jwplayer/ott-web-app/compare/v4.1.1...v4.2.0) (2023-02-10)
+## [4.2.0](https://github.com/jwplayer/ott-web-app/compare/v4.1.1...v4.2.0) (2023-02-10)
 
 
 ### Features
@@ -643,7 +643,7 @@
 
 
 
-# [4.1.0](https://github.com/jwplayer/ott-web-app/compare/v4.0.1...v4.1.0) (2023-02-01)
+## [4.1.0](https://github.com/jwplayer/ott-web-app/compare/v4.0.1...v4.1.0) (2023-02-01)
 
 
 ### Features
@@ -661,7 +661,7 @@
 
 
 
-# [4.0.0](https://github.com/jwplayer/ott-web-app/compare/v3.4.0...v4.0.0) (2023-01-30)
+## [4.0.0](https://github.com/jwplayer/ott-web-app/compare/v3.4.0...v4.0.0) (2023-01-30)
 
 
 * feat!: add JWP authentication, payments, and subscriptions with docs (bump version) ([a3e2a08](https://github.com/jwplayer/ott-web-app/commit/a3e2a080df10a911c0518629924612ad2655e047))
@@ -673,7 +673,7 @@
 
 
 
-# [3.4.0](https://github.com/jwplayer/ott-web-app/compare/v3.3.0...v3.4.0) (2023-01-27)
+## [3.4.0](https://github.com/jwplayer/ott-web-app/compare/v3.3.0...v3.4.0) (2023-01-27)
 
 
 ### Features
@@ -682,7 +682,7 @@
 
 
 
-# [3.3.0](https://github.com/jwplayer/ott-web-app/compare/v3.2.2...v3.3.0) (2023-01-25)
+## [3.3.0](https://github.com/jwplayer/ott-web-app/compare/v3.2.2...v3.3.0) (2023-01-25)
 
 
 ### Features
@@ -709,7 +709,7 @@
 
 
 
-# [3.2.0](https://github.com/jwplayer/ott-web-app/compare/v3.1.1...v3.2.0) (2023-01-18)
+## [3.2.0](https://github.com/jwplayer/ott-web-app/compare/v3.1.1...v3.2.0) (2023-01-18)
 
 
 ### Features
@@ -727,7 +727,7 @@
 
 
 
-# [3.1.0](https://github.com/jwplayer/ott-web-app/compare/v3.0.2...v3.1.0) (2023-01-11)
+## [3.1.0](https://github.com/jwplayer/ott-web-app/compare/v3.0.2...v3.1.0) (2023-01-11)
 
 
 ### Features
@@ -760,7 +760,7 @@
 
 
 
-# [3.0.0](https://github.com/jwplayer/ott-web-app/compare/v2.9.1...v3.0.0) (2022-12-14)
+## [3.0.0](https://github.com/jwplayer/ott-web-app/compare/v2.9.1...v3.0.0) (2022-12-14)
 
 
 * feat!: InPlayer register and update user flows (#202) ([489d8e8](https://github.com/jwplayer/ott-web-app/commit/489d8e8a6fb358df8dbd4522aed69228ded1bf6e)), closes [#202](https://github.com/jwplayer/ott-web-app/issues/202)
@@ -781,7 +781,7 @@
 
 
 
-# [2.9.0](https://github.com/jwplayer/ott-web-app/compare/v2.8.0...v2.9.0) (2022-12-05)
+## [2.9.0](https://github.com/jwplayer/ott-web-app/compare/v2.8.0...v2.9.0) (2022-12-05)
 
 
 ### Bug Fixes
@@ -796,7 +796,7 @@
 
 
 
-# [2.8.0](https://github.com/jwplayer/ott-web-app/compare/v2.7.1...v2.8.0) (2022-12-01)
+## [2.8.0](https://github.com/jwplayer/ott-web-app/compare/v2.7.1...v2.8.0) (2022-12-01)
 
 
 ### Features
@@ -814,7 +814,7 @@
 
 
 
-# [2.7.0](https://github.com/jwplayer/ott-web-app/compare/v2.6.2...v2.7.0) (2022-11-17)
+## [2.7.0](https://github.com/jwplayer/ott-web-app/compare/v2.6.2...v2.7.0) (2022-11-17)
 
 
 ### Features
@@ -841,7 +841,7 @@
 
 
 
-# [2.6.0](https://github.com/jwplayer/ott-web-app/compare/v2.5.0...v2.6.0) (2022-10-12)
+## [2.6.0](https://github.com/jwplayer/ott-web-app/compare/v2.5.0...v2.6.0) (2022-10-12)
 
 
 ### Bug Fixes
@@ -867,7 +867,7 @@
 
 
 
-# [2.5.0](https://github.com/jwplayer/ott-web-app/compare/v2.4.2...v2.5.0) (2022-08-05)
+## [2.5.0](https://github.com/jwplayer/ott-web-app/compare/v2.4.2...v2.5.0) (2022-08-05)
 
 
 ### Features
@@ -894,7 +894,7 @@
 
 
 
-# [2.4.0](https://github.com/jwplayer/ott-web-app/compare/v2.3.0...v2.4.0) (2022-07-18)
+## [2.4.0](https://github.com/jwplayer/ott-web-app/compare/v2.3.0...v2.4.0) (2022-07-18)
 
 
 ### Features
@@ -903,7 +903,7 @@
 
 
 
-# [2.3.0](https://github.com/jwplayer/ott-web-app/compare/v2.2.0...v2.3.0) (2022-07-11)
+## [2.3.0](https://github.com/jwplayer/ott-web-app/compare/v2.2.0...v2.3.0) (2022-07-11)
 
 
 ### Features
@@ -912,7 +912,7 @@
 
 
 
-# [2.2.0](https://github.com/jwplayer/ott-web-app/compare/v2.1.0...v2.2.0) (2022-07-08)
+## [2.2.0](https://github.com/jwplayer/ott-web-app/compare/v2.1.0...v2.2.0) (2022-07-08)
 
 
 ### Features
@@ -921,7 +921,7 @@
 
 
 
-# [2.1.0](https://github.com/jwplayer/ott-web-app/compare/v2.0.4...v2.1.0) (2022-07-05)
+## [2.1.0](https://github.com/jwplayer/ott-web-app/compare/v2.0.4...v2.1.0) (2022-07-05)
 
 
 ### Features
@@ -971,7 +971,7 @@
 
 
 
-# [2.0.0](https://github.com/jwplayer/ott-web-app/compare/v2.0.0-alpha...v2.0.0) (2022-06-03)
+## [2.0.0](https://github.com/jwplayer/ott-web-app/compare/v2.0.0-alpha...v2.0.0) (2022-06-03)
 
 
 ### Bug Fixes
@@ -1008,7 +1008,7 @@
 
 
 
-# [2.0.0-alpha](https://github.com/jwplayer/ott-web-app/compare/v1.1.1...v2.0.0-alpha) (2022-05-06)
+## [2.0.0-alpha](https://github.com/jwplayer/ott-web-app/compare/v1.1.1...v2.0.0-alpha) (2022-05-06)
 
 
 ### Bug Fixes
@@ -1058,7 +1058,7 @@
 
 
 
-# [1.1.0](https://github.com/jwplayer/ott-web-app/compare/v1.0.0...v1.1.0) (2021-08-05)
+## [1.1.0](https://github.com/jwplayer/ott-web-app/compare/v1.0.0...v1.1.0) (2021-08-05)
 
 
 ### Bug Fixes
@@ -1183,7 +1183,7 @@
 
 
 
-# [1.0.0](https://github.com/jwplayer/ott-web-app/compare/73c6598848b81d1df749b2ba1c7545a433afca82...v1.0.0) (2021-06-25)
+## [1.0.0](https://github.com/jwplayer/ott-web-app/compare/73c6598848b81d1df749b2ba1c7545a433afca82...v1.0.0) (2021-06-25)
 
 
 ### Bug Fixes

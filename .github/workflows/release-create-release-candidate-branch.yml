@@ -38,7 +38,8 @@ jobs:
           skip-tag: true
           git-push: false
           skip-ci: false
-          skip-version-file: true
+          preset: conventionalcommits
+          input-file: "CHANGELOG.md"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
