@@ -33,7 +33,10 @@ const Profiles = ({ editMode = false }: Props) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  const { data, isLoading, isFetching, isError, profilesEnabled } = useProfiles();
+  const {
+    query: { data, isLoading, isFetching, isError },
+    profilesEnabled,
+  } = useProfiles();
 
   const activeProfiles = data?.responseData.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;

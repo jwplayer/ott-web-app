@@ -13,7 +13,10 @@ import styles from '#src/pages/User/User.module.scss';
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const { profilesEnabled } = useProfiles();
+  const {
+    query: { isLoading: loadingProfilesList },
+    profilesEnabled,
+  } = useProfiles();
 
   const [avatarUrl, setAvatarUrl] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
 
@@ -23,8 +26,6 @@ const CreateProfile = () => {
   useEffect(() => {
     if (!profilesEnabled) navigate('/');
   }, [profilesEnabled, navigate]);
-
-  const { isLoading: loadingProfilesList } = useProfiles();
 
   const initialValues = {
     name: '',
