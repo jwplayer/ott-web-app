@@ -119,13 +119,16 @@
     "adult": "Adultos",
     "avatar": "Avatar",
     "content_rating": "Puntuación del contenido",
-    "create": "Crear perfil",
     "create_message": "Crea tu perfil",
+    "created_message": "Creaste exitosamente tu perfil. Ahora ve y mira contenido increíble y reúne tu propia colección personal de favoritos.",
+    "created_title": "Has creado tu perfil",
     "delete": "Eliminar perfil",
     "delete_confirmation": "¿Estás seguro que quieres eliminar tu perfil? Perderás todo tu historial y ajustes en este perfil.",
     "delete_description": "Borrar permentemente el perfil junto con el contenido de tu historial y favoritos.",
     "delete_main": "El perfil principal no puede ser borrado debido a que está ligado al historial de tu cuenta y tus favoritos.",
     "description": "Los perfiles te permiten ver el contenido y organizar tu colección de favoritos.",
+    "done": "Hecho",
+    "edit": "Editar perfil",
     "form_error": "Algo salió mal. Intenta de nuevo más tarde",
     "info": "Información del perfil",
     "kids": "Niños",
@@ -133,13 +136,13 @@
     "no_one_watching": "No hay nadie mirando.",
     "validation": {
       "name": {
-        "already_exists": "",
-        "invalid_characters": "",
-        "required": "",
-        "too_long": "",
-        "too_short": ""
+        "already_exists": "Este nombre de perfil ya está en uso. Por favor elije otro.",
+        "invalid_characters": "El nombre de su perfil solo puede contener letras, números y espacios.",
+        "required": "Por favor ingrese un nombre para su perfil.",
+        "too_long": "Por favor, limite el nombre de su perfil a {{charactersCount}} caracteres o menos.",
+        "too_short": "Por favor introduzca al menos {{charactersCount}} caracteres."
       }
     },
-    "watch_now": ""
+    "watch_now": "Ver ahora"
   }
 }
