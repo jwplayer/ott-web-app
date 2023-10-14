@@ -1,15 +1,14 @@
 import merge from 'lodash.merge';
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
-import type ConfigService from '#src/services/config.service';
-import { SERVICES } from '#src/ioc/types';
+import ConfigService from '#src/services/config.service';
 
 @injectable()
 export default class ConfigController {
-  private configService: ConfigService;
+  private readonly configService: ConfigService;
 
-  constructor(@inject(SERVICES.Config) configService: ConfigService) {
+  constructor(configService: ConfigService) {
     this.configService = configService;
   }
 

@@ -3,10 +3,9 @@ import { useQuery } from 'react-query';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
-import type EntitlementController from '#src/stores/EntitlementController';
+import AccountController from '#src/stores/AccountController';
+import EntitlementController from '#src/stores/EntitlementController';
+import { getModule } from '#src/modules/container';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -16,7 +15,7 @@ const useContentProtection = <T>(
   enabled: boolean = true,
   placeholderData?: T,
 ) => {
-  const entitlementController = useController<EntitlementController>(CONTROLLERS.Entitlement);
+  const entitlementController = getModule(EntitlementController);
 
   const { configId, signingConfig, contentProtection, jwp, urlSigning } = useConfigStore(({ config }) => ({
     configId: config.id,
@@ -34,8 +33,7 @@ const useContentProtection = <T>(
     async () => {
       // if provider is not JWP
       if (!!id && !!host) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const accountController = useController<AccountController>(CONTROLLERS.Account);
+        const accountController = getModule(AccountController);
         const authData = await accountController.getAuthData();
         const { host, drmPolicyId } = signingConfig;
         return entitlementController.getMediaToken(host, id, authData?.jwt, params, drmPolicyId);

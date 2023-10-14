@@ -8,12 +8,11 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import SubscriptionCancelled from '#components/SubscriptionCancelled/SubscriptionCancelled';
 import { formatLocalizedDate } from '#src/utils/formatting';
 import { removeQueryParam } from '#src/utils/location';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const CancelSubscription = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { t, i18n } = useTranslation('account');
   const navigate = useNavigate();

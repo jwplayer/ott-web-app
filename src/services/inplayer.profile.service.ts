@@ -1,12 +1,12 @@
 import InPlayer from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import type ProfileService from './profile.service';
+import ProfileService from './profile.service';
 
 import type { ListProfiles, CreateProfile, UpdateProfile, EnterProfile, GetProfileDetails, DeleteProfile } from '#types/account';
 
 @injectable()
-export default class JWProfile implements ProfileService {
+export default class InplayerProfileService extends ProfileService {
   listProfiles: ListProfiles = async () => {
     try {
       const response = await InPlayer.Account.getProfiles();

@@ -11,24 +11,24 @@ import type {
   GetActiveSubscription,
 } from '#types/subscription';
 
-export default interface SubscriptionService {
-  getActiveSubscription: GetActiveSubscription;
+export default abstract class SubscriptionService {
+  abstract getActiveSubscription: GetActiveSubscription;
 
-  getAllTransactions: GetAllTransactions;
+  abstract getAllTransactions: GetAllTransactions;
 
-  getActivePayment: GetActivePayment;
+  abstract getActivePayment: GetActivePayment;
 
-  getSubscriptions: GetSubscriptions;
+  abstract getSubscriptions: GetSubscriptions;
 
-  updateSubscription: UpdateSubscription;
+  abstract updateSubscription: UpdateSubscription;
 
-  changeSubscription: ChangeSubscription;
+  abstract changeSubscription: ChangeSubscription;
 
-  updateCardDetails: UpdateCardDetails;
+  abstract updateCardDetails: UpdateCardDetails;
 
-  getPaymentDetails: GetPaymentDetails;
+  abstract getPaymentDetails: GetPaymentDetails;
 
-  getTransactions: GetTransactions;
+  abstract getTransactions: GetTransactions;
 
-  fetchReceipt: FetchReceipt;
+  abstract fetchReceipt: FetchReceipt;
 }

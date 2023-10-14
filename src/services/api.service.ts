@@ -22,6 +22,10 @@ const PAGE_LIMIT = 20;
 
 @injectable()
 export default class ApiService {
+  /**
+   * We use playlistLabel prop to define the label used for all media items inside.
+   * That way we can change the behavior of the same media items being in different playlists
+   */
   private generateAlternateImageURL({ item, label, playlistLabel }: { item: PlaylistItem; label: string; playlistLabel?: string }) {
     const pathname = `/v2/media/${item.mediaid}/images/${playlistLabel || label}.webp`;
     const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { poster_fallback: 1, fallback: playlistLabel ? label : null });

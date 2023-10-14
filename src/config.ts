@@ -5,6 +5,11 @@ export enum PersonalShelf {
 
 export const PersonalShelves = [PersonalShelf.Favorites, PersonalShelf.ContinueWatching];
 
+export const INTEGRATION = {
+  JWP: 'JWP',
+  CLEENG: 'CLEENG',
+} as const;
+
 export const ACCESS_MODEL = {
   AVOD: 'AVOD',
   AUTHVOD: 'AUTHVOD',

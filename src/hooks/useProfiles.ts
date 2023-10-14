@@ -8,10 +8,9 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
-import type ProfileController from '#src/stores/ProfileController';
-import type AccountController from '#src/stores/AccountController';
+import ProfileController from '#src/stores/ProfileController';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -21,8 +20,8 @@ export const unpersistProfile = () => {
 
 export const useSelectProfile = () => {
   const navigate = useNavigate();
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-  const profileController = useController<ProfileController>(CONTROLLERS.Profile);
+  const accountController = getModule(AccountController);
+  const profileController = getModule(ProfileController);
 
   return useMutation((vars: { id: string; pin?: number; avatarUrl: string }) => profileController.enterProfile({ id: vars.id, pin: vars.pin }), {
     onMutate: ({ avatarUrl }) => {
@@ -54,7 +53,7 @@ export const useSelectProfile = () => {
 };
 
 export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
-  const profileController = useController<ProfileController>(CONTROLLERS.Profile);
+  const profileController = getModule(ProfileController);
 
   const listProfiles = useProfiles();
   const navigate = useNavigate();
@@ -72,7 +71,7 @@ export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 };
 
 export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
-  const profileController = useController<ProfileController>(CONTROLLERS.Profile);
+  const profileController = getModule(ProfileController);
 
   const listProfiles = useProfiles();
   const navigate = useNavigate();
@@ -92,7 +91,7 @@ export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 };
 
 export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>) => {
-  const profileController = useController<ProfileController>(CONTROLLERS.Profile);
+  const profileController = getModule(ProfileController);
 
   const listProfiles = useProfiles();
   const navigate = useNavigate();
@@ -109,11 +108,11 @@ export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<Co
 export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
-  const profileController = useController<ProfileController>(CONTROLLERS.Profile);
+  const { user, canManageProfiles } = useAccountStore((s) => s);
+  const profileController = canManageProfiles ? getModule(ProfileController) : undefined;
 
-  const user = useAccountStore((s) => s.user);
-  const query = useQuery(['listProfiles'], profileController.listProfiles, { ...options, enabled: !!user });
-  const { canManageProfiles } = useAccountStore();
+  const query = useQuery(['listProfiles'], () => profileController?.listProfiles(), { ...options, enabled: !!user && canManageProfiles });
+
   if (!canManageProfiles && query.data?.responseData.canManageProfiles) {
     useAccountStore.setState({ canManageProfiles: true });
   }

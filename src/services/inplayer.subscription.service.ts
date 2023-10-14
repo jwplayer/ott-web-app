@@ -2,12 +2,14 @@ import i18next from 'i18next';
 import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import type SubscriptionService from './subscription.service';
+import SubscriptionService from './subscription.service';
 
 import type {
   ChangeSubscription,
   FetchReceipt,
+  GetActivePayment,
   GetActiveSubscription,
+  GetAllTransactions,
   GetPaymentDetails,
   GetTransactions,
   PaymentDetail,
@@ -34,7 +36,7 @@ interface SubscriptionDetails extends InplayerSubscription {
 }
 
 @injectable()
-export default class JWSubscriptionService implements SubscriptionService {
+export default class InplayerSubscriptionService extends SubscriptionService {
   private formatCardDetails(card: Card & { card_type: string; account_id: number; currency: string }): PaymentDetail {
     const { number, exp_month, exp_year, card_name, card_type, account_id, currency } = card;
     const zeroFillExpMonth = `0${exp_month}`.slice(-2);
@@ -161,7 +163,7 @@ export default class JWSubscriptionService implements SubscriptionService {
     }
   };
 
-  async getAllTransactions() {
+  getAllTransactions: GetAllTransactions = async () => {
     try {
       const { data } = await InPlayer.Payment.getPurchaseHistory('active', 0, 30);
 
@@ -169,9 +171,9 @@ export default class JWSubscriptionService implements SubscriptionService {
     } catch {
       throw new Error('Failed to get transactions');
     }
-  }
+  };
 
-  async getActivePayment() {
+  getActivePayment: GetActivePayment = async () => {
     try {
       const { data } = await InPlayer.Payment.getDefaultCreditCard();
       const cards: PaymentDetail[] = [];
@@ -189,7 +191,7 @@ export default class JWSubscriptionService implements SubscriptionService {
     } catch {
       return null;
     }
-  }
+  };
 
   getSubscriptions = async () => {
     return {

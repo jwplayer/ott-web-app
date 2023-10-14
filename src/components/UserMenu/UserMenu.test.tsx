@@ -3,12 +3,12 @@ import React from 'react';
 import UserMenu from './UserMenu';
 
 import { renderWithRouter } from '#test/testUtils';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof AccountController) => {
     switch (type) {
-      case CONTROLLERS.Account:
+      case AccountController:
         return { logout: vi.fn() };
     }
   },

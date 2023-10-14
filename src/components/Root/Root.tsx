@@ -10,27 +10,17 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
-import { initApp } from '#src/init/initApp';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
-import type SettingsController from '#src/stores/SettingsController';
+import { initApp } from '#src/modules/init';
 import { useConfigSource } from '#src/utils/configOverride';
 
 // This is moved to a separate, parallel component to reduce rerenders
 const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const { t } = useTranslation('error');
-  const settingsController = useController<SettingsController>(CONTROLLERS.Settings);
 
-  const settingsQuery = useQuery('settings-init', () => settingsController.initSettings(), {
-    enabled: true,
-    retry: 1,
-    refetchInterval: false,
-  });
-
-  const configSource = useConfigSource(settingsQuery?.data);
+  const configSource = useConfigSource();
 
   const configQuery = useQuery('config-init-' + configSource, async () => initApp(configSource), {
-    enabled: settingsQuery.isSuccess && !!configSource,
+    enabled: !!configSource,
     retry: configSource ? 1 : 0,
     refetchInterval: false,
   });
@@ -43,19 +33,8 @@ const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.Set
   const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
-  if (settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
+  if (!IS_DEMO_OR_PREVIEW && configQuery.isLoading) {
     return <LoadingOverlay />;
-  }
-
-  if (settingsQuery.isError) {
-    return (
-      <ErrorPage
-        title={t('settings_invalid')}
-        message={t('check_your_settings')}
-        error={settingsQuery.error as Error}
-        helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/initialization-file.md'}
-      />
-    );
   }
 
   return (

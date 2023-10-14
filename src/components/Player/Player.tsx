@@ -12,8 +12,6 @@ import { logDev, testId } from '#src/utils/common';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
-  playerId: string;
-  playerLicenseKey: string | undefined;
   feedId?: string;
   item: PlaylistItem;
   startTime?: number;
@@ -33,8 +31,6 @@ type Props = {
 };
 
 const Player: React.FC<Props> = ({
-  playerId,
-  playerLicenseKey,
   item,
   onReady,
   onPlay,
@@ -58,6 +54,9 @@ const Player: React.FC<Props> = ({
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
   const setPlayer = useOttAnalytics(item, feedId);
+
+  const playerId = import.meta.env.APP_PLAYER_ID;
+  const playerLicenseKey = import.meta.env.APP_PLAYER_LICENSE_KEY;
 
   const { adScheduleData } = useConfigStore((s) => s);
 

@@ -14,14 +14,13 @@ import { addQueryParams } from '#src/utils/formatting';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import PaymentForm from '#src/components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '#src/containers/AdyenInitialPayment/AdyenInitialPayment';
-import type AccountController from '#src/stores/AccountController';
-import type CheckoutController from '#src/stores/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 const Checkout = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
   const location = useLocation();
   const { t } = useTranslation('account');

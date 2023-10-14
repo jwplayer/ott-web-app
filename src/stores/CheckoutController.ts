@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import { getOverrideIP } from '../utils/common';
 
@@ -23,22 +23,17 @@ import type {
   GetEntitlements,
 } from '#types/checkout';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
-import { CONTROLLERS, SERVICES } from '#src/ioc/types';
-import type CheckoutService from '#src/services/checkout.service';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import type SubscriptionService from '#src/services/subscription.service';
+import CheckoutService from '#src/services/checkout.service';
+import SubscriptionService from '#src/services/subscription.service';
 
 @injectable()
 export default class CheckoutController {
-  private checkoutService: CheckoutService;
-  private subscriptionService: SubscriptionService;
-  private accountController: AccountController;
+  private readonly checkoutService: CheckoutService;
+  private readonly subscriptionService: SubscriptionService;
+  private readonly accountController: AccountController;
 
-  constructor(
-    @inject(SERVICES.Checkout) checkoutService: CheckoutService,
-    @inject(SERVICES.Subscription) subscriptionService: SubscriptionService,
-    @inject(CONTROLLERS.Account) accountController: AccountController,
-  ) {
+  constructor(checkoutService: CheckoutService, subscriptionService: SubscriptionService, accountController: AccountController) {
     this.checkoutService = checkoutService;
     this.subscriptionService = subscriptionService;
     this.accountController = accountController;

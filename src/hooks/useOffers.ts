@@ -9,15 +9,14 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Offer } from '#types/checkout';
 import type { OfferType } from '#types/account';
 import { isSVODOffer } from '#src/utils/subscription';
-import type CheckoutController from '#src/stores/CheckoutController';
-import { CONTROLLERS } from '#src/ioc/types';
-import { useController } from '#src/ioc/container';
+import CheckoutController from '#src/stores/CheckoutController';
 import { ACCESS_MODEL } from '#src/config';
+import { getModule } from '#src/modules/container';
 
 const useOffers = () => {
   const { accessModel } = useConfigStore();
   const { clientOffers, sandbox } = useClientIntegration();
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const checkoutController = getModule(CheckoutController);
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasTvodOffer = (requestedMediaOffers || []).some((offer) => offer.offerId);

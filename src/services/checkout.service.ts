@@ -11,7 +11,6 @@ import type {
   GetOrder,
   GetPaymentMethods,
   GetSubscriptionSwitch,
-  GetCardPaymentProvider,
   GetSubscriptionSwitches,
   PaymentWithoutDetails,
   PaymentWithPayPal,
@@ -22,48 +21,44 @@ import type {
   GetOffer,
 } from '#types/checkout';
 
-export default interface CheckoutService {
-  cardPaymentProvider?: string;
+export default abstract class CheckoutService {
+  abstract getOffer: GetOffer;
 
-  getCardPaymentProvider: GetCardPaymentProvider;
+  abstract getOffers: GetOffers;
 
-  getOffer: GetOffer;
+  abstract createOrder: CreateOrder;
 
-  getOffers: GetOffers;
+  abstract updateOrder: UpdateOrder;
 
-  createOrder: CreateOrder;
+  abstract getPaymentMethods: GetPaymentMethods;
 
-  updateOrder: UpdateOrder;
+  abstract paymentWithoutDetails: PaymentWithoutDetails;
 
-  getPaymentMethods: GetPaymentMethods;
+  abstract paymentWithPayPal: PaymentWithPayPal;
 
-  paymentWithoutDetails: PaymentWithoutDetails;
+  abstract getEntitlements: GetEntitlements;
 
-  paymentWithPayPal: PaymentWithPayPal;
+  abstract directPostCardPayment: GetDirectPostCardPayment;
 
-  getEntitlements: GetEntitlements;
+  abstract getOrder: GetOrder;
 
-  directPostCardPayment: GetDirectPostCardPayment;
+  abstract switchSubscription: SwitchSubscription;
 
-  getOrder: GetOrder;
+  abstract getSubscriptionSwitches: GetSubscriptionSwitches;
 
-  switchSubscription: SwitchSubscription;
+  abstract getSubscriptionSwitch: GetSubscriptionSwitch;
 
-  getSubscriptionSwitches: GetSubscriptionSwitches;
+  abstract createAdyenPaymentSession: GetAdyenPaymentSession;
 
-  getSubscriptionSwitch: GetSubscriptionSwitch;
+  abstract initialAdyenPayment: GetInitialAdyenPayment;
 
-  createAdyenPaymentSession: GetAdyenPaymentSession;
+  abstract finalizeAdyenPayment: GetFinalizeAdyenPayment;
 
-  initialAdyenPayment: GetInitialAdyenPayment;
+  abstract updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal;
 
-  finalizeAdyenPayment: GetFinalizeAdyenPayment;
+  abstract deletePaymentMethod: DeletePaymentMethod;
 
-  updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal;
+  abstract addAdyenPaymentDetails: AddAdyenPaymentDetails;
 
-  deletePaymentMethod: DeletePaymentMethod;
-
-  addAdyenPaymentDetails: AddAdyenPaymentDetails;
-
-  finalizeAdyenPaymentDetails: FinalizeAdyenPaymentDetails;
+  abstract finalizeAdyenPaymentDetails: FinalizeAdyenPaymentDetails;
 }

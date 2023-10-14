@@ -1,15 +1,15 @@
 import type { ListProfiles, CreateProfile, UpdateProfile, EnterProfile, GetProfileDetails, DeleteProfile } from '#types/account';
 
-export default interface ProfileService {
-  listProfiles: ListProfiles;
+export default abstract class ProfileService {
+  abstract listProfiles: ListProfiles;
 
-  createProfile: CreateProfile;
+  abstract createProfile: CreateProfile;
 
-  updateProfile: UpdateProfile;
+  abstract updateProfile: UpdateProfile;
 
-  enterProfile: EnterProfile;
+  abstract enterProfile: EnterProfile;
 
-  getProfileDetails: GetProfileDetails;
+  abstract getProfileDetails: GetProfileDetails;
 
-  deleteProfile: DeleteProfile;
+  abstract deleteProfile: DeleteProfile;
 }

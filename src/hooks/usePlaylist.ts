@@ -6,14 +6,13 @@ import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { isScheduledOrLiveMedia } from '#src/utils/liveEvent';
 import { isTruthyCustomParamValue } from '#src/utils/common';
 import type { ApiError } from '#src/utils/api';
-import { CONTROLLERS } from '#src/ioc/types';
-import type ApiController from '#src/stores/ApiController';
-import { useController } from '#src/ioc/container';
+import ApiController from '#src/stores/ApiController';
+import { getModule } from '#src/modules/container';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
 export default function usePlaylist(playlistId?: string, params: GetPlaylistParams = {}, enabled: boolean = true, usePlaceholderData: boolean = true) {
-  const apiController = useController<ApiController>(CONTROLLERS.Api);
+  const apiController = getModule(ApiController);
 
   const callback = async (playlistId?: string, params?: GetPlaylistParams) => {
     const playlist = await apiController.getPlaylistById(playlistId, { ...params });

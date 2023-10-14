@@ -1,7 +1,7 @@
 import InPlayer, { AccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import type CheckoutService from './checkout.service';
+import CheckoutService from './checkout.service';
 
 import type {
   AddAdyenPaymentDetails,
@@ -11,7 +11,6 @@ import type {
   DeletePaymentMethod,
   FinalizeAdyenPaymentDetails,
   GetAdyenPaymentSession,
-  GetCardPaymentProvider,
   GetEntitlements,
   GetEntitlementsResponse,
   GetFinalizeAdyenPayment,
@@ -36,8 +35,8 @@ import type {
 import { isSVODOffer } from '#src/utils/subscription';
 
 @injectable()
-export default class JWCheckout implements CheckoutService {
-  cardPaymentProvider = 'stripe';
+export default class InplayerCheckoutService extends CheckoutService {
+  private readonly cardPaymentProvider = 'stripe';
 
   private formatPaymentMethod(method: MerchantPaymentMethod, cardPaymentProvider: string): PaymentMethod {
     return {
@@ -94,10 +93,6 @@ export default class JWCheckout implements CheckoutService {
       requiredPaymentDetails: true,
     } as Order;
   }
-
-  getCardPaymentProvider: GetCardPaymentProvider = () => {
-    return this.cardPaymentProvider;
-  };
 
   createOrder: CreateOrder = async (payload) => {
     return {

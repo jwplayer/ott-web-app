@@ -1,25 +1,21 @@
 import i18next from 'i18next';
-import { inject, injectable, LazyServiceIdentifer, optional } from 'inversify';
+import { injectable, optional } from 'inversify';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import type FavoritesService from '#src/services/favorites.service';
+import FavoritesService from '#src/services/favorites.service';
+import AccountService from '#src/services/account.service';
 import type { PlaylistItem } from '#types/playlist';
-import { SERVICES } from '#src/ioc/types';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
-import type AccountService from '#src/services/account.service';
 import type { Customer } from '#types/account';
 
 @injectable()
 export default class FavoritesController {
-  private favoritesService: FavoritesService;
-  private accountService!: AccountService;
+  private readonly favoritesService: FavoritesService;
+  private readonly accountService?: AccountService;
 
-  constructor(
-    @inject(SERVICES.Favorites) favoritesService: FavoritesService,
-    @inject(new LazyServiceIdentifer(() => SERVICES.Account)) @optional() accountService: AccountService,
-  ) {
+  constructor(favoritesService: FavoritesService, @optional() accountService?: AccountService) {
     this.favoritesService = favoritesService;
     this.accountService = accountService;
   }
@@ -46,7 +42,7 @@ export default class FavoritesController {
     const { getSandbox } = useConfigStore.getState();
 
     if (user?.id && user?.externalData) {
-      return this.accountService.updatePersonalShelves({ id: user.id, externalData: user.externalData }, getSandbox());
+      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData }, getSandbox());
     }
 
     this.favoritesService.persistFavorites(favorites);

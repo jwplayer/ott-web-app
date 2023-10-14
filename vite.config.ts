@@ -1,5 +1,4 @@
 import path from 'path';
-import fs from 'fs';
 
 import { defineConfig } from 'vite';
 import type { ConfigEnv, UserConfigExport } from 'vitest/config';
@@ -10,22 +9,15 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { Target, viteStaticCopy } from 'vite-plugin-static-copy';
 
+import { initSettings } from './scripts/build-tools/settings';
+
 export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   // Shorten default mode names to dev / prod
   // Also differentiates from build type (production / development)
   mode = mode === 'development' ? 'dev' : mode;
   mode = mode === 'production' ? 'prod' : mode;
 
-  const localFile = `ini/.webapp.${mode}.ini`;
-  const templateFile = `ini/templates/.webapp.${mode}.ini`;
-
-  // The build ONLY uses .ini files in /ini to include in the build output.
-  // All .ini files in the directory are git ignored to customer specific values out of source control.
-  // However, this script will automatically create a .ini file for the current mode if it doesn't exist
-  // by copying the corresponding mode file from the ini/templates directory.
-  if (!fs.existsSync(localFile) && fs.existsSync(templateFile)) {
-    fs.copyFileSync(templateFile, localFile);
-  }
+  initSettings(mode);
 
   // Make sure to builds are always production type,
   // otherwise modes other than 'production' get built in dev
@@ -33,13 +25,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     process.env.NODE_ENV = 'production';
   }
 
-  const fileCopyTargets: Target[] = [
-    {
-      src: localFile,
-      dest: '',
-      rename: '.webapp.ini',
-    },
-  ];
+  const fileCopyTargets: Target[] = [];
 
   // These files are only needed in dev / test / demo, so don't include in prod builds
   if (mode !== 'prod') {
@@ -50,9 +36,18 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   }
 
   return defineConfig({
-    // https://github.com/jwplayer/ott-web-app/pull/346
     plugins: [
-      react(),
+      react({
+        // This is needed to do decorator transforms for ioc resolution to work for classes
+        babel: {
+          plugins: [
+            // Seems like this one isn't needed anymore, but leaving in case we run into a bug later
+            // 'babel-plugin-parameter-decorator',
+            'babel-plugin-transform-typescript-metadata',
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+          ],
+        },
+      }),
       eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
       StylelintPlugin(),
       VitePWA(),
@@ -89,6 +84,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     build: {
       outDir: './build/public',
       cssCodeSplit: false,
+      sourcemap: true,
       minify: true,
       rollupOptions: {
         output: {

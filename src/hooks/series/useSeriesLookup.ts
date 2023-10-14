@@ -1,12 +1,11 @@
 import { useQuery } from 'react-query';
 
 import { SERIES_CACHE_TIME } from '#src/config';
-import type ApiController from '#src/stores/ApiController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import ApiController from '#src/stores/ApiController';
+import { getModule } from '#src/modules/container';
 
 export const useSeriesLookup = (mediaId: string | undefined) => {
-  const apiController = useController<ApiController>(CONTROLLERS.Api);
+  const apiController = getModule(ApiController);
 
   const { isLoading, data } = useQuery(
     ['seriesLookup', mediaId],

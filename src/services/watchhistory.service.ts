@@ -1,20 +1,19 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
-import type ApiService from './api.service';
+import ApiService from './api.service';
 
 import * as persist from '#src/utils/persist';
 import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
 import type { Customer } from '#types/account';
-import { SERVICES } from '#src/ioc/types';
 
 @injectable()
 export default class WatchHistoryService {
   private PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
   private MAX_WATCH_HISTORY_COUNT = 48;
-  private apiService: ApiService;
+  private readonly apiService: ApiService;
 
-  constructor(@inject(SERVICES.Api) apiService: ApiService) {
+  constructor(apiService: ApiService) {
     this.apiService = apiService;
   }
 

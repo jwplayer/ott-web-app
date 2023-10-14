@@ -13,12 +13,11 @@ import type { DeleteAccountFormData } from '#types/account';
 import useForm from '#src/hooks/useForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import Alert from '#components/Alert/Alert';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const DeleteAccountModal = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { t } = useTranslation('user');
 

@@ -23,57 +23,67 @@ import type {
   CustomerConsent,
 } from '#types/account';
 
-export default interface AccountService {
-  canUpdateEmail: boolean;
-  canSupportEmptyFullName: boolean;
-  canChangePasswordWithOldPassword: boolean;
-  canRenewSubscription: boolean;
-  canExportAccountData: boolean;
-  canDeleteAccount: boolean;
-  canUpdatePaymentMethod: boolean;
-  canShowReceipts: boolean;
-  canManageProfiles: boolean;
+interface AccountServiceFeatures {
+  readonly canUpdateEmail: boolean;
+  readonly canSupportEmptyFullName: boolean;
+  readonly canChangePasswordWithOldPassword: boolean;
+  readonly canRenewSubscription: boolean;
+  readonly canExportAccountData: boolean;
+  readonly canDeleteAccount: boolean;
+  readonly canUpdatePaymentMethod: boolean;
+  readonly canShowReceipts: boolean;
+  readonly canManageProfiles: boolean;
+  readonly hasNotifications: boolean;
+}
 
-  initialize: (config: Config, logoutCallback: () => Promise<void>) => void;
+export default abstract class AccountService {
+  readonly features: AccountServiceFeatures;
 
-  getAuthData: () => Promise<AuthData | null>;
+  protected constructor(features: AccountServiceFeatures) {
+    this.features = features;
+  }
 
-  login: Login;
+  abstract initialize: (config: Config, logoutCallback: () => Promise<void>) => Promise<void>;
 
-  register: Register;
+  abstract getAuthData: () => Promise<AuthData | null>;
 
-  logout: () => void;
+  abstract login: Login;
 
-  getUser: ({ config }: { config: Config }) => Promise<{ user: Customer; customerConsents: CustomerConsent[] }>;
+  abstract register: Register;
 
-  getPublisherConsents: GetPublisherConsents;
+  abstract logout: () => Promise<void>;
 
-  getCustomerConsents: GetCustomerConsents;
+  abstract getUser: ({ config }: { config: Config }) => Promise<{ user: Customer; customerConsents: CustomerConsent[] }>;
 
-  updateCustomerConsents: UpdateCustomerConsents;
+  abstract getPublisherConsents: GetPublisherConsents;
 
-  getCaptureStatus: GetCaptureStatus;
+  abstract getCustomerConsents: GetCustomerConsents;
 
-  updateCaptureAnswers: UpdateCaptureAnswers;
-  resetPassword: ResetPassword;
+  abstract updateCustomerConsents: UpdateCustomerConsents;
 
-  changePasswordWithResetToken: ChangePassword;
+  abstract getCaptureStatus: GetCaptureStatus;
 
-  changePasswordWithOldPassword: ChangePasswordWithOldPassword;
+  abstract updateCaptureAnswers: UpdateCaptureAnswers;
 
-  updateCustomer: UpdateCustomer;
+  abstract resetPassword: ResetPassword;
 
-  updatePersonalShelves: UpdatePersonalShelves;
+  abstract changePasswordWithResetToken: ChangePassword;
 
-  subscribeToNotifications: NotificationsData;
+  abstract changePasswordWithOldPassword: ChangePasswordWithOldPassword;
 
-  exportAccountData: ExportAccountData;
+  abstract updateCustomer: UpdateCustomer;
 
-  getSocialUrls: SocialURLSData;
+  abstract updatePersonalShelves: UpdatePersonalShelves;
 
-  deleteAccount: DeleteAccount;
+  abstract subscribeToNotifications: NotificationsData;
 
-  getLocales: GetLocales;
+  abstract exportAccountData: ExportAccountData;
 
-  getCustomer: GetCustomer;
+  abstract getSocialUrls: SocialURLSData;
+
+  abstract deleteAccount: DeleteAccount;
+
+  abstract getLocales: GetLocales;
+
+  abstract getCustomer: GetCustomer;
 }

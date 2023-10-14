@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router';
 import { simultaneousLoginWarningKey } from '#components/LoginForm/LoginForm';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { addQueryParams, removeQueryParamFromUrl } from '#src/utils/formatting';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -22,12 +22,14 @@ enum NotificationsTypes {
 
 export default async function useNotifications(uuid: string = '') {
   const navigate = useNavigate();
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const { hasNotifications } = useAccountStore((s) => s);
+
+  const accountController = hasNotifications ? getModule(AccountController) : undefined;
 
   useEffect(() => {
-    if (!uuid) return;
+    if (!uuid || !hasNotifications) return;
 
-    accountController.subscribeToNotifications({
+    accountController?.subscribeToNotifications({
       uuid,
       onMessage: async (message) => {
         if (message) {

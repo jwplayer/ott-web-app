@@ -20,6 +20,7 @@ type AccountStore = {
   canDeleteAccount: boolean;
   canShowReceipts: boolean;
   canManageProfiles: boolean;
+  hasNotifications: boolean;
   setLoading: (loading: boolean) => void;
   getAccountInfo: () => { customerId: string; customer: Customer; customerConsents: CustomerConsent[] | null };
 };
@@ -41,6 +42,7 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set, g
   canUpdatePaymentMethod: false,
   canShowReceipts: false,
   canManageProfiles: false,
+  hasNotifications: false,
   setLoading: (loading: boolean) => set({ loading }),
   getAccountInfo: () => {
     const user = get().user;

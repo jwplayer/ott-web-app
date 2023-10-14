@@ -16,9 +16,8 @@ import type { ChooseOfferFormData } from '#types/account';
 import type { Subscription } from '#types/subscription';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
-import type CheckoutController from '#src/stores/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import CheckoutController from '#src/stores/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {
   const currentPeriod = subscription?.period;
@@ -33,7 +32,7 @@ const determineSwitchDirection = (subscription: Subscription | null) => {
 };
 
 const ChooseOffer = () => {
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const checkoutController = getModule(CheckoutController);
 
   const navigate = useNavigate();
   const location = useLocation();

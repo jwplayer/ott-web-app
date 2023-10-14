@@ -6,12 +6,12 @@ import customer from '#test/fixtures/customer.json';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { renderWithRouter } from '#test/testUtils';
 import type { Consent } from '#types/account';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof AccountController) => {
     switch (type) {
-      case CONTROLLERS.Account:
+      case AccountController:
         return { exportAccountData: vi.fn() };
     }
   },

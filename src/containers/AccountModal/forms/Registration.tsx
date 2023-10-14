@@ -9,13 +9,12 @@ import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
 import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { getModule } from '#src/modules/container';
 
 const Registration = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const navigate = useNavigate();
   const location = useLocation();

@@ -1,7 +1,7 @@
-import { injectable, inject } from 'inversify';
+import { injectable } from 'inversify';
 
-import type CleengService from './cleeng.service';
-import type CheckoutService from './checkout.service';
+import CleengService from './cleeng.service';
+import CheckoutService from './checkout.service';
 
 import type {
   AddAdyenPaymentDetails,
@@ -18,7 +18,6 @@ import type {
   GetOrder,
   GetPaymentMethods,
   GetSubscriptionSwitch,
-  GetCardPaymentProvider,
   GetSubscriptionSwitches,
   PaymentWithoutDetails,
   PaymentWithPayPal,
@@ -27,20 +26,15 @@ import type {
   UpdatePaymentWithPayPal,
 } from '#types/checkout';
 import { getOverrideIP } from '#src/utils/common';
-import { SERVICES } from '#src/ioc/types';
 
 @injectable()
-export default class CleengCheckout implements CheckoutService {
-  private cleengService: CleengService;
-  cardPaymentProvider = 'adyen';
+export default class CleengCheckoutService extends CheckoutService {
+  private readonly cleengService: CleengService;
 
-  constructor(@inject(SERVICES.Cleeng) cleengService: CleengService) {
+  constructor(cleengService: CleengService) {
+    super();
     this.cleengService = cleengService;
   }
-
-  getCardPaymentProvider: GetCardPaymentProvider = () => {
-    return this.cardPaymentProvider;
-  };
 
   getOffers: GetOffers = async (payload, sandbox) => {
     return await Promise.all(

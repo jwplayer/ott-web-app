@@ -9,7 +9,10 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Config } from '#types/Config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import { CONTROLLERS } from '#src/ioc/types';
+import FavoritesController from '#src/stores/FavoritesController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
+import ProfileController from '#src/stores/ProfileController';
 
 const data = {
   loading: false,
@@ -66,16 +69,16 @@ const data = {
   } as unknown as PaymentDetail,
 };
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof FavoritesController | typeof AccountController | typeof CheckoutController | typeof ProfileController) => {
     switch (type) {
-      case CONTROLLERS.Favorites:
+      case FavoritesController:
         return { clear: vi.fn() };
-      case CONTROLLERS.Account:
+      case AccountController:
         return { logout: vi.fn() };
-      case CONTROLLERS.Checkout:
+      case CheckoutController:
         return { getSubscriptionSwitches: vi.fn() };
-      case CONTROLLERS.Profile:
+      case ProfileController:
         return { listProfiles: vi.fn() };
     }
   },

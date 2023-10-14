@@ -3,9 +3,8 @@ import { useQuery, UseQueryResult } from 'react-query';
 import type { Series } from '#types/series';
 import type { ApiError } from '#src/utils/api';
 import { SERIES_CACHE_TIME } from '#src/config';
-import type ApiController from '#src/stores/ApiController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import ApiController from '#src/stores/ApiController';
+import { getModule } from '#src/modules/container';
 
 export const useSeries = (
   seriesId: string | undefined,
@@ -14,7 +13,7 @@ export const useSeries = (
   error: ApiError | null;
   isLoading: boolean;
 } => {
-  const apiController = useController<ApiController>(CONTROLLERS.Api);
+  const apiController = getModule(ApiController);
 
   // Try to get new series flow data
   const { data, isLoading, error }: UseQueryResult<Series, ApiError> = useQuery(

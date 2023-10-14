@@ -9,12 +9,11 @@ import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import useQueryParam from '#src/hooks/useQueryParam';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const ResetPassword: React.FC = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { t } = useTranslation('account');
   const location = useLocation();

@@ -11,14 +11,13 @@ import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
 import { useSelectProfile } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { AccessModel } from '#types/Config';
 import type { Profile } from '#types/account';
 import defaultAvatar from '#src/assets/profiles/default_avatar.png';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   small?: boolean;
@@ -33,7 +32,7 @@ type Props = {
 const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, currentProfile, profilesEnabled, profiles }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const selectProfile = useSelectProfile();
 

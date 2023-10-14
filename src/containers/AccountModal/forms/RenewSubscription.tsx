@@ -8,12 +8,11 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import RenewSubscriptionForm from '#components/RenewSubscriptionForm/RenewSubscriptionForm';
 import SubscriptionRenewed from '#components/SubscriptionRenewed/SubscriptionRenewed';
 import { removeQueryParam } from '#src/utils/location';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const RenewSubscription = () => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const navigate = useNavigate();
   const location = useLocation();

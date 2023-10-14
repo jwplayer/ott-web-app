@@ -3,7 +3,6 @@ import { useLayoutEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { logDev } from '#src/utils/common';
-import type { Settings } from '#src/stores/SettingsStore';
 
 // Use local storage so the override persists until cleared
 const storage = window.localStorage;
@@ -25,25 +24,23 @@ export function getConfigNavigateCallback(navigate: NavigateFunction) {
   };
 }
 
-function getConfigSource(configKey: string | null, settings: Settings | undefined) {
-  if (!settings) {
-    return '';
-  }
+function getConfigSource(configKey: string | null) {
+  const { APP_UNSAFE_ALLOW_ANY_CONFIG_SOURCE, APP_ADDITIONAL_ALLOWED_CONFIG_SOURCES, APP_DEFAULT_CONFIG_SOURCE } = import.meta.env;
 
   // Skip all the fancy logic below if there aren't any other options besides the default anyhow
-  if (!settings.UNSAFE_allowAnyConfigSource && (settings.additionalAllowedConfigSources?.length || 0) <= 0) {
-    return settings.defaultConfigSource;
+  if (!APP_UNSAFE_ALLOW_ANY_CONFIG_SOURCE && (APP_ADDITIONAL_ALLOWED_CONFIG_SOURCES?.split(',')?.length || 0) <= 0) {
+    return APP_DEFAULT_CONFIG_SOURCE;
   }
 
   if (configKey !== null) {
     // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
     if (!configKey) {
       storage.removeItem(configFileStorageKey);
-      return settings.defaultConfigSource;
+      return APP_DEFAULT_CONFIG_SOURCE;
     }
 
     // If it's valid, store it and return it
-    if (isValidConfigSource(configKey, settings)) {
+    if (isValidConfigSource(configKey)) {
       storage.setItem(configFileStorageKey, configKey);
       return configKey;
     }
@@ -56,7 +53,7 @@ function getConfigSource(configKey: string | null, settings: Settings | undefine
 
   // Make sure the stored value is still valid before returning it
   if (storedSource) {
-    if (isValidConfigSource(storedSource, settings)) {
+    if (isValidConfigSource(storedSource)) {
       return storedSource;
     }
 
@@ -64,21 +61,18 @@ function getConfigSource(configKey: string | null, settings: Settings | undefine
     storage.removeItem(configFileStorageKey);
   }
 
-  return settings.defaultConfigSource;
+  return APP_DEFAULT_CONFIG_SOURCE;
 }
 
-export function useConfigSource(settings?: Settings) {
+export function useConfigSource() {
+  const { APP_DEFAULT_CONFIG_SOURCE } = import.meta.env;
   const [searchParams, setSearchParams] = useSearchParams();
 
   const configKey = searchParams.get(configQueryKey) ?? searchParams.get(configLegacyQueryKey);
-  const configSource = useMemo(() => getConfigSource(configKey, settings), [configKey, settings]);
+  const configSource = useMemo(() => getConfigSource(configKey), [configKey]);
 
   // Update the query string to maintain the right params
   useLayoutEffect(() => {
-    if (!settings) {
-      return;
-    }
-
     // Remove the old ?c= param
     if (searchParams.has(configLegacyQueryKey)) {
       setSearchParams(
@@ -91,7 +85,7 @@ export function useConfigSource(settings?: Settings) {
     }
 
     // If there is no valid config source or the config source equals the default, remove the ?app-config= param
-    if (searchParams.has(configQueryKey) && (!configSource || configSource === settings?.defaultConfigSource)) {
+    if (searchParams.has(configQueryKey) && (!configSource || configSource === APP_DEFAULT_CONFIG_SOURCE)) {
       setSearchParams(
         (s) => {
           s.delete(configQueryKey);
@@ -103,7 +97,7 @@ export function useConfigSource(settings?: Settings) {
     }
 
     // If the config source is not the default and the query string isn't set right, set the ?app-config= param
-    if (configSource && configSource !== settings?.defaultConfigSource && searchParams.get(configQueryKey) !== configSource) {
+    if (configSource && configSource !== APP_DEFAULT_CONFIG_SOURCE && searchParams.get(configQueryKey) !== configSource) {
       setSearchParams(
         (s) => {
           s.set(configQueryKey, configSource);
@@ -112,18 +106,19 @@ export function useConfigSource(settings?: Settings) {
         { replace: true },
       );
     }
-  }, [configSource, searchParams, setSearchParams, configQueryKey, configLegacyQueryKey, configSource, settings]);
+  }, [configSource, searchParams, setSearchParams, configQueryKey, configLegacyQueryKey, configSource]);
 
   return configSource;
 }
 
-function isValidConfigSource(source: string, settings: Settings) {
+function isValidConfigSource(source: string) {
+  const { APP_UNSAFE_ALLOW_ANY_CONFIG_SOURCE, APP_DEFAULT_CONFIG_SOURCE, APP_ADDITIONAL_ALLOWED_CONFIG_SOURCES } = import.meta.env;
   // Dynamic values are valid as long as they are defined
-  if (settings?.UNSAFE_allowAnyConfigSource) {
+  if (APP_UNSAFE_ALLOW_ANY_CONFIG_SOURCE) {
     return !!source;
   }
 
   return (
-    settings?.defaultConfigSource === source || (settings?.additionalAllowedConfigSources && settings?.additionalAllowedConfigSources.indexOf(source) >= 0)
+    APP_DEFAULT_CONFIG_SOURCE === source || (APP_ADDITIONAL_ALLOWED_CONFIG_SOURCES && APP_ADDITIONAL_ALLOWED_CONFIG_SOURCES?.split(',')?.indexOf(source) >= 0)
   );
 }

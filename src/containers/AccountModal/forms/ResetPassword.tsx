@@ -13,16 +13,15 @@ import ConfirmationForm from '#components/ConfirmationForm/ConfirmationForm';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { logDev } from '#src/utils/common';
-import type AccountController from '#src/stores/AccountController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 type Prop = {
   type: 'confirmation' | 'forgot' | 'reset' | 'edit';
 };
 
 const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
-  const accountController = useController<AccountController>(CONTROLLERS.Account);
+  const accountController = getModule(AccountController);
 
   const { t } = useTranslation('account');
   const navigate = useNavigate();

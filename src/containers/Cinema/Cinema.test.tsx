@@ -4,12 +4,12 @@ import Cinema from './Cinema';
 
 import { renderWithRouter } from '#test/testUtils';
 import type { PlaylistItem } from '#types/playlist';
-import { CONTROLLERS } from '#src/ioc/types';
+import ApiController from '#src/stores/ApiController';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof ApiController) => {
     switch (type) {
-      case CONTROLLERS.Api:
+      case ApiController:
         return {
           getPlaylistById: vi.fn(() => ({
             id: 'fake_id',

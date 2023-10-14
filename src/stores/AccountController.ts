@@ -1,8 +1,8 @@
 import i18next from 'i18next';
-import { inject, injectable, LazyServiceIdentifer } from 'inversify';
+import { injectable, optional } from 'inversify';
 
-import type FavoritesController from './FavoritesController';
-import type WatchHistoryController from './WatchHistoryController';
+import FavoritesController from './FavoritesController';
+import WatchHistoryController from './WatchHistoryController';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type {
@@ -20,10 +20,9 @@ import type { Offer } from '#types/checkout';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { logDev } from '#src/utils/common';
-import { CONTROLLERS, SERVICES } from '#src/ioc/types';
-import type SubscriptionService from '#src/services/subscription.service';
-import type AccountService from '#src/services/account.service';
-import type CheckoutService from '#src/services/checkout.service';
+import SubscriptionService from '#src/services/subscription.service';
+import AccountService from '#src/services/account.service';
+import CheckoutService from '#src/services/checkout.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { unpersistProfile } from '#src/hooks/useProfiles';
@@ -34,18 +33,18 @@ const PERSIST_PROFILE = 'profile';
 
 @injectable()
 export default class AccountController {
-  private checkoutService: CheckoutService;
-  private accountService: AccountService;
-  private subscriptionService: SubscriptionService;
-  private favoritesController: FavoritesController;
-  private watchHistoryController: WatchHistoryController;
+  private readonly checkoutService: CheckoutService;
+  private readonly accountService: AccountService;
+  private readonly subscriptionService: SubscriptionService;
+  private readonly favoritesController?: FavoritesController;
+  private readonly watchHistoryController?: WatchHistoryController;
 
   constructor(
-    @inject(SERVICES.Checkout) checkoutService: CheckoutService,
-    @inject(SERVICES.Account) accountService: AccountService,
-    @inject(SERVICES.Subscription) subscriptionService: SubscriptionService,
-    @inject(new LazyServiceIdentifer(() => CONTROLLERS.Favorites)) favoritesController: FavoritesController,
-    @inject(new LazyServiceIdentifer(() => CONTROLLERS.WatchHistory)) watchHistoryController: WatchHistoryController,
+    checkoutService: CheckoutService,
+    accountService: AccountService,
+    subscriptionService: SubscriptionService,
+    @optional() favoritesController?: FavoritesController,
+    @optional() watchHistoryController?: WatchHistoryController,
   ) {
     this.checkoutService = checkoutService;
     this.accountService = accountService;
@@ -70,7 +69,8 @@ export default class AccountController {
       canExportAccountData,
       canShowReceipts,
       canManageProfiles,
-    } = this.accountService;
+      hasNotifications,
+    } = this.accountService.features;
 
     useAccountStore.setState({
       loading: true,
@@ -82,6 +82,7 @@ export default class AccountController {
       canExportAccountData,
       canDeleteAccount: canExportAccountData,
       canShowReceipts,
+      hasNotifications,
     });
 
     useProfileStore.setState({
@@ -95,8 +96,8 @@ export default class AccountController {
 
       if (authData) {
         await this.getAccount();
-        await this.watchHistoryController.restoreWatchHistory();
-        await this.favoritesController.restoreFavorites();
+        await this.watchHistoryController?.restoreWatchHistory();
+        await this.favoritesController?.restoreFavorites();
       }
     } catch (error: unknown) {
       logDev('Failed to get user', error);
@@ -123,8 +124,8 @@ export default class AccountController {
     if (!watchHistory && !favorites) return;
 
     const personalShelfData = {
-      history: this.watchHistoryController.serializeWatchHistory(watchHistory),
-      favorites: this.favoritesController.serializeFavorites(favorites),
+      history: this.watchHistoryController?.serializeWatchHistory(watchHistory),
+      favorites: this.favoritesController?.serializeFavorites(favorites),
     };
 
     return this.accountService?.updatePersonalShelves(
@@ -162,7 +163,7 @@ export default class AccountController {
 
     let payload = values;
     // this is needed as a fallback when the name is empty (cannot be empty on JWP integration)
-    if (!this.accountService.canSupportEmptyFullName) {
+    if (!this.accountService.features.canSupportEmptyFullName) {
       payload = { ...values, email: user.email };
     }
 
@@ -211,8 +212,8 @@ export default class AccountController {
     if (response) {
       await this.afterLogin(response.user, response.customerConsents, accessModel);
 
-      await this.favoritesController.restoreFavorites();
-      await this.watchHistoryController.restoreWatchHistory();
+      await this.favoritesController?.restoreFavorites();
+      await this.watchHistoryController?.restoreWatchHistory();
     }
 
     useAccountStore.setState({ loading: false });
@@ -232,8 +233,8 @@ export default class AccountController {
       loading: false,
     });
 
-    await this.favoritesController.restoreFavorites();
-    await this.watchHistoryController.restoreWatchHistory();
+    await this.favoritesController?.restoreFavorites();
+    await this.watchHistoryController?.restoreWatchHistory();
     await this.accountService?.logout();
 
     persist.removeItem(PERSIST_PROFILE);
@@ -585,8 +586,8 @@ export default class AccountController {
 
     unpersistProfile();
 
-    await this.favoritesController.restoreFavorites();
-    await this.watchHistoryController.restoreWatchHistory();
+    await this.favoritesController?.restoreFavorites();
+    await this.watchHistoryController?.restoreWatchHistory();
   }
 
   async getAuthData() {

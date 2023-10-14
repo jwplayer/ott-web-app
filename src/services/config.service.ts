@@ -1,13 +1,12 @@
 import i18next from 'i18next';
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
-import type ApiService from './api.service';
-import { configSchema } from './schema';
+import ApiService from './api.service';
 
+import { configSchema } from '#src/utils/configSchema';
 import { calculateContrastColor } from '#src/utils/common';
 import { addScript } from '#src/utils/dom';
 import type { AccessModel, Config, Styling } from '#types/Config';
-import { SERVICES } from '#src/ioc/types';
 import { ACCESS_MODEL } from '#src/config';
 
 /**
@@ -35,9 +34,9 @@ export default class ConfigService {
     features: {},
   };
 
-  private apiService: ApiService;
+  private readonly apiService: ApiService;
 
-  constructor(@inject(SERVICES.Api) apiService: ApiService) {
+  constructor(apiService: ApiService) {
     this.apiService = apiService;
   }
 

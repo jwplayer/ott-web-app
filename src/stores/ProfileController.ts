@@ -1,58 +1,43 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import { useConfigStore } from './ConfigStore';
 
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
-import { SERVICES } from '#src/ioc/types';
-import type ProfileService from '#src/services/profile.service';
+import ProfileService from '#src/services/profile.service';
 
 @injectable()
 export default class ProfileController {
-  private profileService!: ProfileService;
+  private readonly profileService: ProfileService;
 
-  constructor(@inject(SERVICES.Profile) profileService: ProfileService) {
+  constructor(profileService: ProfileService) {
     this.profileService = profileService;
   }
 
-  listProfiles = async () => {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
-
-    return await this.profileService?.listProfiles(undefined, sandbox ?? true);
+  private getSandbox = () => {
+    return useConfigStore.getState().getSandbox() ?? true;
   };
 
-  createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
-
-    return await this.profileService?.createProfile({ name, adult, avatar_url, pin }, sandbox ?? true);
+  listProfiles = () => {
+    return this.profileService?.listProfiles(undefined, this.getSandbox());
   };
 
-  updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
-
-    return await this.profileService?.updateProfile({ id, name, adult, avatar_url, pin }, sandbox ?? true);
+  createProfile = ({ name, adult, avatar_url, pin }: ProfilePayload) => {
+    return this.profileService?.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
   };
 
-  enterProfile = async ({ id, pin }: EnterProfilePayload) => {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
-
-    return await this.profileService?.enterProfile({ id, pin }, sandbox ?? true);
+  updateProfile = ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
+    return this.profileService?.updateProfile({ id, name, adult, avatar_url, pin }, this.getSandbox());
   };
 
-  deleteProfile = async ({ id }: ProfileDetailsPayload) => {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
-
-    return await this.profileService?.deleteProfile({ id }, sandbox ?? true);
+  enterProfile = ({ id, pin }: EnterProfilePayload) => {
+    return this.profileService?.enterProfile({ id, pin }, this.getSandbox());
   };
 
-  getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
+  deleteProfile = ({ id }: ProfileDetailsPayload) => {
+    return this.profileService?.deleteProfile({ id }, this.getSandbox());
+  };
 
-    return await this.profileService?.getProfileDetails({ id }, sandbox ?? true);
+  getProfileDetails = ({ id }: ProfileDetailsPayload) => {
+    return this.profileService?.getProfileDetails({ id }, this.getSandbox());
   };
 }

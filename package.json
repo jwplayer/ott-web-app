@@ -11,7 +11,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "vite",
-    "start:test": "vite build --mode test && vite preview --port 8080",
+    "start:test": "vite build --mode test && vite preview --mode test --port 8080",
     "build": "vite build --mode ${MODE:=prod} && sh scripts/compressIni.sh build/public/.webapp.ini",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
@@ -70,6 +70,8 @@
     "zustand": "^3.6.9"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.11",
+    "@babel/plugin-proposal-decorators": "^7.22.10",
     "@codeceptjs/configure": "^0.8.0",
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
@@ -92,6 +94,7 @@
     "@vitejs/plugin-react": "^4.0.4",
     "@vitest/coverage-v8": "^0.33.0",
     "allure-commandline": "^2.17.2",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "codeceptjs": "3.5.5",
     "confusing-browser-globals": "^1.0.10",
     "csv-parse": "^5.4.0",

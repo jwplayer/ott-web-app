@@ -4,12 +4,12 @@ import { fireEvent, act, render } from '@testing-library/react';
 import LoginForm from './LoginForm';
 
 import { createWrapper, waitForWithFakeTimers } from '#test/testUtils';
-import { CONTROLLERS } from '#src/ioc/types';
+import AccountController from '#src/stores/AccountController';
 
-vi.mock('#src/ioc/container', () => ({
-  useController: (type: symbol) => {
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof AccountController) => {
     switch (type) {
-      case CONTROLLERS.Account:
+      case AccountController:
         return {
           getSocialLoginUrls: vi.fn(() => [
             {

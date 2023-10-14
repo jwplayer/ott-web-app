@@ -8,16 +8,15 @@ import PaymentMethodForm from '#components/PaymentMethodForm/PaymentMethodForm';
 import useQueryParam from '#src/hooks/useQueryParam';
 import { useAccountStore } from '#src/stores/AccountStore';
 import PayPal from '#components/PayPal/PayPal';
-import type CheckoutController from '#src/stores/CheckoutController';
-import { useController } from '#src/ioc/container';
-import { CONTROLLERS } from '#src/ioc/types';
+import CheckoutController from '#src/stores/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   onCloseButtonClick: () => void;
 };
 
 const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
-  const checkoutController = useController<CheckoutController>(CONTROLLERS.Checkout);
+  const checkoutController = getModule(CheckoutController);
 
   const updateSuccess = useQueryParam('u') === 'payment-method-success';
   const paymentMethodIdQueryParam = useQueryParam('paymentMethodId');
