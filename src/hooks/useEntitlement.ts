@@ -1,8 +1,6 @@
 import { useQueries } from 'react-query';
 import shallow from 'zustand/shallow';
 
-import useClientIntegration from './useClientIntegration';
-
 import type { MediaOffer } from '#types/media';
 import type { GetEntitlementsResponse } from '#types/checkout';
 import type { PlaylistItem } from '#types/playlist';
@@ -37,7 +35,10 @@ const notifyOnChangeProps = ['data' as const, 'isLoading' as const];
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
   let checkoutController: CheckoutController | null = null;
-  const { sandbox } = useClientIntegration();
+
+  const getIntegration = useConfigStore((s) => s.getIntegration);
+  const { useSandbox } = getIntegration();
+
   const { accessModel } = useConfigStore();
   const { user, subscription } = useAccountStore(
     ({ user, subscription }) => ({
@@ -58,7 +59,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => checkoutController?.getEntitlements({ offerId }, sandbox),
+      queryFn: () => checkoutController?.getEntitlements({ offerId }, useSandbox),
       enabled: !!playlistItem && !!user && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
       notifyOnChangeProps,

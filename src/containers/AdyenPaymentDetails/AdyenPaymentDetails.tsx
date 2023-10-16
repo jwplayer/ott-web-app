@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '#src/config';
 import Adyen from '#components/Adyen/Adyen';
-import useClientIntegration from '#src/hooks/useClientIntegration';
 import type { AdyenPaymentSession } from '#types/checkout';
 import useQueryParam from '#src/hooks/useQueryParam';
 import useEventCallback from '#src/hooks/useEventCallback';
@@ -14,6 +13,7 @@ import { addQueryParams } from '#src/utils/formatting';
 import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {
   setProcessing: (loading: boolean) => void;
@@ -27,7 +27,9 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
   const accountController = getModule(AccountController);
   const checkoutController = getModule(CheckoutController);
 
-  const { sandbox } = useClientIntegration();
+  const getIntegration = useConfigStore((s) => s.getIntegration);
+  const { useSandbox } = getIntegration();
+
   const navigate = useNavigate();
   const location = useLocation();
   const [session, setSession] = useState<AdyenPaymentSession>();
@@ -116,8 +118,8 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
     () => ({
       session,
       showPayButton: false,
-      environment: sandbox ? 'test' : 'live',
-      clientKey: sandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
+      environment: useSandbox ? 'test' : 'live',
+      clientKey: useSandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
       paymentMethodsConfiguration: {
         card: {
           hasHolderName: true,
@@ -141,7 +143,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       onSubmit: (state: AdyenEventData, component: DropinElement) => onSubmit(state, component.handleAction),
       onError: (error: Error) => setPaymentError(error.message),
     }),
-    [session, sandbox, setProcessing, paymentMethodId, navigate, paymentSuccessUrl, setPaymentError, onSubmit, checkoutController],
+    [session, useSandbox, setProcessing, paymentMethodId, navigate, paymentSuccessUrl, setPaymentError, onSubmit, checkoutController],
   );
 
   return <Adyen configuration={adyenConfiguration} type={type} error={error} />;

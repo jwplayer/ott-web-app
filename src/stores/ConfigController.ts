@@ -1,7 +1,7 @@
 import merge from 'lodash.merge';
 import { injectable } from 'inversify';
 
-import { useConfigStore } from '#src/stores/ConfigStore';
+import { IntegrationInfo, useConfigStore } from '#src/stores/ConfigStore';
 import ConfigService from '#src/services/config.service';
 
 @injectable()
@@ -67,4 +67,8 @@ export default class ConfigController {
 
     return config;
   }
+
+  getIntegration = (): IntegrationInfo => {
+    return useConfigStore.getState().getIntegration();
+  };
 }

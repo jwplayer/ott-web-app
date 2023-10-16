@@ -41,11 +41,9 @@ export default class CheckoutController {
 
   createOrder = async (offer: Offer, paymentMethodId?: number): Promise<void> => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const { customer } = getAccountInfo();
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (!this.checkoutService) throw new Error('checkout service is not available');
@@ -58,7 +56,7 @@ export default class CheckoutController {
       paymentMethodId,
     };
 
-    const response = await this.checkoutService.createOrder(createOrderArgs, sandbox);
+    const response = await this.checkoutService.createOrder(createOrderArgs, useSandbox);
 
     if (response?.errors?.length > 0) {
       useCheckoutStore.getState().setOrder(null);
@@ -70,10 +68,7 @@ export default class CheckoutController {
   };
 
   updateOrder = async (order: Order, paymentMethodId?: number, couponCode?: string | null): Promise<void> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (!this.checkoutService) throw new Error('checkout service is not available');
@@ -84,7 +79,7 @@ export default class CheckoutController {
       couponCode,
     };
 
-    const response = await this.checkoutService.updateOrder(updateOrderPayload, sandbox);
+    const response = await this.checkoutService.updateOrder(updateOrderPayload, useSandbox);
     if (response.errors.length > 0) {
       // clear the order when the order doesn't exist on the server
       if (response.errors[0].includes(`Order with ${order.id} not found`)) {
@@ -100,8 +95,7 @@ export default class CheckoutController {
   };
 
   getPaymentMethods = async (): Promise<PaymentMethod[]> => {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
+    const { useSandbox } = this.getIntegration();
 
     if (!this.checkoutService) throw new Error('checkout service is not available');
 
@@ -109,7 +103,7 @@ export default class CheckoutController {
 
     if (paymentMethods) return paymentMethods; // already fetched payment methods
 
-    const response = await this.checkoutService.getPaymentMethods(sandbox);
+    const response = await this.checkoutService.getPaymentMethods(useSandbox);
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -119,10 +113,7 @@ export default class CheckoutController {
   };
 
   paymentWithoutDetails = async (): Promise<unknown> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     if (!this.checkoutService) throw new Error('checkout service is not available');
 
@@ -131,7 +122,7 @@ export default class CheckoutController {
     if (!order) throw new Error('No order created');
     if (!authProviderId) throw new Error('auth provider is not configured');
 
-    const response = await this.checkoutService.paymentWithoutDetails({ orderId: order.id }, sandbox);
+    const response = await this.checkoutService.paymentWithoutDetails({ orderId: order.id }, useSandbox);
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
     if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
@@ -140,9 +131,7 @@ export default class CheckoutController {
   };
 
   directPostCardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
-    const { getAuthProvider } = useConfigStore.getState();
-
-    const authProviderId = getAuthProvider();
+    const { clientId: authProviderId } = this.getIntegration();
 
     const { order } = useCheckoutStore.getState();
 
@@ -154,10 +143,7 @@ export default class CheckoutController {
   };
 
   createAdyenPaymentSession = async (returnUrl: string, isInitialPayment: boolean = true): Promise<AdyenPaymentSession> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const { order } = useCheckoutStore.getState();
 
@@ -173,7 +159,7 @@ export default class CheckoutController {
         orderId: orderId,
         returnUrl: returnUrl,
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -182,10 +168,7 @@ export default class CheckoutController {
   };
 
   initialAdyenPayment = async (paymentMethod: AdyenPaymentMethod, returnUrl: string): Promise<InitialAdyenPayment> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const { order } = useCheckoutStore.getState();
 
@@ -199,10 +182,10 @@ export default class CheckoutController {
         orderId: order.id,
         returnUrl: returnUrl,
         paymentMethod,
-        attemptAuthentication: sandbox ? 'always' : undefined,
+        attemptAuthentication: useSandbox ? 'always' : undefined,
         customerIP: getOverrideIP(),
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -211,10 +194,7 @@ export default class CheckoutController {
   };
 
   finalizeAdyenPayment = async (details: unknown, orderId?: number, paymentData?: string): Promise<FinalizeAdyenPayment> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     if (!orderId) throw new Error('No order created');
     if (!authProviderId) throw new Error('auth provider is not configured');
@@ -227,7 +207,7 @@ export default class CheckoutController {
         details,
         paymentData,
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -236,10 +216,7 @@ export default class CheckoutController {
   };
 
   paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string, couponCode: string = ''): Promise<PaymentWithPayPalResponse> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const { order } = useCheckoutStore.getState();
 
@@ -255,7 +232,7 @@ export default class CheckoutController {
         errorUrl,
         couponCode,
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -265,11 +242,9 @@ export default class CheckoutController {
 
   getSubscriptionSwitches = async (): Promise<unknown> => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const { customerId } = getAccountInfo();
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (!this.checkoutService) throw new Error('checkout service is not available');
@@ -283,12 +258,12 @@ export default class CheckoutController {
         customerId: customerId,
         offerId: subscription.offerId,
       },
-      sandbox,
+      useSandbox,
     );
 
     if (!response.responseData.available.length) return;
 
-    const switchOffers = response.responseData.available.map((offer: SwitchOffer) => this.checkoutService.getOffer({ offerId: offer.toOfferId }, sandbox));
+    const switchOffers = response.responseData.available.map((offer: SwitchOffer) => this.checkoutService.getOffer({ offerId: offer.toOfferId }, useSandbox));
     const offers = await Promise.all(switchOffers);
 
     // Sort offers for proper ordering in "Choose Offer" modal when applicable
@@ -298,11 +273,9 @@ export default class CheckoutController {
 
   switchSubscription = async (toOfferId: string, switchDirection: 'upgrade' | 'downgrade'): Promise<unknown> => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const { customerId } = getAccountInfo();
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (!this.checkoutService) throw new Error('checkout service is not available');
@@ -313,7 +286,7 @@ export default class CheckoutController {
 
     const SwitchSubscriptionPayload = { toOfferId, customerId: customerId, offerId: subscription.offerId, switchDirection: switchDirection };
 
-    await this.checkoutService.switchSubscription(SwitchSubscriptionPayload, sandbox);
+    await this.checkoutService.switchSubscription(SwitchSubscriptionPayload, useSandbox);
 
     // switching a subscription takes a bit longer to process
     await this.accountController.reloadActiveSubscription({ delay: 7500 });
@@ -323,22 +296,17 @@ export default class CheckoutController {
   };
 
   changeSubscription = async ({ accessFeeId, subscriptionId }: { accessFeeId: string; subscriptionId: string }) => {
-    const { getSandbox } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
+    const { useSandbox } = this.getIntegration();
 
     if (!this.subscriptionService || !('changeSubscription' in this.subscriptionService)) throw new Error('subscription service is not configured');
 
-    const { responseData } = await this.subscriptionService.changeSubscription({ accessFeeId, subscriptionId }, sandbox);
+    const { responseData } = await this.subscriptionService.changeSubscription({ accessFeeId, subscriptionId }, useSandbox);
 
     return responseData;
   };
 
   updatePayPalPaymentMethod = async (successUrl: string, cancelUrl: string, errorUrl: string, paymentMethodId: number, currentPaymentId?: number) => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (!this.checkoutService) throw new Error('checkout service is not available');
@@ -351,23 +319,20 @@ export default class CheckoutController {
         cancelUrl,
         errorUrl,
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
     if (currentPaymentId) {
-      await this.checkoutService.deletePaymentMethod({ paymentDetailsId: currentPaymentId }, sandbox);
+      await this.checkoutService.deletePaymentMethod({ paymentDetailsId: currentPaymentId }, useSandbox);
     }
 
     return response.responseData;
   };
 
   addAdyenPaymentDetails = async (paymentMethod: AdyenPaymentMethod, paymentMethodId: number, returnUrl: string): Promise<AddAdyenPaymentDetailsResponse> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (!this.checkoutService) throw new Error('checkout service is not available');
@@ -378,10 +343,10 @@ export default class CheckoutController {
         paymentMethodId,
         returnUrl,
         paymentMethod,
-        attemptAuthentication: sandbox ? 'always' : undefined,
+        attemptAuthentication: useSandbox ? 'always' : undefined,
         customerIP: getOverrideIP(),
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -390,16 +355,13 @@ export default class CheckoutController {
   };
 
   finalizeAdyenPaymentDetails = async (details: unknown, paymentMethodId: number, paymentData?: string): Promise<FinalizeAdyenPaymentDetails> => {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (!this.checkoutService) throw new Error('checkout service is not available');
     if (!('initialAdyenPayment' in this.checkoutService)) throw new Error('finalizeAddedAdyenPaymentDetails is not available in checkout service');
 
-    const response = await this.checkoutService.finalizeAdyenPaymentDetails({ paymentMethodId, details, paymentData }, sandbox);
+    const response = await this.checkoutService.finalizeAdyenPaymentDetails({ paymentMethodId, details, paymentData }, useSandbox);
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -412,5 +374,9 @@ export default class CheckoutController {
 
   getEntitlements: GetEntitlements = (payload, sandbox) => {
     return this.checkoutService.getEntitlements(payload, sandbox);
+  };
+
+  private getIntegration = () => {
+    return useConfigStore.getState().getIntegration() ?? true;
   };
 }

@@ -2,8 +2,6 @@ import { useQuery } from 'react-query';
 import { useMemo, useState } from 'react';
 import shallow from 'zustand/shallow';
 
-import useClientIntegration from './useClientIntegration';
-
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Offer } from '#types/checkout';
@@ -14,8 +12,9 @@ import { ACCESS_MODEL } from '#src/config';
 import { getModule } from '#src/modules/container';
 
 const useOffers = () => {
-  const { accessModel } = useConfigStore();
-  const { clientOffers, sandbox } = useClientIntegration();
+  const { getIntegration, accessModel } = useConfigStore();
+  const { offers, useSandbox } = getIntegration();
+
   const checkoutController = getModule(CheckoutController);
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
@@ -25,10 +24,10 @@ const useOffers = () => {
   const [offerType, setOfferType] = useState<OfferType>(accessModel === ACCESS_MODEL.SVOD && !isPPV ? 'svod' : 'tvod');
 
   const offerIds: string[] = useMemo(() => {
-    return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...clientOffers].filter(Boolean);
-  }, [requestedMediaOffers, clientOffers]);
+    return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...offers].filter(Boolean);
+  }, [requestedMediaOffers, offers]);
 
-  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }, sandbox));
+  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }, useSandbox));
 
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
   return useMemo(() => {

@@ -31,7 +31,6 @@ import FavoritesController from '#src/stores/FavoritesController';
 import ConfigController from '#src/stores/ConfigController';
 
 import { PersonalShelf, INTEGRATION } from '#src/config';
-import getIntegration from '#src/utils/integration';
 
 import { container, getModule } from './container';
 
@@ -56,8 +55,7 @@ export const initApp = async (configSource: string | undefined) => {
 
   const configController = getModule(ConfigController);
   const config = await configController.loadAndValidateConfig(configSource);
-
-  const { integrationType } = getIntegration(config.integrations);
+  const { integrationType } = configController.getIntegration();
 
   if (integrationType === INTEGRATION.CLEENG) {
     container.bind(CleengService).toSelf();

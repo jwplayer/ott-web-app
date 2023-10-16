@@ -42,8 +42,6 @@ export const initSettings = (mode: string) => {
     console.warn('Using Global OTT Player without setting player key. Some features, such as analytics, may not work correctly.');
   }
 
-  console.log(APP_PLAYER_ID, APP_PLAYER_LICENSE_KEY, APP_DEFAULT_CONFIG_SOURCE, APP_ADDITIONAL_ALLOWED_CONFIG_SOURCES, APP_UNSAFE_ALLOW_ANY_CONFIG_SOURCE);
-
   // This will result in an unusable app
   if (
     !APP_DEFAULT_CONFIG_SOURCE &&

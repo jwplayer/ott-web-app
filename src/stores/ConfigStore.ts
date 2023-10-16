@@ -2,14 +2,20 @@ import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
 import type { AdSchedule } from '#types/ad-schedule';
-import { ACCESS_MODEL } from '#src/config';
+import { ACCESS_MODEL, INTEGRATION } from '#src/config';
+
+export type IntegrationInfo = {
+  integrationType: keyof typeof INTEGRATION | null;
+  useSandbox: boolean;
+  clientId?: string;
+  offers: string[];
+};
 
 type ConfigState = {
   config: Config;
   accessModel: AccessModel;
   adScheduleData: AdSchedule | null | undefined;
-  getSandbox: () => boolean;
-  getAuthProvider: () => string | undefined;
+  getIntegration: () => IntegrationInfo;
 };
 
 export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) => ({
@@ -37,21 +43,36 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
   },
   accessModel: ACCESS_MODEL.SVOD,
   adScheduleData: null,
-  getSandbox: (): boolean => {
+  getIntegration(): IntegrationInfo {
     const { cleeng, jwp } = get().config?.integrations;
 
-    if (jwp?.clientId) return !!jwp?.useSandbox;
+    if (cleeng?.id && jwp?.clientId) {
+      // Move to yup validation
+      throw new Error('Invalid client integration. You cannot have both Cleeng and JWP integrations enabled at the same time.');
+    }
 
-    if (cleeng?.id) return !!cleeng.useSandbox;
+    if (jwp?.clientId) {
+      return {
+        integrationType: INTEGRATION.JWP,
+        useSandbox: !!jwp.useSandbox,
+        clientId: jwp.clientId,
+        offers: jwp.assetId ? [`${jwp.assetId}`] : [],
+      };
+    }
 
-    return true;
-  },
+    if (cleeng?.id) {
+      return {
+        integrationType: INTEGRATION.CLEENG,
+        useSandbox: !!cleeng.useSandbox,
+        clientId: cleeng.id,
+        offers: [cleeng?.monthlyOffer, cleeng?.yearlyOffer].filter(Boolean).map(String),
+      };
+    }
 
-  getAuthProvider: (): string | undefined => {
-    const { cleeng, jwp } = get().config?.integrations;
-
-    if (jwp?.clientId) return jwp?.clientId?.toString();
-
-    if (cleeng?.id) return cleeng?.id;
+    return {
+      useSandbox: true,
+      offers: [],
+      integrationType: null,
+    };
   },
 }));

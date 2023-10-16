@@ -14,7 +14,7 @@ export default class ProfileController {
   }
 
   private getSandbox = () => {
-    return useConfigStore.getState().getSandbox() ?? true;
+    return useConfigStore.getState().getIntegration().useSandbox ?? true;
   };
 
   listProfiles = () => {

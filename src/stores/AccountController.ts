@@ -116,9 +116,8 @@ export default class AccountController {
     const { watchHistory } = useWatchHistoryStore.getState();
     const { favorites } = useFavoritesStore.getState();
     const { getAccountInfo } = useAccountStore.getState();
-    const { getSandbox } = useConfigStore.getState();
 
-    const sandbox = getSandbox();
+    const { useSandbox } = this.getIntegration();
     const { customer } = getAccountInfo();
 
     if (!watchHistory && !favorites) return;
@@ -133,17 +132,15 @@ export default class AccountController {
         id: customer.id,
         externalData: personalShelfData,
       },
-      sandbox,
+      useSandbox,
     );
   }
 
   async updateUser(values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> {
     useAccountStore.setState({ loading: true });
 
-    const { getSandbox } = useConfigStore.getState();
+    const { useSandbox } = this.getIntegration();
     const { user, canUpdateEmail } = useAccountStore.getState();
-
-    const sandbox = getSandbox();
 
     if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
       throw new Error('Email update not supported');
@@ -167,7 +164,7 @@ export default class AccountController {
       payload = { ...values, email: user.email };
     }
 
-    const response = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() }, sandbox);
+    const response = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() }, useSandbox);
 
     if (!response) {
       throw new Error('Unknown error');
@@ -320,22 +317,22 @@ export default class AccountController {
 
   async getCaptureStatus(): Promise<GetCaptureStatusResponse> {
     const { getAccountInfo } = useAccountStore.getState();
-    const { getSandbox } = useConfigStore.getState();
+    const { useSandbox } = this.getIntegration();
     const { customer } = getAccountInfo();
-    const sandbox = getSandbox();
 
-    const { responseData } = await this.accountService.getCaptureStatus({ customer }, sandbox);
+    const { responseData } = await this.accountService.getCaptureStatus({ customer }, useSandbox);
 
     return responseData;
   }
 
   async updateCaptureAnswers(capture: Capture): Promise<Capture> {
     const { getAccountInfo } = useAccountStore.getState();
-    const { getSandbox, accessModel } = useConfigStore.getState();
-    const { customer, customerConsents } = getAccountInfo();
-    const sandbox = getSandbox();
+    const { accessModel } = useConfigStore.getState();
+    const { useSandbox } = this.getIntegration();
 
-    const response = await this.accountService.updateCaptureAnswers({ customer, ...capture }, sandbox);
+    const { customer, customerConsents } = getAccountInfo();
+
+    const response = await this.accountService.updateCaptureAnswers({ customer, ...capture }, useSandbox);
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -345,9 +342,7 @@ export default class AccountController {
   }
 
   async resetPassword(email: string, resetUrl: string) {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const response = await this.accountService.resetPassword(
       {
@@ -355,7 +350,7 @@ export default class AccountController {
         publisherId: authProviderId,
         resetUrl,
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -364,8 +359,7 @@ export default class AccountController {
   }
 
   async changePasswordWithOldPassword(oldPassword: string, newPassword: string, newPasswordConfirmation: string) {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
+    const { useSandbox } = this.getIntegration();
 
     const response = await this.accountService.changePasswordWithOldPassword(
       {
@@ -373,7 +367,7 @@ export default class AccountController {
         newPassword,
         newPasswordConfirmation,
       },
-      sandbox,
+      useSandbox,
     );
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
@@ -381,13 +375,11 @@ export default class AccountController {
   }
 
   async changePasswordWithToken(customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) {
-    const { getSandbox, getAuthProvider } = useConfigStore.getState();
-    const sandbox = getSandbox();
-    const authProviderId = getAuthProvider();
+    const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     const response = await this.accountService.changePasswordWithResetToken(
       { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
-      sandbox,
+      useSandbox,
     );
 
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
@@ -396,11 +388,10 @@ export default class AccountController {
   }
 
   async updateSubscription(status: 'active' | 'cancelled'): Promise<unknown> {
-    const { getSandbox } = useConfigStore.getState();
+    const { useSandbox } = this.getIntegration();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
-    const sandbox = getSandbox();
 
     if (!this.subscriptionService) throw new Error('subscription service is not configured');
     const { subscription } = useAccountStore.getState();
@@ -413,7 +404,7 @@ export default class AccountController {
         status,
         unsubscribeUrl: subscription.unsubscribeUrl,
       },
-      sandbox,
+      useSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -438,11 +429,10 @@ export default class AccountController {
     expYear: number;
     currency: string;
   }) {
-    const { getSandbox } = useConfigStore.getState();
+    const { useSandbox: sandbox } = this.getIntegration();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
-    const sandbox = getSandbox();
 
     const response = await this.subscriptionService.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
     const activePayment = (await this.subscriptionService.getActivePayment({ sandbox, customerId })) || null;
@@ -455,26 +445,25 @@ export default class AccountController {
   }
 
   async checkEntitlements(offerId?: string): Promise<unknown> {
-    const { getSandbox } = useConfigStore.getState();
-
-    const sandbox = getSandbox();
+    const { useSandbox } = this.getIntegration();
 
     if (!this.checkoutService) throw new Error('checkout service is not configured');
     if (!offerId) {
       return false;
     }
-    const { responseData } = await this.checkoutService.getEntitlements({ offerId }, sandbox);
+    const { responseData } = await this.checkoutService.getEntitlements({ offerId }, useSandbox);
     return !!responseData?.accessGranted;
   }
 
   async reloadActiveSubscription({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> {
     useAccountStore.setState({ loading: true });
 
-    const { getSandbox, config } = useConfigStore.getState();
+    const { config } = useConfigStore.getState();
+    const { useSandbox: sandbox } = this.getIntegration();
+
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
-    const sandbox = getSandbox();
 
     if (!this.subscriptionService) throw new Error('subscription service is not configured');
     // The subscription data takes a few seconds to load after it's purchased,
@@ -534,12 +523,11 @@ export default class AccountController {
   }
 
   async getReceipt(transactionId: string) {
-    const { getSandbox } = useConfigStore.getState();
-    const sandbox = getSandbox();
+    const { useSandbox } = this.getIntegration();
 
     if (!this.subscriptionService || !('fetchReceipt' in this.subscriptionService)) return null;
 
-    const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId }, sandbox);
+    const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId }, useSandbox);
 
     return responseData;
   }
@@ -597,4 +585,8 @@ export default class AccountController {
   async subscribeToNotifications({ uuid, onMessage }: SubscribeToNotificationsPayload) {
     return this.accountService.subscribeToNotifications({ uuid, onMessage });
   }
+
+  private getIntegration = () => {
+    return useConfigStore.getState().getIntegration() ?? true;
+  };
 }

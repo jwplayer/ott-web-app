@@ -2,11 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
-import useClientIntegration from './useClientIntegration';
-
 import { addQueryParam } from '#src/utils/location';
 import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
+import { useConfigStore } from '#src/stores/ConfigStore';
 
 type intervalCheckAccessPayload = {
   interval?: number;
@@ -22,12 +21,14 @@ const useCheckAccess = () => {
   const location = useLocation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('user');
-  const { clientOffers } = useClientIntegration();
+
+  const getIntegration = useConfigStore((s) => s.getIntegration);
+  const { offers } = getIntegration();
 
   const intervalCheckAccess = useCallback(
     ({ interval = 3000, iterations = 5, offerId }: intervalCheckAccessPayload) => {
-      if (!offerId && clientOffers?.[0]) {
-        offerId = clientOffers[0];
+      if (!offerId && offers?.[0]) {
+        offerId = offers[0];
       }
 
       intervalRef.current = window.setInterval(async () => {
@@ -42,7 +43,7 @@ const useCheckAccess = () => {
         }
       }, interval);
     },
-    [clientOffers, navigate, location, t, accountController],
+    [offers, navigate, location, t, accountController],
   );
 
   useEffect(() => {
