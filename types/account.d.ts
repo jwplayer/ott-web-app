@@ -20,10 +20,14 @@ export type PayloadWithIPOverride = {
   customerIP?: string;
 };
 
-export type AuthArgs = {
+export type LoginArgs = {
   config: Config;
   email: string;
   password: string;
+};
+
+export type RegistrationArgs = LoginArgs & {
+  consents: CustomerConsent[];
 };
 
 export type AuthResponse = {
@@ -360,8 +364,8 @@ export type DeleteAccountPayload = {
   password: string;
 };
 
-type Login = PromiseRequest<AuthArgs, AuthResponse>;
-type Register = PromiseRequest<AuthArgs, AuthResponse>;
+type Login = PromiseRequest<LoginArgs, AuthResponse>;
+type Register = PromiseRequest<RegistrationArgs, AuthResponse>;
 type GetCustomer = EnvironmentServiceRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = EnvironmentServiceRequest<UpdateCustomerArgs, Customer>;
 type GetPublisherConsents = PromiseRequest<Config, GetPublisherConsentsResponse>;

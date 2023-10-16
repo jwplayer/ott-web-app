@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 
 import styles from './Account.module.scss';
 
+import { isTruthyCustomParamValue, isTruthy, logDev } from '#src/utils/common';
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
 import type { Consent } from '#types/account';
 import Alert from '#components/Alert/Alert';
@@ -23,7 +24,6 @@ import useToggle from '#src/hooks/useToggle';
 import { formatConsentsFromValues, formatConsents, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { isTruthy, logDev } from '#src/utils/common';
 import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
 
 type Props = {
@@ -269,7 +269,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   <Checkbox
                     key={index}
                     name={`consentsValues.${consent.name}`}
-                    checked={section.values.consentsValues?.[consent.name] === true}
+                    checked={isTruthyCustomParamValue(section.values.consentsValues?.[consent.name])}
                     onChange={section.onChange}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}
@@ -296,6 +296,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                       value={section.values.consentsValues[consent.name]}
                       disabled={(consent.type === 'checkbox' && consent.required) || section.isBusy}
                       onChange={section.onChange}
+                      required={consent.required}
                     />
                   ))}
                 </div>

@@ -142,6 +142,33 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
   return { customerConsents, consentsErrors };
 };
 
+const isNotEmptyConsent = (consent: CustomerConsent) => consent.value !== '';
+
+const formatConsentToRegisterField = ({ name, value = '' }: CustomerConsent, _: number, collection: CustomerConsent[]) => {
+  const val = (() => {
+    if (name === 'us_state') {
+      if (collection.find(({ name, value }) => name === 'country' && value === 'us')) {
+        return value === 'n/a' ? '' : value;
+      }
+
+      return 'n/a';
+    }
+
+    const isBoolean = value === true || value === false;
+
+    if (isBoolean && name !== 'terms') {
+      return value ? 'on' : 'off';
+    }
+
+    return value;
+  })();
+
+  return [name, val] as const;
+};
+
+const formatConsentsToRegisterFields = (consents: CustomerConsent[]) =>
+  Object.fromEntries(consents.filter(isNotEmptyConsent).map(formatConsentToRegisterField));
+
 const deepCopy = (obj: unknown) => {
   if (Array.isArray(obj) || (typeof obj === 'object' && obj !== null)) {
     return JSON.parse(JSON.stringify(obj));
@@ -177,4 +204,7 @@ export {
   deepCopy,
   parseAspectRatio,
   parseTilesDelta,
+  isNotEmptyConsent,
+  formatConsentToRegisterField,
+  formatConsentsToRegisterFields,
 };

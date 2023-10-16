@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 
 import type { CustomRegisterFieldVariant } from '#types/account';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 import Checkbox from '#components/Checkbox/Checkbox';
 import TextField from '#components/TextField/TextField';
 import Radio from '#components/Radio/Radio';
@@ -62,7 +63,7 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
     case 'datepicker':
       return <DateField {...props} value={value as string} />;
     default:
-      return <Checkbox {...props} checked={value === true} />;
+      return <Checkbox {...props} checked={isTruthyCustomParamValue(value)} />;
   }
 };
 

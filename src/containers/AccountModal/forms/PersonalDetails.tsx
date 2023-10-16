@@ -117,6 +117,7 @@ const PersonalDetails = () => {
             value: questionValues[question.key],
           } as CaptureCustomAnswer),
       );
+
       await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
 
       nextStep();

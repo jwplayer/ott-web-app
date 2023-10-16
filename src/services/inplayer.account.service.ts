@@ -1,6 +1,7 @@
 import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
+import { formatConsentsToRegisterFields } from '#src/utils/collection';
 import { getCommonResponseData } from '#src/utils/api';
 import type { Config } from '#types/Config';
 import type {
@@ -86,7 +87,7 @@ export const login: Login = async ({ config, email, password }) => {
   }
 };
 
-export const register: Register = async ({ config, email, password }) => {
+export const register: Register = async ({ config, email, password, consents }) => {
   try {
     const { data } = await InPlayer.Account.signUpV2({
       email,
@@ -96,6 +97,8 @@ export const register: Register = async ({ config, email, password }) => {
       metadata: {
         first_name: ' ',
         surname: ' ',
+        ...formatConsentsToRegisterFields(consents),
+        consents: JSON.stringify(consents),
       },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
@@ -211,9 +214,14 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
+
+    const existingAccountData = formatUpdateAccount(customer);
+
     const params = {
-      ...formatUpdateAccount(customer),
+      ...existingAccountData,
       metadata: {
+        ...existingAccountData.metadata,
+        ...formatConsentsToRegisterFields(consents),
         consents: JSON.stringify(consents),
       },
     };
@@ -249,8 +257,8 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
   };
 };
 
-export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
-  return (await updateCustomer(metadata, true)) as ServiceResponse<Capture>;
+export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...newAnswers }) => {
+  return (await updateCustomer({ ...customer, ...newAnswers }, true)) as ServiceResponse<Capture>;
 };
 
 export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
@@ -451,10 +459,10 @@ function formatUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
   const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
-  const metadata: { [key: string]: string } = {
+  const metadata: Record<string, string> = {
+    ...customer.metadata,
     first_name: firstName,
     surname: lastName,
-    ...customer.metadata,
   };
   const data: UpdateAccountData = {
     fullName,

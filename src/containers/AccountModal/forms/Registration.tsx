@@ -9,7 +9,7 @@ import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
 import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
-import { getPublisherConsents, register, updateConsents } from '#src/stores/AccountController';
+import { getPublisherConsents, register } from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 const Registration = () => {
@@ -57,11 +57,7 @@ const Registration = () => {
         return;
       }
 
-      await register(email, password);
-
-      await updateConsents(customerConsents).catch(() => {
-        // error caught while updating the consents, but continue the registration flow
-      });
+      await register(email, password, customerConsents);
 
       await queryClient.invalidateQueries('listProfiles');
 
