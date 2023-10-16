@@ -24,7 +24,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       <label
         for="radio_1235_radio0"
       >
-        value1
+        Label 1 
       </label>
     </div>
     <div
@@ -39,7 +39,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       <label
         for="radio_1235_radio1"
       >
-        value2
+        Label 2 
       </label>
     </div>
     <div
@@ -54,7 +54,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       <label
         for="radio_1235_radio2"
       >
-        value3
+        Label 3 
       </label>
     </div>
     <div

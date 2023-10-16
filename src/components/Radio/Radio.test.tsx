@@ -11,7 +11,7 @@ describe('<Radio>', () => {
         header={'Choose a Value'}
         onChange={vi.fn()}
         value="value1"
-        values={Array.of('value1', 'value2', 'value3')}
+        values={Array.of({ value: 'value1', label: 'Label 1 ' }, { value: 'value2', label: 'Label 2 ' }, { value: 'value3', label: 'Label 3 ' })}
         helperText={'This is required!'}
         error={false}
       />,
