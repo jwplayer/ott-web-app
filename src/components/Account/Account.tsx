@@ -296,6 +296,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                       value={section.values.consentsValues[consent.name]}
                       disabled={(consent.type === 'checkbox' && consent.required) || section.isBusy}
                       onChange={section.onChange}
+                      required={consent.required}
                     />
                   ))}
                 </div>

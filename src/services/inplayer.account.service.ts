@@ -98,6 +98,7 @@ export const register: Register = async ({ config, email, password, consents }) 
         first_name: ' ',
         surname: ' ',
         ...formatConsentsToRegisterFields(consents),
+        consents: JSON.stringify(consents),
       },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
