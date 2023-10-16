@@ -18,6 +18,7 @@ import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
 import CheckoutController from '#src/stores/CheckoutController';
 import { getModule } from '#src/modules/container';
+import AccountController from '#src/stores/AccountController';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {
   const currentPeriod = subscription?.period;
@@ -33,6 +34,7 @@ const determineSwitchDirection = (subscription: Subscription | null) => {
 
 const ChooseOffer = () => {
   const checkoutController = getModule(CheckoutController);
+  const accountController = getModule(AccountController);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -69,6 +71,9 @@ const ChooseOffer = () => {
 
         try {
           await checkoutController.switchSubscription(targetOfferId, determineSwitchDirection(subscription));
+          // switching a subscription takes a bit longer to process
+          await accountController.reloadActiveSubscription({ delay: 7500 });
+
           const isPendingSwitch = !!useAccountStore.getState().pendingOffer;
 
           updateAccountModal(isPendingSwitch ? 'upgrade-subscription-pending' : 'upgrade-subscription-success');
@@ -85,7 +90,19 @@ const ChooseOffer = () => {
         updateAccountModal('checkout');
       }
     },
-    [availableOffers, isOfferSwitch, offerSwitches, offersDict, setOffer, subscription, t, updateAccountModal, updateOffer, checkoutController],
+    [
+      availableOffers,
+      isOfferSwitch,
+      offerSwitches,
+      offersDict,
+      setOffer,
+      subscription,
+      t,
+      updateAccountModal,
+      updateOffer,
+      checkoutController,
+      accountController,
+    ],
   );
 
   const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);

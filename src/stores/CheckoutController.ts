@@ -2,8 +2,6 @@ import { injectable } from 'inversify';
 
 import { getOverrideIP } from '../utils/common';
 
-import AccountController from './AccountController';
-
 import { useAccountStore } from '#src/stores/AccountStore';
 import type {
   AddAdyenPaymentDetailsResponse,
@@ -31,12 +29,10 @@ import SubscriptionService from '#src/services/subscription.service';
 export default class CheckoutController {
   private readonly checkoutService: CheckoutService;
   private readonly subscriptionService: SubscriptionService;
-  private readonly accountController: AccountController;
 
-  constructor(checkoutService: CheckoutService, subscriptionService: SubscriptionService, accountController: AccountController) {
+  constructor(checkoutService: CheckoutService, subscriptionService: SubscriptionService) {
     this.checkoutService = checkoutService;
     this.subscriptionService = subscriptionService;
-    this.accountController = accountController;
   }
 
   createOrder = async (offer: Offer, paymentMethodId?: number): Promise<void> => {
@@ -46,7 +42,6 @@ export default class CheckoutController {
     const { customer } = getAccountInfo();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (!this.checkoutService) throw new Error('checkout service is not available');
 
     const createOrderArgs: CreateOrderArgs = {
       offer,
@@ -71,7 +66,6 @@ export default class CheckoutController {
     const { useSandbox, clientId: authProviderId } = this.getIntegration();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (!this.checkoutService) throw new Error('checkout service is not available');
 
     const updateOrderPayload: UpdateOrderPayload = {
       order,
@@ -96,9 +90,6 @@ export default class CheckoutController {
 
   getPaymentMethods = async (): Promise<PaymentMethod[]> => {
     const { useSandbox } = this.getIntegration();
-
-    if (!this.checkoutService) throw new Error('checkout service is not available');
-
     const { paymentMethods } = useCheckoutStore.getState();
 
     if (paymentMethods) return paymentMethods; // already fetched payment methods
@@ -114,9 +105,6 @@ export default class CheckoutController {
 
   paymentWithoutDetails = async (): Promise<unknown> => {
     const { useSandbox, clientId: authProviderId } = this.getIntegration();
-
-    if (!this.checkoutService) throw new Error('checkout service is not available');
-
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
@@ -132,25 +120,21 @@ export default class CheckoutController {
 
   directPostCardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
     const { clientId: authProviderId } = this.getIntegration();
-
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (!this.checkoutService) throw new Error('checkout service is not available');
 
     return await this.checkoutService.directPostCardPayment(cardPaymentPayload, order);
   };
 
   createAdyenPaymentSession = async (returnUrl: string, isInitialPayment: boolean = true): Promise<AdyenPaymentSession> => {
     const { useSandbox, clientId: authProviderId } = this.getIntegration();
-
     const { order } = useCheckoutStore.getState();
 
     const orderId = order?.id;
 
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (!this.checkoutService) throw new Error('checkout service is not available');
     if (isInitialPayment && !orderId) throw new Error('There is no order to pay for');
     if (typeof this.checkoutService.createAdyenPaymentSession === 'undefined') {
       throw new Error('createAdyenPaymentSession is not available in checkout service');
@@ -250,8 +234,13 @@ export default class CheckoutController {
     const { customerId } = getAccountInfo();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
+
     if (typeof this.checkoutService.getSubscriptionSwitches === 'undefined') {
       throw new Error('getSubscriptionSwitches is not available in checkout service');
+    }
+
+    if (typeof this.checkoutService.getOffer === 'undefined') {
+      throw new Error('getOffer is not available in checkout service');
     }
 
     const { subscription } = useAccountStore.getState();
@@ -267,10 +256,6 @@ export default class CheckoutController {
     );
 
     if (!response.responseData.available.length) return;
-
-    if (typeof this.checkoutService.getOffer === 'undefined') {
-      throw new Error('getOffer is not available in checkout service');
-    }
 
     // @ts-expect-error we have checked the presence of the method
     const switchOffers = response.responseData.available.map((offer: SwitchOffer) => this.checkoutService.getOffer({ offerId: offer.toOfferId }, useSandbox));
@@ -298,9 +283,6 @@ export default class CheckoutController {
     const SwitchSubscriptionPayload = { toOfferId, customerId: customerId, offerId: subscription.offerId, switchDirection: switchDirection };
 
     await this.checkoutService.switchSubscription(SwitchSubscriptionPayload, useSandbox);
-
-    // switching a subscription takes a bit longer to process
-    await this.accountController.reloadActiveSubscription({ delay: 7500 });
 
     // clear current offers
     useCheckoutStore.setState({ offerSwitches: [] });

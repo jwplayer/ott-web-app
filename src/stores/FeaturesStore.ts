@@ -8,6 +8,7 @@ type FeaturesStore = {
   canRenewSubscription: boolean;
   canUpdatePaymentMethod: boolean;
   canChangePasswordWithOldPassword: boolean;
+  canSupportEmptyFullName: boolean;
   canExportAccountData: boolean;
   canDeleteAccount: boolean;
   canShowReceipts: boolean;
@@ -21,6 +22,7 @@ export const useFeaturesStore = createStore<FeaturesStore>('FeaturesStore', () =
   hasProfiles: false,
   canUpdateEmail: false,
   canRenewSubscription: false,
+  canSupportEmptyFullName: false,
   canChangePasswordWithOldPassword: false,
   canExportAccountData: false,
   canDeleteAccount: false,

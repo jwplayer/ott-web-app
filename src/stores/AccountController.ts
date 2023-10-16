@@ -29,6 +29,7 @@ import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { unpersistProfile } from '#src/hooks/useProfiles';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import * as persist from '#src/utils/persist';
+import { ACCESS_MODEL } from '#src/config';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -56,12 +57,6 @@ export default class AccountController {
 
   async initializeAccount() {
     const { config } = useConfigStore.getState();
-
-    if (!this.accountService) {
-      useAccountStore.setState({ loading: false });
-      return;
-    }
-
     const features = this.accountService.features;
 
     useAccountStore.setState({
@@ -137,7 +132,7 @@ export default class AccountController {
 
     const { useSandbox } = this.getIntegration();
     const { user } = useAccountStore.getState();
-    const { canUpdateEmail } = useFeaturesStore.getState();
+    const { canUpdateEmail, canSupportEmptyFullName } = useFeaturesStore.getState();
 
     if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
       throw new Error('Email update not supported');
@@ -157,7 +152,7 @@ export default class AccountController {
 
     let payload = values;
     // this is needed as a fallback when the name is empty (cannot be empty on JWP integration)
-    if (!this.accountService.features.canSupportEmptyFullName) {
+    if (!canSupportEmptyFullName) {
       payload = { ...values, email: user.email };
     }
 
@@ -390,7 +385,6 @@ export default class AccountController {
 
     const { customerId } = getAccountInfo();
 
-    if (!this.subscriptionService) throw new Error('subscription service is not configured');
     const { subscription } = useAccountStore.getState();
     if (!subscription) throw new Error('user has no active subscription');
 
@@ -448,10 +442,10 @@ export default class AccountController {
   async checkEntitlements(offerId?: string): Promise<unknown> {
     const { useSandbox } = this.getIntegration();
 
-    if (!this.checkoutService) throw new Error('checkout service is not configured');
     if (!offerId) {
       return false;
     }
+
     const { responseData } = await this.checkoutService.getEntitlements({ offerId }, useSandbox);
     return !!responseData?.accessGranted;
   }
@@ -465,7 +459,6 @@ export default class AccountController {
     const { getAccountInfo } = useAccountStore.getState();
     const { customerId } = getAccountInfo();
 
-    if (!this.subscriptionService) throw new Error('subscription service is not configured');
     // The subscription data takes a few seconds to load after it's purchased,
     // so here's a delay mechanism to give it time to process
     if (delay > 0) {
@@ -493,7 +486,7 @@ export default class AccountController {
         throw new Error('getSubscriptionSwitch is not available in checkout service');
       }
 
-      if (activeSubscription?.pendingSwitchId && this.checkoutService && 'getSubscriptionSwitch' in this.checkoutService) {
+      if (activeSubscription?.pendingSwitchId) {
         const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, sandbox);
         const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, sandbox);
 
@@ -565,7 +558,7 @@ export default class AccountController {
     });
 
     return await Promise.allSettled([
-      accessModel === 'SVOD' && shouldSubscriptionReload ? this.reloadActiveSubscription() : Promise.resolve(),
+      accessModel === ACCESS_MODEL.SVOD && shouldSubscriptionReload ? this.reloadActiveSubscription() : Promise.resolve(),
       this.getPublisherConsents(),
     ]);
   }
