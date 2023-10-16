@@ -24,6 +24,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
 import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
+import { useFeaturesStore } from '#src/stores/FeaturesStore';
 
 type Props = {
   panelClassName?: string;
@@ -56,8 +57,9 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
   }, [exportData.isSuccess, exportData.isError]);
 
-  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = useAccountStore(
-    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount }) => ({
+  const { canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = useFeaturesStore();
+  const { customer, customerConsents, publisherConsents } = useAccountStore(
+    ({ user, customerConsents, publisherConsents }) => ({
       customer: user,
       customerConsents,
       publisherConsents,

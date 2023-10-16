@@ -16,10 +16,8 @@ import type {
   ExportAccountData,
   ExternalData,
   GetCaptureStatus,
-  GetCustomer,
   GetCustomerConsents,
   GetCustomerConsentsResponse,
-  GetLocales,
   GetPublisherConsents,
   Login,
   NotificationsData,
@@ -58,6 +56,7 @@ export default class InplayerAccountService extends AccountService {
       canDeleteAccount: true,
       canManageProfiles: true,
       hasNotifications: true,
+      hasSocialURLs: true,
     });
   }
 
@@ -497,13 +496,5 @@ export default class InplayerAccountService extends AccountService {
     }
 
     return socialResponse.data.social_urls;
-  };
-
-  getLocales: GetLocales = () => {
-    throw new Error('Method is not supported');
-  };
-
-  getCustomer: GetCustomer = () => {
-    throw new Error('Method is not supported');
   };
 }

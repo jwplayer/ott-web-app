@@ -24,6 +24,7 @@ import SubscriptionService from '#src/services/subscription.service';
 import AccountService from '#src/services/account.service';
 import CheckoutService from '#src/services/checkout.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
+import { useFeaturesStore } from '#src/stores/FeaturesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { unpersistProfile } from '#src/hooks/useProfiles';
 import { useProfileStore } from '#src/stores/ProfileStore';
@@ -61,28 +62,23 @@ export default class AccountController {
       return;
     }
 
-    const {
-      canUpdateEmail,
-      canRenewSubscription,
-      canUpdatePaymentMethod,
-      canChangePasswordWithOldPassword,
-      canExportAccountData,
-      canShowReceipts,
-      canManageProfiles,
-      hasNotifications,
-    } = this.accountService.features;
+    const features = this.accountService.features;
 
     useAccountStore.setState({
       loading: true,
-      canUpdateEmail,
-      canRenewSubscription,
-      canManageProfiles,
-      canUpdatePaymentMethod,
-      canChangePasswordWithOldPassword,
-      canExportAccountData,
-      canDeleteAccount: canExportAccountData,
-      canShowReceipts,
-      hasNotifications,
+    });
+
+    useFeaturesStore.setState({
+      hasIntegration: true,
+      canDeleteAccount: features.canExportAccountData,
+      canUpdateEmail: features.canUpdateEmail,
+      canRenewSubscription: features.canRenewSubscription,
+      canManageProfiles: features.canManageProfiles,
+      canUpdatePaymentMethod: features.canUpdatePaymentMethod,
+      canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
+      canExportAccountData: features.canExportAccountData,
+      canShowReceipts: features.canShowReceipts,
+      hasNotifications: features.hasNotifications,
     });
 
     useProfileStore.setState({
@@ -140,7 +136,8 @@ export default class AccountController {
     useAccountStore.setState({ loading: true });
 
     const { useSandbox } = this.getIntegration();
-    const { user, canUpdateEmail } = useAccountStore.getState();
+    const { user } = useAccountStore.getState();
+    const { canUpdateEmail } = useFeaturesStore.getState();
 
     if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
       throw new Error('Email update not supported');
@@ -509,16 +506,33 @@ export default class AccountController {
   }
 
   async exportAccountData() {
-    return this.accountService.exportAccountData(undefined, true);
+    const { canExportAccountData } = useFeaturesStore();
+
+    if (!canExportAccountData || typeof this.accountService.exportAccountData === 'undefined') {
+      throw new Error('Export account feature is not enabled');
+    }
+
+    return this.accountService?.exportAccountData(undefined, true);
   }
 
   async getSocialLoginUrls() {
     const { config } = useConfigStore.getState();
+    const { hasSocialURLs } = useFeaturesStore();
+
+    if (!hasSocialURLs || typeof this.accountService.getSocialUrls === 'undefined') {
+      throw new Error('Export account feature is not enabled');
+    }
 
     return this.accountService.getSocialUrls(config);
   }
 
   async deleteAccountData(password: string) {
+    const { canDeleteAccount } = useFeaturesStore();
+
+    if (!canDeleteAccount || typeof this.accountService.deleteAccount === 'undefined') {
+      throw new Error('Delete account feature is not enabled');
+    }
+
     return this.accountService.deleteAccount({ password }, true);
   }
 

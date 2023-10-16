@@ -27,6 +27,7 @@ import EditProfile from '#src/containers/Profiles/EditProfile';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useProfiles } from '#src/hooks/useProfiles';
 import { getModule } from '#src/modules/container';
+import { useFeaturesStore } from '#src/stores/FeaturesStore';
 
 const User = (): JSX.Element => {
   const favoritesController = getModule(FavoritesController);
@@ -47,7 +48,8 @@ const User = (): JSX.Element => {
   const location = useLocation();
 
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, loading, canUpdateEmail } = useAccountStore();
+  const { user: customer, subscription, loading } = useAccountStore();
+  const { canUpdateEmail } = useFeaturesStore();
   const { profile } = useProfileStore();
 
   const { profilesEnabled } = useProfiles();

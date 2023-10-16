@@ -1,7 +1,6 @@
 import type { Config } from '#types/Config';
 import type {
   ChangePassword,
-  GetCustomer,
   GetCustomerConsents,
   GetPublisherConsents,
   Login,
@@ -13,7 +12,6 @@ import type {
   UpdateCaptureAnswers,
   AuthData,
   SocialURLSData,
-  GetLocales,
   ChangePasswordWithOldPassword,
   UpdatePersonalShelves,
   ExportAccountData,
@@ -33,6 +31,7 @@ interface AccountServiceFeatures {
   readonly canUpdatePaymentMethod: boolean;
   readonly canShowReceipts: boolean;
   readonly canManageProfiles: boolean;
+  readonly hasSocialURLs: boolean;
   readonly hasNotifications: boolean;
 }
 
@@ -77,13 +76,9 @@ export default abstract class AccountService {
 
   abstract subscribeToNotifications: NotificationsData;
 
-  abstract exportAccountData: ExportAccountData;
+  abstract getSocialUrls?: SocialURLSData;
 
-  abstract getSocialUrls: SocialURLSData;
+  abstract exportAccountData?: ExportAccountData;
 
-  abstract deleteAccount: DeleteAccount;
-
-  abstract getLocales: GetLocales;
-
-  abstract getCustomer: GetCustomer;
+  abstract deleteAccount?: DeleteAccount;
 }

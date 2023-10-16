@@ -1,7 +1,8 @@
 import { createStore } from '#src/stores/utils';
 
 type FeaturesStore = {
-  hasAccount: boolean;
+  hasIntegration: boolean;
+  hasSocialURLs: boolean;
   hasNotifications: boolean;
   canUpdateEmail: boolean;
   canRenewSubscription: boolean;
@@ -14,8 +15,9 @@ type FeaturesStore = {
 };
 
 export const useFeaturesStore = createStore<FeaturesStore>('FeaturesStore', () => ({
-  hasAccount: false,
+  hasIntegration: false, // JW or Cleeng
   hasNotifications: false,
+  hasSocialURLs: false,
   hasProfiles: false,
   canUpdateEmail: false,
   canRenewSubscription: false,

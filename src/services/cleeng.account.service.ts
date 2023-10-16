@@ -52,22 +52,12 @@ export default class CleengAccountService extends AccountService {
       canUpdatePaymentMethod: true,
       canShowReceipts: true,
       canManageProfiles: false,
+      hasSocialURLs: false,
       hasNotifications: false,
     });
 
     this.cleengService = cleengService;
   }
-
-  private handleErrors = (errors: ApiResponse['errors']) => {
-    if (errors.length > 0) {
-      throw new Error(errors[0]);
-    }
-  };
-
-  private getCustomerIdFromAuthData = (auth: AuthData) => {
-    const decodedToken: JwtDetails = jwtDecode(auth.jwt);
-    return decodedToken.customerId;
-  };
 
   initialize = async (config: Config, logoutCallback: () => Promise<void>) => {
     await this.cleengService.initialize(!!config.integrations.cleeng?.useSandbox, logoutCallback);
@@ -271,14 +261,6 @@ export default class CleengAccountService extends AccountService {
     return this.cleengService.patch(sandbox, `/customers/${id}`, JSON.stringify(params), { authenticate: true, keepalive: true });
   };
 
-  getCustomer: GetCustomer = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/customers/${payload.customerId}`, { authenticate: true });
-  };
-
-  getLocales: GetLocales = async (sandbox) => {
-    return this.cleengService.getLocales(sandbox);
-  };
-
   updatePersonalShelves: UpdatePersonalShelves = async (payload, sandbox) => {
     return await this.updateCustomer(payload, sandbox);
   };
@@ -288,7 +270,7 @@ export default class CleengAccountService extends AccountService {
   };
 
   getSocialUrls: SocialURLSData = async () => {
-    return [];
+    throw new Error('Method is not supported');
   };
 
   exportAccountData: ExportAccountData = () => {
@@ -299,27 +281,22 @@ export default class CleengAccountService extends AccountService {
     throw new Error('Method is not supported');
   };
 
-  listProfiles: DeleteAccount = () => {
-    throw new Error('Method is not supported');
+  private handleErrors = (errors: ApiResponse['errors']) => {
+    if (errors.length > 0) {
+      throw new Error(errors[0]);
+    }
   };
 
-  createProfile: DeleteAccount = () => {
-    throw new Error('Method is not supported');
+  private getCustomerIdFromAuthData = (auth: AuthData) => {
+    const decodedToken: JwtDetails = jwtDecode(auth.jwt);
+    return decodedToken.customerId;
   };
 
-  enterProfile: DeleteAccount = () => {
-    throw new Error('Method is not supported');
+  private getCustomer: GetCustomer = async (payload, sandbox) => {
+    return this.cleengService.get(sandbox, `/customers/${payload.customerId}`, { authenticate: true });
   };
 
-  updateProfile: DeleteAccount = () => {
-    throw new Error('Method is not supported');
-  };
-
-  getProfileDetails: DeleteAccount = () => {
-    throw new Error('Method is not supported');
-  };
-
-  deleteProfile: DeleteAccount = () => {
-    throw new Error('Method is not supported');
+  private getLocales: GetLocales = async (sandbox) => {
+    return this.cleengService.getLocales(sandbox);
   };
 }

@@ -12,6 +12,7 @@ import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import { initApp } from '#src/modules/init';
 import { useConfigSource } from '#src/utils/configOverride';
+import { useFeaturesStore } from '#src/stores/FeaturesStore';
 
 // This is moved to a separate, parallel component to reduce rerenders
 const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.SetStateAction<boolean>> }) => {
@@ -23,6 +24,8 @@ const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.Set
     enabled: !!configSource,
     retry: configSource ? 1 : 0,
     refetchInterval: false,
+    cacheTime: 1000 * 60 * 60 * 6,
+    staleTime: 1000 * 60 * 60 * 6,
   });
 
   // After the config loads, we can show the rest of the App
@@ -58,6 +61,8 @@ const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.Set
 const Root: FC = () => {
   const [isReady, setIsReady] = useState(false);
 
+  const { hasIntegration } = useFeaturesStore.getState();
+
   // Register custom screen mappings
   useEffect(() => {
     registerCustomScreens();
@@ -66,7 +71,7 @@ const Root: FC = () => {
   return (
     <>
       {isReady && <AppRoutes />}
-      {isReady && <AccountModal />}
+      {isReady && hasIntegration && <AccountModal />}
       {/*This is moved to a separate, parallel component to reduce rerenders*/}
       <RootLoader setAppIsReady={setIsReady} />
     </>

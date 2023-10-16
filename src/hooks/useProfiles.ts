@@ -11,6 +11,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import ProfileController from '#src/stores/ProfileController';
 import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
+import { useFeaturesStore } from '#src/stores/FeaturesStore';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -108,13 +109,14 @@ export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<Co
 export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
-  const { user, canManageProfiles } = useAccountStore((s) => s);
+  const { user } = useAccountStore();
+  const { canManageProfiles } = useFeaturesStore();
   const profileController = canManageProfiles ? getModule(ProfileController) : undefined;
 
   const query = useQuery(['listProfiles'], () => profileController?.listProfiles(), { ...options, enabled: !!user && canManageProfiles });
 
   if (!canManageProfiles && query.data?.responseData.canManageProfiles) {
-    useAccountStore.setState({ canManageProfiles: true });
+    useFeaturesStore.setState({ canManageProfiles: true });
   }
   return { ...query, profilesEnabled: query.data?.responseData.canManageProfiles && canManageProfiles };
 };
