@@ -431,6 +431,10 @@ export default class AccountController {
 
     const { customerId } = getAccountInfo();
 
+    if (typeof this.subscriptionService.updateCardDetails === 'undefined') {
+      throw new Error('updateCardDetails is not available in subscription service');
+    }
+
     const response = await this.subscriptionService.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
     const activePayment = (await this.subscriptionService.getActivePayment({ sandbox, customerId })) || null;
 
@@ -459,7 +463,6 @@ export default class AccountController {
     const { useSandbox: sandbox } = this.getIntegration();
 
     const { getAccountInfo } = useAccountStore.getState();
-
     const { customerId } = getAccountInfo();
 
     if (!this.subscriptionService) throw new Error('subscription service is not configured');
@@ -483,6 +486,13 @@ export default class AccountController {
 
     // resolve and fetch the pending offer after upgrade/downgrade
     try {
+      if (typeof this.checkoutService.getOffer === 'undefined') {
+        throw new Error('getOffer is not available in checkout service');
+      }
+      if (typeof this.checkoutService.getSubscriptionSwitch === 'undefined') {
+        throw new Error('getSubscriptionSwitch is not available in checkout service');
+      }
+
       if (activeSubscription?.pendingSwitchId && this.checkoutService && 'getSubscriptionSwitch' in this.checkoutService) {
         const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, sandbox);
         const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, sandbox);
@@ -539,7 +549,9 @@ export default class AccountController {
   async getReceipt(transactionId: string) {
     const { useSandbox } = this.getIntegration();
 
-    if (!this.subscriptionService || !('fetchReceipt' in this.subscriptionService)) return null;
+    if (typeof this.subscriptionService.fetchReceipt === 'undefined') {
+      throw new Error('fetchReceipt is not available in subscription service');
+    }
 
     const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId }, useSandbox);
 

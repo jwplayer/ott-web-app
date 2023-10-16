@@ -18,26 +18,50 @@ export default class ProfileController {
   };
 
   listProfiles = () => {
-    return this.profileService?.listProfiles(undefined, this.getSandbox());
+    if (typeof this.profileService.listProfiles === 'undefined') {
+      throw new Error('listProfiles is not available in profile service');
+    }
+
+    return this.profileService.listProfiles(undefined, this.getSandbox());
   };
 
   createProfile = ({ name, adult, avatar_url, pin }: ProfilePayload) => {
-    return this.profileService?.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
+    if (typeof this.profileService.createProfile === 'undefined') {
+      throw new Error('createProfile is not available in profile service');
+    }
+
+    return this.profileService.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
   };
 
   updateProfile = ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
-    return this.profileService?.updateProfile({ id, name, adult, avatar_url, pin }, this.getSandbox());
+    if (typeof this.profileService.updateProfile === 'undefined') {
+      throw new Error('updateProfile is not available in profile service');
+    }
+
+    return this.profileService.updateProfile({ id, name, adult, avatar_url, pin }, this.getSandbox());
   };
 
   enterProfile = ({ id, pin }: EnterProfilePayload) => {
-    return this.profileService?.enterProfile({ id, pin }, this.getSandbox());
+    if (typeof this.profileService.enterProfile === 'undefined') {
+      throw new Error('enterProfile is not available in profile service');
+    }
+
+    return this.profileService.enterProfile({ id, pin }, this.getSandbox());
   };
 
   deleteProfile = ({ id }: ProfileDetailsPayload) => {
-    return this.profileService?.deleteProfile({ id }, this.getSandbox());
+    if (typeof this.profileService.deleteProfile === 'undefined') {
+      throw new Error('deleteProfile is not available in profile service');
+    }
+
+    return this.profileService.deleteProfile({ id }, this.getSandbox());
   };
 
   getProfileDetails = ({ id }: ProfileDetailsPayload) => {
-    return this.profileService?.getProfileDetails({ id }, this.getSandbox());
+    if (typeof this.profileService.getProfileDetails === 'undefined') {
+      throw new Error('getProfileDetails is not available in profile service');
+    }
+
+    return this.profileService.getProfileDetails({ id }, this.getSandbox());
   };
 }

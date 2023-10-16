@@ -22,8 +22,6 @@ import type {
 } from '#types/checkout';
 
 export default abstract class CheckoutService {
-  abstract getOffer: GetOffer;
-
   abstract getOffers: GetOffers;
 
   abstract createOrder: CreateOrder;
@@ -40,25 +38,27 @@ export default abstract class CheckoutService {
 
   abstract directPostCardPayment: GetDirectPostCardPayment;
 
-  abstract getOrder: GetOrder;
+  abstract getOffer?: GetOffer;
 
-  abstract switchSubscription: SwitchSubscription;
+  abstract getOrder?: GetOrder;
 
-  abstract getSubscriptionSwitches: GetSubscriptionSwitches;
+  abstract switchSubscription?: SwitchSubscription;
 
-  abstract getSubscriptionSwitch: GetSubscriptionSwitch;
+  abstract getSubscriptionSwitches?: GetSubscriptionSwitches;
 
-  abstract createAdyenPaymentSession: GetAdyenPaymentSession;
+  abstract getSubscriptionSwitch?: GetSubscriptionSwitch;
 
-  abstract initialAdyenPayment: GetInitialAdyenPayment;
+  abstract createAdyenPaymentSession?: GetAdyenPaymentSession;
 
-  abstract finalizeAdyenPayment: GetFinalizeAdyenPayment;
+  abstract initialAdyenPayment?: GetInitialAdyenPayment;
 
-  abstract updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal;
+  abstract finalizeAdyenPayment?: GetFinalizeAdyenPayment;
 
-  abstract deletePaymentMethod: DeletePaymentMethod;
+  abstract updatePaymentMethodWithPayPal?: UpdatePaymentWithPayPal;
 
-  abstract addAdyenPaymentDetails: AddAdyenPaymentDetails;
+  abstract deletePaymentMethod?: DeletePaymentMethod;
 
-  abstract finalizeAdyenPaymentDetails: FinalizeAdyenPaymentDetails;
+  abstract addAdyenPaymentDetails?: AddAdyenPaymentDetails;
+
+  abstract finalizeAdyenPaymentDetails?: FinalizeAdyenPaymentDetails;
 }
