@@ -1,4 +1,5 @@
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
+import * as yup from 'yup';
 
 import { useAccountStore } from './AccountStore';
 import { useFavoritesStore } from './FavoritesStore';
@@ -25,16 +26,24 @@ export const persistProfile = ({ profile }: { profile: ProfilesData }) => {
   });
 };
 
-export const isValidProfile = (profile: unknown): profile is ProfilesData => {
-  return (
-    typeof profile === 'object' &&
-    profile !== null &&
-    'id' in profile &&
-    'name' in profile &&
-    'avatar_url' in profile &&
-    'adult' in profile &&
-    'credentials' in profile
-  );
+const profileSchema = yup.object().shape({
+  id: yup.string().required(),
+  name: yup.string().required(),
+  avatar_url: yup.string(),
+  adult: yup.boolean().required(),
+  credentials: yup.object().shape({
+    access_token: yup.string().required(),
+    expires: yup.number().required(),
+  }),
+});
+
+const isValidProfile = (profile: unknown): profile is ProfilesData => {
+  try {
+    profileSchema.validateSync(profile);
+    return true;
+  } catch (e: unknown) {
+    return false;
+  }
 };
 
 export const loadPersistedProfile = () => {

@@ -13,14 +13,12 @@ import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import { logout } from '#src/stores/AccountController';
 import ProfileCircle from '#src/icons/ProfileCircle';
-import type { AccessModel } from '#types/Config';
 import type { Profile } from '#types/account';
 
 type Props = {
   small?: boolean;
   showPaymentsItem: boolean;
   onClick?: () => void;
-  accessModel?: AccessModel;
   currentProfile?: Profile | null;
   profilesEnabled?: boolean;
   profiles?: Profile[];
@@ -28,17 +26,7 @@ type Props = {
   selectProfile?: ({ id, avatarUrl }: { id: string; avatarUrl: string }) => void;
 };
 
-const UserMenu = ({
-  showPaymentsItem,
-  small = false,
-  onClick,
-  accessModel,
-  currentProfile,
-  profilesEnabled,
-  profiles,
-  isSelectingProfile,
-  selectProfile,
-}: Props) => {
+const UserMenu = ({ showPaymentsItem, small = false, onClick, currentProfile, profilesEnabled, profiles, isSelectingProfile, selectProfile }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
 
@@ -53,7 +41,7 @@ const UserMenu = ({
 
   return (
     <ul className={styles.menuItems}>
-      {accessModel === 'SVOD' && profilesEnabled && selectProfile && (
+      {profilesEnabled && selectProfile && (
         <ProfilesMenu
           profiles={profiles ?? []}
           currentProfile={currentProfile}
