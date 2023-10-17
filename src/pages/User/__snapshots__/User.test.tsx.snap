@@ -102,135 +102,16 @@ exports[`User Component tests > Account Page 1`] = `
       class="_mainColumn_e9c5ca"
     >
       <div
-        class="_panel_e9c5ca"
+        class="_loadingOverlay_eb61cb _inline_eb61cb"
       >
         <div
-          class="_panelHeader_e9c5ca"
+          class="_buffer_d122df"
         >
-          <h3>
-            account.about_you
-          </h3>
+          <div />
+          <div />
+          <div />
+          <div />
         </div>
-        <form
-          class="_flexBox_1c1c63"
-          novalidate=""
-        >
-          <div
-            class="_textField_e16c1b"
-          >
-            <label
-              class="_label_e16c1b"
-              for="text-field_1235_firstName"
-            >
-              account.firstname
-            </label>
-            <p>
-              User
-            </p>
-          </div>
-          <div
-            class="_textField_e16c1b"
-          >
-            <label
-              class="_label_e16c1b"
-              for="text-field_1235_lastName"
-            >
-              account.lastname
-            </label>
-            <p>
-              Person
-            </p>
-          </div>
-        </form>
-        <div
-          class="_controls_1c1c63"
-        >
-          <button
-            class="_button_f8f296 _default_f8f296 _outlined_f8f296"
-            type="button"
-          >
-            <span>
-              account.edit_information
-            </span>
-          </button>
-        </div>
-      </div>
-      <div
-        class="_panel_e9c5ca"
-      >
-        <div
-          class="_panelHeader_e9c5ca"
-        >
-          <h3>
-            account.email
-          </h3>
-        </div>
-        <form
-          class="_flexBox_1c1c63"
-          novalidate=""
-        >
-          <div
-            class="_textField_e16c1b"
-          >
-            <label
-              class="_label_e16c1b"
-              for="text-field_1235_email"
-            >
-              account.email
-            </label>
-            <p>
-              user@jwplayer.com
-            </p>
-          </div>
-        </form>
-        <div
-          class="_controls_1c1c63"
-        />
-      </div>
-      <div
-        class="_panel_e9c5ca"
-      >
-        <div
-          class="_panelHeader_e9c5ca"
-        >
-          <h3>
-            account.security
-          </h3>
-        </div>
-        <form
-          class="_flexBox_1c1c63"
-          novalidate=""
-        />
-        <div
-          class="_controls_1c1c63"
-        >
-          <button
-            class="_button_f8f296 _default_f8f296 _outlined_f8f296"
-            type="button"
-          >
-            <span>
-              account.edit_password
-            </span>
-          </button>
-        </div>
-      </div>
-      <div
-        class="_panel_e9c5ca"
-      >
-        <div
-          class="_panelHeader_e9c5ca"
-        >
-          <h3>
-            account.terms_and_tracking
-          </h3>
-        </div>
-        <form
-          class="_flexBox_1c1c63"
-          novalidate=""
-        />
-        <div
-          class="_controls_1c1c63"
-        />
       </div>
     </div>
   </div>

@@ -127,14 +127,10 @@ export const logout = async () => {
   }
 };
 
-export const getUser = async ({ shouldFetchData = false }: { shouldFetchData?: boolean }) => {
+export const getUser = async () => {
   try {
-    const accountInfo = await getAccountInfo({ shouldFetchData });
-    const user = formatAccount(accountInfo);
-
-    if (!shouldFetchData) {
-      user.externalData = await getCustomerExternalData();
-    }
+    const user = await getAccountInfo({ shouldFetchData: false });
+    user.externalData = await getCustomerExternalData();
 
     return {
       user,
@@ -400,12 +396,12 @@ export const getSocialUrls = async (config: Config) => {
   return socialResponse.data.social_urls;
 };
 
-const getAccountInfo = async ({ shouldFetchData }: { shouldFetchData: boolean }): Promise<AccountData> => {
+export const getAccountInfo = async ({ shouldFetchData = false }: { shouldFetchData: boolean }): Promise<Customer> => {
   if (!shouldFetchData) {
     const authData = await getAuthData();
     if (authData) {
       const token: JwtDecodeValues = jwtDecode(authData.jwt);
-      return {
+      return formatAccount({
         id: token.aid,
         email: token.sub,
         full_name: '',
@@ -419,12 +415,12 @@ const getAccountInfo = async ({ shouldFetchData }: { shouldFetchData: boolean })
         date_of_birth: 0,
         uuid: token.tuuid,
         merchant_uuid: token.aud,
-      };
+      });
     }
   }
 
   const { data } = await InPlayer.Account.getAccountInfo();
-  return data;
+  return formatAccount(data);
 };
 
 const getCustomerExternalData = async (): Promise<ExternalData> => {
@@ -536,4 +532,3 @@ export const canUpdatePaymentMethod = false;
 export const canShowReceipts = false;
 export const canDeleteAccount = true;
 export const canManageProfiles = true;
-export const fetchOnVisit = true;

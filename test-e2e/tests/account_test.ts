@@ -302,7 +302,6 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
 
   async function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string; newValue: string; expectedError?: string }[]) {
     I.amOnPage(constants.accountsUrl);
-    await waitForElementToBePopulated(I, `//*[text() = "${editButton}"]`, normalTimeout);
 
     I.waitForElement(`//*[text() = "${editButton}"]`, normalTimeout);
     I.scrollTo(`//*[text() = "${editButton}"]`);
@@ -316,7 +315,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     });
 
     for (const field of fieldsWithPaths) {
-      I.seeElement(field.xpath);
+      I.waitForElement(field.xpath);
 
       if (field.newValue) {
         I.fillField(field.xpath, field.newValue);
@@ -357,8 +356,6 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     fields: { name: string; startingValue: string; newValue: string; expectedError?: string }[],
   ) {
     I.amOnPage(constants.accountsUrl);
-    await waitForElementToBePopulated(I, `//*[text() = "${editButton}"]`, normalTimeout);
-
     I.waitForElement(`//*[text() = "${editButton}"]`, normalTimeout);
     I.scrollTo(`//*[text() = "${editButton}"]`);
     I.click(editButton);
@@ -384,7 +381,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
       I.see('Cancel');
 
       for (const field of fieldsWithPaths) {
-        I.seeElement(field.xpath);
+        I.waitForElement(field.xpath, normalTimeout);
         if (field.name !== passwordField) {
           I.waitForValue(field.xpath, field.newValue, 0);
         }
@@ -413,21 +410,5 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
       I.seeElement(field.xpath);
       I.waitForValue(field.xpath, field.name === passwordField ? '' : field.startingValue, 0);
     }
-  }
-
-  async function waitForElementToBePopulated(I: CodeceptJS.I, selector: string, timeoutInSeconds: number) {
-    const startTime = Date.now();
-
-    while (Date.now() - startTime < timeoutInSeconds * 1000) {
-      const elementContent = await I.grabTextFrom(selector);
-
-      if (elementContent && elementContent.trim() !== '') {
-        return;
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    }
-
-    throw new Error(`Timeout: Element did not get populated within ${timeoutInSeconds} seconds.`);
   }
 }

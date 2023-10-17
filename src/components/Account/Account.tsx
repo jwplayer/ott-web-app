@@ -3,7 +3,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import shallow from 'zustand/shallow';
 import DOMPurify from 'dompurify';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import styles from './Account.module.scss';
 
@@ -24,9 +24,8 @@ import { formatConsentsFromValues, formatConsents, formatConsentValues } from '#
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
-import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
-import useService from '#src/hooks/useService';
-import { useConfigStore } from '#src/stores/ConfigStore';
+import { exportAccountData, getUserInfo, updateConsents, updateUser } from '#src/stores/AccountController';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 
 type Props = {
   panelClassName?: string;
@@ -50,8 +49,6 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const exportData = useMutation(exportAccountData);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const exportDataMessage = exportData.isSuccess ? t('account.export_data_success') : t('account.export_data_error');
-  const { config } = useConfigStore();
-  const accountService = useService(({ accountService }) => accountService);
 
   useEffect(() => {
     if (exportData.isSuccess || exportData.isError) {
@@ -59,30 +56,20 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
   }, [exportData.isSuccess, exportData.isError]);
 
-  const { customer, fetchOnVisit, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } =
-    useAccountStore(
-      ({ user, fetchOnVisit, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount }) => ({
-        customer: user,
-        fetchOnVisit,
-        customerConsents,
-        publisherConsents,
-        canChangePasswordWithOldPassword,
-        canExportAccountData,
-        canDeleteAccount,
-      }),
-      shallow,
-    );
+  const { customer, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = useAccountStore(
+    ({ user, customerConsents, publisherConsents, canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount }) => ({
+      customer: user,
+      customerConsents,
+      publisherConsents,
+      canChangePasswordWithOldPassword,
+      canExportAccountData,
+      canDeleteAccount,
+    }),
+    shallow,
+  );
 
-  // update account with fresh data when visited
-  useEffect(() => {
-    const getUserInfo = async () => {
-      if (fetchOnVisit) {
-        const { user } = await accountService.getUser({ config, shouldFetchData: true });
-        useAccountStore.setState({ user, fetchOnVisit: false });
-      }
-    };
-    getUserInfo();
-  }, [customer, fetchOnVisit, accountService, config]);
+  // refetch user data on visit (this is only JW integration case)
+  const { isLoading } = useQuery(['userInfo'], () => getUserInfo());
 
   const [termsConsents, nonTermsConsents] = useMemo(() => {
     const terms: Consent[] = [];
@@ -194,6 +181,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password';
     navigate(addQueryParam(location, 'u', modal));
   };
+
+  if (isLoading) {
+    return <LoadingOverlay inline />;
+  }
 
   return (
     <>

@@ -38,7 +38,6 @@ export const initializeAccount = async () => {
 
     useAccountStore.setState({
       loading: true,
-      fetchOnVisit: accountService.fetchOnVisit,
       canUpdateEmail: accountService.canUpdateEmail,
       canRenewSubscription: accountService.canRenewSubscription,
       canManageProfiles: accountService.canManageProfiles,
@@ -138,6 +137,15 @@ export const getAccount = async () => {
         publisherConsents: null,
         loading: false,
       });
+    }
+  });
+};
+
+export const getUserInfo = async () => {
+  await useService(async ({ accountService }) => {
+    const user = await accountService.getAccountInfo({ shouldFetchData: true });
+    if (user) {
+      useAccountStore.setState({ user });
     }
   });
 };
