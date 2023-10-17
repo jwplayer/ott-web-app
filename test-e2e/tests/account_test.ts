@@ -300,7 +300,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     ]);
   });
 
-  async function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string; newValue: string; expectedError?: string }[]) {
+  function editAndSave(I: CodeceptJS.I, editButton: string, fields: { name: string; newValue: string; expectedError?: string }[]) {
     I.amOnPage(constants.accountsUrl);
 
     I.waitForElement(`//*[text() = "${editButton}"]`, normalTimeout);
@@ -315,7 +315,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     });
 
     for (const field of fieldsWithPaths) {
-      I.waitForElement(field.xpath);
+      I.seeElement(field.xpath);
 
       if (field.newValue) {
         I.fillField(field.xpath, field.newValue);
@@ -350,15 +350,13 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.click('Cancel');
   }
 
-  async function editAndCancel(
-    I: CodeceptJS.I,
-    editButton: string,
-    fields: { name: string; startingValue: string; newValue: string; expectedError?: string }[],
-  ) {
+  function editAndCancel(I: CodeceptJS.I, editButton: string, fields: { name: string; startingValue: string; newValue: string; expectedError?: string }[]) {
     I.amOnPage(constants.accountsUrl);
+
     I.waitForElement(`//*[text() = "${editButton}"]`, normalTimeout);
     I.scrollTo(`//*[text() = "${editButton}"]`);
     I.click(editButton);
+
     I.see('Save');
     I.see('Cancel');
 
@@ -381,7 +379,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
       I.see('Cancel');
 
       for (const field of fieldsWithPaths) {
-        I.waitForElement(field.xpath, normalTimeout);
+        I.seeElement(field.xpath);
         if (field.name !== passwordField) {
           I.waitForValue(field.xpath, field.newValue, 0);
         }
