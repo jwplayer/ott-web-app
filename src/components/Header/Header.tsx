@@ -20,7 +20,6 @@ import type { LanguageDefinition } from '#src/i18n/config';
 import Panel from '#components/Panel/Panel';
 import type { Profile } from '#types/account';
 import ProfileCircle from '#src/icons/ProfileCircle';
-import type { AccessModel } from '#types/Config';
 import AccountCircle from '#src/icons/AccountCircle';
 
 type TypeHeader = 'static' | 'fixed';
@@ -50,7 +49,6 @@ type Props = {
   currentLanguage: LanguageDefinition | undefined;
   onLanguageClick: (code: string) => void;
 
-  accessModel?: AccessModel;
   profilesData?: {
     currentProfile: Profile | null;
     profiles: Profile[];
@@ -84,7 +82,6 @@ const Header: React.FC<Props> = ({
   supportedLanguages,
   currentLanguage,
   onLanguageClick,
-  accessModel,
   profilesData: { currentProfile, profiles, profilesEnabled, selectProfile, isSelectingProfile } = {},
 }) => {
   const { t } = useTranslation('menu');
@@ -148,7 +145,6 @@ const Header: React.FC<Props> = ({
               onClick={closeUserMenu}
               showPaymentsItem={showPaymentsMenuItem}
               small
-              accessModel={accessModel}
               currentProfile={currentProfile}
               profilesEnabled={profilesEnabled}
               profiles={profiles}

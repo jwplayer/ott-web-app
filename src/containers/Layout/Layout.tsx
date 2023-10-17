@@ -157,7 +157,6 @@ const Layout = () => {
           closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== 'AVOD'}
-          accessModel={accessModel}
           profilesData={{
             currentProfile: profile,
             profiles,
