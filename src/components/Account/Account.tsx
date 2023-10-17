@@ -8,7 +8,6 @@ import { useMutation, useQuery } from 'react-query';
 import styles from './Account.module.scss';
 
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
-import type { Consent } from '#types/account';
 import Alert from '#components/Alert/Alert';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
@@ -18,9 +17,8 @@ import IconButton from '#components/IconButton/IconButton';
 import TextField from '#components/TextField/TextField';
 import Checkbox from '#components/Checkbox/Checkbox';
 import HelperText from '#components/HelperText/HelperText';
-import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import useToggle from '#src/hooks/useToggle';
-import { formatConsentsFromValues, formatConsents, formatConsentValues } from '#src/utils/collection';
+import { formatConsentsFromValues, formatConsentValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
@@ -71,33 +69,15 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   // refetch user data on visit (this is only JW integration case)
   const { isLoading } = useQuery(['userInfo'], () => getUserInfo());
 
-  const [termsConsents, nonTermsConsents] = useMemo(() => {
-    const terms: Consent[] = [];
-    const nonTerms: Consent[] = [];
-
-    publisherConsents?.forEach((consent) => {
-      if (consent?.type === 'checkbox') {
-        terms.push(consent);
-      } else {
-        nonTerms.push(consent);
-      }
-    });
-
-    return [terms, nonTerms];
-  }, [publisherConsents]);
-
-  const consents = useMemo(() => formatConsents(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
-
-  const consentsValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
+  const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
 
   const initialValues = useMemo(
     () => ({
       ...customer,
-      consents,
-      consentsValues,
+      consents: consentValues,
       confirmationPassword: '',
     }),
-    [customer, consents, consentsValues],
+    [customer, consentValues],
   );
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
@@ -270,14 +250,15 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, { ...values.consentsValues, terms: true })),
+            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values)),
             content: (section) => (
               <>
-                {termsConsents?.map((consent, index) => (
+                {publisherConsents?.map((consent, index) => (
                   <Checkbox
                     key={index}
-                    name={`consentsValues.${consent.name}`}
-                    checked={section.values.consentsValues?.[consent.name] === true}
+                    name={`consents.${consent.name}`}
+                    value={consent.value || ''}
+                    checked={(section.values.consents?.[consent.name] as boolean) || false}
                     onChange={section.onChange}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}
@@ -286,29 +267,6 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               </>
             ),
           }),
-          nonTermsConsents?.length &&
-            formSection({
-              label: t('account.other_registration_details'),
-              saveButton: t('account.update_consents'),
-              onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
-              content: (section) => (
-                <div className={styles.customFields}>
-                  {nonTermsConsents.map((consent) => (
-                    <CustomRegisterField
-                      key={consent.name}
-                      type={consent.type}
-                      name={`consentsValues.${consent.name}`}
-                      options={consent.options}
-                      label={formatConsentLabel(consent.label)}
-                      placeholder={consent.placeholder}
-                      value={section.values.consentsValues[consent.name]}
-                      disabled={(consent.type === 'checkbox' && consent.required) || section.isBusy}
-                      onChange={section.onChange}
-                    />
-                  ))}
-                </div>
-              ),
-            }),
           canExportAccountData &&
             formSection({
               label: t('account.export_data_title'),

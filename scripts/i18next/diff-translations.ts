@@ -13,7 +13,9 @@ const changes: {
 } = {};
 
 function run() {
-  const fileChanges = execSync('git diff -U200000 --no-prefix release..release-candidate public/locales')
+  execSync('git fetch');
+
+  const fileChanges = execSync('git diff -U200000 --no-prefix origin/release..origin/release-candidate public/locales')
     .toString()
     .split('\n')
     .filter((s) => !!s)
@@ -27,19 +29,18 @@ function run() {
     if (line.startsWith('diff --git')) {
       [filename, language] = line.split('\n')[0].split('/').reverse() || [];
       path = [];
-    } else if (line.startsWith('"') && line.endsWith('{')) {
+    } else if (line.match(/^\+?\s*"[^:]+": {$/)?.length) {
       // This is the start of a new subgroup, parse the name and add it to the path
-      path.push(line.split(':')[0].replace(/"/g, ''));
-    } else if (line.startsWith('}')) {
+      path.push(line.split('"')[1]);
+    } else if (line.match(/^\+?\s*},?$/)?.length) {
       // This is the end of a subgroup, so take last path segment away
       path.pop();
     } else if (line.startsWith('---') || line.startsWith('+++')) {
       // Skip these lines
-    } else if (line.startsWith('+') || line.startsWith('-')) {
-      // This is a changed line, first parse the value
-      // using regex to strip the leading +/-, whitespace, and quotes OR trailing quote and comma
-      // Then split on the colon and middle quotes
-      const [name, value] = line.replace(/(^[+-]\s*")|(",$)/g, '').split('": "');
+    } else if (line.match(/^[+-]\s*"[^"]+": "[^"]*",?$/)) {
+      // This is a changed line
+      // Split by quotes to get the items at index 1 and 3 which should be the name and value
+      const [, name, , value] = line.split('"');
 
       // Reconstruct the full path from any parent paths
       const key = [...path, name].join('.');
@@ -66,7 +67,10 @@ function run() {
     Object.entries(fileChanges).forEach(([key, languages]) => {
       Object.entries(languages).forEach(([language, props]) => {
         // Only include keys with updated new values or where the English has updated new values
-        if (languages['en'].newValue !== undefined || props.newValue !== undefined) {
+        if (
+          (languages['en']?.newValue !== undefined && languages['en']?.newValue !== languages['en']?.oldValue) ||
+          (props.newValue !== undefined && props.newValue !== props.oldValue)
+        ) {
           // Add the headers
           languageGroups[language] ||= [
             [

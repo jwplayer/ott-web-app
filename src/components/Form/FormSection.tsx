@@ -53,7 +53,7 @@ export function FormSection<TData extends GenericFormValues>({
   const isEditing = sectionId === activeSectionId;
 
   const onChange = useCallback(
-    ({ currentTarget }: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    function onChange({ currentTarget }: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
       if (!currentTarget) return;
 
       const { name, type } = currentTarget;
@@ -152,17 +152,14 @@ export function FormSection<TData extends GenericFormValues>({
         <h3>{label}</h3>
       </div>
       {isBusy && isEditing && <LoadingOverlay transparentBackground />}
-      {content && (
-        <form className={styles.flexBox} noValidate onSubmit={(event) => event.preventDefault()}>
-          {content({
-            values,
-            isEditing,
-            isBusy,
-            onChange,
-            ...(isEditing ? { errors: formErrors } : {}),
-          })}
-        </form>
-      )}
+      {content &&
+        (isEditing ? (
+          <form className={styles.flexBox} noValidate onSubmit={(event) => event.preventDefault()}>
+            {content({ values, isEditing, isBusy, onChange, errors: formErrors })}
+          </form>
+        ) : (
+          <div className={styles.flexBox}>{content({ values, isEditing, isBusy, onChange })}</div>
+        ))}
       {(saveButton || editButton || cancelButton) && (
         <div className={styles.controls}>
           {isEditing ? (

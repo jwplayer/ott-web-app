@@ -25,10 +25,9 @@ type Props = {
   channel: EpgChannel | undefined;
   program: EpgProgram | undefined;
   config: Config;
-  getUrl: (channelId: string) => string;
 };
 
-export default function Epg({ channels, onChannelClick, onProgramClick, channel, program, config, getUrl }: Props) {
+export default function Epg({ channels, onChannelClick, onProgramClick, channel, program, config }: Props) {
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
 
@@ -75,7 +74,6 @@ export default function Epg({ channels, onChannelClick, onProgramClick, channel,
                 onScrollToNow();
               }}
               isActive={channel?.id === epgChannel.uuid}
-              url={getUrl(epgChannel.uuid)}
             />
           )}
           renderProgram={({ program: programItem, isBaseTimeFormat }) => {
@@ -91,7 +89,6 @@ export default function Epg({ channels, onChannelClick, onProgramClick, channel,
                 isActive={program?.id === programItem.data.id}
                 compact={isMobile}
                 isBaseTimeFormat={isBaseTimeFormat}
-                url={getUrl(programItem.data.channelUuid)}
               />
             );
           }}

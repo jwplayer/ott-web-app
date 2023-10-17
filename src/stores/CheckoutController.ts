@@ -1,6 +1,5 @@
 import { getOverrideIP } from '../utils/common';
 
-import { subscribeToNotifications } from './NotificationsController';
 import { useAccountStore } from './AccountStore';
 import { reloadActiveSubscription } from './AccountController';
 
@@ -120,19 +119,14 @@ export const paymentWithoutDetails = async (): Promise<unknown> => {
 };
 
 export const directPostCardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
-  return await useAccount(async ({ customer }) => {
-    return await useService(async ({ checkoutService, authProviderId }) => {
-      const { order } = useCheckoutStore.getState();
+  return await useService(async ({ checkoutService, authProviderId }) => {
+    const { order } = useCheckoutStore.getState();
 
-      if (!order) throw new Error('No order created');
-      if (!authProviderId) throw new Error('auth provider is not configured');
-      if (!checkoutService) throw new Error('checkout service is not available');
+    if (!order) throw new Error('No order created');
+    if (!authProviderId) throw new Error('auth provider is not configured');
+    if (!checkoutService) throw new Error('checkout service is not available');
 
-      // subscribe to listen to inplayer websocket notifications
-      await subscribeToNotifications(customer?.uuid);
-
-      return await checkoutService.directPostCardPayment(cardPaymentPayload, order);
-    });
+    return await checkoutService.directPostCardPayment(cardPaymentPayload, order);
   });
 };
 

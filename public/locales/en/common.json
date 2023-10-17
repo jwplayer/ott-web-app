@@ -19,6 +19,7 @@
   "live": "LIVE",
   "now": "Now",
   "optional": "(Optional)",
+  "play_item": "Play {{title}}",
   "scheduled": "Scheduled",
   "series": "series",
   "sign_in": "Sign in",

@@ -108,7 +108,7 @@ Scenario('I see the epg on the live channel screen', async ({ I }) => {
   I.see('Start watching');
 
   I.seeElement(channel1LiveProgramLocator);
-  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1');
+  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1', true);
 
   I.seeElement(channel1PreviousProgramLocator);
   await isProgram(I, channel1PreviousProgramLocator, 'channel 1');
@@ -125,7 +125,7 @@ Scenario('I see the epg on the live channel screen', async ({ I }) => {
 Scenario('I can select an upcoming program on the same channel', async ({ I }) => {
   await I.openVideoCard('Channel 1');
   I.seeElement(channel1LiveProgramLocator);
-  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1');
+  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1', true);
 
   I.seeElement(channel1UpcomingProgramLocator);
   await isProgram(I, channel1UpcomingProgramLocator, 'channel 1');
@@ -134,7 +134,7 @@ Scenario('I can select an upcoming program on the same channel', async ({ I }) =
 
   waitForEpgAnimation(I);
   I.scrollTo(channel1UpcomingProgramLocator);
-  await isSelectedProgram(I, channel1UpcomingProgramLocator, 'channel 1');
+  await isSelectedProgram(I, channel1UpcomingProgramLocator, 'channel 1', false);
 
   I.see('The Flash', locate('div').inside(videoDetailsLocator));
 
@@ -150,7 +150,7 @@ Scenario('I can select an upcoming program on the same channel', async ({ I }) =
 Scenario('I can select a previous program on the same channel and watch the video', async ({ I }) => {
   await I.openVideoCard('Channel 1');
   I.seeElement(channel1LiveProgramLocator);
-  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1');
+  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1', true);
 
   I.seeElement(channel1PreviousProgramLocator);
   await isProgram(I, channel1PreviousProgramLocator, 'channel 1');
@@ -159,8 +159,7 @@ Scenario('I can select a previous program on the same channel and watch the vide
 
   waitForEpgAnimation(I);
 
-  I.scrollTo(channel1PreviousProgramLocator);
-  await isSelectedProgram(I, channel1PreviousProgramLocator, 'channel 1');
+  await isSelectedProgram(I, channel1PreviousProgramLocator, 'channel 1', false);
 
   I.dontSee('LIVE', locate('div').inside(videoDetailsLocator));
   I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
@@ -188,7 +187,7 @@ Scenario('I can select a program on another channel', async ({ I }) => {
 
   I.scrollTo(channel2LiveProgramLocator);
   I.seeElement(channel2LiveProgramLocator);
-  await isSelectedProgram(I, channel2LiveProgramLocator, 'channel 2');
+  await isSelectedProgram(I, channel2LiveProgramLocator, 'channel 2', true);
 
   I.click(channel1Locator);
   waitForEpgAnimation(I);
@@ -220,7 +219,7 @@ Scenario('I can navigate through the epg', async ({ I }) => {
   waitForEpgAnimation(I);
   I.scrollTo(channel1LiveProgramLocator);
   I.seeElement(channel1LiveProgramLocator);
-  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1');
+  await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1', true);
 
   I.seeElement(channel2LiveProgramLocator);
   I.scrollTo(channel2LiveProgramLocator);
@@ -247,12 +246,15 @@ Scenario('I can see the background image for Channel 4', async ({ I }) => {
   await I.seeVideoDetailsBackgroundImage('Channel 4', 'https://cdn.jwplayer.com/v2/media/kH7LozaK/images/background.webp?poster_fallback=1&width=1280');
 });
 
-async function isSelectedProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
+async function isSelectedProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string, isLive: boolean) {
+  I.moveCursorTo('body', 0, 0); // This prevents accidentally triggering the hover state
+
   await checkStyle(I, locator, {
     'background-color': programSelectedBackgroundColor,
-    border: programLiveBorder,
+    border: isLive ? programLiveBorder : programBorder,
   });
-  await I.say(`I see the program is selected on ${channel}`);
+
+  I.say(`I see the program is selected on ${channel}`);
 }
 
 async function isLiveProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
@@ -260,7 +262,8 @@ async function isLiveProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, chann
     'background-color': programBackgroundColor,
     border: programLiveBorder,
   });
-  await I.say(`I see the program is live on ${channel}`);
+
+  I.say(`I see the program is live on ${channel}`);
 }
 
 async function isProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
@@ -268,7 +271,8 @@ async function isProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: 
     'background-color': programBackgroundColor,
     border: programBorder,
   });
-  await I.say(`I see the program is not active nor selected on ${channel}`);
+
+  I.say(`I see the program is not active nor selected on ${channel}`);
 }
 
 async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
@@ -276,5 +280,6 @@ async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, 
 }
 
 function waitForEpgAnimation(I: CodeceptJS.I, sec: number = 1) {
+  I.waitForLoaderDone();
   return I.wait(sec);
 }

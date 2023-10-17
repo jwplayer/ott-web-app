@@ -2,9 +2,8 @@ name: Test - Static Analysis
 
 on:
   push:
-    branches: ['develop', 'feat/*', 'feature/*', 'release', 'release-candidate']
+    branches: ['develop', 'release']
   pull_request:
-    branches: ['develop', 'feat/*', 'feature/*', 'release', 'release-candidate']
   schedule:
     - cron: '30 4 * * 4'
 
