@@ -67,7 +67,7 @@ const data = {
 };
 
 describe('User Component tests', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     const spy = vi.spyOn(checkoutController, 'getSubscriptionSwitches');
     spy.mockResolvedValue(undefined);
   });

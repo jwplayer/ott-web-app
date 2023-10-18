@@ -67,7 +67,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   );
 
   // refetch user data on visit (this is only JW integration case)
-  const { isLoading } = useQuery(['userInfo'], () => getUserInfo(), { cacheTime: 10000 });
+  const { isLoading } = useQuery(['userInfo'], () => getUserInfo());
 
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
 
