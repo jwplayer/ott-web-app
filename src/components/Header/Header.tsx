@@ -49,6 +49,8 @@ type Props = {
   currentLanguage: LanguageDefinition | undefined;
   onLanguageClick: (code: string) => void;
 
+  favoritesEnabled?: boolean;
+
   profilesData?: {
     currentProfile: Profile | null;
     profiles: Profile[];
@@ -82,6 +84,7 @@ const Header: React.FC<Props> = ({
   supportedLanguages,
   currentLanguage,
   onLanguageClick,
+  favoritesEnabled,
   profilesData: { currentProfile, profiles, profilesEnabled, selectProfile, isSelectingProfile } = {},
 }) => {
   const { t } = useTranslation('menu');
@@ -150,6 +153,7 @@ const Header: React.FC<Props> = ({
               profiles={profiles}
               selectProfile={selectProfile}
               isSelectingProfile={!!isSelectingProfile}
+              favoritesEnabled={favoritesEnabled}
             />
           </Panel>
         </Popover>
