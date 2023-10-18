@@ -24,9 +24,20 @@ type Props = {
   profiles?: Profile[];
   isSelectingProfile?: boolean;
   selectProfile?: ({ id, avatarUrl }: { id: string; avatarUrl: string }) => void;
+  favoritesEnabled?: boolean;
 };
 
-const UserMenu = ({ showPaymentsItem, small = false, onClick, currentProfile, profilesEnabled, profiles, isSelectingProfile, selectProfile }: Props) => {
+const UserMenu = ({
+  showPaymentsItem,
+  small = false,
+  onClick,
+  currentProfile,
+  profilesEnabled,
+  profiles,
+  isSelectingProfile,
+  selectProfile,
+  favoritesEnabled,
+}: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
 
@@ -69,9 +80,11 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, currentProfile, pr
         <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>
 
-      <li>
-        <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
-      </li>
+      {favoritesEnabled && (
+        <li>
+          <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
+        </li>
+      )}
       {showPaymentsItem && (
         <li>
           <MenuButton small={small} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
