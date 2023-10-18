@@ -1,3 +1,5 @@
+import { waitFor } from '@testing-library/react';
+
 import User from './User';
 
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -65,7 +67,7 @@ const data = {
 };
 
 describe('User Component tests', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     const spy = vi.spyOn(checkoutController, 'getSubscriptionSwitches');
     spy.mockResolvedValue(undefined);
   });
@@ -74,10 +76,15 @@ describe('User Component tests', () => {
     vi.clearAllMocks();
   });
 
-  test('Account Page', () => {
+  test('Account Page', async () => {
     useAccountStore.setState(data);
     mockWindowLocation('my-account');
     const { container } = renderWithRouter(<User />);
+
+    await waitFor(() => {
+      const loadingOverlay = container.querySelector('[class*="loadingOverlay"]');
+      return !loadingOverlay;
+    });
 
     expect(container).toMatchSnapshot();
   });

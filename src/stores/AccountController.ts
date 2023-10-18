@@ -141,10 +141,13 @@ export const getAccount = async () => {
 };
 
 export const getUserInfo = async () => {
-  await useService(async ({ accountService }) => {
-    const user = await accountService.getAccountInfo({ shouldFetchData: true });
-    if (user) {
+  return await useService(async ({ accountService }) => {
+    try {
+      const user = await accountService.getAccountInfo({ shouldFetchData: true });
       useAccountStore.setState({ user });
+      return user;
+    } catch (eror: unknown) {
+      logDev('Failed to get user info', eror);
     }
   });
 };

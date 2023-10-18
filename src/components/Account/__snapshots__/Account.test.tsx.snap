@@ -3,16 +3,160 @@
 exports[`<Account> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_loadingOverlay_eb61cb _inline_eb61cb"
+    class="panel-class"
   >
     <div
-      class="_buffer_d122df"
+      class="header-class"
     >
-      <div />
-      <div />
-      <div />
-      <div />
+      <h3>
+        account.about_you
+      </h3>
     </div>
+    <div
+      class="_flexBox_1c1c63"
+    >
+      <div
+        class="_textField_e16c1b"
+      >
+        <label
+          class="_label_e16c1b"
+          for="text-field_1235_firstName"
+        >
+          account.firstname
+        </label>
+        <p>
+          John
+        </p>
+      </div>
+      <div
+        class="_textField_e16c1b"
+      >
+        <label
+          class="_label_e16c1b"
+          for="text-field_1235_lastName"
+        >
+          account.lastname
+        </label>
+        <p>
+          Doe
+        </p>
+      </div>
+    </div>
+    <div
+      class="_controls_1c1c63"
+    >
+      <button
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        type="button"
+      >
+        <span>
+          account.edit_information
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.email
+      </h3>
+    </div>
+    <div
+      class="_flexBox_1c1c63"
+    >
+      <div
+        class="_textField_e16c1b"
+      >
+        <label
+          class="_label_e16c1b"
+          for="text-field_1235_email"
+        >
+          account.email
+        </label>
+        <p>
+          email@domain.com
+        </p>
+      </div>
+    </div>
+    <div
+      class="_controls_1c1c63"
+    >
+      <button
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        type="button"
+      >
+        <span>
+          account.edit_account
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.security
+      </h3>
+    </div>
+    <div
+      class="_flexBox_1c1c63"
+    />
+    <div
+      class="_controls_1c1c63"
+    >
+      <button
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        type="button"
+      >
+        <span>
+          account.edit_password
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.terms_and_tracking
+      </h3>
+    </div>
+    <div
+      class="_flexBox_1c1c63"
+    >
+      <div
+        class="_checkbox_531f07"
+      >
+        <div
+          class="_row_531f07"
+        >
+          <input
+            id="check-box_1235_consents.marketing"
+            name="consents.marketing"
+            type="checkbox"
+            value=""
+          />
+          <label
+            for="check-box_1235_consents.marketing"
+          >
+            Receive Marketing Emails
+          </label>
+        </div>
+      </div>
+    </div>
+    <div
+      class="_controls_1c1c63"
+    />
   </div>
 </div>
 `;
