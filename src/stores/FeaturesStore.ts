@@ -19,7 +19,6 @@ export const useFeaturesStore = createStore<FeaturesStore>('FeaturesStore', () =
   hasIntegration: false, // JW or Cleeng
   hasNotifications: false,
   hasSocialURLs: false,
-  hasProfiles: false,
   canUpdateEmail: false,
   canRenewSubscription: false,
   canSupportEmptyFullName: false,

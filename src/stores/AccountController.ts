@@ -1,8 +1,10 @@
 import i18next from 'i18next';
-import { injectable, optional } from 'inversify';
+import { injectable } from 'inversify';
 
 import FavoritesController from './FavoritesController';
 import WatchHistoryController from './WatchHistoryController';
+import ProfileController from './ProfileController';
+import { useProfileStore } from './ProfileStore';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type {
@@ -26,8 +28,6 @@ import CheckoutService from '#src/services/checkout.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useFeaturesStore } from '#src/stores/FeaturesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import { unpersistProfile } from '#src/hooks/useProfiles';
-import { useProfileStore } from '#src/stores/ProfileStore';
 import * as persist from '#src/utils/persist';
 import { ACCESS_MODEL } from '#src/config';
 
@@ -38,51 +38,27 @@ export default class AccountController {
   private readonly checkoutService: CheckoutService;
   private readonly accountService: AccountService;
   private readonly subscriptionService: SubscriptionService;
-  private readonly favoritesController?: FavoritesController;
-  private readonly watchHistoryController?: WatchHistoryController;
+  private readonly favoritesController: FavoritesController;
+  private readonly watchHistoryController: WatchHistoryController;
+  private readonly profileController?: ProfileController;
 
   constructor(
     checkoutService: CheckoutService,
     accountService: AccountService,
     subscriptionService: SubscriptionService,
-    @optional() favoritesController?: FavoritesController,
-    @optional() watchHistoryController?: WatchHistoryController,
+    favoritesController: FavoritesController,
+    watchHistoryController: WatchHistoryController,
+    profileController?: ProfileController,
   ) {
     this.checkoutService = checkoutService;
     this.accountService = accountService;
     this.subscriptionService = subscriptionService;
     this.favoritesController = favoritesController;
     this.watchHistoryController = watchHistoryController;
+    this.profileController = profileController;
   }
 
-  async initializeAccount() {
-    const { config } = useConfigStore.getState();
-    const features = this.accountService.features;
-
-    useAccountStore.setState({
-      loading: true,
-    });
-
-    useFeaturesStore.setState({
-      hasIntegration: true,
-      canDeleteAccount: features.canExportAccountData,
-      canUpdateEmail: features.canUpdateEmail,
-      canRenewSubscription: features.canRenewSubscription,
-      canManageProfiles: features.canManageProfiles,
-      canUpdatePaymentMethod: features.canUpdatePaymentMethod,
-      canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
-      canExportAccountData: features.canExportAccountData,
-      canShowReceipts: features.canShowReceipts,
-      canSupportEmptyFullName: features.canSupportEmptyFullName,
-      hasNotifications: features.hasNotifications,
-    });
-
-    useProfileStore.setState({
-      profile: persist.getItem(PERSIST_PROFILE) || null,
-    });
-
-    await this.accountService.initialize(config, this.logout);
-
+  loadUserData = async () => {
     try {
       const authData = await this.accountService.getAuthData();
 
@@ -100,9 +76,36 @@ export default class AccountController {
         await this.logout();
       }
     }
+  };
+
+  initializeAccount = async () => {
+    useAccountStore.setState({
+      loading: true,
+    });
+    const config = useConfigStore.getState().config;
+
+    const features = this.accountService.features;
+
+    useFeaturesStore.setState({
+      hasIntegration: true,
+      canDeleteAccount: features.canExportAccountData,
+      canUpdateEmail: features.canUpdateEmail,
+      canRenewSubscription: features.canRenewSubscription,
+      canManageProfiles: features.canManageProfiles,
+      canUpdatePaymentMethod: features.canUpdatePaymentMethod,
+      canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
+      canExportAccountData: features.canExportAccountData,
+      canShowReceipts: features.canShowReceipts,
+      canSupportEmptyFullName: features.canSupportEmptyFullName,
+      hasNotifications: features.hasNotifications,
+    });
+
+    await this.profileController?.loadPersistedProfile();
+    await this.accountService.initialize(config, this.logout);
+    await this.loadUserData();
 
     useAccountStore.setState({ loading: false });
-  }
+  };
 
   updatePersonalShelves = async () => {
     const { watchHistory } = useWatchHistoryStore.getState();
@@ -600,7 +603,7 @@ export default class AccountController {
       selectingProfileAvatar: null,
     });
 
-    unpersistProfile();
+    this.profileController?.unpersistProfile();
 
     await this.favoritesController?.restoreFavorites();
     await this.watchHistoryController?.restoreWatchHistory();

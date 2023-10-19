@@ -20,6 +20,17 @@ export default class FavoritesController {
     this.accountService = accountService;
   }
 
+  private updateUserFavorites(favorites: Favorite[]) {
+    const { user } = useAccountStore.getState();
+
+    if (user) {
+      useAccountStore.setState((state) => ({
+        ...state,
+        user: { ...(state.user as Customer), externalData: { ...state.user?.externalData, favorites: this.serializeFavorites(favorites) } },
+      }));
+    }
+  }
+
   restoreFavorites = async () => {
     const { user } = useAccountStore.getState();
     const favoritesList = useConfigStore.getState().config.features?.favoritesList;
@@ -52,23 +63,15 @@ export default class FavoritesController {
     return this.favoritesService.serializeFavorites(favorites);
   };
 
-  private updateUserFavorites(favorites: Favorite[]) {
-    useAccountStore.setState((state) => ({
-      ...state,
-      user: { ...(state.user as Customer), externalData: { ...state.user?.externalData, favorites: this.serializeFavorites(favorites) } },
-    }));
-  }
-
   async initializeFavorites() {
     await this.restoreFavorites();
   }
 
   saveItem = async (item: PlaylistItem) => {
     const { favorites } = useFavoritesStore.getState();
-    const service = this.favoritesService;
 
     if (!favorites.some(({ mediaid }) => mediaid === item.mediaid)) {
-      const items = [service.createFavorite(item)].concat(favorites);
+      const items = [this.favoritesService.createFavorite(item)].concat(favorites);
       useFavoritesStore.setState({ favorites: items });
       this.updateUserFavorites(items);
       await this.persistFavorites();

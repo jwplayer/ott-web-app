@@ -1,70 +1,56 @@
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
-import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useProfileStore } from '#src/stores/ProfileStore';
-import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
-import * as persist from '#src/utils/persist';
 import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '#types/account';
 import { useAccountStore } from '#src/stores/AccountStore';
+import type { GenericFormErrors } from '#types/form';
+import type { ProfileFormSubmitError, ProfileFormValues } from '#src/containers/Profiles/types';
+import { logDev } from '#src/utils/common';
 import ProfileController from '#src/stores/ProfileController';
-import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
 import { useFeaturesStore } from '#src/stores/FeaturesStore';
-
-const PERSIST_PROFILE = 'profile';
-
-export const unpersistProfile = () => {
-  persist.removeItem(PERSIST_PROFILE);
-};
+import AccountController from '#src/stores/AccountController';
 
 export const useSelectProfile = () => {
   const navigate = useNavigate();
-  const accountController = getModule(AccountController);
-  const profileController = getModule(ProfileController);
+  const isLoggedIn = useAccountStore((s) => !!s.user);
 
-  return useMutation((vars: { id: string; pin?: number; avatarUrl: string }) => profileController.enterProfile({ id: vars.id, pin: vars.pin }), {
+  const accountController = isLoggedIn ? getModule(AccountController) : undefined;
+  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+
+  return useMutation(async (vars: { id: string; pin?: number; avatarUrl: string }) => profileController?.enterProfile({ id: vars.id, pin: vars.pin }), {
     onMutate: ({ avatarUrl }) => {
       useProfileStore.setState({ selectingProfileAvatar: avatarUrl });
     },
-    onSuccess: async (response) => {
-      const profile = response?.responseData;
-      if (profile?.credentials?.access_token) {
-        persist.setItem(PERSIST_PROFILE, profile);
-        persist.setItemStorage('inplayer_token', {
-          expires: profile.credentials.expires,
-          token: profile.credentials.access_token,
-          refreshToken: '',
-        });
-        useFavoritesStore.setState({ favorites: [] });
-        useWatchHistoryStore.setState({ watchHistory: [] });
-        useProfileStore.setState({ profile });
-        await accountController.initializeAccount().finally(() => {
-          useProfileStore.setState({ selectingProfileAvatar: null });
-          navigate('/');
-        });
-      }
+    onSuccess: async () => {
+      useProfileStore.setState({ selectingProfileAvatar: null });
+      navigate('/');
+      await accountController?.loadUserData();
     },
     onError: () => {
       useProfileStore.setState({ selectingProfileAvatar: null });
-      throw new Error('Unable to enter profile.');
+      navigate('/u/profiles');
+      logDev('Unable to enter profile');
     },
   });
 };
 
 export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
-  const profileController = getModule(ProfileController);
-
-  const listProfiles = useProfiles();
+  const { query: listProfiles } = useProfiles();
   const navigate = useNavigate();
+  const isLoggedIn = useAccountStore((s) => !!s.user);
 
-  return useMutation<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>(profileController.createProfile, {
+  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+
+  return useMutation<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>(async (data) => profileController?.createProfile(data), {
     onSuccess: (res) => {
       const profile = res?.responseData;
       if (profile?.id) {
         listProfiles.refetch();
-        navigate('/u/profiles');
+        navigate(`/u/profiles?success=true&id=${profile.id}`);
       }
     },
     ...options,
@@ -72,15 +58,13 @@ export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 };
 
 export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
-  const profileController = getModule(ProfileController);
-
-  const listProfiles = useProfiles();
+  const { query: listProfiles } = useProfiles();
   const navigate = useNavigate();
+  const isLoggedIn = useAccountStore((s) => !!s.user);
 
-  return useMutation(profileController.updateProfile, {
-    onError: () => {
-      throw new Error('Unable to update profile.');
-    },
+  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+
+  return useMutation(async (data) => profileController?.updateProfile(data), {
     onSuccess: () => {
       navigate('/u/profiles');
     },
@@ -92,31 +76,51 @@ export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 };
 
 export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>) => {
-  const profileController = getModule(ProfileController);
+  const { query: listProfiles } = useProfiles();
+  const isLoggedIn = useAccountStore((s) => !!s.user);
 
-  const listProfiles = useProfiles();
   const navigate = useNavigate();
 
-  return useMutation<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>(profileController.deleteProfile, {
-    onSuccess: () => {
-      listProfiles.refetch();
-      navigate('/u/profiles');
+  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+
+  return useMutation<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>(
+    async (id) => profileController?.deleteProfile(id),
+    {
+      onSuccess: () => {
+        listProfiles.refetch();
+        navigate('/u/profiles');
+      },
+      ...options,
     },
-    ...options,
-  });
+  );
+};
+
+export const isProfileFormSubmitError = (e: unknown): e is ProfileFormSubmitError => !!e && typeof e === 'object' && 'message' in e;
+
+export const useProfileErrorHandler = () => {
+  const { t } = useTranslation('user');
+
+  return (e: unknown, setErrors: (errors: Partial<ProfileFormValues & GenericFormErrors>) => void) => {
+    if (isProfileFormSubmitError(e) && e.message.includes('409')) {
+      setErrors({ name: t('profile.validation.name.already_exists') });
+      return;
+    }
+    setErrors({ form: t('profile.form_error') });
+  };
 };
 
 export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
-  const { user } = useAccountStore();
+  const isLoggedIn = useAccountStore((s) => !!s.user);
   const { canManageProfiles } = useFeaturesStore();
-  const profileController = canManageProfiles ? getModule(ProfileController) : undefined;
 
-  const query = useQuery(['listProfiles'], () => profileController?.listProfiles(), { ...options, enabled: !!user && canManageProfiles });
+  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
 
-  if (!canManageProfiles && query.data?.responseData.canManageProfiles) {
-    useFeaturesStore.setState({ canManageProfiles: true });
-  }
-  return { ...query, profilesEnabled: query.data?.responseData.canManageProfiles && canManageProfiles };
+  const query = useQuery(['listProfiles'], () => profileController?.listProfiles(), { ...options, enabled: isLoggedIn });
+
+  return {
+    query,
+    profilesEnabled: !!(query.data?.responseData.canManageProfiles && canManageProfiles),
+  };
 };

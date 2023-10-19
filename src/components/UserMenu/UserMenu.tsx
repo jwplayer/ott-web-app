@@ -12,29 +12,36 @@ import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
 import AccountController from '#src/stores/AccountController';
-import { useSelectProfile } from '#src/hooks/useProfiles';
 import ProfileCircle from '#src/icons/ProfileCircle';
-import type { AccessModel } from '#types/Config';
 import type { Profile } from '#types/account';
-import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 import { getModule } from '#src/modules/container';
 
 type Props = {
   small?: boolean;
   showPaymentsItem: boolean;
   onClick?: () => void;
-  accessModel?: AccessModel;
-  currentProfile?: Profile;
+  currentProfile?: Profile | null;
   profilesEnabled?: boolean;
   profiles?: Profile[];
+  isSelectingProfile?: boolean;
+  selectProfile?: ({ id, avatarUrl }: { id: string; avatarUrl: string }) => void;
+  favoritesEnabled?: boolean;
 };
 
-const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, currentProfile, profilesEnabled, profiles }: Props) => {
+const UserMenu = ({
+  showPaymentsItem,
+  small = false,
+  onClick,
+  currentProfile,
+  profilesEnabled,
+  profiles,
+  isSelectingProfile,
+  selectProfile,
+  favoritesEnabled,
+}: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const accountController = getModule(AccountController);
-
-  const selectProfile = useSelectProfile();
 
   const onLogout = useCallback(async () => {
     if (onClick) {
@@ -47,14 +54,13 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
 
   return (
     <ul className={styles.menuItems}>
-      {accessModel === 'SVOD' && profilesEnabled && (
+      {profilesEnabled && selectProfile && (
         <ProfilesMenu
           profiles={profiles ?? []}
           currentProfile={currentProfile}
           small={small}
-          selectingProfile={selectProfile.isLoading}
-          selectProfile={selectProfile.mutate}
-          defaultAvatar={defaultAvatar}
+          selectingProfile={!!isSelectingProfile}
+          selectProfile={selectProfile}
           createButtonLabel={t('nav.add_profile')}
           switchProfilesLabel={t('nav.switch_profiles')}
           onCreateButtonClick={() => navigate('/u/profiles/create')}
@@ -68,7 +74,7 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
             onClick={onClick}
             to={`/u/my-profile/${currentProfile?.id ?? ''}`}
             label={t('nav.profile')}
-            startIcon={<ProfileCircle src={currentProfile?.avatar_url || defaultAvatar} alt={currentProfile?.name ?? ''} />}
+            startIcon={<ProfileCircle src={currentProfile?.avatar_url} alt={currentProfile?.name ?? ''} />}
           />
         </li>
       )}
@@ -76,15 +82,19 @@ const UserMenu = ({ showPaymentsItem, small = false, onClick, accessModel, curre
         <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
       </li>
 
-      <li>
-        <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
-      </li>
+      {favoritesEnabled && (
+        <li>
+          <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
+        </li>
+      )}
       {showPaymentsItem && (
         <li>
           <MenuButton small={small} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
         </li>
       )}
-      <hr className={classNames(styles.divider, { [styles.small]: small })} />
+      <li>
+        <hr className={classNames(styles.divider, { [styles.small]: small })} />
+      </li>
       <li>
         <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Exit />} />
       </li>

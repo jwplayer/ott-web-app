@@ -14,7 +14,7 @@ import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import Button from '#src/components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
-import { useUpdateProfile } from '#src/hooks/useProfiles';
+import { useProfileErrorHandler, useUpdateProfile } from '#src/hooks/useProfiles';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import ProfileController from '#src/stores/ProfileController';
 import { getModule } from '#src/modules/container';
@@ -63,6 +63,8 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
 
   const updateProfile = useUpdateProfile();
 
+  const handleErrors = useProfileErrorHandler();
+
   const updateProfileHandler: UseFormOnSubmitHandler<ProfileFormValues> = async (formData, { setErrors, setSubmitting }) =>
     updateProfile.mutate(
       {
@@ -72,16 +74,14 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
         avatar_url: formData.avatar_url || profileDetails?.avatar_url,
       },
       {
+        onError: (e: unknown) => handleErrors(e, setErrors),
         onSettled: () => {
           setSubmitting(false);
-        },
-        onError: () => {
-          setErrors({ form: t('profile.form_error') });
         },
       },
     );
 
-  if (isLoading || isFetching) return <LoadingOverlay inline />;
+  if (isLoading || isFetching) return <LoadingOverlay />;
 
   return (
     <div className={classNames(styles.user, contained && profileStyles.contained)}>

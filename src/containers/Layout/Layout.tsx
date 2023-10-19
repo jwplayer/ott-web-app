@@ -21,18 +21,26 @@ import { addQueryParam } from '#src/utils/location';
 import { getSupportedLanguages } from '#src/i18n/config';
 import { ACCESS_MODEL } from '#src/config';
 import { useProfileStore } from '#src/stores/ProfileStore';
-import { unpersistProfile, useProfiles } from '#src/hooks/useProfiles';
+import { useProfiles, useSelectProfile } from '#src/hooks/useProfiles';
 import { IS_DEVELOPMENT_BUILD } from '#src/utils/common';
+import { getModule } from '#src/modules/container';
+import ProfileController from '#src/stores/ProfileController';
 
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
-  const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
+  const { config, accessModel, getIntegration } = useConfigStore(
+    ({ config, accessModel, getIntegration }) => ({ config, accessModel, getIntegration }),
+    shallow,
+  );
+  const isLoggedIn = !!useAccountStore(({ user }) => user);
+  const favoritesEnabled = !!config.features?.favoritesList;
   const { menu, assets, siteName, description, styling, features } = config;
   const metaDescription = description || t('default_description');
 
-  const getIntegration = useConfigStore((s) => s.getIntegration);
+  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+
   const { clientId } = getIntegration();
 
   const { searchPlaylist } = features || {};
@@ -40,11 +48,16 @@ const Layout = () => {
   const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
-  const { data: { responseData: { collection: profiles = [] } = {} } = {}, profilesEnabled } = useProfiles();
+  const {
+    query: { data: { responseData: { collection: profiles = [] } = {} } = {} },
+    profilesEnabled,
+  } = useProfiles();
 
   if (profilesEnabled && !profiles?.length) {
-    unpersistProfile();
+    profileController?.unpersistProfile();
   }
+
+  const selectProfile = useSelectProfile();
 
   const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
     ({ searchQuery, searchActive, userMenuOpen, languageMenuOpen }) => ({
@@ -57,7 +70,6 @@ const Layout = () => {
   );
   const { updateSearchQuery, resetSearchQuery } = useSearchQueryUpdater();
   const { profile } = useProfileStore();
-  const isLoggedIn = !!useAccountStore(({ user }) => user);
 
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
@@ -107,7 +119,7 @@ const Layout = () => {
     if (!clientId) return null;
 
     return isLoggedIn ? (
-      <UserMenu showPaymentsItem={accessModel !== ACCESS_MODEL.AVOD} />
+      <UserMenu showPaymentsItem={accessModel !== ACCESS_MODEL.AVOD} favoritesEnabled={favoritesEnabled} />
     ) : (
       <div className={styles.buttonContainer}>
         <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
@@ -154,10 +166,14 @@ const Layout = () => {
           closeLanguageMenu={closeLanguageMenu}
           canLogin={!!clientId}
           showPaymentsMenuItem={accessModel !== ACCESS_MODEL.AVOD}
-          currentProfile={profile ?? undefined}
-          profiles={profiles}
-          profilesEnabled={profilesEnabled}
-          accessModel={accessModel}
+          favoritesEnabled={favoritesEnabled}
+          profilesData={{
+            currentProfile: profile,
+            profiles,
+            profilesEnabled,
+            selectProfile: ({ avatarUrl, id }) => selectProfile.mutate({ id, avatarUrl }),
+            isSelectingProfile: !!selectProfile.isLoading,
+          }}
         >
           <Button label={t('home')} to="/" variant="text" />
           {menu.map((item) => (

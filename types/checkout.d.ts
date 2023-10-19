@@ -105,7 +105,7 @@ export type PaymentStatus = {
 export type CardPaymentData = {
   couponCode?: string;
   cardholderName: string;
-  cardNumber: string | number;
+  cardNumber: string;
   cardExpiry: string;
   cardExpMonth?: string;
   cardExpYear?: string;

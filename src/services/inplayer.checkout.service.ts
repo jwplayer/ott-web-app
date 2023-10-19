@@ -20,7 +20,6 @@ import type {
   GetOrder,
   GetPaymentMethods,
   GetSubscriptionSwitch,
-  GetSubscriptionSwitches,
   Offer,
   Order,
   Payment,
@@ -214,13 +213,22 @@ export default class InplayerCheckoutService extends CheckoutService {
     }
   };
 
+  getEntitlements: GetEntitlements = async ({ offerId }) => {
+    try {
+      const response = await InPlayer.Asset.checkAccessForAsset(parseInt(offerId));
+      return this.formatEntitlements(response.data.expires_at, true);
+    } catch {
+      return this.formatEntitlements();
+    }
+  };
+
   directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
     const payload = {
-      number: parseInt(String(cardPaymentPayload.cardNumber).replace(/\s/g, ''), 10),
+      number: cardPaymentPayload.cardNumber.replace(/\s/g, ''),
       cardName: cardPaymentPayload.cardholderName,
       expMonth: cardPaymentPayload.cardExpMonth || '',
       expYear: cardPaymentPayload.cardExpYear || '',
-      cvv: parseInt(cardPaymentPayload.cardCVC),
+      cvv: cardPaymentPayload.cardCVC,
       accessFee: order.id,
       paymentMethod: 1,
       voucherCode: cardPaymentPayload.couponCode,
@@ -241,24 +249,7 @@ export default class InplayerCheckoutService extends CheckoutService {
     }
   };
 
-  getEntitlements: GetEntitlements = async ({ offerId }) => {
-    try {
-      const response = await InPlayer.Asset.checkAccessForAsset(parseInt(offerId));
-      return this.formatEntitlements(response.data.expires_at, true);
-    } catch {
-      return this.formatEntitlements();
-    }
-  };
-
-  getSubscriptionSwitches: GetSubscriptionSwitches = async () => {
-    return {
-      responseData: {
-        available: [],
-        unavailable: [],
-      },
-      errors: [],
-    };
-  };
+  getSubscriptionSwitches = undefined;
 
   getOrder: GetOrder = () => {
     throw new Error('Method is not supported');

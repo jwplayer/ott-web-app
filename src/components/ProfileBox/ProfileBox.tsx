@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import styles from './ProfileBox.module.scss';
 
 import Edit from '#src/icons/Edit';
 import Check from '#src/icons/Check';
 import IconButton from '#components/IconButton/IconButton';
-import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 type Props = {
   name?: string;
@@ -19,14 +19,17 @@ type Props = {
 };
 
 const ProfileBox = ({ name, image, editMode = false, onClick, onEdit, selected = false }: Props) => {
+  const { t } = useTranslation('user');
+  const keyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => (event.key === 'Enter' || event.key === ' ') && onClick();
+
   return (
     <div className={styles.wrapper}>
       <div className={classNames(styles.inner, selected && styles.selected)}>
-        <div onClick={onClick} className={styles.box}>
-          <img className={styles.image} src={image || defaultAvatar} alt="" />
+        <div onClick={onClick} className={styles.box} role="button" tabIndex={0} onKeyDown={keyDownHandler}>
+          <img className={styles.image} src={image} alt="" />
         </div>
         {editMode && (
-          <IconButton aria-label="edit-profile-button" onClick={onEdit} className={styles.overlay}>
+          <IconButton aria-label={t('profile.edit')} onClick={onEdit} className={styles.overlay}>
             <Edit />
           </IconButton>
         )}

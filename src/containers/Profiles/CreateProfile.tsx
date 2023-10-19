@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import Form from './Form';
 import AVATARS from './avatarUrls.json';
+import Form from './Form';
 import type { ProfileFormValues } from './types';
 
 import LoadingOverlay from '#src/components/LoadingOverlay/LoadingOverlay';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import type { UseFormOnSubmitHandler } from '#src/hooks/useForm';
-import { useCreateProfile, useProfiles } from '#src/hooks/useProfiles';
+import { useCreateProfile, useProfileErrorHandler, useProfiles } from '#src/hooks/useProfiles';
 import styles from '#src/pages/User/User.module.scss';
 
 const CreateProfile = () => {
   const navigate = useNavigate();
-  const { profilesEnabled } = useProfiles();
+  const {
+    query: { isLoading: loadingProfilesList },
+    profilesEnabled,
+  } = useProfiles();
 
   const [avatarUrl, setAvatarUrl] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
-
-  const { t } = useTranslation('user');
 
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
@@ -26,8 +26,6 @@ const CreateProfile = () => {
   useEffect(() => {
     if (!profilesEnabled) navigate('/');
   }, [profilesEnabled, navigate]);
-
-  const { isLoading: loadingProfilesList } = useProfiles();
 
   const initialValues = {
     name: '',
@@ -38,6 +36,8 @@ const CreateProfile = () => {
 
   const createProfile = useCreateProfile();
 
+  const handleErrors = useProfileErrorHandler();
+
   const createProfileHandler: UseFormOnSubmitHandler<ProfileFormValues> = async (formData, { setSubmitting, setErrors }) =>
     createProfile.mutate(
       {
@@ -46,16 +46,14 @@ const CreateProfile = () => {
         avatar_url: formData.avatar_url,
       },
       {
-        onError: () => {
-          setErrors({ form: t('profile.form_error') });
-        },
+        onError: (e: unknown) => handleErrors(e, setErrors),
         onSettled: () => {
           setSubmitting(false);
         },
       },
     );
 
-  if (loadingProfilesList) return <LoadingOverlay inline />;
+  if (loadingProfilesList) return <LoadingOverlay />;
 
   return (
     <div className={styles.user}>
