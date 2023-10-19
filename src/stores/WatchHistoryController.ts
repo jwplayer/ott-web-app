@@ -30,7 +30,7 @@ export default class WatchHistoryController {
     }));
   }
 
-  async restoreWatchHistory() {
+  restoreWatchHistory = async () => {
     const { user } = useAccountStore.getState();
     const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;
 
@@ -47,9 +47,9 @@ export default class WatchHistoryController {
         continueWatchingPlaylistId: continueWatchingList,
       });
     }
-  }
+  };
 
-  async persistWatchHistory() {
+  persistWatchHistory = async () => {
     const { watchHistory } = useWatchHistoryStore.getState();
     const { user } = useAccountStore.getState();
     const { useSandbox } = useConfigStore.getState().getIntegration();
@@ -59,7 +59,7 @@ export default class WatchHistoryController {
     }
 
     this.watchHistoryService.persistWatchHistory(watchHistory);
-  }
+  };
 
   /**
    *  If we already have an element with continue watching state, we:
@@ -69,7 +69,7 @@ export default class WatchHistoryController {
    *    1. Move the element to the continue watching list start
    *    2. If there are many elements in continue watching state we remove the oldest one
    */
-  async saveItem(item: PlaylistItem, seriesItem: PlaylistItem | undefined, videoProgress: number | null) {
+  saveItem = async (item: PlaylistItem, seriesItem: PlaylistItem | undefined, videoProgress: number | null) => {
     const { watchHistory } = useWatchHistoryStore.getState();
 
     if (!videoProgress) return;
@@ -81,5 +81,5 @@ export default class WatchHistoryController {
       this.updateUserWatchHistory(updatedHistory);
       await this.persistWatchHistory();
     }
-  }
+  };
 }

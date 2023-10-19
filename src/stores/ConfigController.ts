@@ -12,7 +12,7 @@ export default class ConfigController {
     this.configService = configService;
   }
 
-  async initializeAdSchedule() {
+  initializeAdSchedule = async () => {
     const { config } = useConfigStore.getState();
 
     const adScheduleData = await this.configService.loadAdSchedule(config?.adSchedule);
@@ -20,9 +20,9 @@ export default class ConfigController {
     useConfigStore.setState({
       adScheduleData,
     });
-  }
+  };
 
-  async loadAndValidateConfig(configSource: string | undefined) {
+  loadAndValidateConfig = async (configSource: string | undefined) => {
     const configLocation = this.configService.formatSourceLocation(configSource);
     const defaultConfig = this.configService.getDefaultConfig();
 
@@ -66,7 +66,7 @@ export default class ConfigController {
     }
 
     return config;
-  }
+  };
 
   getIntegration = (): IntegrationInfo => {
     return useConfigStore.getState().getIntegration();

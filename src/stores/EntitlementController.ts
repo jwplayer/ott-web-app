@@ -11,11 +11,11 @@ export default class EntitlementController {
     this.entitlementService = entitlementService;
   }
 
-  async getMediaToken(host: string, id: string, jwt?: string, params?: GetMediaParams, drmPolicyId?: string) {
+  getMediaToken = async (host: string, id: string, jwt?: string, params?: GetMediaParams, drmPolicyId?: string) => {
     return this.entitlementService.getMediaToken(host, id, jwt, params, drmPolicyId);
-  }
+  };
 
-  async getJWPMediaToken(configId: string = '', mediaId: string) {
+  getJWPMediaToken = async (configId: string = '', mediaId: string) => {
     return this.entitlementService.getMediaToken(configId, mediaId);
-  }
+  };
 }

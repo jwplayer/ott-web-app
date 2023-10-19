@@ -10,7 +10,7 @@ import { getModule } from '#src/modules/container';
 const SocialButtonsList = () => {
   const accountController = getModule(AccountController);
 
-  const urls = useQuery('socialUrls', () => accountController.getSocialLoginUrls());
+  const urls = useQuery('socialUrls', accountController.getSocialLoginUrls);
 
   if (urls.error || !urls.data) {
     return null;

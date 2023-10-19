@@ -13,40 +13,40 @@ export default class EpgController {
     this.apiService = apiService;
   }
 
-  async getPlaylistById(id?: string, params: GetPlaylistParams = {}): Promise<Playlist | undefined> {
+  getPlaylistById = async (id?: string, params: GetPlaylistParams = {}): Promise<Playlist | undefined> => {
     return this.apiService.getPlaylistById(id, params);
-  }
+  };
 
-  async getMediaByWatchlist(playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> {
+  getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
     return this.apiService.getMediaByWatchlist(playlistId, mediaIds, token);
-  }
+  };
 
-  async getMediaById(id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> {
+  getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
     return this.apiService.getMediaById(id, token, drmPolicyId);
-  }
+  };
 
-  async getSeries(id: string, params: GetSeriesParams = {}): Promise<Series | undefined> {
+  getSeries = async (id: string, params: GetSeriesParams = {}): Promise<Series | undefined> => {
     return this.apiService.getSeries(id, params);
-  }
+  };
 
-  async getSeriesByMediaIds(mediaIds: string[]): Promise<{ [mediaId: string]: EpisodeInSeries[] | undefined } | undefined> {
+  getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [mediaId: string]: EpisodeInSeries[] | undefined } | undefined> => {
     return this.apiService.getSeriesByMediaIds(mediaIds);
-  }
+  };
 
-  async getEpisodes(args: { seriesId: string | undefined; pageOffset?: number; pageLimit?: number; afterId?: string }): Promise<EpisodesWithPagination> {
+  getEpisodes = async (args: { seriesId: string | undefined; pageOffset?: number; pageLimit?: number; afterId?: string }): Promise<EpisodesWithPagination> => {
     return this.apiService.getEpisodes(args);
-  }
+  };
 
-  async getSeasonWithEpisodes(args: {
+  getSeasonWithEpisodes = async (args: {
     seriesId: string | undefined;
     seasonNumber: number;
     pageOffset?: number;
     pageLimit?: number;
-  }): Promise<EpisodesWithPagination> {
+  }): Promise<EpisodesWithPagination> => {
     return this.apiService.getSeasonWithEpisodes(args);
-  }
+  };
 
-  async getAdSchedule(id: string | undefined | null): Promise<AdSchedule | undefined> {
+  getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {
     return this.apiService.getAdSchedule(id);
-  }
+  };
 }

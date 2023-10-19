@@ -11,7 +11,7 @@ export default class EpgController {
     this.epgService = epgService;
   }
 
-  async getSchedules(items: PlaylistItem[]) {
+  getSchedules = async (items: PlaylistItem[]) => {
     return this.epgService.getSchedules(items);
-  }
+  };
 }

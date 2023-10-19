@@ -20,7 +20,7 @@ export default class FavoritesController {
     this.accountService = accountService;
   }
 
-  async restoreFavorites() {
+  restoreFavorites = async () => {
     const { user } = useAccountStore.getState();
     const favoritesList = useConfigStore.getState().config.features?.favoritesList;
 
@@ -34,9 +34,9 @@ export default class FavoritesController {
     }
 
     useFavoritesStore.setState({ favorites, favoritesPlaylistId: favoritesList });
-  }
+  };
 
-  persistFavorites = () => {
+  persistFavorites = async () => {
     const { favorites } = useFavoritesStore.getState();
     const { user } = useAccountStore.getState();
     const { useSandbox } = useConfigStore.getState().getIntegration();
@@ -63,7 +63,7 @@ export default class FavoritesController {
     await this.restoreFavorites();
   }
 
-  async saveItem(item: PlaylistItem) {
+  saveItem = async (item: PlaylistItem) => {
     const { favorites } = useFavoritesStore.getState();
     const service = this.favoritesService;
 
@@ -73,9 +73,9 @@ export default class FavoritesController {
       this.updateUserFavorites(items);
       await this.persistFavorites();
     }
-  }
+  };
 
-  async removeItem(item: PlaylistItem) {
+  removeItem = async (item: PlaylistItem) => {
     const { favorites } = useFavoritesStore.getState();
 
     const items = favorites.filter(({ mediaid }) => mediaid !== item.mediaid);
@@ -83,9 +83,9 @@ export default class FavoritesController {
     this.updateUserFavorites(items);
 
     await this.persistFavorites();
-  }
+  };
 
-  async toggleFavorite(item: PlaylistItem | undefined) {
+  toggleFavorite = async (item: PlaylistItem | undefined) => {
     const { favorites, hasItem, setWarning } = useFavoritesStore.getState();
 
     if (!item) {
@@ -107,11 +107,11 @@ export default class FavoritesController {
     }
 
     await this.saveItem(item);
-  }
+  };
 
-  async clear() {
+  clear = async () => {
     useFavoritesStore.setState({ favorites: [] });
 
     await this.persistFavorites();
-  }
+  };
 }
