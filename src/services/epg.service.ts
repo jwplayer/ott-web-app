@@ -62,7 +62,7 @@ export default class EpgService {
   /**
    * Validate the given data with the epgProgramSchema and transform it into an EpgProgram
    */
-  async transformProgram(data: unknown): Promise<EpgProgram> {
+  transformProgram = async (data: unknown): Promise<EpgProgram> => {
     const program = await epgProgramSchema.validate(data);
     const image = program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || undefined;
 
@@ -75,12 +75,12 @@ export default class EpgService {
       backgroundImage: image,
       description: program.chapterPointCustomProperties?.find((item) => item.key === 'description')?.value || undefined,
     };
-  }
+  };
 
   /**
    * Ensure the given data validates to the EpgProgram schema
    */
-  async parseSchedule(data: unknown, demo = false) {
+  parseSchedule = async (data: unknown, demo = false) => {
     if (!Array.isArray(data)) return [];
 
     const transformResults = await Promise.allSettled(
@@ -100,12 +100,12 @@ export default class EpgService {
       .filter((program): program is EpgProgram => !!program);
 
     return demo ? this.generateDemoPrograms(programs) : programs;
-  }
+  };
 
   /**
    * Fetch the schedule data for the given PlaylistItem
    */
-  async fetchSchedule(item: PlaylistItem) {
+  fetchSchedule = async (item: PlaylistItem) => {
     if (!item.scheduleUrl) {
       logDev('Tried requesting a schedule for an item with missing `scheduleUrl`', item);
       return undefined;
@@ -130,13 +130,13 @@ export default class EpgService {
         logDev(`Fetch failed for EPG schedule: '${item.scheduleUrl}'`, error);
       }
     }
-  }
+  };
 
   /**
    * Fetch and parse the EPG schedule for the given PlaylistItem.
    * When there is no program (empty schedule) or the request fails, it returns a static program.
    */
-  async getSchedule(item: PlaylistItem) {
+  getSchedule = async (item: PlaylistItem) => {
     const schedule = await this.fetchSchedule(item);
     const programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
     const catchupHours = item.catchupHours && parseInt(item.catchupHours);
@@ -150,12 +150,12 @@ export default class EpgService {
       backgroundImage: item.backgroundImage,
       programs,
     } as EpgChannel;
-  }
+  };
 
   /**
    * Get all schedules for the given PlaylistItem's
    */
-  async getSchedules(items: PlaylistItem[]) {
+  getSchedules = async (items: PlaylistItem[]) => {
     return Promise.all(items.map((item) => this.getSchedule(item)));
-  }
+  };
 }

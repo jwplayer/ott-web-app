@@ -98,6 +98,7 @@ export default class AccountController {
       canShowReceipts: features.canShowReceipts,
       canSupportEmptyFullName: features.canSupportEmptyFullName,
       hasNotifications: features.hasNotifications,
+      hasSocialURLs: features.hasSocialURLs,
     });
 
     await this.profileController?.loadPersistedProfile();
@@ -483,14 +484,14 @@ export default class AccountController {
 
     // resolve and fetch the pending offer after upgrade/downgrade
     try {
-      if (typeof this.checkoutService.getOffer === 'undefined') {
-        throw new Error('getOffer is not available in checkout service');
-      }
-      if (typeof this.checkoutService.getSubscriptionSwitch === 'undefined') {
-        throw new Error('getSubscriptionSwitch is not available in checkout service');
-      }
-
       if (activeSubscription?.pendingSwitchId) {
+        if (typeof this.checkoutService.getOffer === 'undefined') {
+          throw new Error('getOffer is not available in checkout service');
+        }
+        if (typeof this.checkoutService.getSubscriptionSwitch === 'undefined') {
+          throw new Error('getSubscriptionSwitch is not available in checkout service');
+        }
+
         const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, sandbox);
         const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, sandbox);
 
@@ -527,7 +528,7 @@ export default class AccountController {
     const { hasSocialURLs } = useFeaturesStore.getState();
 
     if (!hasSocialURLs || typeof this.accountService.getSocialUrls === 'undefined') {
-      throw new Error('Export account feature is not enabled');
+      throw new Error('Social logins feature is not enabled');
     }
 
     return this.accountService.getSocialUrls(config);

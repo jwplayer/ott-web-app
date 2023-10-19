@@ -40,15 +40,15 @@ export default class FavoritesService {
     persist.setItem(this.PERSIST_KEY_FAVORITES, this.serializeFavorites(favorites));
   };
 
-  getMaxFavoritesCount() {
+  getMaxFavoritesCount = () => {
     return this.MAX_FAVORITES_COUNT;
-  }
+  };
 
-  hasReachedFavoritesLimit(favorites: Favorite[]) {
+  hasReachedFavoritesLimit = (favorites: Favorite[]) => {
     return favorites?.length >= MAX_WATCHLIST_ITEMS_COUNT;
-  }
+  };
 
-  createFavorite(item: PlaylistItem): Favorite {
+  createFavorite = (item: PlaylistItem): Favorite => {
     return {
       mediaid: item.mediaid,
       title: item.title,
@@ -56,5 +56,5 @@ export default class FavoritesService {
       duration: item.duration,
       playlistItem: item,
     } as Favorite;
-  }
+  };
 }

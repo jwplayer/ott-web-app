@@ -32,9 +32,6 @@ import type {
   ChangePasswordWithOldPassword,
   UpdatePersonalShelves,
   NotificationsData,
-  ExportAccountData,
-  SocialURLSData,
-  DeleteAccount,
 } from '#types/account';
 
 @injectable()
@@ -58,6 +55,25 @@ export default class CleengAccountService extends AccountService {
 
     this.cleengService = cleengService;
   }
+
+  private handleErrors = (errors: ApiResponse['errors']) => {
+    if (errors.length > 0) {
+      throw new Error(errors[0]);
+    }
+  };
+
+  private getCustomerIdFromAuthData = (auth: AuthData) => {
+    const decodedToken: JwtDetails = jwtDecode(auth.jwt);
+    return decodedToken.customerId;
+  };
+
+  private getCustomer: GetCustomer = async (payload, sandbox) => {
+    return this.cleengService.get(sandbox, `/customers/${payload.customerId}`, { authenticate: true });
+  };
+
+  private getLocales: GetLocales = async (sandbox) => {
+    return this.cleengService.getLocales(sandbox);
+  };
 
   initialize = async (config: Config, logoutCallback: () => Promise<void>) => {
     await this.cleengService.initialize(!!config.integrations.cleeng?.useSandbox, logoutCallback);
@@ -269,34 +285,9 @@ export default class CleengAccountService extends AccountService {
     return false;
   };
 
-  getSocialUrls: SocialURLSData = async () => {
-    throw new Error('Method is not supported');
-  };
+  getSocialUrls: undefined;
 
-  exportAccountData: ExportAccountData = () => {
-    throw new Error('Method is not supported');
-  };
+  exportAccountData: undefined;
 
-  deleteAccount: DeleteAccount = () => {
-    throw new Error('Method is not supported');
-  };
-
-  private handleErrors = (errors: ApiResponse['errors']) => {
-    if (errors.length > 0) {
-      throw new Error(errors[0]);
-    }
-  };
-
-  private getCustomerIdFromAuthData = (auth: AuthData) => {
-    const decodedToken: JwtDetails = jwtDecode(auth.jwt);
-    return decodedToken.customerId;
-  };
-
-  private getCustomer: GetCustomer = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/customers/${payload.customerId}`, { authenticate: true });
-  };
-
-  private getLocales: GetLocales = async (sandbox) => {
-    return this.cleengService.getLocales(sandbox);
-  };
+  deleteAccount: undefined;
 }

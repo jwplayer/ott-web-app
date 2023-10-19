@@ -36,6 +36,7 @@ const useContentProtection = <T>(
         const accountController = getModule(AccountController);
         const authData = await accountController.getAuthData();
         const { host, drmPolicyId } = signingConfig;
+
         return entitlementController.getMediaToken(host, id, authData?.jwt, params, drmPolicyId);
       }
       // if provider is JWP

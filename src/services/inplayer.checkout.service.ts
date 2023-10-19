@@ -4,22 +4,13 @@ import { injectable } from 'inversify';
 import CheckoutService from './checkout.service';
 
 import type {
-  AddAdyenPaymentDetails,
   CardPaymentData,
   CreateOrder,
   CreateOrderArgs,
-  DeletePaymentMethod,
-  FinalizeAdyenPaymentDetails,
-  GetAdyenPaymentSession,
   GetEntitlements,
   GetEntitlementsResponse,
-  GetFinalizeAdyenPayment,
-  GetInitialAdyenPayment,
-  GetOffer,
   GetOffers,
-  GetOrder,
   GetPaymentMethods,
-  GetSubscriptionSwitch,
   Offer,
   Order,
   Payment,
@@ -27,9 +18,7 @@ import type {
   PaymentWithAdyen,
   PaymentWithoutDetails,
   PaymentWithPayPal,
-  SwitchSubscription,
   UpdateOrder,
-  UpdatePaymentWithPayPal,
 } from '#types/checkout';
 import { isSVODOffer } from '#src/utils/subscription';
 
@@ -37,16 +26,16 @@ import { isSVODOffer } from '#src/utils/subscription';
 export default class InplayerCheckoutService extends CheckoutService {
   private readonly cardPaymentProvider = 'stripe';
 
-  private formatPaymentMethod(method: MerchantPaymentMethod, cardPaymentProvider: string): PaymentMethod {
+  private formatPaymentMethod = (method: MerchantPaymentMethod, cardPaymentProvider: string): PaymentMethod => {
     return {
       id: method.id,
       methodName: method.method_name.toLocaleLowerCase(),
       provider: cardPaymentProvider,
       logoUrl: '',
     } as PaymentMethod;
-  }
+  };
 
-  private formatEntitlements(expiresAt: number = 0, accessGranted: boolean = false): ServiceResponse<GetEntitlementsResponse> {
+  private formatEntitlements = (expiresAt: number = 0, accessGranted: boolean = false): ServiceResponse<GetEntitlementsResponse> => {
     return {
       errors: [],
       responseData: {
@@ -54,9 +43,9 @@ export default class InplayerCheckoutService extends CheckoutService {
         expiresAt,
       },
     };
-  }
+  };
 
-  private formatOffer(offer: AccessFee): Offer {
+  private formatOffer = (offer: AccessFee): Offer => {
     const ppvOffers = ['ppv', 'ppv_custom'];
     const offerId = ppvOffers.includes(offer.access_type.name) ? `C${offer.id}` : `S${offer.id}`;
 
@@ -72,9 +61,9 @@ export default class InplayerCheckoutService extends CheckoutService {
       freePeriods: offer.trial_period ? 1 : 0,
       planSwitchEnabled: offer.item.plan_switch_enabled ?? false,
     } as Offer;
-  }
+  };
 
-  private formatOrder(payload: CreateOrderArgs): Order {
+  private formatOrder = (payload: CreateOrderArgs): Order => {
     return {
       id: payload.offer.id,
       customerId: payload.customerId,
@@ -91,7 +80,7 @@ export default class InplayerCheckoutService extends CheckoutService {
       currency: payload.offer.offerCurrency || 'EUR',
       requiredPaymentDetails: true,
     } as Order;
-  }
+  };
 
   createOrder: CreateOrder = async (payload) => {
     return {
@@ -251,47 +240,25 @@ export default class InplayerCheckoutService extends CheckoutService {
 
   getSubscriptionSwitches = undefined;
 
-  getOrder: GetOrder = () => {
-    throw new Error('Method is not supported');
-  };
+  getOrder = undefined;
 
-  switchSubscription: SwitchSubscription = () => {
-    throw new Error('Method is not supported');
-  };
+  switchSubscription = undefined;
 
-  getSubscriptionSwitch: GetSubscriptionSwitch = () => {
-    throw new Error('Method is not supported');
-  };
+  getSubscriptionSwitch = undefined;
 
-  createAdyenPaymentSession: GetAdyenPaymentSession = () => {
-    throw new Error('Method is not supported');
-  };
+  createAdyenPaymentSession = undefined;
 
-  initialAdyenPayment: GetInitialAdyenPayment = () => {
-    throw new Error('Method is not supported');
-  };
+  initialAdyenPayment = undefined;
 
-  finalizeAdyenPayment: GetFinalizeAdyenPayment = () => {
-    throw new Error('Method is not supported');
-  };
+  finalizeAdyenPayment = undefined;
 
-  updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal = () => {
-    throw new Error('Method is not supported');
-  };
+  updatePaymentMethodWithPayPal = undefined;
 
-  deletePaymentMethod: DeletePaymentMethod = () => {
-    throw new Error('Method is not supported');
-  };
+  deletePaymentMethod = undefined;
 
-  addAdyenPaymentDetails: AddAdyenPaymentDetails = () => {
-    throw new Error('Method is not supported');
-  };
+  addAdyenPaymentDetails = undefined;
 
-  finalizeAdyenPaymentDetails: FinalizeAdyenPaymentDetails = () => {
-    throw new Error('Method is not supported');
-  };
+  finalizeAdyenPaymentDetails = undefined;
 
-  getOffer: GetOffer = () => {
-    throw new Error('Method is not supported');
-  };
+  getOffer = undefined;
 }

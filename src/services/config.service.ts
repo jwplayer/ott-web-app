@@ -47,17 +47,17 @@ export default class ConfigService {
     return { ...config, siteName: siteName || i18next.t('common:default_site_name'), content: updatedContent };
   };
 
-  getDefaultConfig(): Config {
+  getDefaultConfig = (): Config => {
     return this.DEFAULT_CONFIG;
-  }
+  };
 
-  validateConfig(config?: Config): Promise<Config> {
+  validateConfig = (config?: Config): Promise<Config> => {
     return configSchema.validate(config, {
       strict: true,
     }) as Promise<Config>;
-  }
+  };
 
-  formatSourceLocation(source?: string) {
+  formatSourceLocation = (source?: string) => {
     if (!source) {
       return undefined;
     }
@@ -67,13 +67,13 @@ export default class ConfigService {
     }
 
     return source;
-  }
+  };
 
-  async loadAdSchedule(adScheduleId: string | undefined | null) {
+  loadAdSchedule = async (adScheduleId: string | undefined | null) => {
     return this.apiService.getAdSchedule(adScheduleId);
-  }
+  };
 
-  async loadConfig(configLocation: string) {
+  loadConfig = async (configLocation: string) => {
     if (!configLocation) {
       throw new Error('No config location found');
     }
@@ -96,9 +96,9 @@ export default class ConfigService {
     }
 
     return this.enrichConfig(data);
-  }
+  };
 
-  setCssVariables({ backgroundColor, highlightColor, headerBackground }: Styling) {
+  setCssVariables = ({ backgroundColor, highlightColor, headerBackground }: Styling) => {
     const root = document.querySelector(':root') as HTMLElement;
 
     if (root && backgroundColor) {
@@ -114,7 +114,7 @@ export default class ConfigService {
       root.style.setProperty('--header-background', headerBackground);
       root.style.setProperty('--header-contrast-color', calculateContrastColor(headerBackground));
     }
-  }
+  };
 
   maybeInjectAnalyticsLibrary = (config: Config) => {
     if (!config.analyticsToken) return;

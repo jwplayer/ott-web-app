@@ -5,7 +5,6 @@ import SubscriptionService from './subscription.service';
 
 import { addQueryParams } from '#src/utils/formatting';
 import type {
-  ChangeSubscription,
   FetchReceipt,
   GetActivePayment,
   GetActiveSubscription,
@@ -13,7 +12,6 @@ import type {
   GetPaymentDetails,
   GetSubscriptions,
   GetTransactions,
-  UpdateCardDetails,
   UpdateSubscription,
 } from '#types/subscription';
 
@@ -70,11 +68,7 @@ export default class CleengSubscriptionService extends SubscriptionService {
     return this.cleengService.get(sandbox, `/receipt/${transactionId}`, { authenticate: true });
   };
 
-  updateCardDetails: UpdateCardDetails = () => {
-    throw new Error('Method is not supported');
-  };
+  updateCardDetails: undefined;
 
-  changeSubscription: ChangeSubscription = () => {
-    throw new Error('Method is not supported');
-  };
+  changeSubscription: undefined;
 }

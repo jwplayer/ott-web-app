@@ -30,7 +30,7 @@ const PaymentContainer = () => {
   );
   const navigate = useNavigate();
 
-  const { canRenewSubscription, canUpdatePaymentMethod, canShowReceipts } = useFeaturesStore();
+  const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = useFeaturesStore();
   const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading } = useAccountStore();
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
@@ -69,10 +69,10 @@ const PaymentContainer = () => {
   };
 
   useEffect(() => {
-    if (accessModel !== ACCESS_MODEL.AVOD) {
+    if (accessModel !== ACCESS_MODEL.AVOD && canRenewSubscription) {
       checkoutController.getSubscriptionSwitches();
     }
-  }, [accessModel, checkoutController]);
+  }, [accessModel, checkoutController, canRenewSubscription]);
 
   useEffect(() => {
     if (!loading && !customer) {

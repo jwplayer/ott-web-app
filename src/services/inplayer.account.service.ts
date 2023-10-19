@@ -77,7 +77,7 @@ export default class InplayerAccountService extends AccountService {
     };
   };
 
-  private getTermsConsent(): Consent {
+  private getTermsConsent = (): Consent => {
     const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
 
     return this.formatPublisherConsents({
@@ -85,15 +85,15 @@ export default class InplayerAccountService extends AccountService {
       name: 'terms',
       label: i18next.t('account:registration.terms_consent', { termsUrl }),
     });
-  }
+  };
 
-  private parseJson(value: string, fallback = {}) {
+  private parseJson = (value: string, fallback = {}) => {
     try {
       return JSON.parse(value);
     } catch {
       return fallback;
     }
-  }
+  };
 
   private formatFavorite = (favorite: FavoritesData): Favorite => {
     return {
@@ -108,7 +108,7 @@ export default class InplayerAccountService extends AccountService {
     } as WatchHistoryItem;
   };
 
-  private formatAccount(account: AccountData): Customer {
+  private formatAccount = (account: AccountData): Customer => {
     const { id, uuid, email, full_name: fullName, metadata, created_at: createdAt } = account;
     const regDate = new Date(createdAt * 1000).toLocaleString();
 
@@ -127,9 +127,9 @@ export default class InplayerAccountService extends AccountService {
       country: '',
       lastUserIp: '',
     };
-  }
+  };
 
-  private formatUpdateAccount(customer: UpdateCustomerArgs) {
+  private formatUpdateAccount = (customer: UpdateCustomerArgs) => {
     const firstName = customer.firstName?.trim() || '';
     const lastName = customer.lastName?.trim() || '';
     const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
@@ -145,17 +145,17 @@ export default class InplayerAccountService extends AccountService {
     };
 
     return data;
-  }
+  };
 
-  private formatAuth(auth: InPlayerAuthData): AuthData {
+  private formatAuth = (auth: InPlayerAuthData): AuthData => {
     const { access_token: jwt } = auth;
     return {
       jwt,
       refreshToken: '',
     };
-  }
+  };
 
-  private formatPublisherConsents(consent: Partial<RegisterField>) {
+  private formatPublisherConsents = (consent: Partial<RegisterField>) => {
     return {
       broadcasterId: 0,
       enabledByDefault: false,
@@ -165,7 +165,7 @@ export default class InplayerAccountService extends AccountService {
       value: '',
       version: '1',
     } as Consent;
-  }
+  };
 
   initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
     const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;

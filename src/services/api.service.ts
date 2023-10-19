@@ -26,18 +26,18 @@ export default class ApiService {
    * We use playlistLabel prop to define the label used for all media items inside.
    * That way we can change the behavior of the same media items being in different playlists
    */
-  private generateAlternateImageURL({ item, label, playlistLabel }: { item: PlaylistItem; label: string; playlistLabel?: string }) {
+  private generateAlternateImageURL = ({ item, label, playlistLabel }: { item: PlaylistItem; label: string; playlistLabel?: string }) => {
     const pathname = `/v2/media/${item.mediaid}/images/${playlistLabel || label}.webp`;
     const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { poster_fallback: 1, fallback: playlistLabel ? label : null });
 
     return url;
-  }
+  };
 
   /**
    * Transform incoming media items
    * - Parses productId into MediaOffer[] for all cleeng offers
    */
-  private transformMediaItem(item: PlaylistItem, playlist?: Playlist) {
+  private transformMediaItem = (item: PlaylistItem, playlist?: Playlist) => {
     const config = ConfigStore.getState().config;
     const offerKeys = Object.keys(config?.integrations)[0];
     const playlistLabel = playlist?.imageLabel;
@@ -56,7 +56,7 @@ export default class ApiService {
     transformedMediaItem.mediaStatus = getMediaStatusFromEventState(transformedMediaItem);
 
     return transformedMediaItem;
-  }
+  };
 
   /**
    * Transform incoming playlists
@@ -64,14 +64,14 @@ export default class ApiService {
    * @param playlist
    * @param relatedMediaId
    */
-  private async transformPlaylist(playlist: Playlist, relatedMediaId?: string) {
+  private transformPlaylist = async (playlist: Playlist, relatedMediaId?: string) => {
     playlist.playlist = playlist.playlist.map((item) => this.transformMediaItem(item, playlist));
 
     // remove the related media item (when this is a recommendations playlist)
     if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
 
     return playlist;
-  }
+  };
 
   /**
    * Get playlist by id
@@ -79,7 +79,7 @@ export default class ApiService {
    * @param params
    * @param {string} [drmPolicyId]
    */
-  async getPlaylistById(id?: string, params: GetPlaylistParams = {}): Promise<Playlist | undefined> {
+  getPlaylistById = async (id?: string, params: GetPlaylistParams = {}): Promise<Playlist | undefined> => {
     if (!id) {
       return undefined;
     }
@@ -90,14 +90,14 @@ export default class ApiService {
     const data = await getDataOrThrow(response);
 
     return this.transformPlaylist(data, params.related_media_id);
-  }
+  };
 
   /**
    * Get watchlist by playlistId
    * @param {string} playlistId
    * @param {string} [token]
    */
-  async getMediaByWatchlist(playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> {
+  getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
     if (!mediaIds?.length) {
       return [];
     }
@@ -110,7 +110,7 @@ export default class ApiService {
     if (!data) throw new Error(`The data was not found using the watchlist ${playlistId}`);
 
     return (data.playlist || []).map((item) => this.transformMediaItem(item));
-  }
+  };
 
   /**
    * Get media by id
@@ -118,7 +118,7 @@ export default class ApiService {
    * @param {string} [token]
    * @param {string} [drmPolicyId]
    */
-  async getMediaById(id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> {
+  getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
     const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
     const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { token });
     const response = await fetch(url);
@@ -127,14 +127,14 @@ export default class ApiService {
 
     if (!mediaItem) throw new Error('MediaItem not found');
     return this.transformMediaItem(mediaItem);
-  }
+  };
 
   /**
    * Get series by id
    * @param {string} id
    * @param params
    */
-  async getSeries(id: string, params: GetSeriesParams = {}): Promise<Series | undefined> {
+  getSeries = async (id: string, params: GetSeriesParams = {}): Promise<Series | undefined> => {
     if (!id) {
       throw new Error('Series ID is required');
     }
@@ -145,24 +145,24 @@ export default class ApiService {
     const data = await getDataOrThrow(response);
 
     return data;
-  }
+  };
 
   /**
    * Get all series for the given media_ids
    * @param {string[]} mediaIds
    */
-  async getSeriesByMediaIds(mediaIds: string[]): Promise<{ [mediaId: string]: EpisodeInSeries[] | undefined } | undefined> {
+  getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [mediaId: string]: EpisodeInSeries[] | undefined } | undefined> => {
     const pathname = `/apps/series`;
     const url = `${import.meta.env.APP_API_BASE_URL}${pathname}?media_ids=${mediaIds.join(',')}`;
     const response = await fetch(url);
     return await getDataOrThrow(response);
-  }
+  };
 
   /**
    * Get all episodes of the selected series (when no particular season is selected or when episodes are attached to series)
    * @param {string} seriesId
    */
-  async getEpisodes({
+  getEpisodes = async ({
     seriesId,
     pageOffset,
     pageLimit = PAGE_LIMIT,
@@ -172,7 +172,7 @@ export default class ApiService {
     pageOffset?: number;
     pageLimit?: number;
     afterId?: string;
-  }): Promise<EpisodesWithPagination> {
+  }): Promise<EpisodesWithPagination> => {
     if (!seriesId) {
       throw new Error('Series ID is required');
     }
@@ -196,13 +196,13 @@ export default class ApiService {
       })),
       pagination: { page, page_limit, total },
     };
-  }
+  };
 
   /**
    * Get season of the selected series
    * @param {string} seriesId
    */
-  async getSeasonWithEpisodes({
+  getSeasonWithEpisodes = async ({
     seriesId,
     seasonNumber,
     pageOffset,
@@ -212,7 +212,7 @@ export default class ApiService {
     seasonNumber: number;
     pageOffset?: number;
     pageLimit?: number;
-  }): Promise<EpisodesWithPagination> {
+  }): Promise<EpisodesWithPagination> => {
     if (!seriesId) {
       throw new Error('Series ID is required');
     }
@@ -232,14 +232,14 @@ export default class ApiService {
       })),
       pagination: { page, page_limit, total },
     };
-  }
+  };
 
   /**
    * Get series by id
    * @param {string} id
    * @param params
    */
-  async getAdSchedule(id: string | undefined | null): Promise<AdSchedule | undefined> {
+  getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {
     if (!id) {
       throw new Error('Ad Schedule ID is required');
     }
@@ -249,5 +249,5 @@ export default class ApiService {
     const data = await getDataOrThrow(response);
 
     return data;
-  }
+  };
 }

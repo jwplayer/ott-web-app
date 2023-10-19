@@ -6,12 +6,9 @@ import SubscriptionService from './subscription.service';
 
 import type {
   ChangeSubscription,
-  FetchReceipt,
   GetActivePayment,
   GetActiveSubscription,
   GetAllTransactions,
-  GetPaymentDetails,
-  GetTransactions,
   PaymentDetail,
   Subscription,
   Transaction,
@@ -37,7 +34,7 @@ interface SubscriptionDetails extends InplayerSubscription {
 
 @injectable()
 export default class InplayerSubscriptionService extends SubscriptionService {
-  private formatCardDetails(card: Card & { card_type: string; account_id: number; currency: string }): PaymentDetail {
+  private formatCardDetails = (card: Card & { card_type: string; account_id: number; currency: string }): PaymentDetail => {
     const { number, exp_month, exp_year, card_name, card_type, account_id, currency } = card;
     const zeroFillExpMonth = `0${exp_month}`.slice(-2);
     return {
@@ -51,9 +48,9 @@ export default class InplayerSubscriptionService extends SubscriptionService {
       active: true,
       currency,
     } as PaymentDetail;
-  }
+  };
 
-  private formatTransaction(transaction: PurchaseDetails): Transaction {
+  private formatTransaction = (transaction: PurchaseDetails): Transaction => {
     const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
 
     return {
@@ -78,9 +75,9 @@ export default class InplayerSubscriptionService extends SubscriptionService {
       customerCurrency: '',
       paymentMethod: transaction.payment_method || i18next.t('user:payment.access_granted'),
     };
-  }
+  };
 
-  private formatActiveSubscription(subscription: SubscriptionDetails, expiresAt: number) {
+  private formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: number) => {
     let status = '';
     switch (subscription.action_type) {
       case 'free-trial':
@@ -116,9 +113,9 @@ export default class InplayerSubscriptionService extends SubscriptionService {
       unsubscribeUrl: subscription.unsubscribe_url,
       pendingSwitchId: null,
     } as Subscription;
-  }
+  };
 
-  private formatGrantedSubscription(subscription: GetItemAccessV1) {
+  private formatGrantedSubscription = (subscription: GetItemAccessV1) => {
     return {
       subscriptionId: '',
       offerId: subscription.item.id.toString(),
@@ -135,7 +132,7 @@ export default class InplayerSubscriptionService extends SubscriptionService {
       unsubscribeUrl: '',
       pendingSwitchId: null,
     } as Subscription;
-  }
+  };
 
   getActiveSubscription: GetActiveSubscription = async ({ config }) => {
     const assetId = config.integrations.jwp?.assetId || 0;
@@ -237,15 +234,9 @@ export default class InplayerSubscriptionService extends SubscriptionService {
     }
   };
 
-  getPaymentDetails: GetPaymentDetails = () => {
-    throw new Error('Method is not supported');
-  };
+  getPaymentDetails = undefined;
 
-  getTransactions: GetTransactions = () => {
-    throw new Error('Method is not supported');
-  };
+  getTransactions = undefined;
 
-  fetchReceipt: FetchReceipt = () => {
-    throw new Error('Method is not supported');
-  };
+  fetchReceipt = undefined;
 }

@@ -18,12 +18,12 @@ export default class WatchHistoryService {
   }
 
   // Retrieve watch history media items info using a provided watch list
-  private async getWatchHistoryItems(continueWatchingList: string, ids: string[]): Promise<Record<string, PlaylistItem>> {
+  private getWatchHistoryItems = async (continueWatchingList: string, ids: string[]): Promise<Record<string, PlaylistItem>> => {
     const watchHistoryItems = await this.apiService.getMediaByWatchlist(continueWatchingList, ids);
     const watchHistoryItemsDict = Object.fromEntries((watchHistoryItems || []).map((item) => [item.mediaid, item]));
 
     return watchHistoryItemsDict;
-  }
+  };
 
   // We store separate episodes in the watch history and to show series card in the Continue Watching shelf we need to get their parent media items
   private getWatchHistorySeriesItems = async (continueWatchingList: string, ids: string[]): Promise<Record<string, PlaylistItem | undefined>> => {
@@ -100,7 +100,7 @@ export default class WatchHistoryService {
    *    1. Move the element to the continue watching list start
    *    2. If there are many elements in continue watching state we remove the oldest one
    */
-  async saveItem(item: PlaylistItem, seriesItem: PlaylistItem | undefined, videoProgress: number | null, watchHistory: WatchHistoryItem[]) {
+  saveItem = async (item: PlaylistItem, seriesItem: PlaylistItem | undefined, videoProgress: number | null, watchHistory: WatchHistoryItem[]) => {
     if (!videoProgress) return;
 
     const watchHistoryItem = this.createWatchHistoryItem(seriesItem || item, item.mediaid, seriesItem?.mediaid, videoProgress);
@@ -114,5 +114,5 @@ export default class WatchHistoryService {
     updatedHistory.splice(this.MAX_WATCH_HISTORY_COUNT);
 
     return updatedHistory;
-  }
+  };
 }

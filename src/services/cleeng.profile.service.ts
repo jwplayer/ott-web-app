@@ -2,31 +2,17 @@ import { injectable } from 'inversify';
 
 import ProfileService from './profile.service';
 
-import type { ListProfiles, CreateProfile, UpdateProfile, EnterProfile, GetProfileDetails, DeleteProfile } from '#types/account';
-
 @injectable()
 export default class CleengProfileService extends ProfileService {
-  listProfiles: ListProfiles = async () => {
-    throw new Error('Method is not supported');
-  };
+  listProfiles: undefined;
 
-  createProfile: CreateProfile = async () => {
-    throw new Error('Method is not supported');
-  };
+  createProfile: undefined;
 
-  updateProfile: UpdateProfile = async () => {
-    throw new Error('Method is not supported');
-  };
+  updateProfile: undefined;
 
-  enterProfile: EnterProfile = async () => {
-    throw new Error('Method is not supported');
-  };
+  enterProfile: undefined;
 
-  getProfileDetails: GetProfileDetails = async () => {
-    throw new Error('Method is not supported');
-  };
+  getProfileDetails: undefined;
 
-  deleteProfile: DeleteProfile = async () => {
-    throw new Error('Method is not supported');
-  };
+  deleteProfile: undefined;
 }

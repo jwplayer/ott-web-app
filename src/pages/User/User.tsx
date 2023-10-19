@@ -49,7 +49,7 @@ const User = (): JSX.Element => {
 
   const isLargeScreen = breakpoint > Breakpoint.md;
   const { user: customer, subscription, loading } = useAccountStore();
-  const { canUpdateEmail } = useFeaturesStore();
+  const { canUpdateEmail, canRenewSubscription } = useFeaturesStore();
   const { profile } = useProfileStore();
 
   const { profilesEnabled } = useProfiles();
@@ -62,10 +62,10 @@ const User = (): JSX.Element => {
   }, [accountController]);
 
   useEffect(() => {
-    if (accessModel !== ACCESS_MODEL.AVOD) {
+    if (accessModel !== ACCESS_MODEL.AVOD && canRenewSubscription) {
       checkoutController.getSubscriptionSwitches();
     }
-  }, [accessModel, checkoutController]);
+  }, [accessModel, checkoutController, canRenewSubscription]);
 
   useEffect(() => {
     if (!loading && !customer) {
