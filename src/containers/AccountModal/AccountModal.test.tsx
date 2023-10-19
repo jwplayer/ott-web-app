@@ -10,9 +10,6 @@ describe('<AccountModal>', () => {
   });
 
   test('renders and matches snapshot', () => {
-    // const spy = vi.spyOn(checkoutController, 'getSubscriptionSwitches');
-    // spy.mockResolvedValue(undefined);
-
     const { container } = renderWithRouter(<AccountModal />);
 
     expect(container).toMatchSnapshot();

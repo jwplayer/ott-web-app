@@ -47,7 +47,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const navigate = useNavigate();
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
-  const exportData = useMutation(() => accountController.exportAccountData());
+  const exportData = useMutation(accountController.exportAccountData);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const exportDataMessage = exportData.isSuccess ? t('account.export_data_success') : t('account.export_data_error');
 

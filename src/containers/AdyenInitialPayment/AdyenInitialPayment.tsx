@@ -26,9 +26,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
 
   const [session, setSession] = useState<AdyenPaymentSession>();
 
-  const getIntegration = useConfigStore((s) => s.getIntegration);
-  const { useSandbox } = getIntegration();
-
+  const { useSandbox } = useConfigStore((s) => s.getIntegration());
   const navigate = useNavigate();
 
   useEffect(() => {

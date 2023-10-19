@@ -6,7 +6,7 @@ import type { EpisodeInSeries, EpisodesWithPagination, GetSeriesParams, Series }
 import ApiService from '#src/services/api.service';
 
 @injectable()
-export default class EpgController {
+export default class ApiController {
   private readonly apiService: ApiService;
 
   constructor(apiService: ApiService) {

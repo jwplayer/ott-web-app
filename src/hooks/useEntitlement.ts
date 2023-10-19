@@ -36,9 +36,7 @@ const notifyOnChangeProps = ['data' as const, 'isLoading' as const];
 const useEntitlement: UseEntitlement = (playlistItem) => {
   let checkoutController: CheckoutController | null = null;
 
-  const getIntegration = useConfigStore((s) => s.getIntegration);
-  const { useSandbox } = getIntegration();
-
+  const { useSandbox } = useConfigStore((s) => s.getIntegration());
   const { accessModel } = useConfigStore();
   const { user, subscription } = useAccountStore(
     ({ user, subscription }) => ({

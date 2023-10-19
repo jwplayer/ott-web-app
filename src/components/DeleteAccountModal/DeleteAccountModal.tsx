@@ -23,7 +23,7 @@ const DeleteAccountModal = () => {
 
   const [enteredPassword, setEnteredPassword] = useState<string>('');
 
-  const deleteAccount = useMutation((psw: string) => accountController.deleteAccountData(psw), {
+  const deleteAccount = useMutation(accountController.deleteAccountData, {
     onSuccess: async () => {
       await accountController.logout();
       navigate('/');

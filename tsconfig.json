@@ -1,5 +1,13 @@
 {
-  "include": ["src", "types", "scripts", "test", "vite.config.ts", "vitest.config.ts", "vitest.setup.ts"],
+  "include": [
+    "src",
+    "types",
+    "scripts",
+    "test",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.setup.ts"
+  ],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
@@ -29,6 +37,13 @@
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["vi-fetch/matchers", "vitest/globals", "@testing-library/jest-dom", "@types/jwplayer", "vite-plugin-pwa/client", "reflect-metadata"]
+    "types": [
+      "vi-fetch/matchers",
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "@types/jwplayer",
+      "vite-plugin-pwa/client",
+      "reflect-metadata"
+    ]
   }
 }

@@ -27,9 +27,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
   const accountController = getModule(AccountController);
   const checkoutController = getModule(CheckoutController);
 
-  const getIntegration = useConfigStore((s) => s.getIntegration);
-  const { useSandbox } = getIntegration();
-
+  const { useSandbox } = useConfigStore((s) => s.getIntegration());
   const navigate = useNavigate();
   const location = useLocation();
   const [session, setSession] = useState<AdyenPaymentSession>();

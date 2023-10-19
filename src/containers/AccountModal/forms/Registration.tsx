@@ -23,7 +23,7 @@ const Registration = () => {
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
   const appConfigId = useConfigStore(({ config }) => config.id);
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], () => accountController.getPublisherConsents());
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], accountController.getPublisherConsents);
 
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
@@ -53,7 +53,6 @@ const Registration = () => {
       }
 
       await accountController.register(email, password);
-
       await accountController.updateConsents(customerConsents).catch(() => {
         // error caught while updating the consents, but continue the registration flow
       });

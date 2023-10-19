@@ -27,9 +27,7 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
   const accountController = getModule(AccountController);
 
   const { t } = useTranslation('account');
-  const updateCard = useMutation((args: { cardName: string; cardNumber: string; cvc: number; expMonth: number; expYear: number; currency: string }) =>
-    accountController.updateCardDetails(args),
-  );
+  const updateCard = useMutation(accountController.updateCardDetails);
   const { activePayment } = useAccountStore(({ activePayment }) => ({ activePayment }), shallow);
   const paymentData = useForm(
     { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },

@@ -26,7 +26,7 @@ const PersonalDetails = () => {
   const location = useLocation();
   const { t } = useTranslation('account');
   const accessModel = useConfigStore((s) => s.accessModel);
-  const { data, isLoading } = useQuery('captureStatus', () => accountController.getCaptureStatus());
+  const { data, isLoading } = useQuery('captureStatus', accountController.getCaptureStatus);
   const { hasTVODOffers } = useOffers();
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
