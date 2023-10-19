@@ -17,7 +17,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   mode = mode === 'development' ? 'dev' : mode;
   mode = mode === 'production' ? 'prod' : mode;
 
-  initSettings(mode);
+  const localFile = initSettings(mode);
 
   // Make sure to builds are always production type,
   // otherwise modes other than 'production' get built in dev
@@ -25,7 +25,13 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     process.env.NODE_ENV = 'production';
   }
 
-  const fileCopyTargets: Target[] = [];
+  const fileCopyTargets: Target[] = [
+    {
+      src: localFile,
+      dest: '',
+      rename: '.webapp.ini',
+    },
+  ];
 
   // These files are only needed in dev / test / demo, so don't include in prod builds
   if (mode !== 'prod') {

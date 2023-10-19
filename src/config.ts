@@ -51,3 +51,6 @@ export const CONTENT_TYPE = {
   // Page with shelves list
   hub: 'hub',
 } as const;
+
+// OTT shared player
+export const OTT_GLOBAL_PLAYER_ID = 'M4qoGvUk';

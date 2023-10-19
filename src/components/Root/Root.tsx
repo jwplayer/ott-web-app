@@ -13,12 +13,20 @@ import registerCustomScreens from '#src/screenMapping';
 import { initApp } from '#src/modules/init';
 import { useConfigSource } from '#src/utils/configOverride';
 import { useFeaturesStore } from '#src/stores/FeaturesStore';
+import SettingsController from '#src/stores/SettingsController';
 
 // This is moved to a separate, parallel component to reduce rerenders
 const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const { t } = useTranslation('error');
 
-  const configSource = useConfigSource();
+  // const settingsController = useController<SettingsController>(CONTROLLERS.Settings);
+  const settingsQuery = useQuery('settings-init', () => new SettingsController().initSettings(), {
+    enabled: true,
+    retry: 1,
+    refetchInterval: false,
+  });
+
+  const configSource = useConfigSource(settingsQuery?.data);
 
   const configQuery = useQuery('config-init-' + configSource, async () => initApp(configSource), {
     enabled: !!configSource,

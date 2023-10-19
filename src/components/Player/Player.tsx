@@ -10,6 +10,7 @@ import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev, testId } from '#src/utils/common';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { useSettingsStore } from '#src/stores/SettingsStore';
 
 type Props = {
   feedId?: string;
@@ -55,8 +56,9 @@ const Player: React.FC<Props> = ({
   const startTimeRef = useRef(startTime);
   const setPlayer = useOttAnalytics(item, feedId);
 
-  const playerId = import.meta.env.APP_PLAYER_ID;
-  const playerLicenseKey = import.meta.env.APP_PLAYER_LICENSE_KEY;
+  const settings = useSettingsStore();
+  const playerId = settings.playerId;
+  const playerLicenseKey = settings.playerLicenseKey;
 
   const { adScheduleData } = useConfigStore((s) => s);
 

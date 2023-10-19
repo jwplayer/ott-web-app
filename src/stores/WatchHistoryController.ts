@@ -24,10 +24,14 @@ export default class WatchHistoryController {
   };
 
   private updateUserWatchHistory(watchHistory: WatchHistoryItem[]) {
-    useAccountStore.setState((state) => ({
-      ...state,
-      user: { ...(state.user as Customer), externalData: { ...state.user?.externalData, history: this.serializeWatchHistory(watchHistory) } },
-    }));
+    const { user } = useAccountStore.getState();
+
+    if (user) {
+      useAccountStore.setState((state) => ({
+        ...state,
+        user: { ...(state.user as Customer), externalData: { ...state.user?.externalData, history: this.serializeWatchHistory(watchHistory) } },
+      }));
+    }
   }
 
   restoreWatchHistory = async () => {
