@@ -59,7 +59,13 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.see('Edit information');
 
     I.see('Legal & Marketing');
-    I.see(`I accept the Terms and Conditions of ${providerName}.`);
+
+    // TODO: Important! Cover this usecase when writing e2e tests for Custom Register Fields
+    // Reason: This conditional is a result of the Custom Register Fields feature where "Terms and Conditions" consent/checkbox is optional for the customer and isn't included by default
+    if (providerName !== 'JW Player') {
+      I.see(`I accept the Terms and Conditions of ${providerName}.`);
+    }
+
     I.see(consentCheckbox);
 
     I.seeInCurrentUrl(constants.accountsUrl);

@@ -117,7 +117,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.see('Email');
     I.see('Password');
 
-    await I.fillRegisterForm(loginContext);
+    await I.fillRegisterForm(loginContext, undefined, providerName);
 
     I.see(constants.startWatchingButton);
     I.dontSee(constants.signUpToWatch);

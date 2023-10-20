@@ -56,7 +56,7 @@ const stepsObj = {
 
     return context;
   },
-  fillRegisterForm: async function (this: CodeceptJS.I, context: LoginContext, onRegister?: () => void) {
+  fillRegisterForm: async function (this: CodeceptJS.I, context: LoginContext, onRegister?: () => void, providerName?: string) {
     await this.seeQueryParams({ u: 'create-account' });
     this.waitForElement(constants.registrationFormSelector, normalTimeout);
 
@@ -67,7 +67,12 @@ const stepsObj = {
     this.fillField('Password', context.password);
     this.wait(2);
 
-    this.checkOption('Terms and Conditions');
+    // TODO: Important! Cover this usecase when writing e2e tests for Custom Register Fields
+    // Reason: This conditional is a result of the Custom Register Fields feature where "Terms and Conditions" consent/checkbox is optional for the customer and isn't included by default
+    if (providerName !== 'JW Player') {
+      this.checkOption('Terms and Conditions');
+    }
+
     this.click('Continue');
     this.waitForElement('form[data-testid="personal_details-form"]', 20);
 

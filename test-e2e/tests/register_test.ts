@@ -26,8 +26,14 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.see('Password');
     I.see('Use a minimum of 8 characters (case sensitive) with at least one number');
     I.see('I accept the');
-    I.see('Terms and Conditions');
-    I.see(`I accept the Terms and Conditions of ${providerName}.`);
+
+    // TODO: Important! Cover this usecase when writing e2e tests for Custom Register Fields
+    // Reason: This conditional is a result of the Custom Register Fields feature where "Terms and Conditions" consent/checkbox is optional for the customer and isn't included by default
+    if (providerName !== 'JW Player') {
+      I.see('Terms and Conditions');
+      I.see(`I accept the Terms and Conditions of ${providerName}.`);
+    }
+
     I.see('Yes, I want to receive Blender updates by email');
     I.see('Continue');
     I.see('Already have an account?');
@@ -121,7 +127,13 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
   Scenario(`I get warned for duplicate users - ${providerName}`, ({ I }) => {
     I.fillField('Email', constants.username);
     I.fillField('Password', 'Password123!');
-    I.checkOption('Terms and Conditions');
+
+    // TODO: Important! Cover this usecase when writing e2e tests for Custom Register Fields
+    // Reason: This conditional is a result of the Custom Register Fields feature where "Terms and Conditions" consent/checkbox is optional for the customer and isn't included by default
+    if (providerName !== 'JW Player') {
+      I.checkOption('Terms and Conditions');
+    }
+
     I.click('Continue');
     I.waitForLoaderDone();
     I.see(constants.duplicateUserError);
@@ -131,7 +143,12 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.fillField('Email', passwordUtils.createRandomEmail());
     I.fillField('Password', passwordUtils.createRandomPassword());
 
-    I.checkOption('Terms and Conditions');
+    // TODO: Important! Cover this usecase when writing e2e tests for Custom Register Fields
+    // Reason: This conditional is a result of the Custom Register Fields feature where "Terms and Conditions" consent/checkbox is optional for the customer and isn't included by default
+    if (providerName !== 'JW Player') {
+      I.checkOption('Terms and Conditions');
+    }
+
     I.click('Continue');
     I.waitForElement('form[data-testid="personal_details-form"]', longTimeout);
     I.dontSee(constants.duplicateUserError);
