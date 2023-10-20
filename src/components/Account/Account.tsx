@@ -21,7 +21,7 @@ import Checkbox from '#components/Checkbox/Checkbox';
 import HelperText from '#components/HelperText/HelperText';
 import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import useToggle from '#src/hooks/useToggle';
-import { formatConsentsFromValues, formatConsents, formatConsentValues } from '#src/utils/collection';
+import { formatConsentsFromValues, formatConsents, formatConsentValues, formatConsentsToRegisterFields } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { exportAccountData, updateConsents, updateUser } from '#src/stores/AccountController';
@@ -185,7 +185,19 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.about_you'),
             editButton: t('account.edit_information'),
-            onSubmit: (values) => updateUser({ firstName: values.firstName || '', lastName: values.lastName || '' }),
+            onSubmit: (values) => {
+              const consents = formatConsentsFromValues(publisherConsents, { ...values.metadata, ...values.consentsValues });
+
+              return updateUser({
+                firstName: values.firstName || '',
+                lastName: values.lastName || '',
+                metadata: {
+                  ...values.metadata,
+                  ...formatConsentsToRegisterFields(consents),
+                  consents: JSON.stringify(consents),
+                },
+              });
+            },
             content: (section) => (
               <>
                 <TextField
@@ -262,7 +274,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, { ...values.consentsValues, terms: true })),
+            onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
             content: (section) => (
               <>
                 {termsConsents?.map((consent, index) => (
