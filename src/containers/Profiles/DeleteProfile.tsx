@@ -50,7 +50,7 @@ const DeleteProfile = () => {
   return (
     <div>
       <Dialog open={!!viewParam} onClose={closeHandler}>
-        {isDeleting && <LoadingOverlay inline />}
+        {isDeleting && <LoadingOverlay />}
         <div className={styles.deleteModal}>
           <div>
             <h2>{t('profile.delete')}</h2>

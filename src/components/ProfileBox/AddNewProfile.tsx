@@ -15,7 +15,7 @@ const AddNewProfile = ({ onClick }: Props) => {
   const keyDownHandler = (event: React.KeyboardEvent<HTMLDivElement>) => (event.key === 'Enter' || event.key === ' ') && onClick();
 
   return (
-    <div onClick={onClick} tabIndex={0} onKeyDown={keyDownHandler} className={classNames(styles.wrapper, styles.addProfileContainer)}>
+    <div onClick={onClick} tabIndex={0} onKeyDown={keyDownHandler} className={classNames(styles.wrapper, styles.addProfileContainer)} role="button">
       <div className={styles.iconContainer}>
         <div className={`${styles.box} ${styles.circle}`}>
           <Plus />
