@@ -1,4 +1,4 @@
-import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory, type RegisterField } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
 import { formatConsentsToRegisterFields } from '#src/utils/collection';
@@ -38,6 +38,8 @@ enum InPlayerEnv {
   Production = 'production',
   Daily = 'daily',
 }
+
+const JW_TERMS_URL = 'https://inplayer.com/legal/terms';
 
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
@@ -162,9 +164,11 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
+    const terms = data?.collection.find(({ name }) => name === 'terms');
+
     const result = data?.collection
       // we exclude these fields because we already have them by default
-      .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name))
+      .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name) && ![terms].includes(field))
       .map(
         (field): Consent => ({
           type: field.type as CustomRegisterFieldVariant,
@@ -186,7 +190,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
         }),
       );
 
-    const consents = [getTermsConsent(), ...result];
+    const consents = terms ? [getTermsConsent(terms), ...result] : result;
 
     return { consents };
   } catch {
@@ -480,15 +484,15 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-function getTermsConsent(): Consent {
-  const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
+function getTermsConsent({ label: termsUrl }: RegisterField): Consent {
+  const termsLink = `<a href="${termsUrl || JW_TERMS_URL}" target="_blank">${i18next.t('account:registration.terms_and_conditions')}</a>`;
 
   return {
     type: 'checkbox',
     isCustomRegisterField: true,
     required: true,
     name: 'terms',
-    label: i18next.t('account:registration.terms_consent', { termsUrl }),
+    label: i18next.t(`account:registration.${termsUrl ? 'terms_consent' : 'terms_consent_jwplayer'}`, { termsLink }),
     enabledByDefault: false,
     placeholder: '',
     options: {},
