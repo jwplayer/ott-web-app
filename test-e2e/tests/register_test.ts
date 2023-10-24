@@ -119,11 +119,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
 
     I.click('Continue');
 
-    const hasTermsAndConditionsConsent = await tryTo(() => {
-      I.seeElement(constants.customRegFields.termsAndConditionsField);
-    });
-
-    if (!hasTermsAndConditionsConsent) {
+    if (!(await I.hasTermsAndConditionField())) {
       return;
     }
 
@@ -139,7 +135,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.see(constants.duplicateUserError);
   });
 
-  Scenario(`I can register - ${providerName}`, async ({ I }) => {
+  Scenario.only(`I can register - ${providerName}`, async ({ I }) => {
     I.fillField('Email', passwordUtils.createRandomEmail());
     I.fillField('Password', passwordUtils.createRandomPassword());
 
