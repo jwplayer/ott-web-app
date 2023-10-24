@@ -135,7 +135,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.see(constants.duplicateUserError);
   });
 
-  Scenario.only(`I can register - ${providerName}`, async ({ I }) => {
+  Scenario(`I can register - ${providerName}`, async ({ I }) => {
     I.fillField('Email', passwordUtils.createRandomEmail());
     I.fillField('Password', passwordUtils.createRandomPassword());
 
