@@ -93,13 +93,36 @@ const stepsObj = {
       return;
     }
 
-    if (!(await this.hasTermsAndConditionField())) {
-      return;
+    if (await this.hasTermsAndConditionField()) {
+      this.checkOption(constants.customRegFields.termsAndConditionsField);
     }
 
-    return tryTo(() => {
-      this.checkOption(constants.customRegFields.termsAndConditionsField);
+    // Dropdown select field ("select")
+    this.selectOption('select[name="Pol"]', 'Female');
+
+    // US State select field ("us_state")
+    this.selectOption('select[name="us_state"]', 'Idaho');
+
+    // Text input field ("input")
+    this.fillField('input[name="text123"]', 'Random test text');
+
+    // Radio field ("radio")
+    within('div[label="rb test"]', () => {
+      this.checkOption('input[type="radio"][value="rb2"]');
     });
+
+    // Country select field ("country")
+    this.selectOption('select[name="country"]', 'Australia');
+
+    // Date picker ("datepicker")
+    within('[data-testid="crf-datepicker"]', () => {
+      this.fillField('[name="date"]', '25');
+      this.fillField('[name="month"]', '06');
+      this.fillField('[name="year"]', '2050');
+    });
+
+    this.checkOption('Yes, I want to receive Blender updates by email');
+    this.checkOption('Check me');
   },
   submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = normalTimeout) {
     this.click('button[type="submit"]');

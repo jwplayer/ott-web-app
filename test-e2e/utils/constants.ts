@@ -65,13 +65,6 @@ export default {
   customRegFields: {
     topContainerSelector: 'div[data-testid="custom-reg-fields"]',
     termsAndConditionsField: 'input[type="checkbox"][name="terms"]',
-    dropdownField: '[data-testid="crf-select"]',
-    countryField: '[data-testid="crf-country"]',
-    usStateField: '[data-testid="crf-us_state"]',
-    textInputField: '[data-testid="crf-input"]',
-    datepickerField: '[data-testid="crf-datepicker"]',
-    radioField: '[data-testid="crf-radio"]',
-    checkboxField: '[data-testid="crf-checkbox"]',
   },
   offers: {
     monthlyOffer: {
