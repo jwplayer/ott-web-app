@@ -10,7 +10,6 @@ import useOpaqueId from '#src/hooks/useOpaqueId';
 type Props = {
   className?: string;
   label?: ReactNode;
-  placeholder?: string;
   name?: string;
   value: string;
   format?: string;
@@ -27,7 +26,19 @@ const parseDateString = (dateString: string) => {
   return isNaN(date.getTime()) ? null : date;
 };
 
-const DateField: React.FC<Props> = ({ className, label, error, helperText, value, onChange, format = 'YYYY-MM-DD', ...rest }: Props) => {
+const DateField: React.FC<Props> = ({
+  className,
+  label,
+  error,
+  helperText,
+  value,
+  onChange,
+  format = 'YYYY-MM-DD',
+  name,
+  required,
+  onFocus,
+  ...rest
+}: Props) => {
   const { t } = useTranslation('common');
   const parsedDate = parseDateString(value);
 
@@ -37,7 +48,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
     year: parsedDate?.getFullYear().toString() || '',
   });
 
-  const id = useOpaqueId('text-field', rest.name);
+  const id = useOpaqueId('text-field', name);
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
@@ -51,6 +62,7 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
 
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     event.currentTarget.select();
+    onFocus?.(event);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -127,14 +139,14 @@ const DateField: React.FC<Props> = ({ className, label, error, helperText, value
   };
 
   return (
-    <div className={DateFieldClassName}>
+    <div className={DateFieldClassName} {...rest}>
       <label htmlFor={id} className={styles.label}>
         {label}
-        {!rest.required ? <span>{t('optional')}</span> : null}
+        {!required ? <span>{t('optional')}</span> : null}
       </label>
       <div className={styles.container}>
         {/* don't be tempted to make it type="hidden", onChange will practically be ignored that way */}
-        <input ref={hiddenInputRef} id={id} className={styles.hiddenInput} name={rest.name} onChange={onChange} />
+        <input ref={hiddenInputRef} id={id} className={styles.hiddenInput} name={name} onChange={onChange} />
         <input
           className={styles.input}
           name="date"

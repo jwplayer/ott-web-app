@@ -59,7 +59,11 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.see('Edit information');
 
     I.see('Legal & Marketing');
-    I.see(`I accept the Terms and Conditions of ${providerName}.`);
+
+    if (await I.hasTermsAndConditionField()) {
+      I.see(`I accept the Terms and Conditions of ${providerName}.`);
+    }
+
     I.see(consentCheckbox);
 
     I.seeInCurrentUrl(constants.accountsUrl);

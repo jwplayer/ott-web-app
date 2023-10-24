@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
 
 import type { CustomRegisterFieldVariant } from '#types/account';
-import { isTruthyCustomParamValue } from '#src/utils/common';
+import { isTruthyCustomParamValue, testId } from '#src/utils/common';
 import Checkbox from '#components/Checkbox/Checkbox';
 import TextField from '#components/TextField/TextField';
 import Radio from '#components/Radio/Radio';
@@ -51,19 +51,21 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
     }
   }, [t, type, props.options, i18n]);
 
+  const commonProps = { 'data-testid': testId(`crf-${type}`), ...props };
+
   switch (type) {
     case 'input':
-      return <TextField {...props} value={value as string} />;
+      return <TextField {...commonProps} value={value as string} />;
     case 'radio':
-      return <Radio {...props} values={optionsList} value={value as string} header={props.label} />;
+      return <Radio {...commonProps} values={optionsList} value={value as string} header={props.label} />;
     case 'select':
     case 'country':
     case 'us_state':
-      return <Dropdown {...props} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
+      return <Dropdown {...commonProps} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
     case 'datepicker':
-      return <DateField {...props} value={value as string} />;
+      return <DateField {...commonProps} value={value as string} />;
     default:
-      return <Checkbox {...props} checked={isTruthyCustomParamValue(value)} />;
+      return <Checkbox {...commonProps} checked={isTruthyCustomParamValue(value)} />;
   }
 };
 

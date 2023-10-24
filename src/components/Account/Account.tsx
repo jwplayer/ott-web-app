@@ -7,7 +7,7 @@ import { useMutation } from 'react-query';
 
 import styles from './Account.module.scss';
 
-import { isTruthyCustomParamValue, isTruthy, logDev } from '#src/utils/common';
+import { isTruthyCustomParamValue, isTruthy, logDev, testId } from '#src/utils/common';
 import type { FormSectionContentArgs, FormSectionProps } from '#components/Form/FormSection';
 import type { Consent } from '#types/account';
 import Alert from '#components/Alert/Alert';
@@ -296,7 +296,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
               saveButton: t('account.update_consents'),
               onSubmit: (values) => updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
               content: (section) => (
-                <div className={styles.customFields}>
+                <div className={styles.customFields} data-testid={testId('custom-reg-fields')}>
                   {nonTermsConsents.map((consent) => (
                     <CustomRegisterField
                       key={consent.name}

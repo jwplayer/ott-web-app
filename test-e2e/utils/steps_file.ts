@@ -67,7 +67,8 @@ const stepsObj = {
     this.fillField('Password', context.password);
     this.wait(2);
 
-    this.checkOption('Terms and Conditions');
+    await this.fillCustomRegistrationFields();
+
     this.click('Continue');
     this.waitForElement('form[data-testid="personal_details-form"]', 20);
 
@@ -76,6 +77,29 @@ const stepsObj = {
     } else {
       this.clickCloseButton();
     }
+  },
+  hasCustomRegistrationFields: function (this: CodeceptJS.I) {
+    return tryTo(() => {
+      this.seeElement(constants.customRegFields.topContainerSelector);
+    });
+  },
+  hasTermsAndConditionField: async function (this: CodeceptJS.I) {
+    return tryTo(() => {
+      this.seeElement(constants.customRegFields.termsAndConditionsField);
+    });
+  },
+  fillCustomRegistrationFields: async function (this: CodeceptJS.I) {
+    if (!(await this.hasCustomRegistrationFields())) {
+      return;
+    }
+
+    if (!(await this.hasTermsAndConditionField())) {
+      return;
+    }
+
+    return tryTo(() => {
+      this.checkOption(constants.customRegFields.termsAndConditionsField);
+    });
   },
   submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = normalTimeout) {
     this.click('button[type="submit"]');

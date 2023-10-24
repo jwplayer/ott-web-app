@@ -183,7 +183,6 @@ const PersonalDetailsForm: React.FC<Props> = ({
           value={values.birthDate}
           onChange={(event) => setValue('birthDate', event.currentTarget.value)}
           label={t('personal_details.birth_date')}
-          placeholder={t('personal_details.birth_date')}
           error={!!errors.birthDate || !!errors.form}
           helperText={errors.birthDate}
           required={fields.birthDate.required}

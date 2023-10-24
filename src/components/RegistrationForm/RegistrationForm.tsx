@@ -122,7 +122,7 @@ const RegistrationForm: React.FC<Props> = ({
         required
       />
       {publisherConsents && (
-        <div className={styles.customFields}>
+        <div className={styles.customFields} data-testid="custom-reg-fields">
           {publisherConsents.map((consent) => (
             <CustomRegisterField
               key={consent.name}

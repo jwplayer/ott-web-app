@@ -20,7 +20,7 @@ type Props = {
   required?: boolean;
 };
 
-const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error, required }: Props) => {
+const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error, required, ...rest }: Props) => {
   const { t } = useTranslation('common');
   const id = useOpaqueId('check-box', name);
 
@@ -33,7 +33,7 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
         </div>
       ) : null}
       <div className={styles.row}>
-        <input name={name} type="checkbox" id={id} value={value} onChange={onChange} checked={checked} aria-required={required} disabled={disabled} />
+        <input name={name} type="checkbox" id={id} value={value} onChange={onChange} checked={checked} aria-required={required} disabled={disabled} {...rest} />
         <label htmlFor={id}>
           {required ? '* ' : ''}
           {label}

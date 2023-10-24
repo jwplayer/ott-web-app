@@ -17,12 +17,12 @@ type Props = {
   required?: boolean;
 };
 
-const Radio: React.FC<Props> = ({ name, onChange, header, value, values, helperText, error, required }: Props) => {
+const Radio: React.FC<Props> = ({ name, onChange, header, value, values, helperText, error, required, ...rest }: Props) => {
   const { t } = useTranslation('common');
   const id = useOpaqueId('radio', name);
 
   return (
-    <div className={error ? styles.error : undefined}>
+    <div className={error ? styles.error : undefined} {...rest}>
       {header ? (
         <div className={styles.header}>
           {header}
