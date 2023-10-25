@@ -15,7 +15,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: 'http://localhost:8080',
-      show: true, //!!process.env.SHOW,
+      show: !!process.env.SHOW,
       channel: 'chrome',
       locale: 'en-US',
       keepCookies: false,
