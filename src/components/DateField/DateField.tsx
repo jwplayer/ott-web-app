@@ -18,6 +18,7 @@ type Props = {
   helperText?: React.ReactNode;
   error?: boolean;
   required?: boolean;
+  testId?: string;
 };
 
 const parseDateString = (dateString: string) => {
@@ -37,6 +38,7 @@ const DateField: React.FC<Props> = ({
   name,
   required,
   onFocus,
+  testId,
   ...rest
 }: Props) => {
   const { t } = useTranslation('common');
@@ -139,14 +141,14 @@ const DateField: React.FC<Props> = ({
   };
 
   return (
-    <div className={DateFieldClassName} {...rest}>
+    <div className={DateFieldClassName} {...rest} data-testid={testId} id={id}>
       <label htmlFor={id} className={styles.label}>
         {label}
         {!required ? <span>{t('optional')}</span> : null}
       </label>
       <div className={styles.container}>
         {/* don't be tempted to make it type="hidden", onChange will practically be ignored that way */}
-        <input ref={hiddenInputRef} id={id} className={styles.hiddenInput} name={name} onChange={onChange} />
+        <input ref={hiddenInputRef} id={`${id}-hidden`} className={styles.hiddenInput} name={name} onChange={onChange} />
         <input
           className={styles.input}
           name="date"

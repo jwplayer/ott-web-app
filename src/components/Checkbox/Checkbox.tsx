@@ -25,7 +25,7 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
   const id = useOpaqueId('check-box', name);
 
   return (
-    <div className={classNames(styles.checkbox, { [styles.error]: error })}>
+    <div className={classNames(styles.checkbox, { [styles.error]: error })} {...rest}>
       {header ? (
         <div className={styles.header}>
           {header}
@@ -33,7 +33,7 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
         </div>
       ) : null}
       <div className={styles.row}>
-        <input name={name} type="checkbox" id={id} value={value} onChange={onChange} checked={checked} aria-required={required} disabled={disabled} {...rest} />
+        <input name={name} type="checkbox" id={id} value={value} onChange={onChange} checked={checked} aria-required={required} disabled={disabled} />
         <label htmlFor={id}>
           {required ? '* ' : ''}
           {label}

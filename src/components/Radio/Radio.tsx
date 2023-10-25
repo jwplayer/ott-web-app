@@ -23,8 +23,8 @@ const Radio: React.FC<Props> = ({ name, onChange, header, value, values, helperT
 
   return (
     <div className={error ? styles.error : undefined} {...rest}>
-      {header ? (
-        <div className={styles.header}>
+      {header || !required ? (
+        <div className={styles.header} data-testid="radio-header">
           {header}
           {!required ? <span>{t('optional')}</span> : null}
         </div>

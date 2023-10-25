@@ -21,6 +21,7 @@ type Props = {
   helperText?: string;
   required?: boolean;
   onChange: React.ChangeEventHandler;
+  testId?: string;
 };
 
 const Dropdown: React.FC<Props & React.AriaAttributes> = ({
@@ -37,13 +38,14 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
   helperText,
   required = false,
   size = 'medium',
+  testId,
   ...rest
 }: Props & React.AriaAttributes) => {
   const { t } = useTranslation('common');
   const id = useOpaqueId();
 
   return (
-    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)}>
+    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)} data-testid={testId}>
       {(label || !required) && (
         <label htmlFor={id} className={styles.label}>
           {label}

@@ -51,21 +51,19 @@ export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) =
     }
   }, [t, type, props.options, i18n]);
 
-  const commonProps = { 'data-testid': testId(`crf-${type}`), ...props };
-
   switch (type) {
     case 'input':
-      return <TextField {...commonProps} value={value as string} />;
+      return <TextField {...props} value={value as string} testId={testId(`crf-${type}`)} />;
     case 'radio':
-      return <Radio {...commonProps} values={optionsList} value={value as string} header={props.label} />;
+      return <Radio {...props} values={optionsList} value={value as string} header={props.label} data-testid={testId(`crf-${type}`)} />;
     case 'select':
     case 'country':
     case 'us_state':
-      return <Dropdown {...commonProps} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth />;
+      return <Dropdown {...props} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth testId={testId(`crf-${type}`)} />;
     case 'datepicker':
-      return <DateField {...commonProps} value={value as string} />;
+      return <DateField {...props} value={value as string} testId={testId(`crf-${type}`)} />;
     default:
-      return <Checkbox {...commonProps} checked={isTruthyCustomParamValue(value)} />;
+      return <Checkbox {...props} checked={isTruthyCustomParamValue(value)} data-testid={testId(`crf-${type}`)} />;
   }
 };
 

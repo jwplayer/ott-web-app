@@ -1,5 +1,7 @@
 import * as assert from 'assert';
 
+import { randomDate } from './randomizers';
+
 import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 import { TestConfig } from '#test/types';
@@ -97,32 +99,105 @@ const stepsObj = {
       this.checkOption(constants.customRegFields.termsAndConditionsField);
     }
 
-    // Dropdown select field ("select")
-    this.selectOption('select[name="Pol"]', 'Female');
+    await this.checkRequiredCheckboxes();
+    await this.fillRequiredTextInputs();
+    await this.checkRequiredRadioBoxes();
+    await this.selectFromRequiredDropdownLists();
+    await this.fillRequiredDateFields();
+  },
+  checkRequiredCheckboxes: async function (this: CodeceptJS.I) {
+    const container = constants.customRegFields.topContainerSelector;
 
-    // US State select field ("us_state")
-    this.selectOption('select[name="us_state"]', 'Idaho');
+    const requiredCheckboxNames: string[] = await this.executeScript(
+      ([container, crfFieldSelector]: [string, string]) =>
+        Array.from(document.querySelectorAll(`${container} ${crfFieldSelector}`))
+          .filter((element) => element.querySelector('label')?.innerText.startsWith('*'))
+          .map((element) => (element.querySelector('input[type="checkbox"]') as HTMLInputElement)?.name),
+      [container, constants.customRegFields.crfCheckbox],
+    );
 
-    // Text input field ("input")
-    this.fillField('input[name="text123"]', 'Random test text');
-
-    // Radio field ("radio")
-    within('div[label="rb test"]', () => {
-      this.checkOption('input[type="radio"][value="rb2"]');
+    await within(container, () => {
+      requiredCheckboxNames.forEach((name) => {
+        this.checkOption(name);
+      });
     });
+  },
+  fillRequiredTextInputs: async function (this: CodeceptJS.I) {
+    const container = constants.customRegFields.topContainerSelector;
 
-    // Country select field ("country")
-    this.selectOption('select[name="country"]', 'Australia');
+    const requiredTextInputNames: string[] = await this.executeScript(
+      ([container, crfFieldSelector]: [string, string]) =>
+        Array.from(document.querySelectorAll(`${container} ${crfFieldSelector}`))
+          .filter((element) => !element.querySelector('label')?.innerText.includes('(Optional)'))
+          .map((element) => (element.querySelector('input[type="text"]') as HTMLInputElement)?.name),
+      [container, constants.customRegFields.crfTextInput],
+    );
 
-    // Date picker ("datepicker")
-    within('[data-testid="crf-datepicker"]', () => {
-      this.fillField('[name="date"]', '25');
-      this.fillField('[name="month"]', '06');
-      this.fillField('[name="year"]', '2050');
+    await within(container, () => {
+      requiredTextInputNames.forEach((inputField) => {
+        this.fillField(inputField, 'Random text');
+      });
     });
+  },
+  checkRequiredRadioBoxes: async function (this: CodeceptJS.I) {
+    const container = constants.customRegFields.topContainerSelector;
 
-    this.checkOption('Yes, I want to receive Blender updates by email');
-    this.checkOption('Check me');
+    const requiredRadioValues: string[] = await this.executeScript(
+      ([container, crfFieldSelector]: [string, string]) =>
+        Array.from(document.querySelectorAll(`${container} ${crfFieldSelector}`))
+          .filter((element) => !(element.querySelector('[data-testid="radio-header"]') as HTMLElement)?.innerText.includes('(Optional)'))
+          .map((element) => (element.querySelector('input[type="radio"]') as HTMLInputElement)?.value),
+      [container, constants.customRegFields.crfRadioBox],
+    );
+
+    await within(container, () => {
+      requiredRadioValues.forEach((radioValue) => {
+        this.checkOption(`[value="${radioValue}"]`);
+      });
+    });
+  },
+  selectFromRequiredDropdownLists: async function (this: CodeceptJS.I) {
+    const container = constants.customRegFields.topContainerSelector;
+
+    const requiredDropdownNames: string[] = await this.executeScript((container: string) => {
+      const querySelector = ['crf-select', 'crf-country', 'crf-us_state'].map((testId) => `${container} [data-testid="${testId}"]`).join(', ');
+
+      return Array.from(document.querySelectorAll(querySelector))
+        .filter((element) => !element.querySelector('label')?.innerText.includes('(Optional)'))
+        .map((element) => element.querySelector('select')?.name);
+    }, container);
+
+    await within(container, () => {
+      requiredDropdownNames.forEach(async (dropdownName) => {
+        const firstOption: string = await this.executeScript(
+          (dropdownName: string) => (document.querySelector(`select[name="${dropdownName}"] option:not(:disabled)`) as HTMLOptionElement)?.value,
+          dropdownName,
+        );
+
+        this.selectOption(`select[name="${dropdownName}"]`, firstOption);
+      });
+    });
+  },
+  fillRequiredDateFields: async function (this: CodeceptJS.I) {
+    const container = constants.customRegFields.topContainerSelector;
+
+    const requiredDatepickerIds: string[] = await this.executeScript(
+      ([container, crfFieldSelector]: [string, string]) =>
+        Array.from(document.querySelectorAll(`${container} ${crfFieldSelector}`))
+          .filter((element) => !element.querySelector('label')?.innerText.includes('(Optional)'))
+          .map((element) => element.id),
+      [container, constants.customRegFields.crfDateField],
+    );
+
+    requiredDatepickerIds.forEach(async (datepickerId) => {
+      await within(`#${datepickerId}`, () => {
+        const [day, month, year] = randomDate();
+
+        this.fillField('date', day);
+        this.fillField('month', month);
+        this.fillField('year', year);
+      });
+    });
   },
   submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = normalTimeout) {
     this.click('button[type="submit"]');
