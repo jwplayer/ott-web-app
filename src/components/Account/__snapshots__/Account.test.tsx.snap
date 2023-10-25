@@ -162,12 +162,12 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       >
         <div
           class="_checkbox_531f07"
+          data-testid="crf-undefined"
         >
           <div
             class="_row_531f07"
           >
             <input
-              data-testid="crf-undefined"
               id="check-box_1235_consentsValues.marketing"
               name="consentsValues.marketing"
               type="checkbox"

@@ -4,12 +4,12 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Checkbox> 1`] = `
 <div>
   <div
     class="_checkbox_531f07"
+    data-testid="crf-checkbox"
   >
     <div
       class="_row_531f07"
     >
       <input
-        data-testid="crf-checkbox"
         id="check-box_1235_name"
         name="name"
         type="checkbox"
@@ -29,6 +29,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="co
 <div>
   <div
     class="_container_bb73c6 _fullWidth_bb73c6 _medium_bb73c6"
+    data-testid="crf-country"
   >
     <label
       class="_label_bb73c6"
@@ -45,7 +46,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="co
       <select
         aria-required="false"
         class="_select_bb73c6"
-        data-testid="crf-country"
         id="1235"
         name="name"
       >
@@ -1548,6 +1548,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
   <div
     class="_dateField_eb6974"
     data-testid="crf-datepicker"
+    id="text-field_1235_name"
   >
     <label
       class="_label_eb6974"
@@ -1563,7 +1564,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
     >
       <input
         class="_hiddenInput_eb6974"
-        id="text-field_1235_name"
+        id="text-field_1235_name-hidden"
         name="name"
       />
       <input
@@ -1604,12 +1605,12 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="ra
 <div>
   <div
     class="_checkbox_531f07"
+    data-testid="crf-randomstring"
   >
     <div
       class="_row_531f07"
     >
       <input
-        data-testid="crf-randomstring"
         id="check-box_1235_name"
         name="name"
         type="checkbox"
@@ -1629,6 +1630,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="se
 <div>
   <div
     class="_container_bb73c6 _fullWidth_bb73c6 _medium_bb73c6"
+    data-testid="crf-select"
   >
     <label
       class="_label_bb73c6"
@@ -1645,7 +1647,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="se
       <select
         aria-required="false"
         class="_select_bb73c6"
-        data-testid="crf-select"
         id="1235"
         name="name"
       />
@@ -1658,6 +1659,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
 <div>
   <div
     class="_container_bb73c6 _fullWidth_bb73c6 _medium_bb73c6"
+    data-testid="crf-us_state"
   >
     <label
       class="_label_bb73c6"
@@ -1674,7 +1676,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
       <select
         aria-required="false"
         class="_select_bb73c6"
-        data-testid="crf-us_state"
         id="1235"
         name="name"
       >
@@ -1998,6 +1999,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Radio> 1`] = `
   >
     <div
       class="_header_d50e6e"
+      data-testid="radio-header"
     >
       label
       <span>
@@ -2012,6 +2014,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <TextField> 1`] = 
 <div>
   <div
     class="_textField_e16c1b"
+    data-testid="crf-input"
   >
     <label
       class="_label_e16c1b"
@@ -2027,7 +2030,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <TextField> 1`] = 
     >
       <input
         class="_input_e16c1b"
-        data-testid="crf-input"
         id="text-field_1235_name"
         name="name"
         type="text"

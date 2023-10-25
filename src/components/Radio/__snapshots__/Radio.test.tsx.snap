@@ -5,6 +5,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
   <div>
     <div
       class="_header_d50e6e"
+      data-testid="radio-header"
     >
       Choose a Value
       <span>
