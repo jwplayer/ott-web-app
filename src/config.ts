@@ -54,3 +54,7 @@ export const CONTENT_TYPE = {
 
 // OTT shared player
 export const OTT_GLOBAL_PLAYER_ID = 'M4qoGvUk';
+
+export const CONFIG_QUERY_KEY = 'app-config';
+
+export const CONFIG_FILE_STORAGE_KEY = 'config-file-override';

@@ -9,6 +9,8 @@ import { addScript } from '#src/utils/dom';
 import type { AccessModel, Config, Styling } from '#types/Config';
 import { ACCESS_MODEL } from '#src/config';
 
+const FAILED_LOAD_MESSAGE = 'Failed to load the config. Please check the config path and the file availability.';
+
 /**
  * Set config setup changes in both config.service.ts and config.d.ts
  * */
@@ -83,10 +85,12 @@ export default class ConfigService {
         Accept: 'application/json',
       },
       method: 'GET',
+    }).catch(() => {
+      throw new Error(FAILED_LOAD_MESSAGE);
     });
 
     if (!response.ok) {
-      throw new Error('Failed to load the config. Please check the config path and the file availability.');
+      throw new Error(FAILED_LOAD_MESSAGE);
     }
 
     const data = await response.json();

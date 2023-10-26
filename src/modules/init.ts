@@ -28,19 +28,31 @@ import EpgController from '#src/stores/EpgController';
 import EntitlementController from '#src/stores/EntitlementController';
 import ProfileController from '#src/stores/ProfileController';
 import FavoritesController from '#src/stores/FavoritesController';
-import ConfigController from '#src/stores/ConfigController';
+import AppController from '#src/stores/AppController';
 
 import { PersonalShelf, INTEGRATION } from '#src/config';
 
 import { container, getModule } from './container';
 
-export const initApp = async (configSource: string | undefined) => {
+const resolveResources = async () => {
+  container.bind(ConfigService).toSelf();
+  container.bind(AppController).toSelf();
+  container.bind(ApiService).toSelf();
+
+  const appController = getModule(AppController);
+  const data = await appController.loadResources();
+  const { integrationType } = appController.getIntegration();
+
+  return { ...data, integrationType };
+};
+
+export const initApp = async () => {
   container.unbindAll();
 
+  const { config, configSource, settings, integrationType } = await resolveResources();
+
   // Common services
-  container.bind(ApiService).toSelf();
   container.bind(EpgService).toSelf();
-  container.bind(ConfigService).toSelf();
   container.bind(WatchHistoryService).toSelf();
   container.bind(FavoritesService).toSelf();
   container.bind(EntitlementService).toSelf();
@@ -48,14 +60,9 @@ export const initApp = async (configSource: string | undefined) => {
   // Common controllers
   container.bind(ApiController).toSelf();
   container.bind(EpgController).toSelf();
-  container.bind(ConfigController).toSelf();
   container.bind(WatchHistoryController).toSelf();
   container.bind(FavoritesController).toSelf();
   container.bind(EntitlementController).toSelf();
-
-  const configController = getModule(ConfigController);
-  const config = await configController.loadAndValidateConfig(configSource);
-  const { integrationType } = configController.getIntegration();
 
   if (integrationType === INTEGRATION.CLEENG) {
     container.bind(CleengService).toSelf();
@@ -91,5 +98,5 @@ export const initApp = async (configSource: string | undefined) => {
     await container.resolve(AccountController).initializeAccount();
   }
 
-  return config;
+  return { config, configSource, settings };
 };
