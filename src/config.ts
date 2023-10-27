@@ -56,7 +56,6 @@ export const CONFIG_QUERY_KEY = 'app-config';
 
 export const CONFIG_FILE_STORAGE_KEY = 'config-file-override';
 
-// 20 minutes
-export const CACHE_TIME = 60 * 1000 * 20;
+export const CACHE_TIME = 60 * 1000 * 20; // 20 minutes
 
 export const STALE_TIME = 60 * 1000 * 20;
