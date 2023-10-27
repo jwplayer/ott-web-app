@@ -11,7 +11,6 @@ import type { ProfileFormSubmitError, ProfileFormValues } from '#src/containers/
 import { logDev } from '#src/utils/common';
 import ProfileController from '#src/stores/ProfileController';
 import { getModule } from '#src/modules/container';
-import { useFeaturesStore } from '#src/stores/FeaturesStore';
 import AccountController from '#src/stores/AccountController';
 
 export const useSelectProfile = () => {
@@ -112,8 +111,9 @@ export const useProfileErrorHandler = () => {
 export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
-  const isLoggedIn = useAccountStore((s) => !!s.user);
-  const { canManageProfiles } = useFeaturesStore();
+  const { user, features } = useAccountStore();
+  const { canManageProfiles } = features;
+  const isLoggedIn = !!user;
 
   const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
 

@@ -2,7 +2,7 @@ import { useQuery, UseQueryResult } from 'react-query';
 
 import type { Series } from '#types/series';
 import type { ApiError } from '#src/utils/api';
-import { SERIES_CACHE_TIME } from '#src/config';
+import { CACHE_TIME, STALE_TIME } from '#src/config';
 import ApiController from '#src/stores/ApiController';
 import { getModule } from '#src/modules/container';
 
@@ -25,8 +25,8 @@ export const useSeries = (
     },
     {
       enabled: !!seriesId,
-      staleTime: SERIES_CACHE_TIME,
-      cacheTime: SERIES_CACHE_TIME,
+      staleTime: STALE_TIME,
+      cacheTime: CACHE_TIME,
       // Don't retry when we got a not found error from either series or media item request (prevent unneeded requests)
       // Both errors mean that old series flow should be used
       retry: (failureCount, error: ApiError) => error.code !== 404 && failureCount < 2,

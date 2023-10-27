@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 
 import type { Series } from '#types/series';
-import { SERIES_CACHE_TIME } from '#src/config';
+import { CACHE_TIME, STALE_TIME } from '#src/config';
 import ApiController from '#src/stores/ApiController';
 import { getModule } from '#src/modules/container';
 
@@ -15,7 +15,7 @@ export const useNextEpisode = ({ series, episodeId }: { series: Series | undefin
 
       return item?.episodes?.[0];
     },
-    { staleTime: SERIES_CACHE_TIME, cacheTime: SERIES_CACHE_TIME, enabled: !!(series?.series_id && episodeId) },
+    { staleTime: STALE_TIME, cacheTime: CACHE_TIME, enabled: !!(series?.series_id && episodeId) },
   );
 
   return {

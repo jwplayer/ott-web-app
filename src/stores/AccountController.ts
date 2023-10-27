@@ -26,7 +26,6 @@ import SubscriptionService from '#src/services/subscription.service';
 import AccountService from '#src/services/account.service';
 import CheckoutService from '#src/services/checkout.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
-import { useFeaturesStore } from '#src/stores/FeaturesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import { ACCESS_MODEL } from '#src/config';
@@ -86,19 +85,21 @@ export default class AccountController {
 
     const features = this.accountService.features;
 
-    useFeaturesStore.setState({
-      hasIntegration: true,
-      canDeleteAccount: features.canExportAccountData,
-      canUpdateEmail: features.canUpdateEmail,
-      canRenewSubscription: features.canRenewSubscription,
-      canManageProfiles: features.canManageProfiles,
-      canUpdatePaymentMethod: features.canUpdatePaymentMethod,
-      canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
-      canExportAccountData: features.canExportAccountData,
-      canShowReceipts: features.canShowReceipts,
-      canSupportEmptyFullName: features.canSupportEmptyFullName,
-      hasNotifications: features.hasNotifications,
-      hasSocialURLs: features.hasSocialURLs,
+    useAccountStore.setState({
+      features: {
+        hasIntegration: true,
+        canDeleteAccount: features.canExportAccountData,
+        canUpdateEmail: features.canUpdateEmail,
+        canRenewSubscription: features.canRenewSubscription,
+        canManageProfiles: features.canManageProfiles,
+        canUpdatePaymentMethod: features.canUpdatePaymentMethod,
+        canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
+        canExportAccountData: features.canExportAccountData,
+        canShowReceipts: features.canShowReceipts,
+        canSupportEmptyFullName: features.canSupportEmptyFullName,
+        hasNotifications: features.hasNotifications,
+        hasSocialURLs: features.hasSocialURLs,
+      },
     });
 
     await this.profileController?.loadPersistedProfile();
@@ -137,7 +138,7 @@ export default class AccountController {
 
     const { useSandbox } = this.getIntegration();
     const { user } = useAccountStore.getState();
-    const { canUpdateEmail, canSupportEmptyFullName } = useFeaturesStore.getState();
+    const { canUpdateEmail, canSupportEmptyFullName } = useAccountStore.getState().features;
 
     if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
       throw new Error('Email update not supported');
@@ -514,7 +515,7 @@ export default class AccountController {
   };
 
   exportAccountData = async () => {
-    const { canExportAccountData } = useFeaturesStore.getState();
+    const { canExportAccountData } = useAccountStore.getState().features;
 
     if (!canExportAccountData || typeof this.accountService.exportAccountData === 'undefined') {
       throw new Error('Export account feature is not enabled');
@@ -525,7 +526,7 @@ export default class AccountController {
 
   getSocialLoginUrls = () => {
     const { config } = useConfigStore.getState();
-    const { hasSocialURLs } = useFeaturesStore.getState();
+    const { hasSocialURLs } = useAccountStore.getState().features;
 
     if (!hasSocialURLs || typeof this.accountService.getSocialUrls === 'undefined') {
       throw new Error('Social logins feature is not enabled');
@@ -535,7 +536,7 @@ export default class AccountController {
   };
 
   deleteAccountData = async (password: string) => {
-    const { canDeleteAccount } = useFeaturesStore.getState();
+    const { canDeleteAccount } = useAccountStore.getState().features;
 
     if (!canDeleteAccount || typeof this.accountService.deleteAccount === 'undefined') {
       throw new Error('Delete account feature is not enabled');

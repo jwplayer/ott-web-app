@@ -15,7 +15,6 @@ import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { logDev } from '#src/utils/common';
 import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
-import { useFeaturesStore } from '#src/stores/FeaturesStore';
 
 type Prop = {
   type: 'confirmation' | 'forgot' | 'reset' | 'edit';
@@ -29,7 +28,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const location = useLocation();
   const [resetPasswordSubmitting, setResetPasswordSubmitting] = useState<boolean>(false);
 
-  const { canChangePasswordWithOldPassword } = useFeaturesStore();
+  const { canChangePasswordWithOldPassword } = useAccountStore((s) => s.features);
   const { customer: user } = useAccountStore(
     ({ user }) => ({
       customer: user,

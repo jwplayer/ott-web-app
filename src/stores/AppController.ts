@@ -2,12 +2,12 @@ import merge from 'lodash.merge';
 import { injectable } from 'inversify';
 import ini from 'ini';
 
+import type { Config } from '#types/Config';
 import { IntegrationInfo, useConfigStore } from '#src/stores/ConfigStore';
 import ConfigService from '#src/services/config.service';
 import { Settings, useSettingsStore } from '#src/stores/SettingsStore';
 import { logDev } from '#src/utils/common';
 import { OTT_GLOBAL_PLAYER_ID, CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY } from '#src/config';
-import type { Config } from '#types/Config';
 import { ConfigError, SettingsError } from '#src/utils/error';
 
 // Use local storage so the override persists until cleared

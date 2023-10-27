@@ -3,6 +3,21 @@ import type { Consent, Customer, CustomerConsent } from '#types/account';
 import type { Offer } from '#types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';
 
+type Features = {
+  hasIntegration: boolean;
+  hasSocialURLs: boolean;
+  hasNotifications: boolean;
+  canUpdateEmail: boolean;
+  canRenewSubscription: boolean;
+  canUpdatePaymentMethod: boolean;
+  canChangePasswordWithOldPassword: boolean;
+  canSupportEmptyFullName: boolean;
+  canExportAccountData: boolean;
+  canDeleteAccount: boolean;
+  canShowReceipts: boolean;
+  canManageProfiles: boolean;
+};
+
 type AccountStore = {
   loading: boolean;
   user: Customer | null;
@@ -12,6 +27,7 @@ type AccountStore = {
   customerConsents: CustomerConsent[] | null;
   publisherConsents: Consent[] | null;
   pendingOffer: Offer | null;
+  features: Features;
   setLoading: (loading: boolean) => void;
   getAccountInfo: () => { customerId: string; customer: Customer; customerConsents: CustomerConsent[] | null };
 };
@@ -33,5 +49,19 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set, g
     if (!user?.id) throw new Error('user not logged in');
 
     return { customerId: user?.id, customer: user, customerConsents };
+  },
+  features: {
+    hasIntegration: false, // JW or Cleeng
+    hasNotifications: false,
+    hasSocialURLs: false,
+    canUpdateEmail: false,
+    canRenewSubscription: false,
+    canSupportEmptyFullName: false,
+    canChangePasswordWithOldPassword: false,
+    canExportAccountData: false,
+    canDeleteAccount: false,
+    canUpdatePaymentMethod: false,
+    canShowReceipts: false,
+    canManageProfiles: false,
   },
 }));

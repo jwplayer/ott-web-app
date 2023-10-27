@@ -6,7 +6,7 @@ import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { addQueryParams, removeQueryParamFromUrl } from '#src/utils/formatting';
 import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
-import { useFeaturesStore } from '#src/stores/FeaturesStore';
+import { useAccountStore } from '#src/stores/AccountStore';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -22,7 +22,7 @@ enum NotificationsTypes {
 
 export default async function useNotifications(uuid: string = '') {
   const navigate = useNavigate();
-  const { hasNotifications } = useFeaturesStore();
+  const { hasNotifications } = useAccountStore((s) => s.features);
 
   const accountController = hasNotifications ? getModule(AccountController) : undefined;
 

@@ -15,6 +15,7 @@ import { useTrackConfigKeyChange } from '#src/hooks/useTrackConfigKeyChange';
 import { ConfigError, SettingsError } from '#src/utils/error';
 import type { Settings } from '#src/stores/SettingsStore';
 import type { Config } from '#types/Config';
+import { CACHE_TIME, STALE_TIME } from '#src/config';
 
 type Resources = {
   config: Config;
@@ -29,8 +30,8 @@ const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.Set
   const { data, isLoading, error, isError, isSuccess } = useQuery<Resources, Error>('config-init', async () => initApp(), {
     refetchInterval: false,
     retry: 1,
-    cacheTime: 5000,
-    staleTime: 5000,
+    cacheTime: CACHE_TIME,
+    staleTime: STALE_TIME,
   });
 
   // Modify query string to add / remove app-config id
@@ -55,7 +56,7 @@ const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.Set
       <ErrorPage
         title={t('settings_invalid')}
         message={t('check_your_settings')}
-        error={error as Error}
+        error={error}
         helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/initialization-file.md'}
       />
     );
@@ -68,11 +69,11 @@ const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.Set
         <ErrorPage
           title={t('config_invalid')}
           message={t('check_your_config')}
-          error={error as Error}
+          error={error}
           helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/configuration.md'}
         />
       )}
-      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} error={error as Error} isLoading={isLoading} isSuccess={isSuccess} />}
+      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} error={error} isLoading={isLoading} isSuccess={isSuccess} />}
       {/* Config select control to improve testing experience */}
       {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
     </>

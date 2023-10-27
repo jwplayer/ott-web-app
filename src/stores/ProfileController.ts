@@ -4,7 +4,7 @@ import * as yup from 'yup';
 
 import { useProfileStore } from './ProfileStore';
 import { useConfigStore } from './ConfigStore';
-import { useFeaturesStore } from './FeaturesStore';
+import { useAccountStore } from './AccountStore';
 
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
 import ProfileService from '#src/services/profile.service';
@@ -42,10 +42,10 @@ export default class ProfileController {
 
     const res = await this.profileService.listProfiles(undefined, this.getSandbox());
 
-    const canManageProfiles = useFeaturesStore.getState().canManageProfiles;
+    const { canManageProfiles } = useAccountStore.getState().features;
 
     if (!canManageProfiles && res?.responseData.canManageProfiles) {
-      useFeaturesStore.setState({ canManageProfiles: true });
+      useAccountStore.setState((s) => ({ features: { ...s.features, canManageProfiles: true } }));
     }
 
     return res;

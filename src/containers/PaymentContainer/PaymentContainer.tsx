@@ -15,7 +15,6 @@ import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
 import { ACCESS_MODEL } from '#src/config';
 import { getModule } from '#src/modules/container';
-import { useFeaturesStore } from '#src/stores/FeaturesStore';
 
 const PaymentContainer = () => {
   const accountController = getModule(AccountController);
@@ -30,8 +29,8 @@ const PaymentContainer = () => {
   );
   const navigate = useNavigate();
 
-  const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = useFeaturesStore();
-  const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading } = useAccountStore();
+  const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading, features } = useAccountStore();
+  const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = features;
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);

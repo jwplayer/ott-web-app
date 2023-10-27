@@ -21,7 +21,7 @@ const DEMO_CONFIG = '225tvq1i';
 interface Props {
   selectedConfigSource: string | undefined;
   isSuccess: boolean;
-  error: Error | undefined;
+  error: Error | undefined | null;
   isLoading: boolean;
 }
 
@@ -73,7 +73,7 @@ const DemoConfigDialog = ({ selectedConfigSource, isSuccess, error, isLoading }:
     // Get a new config by triggering a query param change
     else {
       // Force a page refresh so that application (including services and controllers) gets fully reinitialized
-      window.location.href = addQueryParams(window.location.href, { 'app-config': configSource });
+      window.location.href = addQueryParams(window.location.href, { [CONFIG_QUERY_KEY]: configSource });
     }
   };
 

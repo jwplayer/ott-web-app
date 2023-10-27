@@ -24,7 +24,6 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
 import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
-import { useFeaturesStore } from '#src/stores/FeaturesStore';
 
 type Props = {
   panelClassName?: string;
@@ -57,18 +56,16 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
   }, [exportData.isSuccess, exportData.isError]);
 
-  const { canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = useFeaturesStore();
-  const { customer, customerConsents, publisherConsents } = useAccountStore(
-    ({ user, customerConsents, publisherConsents }) => ({
+  const { customer, customerConsents, publisherConsents, features } = useAccountStore(
+    ({ user, customerConsents, publisherConsents, features }) => ({
       customer: user,
       customerConsents,
       publisherConsents,
-      canChangePasswordWithOldPassword,
-      canExportAccountData,
-      canDeleteAccount,
+      features,
     }),
     shallow,
   );
+  const { canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = features;
 
   const consentValues = useMemo(() => formatConsentValues(publisherConsents, customerConsents), [publisherConsents, customerConsents]);
 
