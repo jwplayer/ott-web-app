@@ -1,7 +1,18 @@
 import i18next from 'i18next';
 
 import { useProfileStore } from './ProfileStore';
+import { loadPersistedProfile, unpersistProfile } from './ProfileController';
 
+import type {
+  Capture,
+  Customer,
+  CustomerConsent,
+  EmailConfirmPasswordInput,
+  FirstLastNameInput,
+  GetCaptureStatusResponse,
+  GetCustomerConsentsResponse,
+  GetPublisherConsentsResponse,
+} from '#types/account';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import useAccount from '#src/hooks/useAccount';
 import useService from '#src/hooks/useService';
@@ -13,20 +24,31 @@ import { restoreWatchHistory, serializeWatchHistory } from '#src/stores/WatchHis
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { logDev } from '#src/utils/common';
 import * as persist from '#src/utils/persist';
-import type {
-  Capture,
-  Customer,
-  CustomerConsent,
-  EmailConfirmPasswordInput,
-  FirstLastNameInput,
-  GetCaptureStatusResponse,
-  GetCustomerConsentsResponse,
-  GetPublisherConsentsResponse,
-} from '#types/account';
 import type { Offer } from '#types/checkout';
-import { unpersistProfile } from '#src/hooks/useProfiles';
 
 const PERSIST_PROFILE = 'profile';
+
+export const loadUserData = async () => {
+  await useService(async ({ accountService }) => {
+    try {
+      const authData = await accountService.getAuthData();
+
+      if (authData) {
+        await getAccount();
+        await restoreWatchHistory();
+        await restoreFavorites();
+      }
+    } catch (error: unknown) {
+      logDev('Failed to get user', error);
+
+      // clear the session when the token was invalid
+      // don't clear the session when the error is unknown (network hiccup or something similar)
+      if (error instanceof Error && error.message.includes('Invalid JWT token')) {
+        await logout();
+      }
+    }
+  });
+};
 
 export const initializeAccount = async () => {
   await useService(async ({ accountService, config }) => {
@@ -47,29 +69,11 @@ export const initializeAccount = async () => {
       canShowReceipts: accountService.canShowReceipts,
     });
 
-    useProfileStore.setState({
-      profile: persist.getItem(PERSIST_PROFILE) || null,
-    });
+    loadPersistedProfile();
 
     await accountService.initialize(config, logout);
 
-    try {
-      const authData = await accountService.getAuthData();
-
-      if (authData) {
-        await getAccount();
-        await restoreWatchHistory();
-        await restoreFavorites();
-      }
-    } catch (error: unknown) {
-      logDev('Failed to get user', error);
-
-      // clear the session when the token was invalid
-      // don't clear the session when the error is unknown (network hiccup or something similar)
-      if (error instanceof Error && error.message.includes('Invalid JWT token')) {
-        await logout();
-      }
-    }
+    await loadUserData();
 
     useAccountStore.setState({ loading: false });
   });

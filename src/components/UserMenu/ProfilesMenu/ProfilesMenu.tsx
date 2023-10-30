@@ -11,11 +11,10 @@ import type { Profile } from '#types/account';
 
 type ProfilesMenuProps = {
   profiles: Profile[];
-  currentProfile?: Profile;
+  currentProfile?: Profile | null;
   small?: boolean;
   selectingProfile: boolean;
   selectProfile: UseMutateFunction<unknown, unknown, { id: string; avatarUrl: string }, unknown>;
-  defaultAvatar: string;
   createButtonLabel?: string;
   switchProfilesLabel?: string;
   onCreateButtonClick: () => void;
@@ -27,7 +26,6 @@ const ProfilesMenu = ({
   small,
   selectingProfile,
   selectProfile,
-  defaultAvatar,
   createButtonLabel,
   switchProfilesLabel,
   onCreateButtonClick,
@@ -35,7 +33,9 @@ const ProfilesMenu = ({
   <>
     <li className={styles.sectionHeader}>{switchProfilesLabel}</li>
     {selectingProfile ? (
-      <LoadingOverlay inline />
+      <li>
+        <LoadingOverlay inline />
+      </li>
     ) : (
       profiles?.map((profile) => (
         <li key={profile.id}>
@@ -44,7 +44,7 @@ const ProfilesMenu = ({
             small={small}
             onClick={() => selectProfile({ id: profile.id, avatarUrl: profile.avatar_url })}
             label={profile.name}
-            startIcon={<ProfileCircle src={profile.avatar_url || defaultAvatar} alt={profile.name} />}
+            startIcon={<ProfileCircle src={profile.avatar_url} alt={profile.name} />}
           />
         </li>
       ))
@@ -54,11 +54,13 @@ const ProfilesMenu = ({
         <MenuButton small={small} onClick={onCreateButtonClick} startIcon={<Plus />} label={createButtonLabel} />
       </li>
     )}
-    <hr
-      className={classNames(styles.divider, {
-        [styles.small]: small,
-      })}
-    />
+    <li>
+      <hr
+        className={classNames(styles.divider, {
+          [styles.small]: small,
+        })}
+      />
+    </li>
   </>
 );
 
