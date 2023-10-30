@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import 'reflect-metadata'; // include once in the app for inversify (see: https://github.com/inversify/InversifyJS/blob/master/README.md#-installation)
 
 import QueryProvider from '#src/containers/QueryProvider/QueryProvider';
-import '#src/screenMapping';
-import '#src/styles/main.scss';
 import initI18n from '#src/i18n/config';
 import Root from '#components/Root/Root';
 import { ErrorPageWithoutTranslation } from '#components/ErrorPage/ErrorPage';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 
+import '#src/screenMapping';
+import '#src/styles/main.scss';
 interface State {
   isLoading: boolean;
   error?: Error;

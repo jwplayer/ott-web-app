@@ -28,7 +28,7 @@ import EpgController from '#src/stores/EpgController';
 import EntitlementController from '#src/stores/EntitlementController';
 import ProfileController from '#src/stores/ProfileController';
 import FavoritesController from '#src/stores/FavoritesController';
-import AppController from '#src/stores/AppController';
+import AppController from '#src/stores/AppController1';
 
 import { PersonalShelf, INTEGRATION } from '#src/config';
 
