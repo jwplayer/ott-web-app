@@ -1,0 +1,17 @@
+name: Release - Merge Back to Dev
+on:
+  push:
+    branches: ['release']
+jobs:
+  merge-back:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge release -> develop
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: develop
+          message: 'chore: merge release to develop'
+          github_token: ${{ secrets.GITHUB_TOKEN }}

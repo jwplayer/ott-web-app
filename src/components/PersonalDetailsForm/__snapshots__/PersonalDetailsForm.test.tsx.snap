@@ -285,13 +285,8 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_eb6974"
       >
         <input
-          class="_hiddenInput_eb6974"
-          id="text-field_1235_birthDate"
-          name="birthDate"
-        />
-        <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-date"
+          id="text-field_1235_birthDate"
           maxlength="2"
           name="date"
           placeholder="dd"
@@ -301,7 +296,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-month"
+          id="text-field_1235_birthDate"
           maxlength="2"
           name="month"
           placeholder="mm"
@@ -311,7 +306,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-year"
+          id="text-field_1235_birthDate"
           maxlength="4"
           name="year"
           placeholder="yyyy"
@@ -702,13 +697,8 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_eb6974"
       >
         <input
-          class="_hiddenInput_eb6974"
-          id="text-field_1235_birthDate"
-          name="birthDate"
-        />
-        <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-date"
+          id="text-field_1235_birthDate"
           maxlength="2"
           name="date"
           placeholder="dd"
@@ -718,7 +708,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-month"
+          id="text-field_1235_birthDate"
           maxlength="2"
           name="month"
           placeholder="mm"
@@ -728,7 +718,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-year"
+          id="text-field_1235_birthDate"
           maxlength="4"
           name="year"
           placeholder="yyyy"

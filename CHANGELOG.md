@@ -1,3 +1,110 @@
+# [4.29.0](https://github.com/jwplayer/ott-web-app/compare/v4.27.0...v4.29.0) (2023-10-11)
+
+
+### Bug Fixes
+
+* add comment in DateField ([1d50c00](https://github.com/jwplayer/ott-web-app/commit/1d50c008f00fe19927ae14f8ec76f3e626abf6af))
+* add config check for profiles feature ([00288a0](https://github.com/jwplayer/ott-web-app/commit/00288a0caeb406fbd3bcfaed55a9ff8c313a5368))
+* add enabled flag for useProfiles ([2b6cc37](https://github.com/jwplayer/ott-web-app/commit/2b6cc3733c4019109a8b5d8dc9c037a84fd3b8c3))
+* add various profiles fixes and improvements ([4d85c1c](https://github.com/jwplayer/ott-web-app/commit/4d85c1c1b481fbdcc688b1693b512663fbfe40a5))
+* appConfig from store instead of from search params ([63b5134](https://github.com/jwplayer/ott-web-app/commit/63b5134358656ca798cc1ab74afb99aef12a24a7))
+* avoid using auth provider name in components ([1a8a70c](https://github.com/jwplayer/ott-web-app/commit/1a8a70ca4ae07b6cca2195ee968c309a49c0bcc7))
+* avoided response mapping in cleeng ([b172dc7](https://github.com/jwplayer/ott-web-app/commit/b172dc72eb745c0966392f543edd3cde0b8071cf))
+* border radius ([9e1d80b](https://github.com/jwplayer/ott-web-app/commit/9e1d80ba425c81407e2f459dffcb4b895568cef8))
+* bugs ([1185de2](https://github.com/jwplayer/ott-web-app/commit/1185de20671d5e5d764c3c25f9081ba4759c057a))
+* bugs ([77758eb](https://github.com/jwplayer/ott-web-app/commit/77758eb1c38af0b306af8532565ec750ee295bb9))
+* check if user exists before redirecting to profiles ([fb88927](https://github.com/jwplayer/ott-web-app/commit/fb8892745808f6d7751f865e50fa54dca1e66ec0))
+* cleanup from a redundant condition ([9106f05](https://github.com/jwplayer/ott-web-app/commit/9106f050836c74661b6f216d055109a2e4b8e4d3))
+* consent checkbox wasn't rendered for cleeng ([3e7ed31](https://github.com/jwplayer/ott-web-app/commit/3e7ed31e5cc7319c16907f54b844a497a6cbcb6d))
+* countries and US states translated to Spanish ([beb1154](https://github.com/jwplayer/ott-web-app/commit/beb115413009039e5ad1e75f01125c41d0e3f986))
+* create profile service and controller ([865e321](https://github.com/jwplayer/ott-web-app/commit/865e321e4ec13e2a42f3aebec7a0724c80414674))
+* css design changes ([a102b6f](https://github.com/jwplayer/ott-web-app/commit/a102b6fb961d24b151ae36af60deec5d77dd31ce))
+* don't display "first_name" and "surname" custom register fields in registration step 1 ([252feb2](https://github.com/jwplayer/ott-web-app/commit/252feb2d96dc35c03abd34afef95cd21902071a1))
+* fix design related comments ([08ef531](https://github.com/jwplayer/ott-web-app/commit/08ef5316f5ab62c161fdbd3f55c786b0b3f6cd2e))
+* fix env, fix loader logic ([5e2dc7a](https://github.com/jwplayer/ott-web-app/commit/5e2dc7ae7000e36432fbaa42e8d37398f3e09c01))
+* fix form type in update profile ([9bb2fa5](https://github.com/jwplayer/ott-web-app/commit/9bb2fa5d9a82f626748033a0f0a3f5fd0a856dae))
+* fix typescript error in vite.config.ts ([27b0154](https://github.com/jwplayer/ott-web-app/commit/27b0154c38c1ff275f65e525c11adfaae4fcaa6e))
+* fix undefined in url ([9cc5fa9](https://github.com/jwplayer/ott-web-app/commit/9cc5fa9d3a0216b831ad9688e1376b3eb5f11b31))
+* fix user page tabs ([67bd642](https://github.com/jwplayer/ott-web-app/commit/67bd642942361390975469b39cd79b5b7e898b22))
+* fixed consent updating in Account section ([d378708](https://github.com/jwplayer/ott-web-app/commit/d3787081395613fd11ff2327f853bb6121c5b60a))
+* fixed reconciliation issue in FormSection ([a6d069d](https://github.com/jwplayer/ott-web-app/commit/a6d069d3000ff4c927ceb565a8289c29923b4521))
+* implement custom register fields in Account section ([4aa35f5](https://github.com/jwplayer/ott-web-app/commit/4aa35f534f5b4503444b2e7b7378e7602386806b))
+* infinite rerender fix, refetch fix ([c8acc0f](https://github.com/jwplayer/ott-web-app/commit/c8acc0f88ca614cc6bc460f99ad753b8470f0509))
+* invalidate listProfiles on register ([f3b9473](https://github.com/jwplayer/ott-web-app/commit/f3b94734072748c7ca4a86aeabd814b720f21e67))
+* invalidate publisher consents on config change ([e78b05b](https://github.com/jwplayer/ott-web-app/commit/e78b05b870a5a55b9a62a5320f20bef73cde82ea))
+* jwpltx crash fix and multiple test improvements ([4118327](https://github.com/jwplayer/ott-web-app/commit/411832770b94cee4156c416218ddf0111488bafc))
+* lint error ([ddeb8f1](https://github.com/jwplayer/ott-web-app/commit/ddeb8f1bb71e425fc7112137a01784373ff31a5d))
+* pr comments ([662cc18](https://github.com/jwplayer/ott-web-app/commit/662cc182ad9190fc14a10f0dc9d5493ed3761bac))
+* pr comments ([db138a2](https://github.com/jwplayer/ott-web-app/commit/db138a252ab26d75a6f649041fff24356614ca05))
+* pr comments ([9a98254](https://github.com/jwplayer/ott-web-app/commit/9a982546bdf0e0a7f14ae46c73ccc9237327acd1))
+* profilebox css fixes ([10f2594](https://github.com/jwplayer/ott-web-app/commit/10f25944600bdae280adec1972e777440cc9508e))
+* pull request feedback corrections ([02e4fc7](https://github.com/jwplayer/ott-web-app/commit/02e4fc70e000def046edb3f8ca6db0c3ba1797f2))
+* re-introduce the new "other_registration_details" translation line ([c7ac8e8](https://github.com/jwplayer/ott-web-app/commit/c7ac8e8d9d8fee30da6e9eabbb7740b398fecf05))
+* re-introduced the previously reverted changes ([77606db](https://github.com/jwplayer/ott-web-app/commit/77606db87c35fee24f4efb1e18bedc35f12423fa))
+* refactor CustomRegisterField.tsx ([f04af0e](https://github.com/jwplayer/ott-web-app/commit/f04af0e20882c64e7e7f17ecc0ac9cc351769596))
+* remove no longer necessary type casting ([035de63](https://github.com/jwplayer/ott-web-app/commit/035de632509dd7adb631a9f6bdc128643a8b4582))
+* remove redundant "static" folder with json files ([42ef8b2](https://github.com/jwplayer/ott-web-app/commit/42ef8b25795f4b192604441e86d57c567c91c0a5))
+* remove redundant destructuring ([a84c6da](https://github.com/jwplayer/ott-web-app/commit/a84c6da5f4ee37451e8ff02c15e1858f9568d627))
+* remove unnecessary config check, add default avatar ([57d02df](https://github.com/jwplayer/ott-web-app/commit/57d02dfd7c183a87ea2d9b032a41fa2cd6868be2))
+* remove unnecessary helper text, rename class, fix profile persist on relog ([1c7a537](https://github.com/jwplayer/ott-web-app/commit/1c7a53755b7b9a6db400322fbef10ae8d5455dc7))
+* remove unnecessary localstorage key ([1a504b5](https://github.com/jwplayer/ott-web-app/commit/1a504b5fc951dca2e3c50a127ad7500d506c5d7f))
+* removed a no longer valid comment ([22fcdb8](https://github.com/jwplayer/ott-web-app/commit/22fcdb8d19106f3c90cb285928d70c715ee005a2))
+* removed redundant conversion to string ([651d552](https://github.com/jwplayer/ott-web-app/commit/651d552881ea826cc19370a1c5af1db1e5663577))
+* rename a var ([26bef11](https://github.com/jwplayer/ott-web-app/commit/26bef11290a6052eecce7e60fc72e6d18c1d6d7c))
+* replaced an enum with union type ([386df1a](https://github.com/jwplayer/ott-web-app/commit/386df1ae8ffedb2be37072ab8c992d26db52c7b7))
+* replaced ConsentFieldVariants enum with union types ([0b69fc3](https://github.com/jwplayer/ott-web-app/commit/0b69fc3928404be8910bd62bc063bbaaf1c51bbe))
+* revert last change ([a6d1634](https://github.com/jwplayer/ott-web-app/commit/a6d163422e710e1f929b5927b41f94e26cdb36ab))
+* revert one of the last changes ([8ec620c](https://github.com/jwplayer/ott-web-app/commit/8ec620c749ba860d0a7527781540c047ed72dc00))
+* rollback live channel links pending route refactor ([#373](https://github.com/jwplayer/ott-web-app/issues/373)) ([3f06b11](https://github.com/jwplayer/ott-web-app/commit/3f06b11a97bcc249eedb96c42479bbe01ab81454))
+* show "optional" even when no label in Dropdown ([d9f2ee5](https://github.com/jwplayer/ott-web-app/commit/d9f2ee541a8c5d486ffddbe4a09c1711e545bbd1))
+* sync with base branch ([7db6763](https://github.com/jwplayer/ott-web-app/commit/7db67638f8ffa9143c33d9b845ba8069ddc20229))
+* translations, profiles refetch ([fa22d1c](https://github.com/jwplayer/ott-web-app/commit/fa22d1c3789d78cd772c2f9fb6bcada30e4348b5))
+* type casting to supress incorrect type from SDK ([f7f1f6d](https://github.com/jwplayer/ott-web-app/commit/f7f1f6db8399c8477a09be57afca6a6b7d2e1295))
+* update .depcheckrc.yaml ([f373f0e](https://github.com/jwplayer/ott-web-app/commit/f373f0e6341e7c0e9bcd730cc43888fa75d27159))
+* update Account.tsx ([3b81892](https://github.com/jwplayer/ott-web-app/commit/3b81892b2674f9fa420f4949648db51b631c6723))
+* update profile hooks with fetch logic ([bba1c70](https://github.com/jwplayer/ott-web-app/commit/bba1c702d9fb3ea6084826290a910a3286bc3822))
+* update react-i18next mock in vitest.setup.ts ([8de258c](https://github.com/jwplayer/ott-web-app/commit/8de258cd62b270a902a4f3125a446c01cfaf2c01))
+* updated country and US state codes ([6715cae](https://github.com/jwplayer/ott-web-app/commit/6715cae32e1f47fbe4e18e7e2c03acccd0f49dc9))
+* vqa2 fixes ([e418746](https://github.com/jwplayer/ott-web-app/commit/e4187466f476def176bf2cd6ba290af016ab4237))
+* watch history bug ([1fc01ef](https://github.com/jwplayer/ott-web-app/commit/1fc01efb6ff5c9e0e7bc318cd7857567ef10c69f))
+
+
+### Features
+
+* add profiles to user menu ([b63e7e7](https://github.com/jwplayer/ott-web-app/commit/b63e7e71eb9dda1d1c059c34359fe4a1d2601580))
+* add spacing between custom register fields ([6439861](https://github.com/jwplayer/ott-web-app/commit/6439861942e5cd59d9416d0db983a77bd1ed335c))
+* created CustomRegisterField.test.tsx ([39efcd0](https://github.com/jwplayer/ott-web-app/commit/39efcd0819552df00498fb65099bac66cc516c98))
+* custom register fields ([f7a5249](https://github.com/jwplayer/ott-web-app/commit/f7a5249981791bbab28d2a6ab01fa13308c8add2))
+* design changes, remove unnecessary logic, translations ([9d458bd](https://github.com/jwplayer/ott-web-app/commit/9d458bd52afb750b6ee8cb40e7d639eeefb2bba0))
+* implement "datepicker" as the last custom register field ([d66d5da](https://github.com/jwplayer/ott-web-app/commit/d66d5da3cf789431bf6937efbdb7dca385f4b00b))
+* **project:** add an image label as a custom param for playlists ([63a85b5](https://github.com/jwplayer/ott-web-app/commit/63a85b51000b5fd03afabead15509e2b78106bf5))
+* **project:** implement translation of CRF dropdown ([2cbe095](https://github.com/jwplayer/ott-web-app/commit/2cbe09586a25eedf7c1a428ecb1cd80a92de81b5))
+* **project:** profiles loading overlay ([b37cd94](https://github.com/jwplayer/ott-web-app/commit/b37cd9403eb5141372a34897f66cb53265eb844a))
+* **project:** update edit and create forms ([b40c144](https://github.com/jwplayer/ott-web-app/commit/b40c1445d397ea3cbfafcb97335de85df271263d))
+* refactor profiles calls to services and controllers ([416e3b7](https://github.com/jwplayer/ott-web-app/commit/416e3b788b3970e707fcc251b9db78b25d244409))
+* selecting profiles ([b6a978f](https://github.com/jwplayer/ott-web-app/commit/b6a978fd75b157543f5922bf6c04df80f0668ba9))
+* updated test snaps ([09a32ae](https://github.com/jwplayer/ott-web-app/commit/09a32aedd5a85fa73ca686ce933b2937a2233acc))
+* **user:** hw manage profiles ([03f0936](https://github.com/jwplayer/ott-web-app/commit/03f0936e50946f848ba81038e8bba94032255d15))
+
+
+
+# [4.27.0](https://github.com/jwplayer/ott-web-app/compare/v4.25.0...v4.27.0) (2023-08-30)
+
+
+### Bug Fixes
+
+* **project:** fix helmet for legacy series after react update ([90d489c](https://github.com/jwplayer/ott-web-app/commit/90d489c67dde2d10324a5a554a7b28cfe99d5823))
+
+
+### Features
+
+* **project:** convert click based navigation to use links for SEO ([625fbdc](https://github.com/jwplayer/ott-web-app/commit/625fbdc5f845fb79cf33a8fe97459e728be0df4c))
+* **project:** update react ([03e3d30](https://github.com/jwplayer/ott-web-app/commit/03e3d300a4c0e451eb6124ac418b0ed469b23a95))
+* **project:** update React to 18.2.0 ([c98512d](https://github.com/jwplayer/ott-web-app/commit/c98512d4876b81759afa2883875048503e98e419))
+* **project:** update react to 18.2.0 and related dependencies ([83931d2](https://github.com/jwplayer/ott-web-app/commit/83931d235dcba122f0f054bacf891081cbc64821))
+
+
+
 # [4.25.0](https://github.com/jwplayer/ott-web-app/compare/v4.23.2...v4.25.0) (2023-08-01)
 
 

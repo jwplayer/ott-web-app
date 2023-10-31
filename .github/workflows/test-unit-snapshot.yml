@@ -1,9 +1,12 @@
 name: Test - Unit and Snapshot
 
-on: [pull_request]
+on:
+  push:
+    branches: [ 'develop', 'release' ]
+  pull_request:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     strategy:

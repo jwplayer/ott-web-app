@@ -21,6 +21,8 @@ import EditProfile from '#src/containers/Profiles/EditProfile';
 import useQueryParam from '#src/hooks/useQueryParam';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useProfiles } from '#src/hooks/useProfiles';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import useNotifications from '#src/hooks/useNotifications';
 
 export default function AppRoutes() {
   const location = useLocation();
@@ -30,8 +32,21 @@ export default function AppRoutes() {
 
   const { accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const user = useAccountStore(({ user }) => user, shallow);
-  const { profile } = useProfileStore();
+  const { profile, selectingProfileAvatar } = useProfileStore();
   const { profilesEnabled } = useProfiles();
+
+  const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
+
+  // listen to websocket notifications
+  useNotifications(userData.user?.uuid);
+
+  if (userData.user && !userData.loading && window.location.href.includes('#token')) {
+    return <Navigate to="/" />; // component instead of hook to prevent extra re-renders
+  }
+
+  if (userData.user && selectingProfileAvatar !== null) {
+    return <LoadingOverlay profileImageUrl={selectingProfileAvatar || profile?.avatar_url} />;
+  }
 
   const shouldManageProfiles =
     !!user && profilesEnabled && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal && !location.pathname.includes('/u/profiles');

@@ -2,15 +2,14 @@ name: Test - End to End
 
 on:
   pull_request:
-    branches: [ 'develop', 'feat/*', 'feature/*', 'release', 'release-candidate' ]
   push:
-    branches: [ 'develop', 'release', 'release-candidate' ]
+    branches: [ 'develop', 'release' ]
   schedule:
     - cron: '30 3 * * 1-5'
   workflow_dispatch:
 
 jobs:
-  build:
+  test-e2e:
     runs-on: ubuntu-latest
 
     strategy:

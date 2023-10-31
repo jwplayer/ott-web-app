@@ -41,7 +41,12 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
   ];
 
   const validationSchema: SchemaOf<{ name: string }> = object().shape({
-    name: string().required(t('profile.validation.name.required')).min(2, t('profile.validation.name.too_short')),
+    name: string()
+      .trim()
+      .required(t('profile.validation.name.required'))
+      .min(3, t('profile.validation.name.too_short', { charactersCount: 3 }))
+      .max(30, t('profile.validation.name.too_long', { charactersCount: 30 }))
+      .matches(/^[a-zA-Z0-9\s]*$/, t('profile.validation.name.invalid_characters')),
   });
 
   const { handleSubmit, handleChange, values, errors, submitting, setValue } = useForm(initialValues, formHandler, validationSchema);
@@ -50,7 +55,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
     setValue('avatar_url', selectedAvatar?.value || profile?.avatar_url || '');
   }, [profile?.avatar_url, selectedAvatar?.value, setValue]);
 
-  const formLabel = values?.id ? t('profile.info') : t('profile.create');
+  const formLabel = t('profile.info');
 
   return (
     <form onSubmit={handleSubmit} noValidate>
@@ -61,8 +66,8 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
         <div className={profileStyles.profileInfo}>{t('profile.description')}</div>
         <div className={profileStyles.formFields}>
           {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-          {submitting && <LoadingOverlay inline />}
-          <h2 className={profileStyles.nameHeading}>Name</h2>
+          {submitting && <LoadingOverlay />}
+          <h2 className={profileStyles.nameHeading}>{t('name')}</h2>
           <TextField
             required
             name="name"
