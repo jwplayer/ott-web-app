@@ -10,7 +10,7 @@ import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev, testId } from '#src/utils/common';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import { useMediaAds } from '#src/hooks/useMediaAds';
+import { useAds } from '#src/hooks/useAds';
 
 type Props = {
   playerId: string;
@@ -60,9 +60,8 @@ const Player: React.FC<Props> = ({
   const startTimeRef = useRef(startTime);
   const setPlayer = useOttAnalytics(item, feedId);
 
-  const adScheduleId = useConfigStore((s) => s.config.adSchedule);
-  const { preRollUrl, midRollUrl, postRollUrl } = item;
-  const { data: adScheduleData, isLoading: isAdScheduleLoading } = useMediaAds(adScheduleId, item?.mediaid, { preRollUrl, midRollUrl, postRollUrl });
+  const { adSchedule, adScheduleUrls } = useConfigStore((s) => s.config);
+  const { data: adsData, isLoading: isAdsLoading } = useAds(adSchedule, adScheduleUrls, item?.mediaid);
 
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
@@ -162,19 +161,9 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      const data = {
-        ...adScheduleData,
-        schedule: adScheduleData.schedule.map((el) => ({ ...el, offset: el.offset / 1000 })),
-        client: 'googima',
-        vpaidmode: 'insecure',
-        rules: { startOnSeek: 'pre', timeBetweenAds: 0 },
-      };
-
-      console.log(data, 'data');
-
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
-        advertising: data,
+        advertising: adsData,
         aspectratio: false,
         controls: true,
         displaytitle: false,
@@ -214,10 +203,10 @@ const Player: React.FC<Props> = ({
       return loadPlaylist();
     }
 
-    if (libLoaded && !isAdScheduleLoading) {
+    if (libLoaded && !isAdsLoading) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adScheduleData, playerLicenseKey, feedId, isAdScheduleLoading]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adsData, playerLicenseKey, feedId, isAdsLoading]);
 
   useEffect(() => {
     return () => {

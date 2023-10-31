@@ -4,8 +4,7 @@ export type AdSchedule = {
   schedule: string;
 };
 
-export type AdTagUrls = {
-  preRollUrl: string | undefined;
-  midRollUrl: string | undefined;
-  postRollUrl: string | undefined;
+export type AdScheduleUrls = {
+  json?: string | null;
+  xml?: string | null;
 };

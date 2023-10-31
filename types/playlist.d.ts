@@ -57,9 +57,6 @@ export type PlaylistItem = {
   scheduledStart?: Date;
   scheduledEnd?: Date;
   markdown?: string;
-  preRollUrl?: string;
-  midRollUrl?: string;
-  postRollUrl?: string;
   [key: string]: unknown;
 };
 

@@ -55,6 +55,10 @@ const configSchema: SchemaOf<Config> = object({
   description: string().defined(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
+  adScheduleUrls: object({
+    json: string().notRequired().nullable(),
+    xml: string().notRequired().nullable(),
+  }).notRequired(),
   assets: object({
     banner: string().notRequired().nullable(),
   }).notRequired(),
