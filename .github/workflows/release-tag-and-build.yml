@@ -28,7 +28,9 @@ jobs:
 
       - name: Get current package version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
+        run: |
+          version=$( jq -r .version package.json)
+          echo "current-version=${version}" >> "$GITHUB_OUTPUT"
 
       - name: Parse Changelog Entry
         id: changelog-reader
