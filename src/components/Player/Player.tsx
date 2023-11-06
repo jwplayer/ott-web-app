@@ -161,7 +161,13 @@ const Player: React.FC<Props> = ({
 
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
-        advertising: adsData,
+        advertising: {
+          ...adsData,
+          showCountdown: true,
+        },
+        timeSlider: {
+          showAdMarkers: false,
+        },
         aspectratio: false,
         controls: true,
         displaytitle: false,
