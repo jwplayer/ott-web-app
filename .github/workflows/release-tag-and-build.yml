@@ -1,6 +1,7 @@
 name: Release - Tag and Build Artifacts
 
 on:
+  workflow_dispatch:
   push:
     branches: ['release']
 
@@ -12,13 +13,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           persist-credentials: false
-
-      - name: Generate changelog
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@v3
-        with:
-          github-token: ${{ secrets.ACTION_TOKEN }}
-          release-count: '0'
 
       - name: Install dependencies
         run: yarn
@@ -32,18 +26,34 @@ jobs:
           tar czf ott-web-app-build-${RELEASE_VERSION}.tar.gz public
           zip -r ott-web-app-build-${RELEASE_VERSION}.zip public
 
+      - name: Get current package version
+        id: package-version
+        run: |
+          version=$( jq -r .version package.json)
+          echo "current-version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Parse Changelog Entry
+        id: changelog-reader
+        uses: coditory/changelog-parser@v1
+        with:
+          version: ${{ steps.package-version.outputs.current-version }}
+      - name: ECHO
+        run: |
+          echo "${{steps.package-version.outputs.current-version}}"
+          echo "${{steps.changelog-reader.outputs.description}}"
+
       - name: Append Release Notes
         run: |
           cat <<EOT >> .github/RELEASE_BODY_TEMPLATE.md
-          ${{ steps.changelog.outputs.clean_changelog }}
+          ${{ steps.changelog-reader.outputs.description }}
           EOT
           echo "Appended release notes"
 
       - name: Release
         uses: ncipollo/release-action@v1
-        if: ${{ steps.changelog.outputs.tag }}
+        if: ${{ steps.package-version.outputs.current-version }}
         with:
           artifacts: 'build/ott-web-app-build-*.tar.gz, build/ott-web-app-build-*.zip'
-          tag: ${{ steps.changelog.outputs.tag }}
+          tag: v${{ steps.package-version.outputs.current-version }}
           bodyFile: '.github/RELEASE_BODY_TEMPLATE.md'
           token: ${{ secrets.github_token }}
