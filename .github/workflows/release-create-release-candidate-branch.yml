@@ -25,7 +25,7 @@ jobs:
           git merge origin/develop
           yarn && yarn i18next
           git add public/locales/*
-          git commit -m 'chore: parse latest translation tags'
+          git commit --dry-run && git commit -m 'chore: parse latest translation tags'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
 
