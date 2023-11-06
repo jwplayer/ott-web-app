@@ -9,7 +9,6 @@ import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev, testId } from '#src/utils/common';
-import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAds } from '#src/hooks/useAds';
 
 type Props = {
@@ -60,8 +59,7 @@ const Player: React.FC<Props> = ({
   const startTimeRef = useRef(startTime);
   const setPlayer = useOttAnalytics(item, feedId);
 
-  const { adSchedule, adScheduleUrls } = useConfigStore((s) => s.config);
-  const { data: adsData, isLoading: isAdsLoading } = useAds(adSchedule, adScheduleUrls, item?.mediaid);
+  const { data: adsData, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
 
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
