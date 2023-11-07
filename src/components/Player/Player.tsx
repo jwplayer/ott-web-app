@@ -59,7 +59,7 @@ const Player: React.FC<Props> = ({
   const startTimeRef = useRef(startTime);
   const setPlayer = useOttAnalytics(item, feedId);
 
-  const { data: adsData, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
+  const { data: adsData = {}, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
 
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
@@ -163,6 +163,7 @@ const Player: React.FC<Props> = ({
       const playerOptions: { [key: string]: unknown } = {
         advertising: {
           ...adsData,
+          // Beta feature
           showCountdown: true,
         },
         timeSlider: {

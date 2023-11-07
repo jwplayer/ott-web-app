@@ -5,7 +5,10 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 
 const CACHE_TIME = 60 * 1000 * 20;
 
-const useAdSchedule = ({ adScheduleId, enabled }: { adScheduleId: string | null | undefined; enabled: boolean }) => {
+/**
+ * @deprecated Use {@link useAppBasedAds} instead.
+ */
+const useLegacyStandaloneAds = ({ adScheduleId, enabled }: { adScheduleId: string | null | undefined; enabled: boolean }) => {
   const { isLoading, data } = useQuery(
     ['ad-schedule', adScheduleId],
     async () => {
@@ -22,7 +25,7 @@ const useAdSchedule = ({ adScheduleId, enabled }: { adScheduleId: string | null 
   };
 };
 
-const useMediaAds = ({ jsonUrl, mediaId, enabled }: { jsonUrl: string | null | undefined; mediaId: string; enabled: boolean }) => {
+const useAppBasedAds = ({ jsonUrl, mediaId, enabled }: { jsonUrl: string | null | undefined; mediaId: string; enabled: boolean }) => {
   const { isLoading, data } = useQuery(
     ['media-ads', mediaId],
     async () => {
@@ -44,13 +47,13 @@ export const useAds = ({ mediaId }: { mediaId: string }) => {
   const { adSchedule: adScheduleId, adScheduleUrls } = useConfigStore((s) => s.config);
 
   // adScheduleUrls.json prop exists when ad-config is attached to the App Config
-  const usePerMediaAds = !!adScheduleUrls?.json;
+  const useAppBasedFlow = !!adScheduleUrls?.json;
 
-  const { data: mediaAds, isLoading: isMediaAdsLoading } = useMediaAds({ jsonUrl: adScheduleUrls?.json, mediaId, enabled: usePerMediaAds });
-  const { data: adSchedule, isLoading: isAdScheduleLoading } = useAdSchedule({ adScheduleId, enabled: !usePerMediaAds });
+  const { data: mediaAds, isLoading: isMediaAdsLoading } = useAppBasedAds({ jsonUrl: adScheduleUrls?.json, mediaId, enabled: useAppBasedFlow });
+  const { data: adSchedule, isLoading: isAdScheduleLoading } = useLegacyStandaloneAds({ adScheduleId, enabled: !useAppBasedFlow });
 
   return {
-    isLoading: usePerMediaAds ? isMediaAdsLoading : isAdScheduleLoading,
-    data: usePerMediaAds ? mediaAds : adSchedule,
+    isLoading: useAppBasedFlow ? isMediaAdsLoading : isAdScheduleLoading,
+    data: useAppBasedFlow ? mediaAds : adSchedule,
   };
 };
