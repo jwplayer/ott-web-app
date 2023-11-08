@@ -61,6 +61,7 @@
   "login": {
     "field_required": "This field is required"
   },
+  "name": "Name",
   "nav": {
     "account": "Account",
     "add_profile": "Add new profile",
@@ -90,6 +91,7 @@
     "granted_subscription": "Granted subscription",
     "hidden_transactions_one": "One more transaction",
     "hidden_transactions_other": "{{count}} more transactions",
+    "longer_than_usual": "The payment is taking longer than usual. Please try again later.",
     "monthly_subscription": "Monthly subscription",
     "next_billing_date_on": "Next billing date is on {{date}}",
     "no_payment_methods": "No payment methods",
@@ -115,14 +117,18 @@
   "profile": {
     "adult": "Adult",
     "avatar": "Avatar",
+    "back_to_profiles": "Back to profiles",
     "content_rating": "Content rating",
-    "create": "Create profile",
     "create_message": "Create your profile",
+    "created_message": "You successfully created your profile. Now go and watch some awesome content and assemble your own personal collection of favorites.",
+    "created_title": "You’ve created your profile",
     "delete": "Delete profile",
     "delete_confirmation": "Are you sure you want to delete your profile? You will lose all you watch history and settings connected to this profile.",
     "delete_description": "Permanently delete your profile along with all of your watch history and favorites.",
     "delete_main": "The main profile cannot be deleted because it’s linked to your account's watch history and favorites.",
     "description": "Profiles allow you to watch content and assemble your own personal collection of favorites.",
+    "done": "Done",
+    "edit": "Edit profile",
     "form_error": "Something went wrong. Please try again later.",
     "info": "Profile info",
     "kids": "Kids",
@@ -130,9 +136,13 @@
     "no_one_watching": "There’s no one watching.",
     "validation": {
       "name": {
+        "already_exists": "This profile name is already taken. Please choose another one.",
+        "invalid_characters": "Your profile name can only contain letters",
         "required": "Please enter a name for your profile.",
-        "too_short": "Please enter at least 2 characters."
+        "too_long": "Please limit your profile name to {{charactersCount}} characters or fewer.",
+        "too_short": "Please enter at least {{charactersCount}} characters."
       }
-    }
+    },
+    "watch_now": "Watch now"
   }
 }

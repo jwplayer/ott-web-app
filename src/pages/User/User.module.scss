@@ -17,6 +17,7 @@
     margin: 0 calc(#{variables.$base-spacing} * 1.5);
   }
 }
+
 .leftColumn {
   width: 250px;
   margin-right: 24px;
@@ -30,7 +31,14 @@
 }
 
 .button {
+  max-width: 100%;
+  height: max-content;
+  min-height: 36px;
   margin-bottom: variables.$base-spacing;
+}
+
+.button span {
+  word-break: break-word;
 }
 
 .logoutLi {
@@ -89,4 +97,5 @@
 .profileIcon {
   width: 20px;
   height: 20px;
+  border-radius: 50%;
 }

@@ -1,6 +1,7 @@
 import InPlayer from '@inplayer-org/inplayer.js';
 
 import type { ListProfiles, CreateProfile, UpdateProfile, EnterProfile, GetProfileDetails, DeleteProfile } from '#types/account';
+import defaultAvatar from '#src/assets/profiles/default_avatar.png';
 
 export const listProfiles: ListProfiles = async () => {
   try {
@@ -8,7 +9,11 @@ export const listProfiles: ListProfiles = async () => {
     return {
       responseData: {
         canManageProfiles: true,
-        collection: response.data,
+        collection:
+          response.data.map((profile) => ({
+            ...profile,
+            avatar_url: profile?.avatar_url || defaultAvatar,
+          })) ?? [],
       },
       errors: [],
     };
@@ -25,30 +30,22 @@ export const listProfiles: ListProfiles = async () => {
 };
 
 export const createProfile: CreateProfile = async (payload) => {
-  try {
-    const response = await InPlayer.Account.createProfile(payload.name, payload.adult, payload.avatar_url, payload.pin);
-    return {
-      responseData: response.data,
-      errors: [],
-    };
-  } catch {
-    throw new Error('Unable to create profile.');
-  }
+  const response = await InPlayer.Account.createProfile(payload.name, payload.adult, payload.avatar_url, payload.pin);
+  return {
+    responseData: response.data,
+    errors: [],
+  };
 };
 
 export const updateProfile: UpdateProfile = async (payload) => {
-  try {
-    if (!payload.id) {
-      throw new Error('Profile id is required.');
-    }
-    const response = await InPlayer.Account.updateProfile(payload.id, payload.name, payload.avatar_url, payload.adult);
-    return {
-      responseData: response.data,
-      errors: [],
-    };
-  } catch {
-    throw new Error('Unable to update profile.');
+  if (!payload.id) {
+    throw new Error('Profile id is required.');
   }
+  const response = await InPlayer.Account.updateProfile(payload.id, payload.name, payload.avatar_url, payload.adult);
+  return {
+    responseData: response.data,
+    errors: [],
+  };
 };
 
 export const enterProfile: EnterProfile = async ({ id, pin }) => {
