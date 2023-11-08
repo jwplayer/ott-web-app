@@ -9,7 +9,7 @@ import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
 import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev, testId } from '#src/utils/common';
-import { useAds } from '#src/hooks/useAds';
+import type { AdSchedule } from '#types/ad-schedule';
 
 type Props = {
   playerId: string;
@@ -18,6 +18,7 @@ type Props = {
   item: PlaylistItem;
   startTime?: number;
   autostart?: boolean;
+  adsData?: AdSchedule;
   onReady?: (player?: JWPlayer) => void;
   onPlay?: () => void;
   onPause?: () => void;
@@ -36,6 +37,7 @@ const Player: React.FC<Props> = ({
   playerId,
   playerLicenseKey,
   item,
+  adsData,
   onReady,
   onPlay,
   onPause,
@@ -58,8 +60,6 @@ const Player: React.FC<Props> = ({
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
   const setPlayer = useOttAnalytics(item, feedId);
-
-  const { data: adsData = {}, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
 
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
@@ -208,10 +208,10 @@ const Player: React.FC<Props> = ({
       return loadPlaylist();
     }
 
-    if (libLoaded && !isAdsLoading) {
+    if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adsData, playerLicenseKey, feedId, isAdsLoading]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adsData, playerLicenseKey, feedId]);
 
   useEffect(() => {
     return () => {
