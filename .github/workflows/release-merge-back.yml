@@ -14,4 +14,4 @@ jobs:
           type: now
           target_branch: develop
           message: 'chore: merge release to develop'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACTION_TOKEN }}
