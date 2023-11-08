@@ -9,6 +9,7 @@ import useContentProtection from '#src/hooks/useContentProtection';
 import { getMediaById } from '#src/services/api.service';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { useSettingsStore } from '#src/stores/SettingsStore';
+import { useAds } from '#src/hooks/useAds';
 
 type Props = {
   item: PlaylistItem;
@@ -45,6 +46,7 @@ const PlayerContainer: React.FC<Props> = ({
   // data
   const { data: playableItem, isLoading } = useContentProtection('media', item.mediaid, (token, drmPolicyId) => getMediaById(item.mediaid, token, drmPolicyId));
   const { playerId, playerLicenseKey } = useSettingsStore((s) => s);
+  const { data: adsData, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
 
   // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
@@ -68,7 +70,7 @@ const PlayerContainer: React.FC<Props> = ({
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
-  if (!playableItem || isLoading) {
+  if (!playableItem || isLoading || isAdsLoading) {
     return <LoadingOverlay inline />;
   }
 
@@ -78,6 +80,7 @@ const PlayerContainer: React.FC<Props> = ({
       playerLicenseKey={playerLicenseKey}
       feedId={feedId}
       item={playableItem}
+      adsData={adsData}
       onReady={handleReady}
       onFirstFrame={handleFirstFrame}
       onPlay={onPlay}
