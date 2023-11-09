@@ -237,8 +237,9 @@ export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = asyn
       errors: [],
       responseData: {},
     };
-  } catch {
-    throw new Error('Failed to change password.');
+  } catch (error: unknown) {
+    const { response } = error as InPlayerError;
+    throw new Error(response.data.message);
   }
 };
 
@@ -257,8 +258,9 @@ export const changePasswordWithResetToken: ChangePassword = async (payload) => {
       errors: [],
       responseData: {},
     };
-  } catch {
-    throw new Error('Failed to change password.');
+  } catch (error: unknown) {
+    const { response } = error as InPlayerError;
+    throw new Error(response.data.message);
   }
 };
 

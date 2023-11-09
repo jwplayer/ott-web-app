@@ -49,7 +49,7 @@ const EditPasswordForm: React.FC<Props> = ({ onSubmit, onChange, onBlur, showOld
       ) : showResetTokenField ? (
         <TextField
           className={styles.textField}
-          value={value.resetPasswordToken}
+          value={value.resetPasswordToken || ''}
           onChange={onChange}
           onBlur={onBlur}
           label={t('reset.reset_password_token')}
