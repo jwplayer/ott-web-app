@@ -92,7 +92,7 @@
     "granted_subscription": "Granted subscription",
     "hidden_transactions_one": "One more transaction",
     "hidden_transactions_other": "{{count}} more transactions",
-    "longer_than_usual": "",
+    "longer_than_usual": "The payment is taking longer than usual. Please try again later.",
     "monthly_subscription": "Monthly subscription",
     "next_billing_date_on": "Next billing date is on {{date}}",
     "no_payment_methods": "No payment methods",
@@ -138,7 +138,7 @@
     "validation": {
       "name": {
         "already_exists": "This profile name is already taken. Please choose another one.",
-        "invalid_characters": "Your profile name can only contain letters, numbers, and spaces.",
+        "invalid_characters": "Your profile name can only contain letters",
         "required": "Please enter a name for your profile.",
         "too_long": "Please limit your profile name to {{charactersCount}} characters or fewer.",
         "too_short": "Please enter at least {{charactersCount}} characters."

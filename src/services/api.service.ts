@@ -92,6 +92,7 @@ export const getPlaylistById = async (id?: string, params: GetPlaylistParams = {
 /**
  * Get watchlist by playlistId
  * @param {string} playlistId
+ * @param {string[]} mediaIds
  * @param {string} [token]
  */
 export const getMediaByWatchlist = async (playlistId: string, mediaIds: string[], token?: string): Promise<PlaylistItem[] | undefined> => {
@@ -242,8 +243,20 @@ export const getAdSchedule = async (id: string | undefined | null): Promise<AdSc
   }
 
   const url = import.meta.env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
-  const response = await fetch(url);
+  const response = await fetch(url, { credentials: 'omit' });
   const data = await getDataOrThrow(response);
+
+  return data;
+};
+
+export const getMediaAds = async (url: string, mediaId: string): Promise<AdSchedule | undefined> => {
+  const urlWithQuery = addQueryParams(url, {
+    media_id: mediaId,
+  });
+
+  const response = await fetch(urlWithQuery, { credentials: 'omit' });
+
+  const data = (await getDataOrThrow(response)) as AdSchedule;
 
   return data;
 };

@@ -78,7 +78,7 @@ Scenario('I can navigate to live channels from the header', ({ I }) => {
   I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 });
 
-// todo: unskip this scenario when ready
+// TODO: add BCL SaaS stream
 // eslint-disable-next-line codeceptjs/no-skipped-tests
 Scenario.skip('I can watch the current live program on the live channel screen', async ({ I }) => {
   await I.openVideoCard('Channel 1');
