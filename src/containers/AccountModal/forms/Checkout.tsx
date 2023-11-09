@@ -16,7 +16,7 @@ import PaymentForm from '#src/components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '#src/containers/AdyenInitialPayment/AdyenInitialPayment';
 import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 const Checkout = () => {
   const accountController = getModule(AccountController);

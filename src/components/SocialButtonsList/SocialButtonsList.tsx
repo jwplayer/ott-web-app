@@ -5,7 +5,7 @@ import SocialButton, { SocialButtonVariant } from '../SocialButton/SocialButton'
 import styles from './SocialButtonsList.module.scss';
 
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 const SocialButtonsList = () => {
   const accountController = getModule(AccountController);

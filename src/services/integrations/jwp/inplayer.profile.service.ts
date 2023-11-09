@@ -1,7 +1,7 @@
 import InPlayer from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import ProfileService from './profile.service';
+import ProfileService from '../../profile.service';
 
 import type { ListProfiles, CreateProfile, UpdateProfile, EnterProfile, GetProfileDetails, DeleteProfile } from '#types/account';
 import defaultAvatar from '#src/assets/profiles/default_avatar.png';

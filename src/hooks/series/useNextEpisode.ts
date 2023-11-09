@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import type { Series } from '#types/series';
 import { CACHE_TIME, STALE_TIME } from '#src/config';
 import ApiController from '#src/stores/ApiController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 export const useNextEpisode = ({ series, episodeId }: { series: Series | undefined; episodeId: string | undefined }) => {
   const apiController = getModule(ApiController);

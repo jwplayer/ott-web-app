@@ -17,7 +17,7 @@ import type { Subscription } from '#types/subscription';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
 import CheckoutController from '#src/stores/CheckoutController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 import AccountController from '#src/stores/AccountController';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {

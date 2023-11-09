@@ -9,7 +9,7 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import { useAccountStore } from '#src/stores/AccountStore';
 import PayPal from '#components/PayPal/PayPal';
 import CheckoutController from '#src/stores/CheckoutController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 type Props = {
   onCloseButtonClick: () => void;

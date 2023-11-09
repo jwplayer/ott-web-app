@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 
 import CleengService from './cleeng.service';
-import CheckoutService from './checkout.service';
+import CheckoutService from '../../checkout.service';
 
 import type {
   AddAdyenPaymentDetails,

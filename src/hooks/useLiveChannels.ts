@@ -6,7 +6,7 @@ import type { EpgProgram, EpgChannel } from '#types/epg';
 import { getLiveProgram, programIsLive } from '#src/utils/epg';
 import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
 import EpgController from '#src/stores/EpgController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 /**
  * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.

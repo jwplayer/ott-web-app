@@ -10,7 +10,7 @@ import type { GenericFormErrors } from '#types/form';
 import type { ProfileFormSubmitError, ProfileFormValues } from '#src/containers/Profiles/types';
 import { logDev } from '#src/utils/common';
 import ProfileController from '#src/stores/ProfileController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 import AccountController from '#src/stores/AccountController';
 
 export const useSelectProfile = () => {

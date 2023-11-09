@@ -10,7 +10,7 @@ import { addQueryParams } from '#src/utils/formatting';
 import type { AdyenPaymentSession } from '#types/checkout';
 import CheckoutController from '#src/stores/CheckoutController';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 type Props = {
   setUpdatingOrder: (loading: boolean) => void;

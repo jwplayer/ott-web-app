@@ -9,7 +9,7 @@ import type { OfferType } from '#types/account';
 import { isSVODOffer } from '#src/utils/subscription';
 import CheckoutController from '#src/stores/CheckoutController';
 import { ACCESS_MODEL } from '#src/config';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 const useOffers = () => {
   const { getIntegration, accessModel } = useConfigStore();

@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import SubscriptionService from './subscription.service';
+import SubscriptionService from '../../subscription.service';
 
 import type {
   ChangeSubscription,

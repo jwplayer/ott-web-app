@@ -10,7 +10,7 @@ import LoginForm from '#components/LoginForm/LoginForm';
 import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 type Props = {
   messageKey?: string;

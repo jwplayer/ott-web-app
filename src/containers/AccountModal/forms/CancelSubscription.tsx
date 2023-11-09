@@ -9,7 +9,7 @@ import SubscriptionCancelled from '#components/SubscriptionCancelled/Subscriptio
 import { formatLocalizedDate } from '#src/utils/formatting';
 import { removeQueryParam } from '#src/utils/location';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/modules/container';
+import { getModule } from '#src/container';
 
 const CancelSubscription = () => {
   const accountController = getModule(AccountController);

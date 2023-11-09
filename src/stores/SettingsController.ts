@@ -1,26 +1,16 @@
-import merge from 'lodash.merge';
 import { injectable } from 'inversify';
 import ini from 'ini';
 
-import type { Config } from '#types/Config';
-import { IntegrationInfo, useConfigStore } from '#src/stores/ConfigStore';
-import ConfigService from '#src/services/config.service';
 import { Settings, useSettingsStore } from '#src/stores/SettingsStore';
+import { CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY, OTT_GLOBAL_PLAYER_ID } from '#src/config';
 import { logDev } from '#src/utils/common';
-import { OTT_GLOBAL_PLAYER_ID, CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY } from '#src/config';
-import { ConfigError, SettingsError } from '#src/utils/error';
+import { SettingsError } from '#src/utils/error';
 
 // Use local storage so the override persists until cleared
 const storage = window.localStorage;
 
 @injectable()
-export default class AppController {
-  private readonly configService: ConfigService;
-
-  constructor(configService: ConfigService) {
-    this.configService = configService;
-  }
-
+export class SettingsController {
   getConfigSource(settings: Settings | undefined) {
     if (!settings) {
       return '';
@@ -66,7 +56,18 @@ export default class AppController {
     return settings.defaultConfigSource;
   }
 
-  initAppSettings = async () => {
+  isValidConfigSource = (source: string, settings: Settings) => {
+    // Dynamic values are valid as long as they are defined
+    if (settings?.UNSAFE_allowAnyConfigSource) {
+      return !!source;
+    }
+
+    return (
+      settings?.defaultConfigSource === source || (settings?.additionalAllowedConfigSources && settings?.additionalAllowedConfigSources.indexOf(source) >= 0)
+    );
+  };
+
+  initialize = async () => {
     const settings = await fetch('/.webapp.ini')
       .then((result) => result.text())
       .then((iniString) => ini.parse(iniString) as Settings)
@@ -102,83 +103,5 @@ export default class AppController {
     useSettingsStore.setState(settings);
 
     return settings;
-  };
-
-  loadAndValidateConfig = async (configSource: string | undefined) => {
-    const configLocation = this.configService.formatSourceLocation(configSource);
-    const defaultConfig = this.configService.getDefaultConfig();
-    let config: Config | null = null;
-
-    if (!configLocation) {
-      useConfigStore.setState({ config: defaultConfig });
-      throw new ConfigError('Config not defined');
-    }
-
-    try {
-      config = await this.configService.loadConfig(configLocation);
-    } catch (err: unknown) {
-      throw new ConfigError('Config not found');
-    }
-
-    if (!config) {
-      throw new ConfigError('Config not found');
-    }
-
-    config.id = configSource;
-    config.assets = config.assets || {};
-
-    // make sure the banner always defaults to the JWP banner when not defined in the config
-    if (!config.assets.banner) {
-      config.assets.banner = defaultConfig.assets.banner;
-    }
-
-    // Store the logo right away and set css variables so the error page will be branded
-    const banner = config.assets.banner;
-
-    useConfigStore.setState((s) => {
-      s.config.assets.banner = banner;
-    });
-
-    this.configService.setCssVariables(config.styling || {});
-
-    config = await this.configService.validateConfig(config);
-    config = merge({}, defaultConfig, config);
-
-    const accessModel = this.configService.calculateAccessModel(config);
-
-    useConfigStore.setState({ config, accessModel });
-
-    this.configService.maybeInjectAnalyticsLibrary(config);
-
-    if (config.adSchedule) {
-      const adScheduleData = await this.configService.loadAdSchedule(config?.adSchedule);
-      useConfigStore.setState({ adScheduleData });
-    }
-
-    return config;
-  };
-
-  isValidConfigSource = (source: string, settings: Settings) => {
-    // Dynamic values are valid as long as they are defined
-    if (settings?.UNSAFE_allowAnyConfigSource) {
-      return !!source;
-    }
-
-    return (
-      settings?.defaultConfigSource === source || (settings?.additionalAllowedConfigSources && settings?.additionalAllowedConfigSources.indexOf(source) >= 0)
-    );
-  };
-
-  loadResources = async () => {
-    const settings = await this.initAppSettings();
-    const configSource = this.getConfigSource(settings);
-
-    const config = await this.loadAndValidateConfig(configSource);
-
-    return { configSource, config, settings };
-  };
-
-  getIntegration = (): IntegrationInfo => {
-    return useConfigStore.getState().getIntegration();
   };
 }

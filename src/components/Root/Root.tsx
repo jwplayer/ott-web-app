@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
@@ -10,45 +9,17 @@ import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-// import { initApp } from '#src/modules/init1';
-import { useTrackConfigKeyChange } from '#src/hooks/useTrackConfigKeyChange';
 import { ConfigError, SettingsError } from '#src/utils/error';
-import type { Settings } from '#src/stores/SettingsStore';
-import type { Config } from '#types/Config';
-import { CACHE_TIME, STALE_TIME } from '#src/config';
-import AppController from '#src/stores/AppController2';
-import { getModule } from '#src/modules/container';
+import { useBootstrapApp } from '#src/hooks/useBootstrapApp';
 
-type Resources = {
-  config: Config;
-  configSource: string | undefined;
-  settings: Settings;
-};
-
-const applicationController = getModule(AppController);
+const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
 // This is moved to a separate, parallel component to reduce rerenders
-const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const RootLoader = ({ onReady }: { onReady: () => void }) => {
   const { t } = useTranslation('error');
 
-  const { data, isLoading, error, isError, isSuccess } = useQuery<Resources, Error>('config-init', async () => applicationController.initApp(), {
-    refetchInterval: false,
-    retry: 1,
-    cacheTime: CACHE_TIME,
-    staleTime: STALE_TIME,
-  });
-
-  // Modify query string to add / remove app-config id
-  useTrackConfigKeyChange(data?.settings, data?.configSource);
-
+  const { data, isLoading, error, isSuccess } = useBootstrapApp(onReady);
   const { configSource } = data || {};
-
-  // After the config loads, we can show the rest of the App
-  useEffect(() => {
-    setAppIsReady(!isError && !isLoading && !!data);
-  }, [setAppIsReady, isError, isLoading, data]);
-
-  const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
   if (!IS_DEMO_OR_PREVIEW && isLoading) {
@@ -96,8 +67,8 @@ const Root: FC = () => {
     <>
       {isReady && <AppRoutes />}
       {isReady && <AccountModal />}
-      {/*This is moved to a separate, parallel component to reduce rerenders*/}
-      <RootLoader setAppIsReady={setIsReady} />
+      {/*This is moved to a separate, parallel component to reduce rerenders */}
+      <RootLoader onReady={() => setIsReady(true)} />
     </>
   );
 };
