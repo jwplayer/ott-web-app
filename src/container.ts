@@ -26,7 +26,6 @@ export const container = new Container({ defaultScope: 'Singleton', skipBaseClas
 
 // resolve shortcut
 export const getModule = <T>(constructorFunction: interfaces.Newable<T>): T => {
-  console.log('Rsolve', constructorFunction.name);
   return container.resolve(constructorFunction);
 }
 

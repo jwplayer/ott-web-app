@@ -11,25 +11,30 @@ import SubscriptionJWService from '#src/services/integrations/jwp/inplayer.subsc
 import CleengProfileService from '#src/services/integrations/cleeng/cleeng.profile.service';
 import InplayerProfileService from '#src/services/integrations/jwp/inplayer.profile.service';
 import ProfileService from '#src/services/profile.service';
-import { container } from '#src/container';
-import type { Config } from '#types/Config';
-import { logDev } from '#src/utils/common';
+import { container, getModule } from '#src/container';
+import AppController from '#src/stores/AppController';
 
-export const loadIntegration = async (config: Config) => {
-  const { cleeng, jwp } = config.integrations;
+const appController = getModule(AppController);
 
-  if (cleeng?.id) {
-    logDev('Loading Cleeng integration');
+appController.registerIntegration({
+  name: 'Cleeng',
+  selector: (config) => !!config.integrations.cleeng?.id,
+  register: () => {
     container.bind(CleengService).toSelf();
     container.bind(AccountService).to(CleengAccountService);
     container.bind(CheckoutService).to(CleengCheckoutService);
     container.bind(SubscriptionService).to(CleengSubscriptionService);
     container.bind(ProfileService).to(CleengProfileService);
-  } else if (jwp?.clientId) {
-    logDev('Loading JWP integration');
+  },
+});
+
+appController.registerIntegration({
+  name: 'JWP',
+  selector: (config) => !!config.integrations.jwp?.clientId,
+  register: () => {
     container.bind(AccountService).to(InplayerAccountService);
     container.bind(CheckoutService).to(InplayerCheckoutService);
     container.bind(SubscriptionService).to(SubscriptionJWService);
     container.bind(ProfileService).to(InplayerProfileService);
-  }
-};
+  },
+});

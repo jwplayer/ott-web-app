@@ -11,14 +11,35 @@ import ConfigService from '#src/services/config.service';
 import { PersonalShelf } from '#src/config';
 import { ConfigError } from '#src/utils/error';
 import { getModule } from '#src/container';
-import { loadIntegration } from '#src/integrations';
+import { logDev } from '#src/utils/common';
+
+type IntegrationRegistration = {
+  name: string;
+  selector: (config: Config) => boolean;
+  register: (config: Config) => Promise<void> | void;
+};
 
 @injectable()
 export default class AppController {
   private readonly configService: ConfigService;
 
+  private integrationRegistrations: IntegrationRegistration[] = [];
+
   constructor(configService: ConfigService) {
     this.configService = configService;
+  }
+
+  registerIntegration(registration: IntegrationRegistration) {
+    this.integrationRegistrations.push(registration);
+  }
+
+  async loadIntegration(config: Config) {
+    const registration = this.integrationRegistrations.find(({ selector }) => selector(config));
+
+    if (registration) {
+      logDev(`Found integration: ${registration.name}`);
+      await registration.register(config);
+    }
   }
 
   loadAndValidateConfig = async (configSource: string | undefined) => {
@@ -78,7 +99,7 @@ export default class AppController {
   initApp = async (configId: string | undefined) => {
     const config = await this.loadAndValidateConfig(configId);
 
-    await loadIntegration(config);
+    await this.loadIntegration(config);
 
     if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await getModule(WatchHistoryController).restoreWatchHistory();
