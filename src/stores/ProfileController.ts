@@ -1,4 +1,4 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import * as yup from 'yup';
 
@@ -9,6 +9,8 @@ import { useAccountStore } from './AccountStore';
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
 import ProfileService from '#src/services/profile.service';
 import * as persist from '#src/utils/persist';
+import type { INTEGRATION } from '#src/config';
+import { getNamedModule } from '#src/container';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -27,8 +29,8 @@ const profileSchema = yup.object().shape({
 export default class ProfileController {
   private readonly profileService: ProfileService;
 
-  constructor(profileService: ProfileService) {
-    this.profileService = profileService;
+  constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION) {
+    this.profileService = getNamedModule(ProfileService, integrationType);
   }
 
   private getSandbox = () => {

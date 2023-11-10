@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 
 import FavoritesController from './FavoritesController';
 import WatchHistoryController from './WatchHistoryController';
@@ -28,7 +28,8 @@ import CheckoutService from '#src/services/checkout.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
-import { ACCESS_MODEL } from '#src/config';
+import { ACCESS_MODEL, INTEGRATION } from '#src/config';
+import { getNamedModule } from '#src/container';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -42,16 +43,16 @@ export default class AccountController {
   private readonly profileController?: ProfileController;
 
   constructor(
-    checkoutService: CheckoutService,
-    accountService: AccountService,
-    subscriptionService: SubscriptionService,
+    @inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION,
     favoritesController: FavoritesController,
     watchHistoryController: WatchHistoryController,
     profileController?: ProfileController,
   ) {
-    this.checkoutService = checkoutService;
-    this.accountService = accountService;
-    this.subscriptionService = subscriptionService;
+    this.checkoutService = getNamedModule(CheckoutService, integrationType);
+    this.accountService = getNamedModule(AccountService, integrationType);
+    this.subscriptionService = getNamedModule(SubscriptionService, integrationType);
+
+    // @TODO refactor?
     this.favoritesController = favoritesController;
     this.watchHistoryController = watchHistoryController;
     this.profileController = profileController;
@@ -435,7 +436,17 @@ export default class AccountController {
       throw new Error('updateCardDetails is not available in subscription service');
     }
 
-    const response = await this.subscriptionService.updateCardDetails({ cardName, cardNumber, cvc, expMonth, expYear, currency }, sandbox);
+    const response = await this.subscriptionService.updateCardDetails(
+      {
+        cardName,
+        cardNumber,
+        cvc,
+        expMonth,
+        expYear,
+        currency,
+      },
+      sandbox,
+    );
     const activePayment = (await this.subscriptionService.getActivePayment({ sandbox, customerId })) || null;
 
     useAccountStore.setState({

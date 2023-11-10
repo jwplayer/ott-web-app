@@ -20,6 +20,7 @@ export interface Settings {
 }
 
 type ConfigState = {
+  loaded: boolean;
   config: Config;
   accessModel: AccessModel;
   settings: Settings;
@@ -28,6 +29,7 @@ type ConfigState = {
 };
 
 export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) => ({
+  loaded: false,
   config: {
     id: '',
     siteName: '',

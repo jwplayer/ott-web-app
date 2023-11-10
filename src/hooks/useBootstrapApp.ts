@@ -16,7 +16,7 @@ type Resources = {
 };
 
 export const useBootstrapApp = (onReady: () => void) => {
-  const { data, isLoading, error, isError, isSuccess } = useQuery<Resources, Error>('config-init', applicationController.initApp, {
+  const { data, isLoading, error, isError, isSuccess } = useQuery<Resources, Error>('config-init', applicationController.initializeApp, {
     refetchInterval: false,
     retry: 1,
     onSuccess: onReady,

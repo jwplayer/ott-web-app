@@ -1,4 +1,4 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import { getOverrideIP } from '../utils/common';
 
@@ -24,15 +24,17 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import CheckoutService from '#src/services/checkout.service';
 import SubscriptionService from '#src/services/subscription.service';
+import type { INTEGRATION } from '#src/config';
+import { getNamedModule } from '#src/container';
 
 @injectable()
 export default class CheckoutController {
   private readonly checkoutService: CheckoutService;
   private readonly subscriptionService: SubscriptionService;
 
-  constructor(checkoutService: CheckoutService, subscriptionService: SubscriptionService) {
-    this.checkoutService = checkoutService;
-    this.subscriptionService = subscriptionService;
+  constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION) {
+    this.checkoutService = getNamedModule(CheckoutService, integrationType);
+    this.subscriptionService = getNamedModule(SubscriptionService, integrationType);
   }
 
   createOrder = async (offer: Offer, paymentMethodId?: number): Promise<void> => {
@@ -280,7 +282,12 @@ export default class CheckoutController {
     const { subscription } = useAccountStore.getState();
     if (!subscription) return;
 
-    const SwitchSubscriptionPayload = { toOfferId, customerId: customerId, offerId: subscription.offerId, switchDirection: switchDirection };
+    const SwitchSubscriptionPayload = {
+      toOfferId,
+      customerId: customerId,
+      offerId: subscription.offerId,
+      switchDirection: switchDirection,
+    };
 
     await this.checkoutService.switchSubscription(SwitchSubscriptionPayload, useSandbox);
 
@@ -295,7 +302,13 @@ export default class CheckoutController {
       throw new Error('changeSubscription is not available in subscription service');
     }
 
-    const { responseData } = await this.subscriptionService.changeSubscription({ accessFeeId, subscriptionId }, useSandbox);
+    const { responseData } = await this.subscriptionService.changeSubscription(
+      {
+        accessFeeId,
+        subscriptionId,
+      },
+      useSandbox,
+    );
 
     return responseData;
   };
@@ -363,7 +376,14 @@ export default class CheckoutController {
       throw new Error('finalizeAddedAdyenPaymentDetails is not available in checkout service');
     }
 
-    const response = await this.checkoutService.finalizeAdyenPaymentDetails({ paymentMethodId, details, paymentData }, useSandbox);
+    const response = await this.checkoutService.finalizeAdyenPaymentDetails(
+      {
+        paymentMethodId,
+        details,
+        paymentData,
+      },
+      useSandbox,
+    );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 

@@ -1,4 +1,4 @@
-import { injectable, optional } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
@@ -8,15 +8,17 @@ import AccountService from '#src/services/account.service';
 import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
 import type { Customer } from '#types/account';
+import type { INTEGRATION } from '#src/config';
+import { getNamedModule } from '#src/container';
 
 @injectable()
 export default class WatchHistoryController {
   private readonly watchHistoryService: WatchHistoryService;
   private readonly accountService?: AccountService;
 
-  constructor(watchHistoryService: WatchHistoryService, @optional() accountService?: AccountService) {
+  constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION, watchHistoryService: WatchHistoryService) {
     this.watchHistoryService = watchHistoryService;
-    this.accountService = accountService;
+    this.accountService = getNamedModule(AccountService, integrationType, true);
   }
 
   serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {
@@ -29,7 +31,10 @@ export default class WatchHistoryController {
     if (user) {
       useAccountStore.setState((state) => ({
         ...state,
-        user: { ...(state.user as Customer), externalData: { ...state.user?.externalData, history: this.serializeWatchHistory(watchHistory) } },
+        user: {
+          ...(state.user as Customer),
+          externalData: { ...state.user?.externalData, history: this.serializeWatchHistory(watchHistory) },
+        },
       }));
     }
   }

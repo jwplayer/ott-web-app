@@ -12,37 +12,15 @@ import SettingsService from '#src/services/settings.service';
 import { PersonalShelf } from '#src/config';
 import { ConfigError } from '#src/utils/error';
 import { getModule } from '#src/container';
-import { logDev } from '#src/utils/common';
-
-type IntegrationRegistration = {
-  name: string;
-  selector: (config: Config) => boolean;
-  register: (config: Config) => Promise<void> | void;
-};
 
 @injectable()
 export default class AppController {
   private readonly configService: ConfigService;
   private readonly settingsService: SettingsService;
 
-  private integrationRegistrations: IntegrationRegistration[] = [];
-
   constructor(@inject(ConfigService) configService: ConfigService, @inject(SettingsService) settingsService: SettingsService) {
     this.configService = configService;
     this.settingsService = settingsService;
-  }
-
-  registerIntegration(registration: IntegrationRegistration) {
-    this.integrationRegistrations.push(registration);
-  }
-
-  async loadIntegration(config: Config) {
-    const registration = this.integrationRegistrations.find(({ selector }) => selector(config));
-
-    if (registration) {
-      logDev(`Found integration: ${registration.name}`);
-      await registration.register(config);
-    }
   }
 
   loadAndValidateConfig = async (configSource: string | undefined) => {
@@ -87,7 +65,7 @@ export default class AppController {
 
     const accessModel = this.configService.calculateAccessModel(config);
 
-    useConfigStore.setState({ config, accessModel });
+    useConfigStore.setState({ config, accessModel, loaded: true });
 
     this.configService.maybeInjectAnalyticsLibrary(config);
 
@@ -99,16 +77,13 @@ export default class AppController {
     return config;
   };
 
-  initApp = async () => {
+  initializeApp = async () => {
     const settings = await this.settingsService.initialize();
     const configSource = this.settingsService.getConfigSource(settings);
     const config = await this.loadAndValidateConfig(configSource);
 
     // update settings in the config store
     useConfigStore.setState({ settings });
-
-    // load the integration based on the app config
-    await this.loadIntegration(config);
 
     if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await getModule(WatchHistoryController).restoreWatchHistory();
@@ -126,6 +101,10 @@ export default class AppController {
   };
 
   getIntegration = (): IntegrationInfo => {
+    const configState = useConfigStore.getState();
+
+    if (!configState.loaded) throw new Error('A call to `AppController#getIntegration()` was made before loading the config');
+
     return useConfigStore.getState().getIntegration();
   };
 }
