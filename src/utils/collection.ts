@@ -60,6 +60,25 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
   if (!publisherConsents || !customerConsents) {
     return {};
   }
+
+  const values = publisherConsents?.reduce((acc, publisherConsent) => {
+    const consent = customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name);
+
+    if (consent) {
+      const value = publisherConsent.isCustomRegisterField ? consent.value ?? '' : consent.state === 'accepted';
+      acc[publisherConsent.name] = value;
+    }
+
+    return acc;
+  }, {} as Record<string, string | boolean>);
+
+  return values;
+};
+
+const formatConsents = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+  if (!publisherConsents || !customerConsents) {
+    return {};
+  }
   const values: Record<string, boolean> = {};
   publisherConsents?.forEach((publisherConsent) => {
     if (customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name && customerConsent.state === 'accepted')) {
@@ -71,14 +90,14 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
 };
 
 const extractConsentValues = (consents?: Consent[]) => {
-  const values: Record<string, boolean> = {};
+  const values: Record<string, string | boolean> = {};
 
   if (!consents) {
     return values;
   }
 
   consents?.forEach((consent) => {
-    values[consent.name] = consent.enabledByDefault;
+    values[consent.name] = consent.type === 'checkbox' ? consent.enabledByDefault === true : consent.defaultValue ?? '';
   });
 
   return values;
@@ -93,14 +112,15 @@ const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: 
     consents.push({
       name: consent.name,
       version: consent.version,
-      state: values.consents[consent.name] ? 'accepted' : 'declined',
+      state: values[consent.name] ? 'accepted' : 'declined',
+      value: values[consent.name] ?? '',
     });
   });
 
   return consents;
 };
 
-const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, boolean>) => {
+const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, string | boolean>) => {
   const customerConsents: CustomerConsent[] = [];
   const consentsErrors: string[] = [];
 
@@ -115,11 +135,39 @@ const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<
       name: consent.name,
       version: consent.version,
       state: consents[consent.name] ? 'accepted' : 'declined',
+      value: consents[consent.name] ?? '',
     });
   });
 
   return { customerConsents, consentsErrors };
 };
+
+const isNotEmptyConsent = (consent: CustomerConsent) => consent.value !== '';
+
+const formatConsentToRegisterField = ({ name, value = '' }: CustomerConsent, _: number, collection: CustomerConsent[]) => {
+  const val = (() => {
+    if (name === 'us_state') {
+      if (collection.find(({ name, value }) => name === 'country' && value === 'us')) {
+        return value === 'n/a' ? '' : value;
+      }
+
+      return 'n/a';
+    }
+
+    const isBoolean = value === true || value === false;
+
+    if (isBoolean && name !== 'terms') {
+      return value ? 'on' : 'off';
+    }
+
+    return value;
+  })();
+
+  return [name, val] as const;
+};
+
+const formatConsentsToRegisterFields = (consents: CustomerConsent[]) =>
+  Object.fromEntries(consents.filter(isNotEmptyConsent).map(formatConsentToRegisterField));
 
 const deepCopy = (obj: unknown) => {
   if (Array.isArray(obj) || (typeof obj === 'object' && obj !== null)) {
@@ -149,10 +197,14 @@ export {
   findPlaylistImageForWidth,
   generatePlaylistPlaceholder,
   formatConsentValues,
+  formatConsents,
   formatConsentsFromValues,
   extractConsentValues,
   checkConsentsFromValues,
   deepCopy,
   parseAspectRatio,
   parseTilesDelta,
+  isNotEmptyConsent,
+  formatConsentToRegisterField,
+  formatConsentsToRegisterFields,
 };
