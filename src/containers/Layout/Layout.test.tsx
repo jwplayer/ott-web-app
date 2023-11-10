@@ -5,7 +5,7 @@ import Layout from './Layout';
 import { renderWithRouter } from '#test/testUtils';
 import ProfileController from '#src/stores/ProfileController';
 
-vi.mock('#src/modules/container', () => ({
+vi.mock('#src/container', () => ({
   getModule: (type: typeof ProfileController) => {
     switch (type) {
       case ProfileController:
