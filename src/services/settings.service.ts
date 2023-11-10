@@ -1,7 +1,8 @@
 import { injectable } from 'inversify';
 import ini from 'ini';
 
-import { Settings, useSettingsStore } from '#src/stores/SettingsStore';
+// @TODO don't depend on a store from a service
+import type { Settings } from '#src/stores/ConfigStore';
 import { CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY, OTT_GLOBAL_PLAYER_ID } from '#src/config';
 import { logDev } from '#src/utils/common';
 import { SettingsError } from '#src/utils/error';
@@ -10,7 +11,7 @@ import { SettingsError } from '#src/utils/error';
 const storage = window.localStorage;
 
 @injectable()
-export class SettingsController {
+export default class SettingsService {
   getConfigSource(settings: Settings | undefined) {
     if (!settings) {
       return '';
@@ -99,8 +100,6 @@ export class SettingsController {
     ) {
       throw new SettingsError('No usable config sources');
     }
-
-    useSettingsStore.setState(settings);
 
     return settings;
   };

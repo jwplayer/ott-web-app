@@ -2,7 +2,7 @@ import { createStore } from './utils';
 
 import type { AccessModel, Config } from '#types/Config';
 import type { AdSchedule } from '#types/ad-schedule';
-import { ACCESS_MODEL, INTEGRATION } from '#src/config';
+import { ACCESS_MODEL, INTEGRATION, OTT_GLOBAL_PLAYER_ID } from '#src/config';
 
 export type IntegrationInfo = {
   integrationType: keyof typeof INTEGRATION | null;
@@ -11,9 +11,18 @@ export type IntegrationInfo = {
   offers: string[];
 };
 
+export interface Settings {
+  defaultConfigSource?: string;
+  playerId: string;
+  playerLicenseKey?: string;
+  additionalAllowedConfigSources?: string[];
+  UNSAFE_allowAnyConfigSource?: boolean;
+}
+
 type ConfigState = {
   config: Config;
   accessModel: AccessModel;
+  settings: Settings;
   adScheduleData: AdSchedule | null | undefined;
   getIntegration: () => IntegrationInfo;
 };
@@ -40,6 +49,10 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
     styling: {
       footerText: '',
     },
+  },
+  settings: {
+    additionalAllowedConfigSources: [],
+    playerId: OTT_GLOBAL_PLAYER_ID,
   },
   accessModel: ACCESS_MODEL.SVOD,
   adScheduleData: null,

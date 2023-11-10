@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import AccountController from './AccountController';
 import WatchHistoryController from './WatchHistoryController';
@@ -8,6 +8,7 @@ import FavoritesController from './FavoritesController';
 import type { Config } from '#types/Config';
 import { IntegrationInfo, useConfigStore } from '#src/stores/ConfigStore';
 import ConfigService from '#src/services/config.service';
+import SettingsService from '#src/services/settings.service';
 import { PersonalShelf } from '#src/config';
 import { ConfigError } from '#src/utils/error';
 import { getModule } from '#src/container';
@@ -22,11 +23,13 @@ type IntegrationRegistration = {
 @injectable()
 export default class AppController {
   private readonly configService: ConfigService;
+  private readonly settingsService: SettingsService;
 
   private integrationRegistrations: IntegrationRegistration[] = [];
 
-  constructor(configService: ConfigService) {
+  constructor(@inject(ConfigService) configService: ConfigService, @inject(SettingsService) settingsService: SettingsService) {
     this.configService = configService;
+    this.settingsService = settingsService;
   }
 
   registerIntegration(registration: IntegrationRegistration) {
@@ -96,9 +99,15 @@ export default class AppController {
     return config;
   };
 
-  initApp = async (configId: string | undefined) => {
-    const config = await this.loadAndValidateConfig(configId);
+  initApp = async () => {
+    const settings = await this.settingsService.initialize();
+    const configSource = this.settingsService.getConfigSource(settings);
+    const config = await this.loadAndValidateConfig(configSource);
 
+    // update settings in the config store
+    useConfigStore.setState({ settings });
+
+    // load the integration based on the app config
     await this.loadIntegration(config);
 
     if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
@@ -113,7 +122,7 @@ export default class AppController {
       await getModule(AccountController).initializeAccount();
     }
 
-    return config;
+    return { config, settings, configSource };
   };
 
   getIntegration = (): IntegrationInfo => {

@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import type { Settings } from '#src/stores/SettingsStore';
+import type { Settings } from '#src/stores/ConfigStore';
 import { CONFIG_QUERY_KEY } from '#src/config';
 
 export function useTrackConfigKeyChange(settings: Settings | undefined, configSource: string | undefined) {
