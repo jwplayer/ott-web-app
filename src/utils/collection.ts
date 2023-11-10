@@ -61,16 +61,16 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
     return {};
   }
 
-  const values: Record<string, string | boolean> = {};
-
-  publisherConsents?.forEach((publisherConsent) => {
+  const values = publisherConsents?.reduce((acc, publisherConsent) => {
     const consent = customerConsents?.find((customerConsent) => customerConsent.name === publisherConsent.name);
 
     if (consent) {
-      const value = publisherConsent.isCustomRegisterField === true ? consent.value ?? '' : consent.state === 'accepted';
-      values[publisherConsent.name] = value;
+      const value = publisherConsent.isCustomRegisterField ? consent.value ?? '' : consent.state === 'accepted';
+      acc[publisherConsent.name] = value;
     }
-  });
+
+    return acc;
+  }, {} as Record<string, string | boolean>);
 
   return values;
 };

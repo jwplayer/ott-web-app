@@ -177,8 +177,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
           label: field.label,
           placeholder: field.placeholder,
           required: field.required,
-          // todo: field.option type in SDK is incorrect, remove the type casting after fixing that
-          options: field.options as unknown as Record<string, string>,
+          options: field.options,
           version: '1',
           ...(field.type === 'checkbox'
             ? {

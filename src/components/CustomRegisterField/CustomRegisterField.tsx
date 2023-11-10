@@ -1,6 +1,6 @@
 import { type FC, type ChangeEventHandler, type ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { GetRegisterFieldOption } from '@inplayer-org/inplayer.js';
+import type { RegisterFieldOptions } from '@inplayer-org/inplayer.js';
 
 import type { CustomRegisterFieldVariant } from '#types/account';
 import { isTruthyCustomParamValue, testId } from '#src/utils/common';
@@ -22,34 +22,30 @@ type Props = {
   helperText: string;
   disabled: boolean;
   required: boolean;
-  options: GetRegisterFieldOption;
+  options: RegisterFieldOptions;
 }>;
 
 export type CustomRegisterFieldCommonProps = Props;
 
-export const CustomRegisterField: FC<Props> = ({ type, value = '', ...props }) => {
+export const CustomRegisterField: FC<Props> = ({ type, value = '', options, ...props }) => {
   const { t, i18n } = useTranslation();
 
   const optionsList = useMemo(() => {
-    switch (type) {
-      case 'country':
-      case 'us_state': {
-        const codes = Object.keys(i18n.getResourceBundle(i18n.language, type));
+    if (type && ['country', 'us_state'].includes(type)) {
+      const codes = Object.keys(i18n.getResourceBundle(i18n.language, type));
 
-        return codes.map((code) => ({
-          value: code,
-          label: t(`${type}:${code}`),
-        }));
-      }
-      default: {
-        if (props.options) {
-          return Object.entries(props.options).map(([value, label]) => ({ value, label }));
-        }
-
-        return [];
-      }
+      return codes.map((code) => ({
+        value: code,
+        label: t(`${type}:${code}`),
+      }));
     }
-  }, [t, type, props.options, i18n]);
+
+    if (options) {
+      return Object.entries(options).map(([value, label]) => ({ value, label }));
+    }
+
+    return [];
+  }, [t, type, options, i18n]);
 
   switch (type) {
     case 'input':
