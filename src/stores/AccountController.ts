@@ -195,10 +195,10 @@ export async function logout(logoutOptions: { includeNetworkRequest: boolean } =
   });
 }
 
-export const register = async (email: string, password: string) => {
+export const register = async (email: string, password: string, consents: CustomerConsent[]) => {
   await useService(async ({ accountService, accessModel, config }) => {
     useAccountStore.setState({ loading: true });
-    const response = await accountService.register({ config, email, password });
+    const response = await accountService.register({ config, email, password, consents });
     if (response) {
       const { user, customerConsents } = response;
       await afterLogin(user, customerConsents, accessModel);

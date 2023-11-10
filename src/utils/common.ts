@@ -83,9 +83,9 @@ export function getOverrideIP() {
     .trim();
 }
 
-export const isTruthyCustomParamValue = (value: unknown): boolean => ['true', '1', 'yes'].includes(String(value)?.toLowerCase());
+export const isTruthyCustomParamValue = (value: unknown): boolean => ['true', '1', 'yes', 'on'].includes(String(value)?.toLowerCase());
 
-export const isFalsyCustomParamValue = (value: unknown): boolean => ['false', '0', 'no'].includes(String(value)?.toLowerCase());
+export const isFalsyCustomParamValue = (value: unknown): boolean => ['false', '0', 'no', 'off'].includes(String(value)?.toLowerCase());
 
 export function testId(value: string | undefined) {
   return IS_DEVELOPMENT_BUILD || IS_TEST_MODE || IS_PREVIEW_MODE ? value : undefined;

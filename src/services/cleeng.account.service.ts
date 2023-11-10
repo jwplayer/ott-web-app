@@ -74,7 +74,7 @@ export const login: Login = async ({ config, email, password }) => {
   };
 };
 
-export const register: Register = async ({ config, email, password }) => {
+export const register: Register = async ({ config, email, password, consents }) => {
   const localesResponse = await getLocales(!!config.integrations.cleeng?.useSandbox);
 
   handleErrors(localesResponse.errors);
@@ -95,6 +95,10 @@ export const register: Register = async ({ config, email, password }) => {
   await cleengAuthService.setTokens({ accessToken: auth.jwt, refreshToken: auth.refreshToken });
 
   const { user, customerConsents } = await getUser({ config });
+
+  await updateCustomerConsents({ config, consents, customer: user }).catch(() => {
+    // error caught while updating the consents, but continue the registration process
+  });
 
   return {
     user,
@@ -137,9 +141,7 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
 
   handleErrors(response.errors);
 
-  return {
-    consents: response?.responseData?.consents || [],
-  };
+  return { consents: response?.responseData?.consents || [] };
 };
 
 export const getCustomerConsents: GetCustomerConsents = async (payload) => {

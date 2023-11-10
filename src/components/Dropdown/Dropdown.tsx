@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -14,13 +14,14 @@ type Props = {
   defaultLabel?: string;
   options?: (string | { value: string; label: string })[];
   optionsStyle?: string;
-  label?: string;
+  label?: ReactNode;
   fullWidth?: boolean;
   size?: 'small' | 'medium';
   error?: boolean;
   helperText?: string;
   required?: boolean;
   onChange: React.ChangeEventHandler;
+  testId?: string;
 };
 
 const Dropdown: React.FC<Props & React.AriaAttributes> = ({
@@ -37,14 +38,15 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
   helperText,
   required = false,
   size = 'medium',
+  testId,
   ...rest
 }: Props & React.AriaAttributes) => {
   const { t } = useTranslation('common');
   const id = useOpaqueId();
 
   return (
-    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)}>
-      {label && (
+    <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)} data-testid={testId}>
+      {(label || !required) && (
         <label htmlFor={id} className={styles.label}>
           {label}
           {!required ? <span>{t('optional')}</span> : null}
