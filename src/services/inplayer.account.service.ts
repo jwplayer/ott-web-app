@@ -1,7 +1,7 @@
 import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
-import { getCommonResponseData } from '#src/utils/api';
+import { getCommonResponseData, isCommonError } from '#src/utils/api';
 import type { Config } from '#types/Config';
 import type {
   AuthData,
@@ -28,7 +28,7 @@ import type {
   UpdatePersonalShelves,
 } from '#types/account';
 import type { Favorite } from '#types/favorite';
-import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
+import type { InPlayerAuthData } from '#types/inplayer';
 import type { WatchHistoryItem } from '#types/watchHistory';
 
 enum InPlayerEnv {
@@ -110,8 +110,10 @@ export const register: Register = async ({ config, email, password }) => {
       customerConsents: parseJson(user?.metadata?.consents as string, []),
     };
   } catch (error: unknown) {
-    const { response } = error as InPlayerError;
-    throw new Error(response.data.message);
+    if (isCommonError(error)) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error('Failed to create account.');
   }
 };
 
@@ -238,8 +240,10 @@ export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = asyn
       responseData: {},
     };
   } catch (error: unknown) {
-    const { response } = error as InPlayerError;
-    throw new Error(response.data.message);
+    if (isCommonError(error)) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error('Failed to change password');
   }
 };
 
@@ -259,8 +263,10 @@ export const changePasswordWithResetToken: ChangePassword = async (payload) => {
       responseData: {},
     };
   } catch (error: unknown) {
-    const { response } = error as InPlayerError;
-    throw new Error(response.data.message);
+    if (isCommonError(error)) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error('Failed to change password');
   }
 };
 
