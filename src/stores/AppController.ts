@@ -11,7 +11,7 @@ import ConfigService from '#src/services/config.service';
 import SettingsService from '#src/services/settings.service';
 import { PersonalShelf } from '#src/config';
 import { ConfigError } from '#src/utils/error';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 @injectable()
 export default class AppController {
@@ -86,15 +86,15 @@ export default class AppController {
     useConfigStore.setState({ settings });
 
     if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
-      await getModule(WatchHistoryController).restoreWatchHistory();
+      await getModule(WatchHistoryController).initialize();
     }
 
     if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
-      await getModule(FavoritesController).initializeFavorites();
+      await getModule(FavoritesController).initialize();
     }
 
     if (this.getIntegration().integrationType) {
-      await getModule(AccountController).initializeAccount();
+      await getModule(AccountController).initialize();
     }
 
     return { config, settings, configSource };

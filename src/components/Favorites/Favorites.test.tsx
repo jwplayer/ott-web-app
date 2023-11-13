@@ -5,12 +5,12 @@ import Favorites from './Favorites';
 import { PersonalShelf } from '#src/config';
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { renderWithRouter } from '#test/testUtils';
-import ApiController from '#src/stores/ApiController';
+import ApiService from '#src/services/api.service';
 
-vi.mock('#src/container', () => ({
-  getModule: (type: typeof ApiController) => {
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof ApiService) => {
     switch (type) {
-      case ApiController:
+      case ApiService:
         return {
           getPlaylistById: vi.fn(() => ({
             id: 'fake_id',

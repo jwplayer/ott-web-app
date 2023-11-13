@@ -25,7 +25,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import CheckoutService from '#src/services/checkout.service';
 import SubscriptionService from '#src/services/subscription.service';
 import type { INTEGRATION } from '#src/config';
-import { getNamedModule } from '#src/container';
+import { getNamedModule } from '#src/modules/container';
 
 @injectable()
 export default class CheckoutController {

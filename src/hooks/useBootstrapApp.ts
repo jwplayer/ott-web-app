@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 
 import { CACHE_TIME, STALE_TIME } from '#src/config';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 import AppController from '#src/stores/AppController';
 import { useTrackConfigKeyChange } from '#src/hooks/useTrackConfigKeyChange';
 import type { Config } from '#types/Config';

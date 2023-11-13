@@ -1,9 +1,10 @@
-import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory, type RegisterField } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 import { injectable } from 'inversify';
 
 import AccountService from './account.service';
 
+import { formatConsentsToRegisterFields } from '#src/utils/collection';
 import type {
   AuthData,
   Capture,
@@ -29,6 +30,7 @@ import type {
   UpdateCustomerArgs,
   UpdateCustomerConsents,
   UpdatePersonalShelves,
+  CustomRegisterFieldVariant,
 } from '#types/account';
 import type { Config } from '#types/Config';
 import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
@@ -41,6 +43,7 @@ enum InPlayerEnv {
   Production = 'production',
   Daily = 'daily',
 }
+const JW_TERMS_URL = 'https://inplayer.com/legal/terms';
 
 @injectable()
 export default class InplayerAccountService extends AccountService {
@@ -54,8 +57,8 @@ export default class InplayerAccountService extends AccountService {
       canUpdatePaymentMethod: false,
       canShowReceipts: false,
       canDeleteAccount: true,
-      canManageProfiles: true,
       hasNotifications: true,
+      hasProfiles: true,
       hasSocialURLs: true,
     });
   }
@@ -75,16 +78,6 @@ export default class InplayerAccountService extends AccountService {
       favorites,
       history,
     };
-  };
-
-  private getTermsConsent = (): Consent => {
-    const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
-
-    return this.formatPublisherConsents({
-      required: true,
-      name: 'terms',
-      label: i18next.t('account:registration.terms_consent', { termsUrl }),
-    });
   };
 
   private parseJson = (value: string, fallback = {}) => {
@@ -129,43 +122,13 @@ export default class InplayerAccountService extends AccountService {
     };
   };
 
-  private formatUpdateAccount = (customer: UpdateCustomerArgs) => {
-    const firstName = customer.firstName?.trim() || '';
-    const lastName = customer.lastName?.trim() || '';
-    const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
-    const metadata: { [key: string]: string } = {
-      first_name: firstName,
-      surname: lastName,
-      ...customer.metadata,
-    };
-
-    const data: UpdateAccountData = {
-      fullName,
-      metadata,
-    };
-
-    return data;
-  };
-
-  private formatAuth = (auth: InPlayerAuthData): AuthData => {
+  private formatAuth(auth: InPlayerAuthData): AuthData {
     const { access_token: jwt } = auth;
     return {
       jwt,
       refreshToken: '',
     };
-  };
-
-  private formatPublisherConsents = (consent: Partial<RegisterField>) => {
-    return {
-      broadcasterId: 0,
-      enabledByDefault: false,
-      label: consent.label,
-      name: consent.name,
-      required: consent.required,
-      value: '',
-      version: '1',
-    } as Consent;
-  };
+  }
 
   initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
     const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
@@ -193,6 +156,107 @@ export default class InplayerAccountService extends AccountService {
     return null;
   };
 
+  getPublisherConsents: GetPublisherConsents = async (config) => {
+    try {
+      const { jwp } = config.integrations;
+      const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
+
+      const terms = data?.collection.find(({ name }) => name === 'terms');
+
+      const result = data?.collection
+        // we exclude these fields because we already have them by default
+        .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name) && ![terms].includes(field))
+        .map(
+          (field): Consent => ({
+            type: field.type as CustomRegisterFieldVariant,
+            isCustomRegisterField: true,
+            name: field.name,
+            label: field.label,
+            placeholder: field.placeholder,
+            required: field.required,
+            options: field.options,
+            version: '1',
+            ...(field.type === 'checkbox'
+              ? {
+                  enabledByDefault: field.default_value === 'true',
+                }
+              : {
+                  defaultValue: field.default_value,
+                }),
+          }),
+        );
+
+      const consents = terms ? [this.getTermsConsent(terms), ...result] : result;
+
+      return { consents };
+    } catch {
+      throw new Error('Failed to fetch publisher consents.');
+    }
+  };
+
+  getCustomerConsents: GetCustomerConsents = async (payload) => {
+    try {
+      if (!payload?.customer) {
+        return {
+          consents: [],
+        };
+      }
+
+      const { customer } = payload;
+      const consents: GetCustomerConsentsResponse = this.parseJson(customer.metadata?.consents as string, []);
+
+      return consents;
+    } catch {
+      throw new Error('Unable to fetch Customer consents.');
+    }
+  };
+
+  updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
+    try {
+      const { customer, consents } = payload;
+
+      const existingAccountData = this.formatUpdateAccount(customer);
+
+      const params = {
+        ...existingAccountData,
+        metadata: {
+          ...existingAccountData.metadata,
+          ...formatConsentsToRegisterFields(consents),
+          consents: JSON.stringify(consents),
+        },
+      };
+
+      const { data } = await InPlayer.Account.updateAccount(params);
+
+      return {
+        consents: this.parseJson(data?.metadata?.consents as string, []),
+      };
+    } catch {
+      throw new Error('Unable to update Customer consents');
+    }
+  };
+
+  updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...newAnswers }) => {
+    return (await this.updateCustomer({ ...customer, ...newAnswers }, true)) as ServiceResponse<Capture>;
+  };
+
+  changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
+    const { oldPassword, newPassword, newPasswordConfirmation } = payload;
+    try {
+      await InPlayer.Account.changePassword({
+        oldPassword,
+        password: newPassword,
+        passwordConfirmation: newPasswordConfirmation,
+      });
+      return {
+        errors: [],
+        responseData: {},
+      };
+    } catch {
+      throw new Error('Failed to change password.');
+    }
+  };
+
   login: Login = async ({ config, email, password }) => {
     try {
       const { data } = await InPlayer.Account.signInV2({
@@ -215,7 +279,7 @@ export default class InplayerAccountService extends AccountService {
     }
   };
 
-  register: Register = async ({ config, email, password }) => {
+  register: Register = async ({ config, email, password, consents }) => {
     try {
       const { data } = await InPlayer.Account.signUpV2({
         email,
@@ -225,6 +289,8 @@ export default class InplayerAccountService extends AccountService {
         metadata: {
           first_name: ' ',
           surname: ' ',
+          ...formatConsentsToRegisterFields(consents),
+          consents: JSON.stringify(consents),
         },
         type: 'consumer',
         clientId: config.integrations.jwp?.clientId || '',
@@ -283,51 +349,21 @@ export default class InplayerAccountService extends AccountService {
     }
   };
 
-  getPublisherConsents: GetPublisherConsents = async (config) => {
-    try {
-      const { jwp } = config.integrations;
-      const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
+  formatUpdateAccount = (customer: UpdateCustomerArgs) => {
+    const firstName = customer.firstName?.trim() || '';
+    const lastName = customer.lastName?.trim() || '';
+    const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
+    const metadata: Record<string, string> = {
+      ...customer.metadata,
+      first_name: firstName,
+      surname: lastName,
+    };
+    const data: UpdateAccountData = {
+      fullName,
+      metadata,
+    };
 
-      const result: Consent[] = data?.collection.filter((field) => field.type === 'checkbox').map((consent) => this.formatPublisherConsents(consent));
-
-      return {
-        consents: [this.getTermsConsent(), ...result],
-      };
-    } catch {
-      throw new Error('Failed to fetch publisher consents.');
-    }
-  };
-
-  getCustomerConsents: GetCustomerConsents = async (payload) => {
-    try {
-      if (!payload?.customer) {
-        return {
-          consents: [],
-        };
-      }
-
-      const { customer } = payload;
-      const consents: GetCustomerConsentsResponse = this.parseJson(customer.metadata?.consents as string, []);
-
-      return consents;
-    } catch {
-      throw new Error('Unable to fetch Customer consents.');
-    }
-  };
-
-  updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
-    try {
-      const { customer, consents } = payload;
-      const params = { ...this.formatUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
-
-      const { data } = await InPlayer.Account.updateAccount(params);
-
-      return {
-        consents: this.parseJson(data?.metadata?.consents as string, []),
-      };
-    } catch {
-      throw new Error('Unable to update Customer consents');
-    }
+    return data;
   };
 
   getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
@@ -349,27 +385,6 @@ export default class InplayerAccountService extends AccountService {
         ],
       },
     };
-  };
-
-  updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
-    return (await this.updateCustomer(metadata, true)) as ServiceResponse<Capture>;
-  };
-
-  changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
-    const { oldPassword, newPassword, newPasswordConfirmation } = payload;
-    try {
-      await InPlayer.Account.changePassword({
-        oldPassword,
-        password: newPassword,
-        passwordConfirmation: newPasswordConfirmation,
-      });
-      return {
-        errors: [],
-        responseData: {},
-      };
-    } catch {
-      throw new Error('Failed to change password.');
-    }
   };
 
   changePasswordWithResetToken: ChangePassword = async (payload) => {
@@ -406,6 +421,22 @@ export default class InplayerAccountService extends AccountService {
     } catch {
       throw new Error('Failed to reset password.');
     }
+  };
+
+  getTermsConsent = ({ label: termsUrl }: RegisterField): Consent => {
+    const termsLink = `<a href="${termsUrl || JW_TERMS_URL}" target="_blank">${i18next.t('account:registration.terms_and_conditions')}</a>`;
+
+    return {
+      type: 'checkbox',
+      isCustomRegisterField: true,
+      required: true,
+      name: 'terms',
+      label: i18next.t(`account:registration.${termsUrl ? 'terms_consent' : 'terms_consent_jwplayer'}`, { termsLink }),
+      enabledByDefault: false,
+      placeholder: '',
+      options: {},
+      version: '1',
+    };
   };
 
   updatePersonalShelves: UpdatePersonalShelves = async (payload) => {

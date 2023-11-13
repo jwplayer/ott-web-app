@@ -7,6 +7,7 @@ type Features = {
   hasIntegration: boolean;
   hasSocialURLs: boolean;
   hasNotifications: boolean;
+  hasProfiles: boolean;
   canUpdateEmail: boolean;
   canRenewSubscription: boolean;
   canUpdatePaymentMethod: boolean;
@@ -15,7 +16,6 @@ type Features = {
   canExportAccountData: boolean;
   canDeleteAccount: boolean;
   canShowReceipts: boolean;
-  canManageProfiles: boolean;
 };
 
 type AccountStore = {
@@ -54,6 +54,7 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set, g
     hasIntegration: false, // JW or Cleeng
     hasNotifications: false,
     hasSocialURLs: false,
+    hasProfiles: false,
     canUpdateEmail: false,
     canRenewSubscription: false,
     canSupportEmptyFullName: false,
@@ -62,6 +63,5 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set, g
     canDeleteAccount: false,
     canUpdatePaymentMethod: false,
     canShowReceipts: false,
-    canManageProfiles: false,
   },
 }));

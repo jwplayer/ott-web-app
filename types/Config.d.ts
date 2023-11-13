@@ -1,13 +1,15 @@
+import type { AdScheduleUrls } from '#types/ad-schedule';
+
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
  * */
-
 export type Config = {
   id?: string;
   siteName?: string;
   description: string;
   analyticsToken?: string | null;
   adSchedule?: string | null;
+  adScheduleUrls?: AdScheduleUrls;
   integrations: {
     cleeng?: Cleeng;
     jwp?: JWP;

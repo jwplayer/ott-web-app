@@ -10,7 +10,7 @@ import type { GenericFormErrors } from '#types/form';
 import type { ProfileFormSubmitError, ProfileFormValues } from '#src/containers/Profiles/types';
 import { logDev } from '#src/utils/common';
 import ProfileController from '#src/stores/ProfileController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 import AccountController from '#src/stores/AccountController';
 
 export const useSelectProfile = () => {
@@ -112,7 +112,7 @@ export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
   const { user, features } = useAccountStore();
-  const { canManageProfiles } = features;
+  const { canManageProfiles } = useProfileStore();
   const isLoggedIn = !!user;
 
   const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
@@ -121,6 +121,6 @@ export const useProfiles = (
 
   return {
     query,
-    profilesEnabled: !!(query.data?.responseData.canManageProfiles && canManageProfiles),
+    profilesEnabled: !!(query.data?.responseData.canManageProfiles && features.hasProfiles && canManageProfiles),
   };
 };

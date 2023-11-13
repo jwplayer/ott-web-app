@@ -30,8 +30,8 @@ interface AccountServiceFeatures {
   readonly canDeleteAccount: boolean;
   readonly canUpdatePaymentMethod: boolean;
   readonly canShowReceipts: boolean;
-  readonly canManageProfiles: boolean;
   readonly hasSocialURLs: boolean;
+  readonly hasProfiles: boolean;
   readonly hasNotifications: boolean;
 }
 

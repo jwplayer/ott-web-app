@@ -4,12 +4,12 @@ import Cinema from './Cinema';
 
 import { renderWithRouter } from '#test/testUtils';
 import type { PlaylistItem } from '#types/playlist';
-import ApiController from '#src/stores/ApiController';
+import ApiService from '#src/services/api.service';
 
-vi.mock('#src/container', () => ({
-  getModule: (type: typeof ApiController) => {
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof ApiService) => {
     switch (type) {
-      case ApiController:
+      case ApiService:
         return {
           getPlaylistById: vi.fn(() => ({
             id: 'fake_id',

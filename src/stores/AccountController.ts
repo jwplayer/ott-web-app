@@ -29,7 +29,7 @@ import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import { ACCESS_MODEL, INTEGRATION } from '#src/config';
-import { getNamedModule } from '#src/container';
+import { getNamedModule } from '#src/modules/container';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -78,7 +78,7 @@ export default class AccountController {
     }
   };
 
-  initializeAccount = async () => {
+  initialize = async () => {
     useAccountStore.setState({
       loading: true,
     });
@@ -92,7 +92,6 @@ export default class AccountController {
         canDeleteAccount: features.canExportAccountData,
         canUpdateEmail: features.canUpdateEmail,
         canRenewSubscription: features.canRenewSubscription,
-        canManageProfiles: features.canManageProfiles,
         canUpdatePaymentMethod: features.canUpdatePaymentMethod,
         canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
         canExportAccountData: features.canExportAccountData,
@@ -100,6 +99,7 @@ export default class AccountController {
         canSupportEmptyFullName: features.canSupportEmptyFullName,
         hasNotifications: features.hasNotifications,
         hasSocialURLs: features.hasSocialURLs,
+        hasProfiles: features.hasProfiles,
       },
     });
 
@@ -244,12 +244,12 @@ export default class AccountController {
     }
   };
 
-  register = async (email: string, password: string) => {
+  register = async (email: string, password: string, consents: CustomerConsent[]) => {
     const { config, accessModel } = useConfigStore.getState();
 
     useAccountStore.setState({ loading: true });
+    const response = await this.accountService.register({ config, email, password, consents });
 
-    const response = await this.accountService.register({ config, email, password });
     if (response) {
       const { user, customerConsents } = response;
       await this.afterLogin(user, customerConsents, accessModel);

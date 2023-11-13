@@ -14,7 +14,7 @@ import styles from './PaymentForm.module.scss';
 import useForm from '#src/hooks/useForm';
 import useCheckAccess from '#src/hooks/useCheckAccess';
 import CheckoutController from '#src/stores/CheckoutController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   couponCode?: string;

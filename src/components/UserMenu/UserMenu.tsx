@@ -14,7 +14,7 @@ import MenuButton from '#components/MenuButton/MenuButton';
 import AccountController from '#src/stores/AccountController';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { Profile } from '#types/account';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   small?: boolean;

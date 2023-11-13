@@ -8,14 +8,15 @@ exports[`<Form> > renders Form 1`] = `
         Edit This
       </h3>
     </div>
-    <div
+    <form
       class="_flexBox_1c1c63"
+      novalidate=""
     >
       <input
         name="test"
         value="Testing"
       />
-    </div>
+    </form>
     <div
       class="_controls_1c1c63"
     >

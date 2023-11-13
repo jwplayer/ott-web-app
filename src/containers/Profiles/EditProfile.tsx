@@ -17,7 +17,7 @@ import { addQueryParam } from '#src/utils/location';
 import { useProfileErrorHandler, useUpdateProfile } from '#src/hooks/useProfiles';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import ProfileController from '#src/stores/ProfileController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 type EditProfileProps = {
   contained?: boolean;

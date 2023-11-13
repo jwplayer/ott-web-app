@@ -4,7 +4,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import type { Customer } from '#types/account';
 import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 export const useSubscriptionChange = (
   isUpgradeOffer: boolean,

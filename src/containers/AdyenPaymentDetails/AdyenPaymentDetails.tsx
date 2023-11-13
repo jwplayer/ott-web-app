@@ -12,7 +12,7 @@ import { addQueryParam, replaceQueryParam } from '#src/utils/location';
 import { addQueryParams } from '#src/utils/formatting';
 import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 import { useConfigStore } from '#src/stores/ConfigStore';
 
 type Props = {

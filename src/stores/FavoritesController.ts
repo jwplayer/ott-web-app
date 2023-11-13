@@ -9,7 +9,7 @@ import AccountService from '#src/services/account.service';
 import type { PlaylistItem } from '#types/playlist';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { Customer } from '#types/account';
-import { getNamedModule } from '#src/container';
+import { getNamedModule } from '#src/modules/container';
 import type { INTEGRATION } from '#src/config';
 
 @injectable()
@@ -68,9 +68,9 @@ export default class FavoritesController {
     return this.favoritesService.serializeFavorites(favorites);
   };
 
-  async initializeFavorites() {
+  initialize = async () => {
     await this.restoreFavorites();
-  }
+  };
 
   saveItem = async (item: PlaylistItem) => {
     const { favorites } = useFavoritesStore.getState();

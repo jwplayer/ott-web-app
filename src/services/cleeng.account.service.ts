@@ -48,7 +48,7 @@ export default class CleengAccountService extends AccountService {
       canDeleteAccount: false,
       canUpdatePaymentMethod: true,
       canShowReceipts: true,
-      canManageProfiles: false,
+      hasProfiles: false,
       hasSocialURLs: false,
       hasNotifications: false,
     });
@@ -90,6 +90,37 @@ export default class CleengAccountService extends AccountService {
     return null;
   };
 
+  getCustomerConsents: GetCustomerConsents = async (payload) => {
+    const { config, customer } = payload;
+    const { cleeng } = config.integrations;
+
+    const response: ServiceResponse<GetCustomerConsentsResponse> = await this.cleengService.get(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, {
+      authenticate: true,
+    });
+    this.handleErrors(response.errors);
+
+    return {
+      consents: response?.responseData?.consents || [],
+    };
+  };
+
+  updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
+    const { config, customer } = payload;
+    const { cleeng } = config.integrations;
+
+    const params: UpdateCustomerConsentsPayload = {
+      id: customer.id,
+      consents: payload.consents,
+    };
+
+    const response: ServiceResponse<never> = await this.cleengService.put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(params), {
+      authenticate: true,
+    });
+    this.handleErrors(response.errors);
+
+    return await this.getCustomerConsents(payload);
+  };
+
   login: Login = async ({ config, email, password }) => {
     const payload: LoginPayload = {
       email,
@@ -116,7 +147,7 @@ export default class CleengAccountService extends AccountService {
     };
   };
 
-  register: Register = async ({ config, email, password }) => {
+  register: Register = async ({ config, email, password, consents }) => {
     const localesResponse = await this.getLocales(!!config.integrations.cleeng?.useSandbox);
 
     this.handleErrors(localesResponse.errors);
@@ -136,12 +167,15 @@ export default class CleengAccountService extends AccountService {
       '/customers',
       JSON.stringify(payload),
     );
-
     this.handleErrors(errors);
 
     await this.cleengService.setTokens({ accessToken: auth.jwt, refreshToken: auth.refreshToken });
 
     const { user, customerConsents } = await this.getUser({ config });
+
+    await this.updateCustomerConsents({ config, consents, customer: user }).catch(() => {
+      // error caught while updating the consents, but continue the registration process
+    });
 
     return {
       user,
@@ -187,39 +221,6 @@ export default class CleengAccountService extends AccountService {
     return {
       consents: response?.responseData?.consents || [],
     };
-  };
-
-  getCustomerConsents: GetCustomerConsents = async (payload) => {
-    const { config, customer } = payload;
-    const { cleeng } = config.integrations;
-
-    const response: ServiceResponse<GetCustomerConsentsResponse> = await this.cleengService.get(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, {
-      authenticate: true,
-    });
-
-    this.handleErrors(response.errors);
-
-    return {
-      consents: response?.responseData?.consents || [],
-    };
-  };
-
-  updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
-    const { config, customer } = payload;
-    const { cleeng } = config.integrations;
-
-    const params: UpdateCustomerConsentsPayload = {
-      id: customer.id,
-      consents: payload.consents,
-    };
-
-    const response: ServiceResponse<never> = await this.cleengService.put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(params), {
-      authenticate: true,
-    });
-
-    this.handleErrors(response.errors);
-
-    return await this.getCustomerConsents(payload);
   };
 
   getCaptureStatus: GetCaptureStatus = async ({ customer }, sandbox) => {

@@ -13,7 +13,7 @@ import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFo
 import useOffers from '#src/hooks/useOffers';
 import AccountController from '#src/stores/AccountController';
 import { ACCESS_MODEL } from '#src/config';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
@@ -121,6 +121,7 @@ const PersonalDetails = () => {
             value: questionValues[question.key],
           } as CaptureCustomAnswer),
       );
+
       await accountController.updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
 
       nextStep();

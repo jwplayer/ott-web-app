@@ -14,7 +14,7 @@ import useForm from '#src/hooks/useForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import Alert from '#components/Alert/Alert';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const DeleteAccountModal = () => {
   const accountController = getModule(AccountController);

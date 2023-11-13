@@ -23,7 +23,7 @@ import { ACCESS_MODEL } from '#src/config';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useProfiles, useSelectProfile } from '#src/hooks/useProfiles';
 import { IS_DEVELOPMENT_BUILD } from '#src/utils/common';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 import ProfileController from '#src/stores/ProfileController';
 
 const Layout = () => {
@@ -53,10 +53,6 @@ const Layout = () => {
     profilesEnabled,
   } = useProfiles();
 
-  if (profilesEnabled && !profiles?.length) {
-    profileController?.unpersistProfile();
-  }
-
   const selectProfile = useSelectProfile();
 
   const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
@@ -75,6 +71,14 @@ const Layout = () => {
 
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const banner = assets.banner;
+
+  useEffect(() => {
+    if (profilesEnabled && !profiles?.length) {
+      profileController?.unpersistProfile();
+    }
+    // Trigger once on the initial page load
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (searchActive && searchInputRef.current) {

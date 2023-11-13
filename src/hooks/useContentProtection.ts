@@ -4,8 +4,8 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
 import AccountController from '#src/stores/AccountController';
-import EntitlementController from '#src/stores/EntitlementController';
-import { getModule } from '#src/container';
+import EntitlementService from '#src/services/entitlement.service';
+import { getModule } from '#src/modules/container';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -15,7 +15,7 @@ const useContentProtection = <T>(
   enabled: boolean = true,
   placeholderData?: T,
 ) => {
-  const entitlementController = getModule(EntitlementController);
+  const entitlementService = getModule(EntitlementService);
 
   const { configId, signingConfig, contentProtection, jwp, urlSigning } = useConfigStore(({ config }) => ({
     configId: config.id,
@@ -37,11 +37,11 @@ const useContentProtection = <T>(
         const authData = await accountController.getAuthData();
         const { host, drmPolicyId } = signingConfig;
 
-        return entitlementController.getMediaToken(host, id, authData?.jwt, params, drmPolicyId);
+        return entitlementService.getMediaToken(host, id, authData?.jwt, params, drmPolicyId);
       }
       // if provider is JWP
       if (jwp && configId && !!id && signingEnabled) {
-        return entitlementController.getJWPMediaToken(configId, id);
+        return entitlementService.getJWPMediaToken(configId, id);
       }
     },
     { enabled: signingEnabled && enabled && !!id, keepPreviousData: false, staleTime: 15 * 60 * 1000 },

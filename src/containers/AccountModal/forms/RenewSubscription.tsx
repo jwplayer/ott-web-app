@@ -9,7 +9,7 @@ import RenewSubscriptionForm from '#components/RenewSubscriptionForm/RenewSubscr
 import SubscriptionRenewed from '#components/SubscriptionRenewed/SubscriptionRenewed';
 import { removeQueryParam } from '#src/utils/location';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const RenewSubscription = () => {
   const accountController = getModule(AccountController);

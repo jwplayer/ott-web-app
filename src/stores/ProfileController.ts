@@ -4,13 +4,12 @@ import * as yup from 'yup';
 
 import { useProfileStore } from './ProfileStore';
 import { useConfigStore } from './ConfigStore';
-import { useAccountStore } from './AccountStore';
 
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
 import ProfileService from '#src/services/profile.service';
 import * as persist from '#src/utils/persist';
 import type { INTEGRATION } from '#src/config';
-import { getNamedModule } from '#src/container';
+import { getNamedModule } from '#src/modules/container';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -44,10 +43,10 @@ export default class ProfileController {
 
     const res = await this.profileService.listProfiles(undefined, this.getSandbox());
 
-    const { canManageProfiles } = useAccountStore.getState().features;
+    const { canManageProfiles } = useProfileStore.getState();
 
     if (!canManageProfiles && res?.responseData.canManageProfiles) {
-      useAccountStore.setState((s) => ({ features: { ...s.features, canManageProfiles: true } }));
+      useProfileStore.setState({ canManageProfiles: true });
     }
 
     return res;

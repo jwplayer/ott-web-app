@@ -61,6 +61,10 @@ export const configSchema: SchemaOf<Config> = object({
     cleeng: cleengSchema.notRequired(),
     jwp: jwpSchema.notRequired(),
   }).notRequired(),
+  adScheduleUrls: object({
+    json: string().notRequired().nullable(),
+    xml: string().notRequired().nullable(),
+  }).notRequired(),
   custom: object().notRequired(),
   contentSigningService: object().shape({
     // see {@link https://github.com/jquense/yup/issues/1367}
