@@ -2,7 +2,7 @@ import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, Favorites
 import i18next from 'i18next';
 import { injectable } from 'inversify';
 
-import AccountService from '../../account.service';
+import AccountService from './account.service';
 
 import type {
   AuthData,

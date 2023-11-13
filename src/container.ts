@@ -29,7 +29,7 @@ import ProfileService from '#src/services/profile.service';
 
 // Cleeng integration
 import CleengService from '#src/services/integrations/cleeng/cleeng.service';
-import CleengAccountService from '#src/services/integrations/cleeng/cleeng.account.service';
+import CleengAccountService from '#src/services/cleeng.account.service';
 import CleengCheckoutService from '#src/services/integrations/cleeng/cleeng.checkout.service';
 import CleengSubscriptionService from '#src/services/integrations/cleeng/cleeng.subscription.service';
 import CleengProfileService from '#src/services/integrations/cleeng/cleeng.profile.service';

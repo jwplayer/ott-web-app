@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 
-import ProfileService from '../../profile.service';
+import ProfileService from './profile.service';
 
 @injectable()
 export default class CleengProfileService extends ProfileService {

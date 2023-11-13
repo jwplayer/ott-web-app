@@ -1,8 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import { injectable } from 'inversify';
 
-import AccountService from '../../account.service';
-
+import AccountService from './account.service';
 import CleengService from './cleeng.service';
 
 import type { Config } from '#types/Config';

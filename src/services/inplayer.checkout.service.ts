@@ -1,7 +1,7 @@
 import InPlayer, { AccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import CheckoutService from '../../checkout.service';
+import CheckoutService from './checkout.service';
 
 import type {
   CardPaymentData,
