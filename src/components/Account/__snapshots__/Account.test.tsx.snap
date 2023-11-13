@@ -12,8 +12,9 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         account.about_you
       </h3>
     </div>
-    <div
+    <form
       class="_flexBox_1c1c63"
+      novalidate=""
     >
       <div
         class="_textField_e16c1b"
@@ -41,7 +42,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
           Doe
         </p>
       </div>
-    </div>
+    </form>
     <div
       class="_controls_1c1c63"
     >
@@ -65,8 +66,9 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         account.email
       </h3>
     </div>
-    <div
+    <form
       class="_flexBox_1c1c63"
+      novalidate=""
     >
       <div
         class="_textField_e16c1b"
@@ -81,7 +83,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
           email@domain.com
         </p>
       </div>
-    </div>
+    </form>
     <div
       class="_controls_1c1c63"
     >
@@ -105,8 +107,9 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         account.security
       </h3>
     </div>
-    <div
+    <form
       class="_flexBox_1c1c63"
+      novalidate=""
     />
     <div
       class="_controls_1c1c63"
@@ -131,29 +134,54 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         account.terms_and_tracking
       </h3>
     </div>
-    <div
+    <form
       class="_flexBox_1c1c63"
+      novalidate=""
+    />
+    <div
+      class="_controls_1c1c63"
+    />
+  </div>
+  <div
+    class="panel-class"
+  >
+    <div
+      class="header-class"
+    >
+      <h3>
+        account.other_registration_details
+      </h3>
+    </div>
+    <form
+      class="_flexBox_1c1c63"
+      novalidate=""
     >
       <div
-        class="_checkbox_531f07"
+        class="_customFields_c968f7"
+        data-testid="custom-reg-fields"
       >
         <div
-          class="_row_531f07"
+          class="_checkbox_531f07"
+          data-testid="crf-undefined"
         >
-          <input
-            id="check-box_1235_consents.marketing"
-            name="consents.marketing"
-            type="checkbox"
-            value=""
-          />
-          <label
-            for="check-box_1235_consents.marketing"
+          <div
+            class="_row_531f07"
           >
-            Receive Marketing Emails
-          </label>
+            <input
+              id="check-box_1235_consentsValues.marketing"
+              name="consentsValues.marketing"
+              type="checkbox"
+              value=""
+            />
+            <label
+              for="check-box_1235_consentsValues.marketing"
+            >
+              Receive Marketing Emails
+            </label>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
     <div
       class="_controls_1c1c63"
     />

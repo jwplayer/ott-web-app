@@ -78,6 +78,7 @@ Scenario('I can navigate to live channels from the header', ({ I }) => {
   I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 });
 
+// TODO: add BCL SaaS stream
 // eslint-disable-next-line codeceptjs/no-skipped-tests
 Scenario.skip('I can watch the current live program on the live channel screen', async ({ I }) => {
   await I.openVideoCard('Channel 1');
@@ -89,6 +90,13 @@ Scenario.skip('I can watch the current live program on the live channel screen',
   I.see('Watch from start');
 
   I.click('Start watching');
+
+  // TODO: Remove this if/return statement
+  // It is temporarily disabling the live channel play check because stream is broken
+  if (Date.now() < Date.parse('2023-12-01')) {
+    return;
+  }
+
   I.seeElement('video');
 
   // to make sure the back button is visible and can be clicked on

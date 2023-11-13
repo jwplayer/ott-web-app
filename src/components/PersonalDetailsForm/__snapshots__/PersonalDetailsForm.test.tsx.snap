@@ -274,6 +274,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     </div>
     <div
       class="_dateField_eb6974 _error_eb6974"
+      id="text-field_1235_birthDate"
     >
       <label
         class="_label_eb6974"
@@ -285,8 +286,13 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_eb6974"
       >
         <input
+          class="_hiddenInput_eb6974"
+          id="text-field_1235_birthDate-hidden"
+          name="birthDate"
+        />
+        <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate"
+          id="text-field_1235_birthDate-date"
           maxlength="2"
           name="date"
           placeholder="dd"
@@ -296,7 +302,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate"
+          id="text-field_1235_birthDate-month"
           maxlength="2"
           name="month"
           placeholder="mm"
@@ -306,7 +312,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate"
+          id="text-field_1235_birthDate-year"
           maxlength="4"
           name="year"
           placeholder="yyyy"
@@ -374,6 +380,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     <div>
       <div
         class="_header_d50e6e"
+        data-testid="radio-header"
       >
         Is this a question?
         <span>
@@ -686,6 +693,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     </div>
     <div
       class="_dateField_eb6974"
+      id="text-field_1235_birthDate"
     >
       <label
         class="_label_eb6974"
@@ -697,8 +705,13 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_eb6974"
       >
         <input
+          class="_hiddenInput_eb6974"
+          id="text-field_1235_birthDate-hidden"
+          name="birthDate"
+        />
+        <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate"
+          id="text-field_1235_birthDate-date"
           maxlength="2"
           name="date"
           placeholder="dd"
@@ -708,7 +721,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate"
+          id="text-field_1235_birthDate-month"
           maxlength="2"
           name="month"
           placeholder="mm"
@@ -718,7 +731,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate"
+          id="text-field_1235_birthDate-year"
           maxlength="4"
           name="year"
           placeholder="yyyy"
@@ -776,6 +789,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     <div>
       <div
         class="_header_d50e6e"
+        data-testid="radio-header"
       >
         Is this a question?
         <span>

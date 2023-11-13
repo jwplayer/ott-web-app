@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -8,7 +8,7 @@ import HelperText from '#components/HelperText/HelperText';
 import useOpaqueId from '#src/hooks/useOpaqueId';
 
 type Props = {
-  label?: string | JSX.Element;
+  label?: ReactNode;
   name: string;
   value?: string;
   checked?: boolean;
@@ -20,12 +20,12 @@ type Props = {
   required?: boolean;
 };
 
-const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error, required }: Props) => {
+const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error, required, ...rest }: Props) => {
   const { t } = useTranslation('common');
   const id = useOpaqueId('check-box', name);
 
   return (
-    <div className={classNames(styles.checkbox, { [styles.error]: error })}>
+    <div className={classNames(styles.checkbox, { [styles.error]: error })} {...rest}>
       {header ? (
         <div className={styles.header}>
           {header}

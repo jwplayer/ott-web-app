@@ -49,4 +49,8 @@ export default class ApiController {
   getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {
     return this.apiService.getAdSchedule(id);
   };
+
+  getMediaAds = async (url: string, mediaId: string): Promise<AdSchedule | undefined> => {
+    return this.apiService.getMediaAds(url, mediaId);
+  };
 }

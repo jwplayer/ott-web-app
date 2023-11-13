@@ -64,7 +64,7 @@ export default class ApiService {
    * @param playlist
    * @param relatedMediaId
    */
-  private transformPlaylist = async (playlist: Playlist, relatedMediaId?: string) => {
+  private transformPlaylist = (playlist: Playlist, relatedMediaId?: string) => {
     playlist.playlist = playlist.playlist.map((item) => this.transformMediaItem(item, playlist));
 
     // remove the related media item (when this is a recommendations playlist)
@@ -234,19 +234,26 @@ export default class ApiService {
     };
   };
 
-  /**
-   * Get series by id
-   * @param {string} id
-   * @param params
-   */
   getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {
     if (!id) {
       throw new Error('Ad Schedule ID is required');
     }
 
     const url = import.meta.env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
-    const response = await fetch(url);
+    const response = await fetch(url, { credentials: 'omit' });
     const data = await getDataOrThrow(response);
+
+    return data;
+  };
+
+  getMediaAds = async (url: string, mediaId: string): Promise<AdSchedule | undefined> => {
+    const urlWithQuery = addQueryParams(url, {
+      media_id: mediaId,
+    });
+
+    const response = await fetch(urlWithQuery, { credentials: 'omit' });
+
+    const data = (await getDataOrThrow(response)) as AdSchedule;
 
     return data;
   };

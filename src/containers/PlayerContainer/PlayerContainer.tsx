@@ -9,6 +9,7 @@ import useContentProtection from '#src/hooks/useContentProtection';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ApiController from '#src/stores/ApiController';
 import { getModule } from '#src/modules/container';
+import { useAds } from '#src/hooks/useAds';
 
 type Props = {
   item: PlaylistItem;
@@ -45,6 +46,7 @@ const PlayerContainer: React.FC<Props> = ({
   const apiController = getModule(ApiController);
 
   // data
+  const { data: adsData, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
   const { data: playableItem, isLoading } = useContentProtection('media', item.mediaid, (token, drmPolicyId) =>
     apiController.getMediaById(item.mediaid, token, drmPolicyId),
   );
@@ -70,7 +72,7 @@ const PlayerContainer: React.FC<Props> = ({
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
-  if (!playableItem || isLoading) {
+  if (!playableItem || isLoading || isAdsLoading) {
     return <LoadingOverlay inline />;
   }
 
@@ -78,6 +80,7 @@ const PlayerContainer: React.FC<Props> = ({
     <Player
       feedId={feedId}
       item={playableItem}
+      adsData={adsData}
       onReady={handleReady}
       onFirstFrame={handleFirstFrame}
       onPlay={onPlay}

@@ -243,12 +243,12 @@ export default class AccountController {
     }
   };
 
-  register = async (email: string, password: string) => {
+  register = async (email: string, password: string, consents: CustomerConsent[]) => {
     const { config, accessModel } = useConfigStore.getState();
 
     useAccountStore.setState({ loading: true });
+    const response = await this.accountService.register({ config, email, password, consents });
 
-    const response = await this.accountService.register({ config, email, password });
     if (response) {
       const { user, customerConsents } = response;
       await this.afterLogin(user, customerConsents, accessModel);
