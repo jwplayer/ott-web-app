@@ -23,9 +23,15 @@ export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentif
     return;
   }
 
-  const module = container.getAllNamed(constructorFunction, name)[0];
+  let module;
 
-  if (required && !module) throw new Error(`Service not found '${String(constructorFunction)}' with name '${name}'`);
+  try {
+    module = container.getAllNamed(constructorFunction, name)[0];
 
-  return module;
+    return module;
+  } catch (err: unknown) {
+    if (required) {
+      throw new Error(`Service not found '${String(constructorFunction)}' with name '${name}'`);
+    }
+  }
 }

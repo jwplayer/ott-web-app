@@ -26,10 +26,10 @@ const profileSchema = yup.object().shape({
 
 @injectable()
 export default class ProfileController {
-  private readonly profileService: ProfileService;
+  private readonly profileService?: ProfileService;
 
   constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION) {
-    this.profileService = getNamedModule(ProfileService, integrationType);
+    this.profileService = getNamedModule(ProfileService, integrationType, false);
   }
 
   private getSandbox = () => {
@@ -37,7 +37,7 @@ export default class ProfileController {
   };
 
   listProfiles = async () => {
-    if (typeof this.profileService.listProfiles === 'undefined') {
+    if (typeof this.profileService?.listProfiles === 'undefined') {
       throw new Error('listProfiles is not available in profile service');
     }
 
@@ -53,15 +53,15 @@ export default class ProfileController {
   };
 
   createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
-    if (typeof this.profileService.createProfile === 'undefined') {
+    if (typeof this.profileService?.createProfile === 'undefined') {
       throw new Error('createProfile is not available in profile service');
     }
 
-    return this.profileService.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
+    return this.profileService?.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
   };
 
   updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
-    if (typeof this.profileService.updateProfile === 'undefined') {
+    if (typeof this.profileService?.updateProfile === 'undefined') {
       throw new Error('updateProfile is not available in profile service');
     }
 
@@ -69,7 +69,7 @@ export default class ProfileController {
   };
 
   enterProfile = async ({ id, pin }: EnterProfilePayload) => {
-    if (typeof this.profileService.enterProfile === 'undefined') {
+    if (typeof this.profileService?.enterProfile === 'undefined') {
       throw new Error('enterProfile is not available in profile service');
     }
 
@@ -85,7 +85,7 @@ export default class ProfileController {
   };
 
   deleteProfile = async ({ id }: ProfileDetailsPayload) => {
-    if (typeof this.profileService.deleteProfile === 'undefined') {
+    if (typeof this.profileService?.deleteProfile === 'undefined') {
       throw new Error('deleteProfile is not available in profile service');
     }
 
@@ -93,7 +93,7 @@ export default class ProfileController {
   };
 
   getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
-    if (typeof this.profileService.getProfileDetails === 'undefined') {
+    if (typeof this.profileService?.getProfileDetails === 'undefined') {
       throw new Error('getProfileDetails is not available in profile service');
     }
 
