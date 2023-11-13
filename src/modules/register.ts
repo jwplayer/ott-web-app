@@ -51,7 +51,7 @@ container.bind(AppController).toSelf();
 container.bind(WatchHistoryController).toSelf();
 container.bind(FavoritesController).toSelf();
 
-// Integration controllers
+// Integration controllers (conditionally register?)
 container.bind(AccountController).toSelf();
 container.bind(CheckoutController).toSelf();
 container.bind(ProfileController).toSelf();

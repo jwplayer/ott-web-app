@@ -23,8 +23,8 @@ import { ACCESS_MODEL } from '#src/config';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useProfiles, useSelectProfile } from '#src/hooks/useProfiles';
 import { IS_DEVELOPMENT_BUILD } from '#src/utils/common';
-import { getModule } from '#src/modules/container';
 import ProfileController from '#src/stores/ProfileController';
+import { getModule } from '#src/modules/container';
 
 const Layout = () => {
   const location = useLocation();

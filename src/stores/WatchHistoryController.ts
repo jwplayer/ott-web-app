@@ -18,7 +18,7 @@ export default class WatchHistoryController {
 
   constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION, watchHistoryService: WatchHistoryService) {
     this.watchHistoryService = watchHistoryService;
-    this.accountService = getNamedModule(AccountService, integrationType, true);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
   }
 
   serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {
