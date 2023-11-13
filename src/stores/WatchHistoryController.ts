@@ -9,7 +9,7 @@ import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
 import type { Customer } from '#types/account';
 import type { INTEGRATION } from '#src/config';
-import { getNamedModule } from '#src/container';
+import { getNamedModule } from '#src/modules/container';
 
 @injectable()
 export default class WatchHistoryController {
@@ -18,7 +18,7 @@ export default class WatchHistoryController {
 
   constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION, watchHistoryService: WatchHistoryService) {
     this.watchHistoryService = watchHistoryService;
-    this.accountService = getNamedModule(AccountService, integrationType, true);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
   }
 
   serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {

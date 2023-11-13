@@ -6,7 +6,7 @@ import LoginForm from './LoginForm';
 import { createWrapper, waitForWithFakeTimers } from '#test/testUtils';
 import AccountController from '#src/stores/AccountController';
 
-vi.mock('#src/container', () => ({
+vi.mock('#src/modules/container', () => ({
   getModule: (type: typeof AccountController) => {
     switch (type) {
       case AccountController:

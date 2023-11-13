@@ -10,7 +10,7 @@ import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import useQueryParam from '#src/hooks/useQueryParam';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const ResetPassword: React.FC = () => {
   const accountController = getModule(AccountController);

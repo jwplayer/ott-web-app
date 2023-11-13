@@ -10,7 +10,7 @@ import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from 
 import ProfileService from '#src/services/profile.service';
 import * as persist from '#src/utils/persist';
 import type { INTEGRATION } from '#src/config';
-import { getNamedModule } from '#src/container';
+import { getNamedModule } from '#src/modules/container';
 
 const PERSIST_PROFILE = 'profile';
 

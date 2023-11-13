@@ -5,8 +5,8 @@ import { simultaneousLoginWarningKey } from '#components/LoginForm/LoginForm';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { addQueryParams, removeQueryParamFromUrl } from '#src/utils/formatting';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/container';
 import { useAccountStore } from '#src/stores/AccountStore';
+import { getModule } from '#src/modules/container';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',

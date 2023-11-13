@@ -11,7 +11,7 @@ import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
 import AccountController from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const Registration = () => {
   const accountController = getModule(AccountController);

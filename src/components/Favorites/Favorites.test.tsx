@@ -7,7 +7,7 @@ import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContain
 import { renderWithRouter } from '#test/testUtils';
 import ApiController from '#src/stores/ApiController';
 
-vi.mock('#src/container', () => ({
+vi.mock('#src/modules/container', () => ({
   getModule: (type: typeof ApiController) => {
     switch (type) {
       case ApiController:

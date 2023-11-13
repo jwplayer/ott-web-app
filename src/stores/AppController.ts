@@ -11,7 +11,7 @@ import ConfigService from '#src/services/config.service';
 import SettingsService from '#src/services/settings.service';
 import { PersonalShelf } from '#src/config';
 import { ConfigError } from '#src/utils/error';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 @injectable()
 export default class AppController {

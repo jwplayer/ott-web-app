@@ -26,7 +26,7 @@ import CheckoutController from '#src/stores/CheckoutController';
 import EditProfile from '#src/containers/Profiles/EditProfile';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useProfiles } from '#src/hooks/useProfiles';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const User = (): JSX.Element => {
   const favoritesController = getModule(FavoritesController);

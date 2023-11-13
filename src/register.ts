@@ -1,6 +1,8 @@
 // To organize imports in a better way
 /* eslint-disable import/order */
-import { Container } from 'inversify';
+import 'reflect-metadata'; // include once in the app for inversify (see: https://github.com/inversify/InversifyJS/blob/master/README.md#-installation)
+import { INTEGRATION } from '#src/config';
+import { container } from '#src/modules/container';
 
 import ApiService from '#src/services/api.service';
 import WatchHistoryService from '#src/services/watchhistory.service';
@@ -19,7 +21,6 @@ import EntitlementController from '#src/stores/EntitlementController';
 import ProfileController from '#src/stores/ProfileController';
 import FavoritesController from '#src/stores/FavoritesController';
 import AppController from '#src/stores/AppController';
-import type { interfaces } from 'inversify';
 
 // Integration interfaces
 import AccountService from '#src/services/account.service';
@@ -33,32 +34,12 @@ import CleengAccountService from '#src/services/integrations/cleeng/cleeng.accou
 import CleengCheckoutService from '#src/services/integrations/cleeng/cleeng.checkout.service';
 import CleengSubscriptionService from '#src/services/integrations/cleeng/cleeng.subscription.service';
 import CleengProfileService from '#src/services/integrations/cleeng/cleeng.profile.service';
+
+// InPlayer integration
 import InplayerAccountService from '#src/services/integrations/jwp/inplayer.account.service';
 import InplayerCheckoutService from '#src/services/integrations/jwp/inplayer.checkout.service';
-import SubscriptionJWService from '#src/services/integrations/jwp/inplayer.subscription.service';
+import InplayerSubscriptionService from '#src/services/integrations/jwp/inplayer.subscription.service';
 import InplayerProfileService from '#src/services/integrations/jwp/inplayer.profile.service';
-import { INTEGRATION } from '#src/config';
-
-export const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true });
-
-// resolve shortcut
-export const getModule = <T>(constructorFunction: interfaces.ServiceIdentifier<T>, optional = false): T => {
-  const module = container.getAll(constructorFunction)[0];
-
-  if (!optional && !module) {
-    throw new Error(`Service '${String(constructorFunction)}' not found`);
-  }
-
-  return module;
-};
-
-export const getNamedModule = <T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: string, optional = false): T => {
-  const module = container.getAllNamed(constructorFunction, name)[0];
-
-  if (!optional && !module) throw new Error(`Service not found '${String(constructorFunction)}' with name '${name}'`);
-
-  return module;
-};
 
 // Common services
 container.bind(ConfigService).toSelf();
@@ -96,5 +77,5 @@ container.bind(ProfileService).to(CleengProfileService).whenTargetNamed(INTEGRAT
 // JWP integration
 container.bind(AccountService).to(InplayerAccountService).whenTargetNamed(INTEGRATION.JWP);
 container.bind(CheckoutService).to(InplayerCheckoutService).whenTargetNamed(INTEGRATION.JWP);
-container.bind(SubscriptionService).to(SubscriptionJWService).whenTargetNamed(INTEGRATION.JWP);
+container.bind(SubscriptionService).to(InplayerSubscriptionService).whenTargetNamed(INTEGRATION.JWP);
 container.bind(ProfileService).to(InplayerProfileService).whenTargetNamed(INTEGRATION.JWP);

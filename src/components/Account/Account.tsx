@@ -23,7 +23,7 @@ import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { isTruthy, logDev } from '#src/utils/common';
 import AccountController from '#src/stores/AccountController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   panelClassName?: string;

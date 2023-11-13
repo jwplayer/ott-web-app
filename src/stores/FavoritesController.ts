@@ -9,8 +9,8 @@ import AccountService from '#src/services/account.service';
 import type { PlaylistItem } from '#types/playlist';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { Customer } from '#types/account';
-import { getNamedModule } from '#src/container';
 import type { INTEGRATION } from '#src/config';
+import { getNamedModule } from '#src/modules/container';
 
 @injectable()
 export default class FavoritesController {
@@ -19,7 +19,7 @@ export default class FavoritesController {
 
   constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION, favoritesService: FavoritesService) {
     this.favoritesService = favoritesService;
-    this.accountService = getNamedModule(AccountService, integrationType, true);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
   }
 
   private updateUserFavorites(favorites: Favorite[]) {

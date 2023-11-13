@@ -69,7 +69,7 @@ const data = {
   } as unknown as PaymentDetail,
 };
 
-vi.mock('#src/container', () => ({
+vi.mock('#src/modules/container', () => ({
   getModule: (type: typeof FavoritesController | typeof AccountController | typeof CheckoutController | typeof ProfileController) => {
     switch (type) {
       case FavoritesController:

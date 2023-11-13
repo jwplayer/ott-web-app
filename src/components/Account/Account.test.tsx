@@ -8,7 +8,7 @@ import { renderWithRouter } from '#test/testUtils';
 import type { Consent } from '#types/account';
 import AccountController from '#src/stores/AccountController';
 
-vi.mock('#src/container', () => ({
+vi.mock('#src/modules/container', () => ({
   getModule: (type: typeof AccountController) => {
     switch (type) {
       case AccountController:

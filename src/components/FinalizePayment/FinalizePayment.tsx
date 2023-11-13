@@ -13,7 +13,7 @@ import { replaceQueryParam, removeQueryParam, addQueryParam } from '#src/utils/l
 import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
 import { ACCESS_MODEL } from '#src/config';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const FinalizePayment = () => {
   const accountController = getModule(AccountController);

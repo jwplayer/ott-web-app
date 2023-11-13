@@ -14,7 +14,7 @@ import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
 import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
 import { ACCESS_MODEL } from '#src/config';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const PaymentContainer = () => {
   const accountController = getModule(AccountController);

@@ -5,7 +5,7 @@ import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
 import AccountController from '#src/stores/AccountController';
 import EntitlementController from '#src/stores/EntitlementController';
-import { getModule } from '#src/container';
+import { getModule } from '#src/modules/container';
 
 const useContentProtection = <T>(
   type: EntitlementType,

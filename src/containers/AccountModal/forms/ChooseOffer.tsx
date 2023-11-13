@@ -17,8 +17,8 @@ import type { Subscription } from '#types/subscription';
 import useEventCallback from '#src/hooks/useEventCallback';
 import { logDev } from '#src/utils/common';
 import CheckoutController from '#src/stores/CheckoutController';
-import { getModule } from '#src/container';
 import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {
   const currentPeriod = subscription?.period;
