@@ -16,7 +16,7 @@ import { ConfigError, SettingsError } from '#src/utils/error';
 import type { Settings } from '#src/stores/SettingsStore';
 import type { Config } from '#types/Config';
 import { CACHE_TIME, STALE_TIME } from '#src/config';
-import AppController from '#src/stores/AppController2';
+import AppController from '#src/stores/AppController';
 import { getModule } from '#src/modules/container';
 
 type Resources = {

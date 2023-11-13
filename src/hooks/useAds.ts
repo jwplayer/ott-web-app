@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 
 import { useConfigStore } from '#src/stores/ConfigStore';
-import ApiController from '#src/stores/ApiController';
+import ApiService from '#src/services/api.service';
 import { getModule } from '#src/modules/container';
 
 const CACHE_TIME = 60 * 1000 * 20;
@@ -10,12 +10,12 @@ const CACHE_TIME = 60 * 1000 * 20;
  * @deprecated Use {@link useAppBasedAds} instead.
  */
 const useLegacyStandaloneAds = ({ adScheduleId, enabled }: { adScheduleId: string | null | undefined; enabled: boolean }) => {
-  const apiController = getModule(ApiController);
+  const apiService = getModule(ApiService);
 
   const { isLoading, data } = useQuery(
     ['ad-schedule', adScheduleId],
     async () => {
-      const adSchedule = await apiController.getAdSchedule(adScheduleId);
+      const adSchedule = await apiService.getAdSchedule(adScheduleId);
 
       return adSchedule;
     },
@@ -29,13 +29,13 @@ const useLegacyStandaloneAds = ({ adScheduleId, enabled }: { adScheduleId: strin
 };
 
 const useAppBasedAds = ({ jsonUrl, mediaId, enabled }: { jsonUrl: string | null | undefined; mediaId: string; enabled: boolean }) => {
-  const apiController = getModule(ApiController);
+  const apiService = getModule(ApiService);
 
   const { isLoading, data } = useQuery(
     ['media-ads', mediaId],
     async () => {
       // Waiting for `prd` deploy to remove `replace`
-      const mediaAds = await apiController.getMediaAds(jsonUrl?.replace('advertising/site', 'sites') as string, mediaId);
+      const mediaAds = await apiService.getMediaAds(jsonUrl?.replace('advertising/site', 'sites') as string, mediaId);
 
       return mediaAds;
     },

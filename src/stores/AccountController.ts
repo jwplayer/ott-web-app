@@ -77,7 +77,7 @@ export default class AccountController {
     }
   };
 
-  initializeAccount = async () => {
+  initialize = async () => {
     useAccountStore.setState({
       loading: true,
     });

@@ -195,15 +195,15 @@ export default class AppController {
     const { config } = resources;
 
     if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
-      await getModule(WatchHistoryController).restoreWatchHistory();
+      await getModule(WatchHistoryController).initialize();
     }
 
     if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
-      await getModule(FavoritesController).initializeFavorites();
+      await getModule(FavoritesController).initialize();
     }
 
     if (this.getIntegration().integrationType) {
-      await getModule(AccountController).initializeAccount();
+      await getModule(AccountController).initialize();
     }
 
     return resources;

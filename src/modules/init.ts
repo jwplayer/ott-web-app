@@ -17,18 +17,14 @@ import EpgService from '#src/services/epg.service';
 import EntitlementService from '#src/services/entitlement.service';
 import FavoritesService from '#src/services/favorites.service';
 import ConfigService from '#src/services/config.service';
-import CleengProfileService from '#src/services/cleeng.profile.service';
 import InplayerProfileService from '#src/services/inplayer.profile.service';
 
-import ApiController from '#src/stores/ApiController';
 import WatchHistoryController from '#src/stores/WatchHistoryController';
 import CheckoutController from '#src/stores/CheckoutController';
 import AccountController from '#src/stores/AccountController';
-import EpgController from '#src/stores/EpgController';
-import EntitlementController from '#src/stores/EntitlementController';
 import ProfileController from '#src/stores/ProfileController';
 import FavoritesController from '#src/stores/FavoritesController';
-import AppController from '#src/stores/AppController2';
+import AppController from '#src/stores/AppController';
 import { INTEGRATION } from '#src/config';
 
 import { container } from './container';
@@ -44,17 +40,13 @@ container.bind(EntitlementService).toSelf();
 container.bind(ApiService).toSelf();
 
 // Common controllers
-container.bind(ApiController).toSelf();
-container.bind(EpgController).toSelf();
 container.bind(WatchHistoryController).toSelf();
 container.bind(FavoritesController).toSelf();
-container.bind(EntitlementController).toSelf();
 
 container.bind(CleengService).toSelf();
 container.bind(CleengAccountService).toSelf();
 container.bind(CleengCheckoutService).toSelf();
 container.bind(CleengSubscriptionService).toSelf();
-container.bind(CleengProfileService).toSelf();
 
 container.bind(InplayerAccountService).toSelf();
 container.bind(InplayerCheckoutService).toSelf();
@@ -103,5 +95,4 @@ container.bind<ProfileService | undefined>(ProfileService).toDynamicValue(({ con
   if (!applicationController.isReady()) throw new Error('Requested the ProfileService before the config has been loaded');
 
   if (authProviderName === INTEGRATION.JWP) return container.resolve(InplayerProfileService);
-  if (authProviderName === INTEGRATION.CLEENG) return container.resolve(CleengProfileService);
 });

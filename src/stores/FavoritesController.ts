@@ -63,9 +63,9 @@ export default class FavoritesController {
     return this.favoritesService.serializeFavorites(favorites);
   };
 
-  async initializeFavorites() {
+  initialize = async () => {
     await this.restoreFavorites();
-  }
+  };
 
   saveItem = async (item: PlaylistItem) => {
     const { favorites } = useFavoritesStore.getState();

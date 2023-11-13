@@ -34,6 +34,10 @@ export default class WatchHistoryController {
     }
   }
 
+  initialize = async () => {
+    await this.restoreWatchHistory();
+  };
+
   restoreWatchHistory = async () => {
     const { user } = useAccountStore.getState();
     const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;

@@ -3,7 +3,7 @@ import { useQuery, UseQueryResult } from 'react-query';
 import type { Series } from '#types/series';
 import type { ApiError } from '#src/utils/api';
 import { CACHE_TIME, STALE_TIME } from '#src/config';
-import ApiController from '#src/stores/ApiController';
+import ApiService from '#src/services/api.service';
 import { getModule } from '#src/modules/container';
 
 export const useSeries = (
@@ -13,13 +13,13 @@ export const useSeries = (
   error: ApiError | null;
   isLoading: boolean;
 } => {
-  const apiController = getModule(ApiController);
+  const apiService = getModule(ApiService);
 
   // Try to get new series flow data
   const { data, isLoading, error }: UseQueryResult<Series, ApiError> = useQuery(
     ['series', seriesId],
     async () => {
-      const series = await apiController.getSeries(seriesId || '');
+      const series = await apiService.getSeries(seriesId || '');
 
       return series;
     },
