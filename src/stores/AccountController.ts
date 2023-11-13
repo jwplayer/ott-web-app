@@ -91,7 +91,6 @@ export default class AccountController {
         canDeleteAccount: features.canExportAccountData,
         canUpdateEmail: features.canUpdateEmail,
         canRenewSubscription: features.canRenewSubscription,
-        canManageProfiles: features.canManageProfiles,
         canUpdatePaymentMethod: features.canUpdatePaymentMethod,
         canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
         canExportAccountData: features.canExportAccountData,
@@ -99,6 +98,7 @@ export default class AccountController {
         canSupportEmptyFullName: features.canSupportEmptyFullName,
         hasNotifications: features.hasNotifications,
         hasSocialURLs: features.hasSocialURLs,
+        hasProfiles: features.hasProfiles,
       },
     });
 

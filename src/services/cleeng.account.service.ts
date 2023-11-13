@@ -48,7 +48,7 @@ export default class CleengAccountService extends AccountService {
       canDeleteAccount: false,
       canUpdatePaymentMethod: true,
       canShowReceipts: true,
-      canManageProfiles: false,
+      hasProfiles: false,
       hasSocialURLs: false,
       hasNotifications: false,
     });

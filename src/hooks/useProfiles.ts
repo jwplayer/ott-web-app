@@ -112,7 +112,7 @@ export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
   const { user, features } = useAccountStore();
-  const { canManageProfiles } = features;
+  const { canManageProfiles } = useProfileStore();
   const isLoggedIn = !!user;
 
   const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
@@ -121,6 +121,6 @@ export const useProfiles = (
 
   return {
     query,
-    profilesEnabled: !!(query.data?.responseData.canManageProfiles && canManageProfiles),
+    profilesEnabled: !!(query.data?.responseData.canManageProfiles && features.hasProfiles && canManageProfiles),
   };
 };
