@@ -152,8 +152,6 @@
       "weak": "Weak"
     },
     "sign_up": "Sign up",
-    "terms_consent": "I accept the {{termsLink}}.",
-    "terms_consent_jwplayer": "I accept the {{termsLink}} of JW Player.",
     "terms_and_conditions": "Terms and Conditions",
     "user_exists": "There is already a user with this email address",
     "view_password": "View password"
