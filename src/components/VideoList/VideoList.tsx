@@ -7,7 +7,7 @@ import styles from './VideoList.module.scss';
 import VideoListItem from '#components/VideoListItem/VideoListItem';
 import { isLocked } from '#src/utils/entitlements';
 import { testId } from '#src/utils/common';
-import type { AccessModel } from '#types/Config';
+import type { AccessModel } from '#types/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
 

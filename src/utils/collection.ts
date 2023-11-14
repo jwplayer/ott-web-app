@@ -1,5 +1,5 @@
 import type { Consent, CustomerConsent } from '#types/account';
-import type { Config } from '#types/Config';
+import type { Config } from '#types/config';
 import type { GenericFormValues } from '#types/form';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import type { PosterAspectRatio } from '#components/Card/Card';

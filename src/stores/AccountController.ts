@@ -23,13 +23,14 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
 import { logDev } from '#src/utils/common';
 import SubscriptionService from '#src/services/subscription.service';
-import AccountService from '#src/services/account.service';
+import AccountService, { type AccountServiceFeatures } from '#src/services/account.service';
 import CheckoutService from '#src/services/checkout.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
-import { ACCESS_MODEL, INTEGRATION } from '#src/config';
+import { ACCESS_MODEL } from '#src/config';
 import { getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/config';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -41,9 +42,10 @@ export default class AccountController {
   private readonly favoritesController: FavoritesController;
   private readonly watchHistoryController: WatchHistoryController;
   private readonly profileController?: ProfileController;
+  private features: AccountServiceFeatures & { hasIntegration: boolean };
 
   constructor(
-    @inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION,
+    @inject('INTEGRATION_TYPE') integrationType: IntegrationType,
     favoritesController: FavoritesController,
     watchHistoryController: WatchHistoryController,
     profileController?: ProfileController,
@@ -56,6 +58,8 @@ export default class AccountController {
     this.favoritesController = favoritesController;
     this.watchHistoryController = watchHistoryController;
     this.profileController = profileController;
+
+    this.features = { ...this.accountService.features, hasIntegration: true };
   }
 
   loadUserData = async () => {
@@ -84,25 +88,6 @@ export default class AccountController {
     });
     const config = useConfigStore.getState().config;
 
-    const features = this.accountService.features;
-
-    useAccountStore.setState({
-      features: {
-        hasIntegration: true,
-        canDeleteAccount: features.canExportAccountData,
-        canUpdateEmail: features.canUpdateEmail,
-        canRenewSubscription: features.canRenewSubscription,
-        canUpdatePaymentMethod: features.canUpdatePaymentMethod,
-        canChangePasswordWithOldPassword: features.canChangePasswordWithOldPassword,
-        canExportAccountData: features.canExportAccountData,
-        canShowReceipts: features.canShowReceipts,
-        canSupportEmptyFullName: features.canSupportEmptyFullName,
-        hasNotifications: features.hasNotifications,
-        hasSocialURLs: features.hasSocialURLs,
-        hasProfiles: features.hasProfiles,
-      },
-    });
-
     await this.profileController?.loadPersistedProfile();
     await this.accountService.initialize(config, this.logout);
     await this.loadUserData();
@@ -113,9 +98,9 @@ export default class AccountController {
   updatePersonalShelves = async () => {
     const { watchHistory } = useWatchHistoryStore.getState();
     const { favorites } = useFavoritesStore.getState();
+    const { isSandbox } = useConfigStore.getState();
     const { getAccountInfo } = useAccountStore.getState();
 
-    const { useSandbox } = this.getIntegration();
     const { customer } = getAccountInfo();
 
     if (!watchHistory && !favorites) return;
@@ -130,16 +115,16 @@ export default class AccountController {
         id: customer.id,
         externalData: personalShelfData,
       },
-      useSandbox,
+      isSandbox,
     );
   };
 
   updateUser = async (values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> => {
     useAccountStore.setState({ loading: true });
 
-    const { useSandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore.getState();
     const { user } = useAccountStore.getState();
-    const { canUpdateEmail, canSupportEmptyFullName } = useAccountStore.getState().features;
+    const { canUpdateEmail, canSupportEmptyFullName } = this.getFeatures();
 
     if (Object.prototype.hasOwnProperty.call(values, 'email') && !canUpdateEmail) {
       throw new Error('Email update not supported');
@@ -163,7 +148,7 @@ export default class AccountController {
       payload = { ...values, email: user.email };
     }
 
-    const response = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() }, useSandbox);
+    const response = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() }, isSandbox);
 
     if (!response) {
       throw new Error('Unknown error');
@@ -316,10 +301,10 @@ export default class AccountController {
 
   getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { useSandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore.getState();
     const { customer } = getAccountInfo();
 
-    const { responseData } = await this.accountService.getCaptureStatus({ customer }, useSandbox);
+    const { responseData } = await this.accountService.getCaptureStatus({ customer }, isSandbox);
 
     return responseData;
   };
@@ -327,11 +312,11 @@ export default class AccountController {
   updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
     const { getAccountInfo } = useAccountStore.getState();
     const { accessModel } = useConfigStore.getState();
-    const { useSandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore.getState();
 
     const { customer, customerConsents } = getAccountInfo();
 
-    const response = await this.accountService.updateCaptureAnswers({ customer, ...capture }, useSandbox);
+    const response = await this.accountService.updateCaptureAnswers({ customer, ...capture }, isSandbox);
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -341,15 +326,15 @@ export default class AccountController {
   };
 
   resetPassword = async (email: string, resetUrl: string) => {
-    const { useSandbox, clientId: authProviderId } = this.getIntegration();
+    const { isSandbox, clientId: publisherId } = useConfigStore.getState();
 
     const response = await this.accountService.resetPassword(
       {
         customerEmail: email,
-        publisherId: authProviderId,
+        publisherId,
         resetUrl,
       },
-      useSandbox,
+      isSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -358,7 +343,7 @@ export default class AccountController {
   };
 
   changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
-    const { useSandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore.getState();
 
     const response = await this.accountService.changePasswordWithOldPassword(
       {
@@ -366,7 +351,7 @@ export default class AccountController {
         newPassword,
         newPasswordConfirmation,
       },
-      useSandbox,
+      isSandbox,
     );
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
@@ -374,11 +359,11 @@ export default class AccountController {
   };
 
   changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
-    const { useSandbox, clientId: authProviderId } = this.getIntegration();
+    const { isSandbox, clientId: authProviderId } = useConfigStore.getState();
 
     const response = await this.accountService.changePasswordWithResetToken(
       { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
-      useSandbox,
+      isSandbox,
     );
 
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
@@ -387,7 +372,7 @@ export default class AccountController {
   };
 
   updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
-    const { useSandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore.getState();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
@@ -402,7 +387,7 @@ export default class AccountController {
         status,
         unsubscribeUrl: subscription.unsubscribeUrl,
       },
-      useSandbox,
+      isSandbox,
     );
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -427,7 +412,7 @@ export default class AccountController {
     expYear: number;
     currency: string;
   }) => {
-    const { useSandbox: sandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
@@ -445,9 +430,9 @@ export default class AccountController {
         expYear,
         currency,
       },
-      sandbox,
+      isSandbox,
     );
-    const activePayment = (await this.subscriptionService.getActivePayment({ sandbox, customerId })) || null;
+    const activePayment = (await this.subscriptionService.getActivePayment({ sandbox: isSandbox, customerId })) || null;
 
     useAccountStore.setState({
       loading: false,
@@ -457,21 +442,20 @@ export default class AccountController {
   };
 
   checkEntitlements = async (offerId?: string): Promise<unknown> => {
-    const { useSandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore.getState();
 
     if (!offerId) {
       return false;
     }
 
-    const { responseData } = await this.checkoutService.getEntitlements({ offerId }, useSandbox);
+    const { responseData } = await this.checkoutService.getEntitlements({ offerId }, isSandbox);
     return !!responseData?.accessGranted;
   };
 
   reloadActiveSubscription = async ({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> => {
     useAccountStore.setState({ loading: true });
 
-    const { config } = useConfigStore.getState();
-    const { useSandbox: sandbox } = this.getIntegration();
+    const { isSandbox, config } = useConfigStore.getState();
 
     const { getAccountInfo } = useAccountStore.getState();
     const { customerId } = getAccountInfo();
@@ -487,9 +471,9 @@ export default class AccountController {
     }
 
     const [activeSubscription, transactions, activePayment] = await Promise.all([
-      this.subscriptionService.getActiveSubscription({ sandbox, customerId, config }),
-      this.subscriptionService.getAllTransactions({ sandbox, customerId }),
-      this.subscriptionService.getActivePayment({ sandbox, customerId }),
+      this.subscriptionService.getActiveSubscription({ sandbox: isSandbox, customerId, config }),
+      this.subscriptionService.getAllTransactions({ sandbox: isSandbox, customerId }),
+      this.subscriptionService.getActivePayment({ sandbox: isSandbox, customerId }),
     ]);
 
     let pendingOffer: Offer | null = null;
@@ -504,8 +488,8 @@ export default class AccountController {
           throw new Error('getSubscriptionSwitch is not available in checkout service');
         }
 
-        const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, sandbox);
-        const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, sandbox);
+        const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, isSandbox);
+        const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, isSandbox);
 
         pendingOffer = offerResponse.responseData;
       }
@@ -526,7 +510,7 @@ export default class AccountController {
   };
 
   exportAccountData = async () => {
-    const { canExportAccountData } = useAccountStore.getState().features;
+    const { canExportAccountData } = this.getFeatures();
 
     if (!canExportAccountData || typeof this.accountService.exportAccountData === 'undefined') {
       throw new Error('Export account feature is not enabled');
@@ -537,7 +521,7 @@ export default class AccountController {
 
   getSocialLoginUrls = () => {
     const { config } = useConfigStore.getState();
-    const { hasSocialURLs } = useAccountStore.getState().features;
+    const { hasSocialURLs } = this.getFeatures();
 
     if (!hasSocialURLs || typeof this.accountService.getSocialUrls === 'undefined') {
       throw new Error('Social logins feature is not enabled');
@@ -547,7 +531,7 @@ export default class AccountController {
   };
 
   deleteAccountData = async (password: string) => {
-    const { canDeleteAccount } = useAccountStore.getState().features;
+    const { canDeleteAccount } = this.getFeatures();
 
     if (!canDeleteAccount || typeof this.accountService.deleteAccount === 'undefined') {
       throw new Error('Delete account feature is not enabled');
@@ -557,13 +541,13 @@ export default class AccountController {
   };
 
   getReceipt = async (transactionId: string) => {
-    const { useSandbox } = this.getIntegration();
+    const { isSandbox } = useConfigStore.getState();
 
     if (typeof this.subscriptionService.fetchReceipt === 'undefined') {
       throw new Error('fetchReceipt is not available in subscription service');
     }
 
-    const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId }, useSandbox);
+    const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId }, isSandbox);
 
     return responseData;
   };
@@ -575,6 +559,10 @@ export default class AccountController {
   subscribeToNotifications = async ({ uuid, onMessage }: SubscribeToNotificationsPayload) => {
     return this.accountService.subscribeToNotifications({ uuid, onMessage });
   };
+
+  getFeatures() {
+    return this.features;
+  }
 
   private async afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string, shouldSubscriptionReload: boolean = true) {
     useAccountStore.setState({
@@ -620,9 +608,5 @@ export default class AccountController {
 
     await this.favoritesController?.restoreFavorites();
     await this.watchHistoryController?.restoreWatchHistory();
-  };
-
-  private getIntegration = () => {
-    return useConfigStore.getState().getIntegration() ?? true;
   };
 }

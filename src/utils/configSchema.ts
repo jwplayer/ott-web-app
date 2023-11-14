@@ -1,6 +1,6 @@
 import { array, boolean, mixed, number, object, SchemaOf, string, StringSchema } from 'yup';
 
-import type { Cleeng, JWP, Config, Content, Features, Menu, Styling } from '#types/Config';
+import type { Cleeng, JWP, Config, Content, Features, Menu, Styling } from '#types/config';
 
 const contentSchema: SchemaOf<Content> = object({
   contentId: string().notRequired(),

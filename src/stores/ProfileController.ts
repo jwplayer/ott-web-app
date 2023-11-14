@@ -8,8 +8,8 @@ import { useConfigStore } from './ConfigStore';
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
 import ProfileService from '#src/services/profile.service';
 import * as persist from '#src/utils/persist';
-import type { INTEGRATION } from '#src/config';
 import { getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/config';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -28,12 +28,12 @@ const profileSchema = yup.object().shape({
 export default class ProfileController {
   private readonly profileService?: ProfileService;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION) {
+  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType) {
     this.profileService = getNamedModule(ProfileService, integrationType, false);
   }
 
   private getSandbox = () => {
-    return useConfigStore.getState().getIntegration().useSandbox ?? true;
+    return useConfigStore.getState().isSandbox ?? true;
   };
 
   listProfiles = async () => {

@@ -7,7 +7,7 @@ import styles from './Shelf.module.scss';
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import ChevronLeft from '#src/icons/ChevronLeft';
 import ChevronRight from '#src/icons/ChevronRight';
-import type { AccessModel, ContentType } from '#types/Config';
+import type { AccessModel, ContentType } from '#types/config';
 import { isLocked } from '#src/utils/entitlements';
 import TileDock from '#components/TileDock/TileDock';
 import Card, { type PosterAspectRatio } from '#components/Card/Card';

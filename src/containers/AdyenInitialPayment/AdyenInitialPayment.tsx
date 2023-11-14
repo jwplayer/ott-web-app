@@ -26,7 +26,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
 
   const [session, setSession] = useState<AdyenPaymentSession>();
 
-  const { useSandbox } = useConfigStore((s) => s.getIntegration());
+  const { isSandbox } = useConfigStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,8 +87,8 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
     () => ({
       session: session,
       showPayButton: false,
-      environment: useSandbox ? 'test' : 'live',
-      clientKey: useSandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
+      environment: isSandbox ? 'test' : 'live',
+      clientKey: isSandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
       paymentMethodsConfiguration: {
         card: {
           hasHolderName: true,
@@ -113,7 +113,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
       onSubmit: (state: AdyenEventData, component: DropinElement) => onSubmit(state, component.handleAction),
       onError: (error: Error) => setPaymentError(error.message),
     }),
-    [onSubmit, paymentSuccessUrl, useSandbox, session, orderId, navigate, setPaymentError, setUpdatingOrder, checkoutController],
+    [onSubmit, paymentSuccessUrl, isSandbox, session, orderId, navigate, setPaymentError, setUpdatingOrder, checkoutController],
   );
 
   return <Adyen configuration={adyenConfiguration} type={type} />;

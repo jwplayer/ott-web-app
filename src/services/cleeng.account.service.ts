@@ -4,7 +4,7 @@ import { injectable } from 'inversify';
 import AccountService from './account.service';
 import CleengService from './cleeng.service';
 
-import type { Config } from '#types/Config';
+import type { Config } from '#types/config';
 import { getOverrideIP } from '#src/utils/common';
 import type {
   ChangePassword,

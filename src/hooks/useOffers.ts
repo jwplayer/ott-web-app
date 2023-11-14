@@ -12,8 +12,7 @@ import { ACCESS_MODEL } from '#src/config';
 import { getModule } from '#src/modules/container';
 
 const useOffers = () => {
-  const { getIntegration, accessModel } = useConfigStore();
-  const { offers, useSandbox } = getIntegration();
+  const { offers, isSandbox, accessModel } = useConfigStore();
 
   const checkoutController = getModule(CheckoutController);
 
@@ -27,7 +26,7 @@ const useOffers = () => {
     return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...offers].filter(Boolean);
   }, [requestedMediaOffers, offers]);
 
-  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }, useSandbox));
+  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }, isSandbox));
 
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
   return useMemo(() => {

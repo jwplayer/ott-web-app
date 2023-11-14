@@ -22,7 +22,7 @@ const useCheckAccess = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('user');
 
-  const { offers } = useConfigStore((s) => s.getIntegration());
+  const { offers } = useConfigStore();
 
   const intervalCheckAccess = useCallback(
     ({ interval = 3000, iterations = 5, offerId }: intervalCheckAccessPayload) => {

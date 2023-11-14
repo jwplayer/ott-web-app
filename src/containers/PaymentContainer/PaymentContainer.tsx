@@ -29,8 +29,8 @@ const PaymentContainer = () => {
   );
   const navigate = useNavigate();
 
-  const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading, features } = useAccountStore();
-  const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = features;
+  const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading } = useAccountStore();
+  const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = accountController.getFeatures();
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);

@@ -34,10 +34,7 @@ const notifyOnChangeProps = ['data' as const, 'isLoading' as const];
  *
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
-  let checkoutController: CheckoutController | null = null;
-
-  const { useSandbox } = useConfigStore((s) => s.getIntegration());
-  const { accessModel } = useConfigStore();
+  const { accessModel, isSandbox } = useConfigStore();
   const { user, subscription } = useAccountStore(
     ({ user, subscription }) => ({
       user,
@@ -46,9 +43,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
     shallow,
   );
 
-  if (user?.id) {
-    checkoutController = getModule(CheckoutController);
-  }
+  const checkoutController = getModule(CheckoutController, false);
 
   const isPreEntitled = playlistItem && !isLocked(accessModel, !!user, !!subscription, playlistItem);
   const mediaOffers = playlistItem?.mediaOffers || [];
@@ -57,8 +52,8 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => checkoutController?.getEntitlements({ offerId }, useSandbox),
-      enabled: !!playlistItem && !!user && !!offerId && !isPreEntitled,
+      queryFn: () => checkoutController?.getEntitlements({ offerId }, isSandbox),
+      enabled: !!playlistItem && !!user && !!user.id && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
       notifyOnChangeProps,
     })),

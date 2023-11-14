@@ -47,8 +47,8 @@ const User = (): JSX.Element => {
   const location = useLocation();
 
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, loading, features } = useAccountStore();
-  const { canUpdateEmail, canRenewSubscription } = features;
+  const { user: customer, subscription, loading } = useAccountStore();
+  const { canUpdateEmail, canRenewSubscription } = accountController.getFeatures();
   const { profile } = useProfileStore();
 
   const { profilesEnabled } = useProfiles();

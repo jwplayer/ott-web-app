@@ -1,4 +1,4 @@
-import type { Config } from '#types/Config';
+import type { Config } from '#types/config';
 import type {
   ChangePassword,
   GetCustomerConsents,
@@ -21,7 +21,7 @@ import type {
   CustomerConsent,
 } from '#types/account';
 
-interface AccountServiceFeatures {
+export type AccountServiceFeatures = {
   readonly canUpdateEmail: boolean;
   readonly canSupportEmptyFullName: boolean;
   readonly canChangePasswordWithOldPassword: boolean;
@@ -33,7 +33,7 @@ interface AccountServiceFeatures {
   readonly hasSocialURLs: boolean;
   readonly hasProfiles: boolean;
   readonly hasNotifications: boolean;
-}
+};
 
 export default abstract class AccountService {
   readonly features: AccountServiceFeatures;

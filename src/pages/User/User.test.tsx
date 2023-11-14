@@ -6,7 +6,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { mockWindowLocation, renderWithRouter } from '#test/testUtils';
 import type { Transaction, PaymentDetail, Subscription } from '#types/subscription';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import type { Config } from '#types/Config';
+import type { Config } from '#types/config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import FavoritesController from '#src/stores/FavoritesController';
@@ -75,7 +75,7 @@ vi.mock('#src/modules/container', () => ({
       case FavoritesController:
         return { clear: vi.fn() };
       case AccountController:
-        return { logout: vi.fn() };
+        return { logout: vi.fn(), getFeatures: vi.fn(() => ({ canUpdateEmail: false, canRenewSubscription: false })) };
       case CheckoutController:
         return { getSubscriptionSwitches: vi.fn() };
       case ProfileController:

@@ -1,6 +1,6 @@
 import { Container, interfaces } from 'inversify';
 
-import type { INTEGRATION } from '#src/config';
+import type { IntegrationType } from '#types/config';
 
 export const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true });
 
@@ -10,28 +10,28 @@ export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T
 export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, required = true): T | undefined {
   const module = container.getAll(constructorFunction)[0];
 
-  if (required && !module) throw new Error(`Service '${String(constructorFunction)}' not found`);
+  if (required && !module) throw new Error(`Service / Controller '${String(constructorFunction)}' not found`);
 
   return module;
 }
 
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: keyof typeof INTEGRATION | null, required: false): T | undefined;
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: keyof typeof INTEGRATION | null, required: true): T;
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: keyof typeof INTEGRATION | null): T;
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: keyof typeof INTEGRATION | null, required = true): T | undefined {
-  if (!name) {
+export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, integration: IntegrationType | null, required: false): T | undefined;
+export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, integration: IntegrationType | null, required: true): T;
+export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, integration: IntegrationType | null): T;
+export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, integration: IntegrationType | null, required = true): T | undefined {
+  if (!integration) {
     return;
   }
 
   let module;
 
   try {
-    module = container.getAllNamed(constructorFunction, name)[0];
+    module = container.getAllNamed(constructorFunction, integration)[0];
 
     return module;
   } catch (err: unknown) {
     if (required) {
-      throw new Error(`Service not found '${String(constructorFunction)}' with name '${name}'`);
+      throw new Error(`Service not found '${String(constructorFunction)}' with name '${integration}'`);
     }
   }
 }

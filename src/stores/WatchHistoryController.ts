@@ -8,15 +8,15 @@ import AccountService from '#src/services/account.service';
 import type { PlaylistItem } from '#types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchHistory';
 import type { Customer } from '#types/account';
-import type { INTEGRATION } from '#src/config';
 import { getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/config';
 
 @injectable()
 export default class WatchHistoryController {
   private readonly watchHistoryService: WatchHistoryService;
   private readonly accountService?: AccountService;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION, watchHistoryService: WatchHistoryService) {
+  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType, watchHistoryService: WatchHistoryService) {
     this.watchHistoryService = watchHistoryService;
     this.accountService = getNamedModule(AccountService, integrationType, false);
   }
@@ -65,10 +65,10 @@ export default class WatchHistoryController {
   persistWatchHistory = async () => {
     const { watchHistory } = useWatchHistoryStore.getState();
     const { user } = useAccountStore.getState();
-    const { useSandbox } = useConfigStore.getState().getIntegration();
+    const { isSandbox } = useConfigStore.getState();
 
     if (user?.id && user?.externalData) {
-      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData }, useSandbox);
+      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData }, isSandbox);
     }
 
     this.watchHistoryService.persistWatchHistory(watchHistory);

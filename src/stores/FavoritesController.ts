@@ -9,15 +9,15 @@ import AccountService from '#src/services/account.service';
 import type { PlaylistItem } from '#types/playlist';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { Customer } from '#types/account';
-import type { INTEGRATION } from '#src/config';
 import { getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/config';
 
 @injectable()
 export default class FavoritesController {
   private readonly favoritesService: FavoritesService;
   private readonly accountService?: AccountService;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: keyof typeof INTEGRATION, favoritesService: FavoritesService) {
+  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType, favoritesService: FavoritesService) {
     this.favoritesService = favoritesService;
     this.accountService = getNamedModule(AccountService, integrationType, false);
   }
@@ -55,10 +55,10 @@ export default class FavoritesController {
   persistFavorites = async () => {
     const { favorites } = useFavoritesStore.getState();
     const { user } = useAccountStore.getState();
-    const { useSandbox } = useConfigStore.getState().getIntegration();
+    const { isSandbox } = useConfigStore.getState();
 
     if (user?.id && user?.externalData) {
-      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData }, useSandbox);
+      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData }, isSandbox);
     }
 
     this.favoritesService.persistFavorites(favorites);

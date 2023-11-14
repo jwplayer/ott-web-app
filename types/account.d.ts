@@ -3,7 +3,7 @@ import type { CommonResponse, ProfilesData } from '@inplayer-org/inplayer.js';
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
 
-import type { Config } from '#types/Config';
+import type { Config } from '#types/config';
 
 export type AuthData = {
   jwt: string;
@@ -147,7 +147,7 @@ export type GetCustomerConsentsResponse = {
 export type ResetPasswordPayload = {
   customerEmail: string;
   offerId?: string;
-  publisherId?: string;
+  publisherId: string | null;
   resetUrl?: string;
 };
 
@@ -160,7 +160,7 @@ export type ChangePasswordPayload = {
 
 export type ChangePasswordWithTokenPayload = {
   customerEmail?: string;
-  publisherId?: string;
+  publisherId: string | null;
   resetPasswordToken: string;
   newPassword: string;
   newPasswordConfirmation: string;

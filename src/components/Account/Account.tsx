@@ -58,16 +58,16 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
   }, [exportData.isSuccess, exportData.isError]);
 
-  const { customer, customerConsents, publisherConsents, features } = useAccountStore(
-    ({ user, customerConsents, publisherConsents, features }) => ({
+  const { customer, customerConsents, publisherConsents } = useAccountStore(
+    ({ user, customerConsents, publisherConsents }) => ({
       customer: user,
       customerConsents,
       publisherConsents,
-      features,
     }),
     shallow,
   );
-  const { canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = features;
+
+  const { canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = accountController.getFeatures();
 
   const [termsConsents, nonTermsConsents] = useMemo(() => {
     const terms: Consent[] = [];

@@ -10,15 +10,14 @@ import type { GenericFormErrors } from '#types/form';
 import type { ProfileFormSubmitError, ProfileFormValues } from '#src/containers/Profiles/types';
 import { logDev } from '#src/utils/common';
 import ProfileController from '#src/stores/ProfileController';
-import { getModule } from '#src/modules/container';
 import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 export const useSelectProfile = () => {
   const navigate = useNavigate();
-  const isLoggedIn = useAccountStore((s) => !!s.user);
 
-  const accountController = isLoggedIn ? getModule(AccountController) : undefined;
-  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+  const accountController = getModule(AccountController, false);
+  const profileController = getModule(ProfileController, false);
 
   return useMutation(async (vars: { id: string; pin?: number; avatarUrl: string }) => profileController?.enterProfile({ id: vars.id, pin: vars.pin }), {
     onMutate: ({ avatarUrl }) => {
@@ -40,9 +39,8 @@ export const useSelectProfile = () => {
 export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
   const { query: listProfiles } = useProfiles();
   const navigate = useNavigate();
-  const isLoggedIn = useAccountStore((s) => !!s.user);
 
-  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+  const profileController = getModule(ProfileController, false);
 
   return useMutation<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>(async (data) => profileController?.createProfile(data), {
     onSuccess: (res) => {
@@ -59,9 +57,8 @@ export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
   const { query: listProfiles } = useProfiles();
   const navigate = useNavigate();
-  const isLoggedIn = useAccountStore((s) => !!s.user);
 
-  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+  const profileController = getModule(ProfileController, false);
 
   return useMutation(async (data) => profileController?.updateProfile(data), {
     onSuccess: () => {
@@ -76,11 +73,9 @@ export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<Pr
 
 export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>) => {
   const { query: listProfiles } = useProfiles();
-  const isLoggedIn = useAccountStore((s) => !!s.user);
-
   const navigate = useNavigate();
 
-  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+  const profileController = getModule(ProfileController, false);
 
   return useMutation<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>(
     async (id) => profileController?.deleteProfile(id),
@@ -111,16 +106,19 @@ export const useProfileErrorHandler = () => {
 export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
-  const { user, features } = useAccountStore();
+  const { user } = useAccountStore();
   const { canManageProfiles } = useProfileStore();
   const isLoggedIn = !!user;
 
-  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
+  const profileController = getModule(ProfileController, false);
+  const accountController = getModule(AccountController, false);
+
+  const { hasProfiles } = accountController?.getFeatures() || {};
 
   const query = useQuery(['listProfiles'], () => profileController?.listProfiles(), { ...options, enabled: isLoggedIn });
 
   return {
     query,
-    profilesEnabled: !!(query.data?.responseData.canManageProfiles && features.hasProfiles && canManageProfiles),
+    profilesEnabled: !!(query.data?.responseData.canManageProfiles && hasProfiles && canManageProfiles),
   };
 };

@@ -7,7 +7,7 @@ import styles from './CardGrid.module.scss';
 import useBreakpoint, { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
 import { isLocked } from '#src/utils/entitlements';
 import Card from '#components/Card/Card';
-import type { AccessModel } from '#types/Config';
+import type { AccessModel } from '#types/config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';

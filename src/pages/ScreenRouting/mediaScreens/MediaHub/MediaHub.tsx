@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 
 import Hero from '#components/Hero/Hero';
-import type { Content } from '#types/Config';
+import type { Content } from '#types/config';
 import ShelfList from '#src/containers/ShelfList/ShelfList';
 import type { ScreenComponent } from '#types/screens';
 import type { PlaylistItem } from '#types/playlist';

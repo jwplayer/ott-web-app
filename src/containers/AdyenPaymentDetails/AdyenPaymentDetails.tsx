@@ -27,7 +27,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
   const accountController = getModule(AccountController);
   const checkoutController = getModule(CheckoutController);
 
-  const { useSandbox } = useConfigStore((s) => s.getIntegration());
+  const { isSandbox } = useConfigStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [session, setSession] = useState<AdyenPaymentSession>();
@@ -116,8 +116,8 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
     () => ({
       session,
       showPayButton: false,
-      environment: useSandbox ? 'test' : 'live',
-      clientKey: useSandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
+      environment: isSandbox ? 'test' : 'live',
+      clientKey: isSandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
       paymentMethodsConfiguration: {
         card: {
           hasHolderName: true,
@@ -141,7 +141,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       onSubmit: (state: AdyenEventData, component: DropinElement) => onSubmit(state, component.handleAction),
       onError: (error: Error) => setPaymentError(error.message),
     }),
-    [session, useSandbox, setProcessing, paymentMethodId, navigate, paymentSuccessUrl, setPaymentError, onSubmit, checkoutController],
+    [session, isSandbox, setProcessing, paymentMethodId, navigate, paymentSuccessUrl, setPaymentError, onSubmit, checkoutController],
   );
 
   return <Adyen configuration={adyenConfiguration} type={type} error={error} />;

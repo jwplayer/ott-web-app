@@ -28,7 +28,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   const location = useLocation();
   const [resetPasswordSubmitting, setResetPasswordSubmitting] = useState<boolean>(false);
 
-  const { canChangePasswordWithOldPassword } = useAccountStore((s) => s.features);
+  const { canChangePasswordWithOldPassword } = accountController.getFeatures();
   const { customer: user } = useAccountStore(
     ({ user }) => ({
       customer: user,

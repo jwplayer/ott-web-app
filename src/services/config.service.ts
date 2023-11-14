@@ -6,8 +6,8 @@ import ApiService from './api.service';
 import { configSchema } from '#src/utils/configSchema';
 import { calculateContrastColor } from '#src/utils/common';
 import { addScript } from '#src/utils/dom';
-import type { AccessModel, Config, Styling } from '#types/Config';
-import { ACCESS_MODEL } from '#src/config';
+import type { AccessModel, Config, Styling } from '#types/config';
+import { ACCESS_MODEL, INTEGRATION } from '#src/config';
 
 const FAILED_LOAD_MESSAGE = 'Failed to load the config. Please check the config path and the file availability.';
 
@@ -136,5 +136,39 @@ export default class ConfigService {
     }
 
     return ACCESS_MODEL.AVOD;
+  };
+
+  calculateIntegrationData = (config: Config) => {
+    const { cleeng, jwp } = config?.integrations;
+
+    if (cleeng?.id && jwp?.clientId) {
+      // Move to yup validation
+      throw new Error('Invalid client integration. You cannot have both Cleeng and JWP integrations enabled at the same time.');
+    }
+
+    if (jwp?.clientId) {
+      return {
+        integrationType: INTEGRATION.JWP,
+        isSandbox: !!jwp.useSandbox,
+        clientId: jwp.clientId,
+        offers: jwp.assetId ? [`${jwp.assetId}`] : [],
+      };
+    }
+
+    if (cleeng?.id) {
+      return {
+        integrationType: INTEGRATION.CLEENG,
+        isSandbox: !!cleeng.useSandbox,
+        clientId: cleeng.id,
+        offers: [cleeng?.monthlyOffer, cleeng?.yearlyOffer].filter(Boolean).map(String),
+      };
+    }
+
+    return {
+      integrationType: null,
+      isSandbox: true,
+      clientId: null,
+      offers: [],
+    };
   };
 }

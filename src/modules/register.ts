@@ -7,7 +7,8 @@ import { container } from '#src/modules/container';
 import ApiService from '#src/services/api.service';
 import WatchHistoryService from '#src/services/watchhistory.service';
 import EpgService from '#src/services/epg.service';
-import EntitlementService from '#src/services/entitlement.service';
+import GenericEntitlementService from '#src/services/generic_entitlement.service';
+import JWPEntitlementService from '#src/services/jwp_entitlement.service';
 import FavoritesService from '#src/services/favorites.service';
 import ConfigService from '#src/services/config.service';
 import SettingsService from '#src/services/settings.service';
@@ -42,7 +43,7 @@ container.bind(ConfigService).toSelf();
 container.bind(EpgService).toSelf();
 container.bind(WatchHistoryService).toSelf();
 container.bind(FavoritesService).toSelf();
-container.bind(EntitlementService).toSelf();
+container.bind(GenericEntitlementService).toSelf();
 container.bind(ApiService).toSelf();
 container.bind(SettingsService).toSelf();
 
@@ -57,7 +58,7 @@ container.bind(CheckoutController).toSelf();
 container.bind(ProfileController).toSelf();
 
 container.bind('INTEGRATION_TYPE').toDynamicValue((context) => {
-  return context.container.get(AppController).getIntegration().integrationType;
+  return context.container.get(AppController).getIntegrationType();
 });
 
 // Cleeng integration
@@ -67,6 +68,7 @@ container.bind(CheckoutService).to(CleengCheckoutService).whenTargetNamed(INTEGR
 container.bind(SubscriptionService).to(CleengSubscriptionService).whenTargetNamed(INTEGRATION.CLEENG);
 
 // JWP integration
+container.bind(JWPEntitlementService).toSelf();
 container.bind(AccountService).to(InplayerAccountService).whenTargetNamed(INTEGRATION.JWP);
 container.bind(CheckoutService).to(InplayerCheckoutService).whenTargetNamed(INTEGRATION.JWP);
 container.bind(SubscriptionService).to(InplayerSubscriptionService).whenTargetNamed(INTEGRATION.JWP);

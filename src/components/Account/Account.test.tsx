@@ -12,7 +12,10 @@ vi.mock('#src/modules/container', () => ({
   getModule: (type: typeof AccountController) => {
     switch (type) {
       case AccountController:
-        return { exportAccountData: vi.fn() };
+        return {
+          exportAccountData: vi.fn(),
+          getFeatures: vi.fn(() => ({ canChangePasswordWithOldPassword: false, canExportAccountData: false, canDeleteAccount: false })),
+        };
     }
   },
 }));

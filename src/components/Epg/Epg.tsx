@@ -5,7 +5,7 @@ import { isBefore, subHours } from 'date-fns';
 
 import styles from './Epg.module.scss';
 
-import type { Config } from '#types/Config';
+import type { Config } from '#types/config';
 import type { EpgProgram, EpgChannel } from '#types/epg';
 import IconButton from '#components/IconButton/IconButton';
 import Button from '#components/Button/Button';

@@ -5,8 +5,8 @@ import AccountController from './AccountController';
 import WatchHistoryController from './WatchHistoryController';
 import FavoritesController from './FavoritesController';
 
-import type { Config } from '#types/Config';
-import { IntegrationInfo, useConfigStore } from '#src/stores/ConfigStore';
+import type { Config, IntegrationType } from '#types/config';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import ConfigService from '#src/services/config.service';
 import SettingsService from '#src/services/settings.service';
 import { PersonalShelf } from '#src/config';
@@ -64,15 +64,11 @@ export default class AppController {
     config = merge({}, defaultConfig, config);
 
     const accessModel = this.configService.calculateAccessModel(config);
+    const { integrationType, clientId, isSandbox, offers } = this.configService.calculateIntegrationData(config);
 
-    useConfigStore.setState({ config, accessModel, loaded: true });
+    useConfigStore.setState({ config, accessModel, integrationType, clientId, isSandbox, offers, loaded: true });
 
     this.configService.maybeInjectAnalyticsLibrary(config);
-
-    if (config.adSchedule) {
-      const adScheduleData = await this.configService.loadAdSchedule(config?.adSchedule);
-      useConfigStore.setState({ adScheduleData });
-    }
 
     return config;
   };
@@ -93,18 +89,18 @@ export default class AppController {
       await getModule(FavoritesController).initialize();
     }
 
-    if (this.getIntegration().integrationType) {
+    if (this.getIntegrationType()) {
       await getModule(AccountController).initialize();
     }
 
     return { config, settings, configSource };
   };
 
-  getIntegration = (): IntegrationInfo => {
+  getIntegrationType = (): IntegrationType | null => {
     const configState = useConfigStore.getState();
 
-    if (!configState.loaded) throw new Error('A call to `AppController#getIntegration()` was made before loading the config');
+    if (!configState.loaded) throw new Error('A call to `AppController#getIntegrationType()` was made before loading the config');
 
-    return useConfigStore.getState().getIntegration();
+    return useConfigStore.getState().integrationType;
   };
 }

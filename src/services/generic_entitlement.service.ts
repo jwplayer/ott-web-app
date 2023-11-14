@@ -1,10 +1,9 @@
-import InPlayer from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
 import type { GetMediaParams } from '#types/media';
 
 @injectable()
-export default class EntitlementService {
+export default class GenericEntitlementService {
   private getToken = async <T>(url: string, body: unknown = {}, jwt?: string): Promise<T> => {
     const response = await fetch(url, {
       method: 'POST',
@@ -23,14 +22,5 @@ export default class EntitlementService {
     if (!data.entitled) throw new Error('Unauthorized');
 
     return data.token;
-  };
-
-  getJWPMediaToken = async (configId: string = '', mediaId: string) => {
-    try {
-      const { data } = await InPlayer.Asset.getSignedMediaToken(configId, mediaId);
-      return data.token;
-    } catch {
-      throw new Error('Unauthorized');
-    }
   };
 }

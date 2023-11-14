@@ -15,7 +15,7 @@ import type {
   UpdateSubscription,
   ChangeSubscription,
 } from '#types/subscription';
-import type { Config } from '#types/Config';
+import type { Config } from '#types/config';
 import { isCommonError } from '#src/utils/api';
 
 interface SubscriptionDetails extends InplayerSubscription {

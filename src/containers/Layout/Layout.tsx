@@ -30,18 +30,14 @@ const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
-  const { config, accessModel, getIntegration } = useConfigStore(
-    ({ config, accessModel, getIntegration }) => ({ config, accessModel, getIntegration }),
-    shallow,
-  );
+
+  const { config, accessModel, clientId } = useConfigStore(({ config, accessModel, clientId }) => ({ config, accessModel, clientId }), shallow);
   const isLoggedIn = !!useAccountStore(({ user }) => user);
   const favoritesEnabled = !!config.features?.favoritesList;
   const { menu, assets, siteName, description, styling, features } = config;
   const metaDescription = description || t('default_description');
 
-  const profileController = isLoggedIn ? getModule(ProfileController) : undefined;
-
-  const { clientId } = getIntegration();
+  const profileController = getModule(ProfileController, false);
 
   const { searchPlaylist } = features || {};
   const { footerText } = styling || {};
@@ -73,7 +69,7 @@ const Layout = () => {
   const banner = assets.banner;
 
   useEffect(() => {
-    if (profilesEnabled && !profiles?.length) {
+    if (isLoggedIn && profilesEnabled && !profiles?.length) {
       profileController?.unpersistProfile();
     }
     // Trigger once on the initial page load
