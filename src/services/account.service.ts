@@ -1,4 +1,4 @@
-import type { Config } from '#types/config';
+import type { Config } from '#types/Config';
 import type {
   ChangePassword,
   GetCustomerConsents,

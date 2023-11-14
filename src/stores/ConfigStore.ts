@@ -1,6 +1,6 @@
 import { createStore } from './utils';
 
-import type { AccessModel, Config, IntegrationType } from '#types/config';
+import type { AccessModel, Config, IntegrationType } from '#types/Config';
 import { ACCESS_MODEL, OTT_GLOBAL_PLAYER_ID } from '#src/config';
 
 export interface Settings {

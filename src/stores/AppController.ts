@@ -5,7 +5,7 @@ import AccountController from './AccountController';
 import WatchHistoryController from './WatchHistoryController';
 import FavoritesController from './FavoritesController';
 
-import type { Config, IntegrationType } from '#types/config';
+import type { Config, IntegrationType } from '#types/Config';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import ConfigService from '#src/services/config.service';
 import SettingsService from '#src/services/settings.service';

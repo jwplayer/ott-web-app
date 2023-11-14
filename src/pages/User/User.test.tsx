@@ -6,7 +6,7 @@ import { useAccountStore } from '#src/stores/AccountStore';
 import { mockWindowLocation, renderWithRouter } from '#test/testUtils';
 import type { Transaction, PaymentDetail, Subscription } from '#types/subscription';
 import { useConfigStore } from '#src/stores/ConfigStore';
-import type { Config } from '#types/config';
+import type { Config } from '#types/Config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import FavoritesController from '#src/stores/FavoritesController';

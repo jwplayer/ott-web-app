@@ -33,7 +33,7 @@ import type {
   CustomRegisterFieldVariant,
   NotificationsData,
 } from '#types/account';
-import type { Config } from '#types/config';
+import type { Config } from '#types/Config';
 import type { InPlayerAuthData } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
 import type { WatchHistoryItem } from '#types/watchHistory';

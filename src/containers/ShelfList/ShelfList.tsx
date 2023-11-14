@@ -11,7 +11,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import { PersonalShelf } from '#src/config';
 import ShelfComponent from '#components/Shelf/Shelf';
 import { slugify } from '#src/utils/formatting';
-import type { Content } from '#types/config';
+import type { Content } from '#types/Config';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';

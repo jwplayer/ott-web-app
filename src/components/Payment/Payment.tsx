@@ -16,7 +16,7 @@ import TextField from '#components/TextField/TextField';
 import PayPal from '#src/icons/PayPal';
 import { formatLocalizedDate, formatPrice } from '#src/utils/formatting';
 import { addQueryParam } from '#src/utils/location';
-import type { AccessModel } from '#types/config';
+import type { AccessModel } from '#types/Config';
 import type { Customer } from '#types/account';
 import type { Offer } from '#types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '#types/subscription';

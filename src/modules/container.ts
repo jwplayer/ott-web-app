@@ -1,6 +1,6 @@
 import { Container, interfaces } from 'inversify';
 
-import type { IntegrationType } from '#types/config';
+import type { IntegrationType } from '#types/Config';
 
 export const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true });
 
@@ -34,4 +34,12 @@ export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentif
       throw new Error(`Service not found '${String(constructorFunction)}' with name '${integration}'`);
     }
   }
+}
+
+export function assertModuleMethod<T>(method: T, message: string): asserts method is NonNullable<T> {
+  if (!method) throw new Error(message);
+}
+
+export function assertFeature(isEnabled: boolean, featureName: string): asserts isEnabled is true {
+  if (!isEnabled) throw new Error(`${featureName} feature is not enabled`);
 }

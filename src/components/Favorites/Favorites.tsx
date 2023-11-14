@@ -8,7 +8,7 @@ import CardGrid from '#components/CardGrid/CardGrid';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import { Breakpoint, Breakpoints } from '#src/hooks/useBreakpoint';
-import type { AccessModel } from '#types/config';
+import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { mediaURL } from '#src/utils/formatting';
 

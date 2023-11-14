@@ -5,7 +5,7 @@ import usePlaylist from '#src/hooks/usePlaylist';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { ContentType } from '#types/config';
+import type { ContentType } from '#types/Config';
 
 type ChildrenParams = {
   playlist: Playlist;

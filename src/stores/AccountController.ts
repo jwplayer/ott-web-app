@@ -29,8 +29,8 @@ import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
 import { ACCESS_MODEL } from '#src/config';
-import { getNamedModule } from '#src/modules/container';
-import type { IntegrationType } from '#types/config';
+import { assertFeature, assertModuleMethod, getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/Config';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -417,9 +417,7 @@ export default class AccountController {
 
     const { customerId } = getAccountInfo();
 
-    if (typeof this.subscriptionService.updateCardDetails === 'undefined') {
-      throw new Error('updateCardDetails is not available in subscription service');
-    }
+    assertModuleMethod(this.subscriptionService.updateCardDetails, 'updateCardDetails is not available in subscription service');
 
     const response = await this.subscriptionService.updateCardDetails(
       {
@@ -481,12 +479,8 @@ export default class AccountController {
     // resolve and fetch the pending offer after upgrade/downgrade
     try {
       if (activeSubscription?.pendingSwitchId) {
-        if (typeof this.checkoutService.getOffer === 'undefined') {
-          throw new Error('getOffer is not available in checkout service');
-        }
-        if (typeof this.checkoutService.getSubscriptionSwitch === 'undefined') {
-          throw new Error('getSubscriptionSwitch is not available in checkout service');
-        }
+        assertModuleMethod(this.checkoutService.getOffer, 'getOffer is not available in checkout service');
+        assertModuleMethod(this.checkoutService.getSubscriptionSwitch, 'getSubscriptionSwitch is not available in checkout service');
 
         const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, isSandbox);
         const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, isSandbox);
@@ -512,9 +506,8 @@ export default class AccountController {
   exportAccountData = async () => {
     const { canExportAccountData } = this.getFeatures();
 
-    if (!canExportAccountData || typeof this.accountService.exportAccountData === 'undefined') {
-      throw new Error('Export account feature is not enabled');
-    }
+    assertModuleMethod(this.accountService.exportAccountData, 'exportAccountData is not available in account service');
+    assertFeature(canExportAccountData, 'Export account');
 
     return this.accountService?.exportAccountData(undefined, true);
   };
@@ -523,9 +516,8 @@ export default class AccountController {
     const { config } = useConfigStore.getState();
     const { hasSocialURLs } = this.getFeatures();
 
-    if (!hasSocialURLs || typeof this.accountService.getSocialUrls === 'undefined') {
-      throw new Error('Social logins feature is not enabled');
-    }
+    assertModuleMethod(this.accountService.getSocialUrls, 'getSocialUrls is not available in account service');
+    assertFeature(hasSocialURLs, 'Social logins');
 
     return this.accountService.getSocialUrls(config);
   };
@@ -533,9 +525,8 @@ export default class AccountController {
   deleteAccountData = async (password: string) => {
     const { canDeleteAccount } = this.getFeatures();
 
-    if (!canDeleteAccount || typeof this.accountService.deleteAccount === 'undefined') {
-      throw new Error('Delete account feature is not enabled');
-    }
+    assertModuleMethod(this.accountService.deleteAccount, 'deleteAccount is not available in account service');
+    assertFeature(canDeleteAccount, 'Delete account');
 
     return this.accountService.deleteAccount({ password }, true);
   };
@@ -543,9 +534,7 @@ export default class AccountController {
   getReceipt = async (transactionId: string) => {
     const { isSandbox } = useConfigStore.getState();
 
-    if (typeof this.subscriptionService.fetchReceipt === 'undefined') {
-      throw new Error('fetchReceipt is not available in subscription service');
-    }
+    assertModuleMethod(this.subscriptionService.fetchReceipt, 'fetchReceipt is not available in subscription service');
 
     const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId }, isSandbox);
 

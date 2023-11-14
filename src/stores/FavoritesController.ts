@@ -10,7 +10,7 @@ import type { PlaylistItem } from '#types/playlist';
 import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { Customer } from '#types/account';
 import { getNamedModule } from '#src/modules/container';
-import type { IntegrationType } from '#types/config';
+import type { IntegrationType } from '#types/Config';
 
 @injectable()
 export default class FavoritesController {

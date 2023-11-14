@@ -24,8 +24,8 @@ import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import CheckoutService from '#src/services/checkout.service';
 import SubscriptionService from '#src/services/subscription.service';
-import { getNamedModule } from '#src/modules/container';
-import type { IntegrationType } from '#types/config';
+import { assertModuleMethod, getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/Config';
 
 @injectable()
 export default class CheckoutController {
@@ -139,9 +139,8 @@ export default class CheckoutController {
 
     if (!authProviderId) throw new Error('auth provider is not configured');
     if (isInitialPayment && !orderId) throw new Error('There is no order to pay for');
-    if (typeof this.checkoutService.createAdyenPaymentSession === 'undefined') {
-      throw new Error('createAdyenPaymentSession is not available in checkout service');
-    }
+
+    assertModuleMethod(this.checkoutService.createAdyenPaymentSession, 'createAdyenPaymentSession is not available in checkout service');
 
     const response = await this.checkoutService.createAdyenPaymentSession(
       {
@@ -162,9 +161,8 @@ export default class CheckoutController {
 
     if (!order) throw new Error('No order created');
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (typeof this.checkoutService.initialAdyenPayment === 'undefined') {
-      throw new Error('initialAdyenPayment is not available in checkout service');
-    }
+
+    assertModuleMethod(this.checkoutService.initialAdyenPayment, 'initialAdyenPayment is not available in checkout service');
 
     const response = await this.checkoutService.initialAdyenPayment(
       {
@@ -187,9 +185,8 @@ export default class CheckoutController {
 
     if (!orderId) throw new Error('No order created');
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (typeof this.checkoutService.finalizeAdyenPayment === 'undefined') {
-      throw new Error('finalizeAdyenPayment is not available in checkout service');
-    }
+
+    assertModuleMethod(this.checkoutService.finalizeAdyenPayment, 'finalizeAdyenPayment is not available in checkout service');
 
     const response = await this.checkoutService.finalizeAdyenPayment(
       {
@@ -236,13 +233,8 @@ export default class CheckoutController {
 
     if (!authProviderId) throw new Error('auth provider is not configured');
 
-    if (typeof this.checkoutService.getSubscriptionSwitches === 'undefined') {
-      throw new Error('getSubscriptionSwitches is not available in checkout service');
-    }
-
-    if (typeof this.checkoutService.getOffer === 'undefined') {
-      throw new Error('getOffer is not available in checkout service');
-    }
+    assertModuleMethod(this.checkoutService.getSubscriptionSwitches, 'getSubscriptionSwitches is not available in checkout service');
+    assertModuleMethod(this.checkoutService.getOffer, 'getOffer is not available in checkout service');
 
     const { subscription } = useAccountStore.getState();
 
@@ -274,9 +266,8 @@ export default class CheckoutController {
     const { customerId } = getAccountInfo();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (typeof this.checkoutService.switchSubscription === 'undefined') {
-      throw new Error('switchSubscription is not available in checkout service');
-    }
+
+    assertModuleMethod(this.checkoutService.switchSubscription, 'switchSubscription is not available in checkout service');
 
     const { subscription } = useAccountStore.getState();
     if (!subscription) return;
@@ -297,9 +288,7 @@ export default class CheckoutController {
   changeSubscription = async ({ accessFeeId, subscriptionId }: { accessFeeId: string; subscriptionId: string }) => {
     const { isSandbox } = useConfigStore.getState();
 
-    if (typeof this.subscriptionService.changeSubscription === 'undefined') {
-      throw new Error('changeSubscription is not available in subscription service');
-    }
+    assertModuleMethod(this.subscriptionService.changeSubscription, 'changeSubscription is not available in subscription service');
 
     const { responseData } = await this.subscriptionService.changeSubscription(
       {
@@ -317,12 +306,8 @@ export default class CheckoutController {
 
     if (!authProviderId) throw new Error('auth provider is not configured');
 
-    if (typeof this.checkoutService.updatePaymentMethodWithPayPal === 'undefined') {
-      throw new Error('updatePaymentMethodWithPayPal is not available in checkout service');
-    }
-    if (typeof this.checkoutService.deletePaymentMethod === 'undefined') {
-      throw new Error('deletePaymentMethod is not available in checkout service');
-    }
+    assertModuleMethod(this.checkoutService.updatePaymentMethodWithPayPal, 'updatePaymentMethodWithPayPal is not available in checkout service');
+    assertModuleMethod(this.checkoutService.deletePaymentMethod, 'deletePaymentMethod is not available in checkout service');
 
     const response = await this.checkoutService.updatePaymentMethodWithPayPal(
       {
@@ -347,9 +332,8 @@ export default class CheckoutController {
     const { isSandbox, clientId: authProviderId } = useConfigStore.getState();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (typeof this.checkoutService.addAdyenPaymentDetails === 'undefined') {
-      throw new Error('addAdyenPaymentDetails is not available in checkout service');
-    }
+
+    assertModuleMethod(this.checkoutService.addAdyenPaymentDetails, 'addAdyenPaymentDetails is not available in checkout service');
 
     const response = await this.checkoutService.addAdyenPaymentDetails(
       {
@@ -371,9 +355,8 @@ export default class CheckoutController {
     const { isSandbox, clientId: authProviderId } = useConfigStore.getState();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
-    if (typeof this.checkoutService.finalizeAdyenPaymentDetails === 'undefined') {
-      throw new Error('finalizeAddedAdyenPaymentDetails is not available in checkout service');
-    }
+
+    assertModuleMethod(this.checkoutService.finalizeAdyenPaymentDetails, 'finalizeAdyenPaymentDetails is not available in checkout service');
 
     const response = await this.checkoutService.finalizeAdyenPaymentDetails(
       {

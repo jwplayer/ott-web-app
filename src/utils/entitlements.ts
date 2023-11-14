@@ -1,4 +1,4 @@
-import type { AccessModel } from '#types/config';
+import type { AccessModel } from '#types/Config';
 import type { MediaOffer } from '#types/media';
 import type { PlaylistItem } from '#types/playlist';
 import { isTruthyCustomParamValue, isFalsyCustomParamValue } from '#src/utils/common';

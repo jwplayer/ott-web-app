@@ -8,8 +8,8 @@ import { useConfigStore } from './ConfigStore';
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
 import ProfileService from '#src/services/profile.service';
 import * as persist from '#src/utils/persist';
-import { getNamedModule } from '#src/modules/container';
-import type { IntegrationType } from '#types/config';
+import { assertModuleMethod, getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/Config';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -37,9 +37,7 @@ export default class ProfileController {
   };
 
   listProfiles = async () => {
-    if (typeof this.profileService?.listProfiles === 'undefined') {
-      throw new Error('listProfiles is not available in profile service');
-    }
+    assertModuleMethod(this.profileService?.listProfiles, 'listProfiles is not available in profile service');
 
     const res = await this.profileService.listProfiles(undefined, this.getSandbox());
 
@@ -53,25 +51,19 @@ export default class ProfileController {
   };
 
   createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
-    if (typeof this.profileService?.createProfile === 'undefined') {
-      throw new Error('createProfile is not available in profile service');
-    }
+    assertModuleMethod(this.profileService?.createProfile, 'createProfile is not available in profile service');
 
     return this.profileService?.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
   };
 
   updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
-    if (typeof this.profileService?.updateProfile === 'undefined') {
-      throw new Error('updateProfile is not available in profile service');
-    }
+    assertModuleMethod(this.profileService?.updateProfile, 'updateProfile is not available in profile service');
 
     return this.profileService.updateProfile({ id, name, adult, avatar_url, pin }, this.getSandbox());
   };
 
   enterProfile = async ({ id, pin }: EnterProfilePayload) => {
-    if (typeof this.profileService?.enterProfile === 'undefined') {
-      throw new Error('enterProfile is not available in profile service');
-    }
+    assertModuleMethod(this.profileService?.enterProfile, 'enterProfile is not available in profile service');
 
     const response = await this.profileService.enterProfile({ id, pin }, this.getSandbox());
 
@@ -85,17 +77,13 @@ export default class ProfileController {
   };
 
   deleteProfile = async ({ id }: ProfileDetailsPayload) => {
-    if (typeof this.profileService?.deleteProfile === 'undefined') {
-      throw new Error('deleteProfile is not available in profile service');
-    }
+    assertModuleMethod(this.profileService?.deleteProfile, 'deleteProfile is not available in profile service');
 
     return this.profileService.deleteProfile({ id }, this.getSandbox());
   };
 
   getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
-    if (typeof this.profileService?.getProfileDetails === 'undefined') {
-      throw new Error('getProfileDetails is not available in profile service');
-    }
+    assertModuleMethod(this.profileService?.getProfileDetails, 'getProfileDetails is not available in profile service');
 
     return this.profileService.getProfileDetails({ id }, this.getSandbox());
   };

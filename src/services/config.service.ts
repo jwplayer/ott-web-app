@@ -6,7 +6,7 @@ import ApiService from './api.service';
 import { configSchema } from '#src/utils/configSchema';
 import { calculateContrastColor } from '#src/utils/common';
 import { addScript } from '#src/utils/dom';
-import type { AccessModel, Config, Styling } from '#types/config';
+import type { AccessModel, Config, Styling } from '#types/Config';
 import { ACCESS_MODEL, INTEGRATION } from '#src/config';
 
 const FAILED_LOAD_MESSAGE = 'Failed to load the config. Please check the config path and the file availability.';

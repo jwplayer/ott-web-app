@@ -11,7 +11,7 @@ import VideoList from '#components/VideoList/VideoList';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
 import { testId } from '#src/utils/common';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import type { AccessModel } from '#types/config';
+import type { AccessModel } from '#types/Config';
 
 type FilterProps = {
   filterMetadata?: React.ReactNode;
