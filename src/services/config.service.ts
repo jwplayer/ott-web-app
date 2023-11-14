@@ -77,11 +77,10 @@ export default class ConfigService {
 
   loadConfig = async (configLocation: string | undefined) => {
     const i18n = getI18n();
-    const bundle = i18n.getResourceBundle(i18n.language, 'error');
 
     const errorPayload = {
-      title: bundle['config_invalid'],
-      description: bundle['check_your_config'],
+      title: i18n.t('error:config_invalid'),
+      description: i18n.t('error:check_your_config'),
       helpLink: 'https://github.com/jwplayer/ott-web-app/blob/develop/docs/configuration.md',
     };
 

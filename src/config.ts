@@ -72,5 +72,4 @@ export const DEFAULT_FEATURES = {
   hasSocialURLs: false,
   hasProfiles: false,
   hasNotifications: false,
-  hasIntegration: false,
 };

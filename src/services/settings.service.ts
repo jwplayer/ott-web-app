@@ -2,8 +2,7 @@ import { injectable } from 'inversify';
 import ini from 'ini';
 import { getI18n } from 'react-i18next';
 
-// @TODO don't depend on a store from a service
-import type { Settings } from '#src/stores/ConfigStore';
+import type { Settings } from '#types/settings';
 import { CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY, OTT_GLOBAL_PLAYER_ID } from '#src/config';
 import { logDev } from '#src/utils/common';
 import { AppError } from '#src/utils/error';

@@ -8,11 +8,11 @@ import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-import { useBootstrapApp } from '#src/hooks/useBootstrapApp';
+import { useBootstrapApp, type BootstrapData } from '#src/hooks/useBootstrapApp';
 
 const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
-const ProdContentLoader = ({ query }: { query: ReturnType<typeof useBootstrapApp> }) => {
+const ProdContentLoader = ({ query }: { query: BootstrapData }) => {
   const { isLoading, error } = query;
 
   if (isLoading) {
@@ -20,14 +20,14 @@ const ProdContentLoader = ({ query }: { query: ReturnType<typeof useBootstrapApp
   }
 
   if (error) {
-    return <ErrorPage title={error?.payload?.title} message={error?.payload?.description} error={error} helpLink={error?.payload?.helpLink} />;
+    return <ErrorPage title={error.payload.title} message={error.payload.description} helpLink={error.payload.helpLink} />;
   }
 
   return null;
 };
 
-const DemoContentLoader = ({ query }: { query: ReturnType<typeof useBootstrapApp> }) => {
-  const { isLoading, error, data, isSuccess } = query;
+const DemoContentLoader = ({ query }: { query: BootstrapData }) => {
+  const { isLoading, error, data } = query;
 
   // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
   if (!IS_DEMO_OR_PREVIEW && isLoading) {
@@ -35,7 +35,7 @@ const DemoContentLoader = ({ query }: { query: ReturnType<typeof useBootstrapApp
   }
 
   if (error && !data?.settings) {
-    return <ErrorPage title={error?.payload?.title} message={error?.payload?.description} error={error} helpLink={error?.payload?.helpLink} />;
+    return <ErrorPage title={error.payload.title} message={error.payload.description} error={error} helpLink={error.payload.helpLink} />;
   }
 
   const { configSource } = data || {};
@@ -46,7 +46,7 @@ const DemoContentLoader = ({ query }: { query: ReturnType<typeof useBootstrapApp
       {!IS_DEMO_OR_PREVIEW && error && (
         <ErrorPage title={error?.payload?.title} message={error?.payload?.description} error={error} helpLink={error?.payload?.helpLink} />
       )}
-      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} error={error} isLoading={isLoading} isSuccess={isSuccess} />}
+      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog query={query} />}
       {/* Config select control to improve testing experience */}
       {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
     </>

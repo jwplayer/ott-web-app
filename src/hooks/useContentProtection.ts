@@ -4,8 +4,8 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
 import AccountController from '#src/stores/AccountController';
-import GenericEntitlementService from '#src/services/generic_entitlement.service';
-import JWPEntitlementService from '#src/services/jwp_entitlement.service';
+import GenericEntitlementService from '#src/services/genericEntitlement.service';
+import JWPEntitlementService from '#src/services/jwpEntitlement.service';
 import { getModule } from '#src/modules/container';
 
 const useContentProtection = <T>(

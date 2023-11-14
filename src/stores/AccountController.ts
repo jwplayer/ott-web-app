@@ -42,7 +42,7 @@ export default class AccountController {
   private readonly favoritesController: FavoritesController;
   private readonly watchHistoryController: WatchHistoryController;
   private readonly profileController?: ProfileController;
-  private features: AccountServiceFeatures & { hasIntegration: boolean } = DEFAULT_FEATURES;
+  private features: AccountServiceFeatures = DEFAULT_FEATURES;
 
   constructor(
     @inject('INTEGRATION_TYPE') integrationType: IntegrationType,
@@ -60,7 +60,7 @@ export default class AccountController {
     this.profileController = profileController;
 
     if (integrationType) {
-      this.features = { ...this.accountService.features, hasIntegration: true };
+      this.features = this.accountService.features;
     }
   }
 

@@ -2,7 +2,6 @@ import React, { ChangeEventHandler, MouseEventHandler, useEffect, useState } fro
 import { useTranslation } from 'react-i18next';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { useQueryClient } from 'react-query';
 
 import styles from './DemoConfigDialog.module.scss';
 
@@ -14,16 +13,10 @@ import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
 import { addQueryParams } from '#src/utils/formatting';
 import { CONFIG_QUERY_KEY } from '#src/config';
+import type { BootstrapData } from '#src/hooks/useBootstrapApp';
 
 const regex = /^[a-z,\d]{0,8}$/g;
 const DEMO_CONFIG = '225tvq1i';
-
-interface Props {
-  selectedConfigSource: string | undefined;
-  isSuccess: boolean;
-  error: Error | undefined | null;
-  isLoading: boolean;
-}
 
 interface State {
   configSource: string | undefined;
@@ -51,9 +44,9 @@ export function getConfigNavigateCallback(navigate: NavigateFunction) {
   };
 }
 
-const DemoConfigDialog = ({ selectedConfigSource, isSuccess, error, isLoading }: Props) => {
-  const client = useQueryClient();
-
+const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
+  const { data, isLoading, error, refetch, isSuccess } = query;
+  const { configSource: selectedConfigSource } = data || {};
   const { t } = useTranslation('demo');
   const navigate = useNavigate();
   const navigateCallback = getConfigNavigateCallback(navigate);
@@ -68,7 +61,7 @@ const DemoConfigDialog = ({ selectedConfigSource, isSuccess, error, isLoading }:
     }
     // If trying to fetch the same config again, use refetch since a query param change won't work
     else if (configSource === selectedConfigSource) {
-      await client.refetchQueries('config-init');
+      await refetch();
     }
     // Get a new config by triggering a query param change
     else {

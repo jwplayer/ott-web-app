@@ -1,15 +1,8 @@
 import { createStore } from './utils';
 
 import type { AccessModel, Config, IntegrationType } from '#types/Config';
+import type { Settings } from '#types/settings';
 import { ACCESS_MODEL, OTT_GLOBAL_PLAYER_ID } from '#src/config';
-
-export interface Settings {
-  defaultConfigSource?: string;
-  playerId: string;
-  playerLicenseKey?: string;
-  additionalAllowedConfigSources?: string[];
-  UNSAFE_allowAnyConfigSource?: boolean;
-}
 
 type ConfigState = {
   loaded: boolean;

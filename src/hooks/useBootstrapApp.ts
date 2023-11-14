@@ -4,7 +4,7 @@ import { CACHE_TIME, STALE_TIME } from '#src/config';
 import AppController from '#src/stores/AppController';
 import { useTrackConfigKeyChange } from '#src/hooks/useTrackConfigKeyChange';
 import type { Config } from '#types/Config';
-import type { Settings } from '#src/stores/ConfigStore';
+import type { Settings } from '#types/settings';
 import type { AppError } from '#src/utils/error';
 import { getModule } from '#src/modules/container';
 
@@ -17,7 +17,7 @@ type Resources = {
 };
 
 export const useBootstrapApp = (onReady: () => void) => {
-  const { data, isLoading, error, isError, isSuccess } = useQuery<Resources, AppError>('config-init', applicationController.initializeApp, {
+  const { data, isLoading, error, isSuccess, refetch } = useQuery<Resources, AppError>('config-init', applicationController.initializeApp, {
     refetchInterval: false,
     retry: 1,
     onSuccess: onReady,
@@ -32,7 +32,9 @@ export const useBootstrapApp = (onReady: () => void) => {
     data,
     isLoading,
     error,
-    isError,
     isSuccess,
+    refetch,
   };
 };
+
+export type BootstrapData = ReturnType<typeof useBootstrapApp>;
