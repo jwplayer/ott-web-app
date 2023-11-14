@@ -28,7 +28,7 @@ import CheckoutService from '#src/services/checkout.service';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '#src/stores/WatchHistoryStore';
 import * as persist from '#src/utils/persist';
-import { ACCESS_MODEL } from '#src/config';
+import { ACCESS_MODEL, DEFAULT_FEATURES } from '#src/config';
 import { assertFeature, assertModuleMethod, getNamedModule } from '#src/modules/container';
 import type { IntegrationType } from '#types/Config';
 
@@ -42,7 +42,7 @@ export default class AccountController {
   private readonly favoritesController: FavoritesController;
   private readonly watchHistoryController: WatchHistoryController;
   private readonly profileController?: ProfileController;
-  private features: AccountServiceFeatures & { hasIntegration: boolean };
+  private features: AccountServiceFeatures & { hasIntegration: boolean } = DEFAULT_FEATURES;
 
   constructor(
     @inject('INTEGRATION_TYPE') integrationType: IntegrationType,
@@ -59,7 +59,9 @@ export default class AccountController {
     this.watchHistoryController = watchHistoryController;
     this.profileController = profileController;
 
-    this.features = { ...this.accountService.features, hasIntegration: true };
+    if (integrationType) {
+      this.features = { ...this.accountService.features, hasIntegration: true };
+    }
   }
 
   loadUserData = async () => {

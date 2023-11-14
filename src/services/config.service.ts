@@ -1,5 +1,6 @@
 import i18next from 'i18next';
 import { injectable } from 'inversify';
+import { getI18n } from 'react-i18next';
 
 import ApiService from './api.service';
 
@@ -8,8 +9,7 @@ import { calculateContrastColor } from '#src/utils/common';
 import { addScript } from '#src/utils/dom';
 import type { AccessModel, Config, Styling } from '#types/Config';
 import { ACCESS_MODEL, INTEGRATION } from '#src/config';
-
-const FAILED_LOAD_MESSAGE = 'Failed to load the config. Please check the config path and the file availability.';
+import { AppError } from '#src/utils/error';
 
 /**
  * Set config setup changes in both config.service.ts and config.d.ts
@@ -75,9 +75,18 @@ export default class ConfigService {
     return this.apiService.getAdSchedule(adScheduleId);
   };
 
-  loadConfig = async (configLocation: string) => {
+  loadConfig = async (configLocation: string | undefined) => {
+    const i18n = getI18n();
+    const bundle = i18n.getResourceBundle(i18n.language, 'error');
+
+    const errorPayload = {
+      title: bundle['config_invalid'],
+      description: bundle['check_your_config'],
+      helpLink: 'https://github.com/jwplayer/ott-web-app/blob/develop/docs/configuration.md',
+    };
+
     if (!configLocation) {
-      throw new Error('No config location found');
+      throw new AppError('No config location found', errorPayload);
     }
 
     const response = await fetch(configLocation, {
@@ -86,11 +95,11 @@ export default class ConfigService {
       },
       method: 'GET',
     }).catch(() => {
-      throw new Error(FAILED_LOAD_MESSAGE);
+      throw new AppError('Failed to load the config', errorPayload);
     });
 
     if (!response.ok) {
-      throw new Error(FAILED_LOAD_MESSAGE);
+      throw new AppError('Failed to load the config', errorPayload);
     }
 
     const data = await response.json();

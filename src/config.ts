@@ -59,3 +59,18 @@ export const CONFIG_FILE_STORAGE_KEY = 'config-file-override';
 export const CACHE_TIME = 60 * 1000 * 20; // 20 minutes
 
 export const STALE_TIME = 60 * 1000 * 20;
+
+export const DEFAULT_FEATURES = {
+  canUpdateEmail: false,
+  canSupportEmptyFullName: false,
+  canChangePasswordWithOldPassword: false,
+  canRenewSubscription: false,
+  canExportAccountData: false,
+  canDeleteAccount: false,
+  canUpdatePaymentMethod: false,
+  canShowReceipts: false,
+  hasSocialURLs: false,
+  hasProfiles: false,
+  hasNotifications: false,
+  hasIntegration: false,
+};

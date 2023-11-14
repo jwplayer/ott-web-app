@@ -5,6 +5,7 @@ import AppController from '#src/stores/AppController';
 import { useTrackConfigKeyChange } from '#src/hooks/useTrackConfigKeyChange';
 import type { Config } from '#types/Config';
 import type { Settings } from '#src/stores/ConfigStore';
+import type { AppError } from '#src/utils/error';
 import { getModule } from '#src/modules/container';
 
 const applicationController = getModule(AppController);
@@ -16,7 +17,7 @@ type Resources = {
 };
 
 export const useBootstrapApp = (onReady: () => void) => {
-  const { data, isLoading, error, isError, isSuccess } = useQuery<Resources, Error>('config-init', applicationController.initializeApp, {
+  const { data, isLoading, error, isError, isSuccess } = useQuery<Resources, AppError>('config-init', applicationController.initializeApp, {
     refetchInterval: false,
     retry: 1,
     onSuccess: onReady,

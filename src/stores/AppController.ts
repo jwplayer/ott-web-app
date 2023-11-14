@@ -5,12 +5,11 @@ import AccountController from './AccountController';
 import WatchHistoryController from './WatchHistoryController';
 import FavoritesController from './FavoritesController';
 
-import type { Config, IntegrationType } from '#types/Config';
+import type { IntegrationType } from '#types/Config';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import ConfigService from '#src/services/config.service';
 import SettingsService from '#src/services/settings.service';
 import { PersonalShelf } from '#src/config';
-import { ConfigError } from '#src/utils/error';
 import { getModule } from '#src/modules/container';
 
 @injectable()
@@ -26,22 +25,12 @@ export default class AppController {
   loadAndValidateConfig = async (configSource: string | undefined) => {
     const configLocation = this.configService.formatSourceLocation(configSource);
     const defaultConfig = this.configService.getDefaultConfig();
-    let config: Config | null = null;
 
     if (!configLocation) {
       useConfigStore.setState({ config: defaultConfig });
-      throw new ConfigError('Config not defined');
     }
 
-    try {
-      config = await this.configService.loadConfig(configLocation);
-    } catch (err: unknown) {
-      throw new ConfigError('Config not found');
-    }
-
-    if (!config) {
-      throw new ConfigError('Config not found');
-    }
+    let config = await this.configService.loadConfig(configLocation);
 
     config.id = configSource;
     config.assets = config.assets || {};

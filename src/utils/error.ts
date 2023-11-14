@@ -1,13 +1,15 @@
-export class SettingsError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'SettingsError';
-  }
-}
+type Payload = {
+  title: string;
+  description: string;
+  helpLink: string;
+};
 
-export class ConfigError extends Error {
-  constructor(message: string) {
+export class AppError extends Error {
+  payload: Payload;
+
+  constructor(message: string, payload: Payload) {
     super(message);
-    this.name = 'ConfigError';
+    this.name = 'AppError';
+    this.payload = payload;
   }
 }

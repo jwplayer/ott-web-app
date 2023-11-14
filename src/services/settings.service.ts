@@ -1,11 +1,12 @@
 import { injectable } from 'inversify';
 import ini from 'ini';
+import { getI18n } from 'react-i18next';
 
 // @TODO don't depend on a store from a service
 import type { Settings } from '#src/stores/ConfigStore';
 import { CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY, OTT_GLOBAL_PLAYER_ID } from '#src/config';
 import { logDev } from '#src/utils/common';
-import { SettingsError } from '#src/utils/error';
+import { AppError } from '#src/utils/error';
 
 // Use local storage so the override persists until cleared
 const storage = window.localStorage;
@@ -78,8 +79,17 @@ export default class SettingsService {
         return {} as Settings;
       });
 
+    const i18n = getI18n();
+    const bundle = i18n.getResourceBundle(i18n.language, 'error');
+
+    const errorPayload = {
+      title: bundle['settings_invalid'],
+      description: bundle['check_your_settings'],
+      helpLink: 'https://github.com/jwplayer/ott-web-app/blob/develop/docs/initialization-file.md',
+    };
+
     if (!settings) {
-      throw new SettingsError('Unable to load .webapp.ini');
+      throw new AppError('Unable to load .webapp.ini', errorPayload);
     }
 
     // The ini file values will be used if provided, even if compile-time values are set
@@ -98,7 +108,7 @@ export default class SettingsService {
       (!settings.additionalAllowedConfigSources || settings.additionalAllowedConfigSources?.length === 0) &&
       !settings.UNSAFE_allowAnyConfigSource
     ) {
-      throw new SettingsError('No usable config sources');
+      throw new AppError('No usable config sources', errorPayload);
     }
 
     return settings;
