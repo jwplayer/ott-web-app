@@ -5,7 +5,6 @@ import { injectable } from 'inversify';
 import SubscriptionService from './subscription.service';
 
 import type {
-  ChangeSubscription,
   GetActivePayment,
   GetActiveSubscription,
   GetAllTransactions,
@@ -14,8 +13,10 @@ import type {
   Transaction,
   UpdateCardDetails,
   UpdateSubscription,
+  ChangeSubscription,
 } from '#types/subscription';
-import type { InPlayerError } from '#types/inplayer';
+import type { Config } from '#types/Config';
+import { isCommonError } from '#src/utils/api';
 
 interface SubscriptionDetails extends InplayerSubscription {
   item_id?: number;
@@ -134,10 +135,9 @@ export default class InplayerSubscriptionService extends SubscriptionService {
     } as Subscription;
   };
 
-  getActiveSubscription: GetActiveSubscription = async ({ config }) => {
-    const assetId = config.integrations.jwp?.assetId || 0;
-
+  getActiveSubscription: GetActiveSubscription = async ({ config }: { config: Config }) => {
     try {
+      const assetId = config.integrations.jwp?.assetId || 0;
       const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);
 
       if (hasAccess) {
@@ -152,8 +152,7 @@ export default class InplayerSubscriptionService extends SubscriptionService {
       }
       return null;
     } catch (error: unknown) {
-      const { response } = error as InPlayerError;
-      if (response.data.code === 402) {
+      if (isCommonError(error) && error.response.data.code === 402) {
         return null;
       }
       throw new Error('Unable to fetch customer subscriptions.');
@@ -176,8 +175,6 @@ export default class InplayerSubscriptionService extends SubscriptionService {
       const cards: PaymentDetail[] = [];
       for (const currency in data?.cards) {
         cards.push(
-          // @ts-ignore
-          // TODO fix Card type in InPlayer SDK
           this.formatCardDetails({
             ...data.cards?.[currency],
             currency: currency,

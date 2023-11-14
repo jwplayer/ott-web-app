@@ -51,6 +51,10 @@ const ResetPassword: React.FC = () => {
         if (error.message.includes('invalid param password')) {
           setErrors({ password: t('reset.invalid_password') });
         } else if (error.message.includes('resetPasswordToken is not valid')) {
+          setErrors({ form: t('reset.invalid_reset_link') });
+        } else if (error.message.includes('score does not match standards')) {
+          setErrors({ form: t('reset.password_strength') });
+        } else if (error.message.includes('password could not be set')) {
           setErrors({ form: t('reset.invalid_token') });
         }
       }

@@ -5,6 +5,7 @@ import { injectable } from 'inversify';
 import AccountService from './account.service';
 
 import { formatConsentsToRegisterFields } from '#src/utils/collection';
+import { getCommonResponseData, isCommonError } from '#src/utils/api';
 import type {
   AuthData,
   Capture,
@@ -21,7 +22,6 @@ import type {
   GetCustomerConsentsResponse,
   GetPublisherConsents,
   Login,
-  NotificationsData,
   Register,
   ResetPassword,
   SocialURLSData,
@@ -31,12 +31,12 @@ import type {
   UpdateCustomerConsents,
   UpdatePersonalShelves,
   CustomRegisterFieldVariant,
+  NotificationsData,
 } from '#types/account';
 import type { Config } from '#types/Config';
-import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
+import type { InPlayerAuthData } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
 import type { WatchHistoryItem } from '#types/watchHistory';
-import { getCommonResponseData } from '#src/utils/api';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -252,8 +252,27 @@ export default class InplayerAccountService extends AccountService {
         errors: [],
         responseData: {},
       };
+    } catch (error: unknown) {
+      if (isCommonError(error)) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error('Failed to change password');
+    }
+  };
+
+  resetPassword: ResetPassword = async ({ customerEmail, publisherId }) => {
+    try {
+      await InPlayer.Account.requestNewPassword({
+        email: customerEmail,
+        merchantUuid: publisherId || '',
+        brandingId: 0,
+      });
+      return {
+        errors: [],
+        responseData: {},
+      };
     } catch {
-      throw new Error('Failed to change password.');
+      throw new Error('Failed to reset password.');
     }
   };
 
@@ -306,8 +325,10 @@ export default class InplayerAccountService extends AccountService {
         customerConsents: this.parseJson(user?.metadata?.consents as string, []),
       };
     } catch (error: unknown) {
-      const { response } = error as InPlayerError;
-      throw new Error(response.data.message);
+      if (isCommonError(error)) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error('Failed to create account.');
     }
   };
 
@@ -407,22 +428,6 @@ export default class InplayerAccountService extends AccountService {
     }
   };
 
-  resetPassword: ResetPassword = async ({ customerEmail, publisherId }) => {
-    try {
-      await InPlayer.Account.requestNewPassword({
-        email: customerEmail,
-        merchantUuid: publisherId || '',
-        brandingId: 0,
-      });
-      return {
-        errors: [],
-        responseData: {},
-      };
-    } catch {
-      throw new Error('Failed to reset password.');
-    }
-  };
-
   getTermsConsent = ({ label: termsUrl }: RegisterField): Consent => {
     const termsLink = `<a href="${termsUrl || JW_TERMS_URL}" target="_blank">${i18next.t('account:registration.terms_and_conditions')}</a>`;
 
@@ -479,7 +484,7 @@ export default class InplayerAccountService extends AccountService {
     }
   };
 
-  subscribeToNotifications: NotificationsData = async ({ uuid = '', onMessage }) => {
+  subscribeToNotifications: NotificationsData = async ({ uuid, onMessage }) => {
     try {
       if (!InPlayer.Notifications.isSubscribed()) {
         InPlayer.subscribe(uuid, {
