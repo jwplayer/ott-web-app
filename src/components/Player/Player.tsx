@@ -162,12 +162,9 @@ const Player: React.FC<Props> = ({
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
         advertising: {
-          ...adsData,
-          // Beta feature
-          showCountdown: true,
-        },
-        timeSlider: {
-          showAdMarkers: false,
+          client: 'vast',
+          schedule: 'https://content-portal.jwplatform.com/v2/advertising/schedules/GDJGFUKL.xml',
+          withCredentials: false,
         },
         aspectratio: false,
         controls: true,
