@@ -1,6 +1,9 @@
 {
   "account": {
     "about_you": "Información de perfil",
+    "add_password": "Agregar contraseña",
+    "add_password_error": "No se pudo pasar a la pantalla Agregar contraseña. Inténtalo de nuevo.",
+    "add_password_modal_text": "Enviamos instrucciones a {{email}} sobre cómo agregar una contraseña. Si no recibes el correo electrónico en unos minutos, revisa tu carpeta de spam o",
     "add_profile": "Añadir perfil",
     "cancel": "Cancelar",
     "confirm_password": "Confirmar contraseña",
@@ -19,6 +22,10 @@
         "warning": "Todas las suscripciones activas que se compraron a través de un navegador web se cancelarán automáticamente al borrar los datos personales. Sin embargo, si compró una suscripción a través de las aplicaciones iOS, Android, Roku o Amazon, tenga en cuenta que no se cancelará automáticamente. En este caso, deberá seguir los pasos habituales de cancelación de suscripción para cada plataforma respectiva para cancelar manualmente la suscripción."
       },
       "title": "Borrar cuenta"
+    },
+    "delete_account_password_warning": {
+      "text": "Para eliminar su cuenta cuando utiliza cuentas de redes sociales para iniciar sesión, primero deberá agregar una contraseña de cuenta y luego iniciar el proceso de eliminación nuevamente.",
+      "title": "Advertencia"
     },
     "edit_account": "Editar cuenta",
     "edit_information": "Editar información",
@@ -44,6 +51,9 @@
     "manage_profiles": "Administrar perfiles",
     "other_registration_details": "Otros detalles de registro",
     "password": "Contraseña",
+    "proceed_to_adding_a_password": "Proceda a agregar una contraseña",
+    "resend_mail": "reenvíe el correo electrónico.",
+    "resend_mail_error": "Se produjo un error al reenviar el correo electrónico. Inténtalo de nuevo.",
     "save": "Guardar",
     "security": "Contraseña",
     "terms_and_tracking": "Jurídico y marketing",

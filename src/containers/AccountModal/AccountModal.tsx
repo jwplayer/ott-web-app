@@ -28,6 +28,7 @@ import WaitingForPayment from '#components/WaitingForPayment/WaitingForPayment';
 import UpdatePaymentMethod from '#src/containers/UpdatePaymentMethod/UpdatePaymentMethod';
 import useEventCallback from '#src/hooks/useEventCallback';
 import UpgradeSubscription from '#components/UpgradeSubscription/UpgradeSubscription';
+import DeleteAccountPasswordWarning from '#components/DeleteAccountPasswordWarning/DeleteAccountPasswordWarning';
 
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
 
@@ -104,9 +105,13 @@ const AccountModal = () => {
         return <ResetPassword type="reset" />;
       case 'forgot-password':
         return <ResetPassword type="forgot" />;
+      case 'add-password':
+        return <EditPassword type="add" />;
       case 'delete-account':
       case 'delete-account-confirmation':
         return <DeleteAccountModal />;
+      case 'warning-account-deletion':
+        return <DeleteAccountPasswordWarning />;
       case 'send-confirmation':
         return <ResetPassword type="confirmation" />;
       case 'edit-password':
@@ -125,7 +130,7 @@ const AccountModal = () => {
     }
   };
 
-  const shouldShowBanner = !['delete-account', 'delete-account-confirmation', 'edit-card'].includes(view ?? '');
+  const shouldShowBanner = !['delete-account', 'delete-account-confirmation', 'edit-card', 'warning-account-deletion'].includes(view ?? '');
   const dialogSize = ['delete-account-confirmation'].includes(view ?? '') ? 'large' : 'small';
 
   return (

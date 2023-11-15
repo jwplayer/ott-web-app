@@ -8,15 +8,16 @@ import EditPasswordForm from '#components/EditPasswordForm/EditPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { changePasswordWithOldPassword, changePasswordWithToken, logout } from '#src/stores/AccountController';
+import { changePasswordWithOldPassword, changePasswordWithToken, logout, resetPassword } from '#src/stores/AccountController';
 import useQueryParam from '#src/hooks/useQueryParam';
 
-const ResetPassword: React.FC = () => {
+const ResetPassword = ({ type }: { type?: 'add' }) => {
   const { t } = useTranslation('account');
   const location = useLocation();
   const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
   const emailParam = useQueryParam('email');
+  const email = useAccountStore((state) => state.user?.email);
   const user = useAccountStore.getState().user;
 
   const passwordSubmitHandler: UseFormOnSubmitHandler<EditPasswordFormData> = async (formData, { setErrors, setSubmitting }) => {
@@ -73,6 +74,16 @@ const ResetPassword: React.FC = () => {
     true,
   );
 
+  const resendEmailClickHandler = async () => {
+    try {
+      if (email) {
+        await resetPassword(email, '');
+      }
+    } catch (error: unknown) {
+      passwordForm.setErrors({ form: t('user:account.resend_mail_error') });
+    }
+  };
+
   return (
     <EditPasswordForm
       value={passwordForm.values}
@@ -81,8 +92,10 @@ const ResetPassword: React.FC = () => {
       onBlur={passwordForm.handleBlur}
       errors={passwordForm.errors}
       onSubmit={passwordForm.handleSubmit}
-      showOldPasswordField={user && !resetPasswordTokenParam ? true : false}
-      showResetTokenField={!user && !resetPasswordTokenParam}
+      showOldPasswordField={!!(user && !resetPasswordTokenParam)}
+      showResetTokenField={type === 'add' || (!user && !resetPasswordTokenParam)}
+      email={emailParam || email}
+      onResendEmailClick={resendEmailClickHandler}
     />
   );
 };
