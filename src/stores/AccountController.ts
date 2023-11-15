@@ -42,7 +42,7 @@ export default class AccountController {
   private readonly favoritesController: FavoritesController;
   private readonly watchHistoryController: WatchHistoryController;
   private readonly profileController?: ProfileController;
-  private features: AccountServiceFeatures = DEFAULT_FEATURES;
+  private readonly features: AccountServiceFeatures;
 
   constructor(
     @inject('INTEGRATION_TYPE') integrationType: IntegrationType,
@@ -59,9 +59,7 @@ export default class AccountController {
     this.watchHistoryController = watchHistoryController;
     this.profileController = profileController;
 
-    if (integrationType) {
-      this.features = this.accountService.features;
-    }
+    this.features = integrationType ? this.accountService.features : DEFAULT_FEATURES;
   }
 
   loadUserData = async () => {

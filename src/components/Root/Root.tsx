@@ -34,11 +34,7 @@ const DemoContentLoader = ({ query }: { query: BootstrapData }) => {
     return <LoadingOverlay />;
   }
 
-  if (error && !data?.settings) {
-    return <ErrorPage title={error.payload.title} message={error.payload.description} error={error} helpLink={error.payload.helpLink} />;
-  }
-
-  const { configSource } = data || {};
+  const { configSource, settings } = data || {};
 
   return (
     <>
@@ -46,9 +42,9 @@ const DemoContentLoader = ({ query }: { query: BootstrapData }) => {
       {!IS_DEMO_OR_PREVIEW && error && (
         <ErrorPage title={error?.payload?.title} message={error?.payload?.description} error={error} helpLink={error?.payload?.helpLink} />
       )}
-      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog query={query} />}
+      {IS_DEMO_OR_PREVIEW && settings && <DemoConfigDialog query={query} />}
       {/* Config select control to improve testing experience */}
-      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
+      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && settings && <DevConfigSelector selectedConfig={configSource} />}
     </>
   );
 };
