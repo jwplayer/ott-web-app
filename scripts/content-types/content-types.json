@@ -326,7 +326,7 @@
               "description": "The playlist ID to display on this hub page",
               "required": true,
               "details": {
-                "field_type": "playlist_select"
+                "field_type": "playlist_multiselect"
               }
             },
             {
