@@ -1,6 +1,9 @@
 {
   "account": {
     "about_you": "Profile info",
+    "add_password": "Add password",
+    "add_password_error": "Failed to proceed to the Add Password screen. Please try again.",
+    "add_password_modal_text": "We sent instructions to {{email}} on how to add a password. If you don’t receive the email within a few minutes, check your spam folder or",
     "add_profile": "Add profile",
     "cancel": "Cancel",
     "confirm_password": "Confirm password",
@@ -19,6 +22,10 @@
         "warning": "All active subscriptions that were purchased through a web browser will be automatically canceled upon erasure of personal data. However, if you purchased a subscription through iOS, Android, Roku, or Amazon apps, please be aware that it will not be canceled automatically. In this case, you will need to follow the usual subscription cancelation steps for each respective platform to manually cancel the subscription."
       },
       "title": "Delete account"
+    },
+    "delete_account_password_warning": {
+      "text": "To delete your account when using social media account(s) for sign-in, you will first need to add an account password and then initiate the deletion process again.",
+      "title": "Warning"
     },
     "edit_account": "Edit account",
     "edit_information": "Edit information",
@@ -44,6 +51,9 @@
     "manage_profiles": "Manage profiles",
     "other_registration_details": "Other registration details",
     "password": "Password",
+    "proceed_to_adding_a_password": "Proceed to adding a password",
+    "resend_mail": "resend the email.",
+    "resend_mail_error": "An error occurred while resending the email. Please try again.",
     "save": "Save",
     "security": "Password",
     "terms_and_tracking": "Legal & Marketing",
