@@ -1,7 +1,6 @@
 import React, { ChangeEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import type { UseQueryResult } from 'react-query';
+import { NavigateFunction, useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet';
 
 import styles from './DemoConfigDialog.module.scss';
@@ -9,19 +8,15 @@ import styles from './DemoConfigDialog.module.scss';
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import TextField from '#components/TextField/TextField';
 import Button from '#components/Button/Button';
-import { getConfigNavigateCallback } from '#src/utils/configOverride';
 import ConfirmationDialog from '#components/ConfirmationDialog/ConfirmationDialog';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
-import type { Config } from '#types/Config';
 import DevStackTrace from '#components/DevStackTrace/DevStackTrace';
+import { addQueryParams } from '#src/utils/formatting';
+import { CONFIG_QUERY_KEY } from '#src/config';
+import type { BootstrapData } from '#src/hooks/useBootstrapApp';
 
 const regex = /^[a-z,\d]{0,8}$/g;
 const DEMO_CONFIG = '225tvq1i';
-
-interface Props {
-  selectedConfigSource: string | undefined;
-  configQuery: UseQueryResult<Config>;
-}
 
 interface State {
   configSource: string | undefined;
@@ -37,7 +32,21 @@ const initialState: State = {
   loaded: false,
 };
 
-const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
+export function getConfigNavigateCallback(navigate: NavigateFunction) {
+  return (configSource: string) => {
+    navigate(
+      {
+        pathname: '/',
+        search: new URLSearchParams([[CONFIG_QUERY_KEY, configSource]]).toString(),
+      },
+      { replace: true },
+    );
+  };
+}
+
+const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
+  const { data, isLoading, error, refetch, isSuccess } = query;
+  const { configSource: selectedConfigSource } = data || {};
   const { t } = useTranslation('demo');
   const navigate = useNavigate();
   const navigateCallback = getConfigNavigateCallback(navigate);
@@ -52,17 +61,18 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
     }
     // If trying to fetch the same config again, use refetch since a query param change won't work
     else if (configSource === selectedConfigSource) {
-      await configQuery.refetch();
+      await refetch();
     }
     // Get a new config by triggering a query param change
     else {
-      navigateCallback(configSource);
+      // Force a page refresh so that application (including services and controllers) gets fully reinitialized
+      window.location.href = addQueryParams(window.location.href, { [CONFIG_QUERY_KEY]: configSource });
     }
   };
 
   useEffect(() => {
     // Don't grab values from props when config source is unset or still loading
-    if (!selectedConfigSource || configQuery.isLoading) {
+    if (!selectedConfigSource || isLoading) {
       return;
     }
 
@@ -70,10 +80,10 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
     setState((s) => ({ ...s, configSource: s.configSource ?? selectedConfigSource }));
 
     // If there's an error after loading is done, grab it to display it to the user
-    if (configQuery.error) {
-      setState((s) => ({ ...s, showDialog: false, error: configQuery.error as Error }));
+    if (error) {
+      setState((s) => ({ ...s, showDialog: false, error }));
     }
-  }, [selectedConfigSource, configQuery.error, configQuery.isLoading]);
+  }, [selectedConfigSource, error, isLoading]);
 
   const clearConfig = () => {
     setState(initialState);
@@ -122,32 +132,32 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
 
   // If the config loads, reset the demo ui state
   useEffect(() => {
-    if (configQuery.isSuccess) {
+    if (isSuccess) {
       setState(initialState);
     }
-  }, [setState, configQuery.isSuccess]);
+  }, [setState, isSuccess]);
 
   // If someone links to the app with a config query,
   // we want to show the normal spinner instead of the dialog while trying to load the first time
   // Config is only undefined when it's the first load attempt.
-  if (configQuery.isLoading && state.configSource === undefined) {
+  if (isLoading && state.configSource === undefined) {
     return <LoadingOverlay />;
   }
 
   return (
     <>
-      {!configQuery.isSuccess && (
+      {!isSuccess && (
         <Helmet>
           <meta name="description" content="Enter the App Config ID" />
         </Helmet>
       )}
-      {configQuery.isSuccess && (
+      {isSuccess && (
         <div className={styles.note}>
           <div>{t('currently_previewing_config', { configSource: selectedConfigSource })}</div>
           <Button variant="text" label={t('click_to_unselect_config')} onClick={clearConfig} />
         </div>
       )}
-      {!configQuery.isSuccess && (
+      {!isSuccess && (
         <div className={styles.configModal}>
           <ErrorPage
             title={t('app_config_not_found')}
@@ -158,7 +168,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
             <form method={'GET'} target={'/'}>
               <TextField
                 required
-                disabled={configQuery.isLoading}
+                disabled={isLoading}
                 className={styles.maxWidth}
                 maxLength={8}
                 value={state.configSource || ''}
@@ -179,14 +189,8 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
                 onChange={onChange}
               />
               <div className={styles.controls}>
-                <Button
-                  label={t('submit_config_id')}
-                  type={'submit'}
-                  onClick={submitClick}
-                  disabled={configQuery.isLoading}
-                  busy={configQuery.isLoading && !state.showDialog}
-                />
-                <Button label={t('cancel_config_id')} onClick={cancelConfigClick} disabled={configQuery.isLoading} />
+                <Button label={t('submit_config_id')} type={'submit'} onClick={submitClick} disabled={isLoading} busy={isLoading && !state.showDialog} />
+                <Button label={t('cancel_config_id')} onClick={cancelConfigClick} disabled={isLoading} />
               </div>
             </form>
             <p>{t('use_the_jwp_dashboard')}</p>
@@ -200,7 +204,7 @@ const DemoConfigDialog = ({ selectedConfigSource, configQuery }: Props) => {
         body={t('viewing_config_demo')}
         onConfirm={confirmDemoClick}
         onClose={cancelDemoClick}
-        busy={configQuery.isLoading}
+        busy={isLoading}
       />
     </>
   );

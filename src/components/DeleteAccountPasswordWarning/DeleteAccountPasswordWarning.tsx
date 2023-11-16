@@ -8,10 +8,13 @@ import styles from './DeleteAccountPasswordWarning.module.scss';
 
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { resetPassword } from '#src/stores/AccountController';
+import AccountController from '#src/stores/AccountController';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
+import { getModule } from '#src/modules/container';
 
 const DeleteAccountPasswordWarning = () => {
+  const accountController = getModule(AccountController);
+
   const { t } = useTranslation('user');
   const email = useAccountStore((state) => state.user?.email);
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -24,7 +27,7 @@ const DeleteAccountPasswordWarning = () => {
   const proceedToAddPasswordClickHandler = async () => {
     try {
       if (email) {
-        await resetPassword(email, '');
+        await accountController.resetPassword(email, '');
         navigate(addQueryParam(location, 'u', 'add-password'));
       }
     } catch (error: unknown) {

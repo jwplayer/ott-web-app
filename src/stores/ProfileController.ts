@@ -1,30 +1,17 @@
+import { inject, injectable } from 'inversify';
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import * as yup from 'yup';
 
-import { useAccountStore } from './AccountStore';
-import { useFavoritesStore } from './FavoritesStore';
 import { useProfileStore } from './ProfileStore';
-import { useWatchHistoryStore } from './WatchHistoryStore';
-import { loadUserData } from './AccountController';
+import { useConfigStore } from './ConfigStore';
 
-import * as persist from '#src/utils/persist';
 import type { ProfilePayload, EnterProfilePayload, ProfileDetailsPayload } from '#types/account';
-import useService from '#src/hooks/useService';
+import ProfileService from '#src/services/profile.service';
+import * as persist from '#src/utils/persist';
+import { assertModuleMethod, getNamedModule } from '#src/modules/container';
+import type { IntegrationType } from '#types/Config';
 
 const PERSIST_PROFILE = 'profile';
-
-export const unpersistProfile = () => {
-  persist.removeItem(PERSIST_PROFILE);
-};
-
-export const persistProfile = ({ profile }: { profile: ProfilesData }) => {
-  persist.setItem(PERSIST_PROFILE, profile);
-  persist.setItemStorage('inplayer_token', {
-    expires: profile.credentials.expires,
-    token: profile.credentials.access_token,
-    refreshToken: '',
-  });
-};
 
 const profileSchema = yup.object().shape({
   id: yup.string().required(),
@@ -37,78 +24,106 @@ const profileSchema = yup.object().shape({
   }),
 });
 
-const isValidProfile = (profile: unknown): profile is ProfilesData => {
-  try {
-    profileSchema.validateSync(profile);
-    return true;
-  } catch (e: unknown) {
-    return false;
+@injectable()
+export default class ProfileController {
+  private readonly profileService?: ProfileService;
+
+  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType) {
+    this.profileService = getNamedModule(ProfileService, integrationType, false);
   }
-};
 
-export const loadPersistedProfile = () => {
-  const profile = persist.getItem(PERSIST_PROFILE);
-  if (isValidProfile(profile)) {
-    useProfileStore.getState().setProfile(profile);
-    return profile;
-  }
-  useProfileStore.getState().setProfile(null);
-  return null;
-};
+  private getSandbox = () => {
+    return useConfigStore.getState().isSandbox ?? true;
+  };
 
-export const initializeProfile = async ({ profile }: { profile: ProfilesData }) => {
-  persistProfile({ profile });
-  useFavoritesStore.setState({ favorites: [] });
-  useWatchHistoryStore.setState({ watchHistory: [] });
-  useProfileStore.getState().setProfile(profile);
+  listProfiles = async () => {
+    assertModuleMethod(this.profileService?.listProfiles, 'listProfiles is not available in profile service');
 
-  await loadUserData();
+    const res = await this.profileService.listProfiles(undefined, this.getSandbox());
 
-  return profile;
-};
+    const { canManageProfiles } = useProfileStore.getState();
 
-export const listProfiles = async () => {
-  return await useService(async ({ profileService, sandbox }) => {
-    const res = await profileService?.listProfiles(undefined, sandbox ?? true);
-    const canManageProfiles = useAccountStore.getState().canManageProfiles;
     if (!canManageProfiles && res?.responseData.canManageProfiles) {
-      useAccountStore.setState({ canManageProfiles: true });
+      useProfileStore.setState({ canManageProfiles: true });
     }
+
     return res;
-  });
-};
+  };
 
-export const createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
-  return await useService(async ({ profileService, sandbox }) => {
-    return await profileService?.createProfile({ name, adult, avatar_url, pin }, sandbox ?? true);
-  });
-};
+  createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
+    assertModuleMethod(this.profileService?.createProfile, 'createProfile is not available in profile service');
 
-export const updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
-  return await useService(async ({ profileService, sandbox }) => {
-    return await profileService?.updateProfile({ id, name, adult, avatar_url, pin }, sandbox ?? true);
-  });
-};
+    return this.profileService?.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
+  };
 
-export const enterProfile = async ({ id, pin }: EnterProfilePayload) => {
-  return await useService(async ({ profileService, sandbox }) => {
-    const response = await profileService?.enterProfile({ id, pin }, sandbox ?? true);
+  updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
+    assertModuleMethod(this.profileService?.updateProfile, 'updateProfile is not available in profile service');
+
+    return this.profileService.updateProfile({ id, name, adult, avatar_url, pin }, this.getSandbox());
+  };
+
+  enterProfile = async ({ id, pin }: EnterProfilePayload) => {
+    assertModuleMethod(this.profileService?.enterProfile, 'enterProfile is not available in profile service');
+
+    const response = await this.profileService.enterProfile({ id, pin }, this.getSandbox());
+
     const profile = response?.responseData;
+
     if (!profile) {
       throw new Error('Unable to enter profile');
     }
-    await initializeProfile({ profile });
-  });
-};
 
-export const deleteProfile = async ({ id }: ProfileDetailsPayload) => {
-  return await useService(async ({ profileService, sandbox }) => {
-    return await profileService?.deleteProfile({ id }, sandbox ?? true);
-  });
-};
+    await this.initializeProfile({ profile });
+  };
 
-export const getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
-  return await useService(async ({ profileService, sandbox }) => {
-    return await profileService?.getProfileDetails({ id }, sandbox ?? true);
-  });
-};
+  deleteProfile = async ({ id }: ProfileDetailsPayload) => {
+    assertModuleMethod(this.profileService?.deleteProfile, 'deleteProfile is not available in profile service');
+
+    return this.profileService.deleteProfile({ id }, this.getSandbox());
+  };
+
+  getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
+    assertModuleMethod(this.profileService?.getProfileDetails, 'getProfileDetails is not available in profile service');
+
+    return this.profileService.getProfileDetails({ id }, this.getSandbox());
+  };
+
+  persistProfile = ({ profile }: { profile: ProfilesData }) => {
+    persist.setItem(PERSIST_PROFILE, profile);
+    persist.setItemStorage('inplayer_token', {
+      expires: profile.credentials.expires,
+      token: profile.credentials.access_token,
+      refreshToken: '',
+    });
+  };
+
+  unpersistProfile = () => {
+    persist.removeItem(PERSIST_PROFILE);
+  };
+
+  isValidProfile = (profile: unknown): profile is ProfilesData => {
+    try {
+      profileSchema.validateSync(profile);
+      return true;
+    } catch (e: unknown) {
+      return false;
+    }
+  };
+
+  loadPersistedProfile = () => {
+    const profile = persist.getItem(PERSIST_PROFILE);
+    if (this.isValidProfile(profile)) {
+      useProfileStore.getState().setProfile(profile);
+      return profile;
+    }
+    useProfileStore.getState().setProfile(null);
+    return null;
+  };
+
+  initializeProfile = async ({ profile }: { profile: ProfilesData }) => {
+    this.persistProfile({ profile });
+    useProfileStore.getState().setProfile(profile);
+
+    return profile;
+  };
+}

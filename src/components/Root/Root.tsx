@@ -1,75 +1,59 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 
 import ErrorPage from '#components/ErrorPage/ErrorPage';
 import AccountModal from '#src/containers/AccountModal/AccountModal';
-import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE } from '#src/utils/common';
+import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE, IS_PROD_MODE } from '#src/utils/common';
 import DemoConfigDialog from '#components/DemoConfigDialog/DemoConfigDialog';
-import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import DevConfigSelector from '#components/DevConfigSelector/DevConfigSelector';
-import { useConfigSource } from '#src/utils/configOverride';
-import { loadAndValidateConfig } from '#src/utils/configLoad';
-import { initSettings } from '#src/stores/SettingsController';
 import AppRoutes from '#src/containers/AppRoutes/AppRoutes';
 import registerCustomScreens from '#src/screenMapping';
+import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
+import { useBootstrapApp, type BootstrapData } from '#src/hooks/useBootstrapApp';
 
-// This is moved to a separate, parallel component to reduce rerenders
-const RootLoader = ({ setAppIsReady }: { setAppIsReady: React.Dispatch<React.SetStateAction<boolean>> }) => {
-  const { t } = useTranslation('error');
-  const settingsQuery = useQuery('settings-init', initSettings, {
-    enabled: true,
-    retry: 1,
-    refetchInterval: false,
-  });
+const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
-  const configSource = useConfigSource(settingsQuery?.data);
+const ProdContentLoader = ({ query }: { query: BootstrapData }) => {
+  const { isLoading, error } = query;
 
-  const configQuery = useQuery('config-init-' + configSource, async () => await loadAndValidateConfig(configSource), {
-    enabled: settingsQuery.isSuccess,
-    retry: configSource ? 1 : 0,
-    refetchInterval: false,
-  });
-
-  // After the config loads, we can show the rest of the App
-  useEffect(() => {
-    setAppIsReady(!configQuery.isError && !configQuery.isLoading && !!configQuery.data);
-  }, [setAppIsReady, configQuery.isError, configQuery.isLoading, configQuery.data]);
-
-  const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
-
-  // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
-  if (settingsQuery.isLoading || (!IS_DEMO_OR_PREVIEW && configQuery.isLoading)) {
+  if (isLoading) {
     return <LoadingOverlay />;
   }
 
-  if (settingsQuery.isError) {
-    return (
-      <ErrorPage
-        title={t('settings_invalid')}
-        message={t('check_your_settings')}
-        error={settingsQuery.error as Error}
-        helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/initialization-file.md'}
-      />
-    );
+  if (error) {
+    return <ErrorPage title={error.payload.title} message={error.payload.description} helpLink={error.payload.helpLink} />;
   }
+
+  return null;
+};
+
+const DemoContentLoader = ({ query }: { query: BootstrapData }) => {
+  const { isLoading, error, data } = query;
+
+  // Show the spinner while loading except in demo mode (the demo config shows its own loading status)
+  if (!IS_DEMO_OR_PREVIEW && isLoading) {
+    return <LoadingOverlay />;
+  }
+
+  const { configSource, settings } = data || {};
 
   return (
     <>
       {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
-      {configQuery.isError && !IS_DEMO_OR_PREVIEW && (
-        <ErrorPage
-          title={t('config_invalid')}
-          message={t('check_your_config')}
-          error={configQuery.error as Error}
-          helpLink={'https://github.com/jwplayer/ott-web-app/blob/develop/docs/configuration.md'}
-        />
+      {!IS_DEMO_OR_PREVIEW && error && (
+        <ErrorPage title={error?.payload?.title} message={error?.payload?.description} error={error} helpLink={error?.payload?.helpLink} />
       )}
-      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog selectedConfigSource={configSource} configQuery={configQuery} />}
+      {IS_DEMO_OR_PREVIEW && settings && <DemoConfigDialog query={query} />}
       {/* Config select control to improve testing experience */}
-      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
+      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && settings && <DevConfigSelector selectedConfig={configSource} />}
     </>
   );
+};
+
+// This is moved to a separate, parallel component to reduce rerenders
+const RootLoader = ({ onReady }: { onReady: () => void }) => {
+  const query = useBootstrapApp(onReady);
+
+  return IS_PROD_MODE ? <ProdContentLoader query={query} /> : <DemoContentLoader query={query} />;
 };
 
 const Root: FC = () => {
@@ -84,8 +68,8 @@ const Root: FC = () => {
     <>
       {isReady && <AppRoutes />}
       {isReady && <AccountModal />}
-      {/*This is moved to a separate, parallel component to reduce rerenders*/}
-      <RootLoader setAppIsReady={setIsReady} />
+      {/*This is moved to a separate, parallel component to reduce rerenders */}
+      <RootLoader onReady={() => setIsReady(true)} />
     </>
   );
 };

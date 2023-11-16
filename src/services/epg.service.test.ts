@@ -2,13 +2,16 @@ import { afterEach, beforeEach, describe, expect } from 'vitest';
 import { mockFetch, mockGet } from 'vi-fetch';
 import { register, unregister } from 'timezone-mock';
 
-import epgService, { EpgProgram } from '#src/services/epg.service';
+import EpgService from './epg.service';
+
+import type { EpgProgram } from '#types/epg';
 import scheduleFixture from '#test/fixtures/schedule.json';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
 import type { Playlist } from '#types/playlist';
 
 const livePlaylist = livePlaylistFixture as Playlist;
 const scheduleData = scheduleFixture as EpgProgram[];
+const epgService = new EpgService();
 
 describe('epgService', () => {
   beforeEach(() => {

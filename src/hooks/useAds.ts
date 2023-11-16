@@ -1,7 +1,8 @@
 import { useQuery } from 'react-query';
 
-import { getMediaAds, getAdSchedule } from '#src/services/api.service';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import ApiService from '#src/services/api.service';
+import { getModule } from '#src/modules/container';
 
 const CACHE_TIME = 60 * 1000 * 20;
 
@@ -9,10 +10,12 @@ const CACHE_TIME = 60 * 1000 * 20;
  * @deprecated Use {@link useAppBasedAds} instead.
  */
 const useLegacyStandaloneAds = ({ adScheduleId, enabled }: { adScheduleId: string | null | undefined; enabled: boolean }) => {
+  const apiService = getModule(ApiService);
+
   const { isLoading, data } = useQuery(
     ['ad-schedule', adScheduleId],
     async () => {
-      const adSchedule = await getAdSchedule(adScheduleId);
+      const adSchedule = await apiService.getAdSchedule(adScheduleId);
 
       return adSchedule;
     },
@@ -26,11 +29,13 @@ const useLegacyStandaloneAds = ({ adScheduleId, enabled }: { adScheduleId: strin
 };
 
 const useAppBasedAds = ({ jsonUrl, mediaId, enabled }: { jsonUrl: string | null | undefined; mediaId: string; enabled: boolean }) => {
+  const apiService = getModule(ApiService);
+
   const { isLoading, data } = useQuery(
     ['media-ads', mediaId],
     async () => {
       // Waiting for `prd` deploy to remove `replace`
-      const mediaAds = await getMediaAds(jsonUrl?.replace('advertising/site', 'sites') as string, mediaId);
+      const mediaAds = await apiService.getMediaAds(jsonUrl?.replace('advertising/site', 'sites') as string, mediaId);
 
       return mediaAds;
     },

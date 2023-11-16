@@ -9,10 +9,13 @@ import RegistrationForm from '#components/RegistrationForm/RegistrationForm';
 import { extractConsentValues, checkConsentsFromValues } from '#src/utils/collection';
 import { addQueryParam } from '#src/utils/location';
 import type { RegistrationFormData } from '#types/account';
-import { getPublisherConsents, register } from '#src/stores/AccountController';
+import AccountController from '#src/stores/AccountController';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import { getModule } from '#src/modules/container';
 
 const Registration = () => {
+  const accountController = getModule(AccountController);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
@@ -20,8 +23,8 @@ const Registration = () => {
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
   const appConfigId = useConfigStore(({ config }) => config.id);
+  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], accountController.getPublisherConsents);
 
-  const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], getPublisherConsents);
   const publisherConsents = useMemo(() => data?.consents || [], [data]);
 
   const queryClient = useQueryClient();
@@ -57,8 +60,7 @@ const Registration = () => {
         return;
       }
 
-      await register(email, password, customerConsents);
-
+      await accountController.register(email, password, customerConsents);
       await queryClient.invalidateQueries('listProfiles');
 
       navigate(addQueryParam(location, 'u', 'personal-details'));

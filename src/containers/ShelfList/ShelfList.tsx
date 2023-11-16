@@ -7,7 +7,8 @@ import styles from './ShelfList.module.scss';
 
 import PlaylistContainer from '#src/containers/PlaylistContainer/PlaylistContainer';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { PersonalShelf } from '#src/config';
 import ShelfComponent from '#components/Shelf/Shelf';
 import { slugify } from '#src/utils/formatting';
 import type { Content } from '#types/Config';

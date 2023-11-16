@@ -7,7 +7,6 @@ import Modal from '#components/Modal/Modal';
 import Player from '#components/Player/Player';
 import ModalCloseButton from '#components/ModalCloseButton/ModalCloseButton';
 import Fade from '#components/Animation/Fade/Fade';
-import { useSettingsStore } from '#src/stores/SettingsStore';
 
 type Props = {
   item?: PlaylistItem | null;
@@ -25,8 +24,6 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
   const handleUserActive = useCallback(() => setUserActive(true), []);
   const handleUserInactive = useCallback(() => setUserActive(false), []);
 
-  const { playerId, playerLicenseKey } = useSettingsStore((s) => s);
-
   if (!item) return null;
 
   return (
@@ -34,8 +31,6 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
       <div className={styles.container}>
         <Player
           item={item}
-          playerId={playerId}
-          playerLicenseKey={playerLicenseKey}
           onPlay={handlePlay}
           onPause={handlePause}
           onComplete={onClose}

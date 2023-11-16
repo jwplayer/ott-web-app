@@ -14,8 +14,9 @@ import TextField from '../TextField/TextField';
 import styles from './EditCardPaymentForm.module.scss';
 
 import useForm from '#src/hooks/useForm';
-import { updateCardDetails } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   onCancel: () => void;
@@ -23,8 +24,10 @@ type Props = {
 };
 
 const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails }) => {
+  const accountController = getModule(AccountController);
+
   const { t } = useTranslation('account');
-  const updateCard = useMutation(updateCardDetails);
+  const updateCard = useMutation(accountController.updateCardDetails);
   const { activePayment } = useAccountStore(({ activePayment }) => ({ activePayment }), shallow);
   const paymentData = useForm(
     { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },

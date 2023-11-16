@@ -3,6 +3,7 @@ import type { ComponentType } from 'react';
 import 'react-app-polyfill/stable';
 import '@testing-library/jest-dom'; // Including this for the expect extensions
 import 'vi-fetch/setup';
+import 'reflect-metadata';
 import country from '../public/locales/en/country.json';
 import us_state from '../public/locales/en/us_state.json';
 

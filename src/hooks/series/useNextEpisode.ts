@@ -1,18 +1,21 @@
 import { useQuery } from 'react-query';
 
 import type { Series } from '#types/series';
-import { SERIES_CACHE_TIME } from '#src/config';
-import { getEpisodes } from '#src/services/api.service';
+import { CACHE_TIME, STALE_TIME } from '#src/config';
+import ApiService from '#src/services/api.service';
+import { getModule } from '#src/modules/container';
 
 export const useNextEpisode = ({ series, episodeId }: { series: Series | undefined; episodeId: string | undefined }) => {
+  const apiService = getModule(ApiService);
+
   const { isLoading, data } = useQuery(
     ['next-episode', series?.series_id, episodeId],
     async () => {
-      const item = await getEpisodes({ seriesId: series?.series_id, pageLimit: 1, afterId: episodeId });
+      const item = await apiService.getEpisodes({ seriesId: series?.series_id, pageLimit: 1, afterId: episodeId });
 
       return item?.episodes?.[0];
     },
-    { staleTime: SERIES_CACHE_TIME, cacheTime: SERIES_CACHE_TIME, enabled: !!(series?.series_id && episodeId) },
+    { staleTime: STALE_TIME, cacheTime: CACHE_TIME, enabled: !!(series?.series_id && episodeId) },
   );
 
   return {

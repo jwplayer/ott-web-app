@@ -13,7 +13,7 @@ import TileDock from '#components/TileDock/TileDock';
 import Card, { type PosterAspectRatio } from '#components/Card/Card';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { mediaURL } from '#src/utils/formatting';
-import { PersonalShelf } from '#src/stores/ConfigStore';
+import { PersonalShelf } from '#src/config';
 
 export const tileBreakpoints: Breakpoints = {
   [Breakpoint.xs]: 1,

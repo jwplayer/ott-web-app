@@ -1,3 +1,5 @@
+import { act } from '@testing-library/react';
+
 import User from './User';
 
 import { useAccountStore } from '#src/stores/AccountStore';
@@ -7,7 +9,10 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { Config } from '#types/Config';
 import { useFavoritesStore } from '#src/stores/FavoritesStore';
 import type { Playlist, PlaylistItem } from '#types/playlist';
-import * as checkoutController from '#src/stores/CheckoutController';
+import FavoritesController from '#src/stores/FavoritesController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
+import ProfileController from '#src/stores/ProfileController';
 
 const data = {
   loading: false,
@@ -64,71 +69,82 @@ const data = {
   } as unknown as PaymentDetail,
 };
 
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof FavoritesController | typeof AccountController | typeof CheckoutController | typeof ProfileController) => {
+    switch (type) {
+      case FavoritesController:
+        return { clear: vi.fn() };
+      case AccountController:
+        return { logout: vi.fn(), getFeatures: vi.fn(() => ({ canUpdateEmail: false, canRenewSubscription: false })) };
+      case CheckoutController:
+        return { getSubscriptionSwitches: vi.fn() };
+      case ProfileController:
+        return { listProfiles: vi.fn() };
+    }
+  },
+}));
+
 describe('User Component tests', () => {
-  beforeEach(() => {
-    const spy = vi.spyOn(checkoutController, 'getSubscriptionSwitches');
-    spy.mockResolvedValue(undefined);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   test('Account Page', () => {
-    useAccountStore.setState(data);
-    mockWindowLocation('my-account');
+    act(() => {
+      useAccountStore.setState(data);
+      mockWindowLocation('my-account');
+    });
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();
   });
 
   test('Payments Page', () => {
-    useAccountStore.setState(data);
-    mockWindowLocation('payments');
+    act(() => {
+      useAccountStore.setState(data);
+      mockWindowLocation('payments');
+    });
     const { container } = renderWithRouter(<User />);
 
     expect(container).toMatchSnapshot();
   });
 
   test('Favorites Page', () => {
-    useAccountStore.setState(data);
-    useConfigStore.setState({
-      config: {
-        features: {
-          favoritesList: 'abcdefgh',
+    act(() => {
+      useAccountStore.setState(data);
+      useConfigStore.setState({
+        config: {
+          features: {
+            favoritesList: 'abcdefgh',
+          },
+          styling: {},
+        } as unknown as Config,
+      });
+      useFavoritesStore.setState({
+        getPlaylist: (): Playlist => {
+          return {
+            title: 'These are my favorite things',
+            playlist: [
+              {
+                mediaid: 'aaabbbcc',
+                title: 'Fav 1',
+                duration: 12,
+                feedid: 'abcdffff',
+              } as unknown as PlaylistItem,
+              {
+                mediaid: 'aaabbbcd',
+                title: 'Big Buck Bunny',
+                duration: 6000,
+                feedid: 'bbbdddff',
+              } as unknown as PlaylistItem,
+              {
+                mediaid: 'ggaaccvv',
+                title: 'My last favorite',
+                duration: 659,
+                feedid: 'bbbbbbbb',
+              } as unknown as PlaylistItem,
+            ],
+          };
         },
-        styling: {},
-      } as unknown as Config,
+      });
+      mockWindowLocation('favorites');
     });
-    useFavoritesStore.setState({
-      getPlaylist: (): Playlist => {
-        return {
-          title: 'These are my favorite things',
-          playlist: [
-            {
-              mediaid: 'aaabbbcc',
-              title: 'Fav 1',
-              duration: 12,
-              feedid: 'abcdffff',
-            } as unknown as PlaylistItem,
-            {
-              mediaid: 'aaabbbcd',
-              title: 'Big Buck Bunny',
-              duration: 6000,
-              feedid: 'bbbdddff',
-            } as unknown as PlaylistItem,
-            {
-              mediaid: 'ggaaccvv',
-              title: 'My last favorite',
-              duration: 659,
-              feedid: 'bbbbbbbb',
-            } as unknown as PlaylistItem,
-          ],
-        };
-      },
-    });
-
-    mockWindowLocation('favorites');
 
     const { container } = renderWithRouter(<User />);
 

@@ -8,10 +8,13 @@ import EditPasswordForm from '#components/EditPasswordForm/EditPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { changePasswordWithOldPassword, changePasswordWithToken, logout, resetPassword } from '#src/stores/AccountController';
 import useQueryParam from '#src/hooks/useQueryParam';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const ResetPassword = ({ type }: { type?: 'add' }) => {
+  const accountController = getModule(AccountController);
+
   const { t } = useTranslation('account');
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,16 +36,16 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
     }
     try {
       if (user && !resetToken) {
-        await changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
+        await accountController.changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
       } else {
         if (!resetToken) {
           setErrors({ form: t('reset.invalid_link') });
 
           return setSubmitting(false);
         }
-        await changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
+        await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
-      await logout({ includeNetworkRequest: false });
+      await accountController.logout({ includeNetworkRequest: false });
       navigate(addQueryParam(location, 'u', 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -77,7 +80,7 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
   const resendEmailClickHandler = async () => {
     try {
       if (email) {
-        await resetPassword(email, '');
+        await accountController.resetPassword(email, '');
       }
     } catch (error: unknown) {
       passwordForm.setErrors({ form: t('user:account.resend_mail_error') });

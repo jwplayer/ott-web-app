@@ -60,6 +60,8 @@ export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
 export const IS_TEST_MODE = import.meta.env.MODE === 'test';
 // Preview mode is used for previewing Pull Requests on github
 export const IS_PREVIEW_MODE = import.meta.env.MODE === 'preview';
+// Production mode
+export const IS_PROD_MODE = import.meta.env.MODE === 'prod';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
   if (IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) {

@@ -9,13 +9,16 @@ import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import LoginForm from '#components/LoginForm/LoginForm';
 import { removeQueryParam } from '#src/utils/location';
 import type { LoginFormData } from '#types/account';
-import { login } from '#src/stores/AccountController';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   messageKey?: string;
 };
 
 const Login: React.FC<Props> = ({ messageKey }: Props) => {
+  const accountController = getModule(AccountController);
+
   const { siteName } = useConfigStore((s) => s.config);
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,7 +28,7 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
 
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
-      await login(formData.email, formData.password);
+      await accountController.login(formData.email, formData.password);
       await queryClient.invalidateQueries('listProfiles');
 
       // close modal

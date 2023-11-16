@@ -11,9 +11,10 @@ import Favorite from '#src/icons/Favorite';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import MenuButton from '#components/MenuButton/MenuButton';
-import { logout } from '#src/stores/AccountController';
+import AccountController from '#src/stores/AccountController';
 import ProfileCircle from '#src/icons/ProfileCircle';
 import type { Profile } from '#types/account';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   small?: boolean;
@@ -40,15 +41,16 @@ const UserMenu = ({
 }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
+  const accountController = getModule(AccountController);
 
   const onLogout = useCallback(async () => {
     if (onClick) {
       onClick();
     }
 
-    await logout();
+    await accountController.logout();
     navigate('/', { replace: true });
-  }, [onClick, navigate]);
+  }, [onClick, navigate, accountController]);
 
   return (
     <ul className={styles.menuItems}>

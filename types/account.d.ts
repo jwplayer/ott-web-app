@@ -147,7 +147,7 @@ export type GetCustomerConsentsResponse = {
 export type ResetPasswordPayload = {
   customerEmail: string;
   offerId?: string;
-  publisherId?: string;
+  publisherId: string | null;
   resetUrl?: string;
 };
 
@@ -160,7 +160,7 @@ export type ChangePasswordPayload = {
 
 export type ChangePasswordWithTokenPayload = {
   customerEmail?: string;
-  publisherId?: string;
+  publisherId: string | null;
   resetPasswordToken: string;
   newPassword: string;
   newPasswordConfirmation: string;
@@ -314,8 +314,8 @@ export type UpdateCaptureAnswersPayload = {
 export type UpdatePersonalShelvesArgs = {
   id: string;
   externalData: {
-    history: SerializedWatchHistoryItem[];
-    favorites: SerializedFavorite[];
+    history?: SerializedWatchHistoryItem[];
+    favorites?: SerializedFavorite[];
   };
 };
 
@@ -364,6 +364,19 @@ export type DeleteAccountPayload = {
   password: string;
 };
 
+export type SubscribeToNotificationsPayload = {
+  uuid: string;
+  onMessage: (payload: string) => void;
+};
+
+export type SocialURLs = {
+  facebook: string;
+  twitter: string;
+  google: string;
+};
+
+type Login = PromiseRequest<AuthArgs, AuthResponse>;
+type Register = PromiseRequest<AuthArgs, AuthResponse>;
 type Login = PromiseRequest<LoginArgs, AuthResponse>;
 type Register = PromiseRequest<RegistrationArgs, AuthResponse>;
 type GetCustomer = EnvironmentServiceRequest<GetCustomerPayload, Customer>;
@@ -379,6 +392,8 @@ type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePasswordWit
 type UpdatePersonalShelves = EnvironmentServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string>>;
 type GetLocales = EmptyServiceRequest<LocalesData>;
 type ExportAccountData = EnvironmentServiceRequest<undefined, CommonAccountResponse>;
+type SocialURLSData = PromiseRequest<Config, SocialURLs[]>;
+type NotificationsData = PromiseRequest<SubscribeToNotificationsPayload, boolean>;
 type DeleteAccount = EnvironmentServiceRequest<DeleteAccountPayload, CommonAccountResponse>;
 type ListProfiles = EnvironmentServiceRequest<undefined, ListProfilesResponse>;
 type CreateProfile = EnvironmentServiceRequest<ProfilePayload, ProfilesData>;

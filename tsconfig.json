@@ -16,18 +16,10 @@
     "baseUrl": "./",
     /* paths - import rewriting/resolving */
     "paths": {
-      "#components/*": [
-        "./src/components/*"
-      ],
-      "#src/*": [
-        "./src/*"
-      ],
-      "#test/*": [
-        "./test/*"
-      ],
-      "#types/*": [
-        "./types/*"
-      ]
+      "#components/*": ["./src/components/*"],
+      "#src/*": ["./src/*"],
+      "#test/*": ["./test/*"],
+      "#types/*": ["./types/*"]
     },
     /* noEmit - Vite builds (emits) files, not tsc. */
     "noEmit": true,
@@ -43,12 +35,15 @@
     "noUnusedLocals": true,
     // Fallthrough must be documented
     "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "types": [
       "vi-fetch/matchers",
       "vitest/globals",
       "@testing-library/jest-dom",
       "@types/jwplayer",
-      "vite-plugin-pwa/client"
+      "vite-plugin-pwa/client",
+      "reflect-metadata"
     ]
   }
 }

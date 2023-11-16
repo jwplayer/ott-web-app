@@ -1,17 +1,29 @@
 import { describe, expect, test } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
 
-import epgService, { EpgChannel } from '#src/services/epg.service';
+import type { EpgChannel } from '#types/epg';
 import useLiveChannels from '#src/hooks/useLiveChannels';
 import { createWrapper, waitForWithFakeTimers } from '#test/testUtils';
 import type { Playlist } from '#types/playlist';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
 import epgChannelsFixture from '#test/fixtures/epgChannels.json';
 import epgChannelsUpdateFixture from '#test/fixtures/epgChannelsUpdate.json';
+import EpgService from '#src/services/epg.service';
 
 const livePlaylist: Playlist = livePlaylistFixture;
 const schedule: EpgChannel[] = epgChannelsFixture;
 const scheduleUpdate: EpgChannel[] = epgChannelsUpdateFixture;
+
+const mockSchedule = vi.fn();
+
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof EpgService) => {
+    switch (type) {
+      case EpgService:
+        return { getSchedules: mockSchedule };
+    }
+  },
+}));
 
 describe('useLiveChannels', () => {
   beforeEach(() => {
@@ -24,7 +36,7 @@ describe('useLiveChannels', () => {
   });
 
   test('gets the date using the EPG service getSchedules method', async () => {
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    const mock = mockSchedule.mockResolvedValue(schedule);
 
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
@@ -46,8 +58,7 @@ describe('useLiveChannels', () => {
   });
 
   test('selects the initial channel based of the initialChannelId', async () => {
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
-
+    const mock = mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: 'channel2' },
@@ -66,8 +77,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:45:00Z'));
     });
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
-
+    mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -84,8 +94,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T09:00:00Z'));
     });
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
-
+    mockSchedule.mockResolvedValue(schedule);
     const { result, rerender } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -109,8 +118,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
-
+    mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -136,8 +144,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
-
+    mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -162,7 +169,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -194,8 +201,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
-
+    mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -219,8 +225,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValueOnce(schedule);
-
+    const mock = mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -250,7 +255,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T11:05:00Z'));
     });
 
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(schedule);
+    const mock = mockSchedule.mockResolvedValue(schedule);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
@@ -279,7 +284,7 @@ describe('useLiveChannels', () => {
     });
 
     // start with update schedule (which has more programs)
-    const mock = vi.spyOn(epgService, 'getSchedules').mockResolvedValue(scheduleUpdate);
+    const mock = mockSchedule.mockResolvedValue(scheduleUpdate);
     const { result } = renderHook((props) => useLiveChannels(props), {
       wrapper: createWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },

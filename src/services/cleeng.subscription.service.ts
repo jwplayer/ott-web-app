@@ -1,49 +1,74 @@
-import { patch, get } from './cleeng.service';
+import { injectable } from 'inversify';
+
+import SubscriptionService from './subscription.service';
+import CleengService from './cleeng.service';
 
 import { addQueryParams } from '#src/utils/formatting';
-import type { FetchReceipt, GetPaymentDetails, GetSubscriptions, GetTransactions, UpdateSubscription } from '#types/subscription';
+import type {
+  FetchReceipt,
+  GetActivePayment,
+  GetActiveSubscription,
+  GetAllTransactions,
+  GetPaymentDetails,
+  GetSubscriptions,
+  GetTransactions,
+  UpdateSubscription,
+} from '#types/subscription';
 
-export async function getActiveSubscription({ sandbox, customerId }: { sandbox: boolean; customerId: string }) {
-  const response = await getSubscriptions({ customerId }, sandbox);
+@injectable()
+export default class CleengSubscriptionService extends SubscriptionService {
+  private readonly cleengService: CleengService;
 
-  if (response.errors.length > 0) return null;
+  constructor(cleengService: CleengService) {
+    super();
+    this.cleengService = cleengService;
+  }
 
-  return response.responseData.items.find((item) => item.status === 'active' || item.status === 'cancelled') || null;
+  getActiveSubscription: GetActiveSubscription = async ({ sandbox, customerId }) => {
+    const response = await this.getSubscriptions({ customerId }, sandbox);
+
+    if (response.errors.length > 0) return null;
+
+    return response.responseData.items.find((item) => item.status === 'active' || item.status === 'cancelled') || null;
+  };
+
+  getAllTransactions: GetAllTransactions = async ({ sandbox, customerId }) => {
+    const response = await this.getTransactions({ customerId }, sandbox);
+
+    if (response.errors.length > 0) return null;
+
+    return response.responseData.items;
+  };
+
+  getActivePayment: GetActivePayment = async ({ sandbox, customerId }) => {
+    const response = await this.getPaymentDetails({ customerId }, sandbox);
+
+    if (response.errors.length > 0) return null;
+
+    return response.responseData.paymentDetails.find((paymentDetails) => paymentDetails.active) || null;
+  };
+
+  getSubscriptions: GetSubscriptions = async (payload, sandbox) => {
+    return this.cleengService.get(sandbox, `/customers/${payload.customerId}/subscriptions`, { authenticate: true });
+  };
+
+  updateSubscription: UpdateSubscription = async (payload, sandbox) => {
+    return this.cleengService.patch(sandbox, `/customers/${payload.customerId}/subscriptions`, JSON.stringify(payload), { authenticate: true });
+  };
+
+  getPaymentDetails: GetPaymentDetails = async (payload, sandbox) => {
+    return this.cleengService.get(sandbox, `/customers/${payload.customerId}/payment_details`, { authenticate: true });
+  };
+
+  getTransactions: GetTransactions = async ({ customerId, limit, offset }, sandbox) => {
+    return this.cleengService.get(sandbox, addQueryParams(`/customers/${customerId}/transactions`, { limit, offset }), { authenticate: true });
+  };
+
+  fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox) => {
+    return this.cleengService.get(sandbox, `/receipt/${transactionId}`, { authenticate: true });
+  };
+
+  updateCardDetails: undefined;
+
+  changeSubscription: undefined;
 }
-
-export async function getAllTransactions({ sandbox, customerId }: { sandbox: boolean; customerId: string }) {
-  const response = await getTransactions({ customerId }, sandbox);
-
-  if (response.errors.length > 0) return null;
-
-  return response.responseData.items;
-}
-
-export async function getActivePayment({ sandbox, customerId }: { sandbox: boolean; customerId: string }) {
-  const response = await getPaymentDetails({ customerId }, sandbox);
-
-  if (response.errors.length > 0) return null;
-
-  return response.responseData.paymentDetails.find((paymentDetails) => paymentDetails.active) || null;
-}
-
-export const getSubscriptions: GetSubscriptions = async (payload, sandbox) => {
-  return get(sandbox, `/customers/${payload.customerId}/subscriptions`, { authenticate: true });
-};
-
-export const updateSubscription: UpdateSubscription = async (payload, sandbox) => {
-  return patch(sandbox, `/customers/${payload.customerId}/subscriptions`, JSON.stringify(payload), { authenticate: true });
-};
-
-export const getPaymentDetails: GetPaymentDetails = async (payload, sandbox) => {
-  return get(sandbox, `/customers/${payload.customerId}/payment_details`, { authenticate: true });
-};
-
-export const getTransactions: GetTransactions = async ({ customerId, limit, offset }, sandbox) => {
-  return get(sandbox, addQueryParams(`/customers/${customerId}/transactions`, { limit, offset }), { authenticate: true });
-};
-
-export const fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox) => {
-  return get(sandbox, `/receipt/${transactionId}`, { authenticate: true });
-};
-export const updateCardDetails = () => null;
