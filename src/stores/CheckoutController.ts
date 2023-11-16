@@ -251,7 +251,7 @@ export default class CheckoutController {
     if (!response.responseData.available.length) return;
 
     // @ts-expect-error we have checked the presence of the method
-    const switchOffers = response.responseData.available.map((offer: SwitchOffer) => this.checkoutService.getOffer({ offerId: offer.toOfferId }, useSandbox));
+    const switchOffers = response.responseData.available.map((offer: SwitchOffer) => this.checkoutService.getOffer({ offerId: offer.toOfferId }, isSandbox));
     const offers = await Promise.all(switchOffers);
 
     // Sort offers for proper ordering in "Choose Offer" modal when applicable
