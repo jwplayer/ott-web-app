@@ -22,6 +22,8 @@ export default abstract class SubscriptionService {
 
   abstract updateSubscription: UpdateSubscription;
 
+  abstract fetchReceipt: FetchReceipt;
+
   abstract changeSubscription?: ChangeSubscription;
 
   abstract updateCardDetails?: UpdateCardDetails;
@@ -29,6 +31,4 @@ export default abstract class SubscriptionService {
   abstract getPaymentDetails?: GetPaymentDetails;
 
   abstract getTransactions?: GetTransactions;
-
-  abstract fetchReceipt?: FetchReceipt;
 }

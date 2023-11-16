@@ -55,7 +55,7 @@ export default class InplayerAccountService extends AccountService {
       canRenewSubscription: false,
       canExportAccountData: true,
       canUpdatePaymentMethod: false,
-      canShowReceipts: false,
+      canShowReceipts: true,
       canDeleteAccount: true,
       hasNotifications: true,
       hasProfiles: true,

@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import InPlayer, { PaymentHistory, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
 import SubscriptionService from './subscription.service';
@@ -51,30 +51,31 @@ export default class InplayerSubscriptionService extends SubscriptionService {
     } as PaymentDetail;
   };
 
-  private formatTransaction = (transaction: PurchaseDetails): Transaction => {
-    const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
+  private formatTransaction = (transaction: PaymentHistory): Transaction => {
+    const purchasedAmount = transaction?.charged_amount?.toString() || '0';
 
     return {
-      transactionId: transaction.parent_resource_id || i18next.t('user:payment.access_granted'),
+      transactionId: transaction.transaction_token || i18next.t('user:payment.access_granted'),
       transactionDate: transaction.created_at,
-      offerId: transaction.purchased_access_fee_id?.toString() || i18next.t('user:payment.no_transaction'),
-      offerType: transaction.type || '',
-      offerTitle: transaction?.purchased_access_fee_description || '',
+      trxToken: transaction.trx_token,
+      offerId: transaction.item_id?.toString() || i18next.t('user:payment.no_transaction'),
+      offerType: transaction.item_type || '',
+      offerTitle: transaction?.item_title || '',
       offerPeriod: '',
       transactionPriceExclTax: purchasedAmount,
-      transactionCurrency: transaction.purchased_currency || 'EUR',
+      transactionCurrency: transaction.currency_iso || 'EUR',
       discountedOfferPrice: purchasedAmount,
-      offerCurrency: transaction.purchased_currency || 'EUR',
+      offerCurrency: transaction.currency_iso || 'EUR',
       offerPriceExclTax: purchasedAmount,
       applicableTax: '0',
       transactionPriceInclTax: purchasedAmount,
-      customerId: transaction.customer_id?.toString(),
-      customerEmail: transaction.consumer_email,
+      customerId: transaction.consumer_id?.toString(),
+      customerEmail: '',
       customerLocale: '',
       customerCountry: 'en',
       customerIpCountry: '',
       customerCurrency: '',
-      paymentMethod: transaction.payment_method || i18next.t('user:payment.access_granted'),
+      paymentMethod: transaction.payment_method_name || i18next.t('user:payment.access_granted'),
     };
   };
 
@@ -161,7 +162,7 @@ export default class InplayerSubscriptionService extends SubscriptionService {
 
   getAllTransactions: GetAllTransactions = async () => {
     try {
-      const { data } = await InPlayer.Payment.getPurchaseHistory('active', 0, 30);
+      const { data } = await InPlayer.Payment.getPaymentHistory();
 
       return data?.collection?.map((transaction) => this.formatTransaction(transaction));
     } catch {
@@ -224,16 +225,28 @@ export default class InplayerSubscriptionService extends SubscriptionService {
   updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
     try {
       const response = await InPlayer.Payment.setDefaultCreditCard({ cardName, cardNumber, cvc, expMonth, expYear, currency });
-
-      return { responseData: response.data, errors: [] };
+      return {
+        errors: [],
+        responseData: response.data,
+      };
     } catch {
       throw new Error('Failed to update card details');
+    }
+  };
+
+  fetchReceipt = async ({ transactionId }: { transactionId: string }) => {
+    try {
+      const { data } = await InPlayer.Payment.getBillingReceipt({ trxToken: transactionId });
+      return {
+        errors: [],
+        responseData: data,
+      };
+    } catch {
+      throw new Error('Failed to get billing receipt');
     }
   };
 
   getPaymentDetails = undefined;
 
   getTransactions = undefined;
-
-  fetchReceipt = undefined;
 }

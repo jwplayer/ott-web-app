@@ -15,6 +15,7 @@ import AccountController from '#src/stores/AccountController';
 import CheckoutController from '#src/stores/CheckoutController';
 import { ACCESS_MODEL } from '#src/config';
 import { getModule } from '#src/modules/container';
+import { processBillingReceipt } from '#src/utils/common';
 
 const PaymentContainer = () => {
   const accountController = getModule(AccountController);
@@ -49,16 +50,8 @@ const PaymentContainer = () => {
 
     try {
       const receipt = await accountController.getReceipt(transactionId);
-
       if (receipt) {
-        const newWindow = window.open('', `Receipt ${transactionId}`, '');
-        const htmlString = window.atob(receipt);
-
-        if (newWindow) {
-          newWindow.opener = null;
-          newWindow.document.write(htmlString);
-          newWindow.document.close();
-        }
+        processBillingReceipt(receipt, transactionId);
       }
     } catch (error: unknown) {
       throw new Error("Couldn't parse receipt. " + (error instanceof Error ? error.message : ''));

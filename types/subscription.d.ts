@@ -40,6 +40,7 @@ export type PaymentMethodSpecificParam = {
 export type Transaction = {
   transactionId: string;
   transactionDate: number;
+  trxToken?: string;
   offerId: string;
   offerType: string;
   offerTitle: string;
@@ -123,7 +124,7 @@ export type FetchReceiptPayload = {
   transactionId: string;
 };
 
-export type FetchReceiptResponse = string;
+export type FetchReceiptResponse = Blob | string;
 
 type ChangeSubscriptionPayload = {
   accessFeeId: string;
@@ -156,9 +157,9 @@ type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsR
 type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
 type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
 type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
-type FetchReceipt = CleengRequest<FetchReceiptPayload, FetchReceiptResponse>;
 
 type GetActiveSubscription = PromiseRequest<GetActiveSubscriptionPayload, GetActiveSubscriptionResponse>;
 type GetAllTransactions = PromiseRequest<GetAllTransactionsPayload, GetAllTransactionsResponse>;
 type GetActivePayment = PromiseRequest<GetActivePaymentPayload, GetActivePaymentResponse>;
 type ChangeSubscription = EnvironmentServiceRequest<ChangeSubscriptionPayload, ChangeSubscriptionPlanResponse>;
+type FetchReceipt = EnvironmentServiceRequest<FetchReceiptPayload, FetchReceiptResponse>;
