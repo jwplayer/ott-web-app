@@ -12,7 +12,7 @@ import useQueryParam from '#src/hooks/useQueryParam';
 import AccountController from '#src/stores/AccountController';
 import { getModule } from '#src/modules/container';
 
-const ResetPassword: React.FC = () => {
+const ResetPassword = ({ type }: { type?: 'add' }) => {
   const accountController = getModule(AccountController);
 
   const { t } = useTranslation('account');
@@ -20,6 +20,7 @@ const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
   const emailParam = useQueryParam('email');
+  const email = useAccountStore((state) => state.user?.email);
   const user = useAccountStore.getState().user;
 
   const passwordSubmitHandler: UseFormOnSubmitHandler<EditPasswordFormData> = async (formData, { setErrors, setSubmitting }) => {
@@ -76,6 +77,16 @@ const ResetPassword: React.FC = () => {
     true,
   );
 
+  const resendEmailClickHandler = async () => {
+    try {
+      if (email) {
+        await accountController.resetPassword(email, '');
+      }
+    } catch (error: unknown) {
+      passwordForm.setErrors({ form: t('user:account.resend_mail_error') });
+    }
+  };
+
   return (
     <EditPasswordForm
       value={passwordForm.values}
@@ -84,8 +95,10 @@ const ResetPassword: React.FC = () => {
       onBlur={passwordForm.handleBlur}
       errors={passwordForm.errors}
       onSubmit={passwordForm.handleSubmit}
-      showOldPasswordField={user && !resetPasswordTokenParam ? true : false}
-      showResetTokenField={!user && !resetPasswordTokenParam}
+      showOldPasswordField={!!(user && !resetPasswordTokenParam)}
+      showResetTokenField={type === 'add' || (!user && !resetPasswordTokenParam)}
+      email={emailParam || email}
+      onResendEmailClick={resendEmailClickHandler}
     />
   );
 };

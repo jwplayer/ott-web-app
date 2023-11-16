@@ -59,7 +59,6 @@ const DeleteAccountModal = () => {
     if (!location.search.includes('delete-account-confirmation') && enteredPassword) {
       // handle back button
       setEnteredPassword('');
-      deleteAccount.reset();
       resetForm();
     }
     if (location.search.includes('delete-account-confirmation') && !enteredPassword) {

@@ -68,6 +68,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   );
 
   const { canChangePasswordWithOldPassword, canExportAccountData, canDeleteAccount } = accountController.getFeatures();
+  // users authenticated with social (register_source: facebook, google, twitter) do not have password by default
+  const registerSource = customer?.metadata?.register_source;
+  const isSocialLogin = (registerSource && registerSource !== 'inplayer') || false;
+  const shouldAddPassword = (isSocialLogin && !customer?.metadata?.has_password) || false;
 
   const [termsConsents, nonTermsConsents] = useMemo(() => {
     const terms: Consent[] = [];
@@ -175,7 +179,14 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     };
   }
 
-  const editPasswordClickHandler = () => {
+  const editPasswordClickHandler = async () => {
+    if (!customer) {
+      return;
+    }
+    if (isSocialLogin && shouldAddPassword) {
+      await accountController.resetPassword(customer.email, '');
+      return navigate(addQueryParam(location, 'u', 'add-password'));
+    }
     const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password';
     navigate(addQueryParam(location, 'u', modal));
   };
@@ -271,7 +282,13 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           }),
           formSection({
             label: t('account.security'),
-            editButton: <Button label={t('account.edit_password')} type="button" onClick={() => (customer ? editPasswordClickHandler() : null)} />,
+            editButton: (
+              <Button
+                label={shouldAddPassword ? t('account.add_password') : t('account.edit_password')}
+                type="button"
+                onClick={() => (customer ? editPasswordClickHandler() : null)}
+              />
+            ),
           }),
           formSection({
             label: t('account.terms_and_tracking'),
@@ -349,7 +366,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                       type="button"
                       variant="danger"
                       onClick={() => {
-                        navigate(addQueryParam(location, 'u', 'delete-account'));
+                        navigate(addQueryParam(location, 'u', shouldAddPassword ? 'warning-account-deletion' : 'delete-account'));
                       }}
                     />
                   </div>
