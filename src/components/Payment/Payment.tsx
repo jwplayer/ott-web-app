@@ -328,7 +328,12 @@ const Payment = ({
                       })}
                   </div>
                   {canShowReceipts && (
-                    <IconButton aria-label={t('user:payment.show_receipt')} onClick={() => !isLoading && onShowReceiptClick(transaction.transactionId)}>
+                    <IconButton
+                      aria-label={t('user:payment.show_receipt')}
+                      // JW integration specific: uses `trxToken` as the unique identifier for each transaction
+                      // Note: `transactionId` is shared with rebills and is not guaranteed to be unique
+                      onClick={() => !isLoading && onShowReceiptClick(transaction?.trxToken ?? transaction.transactionId)}
+                    >
                       <ExternalLink />
                     </IconButton>
                   )}

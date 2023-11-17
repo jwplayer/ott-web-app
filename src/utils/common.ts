@@ -95,3 +95,34 @@ export function testId(value: string | undefined) {
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;
 export const isTruthy = <T>(value: T | true): value is Truthy<T> => Boolean(value);
+
+/**
+ * Handles billing receipts by either downloading the receipt directly if it is an instance of Blob,
+ * or opening it in a new window if it is a string representation.
+ *
+ * @param {Blob | string} receipt - The billing receipt data. If a Blob, it will be downloaded; if a string,
+ * it will be treated as an HTML representation and opened in a new window.
+ * @param {string} transactionId - The unique identifier for the transaction associated with the receipt.
+ *
+ * @returns {void}
+ *
+ */
+export const processBillingReceipt = (receipt: Blob | string, transactionId: string) => {
+  if (receipt instanceof Blob) {
+    const url = window.URL.createObjectURL(new Blob([receipt]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `receipt_${transactionId}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+  } else {
+    const newWindow = window.open('', `Receipt ${transactionId}`, '');
+    const htmlString = window.atob(receipt as unknown as string);
+
+    if (newWindow) {
+      newWindow.opener = null;
+      newWindow.document.write(htmlString);
+      newWindow.document.close();
+    }
+  }
+};
