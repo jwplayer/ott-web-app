@@ -3,6 +3,10 @@ name: Test - Deploy Preview and Lighthouse Test
 on:
   pull_request:
 
+defaults:
+  run:
+    working-directory: ./web
+
 jobs:
   build_and_preview:
     name: Build and preview

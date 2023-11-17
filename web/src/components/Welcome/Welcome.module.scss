@@ -1,0 +1,9 @@
+@use '~/styles/variables';
+@use '~/styles/theme';
+
+.welcome {
+  h2 {
+    font-weight: var(--body-font-weight-bold);
+    font-size: 24px;
+  }
+}

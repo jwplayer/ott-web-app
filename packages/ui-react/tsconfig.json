@@ -1,0 +1,28 @@
+{
+  "extends": "../../web/tsconfig.json",
+  "include": [
+    "src"
+  ],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "noEmit": true,
+    "types": [
+      "vi-fetch/matchers",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "rendererOptions": {
+            "includePaths": ["./styles"]
+          },
+          "postcssOptions": {
+            "useConfig": true
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+@use '~/styles/variables';
+@use '~/styles/theme';
+@use '~/styles/mixins/responsive';
+
+//
+// Logo
+// --------------------------------
+
+.logo {
+  width: auto;
+  max-height: variables.$header-height - 10px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .logo {
+    max-height: variables.$header-height-mobile - 20px;
+  }
+}

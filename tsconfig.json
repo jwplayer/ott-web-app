@@ -1,49 +1,27 @@
 {
-  "include": [
-    "src",
-    "types",
-    "scripts",
-    "test",
-    "vite.config.ts",
-    "vitest.config.ts",
-    "vitest.setup.ts"
-  ],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "node",
-    "jsx": "preserve",
-    "baseUrl": "./",
-    /* paths - import rewriting/resolving */
-    "paths": {
-      "#components/*": ["./src/components/*"],
-      "#src/*": ["./src/*"],
-      "#test/*": ["./test/*"],
-      "#types/*": ["./types/*"]
-    },
-    /* noEmit - Vite builds (emits) files, not tsc. */
-    "noEmit": true,
-    /* Additional Options */
+    "sourceMap": true,
     "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmitOnError": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "importsNotUsedAsValues": "error",
-    // Ensure unused code is cleaned up
-    "noUnusedParameters": true,
+    "verbatimModuleSyntax": false,
     "noUnusedLocals": true,
-    // Fallthrough must be documented
     "noFallthroughCasesInSwitch": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "types": [
-      "vi-fetch/matchers",
-      "vitest/globals",
-      "@testing-library/jest-dom",
-      "@types/jwplayer",
-      "vite-plugin-pwa/client",
-      "reflect-metadata"
-    ]
-  }
+    "jsx": "preserve",
+    "noEmit": true,
+    "baseUrl": "./"
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

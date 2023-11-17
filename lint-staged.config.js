@@ -1,5 +1,5 @@
 module.exports = {
   '{**/*,*}.{js,ts,jsx,tsx}': ['eslint --fix', 'prettier --write'],
-  'src/**/*.scss': ['stylelint --fix'],
+  '{web,packages/ui-react}/src/**/*.scss': ['stylelint --fix'],
   '{**/*,*}.{ts,tsx}': [() => 'tsc --pretty --noEmit'],
 };

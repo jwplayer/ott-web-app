@@ -1,0 +1,21 @@
+{
+  "extends": "../tsconfig.vite.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "#components/*": ["./src/components*"],
+      "#src/*": ["./src/*"],
+      "#test/*": ["./test/*"]
+    }
+  },
+  "include": [
+    "src",
+    "types",
+    "scripts",
+    "test",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.setup.ts",
+    "../packages/common/types"
+  ]
+}
