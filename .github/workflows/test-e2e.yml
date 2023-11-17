@@ -8,6 +8,10 @@ on:
     - cron: '30 3 * * 1-5'
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: ./web
+
 jobs:
   test-e2e:
     runs-on: ubuntu-latest

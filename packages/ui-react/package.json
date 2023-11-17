@@ -1,0 +1,16 @@
+{
+  "name": "@jwplayer/ott-ui-react",
+  "version": "4.30.0",
+  "main": "./src",
+  "peerDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vi-fetch": "^0.8.0",
+    "vitest": "^0.34.1"
+  },
+  "devDependencies": {
+    "typescript-plugin-css-modules": "^5.0.1"
+  }
+}

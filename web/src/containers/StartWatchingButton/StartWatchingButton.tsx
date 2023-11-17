@@ -1,0 +1,92 @@
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router';
+import type { PlaylistItem } from '@jwplayer/ott-common/types/playlist';
+import { useCheckoutStore } from '@jwplayer/ott-common/src/stores/CheckoutStore';
+import { useWatchHistoryStore } from '@jwplayer/ott-common/src/stores/WatchHistoryStore';
+import { useAccountStore } from '@jwplayer/ott-common/src/stores/AccountStore';
+import { addQueryParam } from '@jwplayer/ott-common/src/utils/location';
+
+import Play from '../../icons/Play';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+import Button from '../../components/Button/Button';
+import useEntitlement from '../../hooks/useEntitlement';
+
+import styles from './StartWatchingButton.module.scss';
+
+type Props = {
+  item: PlaylistItem;
+  playUrl?: string;
+  disabled?: boolean;
+  onClick?: () => void;
+};
+
+const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false, onClick }) => {
+  const { t } = useTranslation('video');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const breakpoint = useBreakpoint();
+
+  // account
+  const user = useAccountStore((state) => state.user);
+  const isLoggedIn = !!user;
+
+  // watch history
+  const watchHistoryItem = useWatchHistoryStore((state) => item && state.getItem(item));
+  const videoProgress = watchHistoryItem?.progress;
+
+  // entitlement
+  const setRequestedMediaOffers = useCheckoutStore((s) => s.setRequestedMediaOffers);
+  const { isEntitled, mediaOffers } = useEntitlement(item);
+  const hasMediaOffers = !!mediaOffers.length;
+
+  const startWatchingLabel = useMemo((): string => {
+    if (isEntitled) return typeof videoProgress === 'number' ? t('continue_watching') : t('start_watching');
+    if (hasMediaOffers) return t('buy');
+    if (!isLoggedIn) return t('sign_up_to_start_watching');
+
+    return t('complete_your_subscription');
+  }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
+
+  const handleStartWatchingClick = useCallback(() => {
+    if (isEntitled) {
+      if (onClick) {
+        onClick();
+        return;
+      }
+      return playUrl && navigate(playUrl);
+    }
+    if (!isLoggedIn) return navigate(addQueryParam(location, 'u', 'create-account'));
+    if (hasMediaOffers) return navigate(addQueryParam(location, 'u', 'choose-offer'));
+
+    return navigate('/u/payments');
+  }, [isEntitled, playUrl, navigate, isLoggedIn, location, hasMediaOffers, onClick]);
+
+  useEffect(() => {
+    // set the TVOD mediaOffers in the checkout store
+    setRequestedMediaOffers(mediaOffers.length ? mediaOffers : null);
+
+    return () => setRequestedMediaOffers(null);
+  }, [mediaOffers, setRequestedMediaOffers]);
+
+  return (
+    <Button
+      color="primary"
+      variant="contained"
+      size="large"
+      label={startWatchingLabel}
+      startIcon={isEntitled ? <Play /> : undefined}
+      onClick={handleStartWatchingClick}
+      fullWidth={breakpoint < Breakpoint.md}
+      disabled={disabled}
+    >
+      {videoProgress ? (
+        <div className={styles.progressRail}>
+          <div className={styles.progress} style={{ width: `${videoProgress * 100}%` }} />
+        </div>
+      ) : null}
+    </Button>
+  );
+};
+
+export default StartWatchingButton;

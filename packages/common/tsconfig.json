@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.vite.json",
+  "include": [
+    "src",
+    "types"
+  ],
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [
+      "vi-fetch/matchers",
+      "vitest/globals"
+    ]
+  }
+}

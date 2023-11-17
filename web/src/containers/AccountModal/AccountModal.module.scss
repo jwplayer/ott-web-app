@@ -1,0 +1,10 @@
+@use '~/styles/variables';
+@use '~/styles/theme';
+
+.banner {
+  text-align: center;
+
+  > img {
+    max-width: 50%;
+  }
+}

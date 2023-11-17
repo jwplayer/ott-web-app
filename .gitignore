@@ -4,7 +4,7 @@ build
 .snowpack
 coverage
 output
-public/locales/**/*_old.json
+web/public/locales/**/*_old.json
 yarn-error.log
 .firebase
 firebase-debug.log

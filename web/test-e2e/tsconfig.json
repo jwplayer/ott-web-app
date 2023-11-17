@@ -1,0 +1,31 @@
+{
+  "include": [
+    "./",
+    "../types"
+  ],
+  "exclude": [
+    "../../node_modules"
+  ],
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": ["es2018", "DOM"],
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strictNullChecks": true,
+    "types": ["codeceptjs", "node"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "#test/*": [
+        "../test/*"
+      ],
+      "#utils/*": [
+        "./utils/*"
+      ]
+    }
+  }
+}

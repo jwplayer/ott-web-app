@@ -5,6 +5,11 @@ on:
     branches: [ 'develop', 'release' ]
   pull_request:
 
+# TODO: this needs to run for all packages
+defaults:
+  run:
+    working-directory: ./web
+
 jobs:
   test:
     runs-on: ubuntu-latest
