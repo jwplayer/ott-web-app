@@ -423,7 +423,10 @@ export default class InplayerAccountService extends AccountService {
         errors: [],
         responseData: {},
       };
-    } catch {
+    } catch (error: unknown) {
+      if (isCommonError(error)) {
+        throw new Error(error.response.data.message);
+      }
       throw new Error('Failed to change password.');
     }
   };
