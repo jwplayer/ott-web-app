@@ -1,15 +1,18 @@
 {
   "extends": "../../tsconfig.base.json",
   "include": [
-    "src"
+    "src",
+    "types",
+    "vitest.config.ts",
+    "vitest.setup.ts",
+    "../common/types"
   ],
   "compilerOptions": {
-    "baseUrl": "./",
     "noEmit": true,
     "types": [
       "vi-fetch/matchers",
       "vitest/globals",
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
     ],
     "plugins": [
       {

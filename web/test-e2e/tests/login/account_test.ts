@@ -1,7 +1,8 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants, { normalTimeout } from '#utils/constants';
 import passwordUtils from '#utils/password_utils';
 import { tryToSubmitForm, fillAndCheckField, checkField } from '#utils/login';
-import { testConfigs } from '#test/constants';
 
 const fieldRequired = 'This field is required';
 const invalidEmail = 'Please re-enter your email details and try again.';

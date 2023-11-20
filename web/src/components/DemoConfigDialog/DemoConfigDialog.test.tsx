@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { renderWithRouter } from '../../../test/testUtils';
+import { renderWithRouter } from '@jwp/ott-ui-react/test/utils';
 
 import DemoConfigDialog from './DemoConfigDialog';
 

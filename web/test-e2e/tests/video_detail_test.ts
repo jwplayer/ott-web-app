@@ -1,7 +1,8 @@
 import * as assert from 'assert';
 
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants, { longTimeout, normalTimeout } from '#utils/constants';
-import { testConfigs } from '#test/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 
 runTestSuite(testConfigs.cleengAuthvod, 'Cleeng');
@@ -173,6 +174,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
   });
 
   async function playBigBuckBunny(I) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     I.useConfig(testConfigs.basicNoAuth);
     await I.openVideoCard(constants.bigBuckBunnyTitle);
     I.waitForText(constants.startWatchingButton, normalTimeout);

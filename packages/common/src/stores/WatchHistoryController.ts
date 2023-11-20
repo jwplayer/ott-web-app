@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 
-import WatchHistoryService from '../services/watchhistory.service';
-import AccountService from '../services/account.service';
+import WatchHistoryService from '../services/WatchHistoryService';
+import AccountService from '../services/integrations/AccountService';
 import type { PlaylistItem } from '../../types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '../../types/watchHistory';
 import type { Customer } from '../../types/account';

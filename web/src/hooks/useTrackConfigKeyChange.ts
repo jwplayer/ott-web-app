@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import type { Settings } from '@jwplayer/ott-common/types/settings';
-import { CONFIG_QUERY_KEY } from '@jwplayer/ott-common/src/constants';
+import type { Settings } from '@jwp/ott-common/types/settings';
+import { CONFIG_QUERY_KEY } from '@jwp/ott-common/src/constants';
 
 export function useTrackConfigKeyChange(settings: Settings | undefined, configSource: string | undefined) {
   const [searchParams, setSearchParams] = useSearchParams();

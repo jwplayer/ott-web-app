@@ -4,7 +4,7 @@ import 'wicg-inert';
 import { registerSW } from 'virtual:pwa-register';
 
 // @TODO: platform specific?
-import '@jwplayer/ott-common/src/modules/register';
+import '@jwp/ott-common/src/modules/register';
 
 import App from './App';
 

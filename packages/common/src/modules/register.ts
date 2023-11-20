@@ -4,14 +4,14 @@ import 'reflect-metadata'; // include once in the app for inversify (see: https:
 import { INTEGRATION } from '../constants';
 import { container } from './container';
 
-import ApiService from '../services/api.service';
-import WatchHistoryService from '../services/watchhistory.service';
-import EpgService from '../services/epg.service';
-import GenericEntitlementService from '../services/genericEntitlement.service';
-import JWPEntitlementService from '../services/jwpEntitlement.service';
-import FavoritesService from '../services/favorites.service';
-import ConfigService from '../services/config.service';
-import SettingsService from '../services/settings.service';
+import ApiService from '../services/ApiService';
+import WatchHistoryService from '../services/WatchHistoryService';
+import EpgService from '../services/EpgService';
+import GenericEntitlementService from '../services/GenericEntitlementService';
+import JWPEntitlementService from '../services/JWPEntitlementService';
+import FavoriteService from '../services/FavoriteService';
+import ConfigService from '../services/ConfigService';
+import SettingsService from '../services/SettingsService';
 
 import WatchHistoryController from '../stores/WatchHistoryController';
 import CheckoutController from '../stores/CheckoutController';
@@ -21,28 +21,28 @@ import FavoritesController from '../stores/FavoritesController';
 import AppController from '../stores/AppController';
 
 // Integration interfaces
-import AccountService from '../services/account.service';
-import CheckoutService from '../services/checkout.service';
-import SubscriptionService from '../services/subscription.service';
-import ProfileService from '../services/profile.service';
+import AccountService from '../services/integrations/AccountService';
+import CheckoutService from '../services/integrations/CheckoutService';
+import SubscriptionService from '../services/integrations/SubscriptionService';
+import ProfileService from '../services/ProfileService';
 
 // Cleeng integration
-import CleengService from '../services/cleeng.service';
-import CleengAccountService from '../services/cleeng.account.service';
-import CleengCheckoutService from '../services/cleeng.checkout.service';
-import CleengSubscriptionService from '../services/cleeng.subscription.service';
+import CleengService from '../services/integrations/cleeng/CleengService';
+import CleengAccountService from '../services/integrations/cleeng/CleengAccountService';
+import CleengCheckoutService from '../services/integrations/cleeng/CleengCheckoutService';
+import CleengSubscriptionService from '../services/integrations/cleeng/CleengSubscriptionService';
 
 // InPlayer integration
-import InplayerAccountService from '../services/inplayer.account.service';
-import InplayerCheckoutService from '../services/inplayer.checkout.service';
-import InplayerSubscriptionService from '../services/inplayer.subscription.service';
-import InplayerProfileService from '../services/inplayer.profile.service';
+import JWPAccountService from '../services/integrations/jwp/JWPAccountService';
+import JWPCheckoutService from '../services/integrations/jwp/JWPCheckoutService';
+import JWPSubscriptionService from '../services/integrations/jwp/JWPSubscriptionService';
+import JWPProfileService from '../services/integrations/jwp/JWPProfileService';
 
 // Common services
 container.bind(ConfigService).toSelf();
 container.bind(EpgService).toSelf();
 container.bind(WatchHistoryService).toSelf();
-container.bind(FavoritesService).toSelf();
+container.bind(FavoriteService).toSelf();
 container.bind(GenericEntitlementService).toSelf();
 container.bind(ApiService).toSelf();
 container.bind(SettingsService).toSelf();
@@ -69,7 +69,7 @@ container.bind(SubscriptionService).to(CleengSubscriptionService).whenTargetName
 
 // JWP integration
 container.bind(JWPEntitlementService).toSelf();
-container.bind(AccountService).to(InplayerAccountService).whenTargetNamed(INTEGRATION.JWP);
-container.bind(CheckoutService).to(InplayerCheckoutService).whenTargetNamed(INTEGRATION.JWP);
-container.bind(SubscriptionService).to(InplayerSubscriptionService).whenTargetNamed(INTEGRATION.JWP);
-container.bind(ProfileService).to(InplayerProfileService).whenTargetNamed(INTEGRATION.JWP);
+container.bind(AccountService).to(JWPAccountService).whenTargetNamed(INTEGRATION.JWP);
+container.bind(CheckoutService).to(JWPCheckoutService).whenTargetNamed(INTEGRATION.JWP);
+container.bind(SubscriptionService).to(JWPSubscriptionService).whenTargetNamed(INTEGRATION.JWP);
+container.bind(ProfileService).to(JWPProfileService).whenTargetNamed(INTEGRATION.JWP);

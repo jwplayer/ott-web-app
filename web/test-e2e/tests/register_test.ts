@@ -1,6 +1,7 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants, { longTimeout, normalTimeout } from '#utils/constants';
 import passwordUtils from '#utils/password_utils';
-import { testConfigs } from '#test/constants';
 
 runTestSuite(testConfigs.jwpAuth, 'JW Player');
 runTestSuite(testConfigs.cleengAuthvod, 'Cleeng');

@@ -7,4 +7,6 @@ ignores: [
     '@typescript-eslint/parser', # Required by eslint-config-jwp
     '@typescript-eslint/eslint-plugin', # Required by eslint-config-jwp
     'eslint-plugin-import', # Required by eslint-config-jwp
+
+    'depcheck',
   ]

@@ -2,8 +2,8 @@ import merge from 'lodash.merge';
 import { inject, injectable } from 'inversify';
 
 import { PersonalShelf } from '../constants';
-import SettingsService from '../services/settings.service';
-import ConfigService from '../services/config.service';
+import SettingsService from '../services/SettingsService';
+import ConfigService from '../services/ConfigService';
 import type { IntegrationType } from '../../types/config';
 import { getModule } from '../modules/container';
 

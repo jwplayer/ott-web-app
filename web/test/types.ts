@@ -1,11 +1,9 @@
-export interface TestConfig {
-  id: string;
-  label: string;
-}
+import type { TestConfig } from '@jwp/ott-testing/constants';
 
 export type PaymentOffer = {
   label: string;
   price: string;
+  couponNextPayment: string;
   paymentFee: string;
 };
 

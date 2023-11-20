@@ -1,5 +1,6 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants, { normalTimeout, ShelfId } from '#utils/constants';
-import { testConfigs } from '#test/constants';
 
 const videoListLocator = locate({ css: 'div[data-testid="video-list"]' });
 

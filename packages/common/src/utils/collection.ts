@@ -1,10 +1,10 @@
-import type { PosterAspectRatio } from '@jwplayer/ott-web/src/components/Card/Card';
-import { cardAspectRatios } from '@jwplayer/ott-web/src/components/Card/Card';
-
 import type { Consent, CustomerConsent } from '../../types/account';
 import type { Config } from '../../types/config';
 import type { GenericFormValues } from '../../types/form';
 import type { Playlist, PlaylistItem } from '../../types/playlist';
+import { CARD_ASPECT_RATIOS } from '../constants';
+
+export type PosterAspectRatio = (typeof CARD_ASPECT_RATIOS)[number];
 
 const getFiltersFromConfig = (config: Config, playlistId: string | undefined): string[] => {
   const menuItem = config.menu.find((item) => item.contentId === playlistId);
@@ -178,7 +178,7 @@ const deepCopy = (obj: unknown) => {
 };
 
 const parseAspectRatio = (input: unknown) => {
-  if (typeof input === 'string' && (cardAspectRatios as readonly string[]).includes(input)) return input as PosterAspectRatio;
+  if (typeof input === 'string' && (CARD_ASPECT_RATIOS as readonly string[]).includes(input)) return input as PosterAspectRatio;
 };
 
 const parseTilesDelta = (posterAspect?: PosterAspectRatio) => {

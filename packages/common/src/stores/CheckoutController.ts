@@ -18,8 +18,8 @@ import type {
   SwitchOffer,
   UpdateOrderPayload,
 } from '../../types/checkout';
-import CheckoutService from '../services/checkout.service';
-import SubscriptionService from '../services/subscription.service';
+import CheckoutService from '../services/integrations/CheckoutService';
+import SubscriptionService from '../services/integrations/SubscriptionService';
 import type { IntegrationType } from '../../types/config';
 import { assertModuleMethod, getNamedModule } from '../modules/container';
 

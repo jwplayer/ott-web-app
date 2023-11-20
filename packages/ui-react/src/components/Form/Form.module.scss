@@ -1,0 +1,23 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.flexBox {
+  display: flex;
+  flex-direction: column;
+  > * {
+    margin-bottom: calc(#{variables.$base-spacing} / 2);
+  }
+}
+
+.controls {
+  margin-top: variables.$base-spacing;
+
+  > button {
+    margin-right: 8px;
+  }
+}
+
+.submitConsents {
+  margin-top: variables.$base-spacing;
+}

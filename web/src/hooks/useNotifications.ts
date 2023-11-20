@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { getModule } from '@jwplayer/ott-common/src/modules/container';
-import AccountController from '@jwplayer/ott-common/src/stores/AccountController';
-import { addQueryParams, removeQueryParamFromUrl } from '@jwplayer/ott-common/src/utils/formatting';
-import { queryClient } from '@jwplayer/ott-common/src/queryClient';
-
-import { simultaneousLoginWarningKey } from '../components/LoginForm/LoginForm';
+import { getModule } from '@jwp/ott-common/src/modules/container';
+import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import { addQueryParams, removeQueryParamFromUrl } from '@jwp/ott-common/src/utils/formatting';
+import { queryClient } from '@jwp/ott-common/src/queryClient';
+import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -19,7 +18,7 @@ enum NotificationsTypes {
   ACCOUNT_LOGOUT = 'account.logout',
 }
 
-export default async function useNotifications(uuid: string = '') {
+export default function useNotifications(uuid: string = '') {
   const navigate = useNavigate();
 
   const accountController = getModule(AccountController);

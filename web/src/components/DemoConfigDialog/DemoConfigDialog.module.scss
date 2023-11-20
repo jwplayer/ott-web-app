@@ -1,5 +1,5 @@
-@use '~/styles/variables';
-@use '~/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
 
 .controls {
   margin-top: variables.$base-spacing;

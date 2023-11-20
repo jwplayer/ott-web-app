@@ -1,4 +1,4 @@
-import defaultAvatar from '@jwplayer/ott-web/src/assets/profiles/default_avatar.png';
+import defaultAvatar from '@jwp/ott-theme/assets/profiles/default_avatar.png';
 
 import type { Profile } from '../../types/account';
 

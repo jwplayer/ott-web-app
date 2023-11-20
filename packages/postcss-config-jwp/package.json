@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
+  "scripts": {
+    "lint:ts": "exit 0",
+    "test": "exit 0"
+  },
   "devDependencies": {
+    "stylelint": "^15.11.0",
+    "postcss": "^8.4.31",
     "postcss-import": "^14.0.2",
-    "postcss-scss": "^4.0.4",
-    "stylelint-config-jwp": "*"
+    "postcss-scss": "^4.0.4"
   },
   "peerDependencies": {
-    "postcss": "^8.4.31",
-    "stylelint": "^15.11.0"
+    "stylelint-config-jwp": "*"
   }
 }

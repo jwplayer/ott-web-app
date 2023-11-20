@@ -1,6 +1,6 @@
-@use "theme";
-@use "variables";
-@use "./mixins/responsive";
+@use "@jwp/ott-ui-react/src/styles/theme";
+@use "@jwp/ott-ui-react/src/styles/variables";
+@use "@jwp/ott-ui-react/src/styles/mixins/responsive";
 
 :root {
   --primary-color: #{theme.$primary-color};
