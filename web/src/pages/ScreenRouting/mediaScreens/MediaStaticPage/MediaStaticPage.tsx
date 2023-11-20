@@ -1,11 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
 import type { PlaylistItem } from '@jwplayer/ott-common/types/playlist';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';
 import { mediaURL } from '@jwplayer/ott-common/src/utils/formatting';
 
+import type { ScreenComponent } from '../../../../../types/screens';
 import MarkdownComponent from '../../../../components/MarkdownComponent/MarkdownComponent';
 
 import styles from './MediaStaticPage.module.scss';

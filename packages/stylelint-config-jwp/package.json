@@ -1,0 +1,12 @@
+{
+  "name": "stylelint-config-jwp",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "devDependencies": {
+    "stylelint-config-recommended-scss": "^13.1.0",
+    "stylelint-declaration-strict-value": "^1.9.2",
+    "stylelint-order": "^6.0.3",
+    "stylelint-scss": "^5.3.1"
+  }
+}

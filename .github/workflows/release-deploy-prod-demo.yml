@@ -5,6 +5,10 @@ on:
     branches: ['release']
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: ./web
+
 jobs:
   deploy_live_website:
     runs-on: ubuntu-latest
@@ -20,3 +24,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           channelId: live
+          entryPoint: './web'

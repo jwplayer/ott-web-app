@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '~/styles/variables';
 @use '~/styles/theme';
 
@@ -10,7 +11,7 @@
 .header {
   margin: 8px 0;
   padding: 0 18px;
-  color: darken(theme.$primary-color, 40);
+  color: color.adjust(theme.$primary-color, $lightness: -40%);
   font-weight: bold;
   font-size: 14px;
 }

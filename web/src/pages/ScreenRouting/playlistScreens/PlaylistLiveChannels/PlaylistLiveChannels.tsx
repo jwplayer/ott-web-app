@@ -5,11 +5,11 @@ import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 import type { Playlist } from '@jwplayer/ott-common/types/playlist';
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';
 import { addQueryParams, formatDurationTag, liveChannelsURL } from '@jwplayer/ott-common/src/utils/formatting';
 import { generateMovieJSONLD } from '@jwplayer/ott-common/src/utils/structuredData';
 
+import type { ScreenComponent } from '../../../../../types/screens';
 import Epg from '../../../../components/Epg/Epg';
 import useLiveChannels from '../../../../hooks/useLiveChannels';
 import ShareButton from '../../../../components/ShareButton/ShareButton';

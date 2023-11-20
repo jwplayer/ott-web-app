@@ -1,5 +1,6 @@
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
+
+import type { ScreenComponent } from '../../../types/screens';
 
 type ScreenPredicate<T> = (data?: T) => boolean;
 

@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
 import { useSearchParams } from 'react-router-dom';
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
 import type { PlaylistItem } from '@jwplayer/ott-common/types/playlist';
 import { useWatchHistoryStore } from '@jwplayer/ott-common/src/stores/WatchHistoryStore';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';
@@ -16,6 +15,7 @@ import { buildLegacySeriesUrlFromMediaItem, formatSeriesMetaString, formatVideoM
 import { addQueryParam } from '@jwplayer/ott-common/src/utils/location';
 import { VideoProgressMinMax } from '@jwplayer/ott-common/src/constants';
 
+import type { ScreenComponent } from '../../../../../types/screens';
 import VideoLayout from '../../../../components/VideoLayout/VideoLayout';
 import InlinePlayer from '../../../../containers/InlinePlayer/InlinePlayer';
 import useEntitlement from '../../../../hooks/useEntitlement';

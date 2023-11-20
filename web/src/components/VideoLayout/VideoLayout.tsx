@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
-import type { AccessModel } from '@jwplayer/ott-common/types/Config';
+import type { AccessModel } from '@jwplayer/ott-common/types/config';
 import { testId } from '@jwplayer/ott-common/src/utils/common';
 
 import CardGrid from '../CardGrid/CardGrid';

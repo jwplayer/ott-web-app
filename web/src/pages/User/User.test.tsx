@@ -1,6 +1,6 @@
 import { act } from '@testing-library/react';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
-import type { Config } from '@jwplayer/ott-common/types/Config';
+import type { Config } from '@jwplayer/ott-common/types/config';
 import type { PaymentDetail, Subscription, Transaction } from '@jwplayer/ott-common/types/subscription';
 import { useAccountStore } from '@jwplayer/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';

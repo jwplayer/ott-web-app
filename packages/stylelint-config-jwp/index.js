@@ -305,9 +305,9 @@ module.exports = (function () {
       'no-unknown-animations': true,
 
       'no-descending-specificity': null,
-      'at-rule-semicolon-newline-after': 'always',
-      'block-opening-brace-newline-after': 'always',
-      'block-closing-brace-newline-after': 'always',
+
+      // Reassess this
+      'scss/comment-no-empty': null,
     },
   };
 })();

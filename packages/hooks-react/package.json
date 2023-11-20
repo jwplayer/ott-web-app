@@ -1,4 +1,5 @@
 {
   "name": "@jwplayer/ott-hooks-react",
-  "version": "4.30.0"
+  "version": "4.30.0",
+  "private": true
 }

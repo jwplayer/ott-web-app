@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import InfiniteScroll from 'react-infinite-scroller';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
-import type { AccessModel } from '@jwplayer/ott-common/types/Config';
+import type { AccessModel } from '@jwplayer/ott-common/types/config';
 import { isLocked } from '@jwplayer/ott-common/src/utils/entitlements';
 import { parseAspectRatio, parseTilesDelta } from '@jwplayer/ott-common/src/utils/collection';
 

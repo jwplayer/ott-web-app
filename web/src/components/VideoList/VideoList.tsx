@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import InfiniteScroll from 'react-infinite-scroller';
-import type { AccessModel } from '@jwplayer/ott-common/types/Config';
+import type { AccessModel } from '@jwplayer/ott-common/types/config';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
 import { isLocked } from '@jwplayer/ott-common/src/utils/entitlements';
 import { testId } from '@jwplayer/ott-common/src/utils/common';

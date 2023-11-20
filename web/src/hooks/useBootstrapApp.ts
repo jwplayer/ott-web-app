@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import type { Config } from '@jwplayer/ott-common/types/Config';
+import type { Config } from '@jwplayer/ott-common/types/config';
 import type { Settings } from '@jwplayer/ott-common/types/settings';
 import { getModule } from '@jwplayer/ott-common/src/modules/container';
 import AppController from '@jwplayer/ott-common/src/stores/AppController';
