@@ -1,11 +1,10 @@
 import { addDays, differenceInDays } from 'date-fns';
-import { injectable } from 'inversify';
+import { injectable, targetName } from 'inversify';
 
 import EpgProviderService from './epgProvider.service';
 
 import { logDev } from '#src/utils/common';
 import { EPG_TYPE } from '#src/config';
-import { getNamedModule } from '#src/modules/container';
 import type { PlaylistItem } from '#types/playlist';
 import type { EpgProgram, EpgChannel } from '#types/epg';
 
@@ -20,6 +19,14 @@ export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is Promise
 
 @injectable()
 export default class EpgClientService {
+  private viewNexaProvider: EpgProviderService;
+  private jwProvider: EpgProviderService;
+
+  public constructor(@targetName(EPG_TYPE.JW) jwProvider: EpgProviderService, @targetName(EPG_TYPE.VIEW_NEXA) viewNexaProvider: EpgProviderService) {
+    this.viewNexaProvider = viewNexaProvider;
+    this.jwProvider = jwProvider;
+  }
+
   /**
    * Update the start and end time properties of the given programs with the current date.
    * This can be used when having a static schedule or while developing
@@ -96,10 +103,7 @@ export default class EpgClientService {
   };
 
   getScheduleProvider = (item: PlaylistItem) => {
-    const scheduleType = item.scheduleType || EPG_TYPE.JW;
-    const scheduleProvider = getNamedModule(EpgProviderService, scheduleType);
-
-    return scheduleProvider;
+    return item?.scheduleType === EPG_TYPE.VIEW_NEXA ? this.viewNexaProvider : this.jwProvider;
   };
 
   /**

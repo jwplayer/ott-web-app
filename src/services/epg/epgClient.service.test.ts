@@ -10,10 +10,12 @@ import type { Playlist } from '#types/playlist';
 import { EPG_TYPE } from '#src/config';
 
 const livePlaylist = livePlaylistFixture as Playlist;
-const epgService = new EpgClientService();
 
 const transformProgram = vi.fn();
 const fetchSchedule = vi.fn();
+
+const epgProvider = { transformProgram, fetchSchedule };
+const epgService = new EpgClientService(epgProvider, epgProvider);
 
 const mockProgram1 = {
   id: 'test',

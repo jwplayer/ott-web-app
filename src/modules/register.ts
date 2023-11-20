@@ -14,7 +14,7 @@ import SettingsService from '#src/services/settings.service';
 
 // Epg services
 import EpgClientService from '#src/services/epg/epgClient.service';
-import EpgProvider from '#src/services/epg/epgProvider.service';
+import EpgProviderService from '#src/services/epg/epgProvider.service';
 import ViewNexaEpgService from '#src/services/epg/viewNexaEpg.service';
 import JWEpgService from '#src/services/epg/jwEpg.service';
 
@@ -80,5 +80,11 @@ container.bind(ProfileService).to(InplayerProfileService).whenTargetNamed(INTEGR
 
 // EPG integration
 container.bind(EpgClientService).toSelf();
-container.bind(EpgProvider).to(JWEpgService).whenTargetNamed(EPG_TYPE.JW);
-container.bind(EpgProvider).to(ViewNexaEpgService).whenTargetNamed(EPG_TYPE.VIEW_NEXA);
+container
+  .bind(EpgProviderService)
+  .to(ViewNexaEpgService)
+  .when((request) => request.target.name.equals(EPG_TYPE.VIEW_NEXA));
+container
+  .bind(EpgProviderService)
+  .to(JWEpgService)
+  .when((request) => request.target.name.equals(EPG_TYPE.JW));
