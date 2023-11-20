@@ -1,12 +1,20 @@
 {
-  "extends": "../tsconfig.vite.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
       "#components/*": ["./src/components*"],
       "#src/*": ["./src/*"],
       "#test/*": ["./test/*"]
-    }
+    },
+    "types": [
+      "vi-fetch/matchers",
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "@types/jwplayer",
+      "vite-plugin-pwa/client",
+      "reflect-metadata"
+    ]
   },
   "include": [
     "src",
@@ -14,8 +22,6 @@
     "scripts",
     "test",
     "vite.config.ts",
-    "vitest.config.ts",
-    "vitest.setup.ts",
     "../packages/common/types"
   ]
 }

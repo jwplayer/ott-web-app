@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import shallow from 'zustand/shallow';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
 import { useAccountStore } from '@jwplayer/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';
 import { filterPlaylist, getFiltersFromConfig } from '@jwplayer/ott-common/src/utils/collection';
 import { mediaURL } from '@jwplayer/ott-common/src/utils/formatting';
 
+import type { ScreenComponent } from '../../../../../types/screens';
 import CardGrid from '../../../../components/CardGrid/CardGrid';
 import Filter from '../../../../components/Filter/Filter';
 

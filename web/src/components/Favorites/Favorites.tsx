@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { AccessModel } from '@jwplayer/ott-common/types/Config';
+import type { AccessModel } from '@jwplayer/ott-common/types/config';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
 import { mediaURL } from '@jwplayer/ott-common/src/utils/formatting';
 

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
-import type { AccessModel, ContentType } from '@jwplayer/ott-common/types/Config';
+import type { AccessModel, ContentType } from '@jwplayer/ott-common/types/config';
 import { isLocked } from '@jwplayer/ott-common/src/utils/entitlements';
 import { mediaURL } from '@jwplayer/ott-common/src/utils/formatting';
 import { PersonalShelf } from '@jwplayer/ott-common/src/constants';

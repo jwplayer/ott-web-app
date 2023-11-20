@@ -1,4 +1,4 @@
-import type { MediaOffer } from '#types/media';
+import type { MediaOffer } from './media';
 
 export type GetPlaylistParams = { page_limit?: string; related_media_id?: string; token?: string; search?: string };
 

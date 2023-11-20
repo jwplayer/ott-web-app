@@ -1,4 +1,4 @@
-import type { AdScheduleUrls } from '#types/ad-schedule';
+import type { AdScheduleUrls } from './ad-schedule';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
-import type { AccessModel } from '@jwplayer/ott-common/types/Config';
+import type { AccessModel } from '@jwplayer/ott-common/types/config';
 import type { Customer } from '@jwplayer/ott-common/types/account';
 import type { Offer } from '@jwplayer/ott-common/types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '@jwplayer/ott-common/types/subscription';

@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import shallow from 'zustand/shallow';
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
 import type { PlaylistItem } from '@jwplayer/ott-common/types/playlist';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwplayer/ott-common/src/stores/AccountStore';
@@ -11,6 +10,7 @@ import { isLocked } from '@jwplayer/ott-common/src/utils/entitlements';
 import { formatVideoMetaString, mediaURL } from '@jwplayer/ott-common/src/utils/formatting';
 import { generateMovieJSONLD } from '@jwplayer/ott-common/src/utils/structuredData';
 
+import type { ScreenComponent } from '../../../../../types/screens';
 import useMedia from '../../../../hooks/useMedia';
 import VideoLayout from '../../../../components/VideoLayout/VideoLayout';
 import usePlaylist from '../../../../hooks/usePlaylist';

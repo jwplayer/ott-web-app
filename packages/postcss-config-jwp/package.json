@@ -1,0 +1,15 @@
+{
+  "name": "postcss-config-jwp",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "devDependencies": {
+    "postcss-import": "^14.0.2",
+    "postcss-scss": "^4.0.4",
+    "stylelint-config-jwp": "*"
+  },
+  "peerDependencies": {
+    "postcss": "^8.4.31",
+    "stylelint": "^15.11.0"
+  }
+}

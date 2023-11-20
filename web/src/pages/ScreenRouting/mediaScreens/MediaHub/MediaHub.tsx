@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
-import type { Content } from '@jwplayer/ott-common/types/Config';
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
+import type { Content } from '@jwplayer/ott-common/types/config';
 import type { PlaylistItem } from '@jwplayer/ott-common/types/playlist';
 
+import type { ScreenComponent } from '../../../../../types/screens';
 import ShelfList from '../../../../containers/ShelfList/ShelfList';
 import Hero from '../../../../components/Hero/Hero';
 

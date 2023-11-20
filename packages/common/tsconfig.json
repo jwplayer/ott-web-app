@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.vite.json",
+  "extends": "../../tsconfig.base.json",
   "include": [
     "src",
     "types"
@@ -7,6 +7,7 @@
   "compilerOptions": {
     "noEmit": true,
     "types": [
+      "reflect-metadata",
       "vi-fetch/matchers",
       "vitest/globals"
     ]

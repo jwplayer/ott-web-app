@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isBefore, subHours } from 'date-fns';
 import type { EpgChannel, EpgProgram } from '@jwplayer/ott-common/types/epg';
-import type { Config } from '@jwplayer/ott-common/types/Config';
+import type { Config } from '@jwplayer/ott-common/types/config';
 
 import IconButton from '../IconButton/IconButton';
 import Button from '../Button/Button';

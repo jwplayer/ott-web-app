@@ -1,4 +1,4 @@
-const stylelintConfig = require('./stylelint.config.js');
+const stylelintConfig = require('stylelint-config-jwp');
 
 module.exports = {
   syntax: 'postcss-scss',

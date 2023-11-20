@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import type { Playlist, PlaylistItem } from '@jwplayer/ott-common/types/playlist';
-import type { ContentType } from '@jwplayer/ott-common/types/Config';
+import type { ContentType } from '@jwplayer/ott-common/types/config';
 import { useWatchHistoryStore } from '@jwplayer/ott-common/src/stores/WatchHistoryStore';
 import { useFavoritesStore } from '@jwplayer/ott-common/src/stores/FavoritesStore';
 import { PersonalShelf, PersonalShelves, PLAYLIST_LIMIT } from '@jwplayer/ott-common/src/constants';

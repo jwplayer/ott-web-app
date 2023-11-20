@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import shallow from 'zustand/shallow';
 import InfiniteScroll from 'react-infinite-scroller';
-import type { Content } from '@jwplayer/ott-common/types/Config';
+import type { Content } from '@jwplayer/ott-common/types/config';
 import { useAccountStore } from '@jwplayer/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';
 import { useWatchHistoryStore } from '@jwplayer/ott-common/src/stores/WatchHistoryStore';

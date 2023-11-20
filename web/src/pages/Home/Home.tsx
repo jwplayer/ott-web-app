@@ -1,6 +1,6 @@
 import React from 'react';
 import shallow from 'zustand/shallow';
-import type { Content } from '@jwplayer/ott-common/types/Config';
+import type { Content } from '@jwplayer/ott-common/types/config';
 import { useConfigStore } from '@jwplayer/ott-common/src/stores/ConfigStore';
 
 import ShelfList from '../../containers/ShelfList/ShelfList';

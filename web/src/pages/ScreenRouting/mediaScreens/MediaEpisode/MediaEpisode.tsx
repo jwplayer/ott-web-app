@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import type { PlaylistItem } from '@jwplayer/ott-common/types/playlist';
-import type { ScreenComponent } from '@jwplayer/ott-common/types/screens';
 import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwplayer/ott-common/src/utils/formatting';
 
+import type { ScreenComponent } from '../../../../../types/screens';
 import Loading from '../../../Loading/Loading';
 import { useSeriesLookup } from '../../../../hooks/series/useSeriesLookup';
 import useMedia from '../../../../hooks/useMedia';
