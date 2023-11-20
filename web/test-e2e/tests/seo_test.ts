@@ -1,5 +1,6 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants from '#utils/constants';
-import { testConfigs } from '#test/constants';
 
 Feature('seo').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 

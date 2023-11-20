@@ -4,7 +4,7 @@ import * as yup from 'yup';
 
 import * as persist from '../utils/persist';
 import type { EnterProfilePayload, ProfileDetailsPayload, ProfilePayload } from '../../types/account';
-import ProfileService from '../services/profile.service';
+import ProfileService from '../services/ProfileService';
 import type { IntegrationType } from '../../types/config';
 import { assertModuleMethod, getNamedModule } from '../modules/container';
 
@@ -34,6 +34,15 @@ export default class ProfileController {
 
   private getSandbox = () => {
     return useConfigStore.getState().isSandbox ?? true;
+  };
+
+  private isValidProfile = (profile: unknown): profile is ProfilesData => {
+    try {
+      profileSchema.validateSync(profile);
+      return true;
+    } catch (e: unknown) {
+      return false;
+    }
   };
 
   listProfiles = async () => {
@@ -99,15 +108,6 @@ export default class ProfileController {
 
   unpersistProfile = () => {
     persist.removeItem(PERSIST_PROFILE);
-  };
-
-  isValidProfile = (profile: unknown): profile is ProfilesData => {
-    try {
-      profileSchema.validateSync(profile);
-      return true;
-    } catch (e: unknown) {
-      return false;
-    }
   };
 
   loadPersistedProfile = () => {

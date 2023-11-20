@@ -1,5 +1,9 @@
 {
-  "name": "@jwplayer/ott-theme",
+  "name": "@jwp/ott-theme",
   "version": "4.30.0",
-  "private": true
+  "private": true,
+  "scripts": {
+    "lint:ts": "exit 0",
+    "test": "exit 0"
+  }
 }

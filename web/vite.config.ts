@@ -36,7 +36,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   // These files are only needed in dev / test / demo, so don't include in prod builds
   if (mode !== 'prod') {
     fileCopyTargets.push({
-      src: 'test/epg/*',
+      src: '../packages/testing/epg/*',
       dest: 'epg',
     });
   }

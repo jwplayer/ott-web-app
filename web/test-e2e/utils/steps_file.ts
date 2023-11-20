@@ -1,10 +1,11 @@
 import * as assert from 'assert';
 
+import { TestConfig } from '@jwp/ott-testing/constants';
+
 import { randomDate } from './randomizers';
 
 import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
-import { TestConfig } from '#test/types';
 
 const configFileQueryKey = 'app-config';
 const loaderElement = '[class*=_loadingOverlay]';

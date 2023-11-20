@@ -1,6 +1,7 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import { checkElapsed, checkProgress, playVideo } from '#utils/watch_history';
 import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
-import { testConfigs } from '#test/constants';
 
 const videoTitle = constants.bigBuckBunnyTitle;
 const videoLength = 596;

@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 
-import { testConfigs } from '#test/constants';
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants from '#utils/constants';
 
 const languageText = {

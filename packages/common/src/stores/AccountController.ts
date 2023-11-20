@@ -6,9 +6,9 @@ import { ACCESS_MODEL, DEFAULT_FEATURES } from '../constants';
 import { logDev } from '../utils/common';
 import * as persist from '../utils/persist';
 import type { IntegrationType } from '../../types/config';
-import CheckoutService from '../services/checkout.service';
-import AccountService, { type AccountServiceFeatures } from '../services/account.service';
-import SubscriptionService from '../services/subscription.service';
+import CheckoutService from '../services/integrations/CheckoutService';
+import AccountService, { type AccountServiceFeatures } from '../services/integrations/AccountService';
+import SubscriptionService from '../services/integrations/SubscriptionService';
 import type { Offer } from '../../types/checkout';
 import type {
   Capture,

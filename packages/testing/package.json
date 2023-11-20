@@ -1,0 +1,10 @@
+{
+  "name": "@jwp/ott-testing",
+  "version": "1.0.0",
+  "private": true,
+  "author": "JW Player",
+  "scripts": {
+    "lint:ts": "tsc --pretty --noEmit -p ./",
+    "test": "exit 0"
+  }
+}

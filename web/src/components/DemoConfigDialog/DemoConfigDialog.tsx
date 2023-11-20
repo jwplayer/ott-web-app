@@ -2,18 +2,18 @@ import React, { ChangeEventHandler, MouseEventHandler, useEffect, useState } fro
 import { useTranslation } from 'react-i18next';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { addQueryParams } from '@jwplayer/ott-common/src/utils/formatting';
-import { CONFIG_QUERY_KEY } from '@jwplayer/ott-common/src/constants';
-
-import ErrorPage from '../ErrorPage/ErrorPage';
-import TextField from '../TextField/TextField';
-import Button from '../Button/Button';
-import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import DevStackTrace from '../DevStackTrace/DevStackTrace';
-import type { BootstrapData } from '../../hooks/useBootstrapApp';
+import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { CONFIG_QUERY_KEY } from '@jwp/ott-common/src/constants';
+import ErrorPage from '@jwp/ott-ui-react/src/components/ErrorPage/ErrorPage';
+import TextField from '@jwp/ott-ui-react/src/components/TextField/TextField';
+import Button from '@jwp/ott-ui-react/src/components/Button/Button';
+import ConfirmationDialog from '@jwp/ott-ui-react/src/components/ConfirmationDialog/ConfirmationDialog';
+import LoadingOverlay from '@jwp/ott-ui-react/src/components/LoadingOverlay/LoadingOverlay';
+import DevStackTrace from '@jwp/ott-ui-react/src/components/DevStackTrace/DevStackTrace';
 
 import styles from './DemoConfigDialog.module.scss';
+
+import type { BootstrapData } from '#src/hooks/useBootstrapApp';
 
 const regex = /^[a-z,\d]{0,8}$/g;
 const DEMO_CONFIG = '225tvq1i';

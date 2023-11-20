@@ -1,9 +1,8 @@
-import { isLiveEvent } from '@jwplayer/ott-common/src/utils/liveEvent';
-import { CONTENT_TYPE } from '@jwplayer/ott-common/src/constants';
-
-import MediaEvent from './pages/ScreenRouting/mediaScreens/MediaEvent/MediaEvent';
-import { mediaScreenMap } from './pages/ScreenRouting/MediaScreenRouter';
-import MediaHub from './pages/ScreenRouting/mediaScreens/MediaHub/MediaHub';
+import { isLiveEvent } from '@jwp/ott-common/src/utils/liveEvent';
+import { CONTENT_TYPE } from '@jwp/ott-common/src/constants';
+import MediaEvent from '@jwp/ott-ui-react/src/pages/ScreenRouting/mediaScreens/MediaEvent/MediaEvent';
+import { mediaScreenMap } from '@jwp/ott-ui-react/src/pages/ScreenRouting/MediaScreenRouter';
+import MediaHub from '@jwp/ott-ui-react/src/pages/ScreenRouting/mediaScreens/MediaHub/MediaHub';
 
 /**
  * This file is used to add media and/or playlist screens.

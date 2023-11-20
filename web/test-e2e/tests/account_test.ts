@@ -1,6 +1,7 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 import constants, { longTimeout, normalTimeout } from '#utils/constants';
-import { testConfigs } from '#test/constants';
 
 const editAccount = 'Edit account';
 const editDetails = 'Edit information';

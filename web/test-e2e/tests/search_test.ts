@@ -1,7 +1,8 @@
 import * as assert from 'assert';
 
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants from '#utils/constants';
-import { testConfigs } from '#test/constants';
 
 const openSearchLocator = { css: 'div[aria-label="Open search"]' };
 const searchBarLocator = { css: 'input[aria-label="Search"]' };

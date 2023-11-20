@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import QueryProvider from '@jwp/ott-ui-react/src/containers/QueryProvider/QueryProvider';
+import { ErrorPageWithoutTranslation } from '@jwp/ott-ui-react/src/components/ErrorPage/ErrorPage';
+import LoadingOverlay from '@jwp/ott-ui-react/src/components/LoadingOverlay/LoadingOverlay';
 
-import QueryProvider from './containers/QueryProvider/QueryProvider';
 import initI18n from './i18n/config';
-import Root from './components/Root/Root';
-import { ErrorPageWithoutTranslation } from './components/ErrorPage/ErrorPage';
-import LoadingOverlay from './components/LoadingOverlay/LoadingOverlay';
+import Root from './containers/Root/Root';
 
 import './screenMapping';
 import './styles/main.scss';

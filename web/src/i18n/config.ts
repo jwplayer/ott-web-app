@@ -2,13 +2,9 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import I18NextHttpBackend from 'i18next-http-backend';
 import i18next from 'i18next';
+import type { LanguageDefinition } from '@jwp/ott-common/types/i18n';
 
 import { NAMESPACES } from './resources';
-
-export type LanguageDefinition = {
-  code: string;
-  displayName: string;
-};
 
 // This list contains all languages that are supported by the OTT Web app by default
 // To enable the language, make sure that the language code is added to the `APP_ENABLED_LANGUAGES` environment variable

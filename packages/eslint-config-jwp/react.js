@@ -14,7 +14,7 @@ module.exports = {
 
   overrides: [
     {
-      files: ['*.jsx', '*.tsx', 'src/hooks/*.ts'],
+      files: ['*.jsx', '*.tsx', '*.ts'],
       plugins: [
         // Enable linting React code
         'react',

@@ -1,5 +1,6 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants, { longTimeout } from '#utils/constants';
-import { testConfigs } from '#test/constants';
 import { LoginContext } from '#utils/password_utils';
 
 runTestSuite(testConfigs.jwpAuth, 'JW Player');

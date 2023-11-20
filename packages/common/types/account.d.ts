@@ -368,11 +368,16 @@ export type SubscribeToNotificationsPayload = {
   onMessage: (payload: string) => void;
 };
 
-export type SocialURLs = {
-  facebook: string;
-  twitter: string;
-  google: string;
-};
+export type SocialURLs =
+  | {
+      facebook: string;
+    }
+  | {
+      twitter: string;
+    }
+  | {
+      google: string;
+    };
 
 export type Login = PromiseRequest<LoginArgs, AuthResponse>;
 export type Register = PromiseRequest<RegistrationArgs, AuthResponse>;

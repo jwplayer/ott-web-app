@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
+import { testConfigs } from '@jwp/ott-testing/constants';
 
 import { ShelfId } from '#utils/constants';
-import { testConfigs } from '#test/constants';
 
 const programSelectedBackgroundColor = 'rgb(204, 204, 204)';
 const programLiveBorder = '2px solid rgb(255, 255, 255)';

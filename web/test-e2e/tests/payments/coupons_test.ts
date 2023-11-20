@@ -1,7 +1,8 @@
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import { LoginContext } from '#utils/password_utils';
 import constants from '#utils/constants';
 import { goToCheckout, formatPrice, finishAndCheckSubscription, addYear, cancelPlan, renewPlan, overrideIP } from '#utils/payments';
-import { testConfigs } from '#test/constants';
 import { ProviderProps } from '#test/types';
 
 const jwProps: ProviderProps = {

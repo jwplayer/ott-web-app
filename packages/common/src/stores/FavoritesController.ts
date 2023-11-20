@@ -1,8 +1,8 @@
 import i18next from 'i18next';
 import { inject, injectable } from 'inversify';
 
-import FavoritesService from '../services/favorites.service';
-import AccountService from '../services/account.service';
+import FavoriteService from '../services/FavoriteService';
+import AccountService from '../services/integrations/AccountService';
 import type { PlaylistItem } from '../../types/playlist';
 import type { Favorite, SerializedFavorite } from '../../types/favorite';
 import type { Customer } from '../../types/account';
@@ -15,10 +15,10 @@ import { useConfigStore } from './ConfigStore';
 
 @injectable()
 export default class FavoritesController {
-  private readonly favoritesService: FavoritesService;
+  private readonly favoritesService: FavoriteService;
   private readonly accountService?: AccountService;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType, favoritesService: FavoritesService) {
+  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType, favoritesService: FavoriteService) {
     this.favoritesService = favoritesService;
     this.accountService = getNamedModule(AccountService, integrationType, false);
   }

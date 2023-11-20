@@ -1,7 +1,8 @@
 import * as assert from 'assert';
 
+import { testConfigs } from '@jwp/ott-testing/constants';
+
 import constants, { makeShelfXpath, ShelfId } from '#utils/constants';
-import { testConfigs } from '#test/constants';
 
 const videoTitle = 'Tears of Steel';
 
