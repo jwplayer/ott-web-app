@@ -50,7 +50,8 @@
       "pubdate": 1615480440,
       "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
       "tags": "live",
-      "scheduleUrl": "/epg/channel1.json",
+      "scheduleType": "JW",
+      "scheduleUrl": "/epg/jwChannel.json",
       "catchupHours": "7",
       "sources": [
         {
@@ -103,7 +104,8 @@
       "pubdate": 1615480440,
       "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
       "tags": "live",
-      "scheduleUrl": "/epg/channel2.json",
+      "scheduleType": "JW",
+      "scheduleUrl": "/epg/jwChannel.json",
       "sources": [
         {
           "file": "https://demo-use1.cdn.vustreams.com/live/b49bec86-f786-4b08-941c-a4ee80f70e1f/live.isml/b49bec86-f786-4b08-941c-a4ee80f70e1f.m3u8",
@@ -155,6 +157,7 @@
       "pubdate": 1615480440,
       "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
       "tags": "live",
+      "scheduleType": "JW",
       "scheduleUrl": "/epg/does-not-exist.json",
       "sources": [
         {
@@ -207,6 +210,7 @@
       "pubdate": 1615480440,
       "description": "A 24x7 airing of long films released by Blender Open Movie Project, including Elephants Dream, Big Buck Bunny, Sintel, Tears Of Steel, and Cosmos Laundromat.",
       "tags": "live",
+      "scheduleType": "JW",
       "scheduleUrl": "/epg/network-error.json",
       "sources": [
         {

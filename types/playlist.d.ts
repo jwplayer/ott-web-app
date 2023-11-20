@@ -57,6 +57,7 @@ export type PlaylistItem = {
   scheduledStart?: Date;
   scheduledEnd?: Date;
   markdown?: string;
+  scheduleType?: string;
   [key: string]: unknown;
 };
 

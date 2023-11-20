@@ -73,3 +73,8 @@ export const DEFAULT_FEATURES = {
   hasProfiles: false,
   hasNotifications: false,
 };
+
+export const EPG_TYPE = {
+  JW: 'JW',
+  VIEW_NEXA: 'VIEW_NEXA',
+} as const;

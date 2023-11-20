@@ -55,5 +55,9 @@ declare module '*.png' {
   const ref: string;
   export default ref;
 }
+declare module '*.xml' {
+  const ref: string;
+  export default ref;
+}
 
 /* CUSTOM: ADD YOUR OWN HERE */
