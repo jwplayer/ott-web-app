@@ -23,6 +23,8 @@
   position: absolute;
   top: 0;
   left: 0;
+  // To show over the ad overlay
+  z-index: variables.$player-overlay-z-index;
   width: 100%;
   min-height: 100px;
   padding: 24px 56px;
