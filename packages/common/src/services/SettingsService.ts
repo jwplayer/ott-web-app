@@ -81,6 +81,9 @@ export default class SettingsService {
     const i18n = getI18n();
     const bundle = i18n.getResourceBundle(i18n.language, 'error');
 
+    // @TODO: use `i18next.t()`?
+    // t('error:settings_invalid')
+    // t('error:check_your_settings')
     const errorPayload = {
       title: bundle['settings_invalid'],
       description: bundle['check_your_settings'],
