@@ -27,7 +27,7 @@
     "lint:prettier": "prettier --check \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "lint:ts": "tsc --pretty --noEmit -p ./scripts && yarn workspaces run lint:ts",
     "lint:stylelint": "stylelint '**/*.{css,scss}'",
-    "i18next": "i18next {web,packages/common}/src/{components,containers,pages,services,stores,hooks}/**/{**/,/}*.{ts,tsx} && node ./scripts/i18next/generate.js",
+    "i18next": "i18next 'web/src/**/*.{ts,tsx}' 'packages/*/src/**/*.{ts,tsx}' && node ./scripts/i18next/generate.js",
     "i18next-diff": "npx ts-node ./scripts/i18next/diff-translations",
     "i18next-update": "npx ts-node ./scripts/i18next/update-translations.ts && yarn i18next",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",

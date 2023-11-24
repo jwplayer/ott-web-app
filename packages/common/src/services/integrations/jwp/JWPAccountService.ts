@@ -433,6 +433,8 @@ export default class JWPAccountService extends AccountService {
   getTermsConsent = ({ label: termsUrl }: RegisterField): Consent => {
     const termsLink = `<a href="${termsUrl || JW_TERMS_URL}" target="_blank">${i18next.t('account:registration.terms_and_conditions')}</a>`;
 
+    // t('account:registration.terms_consent_jwplayer')
+    // t('account:registration.terms_consent')
     return {
       type: 'checkbox',
       isCustomRegisterField: true,
