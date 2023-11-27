@@ -3,6 +3,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import I18NextHttpBackend from 'i18next-http-backend';
 import i18next from 'i18next';
 import type { LanguageDefinition } from '@jwp/ott-common/types/i18n';
+import { filterSupportedLanguages } from '@jwp/ott-common/src/utils/i18n';
+import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 
 import { NAMESPACES } from './resources';
 
@@ -20,23 +22,12 @@ export const DEFINED_LANGUAGES: LanguageDefinition[] = [
   },
 ];
 
-export const getSupportedLanguages = () => {
-  const enabledLanguages = import.meta.env.APP_ENABLED_LANGUAGES?.split(',') || [];
-
-  return enabledLanguages.reduce((languages, languageCode) => {
-    const foundLanguage = DEFINED_LANGUAGES.find(({ code }) => code === languageCode);
-
-    if (foundLanguage) {
-      return [...languages, foundLanguage];
-    }
-
-    throw new Error(`Missing defined language for code: ${languageCode}`);
-  }, [] as LanguageDefinition[]);
-};
-
 const initI18n = async () => {
+  const enabledLanguages = import.meta.env.APP_ENABLED_LANGUAGES?.split(',') || [];
   const defaultLanguage = import.meta.env.APP_DEFAULT_LANGUAGE || 'en';
-  const supportedLanguages = getSupportedLanguages();
+  const supportedLanguages = filterSupportedLanguages(DEFINED_LANGUAGES, enabledLanguages);
+
+  useConfigStore.setState({ supportedLanguages });
 
   if (!supportedLanguages.some(({ code }) => code === defaultLanguage)) {
     throw new Error(`The default language is not enabled: ${defaultLanguage}`);

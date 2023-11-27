@@ -1,6 +1,7 @@
 import { ACCESS_MODEL, OTT_GLOBAL_PLAYER_ID } from '../constants';
 import type { AccessModel, Config, IntegrationType } from '../../types/config';
 import type { Settings } from '../../types/settings';
+import type { LanguageDefinition } from '../../types/i18n';
 
 import { createStore } from './utils';
 
@@ -10,6 +11,7 @@ type ConfigState = {
   accessModel: AccessModel;
   settings: Settings;
   integrationType: IntegrationType | null;
+  supportedLanguages: LanguageDefinition[];
   isSandbox: boolean;
   clientId: string | null;
   offers: string[];
@@ -43,6 +45,7 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', () => ({
     additionalAllowedConfigSources: [],
     playerId: OTT_GLOBAL_PLAYER_ID,
   },
+  supportedLanguages: [],
   accessModel: ACCESS_MODEL.SVOD,
   integrationType: null,
   isSandbox: true,
