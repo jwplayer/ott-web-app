@@ -37,3 +37,13 @@ There are many examples in the included [content-types.json](scripts/content-typ
 > Note: Although the upload file allows you to define reused fields and sections, when these are uploaded they become distinct copies for each instance in the schemas where they are used.
 > That means that changing fields and sections via the api after they are uploaded must be done individually for each schema.
 > Alternatively, you can re-upload and overwrite the existing schemas, but use caution because you will lose any other manual changes you have made.  
+
+# Content Type Data Structure
+
+Content types do not change the underlying structure of data returned from the JWP delivery API. They are purely a convention on top of custom params to make the data entry on the JW dashboard easier and less error-prone. Custom params will still be returned as an array of string key-value pairs.
+
+## Boolean custom params
+
+Because custom params are always strings and any non-empty string in javascript converts to truthy, we have by convention decided on a few string values to consider striclty true or false. You can find these values in code: https://github.com/jwplayer/ott-web-app/blob/develop/src/utils/common.ts#L86
+
+Be careful to use the right version considering the fallback when the value is not matched. For example, if you want the property to only be true when matched and fallback to false, use IsTruthy.

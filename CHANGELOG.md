@@ -1,3 +1,47 @@
+## [4.31.0](https://github.com/jwplayer/ott-web-app/compare/v4.30.0...v4.31.0) (2023-11-13)
+
+
+### Features
+
+* **project:** ads countdown ([dab3804](https://github.com/jwplayer/ott-web-app/commit/dab380481d53a9ab5d33d56ac78673f6040d6d46))
+* **project:** ads integration ([044c40f](https://github.com/jwplayer/ott-web-app/commit/044c40f33874f8c35b7394c7c71c3d715bab78f1))
+* **project:** fetch ads in PlayerContainer ([b0eb27a](https://github.com/jwplayer/ott-web-app/commit/b0eb27a742304063b1bc34afb98a97465a37ce89))
+* **project:** per media ads ([f27283e](https://github.com/jwplayer/ott-web-app/commit/f27283eafd6265c8bebd64b012ed9c56de6f36cb))
+* **project:** rename hooks ([71dc1b8](https://github.com/jwplayer/ott-web-app/commit/71dc1b84d805310a44ff53bc0320ecea60a946ab))
+* **project:** use ternanry operator to get ads ([53c3e00](https://github.com/jwplayer/ott-web-app/commit/53c3e00e87f64e0008f576fb9f6c2947eb117f32))
+* reintroduce custom registration fields ([03d277c](https://github.com/jwplayer/ott-web-app/commit/03d277cdd69bd339d9993e4b9b9d44816165887c))
+
+
+### Bug Fixes
+
+* added e2e coverage for custom register fields ([42cd471](https://github.com/jwplayer/ott-web-app/commit/42cd471d4092588f97cf723106e74f40f0802e2e))
+* code review suggestions ([631f342](https://github.com/jwplayer/ott-web-app/commit/631f34285737ad4a63e9a70deb50e466aca89e96))
+* combine metadata when sending personal details ([b1273ca](https://github.com/jwplayer/ott-web-app/commit/b1273ca894c5ce413ecb78bc67e7bc0a79cd7d6e))
+* contain register logic in one service step ([2476a9d](https://github.com/jwplayer/ott-web-app/commit/2476a9dae1160a2f36e09c34899eb566cac820a1))
+* crf checkbox support for 'on' and 'off' ([c0d9629](https://github.com/jwplayer/ott-web-app/commit/c0d9629ba2b7cdeaed506b33fa2d01d6bc9f117b))
+* dynamic crf e2e coverage ([0b35179](https://github.com/jwplayer/ott-web-app/commit/0b35179cd564d3429e6215eb2059efdbad806be4))
+* finally skip an e2e scenario ([98fafc3](https://github.com/jwplayer/ott-web-app/commit/98fafc3ee98f91dc71140759085fd491f235d1d1))
+* fix last commit ([1a44e94](https://github.com/jwplayer/ott-web-app/commit/1a44e9441568d329642033132812f83101cd2ee3))
+* fix updating from account section ([4fd8bf7](https://github.com/jwplayer/ott-web-app/commit/4fd8bf7d778e68ed75284796729c3dbf05bb047f))
+* inplayer: send CRF metadata on register ([053da25](https://github.com/jwplayer/ott-web-app/commit/053da25cd06b6e8a3882bf6740c5b986b6c794f7))
+* make terms field dynamic ([8931596](https://github.com/jwplayer/ott-web-app/commit/8931596f632fba3f08b607f0a6c0cb06dd909171))
+* metadata consistency on register and update account ([39f19a9](https://github.com/jwplayer/ott-web-app/commit/39f19a928b5cb8929763b0496fca2fd2cbe02f26))
+* re-add tryTo ([d4ba872](https://github.com/jwplayer/ott-web-app/commit/d4ba87283aa56cdae1728e210aa6921ba2d6cfa3))
+* refactor last commit ([2f3e135](https://github.com/jwplayer/ott-web-app/commit/2f3e13586ad628dd4673849c16a31ade6499c19e))
+* refactor last commit ([4236dc4](https://github.com/jwplayer/ott-web-app/commit/4236dc485106117d8a682ff9194cb92277f48784))
+* refactor on code review feedback ([9b6fc6b](https://github.com/jwplayer/ott-web-app/commit/9b6fc6b837b479f9e1d300b8a3451e079b976780))
+* remove tryTo in e2e tests ([cb52922](https://github.com/jwplayer/ott-web-app/commit/cb52922eb72f27703237dae7d65ffd5e0200b02f))
+* removed codecept .only for a scenario ([960e068](https://github.com/jwplayer/ott-web-app/commit/960e068bb9b687b831f3ed67e7b8141877e21951))
+* rename functions ([ad20660](https://github.com/jwplayer/ott-web-app/commit/ad2066043e38f3a27e1112222348c73a8815dc6b))
+* revert accidental reftover in codecept.desktop.js ([3ae1007](https://github.com/jwplayer/ott-web-app/commit/3ae1007889709e66ad9c659f2ea1bb7d3e81e1b8))
+* send crf metadata on update account ([26539ad](https://github.com/jwplayer/ott-web-app/commit/26539adab6c396301dfa472d3439aa29a58357fb))
+* send metadata upon updating profile info ([0328c2d](https://github.com/jwplayer/ott-web-app/commit/0328c2dccb1dd192094183a1f4f1aa121a5bcab2))
+* skip an e2e scenario ([1f774ac](https://github.com/jwplayer/ott-web-app/commit/1f774ac9bc59ff31d2a3ff55ce652fb4c26085a7))
+* skip an e2e scenario ([c048e4a](https://github.com/jwplayer/ott-web-app/commit/c048e4a81f886fc43b6912651c808e703f2deaf7))
+* update crf e2e scenario ([3574a16](https://github.com/jwplayer/ott-web-app/commit/3574a160f9bd7a71ec240eea51278530dc8ed46c))
+* update snaps ([c8f9cd3](https://github.com/jwplayer/ott-web-app/commit/c8f9cd3cc884147a81604d2f73a67ce305aca1ae))
+* **user:** password strength on reset ([#395](https://github.com/jwplayer/ott-web-app/issues/395)) ([e80e7a7](https://github.com/jwplayer/ott-web-app/commit/e80e7a7de4fc95a010f12e9f5f527d0bd7b2fd8f))
+
 ## [4.30.0](https://github.com/jwplayer/ott-web-app/compare/v4.28.0...v4.30.0) (2023-11-06)
 
 
