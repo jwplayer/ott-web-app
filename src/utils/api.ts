@@ -1,5 +1,7 @@
 import type { CommonResponse } from '@inplayer-org/inplayer.js';
 
+import type { InPlayerError } from '#types/inplayer';
+
 export class ApiError extends Error {
   code: number;
   message: string;
@@ -41,4 +43,14 @@ export const getCommonResponseData = (response: { data: CommonResponse }) => {
       code,
     },
   };
+};
+
+export const isCommonError = (error: unknown): error is InPlayerError => {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'response' in error &&
+    typeof (error as InPlayerError).response?.data?.code === 'number' &&
+    typeof (error as InPlayerError).response?.data?.message === 'string'
+  );
 };

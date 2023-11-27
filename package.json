@@ -1,6 +1,6 @@
 {
   "name": "jw-ott-webapp",
-  "version": "4.30.0",
+  "version": "4.31.0",
   "main": "index.js",
   "repository": "https://github.com/jwplayer/ott-web-app.git",
   "author": "JW Player",
@@ -43,7 +43,7 @@
   "dependencies": {
     "@adyen/adyen-web": "^5.42.1",
     "@codeceptjs/allure-legacy": "^1.0.2",
-    "@inplayer-org/inplayer.js": "^3.13.19",
+    "@inplayer-org/inplayer.js": "^3.13.21",
     "classnames": "^2.3.1",
     "date-fns": "^2.28.0",
     "dompurify": "^2.3.8",

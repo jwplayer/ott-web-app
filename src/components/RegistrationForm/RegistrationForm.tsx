@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ChangeEventHandler, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
@@ -11,7 +11,7 @@ import IconButton from '#components/IconButton/IconButton';
 import Visibility from '#src/icons/Visibility';
 import VisibilityOff from '#src/icons/VisibilityOff';
 import PasswordStrength from '#components/PasswordStrength/PasswordStrength';
-import Checkbox from '#components/Checkbox/Checkbox';
+import CustomRegisterField from '#components/CustomRegisterField/CustomRegisterField';
 import FormFeedback from '#components/FormFeedback/FormFeedback';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Link from '#components/Link/Link';
@@ -25,11 +25,11 @@ type Props = {
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onConsentChange: React.ChangeEventHandler<HTMLInputElement>;
+  onConsentChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   errors: FormErrors<RegistrationFormData>;
   values: RegistrationFormData;
   loading: boolean;
-  consentValues: Record<string, boolean>;
+  consentValues: Record<string, string | boolean>;
   consentErrors: string[];
   submitting: boolean;
   canSubmit: boolean;
@@ -55,6 +55,8 @@ const RegistrationForm: React.FC<Props> = ({
   const { t } = useTranslation('account');
   const location = useLocation();
 
+  const ref = useRef<HTMLDivElement>(null);
+
   const formatConsentLabel = (label: string): string | JSX.Element => {
     const sanitizedLabel = DOMPurify.sanitize(label);
     const hasHrefOpenTag = /<a(.|\n)*?>/.test(sanitizedLabel);
@@ -67,6 +69,12 @@ const RegistrationForm: React.FC<Props> = ({
     return label;
   };
 
+  useEffect(() => {
+    if (errors.form) {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
+  }, [errors.form]);
+
   if (loading) {
     return (
       <div style={{ height: 400 }}>
@@ -78,7 +86,7 @@ const RegistrationForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
-      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
+      <div ref={ref}>{errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}</div>
       <TextField
         value={values.email}
         onChange={onChange}
@@ -113,19 +121,25 @@ const RegistrationForm: React.FC<Props> = ({
         }
         required
       />
-      {publisherConsents?.map((consent, index) => (
-        <Checkbox
-          key={index}
-          name={consent.name}
-          value={consent.value || ''}
-          error={consentErrors?.includes(consent.name)}
-          helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required') : undefined}
-          required={consent.required}
-          checked={consentValues[consent.name] || false}
-          onChange={onConsentChange}
-          label={formatConsentLabel(consent.label)}
-        />
-      ))}
+      {publisherConsents && (
+        <div className={styles.customFields} data-testid="custom-reg-fields">
+          {publisherConsents.map((consent) => (
+            <CustomRegisterField
+              key={consent.name}
+              type={consent.type}
+              name={consent.name}
+              options={consent.options}
+              label={formatConsentLabel(consent.label)}
+              placeholder={consent.placeholder}
+              value={consentValues[consent.name]}
+              required={consent.required}
+              error={consentErrors?.includes(consent.name)}
+              helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required') : undefined}
+              onChange={onConsentChange}
+            />
+          ))}
+        </div>
+      )}
       <Button
         className={styles.continue}
         type="submit"

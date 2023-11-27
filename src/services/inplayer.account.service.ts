@@ -1,7 +1,8 @@
-import InPlayer, { AccountData, Env, RegisterField, UpdateAccountData, FavoritesData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { AccountData, Env, FavoritesData, UpdateAccountData, WatchHistory, type RegisterField } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 
-import { getCommonResponseData } from '#src/utils/api';
+import { formatConsentsToRegisterFields } from '#src/utils/collection';
+import { getCommonResponseData, isCommonError } from '#src/utils/api';
 import type { Config } from '#types/Config';
 import type {
   AuthData,
@@ -26,9 +27,10 @@ import type {
   UpdateCustomerArgs,
   UpdateCustomerConsents,
   UpdatePersonalShelves,
+  CustomRegisterFieldVariant,
 } from '#types/account';
 import type { Favorite } from '#types/favorite';
-import type { InPlayerAuthData, InPlayerError } from '#types/inplayer';
+import type { InPlayerAuthData } from '#types/inplayer';
 import type { WatchHistoryItem } from '#types/watchHistory';
 
 enum InPlayerEnv {
@@ -36,6 +38,8 @@ enum InPlayerEnv {
   Production = 'production',
   Daily = 'daily',
 }
+
+const JW_TERMS_URL = 'https://inplayer.com/legal/terms';
 
 export const initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
   const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
@@ -85,7 +89,7 @@ export const login: Login = async ({ config, email, password }) => {
   }
 };
 
-export const register: Register = async ({ config, email, password }) => {
+export const register: Register = async ({ config, email, password, consents }) => {
   try {
     const { data } = await InPlayer.Account.signUpV2({
       email,
@@ -95,6 +99,8 @@ export const register: Register = async ({ config, email, password }) => {
       metadata: {
         first_name: ' ',
         surname: ' ',
+        ...formatConsentsToRegisterFields(consents),
+        consents: JSON.stringify(consents),
       },
       type: 'consumer',
       clientId: config.integrations.jwp?.clientId || '',
@@ -110,8 +116,10 @@ export const register: Register = async ({ config, email, password }) => {
       customerConsents: parseJson(user?.metadata?.consents as string, []),
     };
   } catch (error: unknown) {
-    const { response } = error as InPlayerError;
-    throw new Error(response.data.message);
+    if (isCommonError(error)) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error('Failed to create account.');
   }
 };
 
@@ -158,11 +166,34 @@ export const getPublisherConsents: GetPublisherConsents = async (config) => {
     const { jwp } = config.integrations;
     const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
 
-    const result: Consent[] = data?.collection.filter((field) => field.type === 'checkbox').map((consent) => formatPublisherConsents(consent));
+    const terms = data?.collection.find(({ name }) => name === 'terms');
 
-    return {
-      consents: [getTermsConsent(), ...result],
-    };
+    const result = data?.collection
+      // we exclude these fields because we already have them by default
+      .filter((field) => !['email_confirmation', 'first_name', 'surname'].includes(field.name) && ![terms].includes(field))
+      .map(
+        (field): Consent => ({
+          type: field.type as CustomRegisterFieldVariant,
+          isCustomRegisterField: true,
+          name: field.name,
+          label: field.label,
+          placeholder: field.placeholder,
+          required: field.required,
+          options: field.options,
+          version: '1',
+          ...(field.type === 'checkbox'
+            ? {
+                enabledByDefault: field.default_value === 'true',
+              }
+            : {
+                defaultValue: field.default_value,
+              }),
+        }),
+      );
+
+    const consents = terms ? [getTermsConsent(terms), ...result] : result;
+
+    return { consents };
   } catch {
     throw new Error('Failed to fetch publisher consents.');
   }
@@ -188,7 +219,17 @@ export const getCustomerConsents: GetCustomerConsents = async (payload) => {
 export const updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
   try {
     const { customer, consents } = payload;
-    const params = { ...formatUpdateAccount(customer), ...{ metadata: { consents: JSON.stringify(consents) } } };
+
+    const existingAccountData = formatUpdateAccount(customer);
+
+    const params = {
+      ...existingAccountData,
+      metadata: {
+        ...existingAccountData.metadata,
+        ...formatConsentsToRegisterFields(consents),
+        consents: JSON.stringify(consents),
+      },
+    };
 
     const { data } = await InPlayer.Account.updateAccount(params);
 
@@ -221,8 +262,8 @@ export const getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
   };
 };
 
-export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ ...metadata }) => {
-  return (await updateCustomer(metadata, true)) as ServiceResponse<Capture>;
+export const updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...newAnswers }) => {
+  return (await updateCustomer({ ...customer, ...newAnswers }, true)) as ServiceResponse<Capture>;
 };
 
 export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
@@ -237,8 +278,11 @@ export const changePasswordWithOldPassword: ChangePasswordWithOldPassword = asyn
       errors: [],
       responseData: {},
     };
-  } catch {
-    throw new Error('Failed to change password.');
+  } catch (error: unknown) {
+    if (isCommonError(error)) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error('Failed to change password');
   }
 };
 
@@ -257,8 +301,11 @@ export const changePasswordWithResetToken: ChangePassword = async (payload) => {
       errors: [],
       responseData: {},
     };
-  } catch {
-    throw new Error('Failed to change password.');
+  } catch (error: unknown) {
+    if (isCommonError(error)) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error('Failed to change password');
   }
 };
 
@@ -423,10 +470,10 @@ function formatUpdateAccount(customer: UpdateCustomerArgs) {
   const firstName = customer.firstName?.trim() || '';
   const lastName = customer.lastName?.trim() || '';
   const fullName = `${firstName} ${lastName}`.trim() || (customer.email as string);
-  const metadata: { [key: string]: string } = {
+  const metadata: Record<string, string> = {
+    ...customer.metadata,
     first_name: firstName,
     surname: lastName,
-    ...customer.metadata,
   };
   const data: UpdateAccountData = {
     fullName,
@@ -444,25 +491,20 @@ function formatAuth(auth: InPlayerAuthData): AuthData {
   };
 }
 
-function formatPublisherConsents(consent: Partial<RegisterField>) {
-  return {
-    broadcasterId: 0,
-    enabledByDefault: false,
-    label: consent.label,
-    name: consent.name,
-    required: consent.required,
-    value: '',
-    version: '1',
-  } as Consent;
-}
+function getTermsConsent({ label: termsUrl }: RegisterField): Consent {
+  const termsLink = `<a href="${termsUrl || JW_TERMS_URL}" target="_blank">${i18next.t('account:registration.terms_and_conditions')}</a>`;
 
-function getTermsConsent(): Consent {
-  const termsUrl = '<a href="https://inplayer.com/legal/terms" target="_blank">Terms and Conditions</a>';
-  return formatPublisherConsents({
+  return {
+    type: 'checkbox',
+    isCustomRegisterField: true,
     required: true,
     name: 'terms',
-    label: i18next.t('account:registration.terms_consent', { termsUrl }),
-  });
+    label: i18next.t(`account:registration.${termsUrl ? 'terms_consent' : 'terms_consent_jwplayer'}`, { termsLink }),
+    enabledByDefault: false,
+    placeholder: '',
+    options: {},
+    version: '1',
+  };
 }
 
 function parseJson(value: string, fallback = {}) {

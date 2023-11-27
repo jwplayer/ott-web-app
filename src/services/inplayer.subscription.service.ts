@@ -3,7 +3,7 @@ import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails a
 
 import type { ChangeSubscription, PaymentDetail, Subscription, Transaction, UpdateCardDetails, UpdateSubscription } from '#types/subscription';
 import type { Config } from '#types/Config';
-import type { InPlayerError } from '#types/inplayer';
+import { isCommonError } from '#src/utils/api';
 
 interface SubscriptionDetails extends InplayerSubscription {
   item_id?: number;
@@ -37,8 +37,7 @@ export async function getActiveSubscription({ config }: { config: Config }) {
     }
     return null;
   } catch (error: unknown) {
-    const { response } = error as InPlayerError;
-    if (response.data.code === 402) {
+    if (isCommonError(error) && error.response.data.code === 402) {
       return null;
     }
     throw new Error('Unable to fetch customer subscriptions.');

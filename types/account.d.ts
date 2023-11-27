@@ -20,10 +20,14 @@ export type PayloadWithIPOverride = {
   customerIP?: string;
 };
 
-export type AuthArgs = {
+export type LoginArgs = {
   config: Config;
   email: string;
   password: string;
+};
+
+export type RegistrationArgs = LoginArgs & {
+  consents: CustomerConsent[];
 };
 
 export type AuthResponse = {
@@ -218,15 +222,21 @@ export type UpdateCustomerArgs = {
   fullName?: string;
 };
 
-export type Consent = {
-  broadcasterId: number;
+export type CustomRegisterFieldVariant = 'input' | 'select' | 'country' | 'us_state' | 'radio' | 'checkbox' | 'datepicker';
+
+export interface Consent {
+  type?: CustomRegisterFieldVariant;
+  isCustomRegisterField?: boolean;
+  enabledByDefault?: boolean;
+  defaultValue?: string;
   name: string;
-  version: string;
-  value: string;
   label: string;
-  enabledByDefault: boolean;
+  placeholder: string;
   required: boolean;
-};
+  options: Record<string, string>;
+  version: string;
+}
+
 export type CustomerConsent = {
   customerId?: string;
   date?: number;
@@ -236,7 +246,7 @@ export type CustomerConsent = {
   newestVersion?: string;
   required?: boolean;
   state: 'accepted' | 'declined';
-  value?: string;
+  value?: string | boolean;
   version: string;
 };
 
@@ -336,7 +346,7 @@ export type ListProfilesResponse = {
 export type FirstLastNameInput = {
   firstName: string;
   lastName: string;
-  metadata?: Record<string, string>;
+  metadata?: Record<string, string | boolean>;
 };
 
 export type EmailConfirmPasswordInput = {
@@ -354,8 +364,8 @@ export type DeleteAccountPayload = {
   password: string;
 };
 
-type Login = PromiseRequest<AuthArgs, AuthResponse>;
-type Register = PromiseRequest<AuthArgs, AuthResponse>;
+type Login = PromiseRequest<LoginArgs, AuthResponse>;
+type Register = PromiseRequest<RegistrationArgs, AuthResponse>;
 type GetCustomer = EnvironmentServiceRequest<GetCustomerPayload, Customer>;
 type UpdateCustomer = EnvironmentServiceRequest<UpdateCustomerArgs, Customer>;
 type GetPublisherConsents = PromiseRequest<Config, GetPublisherConsentsResponse>;

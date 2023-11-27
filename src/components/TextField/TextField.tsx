@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React, { type RefObject, type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -17,7 +17,7 @@ type InputOrTextAreaProps =
 
 type Props = {
   className?: string;
-  label?: string;
+  label?: ReactNode;
   helperText?: React.ReactNode;
   leftControl?: React.ReactNode;
   rightControl?: React.ReactNode;

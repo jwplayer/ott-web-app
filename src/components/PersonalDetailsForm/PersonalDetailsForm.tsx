@@ -45,7 +45,12 @@ const PersonalDetailsForm: React.FC<Props> = ({
 }: Props) => {
   const { t } = useTranslation('account');
   const renderQuestion = ({ value, key, question, required }: CleengCaptureQuestionField) => {
-    const values = value?.split(';') || [];
+    const values = value?.split(';').map((question) => {
+      const [value, label = value] = question.split(':');
+
+      return { value, label };
+    });
+
     const props = {
       name: key,
       onChange: onQuestionChange,
@@ -55,11 +60,13 @@ const PersonalDetailsForm: React.FC<Props> = ({
       key,
     };
 
-    if (values.length === 1) {
-      return <Checkbox checked={!!questionValues[key]} value={values[0]} header={question} label={values[0]} {...props} />;
-    } else if (values.length === 2) {
+    const optionsKeys = Object.keys(values);
+
+    if (optionsKeys.length === 1) {
+      return <Checkbox checked={!!questionValues[key]} value={values[0].value} header={question} label={values[0].label} {...props} />;
+    } else if (optionsKeys.length === 2) {
       return <Radio values={values} value={questionValues[key]} header={question} {...props} />;
-    } else if (values.length > 2) {
+    } else if (optionsKeys.length > 2) {
       return <Dropdown options={values} value={questionValues[key]} label={question} defaultLabel={t('personal_details.select_answer')} {...props} fullWidth />;
     }
 
@@ -174,9 +181,8 @@ const PersonalDetailsForm: React.FC<Props> = ({
       {fields.birthDate?.enabled ? (
         <DateField
           value={values.birthDate}
-          onChange={(value) => setValue('birthDate', value)}
+          onChange={(event) => setValue('birthDate', event.currentTarget.value)}
           label={t('personal_details.birth_date')}
-          placeholder={t('personal_details.birth_date')}
           error={!!errors.birthDate || !!errors.form}
           helperText={errors.birthDate}
           required={fields.birthDate.required}
