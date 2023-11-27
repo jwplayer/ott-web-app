@@ -25,16 +25,15 @@ import UserMenu from '../../components/UserMenu/UserMenu';
 
 import styles from './Layout.module.scss';
 
-// @TODO: remove web import after adding the ott-i18n package
-// import { getSupportedLanguages } from '@jwp/ott-web/src/i18n/config';
-const getSupportedLanguages = () => [];
-
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
 
-  const { config, accessModel, clientId } = useConfigStore(({ config, accessModel, clientId }) => ({ config, accessModel, clientId }), shallow);
+  const { config, accessModel, clientId, supportedLanguages } = useConfigStore(
+    ({ config, accessModel, clientId, supportedLanguages }) => ({ config, accessModel, clientId, supportedLanguages }),
+    shallow,
+  );
   const isLoggedIn = !!useAccountStore(({ user }) => user);
   const favoritesEnabled = !!config.features?.favoritesList;
   const { menu, assets, siteName, description, styling, features } = config;
@@ -44,7 +43,6 @@ const Layout = () => {
 
   const { searchPlaylist } = features || {};
   const { footerText } = styling || {};
-  const supportedLanguages = useMemo(() => getSupportedLanguages(), []);
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
   const {
@@ -175,7 +173,7 @@ const Layout = () => {
             profiles,
             profilesEnabled,
             selectProfile: ({ avatarUrl, id }) => selectProfile.mutate({ id, avatarUrl }),
-            isSelectingProfile: !!selectProfile.isLoading,
+            isSelectingProfile: selectProfile.isLoading,
           }}
         >
           <Button label={t('home')} to="/" variant="text" />
