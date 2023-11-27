@@ -29,7 +29,7 @@ jobs:
 
       - name: Generate changelog
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v3
+        uses: TriPSs/conventional-changelog-action@v4.1.1
         with:
           github-token: ${{ secrets.ACTION_TOKEN }}
           release-count: 0
