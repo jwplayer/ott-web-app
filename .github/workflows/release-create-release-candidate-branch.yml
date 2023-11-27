@@ -17,12 +17,12 @@ jobs:
           ref: release
       # It would be easier to create the branch from develop,
       # but unfortunately the script that creates the PR's only considers commits added during the action run
-      - name: Merge latest from develop
+      - name: Merge latest from target branch
         run: |
           git config --global user.name 'Release Script'
           git config --global user.email 'ott-release-script@jwplayer.com'
-          git fetch origin develop
-          git merge origin/develop
+          git fetch origin ${{ github.ref_name }}
+          git merge origin/${{ github.ref_name }}
           yarn && yarn i18next
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
@@ -43,8 +43,8 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.ACTION_TOKEN }}
-          title: ${{ steps.changelog.outputs.tag }} Release Candidate
+          title:  Release Candidate - ${{ steps.changelog.outputs.tag }}${{ github.ref_name != 'develop' && ' (Hotfix)' || ''}}
           base: release
-          branch: release-candidate
+          branch: ${{ github.ref_name == 'develop' && 'release-candidate' || 'hotfix-release-candidate' }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
-          labels: release-candidate
+          labels: ${{github.ref_name == 'develop' && 'release-candidate' || 'release-candidate,hotfix'}}
