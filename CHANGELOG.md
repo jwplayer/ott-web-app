@@ -1,4 +1,4 @@
-## [4.31.0](https://github.com/jwplayer/ott-web-app/compare/v4.30.0...v4.31.0) (2023-11-13)
+## [4.32.0](https://github.com/jwplayer/ott-web-app/compare/v4.30.0...v4.32.0) (2023-11-27)
 
 
 ### Features
@@ -14,6 +14,7 @@
 
 ### Bug Fixes
 
+* add missing translations and fix parsability ([09548a5](https://github.com/jwplayer/ott-web-app/commit/09548a51001f559cb7baef84b73b9ae9bb8346c5))
 * added e2e coverage for custom register fields ([42cd471](https://github.com/jwplayer/ott-web-app/commit/42cd471d4092588f97cf723106e74f40f0802e2e))
 * code review suggestions ([631f342](https://github.com/jwplayer/ott-web-app/commit/631f34285737ad4a63e9a70deb50e466aca89e96))
 * combine metadata when sending personal details ([b1273ca](https://github.com/jwplayer/ott-web-app/commit/b1273ca894c5ce413ecb78bc67e7bc0a79cd7d6e))
