@@ -17,30 +17,24 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Build App
-        env:
-          RELEASE_VERSION: ${{ steps.changelog.outputs.tag }}
-        run: |
-          yarn build
-          cd build
-          tar czf ott-web-app-build-${RELEASE_VERSION}.tar.gz public
-          zip -r ott-web-app-build-${RELEASE_VERSION}.zip public
-
       - name: Get current package version
         id: package-version
         run: |
           version=$( jq -r .version package.json)
           echo "current-version=${version}" >> "$GITHUB_OUTPUT"
 
+      - name: Build App
+        run: |
+          yarn build
+          cd build
+          tar czf ott-web-app-build-${{steps.package-version.outputs.current-version}}.tar.gz public
+          zip -r ott-web-app-build-${{steps.package-version.outputs.current-version}}.zip public
+
       - name: Parse Changelog Entry
         id: changelog-reader
         uses: coditory/changelog-parser@v1
         with:
           version: ${{ steps.package-version.outputs.current-version }}
-      - name: ECHO
-        run: |
-          echo "${{steps.package-version.outputs.current-version}}"
-          echo "${{steps.changelog-reader.outputs.description}}"
 
       - name: Append Release Notes
         run: |
@@ -50,10 +44,20 @@ jobs:
           echo "Appended release notes"
 
       - name: Release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         if: ${{ steps.package-version.outputs.current-version }}
         with:
+          commit: 'release'
           artifacts: 'build/ott-web-app-build-*.tar.gz, build/ott-web-app-build-*.zip'
           tag: v${{ steps.package-version.outputs.current-version }}
           bodyFile: '.github/RELEASE_BODY_TEMPLATE.md'
           token: ${{ secrets.github_token }}
+
+      - name: Merge release -> develop
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: develop
+          message: 'chore: merge release to develop'
+          github_token: ${{ secrets.ACTION_TOKEN }}
+
