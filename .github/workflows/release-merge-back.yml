@@ -1,0 +1,24 @@
+name: Release - Merge Back to Dev
+on:
+  workflow_run:
+    workflows: ['Release - Tag, Build Artifacts, and Release']
+    branches: [release]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  merge-back:
+    if: ${{ !github.event.workflow_run || github.event.workflow_run.conclusion == 'success' }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge release -> develop
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: develop
+          message: 'chore: merge release to develop'
+          github_token: ${{ secrets.ACTION_TOKEN }}
