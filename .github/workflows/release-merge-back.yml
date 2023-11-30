@@ -1,7 +1,7 @@
 name: Release - Merge Back to Dev
 on:
   workflow_run:
-    workflows: ['Release - Tag, Build Artifacts, and Release']
+    workflows: ['Release - Build Artifacts, Tag, and Release']
     branches: [release]
     types:
       - completed
