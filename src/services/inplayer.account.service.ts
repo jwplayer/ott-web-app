@@ -499,7 +499,7 @@ function getTermsConsent({ label: termsUrl }: RegisterField): Consent {
     isCustomRegisterField: true,
     required: true,
     name: 'terms',
-    label: i18next.t(`account:registration.${termsUrl ? 'terms_consent' : 'terms_consent_jwplayer'}`, { termsLink }),
+    label: termsUrl ? i18next.t('account:registration.terms_consent', { termsLink }) : i18next.t('account:registration.terms_consent_jwplayer', { termsLink }),
     enabledByDefault: false,
     placeholder: '',
     options: {},
