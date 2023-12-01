@@ -1,4 +1,4 @@
-name: Release - Build Artifacts, Tag, Release, and Merge Back
+name: Release - Build Artifacts, Tag, and Release
 
 on:
   workflow_dispatch:
@@ -55,12 +55,3 @@ jobs:
           tag: v${{ steps.package-version.outputs.current-version }}
           bodyFile: '.github/RELEASE_BODY_TEMPLATE.md'
           token: ${{ secrets.github_token }}
-
-      - name: Merge release -> develop
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          target_branch: develop
-          message: 'chore: merge release to develop'
-          github_token: ${{ secrets.ACTION_TOKEN }}
-
