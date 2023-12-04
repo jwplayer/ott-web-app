@@ -4,7 +4,7 @@ In order to implement a more structural approach of organizing the code and to r
 
 ## DI library
 
-InversifyJS is used to provide IOC container and to perform DI for both services and controllers. Injection happens automatically with the help of the reflect-metadata package (by adding `injectable` decorators to the necessary services / controllers).
+InversifyJS is used to provide IOC container and to perform DI for both services and controllers. Injection happens automatically with the help of the reflect-metadata package (by adding `injectable` decorators).
 
 > **Important:** The type of the service / controller defined in the constructor should be used as a value, without the `type` keyword.
 
@@ -50,34 +50,38 @@ The app is loaded in the [useBootstrapApp](src/hooks/useBootstrapApp.ts) hook wi
 
 ## Controllers and Services
 
+Both Controllers and Services are defined as classes. We use `injectable` decorator to make them visible for the InversifyJS library.
+
+> **Important:** Use arrow functions for class methods to avoid lost context.
+
 ### Services
 
-Controllers and Services can both be used to provide services (objects) that can be injectable into parts of the application.
+Business logic should be mostly stored in Services. We use services to communicate with the back-end and to process the data we receive.
 
-Services - domain related entities. Business logic should be mostly stored there. We use services to communicate with the back-end and to process the data we receive. Services also help to manage different dependencies.
-
-For example, we can use them to support several integration providers. If this is the case we should also create a common interface and make dependant entities use the interface instead of the actual implementation. This is how inversion of control principle can be respected. Then when we inject services into controllers we use interface types instead of the implementation classes.
+Services also help to manage different dependencies. For example, we can use them to support several integration providers. If this is the case we should also create a common interface and make dependant entities use the interface instead of the actual implementation. This is how inversion of control principle can be respected. Then when we inject services into controllers, we use interface types instead of the implementation classes.
 
 All in all:
 
 - Services contain the actual business logic;
-- They can be injected into controllers which orchestrate different services or into other services;
+- They can be injected into controllers (which orchestrate different services) or into other services;
 - We should avoid using services in the View part of the application and prefer controllers instead. However, it is still possible to do in case controllers fully duplicate service's methods (EPG service). In this case we can use a react hook (for the web app) and get access to the service there.
-- One service can use different implementation. For example, we can split it into Cleeng and JWP implementation (account, checkout and so on).
+- One service can use provides different implementations. For example, we can split it into Cleeng and JWP implementation (account, checkout and so on).
+
+> **Important:** Services should be written in an environment / client agnostic way (i.e. no Window usage) to be reused on different platforms (Web, SmartTV and so on).
 
 ### Controllers
 
-Controllers - binding different parts of the application. Controllers use services, store and provide methods to operate with business logic in the UI and in the App. If we need to share code across controllers then it is better to promote the code to the next level (we do it in the AppController). Then it is possible to modify both controllers to call the same (now shared) code.
+Controllers bind different parts of the application. Controllers use services, store and provide methods to operate with business logic in the UI and in the App. If we need to share code across controllers then it is better to promote the code to the next level (we do it in the AppController). Then it is possible to modify both controllers to call the same (now shared) code.
 
 - They can be called from the View part of the application;
 - They use the data from the Store and from the UI to operate different injected services;
 - They use the Store to persist the entities when needed;
 - They return data back to the UI when needed.
 
-> **Important:** We should try to avoid controllers calling each other because it leads to circular dependencies and makes the code messy. However now they do it sometimes.
+> **Important:** We should try to avoid controllers calling each other because it leads to circular dependencies and makes the code messy. However now they do it sometimes (to be refactored).
 
 ### Controllers / Services retrieval
 
-To get access to the service / controller [getModule](src/modules/container.ts) utility can be used. It also accepts and optional `required` param which can be used in case the presence of the service is optional. If `required` is provided but service itself is not bound then the error will be thrown.
+To get access to the service / controller [getModule](src/modules/container.ts) utility can be used. It also accepts a `required` param which can be used in case the presence of the service is optional. If `required` is provided but service itself is not bound then the error will be thrown.
 
 `getNamedModule` function is mostly use in controllers to retrieve integration-specific services, like AccountService or CheckoutService.
