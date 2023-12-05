@@ -91,6 +91,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     }),
     [seriesMedia, series, episodes],
   );
+
   const episodesInSeason = getEpisodesInSeason(episodeMetadata, series);
   const { data: nextItem } = useNextEpisode({ series, episodeId: episode?.mediaid || firstEpisode?.mediaid });
 
@@ -261,7 +262,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         watchHistory={watchHistoryDictionary}
         filterMetadata={filterMetadata}
         filters={filters}
-        hasLoadMore={hasNextEpisodesPage}
+        hasMore={hasNextEpisodesPage}
         loadMore={fetchNextEpisodes}
         player={
           inlineLayout && (episode || firstEpisode) ? (

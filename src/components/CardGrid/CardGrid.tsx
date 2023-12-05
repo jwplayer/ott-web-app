@@ -11,6 +11,7 @@ import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
+import { isDefined } from '#src/utils/common';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -33,7 +34,7 @@ type CardGridProps = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
-  hasLoadMore?: boolean;
+  hasMore?: boolean;
   loadMore?: () => void;
   onCardHover?: (item: PlaylistItem) => void;
   getUrl: (item: PlaylistItem) => string;
@@ -49,7 +50,7 @@ function CardGrid({
   accessModel,
   isLoggedIn,
   hasSubscription,
-  hasLoadMore,
+  hasMore,
   getUrl,
   loadMore,
   onCardHover,
@@ -90,9 +91,14 @@ function CardGrid({
   };
 
   return (
-    <InfiniteScroll pageStart={0} loadMore={loadMore || defaultLoadMore} hasMore={hasLoadMore || defaultHasMore} loader={<InfiniteScrollLoader key="loader" />}>
+    <InfiniteScroll
+      pageStart={0}
+      loadMore={isDefined(loadMore) ? loadMore : defaultLoadMore}
+      hasMore={isDefined(hasMore) ? hasMore : defaultHasMore}
+      loader={<InfiniteScrollLoader key="loader" />}
+    >
       <div className={classNames(styles.container, styles[`cols-${visibleTiles}`])} role="grid">
-        {playlist.playlist.slice(0, rowCount * visibleTiles).map(renderTile)}
+        {(isDefined(loadMore) ? playlist.playlist : playlist.playlist.slice(0, rowCount * visibleTiles)).map(renderTile)}
       </div>
     </InfiniteScroll>
   );
