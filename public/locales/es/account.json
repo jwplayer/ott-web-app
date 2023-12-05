@@ -163,6 +163,8 @@
     },
     "sign_up": "Registrarse",
     "terms_and_conditions": "Términos y condiciones",
+    "terms_consent": "Acepto los {{termsLink}}.",
+    "terms_consent_jwplayer": "Acepto los {{termsLink}} de JW Player.",
     "user_exists": "Ya existe un usuario con esta dirección de correo electrónico",
     "view_password": "Ver contraseña"
   },

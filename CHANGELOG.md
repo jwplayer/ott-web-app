@@ -1,3 +1,10 @@
+## [4.31.1](https://github.com/jwplayer/ott-web-app/compare/v4.31.0...v4.31.1) (2023-11-28)
+
+
+### Bug Fixes
+
+* add missing translations and fix parsability ([09548a5](https://github.com/jwplayer/ott-web-app/commit/09548a51001f559cb7baef84b73b9ae9bb8346c5))
+
 ## [4.31.0](https://github.com/jwplayer/ott-web-app/compare/v4.30.0...v4.31.0) (2023-11-13)
 
 

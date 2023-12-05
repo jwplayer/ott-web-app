@@ -6,7 +6,6 @@ export interface TestConfig {
 export type PaymentOffer = {
   label: string;
   price: string;
-  couponNextPayment: string;
   paymentFee: string;
 };
 
