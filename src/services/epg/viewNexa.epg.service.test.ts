@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect } from 'vitest';
 import { mockFetch, mockGet } from 'vi-fetch';
 import { unregister } from 'timezone-mock';
 
-import ViewNexaEpgService from './viewNexaEpg.service';
+import ViewNexaEpgService from './viewNexa.epg.service';
 
 import viewNexaChannel from '#test/epg/viewNexaChannel.xml?raw';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';

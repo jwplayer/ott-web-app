@@ -2,12 +2,13 @@ import { array, object, string } from 'yup';
 import { isValid } from 'date-fns';
 import { injectable } from 'inversify';
 
-import EpgProviderService from './epgProvider.service';
+import EpgService from './epg.service';
 
 import type { PlaylistItem } from '#types/playlist';
 import { getDataOrThrow } from '#src/utils/api';
 import { logDev } from '#src/utils/common';
 import type { EpgProgram } from '#types/epg';
+import { EPG_TYPE } from '#src/config';
 
 const AUTHENTICATION_HEADER = 'API-KEY';
 
@@ -29,7 +30,11 @@ const jwEpgProgramSchema = object().shape({
 });
 
 @injectable()
-export default class JWEpgService extends EpgProviderService {
+export default class JWEpgService extends EpgService {
+  constructor() {
+    super(EPG_TYPE.JWP);
+  }
+
   transformProgram = async (data: unknown): Promise<EpgProgram> => {
     const program = await jwEpgProgramSchema.validate(data);
     const image = program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || undefined;

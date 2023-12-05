@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect } from 'vitest';
 import { unregister } from 'timezone-mock';
 
-import EpgClientService from './epgClient.service';
-import type EpgProviderService from './epgProvider.service';
+import EpgController from './EpgController';
 
 import channel1 from '#test/epg/jwChannel.json';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
@@ -14,8 +13,18 @@ const livePlaylist = livePlaylistFixture as Playlist;
 const transformProgram = vi.fn();
 const fetchSchedule = vi.fn();
 
-const epgProvider = { transformProgram, fetchSchedule };
-const epgService = new EpgClientService(epgProvider, epgProvider);
+const epgService = { transformProgram, fetchSchedule };
+const jwpEpgService = {
+  ...epgService,
+  type: EPG_TYPE.JWP,
+};
+
+const viewNexaEpgService = {
+  ...epgService,
+  type: EPG_TYPE.VIEW_NEXA,
+};
+
+const epgController = new EpgController([jwpEpgService, viewNexaEpgService]);
 
 const mockProgram1 = {
   id: 'test',
@@ -36,19 +45,6 @@ const mockProgram2 = {
   backgroundImage: '',
   description: 'Description',
 };
-
-vi.mock('#src/modules/container', () => ({
-  getNamedModule: (_service: EpgProviderService, type: string) => {
-    switch (type) {
-      case EPG_TYPE.JW:
-      case EPG_TYPE.VIEW_NEXA:
-        return {
-          transformProgram,
-          fetchSchedule,
-        };
-    }
-  },
-}));
 
 describe('epgService', () => {
   beforeEach(() => {
@@ -76,7 +72,7 @@ describe('epgService', () => {
     fetchSchedule.mockResolvedValue(channel1);
     transformProgram.mockResolvedValue(mockProgram);
 
-    const schedule = await epgService.getSchedule(livePlaylist.playlist[0]);
+    const schedule = await epgController.getSchedule(livePlaylist.playlist[0]);
 
     expect(schedule.title).toEqual('Channel 1');
     expect(schedule.programs.length).toEqual(33);
@@ -94,7 +90,7 @@ describe('epgService', () => {
     const item = Object.assign({}, livePlaylist.playlist[0]);
     item.scheduleDemo = '1';
 
-    const schedule = await epgService.getSchedule(item);
+    const schedule = await epgController.getSchedule(item);
 
     expect(schedule.title).toEqual('Channel 1');
     expect(schedule.programs[0].startTime).toEqual('2036-06-03T23:50:00.000Z');
@@ -116,7 +112,7 @@ describe('epgService', () => {
     transformProgram.mockRejectedValueOnce(undefined);
     transformProgram.mockResolvedValueOnce(mockProgram2);
 
-    const schedule = await epgService.parseSchedule([scheduleItem, scheduleItem, scheduleItem, scheduleItem], livePlaylist.playlist[0]);
+    const schedule = await epgController.parseSchedule([scheduleItem, scheduleItem, scheduleItem, scheduleItem], livePlaylist.playlist[0]);
 
     expect(schedule.length).toEqual(2);
   });

@@ -2,11 +2,12 @@ import { object, string } from 'yup';
 import { parse } from 'date-fns';
 import { injectable } from 'inversify';
 
-import EpgProviderService from './epgProvider.service';
+import EpgService from './epg.service';
 
 import type { PlaylistItem } from '#types/playlist';
 import { logDev } from '#src/utils/common';
 import type { EpgProgram } from '#types/epg';
+import { EPG_TYPE } from '#src/config';
 
 const viewNexaEpgProgramSchema = object().shape({
   'episode-num': object().shape({
@@ -28,7 +29,11 @@ const viewNexaEpgProgramSchema = object().shape({
 const parseData = (date: string): string => parse(date, 'yyyyMdHms xxxx', new Date()).toISOString();
 
 @injectable()
-export default class ViewNexaEpgService extends EpgProviderService {
+export default class ViewNexaEpgService extends EpgService {
+  constructor() {
+    super(EPG_TYPE.VIEW_NEXA);
+  }
+
   /**
    * Validate the given data with the viewNexaProgramSchema and transform it into an EpgProgram
    */
@@ -38,11 +43,11 @@ export default class ViewNexaEpgService extends EpgProviderService {
     return {
       id: program['episode-num']['#text'],
       title: program['title']['#text'],
-      description: program['desc']['#text'],
       startTime: parseData(program['start']),
       endTime: parseData(program['stop']),
-      cardImage: program['icon']['src'],
-      backgroundImage: program['icon']['src'],
+      description: program?.['desc']?.['#text'],
+      cardImage: program?.['icon']?.['src'],
+      backgroundImage: program?.['icon']?.['src'],
     };
   };
 

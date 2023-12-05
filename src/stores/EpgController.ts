@@ -1,12 +1,11 @@
 import { addDays, differenceInDays } from 'date-fns';
-import { injectable, targetName } from 'inversify';
+import { injectable, multiInject } from 'inversify';
 
-import EpgProviderService from './epgProvider.service';
-
+import EpgService from '#src/services/epg/epg.service';
 import { logDev } from '#src/utils/common';
-import { EPG_TYPE } from '#src/config';
 import type { PlaylistItem } from '#types/playlist';
 import type { EpgProgram, EpgChannel } from '#types/epg';
+import { EPG_TYPE } from '#src/config';
 
 export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => {
   if (input.status === 'fulfilled') {
@@ -18,13 +17,11 @@ export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is Promise
 };
 
 @injectable()
-export default class EpgClientService {
-  private viewNexaProvider: EpgProviderService;
-  private jwProvider: EpgProviderService;
+export default class EpgController {
+  private epgServices: EpgService[];
 
-  public constructor(@targetName(EPG_TYPE.JW) jwProvider: EpgProviderService, @targetName(EPG_TYPE.VIEW_NEXA) viewNexaProvider: EpgProviderService) {
-    this.viewNexaProvider = viewNexaProvider;
-    this.jwProvider = jwProvider;
+  public constructor(@multiInject(EpgService) epgServices: EpgService[]) {
+    this.epgServices = epgServices || [];
   }
 
   /**
@@ -55,7 +52,7 @@ export default class EpgClientService {
   parseSchedule = async (data: unknown, item: PlaylistItem) => {
     const demo = !!item.scheduleDemo || false;
 
-    const epgService = this.getScheduleProvider(item);
+    const epgService = this.getEpgService(item);
 
     if (!Array.isArray(data)) return [];
 
@@ -84,7 +81,7 @@ export default class EpgClientService {
    * When there is no program (empty schedule) or the request fails, it returns a static program.
    */
   getSchedule = async (item: PlaylistItem) => {
-    const epgService = this.getScheduleProvider(item);
+    const epgService = this.getEpgService(item);
 
     const schedule = await epgService.fetchSchedule(item);
     const programs = await this.parseSchedule(schedule, item);
@@ -102,8 +99,15 @@ export default class EpgClientService {
     } as EpgChannel;
   };
 
-  getScheduleProvider = (item: PlaylistItem) => {
-    return item?.scheduleType === EPG_TYPE.VIEW_NEXA ? this.viewNexaProvider : this.jwProvider;
+  getEpgService = (item: PlaylistItem) => {
+    const scheduleType = item?.scheduleType || EPG_TYPE.JWP;
+    const service = this.epgServices.find((service) => service.type === scheduleType);
+
+    if (!service) {
+      throw Error(`No epg service was added for the ${scheduleType} schedule type`);
+    }
+
+    return service;
   };
 
   /**

@@ -6,7 +6,7 @@ import type { EpgProgram, EpgChannel } from '#types/epg';
 import { getLiveProgram, programIsLive } from '#src/utils/epg';
 import { LIVE_CHANNELS_REFETCH_INTERVAL } from '#src/config';
 import { getModule } from '#src/modules/container';
-import EpgClientService from '#src/services/epg/epgClient.service';
+import EpgController from '#src/stores/EpgController';
 
 /**
  * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.
@@ -31,9 +31,9 @@ const useLiveChannels = ({
   initialChannelId: string | undefined;
   enableAutoUpdate?: boolean;
 }) => {
-  const epgService = getModule(EpgClientService);
+  const epgController = getModule(EpgController);
 
-  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist), {
+  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgController.getSchedules(playlist), {
     refetchInterval: LIVE_CHANNELS_REFETCH_INTERVAL,
   });
 

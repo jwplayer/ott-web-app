@@ -1,7 +1,7 @@
 // To organize imports in a better way
 /* eslint-disable import/order */
 import 'reflect-metadata'; // include once in the app for inversify (see: https://github.com/inversify/InversifyJS/blob/master/README.md#-installation)
-import { EPG_TYPE, INTEGRATION } from '#src/config';
+import { INTEGRATION } from '#src/config';
 import { container } from '#src/modules/container';
 
 import ApiService from '#src/services/api.service';
@@ -13,10 +13,9 @@ import ConfigService from '#src/services/config.service';
 import SettingsService from '#src/services/settings.service';
 
 // Epg services
-import EpgClientService from '#src/services/epg/epgClient.service';
-import EpgProviderService from '#src/services/epg/epgProvider.service';
-import ViewNexaEpgService from '#src/services/epg/viewNexaEpg.service';
-import JWEpgService from '#src/services/epg/jwEpg.service';
+import EpgService from '#src/services/epg/epg.service';
+import ViewNexaEpgService from '#src/services/epg/viewNexa.epg.service';
+import JWEpgService from '#src/services/epg/jw.epg.service';
 
 import WatchHistoryController from '#src/stores/WatchHistoryController';
 import CheckoutController from '#src/stores/CheckoutController';
@@ -24,6 +23,7 @@ import AccountController from '#src/stores/AccountController';
 import ProfileController from '#src/stores/ProfileController';
 import FavoritesController from '#src/stores/FavoritesController';
 import AppController from '#src/stores/AppController';
+import EpgController from '#src/stores/EpgController';
 
 // Integration interfaces
 import AccountService from '#src/services/account.service';
@@ -51,6 +51,10 @@ container.bind(GenericEntitlementService).toSelf();
 container.bind(ApiService).toSelf();
 container.bind(SettingsService).toSelf();
 
+// EPG services
+container.bind(EpgService).to(JWEpgService);
+container.bind(EpgService).to(ViewNexaEpgService);
+
 // Common controllers
 container.bind(AppController).toSelf();
 container.bind(WatchHistoryController).toSelf();
@@ -60,6 +64,7 @@ container.bind(FavoritesController).toSelf();
 container.bind(AccountController).toSelf();
 container.bind(CheckoutController).toSelf();
 container.bind(ProfileController).toSelf();
+container.bind(EpgController).toSelf();
 
 container.bind('INTEGRATION_TYPE').toDynamicValue((context) => {
   return context.container.get(AppController).getIntegrationType();
@@ -77,14 +82,3 @@ container.bind(AccountService).to(InplayerAccountService).whenTargetNamed(INTEGR
 container.bind(CheckoutService).to(InplayerCheckoutService).whenTargetNamed(INTEGRATION.JWP);
 container.bind(SubscriptionService).to(InplayerSubscriptionService).whenTargetNamed(INTEGRATION.JWP);
 container.bind(ProfileService).to(InplayerProfileService).whenTargetNamed(INTEGRATION.JWP);
-
-// EPG integration
-container.bind(EpgClientService).toSelf();
-container
-  .bind(EpgProviderService)
-  .to(ViewNexaEpgService)
-  .when((request) => request.target.name.equals(EPG_TYPE.VIEW_NEXA));
-container
-  .bind(EpgProviderService)
-  .to(JWEpgService)
-  .when((request) => request.target.name.equals(EPG_TYPE.JW));

@@ -75,6 +75,6 @@ export const DEFAULT_FEATURES = {
 };
 
 export const EPG_TYPE = {
-  JW: 'JW',
+  JWP: 'JWP',
   VIEW_NEXA: 'VIEW_NEXA',
 } as const;

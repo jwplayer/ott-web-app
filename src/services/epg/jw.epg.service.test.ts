@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect } from 'vitest';
 import { mockFetch, mockGet } from 'vi-fetch';
 import { unregister } from 'timezone-mock';
 
-import JWEpgService from './jwEpg.service';
+import JWEpgService from './jw.epg.service';
 
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
 import type { Playlist } from '#types/playlist';
