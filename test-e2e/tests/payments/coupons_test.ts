@@ -87,7 +87,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
       );
     }
 
-    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.couponNextPayment, props.hasInlineOfferSwitch);
+    await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, props.hasInlineOfferSwitch);
   });
 
   Scenario(`I can cancel a free subscription - ${providerName}`, async ({ I }) => {
@@ -96,7 +96,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
   Scenario(`I can renew a free subscription - ${providerName}`, async ({ I }) => {
     if (props.canRenewSubscription) {
-      renewPlan(I, addYear(today), props.yearlyOffer.couponNextPayment);
+      renewPlan(I, addYear(today), props.yearlyOffer.price);
     } else {
       I.say(`Provider ${providerName} does not support renewal. Skipping test...`);
     }
