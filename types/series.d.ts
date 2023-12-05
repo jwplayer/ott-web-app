@@ -7,8 +7,8 @@ export type GetSeriesParams = {
 
 export type Episode = {
   episode_number: number;
-  season_number: number;
-  media_item: PlaylistItem;
+  season_number: number | null;
+  media_item: PlaylistItem | null;
 };
 
 export type Season = {

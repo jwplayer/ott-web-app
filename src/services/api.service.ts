@@ -73,6 +73,22 @@ export default class ApiService {
     return playlist;
   };
 
+  private transformEpisodes = (episodesRes: EpisodesRes, seasonNumber?: number) => {
+    const { episodes, page, page_limit, total } = episodesRes;
+
+    // Adding images and keys for media items
+    return {
+      episodes: episodes
+        .filter((el) => el.media_item)
+        .map((el) => ({
+          ...this.transformMediaItem(el.media_item as PlaylistItem),
+          seasonNumber: seasonNumber ? String(seasonNumber) : String(el.season_number) || '',
+          episodeNumber: String(el.episode_number),
+        })),
+      pagination: { page, page_limit, total },
+    };
+  };
+
   /**
    * Get playlist by id
    * @param {string} id
@@ -185,17 +201,9 @@ export default class ApiService {
     });
 
     const response = await fetch(url);
-    const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
+    const episodesRes: EpisodesRes = await getDataOrThrow(response);
 
-    // Adding images and keys for media items
-    return {
-      episodes: episodes.map((el) => ({
-        ...this.transformMediaItem(el.media_item),
-        seasonNumber: el.season_number ? String(el.season_number) : '',
-        episodeNumber: String(el.episode_number),
-      })),
-      pagination: { page, page_limit, total },
-    };
+    return this.transformEpisodes(episodesRes);
   };
 
   /**
@@ -221,17 +229,9 @@ export default class ApiService {
     const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit });
 
     const response = await fetch(url);
-    const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
+    const episodesRes: EpisodesRes = await getDataOrThrow(response);
 
-    // Adding images and keys for media items
-    return {
-      episodes: episodes.map((el) => ({
-        ...this.transformMediaItem(el.media_item),
-        seasonNumber: String(seasonNumber),
-        episodeNumber: String(el.episode_number),
-      })),
-      pagination: { page, page_limit, total },
-    };
+    return this.transformEpisodes(episodesRes, seasonNumber);
   };
 
   getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {
