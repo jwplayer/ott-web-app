@@ -6,7 +6,7 @@ import styles from './VideoList.module.scss';
 
 import VideoListItem from '#components/VideoListItem/VideoListItem';
 import { isLocked } from '#src/utils/entitlements';
-import { isDefined, testId } from '#src/utils/common';
+import { testId } from '#src/utils/common';
 import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
@@ -51,12 +51,7 @@ function VideoList({
     <div className={classNames(styles.container, !!className && className)} data-testid={testId('video-list')}>
       {!!header && header}
       <div className={styles.content}>
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={isDefined(loadMore) ? loadMore : defaultLoadMore}
-          hasMore={isDefined(hasMore) ? hasMore : false}
-          loader={<InfiniteScrollLoader key="loader" />}
-        >
+        <InfiniteScroll pageStart={0} loadMore={loadMore ?? defaultLoadMore} hasMore={hasMore ?? false} loader={<InfiniteScrollLoader key="loader" />}>
           {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
             <VideoListItem
               url={getUrl(playlistItem)}

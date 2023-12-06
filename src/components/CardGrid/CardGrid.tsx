@@ -11,7 +11,6 @@ import type { AccessModel } from '#types/Config';
 import type { Playlist, PlaylistItem } from '#types/playlist';
 import { parseAspectRatio, parseTilesDelta } from '#src/utils/collection';
 import InfiniteScrollLoader from '#components/InfiniteScrollLoader/InfiniteScrollLoader';
-import { isDefined } from '#src/utils/common';
 
 const INITIAL_ROW_COUNT = 6;
 const LOAD_ROWS_COUNT = 4;
@@ -91,14 +90,11 @@ function CardGrid({
   };
 
   return (
-    <InfiniteScroll
-      pageStart={0}
-      loadMore={isDefined(loadMore) ? loadMore : defaultLoadMore}
-      hasMore={isDefined(hasMore) ? hasMore : defaultHasMore}
-      loader={<InfiniteScrollLoader key="loader" />}
-    >
+    <InfiniteScroll pageStart={0} loadMore={loadMore ?? defaultLoadMore} hasMore={hasMore ?? defaultHasMore} loader={<InfiniteScrollLoader key="loader" />}>
       <div className={classNames(styles.container, styles[`cols-${visibleTiles}`])} role="grid">
-        {(isDefined(loadMore) ? playlist.playlist : playlist.playlist.slice(0, rowCount * visibleTiles)).map(renderTile)}
+        {/* When loadMore is present -> we get accumulated data (playlist.playlist) from the outside (we do it for series) 
+            When not -> we hide some cards visually to save some computing resources spent on rendering */}
+        {(loadMore ? playlist.playlist : playlist.playlist.slice(0, rowCount * visibleTiles)).map(renderTile)}
       </div>
     </InfiniteScroll>
   );

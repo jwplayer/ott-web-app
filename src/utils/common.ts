@@ -89,8 +89,6 @@ export const isTruthyCustomParamValue = (value: unknown): boolean => ['true', '1
 
 export const isFalsyCustomParamValue = (value: unknown): boolean => ['false', '0', 'no', 'off'].includes(String(value)?.toLowerCase());
 
-export const isDefined = <T>(value: T | undefined): value is T => typeof value !== 'undefined';
-
 export function testId(value: string | undefined) {
   return IS_DEVELOPMENT_BUILD || IS_TEST_MODE || IS_PREVIEW_MODE ? value : undefined;
 }
