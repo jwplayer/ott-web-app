@@ -37,6 +37,7 @@ import type { Config } from '#types/Config';
 import type { InPlayerAuthData } from '#types/inplayer';
 import type { Favorite } from '#types/favorite';
 import type { WatchHistoryItem } from '#types/watchHistory';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -60,6 +61,7 @@ export default class InplayerAccountService extends AccountService {
       hasNotifications: true,
       hasProfiles: true,
       hasSocialURLs: true,
+      watchListSizeLimit: MAX_WATCHLIST_ITEMS_COUNT.JWP,
     });
   }
 

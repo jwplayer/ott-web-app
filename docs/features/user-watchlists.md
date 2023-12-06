@@ -127,10 +127,16 @@ Example data format
 }
 ```
 
-### Max 48 items
+### Max amount of items
 
-Cleeng customer `externalData` attribute has maxsize of 5000 symbols.
+#### JWP
 
-The length of one stringified object of History equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only History objects, we get 5000 / 52 = ~96, so 48 for Favorites and 48 for History. We also leave some extra space for possible further updates.
+For JWP customers it is possible to add 100 items for Favorites and 100 for Watch History
+
+#### Cleeng
+
+Cleeng customer `externalData` attribute has maxsize of 4000 symbols.
+
+The length of one stringified object of History equals to 52 symbols, one Favorites object equals to 22 symbols. Taking into account only History objects, we get 4000 / 52 = ~76.92, so 38 for Favorites and 38 for Watch History. We also leave some extra space for possible further updates.
 
 We rotate the oldest continue watching object to the first item position after its progress property gets a new value.

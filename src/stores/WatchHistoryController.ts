@@ -10,6 +10,7 @@ import type { SerializedWatchHistoryItem, WatchHistoryItem } from '#types/watchH
 import type { Customer } from '#types/account';
 import { getNamedModule } from '#src/modules/container';
 import type { IntegrationType } from '#types/Config';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 @injectable()
 export default class WatchHistoryController {
@@ -87,7 +88,8 @@ export default class WatchHistoryController {
 
     if (!videoProgress) return;
 
-    const updatedHistory = await this.watchHistoryService.saveItem(item, seriesItem, videoProgress, watchHistory);
+    const watchHistoryLimit = this.accountService?.features.watchListSizeLimit || MAX_WATCHLIST_ITEMS_COUNT.DEFAULT;
+    const updatedHistory = await this.watchHistoryService.saveItem(item, seriesItem, videoProgress, watchHistory, watchHistoryLimit);
 
     if (updatedHistory) {
       useWatchHistoryStore.setState({ watchHistory: updatedHistory });

@@ -33,6 +33,7 @@ import type {
   UpdatePersonalShelves,
   NotificationsData,
 } from '#types/account';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 @injectable()
 export default class CleengAccountService extends AccountService {
@@ -51,6 +52,7 @@ export default class CleengAccountService extends AccountService {
       hasProfiles: false,
       hasSocialURLs: false,
       hasNotifications: false,
+      watchListSizeLimit: MAX_WATCHLIST_ITEMS_COUNT.CLEENG,
     });
 
     this.cleengService = cleengService;

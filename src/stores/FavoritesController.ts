@@ -11,6 +11,7 @@ import type { Favorite, SerializedFavorite } from '#types/favorite';
 import type { Customer } from '#types/account';
 import { getNamedModule } from '#src/modules/container';
 import type { IntegrationType } from '#types/Config';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '#src/config';
 
 @injectable()
 export default class FavoritesController {
@@ -108,9 +109,11 @@ export default class FavoritesController {
       return;
     }
 
+    const favoritesLimit = this.accountService?.features?.watchListSizeLimit || MAX_WATCHLIST_ITEMS_COUNT.DEFAULT;
+
     // If we exceed the max available number of favorites, we show a warning
-    if (this.favoritesService.hasReachedFavoritesLimit(favorites)) {
-      setWarning(i18next.t('video:favorites_warning', { maxCount: this.favoritesService.getMaxFavoritesCount() }));
+    if (this.accountService && favorites?.length >= favoritesLimit) {
+      setWarning(i18next.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
       return;
     }
 
