@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns';
+import { parseISO, isValid } from 'date-fns';
 import { injectable } from 'inversify';
 
 import { getMediaStatusFromEventState } from '../utils/liveEvent';
@@ -33,6 +33,17 @@ export default class ApiService {
     return url;
   };
 
+  private parseDate = (item: PlaylistItem, prop: string) => {
+    const date = item[prop];
+
+    if (date && !isValid(date)) {
+      console.error(`Invalid "${prop}" date provided for the "${item.title}" media item`);
+      return undefined;
+    }
+
+    return typeof date === 'string' ? parseISO(date) : undefined;
+  };
+
   /**
    * Transform incoming media items
    * - Parses productId into MediaOffer[] for all cleeng offers
@@ -48,8 +59,8 @@ export default class ApiService {
       channelLogoImage: this.generateAlternateImageURL({ item, label: ImageProperty.CHANNEL_LOGO, playlistLabel }),
       backgroundImage: this.generateAlternateImageURL({ item, label: ImageProperty.BACKGROUND }),
       mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
-      scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
-      scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
+      scheduledStart: this.parseDate(item, 'VCH.ScheduledStart'),
+      scheduledEnd: this.parseDate(item, 'VCH.ScheduledEnd'),
     };
 
     // add the media status to the media item after the transformation because the live media status depends on the scheduledStart and scheduledEnd
