@@ -82,7 +82,7 @@ export default class ApiService {
         .filter((el) => el.media_item)
         .map((el) => ({
           ...this.transformMediaItem(el.media_item as PlaylistItem),
-          seasonNumber: seasonNumber ? String(seasonNumber) : String(el.season_number) || '',
+          seasonNumber: seasonNumber?.toString() || el.season_number?.toString() || '',
           episodeNumber: String(el.episode_number),
         })),
       pagination: { page, page_limit, total },
