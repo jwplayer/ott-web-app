@@ -131,7 +131,7 @@ Example data format
 
 #### JWP
 
-For JWP customers it is possible to add 100 items for Favorites and 100 for Watch History
+For JWP the limit is 50 items for Favorites and 50 for Watch History.
 
 #### Cleeng
 

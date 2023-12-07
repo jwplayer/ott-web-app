@@ -112,8 +112,8 @@ export default class FavoritesController {
     const favoritesLimit = this.accountService?.features?.watchListSizeLimit || MAX_WATCHLIST_ITEMS_COUNT.DEFAULT;
 
     // If we exceed the max available number of favorites, we show a warning
-    if (this.accountService && favorites?.length >= favoritesLimit) {
-      setWarning(i18next.t('video:favorites_warning', { maxCount: MAX_WATCHLIST_ITEMS_COUNT }));
+    if (favorites?.length >= favoritesLimit) {
+      setWarning(i18next.t('video:favorites_warning', { maxCount: favoritesLimit }));
       return;
     }
 

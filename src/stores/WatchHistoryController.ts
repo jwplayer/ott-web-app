@@ -89,6 +89,7 @@ export default class WatchHistoryController {
     if (!videoProgress) return;
 
     const watchHistoryLimit = this.accountService?.features.watchListSizeLimit || MAX_WATCHLIST_ITEMS_COUNT.DEFAULT;
+
     const updatedHistory = await this.watchHistoryService.saveItem(item, seriesItem, videoProgress, watchHistory, watchHistoryLimit);
 
     if (updatedHistory) {

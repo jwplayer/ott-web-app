@@ -24,9 +24,9 @@ export const VideoProgressMinMax = {
 export const PLAYLIST_LIMIT = 25;
 
 export const MAX_WATCHLIST_ITEMS_COUNT = {
-  JWP: 100,
-  CLEENG: 38, // The externalData attribute of Cleeng can contain max 4000 characters
-  DEFAULT: 48, // Local storage
+  CLEENG: 38, // The 'externalData' attribute of Cleeng can contain max 4000 characters
+  JWP: 50, // Limit of media_ids length passed to the /apps/watchlists endpoint
+  DEFAULT: 38, // Local storage
 };
 
 export const ADYEN_TEST_CLIENT_KEY = 'test_I4OFGUUCEVB5TI222AS3N2Y2LY6PJM3K';
