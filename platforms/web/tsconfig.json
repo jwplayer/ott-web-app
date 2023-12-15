@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
@@ -22,6 +22,6 @@
     "scripts",
     "test",
     "vite.config.ts",
-    "../packages/common/types"
+    "../../packages/common/types"
   ]
 }

@@ -9,7 +9,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
       currently_previewing_config
     </div>
     <button
-      class="_button_711ff2 _default_711ff2 _text_711ff2"
+      class="_button_e29948 _default_e29948 _text_e29948"
     >
       <span>
         click_to_unselect_config
@@ -25,43 +25,43 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
     class="_configModal_561a54"
   >
     <div
-      class="_errorPage_6dfe53"
+      class="_errorPage_d73633"
     >
       <div
-        class="_box_6dfe53"
+        class="_box_d73633"
       >
         <img
           alt="Logo"
-          class="_image_6dfe53"
+          class="_image_d73633"
           src="/images/logo.png"
         />
         <header>
           <h1
-            class="_title_6dfe53"
+            class="_title_d73633"
           >
             app_config_not_found
           </h1>
         </header>
         <main
-          class="_main_6dfe53"
+          class="_main_d73633"
         >
           <form
             method="GET"
             target="/"
           >
             <div
-              class="_textField_800986 _error_800986 _maxWidth_561a54"
+              class="_textField_25c745 _error_25c745 _maxWidth_561a54"
             >
               <label
-                class="_label_800986"
+                class="_label_25c745"
                 for="text-field_1235_app-config"
               />
               <div
-                class="_container_800986"
+                class="_container_25c745"
               >
                 <input
                   autocapitalize="none"
-                  class="_input_800986"
+                  class="_input_25c745"
                   id="text-field_1235_app-config"
                   maxlength="8"
                   name="app-config"
@@ -72,7 +72,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 />
               </div>
               <div
-                class="_helperText_67978e _error_67978e"
+                class="_helperText_edc1c5 _error_edc1c5"
               >
                 <span>
                   smth
@@ -89,7 +89,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="_button_711ff2 _default_711ff2 _outlined_711ff2"
+                class="_button_e29948 _default_e29948 _outlined_e29948"
                 type="submit"
               >
                 <span>
@@ -98,7 +98,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="_button_711ff2 _default_711ff2 _outlined_711ff2"
+                class="_button_e29948 _default_e29948 _outlined_e29948"
               >
                 <span>
                   cancel_config_id
@@ -113,7 +113,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
             demo_note
           </p>
           <p
-            class="_links_6dfe53"
+            class="_links_d73633"
           >
             <a
               href="https://docs.jwplayer.com/platform/docs/ott-create-an-app-config"
@@ -123,7 +123,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               app_config_learn_more
             </a>
             <span
-              class="_stack_6dfe53"
+              class="_stack_d73633"
             >
               <a>
                 Show Stack Trace
