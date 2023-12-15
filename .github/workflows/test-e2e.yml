@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./web
+    working-directory: ./platforms/web
 
 jobs:
   test-e2e:
@@ -44,5 +44,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: allure-report-${{ matrix.config }}
-          path: ./web/test-e2e/output/${{ matrix.config }}
+          path: ./platforms/web/test-e2e/output/${{ matrix.config }}
           retention-days: 7

@@ -24,7 +24,7 @@ jobs:
           echo "current-version=${version}" >> "$GITHUB_OUTPUT"
 
       - name: Build App
-        working-directory: ./web
+        working-directory: ./platforms/web
         run: |
           yarn build
           cd build
