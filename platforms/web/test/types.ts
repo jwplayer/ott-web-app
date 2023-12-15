@@ -3,7 +3,6 @@ import type { TestConfig } from '@jwp/ott-testing/constants';
 export type PaymentOffer = {
   label: string;
   price: string;
-  couponNextPayment: string;
   paymentFee: string;
 };
 

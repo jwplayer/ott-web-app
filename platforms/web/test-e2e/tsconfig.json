@@ -2,10 +2,10 @@
   "include": [
     "./",
     "../types",
-    "../../packages/common/types"
+    "../../../packages/common/types"
   ],
   "exclude": [
-    "../../node_modules",
+    "../../../node_modules",
     "../node_modules"
   ],
   "ts-node": {
