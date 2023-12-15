@@ -5,7 +5,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./web
+    working-directory: ./platforms/web
 
 jobs:
   build_and_preview:
@@ -22,7 +22,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         id: firebase_hosting_preview
         with:
-          entryPoint: './web'
+          entryPoint: './platforms/web'
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           expires: 30d
