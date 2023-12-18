@@ -8,6 +8,7 @@ import { calculateContrastColor } from '../utils/common';
 import { addScript } from '../utils/dom';
 import { AppError } from '../utils/error';
 import type { AccessModel, Config, Styling } from '../../types/config';
+import env from '../env';
 
 import ApiService from './ApiService';
 
@@ -17,7 +18,7 @@ import ApiService from './ApiService';
 
 @injectable()
 export default class ConfigService {
-  private CONFIG_HOST = import.meta.env.APP_API_BASE_URL;
+  private CONFIG_HOST = env.APP_API_BASE_URL;
   // Explicitly set default config here as a local variable,
   // otherwise if it's a module level const, the merge below causes changes to nested properties
   private DEFAULT_CONFIG: Config = {

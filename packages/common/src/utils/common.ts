@@ -1,4 +1,5 @@
 import { overrideIPCookieKey } from '../constants';
+import env from '../env';
 
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | null;
@@ -53,15 +54,15 @@ export function calculateContrastColor(color: string) {
 
 // Build is either Development or Production
 // Mode can be dev, jwdev, demo, test, prod, etc.
-export const IS_DEVELOPMENT_BUILD = import.meta.env.DEV;
+export const IS_DEVELOPMENT_BUILD = env.DEV;
 // Demo mode is used to run our firebase demo instance
-export const IS_DEMO_MODE = import.meta.env.MODE === 'demo';
+export const IS_DEMO_MODE = env.MODE === 'demo';
 // Test mode is used for e2e and unit tests
-export const IS_TEST_MODE = import.meta.env.MODE === 'test';
+export const IS_TEST_MODE = env.MODE === 'test';
 // Preview mode is used for previewing Pull Requests on GitHub
-export const IS_PREVIEW_MODE = import.meta.env.MODE === 'preview';
+export const IS_PREVIEW_MODE = env.MODE === 'preview';
 // Production mode
-export const IS_PROD_MODE = import.meta.env.MODE === 'prod';
+export const IS_PROD_MODE = env.MODE === 'prod';
 
 export function logDev(message: unknown, ...optionalParams: unknown[]) {
   if ((IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && !IS_TEST_MODE) {

@@ -1,9 +1,10 @@
+import env from '@jwp/ott-common/src/env';
 import { useEffect, useState } from 'react';
 
 const generateId = (prefix?: string, suffix?: string) => {
   // This test code ensures that ID's in snapshots are always the same.
   // Ideally it would be mocked in the test setup but there seems to be a bug with vitest if you mock Math.random
-  const randomId = import.meta.env.MODE === 'test' ? 1235 : Math.random() * 10000;
+  const randomId = env.MODE === 'test' ? 1235 : Math.random() * 10000;
 
   return [prefix, Math.round(randomId), suffix].filter(Boolean).join('_');
 };
