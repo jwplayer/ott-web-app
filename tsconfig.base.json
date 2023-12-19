@@ -13,6 +13,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    // @todo: Migrate deprecated "importsNotUsedAsValues" to "verbatimModuleSyntax"
+    "ignoreDeprecations": "5.0",
     "importsNotUsedAsValues": "error",
     // Ensure unused code is cleaned up
     "noUnusedParameters": true,
