@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import '@testing-library/jest-dom'; // Including this for the expect extensions
 import 'react-app-polyfill/stable';
 import type { ComponentType } from 'react';
+import { configureEnv } from '@jwp/ott-common/src/env';
 
 const country = {
   af: 'Afghanistan',
@@ -15,6 +16,11 @@ const usStates = {
   ak: 'Alaska',
   az: 'Arizona',
 };
+
+// Set the env.MODE (alsofor a non-Vite env)
+configureEnv({
+  MODE: 'test',
+});
 
 // stubs
 vi.stubGlobal(
