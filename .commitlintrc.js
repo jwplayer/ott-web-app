@@ -30,6 +30,7 @@ module.exports = {
         'epg',
         'tests',
         'i18n',
+        'a11y',
       ],
     ],
   },

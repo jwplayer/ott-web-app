@@ -24,7 +24,7 @@ Scenario('I can see the movie inline player layout', async ({ I }) => {
   I.see('Trailer');
   I.see('Favorite');
   I.see('Share');
-  I.seeTextEquals('Related Films', 'h3');
+  I.seeTextEquals('Related Films', 'h2');
   I.see('Caminandes 1: Llama Drama', locate({ css: 'a[aria-label="Caminandes 1: Llama Drama"]' }).inside(videoListLocator));
   I.see('Caminandes 2: Gran Dillama', locate({ css: 'a[aria-label="Caminandes 2: Gran Dillama"]' }).inside(videoListLocator));
 });
@@ -50,7 +50,7 @@ Scenario('I can see the series inline player layout', async ({ I }) => {
   I.see(constants.minecraftAnimationWorkshopDescription);
   I.see('Favorite');
   I.see('Share');
-  I.seeTextEquals('Minecraft Animation Workshop', 'h3');
+  I.seeTextEquals('Minecraft Animation Workshop', 'h2');
   I.see('Season 1', locate({ css: 'select' }).inside(videoListLocator));
   I.see('S1:E2', locate({ css: 'a[aria-label="Basics Of Blender"]' }).inside(videoListLocator));
   I.see('S1:E3', locate({ css: 'a[aria-label="Using Mineways"]' }).inside(videoListLocator));

@@ -4,9 +4,9 @@ exports[`<Form> > renders Form 1`] = `
 <div>
   <div>
     <div>
-      <h3>
+      <h2>
         Edit This
-      </h3>
+      </h2>
     </div>
     <form
       class="_flexBox_1c1c63"

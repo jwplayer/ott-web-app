@@ -30,6 +30,7 @@ const PaymentMethodForm: React.FC<Props> = ({
   updateSuccess,
 }) => {
   const { t } = useTranslation('account');
+  // t('payment.longer_than_usual');
 
   const cardPaymentMethod = paymentMethods?.find((method) => method.methodName === 'card');
   const paypalPaymentMethod = paymentMethods?.find((method) => method.methodName === 'paypal');

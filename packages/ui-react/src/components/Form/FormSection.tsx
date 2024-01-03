@@ -149,7 +149,7 @@ export function FormSection<TData extends GenericFormValues>({
   return (
     <div className={className}>
       <div className={panelHeaderClassName}>
-        <h3>{label}</h3>
+        <h2>{label}</h2>
       </div>
       {isBusy && isEditing && <LoadingOverlay transparentBackground />}
       {content && (

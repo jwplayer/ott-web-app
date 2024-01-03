@@ -20,11 +20,11 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
         />
       </svg>
     </div>
-    <h2
+    <h1
       class="_title_abc9bc"
     >
       checkout.payment_method
-    </h2>
+    </h1>
     <div
       class="_order_abc9bc"
     >

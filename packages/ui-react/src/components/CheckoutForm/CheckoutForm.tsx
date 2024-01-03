@@ -91,7 +91,7 @@ const CheckoutForm: React.FC<Props> = ({
   return (
     <div>
       <DialogBackButton onClick={onBackButtonClick} />
-      <h2 className={styles.title}>{t('checkout.payment_method')}</h2>
+      <h1 className={styles.title}>{t('checkout.payment_method')}</h1>
       <div className={styles.order}>
         <div className={styles.orderInfo}>
           <p className={classNames(styles.orderTitle, { [styles.orderTitleMargin]: offerType === 'svod' })}>{orderTitle}</p>

@@ -20,11 +20,11 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
         <div
           class="_info_d0c133"
         >
-          <h2
+          <h1
             class="_title_d0c133"
           >
             Test video
-          </h2>
+          </h1>
           <div
             class="_metaContainer_d0c133"
           >

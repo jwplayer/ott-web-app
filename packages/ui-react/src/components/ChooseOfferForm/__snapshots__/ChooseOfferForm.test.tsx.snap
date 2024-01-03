@@ -6,16 +6,16 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
     data-testid="choose-offer-form"
     novalidate=""
   >
-    <h2
+    <h1
       class="_title_f7961f"
     >
       choose_offer.title
-    </h2>
-    <h3
+    </h1>
+    <p
       class="_subtitle_f7961f"
     >
       choose_offer.watch_this_on_platform
-    </h3>
+    </p>
     <div
       class="_offerGroupSwitch_f7961f"
     >
@@ -66,11 +66,11 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           class="_label_f7961f"
           for="S916977979_NL"
         >
-          <h4
+          <h2
             class="_offerTitle_f7961f"
           >
             choose_offer.monthly
-          </h4>
+          </h2>
           <hr
             class="_offerDivider_f7961f"
           />
@@ -150,11 +150,11 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           class="_label_f7961f"
           for="S345569153_NL"
         >
-          <h4
+          <h2
             class="_offerTitle_f7961f"
           >
             choose_offer.yearly
-          </h4>
+          </h2>
           <hr
             class="_offerDivider_f7961f"
           />
@@ -239,16 +239,16 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
     data-testid="choose-offer-form"
     novalidate=""
   >
-    <h2
+    <h1
       class="_title_f7961f"
     >
       choose_offer.title
-    </h2>
-    <h3
+    </h1>
+    <p
       class="_subtitle_f7961f"
     >
       choose_offer.watch_this_on_platform
-    </h3>
+    </p>
     <div
       class="_offerGroupSwitch_f7961f"
     >
@@ -299,11 +299,11 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
           class="_label_f7961f"
           for="R892134629_NL"
         >
-          <h4
+          <h2
             class="_offerTitle_f7961f"
           >
             One Time - TVOD offer
-          </h4>
+          </h2>
           <hr
             class="_offerDivider_f7961f"
           />

@@ -20,7 +20,7 @@ const VideoDetailsInline: React.FC<Props> = ({ title, description, primaryMetada
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  const TitleComponent = typeof title === 'string' ? 'h2' : 'div';
+  const TitleComponent = typeof title === 'string' ? 'h1' : 'div';
 
   return (
     <div className={styles.details} data-testid={testId('video-details-inline')}>

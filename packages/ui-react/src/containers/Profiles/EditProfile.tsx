@@ -98,7 +98,7 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
         />
         <div className={styles.panel}>
           <div className={styles.panelHeader}>
-            <h3>{t('profile.delete')}</h3>
+            <h2>{t('profile.delete')}</h2>
           </div>
           <div className={profileStyles.profileInfo}>{t(profileDetails?.default ? 'profile.delete_main' : 'profile.delete_description')}</div>
           {!profileDetails?.default && (

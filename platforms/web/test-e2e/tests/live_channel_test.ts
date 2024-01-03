@@ -176,7 +176,7 @@ Scenario('I can select a previous program on the same channel and watch the vide
   I.seeElement(channel1LiveProgramLocator);
   await isLiveProgram(I, channel1LiveProgramLocator, 'channel 1');
 
-  I.see('The Flash', locate('h2').inside(videoDetailsLocator));
+  I.see('The Flash', locate('h1').inside(videoDetailsLocator));
 
   I.click('Start watching');
   I.seeElement('video');
@@ -191,7 +191,7 @@ Scenario('I can select a program on another channel', async ({ I }) => {
   I.see('LIVE');
   I.dontSee('On Channel 1', locate('div').inside(videoDetailsLocator));
 
-  I.see('The Flash', locate('h2').inside(videoDetailsLocator));
+  I.see('The Flash', locate('h1').inside(videoDetailsLocator));
   I.see('On Channel 2', locate('div').inside(videoDetailsLocator));
 
   I.scrollTo(channel2LiveProgramLocator);

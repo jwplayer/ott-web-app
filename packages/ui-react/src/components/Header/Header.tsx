@@ -199,6 +199,9 @@ const Header: React.FC<Props> = ({
             <Icon icon={Menu} />
           </IconButton>
         </div>
+        <a href="#content" className={styles.skipToContent}>
+          {t('skip_to_content')}
+        </a>
         {logoSrc && (
           <div className={styles.brand}>
             <Logo src={logoSrc} onLoad={() => setLogoLoaded(true)} />

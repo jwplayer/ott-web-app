@@ -39,6 +39,12 @@ exports[`<Layout /> > renders layout 1`] = `
               </svg>
             </div>
           </div>
+          <a
+            class="_skipToContent_f4f7a7"
+            href="#content"
+          >
+            skip_to_content
+          </a>
           <nav
             aria-label="menu"
             class="_nav_f4f7a7"
@@ -108,6 +114,11 @@ exports[`<Layout /> > renders layout 1`] = `
           />
         </nav>
       </div>
+      <div
+        class="_content_c71437"
+        id="content"
+        tabindex="-1"
+      />
     </div>
   </div>
 </div>

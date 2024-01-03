@@ -57,7 +57,7 @@ const Search = () => {
   if ((error || !playlist) && !isFetching) {
     return (
       <ErrorPage title={t('error_heading')}>
-        <h6>{t('error_subheading')}</h6>
+        <h2 className={styles.subHeading}>{t('error_subheading')}</h2>
         <p>{t('error_description')}</p>
       </ErrorPage>
     );
@@ -70,7 +70,7 @@ const Search = () => {
   if (!playlist?.playlist.length) {
     return (
       <ErrorPage title={t('no_results_heading', { query })}>
-        <h6>{t('suggestions')}</h6>
+        <h2 className={styles.subHeading}>{t('suggestions')}</h2>
         <ul>
           <li>{t('tip_one')}</li>
           <li>{t('tip_two')}</li>

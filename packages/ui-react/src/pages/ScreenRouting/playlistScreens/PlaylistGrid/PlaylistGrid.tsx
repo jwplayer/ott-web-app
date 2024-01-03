@@ -42,7 +42,7 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       <header className={styles.header}>
-        <h2>{data.title}</h2>
+        <h1>{data.title}</h1>
         {shouldShowFilter && <Filter name="genre" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
       </header>
       <main className={styles.main}>

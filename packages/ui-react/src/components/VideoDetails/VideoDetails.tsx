@@ -42,7 +42,7 @@ const VideoDetails: React.VFC<Props> = ({
         <div className={classNames(styles.main, styles.mainPadding)}>
           <Image className={styles.poster} image={image} alt={title} width={1280} />
           <div className={styles.info}>
-            <h2 className={styles.title}>{title}</h2>
+            <h1 className={styles.title}>{title}</h1>
             <div className={styles.metaContainer}>
               <div className={styles.primaryMetadata}>{primaryMetadata}</div>
               {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}

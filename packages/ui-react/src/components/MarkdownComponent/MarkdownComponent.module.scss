@@ -61,11 +61,7 @@
   a,
   a:visited {
     color: theme.$link-color;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    text-decoration: underline;
   }
 
   ul,

@@ -46,3 +46,7 @@ div.testFixMargin {
     margin-bottom: calc(#{variables.$base-spacing} / 2);
   }
 }
+
+.content {
+  height: 100%;
+}

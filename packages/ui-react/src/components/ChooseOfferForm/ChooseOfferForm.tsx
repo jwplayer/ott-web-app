@@ -82,7 +82,7 @@ const ChooseOfferForm: React.FC<Props> = ({
         aria-label={ariaLabel}
       />
       <label className={styles.label} htmlFor={offer.offerId}>
-        <h4 className={styles.offerTitle}>{title}</h4>
+        <h2 className={styles.offerTitle}>{title}</h2>
         <hr className={styles.offerDivider} />
         <ul className={styles.offerBenefits}>
           {offer.freeDays || offer.freePeriods ? (
@@ -142,8 +142,8 @@ const ChooseOfferForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
       {onBackButtonClickHandler ? <DialogBackButton onClick={onBackButtonClickHandler} /> : null}
-      <h2 className={styles.title}>{t('choose_offer.title')}</h2>
-      <h3 className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</h3>
+      <h1 className={styles.title}>{t('choose_offer.title')}</h1>
+      <p className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</p>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       {setOfferType && (
         <div className={styles.offerGroupSwitch}>

@@ -17,6 +17,7 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
   >
     <div
       class="_modal_6c6c55"
+      role="dialog"
     >
       <div
         class="_backdrop_6c6c55"

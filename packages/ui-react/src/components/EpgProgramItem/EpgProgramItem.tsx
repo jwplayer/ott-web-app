@@ -52,7 +52,7 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, di
         {showLiveTagInImage && <div className={styles.epgLiveTag}>{t('live')}</div>}
         <div className={styles.epgProgramContent}>
           {compact && isLive && <div className={styles.epgLiveTag}>{t('live')}</div>}
-          <h3 className={styles.epgProgramTitle}>{title}</h3>
+          <h2 className={styles.epgProgramTitle}>{title}</h2>
           <span className={styles.epgProgramText}>
             {sinceTime} - {tillTime}
           </span>

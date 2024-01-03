@@ -19,8 +19,10 @@ const ConfirmationDialog: React.FC<Props> = ({ open, title, body, onConfirm, onC
   const { t } = useTranslation('common');
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <h2 className={styles.title}>{title}</h2>
+    <Dialog open={open} onClose={onClose} role="dialog" aria-labbeledby="confirmation-heading">
+      <h2 className={styles.title} id="confirmation-heading">
+        {title}
+      </h2>
       <p className={styles.body}>{body}</p>
       <Button
         className={styles.confirmButton}

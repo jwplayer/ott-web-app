@@ -5,13 +5,8 @@
   display: inline-block;
   color: var(--primary-color);
   font-weight: var(--body-font-weight-bold);
-  text-decoration: none;
+  text-decoration: underline;
   cursor: pointer;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
 
   &:disabled {
     cursor: default;

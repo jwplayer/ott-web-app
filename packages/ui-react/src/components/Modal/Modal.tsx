@@ -13,9 +13,10 @@ type Props = {
   AnimationComponent?: React.JSXElementConstructor<{ open?: boolean; duration?: number; delay?: number; children: React.ReactNode }>;
   open: boolean;
   onClose?: () => void;
+  role?: string;
 };
 
-const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow }: Props) => {
+const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow, role }: Props) => {
   const [visible, setVisible] = useState(open);
   const lastFocus = useRef<HTMLElement>() as React.MutableRefObject<HTMLElement>;
   const modalRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
@@ -76,7 +77,7 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
 
   return ReactDOM.createPortal(
     <Fade open={open} duration={300} onCloseAnimationEnd={() => setVisible(false)}>
-      <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
+      <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef} role={role}>
         <div className={styles.backdrop} onClick={onClose} data-testid={testId('backdrop')} />
         <div className={styles.container}>
           <AnimationComponent open={open} duration={200}>

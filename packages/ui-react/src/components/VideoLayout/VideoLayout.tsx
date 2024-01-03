@@ -119,7 +119,7 @@ const VideoLayout: React.FC<Props> = ({
     return grid ? (
       <>
         <div className={classNames(styles.relatedVideosGrid, { [styles.inlineLayout]: inlineLayout })}>
-          <h3 className={styles.relatedVideosGridTitle}>{relatedTitle || '\u00A0'}</h3>
+          <h2 className={styles.relatedVideosGridTitle}>{relatedTitle || '\u00A0'}</h2>
           {hasFilters && renderFilters(inlineLayout)}
         </div>
         <CardGrid
@@ -142,7 +142,7 @@ const VideoLayout: React.FC<Props> = ({
           className={styles.videoList}
           header={
             <>
-              {title && <h3 className={styles.relatedVideosListTitle}>{relatedTitle}</h3>}
+              {title && <h2 className={styles.relatedVideosListTitle}>{relatedTitle}</h2>}
               {hasFilters && renderFilters(true)}
             </>
           }

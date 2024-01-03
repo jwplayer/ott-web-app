@@ -24,8 +24,6 @@
   margin-left: 6px;
   color: var(--primary-color);
   font-weight: var(--body-font-weight-bold);
+  text-decoration: underline;
   cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
 }

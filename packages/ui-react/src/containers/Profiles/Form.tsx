@@ -61,7 +61,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
     <form onSubmit={handleSubmit} noValidate>
       <div className={styles.panel}>
         <div className={styles.panelHeader}>
-          <h3>{formLabel}</h3>
+          <h2>{formLabel}</h2>
         </div>
         <div className={profileStyles.profileInfo}>{t('profile.description')}</div>
         <div className={profileStyles.formFields}>
@@ -92,7 +92,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
         </div>
         <hr className={profileStyles.divider} />
         <div className={classNames(styles.panelHeader, profileStyles.noBottomBorder)}>
-          <h3>{t('profile.avatar')}</h3>
+          <h2>{t('profile.avatar')}</h2>
           <div className={profileStyles.avatarsContainer}>
             {AVATARS.map((avatarUrl) => (
               <ProfileBox

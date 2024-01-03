@@ -1,5 +1,6 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 @use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/accessibility';
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 @use '@jwp/ott-ui-react/src/styles/mixins/utils';
 
@@ -83,6 +84,34 @@
     padding: 0 calc(#{variables.$base-spacing} / 2);
     font-weight: var(--body-font-weight-bold);
     font-size: 18px;
+  }
+}
+
+.skipToContent {
+  @include accessibility.focus-visible() using ($value) {
+    box-shadow: $value;
+  }
+
+  position: absolute;
+  top: 50px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  color: var(--highlight-contrast-color, black);
+  font-weight: bold;
+  border-radius: 20px;
+  clip: rect(1px, 1px, 1px, 1px);
+
+  &:focus {
+    z-index: 1;
+    width: auto;
+    height: auto;
+    padding: calc(variables.$base-spacing / 2);
+    white-space: nowrap;
+    text-decoration: none;
+    background: var(--highlight-color, white);
+    box-shadow: theme.$panel-box-shadow;
+    clip: auto;
   }
 }
 

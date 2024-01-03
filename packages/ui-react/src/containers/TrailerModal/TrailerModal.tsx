@@ -27,7 +27,7 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
   if (!item) return null;
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} role="dialog">
       <div className={styles.container}>
         <Player
           item={item}

@@ -6,7 +6,7 @@
   display: flex;
   margin-bottom: calc(#{variables.$base-spacing} * 1.5);
 
-  > h3 {
+  > h1 {
     margin-right: calc(#{variables.$base-spacing} * 1.5);
     font-weight: var(--body-font-weight-bold);
     font-size: 34px;

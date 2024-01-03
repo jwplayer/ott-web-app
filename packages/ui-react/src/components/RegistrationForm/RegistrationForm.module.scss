@@ -23,12 +23,8 @@
 .login {
   margin-left: 6px;
   font-weight: var(--body-font-weight-bold);
+  text-decoration: underline;
   cursor: pointer;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
 }
 
 .customFields {

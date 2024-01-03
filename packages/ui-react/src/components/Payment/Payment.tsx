@@ -167,10 +167,11 @@ const Payment = ({
           setIsChangingOffer(false);
         }}
       />
+      <h1 className="hideUntilFocus">{t('nav.payments')}</h1>
       {accessModel === ACCESS_MODEL.SVOD && (
         <div className={panelClassName}>
           <div className={panelHeaderClassName}>
-            <h3>{isChangingOffer ? t('user:payment.change_plan') : t('user:payment.subscription_details')}</h3>
+            <h2>{isChangingOffer ? t('user:payment.change_plan') : t('user:payment.subscription_details')}</h2>
           </div>
           {activeSubscription ? (
             <React.Fragment>
@@ -272,7 +273,7 @@ const Payment = ({
       )}
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('user:payment.payment_method')}</h3>
+          <h2>{t('user:payment.payment_method')}</h2>
         </div>
         {activePaymentDetail ? (
           activePaymentDetail.paymentMethod === 'paypal' ? (
@@ -308,7 +309,7 @@ const Payment = ({
       </div>
       <div className={panelClassName}>
         <div className={panelHeaderClassName}>
-          <h3>{t('user:payment.billing_history')}</h3>
+          <h2>{t('user:payment.billing_history')}</h2>
         </div>
         {transactions?.length ? (
           <React.Fragment>

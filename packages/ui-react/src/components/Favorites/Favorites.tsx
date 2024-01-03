@@ -44,7 +44,7 @@ const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, o
   return (
     <div>
       <div className={styles.header}>
-        <h3>{t('favorites.title')}</h3>
+        <h1>{t('favorites.title')}</h1>
         {playlist.playlist.length > 0 ? <Button label={t('favorites.clear')} onClick={onClearFavoritesClick} /> : null}
       </div>
       {playlist.playlist.length > 0 ? (
