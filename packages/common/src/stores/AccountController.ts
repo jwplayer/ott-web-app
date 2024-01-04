@@ -202,7 +202,7 @@ export default class AccountController {
 
   logout = async (logoutOptions: { includeNetworkRequest: boolean } = { includeNetworkRequest: true }) => {
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-    await queryClient.invalidateQueries('entitlements');
+    await queryClient.invalidateQueries({ queryKey: ['entitlements'] });
 
     useAccountStore.setState({
       user: null,
@@ -221,7 +221,7 @@ export default class AccountController {
     persist.removeItem(PERSIST_PROFILE);
 
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-    await queryClient.invalidateQueries('entitlements');
+    await queryClient.invalidateQueries({ queryKey: ['entitlements'] });
 
     await this.clearLoginState();
     if (logoutOptions.includeNetworkRequest) {
@@ -492,7 +492,7 @@ export default class AccountController {
     }
 
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-    await queryClient.invalidateQueries('entitlements');
+    await queryClient.invalidateQueries({ queryKey: ['entitlements'] });
 
     useAccountStore.setState({
       subscription: activeSubscription,

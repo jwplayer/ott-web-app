@@ -29,7 +29,7 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await accountController.login(formData.email, formData.password);
-      await queryClient.invalidateQueries('listProfiles');
+      await queryClient.invalidateQueries(['listProfiles']);
 
       // close modal
       navigate(removeQueryParam(location, 'u'));

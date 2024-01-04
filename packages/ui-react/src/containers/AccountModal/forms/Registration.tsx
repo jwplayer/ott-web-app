@@ -61,7 +61,7 @@ const Registration = () => {
       }
 
       await accountController.register(email, password, customerConsents);
-      await queryClient.invalidateQueries('listProfiles');
+      await queryClient.invalidateQueries(['listProfiles']);
 
       navigate(addQueryParam(location, 'u', 'personal-details'));
     } catch (error: unknown) {
