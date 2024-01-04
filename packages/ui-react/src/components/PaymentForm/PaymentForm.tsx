@@ -7,7 +7,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 import useCheckAccess from '@jwp/ott-hooks-react/src/useCheckAccess';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import Button from '../Button/Button';
 import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';

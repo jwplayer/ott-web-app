@@ -5,7 +5,7 @@ import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { removeQueryParam } from '@jwp/ott-common/src/utils/location';
+import { removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import RenewSubscriptionForm from '../../../components/RenewSubscriptionForm/RenewSubscriptionForm';

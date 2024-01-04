@@ -7,7 +7,7 @@ import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
-import { addQueryParam, removeQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam, removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 

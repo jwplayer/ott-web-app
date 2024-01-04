@@ -6,7 +6,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import { addQueryParam, removeQueryParam, replaceQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam, removeQueryParam, replaceQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 

@@ -10,7 +10,7 @@ import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';

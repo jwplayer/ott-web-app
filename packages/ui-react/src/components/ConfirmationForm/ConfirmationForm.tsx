@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import Button from '../Button/Button';
 

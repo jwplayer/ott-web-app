@@ -7,7 +7,7 @@ import type { ForgotPasswordFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam, removeQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam, removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 

@@ -1,5 +1,3 @@
-import type { Location } from 'react-router-dom';
-
 import { createStore } from './utils';
 
 type UIState = {
@@ -7,7 +5,7 @@ type UIState = {
   searchActive: boolean;
   userMenuOpen: boolean;
   languageMenuOpen: boolean;
-  preSearchPage?: Location;
+  preSearchPage?: string;
 };
 
 export const useUIStore = createStore<UIState>('UIStore', () => ({
