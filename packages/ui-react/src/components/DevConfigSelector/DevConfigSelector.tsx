@@ -2,7 +2,6 @@ import { ChangeEvent, useCallback } from 'react';
 import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
 import { CONFIG_QUERY_KEY } from '@jwp/ott-common/src/constants';
 import { jwDevEnvConfigs, testConfigs } from '@jwp/ott-testing/constants';
-import env from '@jwp/ott-common/src/env';
 
 import Dropdown from '../Dropdown/Dropdown';
 
