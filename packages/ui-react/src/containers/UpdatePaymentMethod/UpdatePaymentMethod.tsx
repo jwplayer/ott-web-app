@@ -4,7 +4,7 @@ import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
-import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
+import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import PaymentMethodForm from '../../components/PaymentMethodForm/PaymentMethodForm';

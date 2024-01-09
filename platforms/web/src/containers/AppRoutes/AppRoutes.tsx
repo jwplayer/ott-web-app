@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
-import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
+import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import { useProfiles } from '@jwp/ott-hooks-react/src/useProfiles';
 import ErrorPage from '@jwp/ott-ui-react/src/components/ErrorPage/ErrorPage';
 import RootErrorPage from '@jwp/ott-ui-react/src/components/RootErrorPage/RootErrorPage';

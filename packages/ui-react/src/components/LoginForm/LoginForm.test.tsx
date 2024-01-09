@@ -54,6 +54,7 @@ describe('<LoginForm>', () => {
         }}
         errors={{}}
         submitting={false}
+        messageKey={null}
       />,
       { wrapper: createWrapper() },
     );
@@ -74,6 +75,7 @@ describe('<LoginForm>', () => {
         }}
         errors={{}}
         submitting={false}
+        messageKey={null}
       />,
       { wrapper: createWrapper() },
     );
@@ -95,6 +97,7 @@ describe('<LoginForm>', () => {
         }}
         errors={{ email: 'Email error', password: 'Password error', form: 'Form error' }}
         submitting={false}
+        messageKey={null}
       />,
       { wrapper: createWrapper() },
     );
@@ -117,6 +120,7 @@ describe('<LoginForm>', () => {
         }}
         errors={{}}
         submitting={true}
+        messageKey={null}
       />,
       { wrapper: createWrapper() },
     );
@@ -139,6 +143,7 @@ describe('<LoginForm>', () => {
         }}
         errors={{}}
         submitting={true}
+        messageKey={null}
       />,
       { wrapper: createWrapper() },
     );
@@ -165,6 +170,7 @@ describe('<LoginForm>', () => {
         }}
         errors={{}}
         submitting={true}
+        messageKey={null}
       />,
       { wrapper: createWrapper() },
     );

@@ -13,7 +13,7 @@ import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useFor
 import LoginForm from '../../../components/LoginForm/LoginForm';
 
 type Props = {
-  messageKey?: string;
+  messageKey: string | null;
 };
 
 const Login: React.FC<Props> = ({ messageKey }: Props) => {

@@ -7,7 +7,7 @@ import styles from './PaymentFailed.module.scss';
 
 type Props = {
   type: 'error' | 'cancelled';
-  message?: string;
+  message: string | null;
   onCloseButtonClick: () => void;
 };
 
