@@ -86,7 +86,7 @@ const Layout = () => {
   const searchButtonClickHandler = () => {
     useUIStore.setState({
       searchActive: true,
-      preSearchPage: `${location.pathname}${location.search}`,
+      preSearchPage: `${location.pathname}${location.search || ''}`,
     });
   };
 
