@@ -42,7 +42,8 @@ export const ErrorPageWithoutTranslation = ({ title, children, message, learnMor
         </header>
         <main className={styles.main}>
           <>
-            {children || <p>{message || 'Try refreshing this page or come back later.'}</p>}
+            <p className={styles.message}>{message || 'Try refreshing this page or come back later.'}</p>
+            {children}
             {(IS_DEVELOPMENT_BUILD || IS_DEMO_MODE || IS_PREVIEW_MODE) && helpLink && (
               <p className={styles.links}>
                 <a href={helpLink} target={'_blank'} rel={'noreferrer'}>

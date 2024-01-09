@@ -23,6 +23,11 @@ exports[`<ErrorPage> > renders and matches snapshot 1`] = `
       <main
         class="_main_8c5621"
       >
+        <p
+          class="_message_8c5621"
+        >
+          generic_error_description
+        </p>
         This is the content
       </main>
     </div>

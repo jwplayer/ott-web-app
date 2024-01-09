@@ -45,6 +45,11 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
         <main
           class="_main_8c5621"
         >
+          <p
+            class="_message_8c5621"
+          >
+            generic_error_description
+          </p>
           <form
             method="GET"
             target="/"
