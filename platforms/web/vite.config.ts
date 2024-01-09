@@ -80,6 +80,8 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     ],
     define: {
       'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
+      __mode__: JSON.stringify(mode),
+      __dev__: process.env.NODE_ENV !== 'production',
     },
     publicDir: './public',
     envPrefix: 'APP_',

@@ -8,6 +8,7 @@ import { deepCopy } from '@jwp/ott-common/src/utils/collection';
 import { logDev, testId } from '@jwp/ott-common/src/utils/common';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 import useOttAnalytics from '@jwp/ott-hooks-react/src/useOttAnalytics';
+import env from '@jwp/ott-common/src/env';
 
 import styles from './Player.module.scss';
 
@@ -118,7 +119,7 @@ const Player: React.FC<Props> = ({
     if (!window.jwplayer && !loadingRef.current) {
       loadingRef.current = true;
 
-      const scriptUrl = `${import.meta.env.APP_API_BASE_URL}/libraries/${playerId}.js`;
+      const scriptUrl = `${env.APP_API_BASE_URL}/libraries/${playerId}.js`;
 
       addScript(scriptUrl).then(() => {
         setLibLoaded(true);

@@ -6,6 +6,7 @@ import { CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY, OTT_GLOBAL_PLAYER_ID } from 
 import { logDev } from '../utils/common';
 import { AppError } from '../utils/error';
 import type { Settings } from '../../types/settings';
+import env from '../env';
 
 // Use local storage so the override persists until cleared
 const storage = window.localStorage;
@@ -95,9 +96,9 @@ export default class SettingsService {
     }
 
     // The ini file values will be used if provided, even if compile-time values are set
-    settings.defaultConfigSource ||= import.meta.env.APP_DEFAULT_CONFIG_SOURCE;
-    settings.playerId ||= import.meta.env.APP_PLAYER_ID || OTT_GLOBAL_PLAYER_ID;
-    settings.playerLicenseKey ||= import.meta.env.APP_PLAYER_LICENSE_KEY;
+    settings.defaultConfigSource ||= env.APP_DEFAULT_CONFIG_SOURCE;
+    settings.playerId ||= env.APP_PLAYER_ID || OTT_GLOBAL_PLAYER_ID;
+    settings.playerLicenseKey ||= env.APP_PLAYER_LICENSE_KEY;
 
     // The player key should be set if using the global ott player
     if (settings.playerId === OTT_GLOBAL_PLAYER_ID && !settings.playerLicenseKey) {

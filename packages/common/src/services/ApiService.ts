@@ -9,6 +9,7 @@ import { useConfigStore as ConfigStore } from '../stores/ConfigStore';
 import type { GetPlaylistParams, Playlist, PlaylistItem } from '../../types/playlist';
 import type { AdSchedule } from '../../types/ad-schedule';
 import type { EpisodeInSeries, EpisodesRes, EpisodesWithPagination, GetSeriesParams, Series } from '../../types/series';
+import env from '../env';
 
 // change the values below to change the property used to look up the alternate image
 enum ImageProperty {
@@ -27,7 +28,7 @@ export default class ApiService {
    */
   private generateAlternateImageURL = ({ item, label, playlistLabel }: { item: PlaylistItem; label: string; playlistLabel?: string }) => {
     const pathname = `/v2/media/${item.mediaid}/images/${playlistLabel || label}.webp`;
-    const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { poster_fallback: 1, fallback: playlistLabel ? label : null });
+    const url = addQueryParams(`${env.APP_API_BASE_URL}${pathname}`, { poster_fallback: 1, fallback: playlistLabel ? label : null });
 
     return url;
   };
@@ -111,7 +112,7 @@ export default class ApiService {
     }
 
     const pathname = `/v2/playlists/${id}`;
-    const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
+    const url = addQueryParams(`${env.APP_API_BASE_URL}${pathname}`, params);
     const response = await fetch(url);
     const data = await getDataOrThrow(response);
 
@@ -129,7 +130,7 @@ export default class ApiService {
     }
 
     const pathname = `/apps/watchlists/${playlistId}`;
-    const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
+    const url = addQueryParams(`${env.APP_API_BASE_URL}${pathname}`, { token, media_ids: mediaIds });
     const response = await fetch(url);
     const data = (await getDataOrThrow(response)) as Playlist;
 
@@ -146,7 +147,7 @@ export default class ApiService {
    */
   getMediaById = async (id: string, token?: string, drmPolicyId?: string): Promise<PlaylistItem | undefined> => {
     const pathname = drmPolicyId ? `/v2/media/${id}/drm/${drmPolicyId}` : `/v2/media/${id}`;
-    const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { token });
+    const url = addQueryParams(`${env.APP_API_BASE_URL}${pathname}`, { token });
     const response = await fetch(url);
     const data = (await getDataOrThrow(response)) as Playlist;
     const mediaItem = data.playlist[0];
@@ -166,7 +167,7 @@ export default class ApiService {
     }
 
     const pathname = `/apps/series/${id}`;
-    const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, params);
+    const url = addQueryParams(`${env.APP_API_BASE_URL}${pathname}`, params);
     const response = await fetch(url);
     const data = await getDataOrThrow(response);
 
@@ -179,7 +180,7 @@ export default class ApiService {
    */
   getSeriesByMediaIds = async (mediaIds: string[]): Promise<{ [mediaId: string]: EpisodeInSeries[] | undefined } | undefined> => {
     const pathname = `/apps/series`;
-    const url = `${import.meta.env.APP_API_BASE_URL}${pathname}?media_ids=${mediaIds.join(',')}`;
+    const url = `${env.APP_API_BASE_URL}${pathname}?media_ids=${mediaIds.join(',')}`;
     const response = await fetch(url);
     return await getDataOrThrow(response);
   };
@@ -204,7 +205,7 @@ export default class ApiService {
     }
 
     const pathname = `/apps/series/${seriesId}/episodes`;
-    const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, {
+    const url = addQueryParams(`${env.APP_API_BASE_URL}${pathname}`, {
       page_offset: pageOffset,
       page_limit: pageLimit,
       after_id: afterId,
@@ -236,7 +237,7 @@ export default class ApiService {
     }
 
     const pathname = `/apps/series/${seriesId}/seasons/${seasonNumber}/episodes`;
-    const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit });
+    const url = addQueryParams(`${env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit });
 
     const response = await fetch(url);
     const episodesRes: EpisodesRes = await getDataOrThrow(response);
@@ -249,7 +250,7 @@ export default class ApiService {
       throw new Error('Ad Schedule ID is required');
     }
 
-    const url = import.meta.env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
+    const url = env.APP_API_BASE_URL + `/v2/advertising/schedules/${id}.json`;
     const response = await fetch(url, { credentials: 'omit' });
     const data = await getDataOrThrow(response);
 

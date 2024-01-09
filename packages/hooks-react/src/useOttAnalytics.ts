@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
+import env from '@jwp/ott-common/src/env';
 
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
@@ -13,7 +14,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   // app config id (oiid)
   const oiid = config?.id;
   // app version number (av)
-  const av = import.meta.env.APP_VERSION;
+  const av = env.APP_VERSION;
 
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 

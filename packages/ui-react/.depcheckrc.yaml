@@ -2,4 +2,5 @@ ignores: [
   '@jwp/ott-ui-react',
   'eslint-plugin-react',
   'eslint-plugin-react-hooks',
+  'typescript-plugin-css-modules',
 ]
