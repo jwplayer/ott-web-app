@@ -21,7 +21,7 @@ const Alert: React.FC<Props> = ({ open, message, onClose, isSuccess, actionsOver
   const headingId = useOpaqueId('alert-heading');
 
   return (
-    <Dialog open={open} onClose={onClose} role="alert" aria-labelledby="alert-heading">
+    <Dialog open={open} onClose={onClose} role="alertdialog" aria-modal="true" aria-labelledby={headingId}>
       <h2 id={headingId} className={styles.title}>
         {titleOverride ?? (isSuccess ? t('alert.success') : t('alert.title'))}
       </h2>
