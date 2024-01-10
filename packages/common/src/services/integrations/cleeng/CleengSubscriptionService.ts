@@ -24,48 +24,48 @@ export default class CleengSubscriptionService extends SubscriptionService {
     this.cleengService = cleengService;
   }
 
-  getActiveSubscription: GetActiveSubscription = async ({ sandbox, customerId }) => {
-    const response = await this.getSubscriptions({ customerId }, sandbox);
+  getActiveSubscription: GetActiveSubscription = async ({ customerId }) => {
+    const response = await this.getSubscriptions({ customerId });
 
     if (response.errors.length > 0) return null;
 
     return response.responseData.items.find((item) => item.status === 'active' || item.status === 'cancelled') || null;
   };
 
-  getAllTransactions: GetAllTransactions = async ({ sandbox, customerId }) => {
-    const response = await this.getTransactions({ customerId }, sandbox);
+  getAllTransactions: GetAllTransactions = async ({ customerId }) => {
+    const response = await this.getTransactions({ customerId });
 
     if (response.errors.length > 0) return null;
 
     return response.responseData.items;
   };
 
-  getActivePayment: GetActivePayment = async ({ sandbox, customerId }) => {
-    const response = await this.getPaymentDetails({ customerId }, sandbox);
+  getActivePayment: GetActivePayment = async ({ customerId }) => {
+    const response = await this.getPaymentDetails({ customerId });
 
     if (response.errors.length > 0) return null;
 
     return response.responseData.paymentDetails.find((paymentDetails) => paymentDetails.active) || null;
   };
 
-  getSubscriptions: GetSubscriptions = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/customers/${payload.customerId}/subscriptions`, { authenticate: true });
+  getSubscriptions: GetSubscriptions = async (payload) => {
+    return this.cleengService.get(`/customers/${payload.customerId}/subscriptions`, { authenticate: true });
   };
 
-  updateSubscription: UpdateSubscription = async (payload, sandbox) => {
-    return this.cleengService.patch(sandbox, `/customers/${payload.customerId}/subscriptions`, JSON.stringify(payload), { authenticate: true });
+  updateSubscription: UpdateSubscription = async (payload) => {
+    return this.cleengService.patch(`/customers/${payload.customerId}/subscriptions`, JSON.stringify(payload), { authenticate: true });
   };
 
-  getPaymentDetails: GetPaymentDetails = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/customers/${payload.customerId}/payment_details`, { authenticate: true });
+  getPaymentDetails: GetPaymentDetails = async (payload) => {
+    return this.cleengService.get(`/customers/${payload.customerId}/payment_details`, { authenticate: true });
   };
 
-  getTransactions: GetTransactions = async ({ customerId, limit, offset }, sandbox) => {
-    return this.cleengService.get(sandbox, createURL(`/customers/${customerId}/transactions`, { limit, offset }), { authenticate: true });
+  getTransactions: GetTransactions = async ({ customerId, limit, offset }) => {
+    return this.cleengService.get(createURL(`/customers/${customerId}/transactions`, { limit, offset }), { authenticate: true });
   };
 
-  fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox) => {
-    return this.cleengService.get(sandbox, `/receipt/${transactionId}`, { authenticate: true });
+  fetchReceipt: FetchReceipt = async ({ transactionId }) => {
+    return this.cleengService.get(`/receipt/${transactionId}`, { authenticate: true });
   };
 
   updateCardDetails: undefined;

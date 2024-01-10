@@ -39,10 +39,10 @@ export default class CleengCheckoutService extends CheckoutService {
     this.getCustomerIP = getCustomerIP;
   }
 
-  getOffers: GetOffers = async (payload, sandbox) => {
+  getOffers: GetOffers = async (payload) => {
     return await Promise.all(
       payload.offerIds.map(async (offerId) => {
-        const response = await this.getOffer({ offerId: offerId as string }, sandbox);
+        const response = await this.getOffer({ offerId: String(offerId) });
 
         if (response.errors.length > 0) {
           throw new Error(response.errors[0]);
@@ -53,14 +53,14 @@ export default class CleengCheckoutService extends CheckoutService {
     );
   };
 
-  getOffer: GetOffer = async (payload, sandbox) => {
+  getOffer: GetOffer = async (payload) => {
     const customerIP = await this.getCustomerIP();
 
-    return this.cleengService.get(sandbox, `/offers/${payload.offerId}${customerIP ? '?customerIP=' + customerIP : ''}`);
+    return this.cleengService.get(`/offers/${payload.offerId}${customerIP ? '?customerIP=' + customerIP : ''}`);
   };
 
-  createOrder: CreateOrder = async (payload, sandbox) => {
-    const locales = await this.cleengService.getLocales(sandbox);
+  createOrder: CreateOrder = async (payload) => {
+    const locales = await this.cleengService.getLocales();
 
     if (locales.errors.length > 0) throw new Error(locales.errors[0]);
 
@@ -73,26 +73,26 @@ export default class CleengCheckoutService extends CheckoutService {
       paymentMethodId: payload.paymentMethodId,
     };
 
-    return this.cleengService.post(sandbox, '/orders', JSON.stringify(createOrderPayload), { authenticate: true });
+    return this.cleengService.post('/orders', JSON.stringify(createOrderPayload), { authenticate: true });
   };
 
-  getOrder: GetOrder = async ({ orderId }, sandbox) => {
-    return this.cleengService.get(sandbox, `/orders/${orderId}`, { authenticate: true });
+  getOrder: GetOrder = async ({ orderId }) => {
+    return this.cleengService.get(`/orders/${orderId}`, { authenticate: true });
   };
 
-  updateOrder: UpdateOrder = async ({ order, ...payload }, sandbox) => {
-    return this.cleengService.patch(sandbox, `/orders/${order.id}`, JSON.stringify(payload), { authenticate: true });
+  updateOrder: UpdateOrder = async ({ order, ...payload }) => {
+    return this.cleengService.patch(`/orders/${order.id}`, JSON.stringify(payload), { authenticate: true });
   };
 
-  getPaymentMethods: GetPaymentMethods = async (sandbox) => {
-    return this.cleengService.get(sandbox, '/payment-methods', { authenticate: true });
+  getPaymentMethods: GetPaymentMethods = async () => {
+    return this.cleengService.get('/payment-methods', { authenticate: true });
   };
 
-  paymentWithoutDetails: PaymentWithoutDetails = async (payload, sandbox) => {
-    return this.cleengService.post(sandbox, '/payments', JSON.stringify(payload), { authenticate: true });
+  paymentWithoutDetails: PaymentWithoutDetails = async (payload) => {
+    return this.cleengService.post('/payments', JSON.stringify(payload), { authenticate: true });
   };
 
-  paymentWithPayPal: PaymentWithPayPal = async (payload, sandbox) => {
+  paymentWithPayPal: PaymentWithPayPal = async (payload) => {
     const { order, successUrl, cancelUrl, errorUrl } = payload;
 
     const paypalPayload = {
@@ -102,53 +102,63 @@ export default class CleengCheckoutService extends CheckoutService {
       errorUrl,
     };
 
-    return this.cleengService.post(sandbox, '/connectors/paypal/v1/tokens', JSON.stringify(paypalPayload), { authenticate: true });
+    return this.cleengService.post('/connectors/paypal/v1/tokens', JSON.stringify(paypalPayload), { authenticate: true });
   };
 
-  getSubscriptionSwitches: GetSubscriptionSwitches = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/customers/${payload.customerId}/subscription_switches/${payload.offerId}/availability`, { authenticate: true });
+  getSubscriptionSwitches: GetSubscriptionSwitches = async (payload) => {
+    return this.cleengService.get(`/customers/${payload.customerId}/subscription_switches/${payload.offerId}/availability`, { authenticate: true });
   };
 
-  getSubscriptionSwitch: GetSubscriptionSwitch = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/subscription_switches/${payload.switchId}`, { authenticate: true });
+  getSubscriptionSwitch: GetSubscriptionSwitch = async (payload) => {
+    return this.cleengService.get(`/subscription_switches/${payload.switchId}`, { authenticate: true });
   };
 
-  switchSubscription: SwitchSubscription = async (payload, sandbox) => {
+  switchSubscription: SwitchSubscription = async (payload) => {
     return this.cleengService.post(
-      sandbox,
       `/customers/${payload.customerId}/subscription_switches/${payload.offerId}`,
       JSON.stringify({ toOfferId: payload.toOfferId, switchDirection: payload.switchDirection }),
       { authenticate: true },
     );
   };
 
-  getEntitlements: GetEntitlements = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/entitlements/${payload.offerId}`, { authenticate: true });
+  getEntitlements: GetEntitlements = async (payload) => {
+    return this.cleengService.get(`/entitlements/${payload.offerId}`, { authenticate: true });
   };
 
-  createAdyenPaymentSession: GetAdyenPaymentSession = async (payload, sandbox) => {
-    return await this.cleengService.post(sandbox, '/connectors/adyen/sessions', JSON.stringify(payload), { authenticate: true });
+  createAdyenPaymentSession: GetAdyenPaymentSession = async (payload) => {
+    return await this.cleengService.post('/connectors/adyen/sessions', JSON.stringify(payload), { authenticate: true });
   };
 
-  initialAdyenPayment: GetInitialAdyenPayment = async (payload, sandbox) =>
-    this.cleengService.post(sandbox, '/connectors/adyen/initial-payment', JSON.stringify(payload), { authenticate: true });
+  initialAdyenPayment: GetInitialAdyenPayment = async (payload) =>
+    this.cleengService.post(
+      '/connectors/adyen/initial-payment',
+      JSON.stringify({ ...payload, attemptAuthentication: this.cleengService.sandbox ? 'always' : undefined }),
+      { authenticate: true },
+    );
 
-  finalizeAdyenPayment: GetFinalizeAdyenPayment = async (payload, sandbox) =>
-    this.cleengService.post(sandbox, '/connectors/adyen/initial-payment/finalize', JSON.stringify(payload), { authenticate: true });
+  finalizeAdyenPayment: GetFinalizeAdyenPayment = async (payload) =>
+    this.cleengService.post('/connectors/adyen/initial-payment/finalize', JSON.stringify(payload), { authenticate: true });
 
-  updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal = async (payload, sandbox) => {
-    return this.cleengService.post(sandbox, '/connectors/paypal/v1/payment_details/tokens', JSON.stringify(payload), { authenticate: true });
+  updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal = async (payload) => {
+    return this.cleengService.post('/connectors/paypal/v1/payment_details/tokens', JSON.stringify(payload), { authenticate: true });
   };
 
-  deletePaymentMethod: DeletePaymentMethod = async (payload, sandbox) => {
-    return this.cleengService.remove(sandbox, `/payment_details/${payload.paymentDetailsId}`, { authenticate: true });
+  deletePaymentMethod: DeletePaymentMethod = async (payload) => {
+    return this.cleengService.remove(`/payment_details/${payload.paymentDetailsId}`, { authenticate: true });
   };
 
-  addAdyenPaymentDetails: AddAdyenPaymentDetails = async (payload, sandbox) =>
-    this.cleengService.post(sandbox, '/connectors/adyen/payment-details', JSON.stringify(payload), { authenticate: true });
+  addAdyenPaymentDetails: AddAdyenPaymentDetails = async (payload) =>
+    this.cleengService.post(
+      '/connectors/adyen/payment-details',
+      JSON.stringify({
+        ...payload,
+        attemptAuthentication: this.cleengService.sandbox ? 'always' : undefined,
+      }),
+      { authenticate: true },
+    );
 
-  finalizeAdyenPaymentDetails: FinalizeAdyenPaymentDetails = async (payload, sandbox) =>
-    this.cleengService.post(sandbox, '/connectors/adyen/payment-details/finalize', JSON.stringify(payload), { authenticate: true });
+  finalizeAdyenPaymentDetails: FinalizeAdyenPaymentDetails = async (payload) =>
+    this.cleengService.post('/connectors/adyen/payment-details/finalize', JSON.stringify(payload), { authenticate: true });
 
   directPostCardPayment = async () => false;
 }

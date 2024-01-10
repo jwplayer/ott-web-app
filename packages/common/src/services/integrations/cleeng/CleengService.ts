@@ -82,7 +82,8 @@ export default class CleengService {
   private readonly queue = new PromiseQueue();
   private isRefreshing = false;
   private expiration = -1;
-  private sandbox = false;
+
+  sandbox = false;
   tokens: Tokens | null = null;
 
   constructor(storageService: StorageService, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
@@ -118,11 +119,7 @@ export default class CleengService {
    */
   private getNewTokens: (tokens: Tokens) => Promise<Tokens | null> = async ({ refreshToken }) => {
     try {
-      const { responseData: newTokens } = await this.post<Promise<ServiceResponse<AuthData>>>(
-        this.sandbox,
-        '/auths/refresh_token',
-        JSON.stringify({ refreshToken }),
-      );
+      const { responseData: newTokens } = await this.post<Promise<ServiceResponse<AuthData>>>('/auths/refresh_token', JSON.stringify({ refreshToken }));
 
       return {
         accessToken: newTokens.jwt,
@@ -173,13 +170,13 @@ export default class CleengService {
     this.channel.postMessage(message);
   };
 
-  private getBaseUrl = (sandbox: boolean) => (sandbox ? 'https://mediastore-sandbox.cleeng.com' : 'https://mediastore.cleeng.com');
+  private getBaseUrl = () => (this.sandbox ? 'https://mediastore-sandbox.cleeng.com' : 'https://mediastore.cleeng.com');
 
-  private performRequest = async (sandbox: boolean, path: string = '/', method = 'GET', body?: string, options: RequestOptions = {}) => {
+  private performRequest = async (path: string = '/', method = 'GET', body?: string, options: RequestOptions = {}) => {
     try {
       const token = options.authenticate ? await this.getAccessTokenOrThrow() : undefined;
 
-      const resp = await fetch(`${this.getBaseUrl(sandbox)}${path}`, {
+      const resp = await fetch(`${this.getBaseUrl()}${path}`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -359,19 +356,19 @@ export default class CleengService {
     return accessToken;
   };
 
-  getLocales: GetLocales = async (sandbox) => {
+  getLocales: GetLocales = async () => {
     const customerIP = await this.getCustomerIP();
 
-    return this.get(sandbox, `/locales${customerIP ? '?customerIP=' + customerIP : ''}`);
+    return this.get(`/locales${customerIP ? '?customerIP=' + customerIP : ''}`);
   };
 
-  get = <T>(sandbox: boolean, path: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'GET', undefined, options) as T;
+  get = <T>(path: string, options?: RequestOptions) => this.performRequest(path, 'GET', undefined, options) as T;
 
-  patch = <T>(sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'PATCH', body, options) as T;
+  patch = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'PATCH', body, options) as T;
 
-  put = <T>(sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'PUT', body, options) as T;
+  put = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'PUT', body, options) as T;
 
-  post = <T>(sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'POST', body, options) as T;
+  post = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'POST', body, options) as T;
 
-  remove = <T>(sandbox: boolean, path: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'DELETE', undefined, options) as T;
+  remove = <T>(path: string, options?: RequestOptions) => this.performRequest(path, 'DELETE', undefined, options) as T;
 }

@@ -4,7 +4,6 @@ import type DropinElement from '@adyen/adyen-web/dist/types/components/Dropin/Dr
 import { useNavigate } from 'react-router';
 import type { AdyenPaymentSession } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
@@ -26,7 +25,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
 
   const [session, setSession] = useState<AdyenPaymentSession>();
 
-  const { isSandbox } = useConfigStore();
+  const isSandbox = accountController.getSandbox();
   const navigate = useNavigate();
 
   useEffect(() => {

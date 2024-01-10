@@ -132,19 +132,15 @@ type ChangeSubscriptionPayload = {
 };
 
 type GetActivePaymentPayload = {
-  sandbox: boolean;
   customerId: string;
 };
 
 type GetAllTransactionsPayload = {
-  sandbox: boolean;
   customerId: string;
 };
 
 type GetActiveSubscriptionPayload = {
-  sandbox: boolean;
   customerId: string;
-  config: Config;
 };
 
 type GetActivePaymentResponse = PaymentDetail | null;

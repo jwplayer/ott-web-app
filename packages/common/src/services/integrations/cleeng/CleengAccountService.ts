@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import { inject, injectable } from 'inversify';
 
-import type { Config } from '../../../../types/config';
+import type { AccessModel, Config } from '../../../../types/config';
 import type {
   AuthData,
   Capture,
@@ -33,6 +33,7 @@ import type {
 import AccountService from '../AccountService';
 import { GET_CUSTOMER_IP } from '../../../modules/types';
 import type { GetCustomerIP } from '../../../../types/get-customer-ip';
+import { ACCESS_MODEL } from '../../../constants';
 
 import CleengService from './CleengService';
 
@@ -40,6 +41,11 @@ import CleengService from './CleengService';
 export default class CleengAccountService extends AccountService {
   private readonly cleengService;
   private readonly getCustomerIP;
+  private publisherId = '';
+
+  accessModel: AccessModel = ACCESS_MODEL.AUTHVOD;
+  svodOfferIds: string[] = [];
+  sandbox = false;
 
   constructor(cleengService: CleengService, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
     super({
@@ -71,16 +77,29 @@ export default class CleengAccountService extends AccountService {
     return decodedToken.customerId;
   };
 
-  private getCustomer: GetCustomer = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/customers/${payload.customerId}`, { authenticate: true });
+  private getCustomer: GetCustomer = async (payload) => {
+    return this.cleengService.get(`/customers/${payload.customerId}`, { authenticate: true });
   };
 
-  private getLocales: GetLocales = async (sandbox) => {
-    return this.cleengService.getLocales(sandbox);
+  private getLocales: GetLocales = async () => {
+    return this.cleengService.getLocales();
   };
 
   initialize = async (config: Config, _url: string, logoutCallback: () => Promise<void>) => {
-    await this.cleengService.initialize(!!config.integrations.cleeng?.useSandbox, logoutCallback);
+    const cleengConfig = config?.integrations?.cleeng;
+
+    if (!cleengConfig?.id) {
+      throw new Error('Failed to initialize Cleeng integration. The publisherId is missing.');
+    }
+
+    // set accessModel and publisherId
+    this.publisherId = cleengConfig.id;
+    this.accessModel = cleengConfig.monthlyOffer || cleengConfig.yearlyOffer ? ACCESS_MODEL.SVOD : ACCESS_MODEL.AUTHVOD;
+    this.svodOfferIds = [cleengConfig?.monthlyOffer, cleengConfig?.yearlyOffer].filter(Boolean).map(String);
+
+    // initialize the Cleeng service
+    this.sandbox = !!cleengConfig.useSandbox;
+    await this.cleengService.initialize(this.sandbox, logoutCallback);
   };
 
   getAuthData = async () => {
@@ -95,10 +114,8 @@ export default class CleengAccountService extends AccountService {
   };
 
   getCustomerConsents: GetCustomerConsents = async (payload) => {
-    const { config, customer } = payload;
-    const { cleeng } = config.integrations;
-
-    const response: ServiceResponse<GetCustomerConsentsResponse> = await this.cleengService.get(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, {
+    const { customer } = payload;
+    const response: ServiceResponse<GetCustomerConsentsResponse> = await this.cleengService.get(`/customers/${customer?.id}/consents`, {
       authenticate: true,
     });
     this.handleErrors(response.errors);
@@ -109,15 +126,14 @@ export default class CleengAccountService extends AccountService {
   };
 
   updateCustomerConsents: UpdateCustomerConsents = async (payload) => {
-    const { config, customer } = payload;
-    const { cleeng } = config.integrations;
+    const { customer } = payload;
 
     const params: UpdateCustomerConsentsPayload = {
       id: customer.id,
       consents: payload.consents,
     };
 
-    const response: ServiceResponse<never> = await this.cleengService.put(!!cleeng?.useSandbox, `/customers/${customer?.id}/consents`, JSON.stringify(params), {
+    const response: ServiceResponse<never> = await this.cleengService.put(`/customers/${customer?.id}/consents`, JSON.stringify(params), {
       authenticate: true,
     });
     this.handleErrors(response.errors);
@@ -129,15 +145,11 @@ export default class CleengAccountService extends AccountService {
     const payload: LoginPayload = {
       email,
       password,
-      publisherId: config.integrations.cleeng?.id || '',
+      publisherId: this.publisherId,
       customerIP: await this.getCustomerIP(),
     };
 
-    const { responseData: auth, errors }: ServiceResponse<AuthData> = await this.cleengService.post(
-      !!config.integrations.cleeng?.useSandbox,
-      '/auths',
-      JSON.stringify(payload),
-    );
+    const { responseData: auth, errors }: ServiceResponse<AuthData> = await this.cleengService.post('/auths', JSON.stringify(payload));
     this.handleErrors(errors);
 
     await this.cleengService.setTokens({ accessToken: auth.jwt, refreshToken: auth.refreshToken });
@@ -152,7 +164,7 @@ export default class CleengAccountService extends AccountService {
   };
 
   register: Register = async ({ config, email, password, consents }) => {
-    const localesResponse = await this.getLocales(!!config.integrations.cleeng?.useSandbox);
+    const localesResponse = await this.getLocales();
 
     this.handleErrors(localesResponse.errors);
 
@@ -162,15 +174,11 @@ export default class CleengAccountService extends AccountService {
       locale: localesResponse.responseData.locale,
       country: localesResponse.responseData.country,
       currency: localesResponse.responseData.currency,
-      publisherId: config.integrations.cleeng?.id || '',
+      publisherId: this.publisherId,
       customerIP: await this.getCustomerIP(),
     };
 
-    const { responseData: auth, errors }: ServiceResponse<AuthData> = await this.cleengService.post(
-      !!config.integrations.cleeng?.useSandbox,
-      '/customers',
-      JSON.stringify(payload),
-    );
+    const { responseData: auth, errors }: ServiceResponse<AuthData> = await this.cleengService.post('/customers', JSON.stringify(payload));
     this.handleErrors(errors);
 
     await this.cleengService.setTokens({ accessToken: auth.jwt, refreshToken: auth.refreshToken });
@@ -199,7 +207,7 @@ export default class CleengAccountService extends AccountService {
     if (!authData) throw new Error('Not logged in');
 
     const customerId = this.getCustomerIdFromAuthData(authData);
-    const { responseData: user, errors } = await this.getCustomer({ customerId }, !!config.integrations.cleeng?.useSandbox);
+    const { responseData: user, errors } = await this.getCustomer({ customerId });
 
     this.handleErrors(errors);
 
@@ -218,7 +226,7 @@ export default class CleengAccountService extends AccountService {
 
   getPublisherConsents: GetPublisherConsents = async (config) => {
     const { cleeng } = config.integrations;
-    const response: ServiceResponse<GetPublisherConsentsResponse> = await this.cleengService.get(!!cleeng?.useSandbox, `/publishers/${cleeng?.id}/consents`);
+    const response: ServiceResponse<GetPublisherConsentsResponse> = await this.cleengService.get(`/publishers/${cleeng?.id}/consents`);
 
     this.handleErrors(response.errors);
 
@@ -227,8 +235,8 @@ export default class CleengAccountService extends AccountService {
     };
   };
 
-  getCaptureStatus: GetCaptureStatus = async ({ customer }, sandbox) => {
-    const response: ServiceResponse<GetCaptureStatusResponse> = await this.cleengService.get(sandbox, `/customers/${customer?.id}/capture/status`, {
+  getCaptureStatus: GetCaptureStatus = async ({ customer }) => {
+    const response: ServiceResponse<GetCaptureStatusResponse> = await this.cleengService.get(`/customers/${customer?.id}/capture/status`, {
       authenticate: true,
     });
 
@@ -237,18 +245,18 @@ export default class CleengAccountService extends AccountService {
     return response;
   };
 
-  updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...payload }, sandbox) => {
+  updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...payload }) => {
     const params: UpdateCaptureAnswersPayload = {
       customerId: customer.id,
       ...payload,
     };
 
-    const response: ServiceResponse<Capture> = await this.cleengService.put(sandbox, `/customers/${customer.id}/capture`, JSON.stringify(params), {
+    const response: ServiceResponse<Capture> = await this.cleengService.put(`/customers/${customer.id}/capture`, JSON.stringify(params), {
       authenticate: true,
     });
     this.handleErrors(response.errors);
 
-    const { responseData, errors } = await this.getCustomer({ customerId: customer.id }, sandbox);
+    const { responseData, errors } = await this.getCustomer({ customerId: customer.id });
     this.handleErrors(errors);
 
     return {
@@ -257,12 +265,12 @@ export default class CleengAccountService extends AccountService {
     };
   };
 
-  resetPassword: ResetPassword = async (payload, sandbox) => {
-    return this.cleengService.put(sandbox, '/customers/passwords', JSON.stringify(payload));
+  resetPassword: ResetPassword = async (payload) => {
+    return this.cleengService.put('/customers/passwords', JSON.stringify({ ...payload, publisherId: this.publisherId }));
   };
 
-  changePasswordWithResetToken: ChangePassword = async (payload, sandbox) => {
-    return this.cleengService.patch(sandbox, '/customers/passwords', JSON.stringify(payload));
+  changePasswordWithResetToken: ChangePassword = async (payload) => {
+    return this.cleengService.patch('/customers/passwords', JSON.stringify({ ...payload, publisherId: this.publisherId }));
   };
 
   changePasswordWithOldPassword: ChangePasswordWithOldPassword = async () => {
@@ -272,21 +280,21 @@ export default class CleengAccountService extends AccountService {
     };
   };
 
-  updateCustomer: UpdateCustomer = async (payload, sandbox) => {
+  updateCustomer: UpdateCustomer = async (payload) => {
     const { id, metadata, fullName, ...rest } = payload;
     const params: UpdateCustomerPayload = {
       id,
       ...rest,
     };
     // enable keepalive to ensure data is persisted when closing the browser/tab
-    return this.cleengService.patch(sandbox, `/customers/${id}`, JSON.stringify(params), {
+    return this.cleengService.patch(`/customers/${id}`, JSON.stringify(params), {
       authenticate: true,
       keepalive: true,
     });
   };
 
-  updatePersonalShelves: UpdatePersonalShelves = async (payload, sandbox) => {
-    return await this.updateCustomer(payload, sandbox);
+  updatePersonalShelves: UpdatePersonalShelves = async (payload) => {
+    return await this.updateCustomer(payload);
   };
 
   subscribeToNotifications: NotificationsData = async () => {

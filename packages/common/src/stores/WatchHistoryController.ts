@@ -67,10 +67,9 @@ export default class WatchHistoryController {
   persistWatchHistory = async () => {
     const { watchHistory } = useWatchHistoryStore.getState();
     const { user } = useAccountStore.getState();
-    const { isSandbox } = useConfigStore.getState();
 
     if (user?.id && user?.externalData) {
-      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData }, isSandbox);
+      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData });
     }
 
     this.watchHistoryService.persistWatchHistory(watchHistory);

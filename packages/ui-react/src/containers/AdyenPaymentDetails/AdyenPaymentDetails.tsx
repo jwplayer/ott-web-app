@@ -6,7 +6,6 @@ import type { AdyenPaymentSession } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/src/constants';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
@@ -27,7 +26,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
   const accountController = getModule(AccountController);
   const checkoutController = getModule(CheckoutController);
 
-  const { isSandbox } = useConfigStore();
+  const isSandbox = accountController.getSandbox();
   const navigate = useNavigate();
   const location = useLocation();
   const [session, setSession] = useState<AdyenPaymentSession>();

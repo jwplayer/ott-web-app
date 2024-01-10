@@ -57,10 +57,9 @@ export default class FavoritesController {
   persistFavorites = async () => {
     const { favorites } = useFavoritesStore.getState();
     const { user } = useAccountStore.getState();
-    const { isSandbox } = useConfigStore.getState();
 
     if (user?.id && user?.externalData) {
-      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData }, isSandbox);
+      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData });
     }
 
     this.favoritesService.persistFavorites(favorites);

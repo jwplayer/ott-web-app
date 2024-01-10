@@ -93,10 +93,17 @@ export default class AccountController {
     useAccountStore.setState({ loading: false });
   };
 
+  getAccessModel() {
+    return this.accountService.accessModel || 'AVOD';
+  }
+
+  getSandbox() {
+    return this.accountService.sandbox;
+  }
+
   updatePersonalShelves = async () => {
     const { watchHistory } = useWatchHistoryStore.getState();
     const { favorites } = useFavoritesStore.getState();
-    const { isSandbox } = useConfigStore.getState();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customer } = getAccountInfo();
@@ -108,19 +115,15 @@ export default class AccountController {
       favorites: this.favoritesController?.serializeFavorites(favorites),
     };
 
-    return this.accountService?.updatePersonalShelves(
-      {
-        id: customer.id,
-        externalData: personalShelfData,
-      },
-      isSandbox,
-    );
+    return this.accountService?.updatePersonalShelves({
+      id: customer.id,
+      externalData: personalShelfData,
+    });
   };
 
   updateUser = async (values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> => {
     useAccountStore.setState({ loading: true });
 
-    const { isSandbox } = useConfigStore.getState();
     const { user } = useAccountStore.getState();
     const { canUpdateEmail, canSupportEmptyFullName } = this.getFeatures();
 
@@ -146,7 +149,7 @@ export default class AccountController {
       payload = { ...values, email: user.email };
     }
 
-    const response = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() }, isSandbox);
+    const response = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() });
 
     if (!response) {
       throw new Error('Unknown error');
@@ -298,10 +301,9 @@ export default class AccountController {
 
   getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { isSandbox } = useConfigStore.getState();
     const { customer } = getAccountInfo();
 
-    const { responseData } = await this.accountService.getCaptureStatus({ customer }, isSandbox);
+    const { responseData } = await this.accountService.getCaptureStatus({ customer });
 
     return responseData;
   };
@@ -309,11 +311,9 @@ export default class AccountController {
   updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
     const { getAccountInfo } = useAccountStore.getState();
     const { accessModel } = useConfigStore.getState();
-    const { isSandbox } = useConfigStore.getState();
-
     const { customer, customerConsents } = getAccountInfo();
 
-    const response = await this.accountService.updateCaptureAnswers({ customer, ...capture }, isSandbox);
+    const response = await this.accountService.updateCaptureAnswers({ customer, ...capture });
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -323,16 +323,10 @@ export default class AccountController {
   };
 
   resetPassword = async (email: string, resetUrl: string) => {
-    const { isSandbox, clientId: publisherId } = useConfigStore.getState();
-
-    const response = await this.accountService.resetPassword(
-      {
-        customerEmail: email,
-        publisherId,
-        resetUrl,
-      },
-      isSandbox,
-    );
+    const response = await this.accountService.resetPassword({
+      customerEmail: email,
+      resetUrl,
+    });
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -340,28 +334,23 @@ export default class AccountController {
   };
 
   changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
-    const { isSandbox } = useConfigStore.getState();
-
-    const response = await this.accountService.changePasswordWithOldPassword(
-      {
-        oldPassword,
-        newPassword,
-        newPasswordConfirmation,
-      },
-      isSandbox,
-    );
+    const response = await this.accountService.changePasswordWithOldPassword({
+      oldPassword,
+      newPassword,
+      newPasswordConfirmation,
+    });
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
     return response?.responseData;
   };
 
   changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
-    const { isSandbox, clientId: authProviderId } = useConfigStore.getState();
-
-    const response = await this.accountService.changePasswordWithResetToken(
-      { publisherId: authProviderId, customerEmail, newPassword, resetPasswordToken, newPasswordConfirmation },
-      isSandbox,
-    );
+    const response = await this.accountService.changePasswordWithResetToken({
+      customerEmail,
+      newPassword,
+      resetPasswordToken,
+      newPasswordConfirmation,
+    });
 
     if (response?.errors?.length > 0) throw new Error(response.errors[0]);
 
@@ -369,7 +358,6 @@ export default class AccountController {
   };
 
   updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
-    const { isSandbox } = useConfigStore.getState();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
@@ -377,15 +365,12 @@ export default class AccountController {
     const { subscription } = useAccountStore.getState();
     if (!subscription) throw new Error('user has no active subscription');
 
-    const response = await this.subscriptionService?.updateSubscription(
-      {
-        customerId,
-        offerId: subscription.offerId,
-        status,
-        unsubscribeUrl: subscription.unsubscribeUrl,
-      },
-      isSandbox,
-    );
+    const response = await this.subscriptionService?.updateSubscription({
+      customerId,
+      offerId: subscription.offerId,
+      status,
+      unsubscribeUrl: subscription.unsubscribeUrl,
+    });
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
@@ -409,25 +394,21 @@ export default class AccountController {
     expYear: number;
     currency: string;
   }) => {
-    const { isSandbox } = useConfigStore();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
 
     assertModuleMethod(this.subscriptionService.updateCardDetails, 'updateCardDetails is not available in subscription service');
 
-    const response = await this.subscriptionService.updateCardDetails(
-      {
-        cardName,
-        cardNumber,
-        cvc,
-        expMonth,
-        expYear,
-        currency,
-      },
-      isSandbox,
-    );
-    const activePayment = (await this.subscriptionService.getActivePayment({ sandbox: isSandbox, customerId })) || null;
+    const response = await this.subscriptionService.updateCardDetails({
+      cardName,
+      cardNumber,
+      cvc,
+      expMonth,
+      expYear,
+      currency,
+    });
+    const activePayment = (await this.subscriptionService.getActivePayment({ customerId })) || null;
 
     useAccountStore.setState({
       loading: false,
@@ -437,20 +418,16 @@ export default class AccountController {
   };
 
   checkEntitlements = async (offerId?: string): Promise<unknown> => {
-    const { isSandbox } = useConfigStore.getState();
-
     if (!offerId) {
       return false;
     }
 
-    const { responseData } = await this.checkoutService.getEntitlements({ offerId }, isSandbox);
+    const { responseData } = await this.checkoutService.getEntitlements({ offerId });
     return !!responseData?.accessGranted;
   };
 
   reloadActiveSubscription = async ({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> => {
     useAccountStore.setState({ loading: true });
-
-    const { isSandbox, config } = useConfigStore.getState();
 
     const { getAccountInfo } = useAccountStore.getState();
     const { customerId } = getAccountInfo();
@@ -466,9 +443,9 @@ export default class AccountController {
     }
 
     const [activeSubscription, transactions, activePayment] = await Promise.all([
-      this.subscriptionService.getActiveSubscription({ sandbox: isSandbox, customerId, config }),
-      this.subscriptionService.getAllTransactions({ sandbox: isSandbox, customerId }),
-      this.subscriptionService.getActivePayment({ sandbox: isSandbox, customerId }),
+      this.subscriptionService.getActiveSubscription({ customerId }),
+      this.subscriptionService.getAllTransactions({ customerId }),
+      this.subscriptionService.getActivePayment({ customerId }),
     ]);
 
     let pendingOffer: Offer | null = null;
@@ -479,8 +456,8 @@ export default class AccountController {
         assertModuleMethod(this.checkoutService.getOffer, 'getOffer is not available in checkout service');
         assertModuleMethod(this.checkoutService.getSubscriptionSwitch, 'getSubscriptionSwitch is not available in checkout service');
 
-        const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId }, isSandbox);
-        const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId }, isSandbox);
+        const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId });
+        const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId });
 
         pendingOffer = offerResponse.responseData;
       }
@@ -506,7 +483,7 @@ export default class AccountController {
     assertModuleMethod(this.accountService.exportAccountData, 'exportAccountData is not available in account service');
     assertFeature(canExportAccountData, 'Export account');
 
-    return this.accountService?.exportAccountData(undefined, true);
+    return this.accountService?.exportAccountData(undefined);
   };
 
   getSocialLoginUrls = (redirectUrl: string) => {
@@ -525,15 +502,13 @@ export default class AccountController {
     assertModuleMethod(this.accountService.deleteAccount, 'deleteAccount is not available in account service');
     assertFeature(canDeleteAccount, 'Delete account');
 
-    return this.accountService.deleteAccount({ password }, true);
+    return this.accountService.deleteAccount({ password });
   };
 
   getReceipt = async (transactionId: string) => {
-    const { isSandbox } = useConfigStore.getState();
-
     assertModuleMethod(this.subscriptionService.fetchReceipt, 'fetchReceipt is not available in subscription service');
 
-    const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId }, isSandbox);
+    const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId });
 
     return responseData;
   };

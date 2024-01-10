@@ -11,9 +11,10 @@ import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 
 const useOffers = () => {
-  const { offers, isSandbox, accessModel } = useConfigStore();
-
   const checkoutController = getModule(CheckoutController);
+
+  const { accessModel } = useConfigStore();
+  const offers = checkoutController.getSubscriptionOfferIds();
 
   const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
   const hasTvodOffer = (requestedMediaOffers || []).some((offer) => offer.offerId);
@@ -25,7 +26,7 @@ const useOffers = () => {
     return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...offers].filter(Boolean);
   }, [requestedMediaOffers, offers]);
 
-  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }, isSandbox));
+  const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }));
 
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
   return useMemo(() => {

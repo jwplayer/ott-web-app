@@ -10,7 +10,6 @@ import StorageService from '../services/StorageService';
 import { INTEGRATION_TYPE } from '../modules/types';
 
 import { useProfileStore } from './ProfileStore';
-import { useConfigStore } from './ConfigStore';
 
 const PERSIST_PROFILE = 'profile';
 
@@ -35,10 +34,6 @@ export default class ProfileController {
     this.storageService = storageService;
   }
 
-  private getSandbox = () => {
-    return useConfigStore.getState().isSandbox ?? true;
-  };
-
   private isValidProfile = (profile: unknown): profile is ProfilesData => {
     try {
       profileSchema.validateSync(profile);
@@ -51,7 +46,7 @@ export default class ProfileController {
   listProfiles = async () => {
     assertModuleMethod(this.profileService?.listProfiles, 'listProfiles is not available in profile service');
 
-    const res = await this.profileService?.listProfiles(undefined, this.getSandbox());
+    const res = await this.profileService?.listProfiles(undefined);
 
     const { canManageProfiles } = useProfileStore.getState();
 
@@ -65,19 +60,19 @@ export default class ProfileController {
   createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
     assertModuleMethod(this.profileService?.createProfile, 'createProfile is not available in profile service');
 
-    return this.profileService?.createProfile({ name, adult, avatar_url, pin }, this.getSandbox());
+    return this.profileService?.createProfile({ name, adult, avatar_url, pin });
   };
 
   updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
     assertModuleMethod(this.profileService?.updateProfile, 'updateProfile is not available in profile service');
 
-    return this.profileService?.updateProfile({ id, name, adult, avatar_url, pin }, this.getSandbox());
+    return this.profileService?.updateProfile({ id, name, adult, avatar_url, pin });
   };
 
   enterProfile = async ({ id, pin }: EnterProfilePayload) => {
     assertModuleMethod(this.profileService?.enterProfile, 'enterProfile is not available in profile service');
 
-    const response = await this.profileService?.enterProfile({ id, pin }, this.getSandbox());
+    const response = await this.profileService?.enterProfile({ id, pin });
 
     const profile = response?.responseData;
 
@@ -91,13 +86,13 @@ export default class ProfileController {
   deleteProfile = async ({ id }: ProfileDetailsPayload) => {
     assertModuleMethod(this.profileService?.deleteProfile, 'deleteProfile is not available in profile service');
 
-    return this.profileService?.deleteProfile({ id }, this.getSandbox());
+    return this.profileService?.deleteProfile({ id });
   };
 
   getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
     assertModuleMethod(this.profileService?.getProfileDetails, 'getProfileDetails is not available in profile service');
 
-    return this.profileService?.getProfileDetails({ id }, this.getSandbox());
+    return this.profileService?.getProfileDetails({ id });
   };
 
   persistProfile = ({ profile }: { profile: ProfilesData }) => {

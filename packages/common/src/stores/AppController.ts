@@ -4,9 +4,11 @@ import { inject, injectable } from 'inversify';
 import { PersonalShelf } from '../constants';
 import SettingsService from '../services/SettingsService';
 import ConfigService from '../services/ConfigService';
-import type { IntegrationType } from '../../types/config';
-import { getModule } from '../modules/container';
+import { container, getModule } from '../modules/container';
 import StorageService from '../services/StorageService';
+import type { Config } from '../../types/config';
+import type { CalculateIntegrationType } from '../../types/calculate-integration-type';
+import { DETERMINE_INTEGRATION_TYPE } from '../modules/types';
 
 import AccountController from './AccountController';
 import WatchHistoryController from './WatchHistoryController';
@@ -57,11 +59,6 @@ export default class AppController {
     config = await this.configService.validateConfig(config);
     config = merge({}, defaultConfig, config);
 
-    const accessModel = this.configService.calculateAccessModel(config);
-    const { integrationType, clientId, isSandbox, offers } = this.configService.calculateIntegrationData(config);
-
-    useConfigStore.setState({ config, accessModel, integrationType, clientId, isSandbox, offers, loaded: true });
-
     return config;
   };
 
@@ -69,6 +66,10 @@ export default class AppController {
     const settings = await this.settingsService.initialize();
     const configSource = await this.settingsService.getConfigSource(settings, url);
     const config = await this.loadAndValidateConfig(configSource);
+    const integrationType = this.calculateIntegrationType(config);
+
+    // update the config store
+    useConfigStore.setState({ config, loaded: true, integrationType });
 
     // we could add the configSource to the storage prefix, but this would cause a breaking change for end users
     // (since 'window.configId' isn't used anymore, all platforms currently use the same prefix)
@@ -85,18 +86,39 @@ export default class AppController {
       await getModule(FavoritesController).initialize();
     }
 
-    if (this.getIntegrationType()) {
-      await getModule(AccountController).initialize(url);
+    // when an integration is set, we initialize the AccountController
+    if (integrationType) {
+      const accountController = getModule(AccountController);
+
+      await accountController.initialize(url);
+
+      useConfigStore.setState({ accessModel: accountController.getAccessModel() });
     }
 
     return { config, settings, configSource };
   };
 
-  getIntegrationType = (): IntegrationType | null => {
+  calculateIntegrationType = (config: Config) => {
+    const registerIntegrationTypes = container.getAll<CalculateIntegrationType>(DETERMINE_INTEGRATION_TYPE);
+
+    const activatedIntegrationTypes = registerIntegrationTypes.reduce((previousValue, calculateIntegrationType) => {
+      const integrationType = calculateIntegrationType(config);
+
+      return integrationType ? [...previousValue, integrationType] : previousValue;
+    }, [] as string[]);
+
+    if (activatedIntegrationTypes.length > 1) {
+      throw new Error(`Failed to initialize app, more than 1 integrations are enabled: ${activatedIntegrationTypes.join(', ')}`);
+    }
+
+    return activatedIntegrationTypes[0] || null;
+  };
+
+  getIntegrationType = (): string | null => {
     const configState = useConfigStore.getState();
 
     if (!configState.loaded) throw new Error('A call to `AppController#getIntegrationType()` was made before loading the config');
 
-    return useConfigStore.getState().integrationType;
+    return configState.integrationType;
   };
 }

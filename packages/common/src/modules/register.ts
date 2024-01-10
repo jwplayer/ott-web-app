@@ -3,7 +3,7 @@
 import 'reflect-metadata'; // include once in the app for inversify (see: https://github.com/inversify/InversifyJS/blob/master/README.md#-installation)
 import { INTEGRATION } from '../constants';
 import { container } from './container';
-import { INTEGRATION_TYPE } from './types';
+import { DETERMINE_INTEGRATION_TYPE, INTEGRATION_TYPE } from './types';
 
 import ApiService from '../services/ApiService';
 import WatchHistoryService from '../services/WatchHistoryService';
@@ -38,6 +38,8 @@ import JWPAccountService from '../services/integrations/jwp/JWPAccountService';
 import JWPCheckoutService from '../services/integrations/jwp/JWPCheckoutService';
 import JWPSubscriptionService from '../services/integrations/jwp/JWPSubscriptionService';
 import JWPProfileService from '../services/integrations/jwp/JWPProfileService';
+import { getIntegrationType } from './functions/getIntegrationType';
+import { isCleengIntegrationType, isJwpIntegrationType } from './functions/calculateIntegrationType';
 
 // Common services
 container.bind(ConfigService).toSelf();
@@ -58,17 +60,18 @@ container.bind(AccountController).toSelf();
 container.bind(CheckoutController).toSelf();
 container.bind(ProfileController).toSelf();
 
-container.bind(INTEGRATION_TYPE).toDynamicValue((context) => {
-  return context.container.get(AppController).getIntegrationType();
-});
+// Functions
+container.bind(INTEGRATION_TYPE).toDynamicValue(getIntegrationType);
 
 // Cleeng integration
+container.bind(DETERMINE_INTEGRATION_TYPE).toConstantValue(isCleengIntegrationType);
 container.bind(CleengService).toSelf();
 container.bind(AccountService).to(CleengAccountService).whenTargetNamed(INTEGRATION.CLEENG);
 container.bind(CheckoutService).to(CleengCheckoutService).whenTargetNamed(INTEGRATION.CLEENG);
 container.bind(SubscriptionService).to(CleengSubscriptionService).whenTargetNamed(INTEGRATION.CLEENG);
 
 // JWP integration
+container.bind(DETERMINE_INTEGRATION_TYPE).toConstantValue(isJwpIntegrationType);
 container.bind(JWPEntitlementService).toSelf();
 container.bind(AccountService).to(JWPAccountService).whenTargetNamed(INTEGRATION.JWP);
 container.bind(CheckoutService).to(JWPCheckoutService).whenTargetNamed(INTEGRATION.JWP);

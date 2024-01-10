@@ -30,8 +30,8 @@ const Layout = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
 
-  const { config, accessModel, clientId, supportedLanguages } = useConfigStore(
-    ({ config, accessModel, clientId, supportedLanguages }) => ({ config, accessModel, clientId, supportedLanguages }),
+  const { config, accessModel, supportedLanguages } = useConfigStore(
+    ({ config, accessModel, supportedLanguages }) => ({ config, accessModel, supportedLanguages }),
     shallow,
   );
   const isLoggedIn = !!useAccountStore(({ user }) => user);
@@ -71,6 +71,7 @@ const Layout = () => {
 
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const banner = assets.banner;
+  const canLogin = accessModel !== ACCESS_MODEL.AVOD;
 
   useEffect(() => {
     if (isLoggedIn && profilesEnabled && !profiles?.length) {
@@ -120,10 +121,10 @@ const Layout = () => {
   const closeLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: false }), []);
 
   const renderUserActions = () => {
-    if (!clientId) return null;
+    if (!canLogin) return null;
 
     return isLoggedIn ? (
-      <UserMenu showPaymentsItem={accessModel !== ACCESS_MODEL.AVOD} favoritesEnabled={favoritesEnabled} />
+      <UserMenu favoritesEnabled={favoritesEnabled} showPaymentsItem />
     ) : (
       <div className={styles.buttonContainer}>
         <Button fullWidth onClick={loginButtonClickHandler} label={t('sign_in')} />
@@ -168,7 +169,7 @@ const Layout = () => {
           closeUserMenu={closeUserMenu}
           openLanguageMenu={openLanguageMenu}
           closeLanguageMenu={closeLanguageMenu}
-          canLogin={!!clientId}
+          canLogin={canLogin}
           showPaymentsMenuItem={accessModel !== ACCESS_MODEL.AVOD}
           favoritesEnabled={favoritesEnabled}
           profilesData={{

@@ -11,7 +11,9 @@ import ApiService from '@jwp/ott-common/src/services/ApiService';
 import FavoritesController from '@jwp/ott-common/src/stores/FavoritesController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
-import { DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
+import { ACCESS_MODEL, DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
+import { Route, Routes } from 'react-router-dom';
+import React from 'react';
 
 import { mockWindowLocation, renderWithRouter } from '../../../test/utils';
 
@@ -84,16 +86,24 @@ describe('User Component tests', () => {
       })),
     });
     mockService(FavoritesController, { clear: vi.fn() });
-    mockService(CheckoutController, { getSubscriptionSwitches: vi.fn() });
+    mockService(CheckoutController, { getSubscriptionSwitches: vi.fn(), getSubscriptionOfferIds: vi.fn().mockReturnValue([]) });
     mockService(ProfileController, { listProfiles: vi.fn() });
+
+    useConfigStore.setState({
+      accessModel: ACCESS_MODEL.SVOD,
+    });
   });
 
   test('Account Page', () => {
     act(() => {
       useAccountStore.setState(data);
-      mockWindowLocation('my-account');
+      mockWindowLocation('u/my-account');
     });
-    const { container } = renderWithRouter(<User />);
+    const { container } = renderWithRouter(
+      <Routes>
+        <Route path="/u/*" element={<User />} />
+      </Routes>,
+    );
 
     expect(container).toMatchSnapshot();
   });
@@ -101,9 +111,13 @@ describe('User Component tests', () => {
   test('Payments Page', () => {
     act(() => {
       useAccountStore.setState(data);
-      mockWindowLocation('payments');
+      mockWindowLocation('u/payments');
     });
-    const { container } = renderWithRouter(<User />);
+    const { container } = renderWithRouter(
+      <Routes>
+        <Route path="/u/*" element={<User />} />
+      </Routes>,
+    );
 
     expect(container).toMatchSnapshot();
   });
@@ -146,10 +160,14 @@ describe('User Component tests', () => {
           };
         },
       });
-      mockWindowLocation('favorites');
+      mockWindowLocation('u/favorites');
     });
 
-    const { container } = renderWithRouter(<User />);
+    const { container } = renderWithRouter(
+      <Routes>
+        <Route path="/u/*" element={<User />} />
+      </Routes>,
+    );
 
     expect(container).toMatchSnapshot();
   });

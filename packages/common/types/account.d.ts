@@ -147,20 +147,11 @@ export type GetCustomerConsentsResponse = {
 export type ResetPasswordPayload = {
   customerEmail: string;
   offerId?: string;
-  publisherId: string | null;
   resetUrl?: string;
-};
-
-export type ChangePasswordPayload = {
-  customerEmail: string;
-  publisherId: string;
-  resetPasswordToken: string;
-  newPassword: string;
 };
 
 export type ChangePasswordWithTokenPayload = {
   customerEmail?: string;
-  publisherId: string | null;
   resetPasswordToken: string;
   newPassword: string;
   newPasswordConfirmation: string;

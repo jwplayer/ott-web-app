@@ -294,7 +294,6 @@ export type InitialAdyenPaymentPayload = {
   origin?: string;
   customerIP?: string;
   browserInfo?: unknown;
-  attemptAuthentication?: 'always' | 'never' | 'preferNo';
   enable3DSRedirectFlow?: boolean;
 };
 
@@ -356,7 +355,7 @@ export type FinalizeAdyenPaymentDetailsPayload = Omit<FinalizeAdyenPaymentPayloa
 
 export type FinalizeAdyenPaymentDetailsResponse = PaymentDetail;
 
-export type GetOffers = (payload: GetOffersPayload, sandbox: boolean) => Promise<Offer[]>;
+export type GetOffers = PromiseRequest<GetOffersPayload, Offer[]>;
 export type GetOffer = EnvironmentServiceRequest<GetOfferPayload, Offer>;
 export type CreateOrder = EnvironmentServiceRequest<CreateOrderArgs, CreateOrderResponse>;
 export type GetOrder = EnvironmentServiceRequest<GetOrderPayload, GetOrderResponse>;

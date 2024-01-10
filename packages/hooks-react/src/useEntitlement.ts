@@ -33,7 +33,7 @@ const notifyOnChangeProps = ['data' as const, 'isLoading' as const];
  *
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
-  const { accessModel, isSandbox } = useConfigStore();
+  const { accessModel } = useConfigStore();
   const { user, subscription } = useAccountStore(
     ({ user, subscription }) => ({
       user,
@@ -51,7 +51,7 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => checkoutController?.getEntitlements({ offerId }, isSandbox),
+      queryFn: () => checkoutController?.getEntitlements({ offerId }),
       enabled: !!playlistItem && !!user && !!user.id && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
       notifyOnChangeProps,

@@ -32,12 +32,13 @@ import type {
   UpdateCustomerConsents,
   UpdatePersonalShelves,
 } from '../../../../types/account';
-import type { Config } from '../../../../types/config';
+import type { AccessModel, Config } from '../../../../types/config';
 import type { InPlayerAuthData } from '../../../../types/inplayer';
 import type { Favorite } from '../../../../types/favorite';
 import type { WatchHistoryItem } from '../../../../types/watchHistory';
 import AccountService from '../AccountService';
 import StorageService from '../../StorageService';
+import { ACCESS_MODEL } from '../../../constants';
 
 enum InPlayerEnv {
   Development = 'development',
@@ -50,6 +51,12 @@ const JW_TERMS_URL = 'https://inplayer.com/legal/terms';
 @injectable()
 export default class JWPAccountService extends AccountService {
   private readonly storageService;
+  private clientId = '';
+
+  accessModel: AccessModel = ACCESS_MODEL.AUTHVOD;
+  assetId: number | null = null;
+  svodOfferIds: string[] = [];
+  sandbox = false;
 
   constructor(storageService: StorageService) {
     super({
@@ -137,9 +144,30 @@ export default class JWPAccountService extends AccountService {
   }
 
   initialize = async (config: Config, url: string, _logoutFn: () => Promise<void>) => {
-    const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
+    const jwpConfig = config.integrations?.jwp;
+
+    if (!jwpConfig?.clientId) {
+      throw new Error('Failed to initialize JWP integration. The clientId is missing.');
+    }
+
+    // set environment
+    this.sandbox = !!jwpConfig.useSandbox;
+
+    const env: string = this.sandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
     InPlayer.setConfig(env as Env);
 
+    // calculate access model
+    if (jwpConfig.clientId) {
+      this.clientId = jwpConfig.clientId;
+    }
+
+    if (jwpConfig.assetId) {
+      this.accessModel = ACCESS_MODEL.SVOD;
+      this.assetId = jwpConfig.assetId;
+      this.svodOfferIds = jwpConfig.assetId ? [String(jwpConfig.assetId)] : [];
+    }
+
+    // restore session from URL params
     const queryParams = new URLSearchParams(url.split('#')[1]);
     const token = queryParams.get('token');
     const refreshToken = queryParams.get('refresh_token');
@@ -165,10 +193,9 @@ export default class JWPAccountService extends AccountService {
     return null;
   };
 
-  getPublisherConsents: GetPublisherConsents = async (config) => {
+  getPublisherConsents: GetPublisherConsents = async () => {
     try {
-      const { jwp } = config.integrations;
-      const { data } = await InPlayer.Account.getRegisterFields(jwp?.clientId || '');
+      const { data } = await InPlayer.Account.getRegisterFields(this.clientId);
 
       const terms = data?.collection.find(({ name }) => name === 'terms');
 
@@ -246,7 +273,7 @@ export default class JWPAccountService extends AccountService {
   };
 
   updateCaptureAnswers: UpdateCaptureAnswers = async ({ customer, ...newAnswers }) => {
-    return (await this.updateCustomer({ ...customer, ...newAnswers }, true)) as ServiceResponse<Capture>;
+    return (await this.updateCustomer({ ...customer, ...newAnswers })) as ServiceResponse<Capture>;
   };
 
   changePasswordWithOldPassword: ChangePasswordWithOldPassword = async (payload) => {
@@ -269,11 +296,11 @@ export default class JWPAccountService extends AccountService {
     }
   };
 
-  resetPassword: ResetPassword = async ({ customerEmail, publisherId }) => {
+  resetPassword: ResetPassword = async ({ customerEmail }) => {
     try {
       await InPlayer.Account.requestNewPassword({
         email: customerEmail,
-        merchantUuid: publisherId || '',
+        merchantUuid: this.clientId,
         brandingId: 0,
       });
       return {

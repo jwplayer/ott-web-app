@@ -1,4 +1,4 @@
-import type { Config } from '../../../types/config';
+import type { AccessModel, Config } from '../../../types/config';
 import type {
   AuthData,
   ChangePassword,
@@ -37,6 +37,10 @@ export type AccountServiceFeatures = {
 
 export default abstract class AccountService {
   readonly features: AccountServiceFeatures;
+
+  abstract accessModel: AccessModel;
+  abstract svodOfferIds: string[];
+  abstract sandbox: boolean;
 
   protected constructor(features: AccountServiceFeatures) {
     this.features = features;

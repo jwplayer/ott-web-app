@@ -7,6 +7,25 @@ import type { GetCustomerIP } from '@jwp/ott-common/types/get-customer-ip';
 import { LocalStorageService } from '#src/services/LocalStorageService';
 import { getOverrideIP } from '#src/utils/ip';
 
+/**
+ * Custom integration override
+ *
+ * @example
+ * ```ts
+ * // Custom integration services
+ * const MY_INTEGRATION_NAME = 'CUSTOM';
+ *
+ * container.bind(AccountService).to(CustomAccountService).whenTargetNamed(MY_INTEGRATION_NAME);
+ * container.bind(CheckoutService).to(CustomCheckoutService).whenTargetNamed(MY_INTEGRATION_NAME);
+ * container.bind(SubscriptionService).to(CustomSubscriptionService).whenTargetNamed(MY_INTEGRATION_NAME);
+ *
+ * // Override integration type calculation
+ * container.bind(DETERMINE_INTEGRATION_TYPE).toConstantValue((config: Config) => {
+ *   return config.custom?.['custom'] ? MY_INTEGRATION_NAME : null;
+ * })
+ * ```
+ */
+
 container.bind(StorageService).to(LocalStorageService);
 
 // Currently, this is only used for e2e testing to override the customer ip from a browser cookie
