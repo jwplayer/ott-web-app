@@ -13,6 +13,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { AdSchedule } from '#types/ad-schedule';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useProfileStore } from '#src/stores/ProfileStore';
+import { attachAnalyticsParams } from '#src/utils/player';
 
 type Props = {
   feedId?: string;
@@ -70,7 +71,7 @@ const Player: React.FC<Props> = ({
   const playerId = settings.playerId;
   const playerLicenseKey = settings.playerLicenseKey;
 
-  const isJwIntegration = config?.integrations?.jwp;
+  const isJwIntegration = !!config?.integrations?.jwp;
   const userId = user?.id;
   const profileId = profile?.id;
 
@@ -172,22 +173,9 @@ const Player: React.FC<Props> = ({
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
-      // Add user_id and profile_id for CDN analytics
-      const { sources } = item;
-
-      sources?.map((source) => {
-        const url = new URL(source.file);
-        const isVOD = url.pathname.includes('manifests');
-        const isBCL = url.pathname.includes('broadcast');
-        const isDRM = url.searchParams.has('exp') || url.searchParams.has('sig');
-
-        if ((isVOD || isBCL) && !isDRM && userId) {
-          url.searchParams.set('user_id', userId);
-          if (isJwIntegration && profileId) url.searchParams.append('profile_id', profileId);
-        }
-
-        source.file = url.toString();
-      });
+      // Inject user_id and profile_id into the CDN analytics
+      const { sources, mediaid } = item;
+      attachAnalyticsParams(sources, mediaid, isJwIntegration, userId, profileId);
 
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
