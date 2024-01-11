@@ -7,9 +7,13 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
   >
     nav.payments
   </h1>
-  <div>
+  <section
+    aria-labelledby="payment-method_1235"
+  >
     <div>
-      <h2>
+      <h2
+        id="payment-method_1235"
+      >
         user:payment.payment_method
       </h2>
     </div>
@@ -65,10 +69,14 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         </span>
       </button>
     </div>
-  </div>
-  <div>
+  </section>
+  <section
+    aria-labelledby="billing-history_1235"
+  >
     <div>
-      <h2>
+      <h2
+        id="billing-history_1235"
+      >
         user:payment.billing_history
       </h2>
     </div>
@@ -150,6 +158,6 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
 `;

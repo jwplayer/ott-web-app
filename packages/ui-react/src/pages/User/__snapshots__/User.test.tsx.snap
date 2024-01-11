@@ -92,13 +92,16 @@ exports[`User Component tests > Account Page 1`] = `
     <div
       class="_mainColumn_e9c5ca"
     >
-      <div
+      <section
+        aria-labelledby="account_about_you_1235"
         class="_panel_e9c5ca"
       >
         <div
           class="_panelHeader_e9c5ca"
         >
-          <h2>
+          <h2
+            id="account_about_you_1235"
+          >
             account.about_you
           </h2>
         </div>
@@ -116,7 +119,7 @@ exports[`User Component tests > Account Page 1`] = `
           >
             <label
               class="_label_e16c1b"
-              for="text-field_1235_firstName"
+              for="text-field_1235_firstname"
             >
               account.firstname
             </label>
@@ -129,7 +132,7 @@ exports[`User Component tests > Account Page 1`] = `
           >
             <label
               class="_label_e16c1b"
-              for="text-field_1235_lastName"
+              for="text-field_1235_lastname"
             >
               account.lastname
             </label>
@@ -150,14 +153,17 @@ exports[`User Component tests > Account Page 1`] = `
             </span>
           </button>
         </div>
-      </div>
-      <div
+      </section>
+      <section
+        aria-labelledby="account_email_1235"
         class="_panel_e9c5ca"
       >
         <div
           class="_panelHeader_e9c5ca"
         >
-          <h2>
+          <h2
+            id="account_email_1235"
+          >
             account.email
           </h2>
         </div>
@@ -182,14 +188,17 @@ exports[`User Component tests > Account Page 1`] = `
         <div
           class="_controls_1c1c63"
         />
-      </div>
-      <div
+      </section>
+      <section
+        aria-labelledby="account_security_1235"
         class="_panel_e9c5ca"
       >
         <div
           class="_panelHeader_e9c5ca"
         >
-          <h2>
+          <h2
+            id="account_security_1235"
+          >
             account.security
           </h2>
         </div>
@@ -209,14 +218,17 @@ exports[`User Component tests > Account Page 1`] = `
             </span>
           </button>
         </div>
-      </div>
-      <div
+      </section>
+      <section
+        aria-labelledby="account_terms_and_tracking_1235"
         class="_panel_e9c5ca"
       >
         <div
           class="_panelHeader_e9c5ca"
         >
-          <h2>
+          <h2
+            id="account_terms_and_tracking_1235"
+          >
             account.terms_and_tracking
           </h2>
         </div>
@@ -227,7 +239,7 @@ exports[`User Component tests > Account Page 1`] = `
         <div
           class="_controls_1c1c63"
         />
-      </div>
+      </section>
     </div>
   </div>
 </div>
@@ -600,13 +612,16 @@ exports[`User Component tests > Payments Page 1`] = `
       >
         nav.payments
       </h1>
-      <div
+      <section
+        aria-labelledby="subscription-details_1235"
         class="_panel_e9c5ca"
       >
         <div
           class="_panelHeader_e9c5ca"
         >
-          <h2>
+          <h2
+            id="subscription-details_1235"
+          >
             user:payment.subscription_details
           </h2>
         </div>
@@ -642,14 +657,17 @@ exports[`User Component tests > Payments Page 1`] = `
             user:payment.change_subscription
           </span>
         </button>
-      </div>
-      <div
+      </section>
+      <section
+        aria-labelledby="payment-method_1235"
         class="_panel_e9c5ca"
       >
         <div
           class="_panelHeader_e9c5ca"
         >
-          <h2>
+          <h2
+            id="payment-method_1235"
+          >
             user:payment.payment_method
           </h2>
         </div>
@@ -705,14 +723,17 @@ exports[`User Component tests > Payments Page 1`] = `
             </span>
           </button>
         </div>
-      </div>
-      <div
+      </section>
+      <section
+        aria-labelledby="billing-history_1235"
         class="_panel_e9c5ca"
       >
         <div
           class="_panelHeader_e9c5ca"
         >
-          <h2>
+          <h2
+            id="billing-history_1235"
+          >
             user:payment.billing_history
           </h2>
         </div>
@@ -768,7 +789,7 @@ exports[`User Component tests > Payments Page 1`] = `
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>

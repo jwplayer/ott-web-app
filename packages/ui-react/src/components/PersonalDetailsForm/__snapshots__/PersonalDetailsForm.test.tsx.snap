@@ -21,7 +21,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_firstName"
+        for="text-field_1235_firstname"
       >
         personal_details.fist_name
       </label>
@@ -30,7 +30,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_firstName"
+          id="text-field_1235_firstname"
           name="firstName"
           placeholder="personal_details.fist_name"
           required=""
@@ -49,7 +49,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_lastName"
+        for="text-field_1235_lastname"
       >
         personal_details.last_name
       </label>
@@ -58,7 +58,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_lastName"
+          id="text-field_1235_lastname"
           name="lastName"
           placeholder="personal_details.last_name"
           required=""
@@ -77,7 +77,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_companyName"
+        for="text-field_1235_companyname"
       >
         personal_details.company_name
         <span>
@@ -89,7 +89,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_companyName"
+          id="text-field_1235_companyname"
           name="companyName"
           placeholder="personal_details.company_name"
           type="text"
@@ -221,7 +221,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_postCode"
+        for="text-field_1235_postcode"
       >
         personal_details.post_code
       </label>
@@ -230,7 +230,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_postCode"
+          id="text-field_1235_postcode"
           name="postCode"
           placeholder="personal_details.post_code"
           required=""
@@ -249,7 +249,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_phoneNumber"
+        for="text-field_1235_phonenumber"
       >
         personal_details.phone_number
       </label>
@@ -258,7 +258,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_phoneNumber"
+          id="text-field_1235_phonenumber"
           name="phoneNumber"
           placeholder="personal_details.phone_number"
           required=""
@@ -274,11 +274,11 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
     </div>
     <div
       class="_dateField_eb6974 _error_eb6974"
-      id="text-field_1235_birthDate"
+      id="text-field_1235_birthdate"
     >
       <label
         class="_label_eb6974"
-        for="text-field_1235_birthDate"
+        for="text-field_1235_birthdate"
       >
         personal_details.birth_date
       </label>
@@ -287,12 +287,12 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       >
         <input
           class="_hiddenInput_eb6974"
-          id="text-field_1235_birthDate-hidden"
+          id="text-field_1235_birthdate-hidden"
           name="birthDate"
         />
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-date"
+          id="text-field_1235_birthdate-date"
           maxlength="2"
           name="date"
           placeholder="dd"
@@ -302,7 +302,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-month"
+          id="text-field_1235_birthdate-month"
           maxlength="2"
           name="month"
           placeholder="mm"
@@ -312,7 +312,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-year"
+          id="text-field_1235_birthdate-year"
           maxlength="4"
           name="year"
           placeholder="yyyy"
@@ -485,7 +485,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_firstName"
+        for="text-field_1235_firstname"
       >
         personal_details.fist_name
       </label>
@@ -494,7 +494,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_firstName"
+          id="text-field_1235_firstname"
           name="firstName"
           placeholder="personal_details.fist_name"
           required=""
@@ -508,7 +508,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_lastName"
+        for="text-field_1235_lastname"
       >
         personal_details.last_name
       </label>
@@ -517,7 +517,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_lastName"
+          id="text-field_1235_lastname"
           name="lastName"
           placeholder="personal_details.last_name"
           required=""
@@ -531,7 +531,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_companyName"
+        for="text-field_1235_companyname"
       >
         personal_details.company_name
         <span>
@@ -543,7 +543,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_companyName"
+          id="text-field_1235_companyname"
           name="companyName"
           placeholder="personal_details.company_name"
           type="text"
@@ -650,7 +650,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_postCode"
+        for="text-field_1235_postcode"
       >
         personal_details.post_code
       </label>
@@ -659,7 +659,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_postCode"
+          id="text-field_1235_postcode"
           name="postCode"
           placeholder="personal_details.post_code"
           required=""
@@ -673,7 +673,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     >
       <label
         class="_label_e16c1b"
-        for="text-field_1235_phoneNumber"
+        for="text-field_1235_phonenumber"
       >
         personal_details.phone_number
       </label>
@@ -682,7 +682,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       >
         <input
           class="_input_e16c1b"
-          id="text-field_1235_phoneNumber"
+          id="text-field_1235_phonenumber"
           name="phoneNumber"
           placeholder="personal_details.phone_number"
           required=""
@@ -693,11 +693,11 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
     </div>
     <div
       class="_dateField_eb6974"
-      id="text-field_1235_birthDate"
+      id="text-field_1235_birthdate"
     >
       <label
         class="_label_eb6974"
-        for="text-field_1235_birthDate"
+        for="text-field_1235_birthdate"
       >
         personal_details.birth_date
       </label>
@@ -706,12 +706,12 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       >
         <input
           class="_hiddenInput_eb6974"
-          id="text-field_1235_birthDate-hidden"
+          id="text-field_1235_birthdate-hidden"
           name="birthDate"
         />
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-date"
+          id="text-field_1235_birthdate-date"
           maxlength="2"
           name="date"
           placeholder="dd"
@@ -721,7 +721,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-month"
+          id="text-field_1235_birthdate-month"
           maxlength="2"
           name="month"
           placeholder="mm"
@@ -731,7 +731,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
          / 
         <input
           class="_input_eb6974"
-          id="text-field_1235_birthDate-year"
+          id="text-field_1235_birthdate-year"
           maxlength="4"
           name="year"
           placeholder="yyyy"

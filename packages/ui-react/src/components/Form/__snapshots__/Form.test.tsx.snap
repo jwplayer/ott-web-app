@@ -2,9 +2,13 @@
 
 exports[`<Form> > renders Form 1`] = `
 <div>
-  <div>
+  <section
+    aria-labelledby="edit_this_1235"
+  >
     <div>
-      <h2>
+      <h2
+        id="edit_this_1235"
+      >
         Edit This
       </h2>
     </div>
@@ -29,6 +33,6 @@ exports[`<Form> > renders Form 1`] = `
         </span>
       </button>
     </div>
-  </div>
+  </section>
 </div>
 `;

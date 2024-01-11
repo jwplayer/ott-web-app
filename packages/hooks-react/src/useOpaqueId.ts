@@ -6,7 +6,11 @@ const generateId = (prefix?: string, suffix?: string) => {
   // Ideally it would be mocked in the test setup but there seems to be a bug with vitest if you mock Math.random
   const randomId = IS_TEST_MODE ? 1235 : Math.random() * 10000;
 
-  return [prefix, Math.round(randomId), suffix].filter(Boolean).join('_');
+  return [prefix, Math.round(randomId), suffix]
+    .filter(Boolean)
+    .join('_')
+    .replace(/[\s.]+/g, '_')
+    .toLowerCase();
 };
 
 const useOpaqueId = (prefix?: string, suffix?: string, override?: string): string => {

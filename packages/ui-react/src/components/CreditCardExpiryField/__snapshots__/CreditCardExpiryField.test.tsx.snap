@@ -7,7 +7,7 @@ exports[`<CreditCardExpiryField> > renders and matches snapshot 1`] = `
   >
     <label
       class="_label_e16c1b"
-      for="text-field_1235_cardExpiry"
+      for="text-field_1235_cardexpiry"
     >
       Expiry date
     </label>
@@ -16,7 +16,7 @@ exports[`<CreditCardExpiryField> > renders and matches snapshot 1`] = `
     >
       <input
         class="_input_e16c1b"
-        id="text-field_1235_cardExpiry"
+        id="text-field_1235_cardexpiry"
         name="cardExpiry"
         pattern="\\\\d*"
         placeholder="MM/YY"

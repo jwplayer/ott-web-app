@@ -2,13 +2,16 @@
 
 exports[`<Account> > renders and matches snapshot 1`] = `
 <div>
-  <div
+  <section
+    aria-labelledby="account_about_you_1235"
     class="panel-class"
   >
     <div
       class="header-class"
     >
-      <h2>
+      <h2
+        id="account_about_you_1235"
+      >
         account.about_you
       </h2>
     </div>
@@ -26,7 +29,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       >
         <label
           class="_label_e16c1b"
-          for="text-field_1235_firstName"
+          for="text-field_1235_firstname"
         >
           account.firstname
         </label>
@@ -39,7 +42,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       >
         <label
           class="_label_e16c1b"
-          for="text-field_1235_lastName"
+          for="text-field_1235_lastname"
         >
           account.lastname
         </label>
@@ -60,14 +63,17 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         </span>
       </button>
     </div>
-  </div>
-  <div
+  </section>
+  <section
+    aria-labelledby="account_email_1235"
     class="panel-class"
   >
     <div
       class="header-class"
     >
-      <h2>
+      <h2
+        id="account_email_1235"
+      >
         account.email
       </h2>
     </div>
@@ -101,14 +107,17 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         </span>
       </button>
     </div>
-  </div>
-  <div
+  </section>
+  <section
+    aria-labelledby="account_security_1235"
     class="panel-class"
   >
     <div
       class="header-class"
     >
-      <h2>
+      <h2
+        id="account_security_1235"
+      >
         account.security
       </h2>
     </div>
@@ -128,14 +137,17 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         </span>
       </button>
     </div>
-  </div>
-  <div
+  </section>
+  <section
+    aria-labelledby="account_terms_and_tracking_1235"
     class="panel-class"
   >
     <div
       class="header-class"
     >
-      <h2>
+      <h2
+        id="account_terms_and_tracking_1235"
+      >
         account.terms_and_tracking
       </h2>
     </div>
@@ -146,14 +158,17 @@ exports[`<Account> > renders and matches snapshot 1`] = `
     <div
       class="_controls_1c1c63"
     />
-  </div>
-  <div
+  </section>
+  <section
+    aria-labelledby="account_other_registration_details_1235"
     class="panel-class"
   >
     <div
       class="header-class"
     >
-      <h2>
+      <h2
+        id="account_other_registration_details_1235"
+      >
         account.other_registration_details
       </h2>
     </div>
@@ -173,13 +188,13 @@ exports[`<Account> > renders and matches snapshot 1`] = `
             class="_row_531f07"
           >
             <input
-              id="check-box_1235_consentsValues.marketing"
+              id="check-box_1235_consentsvalues_marketing"
               name="consentsValues.marketing"
               type="checkbox"
               value=""
             />
             <label
-              for="check-box_1235_consentsValues.marketing"
+              for="check-box_1235_consentsvalues_marketing"
             >
               Receive Marketing Emails
             </label>
@@ -190,6 +205,6 @@ exports[`<Account> > renders and matches snapshot 1`] = `
     <div
       class="_controls_1c1c63"
     />
-  </div>
+  </section>
 </div>
 `;

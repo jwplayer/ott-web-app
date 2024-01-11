@@ -7,7 +7,7 @@ exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
   >
     <label
       class="_label_e16c1b"
-      for="text-field_1235_cardCVC"
+      for="text-field_1235_cardcvc"
     >
       payment.security_code
     </label>
@@ -17,7 +17,7 @@ exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
       <input
         aria-label="payment.security_code"
         class="_input_e16c1b"
-        id="text-field_1235_cardCVC"
+        id="text-field_1235_cardcvc"
         name="cardCVC"
         pattern="\\\\d*"
         placeholder="###"

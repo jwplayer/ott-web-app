@@ -147,9 +147,9 @@ export function FormSection<TData extends GenericFormValues>({
   );
 
   return (
-    <div className={className}>
+    <section aria-labelledby={sectionId} className={className}>
       <div className={panelHeaderClassName}>
-        <h2>{label}</h2>
+        <h2 id={sectionId}>{label}</h2>
       </div>
       {isBusy && isEditing && <LoadingOverlay transparentBackground />}
       {content && (
@@ -183,6 +183,6 @@ export function FormSection<TData extends GenericFormValues>({
           )}
         </div>
       )}
-    </div>
+    </section>
   );
 }

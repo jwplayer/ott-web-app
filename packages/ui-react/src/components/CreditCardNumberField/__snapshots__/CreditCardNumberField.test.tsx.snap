@@ -7,7 +7,7 @@ exports[`<CreditCardNumberField> > renders and matches snapshot 1`] = `
   >
     <label
       class="_label_e16c1b"
-      for="text-field_1235_cardNumber"
+      for="text-field_1235_cardnumber"
     >
       Card number
     </label>
@@ -16,7 +16,7 @@ exports[`<CreditCardNumberField> > renders and matches snapshot 1`] = `
     >
       <input
         class="_input_e16c1b"
-        id="text-field_1235_cardNumber"
+        id="text-field_1235_cardnumber"
         name="cardNumber"
         pattern="\\\\d*"
         placeholder="1234 5678 9012 3456"
