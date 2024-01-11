@@ -41,7 +41,7 @@ export default class ApiService {
       return undefined;
     }
 
-    return typeof date === 'string' ? parseISO(date) : undefined;
+    return date ? parseISO(date) : undefined;
   };
 
   /**
