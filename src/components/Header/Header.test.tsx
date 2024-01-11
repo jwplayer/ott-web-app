@@ -4,9 +4,21 @@ import { render } from '@testing-library/react';
 import Header from './Header';
 
 import Button from '#components/Button/Button';
+import AccountController from '#src/stores/AccountController';
 
 vi.mock('react-router-dom', () => ({
   NavLink: () => 'a',
+}));
+
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof AccountController) => {
+    switch (type) {
+      case AccountController:
+        return {
+          logout: vi.fn(() => null),
+        };
+    }
+  },
 }));
 
 describe('<Header />', () => {

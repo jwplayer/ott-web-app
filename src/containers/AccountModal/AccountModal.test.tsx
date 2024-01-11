@@ -3,7 +3,16 @@ import React from 'react';
 import AccountModal from './AccountModal';
 
 import { renderWithRouter } from '#test/testUtils';
-import * as checkoutController from '#src/stores/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof AccountController) => {
+    switch (type) {
+      case AccountController:
+        return {};
+    }
+  },
+}));
 
 describe('<AccountModal>', () => {
   afterEach(() => {
@@ -11,9 +20,6 @@ describe('<AccountModal>', () => {
   });
 
   test('renders and matches snapshot', () => {
-    const spy = vi.spyOn(checkoutController, 'getSubscriptionSwitches');
-    spy.mockResolvedValue(undefined);
-
     const { container } = renderWithRouter(<AccountModal />);
 
     expect(container).toMatchSnapshot();

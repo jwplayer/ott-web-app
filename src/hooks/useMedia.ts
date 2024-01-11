@@ -1,13 +1,16 @@
 import { UseBaseQueryResult, useQuery } from 'react-query';
 
-import { getMediaById } from '#src/services/api.service';
 import type { PlaylistItem } from '#types/playlist';
 import { isScheduledOrLiveMedia } from '#src/utils/liveEvent';
+import ApiService from '#src/services/api.service';
+import { getModule } from '#src/modules/container';
 
 export type UseMediaResult<TData = PlaylistItem, TError = unknown> = UseBaseQueryResult<TData, TError>;
 
 export default function useMedia(mediaId: string, enabled: boolean = true): UseMediaResult {
-  return useQuery(['media', mediaId], () => getMediaById(mediaId), {
+  const apiService = getModule(ApiService);
+
+  return useQuery(['media', mediaId], () => apiService.getMediaById(mediaId), {
     enabled: !!mediaId && enabled,
     refetchInterval: (data, _) => {
       if (!data) return false;

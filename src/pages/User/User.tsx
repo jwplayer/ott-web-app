@@ -17,16 +17,22 @@ import AccountCircle from '#src/icons/AccountCircle';
 import BalanceWallet from '#src/icons/BalanceWallet';
 import Exit from '#src/icons/Exit';
 import Favorite from '#src/icons/Favorite';
-import { logout } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { ACCESS_MODEL, PersonalShelf } from '#src/config';
+import FavoritesController from '#src/stores/FavoritesController';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
 import EditProfile from '#src/containers/Profiles/EditProfile';
-import { PersonalShelf, useConfigStore } from '#src/stores/ConfigStore';
-import { clear as clearFavorites } from '#src/stores/FavoritesController';
 import { useProfileStore } from '#src/stores/ProfileStore';
 import { useProfiles } from '#src/hooks/useProfiles';
+import { getModule } from '#src/modules/container';
 
 const User = (): JSX.Element => {
+  const favoritesController = getModule(FavoritesController);
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
+
   const { accessModel, favoritesList } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
@@ -41,7 +47,8 @@ const User = (): JSX.Element => {
   const location = useLocation();
 
   const isLargeScreen = breakpoint > Breakpoint.md;
-  const { user: customer, subscription, loading, canUpdateEmail } = useAccountStore();
+  const { user: customer, subscription, loading } = useAccountStore();
+  const { canUpdateEmail, canRenewSubscription } = accountController.getFeatures();
   const { profile } = useProfileStore();
 
   const { profilesEnabled } = useProfiles();
@@ -50,14 +57,14 @@ const User = (): JSX.Element => {
 
   const onLogout = useCallback(async () => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
-    await logout();
-  }, []);
+    await accountController.logout();
+  }, [accountController]);
 
   useEffect(() => {
-    if (accessModel !== 'AVOD') {
-      getSubscriptionSwitches();
+    if (accessModel !== ACCESS_MODEL.AVOD && canRenewSubscription) {
+      checkoutController.getSubscriptionSwitches();
     }
-  }, [accessModel]);
+  }, [accessModel, checkoutController, canRenewSubscription]);
 
   useEffect(() => {
     if (!loading && !customer) {
@@ -101,7 +108,7 @@ const User = (): JSX.Element => {
                 </li>
               )}
 
-              {accessModel !== 'AVOD' && (!profilesEnabled || !profileAndFavoritesPage) && (
+              {accessModel !== ACCESS_MODEL.AVOD && (!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
                   <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
                 </li>
@@ -145,7 +152,7 @@ const User = (): JSX.Element => {
                     title={t('favorites.clear_favorites_title')}
                     body={t('favorites.clear_favorites_body')}
                     onConfirm={async () => {
-                      await clearFavorites();
+                      await favoritesController.clear();
                       setClearFavoritesOpen(false);
                     }}
                     onClose={() => setClearFavoritesOpen(false)}
@@ -154,7 +161,7 @@ const User = (): JSX.Element => {
               }
             />
           )}
-          <Route path="payments" element={accessModel !== 'AVOD' ? <PaymentContainer /> : <Navigate to="my-account" />} />
+          <Route path="payments" element={accessModel !== ACCESS_MODEL.AVOD ? <PaymentContainer /> : <Navigate to="my-account" />} />
           <Route path="*" element={<Navigate to="my-account" />} />
         </Routes>
       </div>

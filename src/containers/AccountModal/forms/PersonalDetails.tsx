@@ -10,19 +10,23 @@ import PersonalDetailsForm from '#components/PersonalDetailsForm/PersonalDetails
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import { addQueryParam } from '#src/utils/location';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '#types/account';
-import { getCaptureStatus, updateCaptureAnswers } from '#src/stores/AccountController';
 import useOffers from '#src/hooks/useOffers';
+import AccountController from '#src/stores/AccountController';
+import { ACCESS_MODEL } from '#src/config';
+import { getModule } from '#src/modules/container';
 
 const yupConditional = (required: boolean, message: string) => {
   return required ? string().required(message) : mixed().notRequired();
 };
 
 const PersonalDetails = () => {
+  const accountController = getModule(AccountController);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
   const accessModel = useConfigStore((s) => s.accessModel);
-  const { data, isLoading } = useQuery('captureStatus', () => getCaptureStatus());
+  const { data, isLoading } = useQuery('captureStatus', accountController.getCaptureStatus);
   const { hasTVODOffers } = useOffers();
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
@@ -34,7 +38,7 @@ const PersonalDetails = () => {
   );
 
   const nextStep = useCallback(() => {
-    const hasOffers = accessModel === 'SVOD' || (accessModel === 'AUTHVOD' && hasTVODOffers);
+    const hasOffers = accessModel === ACCESS_MODEL.SVOD || (accessModel === ACCESS_MODEL.AUTHVOD && hasTVODOffers);
 
     navigate(addQueryParam(location, 'u', hasOffers ? 'choose-offer' : 'welcome'), { replace: true });
   }, [navigate, location, accessModel, hasTVODOffers]);
@@ -118,7 +122,7 @@ const PersonalDetails = () => {
           } as CaptureCustomAnswer),
       );
 
-      await updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
+      await accountController.updateCaptureAnswers(removeEmpty({ ...formData, customAnswers }));
 
       nextStep();
     } catch (error: unknown) {

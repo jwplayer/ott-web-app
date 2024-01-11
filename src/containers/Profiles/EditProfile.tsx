@@ -16,7 +16,8 @@ import Button from '#src/components/Button/Button';
 import { addQueryParam } from '#src/utils/location';
 import { useProfileErrorHandler, useUpdateProfile } from '#src/hooks/useProfiles';
 import useBreakpoint, { Breakpoint } from '#src/hooks/useBreakpoint';
-import { getProfileDetails } from '#src/stores/ProfileController';
+import ProfileController from '#src/stores/ProfileController';
+import { getModule } from '#src/modules/container';
 
 type EditProfileProps = {
   contained?: boolean;
@@ -29,10 +30,12 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation('user');
 
+  const profileController = getModule(ProfileController);
+
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  const { data, isLoading, isFetching } = useQuery(['getProfileDetails'], () => getProfileDetails({ id: id || '' }), {
+  const { data, isLoading, isFetching } = useQuery(['getProfileDetails'], () => profileController.getProfileDetails({ id: id || '' }), {
     staleTime: 0,
   });
 

@@ -4,10 +4,13 @@ import SocialButton, { SocialButtonVariant } from '../SocialButton/SocialButton'
 
 import styles from './SocialButtonsList.module.scss';
 
-import { getSocialLoginUrls } from '#src/stores/AccountController';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const SocialButtonsList = () => {
-  const urls = useQuery('socialUrls', getSocialLoginUrls);
+  const accountController = getModule(AccountController);
+
+  const urls = useQuery('socialUrls', accountController.getSocialLoginUrls);
 
   if (urls.error || !urls.data) {
     return null;

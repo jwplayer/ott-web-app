@@ -8,15 +8,19 @@ import EditPasswordForm from '#components/EditPasswordForm/EditPasswordForm';
 import useForm, { UseFormOnSubmitHandler } from '#src/hooks/useForm';
 import { addQueryParam } from '#src/utils/location';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { changePasswordWithOldPassword, changePasswordWithToken, logout } from '#src/stores/AccountController';
 import useQueryParam from '#src/hooks/useQueryParam';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
-const ResetPassword: React.FC = () => {
+const ResetPassword = ({ type }: { type?: 'add' }) => {
+  const accountController = getModule(AccountController);
+
   const { t } = useTranslation('account');
   const location = useLocation();
   const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
   const emailParam = useQueryParam('email');
+  const email = useAccountStore((state) => state.user?.email);
   const user = useAccountStore.getState().user;
 
   const passwordSubmitHandler: UseFormOnSubmitHandler<EditPasswordFormData> = async (formData, { setErrors, setSubmitting }) => {
@@ -32,16 +36,16 @@ const ResetPassword: React.FC = () => {
     }
     try {
       if (user && !resetToken) {
-        await changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
+        await accountController.changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
       } else {
         if (!resetToken) {
           setErrors({ form: t('reset.invalid_link') });
 
           return setSubmitting(false);
         }
-        await changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
+        await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
-      await logout({ includeNetworkRequest: false });
+      await accountController.logout({ includeNetworkRequest: false });
       navigate(addQueryParam(location, 'u', 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -73,6 +77,16 @@ const ResetPassword: React.FC = () => {
     true,
   );
 
+  const resendEmailClickHandler = async () => {
+    try {
+      if (email) {
+        await accountController.resetPassword(email, '');
+      }
+    } catch (error: unknown) {
+      passwordForm.setErrors({ form: t('user:account.resend_mail_error') });
+    }
+  };
+
   return (
     <EditPasswordForm
       value={passwordForm.values}
@@ -81,8 +95,10 @@ const ResetPassword: React.FC = () => {
       onBlur={passwordForm.handleBlur}
       errors={passwordForm.errors}
       onSubmit={passwordForm.handleSubmit}
-      showOldPasswordField={user && !resetPasswordTokenParam ? true : false}
-      showResetTokenField={!user && !resetPasswordTokenParam}
+      showOldPasswordField={!!(user && !resetPasswordTokenParam)}
+      showResetTokenField={type === 'add' || (!user && !resetPasswordTokenParam)}
+      email={emailParam || email}
+      onResendEmailClick={resendEmailClickHandler}
     />
   );
 };

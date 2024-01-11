@@ -1,15 +1,14 @@
 import { useQueries } from 'react-query';
 import shallow from 'zustand/shallow';
 
-import useService, { CheckoutService } from './useService';
-import useClientIntegration from './useClientIntegration';
-
 import type { MediaOffer } from '#types/media';
 import type { GetEntitlementsResponse } from '#types/checkout';
 import type { PlaylistItem } from '#types/playlist';
 import { isLocked } from '#src/utils/entitlements';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { useAccountStore } from '#src/stores/AccountStore';
+import CheckoutController from '#src/stores/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 export type UseEntitlementResult = {
   isEntitled: boolean;
@@ -35,10 +34,7 @@ const notifyOnChangeProps = ['data' as const, 'isLoading' as const];
  *
  *  */
 const useEntitlement: UseEntitlement = (playlistItem) => {
-  const checkoutService: CheckoutService = useService(({ checkoutService }) => checkoutService);
-
-  const { sandbox } = useClientIntegration();
-  const { accessModel } = useConfigStore();
+  const { accessModel, isSandbox } = useConfigStore();
   const { user, subscription } = useAccountStore(
     ({ user, subscription }) => ({
       user,
@@ -47,6 +43,8 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
     shallow,
   );
 
+  const checkoutController = getModule(CheckoutController, false);
+
   const isPreEntitled = playlistItem && !isLocked(accessModel, !!user, !!subscription, playlistItem);
   const mediaOffers = playlistItem?.mediaOffers || [];
 
@@ -54,8 +52,8 @@ const useEntitlement: UseEntitlement = (playlistItem) => {
   const mediaEntitlementQueries = useQueries(
     mediaOffers.map(({ offerId }) => ({
       queryKey: ['entitlements', offerId],
-      queryFn: () => checkoutService?.getEntitlements({ offerId }, sandbox),
-      enabled: !!playlistItem && !!user && !!offerId && !isPreEntitled,
+      queryFn: () => checkoutController?.getEntitlements({ offerId }, isSandbox),
+      enabled: !!playlistItem && !!user && !!user.id && !!offerId && !isPreEntitled,
       refetchOnMount: 'always' as const,
       notifyOnChangeProps,
     })),

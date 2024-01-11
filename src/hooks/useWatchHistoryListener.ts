@@ -3,8 +3,9 @@ import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import type { JWPlayer } from '#types/jwplayer';
 import type { PlaylistItem } from '#types/playlist';
 import useEventCallback from '#src/hooks/useEventCallback';
-import { saveItem } from '#src/stores/WatchHistoryController';
 import { useConfigStore } from '#src/stores/ConfigStore';
+import WatchHistoryController from '#src/stores/WatchHistoryController';
+import { getModule } from '#src/modules/container';
 
 type QueuedProgress = {
   item: PlaylistItem;
@@ -32,6 +33,7 @@ const PROGRESSIVE_SAVE_INTERVAL = 300_000; // 5 minutes
  */
 export const useWatchHistoryListener = (player: JWPlayer | undefined, item: PlaylistItem, seriesItem?: PlaylistItem) => {
   const queuedWatchProgress = useRef<QueuedProgress | null>(null);
+  const watchHistoryController = getModule(WatchHistoryController);
 
   // config
   const { features } = useConfigStore((s) => s.config);
@@ -45,11 +47,11 @@ export const useWatchHistoryListener = (player: JWPlayer | undefined, item: Play
     const { item, seriesItem, progress } = queuedWatchProgress.current;
 
     // save the queued watch progress
-    saveItem(item, seriesItem, progress);
+    watchHistoryController.saveItem(item, seriesItem, progress);
 
     // clear the queue
     queuedWatchProgress.current = null;
-  }, [watchHistoryEnabled]);
+  }, [watchHistoryEnabled, watchHistoryController]);
 
   // update the queued watch progress on each time update event
   const handleTimeUpdate = useEventCallback((event: jwplayer.TimeParam) => {

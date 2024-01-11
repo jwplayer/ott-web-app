@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router';
 
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '#src/config';
 import Adyen from '#components/Adyen/Adyen';
-import useClientIntegration from '#src/hooks/useClientIntegration';
-import { reloadActiveSubscription } from '#src/stores/AccountController';
+import { useConfigStore } from '#src/stores/ConfigStore';
 import { addQueryParams } from '#src/utils/formatting';
 import type { AdyenPaymentSession } from '#types/checkout';
-import { createAdyenPaymentSession, finalizeAdyenPayment, initialAdyenPayment } from '#src/stores/CheckoutController';
+import CheckoutController from '#src/stores/CheckoutController';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 type Props = {
   setUpdatingOrder: (loading: boolean) => void;
@@ -20,9 +21,12 @@ type Props = {
 };
 
 export default function AdyenInitialPayment({ setUpdatingOrder, type, setPaymentError, paymentSuccessUrl, orderId }: Props) {
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
+
   const [session, setSession] = useState<AdyenPaymentSession>();
 
-  const { sandbox } = useClientIntegration();
+  const { isSandbox } = useConfigStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
       setUpdatingOrder(true);
 
       try {
-        const session = await createAdyenPaymentSession(window.origin);
+        const session = await checkoutController.createAdyenPaymentSession(window.origin);
 
         setSession(session);
       } catch (error: unknown) {
@@ -43,7 +47,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
     };
 
     createSession();
-  }, [setUpdatingOrder, setPaymentError]);
+  }, [setUpdatingOrder, setPaymentError, checkoutController]);
 
   const onSubmit = useCallback(
     async (state: AdyenEventData, handleAction: DropinElement['handleAction']) => {
@@ -59,13 +63,13 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
         }
 
         const returnUrl = addQueryParams(window.location.href, { u: 'finalize-payment', orderId: orderId });
-        const result = await initialAdyenPayment(state.data.paymentMethod, returnUrl);
+        const result = await checkoutController.initialAdyenPayment(state.data.paymentMethod, returnUrl);
 
         if ('action' in result) {
           handleAction(result.action);
         }
 
-        await reloadActiveSubscription({ delay: 2000 });
+        await accountController.reloadActiveSubscription({ delay: 2000 });
 
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {
@@ -76,15 +80,15 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
 
       setUpdatingOrder(false);
     },
-    [navigate, orderId, paymentSuccessUrl, setPaymentError, setUpdatingOrder],
+    [navigate, orderId, paymentSuccessUrl, setPaymentError, setUpdatingOrder, accountController, checkoutController],
   );
 
   const adyenConfiguration: CoreOptions = useMemo(
     () => ({
       session: session,
       showPayButton: false,
-      environment: sandbox ? 'test' : 'live',
-      clientKey: sandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
+      environment: isSandbox ? 'test' : 'live',
+      clientKey: isSandbox ? ADYEN_TEST_CLIENT_KEY : ADYEN_LIVE_CLIENT_KEY,
       paymentMethodsConfiguration: {
         card: {
           hasHolderName: true,
@@ -96,8 +100,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
           setUpdatingOrder(true);
 
           const data = state.data.details as number | undefined;
-
-          await finalizeAdyenPayment(orderId, data);
+          await checkoutController.finalizeAdyenPayment(orderId, data);
 
           navigate(paymentSuccessUrl, { replace: true });
         } catch (error: unknown) {
@@ -110,7 +113,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
       onSubmit: (state: AdyenEventData, component: DropinElement) => onSubmit(state, component.handleAction),
       onError: (error: Error) => setPaymentError(error.message),
     }),
-    [onSubmit, paymentSuccessUrl, sandbox, session, orderId, navigate, setPaymentError, setUpdatingOrder],
+    [onSubmit, paymentSuccessUrl, isSandbox, session, orderId, navigate, setPaymentError, setUpdatingOrder, checkoutController],
   );
 
   return <Adyen configuration={adyenConfiguration} type={type} />;

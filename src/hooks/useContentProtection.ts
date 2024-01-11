@@ -1,10 +1,13 @@
 import { useQuery } from 'react-query';
 
-import { getJWPMediaToken, getMediaToken } from '#src/services/entitlement.service';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { GetPlaylistParams } from '#types/playlist';
 import type { GetMediaParams } from '#types/media';
-import useService from '#src/hooks/useService';
+import AccountController from '#src/stores/AccountController';
+import GenericEntitlementService from '#src/services/genericEntitlement.service';
+import JWPEntitlementService from '#src/services/jwpEntitlement.service';
+import { getModule } from '#src/modules/container';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -14,13 +17,15 @@ const useContentProtection = <T>(
   enabled: boolean = true,
   placeholderData?: T,
 ) => {
-  const accountService = useService(({ accountService }) => accountService);
+  const genericEntitlementService = getModule(GenericEntitlementService);
+  const jwpEntitlementService = getModule(JWPEntitlementService);
+
   const { configId, signingConfig, contentProtection, jwp, urlSigning } = useConfigStore(({ config }) => ({
     configId: config.id,
     signingConfig: config.contentSigningService,
     contentProtection: config.contentProtection,
     jwp: config.integrations.jwp,
-    urlSigning: config?.custom?.urlSigning,
+    urlSigning: isTruthyCustomParamValue(config?.custom?.urlSigning),
   }));
   const host = signingConfig?.host;
   const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? signingConfig?.drmPolicyId;
@@ -31,13 +36,15 @@ const useContentProtection = <T>(
     async () => {
       // if provider is not JWP
       if (!!id && !!host) {
-        const authData = await accountService.getAuthData();
+        const accountController = getModule(AccountController);
+        const authData = await accountController.getAuthData();
         const { host, drmPolicyId } = signingConfig;
-        return getMediaToken(host, id, authData?.jwt, params, drmPolicyId);
+
+        return genericEntitlementService.getMediaToken(host, id, authData?.jwt, params, drmPolicyId);
       }
       // if provider is JWP
       if (jwp && configId && !!id && signingEnabled) {
-        return getJWPMediaToken(configId, id);
+        return jwpEntitlementService.getJWPMediaToken(configId, id);
       }
     },
     { enabled: signingEnabled && enabled && !!id, keepPreviousData: false, staleTime: 15 * 60 * 1000 },

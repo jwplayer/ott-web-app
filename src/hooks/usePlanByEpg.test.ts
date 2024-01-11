@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 
 import usePlanByEpg, { makeTheme, formatChannel, formatProgram } from '#src/hooks/usePlanByEpg';
 import epgChannelsFixture from '#test/fixtures/epgChannels.json';
-import type { EpgChannel } from '#src/services/epg.service';
+import type { EpgChannel } from '#types/epg';
 
 const schedule: EpgChannel[] = epgChannelsFixture;
 

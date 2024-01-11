@@ -1,9 +1,10 @@
 import { useMutation } from 'react-query';
 
-import { updateUser } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { changeSubscription } from '#src/stores/CheckoutController';
 import type { Customer } from '#types/account';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
+import { getModule } from '#src/modules/container';
 
 export const useSubscriptionChange = (
   isUpgradeOffer: boolean,
@@ -11,7 +12,10 @@ export const useSubscriptionChange = (
   customer: Customer | null,
   activeSubscriptionId: string | number | undefined,
 ) => {
-  const updateSubscriptionMetadata = useMutation(updateUser, {
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
+
+  const updateSubscriptionMetadata = useMutation(accountController.updateUser, {
     onSuccess: () => {
       useAccountStore.setState({
         loading: false,
@@ -19,7 +23,7 @@ export const useSubscriptionChange = (
     },
   });
 
-  return useMutation(changeSubscription, {
+  return useMutation(checkoutController.changeSubscription, {
     onSuccess: () => {
       if (!isUpgradeOffer && selectedOfferId) {
         updateSubscriptionMetadata.mutate({

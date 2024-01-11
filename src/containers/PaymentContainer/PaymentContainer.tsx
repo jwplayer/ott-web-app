@@ -5,16 +5,22 @@ import shallow from 'zustand/shallow';
 import styles from '#src/pages/User/User.module.scss';
 import LoadingOverlay from '#components/LoadingOverlay/LoadingOverlay';
 import Payment from '#components/Payment/Payment';
-import { getReceipt } from '#src/stores/AccountController';
 import { useAccountStore } from '#src/stores/AccountStore';
-import { getSubscriptionSwitches } from '#src/stores/CheckoutController';
 import { useCheckoutStore } from '#src/stores/CheckoutStore';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import { addQueryParam } from '#src/utils/location';
 import useOffers from '#src/hooks/useOffers';
 import { useSubscriptionChange } from '#src/hooks/useSubscriptionChange';
+import AccountController from '#src/stores/AccountController';
+import CheckoutController from '#src/stores/CheckoutController';
+import { ACCESS_MODEL } from '#src/config';
+import { getModule } from '#src/modules/container';
+import { processBillingReceipt } from '#src/utils/common';
 
 const PaymentContainer = () => {
+  const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
+
   const { accessModel } = useConfigStore(
     (s) => ({
       accessModel: s.accessModel,
@@ -24,17 +30,8 @@ const PaymentContainer = () => {
   );
   const navigate = useNavigate();
 
-  const {
-    user: customer,
-    subscription: activeSubscription,
-    transactions,
-    activePayment,
-    pendingOffer,
-    loading,
-    canRenewSubscription,
-    canUpdatePaymentMethod,
-    canShowReceipts,
-  } = useAccountStore();
+  const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading } = useAccountStore();
+  const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = accountController.getFeatures();
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);
@@ -52,17 +49,9 @@ const PaymentContainer = () => {
     setIsLoadingReceipt(true);
 
     try {
-      const receipt = await getReceipt(transactionId);
-
+      const receipt = await accountController.getReceipt(transactionId);
       if (receipt) {
-        const newWindow = window.open('', `Receipt ${transactionId}`, '');
-        const htmlString = window.atob(receipt);
-
-        if (newWindow) {
-          newWindow.opener = null;
-          newWindow.document.write(htmlString);
-          newWindow.document.close();
-        }
+        processBillingReceipt(receipt, transactionId);
       }
     } catch (error: unknown) {
       throw new Error("Couldn't parse receipt. " + (error instanceof Error ? error.message : ''));
@@ -72,10 +61,10 @@ const PaymentContainer = () => {
   };
 
   useEffect(() => {
-    if (accessModel !== 'AVOD') {
-      getSubscriptionSwitches();
+    if (accessModel !== ACCESS_MODEL.AVOD && canRenewSubscription) {
+      checkoutController.getSubscriptionSwitches();
     }
-  }, [accessModel]);
+  }, [accessModel, checkoutController, canRenewSubscription]);
 
   useEffect(() => {
     if (!loading && !customer) {

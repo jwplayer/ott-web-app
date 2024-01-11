@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import 'wicg-inert';
 import { registerSW } from 'virtual:pwa-register';
 
+import '#src/modules/register';
+
 import App from './App';
 
 const rootElement = document.getElementById('root');

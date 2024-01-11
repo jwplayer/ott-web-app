@@ -1,5 +1,5 @@
 export type AdSchedule = {
-  adscheduleid: string;
+  adscheduleid?: string;
   client: string;
   schedule: string;
 };

@@ -1,7 +1,20 @@
 import i18next from 'i18next';
-import InPlayer, { PurchaseDetails, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import InPlayer, { PaymentHistory, Card, GetItemAccessV1, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import { injectable } from 'inversify';
 
-import type { ChangeSubscription, PaymentDetail, Subscription, Transaction, UpdateCardDetails, UpdateSubscription } from '#types/subscription';
+import SubscriptionService from './subscription.service';
+
+import type {
+  GetActivePayment,
+  GetActiveSubscription,
+  GetAllTransactions,
+  PaymentDetail,
+  Subscription,
+  Transaction,
+  UpdateCardDetails,
+  UpdateSubscription,
+  ChangeSubscription,
+} from '#types/subscription';
 import type { Config } from '#types/Config';
 import { isCommonError } from '#src/utils/api';
 
@@ -20,198 +33,220 @@ interface SubscriptionDetails extends InplayerSubscription {
   access_fee_id?: number;
 }
 
-export async function getActiveSubscription({ config }: { config: Config }) {
-  try {
-    const assetId = config.integrations.jwp?.assetId || 0;
-    const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);
+@injectable()
+export default class InplayerSubscriptionService extends SubscriptionService {
+  private formatCardDetails = (card: Card & { card_type: string; account_id: number; currency: string }): PaymentDetail => {
+    const { number, exp_month, exp_year, card_name, card_type, account_id, currency } = card;
+    const zeroFillExpMonth = `0${exp_month}`.slice(-2);
+    return {
+      customerId: account_id.toString(),
+      paymentMethodSpecificParams: {
+        holderName: card_name,
+        variant: card_type,
+        lastCardFourDigits: number,
+        cardExpirationDate: `${zeroFillExpMonth}/${exp_year}`,
+      },
+      active: true,
+      currency,
+    } as PaymentDetail;
+  };
 
-    if (hasAccess) {
-      const { data } = await InPlayer.Subscription.getSubscriptions();
-      const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
+  private formatTransaction = (transaction: PaymentHistory): Transaction => {
+    const purchasedAmount = transaction?.charged_amount?.toString() || '0';
 
-      if (activeSubscription) {
-        return formatActiveSubscription(activeSubscription, hasAccess?.data?.expires_at);
-      }
+    return {
+      transactionId: transaction.transaction_token || i18next.t('user:payment.access_granted'),
+      transactionDate: transaction.created_at,
+      trxToken: transaction.trx_token,
+      offerId: transaction.item_id?.toString() || i18next.t('user:payment.no_transaction'),
+      offerType: transaction.item_type || '',
+      offerTitle: transaction?.item_title || '',
+      offerPeriod: '',
+      transactionPriceExclTax: purchasedAmount,
+      transactionCurrency: transaction.currency_iso || 'EUR',
+      discountedOfferPrice: purchasedAmount,
+      offerCurrency: transaction.currency_iso || 'EUR',
+      offerPriceExclTax: purchasedAmount,
+      applicableTax: '0',
+      transactionPriceInclTax: purchasedAmount,
+      customerId: transaction.consumer_id?.toString(),
+      customerEmail: '',
+      customerLocale: '',
+      customerCountry: 'en',
+      customerIpCountry: '',
+      customerCurrency: '',
+      paymentMethod: transaction.payment_method_name || i18next.t('user:payment.access_granted'),
+    };
+  };
 
-      return formatGrantedSubscription(hasAccess.data);
+  private formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: number) => {
+    let status = '';
+    switch (subscription.action_type) {
+      case 'free-trial':
+        status = 'active_trial';
+        break;
+      case 'recurrent':
+        status = 'active';
+        break;
+      case 'canceled':
+        status = 'cancelled';
+        break;
+      case 'incomplete_expired' || 'ended':
+        status = 'expired';
+        break;
+      default:
+        status = 'terminated';
     }
-    return null;
-  } catch (error: unknown) {
-    if (isCommonError(error) && error.response.data.code === 402) {
+
+    return {
+      subscriptionId: subscription.subscription_id,
+      offerId: subscription.item_id?.toString(),
+      accessFeeId: `S${subscription.access_fee_id}`,
+      status,
+      expiresAt,
+      nextPaymentAt: subscription.next_rebill_date,
+      nextPaymentPrice: subscription.subscription_price,
+      nextPaymentCurrency: subscription.currency,
+      paymentGateway: 'stripe',
+      paymentMethod: subscription.payment_method_name,
+      offerTitle: subscription.item_title,
+      period: subscription.access_type?.period,
+      totalPrice: subscription.charged_amount,
+      unsubscribeUrl: subscription.unsubscribe_url,
+      pendingSwitchId: null,
+    } as Subscription;
+  };
+
+  private formatGrantedSubscription = (subscription: GetItemAccessV1) => {
+    return {
+      subscriptionId: '',
+      offerId: subscription.item.id.toString(),
+      status: 'active',
+      expiresAt: subscription.expires_at,
+      nextPaymentAt: subscription.expires_at,
+      nextPaymentPrice: 0,
+      nextPaymentCurrency: 'EUR',
+      paymentGateway: 'none',
+      paymentMethod: i18next.t('user:payment.access_granted'),
+      offerTitle: subscription.item.title,
+      period: 'granted',
+      totalPrice: 0,
+      unsubscribeUrl: '',
+      pendingSwitchId: null,
+    } as Subscription;
+  };
+
+  getActiveSubscription: GetActiveSubscription = async ({ config }: { config: Config }) => {
+    try {
+      const assetId = config.integrations.jwp?.assetId || 0;
+      const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);
+
+      if (hasAccess) {
+        const { data } = await InPlayer.Subscription.getSubscriptions();
+        const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
+
+        if (activeSubscription) {
+          return this.formatActiveSubscription(activeSubscription, hasAccess?.data?.expires_at);
+        }
+
+        return this.formatGrantedSubscription(hasAccess.data);
+      }
+      return null;
+    } catch (error: unknown) {
+      if (isCommonError(error) && error.response.data.code === 402) {
+        return null;
+      }
+      throw new Error('Unable to fetch customer subscriptions.');
+    }
+  };
+
+  getAllTransactions: GetAllTransactions = async () => {
+    try {
+      const { data } = await InPlayer.Payment.getPaymentHistory();
+
+      return data?.collection?.map((transaction) => this.formatTransaction(transaction));
+    } catch {
+      throw new Error('Failed to get transactions');
+    }
+  };
+
+  getActivePayment: GetActivePayment = async () => {
+    try {
+      const { data } = await InPlayer.Payment.getDefaultCreditCard();
+      const cards: PaymentDetail[] = [];
+      for (const currency in data?.cards) {
+        cards.push(
+          this.formatCardDetails({
+            ...data.cards?.[currency],
+            currency: currency,
+          }),
+        );
+      }
+      return cards.find((paymentDetails) => paymentDetails.active) || null;
+    } catch {
       return null;
     }
-    throw new Error('Unable to fetch customer subscriptions.');
-  }
-}
+  };
 
-export async function getAllTransactions() {
-  try {
-    const { data } = await InPlayer.Payment.getPurchaseHistory('active', 0, 30);
+  getSubscriptions = async () => {
+    return {
+      errors: [],
+      responseData: { items: [] },
+    };
+  };
 
-    return data?.collection?.map((transaction) => formatTransaction(transaction));
-  } catch {
-    throw new Error('Failed to get transactions');
-  }
-}
-export async function getActivePayment() {
-  try {
-    const { data } = await InPlayer.Payment.getDefaultCreditCard();
-    const cards: PaymentDetail[] = [];
-    for (const currency in data?.cards) {
-      cards.push(
-        // @ts-ignore
-        // TODO fix Card type in InPlayer SDK
-        formatCardDetails({
-          ...data.cards?.[currency],
-          currency: currency,
-        }),
-      );
+  updateSubscription: UpdateSubscription = async ({ offerId, unsubscribeUrl }) => {
+    if (!unsubscribeUrl) {
+      throw new Error('Missing unsubscribe url');
     }
-    return cards.find((paymentDetails) => paymentDetails.active) || null;
-  } catch {
-    return null;
-  }
+    try {
+      await InPlayer.Subscription.cancelSubscription(unsubscribeUrl);
+      return {
+        errors: [],
+        responseData: { offerId: offerId, status: 'cancelled', expiresAt: 0 },
+      };
+    } catch {
+      throw new Error('Failed to update subscription');
+    }
+  };
+
+  changeSubscription: ChangeSubscription = async ({ accessFeeId, subscriptionId }) => {
+    try {
+      const response = await InPlayer.Subscription.changeSubscriptionPlan({ access_fee_id: parseInt(accessFeeId), inplayer_token: subscriptionId });
+      return {
+        errors: [],
+        responseData: { message: response.data.message },
+      };
+    } catch {
+      throw new Error('Failed to change subscription');
+    }
+  };
+
+  updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
+    try {
+      const response = await InPlayer.Payment.setDefaultCreditCard({ cardName, cardNumber, cvc, expMonth, expYear, currency });
+      return {
+        errors: [],
+        responseData: response.data,
+      };
+    } catch {
+      throw new Error('Failed to update card details');
+    }
+  };
+
+  fetchReceipt = async ({ transactionId }: { transactionId: string }) => {
+    try {
+      const { data } = await InPlayer.Payment.getBillingReceipt({ trxToken: transactionId });
+      return {
+        errors: [],
+        responseData: data,
+      };
+    } catch {
+      throw new Error('Failed to get billing receipt');
+    }
+  };
+
+  getPaymentDetails = undefined;
+
+  getTransactions = undefined;
 }
-export const getSubscriptions = async () => {
-  return {
-    errors: [],
-    responseData: { items: [] },
-  };
-};
-
-export const updateSubscription: UpdateSubscription = async ({ offerId, unsubscribeUrl }) => {
-  if (!unsubscribeUrl) {
-    throw new Error('Missing unsubscribe url');
-  }
-  try {
-    await InPlayer.Subscription.cancelSubscription(unsubscribeUrl);
-    return {
-      errors: [],
-      responseData: { offerId: offerId, status: 'cancelled', expiresAt: 0 },
-    };
-  } catch {
-    throw new Error('Failed to update subscription');
-  }
-};
-
-export const changeSubscription: ChangeSubscription = async ({ accessFeeId, subscriptionId }) => {
-  try {
-    const response = await InPlayer.Subscription.changeSubscriptionPlan({ access_fee_id: parseInt(accessFeeId), inplayer_token: subscriptionId });
-    return {
-      errors: [],
-      responseData: { message: response.data.message },
-    };
-  } catch {
-    throw new Error('Failed to change subscription');
-  }
-};
-
-export const updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
-  try {
-    const response = await InPlayer.Payment.setDefaultCreditCard({ cardName, cardNumber, cvc, expMonth, expYear, currency });
-
-    return { responseData: response.data, errors: [] };
-  } catch {
-    throw new Error('Failed to update card details');
-  }
-};
-
-const formatCardDetails = (card: Card & { card_type: string; account_id: number; currency: string }): PaymentDetail => {
-  const { number, exp_month, exp_year, card_name, card_type, account_id, currency } = card;
-  const zeroFillExpMonth = `0${exp_month}`.slice(-2);
-  return {
-    customerId: account_id.toString(),
-    paymentMethodSpecificParams: {
-      holderName: card_name,
-      variant: card_type,
-      lastCardFourDigits: number,
-      cardExpirationDate: `${zeroFillExpMonth}/${exp_year}`,
-    },
-    active: true,
-    currency,
-  } as PaymentDetail;
-};
-
-const formatTransaction = (transaction: PurchaseDetails): Transaction => {
-  const purchasedAmount = transaction?.purchased_amount?.toString() || '0';
-
-  return {
-    transactionId: transaction.parent_resource_id || i18next.t('user:payment.access_granted'),
-    transactionDate: transaction.created_at,
-    offerId: transaction.purchased_access_fee_id?.toString() || i18next.t('user:payment.no_transaction'),
-    offerType: transaction.type || '',
-    offerTitle: transaction?.purchased_access_fee_description || '',
-    offerPeriod: '',
-    transactionPriceExclTax: purchasedAmount,
-    transactionCurrency: transaction.purchased_currency || 'EUR',
-    discountedOfferPrice: purchasedAmount,
-    offerCurrency: transaction.purchased_currency || 'EUR',
-    offerPriceExclTax: purchasedAmount,
-    applicableTax: '0',
-    transactionPriceInclTax: purchasedAmount,
-    customerId: transaction.customer_id?.toString(),
-    customerEmail: transaction.consumer_email,
-    customerLocale: '',
-    customerCountry: 'en',
-    customerIpCountry: '',
-    customerCurrency: '',
-    paymentMethod: transaction.payment_method || i18next.t('user:payment.access_granted'),
-  };
-};
-
-const formatActiveSubscription = (subscription: SubscriptionDetails, expiresAt: number) => {
-  let status = '';
-  switch (subscription.action_type) {
-    case 'free-trial':
-      status = 'active_trial';
-      break;
-    case 'recurrent':
-      status = 'active';
-      break;
-    case 'canceled':
-      status = 'cancelled';
-      break;
-    case 'incomplete_expired' || 'ended':
-      status = 'expired';
-      break;
-    default:
-      status = 'terminated';
-  }
-
-  return {
-    subscriptionId: subscription.subscription_id,
-    offerId: subscription.item_id?.toString(),
-    accessFeeId: `S${subscription.access_fee_id}`,
-    status,
-    expiresAt,
-    nextPaymentAt: subscription.next_rebill_date,
-    nextPaymentPrice: subscription.subscription_price,
-    nextPaymentCurrency: subscription.currency,
-    paymentGateway: 'stripe',
-    paymentMethod: subscription.payment_method_name,
-    offerTitle: subscription.item_title,
-    period: subscription.access_type?.period,
-    totalPrice: subscription.charged_amount,
-    unsubscribeUrl: subscription.unsubscribe_url,
-    pendingSwitchId: null,
-  } as Subscription;
-};
-
-const formatGrantedSubscription = (subscription: GetItemAccessV1) => {
-  return {
-    subscriptionId: '',
-    offerId: subscription.item.id.toString(),
-    status: 'active',
-    expiresAt: subscription.expires_at,
-    nextPaymentAt: subscription.expires_at,
-    nextPaymentPrice: 0,
-    nextPaymentCurrency: 'EUR',
-    paymentGateway: 'none',
-    paymentMethod: i18next.t('user:payment.access_granted'),
-    offerTitle: subscription.item.title,
-    period: 'granted',
-    totalPrice: 0,
-    unsubscribeUrl: '',
-    pendingSwitchId: null,
-  } as Subscription;
-};

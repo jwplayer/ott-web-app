@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import useService from './useService';
-
 import { simultaneousLoginWarningKey } from '#components/LoginForm/LoginForm';
 import { queryClient } from '#src/containers/QueryProvider/QueryProvider';
-import { logout } from '#src/services/inplayer.account.service';
-import { reloadActiveSubscription } from '#src/stores/AccountController';
 import { addQueryParams, removeQueryParamFromUrl } from '#src/utils/formatting';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -23,52 +21,57 @@ enum NotificationsTypes {
 
 export default async function useNotifications(uuid: string = '') {
   const navigate = useNavigate();
-  const accountService = useService(({ accountService }) => accountService);
+
+  const accountController = getModule(AccountController);
+  const { hasNotifications } = accountController?.getFeatures() || {};
 
   useEffect(() => {
-    if (!uuid) return;
+    if (!uuid || !hasNotifications) return;
 
-    accountService.subscribeToNotifications(uuid, async (message) => {
-      if (message) {
-        const notification = JSON.parse(message);
+    accountController?.subscribeToNotifications({
+      uuid,
+      onMessage: async (message) => {
+        if (message) {
+          const notification = JSON.parse(message);
 
-        switch (notification.type) {
-          case NotificationsTypes.FAILED:
-          case NotificationsTypes.CARD_FAILED:
-          case NotificationsTypes.SUBSCRIBE_FAILED:
-            navigate(
-              addQueryParams(window.location.pathname, {
-                u: 'payment-error',
-                message: notification.resource?.message,
-              }),
-            );
-            break;
-          case NotificationsTypes.CARD_SUCCESS:
-            await queryClient.invalidateQueries('entitlements');
-            navigate(removeQueryParamFromUrl('u'));
-            break;
-          case NotificationsTypes.SUBSCRIBE_SUCCESS:
-            await reloadActiveSubscription();
-            break;
-          case NotificationsTypes.ACCESS_REVOKED:
-            await reloadActiveSubscription();
-            break;
-          case NotificationsTypes.CARD_REQUIRES_ACTION:
-          case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:
-            window.location.href = notification.resource?.redirect_to_url;
-            break;
-          case NotificationsTypes.ACCOUNT_LOGOUT:
-            if (notification.resource?.reason === 'sessions_limit') {
-              navigate(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
-            } else {
-              await logout();
-            }
-            break;
-          default:
-            break;
+          switch (notification.type) {
+            case NotificationsTypes.FAILED:
+            case NotificationsTypes.CARD_FAILED:
+            case NotificationsTypes.SUBSCRIBE_FAILED:
+              navigate(
+                addQueryParams(window.location.pathname, {
+                  u: 'payment-error',
+                  message: notification.resource?.message,
+                }),
+              );
+              break;
+            case NotificationsTypes.CARD_SUCCESS:
+              await queryClient.invalidateQueries('entitlements');
+              navigate(removeQueryParamFromUrl('u'));
+              break;
+            case NotificationsTypes.SUBSCRIBE_SUCCESS:
+              await accountController.reloadActiveSubscription();
+              break;
+            case NotificationsTypes.ACCESS_REVOKED:
+              await accountController.reloadActiveSubscription();
+              break;
+            case NotificationsTypes.CARD_REQUIRES_ACTION:
+            case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:
+              window.location.href = notification.resource?.redirect_to_url;
+              break;
+            case NotificationsTypes.ACCOUNT_LOGOUT:
+              if (notification.resource?.reason === 'sessions_limit') {
+                navigate(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
+              } else {
+                await accountController.logout();
+              }
+              break;
+            default:
+              break;
+          }
         }
-      }
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountService, uuid]);
+  }, [accountController, uuid]);
 }

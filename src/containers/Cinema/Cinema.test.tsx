@@ -4,6 +4,20 @@ import Cinema from './Cinema';
 
 import { renderWithRouter } from '#test/testUtils';
 import type { PlaylistItem } from '#types/playlist';
+import ApiService from '#src/services/api.service';
+
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof ApiService) => {
+    switch (type) {
+      case ApiService:
+        return {
+          getPlaylistById: vi.fn(() => ({
+            id: 'fake_id',
+          })),
+        };
+    }
+  },
+}));
 
 describe('<Cinema>', () => {
   test('renders and matches snapshot', () => {

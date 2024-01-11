@@ -12,17 +12,20 @@ import styles from './DeleteAccountModal.module.scss';
 import type { DeleteAccountFormData } from '#types/account';
 import useForm from '#src/hooks/useForm';
 import { addQueryParam, removeQueryParam } from '#src/utils/location';
-import { deleteAccountData, logout } from '#src/stores/AccountController';
 import Alert from '#components/Alert/Alert';
+import AccountController from '#src/stores/AccountController';
+import { getModule } from '#src/modules/container';
 
 const DeleteAccountModal = () => {
+  const accountController = getModule(AccountController);
+
   const { t } = useTranslation('user');
 
   const [enteredPassword, setEnteredPassword] = useState<string>('');
 
-  const deleteAccount = useMutation(deleteAccountData, {
+  const deleteAccount = useMutation(accountController.deleteAccountData, {
     onSuccess: async () => {
-      await logout();
+      await accountController.logout();
       navigate('/');
     },
     onError: () => {
@@ -56,7 +59,6 @@ const DeleteAccountModal = () => {
     if (!location.search.includes('delete-account-confirmation') && enteredPassword) {
       // handle back button
       setEnteredPassword('');
-      deleteAccount.reset();
       resetForm();
     }
     if (location.search.includes('delete-account-confirmation') && !enteredPassword) {

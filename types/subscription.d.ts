@@ -40,6 +40,7 @@ export type PaymentMethodSpecificParam = {
 export type Transaction = {
   transactionId: string;
   transactionDate: number;
+  trxToken?: string;
   offerId: string;
   offerType: string;
   offerTitle: string;
@@ -114,24 +115,51 @@ export type GetTransactionsPayload = {
 export type GetTransactionsResponse = {
   items: Transaction[];
 };
+
 export type UpdateCardDetailsPayload = DefaultCreditCardData;
 
 export type UpdateCardDetails = EnvironmentServiceRequest<DefaultCreditCardData, SetDefaultCard>;
+
 export type FetchReceiptPayload = {
   transactionId: string;
 };
 
-export type FetchReceiptResponse = string;
+export type FetchReceiptResponse = Blob | string;
 
 type ChangeSubscriptionPayload = {
   accessFeeId: string;
   subscriptionId: string;
 };
 
+type GetActivePaymentPayload = {
+  sandbox: boolean;
+  customerId: string;
+};
+
+type GetAllTransactionsPayload = {
+  sandbox: boolean;
+  customerId: string;
+};
+
+type GetActiveSubscriptionPayload = {
+  sandbox: boolean;
+  customerId: string;
+  config: Config;
+};
+
+type GetActivePaymentResponse = PaymentDetail | null;
+
+type GetAllTransactionsResponse = Transaction[] | null;
+
+type GetActiveSubscriptionResponse = Subscription | null;
+
 type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
 type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
 type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
 type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
-type FetchReceipt = CleengRequest<FetchReceiptPayload, FetchReceiptResponse>;
 
+type GetActiveSubscription = PromiseRequest<GetActiveSubscriptionPayload, GetActiveSubscriptionResponse>;
+type GetAllTransactions = PromiseRequest<GetAllTransactionsPayload, GetAllTransactionsResponse>;
+type GetActivePayment = PromiseRequest<GetActivePaymentPayload, GetActivePaymentResponse>;
 type ChangeSubscription = EnvironmentServiceRequest<ChangeSubscriptionPayload, ChangeSubscriptionPlanResponse>;
+type FetchReceipt = EnvironmentServiceRequest<FetchReceiptPayload, FetchReceiptResponse>;

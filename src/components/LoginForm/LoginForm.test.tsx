@@ -4,25 +4,33 @@ import { fireEvent, act, render } from '@testing-library/react';
 import LoginForm from './LoginForm';
 
 import { createWrapper, waitForWithFakeTimers } from '#test/testUtils';
+import AccountController from '#src/stores/AccountController';
+
+vi.mock('#src/modules/container', () => ({
+  getModule: (type: typeof AccountController) => {
+    switch (type) {
+      case AccountController:
+        return {
+          getSocialLoginUrls: vi.fn(() => [
+            {
+              twitter: 'https://staging-v2.inplayer.com/',
+            },
+            {
+              facebook: 'https://www.facebook.com/',
+            },
+            {
+              google: 'https://accounts.google.com/',
+            },
+          ]),
+        };
+    }
+  },
+}));
 
 vi.mock('../SocialButton/SocialButton.tsx', () => ({
   default: (props: { href: string }) => {
     return <a href={props.href}>Social Button</a>;
   },
-}));
-
-vi.mock('#src/stores/AccountController', async () => ({
-  getSocialLoginUrls: vi.fn(() => [
-    {
-      twitter: 'https://staging-v2.inplayer.com/',
-    },
-    {
-      facebook: 'https://www.facebook.com/',
-    },
-    {
-      google: 'https://accounts.google.com/',
-    },
-  ]),
 }));
 
 describe('<LoginForm>', () => {

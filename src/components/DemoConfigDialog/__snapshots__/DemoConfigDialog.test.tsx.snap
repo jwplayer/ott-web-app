@@ -45,12 +45,17 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
         <main
           class="_main_8c5621"
         >
+          <p
+            class="_message_8c5621"
+          >
+            generic_error_description
+          </p>
           <form
             method="GET"
             target="/"
           >
             <div
-              class="_textField_e16c1b _maxWidth_561a54"
+              class="_textField_e16c1b _error_e16c1b _maxWidth_561a54"
             >
               <label
                 class="_label_e16c1b"
@@ -71,11 +76,24 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                   value="aaaaaaaa"
                 />
               </div>
+              <div
+                class="_helperText_da58e0 _error_da58e0"
+              >
+                <span>
+                  smth
+                  <br />
+                  <br />
+                  <a>
+                    Show Stack Trace
+                  </a>
+                </span>
+              </div>
             </div>
             <div
               class="_controls_561a54"
             >
               <button
+                aria-disabled="false"
                 class="_button_f8f296 _default_f8f296 _outlined_f8f296"
                 type="submit"
               >
@@ -84,6 +102,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 </span>
               </button>
               <button
+                aria-disabled="false"
                 class="_button_f8f296 _default_f8f296 _outlined_f8f296"
               >
                 <span>
@@ -98,7 +117,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           <p>
             demo_note
           </p>
-          <p
+          <div
             class="_links_8c5621"
           >
             <a
@@ -108,7 +127,14 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
             >
               app_config_learn_more
             </a>
-          </p>
+            <span
+              class="_stack_8c5621"
+            >
+              <a>
+                Show Stack Trace
+              </a>
+            </span>
+          </div>
         </main>
       </div>
     </div>

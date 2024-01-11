@@ -1,30 +1,22 @@
 import { createStore } from './utils';
 
-import type { AccessModel, Config } from '#types/Config';
-import type { AdSchedule } from '#types/ad-schedule';
-
-export enum PersonalShelf {
-  ContinueWatching = 'continue_watching',
-  Favorites = 'favorites',
-}
-
-export const PersonalShelves = [PersonalShelf.Favorites, PersonalShelf.ContinueWatching];
-
-type CleengData = {
-  cleengId: string | null | undefined;
-  cleengSandbox: boolean;
-  monthlyOfferId: string;
-  yearlyOfferId: string;
-};
+import type { AccessModel, Config, IntegrationType } from '#types/Config';
+import type { Settings } from '#types/settings';
+import { ACCESS_MODEL, OTT_GLOBAL_PLAYER_ID } from '#src/config';
 
 type ConfigState = {
+  loaded: boolean;
   config: Config;
   accessModel: AccessModel;
-  adScheduleData: AdSchedule | null | undefined;
-  getCleengData: () => CleengData;
+  settings: Settings;
+  integrationType: IntegrationType | null;
+  isSandbox: boolean;
+  clientId: string | null;
+  offers: string[];
 };
 
-export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) => ({
+export const useConfigStore = createStore<ConfigState>('ConfigStore', () => ({
+  loaded: false,
   config: {
     id: '',
     siteName: '',
@@ -47,16 +39,13 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', (_, get) =
       footerText: '',
     },
   },
-  accessModel: 'SVOD',
-  adScheduleData: null,
-  getCleengData: (): CleengData => {
-    const cleeng = get().config?.integrations?.cleeng;
-
-    const cleengId = cleeng?.id;
-    const cleengSandbox = !!cleeng?.useSandbox;
-    const monthlyOfferId = cleeng?.monthlyOffer || '';
-    const yearlyOfferId = cleeng?.yearlyOffer || '';
-
-    return { cleengId, cleengSandbox, monthlyOfferId, yearlyOfferId };
+  settings: {
+    additionalAllowedConfigSources: [],
+    playerId: OTT_GLOBAL_PLAYER_ID,
   },
+  accessModel: ACCESS_MODEL.SVOD,
+  integrationType: null,
+  isSandbox: true,
+  clientId: null,
+  offers: [],
 }));

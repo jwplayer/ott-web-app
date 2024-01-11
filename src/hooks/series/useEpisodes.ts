@@ -1,9 +1,10 @@
 import { useInfiniteQuery } from 'react-query';
 
-import { getEpisodes, getSeasonWithEpisodes } from '#src/services/api.service';
 import type { EpisodesWithPagination } from '#types/series';
 import type { Pagination } from '#types/pagination';
-import { SERIES_CACHE_TIME } from '#src/config';
+import { CACHE_TIME, STALE_TIME } from '#src/config';
+import ApiService from '#src/services/api.service';
+import { getModule } from '#src/modules/container';
 
 const getNextPageParam = (pagination: Pagination) => {
   const { page, page_limit, total } = pagination;
@@ -26,6 +27,8 @@ export const useEpisodes = (
   fetchNextPage: (params?: { pageParam?: number }) => void;
   isLoading: boolean;
 } => {
+  const apiService = getModule(ApiService);
+
   const {
     data,
     fetchNextPage,
@@ -36,20 +39,20 @@ export const useEpisodes = (
     async ({ pageParam = 0 }) => {
       if (Number(seasonNumber)) {
         // Get episodes from a selected season using pagination
-        const season = await getSeasonWithEpisodes({ seriesId, seasonNumber: Number(seasonNumber), pageOffset: pageParam });
+        const season = await apiService.getSeasonWithEpisodes({ seriesId, seasonNumber: Number(seasonNumber), pageOffset: pageParam });
 
         return { pagination: season.pagination, episodes: season.episodes };
       } else {
         // Get episodes from a selected series using pagination
-        const data = await getEpisodes({ seriesId, pageOffset: pageParam });
+        const data = await apiService.getEpisodes({ seriesId, pageOffset: pageParam });
         return data;
       }
     },
     {
       getNextPageParam: (lastPage) => getNextPageParam(lastPage?.pagination),
       enabled: options.enabled,
-      staleTime: SERIES_CACHE_TIME,
-      cacheTime: SERIES_CACHE_TIME,
+      staleTime: STALE_TIME,
+      cacheTime: CACHE_TIME,
     },
   );
 
