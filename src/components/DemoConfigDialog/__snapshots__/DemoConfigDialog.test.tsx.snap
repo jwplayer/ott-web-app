@@ -117,7 +117,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           <p>
             demo_note
           </p>
-          <p
+          <div
             class="_links_8c5621"
           >
             <a
@@ -134,7 +134,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 Show Stack Trace
               </a>
             </span>
-          </p>
+          </div>
         </main>
       </div>
     </div>
