@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-
+/// <reference types="vite-plugin-svgr/client" />
 interface ImportMetaEnv {
   readonly APP_DEFAULT_CONFIG_SOURCE: string | undefined;
   readonly APP_PLAYER_ID: string | undefined;

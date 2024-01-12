@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
+import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';
 import useBreakpoint from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
-import ChevronRight from '../../icons/ChevronRight';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 import styles from './CollapsibleText.module.scss';
 
@@ -41,7 +42,7 @@ const CollapsibleText: React.FC<Props> = ({ text, className, maxHeight = 'none' 
       </div>
       {doesFlowOver && (
         <IconButton aria-label={ariaLabel} className={classNames(styles.chevron, { [styles.expanded]: expanded })} onClick={() => setExpanded(!expanded)}>
-          <ChevronRight />
+          <Icon icon={ChevronRight} />
         </IconButton>
       )}
     </div>

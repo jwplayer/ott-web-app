@@ -11,9 +11,9 @@ import { generateMovieJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import useLiveChannels from '@jwp/ott-hooks-react/src/useLiveChannels';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useLiveProgram from '@jwp/ott-hooks-react/src/useLiveProgram';
+import Play from '@jwp/ott-theme/assets/icons/play.svg?react';
 
 import type { ScreenComponent } from '../../../../../types/screens';
-import Play from '../../../../icons/Play';
 import Epg from '../../../../components/Epg/Epg';
 import ShareButton from '../../../../components/ShareButton/ShareButton';
 import StartWatchingButton from '../../../../containers/StartWatchingButton/StartWatchingButton';
@@ -22,6 +22,7 @@ import Button from '../../../../components/Button/Button';
 import Tag from '../../../../components/Tag/Tag';
 import Loading from '../../../Loading/Loading';
 import VideoDetails from '../../../../components/VideoDetails/VideoDetails';
+import Icon from '../../../../components/Icon/Icon';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
@@ -154,7 +155,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
             )
           }
           label={t('start_from_beginning')}
-          startIcon={<Play />}
+          startIcon={<Icon icon={Play} />}
         />
       )}
     </>

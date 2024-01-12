@@ -12,9 +12,9 @@ import { isTruthy, isTruthyCustomParamValue, logDev, testId } from '@jwp/ott-com
 import { formatConsents, formatConsentsFromValues, formatConsentsToRegisterFields, formatConsentValues } from '@jwp/ott-common/src/utils/collection';
 import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
+import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
+import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
 
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
 import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
 import Alert from '../Alert/Alert';
 import Button from '../Button/Button';
@@ -24,6 +24,7 @@ import TextField from '../TextField/TextField';
 import Checkbox from '../Checkbox/Checkbox';
 import HelperText from '../HelperText/HelperText';
 import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
+import Icon from '../Icon/Icon';
 
 import styles from './Account.module.scss';
 
@@ -271,7 +272,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     disabled={section.isBusy}
                     rightControl={
                       <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
-                        {viewPassword ? <Visibility /> : <VisibilityOff />}
+                        <Icon icon={viewPassword ? Visibility : VisibilityOff} />
                       </IconButton>
                     }
                     required

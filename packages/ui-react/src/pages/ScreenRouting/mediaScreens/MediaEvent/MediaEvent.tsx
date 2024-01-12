@@ -16,9 +16,9 @@ import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
+import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
 
 import type { ScreenComponent } from '../../../../../types/screens';
-import PlayTrailer from '../../../../icons/PlayTrailer';
 import VideoLayout from '../../../../components/VideoLayout/VideoLayout';
 import StartWatchingButton from '../../../../containers/StartWatchingButton/StartWatchingButton';
 import Cinema from '../../../../containers/Cinema/Cinema';
@@ -28,6 +28,7 @@ import FavoriteButton from '../../../../containers/FavoriteButton/FavoriteButton
 import Button from '../../../../components/Button/Button';
 import InlinePlayer from '../../../../containers/InlinePlayer/InlinePlayer';
 import StatusIcon from '../../../../components/StatusIcon/StatusIcon';
+import Icon from '../../../../components/Icon/Icon';
 
 const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) => {
   const { t, i18n } = useTranslation('video');
@@ -102,7 +103,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
     <Button
       label={t('video:trailer')}
       aria-label={t('video:watch_trailer')}
-      startIcon={<PlayTrailer />}
+      startIcon={<Icon icon={PlayTrailer} />}
       onClick={() => setPlayTrailer(true)}
       active={playTrailer}
       fullWidth={breakpoint < Breakpoint.md}

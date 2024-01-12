@@ -1,12 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
+import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
+import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
 
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
 import TextField from '../TextField/TextField';
 import PasswordStrength from '../PasswordStrength/PasswordStrength';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 type Props = {
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -40,7 +41,7 @@ const PasswordField: React.FC<Props> = ({ value, showToggleView = true, showHelp
       rightControl={
         showToggleView ? (
           <IconButton aria-label={viewPassword ? t('reset.hide_password') : t('reset.view_password')} onClick={() => toggleViewPassword()}>
-            {viewPassword ? <Visibility /> : <VisibilityOff />}
+            <Icon icon={viewPassword ? Visibility : VisibilityOff} />
           </IconButton>
         ) : null
       }

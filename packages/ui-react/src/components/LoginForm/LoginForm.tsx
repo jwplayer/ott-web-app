@@ -7,9 +7,9 @@ import { testId } from '@jwp/ott-common/src/utils/common';
 import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
+import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
+import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
 
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
 import TextField from '../TextField/TextField';
 import Button from '../Button/Button';
 import Link from '../Link/Link';
@@ -17,6 +17,7 @@ import IconButton from '../IconButton/IconButton';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import SocialButtonsList from '../SocialButtonsList/SocialButtonsList';
+import Icon from '../Icon/Icon';
 
 import styles from './LoginForm.module.scss';
 
@@ -78,7 +79,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         type={viewPassword ? 'text' : 'password'}
         rightControl={
           <IconButton aria-label={viewPassword ? t('login.hide_password') : t('login.view_password')} onClick={() => toggleViewPassword()}>
-            {viewPassword ? <Visibility /> : <VisibilityOff />}
+            <Icon icon={viewPassword ? Visibility : VisibilityOff} />
           </IconButton>
         }
         required

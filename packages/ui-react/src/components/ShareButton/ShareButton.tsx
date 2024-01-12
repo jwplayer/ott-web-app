@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Check from '@jwp/ott-theme/assets/icons/check.svg?react';
+import Share from '@jwp/ott-theme/assets/icons/share.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import { copyToClipboard } from '../../utils/clipboard';
-import Check from '../../icons/Check';
-import Share from '../../icons/Share';
 import Button from '../Button/Button';
+import Icon from '../Icon/Icon';
 
 type Props = {
   title: string;
@@ -32,7 +33,7 @@ const ShareButton = ({ title, description, url }: Props) => {
   return (
     <Button
       label={hasShared ? t('video:copied_url') : t('video:share')}
-      startIcon={hasShared ? <Check /> : <Share />}
+      startIcon={hasShared ? <Icon icon={Check} /> : <Icon icon={Share} />}
       onClick={onShareClick}
       active={hasShared}
       fullWidth={breakpoint < Breakpoint.md}

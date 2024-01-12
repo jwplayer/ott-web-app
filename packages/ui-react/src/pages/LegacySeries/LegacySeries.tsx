@@ -14,8 +14,8 @@ import useMedia from '@jwp/ott-hooks-react/src/useMedia';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
+import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
 
-import PlayTrailer from '../../icons/PlayTrailer';
 import VideoLayout from '../../components/VideoLayout/VideoLayout';
 import InlinePlayer from '../../containers/InlinePlayer/InlinePlayer';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
@@ -26,6 +26,7 @@ import ShareButton from '../../components/ShareButton/ShareButton';
 import FavoriteButton from '../../containers/FavoriteButton/FavoriteButton';
 import Button from '../../components/Button/Button';
 import Loading from '../Loading/Loading';
+import Icon from '../../components/Icon/Icon';
 
 import { filterSeries, generateLegacyEpisodeJSONLD, getEpisodesInSeason, getFiltersFromSeries, getNextItem } from './utils';
 
@@ -137,7 +138,7 @@ const LegacySeries = () => {
     <Button
       label={t('video:trailer')}
       aria-label={t('video:watch_trailer')}
-      startIcon={<PlayTrailer />}
+      startIcon={<Icon icon={PlayTrailer} />}
       onClick={() => setPlayTrailer(true)}
       active={playTrailer}
       fullWidth={breakpoint < Breakpoint.md}

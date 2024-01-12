@@ -7,6 +7,7 @@ import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import svgr from 'vite-plugin-svgr';
 import { viteStaticCopy, type Target } from 'vite-plugin-static-copy';
 
 import { initSettings } from './scripts/build-tools/settings';
@@ -56,6 +57,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       }),
       eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
       StylelintPlugin(),
+      svgr(),
       VitePWA(),
       createHtmlPlugin({
         minify: true,

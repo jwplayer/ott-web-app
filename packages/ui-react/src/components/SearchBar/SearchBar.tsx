@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import Search from '@jwp/ott-theme/assets/icons/search.svg?react';
+import Cancel from '@jwp/ott-theme/assets/icons/cancel.svg?react';
 
-import SearchIcon from '../../icons/Search';
-import CancelIcon from '../../icons/Cancel';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 import styles from './SearchBar.module.scss';
 
@@ -19,7 +20,7 @@ const SearchBar: React.FC<Props> = ({ query, onQueryChange, onClearButtonClick, 
 
   return (
     <div className={styles.searchBar}>
-      <SearchIcon className={styles.icon} />
+      <Icon icon={Search} className={styles.icon} />
       <input
         className={styles.input}
         type="text"
@@ -31,7 +32,7 @@ const SearchBar: React.FC<Props> = ({ query, onQueryChange, onClearButtonClick, 
       />
       {query ? (
         <IconButton className={styles.clearButton} aria-label={t('search_bar.clear_search_label')} onClick={onClearButtonClick}>
-          <CancelIcon />
+          <Icon icon={Cancel} />
         </IconButton>
       ) : null}
     </div>

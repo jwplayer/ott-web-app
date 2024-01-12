@@ -5,16 +5,17 @@ import { isBefore, subHours } from 'date-fns';
 import type { EpgChannel, EpgProgram } from '@jwp/ott-common/types/epg';
 import type { Config } from '@jwp/ott-common/types/config';
 import usePlanByEpg from '@jwp/ott-hooks-react/src/usePlanByEpg';
+import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';
+import ChevronLeft from '@jwp/ott-theme/assets/icons/chevron_left.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
-import ChevronRight from '../../icons/ChevronRight';
-import ChevronLeft from '../../icons/ChevronLeft';
 import IconButton from '../IconButton/IconButton';
 import Button from '../Button/Button';
 import EpgChannelItem from '../EpgChannel/EpgChannelItem';
 import EpgProgramItem from '../EpgProgramItem/EpgProgramItem';
 import EpgTimeline from '../EpgTimeline/EpgTimeline';
 import Spinner from '../Spinner/Spinner';
+import Icon from '../Icon/Icon';
 
 import styles from './Epg.module.scss';
 
@@ -53,10 +54,10 @@ export default function Epg({ channels, onChannelClick, onProgramClick, channel,
       <div className={styles.timelineControl}>
         <Button className={styles.timelineNowButton} variant="contained" label={t('now')} color="primary" onClick={onScrollToNow} size="small" />
         <IconButton className={styles.leftControl} aria-label={t('slide_left')} onClick={() => onScrollLeft()}>
-          <ChevronLeft />
+          <Icon icon={ChevronLeft} />
         </IconButton>
         <IconButton className={styles.rightControl} aria-label={t('slide_right')} onClick={() => onScrollRight()}>
-          <ChevronRight />
+          <Icon icon={ChevronRight} />
         </IconButton>
       </div>
       <EpgContainer {...getEpgProps()} loader={<Spinner className={styles.epgSpinner} />}>

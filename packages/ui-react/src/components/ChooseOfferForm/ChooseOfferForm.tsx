@@ -7,12 +7,13 @@ import type { Offer } from '@jwp/ott-common/types/checkout';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { getOfferPrice, isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
 import { testId } from '@jwp/ott-common/src/utils/common';
+import CheckCircle from '@jwp/ott-theme/assets/icons/check_circle.svg?react';
 
-import CheckCircle from '../../icons/CheckCircle';
 import Button from '../Button/Button';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import DialogBackButton from '../DialogBackButton/DialogBackButton';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import Icon from '../Icon/Icon';
 
 import styles from './ChooseOfferForm.module.scss';
 
@@ -86,17 +87,17 @@ const ChooseOfferForm: React.FC<Props> = ({
         <ul className={styles.offerBenefits}>
           {offer.freeDays || offer.freePeriods ? (
             <li>
-              <CheckCircle /> {getFreeTrialText(offer)}
+              <Icon icon={CheckCircle} /> {getFreeTrialText(offer)}
             </li>
           ) : null}
 
           {!!secondBenefit && (
             <li>
-              <CheckCircle /> {secondBenefit}
+              <Icon icon={CheckCircle} /> {secondBenefit}
             </li>
           )}
           <li>
-            <CheckCircle /> {t('choose_offer.benefits.watch_on_all_devices')}
+            <Icon icon={CheckCircle} /> {t('choose_offer.benefits.watch_on_all_devices')}
           </li>
         </ul>
         <div className={styles.fill} />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-
-import Close from '../../icons/Close';
+import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
 
 import IconButton from './IconButton';
 

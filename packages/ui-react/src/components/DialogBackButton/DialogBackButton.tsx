@@ -1,6 +1,7 @@
 import React from 'react';
+import ArrowLeft from '@jwp/ott-theme/assets/icons/arrow_left.svg?react';
 
-import ArrowLeft from '../../icons/ArrowLeft';
+import Icon from '../Icon/Icon';
 import IconButton from '../IconButton/IconButton';
 
 import styles from './DialogBackButton.module.scss';
@@ -12,7 +13,7 @@ type Props = {
 const DialogBackButton: React.FC<Props> = ({ onClick }: Props) => {
   return (
     <IconButton onClick={onClick} className={styles.dialogBackButton} aria-label="Go back">
-      <ArrowLeft />
+      <Icon icon={ArrowLeft} />
     </IconButton>
   );
 };

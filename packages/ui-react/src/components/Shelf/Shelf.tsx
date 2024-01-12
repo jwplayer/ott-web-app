@@ -6,12 +6,13 @@ import type { AccessModel, ContentType } from '@jwp/ott-common/types/config';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { mediaURL } from '@jwp/ott-common/src/utils/formatting';
 import { PersonalShelf } from '@jwp/ott-common/src/constants';
+import ChevronLeft from '@jwp/ott-theme/assets/icons/chevron_left.svg?react';
+import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';
 import useBreakpoint, { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
-import ChevronLeft from '../../icons/ChevronLeft';
-import ChevronRight from '../../icons/ChevronRight';
 import TileDock from '../TileDock/TileDock';
 import Card from '../Card/Card';
+import Icon from '../Icon/Icon';
 
 import styles from './Shelf.module.scss';
 
@@ -100,7 +101,7 @@ const Shelf = ({
         onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
         onClick={() => handleSlide(doSlide)}
       >
-        <ChevronRight />
+        <Icon icon={ChevronRight} />
       </div>
     ),
     [t],
@@ -118,7 +119,7 @@ const Shelf = ({
         onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
         onClick={() => handleSlide(doSlide)}
       >
-        <ChevronLeft />
+        <Icon icon={ChevronLeft} />
       </div>
     ),
     [didSlideBefore, t],

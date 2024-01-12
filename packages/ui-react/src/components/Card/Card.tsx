@@ -6,10 +6,11 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { formatDurationTag, formatLocalizedDateTime, formatSeriesMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { isLiveChannel, isSeries } from '@jwp/ott-common/src/utils/media';
 import { MediaStatus } from '@jwp/ott-common/src/utils/liveEvent';
+import Lock from '@jwp/ott-theme/assets/icons/lock.svg?react';
+import Today from '@jwp/ott-theme/assets/icons/today.svg?react';
 
-import Lock from '../../icons/Lock';
-import Today from '../../icons/Today';
 import Image from '../Image/Image';
+import Icon from '../Icon/Icon';
 
 import styles from './Card.module.scss';
 
@@ -75,7 +76,7 @@ function Card({
     } else if (isScheduled) {
       return (
         <div className={styles.tag}>
-          <Today className={styles.scheduled} />
+          <Icon icon={Today} className={styles.scheduled} />
           {t('scheduled')}
         </div>
       );
@@ -100,7 +101,7 @@ function Card({
             <div className={styles.tags}>
               {isLocked && (
                 <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="status">
-                  <Lock />
+                  <Icon icon={Lock} />
                 </div>
               )}
               {renderTag()}

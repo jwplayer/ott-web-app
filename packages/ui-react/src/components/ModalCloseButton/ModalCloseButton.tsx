@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
 
-import Close from '../../icons/Close';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 import styles from './ModalCloseButton.module.scss';
 
@@ -17,7 +18,7 @@ const ModalCloseButton: React.FC<Props> = ({ onClick, visible = true }: Props) =
 
   return (
     <IconButton onClick={onClick} aria-label={t('close_modal')} className={classNames(styles.modalCloseButton, { [styles.hidden]: !visible })}>
-      <Close />
+      <Icon icon={Close} />
     </IconButton>
   );
 };

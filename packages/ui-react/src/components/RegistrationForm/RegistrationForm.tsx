@@ -7,9 +7,9 @@ import type { Consent, RegistrationFormData } from '@jwp/ott-common/types/accoun
 import { testId } from '@jwp/ott-common/src/utils/common';
 import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
+import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
+import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
 
-import Visibility from '../../icons/Visibility';
-import VisibilityOff from '../../icons/VisibilityOff';
 import TextField from '../TextField/TextField';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
@@ -18,6 +18,7 @@ import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Link from '../Link/Link';
+import Icon from '../Icon/Icon';
 
 import styles from './RegistrationForm.module.scss';
 
@@ -116,7 +117,7 @@ const RegistrationForm: React.FC<Props> = ({
         type={viewPassword ? 'text' : 'password'}
         rightControl={
           <IconButton aria-label={viewPassword ? t('registration.hide_password') : t('registration.view_password')} onClick={() => toggleViewPassword()}>
-            {viewPassword ? <Visibility /> : <VisibilityOff />}
+            <Icon icon={viewPassword ? Visibility : VisibilityOff} />
           </IconButton>
         }
         required

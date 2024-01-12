@@ -10,7 +10,7 @@ type Props = {
   onClick?: () => void;
   tabIndex?: number;
   active?: boolean;
-  startIcon?: JSX.Element;
+  startIcon?: React.ReactElement;
   small?: boolean;
 };
 

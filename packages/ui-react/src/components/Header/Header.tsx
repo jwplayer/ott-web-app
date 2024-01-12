@@ -4,13 +4,12 @@ import { useTranslation } from 'react-i18next';
 import type { Profile } from '@jwp/ott-common/types/account';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { LanguageDefinition } from '@jwp/ott-common/types/i18n';
+import Menu from '@jwp/ott-theme/assets/icons/menu.svg?react';
+import SearchIcon from '@jwp/ott-theme/assets/icons/search.svg?react';
+import CloseIcon from '@jwp/ott-theme/assets/icons/close.svg?react';
+import Language from '@jwp/ott-theme/assets/icons/language.svg?react';
+import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
 
-import Menu from '../../icons/Menu';
-import SearchIcon from '../../icons/Search';
-import CloseIcon from '../../icons/Close';
-import Language from '../../icons/Language';
-import ProfileCircle from '../../icons/ProfileCircle';
-import AccountCircle from '../../icons/AccountCircle';
 import SearchBar, { type Props as SearchBarProps } from '../SearchBar/SearchBar';
 import Logo from '../Logo/Logo';
 import Button from '../Button/Button';
@@ -19,6 +18,8 @@ import UserMenu from '../UserMenu/UserMenu';
 import IconButton from '../IconButton/IconButton';
 import LanguageMenu from '../LanguageMenu/LanguageMenu';
 import Panel from '../Panel/Panel';
+import Icon from '../Icon/Icon';
+import ProfileCircle from '../ProfileCircle/ProfileCircle';
 
 import styles from './Header.module.scss';
 
@@ -112,7 +113,7 @@ const Header: React.FC<Props> = ({
             }
           }}
         >
-          <CloseIcon />
+          <Icon icon={CloseIcon} />
         </IconButton>
       </div>
     ) : (
@@ -125,7 +126,7 @@ const Header: React.FC<Props> = ({
           }
         }}
       >
-        <SearchIcon />
+        <Icon icon={SearchIcon} />
       </IconButton>
     );
   };
@@ -139,7 +140,7 @@ const Header: React.FC<Props> = ({
           {profilesEnabled && currentProfile ? (
             <ProfileCircle src={currentProfile.avatar_url} alt={currentProfile.name || t('profile_icon')} />
           ) : (
-            <AccountCircle />
+            <Icon icon={AccountCircle} />
           )}
         </IconButton>
         <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
@@ -172,7 +173,7 @@ const Header: React.FC<Props> = ({
     return (
       <React.Fragment>
         <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('select_language')} onClick={openLanguageMenu}>
-          <Language />
+          <Icon icon={Language} />
         </IconButton>
         <Popover isOpen={languageMenuOpen} onClose={closeLanguageMenu}>
           <Panel>
@@ -195,7 +196,7 @@ const Header: React.FC<Props> = ({
       <div className={styles.container}>
         <div className={styles.menu}>
           <IconButton className={styles.iconButton} aria-label={t('open_menu')} onClick={onMenuButtonClick}>
-            <Menu />
+            <Icon icon={Menu} />
           </IconButton>
         </div>
         {logoSrc && (

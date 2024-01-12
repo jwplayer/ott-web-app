@@ -1,11 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PaymentMethod } from '@jwp/ott-common/types/checkout';
+import CreditCard from '@jwp/ott-theme/assets/icons/creditcard.svg?react';
+import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
 
-import CreditCard from '../../icons/CreditCard';
-import PayPal from '../../icons/PayPal';
 import Button from '../Button/Button';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import Icon from '../Icon/Icon';
 
 import styles from './PaymentMethodForm.module.scss';
 
@@ -56,7 +57,7 @@ const PaymentMethodForm: React.FC<Props> = ({
                   onChange={onPaymentMethodChange}
                 />
                 <label className={styles.paymentMethodLabel} htmlFor="card">
-                  <CreditCard />
+                  <Icon icon={CreditCard} />
                   {t('payment.credit_card')}
                 </label>
               </div>
@@ -73,7 +74,7 @@ const PaymentMethodForm: React.FC<Props> = ({
                   onChange={onPaymentMethodChange}
                 />
                 <label className={styles.paymentMethodLabel} htmlFor="paypal">
-                  <PayPal /> {t('payment.paypal')}
+                  <Icon icon={PayPal} /> {t('payment.paypal')}
                 </label>
               </div>
             ) : null}

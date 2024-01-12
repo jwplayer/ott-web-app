@@ -1,8 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
+import Plus from '@jwp/ott-theme/assets/icons/plus.svg?react';
 
-import Plus from '../../icons/Plus';
+import Icon from '../Icon/Icon';
 
 import styles from './ProfileBox.module.scss';
 
@@ -18,7 +19,7 @@ const AddNewProfile = ({ onClick }: Props) => {
     <div onClick={onClick} tabIndex={0} onKeyDown={keyDownHandler} className={classNames(styles.wrapper, styles.addProfileContainer)} role="button">
       <div className={styles.iconContainer}>
         <div className={`${styles.box} ${styles.circle}`}>
-          <Plus />
+          <Icon icon={Plus} />
         </div>
       </div>
       <h2 className={styles.title}>{t('account.add_profile')}</h2>

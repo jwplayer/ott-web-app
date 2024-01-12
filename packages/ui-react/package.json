@@ -42,6 +42,7 @@
     "sass": "^1.49.10",
     "typescript-plugin-css-modules": "^5.0.2",
     "vi-fetch": "^0.8.0",
+    "vite-plugin-svgr": "4.2.0",
     "vitest": "^0.34.6"
   },
   "peerDependencies": {

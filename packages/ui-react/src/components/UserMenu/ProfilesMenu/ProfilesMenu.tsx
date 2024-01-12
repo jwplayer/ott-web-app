@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import type { UseMutateFunction } from 'react-query';
 import type { Profile } from '@jwp/ott-common/types/account';
+import Plus from '@jwp/ott-theme/assets/icons/plus.svg?react';
 
-import Plus from '../../../icons/Plus';
-import ProfileCircle from '../../../icons/ProfileCircle';
 import styles from '../UserMenu.module.scss';
 import LoadingOverlay from '../../LoadingOverlay/LoadingOverlay';
 import MenuButton from '../../MenuButton/MenuButton';
+import Icon from '../../Icon/Icon';
+import ProfileCircle from '../../ProfileCircle/ProfileCircle';
 
 type ProfilesMenuProps = {
   profiles: Profile[];
@@ -50,7 +51,7 @@ const ProfilesMenu = ({
     )}
     {(profiles?.length || 0) < 4 && (
       <li>
-        <MenuButton small={small} onClick={onCreateButtonClick} startIcon={<Plus />} label={createButtonLabel} />
+        <MenuButton small={small} onClick={onCreateButtonClick} startIcon={<Icon icon={Plus} />} label={createButtonLabel} />
       </li>
     )}
     <li>

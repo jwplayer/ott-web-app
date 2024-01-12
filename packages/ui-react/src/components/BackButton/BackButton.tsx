@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
+import ArrowLeft from '@jwp/ott-theme/assets/icons/icon.svg?react';
 
-import ArrowLeft from '../../icons/ArrowLeft';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 import styles from './BackButton.module.scss';
 
@@ -17,7 +18,7 @@ const BackButton: React.FC<Props> = ({ className, onClick }: Props) => {
 
   return (
     <IconButton onClick={onClick} className={classNames(styles.backButton, className)} aria-label={t('common:back')}>
-      <ArrowLeft />
+      <Icon icon={ArrowLeft} />
     </IconButton>
   );
 };

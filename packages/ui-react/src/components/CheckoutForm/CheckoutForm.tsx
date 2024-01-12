@@ -4,15 +4,16 @@ import classNames from 'classnames';
 import type { OfferType } from '@jwp/ott-common/types/account';
 import type { Offer, Order, PaymentMethod } from '@jwp/ott-common/types/checkout';
 import { formatPrice } from '@jwp/ott-common/src/utils/formatting';
+import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
+import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
+import CreditCard from '@jwp/ott-theme/assets/icons/creditcard.svg?react';
 
-import Close from '../../icons/Close';
-import PayPal from '../../icons/PayPal';
-import CreditCard from '../../icons/CreditCard';
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import DialogBackButton from '../DialogBackButton/DialogBackButton';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import Icon from '../Icon/Icon';
 
 import styles from './CheckoutForm.module.scss';
 
@@ -106,7 +107,7 @@ const CheckoutForm: React.FC<Props> = ({
           <form onSubmit={onCouponFormSubmit} noValidate>
             <div className={styles.redeemCoupon}>
               <IconButton aria-label="Close coupon form" onClick={onCloseCouponFormClick}>
-                <Close />
+                <Icon icon={Close} />
               </IconButton>
               <input
                 className={styles.couponInput}
@@ -187,7 +188,7 @@ const CheckoutForm: React.FC<Props> = ({
                 onChange={onPaymentMethodChange}
               />
               <label className={styles.paymentMethodLabel} htmlFor="card">
-                <CreditCard /> {t('checkout.credit_card')}
+                <Icon icon={CreditCard} /> {t('checkout.credit_card')}
               </label>
             </div>
           ) : null}
@@ -203,7 +204,7 @@ const CheckoutForm: React.FC<Props> = ({
                 onChange={onPaymentMethodChange}
               />
               <label className={styles.paymentMethodLabel} htmlFor="paypal">
-                <PayPal /> {t('checkout.paypal')}
+                <Icon icon={PayPal} /> {t('checkout.paypal')}
               </label>
             </div>
           ) : null}

@@ -6,11 +6,12 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { formatDurationTag, formatLocalizedDateTime, formatSeriesMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { isLiveChannel, isSeries } from '@jwp/ott-common/src/utils/media';
 import { MediaStatus } from '@jwp/ott-common/src/utils/liveEvent';
+import Lock from '@jwp/ott-theme/assets/icons/lock.svg?react';
+import Today from '@jwp/ott-theme/assets/icons/today.svg?react';
 
-import Lock from '../../icons/Lock';
-import Today from '../../icons/Today';
 import Image from '../Image/Image';
 import Tag from '../Tag/Tag';
+import Icon from '../Icon/Icon';
 
 import styles from './VideoListItem.module.scss';
 
@@ -55,7 +56,7 @@ function VideoListItem({ onHover, progress, activeLabel, item, url, loading = fa
     } else if (isScheduled) {
       return (
         <>
-          <Today className={styles.scheduled} />
+          <Icon icon={Today} className={styles.scheduled} />
           {t('scheduled')}
         </>
       );
@@ -68,7 +69,7 @@ function VideoListItem({ onHover, progress, activeLabel, item, url, loading = fa
         <Image className={posterImageClassNames} image={image} alt={title} onLoad={() => setImageLoaded(true)} width={320} />
         {isActive && <div className={styles.activeLabel}>{activeLabel}</div>}
         <div className={styles.tags}>
-          {isLocked && <Lock className={styles.lock} />}
+          {isLocked && <Icon icon={Lock} className={styles.lock} />}
           <Tag className={classNames(styles.tag, { [styles.live]: isLive })}>{renderTagLabel()}</Tag>
         </div>
 

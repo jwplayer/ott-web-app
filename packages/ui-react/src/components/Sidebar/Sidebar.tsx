@@ -1,9 +1,10 @@
 import React, { Fragment, type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
 
-import Close from '../../icons/Close';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 import styles from './Sidebar.module.scss';
 
@@ -31,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
       >
         <div className={styles.heading}>
           <IconButton onClick={onClose} aria-label={t('close_menu')} tabIndex={isOpen ? 0 : -1}>
-            <Close />
+            <Icon icon={Close} />
           </IconButton>
         </div>
         <nav className={styles.group} onClick={onClose}>

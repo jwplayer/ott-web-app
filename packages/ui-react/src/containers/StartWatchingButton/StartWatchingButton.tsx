@@ -8,9 +8,10 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
+import Play from '@jwp/ott-theme/assets/icons/play.svg?react';
 
-import Play from '../../icons/Play';
 import Button from '../../components/Button/Button';
+import Icon from '../../components/Icon/Icon';
 
 import styles from './StartWatchingButton.module.scss';
 
@@ -75,7 +76,7 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
       variant="contained"
       size="large"
       label={startWatchingLabel}
-      startIcon={isEntitled ? <Play /> : undefined}
+      startIcon={isEntitled ? <Icon icon={Play} /> : undefined}
       onClick={handleStartWatchingClick}
       fullWidth={breakpoint < Breakpoint.md}
       disabled={disabled}

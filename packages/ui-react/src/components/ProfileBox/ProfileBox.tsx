@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import Edit from '@jwp/ott-theme/assets/icons/edit.svg?react';
+import Check from '@jwp/ott-theme/assets/icons/check.svg?react';
 
-import Edit from '../../icons/Edit';
-import Check from '../../icons/Check';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 import styles from './ProfileBox.module.scss';
 
@@ -30,14 +31,14 @@ const ProfileBox = ({ name, image, editMode = false, onClick, onEdit, selected =
         </div>
         {editMode && (
           <IconButton aria-label={t('profile.edit')} onClick={onEdit} className={styles.overlay}>
-            <Edit />
+            <Icon icon={Edit} />
           </IconButton>
         )}
       </div>
       {name && <h2 className={styles.title}>{name}</h2>}
       {selected && (
         <div className={styles.checkmarkContainer}>
-          <Check className={styles.checkmark} />
+          <Icon icon={Check} className={styles.checkmark} />
         </div>
       )}
     </div>

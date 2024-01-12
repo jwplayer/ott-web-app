@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
+import ArrowLeft from '@jwp/ott-theme/assets/icons/arrow_left.svg?react';
 
-import ArrowLeft from '../../icons/ArrowLeft';
 import IconButton from '../../components/IconButton/IconButton';
 import PlayerContainer from '../PlayerContainer/PlayerContainer';
 import Fade from '../../components/Animation/Fade/Fade';
+import Icon from '../../components/Icon/Icon';
 
 import styles from './Cinema.module.scss';
 
@@ -106,7 +107,7 @@ const Cinema: React.FC<Props> = ({
           <div className={styles.playerOverlay}>
             <div className={styles.playerContent}>
               <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
-                <ArrowLeft />
+                <Icon icon={ArrowLeft} />
               </IconButton>
               <div>
                 <h1 className={styles.title}>{title}</h1>

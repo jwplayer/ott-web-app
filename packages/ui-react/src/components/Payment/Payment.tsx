@@ -8,16 +8,17 @@ import type { PaymentDetail, Subscription, Transaction } from '@jwp/ott-common/t
 import { formatLocalizedDate, formatPrice } from '@jwp/ott-common/src/utils/formatting';
 import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
+import ExternalLink from '@jwp/ott-theme/assets/icons/external_link.svg?react';
+import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
-import ExternalLink from '../../icons/ExternalLink';
-import PayPal from '../../icons/PayPal';
 import IconButton from '../IconButton/IconButton';
 import Alert from '../Alert/Alert';
 import Button from '../Button/Button';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import OfferSwitch from '../OfferSwitch/OfferSwitch';
 import TextField from '../TextField/TextField';
+import Icon from '../Icon/Icon';
 
 import styles from './Payment.module.scss';
 
@@ -277,7 +278,7 @@ const Payment = ({
           activePaymentDetail.paymentMethod === 'paypal' ? (
             <div>
               <div className={styles.paypal}>
-                <PayPal /> {t('account:payment.paypal')}
+                <Icon icon={PayPal} /> {t('account:payment.paypal')}
               </div>
 
               {activePaymentDetail.currency}
@@ -333,7 +334,7 @@ const Payment = ({
                       // Note: `transactionId` is shared with rebills and is not guaranteed to be unique
                       onClick={() => !isLoading && onShowReceiptClick(transaction?.trxToken ?? transaction.transactionId)}
                     >
-                      <ExternalLink />
+                      <Icon icon={ExternalLink} />
                     </IconButton>
                   )}
                 </div>

@@ -80,16 +80,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="_icon_1e9999"
-                focusable="false"
+                class="_icon_585b29"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g>
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                  />
-                </g>
+                <path
+                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                />
               </svg>
                
               choose_offer.benefits.first_periods_free
@@ -97,16 +94,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="_icon_1e9999"
-                focusable="false"
+                class="_icon_585b29"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g>
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                  />
-                </g>
+                <path
+                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                />
               </svg>
                
               choose_offer.benefits.cancel_anytime
@@ -114,16 +108,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="_icon_1e9999"
-                focusable="false"
+                class="_icon_585b29"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g>
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                  />
-                </g>
+                <path
+                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                />
               </svg>
                
               choose_offer.benefits.watch_on_all_devices
@@ -173,16 +164,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="_icon_1e9999"
-                focusable="false"
+                class="_icon_585b29"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g>
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                  />
-                </g>
+                <path
+                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                />
               </svg>
                
               choose_offer.benefits.first_days_free
@@ -190,16 +178,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="_icon_1e9999"
-                focusable="false"
+                class="_icon_585b29"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g>
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                  />
-                </g>
+                <path
+                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                />
               </svg>
                
               choose_offer.benefits.cancel_anytime
@@ -207,16 +192,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="_icon_1e9999"
-                focusable="false"
+                class="_icon_585b29"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g>
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                  />
-                </g>
+                <path
+                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                />
               </svg>
                
               choose_offer.benefits.watch_on_all_devices
@@ -331,16 +313,13 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
             <li>
               <svg
                 aria-hidden="true"
-                class="_icon_1e9999"
-                focusable="false"
+                class="_icon_585b29"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g>
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                  />
-                </g>
+                <path
+                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                />
               </svg>
                
               choose_offer.benefits.watch_on_all_devices

@@ -12,11 +12,11 @@ import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import { ACCESS_MODEL, PersonalShelf } from '@jwp/ott-common/src/constants';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import { useProfiles } from '@jwp/ott-hooks-react/src/useProfiles';
+import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
+import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react';
+import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
+import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
 
-import AccountCircle from '../../icons/AccountCircle';
-import BalanceWallet from '../../icons/BalanceWallet';
-import Exit from '../../icons/Exit';
-import Favorite from '../../icons/Favorite';
 import AccountComponent from '../../components/Account/Account';
 import Button from '../../components/Button/Button';
 import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog';
@@ -25,6 +25,7 @@ import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import PaymentContainer from '../../containers/PaymentContainer/PaymentContainer';
 import PlaylistContainer from '../../containers/PlaylistContainer/PlaylistContainer';
 import EditProfile from '../../containers/Profiles/EditProfile';
+import Icon from '../../components/Icon/Icon';
 
 import styles from './User.module.scss';
 
@@ -99,24 +100,24 @@ const User = (): JSX.Element => {
               )}
               {(!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
-                  <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<AccountCircle />} className={styles.button} />
+                  <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<Icon icon={AccountCircle} />} className={styles.button} />
                 </li>
               )}
               {favoritesList && (!profilesEnabled || profileAndFavoritesPage) && (
                 <li>
-                  <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Favorite />} className={styles.button} />
+                  <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Icon icon={Favorite} />} className={styles.button} />
                 </li>
               )}
 
               {accessModel !== ACCESS_MODEL.AVOD && (!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
-                  <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<BalanceWallet />} className={styles.button} />
+                  <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<Icon icon={BalanceWallet} />} className={styles.button} />
                 </li>
               )}
 
               {(!profilesEnabled || !profileAndFavoritesPage) && (
                 <li className={styles.logoutLi}>
-                  <Button onClick={onLogout} label={t('nav.logout')} variant="text" startIcon={<Exit />} className={styles.button} />
+                  <Button onClick={onLogout} label={t('nav.logout')} variant="text" startIcon={<Icon icon={Exit} />} className={styles.button} />
                 </li>
               )}
             </ul>

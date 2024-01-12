@@ -16,7 +16,7 @@ type Props = {
   active?: boolean;
   color?: Color;
   fullWidth?: boolean;
-  startIcon?: JSX.Element;
+  startIcon?: React.ReactElement;
   variant?: Variant;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   tabIndex?: number;

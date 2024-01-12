@@ -5,13 +5,14 @@ import classNames from 'classnames';
 import type { Profile } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
+import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
+import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react';
+import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
 
-import AccountCircle from '../../icons/AccountCircle';
-import Favorite from '../../icons/Favorite';
-import BalanceWallet from '../../icons/BalanceWallet';
-import Exit from '../../icons/Exit';
-import ProfileCircle from '../../icons/ProfileCircle';
 import MenuButton from '../MenuButton/MenuButton';
+import Icon from '../Icon/Icon';
+import ProfileCircle from '../ProfileCircle/ProfileCircle';
 
 import ProfilesMenu from './ProfilesMenu/ProfilesMenu';
 import styles from './UserMenu.module.scss';
@@ -79,24 +80,24 @@ const UserMenu = ({
         </li>
       )}
       <li>
-        <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<AccountCircle />} />
+        <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<Icon icon={AccountCircle} />} />
       </li>
 
       {favoritesEnabled && (
         <li>
-          <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Favorite />} />
+          <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Icon icon={Favorite} />} />
         </li>
       )}
       {showPaymentsItem && (
         <li>
-          <MenuButton small={small} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<BalanceWallet />} />
+          <MenuButton small={small} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<Icon icon={BalanceWallet} />} />
         </li>
       )}
       <li>
         <hr className={classNames(styles.divider, { [styles.small]: small })} />
       </li>
       <li>
-        <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Exit />} />
+        <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Icon icon={Exit} />} />
       </li>
     </ul>
   );
