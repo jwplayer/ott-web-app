@@ -42,7 +42,7 @@ export const CONTENT_TYPE = {
   // Page with a list of channels
   live: 'live',
   // Separate channel page
-  livechannel: 'livechannel',
+  liveChannel: 'livechannel',
   // Static page with markdown
   page: 'page',
   // Page with shelves list
