@@ -1,13 +1,7 @@
-import type { EpgProgram, EpgScheduleType } from '#types/epg';
+import type { EpgProgram } from '#types/epg';
 import type { PlaylistItem } from '#types/playlist';
 
-export default abstract class EpgProviderService {
-  readonly type: EpgScheduleType;
-
-  protected constructor(type: EpgScheduleType) {
-    this.type = type;
-  }
-
+export default abstract class EpgService {
   /**
    * Fetch the schedule data for the given PlaylistItem
    */

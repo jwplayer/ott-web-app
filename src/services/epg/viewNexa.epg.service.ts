@@ -7,7 +7,6 @@ import EpgService from './epg.service';
 import type { PlaylistItem } from '#types/playlist';
 import { logDev } from '#src/utils/common';
 import type { EpgProgram } from '#types/epg';
-import { EPG_TYPE } from '#src/config';
 
 const viewNexaEpgProgramSchema = object().shape({
   'episode-num': object().shape({
@@ -30,13 +29,6 @@ const parseData = (date: string): string => parse(date, 'yyyyMdHms xxxx', new Da
 
 @injectable()
 export default class ViewNexaEpgService extends EpgService {
-  constructor() {
-    super(EPG_TYPE.VIEW_NEXA);
-  }
-
-  /**
-   * Validate the given data with the viewNexaProgramSchema and transform it into an EpgProgram
-   */
   transformProgram = async (data: unknown): Promise<EpgProgram> => {
     const program = await viewNexaEpgProgramSchema.validate(data);
 
@@ -51,9 +43,6 @@ export default class ViewNexaEpgService extends EpgService {
     };
   };
 
-  /**
-   * Fetch the schedule data for the given PlaylistItem
-   */
   fetchSchedule = async (item: PlaylistItem) => {
     const { XMLParser } = await import('fast-xml-parser');
 

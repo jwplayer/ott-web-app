@@ -5,26 +5,24 @@ import EpgController from './EpgController';
 
 import channel1 from '#test/epg/jwChannel.json';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
+import EpgService from '#src/services/epg/epg.service';
 import type { Playlist } from '#types/playlist';
-import { EPG_TYPE } from '#src/config';
 
 const livePlaylist = livePlaylistFixture as Playlist;
 
 const transformProgram = vi.fn();
 const fetchSchedule = vi.fn();
 
-const epgService = { transformProgram, fetchSchedule };
-const jwpEpgService = {
-  ...epgService,
-  type: EPG_TYPE.JWP,
-};
+vi.mock('#src/modules/container', () => ({
+  getNamedModule: (type: typeof EpgService) => {
+    switch (type) {
+      case EpgService:
+        return { transformProgram, fetchSchedule };
+    }
+  },
+}));
 
-const viewNexaEpgService = {
-  ...epgService,
-  type: EPG_TYPE.VIEW_NEXA,
-};
-
-const epgController = new EpgController([jwpEpgService, viewNexaEpgService]);
+const epgController = new EpgController();
 
 const mockProgram1 = {
   id: 'test',

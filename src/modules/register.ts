@@ -1,7 +1,7 @@
 // To organize imports in a better way
 /* eslint-disable import/order */
 import 'reflect-metadata'; // include once in the app for inversify (see: https://github.com/inversify/InversifyJS/blob/master/README.md#-installation)
-import { INTEGRATION } from '#src/config';
+import { EPG_TYPE, INTEGRATION } from '#src/config';
 import { container } from '#src/modules/container';
 
 import ApiService from '#src/services/api.service';
@@ -51,10 +51,6 @@ container.bind(GenericEntitlementService).toSelf();
 container.bind(ApiService).toSelf();
 container.bind(SettingsService).toSelf();
 
-// EPG services
-container.bind(EpgService).to(JWEpgService);
-container.bind(EpgService).to(ViewNexaEpgService);
-
 // Common controllers
 container.bind(AppController).toSelf();
 container.bind(WatchHistoryController).toSelf();
@@ -69,6 +65,10 @@ container.bind(EpgController).toSelf();
 container.bind('INTEGRATION_TYPE').toDynamicValue((context) => {
   return context.container.get(AppController).getIntegrationType();
 });
+
+// EPG services
+container.bind(EpgService).to(JWEpgService).whenTargetNamed(EPG_TYPE.JWP);
+container.bind(EpgService).to(ViewNexaEpgService).whenTargetNamed(EPG_TYPE.VIEW_NEXA);
 
 // Cleeng integration
 container.bind(CleengService).toSelf();
