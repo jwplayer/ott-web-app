@@ -8,7 +8,10 @@
   align-items: center;
   min-height: 70vh;
 
-  a, a:visited, a:hover, a:active {
+  a,
+  a:visited,
+  a:hover,
+  a:active {
     color: inherit;
     font-weight: var(--body-font-weight-bold);
     text-decoration: underline;
@@ -26,6 +29,10 @@
   color: variables.$white;
   font-weight: var(--body-font-weight-bold);
   font-size: 34px;
+}
+
+.message {
+  padding-bottom: 16px;
 }
 
 .main {
@@ -50,7 +57,6 @@
 
 .links {
   position: relative;
-
 }
 
 .stack {

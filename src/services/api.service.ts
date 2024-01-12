@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns';
+import { parseISO, isValid } from 'date-fns';
 import { injectable } from 'inversify';
 
 import { getMediaStatusFromEventState } from '../utils/liveEvent';
@@ -33,6 +33,17 @@ export default class ApiService {
     return url;
   };
 
+  private parseDate = (item: PlaylistItem, prop: string) => {
+    const date = item[prop] as string | undefined;
+
+    if (date && !isValid(new Date(date))) {
+      console.error(`Invalid "${prop}" date provided for the "${item.title}" media item`);
+      return undefined;
+    }
+
+    return date ? parseISO(date) : undefined;
+  };
+
   /**
    * Transform incoming media items
    * - Parses productId into MediaOffer[] for all cleeng offers
@@ -48,8 +59,8 @@ export default class ApiService {
       channelLogoImage: this.generateAlternateImageURL({ item, label: ImageProperty.CHANNEL_LOGO, playlistLabel }),
       backgroundImage: this.generateAlternateImageURL({ item, label: ImageProperty.BACKGROUND }),
       mediaOffers: item.productIds ? filterMediaOffers(offerKeys, item.productIds) : undefined,
-      scheduledStart: item['VCH.ScheduledStart'] ? parseISO(item['VCH.ScheduledStart'] as string) : undefined,
-      scheduledEnd: item['VCH.ScheduledEnd'] ? parseISO(item['VCH.ScheduledEnd'] as string) : undefined,
+      scheduledStart: this.parseDate(item, 'VCH.ScheduledStart'),
+      scheduledEnd: this.parseDate(item, 'VCH.ScheduledEnd'),
     };
 
     // add the media status to the media item after the transformation because the live media status depends on the scheduledStart and scheduledEnd
@@ -71,6 +82,22 @@ export default class ApiService {
     if (relatedMediaId) playlist.playlist.filter((item) => item.mediaid !== relatedMediaId);
 
     return playlist;
+  };
+
+  private transformEpisodes = (episodesRes: EpisodesRes, seasonNumber?: number) => {
+    const { episodes, page, page_limit, total } = episodesRes;
+
+    // Adding images and keys for media items
+    return {
+      episodes: episodes
+        .filter((el) => el.media_item)
+        .map((el) => ({
+          ...this.transformMediaItem(el.media_item as PlaylistItem),
+          seasonNumber: seasonNumber?.toString() || el.season_number?.toString() || '',
+          episodeNumber: String(el.episode_number),
+        })),
+      pagination: { page, page_limit, total },
+    };
   };
 
   /**
@@ -185,17 +212,9 @@ export default class ApiService {
     });
 
     const response = await fetch(url);
-    const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
+    const episodesRes: EpisodesRes = await getDataOrThrow(response);
 
-    // Adding images and keys for media items
-    return {
-      episodes: episodes.map((el) => ({
-        ...this.transformMediaItem(el.media_item),
-        seasonNumber: el.season_number ? String(el.season_number) : '',
-        episodeNumber: String(el.episode_number),
-      })),
-      pagination: { page, page_limit, total },
-    };
+    return this.transformEpisodes(episodesRes);
   };
 
   /**
@@ -221,17 +240,9 @@ export default class ApiService {
     const url = addQueryParams(`${import.meta.env.APP_API_BASE_URL}${pathname}`, { page_offset: pageOffset, page_limit: pageLimit });
 
     const response = await fetch(url);
-    const { episodes, page, page_limit, total }: EpisodesRes = await getDataOrThrow(response);
+    const episodesRes: EpisodesRes = await getDataOrThrow(response);
 
-    // Adding images and keys for media items
-    return {
-      episodes: episodes.map((el) => ({
-        ...this.transformMediaItem(el.media_item),
-        seasonNumber: String(seasonNumber),
-        episodeNumber: String(el.episode_number),
-      })),
-      pagination: { page, page_limit, total },
-    };
+    return this.transformEpisodes(episodesRes, seasonNumber);
   };
 
   getAdSchedule = async (id: string | undefined | null): Promise<AdSchedule | undefined> => {

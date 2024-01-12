@@ -22,7 +22,7 @@ type FilterProps = {
 };
 
 type LoadMoreProps = {
-  hasLoadMore?: boolean;
+  hasMore?: boolean;
   loadMore?: () => void;
 };
 
@@ -94,7 +94,7 @@ const VideoLayout: React.FC<Props> = ({
   defaultFilterLabel = '',
   children,
   // load more
-  hasLoadMore,
+  hasMore,
   loadMore,
   getURL,
 }) => {
@@ -131,7 +131,7 @@ const VideoLayout: React.FC<Props> = ({
           currentCardItem={item}
           currentCardLabel={activeLabel}
           hasSubscription={hasSubscription}
-          hasLoadMore={hasLoadMore}
+          hasMore={hasMore}
           loadMore={loadMore}
           getUrl={getURL}
         />
@@ -154,7 +154,7 @@ const VideoLayout: React.FC<Props> = ({
           accessModel={accessModel}
           isLoggedIn={isLoggedIn}
           hasSubscription={hasSubscription}
-          hasLoadMore={hasLoadMore}
+          hasMore={hasMore}
           loadMore={loadMore}
           getUrl={getURL}
         />

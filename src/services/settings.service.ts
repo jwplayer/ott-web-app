@@ -79,11 +79,10 @@ export default class SettingsService {
       });
 
     const i18n = getI18n();
-    const bundle = i18n.getResourceBundle(i18n.language, 'error');
 
     const errorPayload = {
-      title: bundle['settings_invalid'],
-      description: bundle['check_your_settings'],
+      title: i18n.t('error:settings_invalid'),
+      description: i18n.t('error:check_your_settings'),
       helpLink: 'https://github.com/jwplayer/ott-web-app/blob/develop/docs/initialization-file.md',
     };
 
