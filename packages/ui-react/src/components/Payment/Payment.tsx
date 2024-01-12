@@ -6,7 +6,6 @@ import type { Customer } from '@jwp/ott-common/types/account';
 import type { Offer } from '@jwp/ott-common/types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '@jwp/ott-common/types/subscription';
 import { formatLocalizedDate, formatPrice } from '@jwp/ott-common/src/utils/formatting';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import ExternalLink from '@jwp/ott-theme/assets/icons/external_link.svg?react';
 import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
@@ -19,6 +18,7 @@ import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import OfferSwitch from '../OfferSwitch/OfferSwitch';
 import TextField from '../TextField/TextField';
 import Icon from '../Icon/Icon';
+import { modalURL } from '../../utils/location';
 
 import styles from './Payment.module.scss';
 
@@ -115,18 +115,18 @@ const Payment = ({
   }, [selectedOfferId, offers, activeSubscription, setIsUpgradeOffer]);
 
   function onCompleteSubscriptionClick() {
-    navigate(addQueryParam(location, 'u', 'choose-offer'));
+    navigate(modalURL(location, 'choose-offer'));
   }
   function onEditCardDetailsClick() {
-    navigate(addQueryParam(location, 'u', 'edit-card'));
+    navigate(modalURL(location, 'edit-card'));
   }
 
   function onCancelSubscriptionClick() {
-    navigate(addQueryParam(location, 'u', 'unsubscribe'));
+    navigate(modalURL(location, 'unsubscribe'));
   }
 
   function onRenewSubscriptionClick() {
-    navigate(addQueryParam(location, 'u', 'renew-subscription'));
+    navigate(modalURL(location, 'renew-subscription'));
   }
 
   function getTitle(period: Subscription['period']) {
@@ -303,7 +303,7 @@ const Payment = ({
           </div>
         )}
         {canUpdatePaymentMethod && (
-          <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(addQueryParam(location, 'u', 'payment-method'))} />
+          <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(modalURL(location, 'payment-method'))} />
         )}
       </div>
       <div className={panelClassName}>

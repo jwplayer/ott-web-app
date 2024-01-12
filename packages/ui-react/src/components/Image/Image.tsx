@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import styles from './Image.module.scss';
 
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const setWidth = (url: string, width: number) => {
-  return addQueryParams(url, { width });
+  return createURL(url, { width });
 };
 
 const Image = ({ className, image, onLoad, alt = '', width = 640 }: Props) => {

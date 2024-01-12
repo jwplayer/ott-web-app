@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import type { FormErrors } from '@jwp/ott-common/types/form';
 import type { LoginFormData } from '@jwp/ott-common/types/account';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
@@ -18,6 +17,7 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import SocialButtonsList from '../SocialButtonsList/SocialButtonsList';
 import Icon from '../Icon/Icon';
+import { modalURL } from '../../utils/location';
 
 import styles from './LoginForm.module.scss';
 
@@ -86,12 +86,12 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         testId="login-password-input"
       />
       {submitting && <LoadingOverlay transparentBackground inline />}
-      <Link className={styles.link} to={addQueryParam(location, 'u', 'forgot-password')}>
+      <Link className={styles.link} to={modalURL(location, 'forgot-password')}>
         {t('login.forgot_password')}
       </Link>
       <Button type="submit" label={t('login.sign_in')} variant="contained" color="primary" size="large" disabled={submitting} fullWidth />
       <p className={styles.bottom}>
-        {t('login.not_registered', { siteName })} <Link to={addQueryParam(location, 'u', 'create-account')}>{t('login.sign_up')}</Link>
+        {t('login.not_registered', { siteName })} <Link to={modalURL(location, 'create-account')}>{t('login.sign_up')}</Link>
       </p>
     </form>
   );

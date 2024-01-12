@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 
-import { addQueryParams } from '../../../utils/formatting';
+import { createURL } from '../../../utils/urlFormatting';
 import type {
   FetchReceipt,
   GetActivePayment,
@@ -61,7 +61,7 @@ export default class CleengSubscriptionService extends SubscriptionService {
   };
 
   getTransactions: GetTransactions = async ({ customerId, limit, offset }, sandbox) => {
-    return this.cleengService.get(sandbox, addQueryParams(`/customers/${customerId}/transactions`, { limit, offset }), { authenticate: true });
+    return this.cleengService.get(sandbox, createURL(`/customers/${customerId}/transactions`, { limit, offset }), { authenticate: true });
   };
 
   fetchReceipt: FetchReceipt = async ({ transactionId }, sandbox) => {

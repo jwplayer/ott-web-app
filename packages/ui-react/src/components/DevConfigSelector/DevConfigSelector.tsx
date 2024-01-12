@@ -1,5 +1,5 @@
 import { type ChangeEvent, useCallback } from 'react';
-import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { CONFIG_QUERY_KEY } from '@jwp/ott-common/src/constants';
 import { jwDevEnvConfigs, testConfigs } from '@jwp/ott-testing/constants';
 
@@ -19,7 +19,7 @@ const configOptions: { value: string; label: string }[] = [
 
 const DevConfigSelector = ({ selectedConfig }: Props) => {
   const onChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
-    window.location.href = addQueryParams(window.location.href, { [CONFIG_QUERY_KEY]: event.target.value });
+    window.location.href = createURL(window.location.href, { [CONFIG_QUERY_KEY]: event.target.value });
   }, []);
 
   return (

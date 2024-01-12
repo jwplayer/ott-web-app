@@ -5,7 +5,7 @@ import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { filterPlaylist, getFiltersFromConfig } from '@jwp/ott-common/src/utils/collection';
-import { mediaURL } from '@jwp/ott-common/src/utils/formatting';
+import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import CardGrid from '../../../../components/CardGrid/CardGrid';

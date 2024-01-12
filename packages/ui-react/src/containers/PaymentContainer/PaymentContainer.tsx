@@ -6,13 +6,13 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import { useSubscriptionChange } from '@jwp/ott-hooks-react/src/useSubscriptionChange';
 
 import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import Payment from '../../components/Payment/Payment';
+import { modalURL } from '../../utils/location';
 
 /**
  * Handles billing receipts by either downloading the receipt directly if it is an instance of Blob,
@@ -69,7 +69,7 @@ const PaymentContainer = () => {
   const location = useLocation();
 
   const handleUpgradeSubscriptionClick = async () => {
-    navigate(addQueryParam(location, 'u', 'upgrade-subscription'));
+    navigate(modalURL(location, 'upgrade-subscription'));
   };
 
   const handleShowReceiptClick = async (transactionId: string) => {

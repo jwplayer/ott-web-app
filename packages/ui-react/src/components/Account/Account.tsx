@@ -10,7 +10,6 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { isTruthy, isTruthyCustomParamValue, logDev, testId } from '@jwp/ott-common/src/utils/common';
 import { formatConsents, formatConsentsFromValues, formatConsentsToRegisterFields, formatConsentValues } from '@jwp/ott-common/src/utils/collection';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
 import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
@@ -25,6 +24,7 @@ import Checkbox from '../Checkbox/Checkbox';
 import HelperText from '../HelperText/HelperText';
 import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
 import Icon from '../Icon/Icon';
+import { modalURL } from '../../utils/location';
 
 import styles from './Account.module.scss';
 
@@ -186,10 +186,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
     if (isSocialLogin && shouldAddPassword) {
       await accountController.resetPassword(customer.email, '');
-      return navigate(addQueryParam(location, 'u', 'add-password'));
+      return navigate(modalURL(location, 'add-password'));
     }
-    const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password';
-    navigate(addQueryParam(location, 'u', modal));
+
+    navigate(modalURL(location, canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password'));
   };
 
   return (
@@ -367,7 +367,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                       type="button"
                       variant="danger"
                       onClick={() => {
-                        navigate(addQueryParam(location, 'u', shouldAddPassword ? 'warning-account-deletion' : 'delete-account'));
+                        navigate(modalURL(location, shouldAddPassword ? 'warning-account-deletion' : 'delete-account'));
                       }}
                     />
                   </div>

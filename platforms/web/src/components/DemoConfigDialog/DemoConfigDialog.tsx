@@ -2,7 +2,7 @@ import React, { type ChangeEventHandler, type MouseEventHandler, useEffect, useS
 import { useTranslation } from 'react-i18next';
 import { type NavigateFunction, useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { CONFIG_QUERY_KEY } from '@jwp/ott-common/src/constants';
 import ErrorPage from '@jwp/ott-ui-react/src/components/ErrorPage/ErrorPage';
 import TextField from '@jwp/ott-ui-react/src/components/TextField/TextField';
@@ -65,7 +65,7 @@ const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
     // Get a new config by triggering a query param change
     else {
       // Force a page refresh so that application (including services and controllers) gets fully reinitialized
-      window.location.href = addQueryParams(window.location.href, { [CONFIG_QUERY_KEY]: configSource });
+      window.location.href = createURL(window.location.href, { [CONFIG_QUERY_KEY]: configSource });
     }
   };
 

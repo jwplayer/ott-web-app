@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { addQueryParam, removeMultipleQueryParams } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 
@@ -30,7 +31,38 @@ import Registration from './forms/Registration';
 import Login from './forms/Login';
 import styles from './AccountModal.module.scss';
 
+// @todo: connect with route typings
 const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
+
+export type AccountModals = {
+  login: 'login';
+  'create-account': 'create-account';
+  'personal-details': 'personal-details';
+  'choose-offer': 'choose-offer';
+  'edit-card': 'edit-card';
+  'upgrade-subscription': 'upgrade-subscription';
+  'upgrade-subscription-error': 'upgrade-subscription-error';
+  'upgrade-subscription-success': 'upgrade-subscription-success';
+  'upgrade-subscription-pending': 'upgrade-subscription-pending';
+  checkout: 'checkout';
+  'payment-error': 'payment-error';
+  'payment-cancelled': 'payment-cancelled';
+  welcome: 'welcome';
+  'reset-password': 'reset-password';
+  'forgot-password': 'forgot-password';
+  'add-password': 'add-password';
+  'delete-account': 'delete-account';
+  'delete-account-confirmation': 'delete-account-confirmation';
+  'warning-account-deletion': 'warning-account-deletion';
+  'send-confirmation': 'send-confirmation';
+  'edit-password': 'edit-password';
+  unsubscribe: 'unsubscribe';
+  'renew-subscription': 'renew-subscription';
+  'payment-method': 'payment-method';
+  'payment-method-success': 'payment-method-success';
+  'waiting-for-payment': 'waiting-for-payment';
+  'finalize-payment': 'finalize-payment';
+};
 
 const AccountModal = () => {
   const navigate = useNavigate();
@@ -47,7 +79,7 @@ const AccountModal = () => {
   const isPublicView = viewParam && PUBLIC_VIEWS.includes(viewParam);
 
   const toLogin = useEventCallback(() => {
-    navigate(addQueryParam(location, 'u', 'login'));
+    navigate(modalURL(location, 'login'));
   });
 
   useEffect(() => {
@@ -62,7 +94,7 @@ const AccountModal = () => {
   }, [viewParam, loading, isPublicView, user, toLogin]);
 
   const closeHandler = useEventCallback(() => {
-    navigate(removeMultipleQueryParams(location, ['u', 'message']));
+    navigate(createURL(location.pathname, { u: null, message: null }, location.search));
   });
 
   const renderForm = () => {

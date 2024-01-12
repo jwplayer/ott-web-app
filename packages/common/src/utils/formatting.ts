@@ -1,7 +1,5 @@
 import type { Playlist, PlaylistItem } from '../../types/playlist';
 
-import { getLegacySeriesPlaylistIdFromEpisodeTags, getSeriesPlaylistIdFromCustomParams } from './media';
-
 export const formatDurationTag = (seconds: number): string | null => {
   if (!seconds) return null;
 
@@ -30,95 +28,6 @@ export const formatDuration = (duration: number): string | null => {
   const minutesString = minutes ? `${minutes}m ` : '';
 
   return `${hoursString}${minutesString}`;
-};
-
-export const addQueryParams = (url: string, queryParams: { [key: string]: string | number | string[] | undefined | null }) => {
-  const queryStringIndex = url.indexOf('?');
-  const urlWithoutSearch = queryStringIndex > -1 ? url.slice(0, queryStringIndex) : url;
-  const urlSearchParams = new URLSearchParams(queryStringIndex > -1 ? url.slice(queryStringIndex) : undefined);
-
-  Object.keys(queryParams).forEach((key) => {
-    const value = queryParams[key];
-
-    // null or undefined
-    if (value == null) return;
-
-    if (typeof value === 'object' && !value?.length) return;
-
-    const formattedValue = Array.isArray(value) ? value.join(',') : value;
-
-    urlSearchParams.set(key, String(formattedValue));
-  });
-  const queryString = urlSearchParams.toString();
-
-  return `${urlWithoutSearch}${queryString ? `?${queryString}` : ''}`;
-};
-
-export function removeQueryParamFromUrl(url: string, key: string): string {
-  const parsedUrl = new URL(url);
-  const urlSearchParams = new URLSearchParams(parsedUrl.search);
-
-  urlSearchParams.delete(key);
-
-  const searchParams = urlSearchParams.toString();
-
-  return `${parsedUrl.pathname}${searchParams ? `?${searchParams}` : ''}`;
-}
-
-export const slugify = (text: string, whitespaceChar: string = '-') =>
-  text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '')
-    .replace(/-/g, whitespaceChar);
-
-export const mediaURL = ({
-  media,
-  playlistId,
-  play = false,
-  episodeId,
-}: {
-  media: PlaylistItem;
-  playlistId?: string | null;
-  play?: boolean;
-  episodeId?: string;
-}) => addQueryParams(`/m/${media.mediaid}/${slugify(media.title)}`, { r: playlistId, play: play ? '1' : null, e: episodeId });
-
-export const liveChannelsURL = (playlistId: string, channelId?: string, play = false) => {
-  return addQueryParams(`/p/${playlistId}`, {
-    channel: channelId,
-    play: play ? '1' : null,
-  });
-};
-
-export const legacySeriesURL = ({
-  seriesId,
-  episodeId,
-  play,
-  playlistId,
-}: {
-  seriesId: string;
-  episodeId?: string;
-  play?: boolean;
-  playlistId?: string | null;
-}) => addQueryParams(`/s/${seriesId}`, { r: playlistId, e: episodeId, play: play ? '1' : null });
-
-export const buildLegacySeriesUrlFromMediaItem = (media: PlaylistItem, play: boolean, playlistId: string | null) => {
-  const legacyPlaylistIdFromTags = getLegacySeriesPlaylistIdFromEpisodeTags(media);
-  const legacyPlaylistIdFromCustomParams = getSeriesPlaylistIdFromCustomParams(media);
-
-  return legacySeriesURL({
-    // Use the id grabbed from either custom params for series or tags for an episode
-    seriesId: legacyPlaylistIdFromCustomParams || legacyPlaylistIdFromTags || '',
-    play,
-    playlistId,
-    // Add episode id only if series id can be retrieved from tags
-    episodeId: legacyPlaylistIdFromTags && media.mediaid,
-  });
 };
 
 export const formatPrice = (price: number, currency: string, country?: string) => {

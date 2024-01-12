@@ -1,7 +1,7 @@
 import type { PlaylistItem } from '../../types/playlist';
 import type { EpisodeMetadata, Series } from '../../types/series';
 
-import { mediaURL } from './formatting';
+import { mediaURL } from './urlFormatting';
 import { secondsToISO8601 } from './datetime';
 
 export const generateMovieJSONLD = (item: PlaylistItem, origin: string) => {

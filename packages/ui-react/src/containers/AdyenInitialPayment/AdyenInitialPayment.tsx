@@ -7,7 +7,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/src/constants';
 
 import Adyen from '../../components/Adyen/Adyen';
@@ -62,7 +62,10 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, setPayment
           return;
         }
 
-        const returnUrl = addQueryParams(window.location.href, { u: 'finalize-payment', orderId: orderId });
+        const returnUrl = createURL(window.location.href, {
+          u: 'finalize-payment',
+          orderId: orderId,
+        });
         const result = await checkoutController.initialAdyenPayment(state.data.paymentMethod, returnUrl);
 
         if ('action' in result) {

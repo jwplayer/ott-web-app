@@ -9,7 +9,7 @@ import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { checkConsentsFromValues, extractConsentValues } from '@jwp/ott-common/src/utils/collection';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 
 import RegistrationForm from '../../../components/RegistrationForm/RegistrationForm';
 
@@ -63,7 +63,7 @@ const Registration = () => {
       await accountController.register(email, password, window.location.href, customerConsents);
       await queryClient.invalidateQueries(['listProfiles']);
 
-      navigate(addQueryParam(location, 'u', 'personal-details'));
+      navigate(modalURL(location, 'personal-details'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         const errorMessage = error.message.toLowerCase();

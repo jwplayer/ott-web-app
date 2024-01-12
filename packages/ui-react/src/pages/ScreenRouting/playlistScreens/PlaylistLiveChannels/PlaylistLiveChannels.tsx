@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { differenceInSeconds, format } from 'date-fns';
 import type { Playlist } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { addQueryParams, formatDurationTag, liveChannelsURL } from '@jwp/ott-common/src/utils/formatting';
+import { formatDurationTag } from '@jwp/ott-common/src/utils/formatting';
+import { createURL, liveChannelsURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { generateMovieJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import useLiveChannels from '@jwp/ott-hooks-react/src/useLiveChannels';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
@@ -137,7 +138,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     <>
       <StartWatchingButton
         item={channelMediaItem}
-        playUrl={addQueryParams(liveChannelsURL(feedid, channelId, true), {
+        playUrl={createURL(liveChannelsURL(feedid, channelId, true), {
           start: isVod ? program?.startTime : undefined,
           end: isVod ? program?.endTime : undefined,
         })}
@@ -148,7 +149,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
           className={styles.catchupButton}
           onClick={() =>
             navigate(
-              addQueryParams(liveChannelsURL(feedid || '', channelId, true), {
+              createURL(liveChannelsURL(feedid || '', channelId, true), {
                 start: program?.startTime,
                 beginning: 1,
               }),

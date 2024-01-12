@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { EpisodeMetadata } from '@jwp/ott-common/types/series';
-import { legacySeriesURL } from '@jwp/ott-common/src/utils/formatting';
+import { legacySeriesURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { secondsToISO8601 } from '@jwp/ott-common/src/utils/datetime';
 
 /**

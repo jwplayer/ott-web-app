@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import type { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { useProfileErrorHandler, useUpdateProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
@@ -103,7 +103,7 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
           <div className={profileStyles.profileInfo}>{t(profileDetails?.default ? 'profile.delete_main' : 'profile.delete_description')}</div>
           {!profileDetails?.default && (
             <Button
-              onClick={() => navigate(addQueryParam(location, 'action', 'delete-profile'))}
+              onClick={() => navigate(createURL(location.pathname, { action: 'delete-profile' }, location.search))}
               label={t('profile.delete')}
               variant="contained"
               color="delete"

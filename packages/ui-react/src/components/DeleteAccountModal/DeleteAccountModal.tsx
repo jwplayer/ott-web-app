@@ -6,12 +6,12 @@ import { useMutation } from 'react-query';
 import type { DeleteAccountFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam, removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 
 import PasswordField from '../PasswordField/PasswordField';
 import Button from '../Button/Button';
 import Alert from '../Alert/Alert';
+import { modalURL } from '../../utils/location';
 
 import styles from './DeleteAccountModal.module.scss';
 
@@ -49,7 +49,7 @@ const DeleteAccountModal = () => {
     initialValues,
     () => {
       setEnteredPassword(values.password);
-      navigate(addQueryParam(location, 'u', 'delete-account-confirmation'), { replace: true });
+      navigate(modalURL(location, 'delete-account-confirmation'), { replace: true });
     },
     validationSchema,
   );
@@ -61,7 +61,7 @@ const DeleteAccountModal = () => {
       resetForm();
     }
     if (location.search.includes('delete-account-confirmation') && !enteredPassword) {
-      navigate(addQueryParam(location, 'u', 'delete-account'), { replace: true });
+      navigate(modalURL(location, 'delete-account'), { replace: true });
     }
   }, [location, location.search, navigate, enteredPassword, deleteAccount, resetForm]);
 
@@ -69,11 +69,11 @@ const DeleteAccountModal = () => {
     deleteAccount.reset();
     resetForm();
     setEnteredPassword('');
-    navigate(addQueryParam(location, 'u', 'delete-account'), { replace: true });
+    navigate(modalURL(location, 'delete-account'), { replace: true });
   }, [location, navigate, setEnteredPassword, deleteAccount, resetForm]);
 
   const handleCancel = useCallback(() => {
-    navigate(removeQueryParam(location, 'u'), { replace: true });
+    navigate(modalURL(location, null), { replace: true });
   }, [location, navigate]);
 
   if (deleteAccount.isError) {

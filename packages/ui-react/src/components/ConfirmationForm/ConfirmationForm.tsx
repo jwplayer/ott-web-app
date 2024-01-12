@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import Button from '../Button/Button';
+import { modalURL } from '../../utils/location';
 
 import styles from './ConfirmationForm.module.scss';
 
@@ -25,7 +25,7 @@ const ConfirmationForm: React.FC<Props> = ({ email, onBackToLogin, loggedIn }: P
       {!loggedIn && (
         <React.Fragment>
           <span className={styles.notSure}>{t('reset.not_sure')}</span>
-          <Link className={styles.link} to={addQueryParam(location, 'u', 'forgot-password')}>
+          <Link className={styles.link} to={modalURL(location, 'forgot-password')}>
             {t('reset.try_again')}
           </Link>
         </React.Fragment>

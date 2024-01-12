@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { AccessModel, ContentType } from '@jwp/ott-common/types/config';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
-import { mediaURL } from '@jwp/ott-common/src/utils/formatting';
+import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { PersonalShelf } from '@jwp/ott-common/src/constants';
 import ChevronLeft from '@jwp/ott-theme/assets/icons/chevron_left.svg?react';
 import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';

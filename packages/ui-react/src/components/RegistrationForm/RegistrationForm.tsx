@@ -5,7 +5,6 @@ import DOMPurify from 'dompurify';
 import type { FormErrors } from '@jwp/ott-common/types/form';
 import type { Consent, RegistrationFormData } from '@jwp/ott-common/types/account';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
 import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
@@ -19,6 +18,7 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Link from '../Link/Link';
 import Icon from '../Icon/Icon';
+import { modalURL } from '../../utils/location';
 
 import styles from './RegistrationForm.module.scss';
 
@@ -152,7 +152,7 @@ const RegistrationForm: React.FC<Props> = ({
         fullWidth
       />
       <p className={styles.bottom}>
-        {t('registration.already_account')} <Link to={addQueryParam(location, 'u', 'login')}>{t('login.sign_in')}</Link>
+        {t('registration.already_account')} <Link to={modalURL(location, 'login')}>{t('login.sign_in')}</Link>
       </p>
       {submitting && <LoadingOverlay transparentBackground inline />}
     </form>

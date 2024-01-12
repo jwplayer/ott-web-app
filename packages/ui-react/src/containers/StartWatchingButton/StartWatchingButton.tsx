@@ -5,8 +5,8 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistoryStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import Play from '@jwp/ott-theme/assets/icons/play.svg?react';
 
@@ -57,8 +57,8 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
       }
       return playUrl && navigate(playUrl);
     }
-    if (!isLoggedIn) return navigate(addQueryParam(location, 'u', 'create-account'));
-    if (hasMediaOffers) return navigate(addQueryParam(location, 'u', 'choose-offer'));
+    if (!isLoggedIn) return navigate(modalURL(location, 'create-account'));
+    if (hasMediaOffers) return navigate(modalURL(location, 'choose-offer'));
 
     return navigate('/u/payments');
   }, [isEntitled, playUrl, navigate, isLoggedIn, location, hasMediaOffers, onClick]);

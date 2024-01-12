@@ -10,7 +10,7 @@ import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
@@ -19,6 +19,7 @@ import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 
 import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
+import type { AccountModals } from '../AccountModal';
 
 const determineSwitchDirection = (subscription: Subscription | null) => {
   const currentPeriod = subscription?.period;
@@ -55,8 +56,8 @@ const ChooseOffer = () => {
     offerId: defaultOfferId,
   };
 
-  const updateAccountModal = useEventCallback((modal: string) => {
-    navigate(addQueryParam(location, 'u', modal));
+  const updateAccountModal = useEventCallback((modal: keyof AccountModals) => {
+    navigate(modalURL(location, modal));
   });
 
   const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = useCallback(

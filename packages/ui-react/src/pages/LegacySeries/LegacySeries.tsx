@@ -8,7 +8,8 @@ import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistorySto
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
-import { formatPlaylistMetaString, formatSeriesMetaString, formatVideoMetaString, legacySeriesURL } from '@jwp/ott-common/src/utils/formatting';
+import { formatPlaylistMetaString, formatSeriesMetaString, formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
+import { legacySeriesURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';

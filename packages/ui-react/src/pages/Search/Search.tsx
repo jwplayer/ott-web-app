@@ -7,7 +7,7 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { mediaURL } from '@jwp/ott-common/src/utils/formatting';
+import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useFirstRender from '@jwp/ott-hooks-react/src/useFirstRender';
 import useSearchQueryUpdater from '@jwp/ott-hooks-react/src/useSearchQueryUpdater';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';

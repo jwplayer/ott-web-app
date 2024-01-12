@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
-import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwp/ott-common/src/utils/formatting';
+import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { useSeriesLookup } from '@jwp/ott-hooks-react/src/series/useSeriesLookup';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
 

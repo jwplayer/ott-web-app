@@ -10,7 +10,7 @@ import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import { IS_DEVELOPMENT_BUILD } from '@jwp/ott-common/src/utils/common';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useSearchQueryUpdater from '@jwp/ott-hooks-react/src/useSearchQueryUpdater';
@@ -99,11 +99,11 @@ const Layout = () => {
   };
 
   const loginButtonClickHandler = () => {
-    navigate(addQueryParam(location, 'u', 'login'));
+    navigate(modalURL(location, 'login'));
   };
 
   const signUpButtonClickHandler = () => {
-    navigate(addQueryParam(location, 'u', 'create-account'));
+    navigate(modalURL(location, 'create-account'));
   };
 
   const languageClickHandler = async (code: string) => {

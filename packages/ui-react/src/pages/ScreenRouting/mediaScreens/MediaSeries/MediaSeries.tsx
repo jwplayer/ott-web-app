@@ -11,8 +11,8 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { generateEpisodeJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { getEpisodesInSeason, getFiltersFromSeries } from '@jwp/ott-common/src/utils/series';
-import { buildLegacySeriesUrlFromMediaItem, formatSeriesMetaString, formatVideoMetaString, mediaURL } from '@jwp/ott-common/src/utils/formatting';
-import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
+import { formatSeriesMetaString, formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
+import { buildLegacySeriesUrlFromMediaItem, createURL, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { VideoProgressMinMax } from '@jwp/ott-common/src/constants';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
@@ -111,7 +111,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
 
   const location = useLocation();
   const getURL = (toEpisode: PlaylistItem) => {
-    return addQueryParam(location, 'e', toEpisode.mediaid);
+    return createURL(location.pathname, { e: toEpisode.mediaid }, location.search);
   };
 
   // Handlers

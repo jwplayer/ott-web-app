@@ -7,11 +7,11 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { addQueryParam, replaceQueryParam } from '@jwp/ott-ui-react/src/utils/location';
-import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/src/constants';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import Adyen from '../../components/Adyen/Adyen';
 
@@ -34,7 +34,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
 
   const redirectResult = useQueryParam('redirectResult');
   const finalize = !!redirectResult;
-  const paymentSuccessUrl = addQueryParam(location, 'u', 'payment-method-success');
+  const paymentSuccessUrl = modalURL(location, 'payment-method-success');
 
   const finalizePaymentDetails = useEventCallback(async (redirectResult: string) => {
     try {
@@ -44,13 +44,13 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       await accountController.reloadActiveSubscription({ delay: 2000 });
 
       setProcessing(false);
-      navigate(replaceQueryParam(location, 'u', 'payment-method-success'));
+      navigate(modalURL(location, 'payment-method-success'));
     } catch (error: unknown) {
       setProcessing(false);
 
       if (error instanceof Error) {
         setPaymentError(error.message);
-        navigate(replaceQueryParam(location, 'u', 'payment-method'), { replace: true });
+        navigate(modalURL(location, 'payment-method'), { replace: true });
       }
     }
   });
@@ -91,7 +91,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
         setProcessing(true);
         setPaymentError(undefined);
 
-        const returnUrl = addQueryParams(window.location.href, { u: 'payment-method', paymentMethodId: `${paymentMethodId}` });
+        const returnUrl = createURL(window.location.href, { u: 'payment-method', paymentMethodId: `${paymentMethodId}` });
         const result = await checkoutController.addAdyenPaymentDetails(state.data.paymentMethod, paymentMethodId, returnUrl);
 
         if ('action' in result) {

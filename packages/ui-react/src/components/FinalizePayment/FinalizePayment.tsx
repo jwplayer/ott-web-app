@@ -6,12 +6,12 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import { addQueryParam, removeQueryParam, replaceQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 
 import Button from '../Button/Button';
 import Spinner from '../Spinner/Spinner';
+import { modalURL } from '../../utils/location';
 
 import styles from './FinalizePayment.module.scss';
 
@@ -31,7 +31,7 @@ const FinalizePayment = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const paymentSuccessUrl = useMemo(() => {
-    return accessModel === ACCESS_MODEL.SVOD ? replaceQueryParam(location, 'u', 'welcome') : removeQueryParam(location, 'u');
+    return modalURL(location, accessModel === ACCESS_MODEL.SVOD ? 'welcome' : null);
   }, [accessModel, location]);
 
   const checkPaymentResult = useEventCallback(async (redirectResult: string) => {
@@ -65,7 +65,7 @@ const FinalizePayment = () => {
             variant="contained"
             color="primary"
             size="large"
-            onClick={() => navigate(addQueryParam(location, 'u', 'checkout'))}
+            onClick={() => navigate(modalURL(location, 'checkout'))}
             fullWidth
           />
         </>

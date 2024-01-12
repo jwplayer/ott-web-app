@@ -3,7 +3,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
@@ -48,10 +48,10 @@ const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
     try {
       setPaymentError(undefined);
 
-      const successUrl = addQueryParams(window.location.href, { u: 'payment-method-success' });
-      const waitingUrl = addQueryParams(window.location.href, { u: 'waiting-for-payment' });
-      const cancelUrl = addQueryParams(window.location.href, { u: 'paypal-cancelled' });
-      const errorUrl = addQueryParams(window.location.href, { u: 'paypal-error' });
+      const successUrl = createURL(window.location.href, { u: 'payment-method-success' });
+      const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment' });
+      const cancelUrl = createURL(window.location.href, { u: 'paypal-cancelled' }); // @todo: This route doesn't exist
+      const errorUrl = createURL(window.location.href, { u: 'paypal-error' }); // @todo: This route doesn't exist
 
       const response = await checkoutController.updatePayPalPaymentMethod(
         successUrl,

@@ -5,7 +5,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { formatLocalizedDate } from '@jwp/ott-common/src/utils/formatting';
-import { removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 
 import CancelSubscriptionForm from '../../../components/CancelSubscriptionForm/CancelSubscriptionForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -37,7 +37,7 @@ const CancelSubscription = () => {
   };
 
   const closeHandler = () => {
-    navigate(removeQueryParam(location, 'u'), { replace: true });
+    navigate(modalURL(location, null), { replace: true });
   };
 
   if (!subscription) return null;

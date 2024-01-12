@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { AccessModel } from '@jwp/ott-common/types/config';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
-import { mediaURL } from '@jwp/ott-common/src/utils/formatting';
+import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import Button from '../Button/Button';

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParams, removeQueryParamFromUrl } from '@jwp/ott-common/src/utils/formatting';
 import { queryClient } from '@jwp/ott-common/src/queryClient';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -20,6 +20,7 @@ enum NotificationsTypes {
 
 export default function useNotifications(uuid: string = '') {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const accountController = getModule(AccountController);
   const { hasNotifications } = accountController?.getFeatures() || {};
@@ -37,16 +38,11 @@ export default function useNotifications(uuid: string = '') {
             case NotificationsTypes.FAILED:
             case NotificationsTypes.CARD_FAILED:
             case NotificationsTypes.SUBSCRIBE_FAILED:
-              navigate(
-                addQueryParams(window.location.pathname, {
-                  u: 'payment-error',
-                  message: notification.resource?.message,
-                }),
-              );
+              navigate(modalURL(location, 'payment-error', { message: notification.resource?.message }));
               break;
             case NotificationsTypes.CARD_SUCCESS:
               await queryClient.invalidateQueries(['entitlements']);
-              navigate(removeQueryParamFromUrl(window.location.href, 'u'));
+              navigate(modalURL(location, null));
               break;
             case NotificationsTypes.SUBSCRIBE_SUCCESS:
               await accountController.reloadActiveSubscription();
@@ -60,7 +56,7 @@ export default function useNotifications(uuid: string = '') {
               break;
             case NotificationsTypes.ACCOUNT_LOGOUT:
               if (notification.resource?.reason === 'sessions_limit') {
-                navigate(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
+                navigate(modalURL(location, 'login', { message: simultaneousLoginWarningKey }));
               } else {
                 await accountController.logout();
               }

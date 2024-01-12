@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { mediaURL } from '@jwp/ott-common/src/utils/formatting';
+import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import MarkdownComponent from '../../../../components/MarkdownComponent/MarkdownComponent';

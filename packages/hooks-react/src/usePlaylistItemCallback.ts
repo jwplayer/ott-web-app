@@ -1,5 +1,5 @@
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
-import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import useEventCallback from './useEventCallback';
 
@@ -16,7 +16,7 @@ export const usePlaylistItemCallback = (startDateTime?: string | null, endDateTi
       allSources: undefined, // `allSources` need to be cleared otherwise JW Player will use those instead
       sources: item.sources.map((source) => ({
         ...source,
-        file: addQueryParams(source.file, {
+        file: createURL(source.file, {
           t: timeParam,
         }),
       })),

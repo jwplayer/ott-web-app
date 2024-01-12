@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 
 import EditCardDetailsForm from '../../../components/EditForm/EditCardDetailsForm';
 import EditCardPaymentForm from '../../../components/EditCardPaymentForm/EditCardPaymentForm';
@@ -11,7 +11,7 @@ const EditCardDetails = () => {
   const [updatingCardDetails, setUpdatingCardDetails] = useState(false);
 
   const closeHandler = () => {
-    navigate(removeQueryParam(location, 'u'), { replace: false });
+    navigate(modalURL(location, null), { replace: false });
   };
 
   const renderPaymentMethod = () => {

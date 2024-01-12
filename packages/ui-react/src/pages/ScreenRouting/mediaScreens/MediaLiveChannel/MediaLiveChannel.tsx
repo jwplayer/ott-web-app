@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { isLiveChannel } from '@jwp/ott-common/src/utils/media';
-import { liveChannelsURL } from '@jwp/ott-common/src/utils/formatting';
+import { liveChannelsURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import ErrorPage from '../../../../components/ErrorPage/ErrorPage';
