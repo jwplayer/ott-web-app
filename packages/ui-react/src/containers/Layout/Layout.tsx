@@ -82,6 +82,10 @@ const Layout = () => {
   }, []);
 
   useEffect(() => {
+    document.documentElement.setAttribute('lang', i18n.language);
+  }, [i18n.language]);
+
+  useEffect(() => {
     if (searchActive && searchInputRef.current) {
       searchInputRef.current.focus();
     }
