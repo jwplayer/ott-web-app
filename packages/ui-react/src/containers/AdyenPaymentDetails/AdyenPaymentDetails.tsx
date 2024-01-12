@@ -7,7 +7,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { addQueryParam, replaceQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam, replaceQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/src/constants';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { removeQueryParam } from '@jwp/ott-common/src/utils/location';
+import { removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import { useDeleteProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 

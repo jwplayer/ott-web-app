@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import Lock from '../../icons/Lock';
 import Image from '../../components/Image/Image';

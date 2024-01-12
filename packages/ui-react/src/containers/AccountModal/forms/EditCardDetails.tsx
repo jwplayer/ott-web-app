@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { removeQueryParam } from '@jwp/ott-common/src/utils/location';
+import { removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import EditCardDetailsForm from '../../../components/EditForm/EditCardDetailsForm';
 import EditCardPaymentForm from '../../../components/EditCardPaymentForm/EditCardPaymentForm';

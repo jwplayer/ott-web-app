@@ -4,6 +4,8 @@ import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
 
 import useDebounce from './useDebounce';
 
+// @todo: should move entirely to ui-react?
+
 const useSearchQueryUpdater = () => {
   const navigate = useNavigate();
 

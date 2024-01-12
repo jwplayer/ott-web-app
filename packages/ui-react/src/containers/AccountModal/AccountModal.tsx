@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { addQueryParam, removeMultipleQueryParams } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam, removeMultipleQueryParams } from '@jwp/ott-ui-react/src/utils/location';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 

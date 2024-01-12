@@ -5,7 +5,7 @@ import DOMPurify from 'dompurify';
 import type { FormErrors } from '@jwp/ott-common/types/form';
 import type { Consent, RegistrationFormData } from '@jwp/ott-common/types/account';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 
 import Visibility from '../../icons/Visibility';

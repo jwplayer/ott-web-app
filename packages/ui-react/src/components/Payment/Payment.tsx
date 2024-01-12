@@ -6,7 +6,7 @@ import type { Customer } from '@jwp/ott-common/types/account';
 import type { Offer } from '@jwp/ott-common/types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '@jwp/ott-common/types/subscription';
 import { formatLocalizedDate, formatPrice } from '@jwp/ott-common/src/utils/formatting';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 

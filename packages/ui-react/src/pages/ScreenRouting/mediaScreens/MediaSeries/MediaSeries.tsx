@@ -12,7 +12,7 @@ import { generateEpisodeJSONLD } from '@jwp/ott-common/src/utils/structuredData'
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { getEpisodesInSeason, getFiltersFromSeries } from '@jwp/ott-common/src/utils/series';
 import { buildLegacySeriesUrlFromMediaItem, formatSeriesMetaString, formatVideoMetaString, mediaURL } from '@jwp/ott-common/src/utils/formatting';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { VideoProgressMinMax } from '@jwp/ott-common/src/constants';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';

@@ -7,8 +7,8 @@ import type { LoginFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { removeQueryParam } from '@jwp/ott-common/src/utils/location';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import { removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
 
@@ -29,7 +29,7 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await accountController.login(formData.email, formData.password, window.location.href);
-      await queryClient.invalidateQueries('listProfiles');
+      await queryClient.invalidateQueries(['listProfiles']);
 
       // close modal
       navigate(removeQueryParam(location, 'u'));

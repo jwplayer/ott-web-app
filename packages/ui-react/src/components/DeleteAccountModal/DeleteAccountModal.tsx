@@ -6,7 +6,7 @@ import { useMutation } from 'react-query';
 import type { DeleteAccountFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam, removeQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam, removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 
 import PasswordField from '../PasswordField/PasswordField';

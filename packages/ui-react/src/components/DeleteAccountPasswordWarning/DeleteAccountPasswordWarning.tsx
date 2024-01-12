@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam, removeQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam, removeQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 
 import Button from '../Button/Button';
 import FormFeedback from '../FormFeedback/FormFeedback';

@@ -1,6 +1,5 @@
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/query-core';
 
-// @TODO: replace with `@tanstack/query-core` to remove React dependency
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { FormErrors } from '@jwp/ott-common/types/form';
 import type { LoginFormData } from '@jwp/ott-common/types/account';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 

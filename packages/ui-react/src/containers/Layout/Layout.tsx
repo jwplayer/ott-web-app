@@ -10,7 +10,7 @@ import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import { IS_DEVELOPMENT_BUILD } from '@jwp/ott-common/src/utils/common';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useSearchQueryUpdater from '@jwp/ott-hooks-react/src/useSearchQueryUpdater';
@@ -86,7 +86,7 @@ const Layout = () => {
   const searchButtonClickHandler = () => {
     useUIStore.setState({
       searchActive: true,
-      preSearchPage: location,
+      preSearchPage: `${location.pathname}${location.search || ''}`,
     });
   };
 

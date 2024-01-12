@@ -5,8 +5,8 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistoryStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 
 import Play from '../../icons/Play';

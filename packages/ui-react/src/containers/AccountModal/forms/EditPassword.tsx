@@ -6,8 +6,8 @@ import type { EditPasswordFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 
 import EditPasswordForm from '../../../components/EditPasswordForm/EditPasswordForm';

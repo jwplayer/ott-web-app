@@ -10,7 +10,7 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { isTruthy, isTruthyCustomParamValue, logDev, testId } from '@jwp/ott-common/src/utils/common';
 import { formatConsents, formatConsentsFromValues, formatConsentsToRegisterFields, formatConsentValues } from '@jwp/ott-common/src/utils/collection';
-import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParam } from '@jwp/ott-ui-react/src/utils/location';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 
 import Visibility from '../../icons/Visibility';
