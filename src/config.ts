@@ -42,7 +42,7 @@ export const CONTENT_TYPE = {
   // Page with a list of channels
   live: 'live',
   // Separate channel page
-  liveChannel: 'liveChannel',
+  liveChannel: 'livechannel',
   // Static page with markdown
   page: 'page',
   // Page with shelves list
@@ -75,6 +75,6 @@ export const DEFAULT_FEATURES = {
 };
 
 export const EPG_TYPE = {
-  JWP: 'JWP',
-  VIEW_NEXA: 'VIEW_NEXA',
+  jwp: 'jwp',
+  viewNexa: 'viewnexa',
 } as const;

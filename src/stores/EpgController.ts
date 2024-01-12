@@ -95,11 +95,11 @@ export default class EpgController {
   };
 
   getEpgService = (item: PlaylistItem) => {
-    const scheduleType = item?.scheduleType || EPG_TYPE.JWP;
-    const service = getNamedModule(EpgService, scheduleType);
+    const scheduleType = item?.scheduleType || EPG_TYPE.jwp;
+    const service = getNamedModule(EpgService, scheduleType?.toLowerCase());
 
     if (!service) {
-      throw Error(`No epg service was added for the ${scheduleType} schedule type`);
+      console.error(`No epg service was added for the ${scheduleType} schedule type`);
     }
 
     return service;

@@ -67,8 +67,8 @@ container.bind('INTEGRATION_TYPE').toDynamicValue((context) => {
 });
 
 // EPG services
-container.bind(EpgService).to(JWEpgService).whenTargetNamed(EPG_TYPE.JWP);
-container.bind(EpgService).to(ViewNexaEpgService).whenTargetNamed(EPG_TYPE.VIEW_NEXA);
+container.bind(EpgService).to(JWEpgService).whenTargetNamed(EPG_TYPE.jwp);
+container.bind(EpgService).to(ViewNexaEpgService).whenTargetNamed(EPG_TYPE.viewNexa);
 
 // Cleeng integration
 container.bind(CleengService).toSelf();

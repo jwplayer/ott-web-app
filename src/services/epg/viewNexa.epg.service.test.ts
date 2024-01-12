@@ -28,7 +28,7 @@ describe('ViewNexaEpgService', () => {
 
   test('fetchSchedule performs a request', async () => {
     const mock = mockGet('/epg/viewNexaChannel.xml').willResolveOnce([]);
-    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/viewNexaChannel.xml', scheduleType: EPG_TYPE.VIEW_NEXA });
+    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/viewNexaChannel.xml', scheduleType: EPG_TYPE.viewNexa });
 
     expect(mock).toHaveFetched();
     expect(data).toEqual([]);
@@ -36,7 +36,7 @@ describe('ViewNexaEpgService', () => {
 
   test('fetchSchedule parses xml content', async () => {
     const mock = mockGet('/epg/viewNexaChannel.xml').willResolveOnce(viewNexaChannel);
-    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/viewNexaChannel.xml', scheduleType: EPG_TYPE.VIEW_NEXA });
+    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/viewNexaChannel.xml', scheduleType: EPG_TYPE.viewNexa });
 
     expect(mock).toHaveFetched();
     expect(data[0]).toEqual({
