@@ -1,7 +1,18 @@
+import { useAccountStore } from '#src/stores/AccountStore';
+import { useConfigStore } from '#src/stores/ConfigStore';
+import { useProfileStore } from '#src/stores/ProfileStore';
 import type { PlaylistItem, Source } from '#types/playlist';
 
-export const attachAnalyticsParams = (item: PlaylistItem, isJwIntegration: boolean, userId?: string, profileId?: string) => {
+export const attachAnalyticsParams = (item: PlaylistItem) => {
+  const { config } = useConfigStore.getState();
+  const { user } = useAccountStore.getState();
+  const { profile } = useProfileStore.getState();
+
   const { sources, mediaid } = item;
+
+  const userId = user?.id;
+  const profileId = profile?.id;
+  const isJwIntegration = !!config?.integrations?.jwp;
 
   return sources.map((source: Source) => {
     const url = new URL(source.file);
