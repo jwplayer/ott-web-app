@@ -65,10 +65,11 @@ export default class AppController {
   initializeApp = async () => {
     const settings = await this.settingsService.initialize();
     const configSource = this.settingsService.getConfigSource(settings);
-    const config = await this.loadAndValidateConfig(configSource);
 
     // update settings in the config store
     useConfigStore.setState({ settings });
+
+    const config = await this.loadAndValidateConfig(configSource);
 
     if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await getModule(WatchHistoryController).initialize();

@@ -7,6 +7,7 @@ import AccountController from '#src/stores/AccountController';
 import GenericEntitlementService from '#src/services/genericEntitlement.service';
 import JWPEntitlementService from '#src/services/jwpEntitlement.service';
 import { getModule } from '#src/modules/container';
+import { isTruthyCustomParamValue } from '#src/utils/common';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -24,7 +25,7 @@ const useContentProtection = <T>(
     signingConfig: config.contentSigningService,
     contentProtection: config.contentProtection,
     jwp: config.integrations.jwp,
-    urlSigning: config?.custom?.urlSigning,
+    urlSigning: isTruthyCustomParamValue(config?.custom?.urlSigning),
   }));
   const host = signingConfig?.host;
   const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? signingConfig?.drmPolicyId;

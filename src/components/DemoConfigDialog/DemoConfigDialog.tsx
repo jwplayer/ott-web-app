@@ -47,6 +47,7 @@ export function getConfigNavigateCallback(navigate: NavigateFunction) {
 const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
   const { data, isLoading, error, refetch, isSuccess } = query;
   const { configSource: selectedConfigSource } = data || {};
+
   const { t } = useTranslation('demo');
   const navigate = useNavigate();
   const navigateCallback = getConfigNavigateCallback(navigate);
@@ -160,7 +161,8 @@ const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
       {!isSuccess && (
         <div className={styles.configModal}>
           <ErrorPage
-            title={t('app_config_not_found')}
+            title={error?.payload?.title || t('app_config_not_found')}
+            message={error?.payload?.description || ''}
             learnMoreLabel={t('app_config_learn_more')}
             helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'}
             error={typeof state.error === 'string' ? undefined : state.error}
