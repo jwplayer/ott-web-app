@@ -6,8 +6,6 @@ import AppController from '@jwp/ott-common/src/stores/AppController';
 import type { AppError } from '@jwp/ott-common/src/utils/error';
 import { CACHE_TIME, STALE_TIME } from '@jwp/ott-common/src/constants';
 
-import { useTrackConfigKeyChange } from './useTrackConfigKeyChange';
-
 const applicationController = getModule(AppController);
 
 type Resources = {
@@ -16,17 +14,16 @@ type Resources = {
   settings: Settings;
 };
 
-export const useBootstrapApp = (onReady: () => void) => {
-  const { data, isLoading, error, isSuccess, refetch } = useQuery<Resources, AppError>('config-init', applicationController.initializeApp, {
+export type OnReadyCallback = (config: Config | undefined) => void;
+
+export const useBootstrapApp = (url: string, onReady: OnReadyCallback) => {
+  const { data, isLoading, error, isSuccess, refetch } = useQuery<Resources, AppError>('config-init', () => applicationController.initializeApp(url), {
     refetchInterval: false,
     retry: 1,
-    onSuccess: onReady,
+    onSettled: (query) => onReady(query?.config),
     cacheTime: CACHE_TIME,
     staleTime: STALE_TIME,
   });
-
-  // Modify query string to add / remove app-config id
-  useTrackConfigKeyChange(data?.settings, data?.configSource);
 
   return {
     data,

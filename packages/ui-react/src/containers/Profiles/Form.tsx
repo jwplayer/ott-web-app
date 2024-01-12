@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { object, type SchemaOf, string } from 'yup';
+import { object, string, type SchemaOf } from 'yup';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
-import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';
 
 import styles from '../../pages/User/User.module.scss';

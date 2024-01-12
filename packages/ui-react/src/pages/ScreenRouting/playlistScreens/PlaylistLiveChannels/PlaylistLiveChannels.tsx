@@ -184,7 +184,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         {channelMediaItem?.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem)}</script> : null}
+        {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem, window.location.origin)}</script> : null}
       </Helmet>
       <VideoDetails
         title={videoDetails.title}

@@ -8,6 +8,7 @@ import type { Favorite, SerializedFavorite } from '../../types/favorite';
 import type { Customer } from '../../types/account';
 import type { IntegrationType } from '../../types/config';
 import { getNamedModule } from '../modules/container';
+import { INTEGRATION_TYPE } from '../modules/types';
 
 import { useAccountStore } from './AccountStore';
 import { useFavoritesStore } from './FavoritesStore';
@@ -18,7 +19,7 @@ export default class FavoritesController {
   private readonly favoritesService: FavoriteService;
   private readonly accountService?: AccountService;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType, favoritesService: FavoriteService) {
+  constructor(@inject(INTEGRATION_TYPE) integrationType: IntegrationType, favoritesService: FavoriteService) {
     this.favoritesService = favoritesService;
     this.accountService = getNamedModule(AccountService, integrationType, false);
   }

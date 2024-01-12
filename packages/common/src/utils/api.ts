@@ -23,9 +23,9 @@ export const getDataOrThrow = async (response: Response) => {
 
   if (!response.ok) {
     const message = `Request '${response.url}' failed with ${response.status}`;
-    const error = new ApiError(data?.message || message, response.status || 500);
+    const apiMessage = data && typeof data === 'object' && 'message' in data && typeof data.message === 'string' ? data.message : undefined;
 
-    throw error;
+    throw new ApiError(apiMessage || message, response.status || 500);
   }
 
   return data;

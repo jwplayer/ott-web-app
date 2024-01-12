@@ -1,4 +1,4 @@
-import { overrideIPCookieKey } from '@jwp/ott-common/src/constants';
+import { overrideIPCookieKey } from '../../src/constants';
 
 import constants, { longTimeout } from './constants';
 

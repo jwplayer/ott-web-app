@@ -4,7 +4,6 @@ import { inject, injectable } from 'inversify';
 import { queryClient } from '../queryClient';
 import { ACCESS_MODEL, DEFAULT_FEATURES } from '../constants';
 import { logDev } from '../utils/common';
-import * as persist from '../utils/persist';
 import type { IntegrationType } from '../../types/config';
 import CheckoutService from '../services/integrations/CheckoutService';
 import AccountService, { type AccountServiceFeatures } from '../services/integrations/AccountService';
@@ -22,6 +21,7 @@ import type {
   SubscribeToNotificationsPayload,
 } from '../../types/account';
 import { assertFeature, assertModuleMethod, getNamedModule } from '../modules/container';
+import { INTEGRATION_TYPE } from '../modules/types';
 
 import { useWatchHistoryStore } from './WatchHistoryStore';
 import { useFavoritesStore } from './FavoritesStore';
@@ -31,8 +31,6 @@ import { useProfileStore } from './ProfileStore';
 import ProfileController from './ProfileController';
 import WatchHistoryController from './WatchHistoryController';
 import FavoritesController from './FavoritesController';
-
-const PERSIST_PROFILE = 'profile';
 
 @injectable()
 export default class AccountController {
@@ -45,7 +43,7 @@ export default class AccountController {
   private readonly features: AccountServiceFeatures;
 
   constructor(
-    @inject('INTEGRATION_TYPE') integrationType: IntegrationType,
+    @inject(INTEGRATION_TYPE) integrationType: IntegrationType,
     favoritesController: FavoritesController,
     watchHistoryController: WatchHistoryController,
     profileController?: ProfileController,
@@ -82,14 +80,14 @@ export default class AccountController {
     }
   };
 
-  initialize = async () => {
+  initialize = async (url: string) => {
     useAccountStore.setState({
       loading: true,
     });
     const config = useConfigStore.getState().config;
 
     await this.profileController?.loadPersistedProfile();
-    await this.accountService.initialize(config, this.logout);
+    await this.accountService.initialize(config, url, this.logout);
     await this.loadUserData();
 
     useAccountStore.setState({ loading: false });
@@ -184,12 +182,12 @@ export default class AccountController {
     }
   };
 
-  login = async (email: string, password: string) => {
+  login = async (email: string, password: string, referrer: string) => {
     const { config, accessModel } = useConfigStore.getState();
 
     useAccountStore.setState({ loading: true });
 
-    const response = await this.accountService.login({ config, email, password });
+    const response = await this.accountService.login({ config, email, password, referrer });
     if (response) {
       await this.afterLogin(response.user, response.customerConsents, accessModel);
 
@@ -217,8 +215,7 @@ export default class AccountController {
     await this.favoritesController?.restoreFavorites();
     await this.watchHistoryController?.restoreWatchHistory();
     await this.accountService?.logout();
-
-    persist.removeItem(PERSIST_PROFILE);
+    await this.profileController?.unpersistProfile();
 
     // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
     await queryClient.invalidateQueries('entitlements');
@@ -229,11 +226,11 @@ export default class AccountController {
     }
   };
 
-  register = async (email: string, password: string, consents: CustomerConsent[]) => {
+  register = async (email: string, password: string, referrer: string, consents: CustomerConsent[]) => {
     const { config, accessModel } = useConfigStore.getState();
 
     useAccountStore.setState({ loading: true });
-    const response = await this.accountService.register({ config, email, password, consents });
+    const response = await this.accountService.register({ config, email, password, consents, referrer });
 
     if (response) {
       const { user, customerConsents } = response;
@@ -462,7 +459,7 @@ export default class AccountController {
     // so here's a delay mechanism to give it time to process
     if (delay > 0) {
       return new Promise((resolve: (value?: unknown) => void) => {
-        window.setTimeout(() => {
+        setTimeout(() => {
           this.reloadActiveSubscription().finally(resolve);
         }, delay);
       });
@@ -512,14 +509,14 @@ export default class AccountController {
     return this.accountService?.exportAccountData(undefined, true);
   };
 
-  getSocialLoginUrls = () => {
+  getSocialLoginUrls = (redirectUrl: string) => {
     const { config } = useConfigStore.getState();
     const { hasSocialURLs } = this.getFeatures();
 
     assertModuleMethod(this.accountService.getSocialUrls, 'getSocialUrls is not available in account service');
     assertFeature(hasSocialURLs, 'Social logins');
 
-    return this.accountService.getSocialUrls(config);
+    return this.accountService.getSocialUrls({ config, redirectUrl });
   };
 
   deleteAccountData = async (password: string) => {

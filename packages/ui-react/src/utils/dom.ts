@@ -1,4 +1,3 @@
-// @TODO: move this util
 export const canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 let size: number;
@@ -33,31 +32,4 @@ export const addScript = (src: string): Promise<void> => {
     };
     document.body.appendChild(script);
   });
-};
-
-export const addStyleSheet = (href: string): Promise<void> => {
-  return new Promise((resolve) => {
-    const link: HTMLLinkElement = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.onload = () => resolve();
-    link.onerror = (error) => {
-      console.info('Error loading external style sheet', error);
-      throw new Error('Error loading external style sheet');
-    };
-    document.body.appendChild(link);
-  });
-};
-
-export const copyToClipboard = (value: string): void => {
-  const inputc = document.createElement('input');
-  inputc.style.zIndex = '-10';
-  inputc.style.position = 'absolute';
-  inputc.style.left = '-1000';
-  inputc.value = value;
-  document.body.appendChild(inputc);
-  inputc.select();
-  document.execCommand('copy');
-  inputc.blur();
-  document.body.removeChild(inputc);
 };

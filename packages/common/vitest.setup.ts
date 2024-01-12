@@ -6,7 +6,7 @@ import 'reflect-metadata';
 vi.stubGlobal(
   'BroadcastChannel',
   vi.fn().mockImplementation(() => {
-    const listeners: Record<string, ((event: MessageEvent<string>) => void)[]> = {};
+    const listeners: Record<string, ((event: { type: string; data: string }) => void)[]> = {};
 
     return {
       close: () => undefined,
@@ -21,7 +21,7 @@ vi.stubGlobal(
       postMessage: (message: string) => {
         const messageListeners = listeners['message'] || [];
 
-        messageListeners.forEach((listener) => listener(new MessageEvent('message', { data: message })));
+        messageListeners.forEach((listener) => listener({ type: 'message', data: message }));
       },
     };
   }),

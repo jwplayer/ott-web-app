@@ -1,4 +1,4 @@
-import { UseBaseQueryResult, useQuery } from 'react-query';
+import { useQuery, type UseBaseQueryResult } from 'react-query';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
 import { getModule } from '@jwp/ott-common/src/modules/container';

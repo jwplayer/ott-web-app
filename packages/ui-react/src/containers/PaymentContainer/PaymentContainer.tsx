@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
@@ -6,10 +6,7 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { addQueryParam } from '@jwp/ott-common/src/utils/location';
-import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
-import { processBillingReceipt } from '@jwp/ott-common/src/utils/common';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import { useSubscriptionChange } from '@jwp/ott-hooks-react/src/useSubscriptionChange';
 
@@ -17,9 +14,39 @@ import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import Payment from '../../components/Payment/Payment';
 
+/**
+ * Handles billing receipts by either downloading the receipt directly if it is an instance of Blob,
+ * or opening it in a new window if it is a string representation.
+ *
+ * @param {Blob | string} receipt - The billing receipt data. If a Blob, it will be downloaded; if a string,
+ * it will be treated as an HTML representation and opened in a new window.
+ * @param {string} transactionId - The unique identifier for the transaction associated with the receipt.
+ *
+ * @returns {void}
+ *
+ */
+export const processBillingReceipt = (receipt: Blob | string, transactionId: string) => {
+  if (receipt instanceof Blob) {
+    const url = window.URL.createObjectURL(new Blob([receipt]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `receipt_${transactionId}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+  } else {
+    const newWindow = window.open('', `Receipt ${transactionId}`, '');
+    const htmlString = window.atob(receipt as unknown as string);
+
+    if (newWindow) {
+      newWindow.opener = null;
+      newWindow.document.write(htmlString);
+      newWindow.document.close();
+    }
+  }
+};
+
 const PaymentContainer = () => {
   const accountController = getModule(AccountController);
-  const checkoutController = getModule(CheckoutController);
 
   const { accessModel } = useConfigStore(
     (s) => ({
@@ -59,18 +86,6 @@ const PaymentContainer = () => {
 
     setIsLoadingReceipt(false);
   };
-
-  useEffect(() => {
-    if (accessModel !== ACCESS_MODEL.AVOD && canRenewSubscription) {
-      checkoutController.getSubscriptionSwitches();
-    }
-  }, [accessModel, checkoutController, canRenewSubscription]);
-
-  useEffect(() => {
-    if (!loading && !customer) {
-      navigate('/', { replace: true });
-    }
-  }, [navigate, customer, loading]);
 
   const { offers } = useOffers();
 

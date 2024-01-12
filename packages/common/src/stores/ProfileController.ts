@@ -2,11 +2,12 @@ import { inject, injectable } from 'inversify';
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import * as yup from 'yup';
 
-import * as persist from '../utils/persist';
 import type { EnterProfilePayload, ProfileDetailsPayload, ProfilePayload } from '../../types/account';
 import ProfileService from '../services/ProfileService';
 import type { IntegrationType } from '../../types/config';
 import { assertModuleMethod, getNamedModule } from '../modules/container';
+import StorageService from '../services/StorageService';
+import { INTEGRATION_TYPE } from '../modules/types';
 
 import { useProfileStore } from './ProfileStore';
 import { useConfigStore } from './ConfigStore';
@@ -27,9 +28,11 @@ const profileSchema = yup.object().shape({
 @injectable()
 export default class ProfileController {
   private readonly profileService?: ProfileService;
+  private readonly storageService: StorageService;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType) {
+  constructor(@inject(INTEGRATION_TYPE) integrationType: IntegrationType, storageService: StorageService) {
     this.profileService = getNamedModule(ProfileService, integrationType, false);
+    this.storageService = storageService;
   }
 
   private getSandbox = () => {
@@ -98,25 +101,23 @@ export default class ProfileController {
   };
 
   persistProfile = ({ profile }: { profile: ProfilesData }) => {
-    persist.setItem(PERSIST_PROFILE, profile);
-    persist.setItemStorage('inplayer_token', {
-      expires: profile.credentials.expires,
-      token: profile.credentials.access_token,
-      refreshToken: '',
-    });
+    this.storageService.setItem(PERSIST_PROFILE, JSON.stringify(profile));
   };
 
-  unpersistProfile = () => {
-    persist.removeItem(PERSIST_PROFILE);
+  unpersistProfile = async () => {
+    await this.storageService.removeItem(PERSIST_PROFILE);
   };
 
-  loadPersistedProfile = () => {
-    const profile = persist.getItem(PERSIST_PROFILE);
+  loadPersistedProfile = async () => {
+    const profile = await this.storageService.getItem(PERSIST_PROFILE, true);
+
     if (this.isValidProfile(profile)) {
       useProfileStore.getState().setProfile(profile);
       return profile;
     }
+
     useProfileStore.getState().setProfile(null);
+
     return null;
   };
 

@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { type MutableRefObject, useEffect, useRef } from 'react';
 import { debounce } from '@jwp/ott-common/src/utils/common';
 
 const useDebounce = <T extends (...args: any[]) => unknown>(callback: T, time: number) => {

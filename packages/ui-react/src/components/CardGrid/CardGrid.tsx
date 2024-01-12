@@ -5,7 +5,7 @@ import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { AccessModel } from '@jwp/ott-common/types/config';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { parseAspectRatio, parseTilesDelta } from '@jwp/ott-common/src/utils/collection';
-import useBreakpoint, { Breakpoint, Breakpoints } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import Card from '../Card/Card';
 import InfiniteScrollLoader from '../InfiniteScrollLoader/InfiniteScrollLoader';
@@ -92,7 +92,7 @@ function CardGrid({
   return (
     <InfiniteScroll pageStart={0} loadMore={loadMore ?? defaultLoadMore} hasMore={hasMore ?? defaultHasMore} loader={<InfiniteScrollLoader key="loader" />}>
       <div className={classNames(styles.container, styles[`cols-${visibleTiles}`])} role="grid">
-        {/* When loadMore is present -> we get accumulated data (playlist.playlist) from the outside (we do it for series) 
+        {/* When loadMore is present -> we get accumulated data (playlist.playlist) from the outside (we do it for series)
             When not -> we hide some cards visually to save some computing resources spent on rendering */}
         {(loadMore ? playlist.playlist : playlist.playlist.slice(0, rowCount * visibleTiles)).map(renderTile)}
       </div>

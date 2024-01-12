@@ -8,17 +8,22 @@ import { AppError } from '../utils/error';
 import type { Settings } from '../../types/settings';
 import env from '../env';
 
-// Use local storage so the override persists until cleared
-const storage = window.localStorage;
+import StorageService from './StorageService';
 
 @injectable()
 export default class SettingsService {
-  getConfigSource(settings: Settings | undefined) {
+  private readonly storageService;
+
+  constructor(storageService: StorageService) {
+    this.storageService = storageService;
+  }
+
+  async getConfigSource(settings: Settings | undefined, url: string) {
     if (!settings) {
       return '';
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(url.split('?')[1]);
     const configKey = urlParams.get(CONFIG_QUERY_KEY);
 
     // Skip all the fancy logic below if there aren't any other options besides the default anyhow
@@ -29,13 +34,13 @@ export default class SettingsService {
     if (configKey !== null) {
       // If the query param exists but the value is empty, clear the storage and allow fallback to the default config
       if (!configKey) {
-        storage.removeItem(CONFIG_FILE_STORAGE_KEY);
+        await this.storageService.removeItem(CONFIG_FILE_STORAGE_KEY);
         return settings.defaultConfigSource;
       }
 
       // If it's valid, store it and return it
       if (this.isValidConfigSource(configKey, settings)) {
-        storage.setItem(CONFIG_FILE_STORAGE_KEY, configKey);
+        await this.storageService.setItem(CONFIG_FILE_STORAGE_KEY, configKey);
         return configKey;
       }
 
@@ -43,16 +48,16 @@ export default class SettingsService {
     }
     // Yes this falls through from above to look up the stored value if the query string is invalid and that's OK
 
-    const storedSource = storage.getItem(CONFIG_FILE_STORAGE_KEY);
+    const storedSource = await this.storageService.getItem(CONFIG_FILE_STORAGE_KEY, false);
 
     // Make sure the stored value is still valid before returning it
-    if (storedSource) {
+    if (storedSource && typeof storedSource === 'string') {
       if (this.isValidConfigSource(storedSource, settings)) {
         return storedSource;
       }
 
       logDev('Invalid stored config: ' + storedSource);
-      storage.removeItem(CONFIG_FILE_STORAGE_KEY);
+      await this.storageService.removeItem(CONFIG_FILE_STORAGE_KEY);
     }
 
     return settings.defaultConfigSource;

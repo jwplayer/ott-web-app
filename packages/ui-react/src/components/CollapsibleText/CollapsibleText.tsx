@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
-import useBreakpoint from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import ChevronRight from '../../icons/ChevronRight';
 import IconButton from '../IconButton/IconButton';

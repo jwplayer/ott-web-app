@@ -1,5 +1,5 @@
 import React from 'react';
-import { Program, useProgram } from 'planby';
+import { useProgram, type Program } from 'planby';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { testId } from '@jwp/ott-common/src/utils/common';

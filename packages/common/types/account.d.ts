@@ -23,6 +23,7 @@ export type LoginArgs = {
   config: Config;
   email: string;
   password: string;
+  referrer: string;
 };
 
 export type RegistrationArgs = LoginArgs & {
@@ -368,6 +369,11 @@ export type SubscribeToNotificationsPayload = {
   onMessage: (payload: string) => void;
 };
 
+export type GetSocialURLsPayload = {
+  config: Config;
+  redirectUrl: string;
+};
+
 export type SocialURLs =
   | {
       facebook: string;
@@ -394,7 +400,7 @@ export type ChangePasswordWithOldPassword = EnvironmentServiceRequest<ChangePass
 export type UpdatePersonalShelves = EnvironmentServiceRequest<UpdatePersonalShelvesArgs, Customer | Record<string, unknown>>;
 export type GetLocales = EmptyServiceRequest<LocalesData>;
 export type ExportAccountData = EnvironmentServiceRequest<undefined, CommonAccountResponse>;
-export type SocialURLSData = PromiseRequest<Config, SocialURLs[]>;
+export type GetSocialURLs = PromiseRequest<GetSocialURLsPayload, SocialURLs[]>;
 export type NotificationsData = PromiseRequest<SubscribeToNotificationsPayload, boolean>;
 export type DeleteAccount = EnvironmentServiceRequest<DeleteAccountPayload, CommonAccountResponse>;
 export type ListProfiles = EnvironmentServiceRequest<undefined, ListProfilesResponse>;

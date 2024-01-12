@@ -1,26 +1,28 @@
 import { injectable } from 'inversify';
 
 import { MAX_WATCHLIST_ITEMS_COUNT } from '../constants';
-import * as persist from '../utils/persist';
 import type { Favorite, SerializedFavorite } from '../../types/favorite';
 import type { PlaylistItem } from '../../types/playlist';
 import type { Customer } from '../../types/account';
 
 import ApiService from './ApiService';
+import StorageService from './StorageService';
 
 @injectable()
 export default class FavoriteService {
   private MAX_FAVORITES_COUNT = 48;
-  private PERSIST_KEY_FAVORITES = `favorites${window.configId ? `-${window.configId}` : ''}`;
+  private PERSIST_KEY_FAVORITES = 'favorites';
 
   private readonly apiService;
+  private readonly storageService;
 
-  constructor(apiService: ApiService) {
+  constructor(apiService: ApiService, storageService: StorageService) {
     this.apiService = apiService;
+    this.storageService = storageService;
   }
 
   getFavorites = async (user: Customer | null, favoritesList: string) => {
-    const savedItems = user ? user.externalData?.favorites : persist.getItem<Favorite[]>(this.PERSIST_KEY_FAVORITES);
+    const savedItems = user ? user.externalData?.favorites : await this.storageService.getItem<Favorite[]>(this.PERSIST_KEY_FAVORITES, true);
 
     if (savedItems?.length) {
       const playlistItems = await this.apiService.getMediaByWatchlist(
@@ -37,7 +39,7 @@ export default class FavoriteService {
   };
 
   persistFavorites = (favorites: Favorite[]) => {
-    persist.setItem(this.PERSIST_KEY_FAVORITES, this.serializeFavorites(favorites));
+    this.storageService.setItem(this.PERSIST_KEY_FAVORITES, JSON.stringify(this.serializeFavorites(favorites)));
   };
 
   getMaxFavoritesCount = () => {

@@ -1,5 +1,5 @@
-import React, { ChangeEventHandler, useEffect, useMemo, useState } from 'react';
-import { object, SchemaOf, string } from 'yup';
+import React, { useEffect, useMemo, useState, type ChangeEventHandler } from 'react';
+import { object, string, type SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { useQuery, useQueryClient } from 'react-query';
@@ -9,7 +9,7 @@ import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { checkConsentsFromValues, extractConsentValues } from '@jwp/ott-common/src/utils/collection';
 import { addQueryParam } from '@jwp/ott-common/src/utils/location';
-import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 
 import RegistrationForm from '../../../components/RegistrationForm/RegistrationForm';
 
@@ -60,7 +60,7 @@ const Registration = () => {
         return;
       }
 
-      await accountController.register(email, password, customerConsents);
+      await accountController.register(email, password, window.location.href, customerConsents);
       await queryClient.invalidateQueries('listProfiles');
 
       navigate(addQueryParam(location, 'u', 'personal-details'));

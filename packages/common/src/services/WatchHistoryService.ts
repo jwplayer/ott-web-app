@@ -1,20 +1,23 @@
 import { injectable } from 'inversify';
 
-import * as persist from '../utils/persist';
 import type { PlaylistItem } from '../../types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '../../types/watchHistory';
 import type { Customer } from '../../types/account';
 
 import ApiService from './ApiService';
+import StorageService from './StorageService';
 
 @injectable()
 export default class WatchHistoryService {
-  private PERSIST_KEY_WATCH_HISTORY = `history${window.configId ? `-${window.configId}` : ''}`;
+  private PERSIST_KEY_WATCH_HISTORY = 'history';
   private MAX_WATCH_HISTORY_COUNT = 48;
-  private readonly apiService: ApiService;
 
-  constructor(apiService: ApiService) {
+  private readonly apiService: ApiService;
+  private readonly storageService: StorageService;
+
+  constructor(apiService: ApiService, storageService: StorageService) {
     this.apiService = apiService;
+    this.storageService = storageService;
   }
 
   // Retrieve watch history media items info using a provided watch list
@@ -45,7 +48,7 @@ export default class WatchHistoryService {
   };
 
   getWatchHistory = async (user: Customer | null, continueWatchingList: string) => {
-    const savedItems = user ? user.externalData?.history : persist.getItem<WatchHistoryItem[]>(this.PERSIST_KEY_WATCH_HISTORY);
+    const savedItems = user ? user.externalData?.history : await this.storageService.getItem<WatchHistoryItem[]>(this.PERSIST_KEY_WATCH_HISTORY, true);
 
     if (savedItems?.length) {
       // When item is an episode of the new flow -> show the card as a series one, but keep episode to redirect in a right way
@@ -74,7 +77,7 @@ export default class WatchHistoryService {
     }));
 
   persistWatchHistory = (watchHistory: WatchHistoryItem[]) => {
-    persist.setItem(this.PERSIST_KEY_WATCH_HISTORY, this.serializeWatchHistory(watchHistory));
+    this.storageService.setItem(this.PERSIST_KEY_WATCH_HISTORY, JSON.stringify(this.serializeWatchHistory(watchHistory)));
   };
 
   /** Use mediaid of originally watched movie / episode.

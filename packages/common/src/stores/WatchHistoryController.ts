@@ -7,6 +7,7 @@ import type { SerializedWatchHistoryItem, WatchHistoryItem } from '../../types/w
 import type { Customer } from '../../types/account';
 import type { IntegrationType } from '../../types/config';
 import { getNamedModule } from '../modules/container';
+import { INTEGRATION_TYPE } from '../modules/types';
 
 import { useAccountStore } from './AccountStore';
 import { useConfigStore } from './ConfigStore';
@@ -17,7 +18,7 @@ export default class WatchHistoryController {
   private readonly watchHistoryService: WatchHistoryService;
   private readonly accountService?: AccountService;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType, watchHistoryService: WatchHistoryService) {
+  constructor(@inject(INTEGRATION_TYPE) integrationType: IntegrationType, watchHistoryService: WatchHistoryService) {
     this.watchHistoryService = watchHistoryService;
     this.accountService = getNamedModule(AccountService, integrationType, false);
   }

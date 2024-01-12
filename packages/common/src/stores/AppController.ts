@@ -6,6 +6,7 @@ import SettingsService from '../services/SettingsService';
 import ConfigService from '../services/ConfigService';
 import type { IntegrationType } from '../../types/config';
 import { getModule } from '../modules/container';
+import StorageService from '../services/StorageService';
 
 import AccountController from './AccountController';
 import WatchHistoryController from './WatchHistoryController';
@@ -16,10 +17,16 @@ import { useConfigStore } from './ConfigStore';
 export default class AppController {
   private readonly configService: ConfigService;
   private readonly settingsService: SettingsService;
+  private readonly storageService: StorageService;
 
-  constructor(@inject(ConfigService) configService: ConfigService, @inject(SettingsService) settingsService: SettingsService) {
+  constructor(
+    @inject(ConfigService) configService: ConfigService,
+    @inject(SettingsService) settingsService: SettingsService,
+    @inject(StorageService) storageService: StorageService,
+  ) {
     this.configService = configService;
     this.settingsService = settingsService;
+    this.storageService = storageService;
   }
 
   loadAndValidateConfig = async (configSource: string | undefined) => {
@@ -47,8 +54,6 @@ export default class AppController {
       s.config.assets.banner = banner;
     });
 
-    this.configService.setCssVariables(config.styling || {});
-
     config = await this.configService.validateConfig(config);
     config = merge({}, defaultConfig, config);
 
@@ -57,15 +62,17 @@ export default class AppController {
 
     useConfigStore.setState({ config, accessModel, integrationType, clientId, isSandbox, offers, loaded: true });
 
-    this.configService.maybeInjectAnalyticsLibrary(config);
-
     return config;
   };
 
-  initializeApp = async () => {
+  initializeApp = async (url: string) => {
     const settings = await this.settingsService.initialize();
-    const configSource = this.settingsService.getConfigSource(settings);
+    const configSource = await this.settingsService.getConfigSource(settings, url);
     const config = await this.loadAndValidateConfig(configSource);
+
+    // we could add the configSource to the storage prefix, but this would cause a breaking change for end users
+    // (since 'window.configId' isn't used anymore, all platforms currently use the same prefix)
+    this.storageService.initialize('jwapp');
 
     // update settings in the config store
     useConfigStore.setState({ settings });
@@ -79,7 +86,7 @@ export default class AppController {
     }
 
     if (this.getIntegrationType()) {
-      await getModule(AccountController).initialize();
+      await getModule(AccountController).initialize(url);
     }
 
     return { config, settings, configSource };

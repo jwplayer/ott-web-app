@@ -1,4 +1,5 @@
-import InPlayer, { AccountData, Env, FavoritesData, type RegisterField, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
+import InPlayer, { Env } from '@inplayer-org/inplayer.js';
+import type { AccountData, FavoritesData, RegisterField, UpdateAccountData, WatchHistory } from '@inplayer-org/inplayer.js';
 import i18next from 'i18next';
 import { injectable } from 'inversify';
 
@@ -24,7 +25,7 @@ import type {
   NotificationsData,
   Register,
   ResetPassword,
-  SocialURLSData,
+  GetSocialURLs,
   UpdateCaptureAnswers,
   UpdateCustomer,
   UpdateCustomerArgs,
@@ -36,17 +37,21 @@ import type { InPlayerAuthData } from '../../../../types/inplayer';
 import type { Favorite } from '../../../../types/favorite';
 import type { WatchHistoryItem } from '../../../../types/watchHistory';
 import AccountService from '../AccountService';
+import StorageService from '../../StorageService';
 
 enum InPlayerEnv {
   Development = 'development',
   Production = 'production',
   Daily = 'daily',
 }
+
 const JW_TERMS_URL = 'https://inplayer.com/legal/terms';
 
 @injectable()
 export default class JWPAccountService extends AccountService {
-  constructor() {
+  private readonly storageService;
+
+  constructor(storageService: StorageService) {
     super({
       canUpdateEmail: false,
       canSupportEmptyFullName: false,
@@ -60,6 +65,8 @@ export default class JWPAccountService extends AccountService {
       hasProfiles: true,
       hasSocialURLs: true,
     });
+
+    this.storageService = storageService;
   }
 
   private getCustomerExternalData = async (): Promise<ExternalData> => {
@@ -129,16 +136,19 @@ export default class JWPAccountService extends AccountService {
     };
   }
 
-  initialize = async (config: Config, _logoutFn: () => Promise<void>) => {
+  initialize = async (config: Config, url: string, _logoutFn: () => Promise<void>) => {
     const env: string = config.integrations?.jwp?.useSandbox ? InPlayerEnv.Development : InPlayerEnv.Production;
     InPlayer.setConfig(env as Env);
-    const queryParams = new URLSearchParams(window.location.href.split('#')[1]);
+
+    const queryParams = new URLSearchParams(url.split('#')[1]);
     const token = queryParams.get('token');
     const refreshToken = queryParams.get('refresh_token');
     const expires = queryParams.get('expires');
+
     if (!token || !refreshToken || !expires) {
       return;
     }
+
     InPlayer.Account.setToken(token, refreshToken, parseInt(expires));
   };
 
@@ -275,13 +285,13 @@ export default class JWPAccountService extends AccountService {
     }
   };
 
-  login: Login = async ({ config, email, password }) => {
+  login: Login = async ({ config, email, password, referrer }) => {
     try {
       const { data } = await InPlayer.Account.signInV2({
         email,
         password,
+        referrer,
         clientId: config.integrations.jwp?.clientId || '',
-        referrer: window.location.href,
       });
 
       const user = this.formatAccount(data.account);
@@ -297,11 +307,12 @@ export default class JWPAccountService extends AccountService {
     }
   };
 
-  register: Register = async ({ config, email, password, consents }) => {
+  register: Register = async ({ config, email, password, referrer, consents }) => {
     try {
       const { data } = await InPlayer.Account.signUpV2({
         email,
         password,
+        referrer,
         passwordConfirmation: password,
         fullName: email,
         metadata: {
@@ -312,7 +323,6 @@ export default class JWPAccountService extends AccountService {
         },
         type: 'consumer',
         clientId: config.integrations.jwp?.clientId || '',
-        referrer: window.location.href,
       });
 
       const user = this.formatAccount(data.account);
@@ -523,11 +533,11 @@ export default class JWPAccountService extends AccountService {
     }
   };
 
-  getSocialUrls: SocialURLSData = async (config: Config) => {
-    const socialState = window.btoa(
+  getSocialUrls: GetSocialURLs = async ({ config, redirectUrl }) => {
+    const socialState = this.storageService.base64Encode(
       JSON.stringify({
         client_id: config.integrations.jwp?.clientId || '',
-        redirect: window.location.href.split('u=')[0],
+        redirect: redirectUrl,
       }),
     );
 

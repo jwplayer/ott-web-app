@@ -1,12 +1,14 @@
 import jwtDecode from 'jwt-decode';
 import { object, string } from 'yup';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { BroadcastChannel } from 'broadcast-channel';
 
-import { getItem, removeItem, setItem } from '../../../utils/persist';
-import { Broadcaster } from '../../../utils/broadcaster';
-import { getOverrideIP, IS_DEVELOPMENT_BUILD, logDev } from '../../../utils/common';
+import { IS_DEVELOPMENT_BUILD, logDev } from '../../../utils/common';
 import { PromiseQueue } from '../../../utils/promiseQueue';
-import type { GetLocales } from '../../../../types/account';
+import type { AuthData, GetLocales } from '../../../../types/account';
+import StorageService from '../../StorageService';
+import { GET_CUSTOMER_IP } from '../../../modules/types';
+import type { GetCustomerIP } from '../../../../types/get-customer-ip';
 
 const AUTH_PERSIST_KEY = 'auth';
 
@@ -61,17 +63,6 @@ const getTokenExpiration = (token: string) => {
 };
 
 /**
- * Persist the given token in the storage. Removes the token when the given token is `null`.
- */
-const persistInStorage = async (tokens: Tokens | null) => {
-  if (tokens) {
-    setItem(AUTH_PERSIST_KEY, JSON.stringify(tokens));
-  } else {
-    removeItem(AUTH_PERSIST_KEY);
-  }
-};
-
-/**
  * The AuthService is responsible for managing JWT access tokens and refresh tokens.
  *
  * Once an access token and refresh token is set, it will automatically refresh the access token when it is about to
@@ -85,16 +76,32 @@ const persistInStorage = async (tokens: Tokens | null) => {
 
 @injectable()
 export default class CleengService {
-  private readonly channel: Broadcaster<MessageData>;
+  private readonly storageService;
+  private readonly getCustomerIP;
+  private readonly channel: BroadcastChannel<MessageData>;
   private readonly queue = new PromiseQueue();
   private isRefreshing = false;
   private expiration = -1;
   private sandbox = false;
   tokens: Tokens | null = null;
 
-  constructor() {
-    this.channel = new Broadcaster<MessageData>('jwp-refresh-token-channel');
-    this.channel.addMessageListener(this.handleBroadcastMessage);
+  constructor(storageService: StorageService, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
+    this.storageService = storageService;
+    this.getCustomerIP = getCustomerIP;
+
+    this.channel = new BroadcastChannel<MessageData>('jwp-refresh-token-channel');
+    this.channel.addEventListener('message', this.handleBroadcastMessage);
+  }
+
+  /**
+   * Persist the given token in the storage. Removes the token when the given token is `null`.
+   */
+  private async persistInStorage(tokens: Tokens | null) {
+    if (tokens) {
+      await this.storageService.setItem(AUTH_PERSIST_KEY, JSON.stringify(tokens));
+    } else {
+      await this.storageService.removeItem(AUTH_PERSIST_KEY);
+    }
   }
 
   /**
@@ -111,7 +118,11 @@ export default class CleengService {
    */
   private getNewTokens: (tokens: Tokens) => Promise<Tokens | null> = async ({ refreshToken }) => {
     try {
-      const { responseData: newTokens } = await this.post(this.sandbox, '/auths/refresh_token', JSON.stringify({ refreshToken }));
+      const { responseData: newTokens } = await this.post<Promise<ServiceResponse<AuthData>>>(
+        this.sandbox,
+        '/auths/refresh_token',
+        JSON.stringify({ refreshToken }),
+      );
 
       return {
         accessToken: newTokens.jwt,
@@ -159,7 +170,7 @@ export default class CleengService {
       tokens,
     };
 
-    this.channel.broadcastMessage(message);
+    this.channel.postMessage(message);
   };
 
   private getBaseUrl = (sandbox: boolean) => (sandbox ? 'https://mediastore-sandbox.cleeng.com' : 'https://mediastore.cleeng.com');
@@ -217,7 +228,7 @@ export default class CleengService {
     this.tokens = tokens;
     this.expiration = getTokenExpiration(tokens.accessToken);
 
-    await persistInStorage(this.tokens);
+    await this.persistInStorage(this.tokens);
   };
 
   /**
@@ -226,14 +237,14 @@ export default class CleengService {
   clearTokens = async () => {
     this.tokens = null;
 
-    await persistInStorage(null);
+    await this.persistInStorage(null);
   };
 
   /**
    * Try to restore tokens from the storage and overwrite the current when they are newer.
    */
   restoreTokensFromStorage = async () => {
-    const tokensString = await getItem(AUTH_PERSIST_KEY);
+    const tokensString = await this.storageService.getItem(AUTH_PERSIST_KEY, false);
     let tokens;
 
     if (typeof tokensString !== 'string') return;
@@ -349,16 +360,18 @@ export default class CleengService {
   };
 
   getLocales: GetLocales = async (sandbox) => {
-    return this.get(sandbox, `/locales${getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
+    const customerIP = await this.getCustomerIP();
+
+    return this.get(sandbox, `/locales${customerIP ? '?customerIP=' + customerIP : ''}`);
   };
 
-  get = (sandbox: boolean, path: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'GET', undefined, options);
+  get = <T>(sandbox: boolean, path: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'GET', undefined, options) as T;
 
-  patch = (sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'PATCH', body, options);
+  patch = <T>(sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'PATCH', body, options) as T;
 
-  put = (sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'PUT', body, options);
+  put = <T>(sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'PUT', body, options) as T;
 
-  post = (sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'POST', body, options);
+  post = <T>(sandbox: boolean, path: string, body?: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'POST', body, options) as T;
 
-  remove = (sandbox: boolean, path: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'DELETE', undefined, options);
+  remove = <T>(sandbox: boolean, path: string, options?: RequestOptions) => this.performRequest(sandbox, path, 'DELETE', undefined, options) as T;
 }

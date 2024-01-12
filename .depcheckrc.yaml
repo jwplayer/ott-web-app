@@ -12,4 +12,5 @@ ignores: [
     'eslint-plugin-import', # Required by eslint-config-jwp
 
     'depcheck',
+    'ts-node'
   ]

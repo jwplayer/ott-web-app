@@ -7,7 +7,7 @@ import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
-import { Target, viteStaticCopy } from 'vite-plugin-static-copy';
+import { viteStaticCopy, type Target } from 'vite-plugin-static-copy';
 
 import { initSettings } from './scripts/build-tools/settings';
 

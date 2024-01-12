@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { AnySchema, ValidationError } from 'yup';
+import { type AnySchema, ValidationError } from 'yup';
 import type { FormErrors, GenericFormValues, UseFormBlurHandler, UseFormChangeHandler, UseFormSubmitHandler } from '@jwp/ott-common/types/form';
 
 export type UseFormReturnValue<T> = {

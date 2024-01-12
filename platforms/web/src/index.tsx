@@ -4,8 +4,7 @@ import 'wicg-inert';
 import { registerSW } from 'virtual:pwa-register';
 import { configureEnv } from '@jwp/ott-common/src/env';
 
-// @TODO: platform specific?
-import '@jwp/ott-common/src/modules/register';
+import './modules/register';
 
 import App from './App';
 
@@ -15,6 +14,9 @@ configureEnv({
 
   APP_API_BASE_URL: import.meta.env.APP_API_BASE_URL,
   APP_PLAYER_ID: import.meta.env.APP_PLAYER_ID,
+
+  APP_DEFAULT_CONFIG_SOURCE: import.meta.env.APP_DEFAULT_CONFIG_SOURCE,
+  APP_PLAYER_LICENSE_KEY: import.meta.env.APP_PLAYER_LICENSE_KEY,
 });
 
 const rootElement = document.getElementById('root');

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { useCreateProfile, useProfileErrorHandler, useProfiles } from '@jwp/ott-hooks-react/src/useProfiles';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';

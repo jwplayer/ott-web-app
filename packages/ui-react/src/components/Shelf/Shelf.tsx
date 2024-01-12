@@ -6,7 +6,7 @@ import type { AccessModel, ContentType } from '@jwp/ott-common/types/config';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { mediaURL } from '@jwp/ott-common/src/utils/formatting';
 import { PersonalShelf } from '@jwp/ott-common/src/constants';
-import useBreakpoint, { Breakpoint, Breakpoints } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import ChevronLeft from '../../icons/ChevronLeft';
 import ChevronRight from '../../icons/ChevronRight';

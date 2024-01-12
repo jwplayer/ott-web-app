@@ -1,4 +1,4 @@
-import InPlayer, { AccessFee, MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
+import InPlayer, { type AccessFee, type MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
 import { isSVODOffer } from '../../../utils/subscription';
@@ -133,7 +133,7 @@ export default class JWPCheckoutService extends CheckoutService {
   paymentWithPayPal: PaymentWithPayPal = async (payload) => {
     try {
       const response = await InPlayer.Payment.getPayPalParams({
-        origin: `${window.location.origin}?u=waiting-for-payment`,
+        origin: payload.waitingUrl,
         accessFeeId: payload.order.id,
         paymentMethod: 2,
         voucherCode: payload.couponCode,
@@ -210,7 +210,7 @@ export default class JWPCheckoutService extends CheckoutService {
     }
   };
 
-  directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order) => {
+  directPostCardPayment = async (cardPaymentPayload: CardPaymentData, order: Order, referrer: string, returnUrl: string) => {
     const payload = {
       number: cardPaymentPayload.cardNumber.replace(/\s/g, ''),
       cardName: cardPaymentPayload.cardholderName,
@@ -220,8 +220,8 @@ export default class JWPCheckoutService extends CheckoutService {
       accessFee: order.id,
       paymentMethod: 1,
       voucherCode: cardPaymentPayload.couponCode,
-      referrer: window.location.href,
-      returnUrl: `${window.location.href}&u=waiting-for-payment`,
+      referrer,
+      returnUrl,
     };
 
     try {

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React, { type MouseEventHandler } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import classNames from 'classnames';
 

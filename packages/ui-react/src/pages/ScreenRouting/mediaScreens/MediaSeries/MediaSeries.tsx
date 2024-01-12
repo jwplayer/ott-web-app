@@ -20,7 +20,7 @@ import { useSeries } from '@jwp/ott-hooks-react/src/series/useSeries';
 import { useEpisodes } from '@jwp/ott-hooks-react/src/series/useEpisodes';
 import { useSeriesLookup } from '@jwp/ott-hooks-react/src/series/useSeriesLookup';
 import { useNextEpisode } from '@jwp/ott-hooks-react/src/series/useNextEpisode';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import PlayTrailer from '../../../../icons/PlayTrailer';
@@ -234,7 +234,9 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         {selectedItem.tags?.split(',').map((tag: string) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {selectedItem ? <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, episode, episodeMetadata)}</script> : null}
+        {selectedItem ? (
+          <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, window.location.origin, episode, episodeMetadata)}</script>
+        ) : null}
       </Helmet>
       <VideoLayout
         item={selectedItem}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { object, SchemaOf, string } from 'yup';
+import { object, string, type SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { useQueryClient } from 'react-query';
@@ -8,7 +8,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { removeQueryParam } from '@jwp/ott-common/src/utils/location';
-import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
 
@@ -28,7 +28,7 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
 
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
-      await accountController.login(formData.email, formData.password);
+      await accountController.login(formData.email, formData.password, window.location.href);
       await queryClient.invalidateQueries('listProfiles');
 
       // close modal

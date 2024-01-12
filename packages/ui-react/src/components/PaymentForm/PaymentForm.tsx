@@ -8,6 +8,7 @@ import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 import useCheckAccess from '@jwp/ott-hooks-react/src/useCheckAccess';
 import { addQueryParam } from '@jwp/ott-common/src/utils/location';
+import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
 
 import Button from '../Button/Button';
 import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
@@ -34,7 +35,12 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
     { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
     async () => {
       setUpdatingOrder(true);
-      await checkoutController.directPostCardPayment({ couponCode, ...paymentData.values });
+
+      const referrer = window.location.href;
+      const returnUrl = addQueryParams(window.location.href, { u: 'waiting-for-payment' });
+
+      await checkoutController.directPostCardPayment({ couponCode, ...paymentData.values }, referrer, returnUrl);
+
       intervalCheckAccess({
         interval: 15000,
         callback: (hasAccess) => hasAccess && navigate(addQueryParam(location, 'u', 'welcome')),

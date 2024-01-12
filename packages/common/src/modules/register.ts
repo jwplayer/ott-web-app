@@ -3,6 +3,7 @@
 import 'reflect-metadata'; // include once in the app for inversify (see: https://github.com/inversify/InversifyJS/blob/master/README.md#-installation)
 import { INTEGRATION } from '../constants';
 import { container } from './container';
+import { INTEGRATION_TYPE } from './types';
 
 import ApiService from '../services/ApiService';
 import WatchHistoryService from '../services/WatchHistoryService';
@@ -57,7 +58,7 @@ container.bind(AccountController).toSelf();
 container.bind(CheckoutController).toSelf();
 container.bind(ProfileController).toSelf();
 
-container.bind('INTEGRATION_TYPE').toDynamicValue((context) => {
+container.bind(INTEGRATION_TYPE).toDynamicValue((context) => {
   return context.container.get(AppController).getIntegrationType();
 });
 

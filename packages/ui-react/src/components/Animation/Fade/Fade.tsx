@@ -1,6 +1,6 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { type CSSProperties, type ReactNode } from 'react';
 
-import Animation, { Status } from '../Animation';
+import Animation, { type Status } from '../Animation';
 
 type Props = {
   className?: string;

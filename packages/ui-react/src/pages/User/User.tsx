@@ -10,7 +10,7 @@ import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import { ACCESS_MODEL, PersonalShelf } from '@jwp/ott-common/src/constants';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import { useProfiles } from '@jwp/ott-hooks-react/src/useProfiles';
 
 import AccountCircle from '../../icons/AccountCircle';

@@ -1,6 +1,5 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
-import { getOverrideIP } from '../../../utils/common';
 import type {
   AddAdyenPaymentDetails,
   CreateOrder,
@@ -24,16 +23,20 @@ import type {
   UpdatePaymentWithPayPal,
 } from '../../../../types/checkout';
 import CheckoutService from '../CheckoutService';
+import { GET_CUSTOMER_IP } from '../../../modules/types';
+import type { GetCustomerIP } from '../../../../types/get-customer-ip';
 
 import CleengService from './CleengService';
 
 @injectable()
 export default class CleengCheckoutService extends CheckoutService {
   private readonly cleengService: CleengService;
+  private readonly getCustomerIP: GetCustomerIP;
 
-  constructor(cleengService: CleengService) {
+  constructor(cleengService: CleengService, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
     super();
     this.cleengService = cleengService;
+    this.getCustomerIP = getCustomerIP;
   }
 
   getOffers: GetOffers = async (payload, sandbox) => {
@@ -51,7 +54,9 @@ export default class CleengCheckoutService extends CheckoutService {
   };
 
   getOffer: GetOffer = async (payload, sandbox) => {
-    return this.cleengService.get(sandbox, `/offers/${payload.offerId}${getOverrideIP() ? '?customerIP=' + getOverrideIP() : ''}`);
+    const customerIP = await this.getCustomerIP();
+
+    return this.cleengService.get(sandbox, `/offers/${payload.offerId}${customerIP ? '?customerIP=' + customerIP : ''}`);
   };
 
   createOrder: CreateOrder = async (payload, sandbox) => {

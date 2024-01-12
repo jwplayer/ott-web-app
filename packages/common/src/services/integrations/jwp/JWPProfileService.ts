@@ -4,9 +4,17 @@ import defaultAvatar from '@jwp/ott-theme/assets/profiles/default_avatar.png';
 
 import type { CreateProfile, DeleteProfile, EnterProfile, GetProfileDetails, ListProfiles, UpdateProfile } from '../../../../types/account';
 import ProfileService from '../../ProfileService';
+import StorageService from '../../StorageService';
 
 @injectable()
 export default class JWPProfileService extends ProfileService {
+  private readonly storageService;
+
+  constructor(storageService: StorageService) {
+    super();
+    this.storageService = storageService;
+  }
+
   listProfiles: ListProfiles = async () => {
     try {
       const response = await InPlayer.Account.getProfiles();
@@ -55,8 +63,21 @@ export default class JWPProfileService extends ProfileService {
   enterProfile: EnterProfile = async ({ id, pin }) => {
     try {
       const response = await InPlayer.Account.enterProfile(id, pin);
+      const profile = response.data;
+
+      // this sets the inplayer_token for the InPlayer SDK
+      if (profile) {
+        const tokenData = JSON.stringify({
+          expires: profile.credentials.expires,
+          token: profile.credentials.access_token,
+          refreshToken: '',
+        });
+
+        await this.storageService.setItem('inplayer_token', tokenData, false);
+      }
+
       return {
-        responseData: response.data,
+        responseData: profile,
         errors: [],
       };
     } catch {

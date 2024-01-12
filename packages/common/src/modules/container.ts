@@ -1,8 +1,11 @@
-import { Container, interfaces } from 'inversify';
+import { Container, injectable, type interfaces, inject } from 'inversify';
 
 import type { IntegrationType } from '../../types/config';
+import { logDev } from '../utils/common';
 
 export const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true });
+
+export { injectable, inject };
 
 export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, required: false): T | undefined;
 export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, required: true): T;
@@ -30,9 +33,15 @@ export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentif
 
     return module;
   } catch (err: unknown) {
-    if (required) {
-      throw new Error(`Service not found '${String(constructorFunction)}' with name '${integration}'`);
+    if (err instanceof Error && err.message.includes('No matching bindings found')) {
+      if (required) {
+        throw new Error(`Service not found '${String(constructorFunction)}' with name '${integration}'`);
+      }
+
+      return;
     }
+
+    logDev('Error caught while initializing service', err);
   }
 }
 

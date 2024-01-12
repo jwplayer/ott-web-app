@@ -1,6 +1,6 @@
-import React, { ChangeEventHandler, MouseEventHandler, useEffect, useState } from 'react';
+import React, { type ChangeEventHandler, type MouseEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavigateFunction, useNavigate } from 'react-router';
+import { type NavigateFunction, useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { addQueryParams } from '@jwp/ott-common/src/utils/formatting';
 import { CONFIG_QUERY_KEY } from '@jwp/ott-common/src/constants';
@@ -10,10 +10,9 @@ import Button from '@jwp/ott-ui-react/src/components/Button/Button';
 import ConfirmationDialog from '@jwp/ott-ui-react/src/components/ConfirmationDialog/ConfirmationDialog';
 import LoadingOverlay from '@jwp/ott-ui-react/src/components/LoadingOverlay/LoadingOverlay';
 import DevStackTrace from '@jwp/ott-ui-react/src/components/DevStackTrace/DevStackTrace';
+import type { BootstrapData } from '@jwp/ott-hooks-react/src/useBootstrapApp';
 
 import styles from './DemoConfigDialog.module.scss';
-
-import type { BootstrapData } from '#src/hooks/useBootstrapApp';
 
 const regex = /^[a-z,\d]{0,8}$/g;
 const DEMO_CONFIG = '225tvq1i';

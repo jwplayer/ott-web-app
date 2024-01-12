@@ -3,12 +3,13 @@ import type { AdSchedule } from '@jwp/ott-common/types/ad-schedule';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { JWPlayer } from '@jwp/ott-common/types/jwplayer';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { addScript } from '@jwp/ott-common/src/utils/dom';
 import { deepCopy } from '@jwp/ott-common/src/utils/collection';
 import { logDev, testId } from '@jwp/ott-common/src/utils/common';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 import useOttAnalytics from '@jwp/ott-hooks-react/src/useOttAnalytics';
 import env from '@jwp/ott-common/src/env';
+
+import { addScript } from '../../utils/dom';
 
 import styles from './Player.module.scss';
 

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React, { type MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 

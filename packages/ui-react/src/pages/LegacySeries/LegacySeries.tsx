@@ -11,7 +11,7 @@ import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { formatPlaylistMetaString, formatSeriesMetaString, formatVideoMetaString, legacySeriesURL } from '@jwp/ott-common/src/utils/formatting';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
 

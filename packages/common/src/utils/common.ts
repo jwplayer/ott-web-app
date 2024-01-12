@@ -1,5 +1,3 @@
-import { overrideIPCookieKey } from '../constants';
-
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | null;
   return (...args: unknown[]) => {
@@ -74,18 +72,6 @@ export function logDev(message: unknown, ...optionalParams: unknown[]) {
   }
 }
 
-export function getOverrideIP() {
-  if (!IS_TEST_MODE && !IS_DEVELOPMENT_BUILD && !IS_PREVIEW_MODE) {
-    return undefined;
-  }
-
-  return document.cookie
-    .split(';')
-    .find((s) => s.trim().startsWith(`${overrideIPCookieKey}=`))
-    ?.split('=')[1]
-    .trim();
-}
-
 export const isTruthyCustomParamValue = (value: unknown): boolean => ['true', '1', 'yes', 'on'].includes(String(value)?.toLowerCase());
 
 export const isFalsyCustomParamValue = (value: unknown): boolean => ['false', '0', 'no', 'off'].includes(String(value)?.toLowerCase());
@@ -96,34 +82,3 @@ export function testId(value: string | undefined) {
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T;
 export const isTruthy = <T>(value: T | true): value is Truthy<T> => Boolean(value);
-
-/**
- * Handles billing receipts by either downloading the receipt directly if it is an instance of Blob,
- * or opening it in a new window if it is a string representation.
- *
- * @param {Blob | string} receipt - The billing receipt data. If a Blob, it will be downloaded; if a string,
- * it will be treated as an HTML representation and opened in a new window.
- * @param {string} transactionId - The unique identifier for the transaction associated with the receipt.
- *
- * @returns {void}
- *
- */
-export const processBillingReceipt = (receipt: Blob | string, transactionId: string) => {
-  if (receipt instanceof Blob) {
-    const url = window.URL.createObjectURL(new Blob([receipt]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `receipt_${transactionId}.pdf`);
-    document.body.appendChild(link);
-    link.click();
-  } else {
-    const newWindow = window.open('', `Receipt ${transactionId}`, '');
-    const htmlString = window.atob(receipt as unknown as string);
-
-    if (newWindow) {
-      newWindow.opener = null;
-      newWindow.document.write(htmlString);
-      newWindow.document.close();
-    }
-  }
-};

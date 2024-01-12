@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { AccessModel } from '@jwp/ott-common/types/config';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import CardGrid from '../CardGrid/CardGrid';
 import Filter from '../Filter/Filter';

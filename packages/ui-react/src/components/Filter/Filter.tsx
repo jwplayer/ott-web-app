@@ -1,6 +1,6 @@
-import React, { FC, Fragment } from 'react';
+import React, { type FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import Dropdown from '../Dropdown/Dropdown';
 import Button from '../Button/Button';

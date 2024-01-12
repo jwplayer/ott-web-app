@@ -75,6 +75,4 @@ export const DEFAULT_FEATURES = {
   hasProfiles: false,
   hasNotifications: false,
 };
-export const overrideIPCookieKey = 'overrideIP';
-
 export const simultaneousLoginWarningKey = 'simultaneous_logins';

@@ -1,4 +1,4 @@
-import { array, boolean, mixed, number, object, SchemaOf, string, StringSchema } from 'yup';
+import { array, boolean, mixed, number, object, type SchemaOf, string, StringSchema } from 'yup';
 
 import type { Cleeng, Config, Content, Features, JWP, Menu, Styling } from '../../types/config';
 

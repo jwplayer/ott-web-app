@@ -1,7 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
-import React, { ReactElement, ReactNode } from 'react';
+import React, { type ReactElement, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { render, RenderOptions, act } from '@testing-library/react';
+import { render, act, type RenderOptions } from '@testing-library/react';
 
 import QueryProvider from '../src/containers/QueryProvider/QueryProvider';
 

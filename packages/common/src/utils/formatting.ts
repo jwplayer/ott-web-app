@@ -54,15 +54,15 @@ export const addQueryParams = (url: string, queryParams: { [key: string]: string
   return `${urlWithoutSearch}${queryString ? `?${queryString}` : ''}`;
 };
 
-export function removeQueryParamFromUrl(key: string): string {
-  const url = new URL(window.location.href);
-  const urlSearchParams = new URLSearchParams(url.search);
+export function removeQueryParamFromUrl(url: string, key: string): string {
+  const parsedUrl = new URL(url);
+  const urlSearchParams = new URLSearchParams(parsedUrl.search);
 
   urlSearchParams.delete(key);
 
   const searchParams = urlSearchParams.toString();
 
-  return `${url.pathname}${searchParams ? `?${searchParams}` : ''}`;
+  return `${parsedUrl.pathname}${searchParams ? `?${searchParams}` : ''}`;
 }
 
 export const slugify = (text: string, whitespaceChar: string = '-') =>

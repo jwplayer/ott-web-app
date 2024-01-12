@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useCallback, useContext } from 'react';
+import React, { useCallback, useContext, type ReactElement, type ReactNode } from 'react';
 import type { GenericFormValues } from '@jwp/ott-common/types/form';
 import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
 

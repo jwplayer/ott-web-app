@@ -1,4 +1,4 @@
-import React, { createContext, SetStateAction, useCallback, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState, type SetStateAction } from 'react';
 import type { GenericFormValues } from '@jwp/ott-common/types/form';
 
 import type { FormSectionProps } from './FormSection';

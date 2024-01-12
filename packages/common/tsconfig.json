@@ -9,6 +9,10 @@
   ],
   "compilerOptions": {
     "noEmit": true,
+    "target": "ESNext",
+    "lib": [
+      "esnext"
+    ],
     "types": [
       "reflect-metadata",
       "vi-fetch/matchers",

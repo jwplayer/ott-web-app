@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { Profile } from '@jwp/ott-common/types/account';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import ProfileBox from '../../components/ProfileBox/ProfileBox';
 import AddNewProfile from '../../components/ProfileBox/AddNewProfile';

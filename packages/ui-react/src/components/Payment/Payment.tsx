@@ -8,7 +8,7 @@ import type { PaymentDetail, Subscription, Transaction } from '@jwp/ott-common/t
 import { formatLocalizedDate, formatPrice } from '@jwp/ott-common/src/utils/formatting';
 import { addQueryParam } from '@jwp/ott-common/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import ExternalLink from '../../icons/ExternalLink';
 import PayPal from '../../icons/PayPal';

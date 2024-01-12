@@ -9,7 +9,7 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { addQueryParam } from '@jwp/ott-common/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
-import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 
 import PersonalDetailsForm from '../../../components/PersonalDetailsForm/PersonalDetailsForm';

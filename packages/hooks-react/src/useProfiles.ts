@@ -1,5 +1,5 @@
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
-import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, useQuery, type UseMutationOptions, type UseQueryOptions } from 'react-query';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { GenericFormErrors } from '@jwp/ott-common/types/form';

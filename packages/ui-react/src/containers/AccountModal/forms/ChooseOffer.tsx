@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { mixed, object, SchemaOf } from 'yup';
+import { mixed, object, type SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
@@ -13,7 +13,7 @@ import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { addQueryParam } from '@jwp/ott-common/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
-import useForm, { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 

@@ -1,8 +1,8 @@
-import React, { ReactFragment, useState } from 'react';
+import React, { type ReactNode, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import type { Profile } from '@jwp/ott-common/types/account';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { LanguageDefinition } from '@jwp/ott-common/types/i18n';
 
 import Menu from '../../icons/Menu';
@@ -11,7 +11,7 @@ import CloseIcon from '../../icons/Close';
 import Language from '../../icons/Language';
 import ProfileCircle from '../../icons/ProfileCircle';
 import AccountCircle from '../../icons/AccountCircle';
-import SearchBar, { Props as SearchBarProps } from '../SearchBar/SearchBar';
+import SearchBar, { type Props as SearchBarProps } from '../SearchBar/SearchBar';
 import Logo from '../Logo/Logo';
 import Button from '../Button/Button';
 import Popover from '../Popover/Popover';
@@ -39,7 +39,7 @@ type Props = {
   closeUserMenu: () => void;
   openLanguageMenu: () => void;
   closeLanguageMenu: () => void;
-  children?: ReactFragment;
+  children?: ReactNode;
   isLoggedIn: boolean;
   userMenuOpen: boolean;
   languageMenuOpen: boolean;

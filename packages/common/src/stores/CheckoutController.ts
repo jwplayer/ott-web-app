@@ -1,6 +1,5 @@
 import { inject, injectable } from 'inversify';
 
-import { getOverrideIP } from '../utils/common';
 import type {
   AddAdyenPaymentDetailsResponse,
   AdyenPaymentSession,
@@ -22,6 +21,8 @@ import CheckoutService from '../services/integrations/CheckoutService';
 import SubscriptionService from '../services/integrations/SubscriptionService';
 import type { IntegrationType } from '../../types/config';
 import { assertModuleMethod, getNamedModule } from '../modules/container';
+import { GET_CUSTOMER_IP, INTEGRATION_TYPE } from '../modules/types';
+import type { GetCustomerIP } from '../../types/get-customer-ip';
 
 import { useConfigStore } from './ConfigStore';
 import { useCheckoutStore } from './CheckoutStore';
@@ -31,8 +32,10 @@ import { useAccountStore } from './AccountStore';
 export default class CheckoutController {
   private readonly checkoutService: CheckoutService;
   private readonly subscriptionService: SubscriptionService;
+  private readonly getCustomerIP: GetCustomerIP;
 
-  constructor(@inject('INTEGRATION_TYPE') integrationType: IntegrationType) {
+  constructor(@inject(INTEGRATION_TYPE) integrationType: IntegrationType, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
+    this.getCustomerIP = getCustomerIP;
     this.checkoutService = getNamedModule(CheckoutService, integrationType);
     this.subscriptionService = getNamedModule(SubscriptionService, integrationType);
   }
@@ -121,14 +124,14 @@ export default class CheckoutController {
     return response.responseData;
   };
 
-  directPostCardPayment = async (cardPaymentPayload: CardPaymentData): Promise<unknown> => {
+  directPostCardPayment = async (cardPaymentPayload: CardPaymentData, referrer: string, returnUrl: string): Promise<unknown> => {
     const { clientId: authProviderId } = useConfigStore.getState();
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
     if (!authProviderId) throw new Error('auth provider is not configured');
 
-    return await this.checkoutService.directPostCardPayment(cardPaymentPayload, order);
+    return await this.checkoutService.directPostCardPayment(cardPaymentPayload, order, referrer, returnUrl);
   };
 
   createAdyenPaymentSession = async (returnUrl: string, isInitialPayment: boolean = true): Promise<AdyenPaymentSession> => {
@@ -170,7 +173,7 @@ export default class CheckoutController {
         returnUrl: returnUrl,
         paymentMethod,
         attemptAuthentication: isSandbox ? 'always' : undefined,
-        customerIP: getOverrideIP(),
+        customerIP: await this.getCustomerIP(),
       },
       isSandbox,
     );
@@ -202,7 +205,13 @@ export default class CheckoutController {
     return response.responseData;
   };
 
-  paypalPayment = async (successUrl: string, cancelUrl: string, errorUrl: string, couponCode: string = ''): Promise<PaymentWithPayPalResponse> => {
+  paypalPayment = async (
+    successUrl: string,
+    waitingUrl: string,
+    cancelUrl: string,
+    errorUrl: string,
+    couponCode: string = '',
+  ): Promise<PaymentWithPayPalResponse> => {
     const { isSandbox, clientId: authProviderId } = useConfigStore.getState();
     const { order } = useCheckoutStore.getState();
 
@@ -213,6 +222,7 @@ export default class CheckoutController {
       {
         order: order,
         successUrl,
+        waitingUrl,
         cancelUrl,
         errorUrl,
         couponCode,
@@ -302,7 +312,14 @@ export default class CheckoutController {
     return responseData;
   };
 
-  updatePayPalPaymentMethod = async (successUrl: string, cancelUrl: string, errorUrl: string, paymentMethodId: number, currentPaymentId?: number) => {
+  updatePayPalPaymentMethod = async (
+    successUrl: string,
+    waitingUrl: string,
+    cancelUrl: string,
+    errorUrl: string,
+    paymentMethodId: number,
+    currentPaymentId?: number,
+  ) => {
     const { isSandbox, clientId: authProviderId } = useConfigStore.getState();
 
     if (!authProviderId) throw new Error('auth provider is not configured');
@@ -314,6 +331,7 @@ export default class CheckoutController {
       {
         paymentMethodId,
         successUrl,
+        waitingUrl,
         cancelUrl,
         errorUrl,
       },
@@ -342,7 +360,7 @@ export default class CheckoutController {
         returnUrl,
         paymentMethod,
         attemptAuthentication: isSandbox ? 'always' : undefined,
-        customerIP: getOverrideIP(),
+        customerIP: await this.getCustomerIP(),
       },
       isSandbox,
     );

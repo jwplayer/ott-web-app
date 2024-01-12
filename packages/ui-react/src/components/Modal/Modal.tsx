@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import scrollbarSize from '@jwp/ott-common/src/utils/dom';
 import { testId } from '@jwp/ott-common/src/utils/common';
 
 import Fade from '../Animation/Fade/Fade';
 import Grow from '../Animation/Grow/Grow';
+import scrollbarSize from '../../utils/dom';
 
 import styles from './Modal.module.scss';
 

@@ -255,6 +255,7 @@ export type PaymentWithPayPalPayload = {
   successUrl: string;
   cancelUrl: string;
   errorUrl: string;
+  waitingUrl: string;
   couponCode?: string;
 };
 
@@ -375,4 +376,4 @@ export type UpdatePaymentWithPayPal = EnvironmentServiceRequest<UpdatePaymentWit
 export type DeletePaymentMethod = EnvironmentServiceRequest<DeletePaymentMethodPayload, DeletePaymentMethodResponse>;
 export type AddAdyenPaymentDetails = EnvironmentServiceRequest<AddAdyenPaymentDetailsPayload, AddAdyenPaymentDetailsResponse>;
 export type FinalizeAdyenPaymentDetails = EnvironmentServiceRequest<FinalizeAdyenPaymentDetailsPayload, FinalizeAdyenPaymentDetailsResponse>;
-export type GetDirectPostCardPayment = (cardPaymentPayload: CardPaymentData, order: Order) => Promise<boolean>;
+export type GetDirectPostCardPayment = (cardPaymentPayload: CardPaymentData, order: Order, referrer: string, returnUrl: string) => Promise<boolean>;

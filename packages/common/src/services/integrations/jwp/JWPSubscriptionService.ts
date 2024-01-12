@@ -1,5 +1,6 @@
 import i18next from 'i18next';
-import InPlayer, { Card, GetItemAccessV1, PaymentHistory, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
+import InPlayer from '@inplayer-org/inplayer.js';
+import type { Card, GetItemAccessV1, PaymentHistory, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
 import { isCommonError } from '../../../utils/api';

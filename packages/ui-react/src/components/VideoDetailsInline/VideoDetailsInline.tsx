@@ -1,6 +1,6 @@
 import React from 'react';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-hooks-react/src/useBreakpoint';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import CollapsibleText from '../CollapsibleText/CollapsibleText';
 

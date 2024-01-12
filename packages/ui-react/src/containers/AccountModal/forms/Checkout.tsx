@@ -167,10 +167,11 @@ const Checkout = () => {
       setPaymentError(undefined);
       setUpdatingOrder(true);
       const cancelUrl = addQueryParams(window.location.href, { u: 'payment-cancelled' });
+      const waitingUrl = addQueryParams(window.location.href, { u: 'waiting-for-payment' });
       const errorUrl = addQueryParams(window.location.href, { u: 'payment-error' });
       const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
 
-      const response = await checkoutController.paypalPayment(successUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
+      const response = await checkoutController.paypalPayment(successUrl, waitingUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
 
       if (response.redirectUrl) {
         window.location.href = response.redirectUrl;
