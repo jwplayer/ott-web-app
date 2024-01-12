@@ -6,9 +6,12 @@ export const attachAnalyticsParams = (item: PlaylistItem, isJwIntegration: boole
   return sources.map((source: Source) => {
     const url = new URL(source.file);
 
+    const mediaId = mediaid.toLowerCase();
+    const sourceUrl = url.href.toLowerCase();
+
     // Attach user_id and profile_id only for VOD and BCL SaaS Live Streams
-    const isVOD = url.href === `https://cdn.jwplayer.com/manifests/${mediaid}.m3u8`;
-    const isBCL = url.href === `https://content.jwplatform.com/live/broadcast/${mediaid}.m3u8`;
+    const isVOD = sourceUrl === `https://cdn.jwplayer.com/manifests/${mediaId}.m3u8`;
+    const isBCL = sourceUrl === `https://content.jwplatform.com/live/broadcast/${mediaId}.m3u8`;
 
     if ((isVOD || isBCL) && userId) {
       url.searchParams.set('user_id', userId);
