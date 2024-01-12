@@ -51,11 +51,11 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
               </svg>
             </div>
             <div>
-              <h2
+              <h1
                 class="_title_555f3c"
               >
                 Test item title
-              </h2>
+              </h1>
               <div
                 class="_metaContainer_555f3c"
               >

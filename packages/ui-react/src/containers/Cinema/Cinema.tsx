@@ -109,7 +109,7 @@ const Cinema: React.FC<Props> = ({
                 <ArrowLeft />
               </IconButton>
               <div>
-                <h2 className={styles.title}>{title}</h2>
+                <h1 className={styles.title}>{title}</h1>
                 <div className={styles.metaContainer}>
                   {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
                   <div className={styles.primaryMetadata}>{primaryMetadata}</div>

@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<ErrorPage> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_error_41dece"
+  >
+    <h2
+      class="_title_41dece"
+    >
+      player_error.geo_blocked_title
+    </h2>
+    <p>
+      player_error.geo_blocked_description
+    </p>
+  </div>
+</div>
+`;

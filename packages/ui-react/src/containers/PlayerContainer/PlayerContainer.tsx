@@ -8,6 +8,7 @@ import useProtectedMedia from '@jwp/ott-hooks-react/src/useProtectedMedia';
 
 import Player from '../../components/Player/Player';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
+import PlayerError, { PlayerErrorState } from '../../components/PlayerError/PlayerError';
 
 type Props = {
   item: PlaylistItem;
@@ -43,7 +44,7 @@ const PlayerContainer: React.FC<Props> = ({
 }: Props) => {
   // data
   const { data: adsData, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
-  const { data: playableItem, isLoading } = useProtectedMedia(item);
+  const { data: playableItem, isLoading, isGeoBlocked } = useProtectedMedia(item);
   // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
 
@@ -68,6 +69,10 @@ const PlayerContainer: React.FC<Props> = ({
 
   if (!playableItem || isLoading || isAdsLoading) {
     return <LoadingOverlay inline />;
+  }
+
+  if (isGeoBlocked) {
+    return <PlayerError error={PlayerErrorState.GEO_BLOCKED} />;
   }
 
   return (
