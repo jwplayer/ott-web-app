@@ -1,6 +1,8 @@
-import type { Source } from '#types/playlist';
+import type { PlaylistItem, Source } from '#types/playlist';
 
-export const attachAnalyticsParams = (sources: Source[], mediaid: string, isJwIntegration: boolean, userId?: string, profileId?: string) => {
+export const attachAnalyticsParams = (item: PlaylistItem, isJwIntegration: boolean, userId?: string, profileId?: string) => {
+  const { sources, mediaid } = item;
+
   return sources.map((source: Source) => {
     const url = new URL(source.file);
 
@@ -12,7 +14,7 @@ export const attachAnalyticsParams = (sources: Source[], mediaid: string, isJwIn
       url.searchParams.set('user_id', userId);
 
       if (isJwIntegration && profileId) {
-        url.searchParams.append('profile_id', profileId);
+        url.searchParams.set('profile_id', profileId);
       }
     }
 

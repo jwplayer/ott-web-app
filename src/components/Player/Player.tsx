@@ -13,7 +13,7 @@ import { useConfigStore } from '#src/stores/ConfigStore';
 import type { AdSchedule } from '#types/ad-schedule';
 import { useAccountStore } from '#src/stores/AccountStore';
 import { useProfileStore } from '#src/stores/ProfileStore';
-import { attachAnalyticsParams } from '#src/utils/player';
+import { attachAnalyticsParams } from '#src/utils/analytics';
 
 type Props = {
   feedId?: string;
@@ -174,8 +174,7 @@ const Player: React.FC<Props> = ({
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
 
       // Inject user_id and profile_id into the CDN analytics
-      const { sources, mediaid } = item;
-      attachAnalyticsParams(sources, mediaid, isJwIntegration, userId, profileId);
+      attachAnalyticsParams(item, isJwIntegration, userId, profileId);
 
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
