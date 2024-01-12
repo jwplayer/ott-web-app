@@ -40,11 +40,21 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="My video"
                       class="_card_d75732"
+                      data-testid="My video"
                       href="/m/abcddabc/my-video"
+                      role="button"
                       tabindex="0"
                     >
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <h3
+                          class="_title_d75732"
+                        >
+                          My video
+                        </h3>
+                      </div>
                       <div
                         class="_poster_d75732 _aspect169_d75732"
                       >
@@ -55,20 +65,28 @@ exports[`Home Component tests > Home test 1`] = `
                             class="_tags_d75732"
                           >
                             <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
                               class="_tag_d75732"
                             >
                               6 min
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div
-                        class="_titleContainer_d75732"
-                      >
-                        <div
-                          class="_title_d75732"
-                        >
-                          My video
                         </div>
                       </div>
                     </a>
@@ -78,11 +96,21 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="Other Vids"
                       class="_card_d75732"
+                      data-testid="Other Vids"
                       href="/m/zzzaaazz/other-vids"
+                      role="button"
                       tabindex="0"
                     >
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <h3
+                          class="_title_d75732"
+                        >
+                          Other Vids
+                        </h3>
+                      </div>
                       <div
                         class="_poster_d75732 _aspect169_d75732"
                       >
@@ -93,20 +121,28 @@ exports[`Home Component tests > Home test 1`] = `
                             class="_tags_d75732"
                           >
                             <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
                               class="_tag_d75732"
                             >
                               6 min
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div
-                        class="_titleContainer_d75732"
-                      >
-                        <div
-                          class="_title_d75732"
-                        >
-                          Other Vids
                         </div>
                       </div>
                     </a>
@@ -145,11 +181,21 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="My video"
                       class="_card_d75732"
+                      data-testid="My video"
                       href="/m/abcddabc/my-video"
+                      role="button"
                       tabindex="0"
                     >
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <h3
+                          class="_title_d75732"
+                        >
+                          My video
+                        </h3>
+                      </div>
                       <div
                         class="_poster_d75732 _aspect169_d75732"
                       >
@@ -160,20 +206,28 @@ exports[`Home Component tests > Home test 1`] = `
                             class="_tags_d75732"
                           >
                             <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
                               class="_tag_d75732"
                             >
                               6 min
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div
-                        class="_titleContainer_d75732"
-                      >
-                        <div
-                          class="_title_d75732"
-                        >
-                          My video
                         </div>
                       </div>
                     </a>
@@ -183,11 +237,21 @@ exports[`Home Component tests > Home test 1`] = `
                     style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                   >
                     <a
-                      aria-label="Other Vids"
                       class="_card_d75732"
+                      data-testid="Other Vids"
                       href="/m/zzzaaazz/other-vids"
+                      role="button"
                       tabindex="0"
                     >
+                      <div
+                        class="_titleContainer_d75732"
+                      >
+                        <h3
+                          class="_title_d75732"
+                        >
+                          Other Vids
+                        </h3>
+                      </div>
                       <div
                         class="_poster_d75732 _aspect169_d75732"
                       >
@@ -198,20 +262,28 @@ exports[`Home Component tests > Home test 1`] = `
                             class="_tags_d75732"
                           >
                             <div
+                              aria-label="card_lock"
+                              class="_tag_d75732 _lock_d75732"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="_icon_1e9999"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <div
                               class="_tag_d75732"
                             >
                               6 min
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div
-                        class="_titleContainer_d75732"
-                      >
-                        <div
-                          class="_title_d75732"
-                        >
-                          Other Vids
                         </div>
                       </div>
                     </a>

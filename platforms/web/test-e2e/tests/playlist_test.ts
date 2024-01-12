@@ -61,7 +61,7 @@ Scenario('I can filter and click on a card and navigate to the video screen', as
 });
 
 function canNavigateToBigBuckBunny(I: CodeceptJS.I) {
-  I.click({ css: 'a[aria-label="Big Buck Bunny"]' });
+  I.click({ css: 'a[data-testid="Big Buck Bunny"]' });
 
   I.see(constants.bigBuckBunnyDescription);
   I.see(constants.startWatchingButton);

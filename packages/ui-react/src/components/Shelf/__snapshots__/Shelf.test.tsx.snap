@@ -38,9 +38,10 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
             <a
-              aria-label="Third movie"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
+              data-testid="Third movie"
               href="/m/12332123/third-movie"
+              role="button"
               tabindex="-1"
             >
               <div
@@ -61,9 +62,10 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
             <a
-              aria-label="Last playlist item"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
+              data-testid="Last playlist item"
               href="/m/ddeeddee/last-playlist-item"
+              role="button"
               tabindex="-1"
             >
               <div
@@ -84,9 +86,10 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
             <a
-              aria-label="Movie 1"
               class="_card_d75732 _featured_d75732"
+              data-testid="Movie 1"
               href="/m/1234abcd/movie-1"
+              role="button"
               tabindex="0"
             >
               <div
@@ -95,11 +98,11 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                 <div
                   class="_meta_d75732"
                 >
-                  <div
+                  <h3
                     class="_title_d75732"
                   >
                     Movie 1
-                  </div>
+                  </h3>
                   <div
                     class="_tags_d75732"
                   >
@@ -118,9 +121,10 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
             <a
-              aria-label="Movie 2"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
+              data-testid="Movie 2"
               href="/m/aaaaaaaa/movie-2"
+              role="button"
               tabindex="-1"
             >
               <div
@@ -141,9 +145,10 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
           >
             <a
-              aria-label="Third movie"
               class="_card_d75732 _featured_d75732 _disabled_d75732"
+              data-testid="Third movie"
               href="/m/12332123/third-movie"
+              role="button"
               tabindex="-1"
             >
               <div
@@ -225,49 +230,21 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
             style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
             <a
-              aria-label="Movie 1"
               class="_card_d75732"
+              data-testid="Movie 1"
               href="/m/1234abcd/movie-1"
+              role="button"
               tabindex="0"
             >
               <div
-                class="_poster_d75732 _aspect169_d75732"
-              >
-                <div
-                  class="_meta_d75732"
-                >
-                  <div
-                    class="_tags_d75732"
-                  >
-                    <div
-                      class="_tag_d75732"
-                    >
-                      1 min
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
                 class="_titleContainer_d75732"
               >
-                <div
+                <h3
                   class="_title_d75732"
                 >
                   Movie 1
-                </div>
+                </h3>
               </div>
-            </a>
-          </li>
-          <li
-            class=""
-            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-          >
-            <a
-              aria-label="Movie 2"
-              class="_card_d75732"
-              href="/m/aaaaaaaa/movie-2"
-              tabindex="0"
-            >
               <div
                 class="_poster_d75732 _aspect169_d75732"
               >
@@ -285,27 +262,28 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                   </div>
                 </div>
               </div>
+            </a>
+          </li>
+          <li
+            class=""
+            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <a
+              class="_card_d75732"
+              data-testid="Movie 2"
+              href="/m/aaaaaaaa/movie-2"
+              role="button"
+              tabindex="0"
+            >
               <div
                 class="_titleContainer_d75732"
               >
-                <div
+                <h3
                   class="_title_d75732"
                 >
                   Movie 2
-                </div>
+                </h3>
               </div>
-            </a>
-          </li>
-          <li
-            class=""
-            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-          >
-            <a
-              aria-label="Third movie"
-              class="_card_d75732"
-              href="/m/12332123/third-movie"
-              tabindex="0"
-            >
               <div
                 class="_poster_d75732 _aspect169_d75732"
               >
@@ -323,13 +301,43 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                   </div>
                 </div>
               </div>
+            </a>
+          </li>
+          <li
+            class=""
+            style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+          >
+            <a
+              class="_card_d75732"
+              data-testid="Third movie"
+              href="/m/12332123/third-movie"
+              role="button"
+              tabindex="0"
+            >
               <div
                 class="_titleContainer_d75732"
               >
-                <div
+                <h3
                   class="_title_d75732"
                 >
                   Third movie
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 min
+                    </div>
+                  </div>
                 </div>
               </div>
             </a>
@@ -339,11 +347,21 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
             style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
           >
             <a
-              aria-label="Last playlist item"
               class="_card_d75732"
+              data-testid="Last playlist item"
               href="/m/ddeeddee/last-playlist-item"
+              role="button"
               tabindex="0"
             >
+              <div
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  Last playlist item
+                </h3>
+              </div>
               <div
                 class="_poster_d75732 _aspect169_d75732"
               >
@@ -359,15 +377,6 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                       21 min
                     </div>
                   </div>
-                </div>
-              </div>
-              <div
-                class="_titleContainer_d75732"
-              >
-                <div
-                  class="_title_d75732"
-                >
-                  Last playlist item
                 </div>
               </div>
             </a>

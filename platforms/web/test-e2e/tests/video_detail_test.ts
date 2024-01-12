@@ -32,7 +32,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.see('Favorite');
     I.see('Share');
     I.see('Elephants Dream');
-    I.see('11 min', { css: 'a[aria-label="Elephants Dream"]' });
+    I.see('11 min', { css: 'a[data-testid="Elephants Dream"]' });
   });
 
   Scenario(`I can expand the description (@mobile-only) - ${providerName}`, async ({ I }) => {

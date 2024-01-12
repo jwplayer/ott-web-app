@@ -22,18 +22,19 @@ describe('<Card>', () => {
 
   it('renders the image with the image prop when valid', () => {
     const { getByAltText } = renderWithRouter(<Card item={itemWithImage} url="https://test.dummy.jwplayer.com" />);
-    expect(getByAltText('This is a movie')).toHaveAttribute('src', 'http://movie.jpg?width=320');
+    expect(getByAltText('')).toHaveAttribute('src', 'http://movie.jpg?width=320');
   });
 
   it('makes the image visible after load', () => {
     const { getByAltText } = renderWithRouter(<Card item={itemWithImage} url="https://test.dummy.jwplayer.com" />);
+    const image = getByAltText(''); // Image alt is intentionally empty for a11y
 
-    expect(getByAltText('This is a movie')).toHaveAttribute('src', 'http://movie.jpg?width=320');
-    expect(getByAltText('This is a movie')).toHaveStyle({ opacity: 0 });
+    expect(image).toHaveAttribute('src', 'http://movie.jpg?width=320');
+    expect(image).toHaveStyle({ opacity: 0 });
 
-    fireEvent.load(getByAltText('This is a movie'));
+    fireEvent.load(image);
 
-    expect(getByAltText('This is a movie')).toHaveStyle({ opacity: 1 });
+    expect(image).toHaveStyle({ opacity: 1 });
   });
 
   it('should render anchor tag', () => {

@@ -3,16 +3,26 @@
 exports[`<Card> > should render anchor tag 1`] = `
 <div>
   <a
-    aria-label="This is a movie"
     class="_card_d75732"
+    data-testid="This is a movie"
     href="https://test.dummy.jwplayer.com"
+    role="button"
     tabindex="0"
   >
+    <div
+      class="_titleContainer_d75732"
+    >
+      <h3
+        class="_title_d75732"
+      >
+        This is a movie
+      </h3>
+    </div>
     <div
       class="_poster_d75732 _aspect169_d75732"
     >
       <img
-        alt="This is a movie"
+        alt=""
         class="_posterImage_d75732 _image_4c41c3"
         src="http://movie.jpg?width=320"
       />
@@ -25,7 +35,6 @@ exports[`<Card> > should render anchor tag 1`] = `
           <div
             aria-label="card_lock"
             class="_tag_d75732 _lock_d75732"
-            role="status"
           >
             <svg
               aria-hidden="true"
@@ -45,15 +54,6 @@ exports[`<Card> > should render anchor tag 1`] = `
             2 min
           </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="_titleContainer_d75732"
-    >
-      <div
-        class="_title_d75732"
-      >
-        This is a movie
       </div>
     </div>
   </a>

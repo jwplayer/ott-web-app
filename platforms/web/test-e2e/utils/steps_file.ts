@@ -466,7 +466,7 @@ const stepsObj = {
     scrollToTheRight: boolean = true,
     preOpenCallback?: (locator: string) => void,
   ) {
-    const cardLocator = `//a[@aria-label="${name}"]`;
+    const cardLocator = `//a[@data-testid="${name}"]`;
     const shelfLocator = shelf ? makeShelfXpath(shelf) : undefined;
 
     this.scrollPageToTop();

@@ -25,19 +25,19 @@ Scenario('I can see series without seasons', async ({ I }) => {
   I.see('Share');
   I.seeTextEquals('Episodes', 'h2');
 
-  I.click('a[aria-label="Blocking"]');
+  I.click('a[data-testid="Blocking"]');
   I.scrollTo('text="Episodes"');
 
   I.see('E1 - Blocking');
-  I.see('Current episode', { css: 'a[aria-label="Blocking"]' });
+  I.see('Current episode', { css: 'a[data-testid="Blocking"]' });
   I.see('Concept Art');
-  I.see('E2', { css: 'a[aria-label="Concept Art"]' });
-  I.see('E3', { css: 'a[aria-label="Modeling Part 1"]' });
-  I.see('E4', { css: 'a[aria-label="Modeling Part 2"]' });
+  I.see('E2', { css: 'a[data-testid="Concept Art"]' });
+  I.see('E3', { css: 'a[data-testid="Modeling Part 1"]' });
+  I.see('E4', { css: 'a[data-testid="Modeling Part 2"]' });
 
-  I.scrollTo('a[aria-label="Modeling Part 2"]');
+  I.scrollTo('a[data-testid="Modeling Part 2"]');
 
-  I.see('E5', { css: 'a[aria-label="Texturing and Lighting"]' });
+  I.see('E5', { css: 'a[data-testid="Texturing and Lighting"]' });
 });
 
 Scenario('I can see series with seasons', async ({ I }) => {
@@ -53,19 +53,19 @@ Scenario('I can see series with seasons', async ({ I }) => {
   I.see('Share');
   I.seeTextEquals('Episodes', 'h2');
 
-  I.click('a[aria-label="Welcome"]');
+  I.click('a[data-testid="Welcome"]');
   I.scrollTo('text="Episodes"');
 
   I.see('S1:E1 - Welcome');
-  I.see('Current episode', { css: 'a[aria-label="Welcome"]' });
-  I.see('S1:E2', { css: 'a[aria-label="Basics Of Blender"]' });
-  I.see('S1:E3', { css: 'a[aria-label="Using Mineways"]' });
-  I.see('S1:E4', { css: 'a[aria-label="Texturing your Minecraft World (Blender Render)"]' });
+  I.see('Current episode', { css: 'a[data-testid="Welcome"]' });
+  I.see('S1:E2', { css: 'a[data-testid="Basics Of Blender"]' });
+  I.see('S1:E3', { css: 'a[data-testid="Using Mineways"]' });
+  I.see('S1:E4', { css: 'a[data-testid="Texturing your Minecraft World (Blender Render)"]' });
 
-  I.scrollTo('a[aria-label="Texturing your Minecraft World (Blender Render)"]');
+  I.scrollTo('a[data-testid="Texturing your Minecraft World (Blender Render)"]');
 
-  I.see('S1:E5', { css: 'a[aria-label="Texturing your Minecraft World (Cycles)"]' });
-  I.see('S1:E6', { css: 'a[aria-label="Rig Overview (Boxscape Studios)"]' });
+  I.see('S1:E5', { css: 'a[data-testid="Texturing your Minecraft World (Cycles)"]' });
+  I.see('S1:E6', { css: 'a[data-testid="Rig Overview (Boxscape Studios)"]' });
 });
 
 Scenario('I can other episodes from the series', async ({ I }) => {
@@ -73,7 +73,7 @@ Scenario('I can other episodes from the series', async ({ I }) => {
   I.see('Fantasy Vehicle Creation');
 
   I.scrollTo('text="Modeling Part 1"');
-  I.click('a[aria-label="Modeling Part 1"]');
+  I.click('a[data-testid="Modeling Part 1"]');
 
   // Scroll to the top when a new episode is selected (takes a short time)
   I.wait(2);
@@ -84,7 +84,7 @@ Scenario('I can other episodes from the series', async ({ I }) => {
   );
 
   I.scrollTo('text="Texturing and Lighting"');
-  I.click('a[aria-label="Texturing and Lighting"]');
+  I.click('a[data-testid="Texturing and Lighting"]');
 
   // Check that scrolled to the top
   I.wait(2);

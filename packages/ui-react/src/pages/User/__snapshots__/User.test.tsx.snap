@@ -389,11 +389,21 @@ exports[`User Component tests > Favorites Page 1`] = `
                 role="cell"
               >
                 <a
-                  aria-label="Fav 1"
                   class="_card_d75732"
+                  data-testid="Fav 1"
                   href="/m/aaabbbcc/fav-1?r=abcdffff"
+                  role="button"
                   tabindex="0"
                 >
+                  <div
+                    class="_titleContainer_d75732"
+                  >
+                    <h3
+                      class="_title_d75732"
+                    >
+                      Fav 1
+                    </h3>
+                  </div>
                   <div
                     class="_poster_d75732 _aspect169_d75732"
                   >
@@ -411,15 +421,6 @@ exports[`User Component tests > Favorites Page 1`] = `
                       </div>
                     </div>
                   </div>
-                  <div
-                    class="_titleContainer_d75732"
-                  >
-                    <div
-                      class="_title_d75732"
-                    >
-                      Fav 1
-                    </div>
-                  </div>
                 </a>
               </div>
             </div>
@@ -431,11 +432,21 @@ exports[`User Component tests > Favorites Page 1`] = `
                 role="cell"
               >
                 <a
-                  aria-label="Big Buck Bunny"
                   class="_card_d75732"
+                  data-testid="Big Buck Bunny"
                   href="/m/aaabbbcd/big-buck-bunny?r=bbbdddff"
+                  role="button"
                   tabindex="0"
                 >
+                  <div
+                    class="_titleContainer_d75732"
+                  >
+                    <h3
+                      class="_title_d75732"
+                    >
+                      Big Buck Bunny
+                    </h3>
+                  </div>
                   <div
                     class="_poster_d75732 _aspect169_d75732"
                   >
@@ -453,15 +464,6 @@ exports[`User Component tests > Favorites Page 1`] = `
                       </div>
                     </div>
                   </div>
-                  <div
-                    class="_titleContainer_d75732"
-                  >
-                    <div
-                      class="_title_d75732"
-                    >
-                      Big Buck Bunny
-                    </div>
-                  </div>
                 </a>
               </div>
             </div>
@@ -473,11 +475,21 @@ exports[`User Component tests > Favorites Page 1`] = `
                 role="cell"
               >
                 <a
-                  aria-label="My last favorite"
                   class="_card_d75732"
+                  data-testid="My last favorite"
                   href="/m/ggaaccvv/my-last-favorite?r=bbbbbbbb"
+                  role="button"
                   tabindex="0"
                 >
+                  <div
+                    class="_titleContainer_d75732"
+                  >
+                    <h3
+                      class="_title_d75732"
+                    >
+                      My last favorite
+                    </h3>
+                  </div>
                   <div
                     class="_poster_d75732 _aspect169_d75732"
                   >
@@ -493,15 +505,6 @@ exports[`User Component tests > Favorites Page 1`] = `
                           11 min
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div
-                    class="_titleContainer_d75732"
-                  >
-                    <div
-                      class="_title_d75732"
-                    >
-                      My last favorite
                     </div>
                   </div>
                 </a>

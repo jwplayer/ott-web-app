@@ -73,7 +73,7 @@ Scenario('It renders the correct meta tags for the episode screen', async ({ I }
   await I.openVideoCard(constants.primitiveAnimalsTitle);
   I.see('Primitive Animals');
 
-  I.click('a[aria-label="Blocking"]');
+  I.click('a[data-testid="Blocking"]');
 
   await checkMetaTags(I, 'Blocking', constants.primitiveAnimalsDescription, 'episode');
 });
@@ -102,7 +102,7 @@ Scenario('It renders the correct structured metadata for the episode screen', as
   await I.openVideoCard(constants.primitiveAnimalsTitle);
   I.see('Primitive Animals');
 
-  I.click('a[aria-label="Blocking"]');
+  I.click('a[data-testid="Blocking"]');
 
   const rawURL = await I.grabCurrentUrl();
   const url = removeQueryParams(rawURL, ['r', 'app-config']);
