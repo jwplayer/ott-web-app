@@ -48,7 +48,10 @@ const Profiles = ({ editMode = false }: Props) => {
     }
   }, [profilesEnabled, navigate, user?.id, isError]);
 
-  const selectProfile = useSelectProfile();
+  const selectProfile = useSelectProfile({
+    onSuccess: () => navigate('/'),
+    onError: () => navigate('/u/profiles'),
+  });
 
   const createdProfileData = data?.responseData.collection.find((profile: Profile) => profile.id === createdProfileId);
 

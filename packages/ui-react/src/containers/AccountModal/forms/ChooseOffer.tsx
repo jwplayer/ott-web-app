@@ -14,7 +14,7 @@ import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
-import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
+import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 
 import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';

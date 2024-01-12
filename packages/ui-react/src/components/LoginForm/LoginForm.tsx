@@ -29,7 +29,7 @@ type Props = {
   values: LoginFormData;
   submitting: boolean;
   siteName?: string;
-  messageKey?: string;
+  messageKey: string | null;
 };
 
 const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName, messageKey }: Props) => {
@@ -37,7 +37,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
   const { t } = useTranslation('account');
   const location = useLocation();
 
-  const getTranslatedErrorMessage = (messageId: string | undefined) => {
+  const getTranslatedErrorMessage = (messageId: string | null) => {
     switch (messageId) {
       case simultaneousLoginWarningKey:
         return t('login.simultaneous_logins');

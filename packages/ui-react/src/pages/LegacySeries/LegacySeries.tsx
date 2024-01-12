@@ -13,7 +13,7 @@ import { legacySeriesURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
-import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
+import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
 import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
 

@@ -1,11 +1,9 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
+import useDebounce from '@jwp/ott-hooks-react/src/useDebounce';
 
-import useDebounce from './useDebounce';
-
-// @todo: should move entirely to ui-react?
-
+// Manages the query of the Search bar
 const useSearchQueryUpdater = () => {
   const navigate = useNavigate();
 

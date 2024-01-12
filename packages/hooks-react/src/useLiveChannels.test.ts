@@ -8,7 +8,7 @@ import epgChannelsFixture from '@jwp/ott-testing/fixtures/epgChannels.json';
 import epgChannelsUpdateFixture from '@jwp/ott-testing/fixtures/epgChannelsUpdate.json';
 import { mockService } from '@jwp/ott-common/test/mockService';
 
-import { createWrapper, waitForWithFakeTimers } from './testUtils';
+import { queryClientWrapper, waitForWithFakeTimers } from './testUtils';
 import useLiveChannels from './useLiveChannels';
 
 const livePlaylist: Playlist = livePlaylistFixture;
@@ -31,7 +31,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: '' },
     });
 
@@ -55,7 +55,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: 'channel2' },
     });
 
@@ -77,7 +77,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -97,7 +97,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result, rerender } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -124,7 +124,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -153,7 +153,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -181,7 +181,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -216,7 +216,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -243,7 +243,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -276,7 +276,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 
@@ -309,7 +309,7 @@ describe('useLiveChannels', () => {
     });
 
     const { result } = renderHook((props) => useLiveChannels(props), {
-      wrapper: createWrapper(),
+      wrapper: queryClientWrapper(),
       initialProps: { playlist: livePlaylist.playlist, initialChannelId: undefined },
     });
 

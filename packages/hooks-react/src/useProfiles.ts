@@ -1,6 +1,5 @@
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import { useMutation, useQuery, type UseMutationOptions, type UseQueryOptions } from 'react-query';
-import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { GenericFormErrors } from '@jwp/ott-common/types/form';
 import type { CommonAccountResponse, ListProfilesResponse, ProfileDetailsPayload, ProfilePayload } from '@jwp/ott-common/types/account';
@@ -12,9 +11,7 @@ import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 
-export const useSelectProfile = () => {
-  const navigate = useNavigate();
-
+export const useSelectProfile = (options?: { onSuccess: () => void; onError: () => void }) => {
   const accountController = getModule(AccountController, false);
   const profileController = getModule(ProfileController, false);
 
@@ -24,71 +21,68 @@ export const useSelectProfile = () => {
     },
     onSuccess: async () => {
       useProfileStore.setState({ selectingProfileAvatar: null });
-      navigate('/');
       await accountController?.loadUserData();
+      options?.onSuccess?.();
     },
     onError: () => {
       useProfileStore.setState({ selectingProfileAvatar: null });
-      navigate('/u/profiles');
       logDev('Unable to enter profile');
+      options?.onError?.();
     },
   });
 };
 
 export const useCreateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
   const { query: listProfiles } = useProfiles();
-  const navigate = useNavigate();
 
   const profileController = getModule(ProfileController, false);
 
   return useMutation<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>(async (data) => profileController?.createProfile(data), {
-    onSuccess: (res) => {
-      const profile = res?.responseData;
-      if (profile?.id) {
-        listProfiles.refetch();
-        navigate(`/u/profiles?success=true&id=${profile.id}`);
-      }
-    },
     ...options,
+    onSuccess: (data, variables, context) => {
+      listProfiles.refetch();
+
+      options?.onSuccess?.(data, variables, context);
+    },
   });
 };
 
 export const useUpdateProfile = (options?: UseMutationOptions<ServiceResponse<ProfilesData> | undefined, unknown, ProfilePayload, unknown>) => {
   const { query: listProfiles } = useProfiles();
-  const navigate = useNavigate();
 
   const profileController = getModule(ProfileController, false);
 
   return useMutation(async (data) => profileController?.updateProfile(data), {
-    onSuccess: () => {
-      navigate('/u/profiles');
-    },
-    onSettled: () => {
-      listProfiles.refetch();
-    },
     ...options,
+    onSettled: (...args) => {
+      listProfiles.refetch();
+
+      options?.onSettled?.(...args);
+    },
   });
 };
 
 export const useDeleteProfile = (options?: UseMutationOptions<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>) => {
   const { query: listProfiles } = useProfiles();
-  const navigate = useNavigate();
 
   const profileController = getModule(ProfileController, false);
 
   return useMutation<ServiceResponse<CommonAccountResponse> | undefined, unknown, ProfileDetailsPayload, unknown>(
     async (id) => profileController?.deleteProfile(id),
     {
-      onSuccess: () => {
-        listProfiles.refetch();
-        navigate('/u/profiles');
-      },
       ...options,
+      onSuccess: (...args) => {
+        listProfiles.refetch();
+
+        options?.onSuccess?.(...args);
+      },
     },
   );
 };
 
-export const isProfileFormSubmitError = (e: unknown): e is ProfileFormSubmitError => !!e && typeof e === 'object' && 'message' in e;
+export const isProfileFormSubmitError = (e: unknown): e is ProfileFormSubmitError => {
+  return !!e && typeof e === 'object' && 'message' in e;
+};
 
 export const useProfileErrorHandler = () => {
   const { t } = useTranslation('user');

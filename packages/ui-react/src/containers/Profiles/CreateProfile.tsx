@@ -4,6 +4,7 @@ import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakp
 import type { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { useCreateProfile, useProfileErrorHandler, useProfiles } from '@jwp/ott-hooks-react/src/useProfiles';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';
+import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
@@ -34,7 +35,13 @@ const CreateProfile = () => {
     pin: undefined,
   };
 
-  const createProfile = useCreateProfile({});
+  const createProfile = useCreateProfile({
+    onSuccess: (res) => {
+      const id = res?.responseData?.id;
+
+      !!id && navigate(createURL(`/u/profiles`, { success: 'true', id }));
+    },
+  });
 
   const handleErrors = useProfileErrorHandler();
 

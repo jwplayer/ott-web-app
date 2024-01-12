@@ -16,8 +16,8 @@ import { useLiveEvent } from '@jwp/ott-hooks-react/src/useLiveEvent';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
-import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
+import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import VideoLayout from '../../../../components/VideoLayout/VideoLayout';

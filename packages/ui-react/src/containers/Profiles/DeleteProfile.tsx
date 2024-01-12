@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
+import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import { useDeleteProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
@@ -27,12 +27,9 @@ const DeleteProfile = () => {
   };
 
   const deleteProfile = useDeleteProfile({
-    onMutate: () => {
-      closeHandler();
-    },
-    onError: () => {
-      setIsDeleting(false);
-    },
+    onMutate: closeHandler,
+    onSuccess: () => navigate('/u/profiles'),
+    onError: () => setIsDeleting(false),
   });
 
   const deleteHandler = async () => id && deleteProfile.mutate({ id });

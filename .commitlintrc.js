@@ -15,6 +15,7 @@ module.exports = {
         'user',
         'watchhistory',
         'favorites',
+        'profiles',
         'analytics',
         'pwa',
         'seo',

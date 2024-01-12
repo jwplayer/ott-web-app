@@ -1,4 +1,3 @@
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import React, { type ReactElement, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { act } from '@testing-library/react';
@@ -7,20 +6,10 @@ interface WrapperProps {
   children?: ReactNode;
 }
 
-function Router({ children }: WrapperProps) {
-  const routes = createRoutesFromElements(<Route path="*" element={<>{children}</>} />);
-
-  return <RouterProvider router={createBrowserRouter(routes, { window })} />;
-}
-
-export const createWrapper = () => {
+export const queryClientWrapper = () => {
   const client = new QueryClient();
 
-  return ({ children }: WrapperProps) => (
-    <QueryClientProvider client={client}>
-      <Router>{children as ReactElement}</Router>
-    </QueryClientProvider>
-  );
+  return ({ children }: WrapperProps) => <QueryClientProvider client={client}>{children as ReactElement}</QueryClientProvider>;
 };
 
 // native 'waitFor' uses 'setInterval' under the hood which is also faked when using vi.useFakeTimers...

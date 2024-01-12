@@ -5,8 +5,8 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
-import useQueryParam from '@jwp/ott-hooks-react/src/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
+import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import Welcome from '../../components/Welcome/Welcome';
@@ -130,7 +130,7 @@ const AccountModal = () => {
       case 'payment-error':
         return <PaymentFailed type="error" message={message} onCloseButtonClick={closeHandler} />;
       case 'payment-cancelled':
-        return <PaymentFailed type="cancelled" onCloseButtonClick={closeHandler} />;
+        return <PaymentFailed type="cancelled" message={message} onCloseButtonClick={closeHandler} />;
       case 'welcome':
         return <Welcome onCloseButtonClick={closeHandler} onCountdownCompleted={closeHandler} siteName={siteName} />;
       case 'reset-password':

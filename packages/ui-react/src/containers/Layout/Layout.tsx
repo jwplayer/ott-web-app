@@ -13,7 +13,7 @@ import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
 import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import { IS_DEVELOPMENT_BUILD } from '@jwp/ott-common/src/utils/common';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
-import useSearchQueryUpdater from '@jwp/ott-hooks-react/src/useSearchQueryUpdater';
+import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 
 import Button from '../../components/Button/Button';
@@ -50,7 +50,10 @@ const Layout = () => {
     profilesEnabled,
   } = useProfiles();
 
-  const selectProfile = useSelectProfile();
+  const selectProfile = useSelectProfile({
+    onSuccess: () => navigate('/'),
+    onError: () => navigate('/u/profiles'),
+  });
 
   const { searchQuery, searchActive, userMenuOpen, languageMenuOpen } = useUIStore(
     ({ searchQuery, searchActive, userMenuOpen, languageMenuOpen }) => ({

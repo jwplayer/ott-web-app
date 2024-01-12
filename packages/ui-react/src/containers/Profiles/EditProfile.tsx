@@ -61,7 +61,7 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
     navigate('/u/profiles');
   }
 
-  const updateProfile = useUpdateProfile();
+  const updateProfile = useUpdateProfile({ onSuccess: () => navigate('/u/profiles') });
 
   const handleErrors = useProfileErrorHandler();
 

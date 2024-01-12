@@ -9,7 +9,7 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useFirstRender from '@jwp/ott-hooks-react/src/useFirstRender';
-import useSearchQueryUpdater from '@jwp/ott-hooks-react/src/useSearchQueryUpdater';
+import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
 
 import CardGrid from '../../components/CardGrid/CardGrid';

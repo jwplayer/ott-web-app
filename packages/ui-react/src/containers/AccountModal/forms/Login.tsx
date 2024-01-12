@@ -13,7 +13,7 @@ import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
 import LoginForm from '../../../components/LoginForm/LoginForm';
 
 type Props = {
-  messageKey?: string;
+  messageKey: string | null;
 };
 
 const Login: React.FC<Props> = ({ messageKey }: Props) => {
