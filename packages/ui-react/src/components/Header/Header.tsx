@@ -7,7 +7,6 @@ import type { LanguageDefinition } from '@jwp/ott-common/types/i18n';
 import Menu from '@jwp/ott-theme/assets/icons/menu.svg?react';
 import SearchIcon from '@jwp/ott-theme/assets/icons/search.svg?react';
 import CloseIcon from '@jwp/ott-theme/assets/icons/close.svg?react';
-import Language from '@jwp/ott-theme/assets/icons/language.svg?react';
 import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
 
 import SearchBar, { type Props as SearchBarProps } from '../SearchBar/SearchBar';
@@ -171,23 +170,16 @@ const Header: React.FC<Props> = ({
     if (!showLanguageSwitcher) return null;
 
     return (
-      <React.Fragment>
-        <IconButton className={classNames(styles.iconButton, styles.actionButton)} aria-label={t('select_language')} onClick={openLanguageMenu}>
-          <Icon icon={Language} />
-        </IconButton>
-        <Popover isOpen={languageMenuOpen} onClose={closeLanguageMenu}>
-          <Panel>
-            <LanguageMenu
-              onClick={(code) => {
-                onLanguageClick(code);
-                closeLanguageMenu();
-              }}
-              languages={supportedLanguages}
-              currentLanguage={currentLanguage}
-            />
-          </Panel>
-        </Popover>
-      </React.Fragment>
+      <LanguageMenu
+        openLanguageMenu={openLanguageMenu}
+        closeLanguageMenu={closeLanguageMenu}
+        languageMenuOpen={languageMenuOpen}
+        onClick={(code) => {
+          onLanguageClick(code);
+        }}
+        languages={supportedLanguages}
+        currentLanguage={currentLanguage}
+      />
     );
   };
 

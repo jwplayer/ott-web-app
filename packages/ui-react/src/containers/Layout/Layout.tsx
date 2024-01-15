@@ -16,12 +16,12 @@ import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 
-import Button from '../../components/Button/Button';
 import MarkdownComponent from '../../components/MarkdownComponent/MarkdownComponent';
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import UserMenu from '../../components/UserMenu/UserMenu';
+import Button from '../../components/Button/Button';
 
 import styles from './Layout.module.scss';
 

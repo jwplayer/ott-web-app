@@ -41,8 +41,8 @@ describe('<Header />', () => {
         canLogin={true}
         showPaymentsMenuItem={true}
         supportedLanguages={[]}
-        currentLanguage={undefined}
         languageMenuOpen={false}
+        currentLanguage={undefined}
         onLanguageClick={vi.fn()}
       >
         {playlistMenuItems}

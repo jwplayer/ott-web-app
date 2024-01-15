@@ -11,6 +11,8 @@ type Props = {
   target?: string;
   children?: React.ReactNode;
   onClick?: MouseEventHandler<HTMLElement>;
+  onBlur?: () => void;
+  onFocus?: () => void;
 };
 
 const Link: React.FC<Props> = ({ to, href, children, className, onClick, target, ...rest }: Props) => {
@@ -18,7 +20,7 @@ const Link: React.FC<Props> = ({ to, href, children, className, onClick, target,
 
   if (to) {
     return (
-      <RouterLink to={to} className={linkClassName} onClick={onClick}>
+      <RouterLink to={to} className={linkClassName} onClick={onClick} {...rest}>
         {children}
       </RouterLink>
     );

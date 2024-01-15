@@ -29,6 +29,10 @@ exports.config = {
   mocha: {},
   name: 'mobile',
   plugins: {
+    customLocator: {
+      enabled: true,
+      attribute: 'data-testid',
+    },
     pauseOnFail: {},
     retryFailedStep: {
       minTimeout: 1000,

@@ -28,6 +28,10 @@ exports.config = {
   mocha: {},
   name: 'desktop',
   plugins: {
+    customLocator: {
+      enabled: true,
+      attribute: 'data-testid',
+    },
     pauseOnFail: {},
     retryFailedStep: {
       minTimeout: 1000,
