@@ -18,7 +18,7 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Link from '../Link/Link';
 import Icon from '../Icon/Icon';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './RegistrationForm.module.scss';
 
@@ -152,7 +152,7 @@ const RegistrationForm: React.FC<Props> = ({
         fullWidth
       />
       <p className={styles.bottom}>
-        {t('registration.already_account')} <Link to={modalURL(location, 'login')}>{t('login.sign_in')}</Link>
+        {t('registration.already_account')} <Link to={modalURLFromLocation(location, 'login')}>{t('login.sign_in')}</Link>
       </p>
       {submitting && <LoadingOverlay transparentBackground inline />}
     </form>

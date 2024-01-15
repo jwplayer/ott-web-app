@@ -7,7 +7,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
 import EditPasswordForm from '../../../components/EditPasswordForm/EditPasswordForm';
@@ -46,7 +46,7 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
         await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
       await accountController.logout({ includeNetworkRequest: false });
-      navigate(modalURL(location, 'login'));
+      navigate(modalURLFromLocation(location, 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.includes('invalid param password')) {

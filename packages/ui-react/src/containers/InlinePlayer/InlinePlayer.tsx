@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import Lock from '@jwp/ott-theme/assets/icons/lock.svg?react';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 
 import Image from '../../components/Image/Image';
 import Fade from '../../components/Animation/Fade/Fade';
@@ -53,7 +53,7 @@ const InlinePlayer: React.FC<Props> = ({
   const location = useLocation();
 
   const loginButtonClickHandler = () => {
-    navigate(modalURL(location, 'login'));
+    navigate(modalURLFromLocation(location, 'login'));
   };
 
   return (

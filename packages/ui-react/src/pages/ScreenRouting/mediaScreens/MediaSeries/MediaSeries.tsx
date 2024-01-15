@@ -12,7 +12,7 @@ import { generateEpisodeJSONLD } from '@jwp/ott-common/src/utils/structuredData'
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { getEpisodesInSeason, getFiltersFromSeries } from '@jwp/ott-common/src/utils/series';
 import { formatSeriesMetaString, formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
-import { buildLegacySeriesUrlFromMediaItem, createURL, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { VideoProgressMinMax } from '@jwp/ott-common/src/constants';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
@@ -35,6 +35,7 @@ import FavoriteButton from '../../../../containers/FavoriteButton/FavoriteButton
 import Button from '../../../../components/Button/Button';
 import Loading from '../../../Loading/Loading';
 import Icon from '../../../../components/Icon/Icon';
+import { createURLFromLocation } from '../../../../utils/location';
 
 const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const breakpoint = useBreakpoint();
@@ -111,7 +112,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
 
   const location = useLocation();
   const getURL = (toEpisode: PlaylistItem) => {
-    return createURL(location.pathname, { e: toEpisode.mediaid }, location.search);
+    return createURLFromLocation(location, { e: toEpisode.mediaid });
   };
 
   // Handlers

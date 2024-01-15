@@ -11,7 +11,7 @@ import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 
 import Button from '../Button/Button';
 import Spinner from '../Spinner/Spinner';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './FinalizePayment.module.scss';
 
@@ -31,7 +31,7 @@ const FinalizePayment = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const paymentSuccessUrl = useMemo(() => {
-    return modalURL(location, accessModel === ACCESS_MODEL.SVOD ? 'welcome' : null);
+    return modalURLFromLocation(location, accessModel === ACCESS_MODEL.SVOD ? 'welcome' : null);
   }, [accessModel, location]);
 
   const checkPaymentResult = useEventCallback(async (redirectResult: string) => {
@@ -65,7 +65,7 @@ const FinalizePayment = () => {
             variant="contained"
             color="primary"
             size="large"
-            onClick={() => navigate(modalURL(location, 'checkout'))}
+            onClick={() => navigate(modalURLFromLocation(location, 'checkout'))}
             fullWidth
           />
         </>

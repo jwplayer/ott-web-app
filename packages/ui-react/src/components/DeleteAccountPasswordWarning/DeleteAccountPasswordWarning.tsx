@@ -7,7 +7,7 @@ import AccountController from '@jwp/ott-common/src/stores/AccountController';
 
 import Button from '../Button/Button';
 import FormFeedback from '../FormFeedback/FormFeedback';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './DeleteAccountPasswordWarning.module.scss';
 
@@ -21,13 +21,13 @@ const DeleteAccountPasswordWarning = () => {
   const location = useLocation();
 
   const handleCancel = useCallback(() => {
-    navigate(modalURL(location, null), { replace: true });
+    navigate(modalURLFromLocation(location, null), { replace: true });
   }, [location, navigate]);
   const proceedToAddPasswordClickHandler = async () => {
     try {
       if (email) {
         await accountController.resetPassword(email, '');
-        navigate(modalURL(location, 'add-password'));
+        navigate(modalURLFromLocation(location, 'add-password'));
       }
     } catch (error: unknown) {
       setErrorMessage(t('account.add_password_error'));

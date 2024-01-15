@@ -4,7 +4,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { queryClient } from '@jwp/ott-common/src/queryClient';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -38,11 +38,11 @@ export default function useNotifications(uuid: string = '') {
             case NotificationsTypes.FAILED:
             case NotificationsTypes.CARD_FAILED:
             case NotificationsTypes.SUBSCRIBE_FAILED:
-              navigate(modalURL(location, 'payment-error', { message: notification.resource?.message }));
+              navigate(modalURLFromLocation(location, 'payment-error', { message: notification.resource?.message }));
               break;
             case NotificationsTypes.CARD_SUCCESS:
               await queryClient.invalidateQueries(['entitlements']);
-              navigate(modalURL(location, null));
+              navigate(modalURLFromLocation(location, null));
               break;
             case NotificationsTypes.SUBSCRIBE_SUCCESS:
               await accountController.reloadActiveSubscription();
@@ -56,7 +56,7 @@ export default function useNotifications(uuid: string = '') {
               break;
             case NotificationsTypes.ACCOUNT_LOGOUT:
               if (notification.resource?.reason === 'sessions_limit') {
-                navigate(modalURL(location, 'login', { message: simultaneousLoginWarningKey }));
+                navigate(modalURLFromLocation(location, 'login', { message: simultaneousLoginWarningKey }));
               } else {
                 await accountController.logout();
               }

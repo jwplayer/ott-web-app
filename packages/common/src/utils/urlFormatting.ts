@@ -2,14 +2,13 @@ import type { PlaylistItem } from '../../types/playlist';
 
 import { getLegacySeriesPlaylistIdFromEpisodeTags, getSeriesPlaylistIdFromCustomParams } from './media';
 
-// Creates a new URL from a url string, search string and an object to add and remove query params
-// For example:
-// createURL(window.location.pathname, { foo: 'bar' }, window.location.search);
-export const createURL = (url: string, queryParams: { [key: string]: string | number | string[] | undefined | null }, search: string | null = '') => {
-  const [baseUrl, urlQueryString = ''] = url.split('?');
-  const searchStringCombined = `${urlQueryString}${urlQueryString && search ? `&` : ''}${search}`;
+export type QueryParamsArg = { [key: string]: string | number | string[] | undefined | null };
 
-  const urlSearchParams = new URLSearchParams(searchStringCombined);
+// Creates a new URL from a url string (could include search params) and an object to add and remove query params
+// For example: createURL(window.location.pathname, { foo: 'bar' });
+export const createURL = (url: string, queryParams: QueryParamsArg) => {
+  const [baseUrl, urlQueryString = ''] = url.split('?');
+  const urlSearchParams = new URLSearchParams(urlQueryString);
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (value === null || value === undefined) {

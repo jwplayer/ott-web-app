@@ -7,7 +7,7 @@ import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
@@ -44,7 +44,7 @@ const Checkout = () => {
   const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
 
   const paymentSuccessUrl = useMemo(() => {
-    return modalURL(location, offerType === 'svod' ? 'welcome' : null);
+    return modalURLFromLocation(location, offerType === 'svod' ? 'welcome' : null);
   }, [location, offerType]);
 
   const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
@@ -58,7 +58,7 @@ const Checkout = () => {
       } catch (error: unknown) {
         if (error instanceof Error) {
           if (error.message.includes(`Order with id ${order.id} not found`)) {
-            navigate(modalURL(location, 'choose-offer'), { replace: true });
+            navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
           } else {
             setErrors({ couponCode: t('checkout.coupon_not_valid') });
           }
@@ -82,7 +82,7 @@ const Checkout = () => {
       } catch (error: unknown) {
         if (error instanceof Error) {
           if (error.message.includes(`Order with id ${order.id} not found`)) {
-            navigate(modalURL(location, 'choose-offer'), { replace: true });
+            navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
           } else {
             couponCodeForm.setErrors({ couponCode: t('checkout.coupon_not_valid') });
           }
@@ -110,7 +110,7 @@ const Checkout = () => {
     }
 
     if (!offer) {
-      return navigate(modalURL(location, 'choose-offer'), { replace: true });
+      return navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
     }
 
     // noinspection JSIgnoredPromiseFromCall
@@ -123,7 +123,7 @@ const Checkout = () => {
   }, [setOrder]);
 
   const backButtonClickHandler = () => {
-    navigate(modalURL(location, 'choose-offer'));
+    navigate(modalURLFromLocation(location, 'choose-offer'));
   };
 
   const handlePaymentMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,7 +139,7 @@ const Checkout = () => {
         .updateOrder(order, toPaymentMethodId, couponCodeForm.values.couponCode)
         .catch((error: Error) => {
           if (error.message.includes(`Order with id ${order.id}} not found`)) {
-            navigate(modalURL(location, 'choose-offer'));
+            navigate(modalURLFromLocation(location, 'choose-offer'));
           }
         })
         .finally(() => setUpdatingOrder(false));

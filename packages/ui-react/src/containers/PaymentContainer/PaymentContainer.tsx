@@ -12,7 +12,7 @@ import { useSubscriptionChange } from '@jwp/ott-hooks-react/src/useSubscriptionC
 import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import Payment from '../../components/Payment/Payment';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 /**
  * Handles billing receipts by either downloading the receipt directly if it is an instance of Blob,
@@ -69,7 +69,7 @@ const PaymentContainer = () => {
   const location = useLocation();
 
   const handleUpgradeSubscriptionClick = async () => {
-    navigate(modalURL(location, 'upgrade-subscription'));
+    navigate(modalURLFromLocation(location, 'upgrade-subscription'));
   };
 
   const handleShowReceiptClick = async (transactionId: string) => {

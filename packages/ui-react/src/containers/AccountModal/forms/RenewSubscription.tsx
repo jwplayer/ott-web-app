@@ -5,7 +5,7 @@ import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import RenewSubscriptionForm from '../../../components/RenewSubscriptionForm/RenewSubscriptionForm';
@@ -37,7 +37,7 @@ const RenewSubscription = () => {
   };
 
   const closeHandler = () => {
-    navigate(modalURL(location, null), { replace: true });
+    navigate(modalURLFromLocation(location, null), { replace: true });
   };
 
   if (!subscription || !user) return null;

@@ -17,7 +17,7 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import SocialButtonsList from '../SocialButtonsList/SocialButtonsList';
 import Icon from '../Icon/Icon';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './LoginForm.module.scss';
 
@@ -86,12 +86,12 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         testId="login-password-input"
       />
       {submitting && <LoadingOverlay transparentBackground inline />}
-      <Link className={styles.link} to={modalURL(location, 'forgot-password')}>
+      <Link className={styles.link} to={modalURLFromLocation(location, 'forgot-password')}>
         {t('login.forgot_password')}
       </Link>
       <Button type="submit" label={t('login.sign_in')} variant="contained" color="primary" size="large" disabled={submitting} fullWidth />
       <p className={styles.bottom}>
-        {t('login.not_registered', { siteName })} <Link to={modalURL(location, 'create-account')}>{t('login.sign_up')}</Link>
+        {t('login.not_registered', { siteName })} <Link to={modalURLFromLocation(location, 'create-account')}>{t('login.sign_up')}</Link>
       </p>
     </form>
   );

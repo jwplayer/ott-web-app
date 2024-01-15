@@ -6,7 +6,7 @@ import type { AdyenPaymentSession } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/src/constants';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
@@ -33,7 +33,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
 
   const redirectResult = useQueryParam('redirectResult');
   const finalize = !!redirectResult;
-  const paymentSuccessUrl = modalURL(location, 'payment-method-success');
+  const paymentSuccessUrl = modalURLFromLocation(location, 'payment-method-success');
 
   const finalizePaymentDetails = useEventCallback(async (redirectResult: string) => {
     try {
@@ -43,13 +43,13 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       await accountController.reloadActiveSubscription({ delay: 2000 });
 
       setProcessing(false);
-      navigate(modalURL(location, 'payment-method-success'));
+      navigate(modalURLFromLocation(location, 'payment-method-success'));
     } catch (error: unknown) {
       setProcessing(false);
 
       if (error instanceof Error) {
         setPaymentError(error.message);
-        navigate(modalURL(location, 'payment-method'), { replace: true });
+        navigate(modalURLFromLocation(location, 'payment-method'), { replace: true });
       }
     }
   });

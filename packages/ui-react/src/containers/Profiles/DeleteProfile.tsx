@@ -3,11 +3,11 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import { useDeleteProfile } from '@jwp/ott-hooks-react/src/useProfiles';
-import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import Button from '../../components/Button/Button';
 import Dialog from '../../components/Dialog/Dialog';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
+import { createURLFromLocation } from '../../utils/location';
 
 import styles from './Profiles.module.scss';
 
@@ -23,7 +23,7 @@ const DeleteProfile = () => {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const closeHandler = () => {
-    navigate(createURL(location.pathname, { action: null }, location.search));
+    navigate(createURLFromLocation(location, { action: null }));
   };
 
   const deleteProfile = useDeleteProfile({

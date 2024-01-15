@@ -18,7 +18,7 @@ import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import OfferSwitch from '../OfferSwitch/OfferSwitch';
 import TextField from '../TextField/TextField';
 import Icon from '../Icon/Icon';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './Payment.module.scss';
 
@@ -115,18 +115,18 @@ const Payment = ({
   }, [selectedOfferId, offers, activeSubscription, setIsUpgradeOffer]);
 
   function onCompleteSubscriptionClick() {
-    navigate(modalURL(location, 'choose-offer'));
+    navigate(modalURLFromLocation(location, 'choose-offer'));
   }
   function onEditCardDetailsClick() {
-    navigate(modalURL(location, 'edit-card'));
+    navigate(modalURLFromLocation(location, 'edit-card'));
   }
 
   function onCancelSubscriptionClick() {
-    navigate(modalURL(location, 'unsubscribe'));
+    navigate(modalURLFromLocation(location, 'unsubscribe'));
   }
 
   function onRenewSubscriptionClick() {
-    navigate(modalURL(location, 'renew-subscription'));
+    navigate(modalURLFromLocation(location, 'renew-subscription'));
   }
 
   function getTitle(period: Subscription['period']) {
@@ -303,7 +303,7 @@ const Payment = ({
           </div>
         )}
         {canUpdatePaymentMethod && (
-          <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(modalURL(location, 'payment-method'))} />
+          <Button label={t('user:payment.update_payment_details')} type="button" onClick={() => navigate(modalURLFromLocation(location, 'payment-method'))} />
         )}
       </div>
       <div className={panelClassName}>

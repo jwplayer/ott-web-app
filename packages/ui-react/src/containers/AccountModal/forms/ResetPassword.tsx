@@ -7,7 +7,7 @@ import type { ForgotPasswordFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 
@@ -36,7 +36,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     shallow,
   );
   const cancelClickHandler = () => {
-    navigate(modalURL(location, null));
+    navigate(modalURLFromLocation(location, null));
   };
 
   const backToLoginClickHandler = async () => {
@@ -66,7 +66,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
       await accountController.resetPassword(user.email, resetUrl);
 
       setResetPasswordSubmitting(false);
-      navigate(modalURL(location, 'send-confirmation'));
+      navigate(modalURLFromLocation(location, 'send-confirmation'));
     } catch (error: unknown) {
       logDev(error instanceof Error ? error.message : error);
     }
@@ -78,7 +78,7 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     try {
       await accountController.resetPassword(formData.email, resetUrl);
       const modal = canChangePasswordWithOldPassword ? 'edit-password' : 'send-confirmation';
-      navigate(modalURL(location, modal));
+      navigate(modalURLFromLocation(location, modal));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.toLowerCase().includes('invalid param email')) {

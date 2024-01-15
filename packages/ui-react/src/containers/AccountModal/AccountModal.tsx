@@ -3,8 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { modalURL } from '@jwp/ott-ui-react/src/utils/location';
-import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { modalURLFromLocation, createURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
@@ -79,7 +78,7 @@ const AccountModal = () => {
   const isPublicView = viewParam && PUBLIC_VIEWS.includes(viewParam);
 
   const toLogin = useEventCallback(() => {
-    navigate(modalURL(location, 'login'));
+    navigate(modalURLFromLocation(location, 'login'));
   });
 
   useEffect(() => {
@@ -94,7 +93,7 @@ const AccountModal = () => {
   }, [viewParam, loading, isPublicView, user, toLogin]);
 
   const closeHandler = useEventCallback(() => {
-    navigate(createURL(location.pathname, { u: null, message: null }, location.search));
+    navigate(createURLFromLocation(location, { u: null, message: null }));
   });
 
   const renderForm = () => {

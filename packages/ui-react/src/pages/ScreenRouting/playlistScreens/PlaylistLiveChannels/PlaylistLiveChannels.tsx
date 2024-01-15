@@ -134,6 +134,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     <ShareButton title={channelMediaItem.title} description={channelMediaItem.description} url={window.location.href} />
   ) : null;
 
+  // @todo: bring all props to liveChannelsURL, so that createURL isn't needed
   const startWatchingButton = channelMediaItem ? (
     <>
       <StartWatchingButton

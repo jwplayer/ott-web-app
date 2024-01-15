@@ -11,7 +11,7 @@ import useForm from '@jwp/ott-hooks-react/src/useForm';
 import PasswordField from '../PasswordField/PasswordField';
 import Button from '../Button/Button';
 import Alert from '../Alert/Alert';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './DeleteAccountModal.module.scss';
 
@@ -49,7 +49,7 @@ const DeleteAccountModal = () => {
     initialValues,
     () => {
       setEnteredPassword(values.password);
-      navigate(modalURL(location, 'delete-account-confirmation'), { replace: true });
+      navigate(modalURLFromLocation(location, 'delete-account-confirmation'), { replace: true });
     },
     validationSchema,
   );
@@ -61,7 +61,7 @@ const DeleteAccountModal = () => {
       resetForm();
     }
     if (location.search.includes('delete-account-confirmation') && !enteredPassword) {
-      navigate(modalURL(location, 'delete-account'), { replace: true });
+      navigate(modalURLFromLocation(location, 'delete-account'), { replace: true });
     }
   }, [location, location.search, navigate, enteredPassword, deleteAccount, resetForm]);
 
@@ -69,11 +69,11 @@ const DeleteAccountModal = () => {
     deleteAccount.reset();
     resetForm();
     setEnteredPassword('');
-    navigate(modalURL(location, 'delete-account'), { replace: true });
+    navigate(modalURLFromLocation(location, 'delete-account'), { replace: true });
   }, [location, navigate, setEnteredPassword, deleteAccount, resetForm]);
 
   const handleCancel = useCallback(() => {
-    navigate(modalURL(location, null), { replace: true });
+    navigate(modalURLFromLocation(location, null), { replace: true });
   }, [location, navigate]);
 
   if (deleteAccount.isError) {

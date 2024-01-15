@@ -24,7 +24,7 @@ import Checkbox from '../Checkbox/Checkbox';
 import HelperText from '../HelperText/HelperText';
 import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
 import Icon from '../Icon/Icon';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './Account.module.scss';
 
@@ -186,10 +186,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
     }
     if (isSocialLogin && shouldAddPassword) {
       await accountController.resetPassword(customer.email, '');
-      return navigate(modalURL(location, 'add-password'));
+      return navigate(modalURLFromLocation(location, 'add-password'));
     }
 
-    navigate(modalURL(location, canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password'));
+    navigate(modalURLFromLocation(location, canChangePasswordWithOldPassword ? 'edit-password' : 'reset-password'));
   };
 
   return (
@@ -367,7 +367,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                       type="button"
                       variant="danger"
                       onClick={() => {
-                        navigate(modalURL(location, shouldAddPassword ? 'warning-account-deletion' : 'delete-account'));
+                        navigate(modalURLFromLocation(location, shouldAddPassword ? 'warning-account-deletion' : 'delete-account'));
                       }}
                     />
                   </div>

@@ -14,7 +14,7 @@ import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
 import CreditCardExpiryField from '../CreditCardExpiryField/CreditCardExpiryField';
 import CreditCardNumberField from '../CreditCardNumberField/CreditCardNumberField';
 import TextField from '../TextField/TextField';
-import { modalURL } from '../../utils/location';
+import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './PaymentForm.module.scss';
 
@@ -43,7 +43,7 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
 
       intervalCheckAccess({
         interval: 15000,
-        callback: (hasAccess) => hasAccess && navigate(modalURL(location, 'welcome')),
+        callback: (hasAccess) => hasAccess && navigate(modalURLFromLocation(location, 'welcome')),
       });
     },
     object().shape({
