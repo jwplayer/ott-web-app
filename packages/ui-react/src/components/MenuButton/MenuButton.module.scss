@@ -41,7 +41,8 @@
 
   @media (hover: hover) and (pointer: fine) {
     &:hover,
-    &:active {
+    &:active,
+    &:focus {
       background: rgba(variables.$white, 0.08);
       opacity: 1;
     }

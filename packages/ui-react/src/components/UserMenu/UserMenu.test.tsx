@@ -14,7 +14,7 @@ describe('<UserMenu>', () => {
   });
 
   test('renders and matches snapshot', () => {
-    const { container } = renderWithRouter(<UserMenu showPaymentsItem={true} />);
+    const { container } = renderWithRouter(<UserMenu focusable={true} showPaymentsItem={true} />);
 
     expect(container).toMatchSnapshot();
   });

@@ -19,8 +19,11 @@ import styles from './UserMenu.module.scss';
 
 type Props = {
   small?: boolean;
+  focusable: boolean;
   showPaymentsItem: boolean;
   onClick?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   currentProfile?: Profile | null;
   profilesEnabled?: boolean;
   profiles?: Profile[];
@@ -33,16 +36,20 @@ const UserMenu = ({
   showPaymentsItem,
   small = false,
   onClick,
+  onFocus,
+  onBlur,
   currentProfile,
   profilesEnabled,
   profiles,
   isSelectingProfile,
   selectProfile,
   favoritesEnabled,
+  focusable,
 }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const accountController = getModule(AccountController);
+  const tabIndex = focusable ? 0 : -1;
 
   const onLogout = useCallback(async () => {
     if (onClick) {
@@ -54,7 +61,7 @@ const UserMenu = ({
   }, [onClick, navigate, accountController]);
 
   return (
-    <ul className={styles.menuItems}>
+    <ul onFocus={onFocus} onBlur={onBlur} className={styles.menuItems}>
       {profilesEnabled && selectProfile && (
         <ProfilesMenu
           profiles={profiles ?? []}
@@ -75,29 +82,37 @@ const UserMenu = ({
             onClick={onClick}
             to={`/u/my-profile/${currentProfile?.id ?? ''}`}
             label={t('nav.profile')}
+            tabIndex={tabIndex}
             startIcon={<ProfileCircle src={currentProfile?.avatar_url} alt={currentProfile?.name ?? ''} />}
           />
         </li>
       )}
       <li>
-        <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<Icon icon={AccountCircle} />} />
+        <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<Icon icon={AccountCircle} />} tabIndex={tabIndex} />
       </li>
 
       {favoritesEnabled && (
         <li>
-          <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Icon icon={Favorite} />} />
+          <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Icon icon={Favorite} />} tabIndex={tabIndex} />
         </li>
       )}
       {showPaymentsItem && (
         <li>
-          <MenuButton small={small} onClick={onClick} to="/u/payments" label={t('nav.payments')} startIcon={<Icon icon={BalanceWallet} />} />
+          <MenuButton
+            small={small}
+            onClick={onClick}
+            to="/u/payments"
+            label={t('nav.payments')}
+            startIcon={<Icon icon={BalanceWallet} />}
+            tabIndex={tabIndex}
+          />
         </li>
       )}
       <li>
         <hr className={classNames(styles.divider, { [styles.small]: small })} />
       </li>
       <li>
-        <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Icon icon={Exit} />} />
+        <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Icon icon={Exit} />} tabIndex={tabIndex} />
       </li>
     </ul>
   );
