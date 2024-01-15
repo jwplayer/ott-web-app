@@ -8,7 +8,7 @@ import type { Playlist } from '#types/playlist';
 import livePlaylistFixture from '#test/fixtures/livePlaylist.json';
 import epgChannelsFixture from '#test/fixtures/epgChannels.json';
 import epgChannelsUpdateFixture from '#test/fixtures/epgChannelsUpdate.json';
-import EpgService from '#src/services/epg.service';
+import EpgController from '#src/stores/EpgController';
 
 const livePlaylist: Playlist = livePlaylistFixture;
 const schedule: EpgChannel[] = epgChannelsFixture;
@@ -17,9 +17,9 @@ const scheduleUpdate: EpgChannel[] = epgChannelsUpdateFixture;
 const mockSchedule = vi.fn();
 
 vi.mock('#src/modules/container', () => ({
-  getModule: (type: typeof EpgService) => {
+  getModule: (type: typeof EpgController) => {
     switch (type) {
-      case EpgService:
+      case EpgController:
         return { getSchedules: mockSchedule };
     }
   },
