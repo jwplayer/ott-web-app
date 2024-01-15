@@ -60,9 +60,12 @@ export default async function useNotifications(uuid: string = '') {
               window.location.href = notification.resource?.redirect_to_url;
               break;
             case NotificationsTypes.ACCOUNT_LOGOUT:
-              accountController.logout();
-              if (notification.resource?.reason === 'sessions_limit') {
-                navigate(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
+              try {
+                await accountController?.logout();
+              } finally {
+                if (notification.resource?.reason === 'sessions_limit') {
+                  navigate(addQueryParams(window.location.pathname, { u: 'login', message: simultaneousLoginWarningKey }));
+                }
               }
               break;
             default:
