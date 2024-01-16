@@ -412,7 +412,7 @@ export default class AccountController {
     expYear: number;
     currency: string;
   }) => {
-    const { isSandbox } = useConfigStore();
+    const { isSandbox } = useConfigStore.getState();
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();

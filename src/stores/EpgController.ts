@@ -1,13 +1,12 @@
-import { array, object, string } from 'yup';
-import { addDays, differenceInDays, isValid } from 'date-fns';
+import { addDays, differenceInDays } from 'date-fns';
 import { injectable } from 'inversify';
 
-import type { PlaylistItem } from '#types/playlist';
-import { getDataOrThrow } from '#src/utils/api';
+import EpgService from '#src/services/epg/epg.service';
 import { logDev } from '#src/utils/common';
+import type { PlaylistItem } from '#types/playlist';
 import type { EpgProgram, EpgChannel } from '#types/epg';
-
-const AUTHENTICATION_HEADER = 'API-KEY';
+import { EPG_TYPE } from '#src/config';
+import { getNamedModule } from '#src/modules/container';
 
 export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => {
   if (input.status === 'fulfilled') {
@@ -18,25 +17,8 @@ export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is Promise
   return false;
 };
 
-const epgProgramSchema = object().shape({
-  id: string().required(),
-  title: string().required(),
-  startTime: string()
-    .required()
-    .test((value) => (value ? isValid(new Date(value)) : false)),
-  endTime: string()
-    .required()
-    .test((value) => (value ? isValid(new Date(value)) : false)),
-  chapterPointCustomProperties: array().of(
-    object().shape({
-      key: string().required(),
-      value: string().test('required-but-empty', 'value is required', (value: unknown) => typeof value === 'string'),
-    }),
-  ),
-});
-
 @injectable()
-export default class EpgService {
+export default class EpgController {
   /**
    * Update the start and end time properties of the given programs with the current date.
    * This can be used when having a static schedule or while developing
@@ -60,32 +42,19 @@ export default class EpgService {
   }
 
   /**
-   * Validate the given data with the epgProgramSchema and transform it into an EpgProgram
-   */
-  transformProgram = async (data: unknown): Promise<EpgProgram> => {
-    const program = await epgProgramSchema.validate(data);
-    const image = program.chapterPointCustomProperties?.find((item) => item.key === 'image')?.value || undefined;
-
-    return {
-      id: program.id,
-      title: program.title,
-      startTime: program.startTime,
-      endTime: program.endTime,
-      cardImage: image,
-      backgroundImage: image,
-      description: program.chapterPointCustomProperties?.find((item) => item.key === 'description')?.value || undefined,
-    };
-  };
-
-  /**
    * Ensure the given data validates to the EpgProgram schema
    */
-  parseSchedule = async (data: unknown, demo = false) => {
+  parseSchedule = async (data: unknown, item: PlaylistItem) => {
+    const demo = !!item.scheduleDemo || false;
+
+    const epgService = this.getEpgService(item);
+
     if (!Array.isArray(data)) return [];
 
     const transformResults = await Promise.allSettled(
       data.map((program) =>
-        this.transformProgram(program)
+        epgService
+          .transformProgram(program)
           // This quiets promise resolution errors in the console
           .catch((error) => {
             logDev(error);
@@ -103,42 +72,15 @@ export default class EpgService {
   };
 
   /**
-   * Fetch the schedule data for the given PlaylistItem
-   */
-  fetchSchedule = async (item: PlaylistItem) => {
-    if (!item.scheduleUrl) {
-      logDev('Tried requesting a schedule for an item with missing `scheduleUrl`', item);
-      return undefined;
-    }
-
-    const headers = new Headers();
-
-    // add authentication token when `scheduleToken` is defined
-    if (item.scheduleToken) {
-      headers.set(AUTHENTICATION_HEADER, item.scheduleToken);
-    }
-
-    try {
-      const response = await fetch(item.scheduleUrl, {
-        headers,
-      });
-
-      // await needed to ensure the error is caught here
-      return await getDataOrThrow(response);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        logDev(`Fetch failed for EPG schedule: '${item.scheduleUrl}'`, error);
-      }
-    }
-  };
-
-  /**
    * Fetch and parse the EPG schedule for the given PlaylistItem.
    * When there is no program (empty schedule) or the request fails, it returns a static program.
    */
   getSchedule = async (item: PlaylistItem) => {
-    const schedule = await this.fetchSchedule(item);
-    const programs = await this.parseSchedule(schedule, !!item.scheduleDemo);
+    const epgService = this.getEpgService(item);
+
+    const schedule = await epgService.fetchSchedule(item);
+    const programs = await this.parseSchedule(schedule, item);
+
     const catchupHours = item.catchupHours && parseInt(item.catchupHours);
 
     return {
@@ -150,6 +92,17 @@ export default class EpgService {
       backgroundImage: item.backgroundImage,
       programs,
     } as EpgChannel;
+  };
+
+  getEpgService = (item: PlaylistItem) => {
+    const scheduleType = item?.scheduleType || EPG_TYPE.jwp;
+    const service = getNamedModule(EpgService, scheduleType?.toLowerCase());
+
+    if (!service) {
+      console.error(`No epg service was added for the ${scheduleType} schedule type`);
+    }
+
+    return service;
   };
 
   /**
