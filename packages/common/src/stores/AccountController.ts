@@ -472,7 +472,6 @@ export default class AccountController {
     useAccountStore.setState({
       subscription: activeSubscription,
       pendingOffer,
-      loading: false,
       transactions,
       activePayment,
     });
@@ -532,10 +531,12 @@ export default class AccountController {
       customerConsents,
     });
 
-    return await Promise.allSettled([
+    await Promise.allSettled([
       accessModel === ACCESS_MODEL.SVOD && shouldSubscriptionReload ? this.reloadActiveSubscription() : Promise.resolve(),
       this.getPublisherConsents(),
     ]);
+
+    useAccountStore.setState({ loading: false });
   }
 
   private validateInputLength = (values: { firstName: string; lastName: string }) => {
