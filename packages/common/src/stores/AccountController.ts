@@ -88,14 +88,14 @@ export default class AccountController {
 
     await this.profileController?.loadPersistedProfile();
     await this.accountService.initialize(config, url, this.logout);
+
+    // set the accessModel before restoring the user session
+    useConfigStore.setState({ accessModel: this.accountService.accessModel });
+
     await this.loadUserData();
 
     useAccountStore.setState({ loading: false });
   };
-
-  getAccessModel() {
-    return this.accountService.accessModel || 'AVOD';
-  }
 
   getSandbox() {
     return this.accountService.sandbox;

@@ -88,11 +88,7 @@ export default class AppController {
 
     // when an integration is set, we initialize the AccountController
     if (integrationType) {
-      const accountController = getModule(AccountController);
-
-      await accountController.initialize(url);
-
-      useConfigStore.setState({ accessModel: accountController.getAccessModel() });
+      await getModule(AccountController).initialize(url);
     }
 
     return { config, settings, configSource };
