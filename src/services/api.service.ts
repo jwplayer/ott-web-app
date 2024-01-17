@@ -34,14 +34,14 @@ export default class ApiService {
   };
 
   private parseDate = (item: PlaylistItem, prop: string) => {
-    const date = item[prop];
+    const date = item[prop] as string | undefined;
 
-    if (date && !isValid(date)) {
+    if (date && !isValid(new Date(date))) {
       console.error(`Invalid "${prop}" date provided for the "${item.title}" media item`);
       return undefined;
     }
 
-    return typeof date === 'string' ? parseISO(date) : undefined;
+    return date ? parseISO(date) : undefined;
   };
 
   /**

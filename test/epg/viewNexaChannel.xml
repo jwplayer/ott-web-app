@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE tv SYSTEM "xmltv.dtd">
+<tv source-info-url="https://bitcentral.com" source-info-name="Bitcentral, Inc." source-data-url="https://fuel-streaming-prod01.fuelmedia.io/v1/sem/dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089.m3u8" generator-info-name="FUEL EPG Feed" generator-info-url="https://bitcentral.com/fuel/">
+    <channel id="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089" start="20231120092300 +0000" stop="20231204092300 +0000">
+        <display-name><![CDATA[Test Channel]]></display-name>
+    </channel>
+    <programme start="20231120073000 +0000" stop="20231120105014 +0000" channel="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089">
+        <title lang="en"><![CDATA[Tears of Steel]]></title>
+        <desc lang="en"><![CDATA[Tears of Steel (code-named Project Mango) is a short science fiction film by producer Ton Roosendaal and director/writer Ian Hubert. The film is both live-action and CGI; it was made using new enhancements to the visual effects capabilities of Blender, a free and open-source 3D computer graphics app. Set in a dystopian future, the short film features a group of warriors and scientists who gather at the Oude Kerk in Amsterdam in a desperate attempt to save the world from destructive robots.]]></desc>
+        <date><![CDATA[20231120]]></date>
+        <icon src="https://fueltools-prod01-public.fuelmedia.io/4523afd9-82d5-45ae-9496-786451f2b517/20230330/5a66fb0a-7ad7-4429-a736-168862df98e5/thumbnail_20230330012948467.jpg" width="1728" height="720"/>
+        <episode-num system="assetId"><![CDATA[5a66fb0a-7ad7-4429-a736-168862df98e5]]></episode-num>
+        <genre lang="en"><![CDATA[action]]></genre>
+        <length units="seconds"><![CDATA[734.192]]></length>
+        <rating system="bfcc">
+            <value><![CDATA[CC-BY]]></value>
+        </rating>
+    </programme>
+    <programme start="20231120105100 +0000" stop="20231120133056 +0000" channel="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089">
+        <title lang="en"><![CDATA[The Lost World: Jurassic Park]]></title>
+        <desc lang="en"><![CDATA[A research team is sent to the Jurassic Park Site B island to study the dinosaurs there, while an InGen team approaches with another agenda.]]></desc>
+        <date><![CDATA[20231120]]></date>
+        <icon src="https://fueltools-prod01-public.fuelmedia.io/4523afd9-82d5-45ae-9496-786451f2b517/20230330/592cd6e5-55d3-427f-9b6d-2cca9d0627fb/thumbnail_20230330012846851.jpg" width="1299" height="720"/>
+        <episode-num system="assetId"><![CDATA[592cd6e5-55d3-427f-9b6d-2cca9d0627fb]]></episode-num>
+        <genre lang="en"><![CDATA[action]]></genre>
+        <length units="seconds"><![CDATA[116.727]]></length>
+        <rating system="mpaa">
+            <value><![CDATA[pg]]></value>
+        </rating>
+    </programme>
+    <programme start="20231120133136 +0000" stop="20231120145100 +0000" channel="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089">
+        <title lang="en"><![CDATA[Spider Man: Homecoming [Captions]]]></title>
+        <desc lang="en"><![CDATA[Following the events of Captain America: Civil War, Peter Parker, with the help of his mentor Tony Stark, tries to balance his life as an ordinary high school student in Queens, New York City, with fighting crime as his superhero alter ego Spider-Man as a new threat, the Vulture, emerges.  [With Captions]]]></desc>
+        <date><![CDATA[20231120]]></date>
+        <icon src="https://fueltools-prod01-public.fuelmedia.io/4523afd9-82d5-45ae-9496-786451f2b517/20230330/5a0ee29e-ef30-4f21-8536-9650d32d7f05/thumbnail_20230330012852324.jpg" width="1694" height="720"/>
+        <episode-num system="assetId"><![CDATA[5a0ee29e-ef30-4f21-8536-9650d32d7f05]]></episode-num>
+        <genre lang="en"><![CDATA[action]]></genre>
+        <length units="seconds"><![CDATA[146.124]]></length>
+        <rating system="bfcc">
+            <value><![CDATA[12a]]></value>
+        </rating>
+    </programme>
+    <programme start="20231120145200 +0000" stop="20231120171448 +0000" channel="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089">
+        <title lang="en"><![CDATA[Sintel (PPI)]]></title>
+        <desc lang="en"><![CDATA[Sintel, code-named Project Durian during production, is a 2010 computer-animated fantasy short film. It was the third Blender "open movie". It was produced by Ton Roosendaal, chairman of the Blender Foundation, written by Esther Wouda, directed by Colin Levy. The plot follows the character, Sintel, who is tracking down her pet Scales, a dragon.]]></desc>
+        <date><![CDATA[20231120]]></date>
+        <icon src="https://fueltools-prod01-public.fuelmedia.io/4523afd9-82d5-45ae-9496-786451f2b517/20230330/aa12cb30-d3d3-4b11-9d70-6c8a962f5c0b/thumbnail_20230330012754797.jpg" width="1694" height="720"/>
+        <episode-num system="assetId"><![CDATA[aa12cb30-d3d3-4b11-9d70-6c8a962f5c0b]]></episode-num>
+        <genre lang="en"><![CDATA[fantasy]]></genre>
+        <length units="seconds"><![CDATA[888.164]]></length>
+        <rating system="bfcc">
+            <value><![CDATA[12a]]></value>
+        </rating>
+    </programme>
+    <programme start="20231120171500 +0000" stop="20231120201244 +0000" channel="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089">
+        <title lang="en"><![CDATA[Spring (Premium)]]></title>
+        <desc lang="en"><![CDATA[Spring is a 2019 animated fantasy short film directed and written by Andreas Goralczyk and produced by Ton Roosendaal and Francesco Siddi. It is the Blender Institute's 12th "open movie", and was made utilizing the open-source software, Blender. The film is about a young shepherd and her dog confronting ancient spirits in order to bring about the change of seasons.]]></desc>
+        <date><![CDATA[20231120]]></date>
+        <icon src="https://fueltools-prod01-public.fuelmedia.io/4523afd9-82d5-45ae-9496-786451f2b517/20230330/8843ecb9-c5aa-40c3-8b8b-816b68d9e319/thumbnail_20230330012953321.jpg" width="1719" height="720"/>
+        <episode-num system="assetId"><![CDATA[8843ecb9-c5aa-40c3-8b8b-816b68d9e319]]></episode-num>
+        <genre lang="en"><![CDATA[Fantasy]]></genre>
+        <length units="seconds"><![CDATA[464.191]]></length>
+        <rating system="bfcc">
+            <value><![CDATA[cc-by]]></value>
+        </rating>
+    </programme>
+    <programme start="20231120201300 +0000" stop="20231120221856 +0000" channel="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089">
+        <title lang="en"><![CDATA[Hero]]></title>
+        <desc lang="en"><![CDATA[Hero is a showcase for the upcoming Grease Pencil in Blender 2.8. Grease Pencil means 2D animation tools within a full 3D pipeline. In Blender. In Open Source. Free for everyone. Hero is directed by Daniel Martinez Lara, and it is the 6th short film funded by the Blender Cloud.]]></desc>
+        <date><![CDATA[20231120]]></date>
+        <icon src="https://fueltools-prod01-public.fuelmedia.io/4523afd9-82d5-45ae-9496-786451f2b517/20230330/fb35f2d5-9458-420e-87a5-eed520b23861/thumbnail_20230330013147016.jpg" width="1719" height="720"/>
+        <episode-num system="assetId"><![CDATA[fb35f2d5-9458-420e-87a5-eed520b23861]]></episode-num>
+        <genre lang="en"><![CDATA[Drama]]></genre>
+        <length units="seconds"><![CDATA[236.751]]></length>
+        <rating system="bfcc">
+            <value><![CDATA[cc-by]]></value>
+        </rating>
+    </programme>
+    <programme start="20231120221951 +0000" stop="20231120235451 +0000" channel="dc4b6b04-7c6f-49f1-aac1-1ff61cb7d089">
+        <title lang="en"><![CDATA[Tears of Steel]]></title>
+        <desc lang="en"><![CDATA[Tears of Steel (code-named Project Mango) is a short science fiction film by producer Ton Roosendaal and director/writer Ian Hubert. The film is both live-action and CGI; it was made using new enhancements to the visual effects capabilities of Blender, a free and open-source 3D computer graphics app. Set in a dystopian future, the short film features a group of warriors and scientists who gather at the Oude Kerk in Amsterdam in a desperate attempt to save the world from destructive robots.]]></desc>
+        <date><![CDATA[20231121]]></date>
+        <icon src="https://fueltools-prod01-public.fuelmedia.io/4523afd9-82d5-45ae-9496-786451f2b517/20230330/5a66fb0a-7ad7-4429-a736-168862df98e5/thumbnail_20230330012948467.jpg" width="1728" height="720"/>
+        <episode-num system="assetId"><![CDATA[5a66fb0a-7ad7-4429-a736-168862df98e5]]></episode-num>
+        <genre lang="en"><![CDATA[action]]></genre>
+        <length units="seconds"><![CDATA[734.192]]></length>
+        <rating system="bfcc">
+            <value><![CDATA[CC-BY]]></value>
+        </rating>
+    </programme>
+</tv>

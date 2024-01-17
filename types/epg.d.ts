@@ -1,3 +1,5 @@
+import type { EPG_TYPE } from '#src/config';
+
 export type EpgChannel = {
   id: string;
   title: string;
@@ -17,3 +19,5 @@ export type EpgProgram = {
   cardImage?: string;
   backgroundImage?: string;
 };
+
+export type EpgScheduleType = keyof typeof EPG_TYPE;
