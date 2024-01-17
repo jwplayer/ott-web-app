@@ -87,7 +87,7 @@ describe('User Component tests', () => {
     });
     mockService(FavoritesController, { clear: vi.fn() });
     mockService(CheckoutController, { getSubscriptionSwitches: vi.fn(), getSubscriptionOfferIds: vi.fn().mockReturnValue([]) });
-    mockService(ProfileController, { listProfiles: vi.fn() });
+    mockService(ProfileController, { listProfiles: vi.fn(), isEnabled: vi.fn().mockReturnValue(false) });
 
     useConfigStore.setState({
       accessModel: ACCESS_MODEL.SVOD,

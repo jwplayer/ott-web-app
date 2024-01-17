@@ -69,7 +69,6 @@ export default class JWPAccountService extends AccountService {
       canShowReceipts: true,
       canDeleteAccount: true,
       hasNotifications: true,
-      hasProfiles: true,
       hasSocialURLs: true,
     });
 

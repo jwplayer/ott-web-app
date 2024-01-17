@@ -3,7 +3,7 @@ import { injectable } from 'inversify';
 import defaultAvatar from '@jwp/ott-theme/assets/profiles/default_avatar.png';
 
 import type { CreateProfile, DeleteProfile, EnterProfile, GetProfileDetails, ListProfiles, UpdateProfile } from '../../../../types/account';
-import ProfileService from '../../ProfileService';
+import ProfileService from '../ProfileService';
 import StorageService from '../../StorageService';
 
 @injectable()

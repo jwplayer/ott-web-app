@@ -1,8 +1,5 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import { mockService } from '@jwp/ott-common/test/mockService';
-import { DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
 
 import { createWrapper, waitForWithFakeTimers } from '../../../test/utils';
 
@@ -16,27 +13,15 @@ vi.mock('../SocialButton/SocialButton.tsx', () => ({
   },
 }));
 
+const socialLoginURLs = {
+  twitter: 'https://staging-v2.inplayer.com/',
+  facebook: 'https://www.facebook.com/',
+  google: 'https://accounts.google.com/',
+};
+
 describe('<LoginForm>', () => {
   beforeEach(() => {
     vi.useFakeTimers();
-
-    // TODO: remove AccountController from component
-    mockService(AccountController, {
-      getFeatures: () => DEFAULT_FEATURES,
-      getSocialLoginUrls: vi.fn().mockImplementation(() =>
-        Promise.resolve([
-          {
-            twitter: 'https://staging-v2.inplayer.com/',
-          },
-          {
-            facebook: 'https://www.facebook.com/',
-          },
-          {
-            google: 'https://accounts.google.com/',
-          },
-        ]),
-      ),
-    });
   });
 
   afterEach(() => {
@@ -53,6 +38,7 @@ describe('<LoginForm>', () => {
           password: '',
         }}
         errors={{}}
+        socialLoginURLs={socialLoginURLs}
         submitting={false}
         messageKey={null}
       />,
@@ -74,6 +60,7 @@ describe('<LoginForm>', () => {
           password: 'mypassword',
         }}
         errors={{}}
+        socialLoginURLs={null}
         submitting={false}
         messageKey={null}
       />,
@@ -96,6 +83,7 @@ describe('<LoginForm>', () => {
           password: 'mypassword',
         }}
         errors={{ email: 'Email error', password: 'Password error', form: 'Form error' }}
+        socialLoginURLs={null}
         submitting={false}
         messageKey={null}
       />,
@@ -119,6 +107,7 @@ describe('<LoginForm>', () => {
           password: 'mypassword',
         }}
         errors={{}}
+        socialLoginURLs={null}
         submitting={true}
         messageKey={null}
       />,
@@ -142,6 +131,7 @@ describe('<LoginForm>', () => {
           password: 'mypassword',
         }}
         errors={{}}
+        socialLoginURLs={null}
         submitting={true}
         messageKey={null}
       />,
@@ -169,6 +159,7 @@ describe('<LoginForm>', () => {
           password: '',
         }}
         errors={{}}
+        socialLoginURLs={null}
         submitting={true}
         messageKey={null}
       />,

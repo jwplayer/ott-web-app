@@ -191,6 +191,7 @@ export default class AccountController {
     useAccountStore.setState({ loading: true });
 
     const response = await this.accountService.login({ config, email, password, referrer });
+
     if (response) {
       await this.afterLogin(response.user, response.customerConsents, accessModel);
 

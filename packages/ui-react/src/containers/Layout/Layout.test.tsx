@@ -10,7 +10,7 @@ import Layout from './Layout';
 
 describe('<Layout />', () => {
   beforeEach(() => {
-    mockService(ProfileController, {});
+    mockService(ProfileController, { isEnabled: vi.fn().mockReturnValue(false) });
     mockService(AccountController, { getFeatures: () => DEFAULT_FEATURES });
   });
 

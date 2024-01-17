@@ -100,18 +100,19 @@ export const useProfiles = (
   options?: UseQueryOptions<ServiceResponse<ListProfilesResponse> | undefined, unknown, ServiceResponse<ListProfilesResponse> | undefined, string[]>,
 ) => {
   const { user } = useAccountStore();
-  const { canManageProfiles } = useProfileStore();
   const isLoggedIn = !!user;
 
-  const profileController = getModule(ProfileController, false);
-  const accountController = getModule(AccountController, false);
+  const profileController = getModule(ProfileController);
 
-  const { hasProfiles } = accountController?.getFeatures() || {};
+  const profilesEnabled = profileController.isEnabled();
 
-  const query = useQuery(['listProfiles'], () => profileController?.listProfiles(), { ...options, enabled: isLoggedIn });
+  const query = useQuery(['listProfiles'], () => profileController.listProfiles(), {
+    ...options,
+    enabled: isLoggedIn && profilesEnabled,
+  });
 
   return {
     query,
-    profilesEnabled: !!(query.data?.responseData.canManageProfiles && hasProfiles && canManageProfiles),
+    profilesEnabled: !!query.data?.responseData.canManageProfiles,
   };
 };

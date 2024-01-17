@@ -3,7 +3,7 @@ import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import * as yup from 'yup';
 
 import type { EnterProfilePayload, ProfileDetailsPayload, ProfilePayload } from '../../types/account';
-import ProfileService from '../services/ProfileService';
+import ProfileService from '../services/integrations/ProfileService';
 import type { IntegrationType } from '../../types/config';
 import { assertModuleMethod, getNamedModule } from '../modules/container';
 import StorageService from '../services/StorageService';
@@ -43,36 +43,32 @@ export default class ProfileController {
     }
   };
 
+  isEnabled() {
+    return !!this.profileService;
+  }
+
   listProfiles = async () => {
     assertModuleMethod(this.profileService?.listProfiles, 'listProfiles is not available in profile service');
 
-    const res = await this.profileService?.listProfiles(undefined);
-
-    const { canManageProfiles } = useProfileStore.getState();
-
-    if (!canManageProfiles && res?.responseData.canManageProfiles) {
-      useProfileStore.setState({ canManageProfiles: true });
-    }
-
-    return res;
+    return this.profileService.listProfiles(undefined);
   };
 
   createProfile = async ({ name, adult, avatar_url, pin }: ProfilePayload) => {
     assertModuleMethod(this.profileService?.createProfile, 'createProfile is not available in profile service');
 
-    return this.profileService?.createProfile({ name, adult, avatar_url, pin });
+    return this.profileService.createProfile({ name, adult, avatar_url, pin });
   };
 
   updateProfile = async ({ id, name, adult, avatar_url, pin }: ProfilePayload) => {
     assertModuleMethod(this.profileService?.updateProfile, 'updateProfile is not available in profile service');
 
-    return this.profileService?.updateProfile({ id, name, adult, avatar_url, pin });
+    return this.profileService.updateProfile({ id, name, adult, avatar_url, pin });
   };
 
   enterProfile = async ({ id, pin }: EnterProfilePayload) => {
     assertModuleMethod(this.profileService?.enterProfile, 'enterProfile is not available in profile service');
 
-    const response = await this.profileService?.enterProfile({ id, pin });
+    const response = await this.profileService.enterProfile({ id, pin });
 
     const profile = response?.responseData;
 
@@ -86,13 +82,13 @@ export default class ProfileController {
   deleteProfile = async ({ id }: ProfileDetailsPayload) => {
     assertModuleMethod(this.profileService?.deleteProfile, 'deleteProfile is not available in profile service');
 
-    return this.profileService?.deleteProfile({ id });
+    return this.profileService.deleteProfile({ id });
   };
 
   getProfileDetails = async ({ id }: ProfileDetailsPayload) => {
     assertModuleMethod(this.profileService?.getProfileDetails, 'getProfileDetails is not available in profile service');
 
-    return this.profileService?.getProfileDetails({ id });
+    return this.profileService.getProfileDetails({ id });
   };
 
   persistProfile = ({ profile }: { profile: ProfilesData }) => {

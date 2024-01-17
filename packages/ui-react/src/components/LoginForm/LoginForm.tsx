@@ -5,6 +5,7 @@ import type { FormErrors } from '@jwp/ott-common/types/form';
 import type { LoginFormData } from '@jwp/ott-common/types/account';
 import { testId } from '@jwp/ott-common/src/utils/common';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
+import type { SocialLoginURLs } from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
 import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
@@ -28,11 +29,12 @@ type Props = {
   errors: FormErrors<LoginFormData>;
   values: LoginFormData;
   submitting: boolean;
+  socialLoginURLs: SocialLoginURLs | null;
   siteName?: string;
   messageKey: string | null;
 };
 
-const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submitting, siteName, messageKey }: Props) => {
+const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, values, errors, submitting, siteName, messageKey }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
   const { t } = useTranslation('account');
   const location = useLocation();
@@ -53,7 +55,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, submit
         </div>
       )}
 
-      <SocialButtonsList />
+      <SocialButtonsList socialLoginURLs={socialLoginURLs} />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField

@@ -25,7 +25,7 @@ import AppController from '../stores/AppController';
 import AccountService from '../services/integrations/AccountService';
 import CheckoutService from '../services/integrations/CheckoutService';
 import SubscriptionService from '../services/integrations/SubscriptionService';
-import ProfileService from '../services/ProfileService';
+import ProfileService from '../services/integrations/ProfileService';
 
 // Cleeng integration
 import CleengService from '../services/integrations/cleeng/CleengService';

@@ -72,7 +72,6 @@ export const DEFAULT_FEATURES = {
   canUpdatePaymentMethod: false,
   canShowReceipts: false,
   hasSocialURLs: false,
-  hasProfiles: false,
   hasNotifications: false,
 };
 export const simultaneousLoginWarningKey = 'simultaneous_logins';

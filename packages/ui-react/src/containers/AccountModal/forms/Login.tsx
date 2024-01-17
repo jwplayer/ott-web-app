@@ -9,6 +9,7 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
+import useSocialLoginUrls from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
 
@@ -23,6 +24,8 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
+
+  const socialLoginURLs = useSocialLoginUrls(window.location.href.split('?')[0]);
 
   const queryClient = useQueryClient();
 
@@ -63,6 +66,7 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
       errors={errors}
       submitting={submitting}
       siteName={siteName}
+      socialLoginURLs={socialLoginURLs}
     />
   );
 };
