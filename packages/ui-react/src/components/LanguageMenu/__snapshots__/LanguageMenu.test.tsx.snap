@@ -6,15 +6,14 @@ exports[`<LanguageMenu> > renders and matches snapshot 1`] = `
     aria-controls="language-panel"
     aria-expanded="false"
     aria-label="language_menu"
-    class="_iconButton_0fef65 _iconButton_0acc33"
+    class="_iconButton_0fef65"
     data-testid="language-menu-button"
     role="button"
     tabindex="0"
   >
     <svg
       aria-hidden="true"
-      class="_icon_1e9999"
-      focusable="false"
+      class="_icon_585b29"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >

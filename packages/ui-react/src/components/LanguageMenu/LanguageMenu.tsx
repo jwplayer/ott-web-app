@@ -9,11 +9,13 @@ import IconButton from '../IconButton/IconButton';
 import Link from '../Link/Link';
 import Panel from '../Panel/Panel';
 import Popover from '../Popover/Popover';
+import Icon from '../Icon/Icon';
 
 import styles from './LanguageMenu.module.scss';
 
 type Props = {
   onClick: (code: string) => void | null;
+  className?: string;
   languages: LanguageDefinition[];
   currentLanguage: LanguageDefinition | undefined;
   languageMenuOpen: boolean;
@@ -21,7 +23,7 @@ type Props = {
   closeLanguageMenu: () => void;
 };
 
-const LanguageMenu = ({ onClick, languages, currentLanguage, languageMenuOpen, closeLanguageMenu, openLanguageMenu }: Props) => {
+const LanguageMenu = ({ onClick, className, languages, currentLanguage, languageMenuOpen, closeLanguageMenu, openLanguageMenu }: Props) => {
   const { t } = useTranslation('menu');
 
   const handleLanguageSelect = (event: MouseEvent<HTMLElement>, code: string) => {
@@ -45,14 +47,13 @@ const LanguageMenu = ({ onClick, languages, currentLanguage, languageMenuOpen, c
         data-testid={testId('language-menu-button')}
         aria-controls="language-panel"
         aria-expanded={languageMenuOpen}
-        className={classNames(styles.iconButton, styles.actionButton)}
+        className={classNames(styles.iconButton, className)}
         aria-label={t('language_menu')}
         onClick={handleMenuToggle}
         onBlur={closeLanguageMenu}
       >
-        <Language />
+        <Icon icon={Language} />
       </IconButton>
-
       <Popover isOpen={languageMenuOpen} onClose={closeLanguageMenu} aria-expanded={languageMenuOpen}>
         <Panel id="language-panel">
           <ul className={styles.menuItems}>

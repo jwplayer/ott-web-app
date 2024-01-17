@@ -106,7 +106,7 @@
     z-index: 1;
     width: auto;
     height: auto;
-    padding: calc(variables.$base-spacing / 2);
+    padding: calc(#{variables.$base-spacing} / 2);
     white-space: nowrap;
     text-decoration: none;
     background: var(--highlight-color, white);
