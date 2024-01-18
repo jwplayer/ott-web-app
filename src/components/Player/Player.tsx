@@ -11,6 +11,7 @@ import useOttAnalytics from '#src/hooks/useOttAnalytics';
 import { logDev, testId } from '#src/utils/common';
 import { useConfigStore } from '#src/stores/ConfigStore';
 import type { AdSchedule } from '#types/ad-schedule';
+import { attachAnalyticsParams } from '#src/utils/analytics';
 
 type Props = {
   feedId?: string;
@@ -56,6 +57,7 @@ const Player: React.FC<Props> = ({
   const loadingRef = useRef(false);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
+
   const setPlayer = useOttAnalytics(item, feedId);
 
   const { settings } = useConfigStore((s) => s);
@@ -160,6 +162,9 @@ const Player: React.FC<Props> = ({
       if (!window.jwplayer || !playerElementRef.current) return;
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
+
+      // Inject user_id and profile_id into the CDN analytics
+      attachAnalyticsParams(item);
 
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
