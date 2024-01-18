@@ -48,4 +48,4 @@ export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | un
 };
 
 export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType' | 'liveChannelsId'> =>
-  item.contentType === 'LiveChannel' && !!item.liveChannelsId;
+  item.contentType?.toLowerCase() === CONTENT_TYPE.liveChannel && !!item.liveChannelsId;
