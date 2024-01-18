@@ -1,9 +1,9 @@
 import { addDays, differenceInDays } from 'date-fns';
 import { injectable } from 'inversify';
-import EpgService from '@jwp/ott-common/src/services/EpgService';
-import { EPG_TYPE } from '@jwp/ott-common/src/constants';
-import { getNamedModule } from '@jwp/ott-common/src/modules/container';
 
+import EpgService from '../services/EpgService';
+import { EPG_TYPE } from '../constants';
+import { getNamedModule } from '../modules/container';
 import { logDev } from '../utils/common';
 import type { PlaylistItem } from '../../types/playlist';
 import type { EpgChannel, EpgProgram } from '../../types/epg';

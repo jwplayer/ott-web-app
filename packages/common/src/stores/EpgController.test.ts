@@ -2,8 +2,9 @@ import { afterEach, beforeEach, describe, expect } from 'vitest';
 import { unregister } from 'timezone-mock';
 import channel1 from '@jwp/ott-testing/epg/jwChannel.json';
 import livePlaylistFixture from '@jwp/ott-testing/fixtures/livePlaylist.json';
-import EpgService from '@jwp/ott-common/src/services/EpgService';
-import type { Playlist } from '@jwp/ott-common/types/playlist';
+
+import EpgService from '../services/EpgService';
+import type { Playlist } from '../../types/playlist';
 
 import EpgController from './EpgController';
 
