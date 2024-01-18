@@ -55,10 +55,12 @@ export default function useNotifications(uuid: string = '') {
               window.location.href = notification.resource?.redirect_to_url;
               break;
             case NotificationsTypes.ACCOUNT_LOGOUT:
-              if (notification.resource?.reason === 'sessions_limit') {
-                navigate(modalURLFromLocation(location, 'login', { message: simultaneousLoginWarningKey }));
-              } else {
-                await accountController.logout();
+              try {
+                await accountController?.logout();
+              } finally {
+                if (notification.resource?.reason === 'sessions_limit') {
+                  navigate(modalURLFromLocation(location, 'login', { message: simultaneousLoginWarningKey }));
+                }
               }
               break;
             default:

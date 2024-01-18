@@ -42,7 +42,7 @@ export const CONTENT_TYPE = {
   // Page with a list of channels
   live: 'live',
   // Separate channel page
-  livechannel: 'livechannel',
+  liveChannel: 'livechannel',
   // Static page with markdown
   page: 'page',
   // Page with shelves list
@@ -74,4 +74,10 @@ export const DEFAULT_FEATURES = {
   hasSocialURLs: false,
   hasNotifications: false,
 };
+
 export const simultaneousLoginWarningKey = 'simultaneous_logins';
+
+export const EPG_TYPE = {
+  jwp: 'jwp',
+  viewNexa: 'viewnexa',
+} as const;

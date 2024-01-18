@@ -39,17 +39,17 @@ const DemoContentLoader = ({ query }: { query: BootstrapData }) => {
     return <LoadingOverlay />;
   }
 
-  const { configSource, settings } = data || {};
+  const { configSource } = data || {};
 
   return (
     <>
-      {/*Show the error page when error except in demo mode (the demo mode shows its own error)*/}
+      {/* Show the error page when error except in demo mode (the demo mode shows its own error) */}
       {!IS_DEMO_OR_PREVIEW && error && (
         <ErrorPage title={error?.payload?.title} message={error?.payload?.description} error={error} helpLink={error?.payload?.helpLink} />
       )}
-      {IS_DEMO_OR_PREVIEW && settings && <DemoConfigDialog query={query} />}
+      {IS_DEMO_OR_PREVIEW && <DemoConfigDialog query={query} />}
       {/* Config select control to improve testing experience */}
-      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && settings && <DevConfigSelector selectedConfig={configSource} />}
+      {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
     </>
   );
 };

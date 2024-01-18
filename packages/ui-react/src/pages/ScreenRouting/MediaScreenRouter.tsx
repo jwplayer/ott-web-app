@@ -22,7 +22,7 @@ export const mediaScreenMap = new ScreenMap<PlaylistItem, ScreenComponent<Playli
 // Register media screens
 mediaScreenMap.registerByContentType(MediaSeries, CONTENT_TYPE.series);
 mediaScreenMap.registerByContentType(MediaEpisode, CONTENT_TYPE.episode);
-mediaScreenMap.registerByContentType(MediaLiveChannel, CONTENT_TYPE.livechannel);
+mediaScreenMap.registerByContentType(MediaLiveChannel, CONTENT_TYPE.liveChannel);
 mediaScreenMap.registerByContentType(MediaStaticPage, CONTENT_TYPE.page);
 mediaScreenMap.registerDefault(MediaMovie);
 

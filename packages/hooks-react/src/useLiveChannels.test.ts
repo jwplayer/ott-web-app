@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import EpgService from '@jwp/ott-common/src/services/EpgService';
 import type { Playlist } from '@jwp/ott-common/types/playlist';
 import type { EpgChannel } from '@jwp/ott-common/types/epg';
 import livePlaylistFixture from '@jwp/ott-testing/fixtures/livePlaylist.json';
 import epgChannelsFixture from '@jwp/ott-testing/fixtures/epgChannels.json';
 import epgChannelsUpdateFixture from '@jwp/ott-testing/fixtures/epgChannelsUpdate.json';
 import { mockService } from '@jwp/ott-common/test/mockService';
+import EpgController from '@jwp/ott-common/src/stores/EpgController';
 
 import { queryClientWrapper, waitForWithFakeTimers } from './testUtils';
 import useLiveChannels from './useLiveChannels';
@@ -26,7 +26,7 @@ describe('useLiveChannels', () => {
   });
 
   test('gets the date using the EPG service getSchedules method', async () => {
-    const { getSchedules } = mockService(EpgService, {
+    const { getSchedules } = mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -50,7 +50,7 @@ describe('useLiveChannels', () => {
   });
 
   test('selects the initial channel based of the initialChannelId', async () => {
-    const { getSchedules } = mockService(EpgService, {
+    const { getSchedules } = mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -72,7 +72,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:45:00Z'));
     });
 
-    mockService(EpgService, {
+    mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -92,7 +92,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T09:00:00Z'));
     });
 
-    mockService(EpgService, {
+    mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -119,7 +119,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    mockService(EpgService, {
+    mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -148,7 +148,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    mockService(EpgService, {
+    mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -176,7 +176,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    mockService(EpgService, {
+    mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -211,7 +211,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    mockService(EpgService, {
+    mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -238,7 +238,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T10:15:00Z'));
     });
 
-    const { getSchedules } = mockService(EpgService, {
+    const { getSchedules } = mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -271,7 +271,7 @@ describe('useLiveChannels', () => {
       vi.setSystemTime(new Date('2022-07-15T11:05:00Z'));
     });
 
-    const { getSchedules } = mockService(EpgService, {
+    const { getSchedules } = mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(schedule),
     });
 
@@ -304,7 +304,7 @@ describe('useLiveChannels', () => {
     });
 
     // start with update schedule (which has more programs)
-    const { getSchedules } = mockService(EpgService, {
+    const { getSchedules } = mockService(EpgController, {
       getSchedules: vi.fn().mockResolvedValue(scheduleUpdate),
     });
 

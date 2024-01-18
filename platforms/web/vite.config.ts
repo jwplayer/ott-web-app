@@ -91,6 +91,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       port: 8080,
     },
     mode: mode,
+    assetsInclude: mode === 'test' ? ['**/*.xml'] : [],
     build: {
       outDir: './build/public',
       cssCodeSplit: false,

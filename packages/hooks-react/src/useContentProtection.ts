@@ -7,6 +7,7 @@ import JWPEntitlementService from '@jwp/ott-common/src/services/JWPEntitlementSe
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
+import { isTruthyCustomParamValue } from '@jwp/ott-common/src/utils/common';
 
 const useContentProtection = <T>(
   type: EntitlementType,
@@ -24,7 +25,7 @@ const useContentProtection = <T>(
     signingConfig: config.contentSigningService,
     contentProtection: config.contentProtection,
     jwp: config.integrations.jwp,
-    urlSigning: config?.custom?.urlSigning,
+    urlSigning: isTruthyCustomParamValue(config?.custom?.urlSigning),
   }));
   const host = signingConfig?.host;
   const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? signingConfig?.drmPolicyId;

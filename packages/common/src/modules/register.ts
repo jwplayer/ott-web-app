@@ -1,13 +1,12 @@
 // To organize imports in a better way
 /* eslint-disable import/order */
 import 'reflect-metadata'; // include once in the app for inversify (see: https://github.com/inversify/InversifyJS/blob/master/README.md#-installation)
-import { INTEGRATION } from '../constants';
+import { INTEGRATION, EPG_TYPE } from '../constants';
 import { container } from './container';
 import { DETERMINE_INTEGRATION_TYPE, INTEGRATION_TYPE } from './types';
 
 import ApiService from '../services/ApiService';
 import WatchHistoryService from '../services/WatchHistoryService';
-import EpgService from '../services/EpgService';
 import GenericEntitlementService from '../services/GenericEntitlementService';
 import JWPEntitlementService from '../services/JWPEntitlementService';
 import FavoriteService from '../services/FavoriteService';
@@ -20,6 +19,11 @@ import AccountController from '../stores/AccountController';
 import ProfileController from '../stores/ProfileController';
 import FavoritesController from '../stores/FavoritesController';
 import AppController from '../stores/AppController';
+
+// Epg services
+import EpgService from '../services/EpgService';
+import ViewNexaEpgService from '../services/epg/ViewNexaEpgService';
+import JWEpgService from '../services/epg/JWEpgService';
 
 // Integration interfaces
 import AccountService from '../services/integrations/AccountService';
@@ -59,6 +63,10 @@ container.bind(FavoritesController).toSelf();
 container.bind(AccountController).toSelf();
 container.bind(CheckoutController).toSelf();
 container.bind(ProfileController).toSelf();
+
+// EPG services
+container.bind(EpgService).to(JWEpgService).whenTargetNamed(EPG_TYPE.jwp);
+container.bind(EpgService).to(ViewNexaEpgService).whenTargetNamed(EPG_TYPE.viewNexa);
 
 // Functions
 container.bind(INTEGRATION_TYPE).toDynamicValue(getIntegrationType);

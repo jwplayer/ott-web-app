@@ -2,10 +2,10 @@ import { useQuery } from 'react-query';
 import { useCallback, useEffect, useState } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { EpgChannel, EpgProgram } from '@jwp/ott-common/types/epg';
-import EpgService from '@jwp/ott-common/src/services/EpgService';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { getLiveProgram, programIsLive } from '@jwp/ott-common/src/utils/epg';
 import { LIVE_CHANNELS_REFETCH_INTERVAL } from '@jwp/ott-common/src/constants';
+import EpgController from '@jwp/ott-common/src/stores/EpgController';
 
 /**
  * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.
@@ -30,9 +30,9 @@ const useLiveChannels = ({
   initialChannelId: string | undefined;
   enableAutoUpdate?: boolean;
 }) => {
-  const epgService = getModule(EpgService);
+  const epgController = getModule(EpgController);
 
-  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgService.getSchedules(playlist), {
+  const { data: channels = [] } = useQuery(['schedules', ...playlist.map(({ mediaid }) => mediaid)], () => epgController.getSchedules(playlist), {
     refetchInterval: LIVE_CHANNELS_REFETCH_INTERVAL,
   });
 

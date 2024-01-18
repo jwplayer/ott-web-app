@@ -45,6 +45,11 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
         <main
           class="_main_d73633"
         >
+          <p
+            class="_message_d73633"
+          >
+            generic_error_description
+          </p>
           <form
             method="GET"
             target="/"
@@ -112,7 +117,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           <p>
             demo_note
           </p>
-          <p
+          <div
             class="_links_d73633"
           >
             <a
@@ -129,7 +134,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 Show Stack Trace
               </a>
             </span>
-          </p>
+          </div>
         </main>
       </div>
     </div>
