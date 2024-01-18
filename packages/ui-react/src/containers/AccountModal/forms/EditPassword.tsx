@@ -45,7 +45,7 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
         }
         await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
-      await accountController.logout({ includeNetworkRequest: false });
+      await accountController.logout();
       navigate(modalURLFromLocation(location, 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {

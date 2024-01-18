@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import type { GetPlaylistParams, Playlist } from '@jwp/ott-common/types/playlist';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
 import { getModule } from '@jwp/ott-common/src/modules/container';
@@ -6,12 +6,12 @@ import { generatePlaylistPlaceholder } from '@jwp/ott-common/src/utils/collectio
 import { isScheduledOrLiveMedia } from '@jwp/ott-common/src/utils/liveEvent';
 import { isTruthyCustomParamValue } from '@jwp/ott-common/src/utils/common';
 import type { ApiError } from '@jwp/ott-common/src/utils/api';
-import { queryClient } from '@jwp/ott-common/src/queryClient';
 
 const placeholderData = generatePlaylistPlaceholder(30);
 
 export default function usePlaylist(playlistId?: string, params: GetPlaylistParams = {}, enabled: boolean = true, usePlaceholderData: boolean = true) {
   const apiService = getModule(ApiService);
+  const queryClient = useQueryClient();
 
   const callback = async (playlistId?: string, params?: GetPlaylistParams) => {
     const playlist = await apiService.getPlaylistById(playlistId, { ...params });

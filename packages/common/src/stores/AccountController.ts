@@ -1,7 +1,6 @@
 import i18next from 'i18next';
 import { inject, injectable } from 'inversify';
 
-import { queryClient } from '../queryClient';
 import { ACCESS_MODEL, DEFAULT_FEATURES } from '../constants';
 import { logDev } from '../utils/common';
 import type { IntegrationType } from '../../types/config';
@@ -42,6 +41,9 @@ export default class AccountController {
   private readonly profileController?: ProfileController;
   private readonly features: AccountServiceFeatures;
 
+  // temporary callback for refreshing the query cache until we've updated to react-query v4 or v5
+  private refreshEntitlements: (() => Promise<void>) | undefined;
+
   constructor(
     @inject(INTEGRATION_TYPE) integrationType: IntegrationType,
     favoritesController: FavoritesController,
@@ -80,10 +82,10 @@ export default class AccountController {
     }
   };
 
-  initialize = async (url: string) => {
-    useAccountStore.setState({
-      loading: true,
-    });
+  initialize = async (url: string, refreshEntitlements?: () => Promise<void>) => {
+    this.refreshEntitlements = refreshEntitlements;
+
+    useAccountStore.setState({ loading: true });
     const config = useConfigStore.getState().config;
 
     await this.profileController?.loadPersistedProfile();
@@ -202,32 +204,12 @@ export default class AccountController {
     useAccountStore.setState({ loading: false });
   };
 
-  logout = async (logoutOptions: { includeNetworkRequest: boolean } = { includeNetworkRequest: true }) => {
-    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-    await queryClient.invalidateQueries({ queryKey: ['entitlements'] });
-
-    useAccountStore.setState({
-      user: null,
-      subscription: null,
-      transactions: null,
-      activePayment: null,
-      customerConsents: null,
-      publisherConsents: null,
-      loading: false,
-    });
-
-    await this.favoritesController?.restoreFavorites();
-    await this.watchHistoryController?.restoreWatchHistory();
+  logout = async () => {
     await this.accountService?.logout();
-    await this.profileController?.unpersistProfile();
-
-    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-    await queryClient.invalidateQueries({ queryKey: ['entitlements'] });
-
     await this.clearLoginState();
-    if (logoutOptions.includeNetworkRequest) {
-      await this.accountService?.logout();
-    }
+
+    // let the application know to refresh all entitlements
+    await this.refreshEntitlements?.();
   };
 
   register = async (email: string, password: string, referrer: string, consents: CustomerConsent[]) => {
@@ -466,8 +448,8 @@ export default class AccountController {
       logDev('Failed to fetch the pending offer', error);
     }
 
-    // this invalidates all entitlements caches which makes the useEntitlement hook to verify the entitlements.
-    await queryClient.invalidateQueries({ queryKey: ['entitlements'] });
+    // let the app know to refresh the entitlements
+    await this.refreshEntitlements?.();
 
     useAccountStore.setState({
       subscription: activeSubscription,

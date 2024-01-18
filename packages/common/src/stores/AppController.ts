@@ -62,7 +62,7 @@ export default class AppController {
     return config;
   };
 
-  initializeApp = async (url: string) => {
+  initializeApp = async (url: string, refreshEntitlements?: () => Promise<void>) => {
     const settings = await this.settingsService.initialize();
     const configSource = await this.settingsService.getConfigSource(settings, url);
     const config = await this.loadAndValidateConfig(configSource);
@@ -88,7 +88,7 @@ export default class AppController {
 
     // when an integration is set, we initialize the AccountController
     if (integrationType) {
-      await getModule(AccountController).initialize(url);
+      await getModule(AccountController).initialize(url, refreshEntitlements);
     }
 
     return { config, settings, configSource };
