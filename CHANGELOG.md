@@ -1,3 +1,28 @@
+## [5.1.0](https://github.com/jwplayer/ott-web-app/compare/v5.0.0...v5.1.0) (2024-01-18)
+
+
+### Features
+
+* add user_id and profile_id for CDN analytics ([114150e](https://github.com/jwplayer/ott-web-app/commit/114150e6cdd8aaf436c06df30ea785f458b641f0))
+* add user_id and profile_id for CDN analytics ([0bacf37](https://github.com/jwplayer/ott-web-app/commit/0bacf37998904278b46bca17d6029f054150fc51))
+* cdn analytics code cleanup ([aeef40f](https://github.com/jwplayer/ott-web-app/commit/aeef40f6f375783cd0820fd27154b616570d3cf0))
+* cdn analytics code cleanup ([d92937d](https://github.com/jwplayer/ott-web-app/commit/d92937da7592c580df8230a4c1ee2fad3765ff55))
+* **epg:** fix live channel casing ([43c487c](https://github.com/jwplayer/ott-web-app/commit/43c487ca72bfdbf5977e6f873f3505fe5bf6011a))
+* **epg:** use getNamedModule ([0394daf](https://github.com/jwplayer/ott-web-app/commit/0394daf6ce8d73103aee5f5667a98fa089325569))
+* **project:** add view nexa epg provider ([9a71457](https://github.com/jwplayer/ott-web-app/commit/9a71457ae51dec38538e5b5ac719426250d3cae4))
+* **project:** change content type default schemas ([e100384](https://github.com/jwplayer/ott-web-app/commit/e1003844da97ba97618ed46e9eba076e49a6159c))
+* **project:** change the way of DI ([4154488](https://github.com/jwplayer/ott-web-app/commit/4154488dbe0e157ea92434382cc5d2d646cdd2bb))
+* **project:** review comments ([3359612](https://github.com/jwplayer/ott-web-app/commit/3359612cd029858a2ea3f596d23cfc835bda2fc8))
+
+
+### Bug Fixes
+
+* **epg:** check lower case, log error ([be774d4](https://github.com/jwplayer/ott-web-app/commit/be774d47780a238800796caf22700c3e4ce7c28f))
+* fix e2e test ([ba1e0de](https://github.com/jwplayer/ott-web-app/commit/ba1e0de5b60c8a5bfed1e52bacaf15d977b69894))
+* missing getState on useConfigStore under updateCardDetails ([#433](https://github.com/jwplayer/ott-web-app/issues/433)) ([ce32908](https://github.com/jwplayer/ott-web-app/commit/ce329084bf8565c475ea37e04006aaa08766c255))
+* place consents in appropriate section ([6281640](https://github.com/jwplayer/ott-web-app/commit/6281640fc4fb0f6f7b3b56cc34749465348cc7a2))
+* transform url to lowerCase ([68d31c4](https://github.com/jwplayer/ott-web-app/commit/68d31c46df3b5999f8bee79ed269e597b30993bf))
+
 ## [5.0.0](https://github.com/jwplayer/ott-web-app/compare/v4.31.1...v5.0.0) (2024-01-11)
 
 
