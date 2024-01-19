@@ -453,6 +453,7 @@ export default class AccountController {
 
     useAccountStore.setState({
       subscription: activeSubscription,
+      loading: false,
       pendingOffer,
       transactions,
       activePayment,
