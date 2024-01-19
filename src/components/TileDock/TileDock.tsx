@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { type ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './TileDock.module.scss';
 
@@ -19,10 +19,10 @@ export type TileDockProps<T> = {
   animated?: boolean;
   wrapWithEmptyTiles?: boolean;
   transitionTime?: string;
-  renderTile: (item: T, isInView: boolean) => JSX.Element;
-  renderLeftControl?: (handleClick: () => void) => JSX.Element;
-  renderRightControl?: (handleClick: () => void) => JSX.Element;
-  renderPaginationDots?: (index: number, pageIndex: number) => JSX.Element;
+  renderTile: (item: T, isInView: boolean) => ReactNode;
+  renderLeftControl?: (handleClick: () => void) => ReactNode;
+  renderRightControl?: (handleClick: () => void) => ReactNode;
+  renderPaginationDots?: (index: number, pageIndex: number) => ReactNode;
 };
 
 type Tile<T> = {
@@ -75,11 +75,11 @@ function TileDock<T>({
   renderRightControl,
   renderPaginationDots,
 }: TileDockProps<T>) {
-  const [index, setIndex] = useState<number>(0);
-  const [slideToIndex, setSlideToIndex] = useState<number>(0);
-  const [transform, setTransform] = useState<number>(-100);
-  const [doAnimationReset, setDoAnimationReset] = useState<boolean>(false);
-  const [hasTransition, setHasTransition] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [slideToIndex, setSlideToIndex] = useState(0);
+  const [transform, setTransform] = useState(-100);
+  const [animationDone, setAnimationDone] = useState(false);
+  const [isAnimationRunning, setIsAnimationRunning] = useState(false);
 
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
   const tileWidth: number = 100 / tilesToShow;
@@ -90,7 +90,7 @@ function TileDock<T>({
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
-  const transitionBasis: string = isMultiPage && animated && hasTransition ? `transform ${transitionTime} ease` : '';
+  const transitionBasis: string = isMultiPage && animated && isAnimationRunning ? `transform ${transitionTime} ease` : '';
 
   const needControls: boolean = showControls && isMultiPage;
   const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
@@ -98,7 +98,8 @@ function TileDock<T>({
 
   const slide = useCallback(
     (direction: Direction): void => {
-      if (hasTransition) {
+      // Debounce slide events based on if the animation is running
+      if (isAnimationRunning) {
         return;
       }
 
@@ -120,11 +121,17 @@ function TileDock<T>({
 
       setSlideToIndex(nextIndex);
       setTransform(-100 + movement);
-      setHasTransition(true);
 
-      if (!animated) setDoAnimationReset(true);
+      // If this is an animated slider, start the animation 'slide'
+      if (animated) {
+        setIsAnimationRunning(true);
+      }
+      // If not anmiated, trigger the post animation code right away
+      else {
+        setAnimationDone(true);
+      }
     },
-    [animated, cycleMode, index, items.length, tileWidth, tilesToShow, hasTransition],
+    [animated, cycleMode, index, items.length, tileWidth, tilesToShow, isAnimationRunning],
   );
 
   const handleTouchStart = useCallback(
@@ -134,7 +141,7 @@ function TileDock<T>({
         y: event.touches[0].clientY,
       };
 
-      function handleTouchMove(this: HTMLDocument, event: TouchEvent): void {
+      function handleTouchMove(this: Document, event: TouchEvent): void {
         const newPosition: Position = {
           x: event.changedTouches[0].clientX,
           y: event.changedTouches[0].clientY,
@@ -148,7 +155,7 @@ function TileDock<T>({
         }
       }
 
-      function handleTouchEnd(this: HTMLDocument, event: TouchEvent): void {
+      function handleTouchEnd(this: Document, event: TouchEvent): void {
         const newPosition = {
           x: event.changedTouches[0].clientX,
           y: event.changedTouches[0].clientY,
@@ -182,8 +189,9 @@ function TileDock<T>({
     [minimalTouchMovement, slide],
   );
 
+  // Run code after the slide animation to set the new index
   useLayoutEffect(() => {
-    const resetAnimation = (): void => {
+    const postAnimationCleanup = (): void => {
       let resetIndex: number = slideToIndex;
 
       resetIndex = resetIndex >= items.length ? slideToIndex - items.length : resetIndex;
@@ -195,16 +203,18 @@ function TileDock<T>({
 
       setIndex(resetIndex);
       setTransform(-100);
-      setDoAnimationReset(false);
+      setIsAnimationRunning(false);
+      setAnimationDone(false);
     };
 
-    if (doAnimationReset) resetAnimation();
-  }, [doAnimationReset, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis]);
+    if (animationDone) {
+      postAnimationCleanup();
+    }
+  }, [animationDone, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis]);
 
   const handleTransitionEnd = (event: React.TransitionEvent<HTMLUListElement>) => {
     if (event.target === frameRef.current) {
-      setDoAnimationReset(true);
-      setHasTransition(false);
+      setAnimationDone(true);
     }
   };
 
