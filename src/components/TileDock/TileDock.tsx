@@ -16,7 +16,7 @@ export type TileDockProps<T> = {
   minimalTouchMovement?: number;
   showControls?: boolean;
   showDots?: boolean;
-  animated?: boolean;
+  animatedOverride?: boolean;
   wrapWithEmptyTiles?: boolean;
   transitionTime?: string;
   renderTile: (item: T, isInView: boolean) => ReactNode;
@@ -66,7 +66,7 @@ function TileDock<T>({
   spacing = 12,
   minimalTouchMovement = 30,
   showControls = true,
-  animated = !window.matchMedia('(prefers-reduced-motion)').matches,
+  animatedOverride,
   transitionTime = '0.6s',
   wrapWithEmptyTiles = false,
   showDots = false,
@@ -78,6 +78,8 @@ function TileDock<T>({
   const [index, setIndex] = useState(0);
   const [slideToIndex, setSlideToIndex] = useState(0);
   const [transform, setTransform] = useState(-100);
+  // Prevent animation mode from changing after first load
+  const [isAnimated] = useState(animatedOverride ?? !window.matchMedia('(prefers-reduced-motion)').matches);
   const [animationDone, setAnimationDone] = useState(false);
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
 
@@ -90,7 +92,7 @@ function TileDock<T>({
     return sliceItems<T>(items, isMultiPage, index, tilesToShow, cycleMode);
   }, [items, isMultiPage, index, tilesToShow, cycleMode]);
 
-  const transitionBasis: string = isMultiPage && animated && isAnimationRunning ? `transform ${transitionTime} ease` : '';
+  const transitionBasis: string = isMultiPage && isAnimated && isAnimationRunning ? `transform ${transitionTime} ease` : '';
 
   const needControls: boolean = showControls && isMultiPage;
   const showLeftControl: boolean = needControls && !(cycleMode === 'stop' && index === 0);
@@ -123,7 +125,7 @@ function TileDock<T>({
       setTransform(-100 + movement);
 
       // If this is an animated slider, start the animation 'slide'
-      if (animated) {
+      if (isAnimated) {
         setIsAnimationRunning(true);
       }
       // If not anmiated, trigger the post animation code right away
@@ -131,7 +133,7 @@ function TileDock<T>({
         setAnimationDone(true);
       }
     },
-    [animated, cycleMode, index, items.length, tileWidth, tilesToShow, isAnimationRunning],
+    [isAnimated, cycleMode, index, items.length, tileWidth, tilesToShow, isAnimationRunning],
   );
 
   const handleTouchStart = useCallback(
