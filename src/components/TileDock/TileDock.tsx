@@ -16,7 +16,7 @@ export type TileDockProps<T> = {
   minimalTouchMovement?: number;
   showControls?: boolean;
   showDots?: boolean;
-  animatedOverride?: boolean;
+  animationModeOverride?: boolean;
   wrapWithEmptyTiles?: boolean;
   transitionTime?: string;
   renderTile: (item: T, isInView: boolean) => ReactNode;
@@ -66,7 +66,7 @@ function TileDock<T>({
   spacing = 12,
   minimalTouchMovement = 30,
   showControls = true,
-  animatedOverride,
+  animationModeOverride,
   transitionTime = '0.6s',
   wrapWithEmptyTiles = false,
   showDots = false,
@@ -79,8 +79,8 @@ function TileDock<T>({
   const [slideToIndex, setSlideToIndex] = useState(0);
   const [transform, setTransform] = useState(-100);
   // Prevent animation mode from changing after first load
-  const [isAnimated] = useState(animatedOverride ?? !window.matchMedia('(prefers-reduced-motion)').matches);
-  const [animationDone, setAnimationDone] = useState(false);
+  const [isAnimated] = useState(animationModeOverride ?? !window.matchMedia('(prefers-reduced-motion)').matches);
+  const [isAnimationDone, setIsAnimationDone] = useState(false);
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
 
   const frameRef = useRef<HTMLUListElement>() as React.MutableRefObject<HTMLUListElement>;
@@ -130,7 +130,7 @@ function TileDock<T>({
       }
       // If not anmiated, trigger the post animation code right away
       else {
-        setAnimationDone(true);
+        setIsAnimationDone(true);
       }
     },
     [isAnimated, cycleMode, index, items.length, tileWidth, tilesToShow, isAnimationRunning],
@@ -206,17 +206,17 @@ function TileDock<T>({
       setIndex(resetIndex);
       setTransform(-100);
       setIsAnimationRunning(false);
-      setAnimationDone(false);
+      setIsAnimationDone(false);
     };
 
-    if (animationDone) {
+    if (isAnimationDone) {
       postAnimationCleanup();
     }
-  }, [animationDone, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis]);
+  }, [isAnimationDone, index, items.length, slideToIndex, tileWidth, tilesToShow, transitionBasis]);
 
   const handleTransitionEnd = (event: React.TransitionEvent<HTMLUListElement>) => {
     if (event.target === frameRef.current) {
-      setAnimationDone(true);
+      setIsAnimationDone(true);
     }
   };
 
