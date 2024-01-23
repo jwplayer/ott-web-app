@@ -41,8 +41,8 @@ const shelfContainerLocator = locate({ css: 'div[role="row"]' });
 const shelfLocator = locate({ css: 'div[role="cell"]' }).inside(shelfContainerLocator);
 const epgContainerLocator = locate({ css: 'div[data-testid="container"]' });
 
-const makeEpgProgramLocator = (id: string) => locate({ css: `div[data-testid="${id}"]` }).inside(epgContainerLocator);
-const makeEpgChannelLocator = (id: string) => locate({ css: `div[data-testid="${id}"]` }).inside(epgContainerLocator);
+const makeEpgProgramLocator = (id: string) => locate({ css: `div[data-testid*="${id}"]` }).inside(epgContainerLocator);
+const makeEpgChannelLocator = (id: string) => locate({ css: `div[data-testid*="${id}"]` }).inside(epgContainerLocator);
 
 const channel1Locator = makeEpgChannelLocator(channel1Id);
 const channel2Locator = makeEpgChannelLocator(channel2Id);

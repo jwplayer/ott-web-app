@@ -34,8 +34,9 @@ export default class EpgController {
     const utcStartDate = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()));
     const daysDelta = differenceInDays(today, utcStartDate);
 
-    return programs.map((program) => ({
+    return programs.map((program, idx) => ({
       ...program,
+      id: `${program.id}_${idx}`,
       startTime: addDays(new Date(program.startTime), daysDelta).toJSON(),
       endTime: addDays(new Date(program.endTime), daysDelta).toJSON(),
     }));
@@ -54,7 +55,7 @@ export default class EpgController {
     const transformResults = await Promise.allSettled(
       data.map((program) =>
         epgService
-          .transformProgram(program)
+          ?.transformProgram(program)
           // This quiets promise resolution errors in the console
           .catch((error) => {
             logDev(error);
@@ -78,7 +79,7 @@ export default class EpgController {
   getSchedule = async (item: PlaylistItem) => {
     const epgService = this.getEpgService(item);
 
-    const schedule = await epgService.fetchSchedule(item);
+    const schedule = await epgService?.fetchSchedule(item);
     const programs = await this.parseSchedule(schedule, item);
 
     const catchupHours = item.catchupHours && parseInt(item.catchupHours);
@@ -95,8 +96,8 @@ export default class EpgController {
   };
 
   getEpgService = (item: PlaylistItem) => {
-    const scheduleType = item?.scheduleType || EPG_TYPE.jwp;
-    const service = getNamedModule(EpgService, scheduleType?.toLowerCase());
+    const scheduleType = item?.scheduleType?.toLocaleLowerCase() || EPG_TYPE.jwp;
+    const service = getNamedModule(EpgService, scheduleType, false);
 
     if (!service) {
       console.error(`No epg service was added for the ${scheduleType} schedule type`);
