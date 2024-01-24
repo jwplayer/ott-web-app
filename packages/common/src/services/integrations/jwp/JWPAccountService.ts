@@ -39,6 +39,7 @@ import type { WatchHistoryItem } from '../../../../types/watchHistory';
 import AccountService from '../AccountService';
 import StorageService from '../../StorageService';
 import { ACCESS_MODEL } from '../../../constants';
+import type { ServiceResponse } from '../../../../types/service';
 
 enum InPlayerEnv {
   Development = 'development',

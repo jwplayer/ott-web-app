@@ -9,6 +9,7 @@
   "compilerOptions": {
     "noEmit": true,
     "types": [
+      "@types/jwplayer",
       "vi-fetch/matchers",
       "vitest/globals"
     ]

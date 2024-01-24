@@ -9,6 +9,7 @@ import type { AuthData, GetLocales } from '../../../../types/account';
 import StorageService from '../../StorageService';
 import { GET_CUSTOMER_IP } from '../../../modules/types';
 import type { GetCustomerIP } from '../../../../types/get-customer-ip';
+import type { ServiceResponse } from '../../../../types/service';
 
 const AUTH_PERSIST_KEY = 'auth';
 

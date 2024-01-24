@@ -20,6 +20,7 @@ import type {
   UpdateOrder,
 } from '../../../../types/checkout';
 import CheckoutService from '../CheckoutService';
+import type { ServiceResponse } from '../../../../types/service';
 
 @injectable()
 export default class JWPCheckoutService extends CheckoutService {

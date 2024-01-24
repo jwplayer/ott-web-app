@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import type { JWPlayer } from '@jwp/ott-common/types/jwplayer';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistoryStore';
@@ -7,7 +6,7 @@ import { VideoProgressMinMax } from '@jwp/ott-common/src/constants';
 
 import { useWatchHistoryListener } from './useWatchHistoryListener';
 
-export const useWatchHistory = (player: JWPlayer | undefined, item: PlaylistItem, seriesItem?: PlaylistItem) => {
+export const useWatchHistory = (player: jwplayer.JWPlayer | undefined, item: PlaylistItem, seriesItem?: PlaylistItem) => {
   // config
   const { features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;

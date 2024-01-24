@@ -3,6 +3,7 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import env from '@jwp/ott-common/src/env';
+import type { Jwpltx } from '@jwp/ott-common/types/jwpltx';
 
 const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const analyticsToken = useConfigStore((s) => s.config.analyticsToken);
@@ -19,21 +20,23 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
   const [player, setPlayer] = useState<jwplayer.JWPlayer | null>(null);
 
   useEffect(() => {
-    if (!window.jwpltx || !analyticsToken || !player || !item) {
+    const jwpltx = 'jwpltx' in window ? (window.jwpltx as Jwpltx) : undefined;
+
+    if (!jwpltx || !analyticsToken || !player || !item) {
       return;
     }
 
     const timeHandler = ({ position, duration }: jwplayer.TimeParam) => {
-      window.jwpltx.time(position, duration);
+      jwpltx.time(position, duration);
     };
 
     const seekHandler = ({ offset }: jwplayer.SeekParam) => {
       // TODO: according to JWPlayer typings, the seek param doesn't contain a `duration` property, but it actually does
-      window.jwpltx.seek(offset, player.getDuration());
+      jwpltx.seek(offset, player.getDuration());
     };
 
     const seekedHandler = () => {
-      window.jwpltx.seeked();
+      jwpltx.seeked();
     };
 
     const playlistItemHandler = () => {
@@ -43,15 +46,15 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
         return;
       }
 
-      window.jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid, oiid, av);
+      jwpltx.ready(analyticsToken, window.location.hostname, feedId, item.mediaid, item.title, oaid, oiid, av);
     };
 
     const completeHandler = () => {
-      window.jwpltx.complete();
+      jwpltx.complete();
     };
 
     const adImpressionHandler = () => {
-      window.jwpltx.adImpression();
+      jwpltx.adImpression();
     };
 
     player.on('playlistItem', playlistItemHandler);
@@ -63,7 +66,7 @@ const useOttAnalytics = (item?: PlaylistItem, feedId: string = '') => {
 
     return () => {
       // Fire remaining seconds / minutes watched
-      window.jwpltx.remove();
+      jwpltx.remove();
       player.off('playlistItem', playlistItemHandler);
       player.off('complete', completeHandler);
       player.off('time', timeHandler);

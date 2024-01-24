@@ -1,4 +1,11 @@
-export type GetMediaParams = { poster_width?: number; default_source_fallback?: boolean; token?: string; max_resolution?: number };
+import type { PlaylistItem } from './playlist';
+
+export type GetMediaParams = {
+  poster_width?: number;
+  default_source_fallback?: boolean;
+  token?: string;
+  max_resolution?: number;
+};
 
 export type Media = {
   description?: string;

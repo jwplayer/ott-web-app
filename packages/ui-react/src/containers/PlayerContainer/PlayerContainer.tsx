@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import type { JWPlayer } from '@jwp/ott-common/types/jwplayer';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useWatchHistory } from '@jwp/ott-hooks-react/src/useWatchHistory';
 import { usePlaylistItemCallback } from '@jwp/ott-hooks-react/src/usePlaylistItemCallback';
 import { useAds } from '@jwp/ott-hooks-react/src/useAds';
 import useProtectedMedia from '@jwp/ott-hooks-react/src/useProtectedMedia';
 
+import type { JWPlayer } from '../../../types/jwplayer';
 import Player from '../../components/Player/Player';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import PlayerError, { PlayerErrorState } from '../../components/PlayerError/PlayerError';

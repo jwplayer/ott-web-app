@@ -31,23 +31,11 @@ interface AdyenEventData {
   };
 }
 
-interface AdyenConfiguration {
-  onSubmit: (data: AdyenEventData) => void;
-  onChange: (data: AdyenEventData) => void;
-  showPayButton: boolean;
-  environment: 'test' | 'live';
-  clientKey: string;
-}
-
 interface AdyenAdditionalEventData {
   isValid: boolean;
   data: {
     details: unknown;
   };
-}
-
-interface AdyenCheckoutStatic {
-  (configuration: AdyenConfiguration): AdyenCheckout;
 }
 
 // currently only card payments with Adyen are supported

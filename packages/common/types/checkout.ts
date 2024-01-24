@@ -1,5 +1,6 @@
 import type { PayloadWithIPOverride } from './account';
 import type { PaymentDetail } from './subscription';
+import type { EmptyEnvironmentServiceRequest, EnvironmentServiceRequest, PromiseRequest } from './service';
 
 export type Offer = {
   id: number | null;

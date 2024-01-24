@@ -363,7 +363,7 @@ const stepsObj = {
     for (let i = 0; i < tries; i++) {
       // In theory this expression can be simplified, but without the typeof's codecept throws an error when the value is undefined.
       const state = await this.executeScript(() =>
-        typeof window.jwplayer === 'undefined' || typeof window.jwplayer().getState === 'undefined' ? '' : jwplayer().getState(),
+        typeof window.jwplayer === 'undefined' || typeof window.jwplayer().getState === 'undefined' ? '' : window.jwplayer().getState(),
       );
 
       this.say(`Waiting for Player state. Expected: "${expectedState}", Current: "${state}"`);
@@ -385,7 +385,7 @@ const stepsObj = {
     this.dontSeeElement('div[class*="jwplayer"]');
     this.dontSeeElement('video');
     // eslint-disable-next-line no-console
-    assert.equal(await this.executeScript(() => (typeof jwplayer === 'undefined' ? undefined : jwplayer().getState)), undefined);
+    assert.equal(await this.executeScript(() => (typeof window.jwplayer === 'undefined' ? undefined : window.jwplayer().getState)), undefined);
   },
   isMobile: async function (this: CodeceptJS.I): Promise<boolean> {
     return await this.executeScript(() => {

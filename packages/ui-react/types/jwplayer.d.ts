@@ -28,7 +28,7 @@ export type JWPlayer = jwplayer.JWPlayer & {
   off(event: keyof EventParams | jwplayer.NoParamEvent): JWPlayer;
   off(event: jwplayer.NoParamEvent, callback: () => void): JWPlayer;
   off<TEvent extends keyof EventParams>(event: TEvent, callback: jwplayer.EventCallback<EventParams[TEvent]>): JWPlayer;
-  setConfig(config: ConfigOptions);
+  setConfig(config: ConfigOptions): JWPlayer;
   setPlaylistItemCallback(callback?: (item: never) => Promise<unknown>): void;
   removePlaylistItemCallback(): void;
 };

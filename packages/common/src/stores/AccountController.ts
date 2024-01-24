@@ -21,6 +21,7 @@ import type {
 } from '../../types/account';
 import { assertFeature, assertModuleMethod, getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
+import type { ServiceResponse } from '../../types/service';
 
 import { useWatchHistoryStore } from './WatchHistoryStore';
 import { useFavoritesStore } from './FavoritesStore';

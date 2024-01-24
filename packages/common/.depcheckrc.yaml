@@ -4,5 +4,6 @@ ignores: [
   '@typescript-eslint/eslint-plugin',
   'eslint-plugin-import',
 
-  ''
+  # Installed by inplayer SDK (only used for typings)
+  'axios'
 ]

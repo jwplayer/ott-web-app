@@ -3,6 +3,7 @@ import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import type { SerializedWatchHistoryItem } from './watchHistory';
 import type { SerializedFavorite } from './favorite';
 import type { Config } from './config';
+import type { EmptyServiceRequest, EnvironmentServiceRequest, PromiseRequest } from './service';
 
 export type AuthData = {
   jwt: string;

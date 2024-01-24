@@ -1,4 +1,8 @@
 import type { ChangeSubscriptionPlanResponse, DefaultCreditCardData, SetDefaultCard } from '@inplayer-org/inplayer.js';
+
+import type { CleengRequest } from './cleeng';
+import type { EnvironmentServiceRequest, PromiseRequest } from './service';
+
 // Subscription types
 export type Subscription = {
   subscriptionId: number | string;
@@ -22,7 +26,7 @@ export type PaymentDetail = {
   customerId: string;
   paymentGateway: string;
   paymentMethod: string;
-  paymentMethodSpecificParams: Record<PaymentMethodSpecificParam>;
+  paymentMethodSpecificParams: PaymentMethodSpecificParam;
   paymentMethodId: number;
   active: boolean;
   currency?: string;
@@ -149,13 +153,13 @@ type GetAllTransactionsResponse = Transaction[] | null;
 
 type GetActiveSubscriptionResponse = Subscription | null;
 
-type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
-type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
-type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
-type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
+export type GetSubscriptions = CleengRequest<GetSubscriptionsPayload, GetSubscriptionsResponse>;
+export type UpdateSubscription = CleengRequest<UpdateSubscriptionPayload, UpdateSubscriptionResponse>;
+export type GetPaymentDetails = CleengRequest<GetPaymentDetailsPayload, GetPaymentDetailsResponse>;
+export type GetTransactions = CleengRequest<GetTransactionsPayload, GetTransactionsResponse>;
 
-type GetActiveSubscription = PromiseRequest<GetActiveSubscriptionPayload, GetActiveSubscriptionResponse>;
-type GetAllTransactions = PromiseRequest<GetAllTransactionsPayload, GetAllTransactionsResponse>;
-type GetActivePayment = PromiseRequest<GetActivePaymentPayload, GetActivePaymentResponse>;
-type ChangeSubscription = EnvironmentServiceRequest<ChangeSubscriptionPayload, ChangeSubscriptionPlanResponse>;
-type FetchReceipt = EnvironmentServiceRequest<FetchReceiptPayload, FetchReceiptResponse>;
+export type GetActiveSubscription = PromiseRequest<GetActiveSubscriptionPayload, GetActiveSubscriptionResponse>;
+export type GetAllTransactions = PromiseRequest<GetAllTransactionsPayload, GetAllTransactionsResponse>;
+export type GetActivePayment = PromiseRequest<GetActivePaymentPayload, GetActivePaymentResponse>;
+export type ChangeSubscription = EnvironmentServiceRequest<ChangeSubscriptionPayload, ChangeSubscriptionPlanResponse>;
+export type FetchReceipt = EnvironmentServiceRequest<FetchReceiptPayload, FetchReceiptResponse>;
