@@ -11,6 +11,7 @@ import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 
 import RegistrationForm from '../../../components/RegistrationForm/RegistrationForm';
+import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
 
 const Registration = () => {
   const accountController = getModule(AccountController);
@@ -18,7 +19,7 @@ const Registration = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
-
+  const announce = useAriaAnnouncer();
   const [consentValues, setConsentValues] = useState<Record<string, string | boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
@@ -56,9 +57,11 @@ const Registration = () => {
   const { handleSubmit, handleChange, handleBlur, values, errors, submitting } = useForm<RegistrationFormData>({
     initialValues: { email: '', password: '' },
     validationSchema: object().shape({
-      email: string().email(t('registration.field_is_not_valid_email')).required(t('registration.field_required')),
+      email: string()
+        .email(t('registration.field_is_not_valid_email'))
+        .required(t('registration.field_required', { field: t('registration.email') })),
       password: string()
-        .matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password'))
+        .matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password', { field: t('registration.password') }))
         .required(t('registration.field_required')),
     }),
     validateOnBlur: true,
@@ -72,7 +75,10 @@ const Registration = () => {
 
       await accountController.register(email, password, window.location.href, formatConsentsFromValues(publisherConsents, consentValues));
     },
-    onSubmitSuccess: () => navigate(modalURLFromLocation(location, 'personal-details')),
+    onSubmitSuccess: () => {
+      announce(t('registration.success'), 'success');
+      navigate(modalURLFromLocation(location, 'personal-details'));
+    },
     onSubmitError: ({ resetValue }) => resetValue('password'),
   });
 

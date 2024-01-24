@@ -26,7 +26,6 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, onBlur, onFocus, tabI
         onBlur={onBlur}
         onFocus={onFocus}
         onClick={onClick}
-        aria-label={label}
         className={({ isActive }) => getClassName(isActive || active)}
         to={to}
         tabIndex={tabIndex}
@@ -39,7 +38,7 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, onBlur, onFocus, tabI
   }
 
   return (
-    <div onBlur={onBlur} onFocus={onFocus} aria-label={label} className={getClassName(active)} onClick={onClick} tabIndex={tabIndex}>
+    <div onBlur={onBlur} onFocus={onFocus} className={getClassName(active)} onClick={onClick} tabIndex={tabIndex}>
       {icon}
       <span className={styles.label}>{label}</span>
     </div>

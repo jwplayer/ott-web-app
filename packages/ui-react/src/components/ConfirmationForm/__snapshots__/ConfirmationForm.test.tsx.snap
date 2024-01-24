@@ -15,6 +15,7 @@ exports[`<ConfirmationForm> > renders and matches snapshot 1`] = `
     </p>
     <button
       class="_button_f8f296 _button_64b7a0 _primary_f8f296 _outlined_f8f296 _fullWidth_f8f296"
+      type="button"
     >
       <span>
         reset.back_login

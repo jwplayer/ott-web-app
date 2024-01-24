@@ -3,7 +3,9 @@
   color: var(--primary-color);
   font-family: var(--body-alt-font-family);
 
-  &:hover {
+  &:hover,
+  &:focus-within
+  {
     .chevron {
       opacity: 1;
       &.disabled {

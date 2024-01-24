@@ -90,9 +90,7 @@ const Search = () => {
       <header className={styles.header}>
         <h2>{t('heading')}</h2>
       </header>
-      <main className={styles.main}>
-        <CardGrid getUrl={getURL} playlist={playlist} isLoading={firstRender} accessModel={accessModel} isLoggedIn={!!user} hasSubscription={!!subscription} />
-      </main>
+      <CardGrid getUrl={getURL} playlist={playlist} isLoading={firstRender} accessModel={accessModel} isLoggedIn={!!user} hasSubscription={!!subscription} />
     </div>
   );
 };

@@ -7,15 +7,11 @@ import { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBre
 
 import Button from '../Button/Button';
 import CardGrid from '../CardGrid/CardGrid';
-import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import ErrorPage from '../ErrorPage/ErrorPage';
 
 import styles from './Favorites.module.scss';
 
 type Props = {
   playlist: Playlist;
-  error: unknown;
-  isLoading: boolean;
   accessModel: AccessModel;
   hasSubscription: boolean;
   onCardHover?: (item: PlaylistItem) => void;
@@ -30,15 +26,8 @@ const cols: Breakpoints = {
   [Breakpoint.xl]: 3,
 };
 
-const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
+const Favorites = ({ playlist, accessModel, hasSubscription, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
   const { t } = useTranslation('user');
-
-  if (isLoading) return <LoadingOverlay />;
-
-  if (error || !playlist) {
-    return <ErrorPage title={t('favorites.not_found')} />;
-  }
-
   const getURL = (playlistItem: PlaylistItem) => mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
 
   return (
@@ -53,7 +42,7 @@ const Favorites = ({ playlist, error, isLoading, accessModel, hasSubscription, o
           playlist={playlist}
           onCardHover={onCardHover}
           cols={cols}
-          isLoading={isLoading}
+          isLoading={false}
           accessModel={accessModel}
           isLoggedIn={true}
           hasSubscription={hasSubscription}

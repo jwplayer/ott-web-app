@@ -43,7 +43,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.click('Account');
 
     I.see('Email');
-    I.see(loginContext.email);
+    I.seeInField('input[name="email"][readonly]', loginContext.email);
 
     if (canEditEmail) {
       I.see(editAccount);
@@ -54,9 +54,9 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
 
     I.see('Profile info');
     I.see('First name');
-    I.see(firstName);
+    I.seeInField('input[name="firstName"][readonly]', firstName);
     I.see('Last name');
-    I.see(lastName);
+    I.seeInField('input[name="lastName"][readonly]', lastName);
     I.see('Edit information');
 
     I.see('Legal & Marketing');
@@ -315,7 +315,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.see('Cancel');
 
     const fieldsWithPaths = fields.map((f) => {
-      return { ...f, xpath: `//input[@name='${f.name}']` };
+      return { ...f, xpath: `//input[@name='${f.name}'][not(@readonly)]` };
     });
 
     for (const field of fieldsWithPaths) {
@@ -340,7 +340,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
       I.dontSee(field.xpath);
 
       if (field.newValue && field.name !== passwordField) {
-        I.see(field.newValue);
+        I.seeInField(`input[name="${field.name}"][readonly]`, field.newValue);
       }
     });
 
@@ -362,7 +362,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     I.see('Cancel');
 
     const fieldsWithPaths = fields.map((f) => {
-      return { ...f, xpath: `//input[@name='${f.name}']` };
+      return { ...f, xpath: `//input[@name='${f.name}'][not(@readonly)]` };
     });
 
     for (const field of fieldsWithPaths) {
@@ -399,7 +399,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string, res
     fieldsWithPaths.forEach((field) => {
       I.dontSee(field.xpath);
       if (field.name !== passwordField) {
-        I.see(field.startingValue);
+        I.seeInField(`input[name="${field.name}"][readonly]`, field.startingValue);
       }
     });
 

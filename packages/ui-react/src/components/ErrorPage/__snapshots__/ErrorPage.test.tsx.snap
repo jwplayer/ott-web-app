@@ -13,14 +13,12 @@ exports[`<ErrorPage> > renders and matches snapshot 1`] = `
         class="_image_8c5621"
         src="/images/logo.png"
       />
-      <header>
-        <h1
-          class="_title_8c5621"
-        >
-          This is the title
-        </h1>
-      </header>
-      <main
+      <h1
+        class="_title_8c5621"
+      >
+        This is the title
+      </h1>
+      <div
         class="_main_8c5621"
       >
         <p
@@ -29,7 +27,7 @@ exports[`<ErrorPage> > renders and matches snapshot 1`] = `
           generic_error_description
         </p>
         This is the content
-      </main>
+      </div>
     </div>
   </div>
 </div>

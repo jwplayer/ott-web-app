@@ -5,6 +5,30 @@ export function debounce<T extends (...args: any[]) => void>(callback: T, wait =
     timeout = setTimeout(() => callback(...args), wait);
   };
 }
+export function throttle<T extends (...args: any[]) => unknown>(func: T, limit: number): (...args: Parameters<T>) => void {
+  let lastFunc: NodeJS.Timeout | undefined;
+  let lastRan: number | undefined;
+
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>): void {
+    const timeSinceLastRan = lastRan ? Date.now() - lastRan : limit;
+
+    if (timeSinceLastRan >= limit) {
+      func.apply(this, args);
+      lastRan = Date.now();
+    } else if (!lastFunc) {
+      lastFunc = setTimeout(() => {
+        if (lastRan) {
+          const timeSinceLastRan = Date.now() - lastRan;
+          if (timeSinceLastRan >= limit) {
+            func.apply(this, args);
+            lastRan = Date.now();
+          }
+        }
+        lastFunc = undefined;
+      }, limit - timeSinceLastRan);
+    }
+  };
+}
 
 export const unicodeToChar = (text: string) => {
   return text.replace(/\\u[\dA-F]{4}/gi, (match) => {

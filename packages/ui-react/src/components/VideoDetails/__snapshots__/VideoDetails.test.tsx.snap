@@ -5,7 +5,7 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
   <div
     data-testid="cinema-layout"
   >
-    <div
+    <header
       class="_video_d0c133"
       data-testid="video-details"
     >
@@ -13,7 +13,7 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
         class="_main_d0c133 _mainPadding_d0c133"
       >
         <img
-          alt="Test video"
+          alt=""
           class="_poster_d0c133 _image_4c41c3"
           src="http://image.jpg?width=1280"
         />
@@ -44,12 +44,12 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           <div
             class="_collapsibleText_561522"
           >
-            <div
+            <p
               class="_textContainer_561522 _description_d0c133"
               style="max-height: none;"
             >
               Video description
-            </div>
+            </p>
           </div>
           <div
             class="_buttonBar_d0c133"
@@ -69,7 +69,7 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           </div>
         </div>
       </div>
-    </div>
+    </header>
     <div>
       Related Videos
     </div>

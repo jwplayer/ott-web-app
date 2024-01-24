@@ -10,6 +10,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Checkbox> 1`] = `
       class="_row_531f07"
     >
       <input
+        aria-describedby="helper_text_1235_name"
         id="check-box_1235_name"
         name="name"
         type="checkbox"
@@ -44,6 +45,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="co
       class="_dropdown_bb73c6 _fullWidth_bb73c6"
     >
       <select
+        aria-describedby="helper_text_1235_name"
         aria-required="false"
         class="_select_bb73c6"
         id="1235"
@@ -93,6 +95,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
       class="_container_eb6974"
     >
       <input
+        aria-describedby="helper_text_1235_name"
         class="_hiddenInput_eb6974"
         id="text-field_1235_name-hidden"
         name="name"
@@ -141,6 +144,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="ra
       class="_row_531f07"
     >
       <input
+        aria-describedby="helper_text_1235_name"
         id="check-box_1235_name"
         name="name"
         type="checkbox"
@@ -175,6 +179,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="se
       class="_dropdown_bb73c6 _fullWidth_bb73c6"
     >
       <select
+        aria-describedby="helper_text_1235_name"
         aria-required="false"
         class="_select_bb73c6"
         id="1235"
@@ -204,6 +209,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="us
       class="_dropdown_bb73c6 _fullWidth_bb73c6"
     >
       <select
+        aria-describedby="helper_text_1235_name"
         aria-required="false"
         class="_select_bb73c6"
         id="1235"
@@ -239,15 +245,20 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Radio> 1`] = `
     data-testid="crf-radio"
     label="label"
   >
-    <div
+    <label
       class="_header_d50e6e"
       data-testid="radio-header"
+      for="radio_1235_name"
     >
-      label
       <span>
+        label
+      </span>
+      <span
+        class="_note_d50e6e"
+      >
         optional
       </span>
-    </div>
+    </label>
   </div>
 </div>
 `;
@@ -271,6 +282,9 @@ exports[`<CustomRegisterField> > renders and matches snapshot <TextField> 1`] = 
       class="_container_e16c1b"
     >
       <input
+        aria-describedby="helper_text_1235_name"
+        aria-invalid="false"
+        aria-required="false"
         class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"

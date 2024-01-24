@@ -33,6 +33,10 @@ const PlaylistScreenRouter = () => {
     return <ErrorPage title={t('playlist_not_found')} />;
   }
 
+  if (data.playlist.length === 0) {
+    return <ErrorPage title={t('empty_shelves_heading')} message={t('empty_shelves_description')} />;
+  }
+
   const PlaylistScreen = playlistScreenMap.getScreen(data);
 
   return <PlaylistScreen data={data} isLoading={isFetching} />;

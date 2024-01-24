@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PaymentMethod } from '@jwp/ott-common/types/checkout';
 import CreditCard from '@jwp/ott-theme/assets/icons/creditcard.svg?react';
@@ -7,6 +7,7 @@ import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
 import Button from '../Button/Button';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Icon from '../Icon/Icon';
+import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './PaymentMethodForm.module.scss';
 
@@ -30,10 +31,15 @@ const PaymentMethodForm: React.FC<Props> = ({
   updateSuccess,
 }) => {
   const { t } = useTranslation('account');
+  const announce = useAriaAnnouncer();
   // t('payment.longer_than_usual');
 
   const cardPaymentMethod = paymentMethods?.find((method) => method.methodName === 'card');
   const paypalPaymentMethod = paymentMethods?.find((method) => method.methodName === 'paypal');
+
+  useEffect(() => {
+    updateSuccess && announce(t('checkout.payment_success'), 'success');
+  }, [updateSuccess, announce, t]);
 
   return (
     <>

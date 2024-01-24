@@ -23,9 +23,11 @@ export type CustomRegisterFieldCommonProps = {
   disabled: boolean;
   required: boolean;
   options: RegisterFieldOptions;
+  editing: boolean;
+  lang: string;
 }>;
 
-const CustomRegisterField: FC<CustomRegisterFieldCommonProps> = ({ type, value = '', options, ...props }) => {
+const CustomRegisterField: FC<CustomRegisterFieldCommonProps> = ({ type, value = '', options, editing, lang, ...props }) => {
   const { t, i18n } = useTranslation();
 
   const optionsList = useMemo(() => {
@@ -49,15 +51,25 @@ const CustomRegisterField: FC<CustomRegisterFieldCommonProps> = ({ type, value =
     case 'input':
       return <TextField {...props} value={value as string} testId={testId(`crf-${type}`)} />;
     case 'radio':
-      return <Radio {...props} values={optionsList} value={value as string} header={props.label} data-testid={testId(`crf-${type}`)} />;
+      return <Radio {...props} values={optionsList} value={value as string} header={props.label} data-testid={testId(`crf-${type}`)} lang={lang} />;
     case 'select':
     case 'country':
     case 'us_state':
-      return <Dropdown {...props} options={optionsList} value={value as string} defaultLabel={props.placeholder} fullWidth testId={testId(`crf-${type}`)} />;
+      return (
+        <Dropdown
+          {...props}
+          options={optionsList}
+          value={value as string}
+          defaultLabel={props.placeholder}
+          fullWidth
+          testId={testId(`crf-${type}`)}
+          lang={lang}
+        />
+      );
     case 'datepicker':
       return <DateField {...props} value={value as string} testId={testId(`crf-${type}`)} />;
     default:
-      return <Checkbox {...props} checked={isTruthyCustomParamValue(value)} data-testid={testId(`crf-${type}`)} />;
+      return <Checkbox {...props} checked={isTruthyCustomParamValue(value)} data-testid={testId(`crf-${type}`)} lang={lang} />;
   }
 };
 

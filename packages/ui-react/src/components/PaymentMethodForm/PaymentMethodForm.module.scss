@@ -1,5 +1,6 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 @use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/accessibility';
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 
 
@@ -23,6 +24,11 @@
 .paymentMethod {
   flex: 1;
   margin: 6px 4px;
+
+  &:focus-within .paymentMethodLabel {
+    @include accessibility.accessibleOutline;
+    transform: scale(1.05);
+  }
 }
 
 .radio {
@@ -33,13 +39,6 @@
   white-space: nowrap;
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
-
-  :focus,
-  :active {
-    + .paymentMethodLabel {
-      border-color: variables.$white;
-    }
-  }
 
   &:checked + .paymentMethodLabel {
     color: variables.$black;

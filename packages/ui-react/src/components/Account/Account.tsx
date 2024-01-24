@@ -13,6 +13,7 @@ import { formatConsents, formatConsentsFromValues, formatConsentsToRegisterField
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
 import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
+import env from '@jwp/ott-common/src/env';
 
 import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
 import Alert from '../Alert/Alert';
@@ -25,6 +26,7 @@ import HelperText from '../HelperText/HelperText';
 import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
 import Icon from '../Icon/Icon';
 import { modalURLFromLocation } from '../../utils/location';
+import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './Account.module.scss';
 
@@ -45,13 +47,15 @@ interface FormErrors {
 const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
   const accountController = getModule(AccountController);
 
-  const { t } = useTranslation('user');
+  const { t, i18n } = useTranslation('user');
+  const announce = useAriaAnnouncer();
   const navigate = useNavigate();
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
   const exportData = useMutation(accountController.exportAccountData);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const exportDataMessage = exportData.isSuccess ? t('account.export_data_success') : t('account.export_data_error');
+  const htmlLang = i18n.language !== env.APP_DEFAULT_LANGUAGE ? env.APP_DEFAULT_LANGUAGE : undefined;
 
   useEffect(() => {
     if (exportData.isSuccess || exportData.isError) {
@@ -203,15 +207,17 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
 
   return (
     <>
+      <h1 className={styles.hideUntilFocus}>{t('nav.account')}</h1>
+
       <Form initialValues={initialValues}>
         {[
           formSection({
             label: t('account.about_you'),
             editButton: t('account.edit_information'),
-            onSubmit: (values) => {
+            onSubmit: async (values) => {
               const consents = formatConsentsFromValues(publisherConsents, { ...values.metadata, ...values.consentsValues });
 
-              return accountController.updateUser({
+              const response = await accountController.updateUser({
                 firstName: values.firstName || '',
                 lastName: values.lastName || '',
                 metadata: {
@@ -220,6 +226,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   consents: JSON.stringify(consents),
                 },
               });
+
+              announce(t('account.update_success', { section: t('account.about_you') }), 'success');
+
+              return response;
             },
             content: (section) => (
               <>
@@ -233,6 +243,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.firstName}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  lang={htmlLang}
                 />
                 <TextField
                   name="lastName"
@@ -243,17 +254,23 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.lastName}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  lang={htmlLang}
                 />
               </>
             ),
           }),
           formSection({
             label: t('account.email'),
-            onSubmit: (values) =>
-              accountController.updateUser({
+            onSubmit: async (values) => {
+              const response = await accountController.updateUser({
                 email: values.email || '',
                 confirmationPassword: values.confirmationPassword,
-              }),
+              });
+
+              announce(t('account.update_success', { section: t('account.email') }), 'success');
+
+              return response;
+            },
             canSave: (values) => !!(values.email && values.confirmationPassword),
             editButton: t('account.edit_account'),
             readOnly: !canUpdateEmail,
@@ -304,7 +321,13 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => accountController.updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
+            onSubmit: async (values) => {
+              const response = await accountController.updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues));
+
+              announce(t('account.update_success', { section: t('account.terms_and_tracking') }), 'success');
+
+              return response;
+            },
             content: (section) => (
               <>
                 {termsConsents?.map((consent, index) => (
@@ -315,6 +338,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     onChange={section.onChange}
                     label={formatConsentLabel(consent.label)}
                     disabled={consent.required || section.isBusy}
+                    lang={htmlLang}
                   />
                 ))}
               </>

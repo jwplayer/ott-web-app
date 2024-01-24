@@ -10,15 +10,29 @@ describe('<TextField>', () => {
     expect(container).toMatchSnapshot();
   });
 
+  test('renders and matches readonly snapshot', () => {
+    const { container } = render(<TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} readOnly={true} />);
+
+    expect(container).toMatchSnapshot();
+  });
+
   test('renders and matches multiline snapshot', () => {
     const { container } = render(<TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} multiline={true} />);
 
     expect(container).toMatchSnapshot();
   });
 
+  test('renders and matches multiline readonly snapshot', () => {
+    const { container } = render(
+      <TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} multiline={true} readOnly={true} />,
+    );
+
+    expect(container).toMatchSnapshot();
+  });
+
   test('triggers an onChange event when the input value changes', () => {
     const onChange = vi.fn();
-    const { getByPlaceholderText } = render(<TextField value="" onChange={onChange} placeholder="Enter your name" />);
+    const { getByPlaceholderText } = render(<TextField name="name" value="" onChange={onChange} placeholder="Enter your name" />);
 
     fireEvent.change(getByPlaceholderText('Enter your name'), { target: { value: 'John Doe' } });
 
@@ -26,7 +40,7 @@ describe('<TextField>', () => {
   });
 
   test('shows the helper text below the input', () => {
-    const { queryByText } = render(<TextField value="" onChange={vi.fn()} helperText="Assertive text" />);
+    const { queryByText } = render(<TextField name="name" value="" onChange={vi.fn()} helperText="Assertive text" />);
 
     expect(queryByText('Assertive text')).toBeDefined();
   });

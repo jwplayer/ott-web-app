@@ -284,7 +284,7 @@ const stepsObj = {
     this.click('div[aria-label="Open user menu"]');
   },
   clickCloseButton: function (this: CodeceptJS.I) {
-    this.click('div[aria-label="Close"]');
+    this.click('div[aria-label="Close panel"]');
   },
   seeAll: function (this: CodeceptJS.I, allStrings: string[]) {
     allStrings.forEach((s) => this.see(s));
@@ -454,8 +454,8 @@ const stepsObj = {
     const imgSrc = await this.grabAttributeFrom(imageLocator, 'src');
     assert.equal(imgSrc, src, "img element src attribute doesn't match");
   },
-  seeEpgChannelLogoImage: async function (this: CodeceptJS.I, channelId: string, src: string) {
-    const imageLocator = locate({ css: `div[data-testid="${channelId}"] img[alt="Logo"]` });
+  seeEpgChannelLogoImage: async function (this: CodeceptJS.I, channelId: string, src: string, alt: string) {
+    const imageLocator = locate({ css: `div[data-testid="${channelId}"] img[alt="${alt}"]` });
     const imgSrc = await this.grabAttributeFrom(imageLocator, 'src');
     assert.equal(imgSrc, src, "img element src attribute doesn't match");
   },
@@ -468,6 +468,7 @@ const stepsObj = {
   ) {
     const cardLocator = `//a[@data-testid="${name}"]`;
     const shelfLocator = shelf ? makeShelfXpath(shelf) : undefined;
+    const gridCellLocator = locate(cardLocator).inside('//div[@role="gridcell"]');
 
     this.scrollPageToTop();
     this.wait(1);
@@ -487,16 +488,22 @@ const stepsObj = {
     const isMobile = await this.isMobile();
     // Easy way to limit to 10 swipes
     for (let i = 0; i < 10; i++) {
-      const [isElementVisible, tabindex] = await within(shelfLocator || 'body', async () => {
+      const [isWithinGridCell, isElementVisible, tabindex] = await within(shelfLocator || 'body', async () => {
+        const isWithinGridCell = (await this.grabNumberOfVisibleElements(gridCellLocator)) >= 1;
         const isElementVisible = (await this.grabNumberOfVisibleElements(cardLocator)) >= 1;
         const tabindex = isElementVisible ? Number(await this.grabAttributeFrom(cardLocator, 'tabindex')) : -1;
 
-        return [isElementVisible, tabindex];
+        return [isWithinGridCell, isElementVisible, tabindex];
       });
 
       // If the item isn't virtualized yet, throw an error (we need more information)
       if (!shelfLocator && !isElementVisible) {
         throw `Can't find item with locator: "${cardLocator}". Try specifying which shelf to look in.`;
+      }
+
+      // CardGrid component uses keyboard or regular mouse (click) navigation
+      if (isWithinGridCell) {
+        break;
       }
 
       if (tabindex >= 0) {

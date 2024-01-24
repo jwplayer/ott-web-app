@@ -52,11 +52,12 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
     >
       <div
         class="_offer_f7961f"
+        role="option"
       >
         <input
-          aria-label="choose_offer.monthly_subscription"
           checked=""
           class="_radio_f7961f"
+          data-testid="choose_offer.monthly"
           id="S916977979_NL"
           name="offerId"
           type="radio"
@@ -137,10 +138,11 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
       </div>
       <div
         class="_offer_f7961f"
+        role="option"
       >
         <input
-          aria-label="choose_offer.yearly_subscription"
           class="_radio_f7961f"
+          data-testid="choose_offer.yearly"
           id="S345569153_NL"
           name="offerId"
           type="radio"
@@ -285,11 +287,12 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
     >
       <div
         class="_offer_f7961f"
+        role="option"
       >
         <input
-          aria-label="One Time - TVOD offer"
           checked=""
           class="_radio_f7961f"
+          data-testid="One Time - TVOD offer"
           id="R892134629_NL"
           name="offerId"
           type="radio"

@@ -46,7 +46,7 @@ describe('<OffersForm>', () => {
   });
 
   test('checks the monthly offer correctly', () => {
-    const { getByLabelText } = render(
+    const { getByTestId } = render(
       <ChooseOfferForm
         values={{ offerId: 'S916977979_NL' }}
         errors={{}}
@@ -59,11 +59,11 @@ describe('<OffersForm>', () => {
       />,
     );
 
-    expect(getByLabelText('choose_offer.monthly_subscription')).toBeChecked();
+    expect(getByTestId('choose_offer.monthly')).toBeChecked();
   });
 
   test('checks the yearly offer correctly', () => {
-    const { getByLabelText } = render(
+    const { getByTestId } = render(
       <ChooseOfferForm
         values={{ offerId: 'S345569153_NL' }}
         errors={{}}
@@ -76,11 +76,11 @@ describe('<OffersForm>', () => {
       />,
     );
 
-    expect(getByLabelText('choose_offer.yearly_subscription')).toBeChecked();
+    expect(getByTestId('choose_offer.yearly')).toBeChecked();
   });
 
   test('checks the tvod offer correctly', () => {
-    const { getByLabelText } = render(
+    const { getByTestId } = render(
       <ChooseOfferForm
         values={{ offerId: 'R892134629_NL' }}
         errors={{}}
@@ -93,12 +93,12 @@ describe('<OffersForm>', () => {
       />,
     );
 
-    expect(getByLabelText('One Time - TVOD offer')).toBeChecked();
+    expect(getByTestId('One Time - TVOD offer')).toBeChecked();
   });
 
   test('calls the onChange callback when changing the offer', () => {
     const onChange = vi.fn();
-    const { getByLabelText } = render(
+    const { getByTestId } = render(
       <ChooseOfferForm
         values={{ offerId: 'S916977979_NL' }}
         errors={{}}
@@ -111,7 +111,7 @@ describe('<OffersForm>', () => {
       />,
     );
 
-    fireEvent.click(getByLabelText('choose_offer.yearly_subscription'));
+    fireEvent.click(getByTestId('choose_offer.yearly'));
 
     expect(onChange).toBeCalled();
   });

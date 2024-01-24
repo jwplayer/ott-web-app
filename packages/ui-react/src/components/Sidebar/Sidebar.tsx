@@ -1,4 +1,4 @@
-import React, { Fragment, type ReactNode } from 'react';
+import React, { Fragment, useEffect, useRef, type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
@@ -16,6 +16,18 @@ type SidebarProps = {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
   const { t } = useTranslation('menu');
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const htmlAttributes = { inert: !isOpen ? '' : undefined }; // inert is not yet officially supported in react. see: https://github.com/facebook/react/pull/24730
+
+  useEffect(() => {
+    if (isOpen) {
+      lastFocusedElementRef.current = document.activeElement as HTMLElement;
+      sidebarRef.current?.querySelectorAll('a')[0]?.focus({ preventScroll: true });
+    } else {
+      lastFocusedElementRef.current?.focus({ preventScroll: true });
+    }
+  }, [isOpen]);
 
   return (
     <Fragment>
@@ -26,12 +38,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
         onClick={onClose}
       />
       <div
+        ref={sidebarRef}
         className={classNames(styles.sidebar, {
           [styles.open]: isOpen,
         })}
+        id="sidebar"
+        {...htmlAttributes}
       >
         <div className={styles.heading}>
-          <IconButton onClick={onClose} aria-label={t('close_menu')} tabIndex={isOpen ? 0 : -1}>
+          <IconButton onClick={onClose} aria-label={t('close_menu')}>
             <Icon icon={Close} />
           </IconButton>
         </div>

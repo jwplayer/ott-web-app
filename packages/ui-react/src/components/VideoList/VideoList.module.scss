@@ -5,16 +5,19 @@
 
 .container {
   height: 100%;
-
-  @include responsive.desktop-only() {
-    overflow: hidden;
-  }
 }
 
 .content {
+  
   @include responsive.desktop-only() {
     height: 100%;
-    padding-right: 24px;
+    padding: 16px 24px;
     overflow-y: scroll;
   }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }

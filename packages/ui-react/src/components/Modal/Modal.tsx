@@ -13,10 +13,9 @@ type Props = {
   AnimationComponent?: React.JSXElementConstructor<{ open?: boolean; duration?: number; delay?: number; children: React.ReactNode }>;
   open: boolean;
   onClose?: () => void;
-  role?: string;
-};
+} & React.AriaAttributes;
 
-const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow, role }: Props) => {
+const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow, ...ariaAtributes }: Props) => {
   const [visible, setVisible] = useState(open);
   const lastFocus = useRef<HTMLElement>() as React.MutableRefObject<HTMLElement>;
   const modalRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
@@ -44,23 +43,25 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
       // make sure main content is hidden for screen readers and inert
       if (appView) {
         appView.inert = true;
-        appView.setAttribute('aria-hidden', 'true');
       }
 
       // prevent scrolling under the modal
       document.body.style.marginRight = `${scrollbarSize()}px`;
       document.body.style.overflowY = 'hidden';
 
-      // focus the first element in the modal
-      if (modalRef.current) {
-        const interactiveElement = modalRef.current.querySelectorAll('a, button, [tabindex="0"]')[0] as HTMLElement | null;
+      // focus the first element in the modal, after a short delay to allow the modal to be rendered
+      setTimeout(() => {
+        if (modalRef.current) {
+          const interactiveElement = modalRef.current.querySelectorAll(
+            'div[role="dialog"] input, div[role="dialog"] a, div[role="dialog"] button, div[role="dialog"] [tabindex]',
+          )[0] as HTMLElement | null;
 
-        if (interactiveElement) interactiveElement.focus();
-      }
+          if (interactiveElement) interactiveElement.focus();
+        }
+      }, 10);
     } else {
       if (appView) {
         appView.inert = false;
-        appView.removeAttribute('aria-hidden');
       }
 
       document.body.style.removeProperty('margin-right');
@@ -77,9 +78,9 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
 
   return ReactDOM.createPortal(
     <Fade open={open} duration={300} onCloseAnimationEnd={() => setVisible(false)}>
-      <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef} role={role}>
+      <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
         <div className={styles.backdrop} onClick={onClose} data-testid={testId('backdrop')} />
-        <div className={styles.container}>
+        <div className={styles.container} data-testid={testId('container')} aria-modal="true" {...ariaAtributes}>
           <AnimationComponent open={open} duration={200}>
             {children}
           </AnimationComponent>

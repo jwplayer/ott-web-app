@@ -31,6 +31,7 @@
     "edit_information": "Editar información",
     "edit_password": "Editar contraseña",
     "email": "Correo electrónico",
+    "update_success": "Tu {{section}} ha sido actualizado con éxito.",
     "errors": {
       "email_exists": "¡El correo electrónico ya existe!",
       "email_update_not_supported": "No se admite la actualización del correo electrónico",
@@ -66,11 +67,10 @@
     "clear_favorites_body": "Estás a punto de borrar todos tus videos favoritos. ¿Estás seguro?",
     "clear_favorites_title": "¿Borrar favoritos?",
     "no_favorites": "Tus favoritos están vacíos",
-    "not_found": "¡Favoritos no encontrados!",
     "title": "Favoritos"
   },
   "login": {
-    "field_required": ""
+    "field_required": "Este campo es obligatorio, por favor ingresa un {{field}} válido."
   },
   "name": "Nombre",
   "nav": {
@@ -90,6 +90,7 @@
     "billing_history": "Historial de facturación",
     "cancel_subscription": "Cancelar suscripción",
     "card_number": "Número de tarjeta",
+    "card_number_hidden": "Número de tarjeta de crédito que termina en {{number}}",
     "change_plan": "Cambiar De Plan",
     "change_plan_error": "Hubo un problema al guardar los cambios en el plan de tu suscripción.",
     "change_subscription": "Cambiar suscripción",
@@ -118,6 +119,7 @@
     "price_paid_with_card": "Precio pagado con tarjeta",
     "renew_subscription": "Renovar suscripción",
     "security_code": "Código de seguridad",
+    "security_code_hidden": "Código de seguridad oculto",
     "show_all": "Mostrar todo",
     "show_receipt": "Mostrar recibo",
     "subscription_details": "Detalles de la suscripción",

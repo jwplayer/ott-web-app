@@ -11,6 +11,7 @@ import useSocialLoginUrls from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
 import type { LoginFormData } from '@jwp/ott-common/types/account';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
+import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
 
 type Props = {
   messageKey: string | null;
@@ -23,6 +24,7 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
+  const announce = useAriaAnnouncer();
 
   const socialLoginURLs = useSocialLoginUrls(window.location.href.split('?')[0]);
 
@@ -33,7 +35,11 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
       password: string().required(t('login.field_required')),
     }),
     onSubmit: ({ email, password }) => accountController.login(email, password, window.location.href),
-    onSubmitSuccess: () => navigate(modalURLFromLocation(location, null)),
+    onSubmitSuccess: () => {
+      announce(t('login.sign_in_success'), 'success');
+
+      navigate(modalURLFromLocation(location, null));
+    },
     onSubmitError: ({ resetValue }) => resetValue('password'),
   });
 

@@ -30,26 +30,10 @@ type Props = {
 
 type OfferBoxProps = {
   offer: Offer;
-  title: string;
-  ariaLabel: string;
-  secondBenefit?: string;
-  periodString?: string;
-};
+  selected: boolean;
+} & Pick<Props, 'onChange'>;
 
-type OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }: OfferBoxProps) => JSX.Element;
-
-const ChooseOfferForm: React.FC<Props> = ({
-  values,
-  errors,
-  onChange,
-  onSubmit,
-  submitting,
-  offers,
-  onBackButtonClickHandler,
-  offerType,
-  setOfferType,
-}: Props) => {
-  const siteName = useConfigStore((s) => s.config.siteName);
+const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferBoxProps) => {
   const { t } = useTranslation('account');
 
   const getFreeTrialText = (offer: Offer) => {
@@ -68,8 +52,8 @@ const ChooseOfferForm: React.FC<Props> = ({
     return null;
   };
 
-  const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }) => (
-    <div className={styles.offer}>
+  const renderOption = ({ title, periodString, secondBenefit }: { title: string; periodString?: string; secondBenefit?: string }) => (
+    <div className={styles.offer} role="option">
       <input
         className={styles.radio}
         onChange={onChange}
@@ -77,8 +61,8 @@ const ChooseOfferForm: React.FC<Props> = ({
         name={'offerId'}
         value={offer.offerId}
         id={offer.offerId}
-        checked={values.offerId === offer.offerId}
-        aria-label={ariaLabel}
+        checked={selected}
+        data-testid={testId(title)}
       />
       <label className={styles.label} htmlFor={offer.offerId}>
         <h2 className={styles.offerTitle}>{title}</h2>
@@ -107,36 +91,38 @@ const ChooseOfferForm: React.FC<Props> = ({
     </div>
   );
 
-  const renderOfferBox = (offer: Offer) => {
-    if (isSVODOffer(offer)) {
-      const isMonthly = offer.period === 'month';
+  if (isSVODOffer(offer)) {
+    const isMonthly = offer.period === 'month';
 
-      return (
-        <OfferBox
-          offer={offer}
-          key={offer.offerId}
-          title={isMonthly ? t('choose_offer.monthly') : t('choose_offer.yearly')}
-          ariaLabel={isMonthly ? t('choose_offer.monthly_subscription') : t('choose_offer.yearly_subscription')}
-          secondBenefit={t('choose_offer.benefits.cancel_anytime')}
-          periodString={isMonthly ? t('periods.month') : t('periods.year')}
-        />
-      );
-    }
+    return renderOption({
+      title: isMonthly ? t('choose_offer.monthly') : t('choose_offer.yearly'),
+      secondBenefit: t('choose_offer.benefits.cancel_anytime'),
+      periodString: isMonthly ? t('periods.month') : t('periods.year'),
+    });
+  }
 
-    return (
-      <OfferBox
-        offer={offer}
-        key={offer.offerId}
-        title={offer.offerTitle}
-        ariaLabel={offer.offerTitle}
-        secondBenefit={
-          !!offer.durationPeriod && !!offer.durationAmount
-            ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
-            : undefined
-        }
-      />
-    );
-  };
+  return renderOption({
+    title: offer.offerTitle,
+    secondBenefit:
+      !!offer.durationPeriod && !!offer.durationAmount
+        ? t('choose_offer.tvod_access', { period: offer.durationPeriod, count: offer.durationAmount })
+        : undefined,
+  });
+};
+
+const ChooseOfferForm: React.FC<Props> = ({
+  values,
+  errors,
+  onChange,
+  onSubmit,
+  submitting,
+  offers,
+  onBackButtonClickHandler,
+  offerType,
+  setOfferType,
+}: Props) => {
+  const siteName = useConfigStore((s) => s.config.siteName);
+  const { t } = useTranslation('account');
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
@@ -172,7 +158,13 @@ const ChooseOfferForm: React.FC<Props> = ({
           </label>
         </div>
       )}
-      {<div className={styles.offers}>{!offers.length ? <p>{t('choose_offer.no_pricing_available')}</p> : offers.map(renderOfferBox)}</div>}
+      <div className={styles.offers}>
+        {!offers.length ? (
+          <p>{t('choose_offer.no_pricing_available')}</p>
+        ) : (
+          offers.map((offer) => <OfferBox key={offer.offerId} offer={offer} selected={values.offerId === offer.offerId} onChange={onChange} />)
+        )}
+      </div>
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Button label={t('choose_offer.continue')} disabled={submitting || !offers.length} variant="contained" color="primary" type="submit" fullWidth />
     </form>

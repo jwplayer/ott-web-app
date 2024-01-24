@@ -44,6 +44,7 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
           values: initialValues,
           isDirty: false,
           activeSectionId: undefined,
+          success: false,
           errors: undefined,
         };
       });

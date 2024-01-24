@@ -54,10 +54,10 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, value
           <FormFeedback variant="warning">{getTranslatedErrorMessage(messageKey)}</FormFeedback>
         </div>
       )}
+      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
 
       <SocialButtonsList socialLoginURLs={socialLoginURLs} />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
-      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
       <TextField
         value={values.email}
         onChange={onChange}

@@ -5,6 +5,7 @@ import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
+import { useTranslation } from 'react-i18next';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -12,6 +13,7 @@ import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
 import PaymentForm, { PaymentFormData } from '../../../components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '../../AdyenInitialPayment/AdyenInitialPayment';
+import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
 
 const Checkout = () => {
   const location = useLocation();
@@ -20,6 +22,8 @@ const Checkout = () => {
 
   const [couponFormOpen, setCouponFormOpen] = useState(false);
   const [showCouponCodeSuccess, setShowCouponCodeSuccess] = useState(false);
+  const { t } = useTranslation('account');
+  const announce = useAriaAnnouncer();
 
   const chooseOfferUrl = modalURLFromLocation(location, 'choose-offer');
   const welcomeUrl = modalURLFromLocation(location, 'welcome');
@@ -30,7 +34,11 @@ const Checkout = () => {
   const { offer, offerType, paymentMethods, order, isSubmitting, updateOrder, submitPaymentWithoutDetails, submitPaymentPaypal, submitPaymentStripe } =
     useCheckout({
       onUpdateOrderSuccess: () => !!couponCode && setShowCouponCodeSuccess(true),
-      onSubmitPaymentWithoutDetailsSuccess: () => navigate(offerType === 'svod' ? welcomeUrl : closeModalUrl, { replace: true }),
+      onSubmitPaymentWithoutDetailsSuccess: () => {
+        announce(t('checkout.payment_success'), 'success');
+
+        return navigate(offerType === 'svod' ? welcomeUrl : closeModalUrl, { replace: true });
+      },
       onSubmitPaypalPaymentSuccess: ({ redirectUrl }) => {
         window.location.href = redirectUrl;
       },

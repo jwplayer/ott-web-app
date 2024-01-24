@@ -68,10 +68,6 @@
 .relatedVideosList {
   grid-area: related;
   position: relative;
-
-  @include responsive.desktop-only() {
-    padding-left: 24px;
-  }
 }
 
 .relatedVideos {
@@ -125,7 +121,7 @@
 }
 
 .relatedVideosListTitle {
-  padding-bottom: 16px;
+  margin-left: 24px;
   font-family: var(--body-alt-font-family);
   font-weight: var(--body-font-weight-bold);
   font-size: 20px;

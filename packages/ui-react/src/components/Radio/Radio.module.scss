@@ -2,12 +2,13 @@
 @use '@jwp/ott-ui-react/src/styles/theme';
 
 .header {
+  display: flex;
   margin-bottom: 8px;
   font-weight: var(--body-font-weight-bold);
   text-align: left;
 
-  > span {
-    float: right;
+  > span.note {
+    margin-left: auto;
     color: rgba(variables.$white, 0.7);
     font-weight: normal;
   }

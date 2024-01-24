@@ -237,12 +237,12 @@ Scenario('I can navigate through the epg', async ({ I }) => {
 
 Scenario('I can see the channel logo for Channel 1', async ({ I }) => {
   await I.openVideoCard('Channel 1');
-  await I.seeEpgChannelLogoImage('Uh7zcqVm', 'https://cdn.jwplayer.com/v2/media/Uh7zcqVm/images/channel_logo.webp?poster_fallback=1&width=320');
+  await I.seeEpgChannelLogoImage('Uh7zcqVm', 'https://cdn.jwplayer.com/v2/media/Uh7zcqVm/images/channel_logo.webp?poster_fallback=1&width=320', 'Channel 1');
 });
 
 Scenario('I can see the channel logo for Channel 2', async ({ I }) => {
   await I.openVideoCard('Channel 2');
-  await I.seeEpgChannelLogoImage('Z2evecey', 'https://cdn.jwplayer.com/v2/media/Z2evecey/images/channel_logo.webp?poster_fallback=1&width=320');
+  await I.seeEpgChannelLogoImage('Z2evecey', 'https://cdn.jwplayer.com/v2/media/Z2evecey/images/channel_logo.webp?poster_fallback=1&width=320', 'Channel 2');
 });
 
 Scenario('I can see the background image for Channel 3', async ({ I }) => {

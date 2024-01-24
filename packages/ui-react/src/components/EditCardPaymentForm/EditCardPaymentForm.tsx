@@ -14,6 +14,7 @@ import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
 import CreditCardExpiryField from '../CreditCardExpiryField/CreditCardExpiryField';
 import CreditCardNumberField from '../CreditCardNumberField/CreditCardNumberField';
 import TextField from '../TextField/TextField';
+import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './EditCardPaymentForm.module.scss';
 
@@ -33,9 +34,10 @@ type Props = {
 
 const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails }) => {
   const accountController = getModule(AccountController);
+  const announce = useAriaAnnouncer();
 
   const { t } = useTranslation('account');
-  const updateCard = useMutation(accountController.updateCardDetails);
+  const { mutate: mutateCardDetails, isLoading } = useMutation(accountController.updateCardDetails);
   const { activePayment } = useAccountStore(({ activePayment }) => ({ activePayment }), shallow);
 
   const paymentData = useForm<EditCardPaymentFormData>({
@@ -65,7 +67,7 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
     validateOnBlur: true,
     onSubmit: async () => {
       setUpdatingCardDetails(true);
-      updateCard.mutate(
+      mutateCardDetails(
         {
           cardName: paymentData.values.cardholderName,
           cardNumber: paymentData.values.cardNumber.replace(/\s+/g, ''),
@@ -76,6 +78,9 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
         },
         {
           onSettled: () => onCancel(),
+          onSuccess: () => {
+            announce(t('checkout.card_details_updated'), 'success');
+          },
         },
       );
     },
@@ -135,10 +140,11 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
       </div>
       <div>
         <Button
-          disabled={updateCard.isLoading}
+          disabled={isLoading}
           label={t('checkout.save')}
           variant="contained"
           onClick={paymentData.handleSubmit as () => void}
+          type="submit"
           color="primary"
           size="large"
           fullWidth

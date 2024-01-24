@@ -3,15 +3,20 @@
 exports[`<Radio> > renders and matches snapshot 1`] = `
 <div>
   <div>
-    <div
+    <label
       class="_header_d50e6e"
       data-testid="radio-header"
+      for="radio_1235_radio"
     >
-      Choose a Value
       <span>
+        Choose a Value
+      </span>
+      <span
+        class="_note_d50e6e"
+      >
         optional
       </span>
-    </div>
+    </label>
     <div
       class="_radio_d50e6e"
     >
@@ -59,7 +64,9 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       </label>
     </div>
     <div
+      aria-live="polite"
       class="_helperText_da58e0"
+      id="helper_text_1235"
     >
       This is required!
     </div>

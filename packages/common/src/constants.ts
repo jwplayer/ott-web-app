@@ -60,7 +60,7 @@ export const CACHE_TIME = 60 * 1000 * 20; // 20 minutes
 
 export const STALE_TIME = 60 * 1000 * 20;
 
-export const CARD_ASPECT_RATIOS = ['2:1', '16:9', '5:3', '4:3', '1:1', '9:13', '2:3', '9:16'] as const;
+export const CARD_ASPECT_RATIOS = ['1:1', '2:1', '2:3', '4:3', '5:3', '16:9', '9:13', '9:16'] as const;
 
 export const DEFAULT_FEATURES = {
   canUpdateEmail: false,

@@ -42,7 +42,7 @@ const Button: React.FC<Props> = ({
   size = 'medium',
   disabled,
   busy,
-  type,
+  type = 'button',
   to,
   as = 'button',
   onClick,

@@ -12,6 +12,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       personal_details.title
     </h2>
     <div
+      aria-live="assertive"
       class="_formFeedback_99f247 _error_99f247"
     >
       This is a form error
@@ -29,6 +30,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_firstname"
+          aria-invalid="true"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_firstname"
           name="firstName"
@@ -39,7 +43,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_firstname_1235"
       >
         this is wrong
       </div>
@@ -57,6 +63,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_lastname"
+          aria-invalid="true"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_lastname"
           name="lastName"
@@ -67,7 +76,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_lastname_1235"
       >
         also this
       </div>
@@ -88,6 +99,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_companyname"
+          aria-invalid="false"
+          aria-required="false"
           class="_input_e16c1b"
           id="text-field_1235_companyname"
           name="companyName"
@@ -97,7 +111,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_companyname_1235"
       >
         So much errors
       </div>
@@ -115,6 +131,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_address"
+          aria-invalid="true"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_address"
           name="address"
@@ -125,7 +144,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_address_1235"
       >
         Do you know where you live
       </div>
@@ -146,6 +167,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_address2"
+          aria-invalid="false"
+          aria-required="false"
           class="_input_e16c1b"
           id="text-field_1235_address2"
           name="address2"
@@ -155,7 +179,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_address2_1235"
       >
         Come on
       </div>
@@ -173,6 +199,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_city"
+          aria-invalid="true"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_city"
           name="city"
@@ -183,7 +212,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_city_1235"
       >
         stop it
       </div>
@@ -201,6 +232,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_state"
+          aria-invalid="true"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_state"
           name="state"
@@ -211,7 +245,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_state_1235"
       >
         Confusion
       </div>
@@ -229,6 +265,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_postcode"
+          aria-invalid="true"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_postcode"
           name="postCode"
@@ -239,7 +278,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_postcode_1235"
       >
         Post Code should be 5 centimeters
       </div>
@@ -257,6 +298,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_phonenumber"
+          aria-invalid="true"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_phonenumber"
           name="phoneNumber"
@@ -267,7 +311,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_phonenumber_1235"
       >
         Invalid
       </div>
@@ -286,6 +332,8 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_container_eb6974"
       >
         <input
+          aria-describedby="helper_text_1235_birthdate"
+          aria-invalid="true"
           class="_hiddenInput_eb6974"
           id="text-field_1235_birthdate-hidden"
           name="birthDate"
@@ -321,7 +369,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_birthdate_1235"
       >
         February 30th? Really?
       </div>
@@ -339,6 +389,8 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_dropdown_bb73c6 _fullWidth_bb73c6"
       >
         <select
+          aria-describedby="helper_text_1235_key1"
+          aria-invalid="true"
           aria-required="true"
           class="_select_bb73c6"
           id="1235"
@@ -372,21 +424,28 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         </select>
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235_key1_1235"
       >
         question 1 is invalid
       </div>
     </div>
     <div>
-      <div
+      <label
         class="_header_d50e6e"
         data-testid="radio-header"
+        for="radio_1235_key2"
       >
-        Is this a question?
         <span>
+          Is this a question?
+        </span>
+        <span
+          class="_note_d50e6e"
+        >
           optional
         </span>
-      </div>
+      </label>
       <div
         class="_radio_d50e6e"
       >
@@ -419,7 +478,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         </label>
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
+        id="helper_text_1235"
       >
         Invalid answer
       </div>
@@ -436,6 +497,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         class="_row_531f07"
       >
         <input
+          aria-describedby="helper_text_1235_ccc"
           aria-required="true"
           checked=""
           id="check-box_1235_ccc"
@@ -451,7 +513,9 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         </label>
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0 _helperTextError_531f07"
+        id="helper_text_1235_ccc_1235"
       >
         No way Jose
       </div>
@@ -493,6 +557,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_firstname"
+          aria-invalid="false"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_firstname"
           name="firstName"
@@ -516,6 +583,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_lastname"
+          aria-invalid="false"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_lastname"
           name="lastName"
@@ -542,6 +612,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_companyname"
+          aria-invalid="false"
+          aria-required="false"
           class="_input_e16c1b"
           id="text-field_1235_companyname"
           name="companyName"
@@ -564,6 +637,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_address"
+          aria-invalid="false"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_address"
           name="address"
@@ -590,6 +666,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_address2"
+          aria-invalid="false"
+          aria-required="false"
           class="_input_e16c1b"
           id="text-field_1235_address2"
           name="address2"
@@ -612,6 +691,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_city"
+          aria-invalid="false"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_city"
           name="city"
@@ -635,6 +717,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_state"
+          aria-invalid="false"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_state"
           name="state"
@@ -658,6 +743,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_postcode"
+          aria-invalid="false"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_postcode"
           name="postCode"
@@ -681,6 +769,9 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_e16c1b"
       >
         <input
+          aria-describedby="helper_text_1235_phonenumber"
+          aria-invalid="false"
+          aria-required="true"
           class="_input_e16c1b"
           id="text-field_1235_phonenumber"
           name="phoneNumber"
@@ -705,6 +796,8 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_container_eb6974"
       >
         <input
+          aria-describedby="helper_text_1235_birthdate"
+          aria-invalid="false"
           class="_hiddenInput_eb6974"
           id="text-field_1235_birthdate-hidden"
           name="birthDate"
@@ -753,6 +846,8 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_dropdown_bb73c6 _fullWidth_bb73c6"
       >
         <select
+          aria-describedby="helper_text_1235_key1"
+          aria-invalid="false"
           aria-required="true"
           class="_select_bb73c6"
           id="1235"
@@ -787,15 +882,20 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       </div>
     </div>
     <div>
-      <div
+      <label
         class="_header_d50e6e"
         data-testid="radio-header"
+        for="radio_1235_key2"
       >
-        Is this a question?
         <span>
+          Is this a question?
+        </span>
+        <span
+          class="_note_d50e6e"
+        >
           optional
         </span>
-      </div>
+      </label>
       <div
         class="_radio_d50e6e"
       >
@@ -840,6 +940,7 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         class="_row_531f07"
       >
         <input
+          aria-describedby="helper_text_1235_ccc"
           aria-required="true"
           checked=""
           id="check-box_1235_ccc"

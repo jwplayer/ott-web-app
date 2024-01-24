@@ -103,7 +103,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     await I.checkPlayerClosed();
     I.waitForText('Email', normalTimeout);
     I.see('Password');
-    I.click('div[aria-label=Close]');
+    I.click('div[aria-label="Close panel"]');
 
     I.click('Trailer');
     await I.waitForPlayerPlaying(`${constants.elephantsDreamTitle} - Trailer`);

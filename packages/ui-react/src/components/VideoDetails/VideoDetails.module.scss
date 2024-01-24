@@ -7,7 +7,7 @@
   color: var(--primary-color);
   font-family: var(--body-font-family);
   font-weight: 400;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
 }
 
 .mainPadding {
@@ -37,7 +37,7 @@
 
 .info {
   position: relative;
-  width: 70%;
+  width: 50%;
   max-width: 650px;
   min-height: 440px;
 
@@ -101,6 +101,7 @@
 
 .description {
   min-height: 21px;
+  margin-top: 0;
   margin-bottom: 24px;
   font-size: 18px;
   line-height: 20px;

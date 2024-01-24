@@ -5,6 +5,7 @@ import useCheckAccess from '@jwp/ott-hooks-react/src/useCheckAccess';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 
 import Spinner from '../Spinner/Spinner';
+import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './WaitingForPayment.module.scss';
 
@@ -12,13 +13,19 @@ const WaitingForPayment = () => {
   const { t } = useTranslation('account');
   const location = useLocation();
   const navigate = useNavigate();
+  const announce = useAriaAnnouncer();
   const { intervalCheckAccess, errorMessage } = useCheckAccess();
 
   useEffect(() => {
     intervalCheckAccess({
       interval: 3000,
       iterations: 5,
-      callback: (hasAccess) => hasAccess && navigate(modalURLFromLocation(location, 'welcome')),
+      callback: (hasAccess) => {
+        if (!hasAccess) return;
+
+        announce(t('checkout.payment_success'), 'success');
+        navigate(modalURLFromLocation(location, 'welcome'));
+      },
     });
     //eslint-disable-next-line
   }, []);
