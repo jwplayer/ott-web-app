@@ -9,6 +9,7 @@ import type { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { useProfileErrorHandler, useUpdateProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';
+import { PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 
 import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
@@ -58,10 +59,10 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
   }, [profileDetails?.avatar_url]);
 
   if (!id || (!isFetching && !isLoading && !profileDetails)) {
-    navigate('/u/profiles');
+    navigate(PATH_USER_PROFILES);
   }
 
-  const updateProfile = useUpdateProfile({ onSuccess: () => navigate('/u/profiles') });
+  const updateProfile = useUpdateProfile({ onSuccess: () => navigate(PATH_USER_PROFILES) });
 
   const handleErrors = useProfileErrorHandler();
 

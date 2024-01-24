@@ -21,6 +21,18 @@ import Layout from '@jwp/ott-ui-react/src/containers/Layout/Layout';
 import Profiles from '@jwp/ott-ui-react/src/containers/Profiles/Profiles';
 import CreateProfile from '@jwp/ott-ui-react/src/containers/Profiles/CreateProfile';
 import EditProfile from '@jwp/ott-ui-react/src/containers/Profiles/EditProfile';
+import {
+  PATH_ABOUT,
+  PATH_LEGACY_SERIES,
+  PATH_MEDIA,
+  PATH_PLAYLIST,
+  PATH_USER_PROFILES,
+  PATH_USER_PROFILES_CREATE,
+  PATH_USER_PROFILES_EDIT,
+  PATH_USER_PROFILES_EDIT_PROFILE,
+  PATH_SEARCH,
+  PATH_USER,
+} from '@jwp/ott-common/src/paths';
 
 import useNotifications from '#src/hooks/useNotifications';
 
@@ -49,26 +61,31 @@ export default function AppRoutes() {
   }
 
   const shouldManageProfiles =
-    !!user && profilesEnabled && !profile && (accessModel === 'SVOD' || accessModel === 'AUTHVOD') && !userModal && !location.pathname.includes('/u/profiles');
+    !!user &&
+    profilesEnabled &&
+    !profile &&
+    (accessModel === 'SVOD' || accessModel === 'AUTHVOD') &&
+    !userModal &&
+    !location.pathname.includes(PATH_USER_PROFILES);
 
   if (shouldManageProfiles) {
-    return <Navigate to="/u/profiles" />;
+    return <Navigate to={PATH_USER_PROFILES} />;
   }
 
   return (
     <Routes>
-      <Route path="/u/profiles" element={<Profiles />} />
-      <Route path="/u/profiles/create" element={<CreateProfile />} />
-      <Route path="/u/profiles/edit" element={<Profiles editMode />} />
-      <Route path="/u/profiles/edit/:id" element={<EditProfile />} />
+      <Route path={PATH_USER_PROFILES} element={<Profiles />} />
+      <Route path={PATH_USER_PROFILES_CREATE} element={<CreateProfile />} />
+      <Route path={PATH_USER_PROFILES_EDIT} element={<Profiles editMode />} />
+      <Route path={PATH_USER_PROFILES_EDIT_PROFILE} element={<EditProfile />} />
       <Route element={<Layout />} errorElement={<RootErrorPage />}>
         <Route index element={<Home />} />
-        <Route path="/p/:id" element={<PlaylistScreenRouter />} />
-        <Route path="/m/:id/*" element={<MediaScreenRouter />} />
-        <Route path="/s/:id/*" element={<LegacySeries />} />
-        <Route path="/q/*" element={<Search />} />
-        <Route path="/u/*" element={<User />} />
-        <Route path="/o/about" element={<About />} />
+        <Route path={PATH_PLAYLIST} element={<PlaylistScreenRouter />} />
+        <Route path={PATH_MEDIA} element={<MediaScreenRouter />} />
+        <Route path={PATH_LEGACY_SERIES} element={<LegacySeries />} />
+        <Route path={PATH_SEARCH} element={<Search />} />
+        <Route path={PATH_USER} element={<User />} />
+        <Route path={PATH_ABOUT} element={<About />} />
         <Route
           path="/*"
           element={<ErrorPage title={t('notfound_error_heading', 'Not found')} message={t('notfound_error_description', "This page doesn't exist.")} />}
