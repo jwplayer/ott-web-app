@@ -123,9 +123,14 @@ exports[`User Component tests > Account Page 1`] = `
             >
               account.firstname
             </label>
-            <p>
-              User
-            </p>
+            <input
+              class="_input_e16c1b"
+              id="text-field_1235_firstname"
+              name="firstName"
+              readonly=""
+              type="text"
+              value="User"
+            />
           </div>
           <div
             class="_textField_e16c1b"
@@ -136,9 +141,14 @@ exports[`User Component tests > Account Page 1`] = `
             >
               account.lastname
             </label>
-            <p>
-              Person
-            </p>
+            <input
+              class="_input_e16c1b"
+              id="text-field_1235_lastname"
+              name="lastName"
+              readonly=""
+              type="text"
+              value="Person"
+            />
           </div>
         </form>
         <div
@@ -180,9 +190,15 @@ exports[`User Component tests > Account Page 1`] = `
             >
               account.email
             </label>
-            <p>
-              user@jwplayer.com
-            </p>
+            <input
+              class="_input_e16c1b"
+              id="text-field_1235_email"
+              name="email"
+              readonly=""
+              required=""
+              type="text"
+              value="user@jwplayer.com"
+            />
           </div>
         </form>
         <div
@@ -684,9 +700,14 @@ exports[`User Component tests > Payments Page 1`] = `
             >
               user:payment.card_number
             </label>
-            <p>
-              •••• •••• •••• 9888
-            </p>
+            <input
+              aria-label="user:payment.card_number_hidden"
+              class="_input_e16c1b"
+              id="text-field_1235"
+              readonly=""
+              type="text"
+              value="•••• •••• •••• 9888"
+            />
           </div>
           <div
             class="_cardDetails_c57ff5"
@@ -700,9 +721,13 @@ exports[`User Component tests > Payments Page 1`] = `
               >
                 user:payment.expiry_date
               </label>
-              <p>
-                03/30
-              </p>
+              <input
+                class="_input_e16c1b"
+                id="text-field_1235"
+                readonly=""
+                type="text"
+                value="03/30"
+              />
             </div>
             <div
               class="_textField_e16c1b"
@@ -713,9 +738,14 @@ exports[`User Component tests > Payments Page 1`] = `
               >
                 user:payment.security_code
               </label>
-              <p>
-                ******
-              </p>
+              <input
+                aria-label="user:payment.security_code_hidden"
+                class="_input_e16c1b"
+                id="text-field_1235"
+                readonly=""
+                type="text"
+                value="******"
+              />
             </div>
           </div>
           <button

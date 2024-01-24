@@ -37,7 +37,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
   const today = new Date();
 
-  const cardInfo = Array.of('Card number', '•••• •••• •••• 1111', 'Expiry date', '03/2030', 'Security code', '******');
+  const cardInfo = Array.of(['Card number', '•••• •••• •••• 1111'], ['Expiry date', '03/2030'], ['Security code', '******']);
 
   Feature(`payments - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
@@ -175,7 +175,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     await finishAndCheckSubscription(I, addYear(today), today, props.yearlyOffer.price, props.hasInlineOfferSwitch);
 
-    cardInfo.forEach((s) => I.waitForText(s));
+    cardInfo.forEach(([label, value]) => I.seeInField(label, value));
   });
 
   Scenario(`I can cancel my subscription - ${providerName}`, async ({ I }) => {
@@ -184,7 +184,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
 
     // Still see payment info
-    cardInfo.forEach((s) => I.waitForText(s));
+    cardInfo.forEach(([label, value]) => I.seeInField(label, value));
   });
 
   Scenario(`I can renew my subscription - ${providerName}`, async ({ I }) => {

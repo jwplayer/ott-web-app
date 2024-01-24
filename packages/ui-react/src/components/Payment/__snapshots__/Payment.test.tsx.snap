@@ -27,9 +27,14 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         >
           user:payment.card_number
         </label>
-        <p>
-          •••• •••• •••• 0002
-        </p>
+        <input
+          aria-label="user:payment.card_number_hidden"
+          class="_input_e16c1b"
+          id="text-field_1235"
+          readonly=""
+          type="text"
+          value="•••• •••• •••• 0002"
+        />
       </div>
       <div
         class="_cardDetails_c57ff5"
@@ -43,9 +48,13 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
           >
             user:payment.expiry_date
           </label>
-          <p>
-            03/2030
-          </p>
+          <input
+            class="_input_e16c1b"
+            id="text-field_1235"
+            readonly=""
+            type="text"
+            value="03/2030"
+          />
         </div>
         <div
           class="_textField_e16c1b"
@@ -56,9 +65,14 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
           >
             user:payment.security_code
           </label>
-          <p>
-            ******
-          </p>
+          <input
+            aria-label="user:payment.security_code_hidden"
+            class="_input_e16c1b"
+            id="text-field_1235"
+            readonly=""
+            type="text"
+            value="******"
+          />
         </div>
       </div>
       <button

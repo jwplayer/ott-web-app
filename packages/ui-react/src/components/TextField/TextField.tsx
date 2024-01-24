@@ -58,6 +58,14 @@ const TextField: React.FC<Props> = ({
     className,
   );
 
+  const renderInput = () => {
+    return isTextArea(inputProps) ? (
+      <textarea id={id} className={styles.input} rows={3} readOnly={!editing} ref={textAreaRef} {...inputProps} />
+    ) : (
+      <input id={id} className={styles.input} type={'text'} readOnly={!editing} ref={inputRef} {...inputProps} />
+    );
+  };
+
   return (
     <div className={textFieldClassName} data-testid={getTestId(testId)}>
       <label htmlFor={id} className={styles.label}>
@@ -67,15 +75,11 @@ const TextField: React.FC<Props> = ({
       {editing ? (
         <div className={styles.container}>
           {leftControl ? <div className={styles.control}>{leftControl}</div> : null}
-          {isTextArea(inputProps) ? (
-            <textarea id={id} className={styles.input} rows={3} ref={textAreaRef} {...inputProps} />
-          ) : (
-            <input id={id} className={styles.input} type={'text'} ref={inputRef} {...inputProps} />
-          )}
+          {renderInput()}
           {rightControl ? <div className={styles.control}>{rightControl}</div> : null}
         </div>
       ) : (
-        <p>{inputProps.value}</p>
+        renderInput()
       )}
       <HelperText error={error}>{helperText}</HelperText>
     </div>
