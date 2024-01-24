@@ -16,6 +16,7 @@ type InputOrTextAreaProps =
   | ({ multiline: true; inputRef?: never; textAreaRef?: RefObject<HTMLTextAreaElement> } & TextAreaProps);
 
 type Props = {
+  name: string;
   className?: string;
   label?: ReactNode;
   helperText?: React.ReactNode;

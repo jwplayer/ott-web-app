@@ -32,7 +32,7 @@ describe('<TextField>', () => {
 
   test('triggers an onChange event when the input value changes', () => {
     const onChange = vi.fn();
-    const { getByPlaceholderText } = render(<TextField value="" onChange={onChange} placeholder="Enter your name" />);
+    const { getByPlaceholderText } = render(<TextField name="name" value="" onChange={onChange} placeholder="Enter your name" />);
 
     fireEvent.change(getByPlaceholderText('Enter your name'), { target: { value: 'John Doe' } });
 
@@ -40,7 +40,7 @@ describe('<TextField>', () => {
   });
 
   test('shows the helper text below the input', () => {
-    const { queryByText } = render(<TextField value="" onChange={vi.fn()} helperText="Assertive text" />);
+    const { queryByText } = render(<TextField name="name" value="" onChange={vi.fn()} helperText="Assertive text" />);
 
     expect(queryByText('Assertive text')).toBeDefined();
   });
