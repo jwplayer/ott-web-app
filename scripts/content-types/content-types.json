@@ -161,7 +161,7 @@
       "hosting_type": "hosted",
       "is_active": true,
       "is_series": false,
-      "sections": []
+      "sections": ["access"]
     },
     {
       "name": "liveChannel",
@@ -261,7 +261,22 @@
       "hosting_type": "hosted",
       "is_active": true,
       "is_series": false,
-      "sections": []
+      "sections": [
+        {
+          "title": "Access",
+          "fields": [
+            {
+              "param": "free",
+              "label": "Free",
+              "description": "If this item can be watched for free and doesn't require a login or subscription, you can set this value to true. Otherwise, if you leave this setting false, the application level subscription and authentication level rules will apply.",
+              "details": {
+                "field_type": "toggle",
+                "default": true
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "hub",
