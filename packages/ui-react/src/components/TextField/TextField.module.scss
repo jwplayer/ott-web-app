@@ -87,4 +87,10 @@
       display: none;
     }
   }
+
+  &[readonly] {
+    min-height: auto;
+    margin: 1em 0;
+    padding: 0;
+  }
 }

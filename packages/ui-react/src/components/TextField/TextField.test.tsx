@@ -10,8 +10,22 @@ describe('<TextField>', () => {
     expect(container).toMatchSnapshot();
   });
 
+  test('renders and matches readonly snapshot', () => {
+    const { container } = render(<TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} readOnly={true} />);
+
+    expect(container).toMatchSnapshot();
+  });
+
   test('renders and matches multiline snapshot', () => {
     const { container } = render(<TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} multiline={true} />);
+
+    expect(container).toMatchSnapshot();
+  });
+
+  test('renders and matches multiline readonly snapshot', () => {
+    const { container } = render(
+      <TextField label="Label" placeholder="Placeholder" name="name" value="" onChange={vi.fn()} multiline={true} readOnly={true} />,
+    );
 
     expect(container).toMatchSnapshot();
   });

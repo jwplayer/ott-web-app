@@ -33,9 +33,14 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         >
           account.firstname
         </label>
-        <p>
-          John
-        </p>
+        <input
+          class="_input_e16c1b"
+          id="text-field_1235_firstname"
+          name="firstName"
+          readonly=""
+          type="text"
+          value="John"
+        />
       </div>
       <div
         class="_textField_e16c1b"
@@ -46,9 +51,14 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         >
           account.lastname
         </label>
-        <p>
-          Doe
-        </p>
+        <input
+          class="_input_e16c1b"
+          id="text-field_1235_lastname"
+          name="lastName"
+          readonly=""
+          type="text"
+          value="Doe"
+        />
       </div>
     </form>
     <div
@@ -90,9 +100,15 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         >
           account.email
         </label>
-        <p>
-          email@domain.com
-        </p>
+        <input
+          class="_input_e16c1b"
+          id="text-field_1235_email"
+          name="email"
+          readonly=""
+          required=""
+          type="text"
+          value="email@domain.com"
+        />
       </div>
     </form>
     <div
