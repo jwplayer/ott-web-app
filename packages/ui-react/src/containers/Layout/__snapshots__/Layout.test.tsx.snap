@@ -6,7 +6,7 @@ exports[`<Layout /> > renders layout 1`] = `
     class="_layout_c71437"
   >
     <div
-      class="_main_c71437"
+      class="_container_c71437"
     >
       <header
         class="_header_f4f7a7 _static_f4f7a7"
@@ -14,10 +14,19 @@ exports[`<Layout /> > renders layout 1`] = `
         <div
           class="_container_f4f7a7"
         >
+          <a
+            class="_skipToContent_f4f7a7"
+            href="#content"
+          >
+            skip_to_content
+          </a>
           <div
             class="_menu_f4f7a7"
           >
             <div
+              aria-controls="sidebar"
+              aria-expanded="false"
+              aria-haspopup="true"
               aria-label="open_menu"
               class="_iconButton_0fef65 _iconButton_f4f7a7"
               role="button"
@@ -39,14 +48,7 @@ exports[`<Layout /> > renders layout 1`] = `
               </svg>
             </div>
           </div>
-          <a
-            class="_skipToContent_f4f7a7"
-            href="#content"
-          >
-            skip_to_content
-          </a>
           <nav
-            aria-label="menu"
             class="_nav_f4f7a7"
           >
             <a
@@ -64,61 +66,62 @@ exports[`<Layout /> > renders layout 1`] = `
           />
         </div>
       </header>
-      <div
-        class="_backdrop_577f70"
-      />
-      <div
-        class="_sidebar_577f70"
-      >
-        <div
-          class="_heading_577f70"
-        >
-          <div
-            aria-label="close_menu"
-            class="_iconButton_0fef65"
-            role="button"
-            tabindex="-1"
-          >
-            <svg
-              aria-hidden="true"
-              class="_icon_585b29"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              />
-              <path
-                d="M0 0h24v24H0z"
-                fill="none"
-              />
-            </svg>
-          </div>
-        </div>
-        <nav
-          class="_group_577f70"
-        >
-          <a
-            aria-current="page"
-            aria-label="home"
-            class="_menuButton_91706b _active_91706b"
-            href="/"
-            tabindex="-1"
-          >
-            <span>
-              home
-            </span>
-          </a>
-          <hr
-            class="_divider_c71437"
-          />
-        </nav>
-      </div>
-      <div
-        class="_content_c71437"
+      <main
+        class="_main_c71437"
         id="content"
         tabindex="-1"
       />
+    </div>
+    <div
+      class="_backdrop_577f70"
+    />
+    <div
+      class="_sidebar_577f70"
+      id="sidebar"
+      inert=""
+    >
+      <div
+        class="_heading_577f70"
+      >
+        <div
+          aria-label="close_menu"
+          class="_iconButton_0fef65"
+          role="button"
+          tabindex="0"
+        >
+          <svg
+            aria-hidden="true"
+            class="_icon_585b29"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+          </svg>
+        </div>
+      </div>
+      <nav
+        class="_group_577f70"
+      >
+        <a
+          aria-current="page"
+          class="_menuButton_91706b _active_91706b"
+          href="/"
+          tabindex="-1"
+        >
+          <span>
+            home
+          </span>
+        </a>
+        <hr
+          class="_divider_c71437"
+        />
+      </nav>
     </div>
   </div>
 </div>

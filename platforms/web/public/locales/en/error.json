@@ -11,5 +11,7 @@
   "settings_invalid": "Invalid or missing settings",
   "video_not_found": "Video not found",
   "unknown_error": "Unknown error",
-  "adyen_order_unknown": "Order is unknown"
+  "adyen_order_unknown": "Order is unknown",
+  "empty_shelves_heading": "No content available",
+  "empty_shelves_description": "We apologize, but there is no content available in your region."
 }

@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { render, act, type RenderOptions } from '@testing-library/react';
 
 import QueryProvider from '../src/containers/QueryProvider/QueryProvider';
+import { AriaAnnouncerProvider } from '../src/containers/AnnouncementProvider/AnnoucementProvider';
 
 interface WrapperProps {
   children?: ReactNode;
@@ -27,7 +28,9 @@ export const createWrapper = () => {
 
 export const wrapper = ({ children }: WrapperProps) => (
   <QueryProvider>
-    <Router>{children as ReactElement}</Router>
+    <AriaAnnouncerProvider>
+      <Router>{children as ReactElement}</Router>
+    </AriaAnnouncerProvider>
   </QueryProvider>
 );
 

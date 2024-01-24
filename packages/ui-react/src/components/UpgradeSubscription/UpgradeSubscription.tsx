@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '../Button/Button';
+import { AriaAnnouncerVariant, useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './UpgradeSubscription.module.scss';
 
@@ -12,6 +13,7 @@ type Props = {
 
 const UpgradeSubscription: React.FC<Props> = ({ type, onCloseButtonClick }: Props) => {
   const { t } = useTranslation('account');
+  const announce = useAriaAnnouncer();
 
   // these comments exist for extracting dynamic i18n keys
   // t('account:checkout.upgrade_success');
@@ -22,6 +24,12 @@ const UpgradeSubscription: React.FC<Props> = ({ type, onCloseButtonClick }: Prop
   // t('account:checkout.upgrade_error_message');
   const title = t(`checkout.upgrade_${type}`);
   const message = t(`checkout.upgrade_${type}_message`);
+
+  useEffect(() => {
+    const typeToAnnounce = { error: 'error', success: 'succes', pending: 'info' }[type] as AriaAnnouncerVariant;
+
+    announce(message, typeToAnnounce);
+  }, [announce, message, type]);
 
   return (
     <div>

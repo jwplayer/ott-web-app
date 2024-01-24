@@ -12,7 +12,6 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     </li>
     <li>
       <a
-        aria-label="nav.account"
         class="_menuButton_91706b"
         href="/u/my-account"
         tabindex="0"
@@ -38,7 +37,6 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     </li>
     <li>
       <a
-        aria-label="nav.payments"
         class="_menuButton_91706b"
         href="/u/payments"
         tabindex="0"
@@ -69,7 +67,6 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     </li>
     <li>
       <div
-        aria-label="nav.logout"
         class="_menuButton_91706b"
         tabindex="0"
       >

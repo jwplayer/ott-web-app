@@ -10,6 +10,7 @@ exports[`<Filter> > renders Filter 1`] = `
     <button
       class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
+      type="button"
     >
       <span>
         x
@@ -18,6 +19,7 @@ exports[`<Filter> > renders Filter 1`] = `
     <button
       class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
+      type="button"
     >
       <span>
         y
@@ -26,6 +28,7 @@ exports[`<Filter> > renders Filter 1`] = `
     <button
       class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
+      type="button"
     >
       <span>
         z
@@ -34,6 +37,7 @@ exports[`<Filter> > renders Filter 1`] = `
     <button
       class="_button_f8f296 _default_f8f296 _outlined_f8f296"
       role="option"
+      type="button"
     >
       <span>
         bb

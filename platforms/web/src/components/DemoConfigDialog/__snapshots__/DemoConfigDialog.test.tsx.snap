@@ -10,6 +10,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
     </div>
     <button
       class="_button_e29948 _default_e29948 _text_e29948"
+      type="button"
     >
       <span>
         click_to_unselect_config
@@ -35,14 +36,12 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           class="_image_d73633"
           src="/images/logo.png"
         />
-        <header>
-          <h1
-            class="_title_d73633"
-          >
-            app_config_not_found
-          </h1>
-        </header>
-        <main
+        <h1
+          class="_title_d73633"
+        >
+          app_config_not_found
+        </h1>
+        <div
           class="_main_d73633"
         >
           <p
@@ -65,6 +64,9 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 class="_container_25c745"
               >
                 <input
+                  aria-describedby="helper_text_1235_app-config"
+                  aria-invalid="true"
+                  aria-required="true"
                   autocapitalize="none"
                   class="_input_25c745"
                   id="text-field_1235_app-config"
@@ -77,7 +79,9 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 />
               </div>
               <div
+                aria-live="assertive"
                 class="_helperText_edc1c5 _error_edc1c5"
+                id="helper_text_1235_app-config_1235"
               >
                 <span>
                   smth
@@ -104,6 +108,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               <button
                 aria-disabled="false"
                 class="_button_e29948 _default_e29948 _outlined_e29948"
+                type="button"
               >
                 <span>
                   cancel_config_id
@@ -135,7 +140,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               </a>
             </span>
           </div>
-        </main>
+        </div>
       </div>
     </div>
   </div>

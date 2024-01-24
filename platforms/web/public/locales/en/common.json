@@ -6,7 +6,7 @@
   },
   "back": "Back",
   "card_lock": "Item locked",
-  "close_modal": "Close",
+  "close_modal": "Close panel",
   "confirmation_dialog": {
     "close": "Cancel",
     "confirm": "Yes"

@@ -11,5 +11,7 @@
   "settings_invalid": "Ajustes inválidos o faltantes",
   "video_not_found": "Video no encontrado",
   "unknown_error": "Error desconocido",
-  "adyen_order_unknown": "El orden es desconocido"
+  "adyen_order_unknown": "El orden es desconocido",
+  "empty_shelves_heading": "No hay contenido disponible",
+  "empty_shelves_description": "Nos disculpamos, pero no hay contenido disponible en su región."
 }

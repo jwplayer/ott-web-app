@@ -31,6 +31,7 @@
     "edit_information": "Edit information",
     "edit_password": "Edit password",
     "email": "Email",
+    "update_success": "Your {{section}} has been successfully updated.",
     "errors": {
       "email_exists": "Email already exists!",
       "email_update_not_supported": "Email update not supported",
@@ -66,11 +67,10 @@
     "clear_favorites_body": "You are about to clear all of your favorite videos. Are you sure?",
     "clear_favorites_title": "Clear favorites?",
     "no_favorites": "Your favorites are empty",
-    "not_found": "Favorites not found!",
     "title": "Favorites"
   },
   "login": {
-    "field_required": "This field is required"
+    "field_required": "This field is required, please fill in a valid {{field}}."
   },
   "name": "Name",
   "nav": {
@@ -90,6 +90,7 @@
     "billing_history": "Billing history",
     "cancel_subscription": "Cancel subscription",
     "card_number": "Card number",
+    "card_number_hidden": "Credit card number ending with {{number}}",
     "change_plan": "Change Plan",
     "change_plan_error": "There was a problem saving your subscription plan change.",
     "change_subscription": "Change subscription",
@@ -117,6 +118,7 @@
     "price_paid_with_card": "Price paid with card",
     "renew_subscription": "Renew subscription",
     "security_code": "Security code",
+    "security_code_hidden": "Security code hidden",
     "show_all": "Show all",
     "show_receipt": "Show receipt",
     "subscription_details": "Subscription details",

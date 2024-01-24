@@ -31,6 +31,7 @@ const DevConfigSelector = ({ selectedConfig }: Props) => {
       value={selectedConfig || ''}
       onChange={onChange}
       required={true}
+      aria-hidden={true}
     />
   );
 };

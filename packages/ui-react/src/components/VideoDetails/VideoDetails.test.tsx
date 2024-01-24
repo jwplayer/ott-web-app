@@ -41,6 +41,7 @@ describe('<VideoDetails>', () => {
       </VideoDetails>,
     );
 
-    expect(getByAltText('Test video')).toHaveAttribute('src', 'http://image.jpg?width=1280');
+    const image = getByAltText(''); // Image alt is intentionally empty for a11y;
+    expect(image).toHaveAttribute('src', 'http://image.jpg?width=1280');
   });
 });

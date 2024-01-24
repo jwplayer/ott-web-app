@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import InfiniteScroll from 'react-infinite-scroller';
 import type { Content } from '@jwp/ott-common/types/config';
@@ -10,15 +11,16 @@ import { slugify } from '@jwp/ott-common/src/utils/urlFormatting';
 import { parseAspectRatio, parseTilesDelta } from '@jwp/ott-common/src/utils/collection';
 import { testId } from '@jwp/ott-common/src/utils/common';
 import { PersonalShelf } from '@jwp/ott-common/src/constants';
+import usePlaylists from '@jwp/ott-hooks-react/src/usePlaylists';
 
-import ShelfComponent from '../../components/Shelf/Shelf';
+import Shelf from '../../components/Shelf/Shelf';
 import InfiniteScrollLoader from '../../components/InfiniteScrollLoader/InfiniteScrollLoader';
-import PlaylistContainer from '../PlaylistContainer/PlaylistContainer';
+import ErrorPage from '../../components/ErrorPage/ErrorPage';
 
 import styles from './ShelfList.module.scss';
 
-const INITIAL_ROW_COUNT = 6;
-const LOAD_ROWS_COUNT = 4;
+const INITIAL_ROWS_TO_LOAD = 6;
+const ROWS_TO_LOAD_STEP = 4;
 
 type Props = {
   rows: Content[];
@@ -26,63 +28,73 @@ type Props = {
 
 const ShelfList = ({ rows }: Props) => {
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
-  const [rowCount, setRowCount] = useState(INITIAL_ROW_COUNT);
+  const [rowsToLoad, setRowsToLoad] = useState(INITIAL_ROWS_TO_LOAD);
+  const { t } = useTranslation('error');
 
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionaryWithSeries());
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
 
+  // Todo: move to more common package?
+
+  const playlists = usePlaylists(rows, rowsToLoad);
+
   useEffect(() => {
     // reset row count when the page changes
-    return () => setRowCount(INITIAL_ROW_COUNT);
+    return () => setRowsToLoad(INITIAL_ROWS_TO_LOAD);
   }, [rows]);
 
+  // If all playlists are empty (most probably due to geo restrictions), we show an empty shelves error
+  const allPlaylistsEmpty = playlists.every(({ data, isSuccess }) => isSuccess && !data?.playlist?.length);
+
+  if (allPlaylistsEmpty) {
+    return <ErrorPage title={t('empty_shelves_heading')} message={t('empty_shelves_description')} />;
+  }
+
   return (
-    <div className={styles.home}>
+    <div className={styles.shelfList}>
       <InfiniteScroll
-        pageStart={0}
         style={{ overflow: 'hidden' }}
-        loadMore={() => setRowCount((current) => current + LOAD_ROWS_COUNT)}
-        hasMore={rowCount < rows.length}
+        loadMore={() => setRowsToLoad((current) => current + ROWS_TO_LOAD_STEP)}
+        hasMore={rowsToLoad < rows.length}
         role="grid"
         loader={<InfiniteScrollLoader key="loader" />}
       >
-        {rows.slice(0, rowCount).map((row, index) => (
-          <PlaylistContainer type={row.type} playlistId={row.contentId} key={`${row.contentId || row.type}_${index}`}>
-            {({ playlist, error, isLoading, style }) => {
-              const title = row?.title || playlist.title;
-              const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
-              const visibleTilesDelta = parseTilesDelta(posterAspect);
+        {rows.slice(0, rowsToLoad).map(({ type, featured, title }, index) => {
+          const { data: playlist, isLoading, error } = playlists[index];
 
-              return (
-                <div
-                  style={style}
-                  role="row"
-                  className={classNames(styles.shelfContainer, { [styles.featured]: row.featured })}
-                  data-testid={testId(`shelf-${row.featured ? 'featured' : row.type !== 'playlist' ? row.type : slugify(title)}`)}
-                >
-                  <div role="cell">
-                    <ShelfComponent
-                      loading={isLoading}
-                      error={error}
-                      type={row.type}
-                      playlist={playlist}
-                      watchHistory={row.type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                      title={title}
-                      featured={row.featured === true}
-                      accessModel={accessModel}
-                      isLoggedIn={!!user}
-                      hasSubscription={!!subscription}
-                      posterAspect={posterAspect}
-                      visibleTilesDelta={visibleTilesDelta}
-                    />
-                  </div>
-                </div>
-              );
-            }}
-          </PlaylistContainer>
-        ))}
+          if (!playlist?.playlist?.length) return null;
+
+          const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
+          const visibleTilesDelta = parseTilesDelta(posterAspect);
+
+          return (
+            <div
+              key={`${index}_${playlist.id}`}
+              role="row"
+              className={classNames(styles.shelfContainer, { [styles.featured]: featured })}
+              data-testid={testId(`shelf-${featured ? 'featured' : type === 'playlist' ? slugify(title || playlist?.title) : type}`)}
+            >
+              <div role="cell">
+                <Shelf
+                  loading={isLoading}
+                  error={error}
+                  type={type}
+                  playlist={playlist}
+                  watchHistory={type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
+                  title={title || playlist?.title}
+                  featured={featured}
+                  accessModel={accessModel}
+                  isLoggedIn={!!user}
+                  hasSubscription={!!subscription}
+                  posterAspect={posterAspect}
+                  visibleTilesDelta={visibleTilesDelta}
+                />
+              </div>
+            </div>
+          );
+        })}
       </InfiniteScroll>
     </div>
   );

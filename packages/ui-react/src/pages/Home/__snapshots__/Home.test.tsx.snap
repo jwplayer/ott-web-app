@@ -7,7 +7,9 @@ exports[`Home Component tests > Home test 1`] = `
   >
     home
   </h1>
-  <div>
+  <div
+    class="_shelfList_a0651b"
+  >
     <div
       role="grid"
       style="overflow: hidden;"
@@ -28,93 +30,93 @@ exports[`Home Component tests > Home test 1`] = `
             >
               This is a playlist
             </h2>
-            <div>
-              <div
-                class="_tileDock_22abb0"
+            <div
+              class="_tileDock_22abb0"
+            >
+              <ul
+                style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
               >
-                <ul
-                  style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+                <li
+                  aria-hidden="false"
+                  class=""
+                  style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                 >
-                  <li
-                    class=""
-                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                  <a
+                    class="_card_d75732"
+                    data-testid="My video"
+                    href="/m/abcddabc/my-video"
+                    role="button"
+                    tabindex="0"
                   >
-                    <a
-                      class="_card_d75732"
-                      data-testid="My video"
-                      href="/m/abcddabc/my-video"
-                      role="button"
-                      tabindex="0"
+                    <div
+                      class="_titleContainer_d75732"
+                    >
+                      <h3
+                        class="_title_d75732"
+                      >
+                        My video
+                      </h3>
+                    </div>
+                    <div
+                      class="_poster_d75732 _aspect169_d75732"
                     >
                       <div
-                        class="_titleContainer_d75732"
-                      >
-                        <h3
-                          class="_title_d75732"
-                        >
-                          My video
-                        </h3>
-                      </div>
-                      <div
-                        class="_poster_d75732 _aspect169_d75732"
+                        class="_meta_d75732"
                       >
                         <div
-                          class="_meta_d75732"
+                          class="_tags_d75732"
                         >
                           <div
-                            class="_tags_d75732"
+                            class="_tag_d75732"
                           >
-                            <div
-                              class="_tag_d75732"
-                            >
-                              6 min
-                            </div>
+                            6 min
                           </div>
                         </div>
                       </div>
-                    </a>
-                  </li>
-                  <li
-                    class=""
-                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                    </div>
+                  </a>
+                </li>
+                <li
+                  aria-hidden="false"
+                  class=""
+                  style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                >
+                  <a
+                    class="_card_d75732"
+                    data-testid="Other Vids"
+                    href="/m/zzzaaazz/other-vids"
+                    role="button"
+                    tabindex="0"
                   >
-                    <a
-                      class="_card_d75732"
-                      data-testid="Other Vids"
-                      href="/m/zzzaaazz/other-vids"
-                      role="button"
-                      tabindex="0"
+                    <div
+                      class="_titleContainer_d75732"
+                    >
+                      <h3
+                        class="_title_d75732"
+                      >
+                        Other Vids
+                      </h3>
+                    </div>
+                    <div
+                      class="_poster_d75732 _aspect169_d75732"
                     >
                       <div
-                        class="_titleContainer_d75732"
-                      >
-                        <h3
-                          class="_title_d75732"
-                        >
-                          Other Vids
-                        </h3>
-                      </div>
-                      <div
-                        class="_poster_d75732 _aspect169_d75732"
+                        class="_meta_d75732"
                       >
                         <div
-                          class="_meta_d75732"
+                          class="_tags_d75732"
                         >
                           <div
-                            class="_tags_d75732"
+                            class="_tag_d75732"
                           >
-                            <div
-                              class="_tag_d75732"
-                            >
-                              6 min
-                            </div>
+                            6 min
                           </div>
                         </div>
                       </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -135,93 +137,93 @@ exports[`Home Component tests > Home test 1`] = `
             >
               Second Playlist
             </h2>
-            <div>
-              <div
-                class="_tileDock_22abb0"
+            <div
+              class="_tileDock_22abb0"
+            >
+              <ul
+                style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
               >
-                <ul
-                  style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+                <li
+                  aria-hidden="false"
+                  class=""
+                  style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
                 >
-                  <li
-                    class=""
-                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                  <a
+                    class="_card_d75732"
+                    data-testid="My video"
+                    href="/m/abcddabc/my-video"
+                    role="button"
+                    tabindex="0"
                   >
-                    <a
-                      class="_card_d75732"
-                      data-testid="My video"
-                      href="/m/abcddabc/my-video"
-                      role="button"
-                      tabindex="0"
+                    <div
+                      class="_titleContainer_d75732"
+                    >
+                      <h3
+                        class="_title_d75732"
+                      >
+                        My video
+                      </h3>
+                    </div>
+                    <div
+                      class="_poster_d75732 _aspect169_d75732"
                     >
                       <div
-                        class="_titleContainer_d75732"
-                      >
-                        <h3
-                          class="_title_d75732"
-                        >
-                          My video
-                        </h3>
-                      </div>
-                      <div
-                        class="_poster_d75732 _aspect169_d75732"
+                        class="_meta_d75732"
                       >
                         <div
-                          class="_meta_d75732"
+                          class="_tags_d75732"
                         >
                           <div
-                            class="_tags_d75732"
+                            class="_tag_d75732"
                           >
-                            <div
-                              class="_tag_d75732"
-                            >
-                              6 min
-                            </div>
+                            6 min
                           </div>
                         </div>
                       </div>
-                    </a>
-                  </li>
-                  <li
-                    class=""
-                    style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                    </div>
+                  </a>
+                </li>
+                <li
+                  aria-hidden="false"
+                  class=""
+                  style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+                >
+                  <a
+                    class="_card_d75732"
+                    data-testid="Other Vids"
+                    href="/m/zzzaaazz/other-vids"
+                    role="button"
+                    tabindex="0"
                   >
-                    <a
-                      class="_card_d75732"
-                      data-testid="Other Vids"
-                      href="/m/zzzaaazz/other-vids"
-                      role="button"
-                      tabindex="0"
+                    <div
+                      class="_titleContainer_d75732"
+                    >
+                      <h3
+                        class="_title_d75732"
+                      >
+                        Other Vids
+                      </h3>
+                    </div>
+                    <div
+                      class="_poster_d75732 _aspect169_d75732"
                     >
                       <div
-                        class="_titleContainer_d75732"
-                      >
-                        <h3
-                          class="_title_d75732"
-                        >
-                          Other Vids
-                        </h3>
-                      </div>
-                      <div
-                        class="_poster_d75732 _aspect169_d75732"
+                        class="_meta_d75732"
                       >
                         <div
-                          class="_meta_d75732"
+                          class="_tags_d75732"
                         >
                           <div
-                            class="_tags_d75732"
+                            class="_tag_d75732"
                           >
-                            <div
-                              class="_tag_d75732"
-                            >
-                              6 min
-                            </div>
+                            6 min
                           </div>
                         </div>
                       </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

@@ -33,6 +33,7 @@ describe('<Header />', () => {
         onCloseSearchButtonClick={vi.fn()}
         onLoginButtonClick={vi.fn()}
         userMenuOpen={false}
+        sideBarOpen={false}
         openUserMenu={vi.fn()}
         closeUserMenu={vi.fn()}
         openLanguageMenu={vi.fn()}

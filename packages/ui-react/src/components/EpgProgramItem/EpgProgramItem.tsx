@@ -36,6 +36,7 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, di
 
   const showImage = !compact && isMinWidth;
   const showLiveTagInImage = !compact && isMinWidth && isLive;
+  const alt = ''; // intentionally empty for a11y, because adjacent text alternative
 
   return (
     <div className={styles.epgProgramBox} style={position} onClick={() => onClick && onClick(program)}>
@@ -48,7 +49,7 @@ const ProgramItem: React.VFC<Props> = ({ program, onClick, isActive, compact, di
         style={{ width: styles.width }}
         data-testid={testId(program.data.id)}
       >
-        {showImage && <img className={styles.epgProgramImage} src={image} alt="Preview" />}
+        {showImage && <img className={styles.epgProgramImage} src={image} alt={alt} />}
         {showLiveTagInImage && <div className={styles.epgLiveTag}>{t('live')}</div>}
         <div className={styles.epgProgramContent}>
           {compact && isLive && <div className={styles.epgLiveTag}>{t('live')}</div>}

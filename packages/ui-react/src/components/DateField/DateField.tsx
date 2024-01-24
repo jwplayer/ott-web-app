@@ -51,6 +51,7 @@ const DateField: React.FC<Props> = ({
   });
 
   const id = useOpaqueId('text-field', name);
+  const helperTextId = useOpaqueId('helper_text', name);
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
@@ -148,7 +149,15 @@ const DateField: React.FC<Props> = ({
       </label>
       <div className={styles.container}>
         {/* don't be tempted to make it type="hidden", onChange will practically be ignored that way */}
-        <input ref={hiddenInputRef} id={`${id}-hidden`} className={styles.hiddenInput} name={name} onChange={onChange} />
+        <input
+          ref={hiddenInputRef}
+          id={`${id}-hidden`}
+          className={styles.hiddenInput}
+          name={name}
+          onChange={onChange}
+          aria-invalid={error}
+          aria-describedby={helperTextId}
+        />
         <input
           className={styles.input}
           name="date"
@@ -191,7 +200,9 @@ const DateField: React.FC<Props> = ({
           id={`${id}-year`}
         />
       </div>
-      <HelperText error={error}>{helperText}</HelperText>
+      <HelperText id={helperTextId} error={error}>
+        {helperText}
+      </HelperText>
     </div>
   );
 };

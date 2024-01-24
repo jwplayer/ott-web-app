@@ -215,7 +215,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
             channels={channels}
             onChannelClick={handleChannelClick}
             onProgramClick={handleProgramClick}
-            channel={channel}
+            selectedChannel={channel}
             program={program}
             config={config}
           />

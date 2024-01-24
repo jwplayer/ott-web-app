@@ -19,6 +19,8 @@ configureEnv({
   APP_PLAYER_LICENSE_KEY: import.meta.env.APP_PLAYER_LICENSE_KEY,
 
   APP_FOOTER_TEXT: import.meta.env.APP_FOOTER_TEXT,
+  APP_BODY_FONT: import.meta.env.APP_BODY_FONT,
+  APP_BODY_ALT_FONT: import.meta.env.APP_BODY_ALT_FONT,
 });
 
 const rootElement = document.getElementById('root');

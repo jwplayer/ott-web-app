@@ -8,10 +8,19 @@ exports[`<Header /> > renders header 1`] = `
     <div
       class="_container_f4f7a7"
     >
+      <a
+        class="_skipToContent_f4f7a7"
+        href="#content"
+      >
+        skip_to_content
+      </a>
       <div
         class="_menu_f4f7a7"
       >
         <div
+          aria-controls="sidebar"
+          aria-expanded="false"
+          aria-haspopup="true"
           aria-label="open_menu"
           class="_iconButton_0fef65 _iconButton_f4f7a7"
           role="button"
@@ -33,14 +42,7 @@ exports[`<Header /> > renders header 1`] = `
           </svg>
         </div>
       </div>
-      <a
-        class="_skipToContent_f4f7a7"
-        href="#content"
-      >
-        skip_to_content
-      </a>
       <nav
-        aria-label="menu"
         class="_nav_f4f7a7"
       >
         a
@@ -70,6 +72,7 @@ exports[`<Header /> > renders header 1`] = `
         >
           <button
             class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+            type="button"
           >
             <span>
               sign_in
@@ -77,6 +80,7 @@ exports[`<Header /> > renders header 1`] = `
           </button>
           <button
             class="_button_f8f296 _primary_f8f296"
+            type="button"
           >
             <span>
               sign_up

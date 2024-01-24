@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { defineConfig, HtmlTagDescriptor } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import type { ConfigEnv, UserConfigExport } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
@@ -8,23 +8,18 @@ import StylelintPlugin from 'vite-plugin-stylelint';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import svgr from 'vite-plugin-svgr';
-import { viteStaticCopy, type Target } from 'vite-plugin-static-copy';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-import { initSettings } from './scripts/build-tools/settings';
+import { extractExternalFonts, getFileCopyTargets, getGoogleFontTags, getGoogleVerificationTag, getGtmTags } from './scripts/build-tools/buildTools';
 
 export default ({ mode, command }: ConfigEnv): UserConfigExport => {
+  const envPrefix = 'APP_';
+  const env = loadEnv(mode, process.cwd(), envPrefix);
+
   // Shorten default mode names to dev / prod
   // Also differentiates from build type (production / development)
   mode = mode === 'development' ? 'dev' : mode;
   mode = mode === 'production' ? 'prod' : mode;
-
-  const localFile = initSettings(mode);
-
-  const app: OTTConfig = {
-    name: process.env.APP_NAME || 'JW OTT Webapp',
-    shortname: process.env.APP_SHORT_NAME || 'JW OTT',
-    description: process.env.APP_DESCRIPTION || 'JW OTT Webapp is an open-source, dynamically generated video website.',
-  };
 
   // Make sure to builds are always production type,
   // otherwise modes other than 'production' get built in dev
@@ -32,69 +27,24 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     process.env.NODE_ENV = 'production';
   }
 
-  const getGoogleScripts = () => {
-    const tags: HtmlTagDescriptor[] = [];
-
-    if (process.env.APP_GOOGLE_SITE_VERIFICATION_ID) {
-      tags.push({
-        tag: 'meta',
-        injectTo: 'head',
-        attrs: {
-          content: process.env.APP_GOOGLE_SITE_VERIFICATION_ID,
-          name: 'google-site-verification',
-        },
-      });
-    }
-    if (process.env.APP_GTM_TAG_ID) {
-      tags.push(
-        {
-          injectTo: 'head',
-          tag: 'script',
-          children: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','${process.env.APP_GTM_TAG_ID}');`,
-        },
-        {
-          injectTo: 'body-prepend',
-          tag: 'noscript',
-          children: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.APP_GTM_TAG_ID}"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-        },
-      );
-    }
-
-    return tags;
+  const app: OTTConfig = {
+    name: process.env.APP_NAME || 'JW OTT Webapp',
+    shortname: process.env.APP_SHORT_NAME || 'JW OTT',
+    description: process.env.APP_DESCRIPTION || 'JW OTT Webapp is an open-source, dynamically generated video website.',
   };
-  const fileCopyTargets: Target[] = [
-    {
-      src: localFile,
-      dest: '',
-      rename: '.webapp.ini',
-    },
-  ];
 
-  // These files are only needed in dev / test / demo, so don't include in prod builds
-  if (mode !== 'prod') {
-    fileCopyTargets.push({
-      src: '../../packages/testing/epg/*',
-      dest: 'epg',
-    });
-  }
+  const bodyFonts = extractExternalFonts(env.APP_BODY_FONT_FAMILY);
+  const bodyAltFonts = extractExternalFonts(env.APP_BODY_ALT_FONT_FAMILY);
+
+  const fontTags = getGoogleFontTags([bodyFonts, bodyAltFonts].flat());
+  const bodyFontsString = bodyFonts.map((font) => font.fontFamily).join(', ');
+  const bodyAltFontsString = bodyAltFonts.map((font) => font.fontFamily).join(', ');
 
   return defineConfig({
     plugins: [
       react({
         // This is needed to do decorator transforms for ioc resolution to work for classes
-        babel: {
-          plugins: [
-            // Seems like this one isn't needed anymore, but leaving in case we run into a bug later
-            // 'babel-plugin-parameter-decorator',
-            'babel-plugin-transform-typescript-metadata',
-            ['@babel/plugin-proposal-decorators', { legacy: true }],
-          ],
-        },
+        babel: { plugins: ['babel-plugin-transform-typescript-metadata', ['@babel/plugin-proposal-decorators', { legacy: true }]] },
       }),
       eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
       StylelintPlugin(),
@@ -129,21 +79,21 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       createHtmlPlugin({
         minify: true,
         inject: {
-          tags: getGoogleScripts(),
+          tags: [getGoogleVerificationTag(env), fontTags, getGtmTags(env)].flat(),
           data: app,
         },
       }),
-      viteStaticCopy({
-        targets: fileCopyTargets,
-      }),
+      viteStaticCopy({ targets: getFileCopyTargets(mode) }),
     ],
     define: {
       'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
       __mode__: JSON.stringify(mode),
       __dev__: process.env.NODE_ENV !== 'production',
+      'import.meta.env.APP_BODY_FONT': JSON.stringify(bodyFontsString),
+      'import.meta.env.APP_BODY_ALT_FONT': JSON.stringify(bodyAltFontsString),
     },
     publicDir: './public',
-    envPrefix: 'APP_',
+    envPrefix,
     server: {
       port: 8080,
     },

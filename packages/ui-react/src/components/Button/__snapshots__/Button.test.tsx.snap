@@ -4,6 +4,7 @@ exports[`<Button> > renders and matches snapshot 1`] = `
 <div>
   <button
     class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296"
+    type="button"
   >
     <span>
       aa

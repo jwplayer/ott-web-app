@@ -8,7 +8,7 @@
   font-family: var(--body-alt-font-family);
   text-align: center;
 
-  > main {
+  > div {
     margin-top: 6px;
   }
 
@@ -23,10 +23,6 @@
   @include responsive.desktop-small-only() {
     margin: 0 calc(#{variables.$base-spacing} * 3);
   }
-}
-
-.main {
-  margin: -8px;
 }
 
 .header {

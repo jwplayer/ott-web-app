@@ -8,6 +8,7 @@ import { testId } from '@jwp/ott-common/src/utils/common';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
 import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
+import env from '@jwp/ott-common/src/env';
 
 import TextField from '../TextField/TextField';
 import Button from '../Button/Button';
@@ -53,10 +54,11 @@ const RegistrationForm: React.FC<Props> = ({
 }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
 
-  const { t } = useTranslation('account');
+  const { t, i18n } = useTranslation('account');
   const location = useLocation();
 
   const ref = useRef<HTMLDivElement>(null);
+  const htmlLang = i18n.language !== env.APP_DEFAULT_LANGUAGE ? env.APP_DEFAULT_LANGUAGE : undefined;
 
   const formatConsentLabel = (label: string): string | JSX.Element => {
     const sanitizedLabel = DOMPurify.sanitize(label);
@@ -75,14 +77,6 @@ const RegistrationForm: React.FC<Props> = ({
       ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     }
   }, [errors.form]);
-
-  if (loading) {
-    return (
-      <div style={{ height: 400 }}>
-        <LoadingOverlay inline />
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
@@ -124,21 +118,26 @@ const RegistrationForm: React.FC<Props> = ({
       />
       {publisherConsents && (
         <div className={styles.customFields} data-testid="custom-reg-fields">
-          {publisherConsents.map((consent) => (
-            <CustomRegisterField
-              key={consent.name}
-              type={consent.type}
-              name={consent.name}
-              options={consent.options}
-              label={formatConsentLabel(consent.label)}
-              placeholder={consent.placeholder}
-              value={consentValues[consent.name] || ''}
-              required={consent.required}
-              error={consentErrors?.includes(consent.name)}
-              helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required') : undefined}
-              onChange={onConsentChange}
-            />
-          ))}
+          {publisherConsents.map((consent) => {
+            const consentError = consentErrors.find((error) => error === consent.name);
+
+            return (
+              <CustomRegisterField
+                key={consent.name}
+                type={consent.type}
+                name={consent.name}
+                options={consent.options}
+                label={formatConsentLabel(consent.label)}
+                placeholder={consent.placeholder}
+                value={consentValues[consent.name] || ''}
+                required={consent.required}
+                error={!!consentError}
+                helperText={consentError ? t(`registration.field_${consent.type}_required`) : undefined}
+                onChange={onConsentChange}
+                lang={htmlLang}
+              />
+            );
+          })}
         </div>
       )}
       <Button
@@ -154,7 +153,7 @@ const RegistrationForm: React.FC<Props> = ({
       <p className={styles.bottom}>
         {t('registration.already_account')} <Link to={modalURLFromLocation(location, 'login')}>{t('login.sign_in')}</Link>
       </p>
-      {submitting && <LoadingOverlay transparentBackground inline />}
+      {(loading || submitting) && <LoadingOverlay transparentBackground inline />}
     </form>
   );
 };

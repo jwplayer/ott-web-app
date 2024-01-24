@@ -9,6 +9,7 @@ import { PersonalShelf } from '@jwp/ott-common/src/constants';
 import ChevronLeft from '@jwp/ott-theme/assets/icons/chevron_left.svg?react';
 import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';
 import useBreakpoint, { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
+import type { PosterAspectRatio } from '@jwp/ott-common/src/utils/collection';
 
 import TileDock from '../TileDock/TileDock';
 import Card from '../Card/Card';
@@ -46,7 +47,7 @@ export type ShelfProps = {
   accessModel: AccessModel;
   isLoggedIn: boolean;
   hasSubscription: boolean;
-  posterAspect?: string;
+  posterAspect?: PosterAspectRatio;
   visibleTilesDelta?: number;
 };
 
@@ -73,6 +74,7 @@ const Shelf = ({
   const renderTile = useCallback(
     (item: PlaylistItem, isInView: boolean) => {
       const url = mediaURL({ media: item, playlistId: playlist.feedid, play: type === PersonalShelf.ContinueWatching });
+
       return (
         <Card
           key={item.mediaid}
@@ -137,8 +139,8 @@ const Shelf = ({
   if (error || !playlist?.playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
-    <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
-      {!featured ? <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2> : null}
+    <div className={classNames(styles.shelf)}>
+      {!featured ? <h2 className={classNames(styles.title)}>{title || playlist.title}</h2> : null}
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}

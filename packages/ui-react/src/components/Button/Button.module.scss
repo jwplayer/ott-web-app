@@ -1,5 +1,6 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 @use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/accessibility';
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 
 $small-button-height: 28px;
@@ -31,15 +32,7 @@ $large-button-height: 40px;
       &:hover,
       &:focus {
         z-index: 1;
-        transform: scale(1.1);
-      }
-
-      &:focus:not(:focus-visible):not(:hover) {
-        transform: scale(1);
-      }
-
-      &:focus-visible {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
     }
   }
@@ -65,6 +58,10 @@ $large-button-height: 40px;
   &.primary {
     color: var(--highlight-contrast-color, theme.$btn-primary-color);
     background-color: var(--highlight-color, theme.$btn-primary-bg);
+
+    &:focus {
+      @include accessibility.accessibleOutlineContrast;
+    }
   }
 
   &.outlined {
@@ -76,6 +73,7 @@ $large-button-height: 40px;
         color: var(--highlight-contrast-color, theme.$btn-primary-color);
         background-color: var(--highlight-color, theme.$btn-primary-bg);
         border-color: var(--highlight-color, theme.$btn-primary-bg);
+        outline: none;
       }
     }
   }

@@ -17,21 +17,24 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
   >
     <div
       class="_modal_6c6c55"
-      role="dialog"
     >
       <div
         class="_backdrop_6c6c55"
         data-testid="backdrop"
       />
       <div
+        aria-modal="true"
         class="_container_6c6c55"
+        data-testid="container"
       >
         <div
           style="transition: transform 0.2s ease, opacity 0.2s ease; transform: translate(0, -15px); opacity: 0; z-index: 15;"
         >
           <div
             class="_dialog_00d559 _small_00d559"
+            role="dialog"
           >
+            Dialog contents
             <div
               aria-label="close_modal"
               class="_iconButton_0fef65 _modalCloseButton_b92d69"
@@ -53,7 +56,6 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
                 />
               </svg>
             </div>
-            Dialog contents
           </div>
         </div>
       </div>

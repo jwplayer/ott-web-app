@@ -3,23 +3,6 @@
 exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
 <div>
   <div>
-    <div
-      aria-label="Go back"
-      class="_iconButton_0fef65 _dialogBackButton_248199"
-      role="button"
-      tabindex="0"
-    >
-      <svg
-        aria-hidden="true"
-        class="_icon_585b29"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
-        />
-      </svg>
-    </div>
     <h1
       class="_title_abc9bc"
     >
@@ -54,6 +37,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
     >
       <button
         class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        type="button"
       >
         <span>
           checkout.redeem_coupon
@@ -113,6 +97,9 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                 class="_container_e16c1b"
               >
                 <input
+                  aria-describedby="helper_text_1235_cardholdername"
+                  aria-invalid="false"
+                  aria-required="true"
                   class="_input_e16c1b"
                   id="text-field_1235_cardholdername"
                   name="cardholderName"
@@ -138,6 +125,9 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                 class="_container_e16c1b"
               >
                 <input
+                  aria-describedby="helper_text_1235_cardnumber"
+                  aria-invalid="false"
+                  aria-required="true"
                   class="_input_e16c1b"
                   id="text-field_1235_cardnumber"
                   name="cardNumber"
@@ -167,6 +157,9 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                   class="_container_e16c1b"
                 >
                   <input
+                    aria-describedby="helper_text_1235_cardexpiry"
+                    aria-invalid="false"
+                    aria-required="true"
                     class="_input_e16c1b"
                     id="text-field_1235_cardexpiry"
                     name="cardExpiry"
@@ -193,7 +186,10 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                   class="_container_e16c1b"
                 >
                   <input
+                    aria-describedby="helper_text_1235_cardcvc"
+                    aria-invalid="false"
                     aria-label="payment.security_code"
+                    aria-required="true"
                     class="_input_e16c1b"
                     id="text-field_1235_cardcvc"
                     name="cardCVC"
@@ -219,6 +215,23 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
           </div>
         </form>
       </div>
+    </div>
+    <div
+      aria-label="common:back"
+      class="_iconButton_0fef65 _dialogBackButton_248199"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="_icon_585b29"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+        />
+      </svg>
     </div>
   </div>
 </div>

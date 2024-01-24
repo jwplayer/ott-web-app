@@ -8,14 +8,15 @@ import HelperText from '../HelperText/HelperText';
 
 import styles from './TextField.module.scss';
 
-type InputProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'id' | 'ref' | 'className'>;
-type TextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'id' | 'ref' | 'className'>;
+type InputProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'id' | 'ref' | 'className' | 'name'>;
+type TextAreaProps = Omit<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'id' | 'ref' | 'className' | 'name'>;
 
 type InputOrTextAreaProps =
   | ({ multiline?: never; inputRef?: RefObject<HTMLInputElement>; textAreaRef?: never } & InputProps)
   | ({ multiline: true; inputRef?: never; textAreaRef?: RefObject<HTMLTextAreaElement> } & TextAreaProps);
 
 type Props = {
+  name: string;
   className?: string;
   label?: ReactNode;
   helperText?: React.ReactNode;
@@ -28,6 +29,7 @@ type Props = {
 } & InputOrTextAreaProps;
 
 const TextField: React.FC<Props> = ({
+  name,
   className,
   label,
   error,
@@ -41,7 +43,9 @@ const TextField: React.FC<Props> = ({
   multiline,
   ...inputProps
 }: Props) => {
-  const id = useOpaqueId('text-field', inputProps.name);
+  const id = useOpaqueId('text-field', name);
+  const helperTextId = useOpaqueId('helper_text', name);
+
   const { t } = useTranslation('common');
 
   const isInputOrTextArea = (item: unknown): item is InputOrTextAreaProps => !!item && typeof item === 'object';
@@ -58,6 +62,37 @@ const TextField: React.FC<Props> = ({
     className,
   );
 
+  const renderInput = () => {
+    const { required, disabled, value, ...otherInputProps } = inputProps;
+
+    // Default to 'text' if 'type' property is absent, which occurs in textareas.
+    const inputType = 'type' in otherInputProps ? otherInputProps.type : 'text';
+
+    const ariaAttributes = {
+      'aria-required': !!required,
+      'aria-invalid': Boolean(required && error && value !== ''),
+      'aria-describedby': helperTextId,
+    } as const;
+
+    const commonProps = {
+      id,
+      name,
+      value,
+      disabled,
+      className: styles.input,
+      readOnly: !editing,
+      required: !!required,
+      ...ariaAttributes,
+      ...otherInputProps,
+    };
+
+    return isTextArea(inputProps) ? (
+      <textarea {...(commonProps as TextAreaProps)} rows={3} ref={textAreaRef} />
+    ) : (
+      <input {...(commonProps as InputProps)} type={inputType} ref={inputRef} />
+    );
+  };
+
   return (
     <div className={textFieldClassName} data-testid={getTestId(testId)}>
       <label htmlFor={id} className={styles.label}>
@@ -67,17 +102,15 @@ const TextField: React.FC<Props> = ({
       {editing ? (
         <div className={styles.container}>
           {leftControl ? <div className={styles.control}>{leftControl}</div> : null}
-          {isTextArea(inputProps) ? (
-            <textarea id={id} className={styles.input} rows={3} ref={textAreaRef} {...inputProps} />
-          ) : (
-            <input id={id} className={styles.input} type={'text'} ref={inputRef} {...inputProps} />
-          )}
+          {renderInput()}
           {rightControl ? <div className={styles.control}>{rightControl}</div> : null}
         </div>
       ) : (
-        <p>{inputProps.value}</p>
+        renderInput()
       )}
-      <HelperText error={error}>{helperText}</HelperText>
+      <HelperText id={helperTextId} error={error}>
+        {helperText}
+      </HelperText>
     </div>
   );
 };

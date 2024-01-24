@@ -29,6 +29,7 @@ const CancelSubscriptionForm: React.FC<Props> = ({ onConfirm, onCancel, error, s
         onClick={onConfirm}
         fullWidth
         disabled={submitting}
+        type="submit"
       />
       <Button label={t('cancel_subscription.no_thanks')} variant="outlined" onClick={onCancel} fullWidth />
     </div>

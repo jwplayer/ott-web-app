@@ -18,11 +18,13 @@ type Props = {
   helperText?: string;
   disabled?: boolean;
   required?: boolean;
+  lang?: string;
 };
 
-const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error, required, ...rest }: Props) => {
+const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, value, helperText, disabled, error, required, lang, ...rest }: Props) => {
   const { t } = useTranslation('common');
   const id = useOpaqueId('check-box', name);
+  const helperTextId = useOpaqueId('helper_text', name);
 
   return (
     <div className={classNames(styles.checkbox, { [styles.error]: error })} {...rest}>
@@ -33,13 +35,23 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
         </div>
       ) : null}
       <div className={styles.row}>
-        <input name={name} type="checkbox" id={id} value={value} onChange={onChange} checked={checked} aria-required={required} disabled={disabled} />
-        <label htmlFor={id}>
+        <input
+          name={name}
+          type="checkbox"
+          id={id}
+          value={value}
+          onChange={onChange}
+          checked={checked}
+          disabled={disabled}
+          aria-required={required}
+          aria-describedby={helperTextId}
+        />
+        <label htmlFor={id} lang={lang}>
           {required ? '* ' : ''}
           {label}
         </label>
       </div>
-      <HelperText error={error} className={error ? styles.helperTextError : undefined}>
+      <HelperText id={helperTextId} error={error} className={error ? styles.helperTextError : undefined}>
         {helperText}
       </HelperText>
     </div>

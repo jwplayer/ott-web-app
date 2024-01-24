@@ -1,10 +1,9 @@
 import React from 'react';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
-import { PersonalShelf } from '@jwp/ott-common/src/constants';
 import { mockService } from '@jwp/ott-common/test/mockService';
+import favorites from '@jwp/ott-testing/fixtures/favorites.json';
 
 import { renderWithRouter } from '../../../test/utils';
-import PlaylistContainer from '../../containers/PlaylistContainer/PlaylistContainer';
 
 import Favorites from './Favorites';
 
@@ -16,19 +15,7 @@ describe('<Favorites>', () => {
 
   test('renders and matches snapshot', () => {
     const { container } = renderWithRouter(
-      <PlaylistContainer type={PersonalShelf.Favorites}>
-        {({ playlist, error, isLoading }) => (
-          <Favorites
-            playlist={playlist}
-            error={error}
-            isLoading={isLoading}
-            onCardHover={() => null}
-            onClearFavoritesClick={() => null}
-            hasSubscription={true}
-            accessModel={'SVOD'}
-          />
-        )}
-      </PlaylistContainer>,
+      <Favorites playlist={favorites} onCardHover={() => null} onClearFavoritesClick={() => null} hasSubscription={true} accessModel={'SVOD'} />,
     );
 
     expect(container).toMatchSnapshot();

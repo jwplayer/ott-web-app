@@ -19,7 +19,7 @@ const ResetPasswordForm: React.FC<Props> = ({ onCancel, onReset, submitting }: P
         {t('reset.reset_password')}
       </h1>
       <p className={styles.text}>{t('reset.text')}</p>
-      <Button onClick={onReset} className={styles.button} fullWidth color="primary" label={t('reset.yes')} disabled={submitting} />
+      <Button onClick={onReset} className={styles.button} fullWidth color="primary" label={t('reset.yes')} type="submit" disabled={submitting} />
       <Button onClick={onCancel} fullWidth label={t('reset.no')} />
     </div>
   );

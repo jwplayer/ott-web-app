@@ -3,7 +3,7 @@
 exports[`<DialogBackButton> > renders and matches snapshot 1`] = `
 <div>
   <div
-    aria-label="Go back"
+    aria-label="common:back"
     class="_iconButton_0fef65 _dialogBackButton_248199"
     role="button"
     tabindex="0"

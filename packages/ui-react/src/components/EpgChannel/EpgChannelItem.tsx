@@ -13,9 +13,10 @@ type Props = {
   sidebarWidth: number;
   onClick?: (channel: Channel) => void;
   isActive: boolean;
+  title: string;
 };
 
-const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWidth, onClick, isActive }) => {
+const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWidth, onClick, isActive, title }) => {
   const { position, uuid, channelLogoImage } = channel;
   const style = { top: position.top, height: position.height, width: sidebarWidth };
 
@@ -26,8 +27,9 @@ const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWi
         style={{ width: channelItemWidth }}
         onClick={() => onClick && onClick(channel)}
         data-testid={testId(uuid)}
+        role="button"
       >
-        <Image className={styles.epgChannelLogo} image={channelLogoImage} alt="Logo" width={320} />
+        <Image className={styles.epgChannelLogo} image={channelLogoImage} alt={title} width={320} />
       </div>
     </div>
   );

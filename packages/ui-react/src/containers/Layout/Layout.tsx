@@ -141,6 +141,8 @@ const Layout = () => {
     );
   };
 
+  const containerProps = { inert: sideBarOpen ? '' : undefined }; // inert is not yet officially supported in react
+
   return (
     <div className={styles.layout}>
       <Helmet>
@@ -151,7 +153,7 @@ const Layout = () => {
         <meta name="twitter:title" content={siteName} />
         <meta name="twitter:description" content={metaDescription} />
       </Helmet>
-      <div className={styles.main}>
+      <div className={styles.container} {...containerProps}>
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
           logoSrc={banner}
@@ -171,6 +173,7 @@ const Layout = () => {
           supportedLanguages={supportedLanguages}
           currentLanguage={currentLanguage}
           isLoggedIn={isLoggedIn}
+          sideBarOpen={sideBarOpen}
           userMenuOpen={userMenuOpen}
           languageMenuOpen={languageMenuOpen}
           openUserMenu={openUserMenu}
@@ -193,26 +196,27 @@ const Layout = () => {
             <Button key={item.contentId} label={item.label} to={playlistURL(item.contentId)} variant="text" />
           ))}
         </Header>
-        <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
-          <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
-          {menu.map((item) => (
-            <MenuButton key={item.contentId} label={item.label} to={playlistURL(item.contentId)} tabIndex={sideBarOpen ? 0 : -1} />
-          ))}
-          <hr className={styles.divider} />
-          {renderUserActions(sideBarOpen)}
-        </Sidebar>
-        <div id="content" className={styles.content} tabIndex={-1}>
+        <main id="content" className={styles.main} tabIndex={-1}>
           <Outlet />
-        </div>
+        </main>
+        {!!footerText && (
+          <MarkdownComponent
+            // The extra style below is just to fix the footer on mobile when the dev selector is shown
+            className={classNames(styles.footer, { [styles.testFixMargin]: IS_DEVELOPMENT_BUILD })}
+            markdownString={footerText}
+            tag="footer"
+            inline
+          />
+        )}
       </div>
-      {!!footerText && (
-        <MarkdownComponent
-          // The extra style below is just to fix the footer on mobile when the dev selector is shown
-          className={classNames(styles.footer, { [styles.testFixMargin]: IS_DEVELOPMENT_BUILD })}
-          markdownString={footerText}
-          inline
-        />
-      )}
+      <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
+        <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
+        {menu.map((item) => (
+          <MenuButton key={item.contentId} label={item.label} to={playlistURL(item.contentId)} tabIndex={sideBarOpen ? 0 : -1} />
+        ))}
+        <hr className={styles.divider} />
+        {renderUserActions(sideBarOpen)}
+      </Sidebar>
     </div>
   );
 };

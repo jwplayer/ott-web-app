@@ -7,14 +7,6 @@
   overflow-x: hidden;
 }
 
-.list {
-  overflow: visible !important;
-
-  > div {
-    overflow: visible !important;
-  }
-}
-
 .shelfContainer {
   position: relative;
   padding: 12px 56px;
