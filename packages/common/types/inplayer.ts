@@ -1,3 +1,5 @@
+import type { AxiosRequestConfig } from 'axios';
+
 export type InPlayerAuthData = {
   access_token: string;
   expires?: number;
@@ -13,7 +15,7 @@ export type InPlayerError = {
 };
 
 export type InPlayerResponse<T> = {
-  data: Record<T>;
+  data: T;
   status: number;
   statusText: string;
   config: AxiosRequestConfig;

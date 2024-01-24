@@ -34,6 +34,7 @@ import AccountService from '../AccountService';
 import { GET_CUSTOMER_IP } from '../../../modules/types';
 import type { GetCustomerIP } from '../../../../types/get-customer-ip';
 import { ACCESS_MODEL } from '../../../constants';
+import type { ServiceResponse } from '../../../../types/service';
 
 import CleengService from './CleengService';
 
@@ -65,7 +66,7 @@ export default class CleengAccountService extends AccountService {
     this.getCustomerIP = getCustomerIP;
   }
 
-  private handleErrors = (errors: ApiResponse['errors']) => {
+  private handleErrors = (errors: string[]) => {
     if (errors.length > 0) {
       throw new Error(errors[0]);
     }
@@ -265,11 +266,23 @@ export default class CleengAccountService extends AccountService {
   };
 
   resetPassword: ResetPassword = async (payload) => {
-    return this.cleengService.put('/customers/passwords', JSON.stringify({ ...payload, publisherId: this.publisherId }));
+    return this.cleengService.put(
+      '/customers/passwords',
+      JSON.stringify({
+        ...payload,
+        publisherId: this.publisherId,
+      }),
+    );
   };
 
   changePasswordWithResetToken: ChangePassword = async (payload) => {
-    return this.cleengService.patch('/customers/passwords', JSON.stringify({ ...payload, publisherId: this.publisherId }));
+    return this.cleengService.patch(
+      '/customers/passwords',
+      JSON.stringify({
+        ...payload,
+        publisherId: this.publisherId,
+      }),
+    );
   };
 
   changePasswordWithOldPassword: ChangePasswordWithOldPassword = async () => {

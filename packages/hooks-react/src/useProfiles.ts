@@ -10,6 +10,7 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { logDev } from '@jwp/ott-common/src/utils/common';
+import type { ServiceResponse } from '@jwp/ott-common/types/service';
 
 export const useSelectProfile = (options?: { onSuccess: () => void; onError: () => void }) => {
   const accountController = getModule(AccountController, false);

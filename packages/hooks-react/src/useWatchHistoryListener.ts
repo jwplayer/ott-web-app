@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
-import type { JWPlayer } from '@jwp/ott-common/types/jwplayer';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import WatchHistoryController from '@jwp/ott-common/src/stores/WatchHistoryController';
@@ -31,7 +30,7 @@ const PROGRESSIVE_SAVE_INTERVAL = 300_000; // 5 minutes
  * item. When this needs to be saved, the queue is used to look up the last progress and item and save it when
  * necessary. The queue is then cleared to prevent duplicate saves and API calls.
  */
-export const useWatchHistoryListener = (player: JWPlayer | undefined, item: PlaylistItem, seriesItem?: PlaylistItem) => {
+export const useWatchHistoryListener = (player: jwplayer.JWPlayer | undefined, item: PlaylistItem, seriesItem?: PlaylistItem) => {
   const queuedWatchProgress = useRef<QueuedProgress | null>(null);
   const watchHistoryController = getModule(WatchHistoryController);
 

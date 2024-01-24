@@ -1,3 +1,5 @@
+import type { MediaStatus } from '../src/utils/liveEvent';
+
 import type { MediaOffer } from './media';
 
 export type GetPlaylistParams = { page_limit?: string; related_media_id?: string; token?: string; search?: string };
