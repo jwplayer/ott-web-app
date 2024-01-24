@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { defineConfig } from 'vite';
+import { defineConfig, HtmlTagDescriptor } from 'vite';
 import type { ConfigEnv, UserConfigExport } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
@@ -26,6 +26,41 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     process.env.NODE_ENV = 'production';
   }
 
+  const getGoogleScripts = () => {
+    const tags: HtmlTagDescriptor[] = [];
+
+    if (process.env.APP_GOOGLE_SITE_VERIFICATION_ID) {
+      tags.push({
+        tag: 'meta',
+        injectTo: 'head',
+        attrs: {
+          content: process.env.APP_GOOGLE_SITE_VERIFICATION_ID,
+          name: 'google-site-verification',
+        },
+      });
+    }
+    if (process.env.APP_GTM_TAG_ID) {
+      tags.push(
+        {
+          injectTo: 'head',
+          tag: 'script',
+          children: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','${process.env.APP_GTM_TAG_ID}');`,
+        },
+        {
+          injectTo: 'body-prepend',
+          tag: 'noscript',
+          children: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.APP_GTM_TAG_ID}"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+        },
+      );
+    }
+
+    return tags;
+  };
   const fileCopyTargets: Target[] = [
     {
       src: localFile,
@@ -61,20 +96,9 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       VitePWA(),
       createHtmlPlugin({
         minify: true,
-        inject: process.env.APP_GOOGLE_SITE_VERIFICATION_ID
-          ? {
-              tags: [
-                {
-                  tag: 'meta',
-                  injectTo: 'head',
-                  attrs: {
-                    content: process.env.APP_GOOGLE_SITE_VERIFICATION_ID,
-                    name: 'google-site-verification',
-                  },
-                },
-              ],
-            }
-          : {},
+        inject: {
+          tags: getGoogleScripts(),
+        },
       }),
       viteStaticCopy({
         targets: fileCopyTargets,
