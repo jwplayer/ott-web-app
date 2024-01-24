@@ -7,6 +7,7 @@ import type { Profile } from '@jwp/ott-common/types/account';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
+import { PATH_USER_PROFILES, PATH_USER_PROFILES_CREATE, PATH_USER_PROFILES_EDIT } from '@jwp/ott-common/src/paths';
 
 import ProfileBox from '../../components/ProfileBox/ProfileBox';
 import AddNewProfile from '../../components/ProfileBox/AddNewProfile';
@@ -50,7 +51,7 @@ const Profiles = ({ editMode = false }: Props) => {
 
   const selectProfile = useSelectProfile({
     onSuccess: () => navigate('/'),
-    onError: () => navigate('/u/profiles'),
+    onError: () => navigate(PATH_USER_PROFILES),
   });
 
   const createdProfileData = data?.responseData.collection.find((profile: Profile) => profile.id === createdProfileId);
@@ -80,14 +81,20 @@ const Profiles = ({ editMode = false }: Props) => {
               image={profile.avatar_url}
             />
           ))}
-          {canAddNew && <AddNewProfile onClick={() => navigate('/u/profiles/create')} />}
+          {canAddNew && <AddNewProfile onClick={() => navigate(PATH_USER_PROFILES_CREATE)} />}
         </div>
         {activeProfiles > 0 && (
           <div className={styles.buttonContainer}>
             {!editMode ? (
-              <Button onClick={() => navigate('/u/profiles/edit')} label={t('account.manage_profiles')} variant="outlined" size="large" fullWidth={isMobile} />
+              <Button
+                onClick={() => navigate(PATH_USER_PROFILES_EDIT)}
+                label={t('account.manage_profiles')}
+                variant="outlined"
+                size="large"
+                fullWidth={isMobile}
+              />
             ) : (
-              <Button onClick={() => navigate('/u/profiles')} label={t('profile.done')} variant="outlined" size="large" fullWidth={isMobile} />
+              <Button onClick={() => navigate(PATH_USER_PROFILES)} label={t('profile.done')} variant="outlined" size="large" fullWidth={isMobile} />
             )}
           </div>
         )}
@@ -97,13 +104,13 @@ const Profiles = ({ editMode = false }: Props) => {
         open={creationSuccess}
         titleOverride={t('profile.created_title')}
         message={t('profile.created_message')}
-        onClose={() => navigate('/u/profiles')}
+        onClose={() => navigate(PATH_USER_PROFILES)}
         actionsOverride={
           <div className={styles.modalActions}>
             <Button to="/u/profiles" label={t('profile.back_to_profiles')} variant="text" fullWidth={isMobile} />
             <Button
               onClick={() => {
-                navigate('/u/profiles');
+                navigate(PATH_USER_PROFILES);
                 createdProfileId && selectProfile.mutate({ id: createdProfileId, avatarUrl: createdProfileData?.avatar_url ?? '' });
               }}
               label={t('profile.watch_now')}

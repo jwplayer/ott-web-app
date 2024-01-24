@@ -16,6 +16,8 @@ import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react'
 import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react';
 import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
 import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
+import { NESTED_PATH_USER_ACCOUNT, NESTED_PATH_USER_FAVORITES, NESTED_PATH_USER_MY_PROFILE, NESTED_PATH_USER_PAYMENTS } from '@jwp/ott-common/src/paths';
+import { userProfileURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import AccountComponent from '../../components/Account/Account';
 import Button from '../../components/Button/Button';
@@ -90,7 +92,7 @@ const User = (): JSX.Element => {
               {accessModel === 'SVOD' && profilesEnabled && profileAndFavoritesPage && (
                 <li>
                   <Button
-                    to={`my-profile/${profile?.id}`}
+                    to={profile ? userProfileURL(profile.id, true) : undefined}
                     label={profile?.name ?? t('nav.profile')}
                     variant="text"
                     startIcon={<img className={styles.profileIcon} src={profile?.avatar_url} alt={profile?.name} />}
@@ -100,18 +102,36 @@ const User = (): JSX.Element => {
               )}
               {(!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
-                  <Button to="my-account" label={t('nav.account')} variant="text" startIcon={<Icon icon={AccountCircle} />} className={styles.button} />
+                  <Button
+                    to={NESTED_PATH_USER_ACCOUNT}
+                    label={t('nav.account')}
+                    variant="text"
+                    startIcon={<Icon icon={AccountCircle} />}
+                    className={styles.button}
+                  />
                 </li>
               )}
               {favoritesList && (!profilesEnabled || profileAndFavoritesPage) && (
                 <li>
-                  <Button to="favorites" label={t('nav.favorites')} variant="text" startIcon={<Icon icon={Favorite} />} className={styles.button} />
+                  <Button
+                    to={NESTED_PATH_USER_FAVORITES}
+                    label={t('nav.favorites')}
+                    variant="text"
+                    startIcon={<Icon icon={Favorite} />}
+                    className={styles.button}
+                  />
                 </li>
               )}
 
               {accessModel !== ACCESS_MODEL.AVOD && (!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
-                  <Button to="payments" label={t('nav.payments')} variant="text" startIcon={<Icon icon={BalanceWallet} />} className={styles.button} />
+                  <Button
+                    to={NESTED_PATH_USER_PAYMENTS}
+                    label={t('nav.payments')}
+                    variant="text"
+                    startIcon={<Icon icon={BalanceWallet} />}
+                    className={styles.button}
+                  />
                 </li>
               )}
 
@@ -127,13 +147,13 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Routes>
           <Route
-            path="my-account"
+            path={NESTED_PATH_USER_ACCOUNT}
             element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
           />
-          {profilesEnabled && <Route path="my-profile/:id" element={<EditProfile contained />} />}
+          {profilesEnabled && <Route path={NESTED_PATH_USER_MY_PROFILE} element={<EditProfile contained />} />}
           {favoritesList && (
             <Route
-              path="favorites"
+              path={NESTED_PATH_USER_FAVORITES}
               element={
                 <>
                   <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
@@ -162,8 +182,11 @@ const User = (): JSX.Element => {
               }
             />
           )}
-          <Route path="payments" element={accessModel !== ACCESS_MODEL.AVOD ? <PaymentContainer /> : <Navigate to="my-account" />} />
-          <Route path="*" element={<Navigate to="my-account" />} />
+          <Route
+            path={NESTED_PATH_USER_PAYMENTS}
+            element={accessModel !== ACCESS_MODEL.AVOD ? <PaymentContainer /> : <Navigate to={NESTED_PATH_USER_ACCOUNT} />}
+          />
+          <Route path="*" element={<Navigate to={NESTED_PATH_USER_ACCOUNT} />} />
         </Routes>
       </div>
     </div>

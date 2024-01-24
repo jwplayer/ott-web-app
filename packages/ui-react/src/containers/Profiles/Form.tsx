@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';
+import { PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 
 import styles from '../../pages/User/User.module.scss';
 import Button from '../../components/Button/Button';
@@ -109,7 +110,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
         </div>
         <>
           <Button type="submit" label={t('account.save')} variant="outlined" disabled={!isDirty || submitting} fullWidth={isMobile} />
-          {showCancelButton && <Button onClick={() => navigate('/u/profiles')} label={t('account.cancel')} variant="text" fullWidth={isMobile} />}
+          {showCancelButton && <Button onClick={() => navigate(PATH_USER_PROFILES)} label={t('account.cancel')} variant="text" fullWidth={isMobile} />}
         </>
       </div>
     </form>
