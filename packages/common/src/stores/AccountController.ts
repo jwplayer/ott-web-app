@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import { inject, injectable } from 'inversify';
 
-import { ACCESS_MODEL, DEFAULT_FEATURES } from '../constants';
+import { DEFAULT_FEATURES } from '../constants';
 import { logDev } from '../utils/common';
 import type { IntegrationType } from '../../types/config';
 import CheckoutService from '../services/integrations/CheckoutService';
@@ -166,12 +166,12 @@ export default class AccountController {
   };
 
   getAccount = async () => {
-    const { config, accessModel } = useConfigStore.getState();
+    const { config } = useConfigStore.getState();
 
     try {
       const response = await this.accountService.getUser({ config });
       if (response) {
-        await this.afterLogin(response.user, response.customerConsents, accessModel);
+        await this.afterLogin(response.user, response.customerConsents);
       }
 
       useAccountStore.setState({ loading: false });
@@ -189,14 +189,14 @@ export default class AccountController {
   };
 
   login = async (email: string, password: string, referrer: string) => {
-    const { config, accessModel } = useConfigStore.getState();
+    const { config } = useConfigStore.getState();
 
     useAccountStore.setState({ loading: true });
 
     const response = await this.accountService.login({ config, email, password, referrer });
 
     if (response) {
-      await this.afterLogin(response.user, response.customerConsents, accessModel);
+      await this.afterLogin(response.user, response.customerConsents);
 
       await this.favoritesController?.restoreFavorites();
       await this.watchHistoryController?.restoreWatchHistory();
@@ -214,14 +214,14 @@ export default class AccountController {
   };
 
   register = async (email: string, password: string, referrer: string, consents: CustomerConsent[]) => {
-    const { config, accessModel } = useConfigStore.getState();
+    const { config } = useConfigStore.getState();
 
     useAccountStore.setState({ loading: true });
     const response = await this.accountService.register({ config, email, password, consents, referrer });
 
     if (response) {
       const { user, customerConsents } = response;
-      await this.afterLogin(user, customerConsents, accessModel);
+      await this.afterLogin(user, customerConsents);
     }
 
     await this.updatePersonalShelves();
@@ -294,14 +294,13 @@ export default class AccountController {
 
   updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { accessModel } = useConfigStore.getState();
     const { customer, customerConsents } = getAccountInfo();
 
     const response = await this.accountService.updateCaptureAnswers({ customer, ...capture });
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-    await this.afterLogin(response.responseData as Customer, customerConsents, accessModel, false);
+    await this.afterLogin(response.responseData as Customer, customerConsents, false);
 
     return response.responseData;
   };
@@ -509,14 +508,14 @@ export default class AccountController {
     return this.features;
   }
 
-  private async afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, accessModel: string, shouldSubscriptionReload: boolean = true) {
+  private async afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, shouldReloadSubscription = true) {
     useAccountStore.setState({
       user,
       customerConsents,
     });
 
     await Promise.allSettled([
-      accessModel === ACCESS_MODEL.SVOD && shouldSubscriptionReload ? this.reloadActiveSubscription() : Promise.resolve(),
+      shouldReloadSubscription ? this.reloadActiveSubscription() : Promise.resolve(), // For every accessModal there could be TVOD items, so we always reload the subscription
       this.getPublisherConsents(),
     ]);
 
