@@ -1,3 +1,12 @@
+## [5.1.1](https://github.com/jwplayer/ott-web-app/compare/v5.1.0...v5.1.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* lock animation mode on first load ([1b36ae0](https://github.com/jwplayer/ott-web-app/commit/1b36ae0e391d9ec977fdd6e8b0ef3befa43ddc5a))
+* prevent slider from getting stuck in non-anmiated mode ([e827aff](https://github.com/jwplayer/ott-web-app/commit/e827affd97f4cd3dbff4296c8686b77fab4a06b4))
+* **project:** fix dfault schemas ([4f6e4b0](https://github.com/jwplayer/ott-web-app/commit/4f6e4b0af50c26b523c1fc8f12469baa5280f5a1))
+
 ## [5.1.0](https://github.com/jwplayer/ott-web-app/compare/v5.0.0...v5.1.0) (2024-01-18)
 
 
