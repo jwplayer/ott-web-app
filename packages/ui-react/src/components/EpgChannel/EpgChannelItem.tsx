@@ -26,6 +26,7 @@ const EpgChannelItem: React.VFC<Props> = ({ channel, channelItemWidth, sidebarWi
         style={{ width: channelItemWidth }}
         onClick={() => onClick && onClick(channel)}
         data-testid={testId(uuid)}
+        role="button"
       >
         <Image className={styles.epgChannelLogo} image={channelLogoImage} alt="Logo" width={320} />
       </div>

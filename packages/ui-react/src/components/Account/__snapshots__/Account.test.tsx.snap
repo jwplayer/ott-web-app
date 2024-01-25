@@ -2,6 +2,11 @@
 
 exports[`<Account> > renders and matches snapshot 1`] = `
 <div>
+  <h1
+    class="_hideUntilFocus_c968f7"
+  >
+    nav.account
+  </h1>
   <section
     aria-labelledby="account_about_you_1235"
     class="panel-class"
@@ -19,11 +24,6 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       class="_flexBox_1c1c63"
       novalidate=""
     >
-      <h1
-        class="_hideUntilFocus_c968f7"
-      >
-        nav.account
-      </h1>
       <div
         class="_textField_e16c1b"
       >

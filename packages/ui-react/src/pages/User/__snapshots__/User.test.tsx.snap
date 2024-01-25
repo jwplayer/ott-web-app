@@ -66,6 +66,7 @@ exports[`User Component tests > Account Page 1`] = `
           >
             <button
               class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              type="button"
             >
               <div
                 class="_startIcon_f8f296"
@@ -92,6 +93,11 @@ exports[`User Component tests > Account Page 1`] = `
     <div
       class="_mainColumn_e9c5ca"
     >
+      <h1
+        class="_hideUntilFocus_c968f7"
+      >
+        nav.account
+      </h1>
       <section
         aria-labelledby="account_about_you_1235"
         class="_panel_e9c5ca"
@@ -109,11 +115,6 @@ exports[`User Component tests > Account Page 1`] = `
           class="_flexBox_1c1c63"
           novalidate=""
         >
-          <h1
-            class="_hideUntilFocus_c968f7"
-          >
-            nav.account
-          </h1>
           <div
             class="_textField_e16c1b"
           >
@@ -351,6 +352,7 @@ exports[`User Component tests > Favorites Page 1`] = `
           >
             <button
               class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              type="button"
             >
               <div
                 class="_startIcon_f8f296"
@@ -386,6 +388,7 @@ exports[`User Component tests > Favorites Page 1`] = `
           </h1>
           <button
             class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+            type="button"
           >
             <span>
               favorites.clear
@@ -600,6 +603,7 @@ exports[`User Component tests > Payments Page 1`] = `
           >
             <button
               class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              type="button"
             >
               <div
                 class="_startIcon_f8f296"
@@ -671,6 +675,7 @@ exports[`User Component tests > Payments Page 1`] = `
           aria-disabled="false"
           class="_button_f8f296 _upgradeSubscription_c57ff5 _primary_f8f296 _outlined_f8f296"
           data-testid="change-subscription-button"
+          type="button"
         >
           <span>
             user:payment.change_subscription
@@ -753,6 +758,7 @@ exports[`User Component tests > Payments Page 1`] = `
           </div>
           <button
             class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+            type="button"
           >
             <span>
               account:payment.edit_card

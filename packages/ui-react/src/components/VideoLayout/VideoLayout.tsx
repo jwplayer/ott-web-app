@@ -166,7 +166,6 @@ const VideoLayout: React.FC<Props> = ({
     return (
       <div className={styles.videoInlineLayout} data-testid={testId('inline-layout')}>
         <div className={styles.player}>{player}</div>
-        {renderRelatedVideos(isTablet)}
         <div className={styles.videoDetailsInline}>
           <VideoDetailsInline
             title={secondaryMetadata || title}
@@ -178,6 +177,7 @@ const VideoLayout: React.FC<Props> = ({
             trailerButton={trailerButton}
           />
         </div>
+        {renderRelatedVideos(isTablet)}
         {children}
       </div>
     );

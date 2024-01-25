@@ -13,6 +13,7 @@ exports[`<Welcome> > renders and matches snapshot 1`] = `
     </p>
     <button
       class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
+      type="button"
     >
       <span>
         checkout.start_watching

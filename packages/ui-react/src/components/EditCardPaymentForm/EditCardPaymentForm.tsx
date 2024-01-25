@@ -120,6 +120,7 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
           label={t('checkout.save')}
           variant="contained"
           onClick={paymentData.handleSubmit as () => void}
+          type="submit"
           color="primary"
           size="large"
           fullWidth

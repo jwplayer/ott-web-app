@@ -44,6 +44,7 @@ const RenewSubscriptionForm: React.FC<Props> = ({ subscription, customer, error,
         onClick={onConfirm}
         fullWidth
         disabled={submitting}
+        type="submit"
       />
       <Button label={t('renew_subscription.no_thanks')} onClick={onClose} fullWidth />
     </div>
