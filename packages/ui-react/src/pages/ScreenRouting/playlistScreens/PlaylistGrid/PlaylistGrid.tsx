@@ -41,11 +41,11 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
         <meta property="og:title" content={pageTitle} />
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
-      <header className={styles.header}>
-        <h1>{data.title}</h1>
-        {shouldShowFilter && <Filter name="genre" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
-      </header>
       <main className={styles.main}>
+        <header className={styles.header}>
+          <h1>{data.title}</h1>
+          {shouldShowFilter && <Filter name="genre" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
+        </header>
         <CardGrid
           getUrl={getUrl}
           playlist={filteredPlaylist}

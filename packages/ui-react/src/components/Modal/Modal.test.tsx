@@ -23,7 +23,7 @@ describe('<Modal>', () => {
     expect(onClose).toBeCalledTimes(1);
   });
 
-  test('should add aria-hidden and inert attributes on the root div when open', () => {
+  test('Should add inert attribute on the root div when open', () => {
     const onClose = vi.fn();
     const { getByTestId, rerender } = render(
       <div id="root" data-testid="root">
@@ -31,7 +31,7 @@ describe('<Modal>', () => {
       </div>,
     );
 
-    expect(getByTestId('root')).toHaveAttribute('aria-hidden', 'true');
+    expect(getByTestId('container')).toHaveAttribute('aria-modal', 'true');
     expect(getByTestId('root')).toHaveProperty('inert', true);
 
     rerender(
@@ -40,7 +40,6 @@ describe('<Modal>', () => {
       </div>,
     );
 
-    expect(getByTestId('root')).not.toHaveAttribute('aria-hidden', 'true');
     expect(getByTestId('root')).toHaveProperty('inert', false);
   });
 

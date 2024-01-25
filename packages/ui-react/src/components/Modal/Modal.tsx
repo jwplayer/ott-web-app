@@ -44,7 +44,6 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
       // make sure main content is hidden for screen readers and inert
       if (appView) {
         appView.inert = true;
-        appView.setAttribute('aria-hidden', 'true');
       }
 
       // prevent scrolling under the modal
@@ -60,7 +59,6 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
     } else {
       if (appView) {
         appView.inert = false;
-        appView.removeAttribute('aria-hidden');
       }
 
       document.body.style.removeProperty('margin-right');
@@ -77,9 +75,9 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
 
   return ReactDOM.createPortal(
     <Fade open={open} duration={300} onCloseAnimationEnd={() => setVisible(false)}>
-      <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef} role={role}>
+      <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
         <div className={styles.backdrop} onClick={onClose} data-testid={testId('backdrop')} />
-        <div className={styles.container}>
+        <div className={styles.container} data-testid={testId('container')} role={role} aria-modal="true">
           <AnimationComponent open={open} duration={200}>
             {children}
           </AnimationComponent>
