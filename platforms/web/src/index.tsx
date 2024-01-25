@@ -17,6 +17,8 @@ configureEnv({
 
   APP_DEFAULT_CONFIG_SOURCE: import.meta.env.APP_DEFAULT_CONFIG_SOURCE,
   APP_PLAYER_LICENSE_KEY: import.meta.env.APP_PLAYER_LICENSE_KEY,
+
+  APP_FOOTER_TEXT: import.meta.env.APP_FOOTER_TEXT,
 });
 
 const rootElement = document.getElementById('root');

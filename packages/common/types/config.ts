@@ -59,7 +59,6 @@ export type Styling = {
   backgroundColor?: string | null;
   highlightColor?: string | null;
   headerBackground?: string | null;
-  footerText?: string | null;
 };
 
 export type Cleeng = {
