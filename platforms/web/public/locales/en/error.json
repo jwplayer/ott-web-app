@@ -9,5 +9,7 @@
   "notfound_error_heading": "Not found",
   "playlist_not_found": "Playlist not found",
   "settings_invalid": "Invalid or missing settings",
-  "video_not_found": "Video not found"
+  "video_not_found": "Video not found",
+  "empty_shelves_heading": "No content available",
+  "empty_shelves_description": "We apologize, but there is no content available in your region."
 }

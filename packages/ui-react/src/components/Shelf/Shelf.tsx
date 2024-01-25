@@ -137,8 +137,8 @@ const Shelf = ({
   if (error || !playlist?.playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
-    <div className={classNames(styles.shelf, { [styles.featured]: featured })}>
-      {!featured ? <h2 className={classNames(styles.title, { [styles.loading]: loading })}>{title || playlist.title}</h2> : null}
+    <div className={classNames(styles.shelf)}>
+      {!featured ? <h2 className={classNames(styles.title)}>{title || playlist.title}</h2> : null}
       <TileDock<PlaylistItem>
         items={playlist.playlist}
         tilesToShow={tilesToShow}
