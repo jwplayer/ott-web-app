@@ -26,9 +26,10 @@ type Props = {
   liveFromBeginning?: boolean;
   startWatchingButton: React.ReactNode;
   isLoggedIn: boolean;
-  paywall: boolean;
+  isEntitled: boolean;
   playable?: boolean;
   autostart?: boolean;
+  hasMediaOffers?: boolean;
 };
 
 const InlinePlayer: React.FC<Props> = ({
@@ -43,9 +44,10 @@ const InlinePlayer: React.FC<Props> = ({
   liveFromBeginning,
   startWatchingButton,
   isLoggedIn,
-  paywall,
+  isEntitled,
   autostart,
   playable = true,
+  hasMediaOffers,
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation();
@@ -56,15 +58,17 @@ const InlinePlayer: React.FC<Props> = ({
     navigate(modalURLFromLocation(location, 'login'));
   };
 
+  const buyLabel = hasMediaOffers ? t('video:buy_to_start_watching') : t('video:sign_up_to_start_watching');
+
   return (
     <div className={styles.inlinePlayer}>
-      <Fade open={!playable || paywall}>
+      <Fade open={!playable || !isEntitled}>
         <div className={styles.paywall}>
           <Image className={styles.poster} image={item.backgroundImage} alt={item.title} width={1280} />
-          {paywall && (
+          {!isEntitled && (
             <>
               <Icon icon={Lock} className={styles.lock} />
-              <h2 className={styles.title}>{t('video:sign_up_to_start_watching')}</h2>
+              <h2 className={styles.title}>{buyLabel}</h2>
               <span className={styles.text}>{t('account:choose_offer.watch_this_on_platform', { siteName })}</span>
               {startWatchingButton}
               {!isLoggedIn && <Button onClick={loginButtonClickHandler} label={t('common:sign_in')} />}
@@ -72,7 +76,7 @@ const InlinePlayer: React.FC<Props> = ({
           )}
         </div>
       </Fade>
-      {!paywall && playable && (
+      {isEntitled && playable && (
         <PlayerContainer
           item={item}
           seriesItem={seriesItem}
