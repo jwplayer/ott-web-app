@@ -34,8 +34,8 @@ The JW OTT Webapp is an open-source, dynamically generated video website built a
 - [Configure JW OTT Webapp](./docs/configuration.md)
 - [Configure Translations](./docs/translations.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
-- [Frameworks, SDKs and Libraries](./docs/frameworks.md)
-- [Backend Services](./docs/backend-services.md)
+- [Frameworks, SDKs and Libraries](./platforms/web/docs/frameworks.md)
+- [Backend Services](./packages/common/docs/backend-services.md)
 - [Developer Guidelines](./docs/developer-guidelines.md)
 - [Workspaces](./docs/workspaces.md)
 
@@ -59,12 +59,6 @@ The JW OTT Webapp is an open-source, dynamically generated video website built a
 ## Unsupported Feature(s)
 
 - Self-hosted JW Players
-
-## Getting started
-
-- Clone this repository
-- Run `yarn` to install dependencies
-- Run `yarn start`
 
 ## Support and Bug Reporting
 

@@ -13,39 +13,45 @@ The following tools are needed to start building JW OTT Webapp. Follow the instr
 ## Build the JW OTT Webapp
 
 1. Clone the **ott-web-app** repository on your local machine.
-   ```shell
-   $ cd ~/
-   
-   $ git clone https://github.com/jwplayer/ott-web-app.git
-   $ cd ott-web-app
-   ```
+
+```shell
+$ cd ~/
+
+$ git clone https://github.com/jwplayer/ott-web-app.git
+$ cd ott-web-app
+```
+
 2. Install the required dependencies. Optional dependencies include packages that are not necessary to build the project. These optional dependencies can be safely ignored.
-   ```shell
-   $ yarn --ignore-optional
-   ```
-   > **NOTE**: Some of the [easy deployments](easy-deployments.md) instructions require installing these optional dependencies. Use the `yarn` command to install all dependencies. The `yarn` command can be run even if `yarn --ignore-optional` has been previously run.
+
+```shell
+$ yarn --ignore-optional
+```
+
+> **NOTE**: Some of the [easy deployments](easy-deployments.md) instructions require installing these optional dependencies. Use the `yarn` command to install all dependencies. The `yarn` command can be run even if `yarn --ignore-optional` has been previously run.
 
 3. Create or update the .ini files in `/platforms/web/ini` for the modes you will be running in (probably dev and prod).
    You can copy the ini file from `/platforms/web/ini/templates` into `/platforms/web/ini`. The files in `/platforms/web/ini` are git-ignored, so you do not need to worry about account values in source control, but you will need to recreate the ini files each time you make a fresh checkout of the repository.
 
+   The .ini files provide startup values to the application such as which app config to load by default. See [initialization-file](initialization-file.md) for more details.
+
 4. Start the local development server.
 
-   ```shell
-   $ cd platforms/web
-   $ yarn start
-   ```
-   
-   If you encounter any errors, make sure you have correctly set the `defaultConfigSource` in `/platforms/web/ini/.webapp.dev.ini` to point to a valid app config from your JWP account.
-   
-   > **NOTE:** Only use the development server for development purposes. The development server is not optimized for production usage.
+```shell
+$ cd platforms/web
+$ yarn start
+```
+
+If you encounter any errors, make sure you have correctly set the `defaultConfigSource` in `/platforms/web/ini/.webapp.dev.ini` to point to a valid app config from your JWP account.
+
+> **NOTE:** Only use the development server for development purposes. The development server is not optimized for production usage.
 
 5. Build a deployable version of the JW OTT Webapp source code.<br /><br />This command creates a new folder in the projects root folder named **build**.
    The `public` folder from the build directory can be uploaded to any static hosting provider to run the web app from that host.
 
-   ```shell
-   $ cd platforms/web
-   $ yarn build
-   ```
+```shell
+$ cd platforms/web
+$ yarn build
+```
 
 If you have not made any changes to the JW OTT Webapp configuration or source code, changes can now be made. Be sure to run the `yarn build` command after making any changes.
 
@@ -72,16 +78,16 @@ Production builds optimize code and minimize debug information, while developmen
 ## Env Variables
 
 To allow for adjustments to be made at compile time, there are several env variables that get replaced during [vite compile](https://vitejs.dev/guide/env-and-mode.html#env-variables).
-These values are then de facto constants, which means code optimizations can remove unused code such as if/else checks using them.
+These values are then defacto constants, which means code optimizations can remove unused code such as if/else checks using them.
 
 For non-sensitive values, you can add them directly to the appropriate .env file for each mode.
 
-For sensitive values, if building with GitHub actions we recommend using [GitHub secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and setting them in the [build action environment](https://docs.github.com/en/actions/learn-github-actions/variables).
+For sensitive values, if building with github actions we recommend using [github secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and setting them in the [build action environment](https://docs.github.com/en/actions/learn-github-actions/variables).
 You can see an example of how these are used in our [Firebase Live / Preview actions.](https://github.com/jwplayer/ott-web-app/blob/develop/.github/workflows/firebase-live.yml#L14)
 
 If building manually, you can create an .env.[mode].local file and add the values there. These files are git ignored which will prevent leaking your secrets to version control.
 
-> Note: env variables must begin with the 'APP_' prefix. or they are ignored by our vite configuration.
+> Note: env variables must begin with the 'APP\_' prefix or they are ignored by our vite configuration.
 
 ### APP_DEFAULT_CONFIG_SOURCE
 
@@ -111,7 +117,7 @@ The value to use can be found labeled 'License Key' in the 'Self-Hosted Web Play
 
 If you link directly to your JWP cloud player using the [APP_PLAYER_ID](#app_player_id) environment variable or the [playerId ini setting](initialization-file.md#playerid), you do not need to provide a value for `APP_PLAYER_LICENSE_KEY`.
 
-It is recommended that this value be provided via a .env.local file or a GitHub secret to avoid saving it in version control.
+It is recommended that this value be provided via a .env.local file or a github secret to avoid saving it in version control.
 
 If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey).
 Keep in mind, if the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey) is provided, it will be used even if the `APP_PLAYER_LICENSE_KEY` environment variable is set.

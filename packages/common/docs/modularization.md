@@ -42,11 +42,11 @@ This is the price we need to pay to remove `inject` decorators from the construc
 
 ## Initialization
 
-We use [register](../platforms/web/src/modules/register.ts) function to initialize services and controllers. Some services don't depend on any integration provider (like `ConfigService` or `EpgService`), while such services as `CleengAccountService` or `InplayerAccountService` depend on the provider and get injected into controllers conditionally based on the `INTEGRATION_TYPE` dynamic value (`JWP` or `CLEENG`).
+We use [register](../src/modules/register.ts) function to initialize services and controllers. Some services don't depend on any integration provider (like `ConfigService` or `EpgService`), while such services as `CleengAccountService` or `InplayerAccountService` depend on the provider and get injected into controllers conditionally based on the `INTEGRATION_TYPE` dynamic value (`JWP` or `CLEENG`).
 
-Initialization starts in the [index.tsx](../platforms/web/src/index.tsx) file where we register services. We do it outside of the react component to make services available in different parts of the application.
+Initialization starts in the platform index.tsx file where we register services. We do it outside the React component to make services available in different parts of the application.
 
-The app is loaded in the [useBootstrapApp](../packages/hooks-react/src/useBootstrapApp.ts) hook with the help of the `AppController` which is responsible for retrieving data from the Config and Settings services, initializing the initial state of the application and hitting init methods of the base app's controllers.
+The app is loaded in the [useBootstrapApp](../src/hooks/useBootstrapApp.ts) hook with the help of the `AppController` which is responsible for retrieving data from the Config and Settings services, initializing the initial state of the application and hitting init methods of the base app's controllers.
 
 ## Controllers and Services
 
@@ -82,6 +82,6 @@ Controllers bind different parts of the application. Controllers use services, s
 
 ### Controllers / Services retrieval
 
-To get access to the service / controller [getModule](../packages/common/src/modules/container.ts) utility can be used. It also accepts a `required` param which can be used in case the presence of the service is optional. If `required` is provided but service itself is not bound then the error will be thrown.
+To get access to the service / controller [getModule](../src/modules/container.ts) utility can be used. It also accepts a `required` param which can be used in case the presence of the service is optional. If `required` is provided but service itself is not bound then the error will be thrown.
 
 `getNamedModule` function is mostly use in controllers to retrieve integration-specific services, like AccountService or CheckoutService.
