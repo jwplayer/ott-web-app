@@ -198,8 +198,8 @@ export default class AccountController {
     if (response) {
       await this.afterLogin(response.user, response.customerConsents, accessModel);
 
-      await this.favoritesController?.restoreFavorites();
-      await this.watchHistoryController?.restoreWatchHistory();
+      await this.favoritesController?.restoreFavorites().catch(logDev);
+      await this.watchHistoryController?.restoreWatchHistory().catch(logDev);
     }
 
     useAccountStore.setState({ loading: false });
