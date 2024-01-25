@@ -28,10 +28,16 @@ const useOffers = () => {
 
   const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }));
 
+  const hasMultipleOfferTypes = (allOffers || []).some((offer: Offer) => (offerType === 'tvod' ? isSVODOffer(offer) : !isSVODOffer(offer)));
+
+  const updateOfferType = useMemo(
+    () => (!hasPremierOffer && hasMultipleOfferTypes ? (type: OfferType) => setOfferType(type) : undefined),
+    [hasMultipleOfferTypes, hasPremierOffer],
+  );
+
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
   return useMemo(() => {
     const offers = (allOffers || []).filter((offer: Offer) => (offerType === 'tvod' ? !isSVODOffer(offer) : isSVODOffer(offer)));
-    const hasMultipleOfferTypes = (allOffers || []).some((offer: Offer) => (offerType === 'tvod' ? isSVODOffer(offer) : !isSVODOffer(offer)));
 
     const offersDict = (!isLoading && Object.fromEntries(offers.map((offer: Offer) => [offer.offerId, offer]))) || {};
     // we need to get the offerIds from the offer responses since it contains different offerIds based on the customers'
@@ -45,12 +51,11 @@ const useOffers = () => {
       hasPremierOffer,
       defaultOfferId,
       offerType,
-      setOfferType,
+      setOfferType: updateOfferType,
       offers,
       offersDict,
-      isTvodRequested: hasTvodOffer,
     };
-  }, [allOffers, isLoading, hasPremierOffer, offerType, hasTvodOffer]);
+  }, [allOffers, isLoading, hasMultipleOfferTypes, hasPremierOffer, offerType, updateOfferType]);
 };
 
 export default useOffers;

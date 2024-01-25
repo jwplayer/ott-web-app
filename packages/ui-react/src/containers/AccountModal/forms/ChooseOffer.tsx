@@ -41,7 +41,7 @@ const ChooseOffer = () => {
   const location = useLocation();
   const { t } = useTranslation('account');
   const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
-  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId, hasMultipleOfferTypes, hasPremierOffer, isTvodRequested } = useOffers();
+  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId } = useOffers();
   const { subscription } = useAccountStore.getState();
   const [offerSwitches, updateOffer] = useCheckoutStore((state) => [state.offerSwitches, state.updateOffer]);
   const isOfferSwitch = useQueryParam('u') === 'upgrade-subscription';
@@ -137,7 +137,7 @@ const ChooseOffer = () => {
       submitting={submitting}
       offers={availableOffers}
       offerType={offerType}
-      setOfferType={isTvodRequested || (hasMultipleOfferTypes && !hasPremierOffer) ? setOfferType : undefined}
+      setOfferType={setOfferType}
     />
   );
 };
