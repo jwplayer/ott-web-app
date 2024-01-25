@@ -7,7 +7,6 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistoryStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { formatPlaylistMetaString, formatSeriesMetaString, formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { legacySeriesURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
@@ -75,7 +74,8 @@ const LegacySeries = () => {
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled } = useEntitlement(episode);
+  const { isEntitled, mediaOffers } = useEntitlement(episode);
+  const hasMediaOffers = !!mediaOffers.length;
   const isLoggedIn = !!user;
   const hasSubscription = !!subscription;
 
@@ -211,7 +211,8 @@ const LegacySeries = () => {
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
               startWatchingButton={startWatchingButton}
-              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, episode || firstEpisode)}
+              isEntitled={isEntitled}
+              hasMediaOffers={hasMediaOffers}
               autostart={play || undefined}
             />
           ) : (
