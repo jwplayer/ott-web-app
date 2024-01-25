@@ -19,7 +19,7 @@ GET playlists/fuD6TWcf?related_media_id=dwEE1oBP
   "description":"",
   "kind":"FEED",
   "feedid":"fuD6TWcf",
-  "playlist":[
+  "playlist": [
     {
       "title":"Elephants Dream",
       "mediaid":"8pN9r7vd",
@@ -33,9 +33,8 @@ GET playlists/fuD6TWcf?related_media_id=dwEE1oBP
       "rating":"CC-BY",
       "genre":"Drama",
       "trailerId":"EorcUZCU"
-    },
-    {}
-   ]
+    }
+  ]
 }
 ```
 
