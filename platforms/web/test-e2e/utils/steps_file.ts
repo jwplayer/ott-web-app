@@ -284,7 +284,7 @@ const stepsObj = {
     this.click('div[aria-label="Open user menu"]');
   },
   clickCloseButton: function (this: CodeceptJS.I) {
-    this.click('div[aria-label="Close"]');
+    this.click('div[aria-label="Close panel"]');
   },
   seeAll: function (this: CodeceptJS.I, allStrings: string[]) {
     allStrings.forEach((s) => this.see(s));

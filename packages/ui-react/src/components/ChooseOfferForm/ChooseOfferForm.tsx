@@ -69,8 +69,8 @@ const ChooseOfferForm: React.FC<Props> = ({
     return null;
   };
 
-  const OfferBox: OfferBox = ({ offer, title, ariaLabel, secondBenefit, periodString }) => (
-    <div className={styles.offer}>
+  const OfferBox: OfferBox = ({ offer, title, secondBenefit, periodString }) => (
+    <div className={styles.offer} role="option">
       <input
         className={styles.radio}
         onChange={onChange}
@@ -79,7 +79,7 @@ const ChooseOfferForm: React.FC<Props> = ({
         value={offer.offerId}
         id={offer.offerId}
         checked={values.offerId === offer.offerId}
-        aria-label={ariaLabel}
+        data-testid={testId(title)}
       />
       <label className={styles.label} htmlFor={offer.offerId}>
         <h2 className={styles.offerTitle}>{title}</h2>

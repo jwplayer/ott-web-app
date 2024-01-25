@@ -13,7 +13,7 @@ exports[`<Card> > should render anchor tag 1`] = `
       class="_titleContainer_d75732"
     >
       <h3
-        class="_title_d75732"
+        class="_title_d75732 false"
       >
         This is a movie
       </h3>

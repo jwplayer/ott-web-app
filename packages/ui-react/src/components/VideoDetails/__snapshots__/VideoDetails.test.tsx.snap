@@ -44,12 +44,12 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           <div
             class="_collapsibleText_561522"
           >
-            <div
+            <p
               class="_textContainer_561522 _description_d0c133"
               style="max-height: none;"
             >
               Video description
-            </div>
+            </p>
           </div>
           <div
             class="_buttonBar_d0c133"

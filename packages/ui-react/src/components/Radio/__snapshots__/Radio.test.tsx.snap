@@ -3,15 +3,16 @@
 exports[`<Radio> > renders and matches snapshot 1`] = `
 <div>
   <div>
-    <div
+    <label
       class="_header_d50e6e"
       data-testid="radio-header"
+      for="radio_1235_radio"
     >
       Choose a Value
       <span>
         optional
       </span>
-    </div>
+    </label>
     <div
       class="_radio_d50e6e"
     >

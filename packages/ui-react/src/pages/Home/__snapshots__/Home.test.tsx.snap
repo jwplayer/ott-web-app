@@ -50,7 +50,7 @@ exports[`Home Component tests > Home test 1`] = `
                         class="_titleContainer_d75732"
                       >
                         <h3
-                          class="_title_d75732"
+                          class="_title_d75732 false"
                         >
                           My video
                         </h3>
@@ -89,7 +89,7 @@ exports[`Home Component tests > Home test 1`] = `
                         class="_titleContainer_d75732"
                       >
                         <h3
-                          class="_title_d75732"
+                          class="_title_d75732 false"
                         >
                           Other Vids
                         </h3>
@@ -157,7 +157,7 @@ exports[`Home Component tests > Home test 1`] = `
                         class="_titleContainer_d75732"
                       >
                         <h3
-                          class="_title_d75732"
+                          class="_title_d75732 false"
                         >
                           My video
                         </h3>
@@ -196,7 +196,7 @@ exports[`Home Component tests > Home test 1`] = `
                         class="_titleContainer_d75732"
                       >
                         <h3
-                          class="_title_d75732"
+                          class="_title_d75732 false"
                         >
                           Other Vids
                         </h3>

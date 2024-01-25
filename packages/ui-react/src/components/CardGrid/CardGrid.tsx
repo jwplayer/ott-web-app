@@ -34,6 +34,7 @@ type CardGridProps = {
   isLoggedIn: boolean;
   hasSubscription: boolean;
   hasMore?: boolean;
+  headingLevel?: number;
   loadMore?: () => void;
   onCardHover?: (item: PlaylistItem) => void;
   getUrl: (item: PlaylistItem) => string;
@@ -53,6 +54,7 @@ function CardGrid({
   getUrl,
   loadMore,
   onCardHover,
+  headingLevel,
 }: CardGridProps) {
   const breakpoint: Breakpoint = useBreakpoint();
   const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
@@ -83,6 +85,7 @@ function CardGrid({
             isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
             posterAspect={posterAspect}
             item={playlistItem}
+            headingLevel={headingLevel}
           />
         </div>
       </div>

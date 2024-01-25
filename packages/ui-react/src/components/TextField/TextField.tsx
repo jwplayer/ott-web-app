@@ -64,7 +64,7 @@ const TextField: React.FC<Props> = ({
     return isTextArea(inputProps) ? (
       <textarea id={id} className={styles.input} rows={3} readOnly={!editing} ref={textAreaRef} name={name} {...inputProps} />
     ) : (
-      <input id={id} className={styles.input} type={'text'} readOnly={!editing} ref={inputRef} name={name} {...inputProps} />
+      <input id={id} className={styles.input} type={'text'} required={inputProps.required} readOnly={!editing} ref={inputRef} name={name} {...inputProps} />
     );
   };
 
