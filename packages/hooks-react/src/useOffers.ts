@@ -1,39 +1,26 @@
 import { useQuery } from 'react-query';
 import { useMemo, useState } from 'react';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
+import { mergeOfferIds } from '@jwp/ott-common/src/utils/offers';
 import type { OfferType } from '@jwp/ott-common/types/account';
 import type { Offer } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
-import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
-import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 
 const useOffers = () => {
   const checkoutController = getModule(CheckoutController);
+  const svodOfferIds = checkoutController.getSubscriptionOfferIds();
+  const { requestedMediaOffers: mediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
+  const hasPremierOffers = mediaOffers?.some((offer) => offer.premier);
+  const hasMultipleOfferTypes = !hasPremierOffers && !!mediaOffers?.length && !!svodOfferIds.length;
+  const offerIds: string[] = mergeOfferIds(mediaOffers || [], svodOfferIds);
 
-  const { accessModel } = useConfigStore();
-  const offers = checkoutController.getSubscriptionOfferIds();
-
-  const { requestedMediaOffers } = useCheckoutStore(({ requestedMediaOffers }) => ({ requestedMediaOffers }), shallow);
-  const hasTvodOffer = (requestedMediaOffers || []).some((offer) => offer.offerId);
-  const hasPremierOffer = (requestedMediaOffers || []).some((offer) => offer.premier);
-  const isPPV = hasTvodOffer || hasPremierOffer;
-  const [offerType, setOfferType] = useState<OfferType>(accessModel === ACCESS_MODEL.SVOD && !isPPV ? 'svod' : 'tvod');
-
-  const offerIds: string[] = useMemo(() => {
-    return [...(requestedMediaOffers || []).map(({ offerId }) => offerId), ...offers].filter(Boolean);
-  }, [requestedMediaOffers, offers]);
+  const [offerType, setOfferType] = useState<OfferType>(hasPremierOffers || !svodOfferIds ? 'tvod' : 'svod');
+  const updateOfferType = useMemo(() => (hasMultipleOfferTypes ? (type: OfferType) => setOfferType(type) : undefined), [hasMultipleOfferTypes]);
 
   const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }));
-
-  const hasMultipleOfferTypes = (allOffers || []).some((offer: Offer) => (offerType === 'tvod' ? isSVODOffer(offer) : !isSVODOffer(offer)));
-
-  const updateOfferType = useMemo(
-    () => (!hasPremierOffer && hasMultipleOfferTypes ? (type: OfferType) => setOfferType(type) : undefined),
-    [hasMultipleOfferTypes, hasPremierOffer],
-  );
 
   // The `offerQueries` variable mutates on each render which prevents the useMemo to work properly.
   return useMemo(() => {
@@ -45,17 +32,15 @@ const useOffers = () => {
     const defaultOfferId = (!isLoading && offers[offers.length - 1]?.offerId) || '';
 
     return {
-      hasTVODOffers: allOffers?.some((offer: Offer) => !isSVODOffer(offer)),
-      hasMultipleOfferTypes,
+      hasMediaOffers: allOffers?.some((offer: Offer) => !isSVODOffer(offer)),
       isLoading,
-      hasPremierOffer,
       defaultOfferId,
       offerType,
       setOfferType: updateOfferType,
       offers,
       offersDict,
     };
-  }, [allOffers, isLoading, hasMultipleOfferTypes, hasPremierOffer, offerType, updateOfferType]);
+  }, [allOffers, isLoading, offerType, updateOfferType]);
 };
 
 export default useOffers;
