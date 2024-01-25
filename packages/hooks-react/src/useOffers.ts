@@ -39,7 +39,7 @@ const useOffers = () => {
     const defaultOfferId = (!isLoading && offers[offers.length - 1]?.offerId) || '';
 
     return {
-      hasTVODOffers: offers.some((offer: Offer) => !isSVODOffer(offer)),
+      hasTVODOffers: allOffers?.some((offer: Offer) => !isSVODOffer(offer)),
       hasMultipleOfferTypes,
       isLoading,
       hasPremierOffer,
