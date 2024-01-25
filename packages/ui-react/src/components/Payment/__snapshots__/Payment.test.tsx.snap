@@ -23,14 +23,15 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
       >
         <label
           class="_label_e16c1b"
-          for="text-field_1235"
+          for="text-field_1235_cardnumber"
         >
           user:payment.card_number
         </label>
         <input
           aria-label="user:payment.card_number_hidden"
           class="_input_e16c1b"
-          id="text-field_1235"
+          id="text-field_1235_cardnumber"
+          name="cardNumber"
           readonly=""
           type="text"
           value="•••• •••• •••• 0002"
@@ -44,13 +45,14 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         >
           <label
             class="_label_e16c1b"
-            for="text-field_1235"
+            for="text-field_1235_cardexpiry"
           >
             user:payment.expiry_date
           </label>
           <input
             class="_input_e16c1b"
-            id="text-field_1235"
+            id="text-field_1235_cardexpiry"
+            name="cardExpiry"
             readonly=""
             type="text"
             value="03/2030"
@@ -61,14 +63,15 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         >
           <label
             class="_label_e16c1b"
-            for="text-field_1235"
+            for="text-field_1235_cardsecuritycode"
           >
             user:payment.security_code
           </label>
           <input
             aria-label="user:payment.security_code_hidden"
             class="_input_e16c1b"
-            id="text-field_1235"
+            id="text-field_1235_cardsecuritycode"
+            name="cardSecurityCode"
             readonly=""
             type="text"
             value="******"
