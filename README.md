@@ -37,6 +37,7 @@ The JW OTT Webapp is an open-source, dynamically generated video website built a
 - [Frameworks, SDKs and Libraries](./docs/frameworks.md)
 - [Backend Services](./docs/backend-services.md)
 - [Developer Guidelines](./docs/developer-guidelines.md)
+- [Workspaces](./docs/workspaces.md)
 
 ## Supported Features
 
