@@ -25,6 +25,7 @@ import HelperText from '../HelperText/HelperText';
 import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
 import Icon from '../Icon/Icon';
 import { modalURLFromLocation } from '../../utils/location';
+import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './Account.module.scss';
 
@@ -46,6 +47,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const accountController = getModule(AccountController);
 
   const { t } = useTranslation('user');
+  const announce = useAriaAnnouncer();
   const navigate = useNavigate();
   const location = useLocation();
   const [viewPassword, toggleViewPassword] = useToggle();
@@ -200,10 +202,10 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.about_you'),
             editButton: t('account.edit_information'),
-            onSubmit: (values) => {
+            onSubmit: async (values) => {
               const consents = formatConsentsFromValues(publisherConsents, { ...values.metadata, ...values.consentsValues });
 
-              return accountController.updateUser({
+              const updateUser = await accountController.updateUser({
                 firstName: values.firstName || '',
                 lastName: values.lastName || '',
                 metadata: {
@@ -212,6 +214,13 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   consents: JSON.stringify(consents),
                 },
               });
+
+              if (updateUser.errors?.length) {
+                return { errors: updateUser.errors };
+              }
+
+              announce(t('account.update_success', { section: t('account.about_you') }), 'success');
+              return {};
             },
             content: (section) => (
               <>
@@ -240,12 +249,19 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           }),
           formSection({
             label: t('account.email'),
-            onSubmit: (values) =>
-              accountController.updateUser({
+            onSubmit: async (values) => {
+              const updateUser = await accountController.updateUser({
                 email: values.email || '',
                 confirmationPassword: values.confirmationPassword,
-              }),
-            canSave: (values) => !!(values.email && values.confirmationPassword),
+              });
+
+              if (updateUser.errors?.length) {
+                return { errors: updateUser.errors };
+              }
+              announce(t('account.update_success', { section: t('account.email') }), 'success');
+              return {};
+            },
+
             editButton: t('account.edit_account'),
             readOnly: !canUpdateEmail,
             content: (section) => (
@@ -295,7 +311,17 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.terms_and_tracking'),
             saveButton: t('account.update_consents'),
-            onSubmit: (values) => accountController.updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
+            onSubmit: async (values) => {
+              const updateConsents = await accountController.updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues));
+
+              if (updateConsents.errors?.length) {
+                return { errors: updateConsents.errors };
+              }
+
+              announce(t('account.update_success', { section: t('account.terms_and_tracking') }), 'success');
+              return {};
+            },
+
             content: (section) => (
               <>
                 {termsConsents?.map((consent, index) => (
@@ -315,7 +341,17 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             formSection({
               label: t('account.other_registration_details'),
               saveButton: t('account.update_consents'),
-              onSubmit: (values) => accountController.updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues)),
+              onSubmit: async (values) => {
+                const updateConsents = await accountController.updateConsents(formatConsentsFromValues(publisherConsents, values.consentsValues));
+
+                if (updateConsents.errors?.length) {
+                  return { errors: updateConsents.errors };
+                }
+
+                announce(t('account.update_success', { section: t('account.other_registration_details') }), 'success');
+                return {};
+              },
+
               content: (section) => (
                 <div className={styles.customFields} data-testid={testId('custom-reg-fields')}>
                   {nonTermsConsents.map((consent) => (

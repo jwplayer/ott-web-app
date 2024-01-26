@@ -15,6 +15,7 @@ import CreditCardExpiryField from '../CreditCardExpiryField/CreditCardExpiryFiel
 import CreditCardNumberField from '../CreditCardNumberField/CreditCardNumberField';
 import TextField from '../TextField/TextField';
 import { modalURLFromLocation } from '../../utils/location';
+import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './PaymentForm.module.scss';
 
@@ -25,6 +26,7 @@ type Props = {
 
 const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
   const checkoutController = getModule(CheckoutController);
+  const announce = useAriaAnnouncer();
 
   const { t } = useTranslation('account');
   const location = useLocation();
@@ -43,7 +45,12 @@ const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
 
       intervalCheckAccess({
         interval: 15000,
-        callback: (hasAccess) => hasAccess && navigate(modalURLFromLocation(location, 'welcome')),
+        callback: (hasAccess) => {
+          if (hasAccess) {
+            announce(t('checkout.payment_success'), 'success');
+            navigate(modalURLFromLocation(location, 'welcome'));
+          }
+        },
       });
     },
     object().shape({

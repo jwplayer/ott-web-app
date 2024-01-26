@@ -11,6 +11,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
       </h1>
       <button
         class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        type="button"
       >
         <span>
           favorites.clear
@@ -40,7 +41,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
                 class="_titleContainer_d75732"
               >
                 <h3
-                  class="_title_d75732"
+                  class="_title_d75732 false"
                 >
                   SVOD 002: Caminandes 1 llama drama
                 </h3>
@@ -88,7 +89,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
                 class="_titleContainer_d75732"
               >
                 <h3
-                  class="_title_d75732"
+                  class="_title_d75732 false"
                 >
                   SVOD 003: Caminandes 2 gran dillama
                 </h3>
@@ -136,7 +137,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
                 class="_titleContainer_d75732"
               >
                 <h3
-                  class="_title_d75732"
+                  class="_title_d75732 false"
                 >
                   SVOD 001: Tears of Steel
                 </h3>

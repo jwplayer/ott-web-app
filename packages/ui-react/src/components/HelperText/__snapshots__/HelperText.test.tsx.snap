@@ -3,6 +3,7 @@
 exports[`<HelperText> > renders and matches snapshot 1`] = `
 <div>
   <div
+    aria-live="assertive"
     class="_helperText_da58e0 _error_da58e0"
   >
     Hello world!

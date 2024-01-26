@@ -17,6 +17,7 @@ import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
 import PaymentForm from '../../../components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '../../AdyenInitialPayment/AdyenInitialPayment';
+import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
 
 const Checkout = () => {
   const accountController = getModule(AccountController);
@@ -24,6 +25,7 @@ const Checkout = () => {
 
   const location = useLocation();
   const { t } = useTranslation('account');
+  const announce = useAriaAnnouncer();
   const navigate = useNavigate();
   const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
   const [updatingOrder, setUpdatingOrder] = useState(false);
@@ -54,6 +56,7 @@ const Checkout = () => {
     if (values.couponCode && order) {
       try {
         await checkoutController.updateOrder(order, paymentMethodId, values.couponCode);
+        announce(t('checkout.coupon_applied'), 'success');
         setCouponCodeApplied(true);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -152,6 +155,8 @@ const Checkout = () => {
       setPaymentError(undefined);
       await checkoutController.paymentWithoutDetails();
       await accountController.reloadActiveSubscription({ delay: 1000 });
+
+      announce(t('checkout.payment_success'), 'success');
       navigate(paymentSuccessUrl, { replace: true });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -174,6 +179,7 @@ const Checkout = () => {
       const response = await checkoutController.paypalPayment(successUrl, waitingUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
 
       if (response.redirectUrl) {
+        announce(t('checkout.redirecting_to_paypal'), 'info');
         window.location.href = response.redirectUrl;
       }
     } catch (error: unknown) {

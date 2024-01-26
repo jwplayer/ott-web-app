@@ -11,8 +11,10 @@ import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/sr
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { useTranslation } from 'react-i18next';
 
 import Adyen from '../../components/Adyen/Adyen';
+import { useAriaAnnouncer } from '../AnnouncementProvider/AnnoucementProvider';
 
 type Props = {
   setProcessing: (loading: boolean) => void;
@@ -27,6 +29,8 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
   const checkoutController = getModule(CheckoutController);
 
   const isSandbox = accountController.getSandbox();
+  const { t } = useTranslation('account');
+  const announce = useAriaAnnouncer();
   const navigate = useNavigate();
   const location = useLocation();
   const [session, setSession] = useState<AdyenPaymentSession>();
@@ -43,7 +47,9 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       await accountController.reloadActiveSubscription({ delay: 2000 });
 
       setProcessing(false);
-      navigate(modalURLFromLocation(location, 'payment-method-success'));
+
+      announce(t('checkout.payment_success'), 'success');
+      navigate(paymentSuccessUrl);
     } catch (error: unknown) {
       setProcessing(false);
 

@@ -11,11 +11,13 @@ import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
 import EditPasswordForm from '../../../components/EditPasswordForm/EditPasswordForm';
+import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
 
 const ResetPassword = ({ type }: { type?: 'add' }) => {
   const accountController = getModule(AccountController);
 
   const { t } = useTranslation('account');
+  const announce = useAriaAnnouncer();
   const location = useLocation();
   const navigate = useNavigate();
   const resetPasswordTokenParam = useQueryParam('resetPasswordToken');
@@ -45,6 +47,8 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
         }
         await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
+
+      announce(t('reset.reset_password_succesful'), 'success');
       await accountController.logout();
       navigate(modalURLFromLocation(location, 'login'));
     } catch (error: unknown) {
@@ -71,7 +75,7 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
       oldPassword: string(),
       password: string()
         .matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password'))
-        .required(t('login.field_required')),
+        .required(t('login.field_required', { field: t('login.password') })),
       passwordConfirmation: string(),
     }),
     true,

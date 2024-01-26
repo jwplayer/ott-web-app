@@ -31,6 +31,7 @@
     "edit_information": "Edit information",
     "edit_password": "Edit password",
     "email": "Email",
+    "update_success": "Your {{section}} has been successfully updated.",
     "errors": {
       "email_exists": "Email already exists!",
       "email_update_not_supported": "Email update not supported",
@@ -69,7 +70,7 @@
     "title": "Favorites"
   },
   "login": {
-    "field_required": "This field is required"
+    "field_required": "This field is required, please fill in a valid {{field}}."
   },
   "name": "Name",
   "nav": {

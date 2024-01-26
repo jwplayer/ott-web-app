@@ -12,6 +12,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       personal_details.title
     </h2>
     <div
+      aria-live="assertive"
       class="_formFeedback_99f247 _error_99f247"
     >
       This is a form error
@@ -39,6 +40,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         this is wrong
@@ -67,6 +69,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         also this
@@ -97,6 +100,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         So much errors
@@ -125,6 +129,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         Do you know where you live
@@ -155,6 +160,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         Come on
@@ -183,6 +189,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         stop it
@@ -211,6 +218,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         Confusion
@@ -239,6 +247,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         Post Code should be 5 centimeters
@@ -267,6 +276,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         Invalid
@@ -321,6 +331,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         />
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         February 30th? Really?
@@ -372,6 +383,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         </select>
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         question 1 is invalid
@@ -420,6 +432,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         </label>
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0"
       >
         Invalid answer
@@ -452,6 +465,7 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         </label>
       </div>
       <div
+        aria-live="assertive"
         class="_helperText_da58e0 _error_da58e0 _helperTextError_531f07"
       >
         No way Jose

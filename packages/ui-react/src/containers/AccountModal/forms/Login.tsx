@@ -12,6 +12,7 @@ import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useSocialLoginUrls from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
+import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
 
 type Props = {
   messageKey: string | null;
@@ -26,15 +27,15 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
   const { t } = useTranslation('account');
 
   const socialLoginURLs = useSocialLoginUrls(window.location.href.split('?')[0]);
-
   const queryClient = useQueryClient();
+  const announce = useAriaAnnouncer();
 
   const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
     try {
       await accountController.login(formData.email, formData.password, window.location.href);
       await queryClient.invalidateQueries(['listProfiles']);
 
-      // close modal
+      announce(t('login.sign_in_success'), 'success');
       navigate(modalURLFromLocation(location, null));
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -45,14 +46,16 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
         }
         setValue('password', '');
       }
+    } finally {
+      setSubmitting(false);
     }
-
-    setSubmitting(false);
   };
 
   const validationSchema: SchemaOf<LoginFormData> = object().shape({
-    email: string().email(t('login.field_is_not_valid_email')).required(t('login.field_required')),
-    password: string().required(t('login.field_required')),
+    email: string()
+      .email(t('login.field_is_not_valid_email'))
+      .required(t('login.field_required', { field: t('login.email') })),
+    password: string().required(t('login.field_required', { field: t('login.password') })),
   });
   const initialValues: LoginFormData = { email: '', password: '' };
   const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, loginSubmitHandler, validationSchema);

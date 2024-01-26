@@ -1,17 +1,18 @@
-import { useTranslation } from 'react-i18next';
-import { object, type SchemaOf, string } from 'yup';
-import { useLocation, useNavigate } from 'react-router';
-import { useCallback, useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
-import type { DeleteAccountFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import type { DeleteAccountFormData } from '@jwp/ott-common/types/account';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
+import { useLocation, useNavigate } from 'react-router';
+import { object, string, type SchemaOf } from 'yup';
 
-import PasswordField from '../PasswordField/PasswordField';
-import Button from '../Button/Button';
-import Alert from '../Alert/Alert';
+import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 import { modalURLFromLocation } from '../../utils/location';
+import Alert from '../Alert/Alert';
+import Button from '../Button/Button';
+import PasswordField from '../PasswordField/PasswordField';
 
 import styles from './DeleteAccountModal.module.scss';
 
@@ -19,13 +20,15 @@ const DeleteAccountModal = () => {
   const accountController = getModule(AccountController);
 
   const { t } = useTranslation('user');
+  const announce = useAriaAnnouncer();
 
   const [enteredPassword, setEnteredPassword] = useState<string>('');
 
   const deleteAccount = useMutation(accountController.deleteAccountData, {
     onSuccess: async () => {
       await accountController.logout();
-      navigate('/');
+      announce(t('account.delete_account.success'), 'success');
+      navigate(modalURLFromLocation(location, null), { replace: true });
     },
     onError: () => {
       setEnteredPassword('');

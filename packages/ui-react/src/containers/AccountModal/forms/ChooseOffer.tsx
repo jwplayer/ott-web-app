@@ -76,7 +76,6 @@ const ChooseOffer = () => {
           await accountController.reloadActiveSubscription({ delay: 7500 });
 
           const isPendingSwitch = !!useAccountStore.getState().pendingOffer;
-
           updateAccountModal(isPendingSwitch ? 'upgrade-subscription-pending' : 'upgrade-subscription-success');
         } catch (error: unknown) {
           logDev('Error occurred while upgrading subscription', error);

@@ -95,7 +95,9 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     { email: '' },
     emailSubmitHandler,
     object().shape({
-      email: string().email(t('login.field_is_not_valid_email')).required(t('login.field_required')),
+      email: string()
+        .email(t('login.field_is_not_valid_email'))
+        .required(t('login.field_required', { field: t('login.email') })),
     }),
     true,
   );

@@ -10,7 +10,11 @@ type Props = {
 };
 
 const HelperText: React.FC<Props> = ({ children, className, error }: Props) => {
-  return children ? <div className={classNames(styles.helperText, { [styles.error]: error }, className)}>{children}</div> : null;
+  return children ? (
+    <div aria-live={error ? 'assertive' : 'polite'} className={classNames(styles.helperText, { [styles.error]: error }, className)}>
+      {children}
+    </div>
+  ) : null;
 };
 
 export default HelperText;

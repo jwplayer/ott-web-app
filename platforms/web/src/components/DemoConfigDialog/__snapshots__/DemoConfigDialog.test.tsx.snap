@@ -10,6 +10,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
     </div>
     <button
       class="_button_e29948 _default_e29948 _text_e29948"
+      type="button"
     >
       <span>
         click_to_unselect_config
@@ -77,6 +78,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 />
               </div>
               <div
+                aria-live="assertive"
                 class="_helperText_edc1c5 _error_edc1c5"
               >
                 <span>
@@ -104,6 +106,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               <button
                 aria-disabled="false"
                 class="_button_e29948 _default_e29948 _outlined_e29948"
+                type="button"
               >
                 <span>
                   cancel_config_id
