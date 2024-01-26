@@ -20,6 +20,12 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
 
   const localFile = initSettings(mode);
 
+  const app: OTTConfig = {
+    name: process.env.APP_NAME || 'JW OTT Webapp',
+    shortname: process.env.APP_SHORT_NAME || 'JW OTT',
+    description: process.env.APP_DESCRIPTION || 'JW OTT Webapp is an open-source, dynamically generated video website.',
+  };
+
   // Make sure to builds are always production type,
   // otherwise modes other than 'production' get built in dev
   if (command === 'build') {
@@ -93,11 +99,38 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
       StylelintPlugin(),
       svgr(),
-      VitePWA(),
+      VitePWA({
+        manifestFilename: 'manifest.json',
+        manifest: {
+          name: app.name,
+          description: app.description,
+          short_name: app.shortname,
+          display: 'standalone',
+          start_url: '/',
+          theme_color: '#DD0000',
+          orientation: 'any',
+          background_color: '#000',
+          related_applications: [],
+          prefer_related_applications: false,
+          icons: [
+            {
+              src: 'images/icons/pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'images/icons/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+          ],
+        },
+      }),
       createHtmlPlugin({
         minify: true,
         inject: {
           tags: getGoogleScripts(),
+          data: app,
         },
       }),
       viteStaticCopy({
