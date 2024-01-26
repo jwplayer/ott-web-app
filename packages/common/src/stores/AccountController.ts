@@ -514,8 +514,11 @@ export default class AccountController {
       customerConsents,
     });
 
+    const { accessModel } = useConfigStore.getState();
+
     await Promise.allSettled([
-      shouldReloadSubscription ? this.reloadActiveSubscription() : Promise.resolve(), // For every accessModal there could be TVOD items, so we always reload the subscription
+      shouldReloadSubscription && accessModel === 'SVOD' ? this.reloadActiveSubscription() : Promise.resolve(),
+      shouldReloadSubscription && accessModel !== 'SVOD' ? this.refreshEntitlements?.() : Promise.resolve(), // For non-SVOD platforms, there could be TVOD items
       this.getPublisherConsents(),
     ]);
 
