@@ -1,4 +1,4 @@
-name: Release - Deploy Prod Demo Site
+name: Web - Release - Deploy Prod Demo Site
 
 on:
   push:
