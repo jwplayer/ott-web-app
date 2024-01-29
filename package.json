@@ -10,6 +10,7 @@
     "node": ">=18.13.0"
   },
   "workspaces": [
+    "configs/*",
     "packages/*",
     "platforms/*"
   ],

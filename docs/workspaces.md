@@ -107,17 +107,17 @@ We can add more platforms by adding a folder to the platforms folder.
 
 Each platform is a standalone application that may use other packages defined in the packages folder as dependency.
 
-### Eslint, PostCSS and Stylelint
+### Configs
 
-Besides the mentioned packages there are also three utility packages listed in the packages folder. These utility
-packages exist to align linting dependencies and configuration between the different packages.
+The configs directory contains packages that are used mainly for configuring common build tools. This ensures these
+configurations are aligned between the different application packages in the `packages/*` and `platforms/*` folder.
 
-All packages depend on Eslint and need a configuration. The recommended way of doing this in a monorepo is by creating
-a local package.
+Since most application packages depend on ESLint and use the same configuration, the recommended way of doing this in a
+monorepo is by creating a local package of the eslint config.
 
 **eslint-config-jwp**
 
-This is the Eslint config for React or TypeScript packages. Usage:
+This is the ESLint config for React or TypeScript packages. Usage:
 
 **.eslintrc.js**
 
