@@ -4,7 +4,7 @@
 
 The JW OTT Web App is an open-source repository that showcases an OTT app implementing JWP services. The OTT Web App, as
 the name implies, originates as a web only repository. But much of the source-code can be re-used for many different
-platforms. Like; Capacitor, React Native, and other frameworks based on TypeScript.
+platforms, like Capacitor, React Native, and other frameworks based on TypeScript.
 
 Using the previous codebase, it would be quite challenging to re-use the services because of the dependencies and
 browser usage. For example, the AccountController could redirect a user to a different page by using `window.location`.
@@ -24,8 +24,7 @@ Based on the re-usability of parts of the existing codebase, we've created separ
 This will combine all similar code and prevent installing redundant or conflicting dependencies.
 
 For example, all components, containers, and pages are be combined into the `packages/ui-react` package, which depends
-on
-react and react-dom. To create a React Native app, you could add an `packages/ui-react-native` package and configure
+on react and react-dom. To create a React Native app, you could add an `packages/ui-react-native` package and configure
 aliases to use the correct package.
 
 ## Packages & Platforms
