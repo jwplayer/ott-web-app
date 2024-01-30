@@ -38,6 +38,7 @@ describe('<Header />', () => {
         openLanguageMenu={vi.fn()}
         closeLanguageMenu={vi.fn()}
         isLoggedIn={false}
+        isMenuOpen={false}
         canLogin={true}
         showPaymentsMenuItem={true}
         supportedLanguages={[]}

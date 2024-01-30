@@ -23,9 +23,10 @@ type Props = {
   markdownString: string;
   className?: string;
   inline?: boolean;
+  tag?: string;
 };
 
-const MarkdownComponent: React.FC<Props> = ({ markdownString, className, inline = false }) => {
+const MarkdownComponent: React.FC<Props> = ({ markdownString, className, tag = 'div', inline = false }) => {
   const sanitizedHTMLString = useMemo(() => {
     const parseDelegate = inline ? marked.parseInline : marked.parse;
     const dirtyHTMLString = parseDelegate(markdownString);
@@ -33,7 +34,7 @@ const MarkdownComponent: React.FC<Props> = ({ markdownString, className, inline 
     return DOMPurify.sanitize(dirtyHTMLString, { ADD_ATTR: ['target'] });
   }, [inline, markdownString]);
 
-  return <div className={classNames(styles.markdown, className)} dangerouslySetInnerHTML={{ __html: sanitizedHTMLString }} />;
+  return React.createElement(tag, { dangerouslySetInnerHTML: { __html: sanitizedHTMLString }, className: classNames(styles.markdown, className) });
 };
 
 export default MarkdownComponent;

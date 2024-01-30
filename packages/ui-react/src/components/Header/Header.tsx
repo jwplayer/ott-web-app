@@ -41,6 +41,7 @@ type Props = {
   closeLanguageMenu: () => void;
   children?: ReactNode;
   isLoggedIn: boolean;
+  isMenuOpen: boolean;
   userMenuOpen: boolean;
   languageMenuOpen: boolean;
   canLogin: boolean;
@@ -48,7 +49,6 @@ type Props = {
   supportedLanguages: LanguageDefinition[];
   currentLanguage: LanguageDefinition | undefined;
   onLanguageClick: (code: string) => void;
-
   favoritesEnabled?: boolean;
 
   profilesData?: {
@@ -73,6 +73,7 @@ const Header: React.FC<Props> = ({
   onCloseSearchButtonClick,
   onSignUpButtonClick,
   isLoggedIn,
+  isMenuOpen,
   userMenuOpen,
   languageMenuOpen,
   openUserMenu,
@@ -194,11 +195,20 @@ const Header: React.FC<Props> = ({
     );
   };
 
+  const headerProps = { inert: isMenuOpen ? '' : null }; // inert is not yet officially supported in react. see: https://github.com/facebook/react/pull/24730
+
   return (
-    <header className={headerClassName}>
+    <header className={headerClassName} {...headerProps}>
       <div className={styles.container}>
         <div className={styles.menu}>
-          <IconButton className={styles.iconButton} aria-label={t('open_menu')} onClick={onMenuButtonClick}>
+          <IconButton
+            className={styles.iconButton}
+            aria-label={isMenuOpen ? t('close_menu') : t('open_menu')}
+            aria-controls="sidebar"
+            aria-haspopup="true"
+            aria-expanded={isMenuOpen}
+            onClick={onMenuButtonClick}
+          >
             <Icon icon={Menu} />
           </IconButton>
         </div>
@@ -210,9 +220,7 @@ const Header: React.FC<Props> = ({
             <Logo src={logoSrc} onLoad={() => setLogoLoaded(true)} />
           </div>
         )}
-        <nav className={styles.nav} aria-label="menu">
-          {logoLoaded || !logoSrc ? children : null}
-        </nav>
+        <nav className={styles.nav}>{logoLoaded || !logoSrc ? children : null}</nav>
         <div className={styles.actions}>
           {renderSearch()}
           {renderLanguageDropdown()}

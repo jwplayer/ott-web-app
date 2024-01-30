@@ -12,6 +12,9 @@ exports[`<Header /> > renders header 1`] = `
         class="_menu_f4f7a7"
       >
         <div
+          aria-controls="sidebar"
+          aria-expanded="false"
+          aria-haspopup="true"
           aria-label="open_menu"
           class="_iconButton_0fef65 _iconButton_f4f7a7"
           role="button"
@@ -40,7 +43,6 @@ exports[`<Header /> > renders header 1`] = `
         skip_to_content
       </a>
       <nav
-        aria-label="menu"
         class="_nav_f4f7a7"
       >
         a
