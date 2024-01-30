@@ -1,10 +1,7 @@
 import type { AccessModel, Config } from '../../../types/config';
 import type {
-  AuthData,
   ChangePassword,
   ChangePasswordWithOldPassword,
-  Customer,
-  CustomerConsent,
   DeleteAccount,
   ExportAccountData,
   GetCaptureStatus,
@@ -16,9 +13,15 @@ import type {
   ResetPassword,
   GetSocialURLs,
   UpdateCaptureAnswers,
-  UpdateCustomer,
   UpdateCustomerConsents,
-  UpdatePersonalShelves,
+  Logout,
+  GetAuthData,
+  UpdateCustomer,
+  UpdateWatchHistory,
+  UpdateFavorites,
+  GetWatchHistory,
+  GetFavorites,
+  GetUser,
 } from '../../../types/account';
 
 export type AccountServiceFeatures = {
@@ -47,15 +50,15 @@ export default abstract class AccountService {
 
   abstract initialize: (config: Config, url: string, logoutCallback: () => Promise<void>) => Promise<void>;
 
-  abstract getAuthData: () => Promise<AuthData | null>;
+  abstract getAuthData: GetAuthData;
 
   abstract login: Login;
 
   abstract register: Register;
 
-  abstract logout: () => Promise<void>;
+  abstract logout: Logout;
 
-  abstract getUser: ({ config }: { config: Config }) => Promise<{ user: Customer; customerConsents: CustomerConsent[] }>;
+  abstract getUser: GetUser;
 
   abstract getPublisherConsents: GetPublisherConsents;
 
@@ -75,7 +78,13 @@ export default abstract class AccountService {
 
   abstract updateCustomer: UpdateCustomer;
 
-  abstract updatePersonalShelves: UpdatePersonalShelves;
+  abstract updateWatchHistory: UpdateWatchHistory;
+
+  abstract updateFavorites: UpdateFavorites;
+
+  abstract getWatchHistory: GetWatchHistory;
+
+  abstract getFavorites: GetFavorites;
 
   abstract subscribeToNotifications: NotificationsData;
 

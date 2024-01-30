@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
-import type { Profile } from '@jwp/ott-common/types/account';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import { PATH_USER_PROFILES, PATH_USER_PROFILES_CREATE, PATH_USER_PROFILES_EDIT } from '@jwp/ott-common/src/paths';
+import type { Profile } from '@jwp/ott-common/types/profiles';
 
 import ProfileBox from '../../components/ProfileBox/ProfileBox';
 import AddNewProfile from '../../components/ProfileBox/AddNewProfile';
@@ -40,7 +40,7 @@ const Profiles = ({ editMode = false }: Props) => {
     profilesEnabled,
   } = useProfiles();
 
-  const activeProfiles = data?.responseData.collection.length || 0;
+  const activeProfiles = data?.collection.length || 0;
   const canAddNew = activeProfiles < MAX_PROFILES;
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const Profiles = ({ editMode = false }: Props) => {
     onError: () => navigate(PATH_USER_PROFILES),
   });
 
-  const createdProfileData = data?.responseData.collection.find((profile: Profile) => profile.id === createdProfileId);
+  const createdProfileData = data?.collection.find((profile: Profile) => profile.id === createdProfileId);
 
   if (loading || isLoading || isFetching) return <LoadingOverlay />;
 
@@ -70,7 +70,7 @@ const Profiles = ({ editMode = false }: Props) => {
           <h2 className={styles.heading}>{t('account.who_is_watching')}</h2>
         )}
         <div className={styles.flex}>
-          {data?.responseData.collection?.map((profile: Profile) => (
+          {data?.collection?.map((profile: Profile) => (
             <ProfileBox
               editMode={editMode}
               onEdit={() => navigate(`/u/profiles/edit/${profile.id}`)}

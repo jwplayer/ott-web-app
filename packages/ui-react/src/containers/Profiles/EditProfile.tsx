@@ -36,11 +36,13 @@ const EditProfile = ({ contained = false }: EditProfileProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const isMobile = breakpoint === Breakpoint.xs;
 
-  const { data, isLoading, isFetching } = useQuery(['getProfileDetails'], () => profileController.getProfileDetails({ id: id || '' }), {
+  const {
+    data: profileDetails,
+    isLoading,
+    isFetching,
+  } = useQuery(['getProfileDetails'], () => profileController.getProfileDetails({ id: id || '' }), {
     staleTime: 0,
   });
-
-  const profileDetails = data?.responseData;
 
   const initialValues = useMemo(() => {
     return {

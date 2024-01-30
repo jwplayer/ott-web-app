@@ -1,23 +1,36 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { array, number, object, string } from 'yup';
 
 import type { PlaylistItem } from '../../types/playlist';
 import type { SerializedWatchHistoryItem, WatchHistoryItem } from '../../types/watchHistory';
 import type { Customer } from '../../types/account';
+import { getNamedModule } from '../modules/container';
+import { INTEGRATION_TYPE } from '../modules/types';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
+import AccountService from './integrations/AccountService';
+
+const schema = array(
+  object().shape({
+    mediaid: string(),
+    progress: number(),
+  }),
+);
 
 @injectable()
 export default class WatchHistoryService {
   private PERSIST_KEY_WATCH_HISTORY = 'history';
   private MAX_WATCH_HISTORY_COUNT = 48;
 
-  private readonly apiService: ApiService;
-  private readonly storageService: StorageService;
+  private readonly apiService;
+  private readonly storageService;
+  private readonly accountService;
 
-  constructor(apiService: ApiService, storageService: StorageService) {
+  constructor(@inject(INTEGRATION_TYPE) integrationType: string, apiService: ApiService, storageService: StorageService) {
     this.apiService = apiService;
     this.storageService = storageService;
+    this.accountService = getNamedModule(AccountService, integrationType);
   }
 
   // Retrieve watch history media items info using a provided watch list
@@ -47,27 +60,49 @@ export default class WatchHistoryService {
     return seriesItemsDict;
   };
 
+  private validateWatchHistory(history: unknown) {
+    if (schema.validateSync(history)) {
+      return history as SerializedWatchHistoryItem[];
+    }
+
+    return [];
+  }
+
+  private async getWatchHistoryFromAccount(user: Customer) {
+    const history = await this.accountService.getWatchHistory({ user });
+
+    return this.validateWatchHistory(history);
+  }
+
+  private async getWatchHistoryFromStorage() {
+    const history = await this.storageService.getItem(this.PERSIST_KEY_WATCH_HISTORY, true);
+
+    return this.validateWatchHistory(history);
+  }
+
   getWatchHistory = async (user: Customer | null, continueWatchingList: string) => {
-    const savedItems = user ? user.externalData?.history : await this.storageService.getItem<WatchHistoryItem[]>(this.PERSIST_KEY_WATCH_HISTORY, true);
+    const savedItems = user ? await this.getWatchHistoryFromAccount(user) : await this.getWatchHistoryFromStorage();
 
-    if (savedItems?.length) {
-      // When item is an episode of the new flow -> show the card as a series one, but keep episode to redirect in a right way
-      const ids = savedItems.map(({ mediaid }) => mediaid);
+    // When item is an episode of the new flow -> show the card as a series one, but keep episode to redirect in a right way
+    const ids = savedItems.map(({ mediaid }) => mediaid);
 
-      const watchHistoryItems = await this.getWatchHistoryItems(continueWatchingList, ids);
-      const seriesItems = await this.getWatchHistorySeriesItems(continueWatchingList, ids);
+    if (!ids.length) {
+      return [];
+    }
 
-      const watchHistory = savedItems.map((item) => {
+    const watchHistoryItems = await this.getWatchHistoryItems(continueWatchingList, ids);
+    const seriesItems = await this.getWatchHistorySeriesItems(continueWatchingList, ids);
+
+    return savedItems
+      .map((item) => {
         const parentSeries = seriesItems?.[item.mediaid];
         const historyItem = watchHistoryItems[item.mediaid];
 
         if (historyItem) {
           return this.createWatchHistoryItem(parentSeries || historyItem, item.mediaid, parentSeries?.mediaid, item.progress);
         }
-      });
-
-      return watchHistory;
-    }
+      })
+      .filter((item): item is WatchHistoryItem => Boolean(item));
   };
 
   serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] =>
@@ -76,8 +111,15 @@ export default class WatchHistoryService {
       progress,
     }));
 
-  persistWatchHistory = (watchHistory: WatchHistoryItem[]) => {
-    this.storageService.setItem(this.PERSIST_KEY_WATCH_HISTORY, JSON.stringify(this.serializeWatchHistory(watchHistory)));
+  persistWatchHistory = async (watchHistory: WatchHistoryItem[], user: Customer | null) => {
+    if (user) {
+      await this.accountService?.updateWatchHistory({
+        history: this.serializeWatchHistory(watchHistory),
+        user,
+      });
+    } else {
+      await this.storageService.setItem(this.PERSIST_KEY_WATCH_HISTORY, JSON.stringify(this.serializeWatchHistory(watchHistory)));
+    }
   };
 
   /** Use mediaid of originally watched movie / episode.

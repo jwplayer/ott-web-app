@@ -25,7 +25,7 @@ const Registration = () => {
   const appConfigId = useConfigStore(({ config }) => config.id);
   const { data, isLoading: publisherConsentsLoading } = useQuery(['consents', appConfigId], accountController.getPublisherConsents);
 
-  const publisherConsents = useMemo(() => data?.consents || [], [data]);
+  const publisherConsents = useMemo(() => data || [], [data]);
 
   const queryClient = useQueryClient();
 

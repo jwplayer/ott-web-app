@@ -5,6 +5,7 @@ import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import { queryClient } from '@jwp/ott-ui-react/src/containers/QueryProvider/QueryProvider';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
+import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -18,9 +19,10 @@ enum NotificationsTypes {
   ACCOUNT_LOGOUT = 'account.logout',
 }
 
-export default function useNotifications(uuid: string = '') {
+export default function useNotifications() {
   const navigate = useNavigate();
   const location = useLocation();
+  const uuid = useAccountStore((s) => (typeof s.user?.uuid === 'string' ? s.user.uuid : undefined));
 
   const accountController = getModule(AccountController);
   const { hasNotifications } = accountController?.getFeatures() || {};

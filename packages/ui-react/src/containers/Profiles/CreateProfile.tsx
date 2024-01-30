@@ -38,7 +38,7 @@ const CreateProfile = () => {
 
   const createProfile = useCreateProfile({
     onSuccess: (res) => {
-      const id = res?.responseData?.id;
+      const id = res?.id;
 
       !!id && navigate(createURL(PATH_USER_PROFILES, { success: 'true', id }));
     },

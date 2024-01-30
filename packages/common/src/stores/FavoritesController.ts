@@ -1,14 +1,8 @@
 import i18next from 'i18next';
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import FavoriteService from '../services/FavoriteService';
-import AccountService from '../services/integrations/AccountService';
 import type { PlaylistItem } from '../../types/playlist';
-import type { Favorite, SerializedFavorite } from '../../types/favorite';
-import type { Customer } from '../../types/account';
-import type { IntegrationType } from '../../types/config';
-import { getNamedModule } from '../modules/container';
-import { INTEGRATION_TYPE } from '../modules/types';
 
 import { useAccountStore } from './AccountStore';
 import { useFavoritesStore } from './FavoritesStore';
@@ -17,26 +11,14 @@ import { useConfigStore } from './ConfigStore';
 @injectable()
 export default class FavoritesController {
   private readonly favoritesService: FavoriteService;
-  private readonly accountService?: AccountService;
 
-  constructor(@inject(INTEGRATION_TYPE) integrationType: IntegrationType, favoritesService: FavoriteService) {
+  constructor(favoritesService: FavoriteService) {
     this.favoritesService = favoritesService;
-    this.accountService = getNamedModule(AccountService, integrationType, false);
   }
 
-  private updateUserFavorites(favorites: Favorite[]) {
-    const { user } = useAccountStore.getState();
-
-    if (user) {
-      useAccountStore.setState((state) => ({
-        ...state,
-        user: {
-          ...(state.user as Customer),
-          externalData: { ...state.user?.externalData, favorites: this.serializeFavorites(favorites) },
-        },
-      }));
-    }
-  }
+  initialize = async () => {
+    await this.restoreFavorites();
+  };
 
   restoreFavorites = async () => {
     const { user } = useAccountStore.getState();
@@ -45,11 +27,8 @@ export default class FavoritesController {
     if (!favoritesList) {
       return;
     }
-    const favorites = await this.favoritesService.getFavorites(user, favoritesList);
 
-    if (!favorites) {
-      return;
-    }
+    const favorites = await this.favoritesService.getFavorites(user, favoritesList);
 
     useFavoritesStore.setState({ favorites, favoritesPlaylistId: favoritesList });
   };
@@ -58,19 +37,7 @@ export default class FavoritesController {
     const { favorites } = useFavoritesStore.getState();
     const { user } = useAccountStore.getState();
 
-    if (user?.id && user?.externalData) {
-      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData });
-    }
-
-    this.favoritesService.persistFavorites(favorites);
-  };
-
-  serializeFavorites = (favorites: Favorite[]): SerializedFavorite[] => {
-    return this.favoritesService.serializeFavorites(favorites);
-  };
-
-  initialize = async () => {
-    await this.restoreFavorites();
+    await this.favoritesService.persistFavorites(favorites, user);
   };
 
   saveItem = async (item: PlaylistItem) => {
@@ -79,7 +46,6 @@ export default class FavoritesController {
     if (!favorites.some(({ mediaid }) => mediaid === item.mediaid)) {
       const items = [this.favoritesService.createFavorite(item)].concat(favorites);
       useFavoritesStore.setState({ favorites: items });
-      this.updateUserFavorites(items);
       await this.persistFavorites();
     }
   };
@@ -89,7 +55,6 @@ export default class FavoritesController {
 
     const items = favorites.filter(({ mediaid }) => mediaid !== item.mediaid);
     useFavoritesStore.setState({ favorites: items });
-    this.updateUserFavorites(items);
 
     await this.persistFavorites();
   };
@@ -101,9 +66,9 @@ export default class FavoritesController {
       return;
     }
 
-    const isFavorited = hasItem(item);
+    const isFavorite = hasItem(item);
 
-    if (isFavorited) {
+    if (isFavorite) {
       await this.removeItem(item);
 
       return;

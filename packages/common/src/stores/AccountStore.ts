@@ -1,4 +1,4 @@
-import type { Consent, Customer, CustomerConsent } from '../../types/account';
+import type { CustomFormField, Customer, CustomerConsent } from '../../types/account';
 import type { Offer } from '../../types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '../../types/subscription';
 
@@ -11,7 +11,7 @@ type AccountStore = {
   transactions: Transaction[] | null;
   activePayment: PaymentDetail | null;
   customerConsents: CustomerConsent[] | null;
-  publisherConsents: Consent[] | null;
+  publisherConsents: CustomFormField[] | null;
   pendingOffer: Offer | null;
   setLoading: (loading: boolean) => void;
   getAccountInfo: () => { customerId: string; customer: Customer; customerConsents: CustomerConsent[] | null };

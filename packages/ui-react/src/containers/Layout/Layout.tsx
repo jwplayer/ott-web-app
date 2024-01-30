@@ -50,7 +50,7 @@ const Layout = () => {
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
   const {
-    query: { data: { responseData: { collection: profiles = [] } = {} } = {} },
+    query: { data: { collection: profiles = [] } = {} },
     profilesEnabled,
   } = useProfiles();
 

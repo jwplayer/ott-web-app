@@ -27,8 +27,8 @@ const data = {
     country: 'us',
     firstName: 'User',
     lastName: 'Person',
-    regDate: 'Jan 1, 2000',
     lastUserIp: '192.0.0.1',
+    metadata: {},
   },
   subscription: {
     subscriptionId: 90210,

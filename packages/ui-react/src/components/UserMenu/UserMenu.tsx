@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import type { Profile } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
@@ -11,6 +10,7 @@ import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react'
 import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
 import { PATH_USER_ACCOUNT, PATH_USER_FAVORITES, PATH_USER_PAYMENTS, PATH_USER_PROFILES_CREATE } from '@jwp/ott-common/src/paths';
 import { userProfileURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import type { Profile } from '@jwp/ott-common/types/profiles';
 
 import MenuButton from '../MenuButton/MenuButton';
 import Icon from '../Icon/Icon';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import type { UseMutateFunction } from 'react-query';
-import type { Profile } from '@jwp/ott-common/types/account';
 import Plus from '@jwp/ott-theme/assets/icons/plus.svg?react';
+import type { Profile } from '@jwp/ott-common/types/profiles';
 
 import styles from '../UserMenu.module.scss';
 import LoadingOverlay from '../../LoadingOverlay/LoadingOverlay';

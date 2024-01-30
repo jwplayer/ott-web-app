@@ -78,17 +78,17 @@ export default class AppController {
     // update settings in the config store
     useConfigStore.setState({ settings });
 
+    // when an integration is set, we initialize the AccountController
+    if (integrationType) {
+      await getModule(AccountController).initialize(url, refreshEntitlements);
+    }
+
     if (config.features?.continueWatchingList && config.content.some((el) => el.type === PersonalShelf.ContinueWatching)) {
       await getModule(WatchHistoryController).initialize();
     }
 
     if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
       await getModule(FavoritesController).initialize();
-    }
-
-    // when an integration is set, we initialize the AccountController
-    if (integrationType) {
-      await getModule(AccountController).initialize(url, refreshEntitlements);
     }
 
     return { config, settings, configSource };

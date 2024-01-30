@@ -50,7 +50,7 @@ export default function AppRoutes() {
   const userData = useAccountStore((s) => ({ loading: s.loading, user: s.user }));
 
   // listen to websocket notifications
-  useNotifications(userData.user?.uuid);
+  useNotifications();
 
   if (userData.user && !userData.loading && window.location.href.includes('#token')) {
     return <Navigate to="/" />; // component instead of hook to prevent extra re-renders

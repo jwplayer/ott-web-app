@@ -2,12 +2,12 @@ import { inject, injectable } from 'inversify';
 import type { ProfilesData } from '@inplayer-org/inplayer.js';
 import * as yup from 'yup';
 
-import type { EnterProfilePayload, ProfileDetailsPayload, ProfilePayload } from '../../types/account';
 import ProfileService from '../services/integrations/ProfileService';
 import type { IntegrationType } from '../../types/config';
 import { assertModuleMethod, getNamedModule } from '../modules/container';
 import StorageService from '../services/StorageService';
 import { INTEGRATION_TYPE } from '../modules/types';
+import type { EnterProfilePayload, ProfileDetailsPayload, ProfilePayload } from '../../types/profiles';
 
 import { useProfileStore } from './ProfileStore';
 
@@ -68,9 +68,7 @@ export default class ProfileController {
   enterProfile = async ({ id, pin }: EnterProfilePayload) => {
     assertModuleMethod(this.profileService?.enterProfile, 'enterProfile is not available in profile service');
 
-    const response = await this.profileService.enterProfile({ id, pin });
-
-    const profile = response?.responseData;
+    const profile = await this.profileService.enterProfile({ id, pin });
 
     if (!profile) {
       throw new Error('Unable to enter profile');

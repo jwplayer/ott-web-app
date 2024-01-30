@@ -1,6 +1,6 @@
 import defaultAvatar from '@jwp/ott-theme/assets/profiles/default_avatar.png';
 
-import type { Profile } from '../../types/account';
+import type { Profile } from '../../types/profiles';
 
 import { createStore } from './utils';
 

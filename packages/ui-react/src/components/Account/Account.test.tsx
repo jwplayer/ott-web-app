@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Consent } from '@jwp/ott-common/types/account';
+import type { CustomFormField } from '@jwp/ott-common/types/account';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/stores/AccountController';
 import customer from '@jwp/ott-testing/fixtures/customer.json';
@@ -19,7 +19,7 @@ describe('<Account>', () => {
   test('renders and matches snapshot', () => {
     useAccountStore.setState({
       user: customer,
-      publisherConsents: Array.of({ name: 'marketing', label: 'Receive Marketing Emails' } as Consent),
+      publisherConsents: Array.of({ name: 'marketing', label: 'Receive Marketing Emails' } as CustomFormField),
     });
 
     const { container } = renderWithRouter(<Account panelClassName={'panel-class'} panelHeaderClassName={'header-class'} canUpdateEmail={true} />);

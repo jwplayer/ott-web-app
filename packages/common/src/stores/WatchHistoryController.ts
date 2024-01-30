@@ -1,13 +1,8 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import WatchHistoryService from '../services/WatchHistoryService';
-import AccountService from '../services/integrations/AccountService';
 import type { PlaylistItem } from '../../types/playlist';
-import type { SerializedWatchHistoryItem, WatchHistoryItem } from '../../types/watchHistory';
-import type { Customer } from '../../types/account';
-import type { IntegrationType } from '../../types/config';
-import { getNamedModule } from '../modules/container';
-import { INTEGRATION_TYPE } from '../modules/types';
+import type { WatchHistoryItem } from '../../types/watchHistory';
 
 import { useAccountStore } from './AccountStore';
 import { useConfigStore } from './ConfigStore';
@@ -16,29 +11,9 @@ import { useWatchHistoryStore } from './WatchHistoryStore';
 @injectable()
 export default class WatchHistoryController {
   private readonly watchHistoryService: WatchHistoryService;
-  private readonly accountService?: AccountService;
 
-  constructor(@inject(INTEGRATION_TYPE) integrationType: IntegrationType, watchHistoryService: WatchHistoryService) {
+  constructor(watchHistoryService: WatchHistoryService) {
     this.watchHistoryService = watchHistoryService;
-    this.accountService = getNamedModule(AccountService, integrationType, false);
-  }
-
-  serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] => {
-    return this.watchHistoryService.serializeWatchHistory(watchHistory);
-  };
-
-  private updateUserWatchHistory(watchHistory: WatchHistoryItem[]) {
-    const { user } = useAccountStore.getState();
-
-    if (user) {
-      useAccountStore.setState((state) => ({
-        ...state,
-        user: {
-          ...(state.user as Customer),
-          externalData: { ...state.user?.externalData, history: this.serializeWatchHistory(watchHistory) },
-        },
-      }));
-    }
   }
 
   initialize = async () => {
@@ -55,24 +30,18 @@ export default class WatchHistoryController {
 
     const watchHistory = await this.watchHistoryService.getWatchHistory(user, continueWatchingList);
 
-    if (watchHistory?.length) {
-      useWatchHistoryStore.setState({
-        watchHistory: watchHistory.filter((item): item is WatchHistoryItem => !!item?.mediaid),
-        playlistItemsLoaded: true,
-        continueWatchingPlaylistId: continueWatchingList,
-      });
-    }
+    useWatchHistoryStore.setState({
+      watchHistory: watchHistory.filter((item): item is WatchHistoryItem => !!item?.mediaid),
+      playlistItemsLoaded: true,
+      continueWatchingPlaylistId: continueWatchingList,
+    });
   };
 
   persistWatchHistory = async () => {
     const { watchHistory } = useWatchHistoryStore.getState();
     const { user } = useAccountStore.getState();
 
-    if (user?.id && user?.externalData) {
-      return this.accountService?.updatePersonalShelves({ id: user.id, externalData: user.externalData });
-    }
-
-    this.watchHistoryService.persistWatchHistory(watchHistory);
+    await this.watchHistoryService.persistWatchHistory(watchHistory, user);
   };
 
   /**
@@ -92,7 +61,6 @@ export default class WatchHistoryController {
 
     if (updatedHistory) {
       useWatchHistoryStore.setState({ watchHistory: updatedHistory });
-      this.updateUserWatchHistory(updatedHistory);
       await this.persistWatchHistory();
     }
   };

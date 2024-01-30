@@ -15,16 +15,12 @@ import type {
   EmailConfirmPasswordInput,
   FirstLastNameInput,
   GetCaptureStatusResponse,
-  GetCustomerConsentsResponse,
-  GetPublisherConsentsResponse,
   SubscribeToNotificationsPayload,
 } from '../../types/account';
 import { assertFeature, assertModuleMethod, getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
 import type { ServiceResponse } from '../../types/service';
 
-import { useWatchHistoryStore } from './WatchHistoryStore';
-import { useFavoritesStore } from './FavoritesStore';
 import { useAccountStore } from './AccountStore';
 import { useConfigStore } from './ConfigStore';
 import { useProfileStore } from './ProfileStore';
@@ -37,9 +33,9 @@ export default class AccountController {
   private readonly checkoutService: CheckoutService;
   private readonly accountService: AccountService;
   private readonly subscriptionService: SubscriptionService;
+  private readonly profileController: ProfileController;
   private readonly favoritesController: FavoritesController;
   private readonly watchHistoryController: WatchHistoryController;
-  private readonly profileController?: ProfileController;
   private readonly features: AccountServiceFeatures;
 
   // temporary callback for refreshing the query cache until we've updated to react-query v4 or v5
@@ -49,13 +45,13 @@ export default class AccountController {
     @inject(INTEGRATION_TYPE) integrationType: IntegrationType,
     favoritesController: FavoritesController,
     watchHistoryController: WatchHistoryController,
-    profileController?: ProfileController,
+    profileController: ProfileController,
   ) {
     this.checkoutService = getNamedModule(CheckoutService, integrationType);
     this.accountService = getNamedModule(AccountService, integrationType);
     this.subscriptionService = getNamedModule(SubscriptionService, integrationType);
 
-    // @TODO refactor?
+    // @TODO: Controllers shouldn't be depending on other controllers, but we've agreed to keep this as is for now
     this.favoritesController = favoritesController;
     this.watchHistoryController = watchHistoryController;
     this.profileController = profileController;
@@ -69,8 +65,8 @@ export default class AccountController {
 
       if (authData) {
         await this.getAccount();
-        await this.watchHistoryController?.restoreWatchHistory();
-        await this.favoritesController?.restoreFavorites();
+        await this.watchHistoryController.restoreWatchHistory();
+        await this.favoritesController.restoreFavorites();
       }
     } catch (error: unknown) {
       logDev('Failed to get user', error);
@@ -104,26 +100,6 @@ export default class AccountController {
     return this.accountService.sandbox;
   }
 
-  updatePersonalShelves = async () => {
-    const { watchHistory } = useWatchHistoryStore.getState();
-    const { favorites } = useFavoritesStore.getState();
-    const { getAccountInfo } = useAccountStore.getState();
-
-    const { customer } = getAccountInfo();
-
-    if (!watchHistory && !favorites) return;
-
-    const personalShelfData = {
-      history: this.watchHistoryController?.serializeWatchHistory(watchHistory),
-      favorites: this.favoritesController?.serializeFavorites(favorites),
-    };
-
-    return this.accountService?.updatePersonalShelves({
-      id: customer.id,
-      externalData: personalShelfData,
-    });
-  };
-
   updateUser = async (values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> => {
     useAccountStore.setState({ loading: true });
 
@@ -152,17 +128,15 @@ export default class AccountController {
       payload = { ...values, email: user.email };
     }
 
-    const response = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() });
+    const updatedUser = await this.accountService.updateCustomer({ ...payload, id: user.id.toString() });
 
-    if (!response) {
+    if (!updatedUser) {
       throw new Error('Unknown error');
     }
 
-    if (response.errors?.length === 0) {
-      useAccountStore.setState({ user: response.responseData });
-    }
+    useAccountStore.setState({ user: updatedUser });
 
-    return response;
+    return { errors: [], responseData: updatedUser };
   };
 
   getAccount = async () => {
@@ -172,6 +146,8 @@ export default class AccountController {
       const response = await this.accountService.getUser({ config });
       if (response) {
         await this.afterLogin(response.user, response.customerConsents);
+        await this.favoritesController.restoreFavorites().catch(logDev);
+        await this.watchHistoryController.restoreWatchHistory().catch(logDev);
       }
 
       useAccountStore.setState({ loading: false });
@@ -189,17 +165,12 @@ export default class AccountController {
   };
 
   login = async (email: string, password: string, referrer: string) => {
-    const { config } = useConfigStore.getState();
-
     useAccountStore.setState({ loading: true });
 
-    const response = await this.accountService.login({ config, email, password, referrer });
+    const response = await this.accountService.login({ email, password, referrer });
 
     if (response) {
       await this.afterLogin(response.user, response.customerConsents);
-
-      await this.favoritesController?.restoreFavorites().catch(logDev);
-      await this.watchHistoryController?.restoreWatchHistory().catch(logDev);
     }
 
     useAccountStore.setState({ loading: false });
@@ -214,37 +185,35 @@ export default class AccountController {
   };
 
   register = async (email: string, password: string, referrer: string, consents: CustomerConsent[]) => {
-    const { config } = useConfigStore.getState();
-
     useAccountStore.setState({ loading: true });
-    const response = await this.accountService.register({ config, email, password, consents, referrer });
+    const response = await this.accountService.register({ email, password, consents, referrer });
 
     if (response) {
       const { user, customerConsents } = response;
       await this.afterLogin(user, customerConsents);
     }
 
-    await this.updatePersonalShelves();
+    // this stores the locally stored favorites and watch history into the users account
+    await this.favoritesController.persistFavorites();
+    await this.watchHistoryController.persistWatchHistory();
   };
 
   updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { config } = useConfigStore.getState();
     const { customer } = getAccountInfo();
 
     useAccountStore.setState({ loading: true });
 
     try {
-      const response = await this.accountService?.updateCustomerConsents({
-        config,
+      const updatedConsents = await this.accountService?.updateCustomerConsents({
         customer,
         consents: customerConsents,
       });
 
-      if (response?.consents) {
-        useAccountStore.setState({ customerConsents: response.consents });
+      if (updatedConsents) {
+        useAccountStore.setState({ customerConsents: updatedConsents });
         return {
-          responseData: response.consents,
+          responseData: updatedConsents,
           errors: [],
         };
       }
@@ -259,85 +228,69 @@ export default class AccountController {
 
   // TODO: Decide if it's worth keeping this or just leave combined with getUser
   // noinspection JSUnusedGlobalSymbols
-  getCustomerConsents = async (): Promise<GetCustomerConsentsResponse> => {
+  getCustomerConsents = async () => {
     const { getAccountInfo } = useAccountStore.getState();
-    const { config } = useConfigStore.getState();
     const { customer } = getAccountInfo();
 
-    const response = await this.accountService.getCustomerConsents({ config, customer });
+    const consents = await this.accountService.getCustomerConsents({ customer });
 
-    if (response?.consents) {
-      useAccountStore.setState({ customerConsents: response.consents });
+    if (consents) {
+      useAccountStore.setState({ customerConsents: consents });
     }
 
-    return response;
+    return consents;
   };
 
-  getPublisherConsents = async (): Promise<GetPublisherConsentsResponse> => {
+  getPublisherConsents = async () => {
     const { config } = useConfigStore.getState();
 
-    const response = await this.accountService.getPublisherConsents(config);
+    const consents = await this.accountService.getPublisherConsents(config);
 
-    useAccountStore.setState({ publisherConsents: response.consents });
+    useAccountStore.setState({ publisherConsents: consents });
 
-    return response;
+    return consents;
   };
 
   getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
     const { getAccountInfo } = useAccountStore.getState();
     const { customer } = getAccountInfo();
 
-    const { responseData } = await this.accountService.getCaptureStatus({ customer });
-
-    return responseData;
+    return this.accountService.getCaptureStatus({ customer });
   };
 
   updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
     const { getAccountInfo } = useAccountStore.getState();
     const { customer, customerConsents } = getAccountInfo();
 
-    const response = await this.accountService.updateCaptureAnswers({ customer, ...capture });
+    const updatedCustomer = await this.accountService.updateCaptureAnswers({ customer, ...capture });
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
+    await this.afterLogin(updatedCustomer, customerConsents, false);
 
-    await this.afterLogin(response.responseData as Customer, customerConsents, false);
-
-    return response.responseData;
+    return updatedCustomer;
   };
 
   resetPassword = async (email: string, resetUrl: string) => {
-    const response = await this.accountService.resetPassword({
+    await this.accountService.resetPassword({
       customerEmail: email,
       resetUrl,
     });
-
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
-
-    return response.responseData;
   };
 
   changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
-    const response = await this.accountService.changePasswordWithOldPassword({
+    await this.accountService.changePasswordWithOldPassword({
       oldPassword,
       newPassword,
       newPasswordConfirmation,
     });
-    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
-
-    return response?.responseData;
   };
 
   changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
-    const response = await this.accountService.changePasswordWithResetToken({
+    await this.accountService.changePasswordWithResetToken({
       customerEmail,
       newPassword,
       resetPasswordToken,
       newPasswordConfirmation,
     });
-
-    if (response?.errors?.length > 0) throw new Error(response.errors[0]);
-
-    return response?.responseData;
   };
 
   updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
@@ -478,13 +431,12 @@ export default class AccountController {
   };
 
   getSocialLoginUrls = (redirectUrl: string) => {
-    const { config } = useConfigStore.getState();
     const { hasSocialURLs } = this.getFeatures();
 
     assertModuleMethod(this.accountService.getSocialUrls, 'getSocialUrls is not available in account service');
     assertFeature(hasSocialURLs, 'Social logins');
 
-    return this.accountService.getSocialUrls({ config, redirectUrl });
+    return this.accountService.getSocialUrls({ redirectUrl });
   };
 
   deleteAccountData = async (password: string) => {
@@ -554,9 +506,9 @@ export default class AccountController {
       selectingProfileAvatar: null,
     });
 
-    this.profileController?.unpersistProfile();
+    this.profileController.unpersistProfile();
 
-    await this.favoritesController?.restoreFavorites();
-    await this.watchHistoryController?.restoreWatchHistory();
+    await this.favoritesController.restoreFavorites().catch(logDev);
+    await this.watchHistoryController.restoreWatchHistory().catch(logDev);
   };
 }
