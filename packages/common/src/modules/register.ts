@@ -19,6 +19,7 @@ import AccountController from '../stores/AccountController';
 import ProfileController from '../stores/ProfileController';
 import FavoritesController from '../stores/FavoritesController';
 import AppController from '../stores/AppController';
+import EpgController from '../stores/EpgController';
 
 // Epg services
 import EpgService from '../services/EpgService';
@@ -47,7 +48,6 @@ import { isCleengIntegrationType, isJwpIntegrationType } from './functions/calcu
 
 // Common services
 container.bind(ConfigService).toSelf();
-container.bind(EpgService).toSelf();
 container.bind(WatchHistoryService).toSelf();
 container.bind(FavoriteService).toSelf();
 container.bind(GenericEntitlementService).toSelf();
@@ -58,6 +58,7 @@ container.bind(SettingsService).toSelf();
 container.bind(AppController).toSelf();
 container.bind(WatchHistoryController).toSelf();
 container.bind(FavoritesController).toSelf();
+container.bind(EpgController).toSelf();
 
 // Integration controllers
 container.bind(AccountController).toSelf();
