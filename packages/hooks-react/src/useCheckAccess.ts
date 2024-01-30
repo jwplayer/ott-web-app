@@ -31,7 +31,7 @@ const useCheckAccess = () => {
         const hasAccess = await accountController.checkEntitlements(offerId);
 
         if (hasAccess) {
-          await accountController.reloadActiveSubscription();
+          await accountController.reloadSubscriptions();
           callback?.(true);
         } else if (--iterations === 0) {
           window.clearInterval(intervalRef.current);

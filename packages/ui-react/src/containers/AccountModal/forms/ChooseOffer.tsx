@@ -73,7 +73,7 @@ const ChooseOffer = () => {
         try {
           await checkoutController.switchSubscription(targetOfferId, determineSwitchDirection(subscription));
           // switching a subscription takes a bit longer to process
-          await accountController.reloadActiveSubscription({ delay: 7500 });
+          await accountController.reloadSubscriptions({ delay: 7500 });
 
           const isPendingSwitch = !!useAccountStore.getState().pendingOffer;
 

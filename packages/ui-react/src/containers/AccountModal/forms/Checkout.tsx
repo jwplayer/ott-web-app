@@ -151,7 +151,7 @@ const Checkout = () => {
       setUpdatingOrder(true);
       setPaymentError(undefined);
       await checkoutController.paymentWithoutDetails();
-      await accountController.reloadActiveSubscription({ delay: 1000 });
+      await accountController.reloadSubscriptions({ delay: 1000 });
       navigate(paymentSuccessUrl, { replace: true });
     } catch (error: unknown) {
       if (error instanceof Error) {

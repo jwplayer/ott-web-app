@@ -357,7 +357,7 @@ export default class AccountController {
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-    await this.reloadActiveSubscription({ delay: 2000 });
+    await this.reloadSubscriptions({ delay: 2000 });
 
     return response?.responseData;
   };
@@ -409,20 +409,28 @@ export default class AccountController {
     return !!responseData?.accessGranted;
   };
 
-  reloadActiveSubscription = async ({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> => {
+  reloadSubscriptions = async ({ delay }: { delay: number } = { delay: 0 }): Promise<unknown> => {
     useAccountStore.setState({ loading: true });
 
     const { getAccountInfo } = useAccountStore.getState();
     const { customerId } = getAccountInfo();
+    const { accessModel } = useConfigStore.getState();
 
     // The subscription data takes a few seconds to load after it's purchased,
     // so here's a delay mechanism to give it time to process
     if (delay > 0) {
       return new Promise((resolve: (value?: unknown) => void) => {
         setTimeout(() => {
-          this.reloadActiveSubscription().finally(resolve);
+          this.reloadSubscriptions().finally(resolve);
         }, delay);
       });
+    }
+
+    // For non-SVOD platforms, there could be TVOD items, so we only reload entitlements
+    if (accessModel !== 'SVOD') {
+      await this.refreshEntitlements?.();
+
+      return useAccountStore.setState({ loading: true });
     }
 
     const [activeSubscription, transactions, activePayment] = await Promise.all([
@@ -514,14 +522,7 @@ export default class AccountController {
       customerConsents,
     });
 
-    const { accessModel } = useConfigStore.getState();
-
-    await Promise.allSettled([
-      shouldReloadSubscription && accessModel === 'SVOD' ? this.reloadActiveSubscription() : Promise.resolve(),
-      shouldReloadSubscription && accessModel !== 'SVOD' ? this.refreshEntitlements?.() : Promise.resolve(), // For non-SVOD platforms, there could be TVOD items
-      this.getPublisherConsents(),
-    ]);
-
+    await Promise.allSettled([shouldReloadSubscription ? this.reloadSubscriptions() : Promise.resolve(), this.getPublisherConsents()]);
     useAccountStore.setState({ loading: false });
   }
 

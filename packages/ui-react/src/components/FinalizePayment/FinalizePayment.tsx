@@ -39,7 +39,7 @@ const FinalizePayment = () => {
 
     try {
       await checkoutController.finalizeAdyenPayment({ redirectResult: decodeURI(redirectResult) }, orderId);
-      await accountController.reloadActiveSubscription({ delay: 2000 });
+      await accountController.reloadSubscriptions({ delay: 2000 });
 
       navigate(paymentSuccessUrl);
     } catch (error: unknown) {

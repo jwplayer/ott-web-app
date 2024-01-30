@@ -45,10 +45,10 @@ export default function useNotifications(uuid: string = '') {
               navigate(modalURLFromLocation(location, null));
               break;
             case NotificationsTypes.SUBSCRIBE_SUCCESS:
-              await accountController.reloadActiveSubscription();
+              await accountController.reloadSubscriptions();
               break;
             case NotificationsTypes.ACCESS_REVOKED:
-              await accountController.reloadActiveSubscription();
+              await accountController.reloadSubscriptions();
               break;
             case NotificationsTypes.CARD_REQUIRES_ACTION:
             case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:
