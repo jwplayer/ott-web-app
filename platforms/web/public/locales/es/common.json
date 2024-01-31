@@ -1,0 +1,29 @@
+{
+  "alert": {
+    "close": "Cerrar",
+    "success": "Success",
+    "title": "Se produjo un error"
+  },
+  "back": "Atrás",
+  "card_lock": "Elemento bloqueado",
+  "close_modal": "Cerrar",
+  "confirmation_dialog": {
+    "close": "Cancelar",
+    "confirm": "Sí"
+  },
+  "default_description": "La OTT WebApp de JW es un sitio web de videos de código abierto generado dinamicamente.",
+  "default_site_name": "Mi aplicación OTT",
+  "filter_videos_by": "Filtrar videos por {{name}}",
+  "filter_videos_by_genre": "Filtrar videos por género",
+  "home": "Inicio",
+  "live": "EN VIVO",
+  "now": "Ahora",
+  "optional": "(Opcional)",
+  "play_item": "Reproducir {{title}}",
+  "scheduled": "Programada",
+  "series": "serie",
+  "sign_in": "Iniciar sesión",
+  "sign_up": "Registrarse",
+  "slide_left": "Deslizar hacia la izquierda",
+  "slide_right": "Deslizar hacia la derecha"
+}

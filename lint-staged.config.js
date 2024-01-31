@@ -1,5 +1,4 @@
 module.exports = {
-  '{**/*,*}.{js,ts,jsx,tsx}': ['eslint --fix', 'prettier --write'],
-  'src/**/*.scss': ['stylelint --fix'],
-  '{**/*,*}.{ts,tsx}': [() => 'tsc --pretty --noEmit'],
+  'scripts/{**/*,*}.{js,ts,jsx,tsx}': ['eslint --fix', 'prettier --write'],
+  'scripts/{**/*,*}.{ts,tsx}': [() => 'tsc --pretty --noEmit -p ./scripts'],
 };

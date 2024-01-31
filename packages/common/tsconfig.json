@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": [
+    "src",
+    "types",
+    "test",
+    "vitest.config.ts",
+    "vitest.setup.ts"
+  ],
+  "compilerOptions": {
+    "noEmit": true,
+    "target": "ESNext",
+    "lib": [
+      "esnext"
+    ],
+    "types": [
+      "reflect-metadata",
+      "vi-fetch/matchers",
+      "vitest/globals"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.link {
+  display: inline-block;
+  color: var(--primary-color);
+  font-weight: var(--body-font-weight-bold);
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
+}

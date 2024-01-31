@@ -1,0 +1,29 @@
+{
+  "alert": {
+    "close": "Close",
+    "success": "Success",
+    "title": "An error occurred"
+  },
+  "back": "Back",
+  "card_lock": "Item locked",
+  "close_modal": "Close",
+  "confirmation_dialog": {
+    "close": "Cancel",
+    "confirm": "Yes"
+  },
+  "default_description": "JW OTT Webapp is an open-source, dynamically generated video website.",
+  "default_site_name": "My OTT Application",
+  "filter_videos_by": "Filter videos by {{name}}",
+  "filter_videos_by_genre": "Filter videos by genre",
+  "home": "Home",
+  "live": "LIVE",
+  "now": "Now",
+  "optional": "(Optional)",
+  "play_item": "Play {{title}}",
+  "scheduled": "Scheduled",
+  "series": "series",
+  "sign_in": "Sign in",
+  "sign_up": "Sign up",
+  "slide_left": "Slide left",
+  "slide_right": "Slide right"
+}

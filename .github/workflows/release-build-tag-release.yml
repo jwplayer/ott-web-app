@@ -24,6 +24,7 @@ jobs:
           echo "current-version=${version}" >> "$GITHUB_OUTPUT"
 
       - name: Build App
+        working-directory: ./platforms/web
         run: |
           yarn build
           cd build
@@ -51,7 +52,7 @@ jobs:
         if: ${{ steps.package-version.outputs.current-version }}
         with:
           commit: 'release'
-          artifacts: 'build/ott-web-app-build-*.tar.gz, build/ott-web-app-build-*.zip'
+          artifacts: 'web/build/ott-web-app-build-*.tar.gz, web/build/ott-web-app-build-*.zip'
           tag: v${{ steps.package-version.outputs.current-version }}
           bodyFile: '.github/RELEASE_BODY_TEMPLATE.md'
           token: ${{ secrets.github_token }}

@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<ProfileCircle> > renders and matches snapshot 1`] = `
+<div>
+  <img
+    alt=""
+    class="_profileIcon_2aec59"
+    src=""
+  />
+</div>
+`;

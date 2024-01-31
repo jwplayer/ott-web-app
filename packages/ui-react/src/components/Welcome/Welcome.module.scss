@@ -1,0 +1,9 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.welcome {
+  h2 {
+    font-weight: var(--body-font-weight-bold);
+    font-size: 24px;
+  }
+}

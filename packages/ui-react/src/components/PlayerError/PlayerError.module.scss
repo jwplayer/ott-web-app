@@ -1,0 +1,23 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: variables.$base-spacing;
+}
+
+.title {
+  color: variables.$white;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 34px;
+
+  @include responsive.mobile-only() {
+    font-size: 24px;
+  }
+}

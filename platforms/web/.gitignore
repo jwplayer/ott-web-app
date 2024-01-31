@@ -1,0 +1,19 @@
+# project, build, and deployment
+.firebase
+firebase-debug.log
+.lighthouseci
+.stylelintcache
+build
+coverage
+output
+
+# exclude backed-up translation keys
+public/locales/**/*_old.json
+
+# exclude ini files because they have customer specific data
+ini/*.ini
+
+# exclude local dotenv files
+*.local
+
+

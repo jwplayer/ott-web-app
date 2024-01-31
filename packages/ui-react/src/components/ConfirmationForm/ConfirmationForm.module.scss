@@ -1,0 +1,29 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+.title {
+  margin: 24px 0;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 26px;
+}
+
+.text {
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+.button {
+  margin: 16px 0;
+}
+
+.notSure {
+  font-size: 16px;
+}
+
+.link {
+  margin-bottom: 24px;
+  margin-left: 6px;
+  color: var(--primary-color);
+  font-weight: var(--body-font-weight-bold);
+  text-decoration: underline;
+  cursor: pointer;
+}

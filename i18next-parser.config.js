@@ -1,6 +1,7 @@
 const fs = require('fs');
 
-const localesEntries = fs.readdirSync('./public/locales');
+// @TODO: make it work with all packages and the web platform
+const localesEntries = fs.readdirSync('./platforms/web/public/locales');
 const locales = localesEntries.filter((entry) => entry !== '..' && entry !== '.');
 
 module.exports = {
@@ -22,6 +23,6 @@ module.exports = {
   lineEnding: 'auto',
   locales,
   namespaceSeparator: ':',
-  output: 'public/locales/$LOCALE/$NAMESPACE.json',
+  output: 'platforms/web/public/locales/$LOCALE/$NAMESPACE.json',
   sort: true,
 };

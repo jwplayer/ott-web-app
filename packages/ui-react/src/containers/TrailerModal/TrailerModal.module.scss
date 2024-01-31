@@ -1,0 +1,30 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/mixins/typography';
+
+.container {
+  position: relative;
+  width: 80vw;
+  height: calc(80vw / 16 * 9);
+
+  @include responsive.mobile-only() {
+    width: 100vw;
+    height: calc(100vw / 16 * 9);
+  }
+}
+
+.playerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100px;
+  padding: 24px;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0.25) 100%);
+  pointer-events: none;
+}
+
+.title {
+  @include typography.video-title-base(22px);
+}

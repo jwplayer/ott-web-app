@@ -1,26 +1,11 @@
 # project, build, and deployment
 node_modules
-build
-.snowpack
-coverage
-output
-public/locales/**/*_old.json
 yarn-error.log
-.firebase
-firebase-debug.log
-.stylelintcache
-.lighthouseci
 
 # os or editor
 .idea
 .DS_Store
 .vscode/
-
-# ignore local files
-*.local
-
-# Exclude ini files because they have customer specific data
-ini/*.ini
 
 # Ignore working area for i18n checks
 .temp-translations

@@ -1,0 +1,73 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/mixins/utils';
+
+//
+// Navigation Button
+// --------------------------------
+
+.menuButton {
+  position: relative;
+  display: inline-flex;
+  justify-content: inherit;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 variables.$base-spacing;
+  color: variables.$white;
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: background 0.1s ease;
+
+  > span {
+    width: max-content;
+  }
+
+  &.small {
+    padding: 0 calc(#{variables.$base-spacing} * 1.5);
+    font-size: 16px;
+    > .startIcon {
+      margin-right: calc(#{variables.$base-spacing} * 1.5);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover,
+    &:active,
+    &:focus {
+      background: rgba(variables.$white, 0.08);
+      opacity: 1;
+    }
+  }
+}
+
+.active {
+  background: rgba(variables.$white, 0.08);
+  opacity: 1;
+}
+
+.startIcon {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 12px;
+
+  > svg {
+    width: 25px;
+    height: 25px;
+    fill: currentColor;
+
+    @include responsive.tablet-only() {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
