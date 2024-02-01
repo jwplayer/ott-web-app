@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 
 type IntervalCheckAccessPayload = {
   interval?: number;

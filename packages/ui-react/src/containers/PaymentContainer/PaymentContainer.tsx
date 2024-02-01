@@ -5,7 +5,7 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import { useSubscriptionChange } from '@jwp/ott-hooks-react/src/useSubscriptionChange';
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
 import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
 import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react';

@@ -34,7 +34,7 @@ type Props = {
   consentErrors: string[];
   submitting: boolean;
   canSubmit: boolean;
-  publisherConsents?: CustomFormField[];
+  publisherConsents: CustomFormField[] | null;
 };
 
 const RegistrationForm: React.FC<Props> = ({

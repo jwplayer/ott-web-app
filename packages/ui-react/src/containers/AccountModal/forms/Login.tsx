@@ -1,15 +1,14 @@
 import React from 'react';
-import { object, string, type SchemaOf } from 'yup';
+import { object, string } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-import { useQueryClient } from 'react-query';
-import type { LoginFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
+import useForm from '@jwp/ott-hooks-react/src/useForm';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useSocialLoginUrls from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
+import type { LoginFormData } from '@jwp/ott-common/types/account';
 
 import LoginForm from '../../../components/LoginForm/LoginForm';
 
@@ -27,46 +26,27 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
 
   const socialLoginURLs = useSocialLoginUrls(window.location.href.split('?')[0]);
 
-  const queryClient = useQueryClient();
-
-  const loginSubmitHandler: UseFormOnSubmitHandler<LoginFormData> = async (formData, { setErrors, setSubmitting, setValue }) => {
-    try {
-      await accountController.login(formData.email, formData.password, window.location.href);
-      await queryClient.invalidateQueries(['listProfiles']);
-
-      // close modal
-      navigate(modalURLFromLocation(location, null));
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        if (error.message.toLowerCase().includes('invalid param email')) {
-          setErrors({ email: t('login.wrong_email') });
-        } else {
-          setErrors({ form: t('login.wrong_combination') });
-        }
-        setValue('password', '');
-      }
-    }
-
-    setSubmitting(false);
-  };
-
-  const validationSchema: SchemaOf<LoginFormData> = object().shape({
-    email: string().email(t('login.field_is_not_valid_email')).required(t('login.field_required')),
-    password: string().required(t('login.field_required')),
+  const { values, errors, submitting, handleSubmit, handleChange } = useForm<LoginFormData>({
+    initialValues: { email: '', password: '' },
+    validationSchema: object().shape({
+      email: string().email(t('login.field_is_not_valid_email')).required(t('login.field_required')),
+      password: string().required(t('login.field_required')),
+    }),
+    onSubmit: ({ email, password }) => accountController.login(email, password, window.location.href),
+    onSubmitSuccess: () => navigate(modalURLFromLocation(location, null)),
+    onSubmitError: ({ resetValue }) => resetValue('password'),
   });
-  const initialValues: LoginFormData = { email: '', password: '' };
-  const { handleSubmit, handleChange, values, errors, submitting } = useForm(initialValues, loginSubmitHandler, validationSchema);
 
   return (
     <LoginForm
-      messageKey={messageKey}
-      onSubmit={handleSubmit}
-      onChange={handleChange}
       values={values}
       errors={errors}
       submitting={submitting}
       siteName={siteName}
       socialLoginURLs={socialLoginURLs}
+      messageKey={messageKey}
+      onSubmit={handleSubmit}
+      onChange={handleChange}
     />
   );
 };

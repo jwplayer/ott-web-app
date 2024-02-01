@@ -9,7 +9,7 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
-import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
+import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { IS_DEVELOPMENT_BUILD, unicodeToChar } from '@jwp/ott-common/src/utils/common';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';

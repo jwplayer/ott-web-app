@@ -6,7 +6,7 @@ import { useMutation } from 'react-query';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 
 import Button from '../Button/Button';
@@ -16,6 +16,15 @@ import CreditCardNumberField from '../CreditCardNumberField/CreditCardNumberFiel
 import TextField from '../TextField/TextField';
 
 import styles from './EditCardPaymentForm.module.scss';
+
+type EditCardPaymentFormData = {
+  cardholderName: string;
+  cardNumber: string;
+  cardExpiry: string;
+  cardCVC: string;
+  cardExpMonth: string;
+  cardExpYear: string;
+};
 
 type Props = {
   onCancel: () => void;
@@ -28,9 +37,33 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
   const { t } = useTranslation('account');
   const updateCard = useMutation(accountController.updateCardDetails);
   const { activePayment } = useAccountStore(({ activePayment }) => ({ activePayment }), shallow);
-  const paymentData = useForm(
-    { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
-    async () => {
+
+  const paymentData = useForm<EditCardPaymentFormData>({
+    initialValues: { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
+    validationSchema: object().shape({
+      cardholderName: string().required(),
+      cardNumber: string()
+        .required()
+        .test('card number validation', t('checkout.invalid_card_number'), (value) => {
+          return Payment.fns.validateCardNumber(value as string);
+        }),
+      cardExpiry: string()
+        .required()
+        .test('card expiry validation', t('checkout.invalid_card_expiry'), (value) => {
+          return Payment.fns.validateCardExpiry(value as string);
+        }),
+      cardCVC: string()
+        .required()
+        .test('cvc validation', t('checkout.invalid_cvc_number'), (value) => {
+          const issuer = Payment.fns.cardType(paymentData?.values?.cardNumber);
+
+          return Payment.fns.validateCardCVC(value as string, issuer);
+        }),
+      cardExpMonth: string().required(),
+      cardExpYear: string().required(),
+    }),
+    validateOnBlur: true,
+    onSubmit: async () => {
       setUpdatingCardDetails(true);
       updateCard.mutate(
         {
@@ -46,21 +79,7 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
         },
       );
     },
-    object().shape({
-      cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
-        return Payment.fns.validateCardNumber(value as string);
-      }),
-      cardExpiry: string().test('card expiry validation', t('checkout.invalid_card_expiry'), (value) => {
-        return Payment.fns.validateCardExpiry(value as string);
-      }),
-      cardCVC: string().test('cvc validation', t('checkout.invalid_cvc_number'), (value) => {
-        const issuer = Payment.fns.cardType(paymentData?.values?.cardNumber);
-        return Payment.fns.validateCardCVC(value as string, issuer);
-      }),
-    }),
-
-    true,
-  );
+  });
 
   useEffect(() => {
     if (paymentData.values.cardExpiry) {

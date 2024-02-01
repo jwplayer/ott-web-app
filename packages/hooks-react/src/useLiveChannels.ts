@@ -5,7 +5,7 @@ import type { EpgChannel, EpgProgram } from '@jwp/ott-common/types/epg';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { getLiveProgram, programIsLive } from '@jwp/ott-common/src/utils/epg';
 import { LIVE_CHANNELS_REFETCH_INTERVAL } from '@jwp/ott-common/src/constants';
-import EpgController from '@jwp/ott-common/src/stores/EpgController';
+import EpgController from '@jwp/ott-common/src/controllers/EpgController';
 
 /**
  * This hook fetches the schedules for the given list of playlist items and manages the current channel and program.

@@ -2,11 +2,10 @@ import { useQuery } from 'react-query';
 import { useMemo, useState } from 'react';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { mergeOfferIds } from '@jwp/ott-common/src/utils/offers';
-import type { OfferType } from '@jwp/ott-common/types/account';
-import type { Offer } from '@jwp/ott-common/types/checkout';
+import type { Offer, OfferType } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
 
 const useOffers = () => {

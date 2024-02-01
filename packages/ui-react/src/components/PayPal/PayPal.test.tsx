@@ -5,7 +5,7 @@ import PayPal from './PayPal';
 
 describe('<PayPal>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<PayPal />);
+    const { container } = render(<PayPal onSubmit={vi.fn()} error={null} />);
 
     expect(container).toMatchSnapshot();
   });

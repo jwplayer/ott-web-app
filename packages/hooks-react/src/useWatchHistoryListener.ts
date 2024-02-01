@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import WatchHistoryController from '@jwp/ott-common/src/stores/WatchHistoryController';
+import WatchHistoryController from '@jwp/ott-common/src/controllers/WatchHistoryController';
 
 import useEventCallback from './useEventCallback';
 

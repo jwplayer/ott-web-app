@@ -4,6 +4,8 @@ import type { Offer, Order } from '@jwp/ott-common/types/checkout';
 import offer from '@jwp/ott-testing/fixtures/monthlyOffer.json';
 import order from '@jwp/ott-testing/fixtures/order.json';
 
+import PaymentForm from '../PaymentForm/PaymentForm';
+
 import CheckoutForm from './CheckoutForm';
 
 describe('<CheckoutForm>', () => {
@@ -25,7 +27,9 @@ describe('<CheckoutForm>', () => {
         offer={offer as Offer}
         offerType={'svod'}
         submitting={false}
-      />,
+      >
+        <PaymentForm onPaymentFormSubmit={vi.fn()} />
+      </CheckoutForm>,
     );
 
     expect(container).toMatchSnapshot();

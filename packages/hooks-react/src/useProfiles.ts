@@ -7,8 +7,8 @@ import type { ListProfilesResponse, ProfileDetailsPayload, ProfileFormSubmitErro
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 
 export const useSelectProfile = (options?: { onSuccess: () => void; onError: () => void }) => {
@@ -101,7 +101,7 @@ export const useProfiles = (options?: UseQueryOptions<ListProfilesResponse | und
 
   const profilesEnabled = profileController.isEnabled();
 
-  const query = useQuery(['listProfiles'], () => profileController.listProfiles(), {
+  const query = useQuery(['listProfiles', user?.id || ''], () => profileController.listProfiles(), {
     ...options,
     enabled: isLoggedIn && profilesEnabled,
   });

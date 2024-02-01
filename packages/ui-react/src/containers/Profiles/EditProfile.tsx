@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
+import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
 import type { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { useProfileErrorHandler, useUpdateProfile } from '@jwp/ott-hooks-react/src/useProfiles';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';

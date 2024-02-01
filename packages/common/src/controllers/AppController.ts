@@ -9,11 +9,11 @@ import StorageService from '../services/StorageService';
 import type { Config } from '../../types/config';
 import type { CalculateIntegrationType } from '../../types/calculate-integration-type';
 import { DETERMINE_INTEGRATION_TYPE } from '../modules/types';
+import { useConfigStore } from '../stores/ConfigStore';
 
-import AccountController from './AccountController';
 import WatchHistoryController from './WatchHistoryController';
 import FavoritesController from './FavoritesController';
-import { useConfigStore } from './ConfigStore';
+import AccountController from './AccountController';
 
 @injectable()
 export default class AppController {

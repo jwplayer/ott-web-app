@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
-import { type AnySchema, ValidationError } from 'yup';
+import { type AnySchema, ValidationError, SchemaOf } from 'yup';
 import type { FormErrors, GenericFormValues, UseFormBlurHandler, UseFormChangeHandler, UseFormSubmitHandler } from '@jwp/ott-common/types/form';
+import { FormValidationError } from '@jwp/ott-common/src/FormValidationError';
+import { useTranslation } from 'react-i18next';
 
 export type UseFormReturnValue<T> = {
   values: T;
@@ -9,7 +11,7 @@ export type UseFormReturnValue<T> = {
   handleChange: UseFormChangeHandler;
   handleBlur: UseFormBlurHandler;
   handleSubmit: UseFormSubmitHandler;
-  setValue: (key: keyof T, value: string) => void;
+  setValue: (key: keyof T, value: T[keyof T]) => void;
   setErrors: (errors: FormErrors<T>) => void;
   setSubmitting: (submitting: boolean) => void;
   reset: () => void;
@@ -24,12 +26,22 @@ type UseFormMethods<T> = {
 
 export type UseFormOnSubmitHandler<T> = (values: T, formMethods: UseFormMethods<T>) => void;
 
-export default function useForm<T extends GenericFormValues>(
-  initialValues: T,
-  onSubmit: UseFormOnSubmitHandler<T>,
-  validationSchema?: AnySchema,
-  validateOnBlur: boolean = false,
-): UseFormReturnValue<T> {
+export default function useForm<T extends GenericFormValues>({
+  initialValues,
+  validationSchema,
+  validateOnBlur = false,
+  onSubmit,
+  onSubmitSuccess,
+  onSubmitError,
+}: {
+  initialValues: T;
+  validationSchema?: SchemaOf<T>;
+  validateOnBlur?: boolean;
+  onSubmit: UseFormOnSubmitHandler<T>;
+  onSubmitSuccess?: (values: T) => void;
+  onSubmitError?: ({ error, resetValue }: { error: unknown; resetValue: (key: keyof T) => void }) => void;
+}): UseFormReturnValue<T> {
+  const { t } = useTranslation('error');
   const [touched, setTouched] = useState<Record<keyof T, boolean>>(
     Object.fromEntries((Object.keys(initialValues) as Array<keyof T>).map((key) => [key, false])) as Record<keyof T, boolean>,
   );
@@ -109,7 +121,7 @@ export default function useForm<T extends GenericFormValues>(
     return false;
   };
 
-  const handleSubmit: UseFormSubmitHandler = (event) => {
+  const handleSubmit: UseFormSubmitHandler = async (event) => {
     event.preventDefault();
 
     if (!onSubmit || submitting) return;
@@ -125,7 +137,32 @@ export default function useForm<T extends GenericFormValues>(
     // start submitting
     setSubmitting(true);
 
-    onSubmit(values, { setValue, setErrors, setSubmitting, validate });
+    try {
+      await onSubmit(values, { setValue, setErrors, setSubmitting, validate });
+      onSubmitSuccess?.(values);
+    } catch (error: unknown) {
+      const newErrors: Record<string, string> = {};
+
+      if (error instanceof FormValidationError) {
+        Object.entries(error.errors).forEach(([key, [value]]) => {
+          if (key && value && !newErrors[key]) {
+            newErrors[key] = value;
+          }
+        });
+      } else if (error instanceof Error) {
+        newErrors.form = error.message;
+      } else {
+        newErrors.form = t('unknown_error');
+      }
+      setErrors(newErrors as FormErrors<T>);
+
+      onSubmitError?.({
+        error,
+        resetValue: (key: keyof T) => setValue(key, ''),
+      });
+    }
+
+    setSubmitting(false);
   };
 
   return { values, errors, handleChange, handleBlur, handleSubmit, submitting, setValue, setErrors, setSubmitting, reset };

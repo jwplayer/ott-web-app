@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
-import { mixed, object, type SchemaOf } from 'yup';
+import { mixed, object } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { Subscription } from '@jwp/ott-common/types/subscription';
-import type { ChooseOfferFormData } from '@jwp/ott-common/types/account';
+import type { ChooseOfferFormData } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
@@ -47,14 +47,6 @@ const ChooseOffer = () => {
   const isOfferSwitch = useQueryParam('u') === 'upgrade-subscription';
   const availableOffers = isOfferSwitch ? offerSwitches : offers;
   const offerId = availableOffers[0]?.offerId || '';
-
-  const validationSchema: SchemaOf<ChooseOfferFormData> = object().shape({
-    offerId: mixed<string>().required(t('choose_offer.field_required')),
-  });
-
-  const initialValues: ChooseOfferFormData = {
-    offerId: defaultOfferId,
-  };
 
   const updateAccountModal = useEventCallback((modal: keyof AccountModals) => {
     navigate(modalURLFromLocation(location, modal));
@@ -106,14 +98,18 @@ const ChooseOffer = () => {
     ],
   );
 
-  const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm(initialValues, chooseOfferSubmitHandler, validationSchema);
+  const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm<ChooseOfferFormData>({
+    initialValues: { offerId: defaultOfferId },
+    validationSchema: object().shape({ offerId: mixed<string>().required(t('choose_offer.field_required')) }),
+    onSubmit: chooseOfferSubmitHandler,
+  });
 
   useEffect(() => {
     if (!isOfferSwitch) setValue('offerId', defaultOfferId);
 
     // Update offerId if the user is switching offers to ensure the correct offer is checked in the ChooseOfferForm
     // Initially, a defaultOfferId is set, but when switching offers, we need to use the id of the target offer
-    if (isOfferSwitch && values.offerId === initialValues.offerId) {
+    if (isOfferSwitch && values.offerId === defaultOfferId) {
       setValue('offerId', offerId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { queryClient } from '@jwp/ott-ui-react/src/containers/QueryProvider/QueryProvider';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';

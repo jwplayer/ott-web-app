@@ -3,10 +3,9 @@ import { injectable } from 'inversify';
 import WatchHistoryService from '../services/WatchHistoryService';
 import type { PlaylistItem } from '../../types/playlist';
 import type { WatchHistoryItem } from '../../types/watchHistory';
-
-import { useAccountStore } from './AccountStore';
-import { useConfigStore } from './ConfigStore';
-import { useWatchHistoryStore } from './WatchHistoryStore';
+import { useAccountStore } from '../stores/AccountStore';
+import { useConfigStore } from '../stores/ConfigStore';
+import { useWatchHistoryStore } from '../stores/WatchHistoryStore';
 
 @injectable()
 export default class WatchHistoryController {

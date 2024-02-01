@@ -8,8 +8,7 @@ import { assertModuleMethod, getNamedModule } from '../modules/container';
 import StorageService from '../services/StorageService';
 import { INTEGRATION_TYPE } from '../modules/types';
 import type { EnterProfilePayload, ProfileDetailsPayload, ProfilePayload } from '../../types/profiles';
-
-import { useProfileStore } from './ProfileStore';
+import { useProfileStore } from '../stores/ProfileStore';
 
 const PERSIST_PROFILE = 'profile';
 

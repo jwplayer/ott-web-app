@@ -1,9 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import type { ChooseOfferFormData, OfferType } from '@jwp/ott-common/types/account';
 import type { FormErrors } from '@jwp/ott-common/types/form';
-import type { Offer } from '@jwp/ott-common/types/checkout';
+import type { Offer, ChooseOfferFormData, OfferType } from '@jwp/ott-common/types/checkout';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { getOfferPrice, isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
 import { testId } from '@jwp/ott-common/src/utils/common';

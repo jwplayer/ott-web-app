@@ -13,13 +13,13 @@ import FavoriteService from '../services/FavoriteService';
 import ConfigService from '../services/ConfigService';
 import SettingsService from '../services/SettingsService';
 
-import WatchHistoryController from '../stores/WatchHistoryController';
-import CheckoutController from '../stores/CheckoutController';
-import AccountController from '../stores/AccountController';
-import ProfileController from '../stores/ProfileController';
-import FavoritesController from '../stores/FavoritesController';
-import AppController from '../stores/AppController';
-import EpgController from '../stores/EpgController';
+import WatchHistoryController from '../controllers/WatchHistoryController';
+import CheckoutController from '../controllers/CheckoutController';
+import AccountController from '../controllers/AccountController';
+import ProfileController from '../controllers/ProfileController';
+import FavoritesController from '../controllers/FavoritesController';
+import AppController from '../controllers/AppController';
+import EpgController from '../controllers/EpgController';
 
 // Epg services
 import EpgService from '../services/EpgService';

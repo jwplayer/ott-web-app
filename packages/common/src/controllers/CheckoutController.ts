@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import i18next from 'i18next';
 
 import type {
   AddAdyenPaymentDetailsResponse,
@@ -12,8 +13,8 @@ import type {
   InitialAdyenPayment,
   Offer,
   Order,
+  Payment,
   PaymentMethod,
-  PaymentWithPayPalResponse,
   SwitchOffer,
   UpdateOrderPayload,
 } from '../../types/checkout';
@@ -24,9 +25,9 @@ import { assertModuleMethod, getNamedModule } from '../modules/container';
 import { GET_CUSTOMER_IP, INTEGRATION_TYPE } from '../modules/types';
 import type { GetCustomerIP } from '../../types/get-customer-ip';
 import AccountService from '../services/integrations/AccountService';
-
-import { useCheckoutStore } from './CheckoutStore';
-import { useAccountStore } from './AccountStore';
+import { useCheckoutStore } from '../stores/CheckoutStore';
+import { useAccountStore } from '../stores/AccountStore';
+import { FormValidationError } from '../FormValidationError';
 
 @injectable()
 export default class CheckoutController {
@@ -46,9 +47,12 @@ export default class CheckoutController {
     return this.accountService.svodOfferIds;
   };
 
-  createOrder = async (offer: Offer, paymentMethodId?: number): Promise<void> => {
+  createOrder = async (offer: Offer): Promise<void> => {
     const { getAccountInfo } = useAccountStore.getState();
     const { customer } = getAccountInfo();
+
+    const paymentMethods = await this.getPaymentMethods();
+    const paymentMethodId = paymentMethods[0]?.id;
 
     const createOrderArgs: CreateOrderArgs = {
       offer,
@@ -75,19 +79,30 @@ export default class CheckoutController {
       couponCode,
     };
 
-    const response = await this.checkoutService.updateOrder(updateOrderPayload);
-    if (response.errors.length > 0) {
-      // clear the order when the order doesn't exist on the server
-      if (response.errors[0].includes(`Order with ${order.id} not found`)) {
-        useCheckoutStore.getState().setOrder(null);
+    try {
+      const response = await this.checkoutService.updateOrder(updateOrderPayload);
+
+      if (response.errors.length > 0) {
+        // clear the order when the order doesn't exist on the server
+        if (response.errors[0].includes(`Order with ${order.id} not found`)) {
+          useCheckoutStore.getState().setOrder(null);
+        }
+
+        throw new FormValidationError({ order: [response.errors[0]] });
       }
 
-      throw new Error(response.errors[0]);
+      if (response.responseData?.order) {
+        useCheckoutStore.getState().setOrder(response.responseData?.order);
+      }
+    } catch (error: unknown) {
+      if (error instanceof FormValidationError) {
+        throw error;
+      }
+
+      throw new FormValidationError({ couponCode: [i18next.t('account:checkout.coupon_not_valid')] });
     }
 
-    if (response.responseData?.order) {
-      useCheckoutStore.getState().setOrder(response.responseData?.order);
-    }
+    return;
   };
 
   getPaymentMethods = async (): Promise<PaymentMethod[]> => {
@@ -104,7 +119,8 @@ export default class CheckoutController {
     return response.responseData?.paymentMethods;
   };
 
-  paymentWithoutDetails = async (): Promise<unknown> => {
+  //
+  paymentWithoutDetails = async (): Promise<Payment> => {
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
@@ -117,7 +133,7 @@ export default class CheckoutController {
     return response.responseData;
   };
 
-  directPostCardPayment = async (cardPaymentPayload: CardPaymentData, referrer: string, returnUrl: string): Promise<unknown> => {
+  directPostCardPayment = async ({ cardPaymentPayload, referrer, returnUrl }: { cardPaymentPayload: CardPaymentData; referrer: string; returnUrl: string }) => {
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
@@ -138,7 +154,9 @@ export default class CheckoutController {
       returnUrl: returnUrl,
     });
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
+    if (response.errors.length > 0) {
+      throw new Error(response.errors[0]);
+    }
 
     return response.responseData;
   };
@@ -173,18 +191,26 @@ export default class CheckoutController {
       paymentData,
     });
 
-    if (response.errors.length > 0) throw new Error(response.errors[0]);
+    if (response.errors.length > 0) {
+      throw new Error(response.errors[0]);
+    }
 
     return response.responseData;
   };
 
-  paypalPayment = async (
-    successUrl: string,
-    waitingUrl: string,
-    cancelUrl: string,
-    errorUrl: string,
-    couponCode: string = '',
-  ): Promise<PaymentWithPayPalResponse> => {
+  paypalPayment = async ({
+    successUrl,
+    waitingUrl,
+    cancelUrl,
+    errorUrl,
+    couponCode = '',
+  }: {
+    successUrl: string;
+    waitingUrl: string;
+    cancelUrl: string;
+    errorUrl: string;
+    couponCode: string;
+  }): Promise<string> => {
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
@@ -200,7 +226,7 @@ export default class CheckoutController {
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-    return response.responseData;
+    return response.responseData.redirectUrl;
   };
 
   getSubscriptionSwitches = async (): Promise<unknown> => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { CustomFormField } from '@jwp/ott-common/types/account';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import customer from '@jwp/ott-testing/fixtures/customer.json';
 import { mockService } from '@jwp/ott-common/test/mockService';
 import { DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';

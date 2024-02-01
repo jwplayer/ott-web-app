@@ -6,7 +6,7 @@ import livePlaylistFixture from '@jwp/ott-testing/fixtures/livePlaylist.json';
 import epgChannelsFixture from '@jwp/ott-testing/fixtures/epgChannels.json';
 import epgChannelsUpdateFixture from '@jwp/ott-testing/fixtures/epgChannelsUpdate.json';
 import { mockService } from '@jwp/ott-common/test/mockService';
-import EpgController from '@jwp/ott-common/src/stores/EpgController';
+import EpgController from '@jwp/ott-common/src/controllers/EpgController';
 
 import { queryClientWrapper, waitForWithFakeTimers } from './testUtils';
 import useLiveChannels from './useLiveChannels';

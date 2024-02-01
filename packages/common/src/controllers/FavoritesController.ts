@@ -3,10 +3,9 @@ import { injectable } from 'inversify';
 
 import FavoriteService from '../services/FavoriteService';
 import type { PlaylistItem } from '../../types/playlist';
-
-import { useAccountStore } from './AccountStore';
-import { useFavoritesStore } from './FavoritesStore';
-import { useConfigStore } from './ConfigStore';
+import { useAccountStore } from '../stores/AccountStore';
+import { useFavoritesStore } from '../stores/FavoritesStore';
+import { useConfigStore } from '../stores/ConfigStore';
 
 @injectable()
 export default class FavoritesController {

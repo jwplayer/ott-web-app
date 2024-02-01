@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useFavoritesStore } from '@jwp/ott-common/src/stores/FavoritesStore';
-import FavoritesController from '@jwp/ott-common/src/stores/FavoritesController';
+import FavoritesController from '@jwp/ott-common/src/controllers/FavoritesController';
 import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
 import FavoriteBorder from '@jwp/ott-theme/assets/icons/favorite_border.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';

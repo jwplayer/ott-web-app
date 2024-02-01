@@ -1,121 +1,108 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
 import Payment from 'payment';
 import { object, string } from 'yup';
-import { getModule } from '@jwp/ott-common/src/modules/container';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
-import useCheckAccess from '@jwp/ott-hooks-react/src/useCheckAccess';
-import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { testId } from '@jwp/ott-common/src/utils/common';
 
 import Button from '../Button/Button';
 import CreditCardCVCField from '../CreditCardCVCField/CreditCardCVCField';
 import CreditCardExpiryField from '../CreditCardExpiryField/CreditCardExpiryField';
 import CreditCardNumberField from '../CreditCardNumberField/CreditCardNumberField';
 import TextField from '../TextField/TextField';
-import { modalURLFromLocation } from '../../utils/location';
+import FormFeedback from '../FormFeedback/FormFeedback';
 
 import styles from './PaymentForm.module.scss';
 
-type Props = {
-  couponCode?: string;
-  setUpdatingOrder: (value: boolean) => void;
+export type PaymentFormData = {
+  cardholderName: string;
+  cardNumber: string;
+  cardExpiry: string;
+  cardCVC: string;
+  cardExpMonth: string;
+  cardExpYear: string;
 };
 
-const PaymentForm: React.FC<Props> = ({ couponCode, setUpdatingOrder }) => {
-  const checkoutController = getModule(CheckoutController);
+type Props = {
+  onPaymentFormSubmit: (values: PaymentFormData) => void;
+};
 
+const PaymentForm: React.FC<Props> = ({ onPaymentFormSubmit }) => {
   const { t } = useTranslation('account');
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { intervalCheckAccess } = useCheckAccess();
 
-  const paymentData = useForm(
-    { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
-    async () => {
-      setUpdatingOrder(true);
+  const { values, errors, setValue, handleChange, handleBlur, handleSubmit } = useForm<PaymentFormData>({
+    initialValues: { cardholderName: '', cardNumber: '', cardExpiry: '', cardCVC: '', cardExpMonth: '', cardExpYear: '' },
+    validationSchema: object()
+      .required()
+      .shape({
+        cardholderName: string().required(),
+        cardNumber: string()
+          .required()
+          .test('card number validation', t('checkout.invalid_card_number'), (value) => Payment.fns.validateCardNumber(value as string)),
+        cardExpiry: string()
+          .required()
+          .test('card expiry validation', t('checkout.invalid_card_expiry'), (value) => Payment.fns.validateCardExpiry(value as string)),
+        cardCVC: string()
+          .required()
+          .test('cvc validation', t('checkout.invalid_cvc_number'), (value, context) => {
+            const issuer = Payment.fns.cardType(context.parent.cardNumber);
 
-      const referrer = window.location.href;
-      const returnUrl = createURL(window.location.href, { u: 'waiting-for-payment' });
-
-      await checkoutController.directPostCardPayment({ couponCode, ...paymentData.values }, referrer, returnUrl);
-
-      intervalCheckAccess({
-        interval: 15000,
-        callback: (hasAccess) => hasAccess && navigate(modalURLFromLocation(location, 'welcome')),
-      });
-    },
-    object().shape({
-      cardNumber: string().test('card number validation', t('checkout.invalid_card_number'), (value) => {
-        return Payment.fns.validateCardNumber(value as string);
+            return Payment.fns.validateCardCVC(value as string, issuer);
+          }),
+        cardExpMonth: string().required(),
+        cardExpYear: string().required(),
       }),
-      cardExpiry: string().test('card expiry validation', t('checkout.invalid_card_expiry'), (value) => {
-        return Payment.fns.validateCardExpiry(value as string);
-      }),
-      cardCVC: string().test('cvc validation', t('checkout.invalid_cvc_number'), (value) => {
-        const issuer = Payment.fns.cardType(paymentData?.values?.cardNumber);
-        return Payment.fns.validateCardCVC(value as string, issuer);
-      }),
-    }),
-    true,
-  );
+    validateOnBlur: true,
+    onSubmit: onPaymentFormSubmit,
+  });
 
   useEffect(() => {
-    if (paymentData.values.cardExpiry) {
-      const expiry = Payment.fns.cardExpiryVal(paymentData.values.cardExpiry);
+    if (values.cardExpiry) {
+      const expiry = Payment.fns.cardExpiryVal(values.cardExpiry);
       if (expiry.month) {
-        paymentData.setValue('cardExpMonth', expiry.month.toString());
+        setValue('cardExpMonth', expiry.month.toString());
       }
       if (expiry.year) {
-        paymentData.setValue('cardExpYear', expiry.year.toString());
+        setValue('cardExpYear', expiry.year.toString());
       }
     }
     //eslint-disable-next-line
-  }, [paymentData.values.cardExpiry]);
+  }, [values.cardExpiry]);
 
   return (
     <div className={styles.paymentForm}>
-      <div>
-        <TextField
-          label={t('checkout.card_holder_name')}
-          name="cardholderName"
-          value={paymentData?.values?.cardholderName}
-          onChange={paymentData?.handleChange}
-          onBlur={paymentData?.handleBlur}
-          placeholder={t('checkout.credit_card_name')}
-          required
-        />
-      </div>
-      <div>
-        <CreditCardNumberField
-          value={paymentData?.values?.cardNumber?.toString()}
-          error={paymentData?.errors?.cardNumber}
-          onBlur={paymentData?.handleBlur}
-          onChange={paymentData?.handleChange}
-        />
-      </div>
-      <div className={styles.columns}>
+      <form onSubmit={handleSubmit} data-testid={testId('payment_form')} noValidate>
+        {errors.form ? (
+          <div className={styles.formError}>
+            <FormFeedback variant="error">{errors.form}</FormFeedback>
+          </div>
+        ) : null}
         <div>
-          <CreditCardExpiryField
-            value={paymentData?.values?.cardExpiry}
-            onBlur={paymentData?.handleBlur}
-            onChange={paymentData?.handleChange}
-            error={paymentData?.errors?.cardExpiry}
+          <TextField
+            label={t('checkout.card_holder_name')}
+            name="cardholderName"
+            value={values.cardholderName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder={t('checkout.credit_card_name')}
+            required
           />
         </div>
         <div>
-          <CreditCardCVCField
-            value={paymentData?.values?.cardCVC}
-            onBlur={paymentData?.handleBlur}
-            onChange={paymentData?.handleChange}
-            error={paymentData?.errors?.cardCVC}
-          />
+          <CreditCardNumberField value={values.cardNumber.toString()} error={errors.cardNumber} onBlur={handleBlur} onChange={handleChange} />
         </div>
-      </div>
-      <div>
-        <Button label={t('checkout.continue')} variant="contained" color="primary" onClick={paymentData.handleSubmit as () => void} size="large" fullWidth />
-      </div>
+        <div className={styles.columns}>
+          <div>
+            <CreditCardExpiryField value={values.cardExpiry} onBlur={handleBlur} onChange={handleChange} error={errors.cardExpiry} />
+          </div>
+          <div>
+            <CreditCardCVCField value={values.cardCVC} onBlur={handleBlur} onChange={handleChange} error={errors.cardCVC} />
+          </div>
+        </div>
+        <div>
+          <Button label={t('checkout.continue')} variant="contained" color="primary" type="submit" size="large" fullWidth />
+        </div>
+      </form>
     </div>
   );
 };

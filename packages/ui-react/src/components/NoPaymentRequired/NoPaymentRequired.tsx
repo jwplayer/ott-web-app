@@ -8,7 +8,7 @@ import styles from './NoPaymentRequired.module.scss';
 
 type Props = {
   onSubmit?: () => void;
-  error?: string;
+  error: string | null;
 };
 
 const NoPaymentRequired: React.FC<Props> = ({ onSubmit, error }) => {

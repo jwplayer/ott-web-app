@@ -44,6 +44,12 @@ export type Offer = {
   planSwitchEnabled?: boolean;
 };
 
+export type OfferType = 'svod' | 'tvod';
+
+export type ChooseOfferFormData = {
+  offerId?: string;
+};
+
 export type OrderOffer = {
   title: string;
   description: string | null;
@@ -90,6 +96,7 @@ export type PaymentMethod = {
   id: number;
   methodName: 'card' | 'paypal';
   provider?: 'stripe' | 'adyen';
+  paymentGateway?: 'adyen' | 'paypal'; // @todo: merge with provider
   logoUrl: string;
 };
 
