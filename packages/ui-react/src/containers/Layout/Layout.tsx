@@ -28,8 +28,6 @@ import Button from '../../components/Button/Button';
 
 import styles from './Layout.module.scss';
 
-const footerText = unicodeToChar(env.APP_FOOTER_TEXT);
-
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,6 +41,7 @@ const Layout = () => {
   const favoritesEnabled = !!config.features?.favoritesList;
   const { menu, assets, siteName, description, features } = config;
   const metaDescription = description || t('default_description');
+  const footerText = unicodeToChar(env.APP_FOOTER_TEXT);
 
   const profileController = getModule(ProfileController, false);
 
