@@ -124,7 +124,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
       return;
     }
 
-    I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#ff0c3e' });
+    I.seeCssPropertiesOnElements('input[name="terms"]', { 'border-color': '#FF3535' });
   });
 
   Scenario(`I get warned for duplicate users - ${providerName}`, async ({ I }) => {

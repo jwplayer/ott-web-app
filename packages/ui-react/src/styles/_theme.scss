@@ -59,8 +59,8 @@ $card-loading-bg-color: $secondary-color !default;
 
 // FormFeedback
 
-$form-feedback-error-bg-color: #ff0c3e !default;
-$form-feedback-error-color: variables.$white !default;
+$form-feedback-error-bg-color: #FF3535 !default;
+$form-feedback-error-color: variables.$black !default;
 $form-feedback-warning-bg-color: variables.$orange !default;
 $form-feedback-warning-color: variables.$white !default;
 $form-feedback-success-bg-color: variables.$green !default;
@@ -86,13 +86,13 @@ $text-field-hover-bg-color: rgba(variables.$white, 0.08) !default;
 $text-field-active-color: variables.$white !default;
 $text-field-active-border-color: variables.$white !default;
 $text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
-$text-field-error-color: #ff0c3e !default;
+$text-field-error-color: #FF3535 !default;
 
 // Input
 
 $input-resting-border-color: rgba(variables.$white, 0.34) !default;
 $input-hover-border-color: rgba(variables.$white, 0.7) !default;
-$input-field-error-color: #ff0c3e !default;
+$input-field-error-color: #FF3535 !default;
 
 // Toggle
 

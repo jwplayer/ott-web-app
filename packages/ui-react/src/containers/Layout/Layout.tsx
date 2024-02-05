@@ -191,9 +191,9 @@ const Layout = () => {
             isSelectingProfile: selectProfile.isLoading,
           }}
         >
-          <Button label={t('home')} to="/" variant="text" />
+          <Button activeClassname={styles.headerButton} label={t('home')} to="/" variant="text" />
           {menu.map((item) => (
-            <Button key={item.contentId} label={item.label} to={playlistURL(item.contentId)} variant="text" />
+            <Button activeClassname={styles.headerButton} key={item.contentId} label={item.label} to={playlistURL(item.contentId)} variant="text" />
           ))}
         </Header>
         <main id="content" className={styles.main} tabIndex={-1}>

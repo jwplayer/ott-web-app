@@ -53,7 +53,7 @@ exports[`<Layout /> > renders layout 1`] = `
           >
             <a
               aria-current="page"
-              class="_button_f8f296 _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_f8f296 _default_f8f296 _text_f8f296 _active_f8f296 _headerButton_c71437"
               href="/"
             >
               <span>

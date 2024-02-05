@@ -28,7 +28,7 @@ export function checkField(I: CodeceptJS.I, field, error: string | boolean = fal
   // If error === true, there's an error, but no associated message
   if (error && error !== true) {
     I.see(error, `[data-testid=login-${field}-input]`);
-    I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=helperText]`, { color: '#ff0c3e' });
+    I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=helperText]`, { color: '#FF3535' });
   } else {
     I.dontSeeElement(`[class*=helperText] [data-testid="${field}-input"]`);
   }
