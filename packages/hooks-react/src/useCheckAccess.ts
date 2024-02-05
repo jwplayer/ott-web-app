@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
-
-import useOffers from './useOffers';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 
 type IntervalCheckAccessPayload = {
   interval?: number;
@@ -14,17 +13,18 @@ type IntervalCheckAccessPayload = {
 
 const useCheckAccess = () => {
   const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
   const intervalRef = useRef<number>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation('user');
 
-  const { availableOffers: offers } = useOffers();
+  const offers = checkoutController.getSubscriptionOfferIds();
 
   const intervalCheckAccess = useCallback(
     ({ interval = 3000, iterations = 5, offerId, callback }: IntervalCheckAccessPayload) => {
       if (!offerId && offers?.[0]) {
-        offerId = offers[0]?.offerId;
+        offerId = offers[0];
       }
 
       intervalRef.current = window.setInterval(async () => {
