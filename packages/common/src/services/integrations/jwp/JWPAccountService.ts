@@ -361,8 +361,13 @@ export default class JWPAccountService extends AccountService {
 
   logout = async () => {
     try {
-      InPlayer.Notifications.unsubscribe();
-      await InPlayer.Account.signOut();
+      if (InPlayer.Notifications.isSubscribed()) {
+        InPlayer.Notifications.unsubscribe();
+      }
+
+      if (InPlayer.Account.isAuthenticated()) {
+        await InPlayer.Account.signOut();
+      }
     } catch {
       throw new Error('Failed to sign out.');
     }

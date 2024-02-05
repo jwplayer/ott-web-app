@@ -24,8 +24,8 @@ const DeleteAccountModal = () => {
 
   const deleteAccount = useMutation(accountController.deleteAccountData, {
     onSuccess: async () => {
-      await accountController.logout();
       navigate('/');
+      await accountController.logout();
     },
     onError: () => {
       setEnteredPassword('');
