@@ -32,12 +32,11 @@
   padding: 12px 0;
   outline-color: var(--highlight-color, white);
   cursor: pointer;
-  opacity: 0;
   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 
   > svg {
-    width: 30px;
-    height: 30px;
+    // Use scale because width and height properties causes layout shifting issues on screen readers
+    transform: scale(1.1);
   }
   &.disabled {
     cursor: default;

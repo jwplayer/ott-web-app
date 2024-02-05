@@ -146,7 +146,7 @@ const Shelf = ({
         tilesToShow={tilesToShow}
         wrapWithEmptyTiles={featured && playlist.playlist.length === 1}
         cycleMode={'restart'}
-        showControls={!matchMedia('(hover: none)').matches && !loading}
+        showControls={!loading}
         showDots={featured}
         transitionTime={'0.3s'}
         spacing={8}
