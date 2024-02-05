@@ -58,7 +58,6 @@ const ShelfList = ({ rows }: Props) => {
         style={{ overflow: 'hidden' }}
         loadMore={() => setRowsToLoad((current) => current + ROWS_TO_LOAD_STEP)}
         hasMore={rowsToLoad < rows.length}
-        role="grid"
         loader={<InfiniteScrollLoader key="loader" />}
       >
         {rows.slice(0, rowsToLoad).map(({ type, featured, title }, index) => {
@@ -70,29 +69,27 @@ const ShelfList = ({ rows }: Props) => {
           const visibleTilesDelta = parseTilesDelta(posterAspect);
 
           return (
-            <div
+            <section
               key={`${index}_${playlist.id}`}
-              role="row"
               className={classNames(styles.shelfContainer, { [styles.featured]: featured })}
               data-testid={testId(`shelf-${featured ? 'featured' : type === 'playlist' ? slugify(title || playlist?.title) : type}`)}
+              aria-label={title || playlist?.title}
             >
-              <div role="cell">
-                <Shelf
-                  loading={isLoading}
-                  error={error}
-                  type={type}
-                  playlist={playlist}
-                  watchHistory={type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                  title={title || playlist?.title}
-                  featured={featured}
-                  accessModel={accessModel}
-                  isLoggedIn={!!user}
-                  hasSubscription={!!subscription}
-                  posterAspect={posterAspect}
-                  visibleTilesDelta={visibleTilesDelta}
-                />
-              </div>
-            </div>
+              <Shelf
+                loading={isLoading}
+                error={error}
+                type={type}
+                playlist={playlist}
+                watchHistory={type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
+                title={title || playlist?.title}
+                featured={featured}
+                accessModel={accessModel}
+                isLoggedIn={!!user}
+                hasSubscription={!!subscription}
+                posterAspect={posterAspect}
+                visibleTilesDelta={visibleTilesDelta}
+              />
+            </section>
           );
         })}
       </InfiniteScroll>

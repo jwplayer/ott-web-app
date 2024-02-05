@@ -263,11 +263,14 @@ function TileDock<T>({
             />
           ) : null}
           {tileList.map((tile: Tile<T>, listIndex) => {
+            const posInSet = items.findIndex((item) => item === tile.item); // TODO optimize this for performances
             const isInView = !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
 
             return (
               <li
                 key={tile.key}
+                aria-setsize={items.length}
+                aria-posinset={posInSet + 1}
                 aria-hidden={!isInView}
                 className={classNames({ [styles.notInView]: !isInView })}
                 style={{
