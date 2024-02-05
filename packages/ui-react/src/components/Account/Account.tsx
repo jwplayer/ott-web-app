@@ -207,7 +207,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
 
   return (
     <>
-      <h1 className={styles.hideUntilFocus}>{t('nav.account')}</h1>
+      <h1 className="hideUntilFocus">{t('nav.account')}</h1>
 
       <Form initialValues={initialValues}>
         {[

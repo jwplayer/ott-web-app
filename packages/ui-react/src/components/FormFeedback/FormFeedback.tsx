@@ -22,7 +22,7 @@ const FormFeedback: React.FC<Props> = ({ children, variant = 'error', visible = 
     [styles.warning]: variant === 'warning',
     [styles.success]: variant === 'success',
     [styles.info]: variant === 'info',
-    [styles.hidden]: !visible,
+    hidden: !visible,
   });
 
   const ariaLive = variantAriaMap[variant];
