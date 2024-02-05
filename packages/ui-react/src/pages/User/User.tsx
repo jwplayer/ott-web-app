@@ -7,7 +7,6 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import FavoritesController from '@jwp/ott-common/src/controllers/FavoritesController';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
-import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
@@ -39,7 +38,6 @@ import styles from './User.module.scss';
 const User = (): JSX.Element => {
   const favoritesController = getModule(FavoritesController);
   const accountController = getModule(AccountController);
-  const checkoutController = getModule(CheckoutController);
 
   const { accessModel, favoritesList } = useConfigStore(
     (s) => ({
@@ -56,7 +54,7 @@ const User = (): JSX.Element => {
 
   const isLargeScreen = breakpoint > Breakpoint.md;
   const { user: customer, subscription, loading } = useAccountStore();
-  const { canUpdateEmail, canRenewSubscription } = accountController.getFeatures();
+  const { canUpdateEmail } = accountController.getFeatures();
   const { profile } = useProfileStore();
   const favorites = useFavoritesStore((state) => state.getPlaylist());
 
@@ -68,12 +66,6 @@ const User = (): JSX.Element => {
     // Empty customer on a user page leads to navigate (code bellow), so we don't repeat it here
     await accountController.logout();
   }, [accountController]);
-
-  useEffect(() => {
-    if (accessModel !== ACCESS_MODEL.AVOD && canRenewSubscription) {
-      checkoutController.getSubscriptionSwitches();
-    }
-  }, [accessModel, checkoutController, canRenewSubscription]);
 
   useEffect(() => {
     if (!loading && !customer) {

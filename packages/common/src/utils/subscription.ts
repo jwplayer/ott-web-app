@@ -1,7 +1,10 @@
-import type { Offer, Order } from '../../types/checkout';
+import type { Subscription } from '../../types/subscription';
 
-import { formatPrice } from './formatting';
+export const determineSwitchDirection = (subscription: Subscription | null) => {
+  const currentPeriod = subscription?.period;
 
-export const getOfferPrice = (offer: Offer) => formatPrice(offer.customerPriceInclTax, offer.customerCurrency, offer.customerCountry);
+  if (currentPeriod === 'month') return 'upgrade';
+  if (currentPeriod === 'year') return 'downgrade';
 
-export const isSVODOffer = (offer: Offer | Order) => offer.offerId?.[0] === 'S';
+  return 'upgrade'; // Default to 'upgrade' if the period is not 'month' or 'year'
+};
