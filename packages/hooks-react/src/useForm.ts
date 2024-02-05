@@ -144,7 +144,7 @@ export default function useForm<T extends GenericFormValues>({
       const newErrors: Record<string, string> = {};
 
       if (error instanceof FormValidationError) {
-        Object.entries(error.errors).forEach(([key, [value]]) => {
+        Object.entries(error.errors).forEach(([key, value]) => {
           if (key && value && !newErrors[key]) {
             newErrors[key] = value;
           }
