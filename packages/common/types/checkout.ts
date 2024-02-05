@@ -209,7 +209,6 @@ export type CreateOrderArgs = {
   offer: Offer;
   customerId: string;
   country: string;
-  customerIP: string;
   paymentMethodId?: number;
   couponCode?: string;
 };

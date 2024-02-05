@@ -49,13 +49,11 @@ export default class CheckoutController {
   createOrder = async (offer: Offer, paymentMethodId?: number): Promise<void> => {
     const { getAccountInfo } = useAccountStore.getState();
     const { customer } = getAccountInfo();
-    const customerIP = typeof customer?.lastUserIp === 'string' && customer.lastUserIp ? customer.lastUserIp : '';
 
     const createOrderArgs: CreateOrderArgs = {
       offer,
       customerId: customer.id,
       country: customer?.country || '',
-      customerIP,
       paymentMethodId,
     };
 
