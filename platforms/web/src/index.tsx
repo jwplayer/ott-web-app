@@ -8,6 +8,8 @@ import './modules/register';
 
 import App from './App';
 
+import { attachAccessibilityListener } from '#src/utils/accessibility';
+
 // Collect env vars
 configureEnv({
   APP_VERSION: import.meta.env.APP_VERSION,
@@ -22,6 +24,8 @@ configureEnv({
   APP_BODY_FONT: import.meta.env.APP_BODY_FONT,
   APP_BODY_ALT_FONT: import.meta.env.APP_BODY_ALT_FONT,
 });
+
+attachAccessibilityListener();
 
 const rootElement = document.getElementById('root');
 

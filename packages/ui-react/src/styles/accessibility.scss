@@ -4,7 +4,7 @@
 // Instead, we apply styles to the focus state first, which solves the purpose, but unwantedly also for the active state
 // We fix this for non-Safari browsers afterwards by resetting to default and then re-applying using focus-visible
 $focus-box-shadow: 0 0 1px 5px var(--highlight-color, variables.$white),
-  0 0 12px 6px rgb(0 0 0 / 80%);
+0 0 12px 6px rgb(0 0 0 / 80%);
 
 @mixin focus-visible($value: $focus-box-shadow, $default-value: none) {
   @media (hover: hover) and (pointer: fine) {
@@ -12,9 +12,11 @@ $focus-box-shadow: 0 0 1px 5px var(--highlight-color, variables.$white),
       &:focus {
         @content ($value);
       }
+
       &:focus:not(:focus-visible) {
         @content ($default-value);
       }
+
       &:focus-visible {
         @content ($value);
       }
@@ -23,13 +25,17 @@ $focus-box-shadow: 0 0 1px 5px var(--highlight-color, variables.$white),
 }
 
 @mixin accessibleOutline {
-  outline: 2px solid var(--highlight-color, #fff);
-  box-shadow: 0 0 2px 3px var(--highlight-contrast-color, #000);
+  body.is-tabbing & {
+    outline: 2px solid var(--highlight-color, #fff);
+    box-shadow: 0 0 2px 3px var(--highlight-contrast-color, #000);
+  }
 }
 
 @mixin accessibleOutlineContrast {
-  outline: 2px solid var(--highlight-contrast-color, #fff);
-  box-shadow: 0 0 2px 3px var(--highlight-color, #000);
+  body.is-tabbing & {
+    outline: 2px solid var(--highlight-contrast-color, #fff);
+    box-shadow: 0 0 2px 3px var(--highlight-color, #000);
+  }
 }
 
 @mixin globalClassNames {
