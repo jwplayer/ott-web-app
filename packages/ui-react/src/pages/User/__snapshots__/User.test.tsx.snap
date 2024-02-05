@@ -15,7 +15,7 @@ exports[`User Component tests > Account Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296 "
               href="/u/my-account"
             >
               <div
@@ -317,7 +317,7 @@ exports[`User Component tests > Favorites Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296 "
               href="/u/favorites"
             >
               <div
@@ -596,7 +596,7 @@ exports[`User Component tests > Payments Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296 "
               href="/u/payments"
             >
               <div

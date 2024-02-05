@@ -81,7 +81,7 @@
     height: 36px;
     min-height: 36px;
     margin: 0 6px;
-    padding: 0 calc(#{variables.$base-spacing} / 2);
+    padding: calc(#{variables.$header-height} / 2.5) calc(#{variables.$base-spacing} / 2);
     font-weight: var(--body-font-weight-bold);
     font-size: 18px;
   }

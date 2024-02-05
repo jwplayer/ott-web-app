@@ -50,3 +50,10 @@ div.testFixMargin {
 .main {
   height: 100%;
 }
+
+.headerButton {
+  &:not(:focus) {
+    border-bottom: 2px variables.$white solid;
+    border-radius: 0;
+  }
+}
