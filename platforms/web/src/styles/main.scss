@@ -18,6 +18,8 @@
   --card-tag-bg: #{theme.$card-tag-bg};
 }
 
+@include accessibility.globalClassNames;
+
 body {
   margin: 0;
   padding: 0;

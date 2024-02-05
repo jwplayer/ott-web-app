@@ -94,7 +94,7 @@ exports[`User Component tests > Account Page 1`] = `
       class="_mainColumn_e9c5ca"
     >
       <h1
-        class="_hideUntilFocus_c968f7"
+        class="hideUntilFocus"
       >
         nav.account
       </h1>
