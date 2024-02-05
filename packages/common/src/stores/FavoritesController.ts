@@ -47,11 +47,7 @@ export default class FavoritesController {
     }
     const favorites = await this.favoritesService.getFavorites(user, favoritesList);
 
-    if (!favorites) {
-      return;
-    }
-
-    useFavoritesStore.setState({ favorites, favoritesPlaylistId: favoritesList });
+    useFavoritesStore.setState({ favorites: favorites || [], favoritesPlaylistId: favoritesList });
   };
 
   persistFavorites = async () => {

@@ -55,13 +55,11 @@ export default class WatchHistoryController {
 
     const watchHistory = await this.watchHistoryService.getWatchHistory(user, continueWatchingList);
 
-    if (watchHistory?.length) {
-      useWatchHistoryStore.setState({
-        watchHistory: watchHistory.filter((item): item is WatchHistoryItem => !!item?.mediaid),
-        playlistItemsLoaded: true,
-        continueWatchingPlaylistId: continueWatchingList,
-      });
-    }
+    useWatchHistoryStore.setState({
+      watchHistory: watchHistory?.filter((item): item is WatchHistoryItem => !!item?.mediaid) || [],
+      playlistItemsLoaded: true,
+      continueWatchingPlaylistId: continueWatchingList,
+    });
   };
 
   persistWatchHistory = async () => {
