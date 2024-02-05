@@ -182,7 +182,7 @@ const Header: React.FC<Props> = ({
 
     return (
       <LanguageMenu
-        className={styles.actionButton}
+        className={classNames(styles.iconButton, styles.actionButton)}
         openLanguageMenu={openLanguageMenu}
         closeLanguageMenu={closeLanguageMenu}
         languageMenuOpen={languageMenuOpen}
