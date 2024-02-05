@@ -2,9 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import type { FormErrors } from '@jwp/ott-common/types/form';
-import type { Offer, ChooseOfferFormData, OfferType } from '@jwp/ott-common/types/checkout';
+import type { Offer, ChooseOfferFormData } from '@jwp/ott-common/types/checkout';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import { getOfferPrice, isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
+import { getOfferPrice, isSVODOffer } from '@jwp/ott-common/src/utils/offers';
 import { testId } from '@jwp/ott-common/src/utils/common';
 import CheckCircle from '@jwp/ott-theme/assets/icons/check_circle.svg?react';
 
@@ -15,18 +15,6 @@ import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Icon from '../Icon/Icon';
 
 import styles from './ChooseOfferForm.module.scss';
-
-type Props = {
-  values: ChooseOfferFormData;
-  errors: FormErrors<ChooseOfferFormData>;
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onSubmit: React.FormEventHandler<HTMLFormElement>;
-  onBackButtonClickHandler?: () => void;
-  offers: Offer[];
-  submitting: boolean;
-  offerType: OfferType;
-  setOfferType?: (offerType: OfferType) => void;
-};
 
 type OfferBoxProps = {
   offer: Offer;
@@ -58,7 +46,7 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
         className={styles.radio}
         onChange={onChange}
         type="radio"
-        name={'offerId'}
+        name={'selectedOfferId'}
         value={offer.offerId}
         id={offer.offerId}
         checked={selected}
@@ -110,19 +98,21 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
   });
 };
 
-const ChooseOfferForm: React.FC<Props> = ({
-  values,
-  errors,
-  onChange,
-  onSubmit,
-  submitting,
-  offers,
-  onBackButtonClickHandler,
-  offerType,
-  setOfferType,
-}: Props) => {
+type Props = {
+  values: ChooseOfferFormData;
+  errors: FormErrors<ChooseOfferFormData>;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
+  onBackButtonClickHandler?: () => void;
+  offers: Offer[];
+  showOfferTypeSwitch: boolean;
+  submitting: boolean;
+};
+
+const ChooseOfferForm: React.FC<Props> = ({ values, errors, submitting, offers, showOfferTypeSwitch, onChange, onSubmit, onBackButtonClickHandler }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation('account');
+  const { selectedOfferType, selectedOfferId } = values;
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('choose-offer-form')} noValidate>
@@ -130,28 +120,28 @@ const ChooseOfferForm: React.FC<Props> = ({
       <h1 className={styles.title}>{t('choose_offer.title')}</h1>
       <p className={styles.subtitle}>{t('choose_offer.watch_this_on_platform', { siteName })}</p>
       {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
-      {setOfferType && (
+      {showOfferTypeSwitch && (
         <div className={styles.offerGroupSwitch}>
           <input
             className={styles.radio}
-            onChange={() => setOfferType('svod')}
+            onChange={onChange}
             type="radio"
-            name="offerType"
+            name="selectedOfferType"
             id="svod"
             value="svod"
-            checked={offerType === 'svod'}
+            checked={selectedOfferType === 'svod'}
           />
           <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="svod">
             {t('choose_offer.subscription')}
           </label>
           <input
             className={styles.radio}
-            onChange={() => setOfferType('tvod')}
+            onChange={onChange}
             type="radio"
-            name="offerType"
+            name="selectedOfferType"
             id="tvod"
             value="tvod"
-            checked={offerType === 'tvod'}
+            checked={selectedOfferType === 'tvod'}
           />
           <label className={classNames(styles.label, styles.offerGroupLabel)} htmlFor="tvod">
             {t('choose_offer.one_time_only')}
@@ -162,7 +152,7 @@ const ChooseOfferForm: React.FC<Props> = ({
         {!offers.length ? (
           <p>{t('choose_offer.no_pricing_available')}</p>
         ) : (
-          offers.map((offer) => <OfferBox key={offer.offerId} offer={offer} selected={values.offerId === offer.offerId} onChange={onChange} />)
+          offers.map((offer) => <OfferBox key={offer.offerId} offer={offer} selected={selectedOfferId === offer.offerId} onChange={onChange} />)
         )}
       </div>
       {submitting && <LoadingOverlay transparentBackground inline />}

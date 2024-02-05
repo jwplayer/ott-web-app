@@ -68,9 +68,9 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
 
   useEffect(() => {
     // set the TVOD mediaOffers in the checkout store
-    setRequestedMediaOffers(mediaOffers.length ? mediaOffers : null);
+    setRequestedMediaOffers(mediaOffers);
 
-    return () => setRequestedMediaOffers(null);
+    return () => setRequestedMediaOffers([]);
   }, [mediaOffers, setRequestedMediaOffers]);
 
   // the user can't purchase access in an AVOD platform due to missing configuration, so we hide the button

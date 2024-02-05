@@ -31,7 +31,7 @@ const Checkout = () => {
 
   const backButtonClickHandler = () => navigate(chooseOfferUrl);
 
-  const { offer, offerType, paymentMethods, order, isSubmitting, updateOrder, submitPaymentWithoutDetails, submitPaymentPaypal, submitPaymentStripe } =
+  const { selectedOffer, offerType, paymentMethods, order, isSubmitting, updateOrder, submitPaymentWithoutDetails, submitPaymentPaypal, submitPaymentStripe } =
     useCheckout({
       onUpdateOrderSuccess: () => !!couponCode && setShowCouponCodeSuccess(true),
       onSubmitPaymentWithoutDetailsSuccess: () => {
@@ -75,10 +75,10 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if (!offer) {
+    if (!selectedOffer) {
       return navigate(chooseOfferUrl, { replace: true });
     }
-  }, [navigate, chooseOfferUrl, offer]);
+  }, [navigate, chooseOfferUrl, selectedOffer]);
 
   // Pre-select first payment method
   useEffect(() => {
@@ -93,7 +93,7 @@ const Checkout = () => {
   }, []);
 
   // loading state
-  if (!offer || !order || !paymentMethods || !offerType) {
+  if (!selectedOffer || !order || !paymentMethods || !offerType) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
@@ -111,13 +111,13 @@ const Checkout = () => {
   const paymentMethod = paymentMethods?.find((method) => method.id === parseInt(paymentMethodId));
   const noPaymentRequired = !order?.requiredPaymentDetails;
   const isStripePayment = paymentMethod?.methodName === 'card' && paymentMethod?.provider === 'stripe';
-  const isAdyenPayment = paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen'; // @todo: conversion from controller?
+  const isAdyenPayment = paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen';
   const isPayPalPayment = paymentMethod?.methodName === 'paypal';
 
   return (
     <CheckoutForm
       order={order}
-      offer={offer}
+      offer={selectedOffer}
       offerType={offerType}
       onBackButtonClick={backButtonClickHandler}
       paymentMethods={paymentMethods}

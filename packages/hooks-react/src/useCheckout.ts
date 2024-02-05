@@ -3,7 +3,7 @@ import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutControll
 import type { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
-import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
+import { isSVODOffer } from '@jwp/ott-common/src/utils/offers';
 import type { CardPaymentData, Offer, OfferType, Payment } from '@jwp/ott-common/types/checkout';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
@@ -19,18 +19,18 @@ const useCheckout = ({ onUpdateOrderSuccess, onSubmitPaymentWithoutDetailsSucces
   const accountController = getModule(AccountController);
   const checkoutController = getModule(CheckoutController);
 
-  const { order, offer, paymentMethods, setOrder } = useCheckoutStore(({ order, offer, paymentMethods, setOrder }) => ({
+  const { order, selectedOffer, paymentMethods, setOrder } = useCheckoutStore(({ order, selectedOffer, paymentMethods, setOrder }) => ({
     order,
-    offer,
+    selectedOffer,
     paymentMethods,
     setOrder,
   }));
 
-  const offerType: OfferType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
+  const offerType: OfferType = selectedOffer && isSVODOffer(selectedOffer) ? 'svod' : 'tvod';
 
-  const createOrder = useMutation<void, FormValidationError, { offer: Offer }>({
-    mutationKey: ['createOrder'],
-    mutationFn: async ({ offer }) => !!offer && checkoutController.createOrder(offer),
+  const initialiseOrder = useMutation<void, FormValidationError, { offer: Offer }>({
+    mutationKey: ['initialiseOrder'],
+    mutationFn: async ({ offer }) => !!offer && checkoutController.initialiseOrder(offer),
   });
 
   const updateOrder = useMutation<void, string, { paymentMethodId: number; couponCode: string }>({
@@ -69,10 +69,10 @@ const useCheckout = ({ onUpdateOrderSuccess, onSubmitPaymentWithoutDetailsSucces
   });
 
   useEffect(() => {
-    if (offer && !order && !createOrder.isLoading) {
-      createOrder.mutate({ offer });
+    if (selectedOffer && !order && !initialiseOrder.isLoading && !initialiseOrder.isError) {
+      initialiseOrder.mutate({ offer: selectedOffer });
     }
-  }, [offer, order, createOrder]);
+  }, [selectedOffer, order, initialiseOrder]);
 
   // Clear the order when unmounted
   useEffect(() => {
@@ -80,10 +80,14 @@ const useCheckout = ({ onUpdateOrderSuccess, onSubmitPaymentWithoutDetailsSucces
   }, [setOrder]);
 
   const isSubmitting =
-    createOrder.isLoading || updateOrder.isLoading || submitPaymentWithoutDetails.isLoading || submitPaymentPaypal.isLoading || submitPaymentStripe.isLoading;
+    initialiseOrder.isLoading ||
+    updateOrder.isLoading ||
+    submitPaymentWithoutDetails.isLoading ||
+    submitPaymentPaypal.isLoading ||
+    submitPaymentStripe.isLoading;
 
   return {
-    offer,
+    selectedOffer,
     offerType,
     paymentMethods,
     order,

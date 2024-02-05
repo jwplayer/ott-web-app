@@ -1,118 +1,67 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { mixed, object } from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
-import { shallow } from '@jwp/ott-common/src/utils/compare';
-import type { Subscription } from '@jwp/ott-common/types/subscription';
-import type { ChooseOfferFormData } from '@jwp/ott-common/types/checkout';
-import { getModule } from '@jwp/ott-common/src/modules/container';
-import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
-import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
-import AccountController from '@jwp/ott-common/src/controllers/AccountController';
+import type { ChooseOfferFormData, OfferType } from '@jwp/ott-common/types/checkout';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
-import { logDev } from '@jwp/ott-common/src/utils/common';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
-import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
-import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
-import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
+import useForm from '@jwp/ott-hooks-react/src/useForm';
+import { isSVODOffer } from '@jwp/ott-common/src/utils/offers';
+import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 
 import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
-import type { AccountModals } from '../AccountModal';
-
-const determineSwitchDirection = (subscription: Subscription | null) => {
-  const currentPeriod = subscription?.period;
-
-  if (currentPeriod === 'month') {
-    return 'upgrade';
-  } else if (currentPeriod === 'year') {
-    return 'downgrade';
-  } else {
-    return 'upgrade'; // Default to 'upgrade' if the period is not 'month' or 'year'
-  }
-};
+import useQueryParam from '../../../hooks/useQueryParam';
 
 const ChooseOffer = () => {
-  const checkoutController = getModule(CheckoutController);
-  const accountController = getModule(AccountController);
-
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
-  const { setOffer } = useCheckoutStore(({ setOffer }) => ({ setOffer }), shallow);
-  const { isLoading, offerType, setOfferType, offers, offersDict, defaultOfferId } = useOffers();
-  const { subscription } = useAccountStore.getState();
-  const [offerSwitches, updateOffer] = useCheckoutStore((state) => [state.offerSwitches, state.updateOffer]);
-  const isOfferSwitch = useQueryParam('u') === 'upgrade-subscription';
-  const availableOffers = isOfferSwitch ? offerSwitches : offers;
-  const offerId = availableOffers[0]?.offerId || '';
+  const isSwitch = useQueryParam('u') === 'upgrade-subscription'; // @todo: Use a store var instead?
+  const isPendingOffer = useAccountStore(({ pendingOffer }) => ({ isPendingOffer: !!pendingOffer }));
 
-  const updateAccountModal = useEventCallback((modal: keyof AccountModals) => {
-    navigate(modalURLFromLocation(location, modal));
-  });
+  const { isLoading, availableOffers, defaultOfferType, hasMultipleOfferTypes, chooseOffer, switchSubscription } = useOffers();
 
-  const chooseOfferSubmitHandler: UseFormOnSubmitHandler<ChooseOfferFormData> = useCallback(
-    async ({ offerId }, { setSubmitting, setErrors }) => {
-      const offer = offerId && offersDict[offerId];
+  const checkoutUrl = modalURLFromLocation(location, 'checkout');
+  const upgradePendingUrl = modalURLFromLocation(location, 'upgrade-subscription-pending');
+  const upgradeSuccessUrl = modalURLFromLocation(location, 'upgrade-subscription-success');
+  const upgradeErrorUrl = modalURLFromLocation(location, 'upgrade-subscription-error');
 
-      if (!offer) return setErrors({ form: t('choose_offer.offer_not_found') });
+  const { values, errors, submitting, setValue, handleSubmit, handleChange } = useForm<ChooseOfferFormData>({
+    initialValues: { selectedOfferType: defaultOfferType, selectedOfferId: undefined },
+    validationSchema: object().shape({
+      selectedOfferId: mixed<string>().required(t('choose_offer.field_required')),
+      selectedOfferType: mixed<OfferType>().required(t('choose_offer.field_required')),
+    }),
+    onSubmit: async ({ selectedOfferId }) => {
+      if (!selectedOfferId) return;
 
-      if (isOfferSwitch) {
-        const targetOffer = offerSwitches.find((offer) => offer.offerId === offerId);
-        const targetOfferId = targetOffer?.offerId || '';
+      chooseOffer.mutateAsync(selectedOfferId);
 
-        try {
-          await checkoutController.switchSubscription(targetOfferId, determineSwitchDirection(subscription));
-          // switching a subscription takes a bit longer to process
-          await accountController.reloadSubscriptions({ delay: 7500 });
-
-          const isPendingSwitch = !!useAccountStore.getState().pendingOffer;
-          updateAccountModal(isPendingSwitch ? 'upgrade-subscription-pending' : 'upgrade-subscription-success');
-        } catch (error: unknown) {
-          logDev('Error occurred while upgrading subscription', error);
-          updateAccountModal('upgrade-subscription-error');
-        }
-      } else {
-        const selectedOffer = availableOffers?.find((offer) => offer.offerId === offerId) || null;
-
-        setOffer(selectedOffer);
-        updateOffer(selectedOffer);
-        setSubmitting(false);
-        updateAccountModal('checkout');
-      }
+      if (isSwitch) return await switchSubscription.mutateAsync();
     },
-    [
-      availableOffers,
-      isOfferSwitch,
-      offerSwitches,
-      offersDict,
-      setOffer,
-      subscription,
-      t,
-      updateAccountModal,
-      updateOffer,
-      checkoutController,
-      accountController,
-    ],
-  );
+    onSubmitSuccess: async () => {
+      if (isSwitch && isPendingOffer) return navigate(upgradePendingUrl);
+      if (isSwitch) return navigate(upgradeSuccessUrl);
 
-  const { handleSubmit, handleChange, setValue, values, errors, submitting } = useForm<ChooseOfferFormData>({
-    initialValues: { offerId: defaultOfferId },
-    validationSchema: object().shape({ offerId: mixed<string>().required(t('choose_offer.field_required')) }),
-    onSubmit: chooseOfferSubmitHandler,
+      navigate(checkoutUrl);
+    },
+    onSubmitError: () => navigate(upgradeErrorUrl),
   });
 
   useEffect(() => {
-    if (!isOfferSwitch && !isLoading) setValue('offerId', defaultOfferId);
+    if (isLoading || !defaultOfferType) return;
 
-    // Update offerId if the user is switching offers to ensure the correct offer is checked in the ChooseOfferForm
-    // Initially, a defaultOfferId is set, but when switching offers, we need to use the id of the target offer
-    if (isOfferSwitch && values.offerId === defaultOfferId) {
-      setValue('offerId', offerId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setValue, defaultOfferId, availableOffers]);
+    setValue('selectedOfferType', defaultOfferType);
+  }, [isLoading, defaultOfferType, setValue]);
+
+  useEffect(() => {
+    if (!availableOffers.length || isLoading) return;
+    const visibleOffers = availableOffers.filter((offer) => isSVODOffer(offer) === (values.selectedOfferType === 'svod'));
+    const defaultOfferId = visibleOffers[visibleOffers.length - 1]?.offerId;
+
+    setValue('selectedOfferId', defaultOfferId);
+  }, [availableOffers, values.selectedOfferType, setValue, isLoading]);
 
   // loading state
   if (isLoading) {
@@ -123,6 +72,8 @@ const ChooseOffer = () => {
     );
   }
 
+  const visibleOffers = availableOffers.filter((offer) => isSVODOffer(offer) === (values.selectedOfferType === 'svod'));
+
   return (
     <ChooseOfferForm
       onSubmit={handleSubmit}
@@ -130,9 +81,8 @@ const ChooseOffer = () => {
       values={values}
       errors={errors}
       submitting={submitting}
-      offers={availableOffers}
-      offerType={offerType}
-      setOfferType={setOfferType}
+      offers={visibleOffers}
+      showOfferTypeSwitch={hasMultipleOfferTypes}
     />
   );
 };

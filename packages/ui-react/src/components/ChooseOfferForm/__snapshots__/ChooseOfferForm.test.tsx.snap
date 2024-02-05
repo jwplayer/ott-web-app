@@ -23,7 +23,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
         checked=""
         class="_radio_f7961f"
         id="svod"
-        name="offerType"
+        name="selectedOfferType"
         type="radio"
         value="svod"
       />
@@ -36,7 +36,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
       <input
         class="_radio_f7961f"
         id="tvod"
-        name="offerType"
+        name="selectedOfferType"
         type="radio"
         value="tvod"
       />
@@ -59,7 +59,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           class="_radio_f7961f"
           data-testid="choose_offer.monthly"
           id="S916977979_NL"
-          name="offerId"
+          name="selectedOfferId"
           type="radio"
           value="S916977979_NL"
         />
@@ -144,7 +144,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           class="_radio_f7961f"
           data-testid="choose_offer.yearly"
           id="S345569153_NL"
-          name="offerId"
+          name="selectedOfferId"
           type="radio"
           value="S345569153_NL"
         />
@@ -257,7 +257,7 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
       <input
         class="_radio_f7961f"
         id="svod"
-        name="offerType"
+        name="selectedOfferType"
         type="radio"
         value="svod"
       />
@@ -271,7 +271,7 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
         checked=""
         class="_radio_f7961f"
         id="tvod"
-        name="offerType"
+        name="selectedOfferType"
         type="radio"
         value="tvod"
       />
@@ -294,7 +294,7 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
           class="_radio_f7961f"
           data-testid="One Time - TVOD offer"
           id="R892134629_NL"
-          name="offerId"
+          name="selectedOfferId"
           type="radio"
           value="R892134629_NL"
         />

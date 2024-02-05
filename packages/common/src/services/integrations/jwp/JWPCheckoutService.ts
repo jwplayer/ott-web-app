@@ -1,7 +1,7 @@
 import InPlayer, { type AccessFee, type MerchantPaymentMethod } from '@inplayer-org/inplayer.js';
 import { injectable } from 'inversify';
 
-import { isSVODOffer } from '../../../utils/subscription';
+import { isSVODOffer } from '../../../utils/offers';
 import type {
   CardPaymentData,
   CreateOrder,

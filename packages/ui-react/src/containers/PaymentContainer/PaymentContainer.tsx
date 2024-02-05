@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import { useSubscriptionChange } from '@jwp/ott-hooks-react/src/useSubscriptionChange';
+import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 
 import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
@@ -47,30 +48,30 @@ const processBillingReceipt = (receipt: Blob | string, transactionId: string) =>
 
 const PaymentContainer = () => {
   const accountController = getModule(AccountController);
+  const checkoutController = getModule(CheckoutController);
 
-  const { accessModel } = useConfigStore(
-    (s) => ({
-      accessModel: s.accessModel,
-      favoritesList: s.config.features?.favoritesList,
-    }),
-    shallow,
-  );
   const navigate = useNavigate();
 
+  const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading } = useAccountStore();
+  const { availableOffers } = useOffers();
   const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = accountController.getFeatures();
+  const offerSwitchesAvailable = canRenewSubscription && !!availableOffers.length;
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(activeSubscription?.accessFeeId ?? null);
   const [isUpgradeOffer, setIsUpgradeOffer] = useState<boolean | undefined>(undefined);
 
-  const { offerSwitches } = useCheckoutStore();
   const location = useLocation();
 
-  const handleUpgradeSubscriptionClick = async () => {
-    navigate(modalURLFromLocation(location, 'upgrade-subscription'));
-  };
+  useEffect(() => {
+    if (accessModel !== ACCESS_MODEL.AVOD && canRenewSubscription) {
+      checkoutController.getSubscriptionSwitches();
+    }
+  }, [accessModel, checkoutController, canRenewSubscription]);
+
+  const handleUpgradeSubscriptionClick = async () => navigate(modalURLFromLocation(location, 'upgrade-subscription'));
 
   const handleShowReceiptClick = async (transactionId: string) => {
     setIsLoadingReceipt(true);
@@ -86,8 +87,6 @@ const PaymentContainer = () => {
 
     setIsLoadingReceipt(false);
   };
-
-  const { offers } = useOffers();
 
   const changeSubscriptionPlan = useSubscriptionChange(isUpgradeOffer ?? false, selectedOfferId, customer, activeSubscription?.subscriptionId);
 
@@ -122,10 +121,10 @@ const PaymentContainer = () => {
       canUpdatePaymentMethod={canUpdatePaymentMethod}
       canRenewSubscription={canRenewSubscription}
       onUpgradeSubscriptionClick={handleUpgradeSubscriptionClick}
-      offerSwitchesAvailable={!!offerSwitches.length}
+      offerSwitchesAvailable={offerSwitchesAvailable}
       canShowReceipts={canShowReceipts}
       onShowReceiptClick={handleShowReceiptClick}
-      offers={offers}
+      offers={availableOffers}
       pendingDowngradeOfferId={pendingDowngradeOfferId}
       changeSubscriptionPlan={changeSubscriptionPlan}
       onChangePlanClick={onChangePlanClick}
