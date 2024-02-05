@@ -4,27 +4,29 @@ import type { MediaOffer } from '../../types/media';
 import { createStore } from './utils';
 
 type CheckoutStore = {
-  offer: Offer | null;
+  requestedMediaOffers: MediaOffer[];
+  mediaOffers: Offer[];
+  subscriptionOffers: Offer[];
+  switchSubscriptionOffers: Offer[];
+  selectedOffer: Offer | null;
+  defaultOfferId: string | null;
   order: Order | null;
   paymentMethods: PaymentMethod[] | null;
-  requestedMediaOffers: MediaOffer[] | null;
-  offerSwitches: Offer[];
-  updateOffer: (offer: Offer | null) => void;
-  setOffer: (offer: Offer | null) => void;
+  setRequestedMediaOffers: (requestedMediaOffers: MediaOffer[]) => void;
   setOrder: (order: Order | null) => void;
   setPaymentMethods: (paymentMethods: PaymentMethod[] | null) => void;
-  setRequestedMediaOffers: (requestedMediaOffers: MediaOffer[] | null) => void;
 };
 
 export const useCheckoutStore = createStore<CheckoutStore>('CheckoutStore', (set) => ({
-  offer: null,
+  requestedMediaOffers: [],
+  mediaOffers: [],
+  subscriptionOffers: [],
+  switchSubscriptionOffers: [],
+  selectedOffer: null,
+  defaultOfferId: null,
   order: null,
   paymentMethods: null,
-  requestedMediaOffers: null,
-  offerSwitches: [],
-  updateOffer: (offer) => set({ offer: offer }),
-  setOffer: (offer) => set({ offer }),
+  setRequestedMediaOffers: (requestedMediaOffers) => set({ requestedMediaOffers }),
   setOrder: (order) => set({ order }),
   setPaymentMethods: (paymentMethods) => set({ paymentMethods }),
-  setRequestedMediaOffers: (requestedMediaOffers) => set({ requestedMediaOffers }),
 }));

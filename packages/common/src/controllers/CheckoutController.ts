@@ -15,7 +15,6 @@ import type {
   Order,
   Payment,
   PaymentMethod,
-  SwitchOffer,
 } from '../../types/checkout';
 import CheckoutService from '../services/integrations/CheckoutService';
 import SubscriptionService from '../services/integrations/SubscriptionService';
@@ -27,6 +26,7 @@ import AccountService from '../services/integrations/AccountService';
 import { useCheckoutStore } from '../stores/CheckoutStore';
 import { useAccountStore } from '../stores/AccountStore';
 import { FormValidationError } from '../errors/FormValidationError';
+import { determineSwitchDirection } from '../utils/subscription';
 
 @injectable()
 export default class CheckoutController {
@@ -42,11 +42,30 @@ export default class CheckoutController {
     this.subscriptionService = getNamedModule(SubscriptionService, integrationType);
   }
 
-  getSubscriptionOfferIds = () => {
-    return this.accountService.svodOfferIds;
+  initialiseOffers = async () => {
+    const requestedMediaOffers = useCheckoutStore.getState().requestedMediaOffers;
+    const mediaOffers = requestedMediaOffers ? await this.getOffers({ offerIds: requestedMediaOffers.map(({ offerId }) => offerId) }) : [];
+    useCheckoutStore.setState({ mediaOffers });
+
+    if (!useCheckoutStore.getState().subscriptionOffers.length && this.accountService.svodOfferIds) {
+      const subscriptionOffers = await this.getOffers({ offerIds: this.accountService.svodOfferIds });
+      useCheckoutStore.setState({ subscriptionOffers });
+    }
+
+    if (!useCheckoutStore.getState().switchSubscriptionOffers.length) {
+      const subscriptionSwitches = await this.getSubscriptionSwitches();
+      const switchSubscriptionOffers = subscriptionSwitches ? await this.getOffers({ offerIds: subscriptionSwitches }) : [];
+      useCheckoutStore.setState({ switchSubscriptionOffers });
+    }
   };
 
-  createOrder = async (offer: Offer): Promise<void> => {
+  getSubscriptionOfferIds = () => this.accountService.svodOfferIds;
+
+  chooseOffer = async (selectedOffer: Offer) => {
+    useCheckoutStore.setState({ selectedOffer });
+  };
+
+  initialiseOrder = async (offer: Offer): Promise<void> => {
     const { getAccountInfo } = useAccountStore.getState();
     const { customer } = getAccountInfo();
 
@@ -227,7 +246,7 @@ export default class CheckoutController {
     };
   };
 
-  getSubscriptionSwitches = async (): Promise<unknown> => {
+  getSubscriptionSwitches = async (): Promise<string[] | null> => {
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
@@ -237,46 +256,38 @@ export default class CheckoutController {
 
     const { subscription } = useAccountStore.getState();
 
-    if (!subscription) return;
+    if (!subscription) return null;
 
     const response = await this.checkoutService.getSubscriptionSwitches({
       customerId: customerId,
       offerId: subscription.offerId,
     });
 
-    if (!response.responseData.available.length) return;
+    if (!response.responseData.available.length) return null;
 
-    // create variable for `getOffer` to ensure it's typed in `Array#map` scope
-    const getOfferDelegate = this.checkoutService.getOffer;
-    const switchOffers = response.responseData.available.map((offer: SwitchOffer) => getOfferDelegate({ offerId: offer.toOfferId }));
-    const offers = await Promise.all(switchOffers);
-
-    // Sort offers for proper ordering in "Choose Offer" modal when applicable
-    const offerSwitches = offers.sort((a, b) => a?.responseData.offerPrice - b?.responseData.offerPrice).map((item) => item.responseData);
-    useCheckoutStore.setState({ offerSwitches });
+    return response.responseData.available.map(({ toOfferId }) => toOfferId);
   };
 
-  switchSubscription = async (toOfferId: string, switchDirection: 'upgrade' | 'downgrade'): Promise<unknown> => {
+  switchSubscription = async () => {
+    const selectedOffer = useCheckoutStore.getState().selectedOffer;
+    const subscription = useAccountStore.getState().subscription;
     const { getAccountInfo } = useAccountStore.getState();
-
     const { customerId } = getAccountInfo();
+
+    if (!selectedOffer || !subscription) throw new Error('No offer selected');
 
     assertModuleMethod(this.checkoutService.switchSubscription, 'switchSubscription is not available in checkout service');
 
-    const { subscription } = useAccountStore.getState();
-    if (!subscription) return;
+    const switchDirection: 'upgrade' | 'downgrade' = determineSwitchDirection(subscription);
 
-    const SwitchSubscriptionPayload = {
-      toOfferId,
+    const switchSubscriptionPayload = {
+      toOfferId: selectedOffer.offerId,
       customerId: customerId,
       offerId: subscription.offerId,
       switchDirection: switchDirection,
     };
 
-    await this.checkoutService.switchSubscription(SwitchSubscriptionPayload);
-
-    // clear current offers
-    useCheckoutStore.setState({ offerSwitches: [] });
+    await this.checkoutService.switchSubscription(switchSubscriptionPayload);
   };
 
   changeSubscription = async ({ accessFeeId, subscriptionId }: { accessFeeId: string; subscriptionId: string }) => {

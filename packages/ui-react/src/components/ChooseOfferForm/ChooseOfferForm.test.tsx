@@ -14,14 +14,13 @@ describe('<OffersForm>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
       <ChooseOfferForm
-        values={{ offerId: 'S916977979_NL' }}
+        values={{ selectedOfferId: 'S916977979_NL', selectedOfferType: 'svod' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
         offers={svodOffers}
-        offerType={'svod'}
-        setOfferType={vi.fn()}
+        showOfferTypeSwitch
       />,
     );
 
@@ -31,14 +30,13 @@ describe('<OffersForm>', () => {
   test('renders and matches snapshot', () => {
     const { container } = render(
       <ChooseOfferForm
-        values={{ offerId: 'R892134629_NL' }}
+        values={{ selectedOfferId: 'R892134629_NL', selectedOfferType: 'tvod' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
         offers={tvodOffers}
-        offerType={'tvod'}
-        setOfferType={vi.fn()}
+        showOfferTypeSwitch
       />,
     );
 
@@ -48,70 +46,66 @@ describe('<OffersForm>', () => {
   test('checks the monthly offer correctly', () => {
     const { getByTestId } = render(
       <ChooseOfferForm
-        values={{ offerId: 'S916977979_NL' }}
+        values={{ selectedOfferId: 'S916977979_NL', selectedOfferType: 'svod' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
         offers={svodOffers}
-        offerType={'svod'}
-        setOfferType={vi.fn()}
+        showOfferTypeSwitch
       />,
     );
 
-    expect(getByTestId('choose_offer.monthly')).toBeChecked();
+    expect(getByTestId('S916977979_NL')).toBeChecked();
   });
 
   test('checks the yearly offer correctly', () => {
     const { getByTestId } = render(
       <ChooseOfferForm
-        values={{ offerId: 'S345569153_NL' }}
+        values={{ selectedOfferId: 'S345569153_NL', selectedOfferType: 'svod' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
         offers={svodOffers}
-        offerType={'svod'}
-        setOfferType={vi.fn()}
+        showOfferTypeSwitch
       />,
     );
 
-    expect(getByTestId('choose_offer.yearly')).toBeChecked();
+    expect(getByTestId('S345569153_NL')).toBeChecked();
   });
 
   test('checks the tvod offer correctly', () => {
     const { getByTestId } = render(
       <ChooseOfferForm
-        values={{ offerId: 'R892134629_NL' }}
+        values={{ selectedOfferId: 'R892134629_NL', selectedOfferType: 'tvod' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
         submitting={false}
         offers={tvodOffers}
-        offerType={'tvod'}
-        setOfferType={vi.fn()}
+        showOfferTypeSwitch
       />,
     );
 
-    expect(getByTestId('One Time - TVOD offer')).toBeChecked();
+    expect(getByTestId('R892134629_NL')).toBeChecked();
   });
 
   test('calls the onChange callback when changing the offer', () => {
     const onChange = vi.fn();
     const { getByTestId } = render(
       <ChooseOfferForm
-        values={{ offerId: 'S916977979_NL' }}
+        values={{ selectedOfferId: 'S916977979_NL', selectedOfferType: 'svod' }}
         errors={{}}
         onChange={onChange}
         onSubmit={vi.fn()}
         submitting={false}
         offers={svodOffers}
-        offerType={'svod'}
-        setOfferType={vi.fn()}
+        showOfferTypeSwitch
       />,
     );
 
-    fireEvent.click(getByTestId('choose_offer.yearly'));
+    fireEvent.click(getByTestId('S345569153_NL'));
 
     expect(onChange).toBeCalled();
   });
@@ -120,14 +114,13 @@ describe('<OffersForm>', () => {
     const onSubmit = vi.fn();
     const { getByTestId } = render(
       <ChooseOfferForm
-        values={{ offerId: 'S916977979_NL' }}
+        values={{ selectedOfferId: 'S916977979_NL', selectedOfferType: 'svod' }}
         errors={{}}
         onChange={vi.fn()}
         onSubmit={onSubmit}
         submitting={false}
         offers={svodOffers}
-        offerType={'svod'}
-        setOfferType={vi.fn()}
+        showOfferTypeSwitch
       />,
     );
 
