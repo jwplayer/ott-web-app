@@ -61,7 +61,7 @@ export default class WatchHistoryService {
   };
 
   private validateWatchHistory(history: unknown) {
-    if (schema.validateSync(history)) {
+    if (history && schema.validateSync(history)) {
       return history as SerializedWatchHistoryItem[];
     }
 

@@ -34,7 +34,7 @@ export default class FavoriteService {
   }
 
   private validateFavorites(favorites: unknown) {
-    if (schema.validateSync(favorites)) {
+    if (favorites && schema.validateSync(favorites)) {
       return favorites as SerializedFavorite[];
     }
 
