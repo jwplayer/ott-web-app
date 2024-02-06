@@ -105,7 +105,7 @@ const ChooseOffer = () => {
   });
 
   useEffect(() => {
-    if (!isOfferSwitch) setValue('offerId', defaultOfferId);
+    if (!isOfferSwitch && !isLoading) setValue('offerId', defaultOfferId);
 
     // Update offerId if the user is switching offers to ensure the correct offer is checked in the ChooseOfferForm
     // Initially, a defaultOfferId is set, but when switching offers, we need to use the id of the target offer

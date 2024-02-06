@@ -16,7 +16,7 @@ const useOffers = () => {
   const hasMultipleOfferTypes = !hasPremierOffers && !!mediaOffers?.length && !!svodOfferIds.length;
   const offerIds: string[] = mergeOfferIds(mediaOffers || [], svodOfferIds);
 
-  const [offerType, setOfferType] = useState<OfferType>(hasPremierOffers || !svodOfferIds ? 'tvod' : 'svod');
+  const [offerType, setOfferType] = useState<OfferType>(hasPremierOffers || !svodOfferIds.length ? 'tvod' : 'svod');
   const updateOfferType = useMemo(() => (hasMultipleOfferTypes ? (type: OfferType) => setOfferType(type) : undefined), [hasMultipleOfferTypes]);
 
   const { data: allOffers, isLoading } = useQuery(['offers', offerIds.join('-')], () => checkoutController.getOffers({ offerIds }));
