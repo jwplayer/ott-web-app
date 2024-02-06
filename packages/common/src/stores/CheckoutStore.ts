@@ -5,7 +5,9 @@ import { createStore } from './utils';
 
 type CheckoutStore = {
   requestedMediaOffers: MediaOffer[];
-  availableOffers: Offer[];
+  offersMedia: Offer[];
+  offersSubscription: Offer[];
+  offersSwitchSubscription: Offer[];
   selectedOffer: Offer | null;
   defaultOfferId: string | null;
   order: Order | null;
@@ -17,7 +19,9 @@ type CheckoutStore = {
 
 export const useCheckoutStore = createStore<CheckoutStore>('CheckoutStore', (set) => ({
   requestedMediaOffers: [],
-  availableOffers: [],
+  offersMedia: [],
+  offersSubscription: [],
+  offersSwitchSubscription: [],
   selectedOffer: null,
   defaultOfferId: null,
   order: null,

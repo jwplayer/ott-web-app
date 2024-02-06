@@ -5,20 +5,24 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
-import { isSVODOffer } from '@jwp/ott-common/src/utils/offers';
 import type { OfferType } from '@jwp/ott-common/types/checkout';
 
 const useOffers = () => {
   const checkoutController = getModule(CheckoutController);
   const accountController = getModule(AccountController);
 
-  const { availableOffers, requestedMediaOffers } = useCheckoutStore(
-    ({ availableOffers, requestedMediaOffers }) => ({ availableOffers, requestedMediaOffers }),
+  const { offersMedia, offersSubscription, offersSwitchSubscription, requestedMediaOffers } = useCheckoutStore(
+    ({ offersMedia, offersSubscription, offersSwitchSubscription, requestedMediaOffers }) => ({
+      offersMedia,
+      offersSubscription,
+      offersSwitchSubscription,
+      requestedMediaOffers,
+    }),
     shallow,
   );
 
-  const initialiseOffers = useMutation<void>({
-    mutationKey: ['initialiseOffers'],
+  const { mutate: initialise, isLoading: isInitialisationLoading } = useMutation<void>({
+    mutationKey: ['initialiseOffers', requestedMediaOffers],
     mutationFn: checkoutController.initialiseOffers,
   });
 
@@ -34,25 +38,20 @@ const useOffers = () => {
   });
 
   useEffect(() => {
-    if (!availableOffers.length && !initialiseOffers.isLoading) {
-      initialiseOffers.mutate();
-    }
-  }, [availableOffers, initialiseOffers]);
+    initialise();
+  }, [requestedMediaOffers, initialise]);
 
-  useEffect(() => {
-    return () => checkoutController.resetOffers();
-  }, [checkoutController]);
-
-  const hasSvodOffers = availableOffers.some(isSVODOffer);
-  const hasMediaOffers = availableOffers.some((offer) => !isSVODOffer(offer));
+  const hasMediaOffers = offersMedia.length > 0;
+  const hasSubscriptionOffers = offersSubscription.length > 0;
   const hasPremierOffers = requestedMediaOffers.some((mediaOffer) => mediaOffer.premier);
-  const hasMultipleOfferTypes = hasSvodOffers && hasMediaOffers && !hasPremierOffers;
-
-  const defaultOfferType: OfferType = hasPremierOffers || !hasSvodOffers ? 'tvod' : 'svod';
+  const hasMultipleOfferTypes = (offersSubscription.length > 0 || offersSwitchSubscription.length > 0) && hasMediaOffers && !hasPremierOffers;
+  const defaultOfferType: OfferType = hasPremierOffers || !hasSubscriptionOffers ? 'tvod' : 'svod';
 
   return {
-    isLoading: initialiseOffers.isLoading || chooseOffer.isLoading,
-    availableOffers,
+    isLoading: isInitialisationLoading || chooseOffer.isLoading,
+    offersMedia,
+    offersSubscription,
+    offersSwitchSubscription,
     chooseOffer,
     switchSubscription,
     hasMultipleOfferTypes,

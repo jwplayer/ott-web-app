@@ -6,7 +6,6 @@ import type { ChooseOfferFormData, OfferType } from '@jwp/ott-common/types/check
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
-import { isSVODOffer } from '@jwp/ott-common/src/utils/offers';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 
 import ChooseOfferForm from '../../../components/ChooseOfferForm/ChooseOfferForm';
@@ -17,10 +16,11 @@ const ChooseOffer = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('account');
-  const isSwitch = useQueryParam('u') === 'upgrade-subscription'; // @todo: Use a store var instead?
+  const isSwitch = useQueryParam('u') === 'upgrade-subscription';
   const isPendingOffer = useAccountStore(({ pendingOffer }) => ({ isPendingOffer: !!pendingOffer }));
 
-  const { isLoading, availableOffers, defaultOfferType, hasMultipleOfferTypes, chooseOffer, switchSubscription } = useOffers();
+  const { isLoading, offersMedia, offersSubscription, offersSwitchSubscription, defaultOfferType, hasMultipleOfferTypes, chooseOffer, switchSubscription } =
+    useOffers();
 
   const checkoutUrl = modalURLFromLocation(location, 'checkout');
   const upgradePendingUrl = modalURLFromLocation(location, 'upgrade-subscription-pending');
@@ -33,12 +33,18 @@ const ChooseOffer = () => {
       selectedOfferId: mixed<string>().required(t('choose_offer.field_required')),
       selectedOfferType: mixed<OfferType>().required(t('choose_offer.field_required')),
     }),
-    onSubmit: async ({ selectedOfferId }) => {
-      if (!selectedOfferId) return;
+    onSubmit: async ({ selectedOfferType, selectedOfferId }) => {
+      if (!selectedOfferType || !selectedOfferId) return;
 
-      chooseOffer.mutateAsync(selectedOfferId);
+      const offer = visibleOffers.find((offer) => offer.offerId === selectedOfferId);
 
-      if (isSwitch) return await switchSubscription.mutateAsync();
+      if (!offer) return;
+
+      await chooseOffer.mutateAsync(offer);
+
+      if (isSwitch) {
+        return await switchSubscription.mutateAsync();
+      }
     },
     onSubmitSuccess: async () => {
       if (isSwitch && isPendingOffer) return navigate(upgradePendingUrl);
@@ -49,19 +55,21 @@ const ChooseOffer = () => {
     onSubmitError: () => navigate(upgradeErrorUrl),
   });
 
+  const visibleOffers = values.selectedOfferType === 'tvod' ? offersMedia : isSwitch ? offersSwitchSubscription : offersSubscription;
+
+  useEffect(() => {
+    if (isLoading || !visibleOffers.length) return;
+
+    const offerId = visibleOffers[visibleOffers.length - 1]?.offerId;
+
+    setValue('selectedOfferId', offerId);
+  }, [visibleOffers, values.selectedOfferType, setValue, isLoading]);
+
   useEffect(() => {
     if (isLoading || !defaultOfferType) return;
 
     setValue('selectedOfferType', defaultOfferType);
   }, [isLoading, defaultOfferType, setValue]);
-
-  useEffect(() => {
-    if (!availableOffers.length || isLoading) return;
-    const visibleOffers = availableOffers.filter((offer) => isSVODOffer(offer) === (values.selectedOfferType === 'svod'));
-    const defaultOfferId = visibleOffers[visibleOffers.length - 1]?.offerId;
-
-    setValue('selectedOfferId', defaultOfferId);
-  }, [availableOffers, values.selectedOfferType, setValue, isLoading]);
 
   // loading state
   if (isLoading) {
@@ -71,8 +79,6 @@ const ChooseOffer = () => {
       </div>
     );
   }
-
-  const visibleOffers = availableOffers.filter((offer) => isSVODOffer(offer) === (values.selectedOfferType === 'svod'));
 
   return (
     <ChooseOfferForm
