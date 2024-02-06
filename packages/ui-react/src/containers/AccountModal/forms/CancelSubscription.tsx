@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { format, fromUnixTime } from 'date-fns';
 import { useLocation, useNavigate } from 'react-router';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
+import { formatLocalizedDate } from '@jwp/ott-common/src/utils/formatting';
 
 import CancelSubscriptionForm from '../../../components/CancelSubscriptionForm/CancelSubscriptionForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -23,7 +23,7 @@ const CancelSubscription = () => {
   const [cancelled, setCancelled] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const expirationDate = subscription?.expiresAt ? fromUnixTime(subscription.expiresAt) : null;
+  const expirationDateFormatted = subscription?.expiresAt ? formatLocalizedDate(new Date(subscription.expiresAt * 1000), i18n.language) : '';
 
   const cancelSubscriptionConfirmHandler = async () => {
     setSubmitting(true);
@@ -32,9 +32,8 @@ const CancelSubscription = () => {
     try {
       await accountController.updateSubscription('cancelled');
 
-      if (expirationDate) {
-        const formattedDate = format(expirationDate, 'P', { locale: { code: i18n.language } });
-        announce(t('subscription_cancelled.message', { date: formattedDate }), 'success');
+      if (expirationDateFormatted) {
+        announce(t('subscription_cancelled.message', { date: expirationDateFormatted }), 'success');
       }
 
       setCancelled(true);
@@ -54,7 +53,7 @@ const CancelSubscription = () => {
   return (
     <React.Fragment>
       {cancelled ? (
-        <SubscriptionCancelled expiresDate={expirationDate ? format(expirationDate, 'P', { locale: { code: i18n.language } }) : ''} onClose={closeHandler} />
+        <SubscriptionCancelled expiresDate={expirationDateFormatted} onClose={closeHandler} />
       ) : (
         <CancelSubscriptionForm onConfirm={cancelSubscriptionConfirmHandler} onCancel={closeHandler} submitting={submitting} error={error} />
       )}
