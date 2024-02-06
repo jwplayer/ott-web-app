@@ -29,7 +29,7 @@ const Checkout = () => {
 
   const { offer, offerType, paymentMethods, order, isSubmitting, updateOrder, submitPaymentWithoutDetails, submitPaymentPaypal, submitPaymentStripe } =
     useCheckout({
-      onUpdateOrderSuccess: () => setShowCouponCodeSuccess(true),
+      onUpdateOrderSuccess: () => !!couponCode && setShowCouponCodeSuccess(true),
       onSubmitPaymentWithoutDetailsSuccess: () => navigate(offerType === 'svod' ? welcomeUrl : closeModalUrl, { replace: true }),
       onSubmitPaypalPaymentSuccess: (paypalUrl: string) => {
         window.location.href = paypalUrl;
