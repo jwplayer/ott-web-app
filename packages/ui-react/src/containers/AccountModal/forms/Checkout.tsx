@@ -53,7 +53,7 @@ const Checkout = () => {
     },
     onSubmitSuccess: ({ couponCode }): void => setShowCouponCodeSuccess(!!couponCode),
     onSubmitError: ({ error }) => {
-      if (error instanceof FormValidationError && error.errors.order?.includes(`not found`)) {
+      if (error instanceof FormValidationError && error.errors.order?.includes(`Order with id ${order?.id} not found`)) {
         navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
       }
     },
