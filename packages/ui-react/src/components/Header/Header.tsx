@@ -103,16 +103,8 @@ const Header: React.FC<Props> = ({
 
     return searchActive ? (
       <div className={styles.searchContainer}>
-        <SearchBar {...searchBarProps} />
-        <IconButton
-          className={styles.iconButton}
-          aria-label="Close search"
-          onClick={() => {
-            if (onCloseSearchButtonClick) {
-              onCloseSearchButtonClick();
-            }
-          }}
-        >
+        <SearchBar {...searchBarProps} onClose={onCloseSearchButtonClick} />
+        <IconButton className={styles.iconButton} aria-label="Close search" onClick={onCloseSearchButtonClick}>
           <Icon icon={CloseIcon} />
         </IconButton>
       </div>
