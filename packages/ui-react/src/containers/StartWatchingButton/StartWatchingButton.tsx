@@ -9,6 +9,8 @@ import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import Play from '@jwp/ott-theme/assets/icons/play.svg?react';
+import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
+import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 
 import Button from '../../components/Button/Button';
 import Icon from '../../components/Icon/Icon';
@@ -29,6 +31,7 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
   const breakpoint = useBreakpoint();
 
   // account
+  const accessModel = useConfigStore((state) => state.accessModel);
   const user = useAccountStore((state) => state.user);
   const isLoggedIn = !!user;
 
@@ -69,6 +72,11 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
 
     return () => setRequestedMediaOffers(null);
   }, [mediaOffers, setRequestedMediaOffers]);
+
+  // the user can't purchase access in an AVOD platform due to missing configuration, so we hide the button
+  if (accessModel === ACCESS_MODEL.AVOD && !isEntitled) {
+    return null;
+  }
 
   return (
     <Button
