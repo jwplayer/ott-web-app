@@ -18,7 +18,12 @@ const IconButton: React.FC<Props> = ({ children, onClick, tabIndex = 0, classNam
       onClick={onClick}
       role="button"
       tabIndex={tabIndex}
-      onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && tabIndex >= 0 && onClick && onClick()}
+      onKeyDown={(event: React.KeyboardEvent) => {
+        if ((event.key === 'Enter' || event.key === ' ') && tabIndex >= 0 && onClick) {
+          onClick();
+          event.preventDefault(); // prevent click being called when this component unmounts
+        }
+      }}
       {...ariaProps}
     >
       {children}
