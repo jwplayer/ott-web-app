@@ -233,7 +233,6 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
             },
             content: (section) => (
               <>
-                <h1 className={styles.hideUntilFocus}>{t('nav.account')}</h1>
                 <TextField
                   name="firstName"
                   label={t('account.firstname')}
