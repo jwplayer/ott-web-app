@@ -47,8 +47,9 @@ export default class WatchHistoryService {
     const seriesIds = Object.keys(mediaWithSeries || {})
       .map((key) => mediaWithSeries?.[key]?.[0]?.series_id)
       .filter(Boolean) as string[];
+    const uniqueSerieIds = [...new Set(seriesIds)];
 
-    const seriesItems = await this.apiService.getMediaByWatchlist(continueWatchingList, seriesIds);
+    const seriesItems = await this.apiService.getMediaByWatchlist(continueWatchingList, uniqueSerieIds);
     const seriesItemsDict = Object.keys(mediaWithSeries || {}).reduce((acc, key) => {
       const seriesItemId = mediaWithSeries?.[key]?.[0]?.series_id;
       if (seriesItemId) {
