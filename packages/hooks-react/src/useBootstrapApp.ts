@@ -20,7 +20,7 @@ export const useBootstrapApp = (url: string, onReady: OnReadyCallback) => {
   const queryClient = useQueryClient();
   const refreshEntitlements = () => queryClient.invalidateQueries({ queryKey: ['entitlements'] });
 
-  const { data, isLoading, error, isSuccess, refetch } = useQuery<Resources, AppError>(
+  const { data, isLoading, error, isSuccess, refetch } = useQuery<Resources, Error | AppError>(
     'config-init',
     () => applicationController.initializeApp(url, refreshEntitlements),
     {
