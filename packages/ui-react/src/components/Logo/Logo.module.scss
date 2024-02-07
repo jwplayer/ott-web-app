@@ -9,7 +9,8 @@
 .logo {
   width: auto;
   max-width: 100%;
-  max-height: variables.$header-height - 10px;
+  height: auto;
+  max-height: variables.$header-height - 20px;
   vertical-align: middle;
   cursor: pointer;
 }

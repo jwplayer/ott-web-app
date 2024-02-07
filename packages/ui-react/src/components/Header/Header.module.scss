@@ -226,11 +226,14 @@
   }
 
   .brand {
+    margin-right: 0;
+    margin-left: 0;
     text-align: center;
   }
 
   .menu,
   .actions {
+    justify-content: flex-end;
     width: 80px;
   }
 }
