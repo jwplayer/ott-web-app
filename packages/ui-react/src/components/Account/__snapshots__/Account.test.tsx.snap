@@ -24,9 +24,6 @@ exports[`<Account> > renders and matches snapshot 1`] = `
       class="_flexBox_1c1c63"
       novalidate=""
     >
-      <h1>
-        nav.account
-      </h1>
       <div
         class="_textField_e16c1b"
       >
