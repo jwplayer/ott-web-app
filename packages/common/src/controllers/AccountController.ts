@@ -181,7 +181,7 @@ export default class AccountController {
         if (error.message.toLowerCase().includes('invalid param email')) {
           throw new FormValidationError({ email: [i18next.t('account:login.wrong_email')] });
         } else {
-          throw new FormValidationError({ email: [i18next.t('account:login.wrong_combination')] });
+          throw new FormValidationError({ form: [i18next.t('account:login.wrong_combination')] });
         }
       }
     }

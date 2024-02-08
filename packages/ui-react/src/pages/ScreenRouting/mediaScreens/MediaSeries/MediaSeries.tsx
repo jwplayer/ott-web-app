@@ -105,7 +105,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled, mediaOffers } = useEntitlement(episode);
+  const { isEntitled, mediaOffers } = useEntitlement(episode || firstEpisode);
   const hasMediaOffers = !!mediaOffers.length;
 
   const isLoggedIn = !!user;

@@ -21,6 +21,7 @@ export type ProviderProps = {
   creditCard: string;
   applicableTax: number;
   canRenewSubscription: boolean;
+  canOpenReceipts?: boolean;
   shouldMakePayment?: boolean;
   locale?: string | undefined;
   fieldWrapper?: string;
