@@ -85,7 +85,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
 
     I.fillField('password', '1234');
     I.pressKey('Tab');
-    checkColor('rgb(255, 12, 62)');
+    checkColor('rgb(255, 53, 53)');
 
     I.fillField('password', 'Test1234');
     checkColor('rgb(255, 255, 255)');

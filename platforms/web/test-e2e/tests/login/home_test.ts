@@ -67,7 +67,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     loginContext = await I.registerOrLogin(loginContext);
 
     await I.openMainMenu();
-    I.click('Log out');
+    I.click('text=Log out');
 
     await I.openSignInMenu();
 

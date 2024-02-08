@@ -15,7 +15,7 @@ export enum ShelfId {
 }
 
 export const makeShelfXpath = (shelf: ShelfId) => {
-  return `//div[@data-testid="shelf-${shelf}"]`;
+  return `//section[@data-testid="shelf-${shelf}"]`;
 };
 
 export default {

@@ -22,8 +22,8 @@ export function fillAndCheckField(I: CodeceptJS.I, field, value, error: string |
 
 export function checkField(I: CodeceptJS.I, field, error: string | boolean = false) {
   const hoverColor = 'rgba(255, 255, 255, 0.7)';
-  const activeColor = error ? 'rgb(255, 12, 62)' : 'rgb(255, 255, 255)';
-  const restingColor = error ? 'rgb(255, 12, 62)' : 'rgba(255, 255, 255, 0.34)';
+  const activeColor = error ? 'rgb(255, 53, 53)' : 'rgb(255, 255, 255)';
+  const restingColor = error ? 'rgb(255, 53, 53)' : 'rgba(255, 255, 255, 0.34)';
 
   // If error === true, there's an error, but no associated message
   if (error && error !== true) {

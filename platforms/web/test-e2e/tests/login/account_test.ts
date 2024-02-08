@@ -111,7 +111,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.submitForm();
 
     I.see(incorrectLogin);
-    I.seeCssPropertiesOnElements(formFeedback, { 'background-color': 'rgb(255, 12, 62)' });
+    I.seeCssPropertiesOnElements(formFeedback, { 'background-color': 'rgb(255, 53, 53)' });
 
     checkField(I, 'email', true);
     checkField(I, 'password', true);
