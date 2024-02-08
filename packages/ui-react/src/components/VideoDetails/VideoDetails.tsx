@@ -42,6 +42,7 @@ const VideoDetails: React.VFC<Props> = ({
       <header className={styles.video} data-testid={testId('video-details')}>
         <div className={classNames(styles.main, styles.mainPadding)}>
           <Image className={styles.poster} image={image} alt={alt} width={1280} />
+          <div className={styles.posterFade} />
           <div className={styles.info}>
             <h1 className={styles.title}>{title}</h1>
             <div className={styles.metaContainer}>

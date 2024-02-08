@@ -13,8 +13,10 @@ export const setThemingVariables = (config: Config) => {
   root.style.setProperty('--highlight-color', highlightColor || '#fff');
   root.style.setProperty('--highlight-contrast-color', highlightColor ? calculateContrastColor(highlightColor) : '#000');
 
-  root.style.setProperty('--header-background', headerBackground || 'rgba(0, 0, 0, 0.85)');
-  root.style.setProperty('--header-contrast-color', headerBackground ? calculateContrastColor(headerBackground) : '#fff');
+  if (headerBackground) {
+    root.style.setProperty('--header-background', headerBackground);
+    root.style.setProperty('--header-contrast-color', calculateContrastColor(headerBackground));
+  }
 
   if (backgroundColor) {
     root.style.setProperty('--body-background-color', backgroundColor);
