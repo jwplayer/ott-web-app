@@ -18,6 +18,9 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           src="http://image.jpg?width=1280"
         />
         <div
+          class="_posterFade_d0c133"
+        />
+        <div
           class="_info_d0c133"
         >
           <h1
