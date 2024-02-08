@@ -42,7 +42,7 @@ const stepsObj = {
   logout: async function (this: CodeceptJS.I) {
     await this.openMainMenu();
 
-    this.click('div[aria-label="Log out"]');
+    this.click('text=Log out');
   },
   // This function will register the user on the first call and return the context
   // then assuming context is passed in the next time, will log that same user back in
@@ -448,11 +448,6 @@ const stepsObj = {
         Date.now = () => __DateNow() + __DateNowOffset;
       }`);
     });
-  },
-  seeVideoDetailsBackgroundImage: async function (this: CodeceptJS.I, name: string, src: string) {
-    const imageLocator = locate({ css: `div[data-testid="video-details"] img[alt="${name}"]` });
-    const imgSrc = await this.grabAttributeFrom(imageLocator, 'src');
-    assert.equal(imgSrc, src, "img element src attribute doesn't match");
   },
   seeEpgChannelLogoImage: async function (this: CodeceptJS.I, channelId: string, src: string, alt: string) {
     const imageLocator = locate({ css: `div[data-testid="${channelId}"] img[alt="${alt}"]` });
