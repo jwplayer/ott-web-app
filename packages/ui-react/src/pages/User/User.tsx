@@ -16,7 +16,12 @@ import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react'
 import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react';
 import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
 import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
-import { NESTED_PATH_USER_ACCOUNT, NESTED_PATH_USER_FAVORITES, NESTED_PATH_USER_MY_PROFILE, NESTED_PATH_USER_PAYMENTS } from '@jwp/ott-common/src/paths';
+import {
+  RELATIVE_PATH_USER_ACCOUNT,
+  RELATIVE_PATH_USER_FAVORITES,
+  RELATIVE_PATH_USER_MY_PROFILE,
+  RELATIVE_PATH_USER_PAYMENTS,
+} from '@jwp/ott-common/src/paths';
 import { userProfileURL } from '@jwp/ott-common/src/utils/urlFormatting';
 
 import AccountComponent from '../../components/Account/Account';
@@ -103,7 +108,7 @@ const User = (): JSX.Element => {
               {(!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
                   <Button
-                    to={NESTED_PATH_USER_ACCOUNT}
+                    to={RELATIVE_PATH_USER_ACCOUNT}
                     label={t('nav.account')}
                     variant="text"
                     startIcon={<Icon icon={AccountCircle} />}
@@ -114,7 +119,7 @@ const User = (): JSX.Element => {
               {favoritesList && (!profilesEnabled || profileAndFavoritesPage) && (
                 <li>
                   <Button
-                    to={NESTED_PATH_USER_FAVORITES}
+                    to={RELATIVE_PATH_USER_FAVORITES}
                     label={t('nav.favorites')}
                     variant="text"
                     startIcon={<Icon icon={Favorite} />}
@@ -126,7 +131,7 @@ const User = (): JSX.Element => {
               {accessModel !== ACCESS_MODEL.AVOD && (!profilesEnabled || !profileAndFavoritesPage) && (
                 <li>
                   <Button
-                    to={NESTED_PATH_USER_PAYMENTS}
+                    to={RELATIVE_PATH_USER_PAYMENTS}
                     label={t('nav.payments')}
                     variant="text"
                     startIcon={<Icon icon={BalanceWallet} />}
@@ -147,13 +152,13 @@ const User = (): JSX.Element => {
       <div className={styles.mainColumn}>
         <Routes>
           <Route
-            path={NESTED_PATH_USER_ACCOUNT}
+            path={RELATIVE_PATH_USER_ACCOUNT}
             element={<AccountComponent panelClassName={styles.panel} panelHeaderClassName={styles.panelHeader} canUpdateEmail={canUpdateEmail} />}
           />
-          {profilesEnabled && <Route path={NESTED_PATH_USER_MY_PROFILE} element={<EditProfile contained />} />}
+          {profilesEnabled && <Route path={RELATIVE_PATH_USER_MY_PROFILE} element={<EditProfile contained />} />}
           {favoritesList && (
             <Route
-              path={NESTED_PATH_USER_FAVORITES}
+              path={RELATIVE_PATH_USER_FAVORITES}
               element={
                 <>
                   <PlaylistContainer type={PersonalShelf.Favorites} showEmpty>
@@ -183,10 +188,10 @@ const User = (): JSX.Element => {
             />
           )}
           <Route
-            path={NESTED_PATH_USER_PAYMENTS}
-            element={accessModel !== ACCESS_MODEL.AVOD ? <PaymentContainer /> : <Navigate to={NESTED_PATH_USER_ACCOUNT} />}
+            path={RELATIVE_PATH_USER_PAYMENTS}
+            element={accessModel !== ACCESS_MODEL.AVOD ? <PaymentContainer /> : <Navigate to={RELATIVE_PATH_USER_ACCOUNT} />}
           />
-          <Route path="*" element={<Navigate to={NESTED_PATH_USER_ACCOUNT} />} />
+          <Route path="*" element={<Navigate to={RELATIVE_PATH_USER_ACCOUNT} />} />
         </Routes>
       </div>
     </div>

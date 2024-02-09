@@ -3,7 +3,7 @@ import epgChannelsFixture from '@jwp/ott-testing/fixtures/epgChannels.json';
 
 import type { Playlist, PlaylistItem } from '../../types/playlist';
 import type { EpgChannel } from '../../types/epg';
-import { NESTED_PATH_USER_ACCOUNT } from '../paths';
+import { RELATIVE_PATH_USER_ACCOUNT } from '../paths';
 
 import { createURL, liveChannelsURL, mediaURL, playlistURL, userProfileURL } from './urlFormatting';
 
@@ -59,7 +59,7 @@ describe('createPath, mediaURL, playlistURL and liveChannelsURL', () => {
     expect(url).toEqual('/u/my-profile/testprofile123');
   });
   test('valid nested user path', () => {
-    const url = NESTED_PATH_USER_ACCOUNT;
+    const url = RELATIVE_PATH_USER_ACCOUNT;
 
     expect(url).toEqual('my-account');
   });

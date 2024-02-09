@@ -1,5 +1,5 @@
 import type { PlaylistItem } from '../../types/playlist';
-import { NESTED_PATH_USER_MY_PROFILE, PATH_MEDIA, PATH_PLAYLIST, PATH_USER_MY_PROFILE } from '../paths';
+import { RELATIVE_PATH_USER_MY_PROFILE, PATH_MEDIA, PATH_PLAYLIST, PATH_USER_MY_PROFILE } from '../paths';
 
 import { getLegacySeriesPlaylistIdFromEpisodeTags, getSeriesPlaylistIdFromCustomParams } from './media';
 
@@ -111,7 +111,7 @@ export const liveChannelsURL = (playlistId: string, channelId?: string, play = f
 };
 
 export const userProfileURL = (profileId: string, nested = false) => {
-  const path = nested ? NESTED_PATH_USER_MY_PROFILE : PATH_USER_MY_PROFILE;
+  const path = nested ? RELATIVE_PATH_USER_MY_PROFILE : PATH_USER_MY_PROFILE;
 
   return createPath(path, { id: profileId });
 };
