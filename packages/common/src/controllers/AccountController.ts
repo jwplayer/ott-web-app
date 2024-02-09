@@ -171,22 +171,23 @@ export default class AccountController {
     try {
       const response = await this.accountService.login({ email, password, referrer });
 
-      if (!response) throw new Error("Couldn't login");
+      if (response) {
+        await this.afterLogin(response.user, response.customerConsents);
+        await this.favoritesController?.restoreFavorites();
+        await this.watchHistoryController?.restoreWatchHistory();
 
-      await this.afterLogin(response.user, response.customerConsents);
-      await this.favoritesController?.restoreFavorites().catch(logDev);
-      await this.watchHistoryController?.restoreWatchHistory().catch(logDev);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        if (error.message.toLowerCase().includes('invalid param email')) {
-          throw new FormValidationError({ email: [i18next.t('account:login.wrong_email')] });
-        } else {
-          throw new FormValidationError({ form: [i18next.t('account:login.wrong_combination')] });
-        }
+        return;
       }
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message.toLowerCase().includes('invalid param email')) {
+        throw new FormValidationError({ email: [i18next.t('account:login.wrong_email')] });
+      }
+    } finally {
+      useAccountStore.setState({ loading: false });
     }
 
-    return useAccountStore.setState({ loading: false });
+    // consider any unknown response as a wrong combinations error (we could specify this even more)
+    throw new FormValidationError({ form: [i18next.t('account:login.wrong_combination')] });
   };
 
   logout = async () => {
@@ -204,6 +205,8 @@ export default class AccountController {
       if (response) {
         const { user, customerConsents } = response;
         await this.afterLogin(user, customerConsents);
+
+        return;
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -213,14 +216,12 @@ export default class AccountController {
           throw new FormValidationError({ form: [i18next.t('account:registration.user_exists')] });
         } else if (errorMessage.includes('invalid param password')) {
           throw new FormValidationError({ password: [i18next.t('account:registration.invalid_password')] });
-        } else {
-          // in case the endpoint fails
-          throw new FormValidationError({ password: [i18next.t('account:registration.failed_to_create')] });
         }
       }
     }
 
-    return;
+    // in case the endpoint fails
+    throw new FormValidationError({ form: [i18next.t('account:registration.failed_to_create')] });
   };
 
   updateConsents = async (customerConsents: CustomerConsent[]): Promise<ServiceResponse<CustomerConsent[]>> => {

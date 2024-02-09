@@ -7,6 +7,7 @@ import type { PlaylistItem } from '../../types/playlist';
 import type { Customer } from '../../types/account';
 import { getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
+import { logDev } from '../utils/common';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
@@ -61,9 +62,15 @@ export default class FavoriteService {
       return [];
     }
 
-    const playlistItems = await this.apiService.getMediaByWatchlist(favoritesList, mediaIds);
+    try {
+      const playlistItems = await this.apiService.getMediaByWatchlist(favoritesList, mediaIds);
 
-    return (playlistItems || []).map((item) => this.createFavorite(item));
+      return (playlistItems || []).map((item) => this.createFavorite(item));
+    } catch (error: unknown) {
+      logDev('Failed to get favorites', error);
+    }
+
+    return [];
   };
 
   serializeFavorites = (favorites: Favorite[]): SerializedFavorite[] => {

@@ -6,6 +6,7 @@ import type { SerializedWatchHistoryItem, WatchHistoryItem } from '../../types/w
 import type { Customer } from '../../types/account';
 import { getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
+import { logDev } from '../utils/common';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
@@ -91,19 +92,25 @@ export default class WatchHistoryService {
       return [];
     }
 
-    const watchHistoryItems = await this.getWatchHistoryItems(continueWatchingList, ids);
-    const seriesItems = await this.getWatchHistorySeriesItems(continueWatchingList, ids);
+    try {
+      const watchHistoryItems = await this.getWatchHistoryItems(continueWatchingList, ids);
+      const seriesItems = await this.getWatchHistorySeriesItems(continueWatchingList, ids);
 
-    return savedItems
-      .map((item) => {
-        const parentSeries = seriesItems?.[item.mediaid];
-        const historyItem = watchHistoryItems[item.mediaid];
+      return savedItems
+        .map((item) => {
+          const parentSeries = seriesItems?.[item.mediaid];
+          const historyItem = watchHistoryItems[item.mediaid];
 
-        if (historyItem) {
-          return this.createWatchHistoryItem(parentSeries || historyItem, item.mediaid, parentSeries?.mediaid, item.progress);
-        }
-      })
-      .filter((item): item is WatchHistoryItem => Boolean(item));
+          if (historyItem) {
+            return this.createWatchHistoryItem(parentSeries || historyItem, item.mediaid, parentSeries?.mediaid, item.progress);
+          }
+        })
+        .filter((item): item is WatchHistoryItem => Boolean(item));
+    } catch (error: unknown) {
+      logDev('Failed to get watch history items', error);
+    }
+
+    return [];
   };
 
   serializeWatchHistory = (watchHistory: WatchHistoryItem[]): SerializedWatchHistoryItem[] =>
