@@ -16,7 +16,6 @@ import type {
   Payment,
   PaymentMethod,
   SwitchOffer,
-  UpdateOrderPayload,
 } from '../../types/checkout';
 import CheckoutService from '../services/integrations/CheckoutService';
 import SubscriptionService from '../services/integrations/SubscriptionService';
@@ -73,36 +72,33 @@ export default class CheckoutController {
   };
 
   updateOrder = async (order: Order, paymentMethodId?: number, couponCode?: string | null): Promise<void> => {
-    const updateOrderPayload: UpdateOrderPayload = {
-      order,
-      paymentMethodId,
-      couponCode,
-    };
+    let response;
 
     try {
-      const response = await this.checkoutService.updateOrder(updateOrderPayload);
-
-      if (response.errors.length > 0) {
-        // clear the order when the order doesn't exist on the server
-        if (response.errors[0].includes(`Order with ${order.id} not found`)) {
-          useCheckoutStore.getState().setOrder(null);
-        }
-
-        throw new FormValidationError({ order: [response.errors[0]] });
-      }
-
-      if (response.responseData?.order) {
-        useCheckoutStore.getState().setOrder(response.responseData?.order);
-      }
+      response = await this.checkoutService.updateOrder({ order, paymentMethodId, couponCode });
     } catch (error: unknown) {
-      if (error instanceof FormValidationError) {
-        throw error;
-      }
-
+      // TODO: we currently (falsely) assume that the only error caught is because the coupon is not valid, but there
+      //  could be a network failure as well (JWPCheckoutService)
       throw new FormValidationError({ couponCode: [i18next.t('account:checkout.coupon_not_valid')] });
     }
 
-    return;
+    if (response.errors.length > 0) {
+      // clear the order when the order doesn't exist on the server
+      if (response.errors[0].includes(`Order with ${order.id} not found`)) {
+        useCheckoutStore.getState().setOrder(null);
+      }
+
+      // TODO: this handles the `Coupon ${couponCode} not found` message (CleengCheckoutService)
+      if (response.errors[0].includes(`not found`)) {
+        throw new FormValidationError({ couponCode: [i18next.t('account:checkout.coupon_not_valid')] });
+      }
+
+      throw new FormValidationError({ form: response.errors });
+    }
+
+    if (response.responseData.order) {
+      useCheckoutStore.getState().setOrder(response.responseData?.order);
+    }
   };
 
   getPaymentMethods = async (): Promise<PaymentMethod[]> => {
