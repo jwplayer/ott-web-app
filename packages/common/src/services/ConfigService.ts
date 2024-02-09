@@ -15,7 +15,6 @@ import ApiService from './ApiService';
 
 @injectable()
 export default class ConfigService {
-  private CONFIG_HOST = env.APP_API_BASE_URL;
   // Explicitly set default config here as a local variable,
   // otherwise if it's a module level const, the merge below causes changes to nested properties
   private DEFAULT_CONFIG: Config = {
@@ -61,9 +60,8 @@ export default class ConfigService {
     if (!source) {
       return undefined;
     }
-
     if (source.match(/^[a-z,\d]{8}$/)) {
-      return `${this.CONFIG_HOST}/apps/configs/${source}.json`;
+      return `${env.APP_API_BASE_URL}/apps/configs/${source}.json`;
     }
 
     return source;

@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "vite",
+    "start:jwdev": "vite --mode jwdev",
     "start:test": "vite build --mode test && vite preview --port 8080",
     "build": "vite build --mode ${MODE:=prod} && sh scripts/compressIni.sh build/public/.webapp.ini",
     "lint:ts": "tsc --pretty --noEmit -p ./ && tsc --pretty --noEmit -p ./test-e2e",
