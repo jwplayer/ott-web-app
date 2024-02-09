@@ -22,7 +22,11 @@ const Registration = () => {
   const [consentValues, setConsentValues] = useState<Record<string, string | boolean>>({});
   const [consentErrors, setConsentErrors] = useState<string[]>([]);
 
-  const { publisherConsents, loading } = useAccountStore(({ publisherConsents, loading }) => ({ publisherConsents, loading }));
+  const { publisherConsents, publisherConsentsLoading, loading } = useAccountStore(({ publisherConsents, publisherConsentsLoading, loading }) => ({
+    publisherConsents,
+    publisherConsentsLoading,
+    loading,
+  }));
 
   const handleChangeConsent: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ currentTarget }) => {
     if (!currentTarget) return;
@@ -84,7 +88,7 @@ const Registration = () => {
       submitting={submitting}
       consentValues={consentValues}
       publisherConsents={publisherConsents}
-      loading={loading}
+      loading={loading || publisherConsentsLoading}
       canSubmit={!!values.email && !!values.password}
     />
   );

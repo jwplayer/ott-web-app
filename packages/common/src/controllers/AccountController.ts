@@ -270,10 +270,10 @@ export default class AccountController {
   getPublisherConsents = async () => {
     const { config } = useConfigStore.getState();
 
-    useAccountStore.setState({ loading: true });
+    useAccountStore.setState({ publisherConsentsLoading: true });
     const consents = await this.accountService.getPublisherConsents(config);
 
-    useAccountStore.setState({ publisherConsents: consents, loading: false });
+    useAccountStore.setState({ publisherConsents: consents, publisherConsentsLoading: false });
   };
 
   getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
