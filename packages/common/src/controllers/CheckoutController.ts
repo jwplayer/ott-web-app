@@ -27,7 +27,7 @@ import type { GetCustomerIP } from '../../types/get-customer-ip';
 import AccountService from '../services/integrations/AccountService';
 import { useCheckoutStore } from '../stores/CheckoutStore';
 import { useAccountStore } from '../stores/AccountStore';
-import { FormValidationError } from '../FormValidationError';
+import { FormValidationError } from '../errors/FormValidationError';
 
 @injectable()
 export default class CheckoutController {

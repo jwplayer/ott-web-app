@@ -23,7 +23,7 @@ import type { ServiceResponse } from '../../types/service';
 import { useAccountStore } from '../stores/AccountStore';
 import { useConfigStore } from '../stores/ConfigStore';
 import { useProfileStore } from '../stores/ProfileStore';
-import { FormValidationError } from '../FormValidationError';
+import { FormValidationError } from '../errors/FormValidationError';
 
 import WatchHistoryController from './WatchHistoryController';
 import ProfileController from './ProfileController';

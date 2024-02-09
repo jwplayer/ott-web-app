@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { type AnySchema, ValidationError, SchemaOf } from 'yup';
 import type { FormErrors, GenericFormValues, UseFormBlurHandler, UseFormChangeHandler, UseFormSubmitHandler } from '@jwp/ott-common/types/form';
-import { FormValidationError } from '@jwp/ott-common/src/FormValidationError';
+import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 import { useTranslation } from 'react-i18next';
 
 export type UseFormReturnValue<T> = {

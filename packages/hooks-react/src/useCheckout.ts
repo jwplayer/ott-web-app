@@ -1,6 +1,6 @@
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
-import type { FormValidationError } from '@jwp/ott-common/src/FormValidationError';
+import type { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';

@@ -4,7 +4,7 @@ import useCheckout from '@jwp/ott-hooks-react/src/useCheckout';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
-import { FormValidationError } from '@jwp/ott-common/src/FormValidationError';
+import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
