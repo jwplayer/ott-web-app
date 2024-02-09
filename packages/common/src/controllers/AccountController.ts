@@ -408,7 +408,7 @@ export default class AccountController {
     if (accessModel !== 'SVOD') {
       await this.refreshEntitlements?.();
 
-      return useAccountStore.setState({ loading: true });
+      return useAccountStore.setState({ loading: false });
     }
 
     const [activeSubscription, transactions, activePayment] = await Promise.all([
