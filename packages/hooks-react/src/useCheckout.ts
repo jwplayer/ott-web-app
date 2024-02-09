@@ -11,7 +11,7 @@ import { useMutation } from 'react-query';
 type Props = {
   onUpdateOrderSuccess?: () => void;
   onSubmitPaymentWithoutDetailsSuccess: () => void;
-  onSubmitPaypalPaymentSuccess: (redirectUrl: string) => void;
+  onSubmitPaypalPaymentSuccess: (response: { redirectUrl: string }) => void;
   onSubmitStripePaymentSuccess: () => void;
 };
 
@@ -52,7 +52,11 @@ const useCheckout = ({ onUpdateOrderSuccess, onSubmitPaymentWithoutDetailsSucces
     },
   });
 
-  const submitPaymentPaypal = useMutation<string, Error, { successUrl: string; waitingUrl: string; cancelUrl: string; errorUrl: string; couponCode: string }>({
+  const submitPaymentPaypal = useMutation<
+    { redirectUrl: string },
+    Error,
+    { successUrl: string; waitingUrl: string; cancelUrl: string; errorUrl: string; couponCode: string }
+  >({
     mutationKey: ['submitPaymentPaypal'],
     mutationFn: checkoutController.paypalPayment,
     onSuccess: onSubmitPaypalPaymentSuccess,

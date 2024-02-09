@@ -31,8 +31,8 @@ const Checkout = () => {
     useCheckout({
       onUpdateOrderSuccess: () => !!couponCode && setShowCouponCodeSuccess(true),
       onSubmitPaymentWithoutDetailsSuccess: () => navigate(offerType === 'svod' ? welcomeUrl : closeModalUrl, { replace: true }),
-      onSubmitPaypalPaymentSuccess: (paypalUrl: string) => {
-        window.location.href = paypalUrl;
+      onSubmitPaypalPaymentSuccess: ({ redirectUrl }) => {
+        window.location.href = redirectUrl;
       },
       onSubmitStripePaymentSuccess: () => navigate(modalURLFromLocation(location, 'waiting-for-payment'), { replace: true }),
     });

@@ -206,7 +206,7 @@ export default class CheckoutController {
     cancelUrl: string;
     errorUrl: string;
     couponCode: string;
-  }): Promise<string> => {
+  }): Promise<{ redirectUrl: string }> => {
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
@@ -222,7 +222,9 @@ export default class CheckoutController {
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
 
-    return response.responseData.redirectUrl;
+    return {
+      redirectUrl: response.responseData.redirectUrl,
+    };
   };
 
   getSubscriptionSwitches = async (): Promise<unknown> => {
