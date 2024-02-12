@@ -28,7 +28,9 @@ export default class ConfigService {
     content: [],
     menu: [],
     integrations: {},
-    styling: {},
+    styling: {
+      footerText: '',
+    },
     features: {},
   };
 

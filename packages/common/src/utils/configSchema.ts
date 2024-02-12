@@ -41,6 +41,7 @@ const stylingSchema: SchemaOf<Styling> = object({
   backgroundColor: string().nullable(),
   highlightColor: string().nullable(),
   headerBackground: string().nullable(),
+  footerText: string().nullable(),
 });
 
 export const configSchema: SchemaOf<Config> = object({

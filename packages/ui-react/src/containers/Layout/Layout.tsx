@@ -39,9 +39,10 @@ const Layout = () => {
   );
   const isLoggedIn = !!useAccountStore(({ user }) => user);
   const favoritesEnabled = !!config.features?.favoritesList;
-  const { menu, assets, siteName, description, features } = config;
+  const { menu, assets, siteName, description, features, styling } = config;
   const metaDescription = description || t('default_description');
-  const footerText = unicodeToChar(env.APP_FOOTER_TEXT);
+  const { footerText: configFooterText } = styling || {};
+  const footerText = configFooterText || unicodeToChar(env.APP_FOOTER_TEXT);
 
   const profileController = getModule(ProfileController, false);
 

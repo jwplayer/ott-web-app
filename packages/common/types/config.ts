@@ -59,6 +59,10 @@ export type Styling = {
   backgroundColor?: string | null;
   highlightColor?: string | null;
   headerBackground?: string | null;
+  /**
+   * @deprecated the footerText is present in the config, but can't be updated in the JWP Dashboard
+   */
+  footerText?: string | null;
 };
 
 export type Cleeng = {
