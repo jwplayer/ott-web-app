@@ -44,7 +44,11 @@ const PersonalDetailsForm: React.FC<Props> = ({
   questionErrors,
 }: Props) => {
   const { t } = useTranslation('account');
-  const renderQuestion = ({ value, key, question, required }: CleengCaptureQuestionField) => {
+  const renderQuestion = ({ value, key, question, required, enabled }: CleengCaptureQuestionField) => {
+    if (!enabled) {
+      return null;
+    }
+
     const values = value?.split(';').map((question) => {
       const [value, label = value] = question.split(':');
 
