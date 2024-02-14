@@ -60,13 +60,19 @@ const PersonalDetailsForm: React.FC<Props> = ({
       key,
     };
 
-    const optionsKeys = Object.keys(values);
+    // The rendered field is determined by the given available options for each question:
+    // TextField <- when there is exactly 1 option and the value is empty (e.g. "")
+    // Checkbox  <- when there is exactly 1 option and the value is not empty (e.g. "accepted")
+    // Radio     <- when there are exactly 2 options
+    // Dropdown  <- when there are more than 2 options
 
-    if (optionsKeys.length === 1) {
+    if (values.length === 1 && values[0].value === '') {
+      return <TextField value={values[0].value} label={question} {...props} />;
+    } else if (values.length === 1) {
       return <Checkbox checked={!!questionValues[key]} value={values[0].value} header={question} label={values[0].label} {...props} />;
-    } else if (optionsKeys.length === 2) {
+    } else if (values.length === 2) {
       return <Radio values={values} value={questionValues[key]} header={question} {...props} />;
-    } else if (optionsKeys.length > 2) {
+    } else if (values.length > 2) {
       return <Dropdown options={values} value={questionValues[key]} label={question} defaultLabel={t('personal_details.select_answer')} {...props} fullWidth />;
     }
 
