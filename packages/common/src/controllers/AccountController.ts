@@ -208,6 +208,8 @@ export default class AccountController {
 
         if (errorMessage.includes('customer already exists') || errorMessage.includes('account already exists')) {
           throw new FormValidationError({ form: [i18next.t('account:registration.user_exists')] });
+        } else if (errorMessage.includes('please enter a valid e-mail address')) {
+          throw new FormValidationError({ email: [i18next.t('account:registration.field_is_not_valid_email')] });
         } else if (errorMessage.includes('invalid param password')) {
           throw new FormValidationError({ password: [i18next.t('account:registration.invalid_password')] });
         }

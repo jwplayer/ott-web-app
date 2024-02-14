@@ -25,7 +25,7 @@ import { modalURLFromLocation } from '../../utils/location';
  * @returns {void}
  *
  */
-export const processBillingReceipt = (receipt: Blob | string, transactionId: string) => {
+const processBillingReceipt = (receipt: Blob | string, transactionId: string) => {
   if (receipt instanceof Blob) {
     const url = window.URL.createObjectURL(new Blob([receipt]));
     const link = document.createElement('a');
