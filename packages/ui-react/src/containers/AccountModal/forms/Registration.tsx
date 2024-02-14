@@ -70,7 +70,7 @@ const Registration = () => {
 
       if (consentsErrors.length) {
         setConsentErrors(consentsErrors);
-        throw new Error('Consents error');
+        throw new Error(t('registration.consents_error'));
       }
 
       await accountController.register(email, password, window.location.href, formatConsentsFromValues(publisherConsents, consentValues));
