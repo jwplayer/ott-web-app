@@ -39,7 +39,7 @@ const VideoDetails: React.VFC<Props> = ({
 
   return (
     <div data-testid={testId('cinema-layout')}>
-      <header className={styles.video} data-testid={testId('video-details')}>
+      <header className={styles.video} data-testid={testId('video-details')} id="video-details">
         <div className={classNames(styles.main, styles.mainPadding)}>
           <Image className={styles.poster} image={image} alt={alt} width={1280} />
           <div className={styles.posterFade} />
