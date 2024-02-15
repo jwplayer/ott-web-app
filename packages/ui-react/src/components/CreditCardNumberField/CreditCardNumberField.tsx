@@ -73,6 +73,7 @@ const CreditCardNumberField: React.FC<Props> = ({ value, error, onChange, onBlur
       type="text"
       placeholder="1234 5678 9012 3456"
       rightControl={cardIssuer}
+      autoComplete="cc-number"
       required
     />
   );
