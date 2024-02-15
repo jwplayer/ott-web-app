@@ -20,6 +20,7 @@ type Props = {
   error?: string;
   errors: FormErrors<EditPasswordFormData>;
   value: EditPasswordFormData;
+  validationError?: boolean;
   submitting: boolean;
   showOldPasswordField?: boolean;
   showResetTokenField?: boolean;
@@ -36,13 +37,18 @@ const EditPasswordForm: React.FC<Props> = ({
   value,
   errors,
   submitting,
+  validationError,
   email,
   onResendEmailClick,
 }: Props) => {
   const { t } = useTranslation(['account', 'user']);
   return (
     <form onSubmit={onSubmit} data-testid={testId('forgot-password-form')} noValidate className={styles.forgotPasswordForm}>
-      {errors.form && <FormFeedback variant="error">{errors.form}</FormFeedback>}
+      {errors.form && (
+        <FormFeedback variant="error" visible={!validationError}>
+          {errors.form}
+        </FormFeedback>
+      )}
       <h2 className={styles.title}>{showOldPasswordField && showResetTokenField ? t('user:account.add_password') : t('reset.password_reset')}</h2>
       {showOldPasswordField && showResetTokenField && (
         <p className={styles.paragraph}>

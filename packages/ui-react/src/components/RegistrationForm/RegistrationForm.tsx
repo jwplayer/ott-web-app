@@ -34,7 +34,7 @@ type Props = {
   consentValues: Record<string, string | boolean>;
   consentErrors: string[];
   submitting: boolean;
-  canSubmit: boolean;
+  validationError?: boolean;
   publisherConsents: CustomFormField[] | null;
 };
 
@@ -45,8 +45,8 @@ const RegistrationForm: React.FC<Props> = ({
   values,
   errors,
   submitting,
+  validationError,
   loading,
-  canSubmit,
   publisherConsents,
   consentValues,
   onConsentChange,
@@ -81,14 +81,20 @@ const RegistrationForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
-      <div ref={ref}>{errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}</div>
+      <div ref={ref}>
+        {errors.form ? (
+          <FormFeedback variant="error" visible={!validationError}>
+            {errors.form}
+          </FormFeedback>
+        ) : null}
+      </div>
       <TextField
         value={values.email}
         onChange={onChange}
         onBlur={onBlur}
         label={t('registration.email')}
         placeholder={t('registration.email')}
-        error={!!errors.email || !!errors.form}
+        error={!!errors.email}
         helperText={errors.email}
         name="email"
         type="email"
@@ -101,7 +107,7 @@ const RegistrationForm: React.FC<Props> = ({
         onBlur={onBlur}
         label={t('registration.password')}
         placeholder={t('registration.password')}
-        error={!!errors.password || !!errors.form}
+        error={!!errors.password}
         helperText={
           <React.Fragment>
             <PasswordStrength password={values.password} />
@@ -134,7 +140,7 @@ const RegistrationForm: React.FC<Props> = ({
                 value={consentValues[consent.name] || ''}
                 required={consent.required}
                 error={!!consentError}
-                helperText={consentError ? t(`registration.field_${consent.type}_required`) : undefined}
+                helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required', { field: consent.name }) : undefined}
                 onChange={onConsentChange}
                 lang={htmlLang}
               />
@@ -149,7 +155,7 @@ const RegistrationForm: React.FC<Props> = ({
         variant="contained"
         color="primary"
         size="large"
-        disabled={submitting || !canSubmit}
+        disabled={submitting}
         fullWidth
       />
       <p className={styles.bottom}>

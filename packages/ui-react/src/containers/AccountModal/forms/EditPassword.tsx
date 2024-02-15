@@ -100,6 +100,7 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
       onBlur={passwordForm.handleBlur}
       errors={passwordForm.errors}
       onSubmit={passwordForm.handleSubmit}
+      validationError={passwordForm.validationSchemaError}
       showOldPasswordField={!!(user && !resetPasswordTokenParam)}
       showResetTokenField={type === 'add' || (!user && !resetPasswordTokenParam)}
       email={emailParam || email}

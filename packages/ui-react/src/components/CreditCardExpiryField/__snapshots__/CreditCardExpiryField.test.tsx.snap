@@ -17,7 +17,6 @@ exports[`<CreditCardExpiryField> > renders and matches snapshot 1`] = `
       <input
         aria-describedby="helper_text_1235_cardexpiry"
         aria-invalid="false"
-        aria-required="true"
         autocomplete="cc-exp"
         class="_input_e16c1b"
         id="text-field_1235_cardexpiry"

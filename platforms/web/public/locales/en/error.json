@@ -13,5 +13,9 @@
   "unknown_error": "Unknown error",
   "adyen_order_unknown": "Order is unknown",
   "empty_shelves_heading": "No content available",
-  "empty_shelves_description": "We apologize, but there is no content available in your region."
+  "empty_shelves_description": "We apologize, but there is no content available in your region.",
+  "validation_form_error": {
+    "other": "Please correct your mistakes before proceeding.",
+    "required": "Please fill in all required fields before proceeding."
+  }
 }
