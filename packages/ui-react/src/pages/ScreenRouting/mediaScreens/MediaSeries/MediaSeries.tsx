@@ -10,7 +10,8 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { generateEpisodeJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import { getEpisodesInSeason, getFiltersFromSeries } from '@jwp/ott-common/src/utils/series';
-import { formatSeriesMetaString, formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
+import { createVideoMetadata } from '@jwp/ott-common/src/utils/media';
+import { formatSeriesMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { VideoProgressMinMax } from '@jwp/ott-common/src/constants';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
@@ -34,6 +35,7 @@ import FavoriteButton from '../../../../containers/FavoriteButton/FavoriteButton
 import Button from '../../../../components/Button/Button';
 import Loading from '../../../Loading/Loading';
 import Icon from '../../../../components/Icon/Icon';
+import VideoMetaData from '../../../../components/VideoMetaData/VideoMetaData';
 import { createURLFromLocation } from '../../../../utils/location';
 
 const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
@@ -188,7 +190,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const canonicalUrl = `${window.location.origin}${mediaURL({ media: seriesMedia, episodeId: episode?.mediaid })}`;
 
-  const primaryMetadata = formatVideoMetaString(selectedItem, t('video:total_episodes', { count: series.episode_count }));
+  const primaryMetadata = <VideoMetaData attributes={createVideoMetadata(selectedItem, t('video:total_episodes', { count: series.episode_count }))} />;
   const secondaryMetadata = episodeMetadata && episode && (
     <>
       <strong>{formatSeriesMetaString(episodeMetadata.seasonNumber, episodeMetadata.episodeNumber)}</strong> - {episode.title}

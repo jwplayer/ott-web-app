@@ -24,6 +24,7 @@ import Tag from '../../../../components/Tag/Tag';
 import Loading from '../../../Loading/Loading';
 import VideoDetails from '../../../../components/VideoDetails/VideoDetails';
 import Icon from '../../../../components/Icon/Icon';
+import VideoMetaData from '../../../../components/VideoMetaData/VideoMetaData';
 
 import styles from './PlaylistLiveChannels.module.scss';
 
@@ -87,15 +88,14 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     const endTime = new Date(program.endTime);
     const durationInSeconds = differenceInSeconds(endTime, startTime);
     const duration = formatDurationTag(durationInSeconds);
+    const attributes = [t('on_channel', { name: channel.title }), duration].filter(Boolean);
 
     return (
       <>
         <Tag className={styles.tag} isLive={isLive}>
           {isLive ? t('common:live') : `${format(startTime, 'p')} - ${format(endTime, 'p')}`}
         </Tag>
-        {t('on_channel', { name: channel.title })}
-        {' • '}
-        {duration}
+        <VideoMetaData attributes={attributes} />
       </>
     );
   }, [channel, isLive, program, t]);
