@@ -1,8 +1,7 @@
-const formFeedback = 'div[class*=formFeedback]';
-
 export function tryToSubmitForm(I: CodeceptJS.I) {
   I.submitForm(false);
-  I.dontSeeElement(formFeedback);
+  I.seeElementInDOM('div[class*=formFeedback]'); // This element can be visually hidden through CSS
+  I.dontSee('Unknown error');
   I.dontSee('Incorrect email/password combination');
 }
 
@@ -20,14 +19,17 @@ export function fillAndCheckField(I: CodeceptJS.I, field, value, error: string |
   checkField(I, field, error);
 }
 
-export function checkField(I: CodeceptJS.I, field, error: string | boolean = false) {
+export async function checkField(I: CodeceptJS.I, field, error: string | boolean = false) {
   const hoverColor = 'rgba(255, 255, 255, 0.7)';
   const activeColor = error ? 'rgb(255, 53, 53)' : 'rgb(255, 255, 255)';
   const restingColor = error ? 'rgb(255, 53, 53)' : 'rgba(255, 255, 255, 0.34)';
 
   // If error === true, there's an error, but no associated message
   if (error && error !== true) {
+    const helperId = await I.grabAttributeFrom(`input[name="${field}"]`, 'aria-describedby');
     I.see(error, `[data-testid=login-${field}-input]`);
+    I.seeElement(`#${helperId}[class*=helperText]`);
+    I.seeAttributesOnElements(`[name="${field}"]`, { 'aria-invalid': 'true' });
     I.seeCssPropertiesOnElements(`[data-testid="login-${field}-input"] [class*=helperText]`, { color: '#FF3535' });
   } else {
     I.dontSeeElement(`[class*=helperText] [data-testid="${field}-input"]`);

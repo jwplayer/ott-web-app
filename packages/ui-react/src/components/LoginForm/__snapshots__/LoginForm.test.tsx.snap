@@ -46,7 +46,6 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
         <input
           aria-describedby="helper_text_1235_email"
           aria-invalid="false"
-          aria-required="true"
           autocomplete="email"
           class="_input_e16c1b"
           id="text-field_1235_email"
@@ -74,7 +73,6 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
         <input
           aria-describedby="helper_text_1235_password"
           aria-invalid="false"
-          aria-required="true"
           autocomplete="current-password"
           class="_input_e16c1b"
           id="text-field_1235_password"

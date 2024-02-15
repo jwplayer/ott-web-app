@@ -18,7 +18,6 @@ exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
         aria-describedby="helper_text_1235_cardcvc"
         aria-invalid="false"
         aria-label="payment.security_code"
-        aria-required="true"
         autocomplete="cc-csc"
         class="_input_e16c1b"
         id="text-field_1235_cardcvc"

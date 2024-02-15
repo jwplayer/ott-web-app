@@ -41,7 +41,9 @@
       "invalid_password": "Password incorrect!",
       "last_name_too_long": "Please limit Last Name to 50 characters or fewer.",
       "please_enter_valid_email": "Please enter a valid email address.",
-      "unknown_error": "An unknown error occurred"
+      "unknown_error": "An unknown error occurred",
+      "validation_error": "Please correct your mistakes before proceeding.",
+      "wrong_combination": "Incorrect email/password combination"
     },
     "export_data_body": "Export all of your personal account data to <strong>{{email}}</strong> as an attachment.",
     "export_data_error": "An error occurred while exporting your account data.",

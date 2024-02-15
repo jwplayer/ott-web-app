@@ -13,5 +13,9 @@
   "unknown_error": "Error desconocido",
   "adyen_order_unknown": "El orden es desconocido",
   "empty_shelves_heading": "No hay contenido disponible",
-  "empty_shelves_description": "Nos disculpamos, pero no hay contenido disponible en su región."
+  "empty_shelves_description": "Nos disculpamos, pero no hay contenido disponible en su región.",
+  "validation_form_error": {
+    "other": "Corrija sus errores antes de continuar.",
+    "required": "Complete todos los campos obligatorios antes de continuar."
+  }
 }

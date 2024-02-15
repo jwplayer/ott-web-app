@@ -28,11 +28,13 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
 
   const socialLoginURLs = useSocialLoginUrls(window.location.href.split('?')[0]);
 
-  const { values, errors, submitting, handleSubmit, handleChange } = useForm<LoginFormData>({
+  const { values, errors, submitting, validationSchemaError, handleSubmit, handleChange } = useForm<LoginFormData>({
     initialValues: { email: '', password: '' },
     validationSchema: object().shape({
-      email: string().email(t('login.field_is_not_valid_email')).required(t('login.field_required')),
-      password: string().required(t('login.field_required')),
+      email: string()
+        .email(t('login.field_is_not_valid_email'))
+        .required(t('login.field_required', { field: t('login.email') })),
+      password: string().required(t('login.field_required', { field: t('login.password') })),
     }),
     onSubmit: ({ email, password }) => accountController.login(email, password, window.location.href),
     onSubmitSuccess: () => {
@@ -46,6 +48,7 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
   return (
     <LoginForm
       values={values}
+      validationError={validationSchemaError}
       errors={errors}
       submitting={submitting}
       siteName={siteName}

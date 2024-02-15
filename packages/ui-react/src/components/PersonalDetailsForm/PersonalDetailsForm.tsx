@@ -21,6 +21,7 @@ type Props = {
   setValue: (key: keyof PersonalDetailsFormData, value: string) => void;
   error?: string;
   errors: FormErrors<PersonalDetailsFormData>;
+  validationError?: boolean;
   values: PersonalDetailsFormData;
   submitting: boolean;
   fields: Record<string, CleengCaptureField>;
@@ -34,6 +35,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
   onSubmit,
   onChange,
   setValue,
+  validationError,
   values,
   errors,
   submitting,
@@ -86,7 +88,11 @@ const PersonalDetailsForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} data-testid={testId('personal_details-form')} noValidate>
       <h2 className={styles.title}>{t('personal_details.title')}</h2>
-      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
+      {errors.form ? (
+        <FormFeedback variant="error" visible={!validationError}>
+          {errors.form}
+        </FormFeedback>
+      ) : null}
       {fields.firstNameLastName?.enabled ? (
         <React.Fragment>
           <TextField
@@ -94,7 +100,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             onChange={onChange}
             label={t('personal_details.fist_name')}
             placeholder={t('personal_details.fist_name')}
-            error={!!errors.firstName || !!errors.form}
+            error={!!errors.firstName}
             helperText={errors.firstName}
             required={fields.firstNameLastName.required}
             name="firstName"
@@ -105,7 +111,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             onChange={onChange}
             label={t('personal_details.last_name')}
             placeholder={t('personal_details.last_name')}
-            error={!!errors.lastName || !!errors.form}
+            error={!!errors.lastName}
             helperText={errors.lastName}
             required={fields.firstNameLastName.required}
             name="lastName"
@@ -119,7 +125,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
           onChange={onChange}
           label={t('personal_details.company_name')}
           placeholder={t('personal_details.company_name')}
-          error={!!errors.companyName || !!errors.form}
+          error={!!errors.companyName}
           helperText={errors.companyName}
           required={fields.companyName.required}
           name="companyName"
@@ -133,7 +139,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             onChange={onChange}
             label={t('personal_details.address')}
             placeholder={t('personal_details.address')}
-            error={!!errors.address || !!errors.form}
+            error={!!errors.address}
             helperText={errors.address}
             required={fields.address.required}
             name="address"
@@ -144,7 +150,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             onChange={onChange}
             label={t('personal_details.address2')}
             placeholder={t('personal_details.address2')}
-            error={!!errors.address2 || !!errors.form}
+            error={!!errors.address2}
             helperText={errors.address2}
             name="address2"
             autoComplete="address-line2"
@@ -154,7 +160,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             onChange={onChange}
             label={t('personal_details.city')}
             placeholder={t('personal_details.city')}
-            error={!!errors.city || !!errors.form}
+            error={!!errors.city}
             helperText={errors.city}
             required={fields.address.required}
             name="city"
@@ -165,7 +171,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             onChange={onChange}
             label={t('personal_details.state')}
             placeholder={t('personal_details.state')}
-            error={!!errors.state || !!errors.form}
+            error={!!errors.state}
             helperText={errors.state}
             required={fields.address.required}
             name="state"
@@ -176,7 +182,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             onChange={onChange}
             label={t('personal_details.post_code')}
             placeholder={t('personal_details.post_code')}
-            error={!!errors.postCode || !!errors.form}
+            error={!!errors.postCode}
             helperText={errors.postCode}
             required={fields.address.required}
             name="postCode"
@@ -190,7 +196,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
           onChange={onChange}
           label={t('personal_details.phone_number')}
           placeholder={t('personal_details.phone_number')}
-          error={!!errors.phoneNumber || !!errors.form}
+          error={!!errors.phoneNumber}
           helperText={errors.phoneNumber}
           required={fields.phoneNumber.required}
           name="phoneNumber"
@@ -201,7 +207,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
           value={values.birthDate}
           onChange={(event) => setValue('birthDate', event.currentTarget.value)}
           label={t('personal_details.birth_date')}
-          error={!!errors.birthDate || !!errors.form}
+          error={!!errors.birthDate}
           helperText={errors.birthDate}
           required={fields.birthDate.required}
           name="birthDate"

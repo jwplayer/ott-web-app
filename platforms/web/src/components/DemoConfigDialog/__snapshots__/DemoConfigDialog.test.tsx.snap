@@ -65,8 +65,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               >
                 <input
                   aria-describedby="helper_text_1235_app-config"
-                  aria-invalid="true"
-                  aria-required="true"
+                  aria-invalid="false"
                   autocapitalize="none"
                   class="_input_25c745"
                   id="text-field_1235_app-config"
@@ -79,9 +78,8 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 />
               </div>
               <div
-                aria-live="assertive"
                 class="_helperText_edc1c5 _error_edc1c5"
-                id="helper_text_1235_app-config_1235"
+                id="helper_text_1235_app-config"
               >
                 <span>
                   smth

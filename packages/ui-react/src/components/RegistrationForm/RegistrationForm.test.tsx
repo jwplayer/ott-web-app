@@ -18,7 +18,6 @@ describe('<RegistrationForm>', () => {
         consentErrors={[]}
         consentValues={{}}
         loading={false}
-        canSubmit={true}
         onConsentChange={vi.fn()}
       />,
     );
