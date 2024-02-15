@@ -469,7 +469,17 @@ export default class AccountController {
     assertModuleMethod(this.accountService.deleteAccount, 'deleteAccount is not available in account service');
     assertFeature(canDeleteAccount, 'Delete account');
 
-    return this.accountService.deleteAccount({ password });
+    try {
+      await this.accountService.deleteAccount({ password });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message.toLowerCase() : '';
+
+      if (message.includes('invalid credentials')) {
+        throw new FormValidationError({ form: [i18next.t('user:account.delete_account.invalid_credentials')] });
+      }
+
+      throw new FormValidationError({ form: [i18next.t('user:account.delete_account.error')] });
+    }
   };
 
   getReceipt = async (transactionId: string) => {

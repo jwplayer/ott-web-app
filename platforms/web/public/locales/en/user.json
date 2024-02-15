@@ -12,13 +12,14 @@
     "delete_account": {
       "body": "Permanently delete your account and all of your content.",
       "error": "An error occurred while deleting your account. Please try again.",
+      "invalid_credentials": "The submitted password is not valid",
       "modal": {
         "placeholder": "Enter your password",
         "text_cant_be_undone": "Please be aware that this process cannot be undone, so proceed with caution.",
         "text_contacts": "If you have any further questions or concerns, please do not hesitate to contact our support team.",
         "text_data_erasure": "Please note that if you choose to proceed with this process, all of your personal data will be erased from our system. This includes any personal information you provided during the registration process, as well as any location and device information that we gathered during the authentication process. Additionally, all other personal information stored in various parts of our database will be deleted as well. However, please be aware that due to some legislations we are required to keep certain personal data as part of transaction and subscription records.",
         "text_revoked_access": "Once the erasure is complete, all of your active accesses will be revoked, and any active login sessions, including this one, will be terminated. Your account information will no longer be accessible to our staff in any capacity.",
-        "title": "Enter password to continue",
+        "description": "Enter password to continue",
         "warning": "All active subscriptions that were purchased through a web browser will be automatically canceled upon erasure of personal data. However, if you purchased a subscription through iOS, Android, Roku, or Amazon apps, please be aware that it will not be canceled automatically. In this case, you will need to follow the usual subscription cancelation steps for each respective platform to manually cancel the subscription."
       },
       "title": "Delete account"

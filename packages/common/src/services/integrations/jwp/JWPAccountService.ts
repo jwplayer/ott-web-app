@@ -549,7 +549,11 @@ export default class JWPAccountService extends AccountService {
       const response = await InPlayer.Account.deleteAccount({ password, brandingId: 0 });
 
       return response.data;
-    } catch {
+    } catch (error: unknown) {
+      if (isCommonError(error)) {
+        throw new Error(error.response.data.message || 'Failed to delete account');
+      }
+
       throw new Error('Failed to delete account');
     }
   };
