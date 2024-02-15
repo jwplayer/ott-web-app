@@ -1,6 +1,7 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 @use '@jwp/ott-ui-react/src/styles/theme';
 @use '@jwp/ott-ui-react/src/styles/accessibility';
+@use '@jwp/ott-ui-react/src/styles/mixins/typography';
 
 .backButton {
   position: absolute;
@@ -108,7 +109,7 @@
   .couponCell {
     padding-top: 8px;
     padding-bottom: 8px;
-    line-height: 1em;
+    line-height: variables.$base-line-height;
 
     & > small {
       font-size: 14px;

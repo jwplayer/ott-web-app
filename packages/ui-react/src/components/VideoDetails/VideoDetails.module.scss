@@ -72,7 +72,7 @@
   align-items: center;
   margin-bottom: 8px;
   font-size: 16px;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.15px;
 
   > :first-child {
@@ -89,7 +89,7 @@
   margin-top: 24px;
   margin-bottom: 8px;
   font-size: 20px;
-  line-height: 20px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.5px;
 
   @include responsive.mobile-only() {
@@ -104,7 +104,7 @@
   margin-top: 0;
   margin-bottom: 24px;
   font-size: 18px;
-  line-height: 20px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.5px;
 }
 

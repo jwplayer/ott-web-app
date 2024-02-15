@@ -6,7 +6,7 @@
     color: variables.$white;
     font-family: var(--body-font-family);
     font-size: 16px;
-    line-height: 18px;
+    line-height: variables.$base-line-height;
   }
 
   .adyen-checkout__error-text {
@@ -20,6 +20,6 @@
     color: variables.$white;
     font-family: var(--body-font-family);
     font-size: 16px;
-    line-height: 18px;
+    line-height: variables.$base-line-height;
   }
 }

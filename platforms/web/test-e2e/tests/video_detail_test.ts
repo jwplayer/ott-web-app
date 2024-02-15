@@ -54,7 +54,7 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
 
     I.seeElement('div[aria-label="Collapse"]');
     I.dontSeeElement('div[aria-label="Expand"]');
-    checkHeight('160px');
+    checkHeight('216px');
 
     I.click('div[aria-label="Collapse"]');
 
