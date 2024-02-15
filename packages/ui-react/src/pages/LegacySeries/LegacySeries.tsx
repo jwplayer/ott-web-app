@@ -7,7 +7,8 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistoryStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { formatPlaylistMetaString, formatSeriesMetaString, formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
+import { createPlaylistMetadata, createVideoMetadata } from '@jwp/ott-common/src/utils/media';
+import { formatSeriesMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { legacySeriesURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
@@ -27,6 +28,7 @@ import FavoriteButton from '../../containers/FavoriteButton/FavoriteButton';
 import Button from '../../components/Button/Button';
 import Loading from '../Loading/Loading';
 import Icon from '../../components/Icon/Icon';
+import VideoMetaData from '../../components/VideoMetaData/VideoMetaData';
 
 import { filterSeries, generateLegacyEpisodeJSONLD, getEpisodesInSeason, getFiltersFromSeries, getNextItem } from './utils';
 
@@ -114,9 +116,11 @@ const LegacySeries = () => {
   const canonicalUrl = `${window.location.origin}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
   const backgroundImage = (selectedItem.backgroundImage as string) || undefined;
 
-  const primaryMetadata = episode
-    ? formatVideoMetaString(episode, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))
-    : formatPlaylistMetaString(seriesPlaylist, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }));
+  const primaryMetadata = episode ? (
+    <VideoMetaData attributes={createVideoMetadata(episode, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))} />
+  ) : (
+    <VideoMetaData attributes={createPlaylistMetadata(seriesPlaylist, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))} />
+  );
   const secondaryMetadata = episodeMetadata && episode && (
     <>
       <strong>{formatSeriesMetaString(episodeMetadata.seasonNumber, episodeMetadata.episodeNumber)}</strong> - {episode.title}
