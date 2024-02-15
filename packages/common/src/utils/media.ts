@@ -1,5 +1,7 @@
-import { CONTENT_TYPE } from '../constants';
 import type { Playlist, PlaylistItem } from '../../types/playlist';
+import { CONTENT_TYPE } from '../constants';
+
+import { formatDuration, formatVideoSchedule } from './formatting';
 
 type RequiredProperties<T, P extends keyof T> = T & Required<Pick<T, P>>;
 
@@ -49,3 +51,37 @@ export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | un
 
 export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType' | 'liveChannelsId'> =>
   item.contentType?.toLowerCase() === CONTENT_TYPE.liveChannel && !!item.liveChannelsId;
+
+export const createVideoMetadata = (media: PlaylistItem, episodesLabel?: string) => {
+  const metaData = [];
+
+  if (media.pubdate) metaData.push(String(new Date(media.pubdate * 1000).getFullYear()));
+  if (!episodesLabel && media.duration) metaData.push(formatDuration(media.duration));
+  if (episodesLabel) metaData.push(episodesLabel);
+  if (media.genre) metaData.push(media.genre);
+  if (media.rating) metaData.push(media.rating);
+
+  return metaData;
+};
+
+export const createPlaylistMetadata = (playlist: Playlist, episodesLabel?: string) => {
+  const metaData = [];
+
+  if (episodesLabel) metaData.push(episodesLabel);
+  if (playlist.genre) metaData.push(playlist.genre as string);
+  if (playlist.rating) metaData.push(playlist.rating as string);
+
+  return metaData;
+};
+
+export const createLiveEventMetadata = (media: PlaylistItem, locale: string) => {
+  const metaData = [];
+  const scheduled = formatVideoSchedule(locale, media.scheduledStart, media.scheduledEnd);
+
+  if (scheduled) metaData.push(scheduled);
+  if (media.duration) metaData.push(formatDuration(media.duration));
+  if (media.genre) metaData.push(media.genre);
+  if (media.rating) metaData.push(media.rating);
+
+  return metaData;
+};
