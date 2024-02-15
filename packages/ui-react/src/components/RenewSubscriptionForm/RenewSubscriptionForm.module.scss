@@ -19,25 +19,23 @@
   padding: calc(#{variables.$base-spacing} / 2) variables.$base-spacing;
 
   font-size: 14px;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
   background: theme.$panel-bg;
   border-radius: 4px;
 
   > strong {
-    line-height: 16px;
     letter-spacing: 0.25px;
   }
 }
 
 .price {
   font-size: 14px;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
 
   > strong {
     font-weight: var(--body-font-weight-bold);
     font-size: 24px;
-    line-height: 26px;
   }
 }
 

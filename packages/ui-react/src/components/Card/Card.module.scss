@@ -29,18 +29,17 @@
 
   &.featured {
     .title {
-      height: 1.1em;
+      height: variables.$base-line-height;
       padding-right: 8px;
       font-family: var(--body-font-family);
       font-size: 34px;
-      line-height: 36px;
+      line-height: variables.$base-line-height;
       white-space: nowrap;
       text-overflow: ellipsis;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
 
       @include responsive.mobile-only {
         font-size: 24px;
-        line-height: 26px;
       }
     }
 
@@ -126,7 +125,7 @@
   font-weight: var(--body-font-weight-bold);
 
   font-size: 18px;
-  line-height: 20px;
+  line-height: variables.$base-line-height;
 }
 
 $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
@@ -145,13 +144,13 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
 }
 
 .title {
-  height: 2.4em;
+  height: calc(variables.$base-line-height * 2);
   overflow: hidden;
   color: var(--card-color);
   font-family: var(--body-alt-font-family);
   font-weight: var(--body-font-weight-bold);
   font-size: 1em;
-  line-height: 1.2em;
+  line-height: variables.$base-line-height;
   text-align: left;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 
@@ -174,7 +173,7 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
 
 .scheduledStart {
   font-size: 0.88em;
-  line-height: 1em;
+  line-height: variables.$base-line-height;
 
   @include responsive.mobile-only {
     font-size: 12px;

@@ -54,7 +54,7 @@
 .price {
   margin-left: auto;
   font-size: 20px;
-  line-height: 28px;
+  line-height: variables.$base-line-height;
 }
 
 .paymentFrequency {

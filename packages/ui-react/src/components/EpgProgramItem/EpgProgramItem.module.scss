@@ -97,14 +97,13 @@
   font-family: var(--body-font-family);
   font-weight: theme.$body-font-weight-bold;
   font-size: 16px;
-  line-height: 20px;
+  line-height: variables.$base-line-height;
   white-space: nowrap;
   text-overflow: ellipsis;
 
   @include responsive.mobile-only {
     margin: auto 0;
     font-size: 14px;
-    line-height: 16px;
   }
 }
 
@@ -113,14 +112,13 @@
   color: theme.$epg-text-color;
   font-family: var(--body-font-family);
   font-size: 14px;
-  line-height: 16px;
+  line-height: variables.$base-line-height;
   white-space: nowrap;
   text-overflow: ellipsis;
 
   @include responsive.mobile-only {
     margin-top: auto;
     font-size: 12px;
-    line-height: 14px;
   }
 }
 
