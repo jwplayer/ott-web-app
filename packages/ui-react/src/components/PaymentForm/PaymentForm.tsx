@@ -85,6 +85,7 @@ const PaymentForm: React.FC<Props> = ({ onPaymentFormSubmit }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder={t('checkout.credit_card_name')}
+            autoComplete="cc-name"
             required
           />
         </div>

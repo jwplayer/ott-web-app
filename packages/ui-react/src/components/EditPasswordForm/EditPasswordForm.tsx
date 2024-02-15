@@ -76,6 +76,7 @@ const EditPasswordForm: React.FC<Props> = ({
           placeholder={t('reset.reset_password_token')}
           name="resetPasswordToken"
           type="text"
+          autoComplete=""
           required
         />
       )}

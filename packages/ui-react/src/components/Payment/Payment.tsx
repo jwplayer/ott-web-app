@@ -296,6 +296,7 @@ const Payment = ({
                 value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
                 aria-label={t('user:payment.card_number_hidden', { number: activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits })}
                 editing={false}
+                autoComplete="cc-number"
               />
               <div className={styles.cardDetails}>
                 <TextField
@@ -303,6 +304,7 @@ const Payment = ({
                   name="cardExpiry"
                   value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate}
                   editing={false}
+                  autoComplete="cc-exp"
                 />
                 <TextField
                   label={t('user:payment.security_code')}
@@ -310,6 +312,7 @@ const Payment = ({
                   value={'******'}
                   editing={false}
                   aria-label={t('user:payment.security_code_hidden')}
+                  autoComplete="cc-csc"
                 />
               </div>
               <Button label={t('account:payment.edit_card')} variant="outlined" onClick={onEditCardDetailsClick} />

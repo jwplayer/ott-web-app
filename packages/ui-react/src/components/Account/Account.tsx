@@ -242,6 +242,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.firstName}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  autoComplete="given-name"
                   lang={htmlLang}
                 />
                 <TextField
@@ -253,6 +254,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.lastName}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  autoComplete="family-name"
                   lang={htmlLang}
                 />
               </>
@@ -284,6 +286,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.email}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  autoComplete="email"
                   required
                 />
                 {section.isEditing && (
@@ -296,6 +299,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     helperText={section.errors?.confirmationPassword}
                     type={viewPassword ? 'text' : 'password'}
                     disabled={section.isBusy}
+                    autoComplete="current-password"
                     rightControl={
                       <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
                         <Icon icon={viewPassword ? Visibility : VisibilityOff} />

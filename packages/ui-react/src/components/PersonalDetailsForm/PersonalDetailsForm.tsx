@@ -98,6 +98,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             helperText={errors.firstName}
             required={fields.firstNameLastName.required}
             name="firstName"
+            autoComplete="given-name"
           />
           <TextField
             value={values.lastName}
@@ -108,6 +109,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             helperText={errors.lastName}
             required={fields.firstNameLastName.required}
             name="lastName"
+            autoComplete="family-name"
           />
         </React.Fragment>
       ) : null}
@@ -121,6 +123,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
           helperText={errors.companyName}
           required={fields.companyName.required}
           name="companyName"
+          autoComplete="organization"
         />
       ) : null}
       {fields.address?.enabled ? (
@@ -134,6 +137,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             helperText={errors.address}
             required={fields.address.required}
             name="address"
+            autoComplete="address-line1"
           />
           <TextField
             value={values.address2}
@@ -143,6 +147,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             error={!!errors.address2 || !!errors.form}
             helperText={errors.address2}
             name="address2"
+            autoComplete="address-line2"
           />
           <TextField
             value={values.city}
@@ -153,6 +158,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             helperText={errors.city}
             required={fields.address.required}
             name="city"
+            autoComplete="address-level2"
           />
           <TextField
             value={values.state}
@@ -163,6 +169,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             helperText={errors.state}
             required={fields.address.required}
             name="state"
+            autoComplete="address-level1"
           />
           <TextField
             value={values.postCode}
@@ -173,6 +180,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
             helperText={errors.postCode}
             required={fields.address.required}
             name="postCode"
+            autoComplete="postal-code"
           />
         </React.Fragment>
       ) : null}

@@ -36,9 +36,10 @@ const ForgotPasswordForm: React.FC<Props> = ({ onSubmit, onChange, value, errors
         placeholder={t('reset.email')}
         error={!!errors.email || !!errors.form}
         helperText={errors.email}
-        required
         name="email"
         type="email"
+        autoComplete="email"
+        required
       />
       <Button type="submit" className={styles.button} fullWidth color="primary" disabled={submitting} label={t('reset.email_me')} />
     </form>

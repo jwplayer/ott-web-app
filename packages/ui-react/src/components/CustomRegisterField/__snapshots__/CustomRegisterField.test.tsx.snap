@@ -101,6 +101,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
         name="name"
       />
       <input
+        autocomplete="bday-day"
         class="_input_eb6974"
         id="text-field_1235_name-date"
         maxlength="2"
@@ -111,6 +112,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
       />
        / 
       <input
+        autocomplete="bday-month"
         class="_input_eb6974"
         id="text-field_1235_name-month"
         maxlength="2"
@@ -121,6 +123,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
       />
        / 
       <input
+        autocomplete="bday-year"
         class="_input_eb6974"
         id="text-field_1235_name-year"
         maxlength="4"
