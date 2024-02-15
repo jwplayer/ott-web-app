@@ -20,6 +20,7 @@ type Props = {
   error?: boolean;
   helperText?: string;
   required?: boolean;
+  hideOptional?: boolean;
   onChange: React.ChangeEventHandler;
   testId?: string;
   lang?: string;
@@ -40,6 +41,7 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
   required = false,
   size = 'medium',
   testId,
+  hideOptional,
   lang,
   ...rest
 }: Props & React.AriaAttributes) => {
@@ -49,10 +51,10 @@ const Dropdown: React.FC<Props & React.AriaAttributes> = ({
 
   return (
     <div className={classNames(styles.container, { [styles.fullWidth]: fullWidth, [styles.error]: error }, styles[size], className)} data-testid={testId}>
-      {(label || !required) && (
+      {(label || (!required && !hideOptional)) && (
         <label htmlFor={id} className={styles.label}>
           {label}
-          {!required ? <span>{t('optional')}</span> : null}
+          {!required && !hideOptional ? <span>{t('optional')}</span> : null}
         </label>
       )}
       <div className={classNames(styles.dropdown, { [styles.fullWidth]: fullWidth })}>
