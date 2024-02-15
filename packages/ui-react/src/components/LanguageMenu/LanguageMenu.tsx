@@ -47,6 +47,7 @@ const LanguageMenu = ({ onClick, className, languages, currentLanguage, language
         data-testid={testId('language-menu-button')}
         aria-controls="language-panel"
         aria-expanded={languageMenuOpen}
+        aria-haspopup="menu"
         className={classNames(styles.iconButton, className)}
         aria-label={t('language_menu')}
         onClick={handleMenuToggle}

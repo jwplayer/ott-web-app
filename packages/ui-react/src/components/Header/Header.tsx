@@ -133,6 +133,7 @@ const Header: React.FC<Props> = ({
           aria-label={t('open_user_menu')}
           aria-controls="user_menu_panel"
           aria-expanded={userMenuOpen}
+          aria-haspopup="menu"
           onClick={openUserMenu}
           onBlur={closeUserMenu}
         >
@@ -163,8 +164,8 @@ const Header: React.FC<Props> = ({
       </React.Fragment>
     ) : (
       <div className={styles.buttonContainer}>
-        <Button onClick={onLoginButtonClick} label={t('sign_in')} />
-        <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
+        <Button onClick={onLoginButtonClick} label={t('sign_in')} aria-haspopup="dialog" />
+        <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} aria-haspopup="dialog" />
       </div>
     );
   };
@@ -200,7 +201,7 @@ const Header: React.FC<Props> = ({
             aria-controls="sidebar"
             aria-haspopup="true"
             aria-expanded={sideBarOpen}
-            onClick={onMenuButtonClick}
+            onClick={() => onMenuButtonClick()}
           >
             <Icon icon={Menu} />
           </IconButton>

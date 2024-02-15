@@ -19,7 +19,7 @@ exports[`<SearchBar> > renders and matches snapshot 1`] = `
       aria-label="search_bar.search_label"
       class="_input_3bb1d7"
       placeholder="search_bar.search_placeholder"
-      type="text"
+      type="search"
       value="My search query"
     />
     <div

@@ -35,6 +35,7 @@ const CollapsibleText: React.FC<Props> = ({ text, className, maxHeight = 'none' 
     <div className={classNames(styles.collapsibleText)}>
       <p
         ref={divRef}
+        id="collapsible-content"
         className={classNames(styles.textContainer, className, { [styles.collapsed]: !expanded && doesFlowOver })}
         style={{ maxHeight: expanded ? divRef.current.scrollHeight : maxHeight }}
       >
@@ -44,6 +45,7 @@ const CollapsibleText: React.FC<Props> = ({ text, className, maxHeight = 'none' 
         <IconButton
           aria-label={ariaLabel}
           aria-expanded={expanded}
+          aria-controls="collapsible-content"
           className={classNames(styles.chevron, { [styles.expanded]: expanded })}
           onClick={() => setExpanded(!expanded)}
         >
