@@ -43,6 +43,7 @@ const FavoriteButton: React.VFC<Props> = ({ item }) => {
         aria-label={isFavorite ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
         startIcon={isFavorite ? <Icon icon={Favorite} /> : <Icon icon={FavoriteBorder} />}
         onClick={onFavoriteButtonClick}
+        aria-pressed={isFavorite}
         color={isFavorite ? 'primary' : 'default'}
         fullWidth={breakpoint < Breakpoint.md}
       />

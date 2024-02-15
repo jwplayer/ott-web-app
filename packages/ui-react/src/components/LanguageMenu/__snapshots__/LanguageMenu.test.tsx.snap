@@ -5,6 +5,7 @@ exports[`<LanguageMenu> > renders and matches snapshot 1`] = `
   <div
     aria-controls="language-panel"
     aria-expanded="false"
+    aria-haspopup="menu"
     aria-label="language_menu"
     class="_iconButton_0fef65"
     data-testid="language-menu-button"
