@@ -8,7 +8,7 @@
   font-weight: normal;
   font-size: 16px;
   font-style: normal;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.15px;
   background: theme.$modal-bg;
   box-shadow: theme.$panel-box-shadow;

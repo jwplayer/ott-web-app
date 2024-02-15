@@ -1,6 +1,7 @@
 @use '@jwp/ott-ui-react/src/styles/theme';
 @use '@jwp/ott-ui-react/src/styles/mixins/typography';
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/variables';
 
 .inlinePlayer {
   position: absolute;
@@ -73,7 +74,7 @@
 
   @include responsive.mobile-only {
     font-size: 16px;
-    line-height: 1em;
+    line-height: variables.$base-line-height;
   }
 }
 
@@ -83,12 +84,11 @@
   margin-bottom: 16px;
   font-family: var(--body-alt-font-family);
   font-size: 16px;
-  line-height: 1.2em;
+  line-height: variables.$base-line-height;
   text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 
   @include responsive.mobile-only {
     font-size: 14px;
-    line-height: 1em;
   }
 }

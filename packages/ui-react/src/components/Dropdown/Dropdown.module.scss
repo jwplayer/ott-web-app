@@ -86,7 +86,7 @@ $disabled-gradient: linear-gradient(to top, #ddd, $disabled-bg-color 33%);
     font-family: inherit;
     font-weight: theme.$body-font-weight-bold;
     font-size: 1rem;
-    line-height: 1em;
+    line-height: variables.$base-line-height;
     text-overflow: ellipsis;
     background: none;
     border: none;
