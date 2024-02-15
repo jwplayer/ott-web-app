@@ -69,6 +69,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, value
         type="email"
         required
         testId="login-email-input"
+        autoComplete="email"
       />
       <TextField
         value={values.password}
@@ -86,6 +87,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, value
         }
         required
         testId="login-password-input"
+        autoComplete="current-password"
       />
       {submitting && <LoadingOverlay transparentBackground inline />}
       <Link className={styles.link} to={modalURLFromLocation(location, 'forgot-password')}>

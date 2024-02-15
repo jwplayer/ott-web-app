@@ -109,6 +109,7 @@ const EditCardPaymentForm: React.FC<Props> = ({ onCancel, setUpdatingCardDetails
           onChange={paymentData?.handleChange}
           onBlur={paymentData?.handleBlur}
           placeholder={t('checkout.credit_card_name')}
+          autoComplete="cc-name"
           required
         />
       </div>

@@ -45,6 +45,7 @@ const CreditCardExpiryField: React.FC<Props> = ({ value, onChange, error, ...pro
       type="text"
       pattern="\d*"
       placeholder="MM/YY"
+      autoComplete="cc-exp"
       required
     />
   );

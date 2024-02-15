@@ -170,6 +170,7 @@ const DateField: React.FC<Props> = ({
           maxLength={2}
           type="number"
           id={`${id}-date`}
+          autoComplete="bday-day"
         />
         {' / '}
         <input
@@ -184,6 +185,7 @@ const DateField: React.FC<Props> = ({
           maxLength={2}
           type="number"
           id={`${id}-month`}
+          autoComplete="bday-month"
         />
         {' / '}
         <input
@@ -198,6 +200,7 @@ const DateField: React.FC<Props> = ({
           maxLength={4}
           type="number"
           id={`${id}-year`}
+          autoComplete="bday-year"
         />
       </div>
       <HelperText id={helperTextId} error={error}>

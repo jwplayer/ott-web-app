@@ -92,6 +92,7 @@ const RegistrationForm: React.FC<Props> = ({
         helperText={errors.email}
         name="email"
         type="email"
+        autoComplete="email"
         required
       />
       <TextField
@@ -114,6 +115,7 @@ const RegistrationForm: React.FC<Props> = ({
             <Icon icon={viewPassword ? Visibility : VisibilityOff} />
           </IconButton>
         }
+        autoComplete="new-password"
         required
       />
       {publisherConsents && (
