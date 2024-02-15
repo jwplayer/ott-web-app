@@ -24,7 +24,7 @@ const SearchBar: React.FC<Props> = ({ query, onQueryChange, onClearButtonClick, 
       <Icon icon={Search} className={styles.icon} />
       <input
         className={styles.input}
-        type="text"
+        type="search"
         value={query}
         onChange={onQueryChange}
         onKeyDown={(event) => event.key === 'Escape' && onClose?.()}

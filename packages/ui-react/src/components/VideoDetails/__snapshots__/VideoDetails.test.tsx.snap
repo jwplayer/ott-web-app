@@ -49,6 +49,7 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
           >
             <p
               class="_textContainer_561522 _description_d0c133"
+              id="collapsible-content"
               style="max-height: none;"
             >
               Video description
