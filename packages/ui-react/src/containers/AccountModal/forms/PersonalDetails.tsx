@@ -72,7 +72,10 @@ const PersonalDetails = () => {
     setQuestionValues((current) => ({ ...current, [event.target.name]: value }));
   };
 
-  const PersonalDetailSubmitHandler: UseFormOnSubmitHandler<PersonalDetailsFormData> = async (formData, { setErrors, setSubmitting, validate }) => {
+  const PersonalDetailSubmitHandler: UseFormOnSubmitHandler<PersonalDetailsFormData> = async (
+    formData,
+    { setErrors, setSubmitting, setValidationSchemaError, validate },
+  ) => {
     const requiredMessage = t('personal_details.this_field_is_required');
     const schema = object().shape({
       firstName: yupConditional(!!fields.firstNameLastName?.required, requiredMessage),
@@ -104,6 +107,7 @@ const PersonalDetails = () => {
     // we have validation errors
     if (!validate(schema) || Object.keys(errors).length) {
       setSubmitting(false);
+      setValidationSchemaError(true);
       return;
     }
 
@@ -135,7 +139,7 @@ const PersonalDetails = () => {
     setSubmitting(false);
   };
 
-  const { setValue, handleSubmit, handleChange, values, errors, submitting } = useForm<PersonalDetailsFormData>({
+  const { setValue, handleSubmit, handleChange, values, errors, validationSchemaError, submitting } = useForm<PersonalDetailsFormData>({
     initialValues,
     onSubmit: PersonalDetailSubmitHandler,
   });
@@ -160,6 +164,7 @@ const PersonalDetails = () => {
       setValue={setValue}
       values={values}
       errors={errors}
+      validationError={validationSchemaError}
       submitting={submitting}
     />
   );

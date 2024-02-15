@@ -28,13 +28,14 @@ type Props = {
   error?: string;
   errors: FormErrors<LoginFormData>;
   values: LoginFormData;
+  validationError?: boolean;
   submitting: boolean;
   socialLoginURLs: SocialLoginURLs | null;
   siteName?: string;
   messageKey: string | null;
 };
 
-const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, values, errors, submitting, siteName, messageKey }: Props) => {
+const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, values, errors, validationError, submitting, siteName, messageKey }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
   const { t } = useTranslation('account');
   const location = useLocation();
@@ -54,7 +55,11 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, value
           <FormFeedback variant="warning">{getTranslatedErrorMessage(messageKey)}</FormFeedback>
         </div>
       )}
-      {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
+      {errors.form ? (
+        <FormFeedback variant="error" visible={!validationError}>
+          {errors.form}
+        </FormFeedback>
+      ) : null}
 
       <SocialButtonsList socialLoginURLs={socialLoginURLs} />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
@@ -63,7 +68,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, value
         onChange={onChange}
         label={t('login.email')}
         placeholder={t('login.email')}
-        error={!!errors.email || !!errors.form}
+        error={!!errors.email}
         helperText={errors.email}
         name="email"
         type="email"
@@ -76,7 +81,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, value
         onChange={onChange}
         label={t('login.password')}
         placeholder={t('login.password')}
-        error={!!errors.password || !!errors.form}
+        error={!!errors.password}
         helperText={errors.password}
         name="password"
         type={viewPassword ? 'text' : 'password'}

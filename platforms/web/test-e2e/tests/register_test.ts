@@ -66,8 +66,11 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.dontSeeElement(constants.loginFormSelector);
   });
 
-  Scenario(`The submit button is disabled when the form is incompletely filled in - ${providerName}`, async ({ I }) => {
-    I.seeAttributesOnElements('button[type="submit"]', { disabled: true });
+  Scenario(`The Sign up modal will invalidate when directly pressing submit - ${providerName}`, async ({ I }) => {
+    I.click('Continue');
+    I.seeElementInDOM('div[class*=formFeedback]'); // This element can be visually hidden through CSS
+    I.seeAttributesOnElements('input[name="email"]', { 'aria-invalid': 'true' });
+    I.seeAttributesOnElements('input[name="password"]', { 'aria-invalid': 'true' });
   });
 
   Scenario(`I get warned when filling in incorrect credentials - ${providerName}`, async ({ I }) => {
