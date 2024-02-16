@@ -62,7 +62,7 @@ export default class CheckoutController {
   getSubscriptionOfferIds = () => this.accountService.svodOfferIds;
 
   chooseOffer = async (selectedOffer: Offer) => {
-    if (!selectedOffer) throw new FormValidationError({ form: i18next.t('choose_offer.offer_not_found') });
+    if (!selectedOffer) throw new FormValidationError({ form: [i18next.t('choose_offer.offer_not_found')] });
 
     useCheckoutStore.setState({ selectedOffer });
   };

@@ -146,7 +146,7 @@ export default function useForm<T extends GenericFormValues>({
       if (error instanceof FormValidationError) {
         Object.entries(error.errors).forEach(([key, value]) => {
           if (key && value && !newErrors[key]) {
-            newErrors[key] = value;
+            newErrors[key] = value.join(',');
           }
         });
       } else if (error instanceof Error) {
