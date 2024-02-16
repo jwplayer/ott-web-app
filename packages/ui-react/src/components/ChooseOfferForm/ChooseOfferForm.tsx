@@ -50,7 +50,7 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
         value={offer.offerId}
         id={offer.offerId}
         checked={selected}
-        data-testid={testId(title)}
+        data-testid={testId(offer.offerId)}
       />
       <label className={styles.label} htmlFor={offer.offerId}>
         <h2 className={styles.offerTitle}>{title}</h2>

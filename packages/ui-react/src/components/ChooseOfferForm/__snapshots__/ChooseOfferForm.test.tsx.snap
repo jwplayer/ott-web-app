@@ -57,7 +57,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
         <input
           checked=""
           class="_radio_f7961f"
-          data-testid="choose_offer.monthly"
+          data-testid="S916977979_NL"
           id="S916977979_NL"
           name="selectedOfferId"
           type="radio"
@@ -142,7 +142,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
       >
         <input
           class="_radio_f7961f"
-          data-testid="choose_offer.yearly"
+          data-testid="S345569153_NL"
           id="S345569153_NL"
           name="selectedOfferId"
           type="radio"
@@ -292,7 +292,7 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
         <input
           checked=""
           class="_radio_f7961f"
-          data-testid="One Time - TVOD offer"
+          data-testid="R892134629_NL"
           id="R892134629_NL"
           name="selectedOfferId"
           type="radio"
