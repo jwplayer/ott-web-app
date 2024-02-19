@@ -5,7 +5,7 @@ exports[`User Component tests > Account Page 1`] = `
   <div
     class="_user_e9c5ca"
   >
-    <div
+    <nav
       class="_leftColumn_e9c5ca"
     >
       <div
@@ -15,7 +15,7 @@ exports[`User Component tests > Account Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296 "
               href="/u/my-account"
             >
               <div
@@ -66,6 +66,7 @@ exports[`User Component tests > Account Page 1`] = `
           >
             <button
               class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              type="button"
             >
               <div
                 class="_startIcon_f8f296"
@@ -88,10 +89,15 @@ exports[`User Component tests > Account Page 1`] = `
           </li>
         </ul>
       </div>
-    </div>
+    </nav>
     <div
       class="_mainColumn_e9c5ca"
     >
+      <h1
+        class="hideUntilFocus"
+      >
+        nav.account
+      </h1>
       <section
         aria-labelledby="account_about_you_1235"
         class="_panel_e9c5ca"
@@ -109,11 +115,6 @@ exports[`User Component tests > Account Page 1`] = `
           class="_flexBox_1c1c63"
           novalidate=""
         >
-          <h1
-            class="_hideUntilFocus_c968f7"
-          >
-            nav.account
-          </h1>
           <div
             class="_textField_e16c1b"
           >
@@ -123,9 +124,18 @@ exports[`User Component tests > Account Page 1`] = `
             >
               account.firstname
             </label>
-            <p>
-              User
-            </p>
+            <input
+              aria-describedby="helper_text_1235_firstname"
+              aria-invalid="false"
+              aria-required="false"
+              class="_input_e16c1b"
+              id="text-field_1235_firstname"
+              lang="en"
+              name="firstName"
+              readonly=""
+              type="text"
+              value="User"
+            />
           </div>
           <div
             class="_textField_e16c1b"
@@ -136,9 +146,18 @@ exports[`User Component tests > Account Page 1`] = `
             >
               account.lastname
             </label>
-            <p>
-              Person
-            </p>
+            <input
+              aria-describedby="helper_text_1235_lastname"
+              aria-invalid="false"
+              aria-required="false"
+              class="_input_e16c1b"
+              id="text-field_1235_lastname"
+              lang="en"
+              name="lastName"
+              readonly=""
+              type="text"
+              value="Person"
+            />
           </div>
         </form>
         <div
@@ -180,9 +199,18 @@ exports[`User Component tests > Account Page 1`] = `
             >
               account.email
             </label>
-            <p>
-              user@jwplayer.com
-            </p>
+            <input
+              aria-describedby="helper_text_1235_email"
+              aria-invalid="false"
+              aria-required="true"
+              class="_input_e16c1b"
+              id="text-field_1235_email"
+              name="email"
+              readonly=""
+              required=""
+              type="text"
+              value="user@jwplayer.com"
+            />
           </div>
         </form>
         <div
@@ -250,7 +278,7 @@ exports[`User Component tests > Favorites Page 1`] = `
   <div
     class="_user_e9c5ca"
   >
-    <div
+    <nav
       class="_leftColumn_e9c5ca"
     >
       <div
@@ -284,7 +312,7 @@ exports[`User Component tests > Favorites Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296 "
               href="/u/favorites"
             >
               <div
@@ -335,6 +363,7 @@ exports[`User Component tests > Favorites Page 1`] = `
           >
             <button
               class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              type="button"
             >
               <div
                 class="_startIcon_f8f296"
@@ -357,7 +386,7 @@ exports[`User Component tests > Favorites Page 1`] = `
           </li>
         </ul>
       </div>
-    </div>
+    </nav>
     <div
       class="_mainColumn_e9c5ca"
     >
@@ -370,6 +399,7 @@ exports[`User Component tests > Favorites Page 1`] = `
           </h1>
           <button
             class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+            type="button"
           >
             <span>
               favorites.clear
@@ -378,15 +408,21 @@ exports[`User Component tests > Favorites Page 1`] = `
         </div>
         <div>
           <div
+            aria-rowcount="1"
             class="_container_7175d1 _cols-3_7175d1"
             role="grid"
           >
             <div
-              class="_cell_7175d1"
+              aria-rowindex="0"
+              class="_row_19b484"
               role="row"
             >
               <div
-                role="cell"
+                aria-colindex="0"
+                class="_cell_19b484"
+                id="layout_grid_0-0"
+                role="gridcell"
+                style="width: 33%;"
               >
                 <a
                   class="_card_d75732"
@@ -423,20 +459,19 @@ exports[`User Component tests > Favorites Page 1`] = `
                   </div>
                 </a>
               </div>
-            </div>
-            <div
-              class="_cell_7175d1"
-              role="row"
-            >
               <div
-                role="cell"
+                aria-colindex="1"
+                class="_cell_19b484"
+                id="layout_grid_0-1"
+                role="gridcell"
+                style="width: 33%;"
               >
                 <a
                   class="_card_d75732"
                   data-testid="Big Buck Bunny"
                   href="/m/aaabbbcd/big-buck-bunny?r=bbbdddff"
                   role="button"
-                  tabindex="0"
+                  tabindex="-1"
                 >
                   <div
                     class="_titleContainer_d75732"
@@ -466,20 +501,19 @@ exports[`User Component tests > Favorites Page 1`] = `
                   </div>
                 </a>
               </div>
-            </div>
-            <div
-              class="_cell_7175d1"
-              role="row"
-            >
               <div
-                role="cell"
+                aria-colindex="2"
+                class="_cell_19b484"
+                id="layout_grid_0-2"
+                role="gridcell"
+                style="width: 33%;"
               >
                 <a
                   class="_card_d75732"
                   data-testid="My last favorite"
                   href="/m/ggaaccvv/my-last-favorite?r=bbbbbbbb"
                   role="button"
-                  tabindex="0"
+                  tabindex="-1"
                 >
                   <div
                     class="_titleContainer_d75732"
@@ -523,7 +557,7 @@ exports[`User Component tests > Payments Page 1`] = `
   <div
     class="_user_e9c5ca"
   >
-    <div
+    <nav
       class="_leftColumn_e9c5ca"
     >
       <div
@@ -557,7 +591,7 @@ exports[`User Component tests > Payments Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296 "
               href="/u/payments"
             >
               <div
@@ -584,6 +618,7 @@ exports[`User Component tests > Payments Page 1`] = `
           >
             <button
               class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              type="button"
             >
               <div
                 class="_startIcon_f8f296"
@@ -606,7 +641,7 @@ exports[`User Component tests > Payments Page 1`] = `
           </li>
         </ul>
       </div>
-    </div>
+    </nav>
     <div
       class="_mainColumn_e9c5ca"
     >
@@ -655,6 +690,7 @@ exports[`User Component tests > Payments Page 1`] = `
           aria-disabled="false"
           class="_button_f8f296 _upgradeSubscription_c57ff5 _primary_f8f296 _outlined_f8f296"
           data-testid="change-subscription-button"
+          type="button"
         >
           <span>
             user:payment.change_subscription
@@ -680,13 +716,22 @@ exports[`User Component tests > Payments Page 1`] = `
           >
             <label
               class="_label_e16c1b"
-              for="text-field_1235"
+              for="text-field_1235_cardnumber"
             >
               user:payment.card_number
             </label>
-            <p>
-              •••• •••• •••• 9888
-            </p>
+            <input
+              aria-describedby="helper_text_1235_cardnumber"
+              aria-invalid="false"
+              aria-label="user:payment.card_number_hidden"
+              aria-required="false"
+              class="_input_e16c1b"
+              id="text-field_1235_cardnumber"
+              name="cardNumber"
+              readonly=""
+              type="text"
+              value="•••• •••• •••• 9888"
+            />
           </div>
           <div
             class="_cardDetails_c57ff5"
@@ -696,30 +741,48 @@ exports[`User Component tests > Payments Page 1`] = `
             >
               <label
                 class="_label_e16c1b"
-                for="text-field_1235"
+                for="text-field_1235_cardexpiry"
               >
                 user:payment.expiry_date
               </label>
-              <p>
-                03/30
-              </p>
+              <input
+                aria-describedby="helper_text_1235_cardexpiry"
+                aria-invalid="false"
+                aria-required="false"
+                class="_input_e16c1b"
+                id="text-field_1235_cardexpiry"
+                name="cardExpiry"
+                readonly=""
+                type="text"
+                value="03/30"
+              />
             </div>
             <div
               class="_textField_e16c1b"
             >
               <label
                 class="_label_e16c1b"
-                for="text-field_1235"
+                for="text-field_1235_cardsecuritycode"
               >
                 user:payment.security_code
               </label>
-              <p>
-                ******
-              </p>
+              <input
+                aria-describedby="helper_text_1235_cardsecuritycode"
+                aria-invalid="false"
+                aria-label="user:payment.security_code_hidden"
+                aria-required="false"
+                class="_input_e16c1b"
+                id="text-field_1235_cardsecuritycode"
+                name="cardSecurityCode"
+                readonly=""
+                type="text"
+                value="******"
+              />
             </div>
           </div>
           <button
             class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+            type="button"
           >
             <span>
               account:payment.edit_card
