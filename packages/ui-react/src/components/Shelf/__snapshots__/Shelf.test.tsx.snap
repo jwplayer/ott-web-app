@@ -12,7 +12,7 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
         class="_leftControl_22abb0"
       >
         <div
-          aria-label="slide_left"
+          aria-label="slide_previous"
           class="_chevron_81910b _disabled_81910b"
           role="button"
           tabindex="-1"
@@ -34,8 +34,6 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
       >
         <li
           aria-hidden="true"
-          aria-posinset="3"
-          aria-setsize="4"
           class="_notInView_22abb0"
           style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
         >
@@ -61,8 +59,6 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
         </li>
         <li
           aria-hidden="true"
-          aria-posinset="4"
-          aria-setsize="4"
           class="_notInView_22abb0"
           style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
         >
@@ -88,8 +84,6 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
         </li>
         <li
           aria-hidden="false"
-          aria-posinset="1"
-          aria-setsize="4"
           class=""
           style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
@@ -126,8 +120,6 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
         </li>
         <li
           aria-hidden="true"
-          aria-posinset="2"
-          aria-setsize="4"
           class="_notInView_22abb0"
           style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
         >
@@ -153,8 +145,6 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
         </li>
         <li
           aria-hidden="true"
-          aria-posinset="3"
-          aria-setsize="4"
           class="_notInView_22abb0"
           style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
         >
@@ -183,7 +173,7 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
         class="_rightControl_22abb0"
       >
         <div
-          aria-label="slide_right"
+          aria-label="slide_next"
           class="_chevron_81910b"
           role="button"
           tabindex="0"
@@ -218,6 +208,12 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
         class="_dot_81910b"
       />
     </div>
+    <div
+      aria-live="polite"
+      class="hidden"
+    >
+      slide_indicator
+    </div>
   </div>
 </div>
 `;
@@ -240,8 +236,6 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
       >
         <li
           aria-hidden="false"
-          aria-posinset="1"
-          aria-setsize="4"
           class=""
           style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
@@ -282,8 +276,6 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
         </li>
         <li
           aria-hidden="false"
-          aria-posinset="2"
-          aria-setsize="4"
           class=""
           style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
@@ -324,8 +316,6 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
         </li>
         <li
           aria-hidden="false"
-          aria-posinset="3"
-          aria-setsize="4"
           class=""
           style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
@@ -366,8 +356,6 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
         </li>
         <li
           aria-hidden="false"
-          aria-posinset="4"
-          aria-setsize="4"
           class=""
           style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >

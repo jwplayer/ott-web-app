@@ -24,6 +24,9 @@
   "series": "series",
   "sign_in": "Sign in",
   "sign_up": "Sign up",
+  "slide_indicator": "Page {{page}} of {{pages}}",
   "slide_left": "Slide left",
+  "slide_next": "Next slide",
+  "slide_previous": "Previous slide",
   "slide_right": "Slide right"
 }
