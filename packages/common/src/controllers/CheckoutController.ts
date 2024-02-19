@@ -62,8 +62,6 @@ export default class CheckoutController {
   getSubscriptionOfferIds = () => this.accountService.svodOfferIds;
 
   chooseOffer = async (selectedOffer: Offer) => {
-    if (!selectedOffer) throw new FormValidationError({ form: [i18next.t('choose_offer.offer_not_found')] });
-
     useCheckoutStore.setState({ selectedOffer });
   };
 
@@ -277,18 +275,19 @@ export default class CheckoutController {
     const { customerId } = getAccountInfo();
 
     if (!selectedOffer || !subscription) throw new Error('No offer selected');
+
     assertModuleMethod(this.checkoutService.switchSubscription, 'switchSubscription is not available in checkout service');
 
     const switchDirection: 'upgrade' | 'downgrade' = determineSwitchDirection(subscription);
 
-    const SwitchSubscriptionPayload = {
+    const switchSubscriptionPayload = {
       toOfferId: selectedOffer.offerId,
       customerId: customerId,
       offerId: subscription.offerId,
       switchDirection: switchDirection,
     };
 
-    await this.checkoutService.switchSubscription(SwitchSubscriptionPayload);
+    await this.checkoutService.switchSubscription(switchSubscriptionPayload);
   };
 
   changeSubscription = async ({ accessFeeId, subscriptionId }: { accessFeeId: string; subscriptionId: string }) => {
