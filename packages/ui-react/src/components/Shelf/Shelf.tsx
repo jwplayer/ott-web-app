@@ -99,7 +99,7 @@ const Shelf = ({
         className={styles.chevron}
         role="button"
         tabIndex={0}
-        aria-label={t('slide_right')}
+        aria-label={t('slide_next')}
         onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
         onClick={() => handleSlide(doSlide)}
       >
@@ -117,7 +117,7 @@ const Shelf = ({
         })}
         role="button"
         tabIndex={didSlideBefore ? 0 : -1}
-        aria-label={t('slide_left')}
+        aria-label={t('slide_previous')}
         onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
         onClick={() => handleSlide(doSlide)}
       >
@@ -129,6 +129,12 @@ const Shelf = ({
 
   const renderPaginationDots = (index: number, pageIndex: number) => (
     <span key={pageIndex} className={classNames(styles.dot, { [styles.active]: index === pageIndex })} />
+  );
+
+  const renderPageIndicator = (pageIndex: number, pages: number) => (
+    <div aria-live="polite" className="hidden">
+      {t('slide_indicator', { page: pageIndex + 1, pages })}
+    </div>
   );
 
   const handleSlide = (doSlide: () => void): void => {
@@ -153,6 +159,7 @@ const Shelf = ({
         renderLeftControl={renderLeftControl}
         renderRightControl={renderRightControl}
         renderPaginationDots={renderPaginationDots}
+        renderPageIndicator={renderPageIndicator}
         renderTile={renderTile}
       />
     </div>

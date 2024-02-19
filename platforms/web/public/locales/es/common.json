@@ -24,6 +24,9 @@
   "series": "serie",
   "sign_in": "Iniciar sesión",
   "sign_up": "Registrarse",
+  "slide_indicator": "Página {{page}} de {{pages}}",
   "slide_left": "Deslizar hacia la izquierda",
+  "slide_next": "Siguiente diapositiva",
+  "slide_previous": "Diapositiva anterior",
   "slide_right": "Deslizar hacia la derecha"
 }
