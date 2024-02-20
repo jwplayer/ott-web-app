@@ -18,7 +18,7 @@ import { useTrackConfigKeyChange } from '#src/hooks/useTrackConfigKeyChange';
 
 const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
-const renderError = (error: Error | AppError) => {
+const BootstrapError = ({ error }: { error: Error | AppError }) => {
   if (error instanceof AppError) {
     return <ErrorPage title={error.payload.title} message={error.payload.description} helpLink={error.payload.helpLink} error={error} />;
   }
@@ -33,7 +33,7 @@ const ProdContentLoader = ({ query }: { query: BootstrapData }) => {
   }
 
   if (error) {
-    return renderError(error);
+    return <BootstrapError error={error} />;
   }
 
   return null;
@@ -52,7 +52,7 @@ const DemoContentLoader = ({ query }: { query: BootstrapData }) => {
   return (
     <>
       {/* Show the error page when error except in demo mode (the demo mode shows its own error) */}
-      {!IS_DEMO_OR_PREVIEW && error && renderError(error)}
+      {!IS_DEMO_OR_PREVIEW && error && <BootstrapError error={error} />}
       {IS_DEMO_OR_PREVIEW && <DemoConfigDialog query={query} />}
       {/* Config select control to improve testing experience */}
       {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}
