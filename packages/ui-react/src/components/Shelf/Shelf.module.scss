@@ -29,14 +29,19 @@
 }
 
 .chevron {
-  padding: 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  width: 44px;
+  height: 44px;
   outline-color: var(--highlight-color, white);
   cursor: pointer;
   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 
   > svg {
-    // Use scale because width and height properties causes layout shifting issues on screen readers
-    transform: scale(1.1);
+    width: 30px;
+    height: 30px;
   }
   &.disabled {
     cursor: default;
