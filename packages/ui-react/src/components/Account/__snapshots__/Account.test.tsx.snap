@@ -199,6 +199,9 @@ exports[`<Account> > renders and matches snapshot 1`] = `
             for="check-box_1235_consentsvalues_marketing"
             lang="en"
           >
+            <span
+              aria-hidden="true"
+            />
             Receive Marketing Emails
           </label>
         </div>
