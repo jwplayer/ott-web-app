@@ -27,8 +27,8 @@ const PersonalDetails = () => {
   const { t } = useTranslation('account');
   const accessModel = useConfigStore((s) => s.accessModel);
   const { data, isLoading } = useQuery('captureStatus', accountController.getCaptureStatus);
-  const { offersMedia } = useOffers();
-  const hasMediaOffers = offersMedia.length > 0;
+  const { mediaOffers } = useOffers();
+  const hasMediaOffers = mediaOffers.length > 0;
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 

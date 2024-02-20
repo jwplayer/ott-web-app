@@ -43,19 +43,19 @@ export default class CheckoutController {
   }
 
   initialiseOffers = async () => {
-    const mediaOffers = useCheckoutStore.getState().requestedMediaOffers;
-    const offersMedia = mediaOffers ? await this.getOffers({ offerIds: mediaOffers.map(({ offerId }) => offerId) }) : [];
-    useCheckoutStore.setState({ offersMedia });
+    const requestedMediaOffers = useCheckoutStore.getState().requestedMediaOffers;
+    const mediaOffers = requestedMediaOffers ? await this.getOffers({ offerIds: requestedMediaOffers.map(({ offerId }) => offerId) }) : [];
+    useCheckoutStore.setState({ mediaOffers });
 
-    if (!useCheckoutStore.getState().offersSubscription.length && this.accountService.svodOfferIds) {
-      const offersSubscription = await this.getOffers({ offerIds: this.accountService.svodOfferIds });
-      useCheckoutStore.setState({ offersSubscription });
+    if (!useCheckoutStore.getState().subscriptionOffers.length && this.accountService.svodOfferIds) {
+      const subscriptionOffers = await this.getOffers({ offerIds: this.accountService.svodOfferIds });
+      useCheckoutStore.setState({ subscriptionOffers });
     }
 
-    if (!useCheckoutStore.getState().offersSwitchSubscription.length) {
+    if (!useCheckoutStore.getState().switchSubscriptionOffers.length) {
       const subscriptionSwitches = await this.getSubscriptionSwitches();
-      const offersSwitchSubscription = subscriptionSwitches ? await this.getOffers({ offerIds: subscriptionSwitches }) : [];
-      useCheckoutStore.setState({ offersSwitchSubscription });
+      const switchSubscriptionOffers = subscriptionSwitches ? await this.getOffers({ offerIds: subscriptionSwitches }) : [];
+      useCheckoutStore.setState({ switchSubscriptionOffers });
     }
   };
 

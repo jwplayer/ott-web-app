@@ -52,7 +52,7 @@ const PaymentContainer = () => {
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const { user: customer, subscription: activeSubscription, transactions, activePayment, pendingOffer, loading } = useAccountStore();
   const { canUpdatePaymentMethod, canShowReceipts, canRenewSubscription } = accountController.getFeatures();
-  const { offersSubscription, offersSwitchSubscription } = useOffers();
+  const { subscriptionOffers, switchSubscriptionOffers } = useOffers();
 
   const [showAllTransactions, setShowAllTransactions] = useState(false);
   const [isLoadingReceipt, setIsLoadingReceipt] = useState(false);
@@ -111,10 +111,10 @@ const PaymentContainer = () => {
       canUpdatePaymentMethod={canUpdatePaymentMethod}
       canRenewSubscription={canRenewSubscription}
       onUpgradeSubscriptionClick={handleUpgradeSubscriptionClick}
-      offerSwitchesAvailable={offersSwitchSubscription.length > 0}
+      offerSwitchesAvailable={switchSubscriptionOffers.length > 0}
       canShowReceipts={canShowReceipts}
       onShowReceiptClick={handleShowReceiptClick}
-      offers={offersSubscription}
+      offers={subscriptionOffers}
       pendingDowngradeOfferId={pendingDowngradeOfferId}
       changeSubscriptionPlan={changeSubscriptionPlan}
       onChangePlanClick={onChangePlanClick}

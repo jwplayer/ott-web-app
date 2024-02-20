@@ -19,7 +19,7 @@ const ChooseOffer = () => {
   const isSwitch = useQueryParam('u') === 'upgrade-subscription';
   const isPendingOffer = useAccountStore(({ pendingOffer }) => ({ isPendingOffer: !!pendingOffer }));
 
-  const { isLoading, offersMedia, offersSubscription, offersSwitchSubscription, defaultOfferType, hasMultipleOfferTypes, chooseOffer, switchSubscription } =
+  const { isLoading, mediaOffers, subscriptionOffers, switchSubscriptionOffers, defaultOfferType, hasMultipleOfferTypes, chooseOffer, switchSubscription } =
     useOffers();
 
   const checkoutUrl = modalURLFromLocation(location, 'checkout');
@@ -55,7 +55,7 @@ const ChooseOffer = () => {
     onSubmitError: () => navigate(upgradeErrorUrl),
   });
 
-  const visibleOffers = values.selectedOfferType === 'tvod' ? offersMedia : isSwitch ? offersSwitchSubscription : offersSubscription;
+  const visibleOffers = values.selectedOfferType === 'tvod' ? mediaOffers : isSwitch ? switchSubscriptionOffers : subscriptionOffers;
 
   useEffect(() => {
     if (isLoading || !visibleOffers.length) return;

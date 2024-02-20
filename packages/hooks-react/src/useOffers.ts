@@ -11,11 +11,11 @@ const useOffers = () => {
   const checkoutController = getModule(CheckoutController);
   const accountController = getModule(AccountController);
 
-  const { offersMedia, offersSubscription, offersSwitchSubscription, requestedMediaOffers } = useCheckoutStore(
-    ({ offersMedia, offersSubscription, offersSwitchSubscription, requestedMediaOffers }) => ({
-      offersMedia,
-      offersSubscription,
-      offersSwitchSubscription,
+  const { mediaOffers, subscriptionOffers, switchSubscriptionOffers, requestedMediaOffers } = useCheckoutStore(
+    ({ mediaOffers, subscriptionOffers, switchSubscriptionOffers, requestedMediaOffers }) => ({
+      mediaOffers,
+      subscriptionOffers,
+      switchSubscriptionOffers,
       requestedMediaOffers,
     }),
     shallow,
@@ -41,17 +41,17 @@ const useOffers = () => {
     initialise();
   }, [requestedMediaOffers, initialise]);
 
-  const hasMediaOffers = offersMedia.length > 0;
-  const hasSubscriptionOffers = offersSubscription.length > 0;
+  const hasMediaOffers = mediaOffers.length > 0;
+  const hasSubscriptionOffers = subscriptionOffers.length > 0;
   const hasPremierOffers = requestedMediaOffers.some((mediaOffer) => mediaOffer.premier);
-  const hasMultipleOfferTypes = (offersSubscription.length > 0 || offersSwitchSubscription.length > 0) && hasMediaOffers && !hasPremierOffers;
+  const hasMultipleOfferTypes = (subscriptionOffers.length > 0 || switchSubscriptionOffers.length > 0) && hasMediaOffers && !hasPremierOffers;
   const defaultOfferType: OfferType = hasPremierOffers || !hasSubscriptionOffers ? 'tvod' : 'svod';
 
   return {
     isLoading: isInitialisationLoading || chooseOffer.isLoading,
-    offersMedia,
-    offersSubscription,
-    offersSwitchSubscription,
+    mediaOffers,
+    subscriptionOffers,
+    switchSubscriptionOffers,
     chooseOffer,
     switchSubscription,
     hasMultipleOfferTypes,
