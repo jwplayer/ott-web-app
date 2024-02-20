@@ -6,11 +6,13 @@ import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 
 import Spinner from '../Spinner/Spinner';
 import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
+import useQueryParam from '../../hooks/useQueryParam';
 
 import styles from './WaitingForPayment.module.scss';
 
 const WaitingForPayment = () => {
   const { t } = useTranslation('account');
+  const offerId = useQueryParam('offerId') || undefined;
   const location = useLocation();
   const navigate = useNavigate();
   const announce = useAriaAnnouncer();
@@ -20,6 +22,7 @@ const WaitingForPayment = () => {
     intervalCheckAccess({
       interval: 3000,
       iterations: 5,
+      offerId,
       callback: (hasAccess) => {
         if (!hasAccess) return;
 
