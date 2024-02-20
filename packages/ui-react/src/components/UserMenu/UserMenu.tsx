@@ -26,6 +26,7 @@ type Props = {
   onClick?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  titleId?: string;
   currentProfile?: Profile | null;
   profilesEnabled?: boolean;
   profiles?: Profile[];
@@ -47,6 +48,7 @@ const UserMenu = ({
   selectProfile,
   favoritesEnabled,
   focusable,
+  titleId,
 }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
@@ -63,74 +65,74 @@ const UserMenu = ({
   }, [onClick, navigate, accountController]);
 
   return (
-    <ul onFocus={onFocus} onBlur={onBlur} className={styles.menuItems}>
-      {profilesEnabled && selectProfile && (
-        <ProfilesMenu
-          profiles={profiles ?? []}
-          currentProfile={currentProfile}
-          small={small}
-          selectingProfile={!!isSelectingProfile}
-          selectProfile={selectProfile}
-          createButtonLabel={t('nav.add_profile')}
-          switchProfilesLabel={t('nav.switch_profiles')}
-          onCreateButtonClick={() => navigate(PATH_USER_PROFILES_CREATE)}
-        />
-      )}
-      <li className={styles.sectionHeader}>{t('nav.settings')}</li>
-      {profilesEnabled && currentProfile && (
+    <>
+      <h2 className={styles.sectionHeader} id={titleId}>
+        {t('nav.settings')}
+      </h2>
+      <ul onFocus={onFocus} onBlur={onBlur} className={styles.menuItems}>
+        {profilesEnabled && selectProfile && (
+          <ProfilesMenu
+            profiles={profiles ?? []}
+            currentProfile={currentProfile}
+            small={small}
+            selectingProfile={!!isSelectingProfile}
+            selectProfile={selectProfile}
+            createButtonLabel={t('nav.add_profile')}
+            switchProfilesLabel={t('nav.switch_profiles')}
+            onCreateButtonClick={() => navigate(PATH_USER_PROFILES_CREATE)}
+          />
+        )}
+        {profilesEnabled && currentProfile && (
+          <li>
+            <MenuButton
+              small={small}
+              onClick={onClick}
+              to={userProfileURL(currentProfile.id ?? '')}
+              label={t('nav.profile')}
+              tabIndex={tabIndex}
+              startIcon={<ProfileCircle src={currentProfile?.avatar_url} alt={currentProfile?.name ?? ''} />}
+            />
+          </li>
+        )}
         <li>
           <MenuButton
             small={small}
             onClick={onClick}
-            to={userProfileURL(currentProfile.id ?? '')}
-            label={t('nav.profile')}
-            tabIndex={tabIndex}
-            startIcon={<ProfileCircle src={currentProfile?.avatar_url} alt={currentProfile?.name ?? ''} />}
-          />
-        </li>
-      )}
-      <li>
-        <MenuButton
-          small={small}
-          onClick={onClick}
-          to={PATH_USER_ACCOUNT}
-          label={t('nav.account')}
-          startIcon={<Icon icon={AccountCircle} />}
-          tabIndex={tabIndex}
-        />
-      </li>
-
-      {favoritesEnabled && (
-        <li>
-          <MenuButton
-            small={small}
-            onClick={onClick}
-            to={PATH_USER_FAVORITES}
-            label={t('nav.favorites')}
-            startIcon={<Icon icon={Favorite} />}
+            to={PATH_USER_ACCOUNT}
+            label={t('nav.account')}
+            startIcon={<Icon icon={AccountCircle} />}
             tabIndex={tabIndex}
           />
         </li>
-      )}
-      {showPaymentsItem && (
-        <li>
-          <MenuButton
-            small={small}
-            onClick={onClick}
-            to={PATH_USER_PAYMENTS}
-            label={t('nav.payments')}
-            startIcon={<Icon icon={BalanceWallet} />}
-            tabIndex={tabIndex}
-          />
+        {favoritesEnabled && (
+          <li>
+            <MenuButton
+              small={small}
+              onClick={onClick}
+              to={PATH_USER_FAVORITES}
+              label={t('nav.favorites')}
+              startIcon={<Icon icon={Favorite} />}
+              tabIndex={tabIndex}
+            />
+          </li>
+        )}
+        {showPaymentsItem && (
+          <li>
+            <MenuButton
+              small={small}
+              onClick={onClick}
+              to={PATH_USER_PAYMENTS}
+              label={t('nav.payments')}
+              startIcon={<Icon icon={BalanceWallet} />}
+              tabIndex={tabIndex}
+            />
+          </li>
+        )}
+        <li className={classNames(styles.divider, { [styles.small]: small })}>
+          <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Icon icon={Exit} />} tabIndex={tabIndex} />
         </li>
-      )}
-      <li>
-        <hr className={classNames(styles.divider, { [styles.small]: small })} />
-      </li>
-      <li>
-        <MenuButton small={small} onClick={onLogout} label={t('nav.logout')} startIcon={<Icon icon={Exit} />} tabIndex={tabIndex} />
-      </li>
-    </ul>
+      </ul>
+    </>
   );
 };
 

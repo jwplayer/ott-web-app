@@ -1,6 +1,21 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 @use '@jwp/ott-ui-react/src/styles/theme';
 
+@mixin divider-before($marginY, $marginX, $background-opacity) {
+  position: relative;
+  margin-top: $marginY;
+
+  &::before {
+    position: absolute;
+    top: calc(#{$marginY} * -0.5);
+    right: $marginX;
+    left: $marginX;
+    height: 1px;
+    background-color: rgba(variables.$white, $background-opacity);
+    content: '';
+  }
+}
+
 .menuItems {
   width: auto;
   margin: 0;
@@ -18,20 +33,16 @@
 }
 
 .divider {
-  vertical-align: baseline;
-  background: transparent;
-  border: 0;
-  border-top: 1px solid rgba(variables.$white, 0.12);
+  @include divider-before(variables.$base-spacing, 0, 0.12);
 
   &.small {
-    margin: variables.$base-spacing;
-    border-top: 1px solid rgba(255, 255, 255, 0.32);
+    @include divider-before(variables.$base-spacing, variables.$base-spacing, 0.32);
   }
 }
 
 .sectionHeader {
   width: 100%;
-  padding: 0 0 12px 24px;
+  padding: 12px 0 12px 24px;
   color: variables.$white;
   font-weight: 700;
   font-size: 12px;
