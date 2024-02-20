@@ -498,7 +498,11 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
         <label
           for="check-box_1235_ccc"
         >
-          * 
+          <span
+            aria-hidden="true"
+          >
+            * 
+          </span>
           CheckMe
         </label>
       </div>
@@ -942,7 +946,11 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
         <label
           for="check-box_1235_ccc"
         >
-          * 
+          <span
+            aria-hidden="true"
+          >
+            * 
+          </span>
           CheckMe
         </label>
       </div>

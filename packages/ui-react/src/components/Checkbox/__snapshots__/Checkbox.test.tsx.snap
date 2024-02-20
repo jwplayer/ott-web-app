@@ -18,6 +18,9 @@ exports[`<Checkbox> > renders and matches snapshot 1`] = `
       <label
         for="check-box_1235_name"
       >
+        <span
+          aria-hidden="true"
+        />
         label
       </label>
     </div>
