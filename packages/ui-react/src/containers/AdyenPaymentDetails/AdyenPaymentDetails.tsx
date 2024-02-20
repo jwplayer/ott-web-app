@@ -6,11 +6,10 @@ import type { AdyenPaymentSession } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
-import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation, modalURLFromWindowLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/src/constants';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
-import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { useTranslation } from 'react-i18next';
 
 import Adyen from '../../components/Adyen/Adyen';
@@ -96,7 +95,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
         setProcessing(true);
         setPaymentError(undefined);
 
-        const returnUrl = createURL(window.location.href, { u: 'payment-method', paymentMethodId: `${paymentMethodId}` });
+        const returnUrl = modalURLFromWindowLocation('payment-method', { paymentMethodId: `${paymentMethodId}` });
         const result = await checkoutController.addAdyenPaymentDetails(state.data.paymentMethod, paymentMethodId, returnUrl);
 
         if ('action' in result) {
