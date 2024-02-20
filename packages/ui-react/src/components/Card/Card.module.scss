@@ -156,10 +156,15 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 
   &.loading {
-    width: 30%;
-    height: 16px;
-    background-color: theme.$card-loading-bg-color;
-    border-radius: 5px;
+    &::before {
+      content: '';
+      position: relative;
+      display: inline-block;
+      width: 45%;
+      height: 1.2em;
+      background-color: theme.$card-loading-bg-color;
+      border-radius: 5px;
+    }
   }
 
   @include responsive.mobile-only {
