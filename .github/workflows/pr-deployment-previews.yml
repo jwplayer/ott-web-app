@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 10
     environment:
       name: Deployment Previews
-      url: ${{ format('https://pr-{0}.{1}', github.event.pull_request.number || '0' , vars.PREVIEW_DOMAIN) }}
+      url: ${{ format('https://pr-{0}.{1}?app-config={2}', github.event.pull_request.number || '0' , vars.PREVIEW_DOMAIN, vars.PREVIEW_DEFAULT_CONFIG) }}
     if:  ${{ vars.DEPLOYMENT_PREVIEWS != '' }}
     steps:
       - uses: actions/checkout@v4
@@ -28,6 +28,7 @@ jobs:
         run: |
           yarn build
         env:
+          MODE: demo
           APP_GTM_TAG_ID: ${{ vars.APP_GTM_TAG_ID }}
           APP_FOOTER_TEXT: ${{ vars.APP_FOOTER_TEXT }}
           APP_BODY_FONT_FAMILY: ${{ vars.APP_BODY_FONT_FAMILY }}
