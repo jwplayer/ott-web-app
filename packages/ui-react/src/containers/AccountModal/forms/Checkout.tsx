@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import useCheckout from '@jwp/ott-hooks-react/src/useCheckout';
-import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation, modalURLFromWindowLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
-import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 import { useTranslation } from 'react-i18next';
 
@@ -101,9 +100,9 @@ const Checkout = () => {
     );
   }
 
-  const cancelUrl = createURL(window.location.href, { u: 'payment-cancelled' });
-  const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment', offerId: selectedOffer?.offerId });
-  const errorUrl = createURL(window.location.href, { u: 'payment-error' });
+  const cancelUrl = modalURLFromWindowLocation('payment-cancelled');
+  const waitingUrl = modalURLFromWindowLocation('waiting-for-payment', { offerId: selectedOffer?.offerId });
+  const errorUrl = modalURLFromWindowLocation('payment-error');
   const successUrlPaypal = offerType === 'svod' ? waitingUrl : closeModalUrl;
   const referrer = window.location.href;
 
