@@ -170,9 +170,6 @@ export default class AccountController {
 
       if (response) {
         await this.afterLogin(response.user, response.customerConsents);
-        await this.favoritesController?.restoreFavorites();
-        await this.watchHistoryController?.restoreWatchHistory();
-
         return;
       }
     } catch (error: unknown) {
@@ -201,7 +198,7 @@ export default class AccountController {
 
       if (response) {
         const { user, customerConsents } = response;
-        await this.afterLogin(user, customerConsents);
+        await this.afterLogin(user, customerConsents, true);
 
         return;
       }
@@ -493,18 +490,20 @@ export default class AccountController {
     return this.features;
   }
 
-  private async afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, shouldReloadSubscription = true) {
+  private async afterLogin(user: Customer, customerConsents: CustomerConsent[] | null, registration = false) {
     useAccountStore.setState({
       user,
       customerConsents,
     });
 
     await Promise.allSettled([
-      shouldReloadSubscription ? this.reloadSubscriptions() : Promise.resolve(),
+      this.reloadSubscriptions(),
       this.getPublisherConsents(),
-      this.favoritesController.restoreFavorites(),
-      this.watchHistoryController.restoreWatchHistory(),
+      // after registration, transfer the personal shelves to the account
+      registration ? this.favoritesController.persistFavorites() : this.favoritesController.restoreFavorites(),
+      registration ? this.watchHistoryController.persistWatchHistory() : this.watchHistoryController.restoreWatchHistory(),
     ]);
+
     useAccountStore.setState({ loading: false });
   }
 
