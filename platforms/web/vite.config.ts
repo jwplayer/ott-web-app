@@ -10,7 +10,15 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import svgr from 'vite-plugin-svgr';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-import { extractExternalFonts, getFileCopyTargets, getGoogleFontTags, getGoogleVerificationTag, getGtmTags } from './scripts/build-tools/buildTools';
+import { basePath, favIconSizes, appleIconSizes } from './pwa-assets.config';
+import {
+  extractExternalFonts,
+  getFileCopyTargets,
+  getGoogleFontTags,
+  getGoogleVerificationTag,
+  getGtmTags,
+  generateIconTags,
+} from './scripts/build-tools/buildTools';
 
 export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   const envPrefix = 'APP_';
@@ -39,6 +47,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   const fontTags = getGoogleFontTags([bodyFonts, bodyAltFonts].flat());
   const bodyFontsString = bodyFonts.map((font) => font.fontFamily).join(', ');
   const bodyAltFontsString = bodyAltFonts.map((font) => font.fontFamily).join(', ');
+  const favicons = generateIconTags(basePath, favIconSizes, appleIconSizes);
 
   return defineConfig({
     plugins: [
@@ -80,7 +89,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
         minify: true,
         inject: {
           tags: [getGoogleVerificationTag(env), fontTags, getGtmTags(env)].flat(),
-          data: app,
+          data: { ...app, favicons },
         },
       }),
       viteStaticCopy({ targets: getFileCopyTargets(mode) }),
