@@ -66,8 +66,6 @@ export default class AccountController {
 
       if (authData) {
         await this.getAccount();
-        await this.watchHistoryController.restoreWatchHistory();
-        await this.favoritesController.restoreFavorites();
       }
     } catch (error: unknown) {
       logDev('Failed to get user', error);
@@ -145,10 +143,9 @@ export default class AccountController {
 
     try {
       const response = await this.accountService.getUser({ config });
+
       if (response) {
         await this.afterLogin(response.user, response.customerConsents);
-        await this.favoritesController.restoreFavorites().catch(logDev);
-        await this.watchHistoryController.restoreWatchHistory().catch(logDev);
       }
 
       useAccountStore.setState({ loading: false });
@@ -289,7 +286,10 @@ export default class AccountController {
 
     const updatedCustomer = await this.accountService.updateCaptureAnswers({ customer, ...capture });
 
-    await this.afterLogin(updatedCustomer, customerConsents, false);
+    useAccountStore.setState({
+      user: updatedCustomer,
+      customerConsents,
+    });
 
     return updatedCustomer;
   };
@@ -499,7 +499,12 @@ export default class AccountController {
       customerConsents,
     });
 
-    await Promise.allSettled([shouldReloadSubscription ? this.reloadSubscriptions() : Promise.resolve(), this.getPublisherConsents()]);
+    await Promise.allSettled([
+      shouldReloadSubscription ? this.reloadSubscriptions() : Promise.resolve(),
+      this.getPublisherConsents(),
+      this.favoritesController.restoreFavorites(),
+      this.watchHistoryController.restoreWatchHistory(),
+    ]);
     useAccountStore.setState({ loading: false });
   }
 
@@ -533,7 +538,7 @@ export default class AccountController {
 
     this.profileController.unpersistProfile();
 
-    await this.favoritesController.restoreFavorites().catch(logDev);
-    await this.watchHistoryController.restoreWatchHistory().catch(logDev);
+    await this.favoritesController.restoreFavorites();
+    await this.watchHistoryController.restoreWatchHistory();
   };
 }
