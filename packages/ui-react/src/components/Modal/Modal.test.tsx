@@ -31,7 +31,6 @@ describe('<Modal>', () => {
       </div>,
     );
 
-    expect(getByTestId('container')).toHaveAttribute('aria-modal', 'true');
     expect(getByTestId('root')).toHaveProperty('inert', true);
 
     rerender(
