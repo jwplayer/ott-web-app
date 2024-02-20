@@ -11,14 +11,14 @@ const VideoMetaData: React.FC<Props> = ({ attributes, separator = '•' }: Props
   return (
     <>
       {attributes.map((value, index) => (
-        <>
-          <span key={index}>{value}</span>
+        <React.Fragment key={value}>
+          <span>{value}</span>
           {index < attributes.length - 1 && (
             <span className={styles.separator} aria-hidden="true">
               {separator}
             </span>
           )}
-        </>
+        </React.Fragment>
       ))}
     </>
   );
