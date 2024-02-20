@@ -19,6 +19,9 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Checkbox> 1`] = `
       <label
         for="check-box_1235_name"
       >
+        <span
+          aria-hidden="true"
+        />
         label
       </label>
     </div>
@@ -156,6 +159,9 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="ra
       <label
         for="check-box_1235_name"
       >
+        <span
+          aria-hidden="true"
+        />
         label
       </label>
     </div>
