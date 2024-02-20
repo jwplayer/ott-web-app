@@ -104,19 +104,20 @@ exports[`<Layout /> > renders layout 1`] = `
       <nav
         class="_group_577f70"
       >
-        <a
-          aria-current="page"
-          class="_menuButton_91706b _active_91706b"
-          href="/"
-          tabindex="-1"
-        >
-          <span>
-            home
-          </span>
-        </a>
-        <hr
-          class="_divider_c71437"
-        />
+        <ul>
+          <li>
+            <a
+              aria-current="page"
+              class="_menuButton_91706b _active_91706b"
+              href="/"
+              tabindex="0"
+            >
+              <span>
+                home
+              </span>
+            </a>
+          </li>
+        </ul>
       </nav>
     </div>
   </div>

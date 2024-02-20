@@ -15,6 +15,7 @@ import { IS_DEVELOPMENT_BUILD, unicodeToChar } from '@jwp/ott-common/src/utils/c
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
+import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
 import { PATH_HOME, PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 import { playlistURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import env from '@jwp/ott-common/src/env';
@@ -37,6 +38,7 @@ const Layout = () => {
     ({ config, accessModel, supportedLanguages }) => ({ config, accessModel, supportedLanguages }),
     shallow,
   );
+  const userMenuTitleId = useOpaqueId('usermenu-title');
   const isLoggedIn = !!useAccountStore(({ user }) => user);
   const favoritesEnabled = !!config.features?.favoritesList;
   const { menu, assets, siteName, description, features, styling } = config;
@@ -132,7 +134,9 @@ const Layout = () => {
     if (!canLogin) return null;
 
     return isLoggedIn ? (
-      <UserMenu focusable={sideBarOpen} favoritesEnabled={favoritesEnabled} showPaymentsItem />
+      <section aria-labelledby={userMenuTitleId}>
+        <UserMenu focusable={sideBarOpen} favoritesEnabled={favoritesEnabled} titleId={userMenuTitleId} showPaymentsItem />
+      </section>
     ) : (
       <div className={styles.buttonContainer}>
         <Button tabIndex={sideBarOpen ? 0 : -1} onClick={loginButtonClickHandler} label={t('sign_in')} fullWidth />
@@ -210,11 +214,16 @@ const Layout = () => {
         )}
       </div>
       <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
-        <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
-        {menu.map((item) => (
-          <MenuButton key={item.contentId} label={item.label} to={playlistURL(item.contentId)} tabIndex={sideBarOpen ? 0 : -1} />
-        ))}
-        <hr className={styles.divider} />
+        <ul>
+          <li>
+            <MenuButton label={t('home')} to="/" />
+          </li>
+          {menu.map((item) => (
+            <li key={item.contentId}>
+              <MenuButton label={item.label} to={playlistURL(item.contentId)} />
+            </li>
+          ))}
+        </ul>
         {renderUserActions(sideBarOpen)}
       </Sidebar>
     </div>
