@@ -81,7 +81,7 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
     <Fade open={open} duration={300} onCloseAnimationEnd={() => setVisible(false)}>
       <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
         <div className={styles.backdrop} onClick={onClose} data-testid={testId('backdrop')} />
-        <div className={styles.container} data-testid={testId('container')} aria-modal="true" {...ariaAtributes}>
+        <div className={styles.container} {...ariaAtributes}>
           <AnimationComponent open={open} duration={200} className={animationContainerClassName}>
             {children}
           </AnimationComponent>

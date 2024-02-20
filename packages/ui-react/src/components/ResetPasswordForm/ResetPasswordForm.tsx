@@ -14,10 +14,8 @@ type Props = {
 const ResetPasswordForm: React.FC<Props> = ({ onCancel, onReset, submitting }: Props) => {
   const { t } = useTranslation('account');
   return (
-    <div className={styles.resetPassword} role="dialog" aria-labelledby="reset_password">
-      <h1 id="reset_password" className={styles.title}>
-        {t('reset.reset_password')}
-      </h1>
+    <div>
+      <h1 className={styles.title}>{t('reset.reset_password')}</h1>
       <p className={styles.text}>{t('reset.text')}</p>
       <Button onClick={onReset} className={styles.button} fullWidth color="primary" label={t('reset.yes')} type="submit" disabled={submitting} />
       <Button onClick={onCancel} fullWidth label={t('reset.no')} />
