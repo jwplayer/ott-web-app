@@ -95,7 +95,7 @@ function Card({
     }
   };
 
-  const heading = React.createElement(`h${headingLevel}`, { className: classNames(styles.title, { [styles.loading]: loading }) }, title);
+  const heading = React.createElement(`h${headingLevel}`, { className: classNames(styles.title, { [styles.loading]: loading }) }, loading ? '' : title);
 
   return (
     <Link
